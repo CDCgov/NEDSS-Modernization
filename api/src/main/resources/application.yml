@@ -1,4 +1,6 @@
 logging.level.org.hibernate.SQL: DEBUG
+spring.graphql.graphiql.enabled: true
+spring.graphql.graphiql.path: /graphiql
 
 spring.jpa.hibernate.ddl-auto: none
 spring.datasource.url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;

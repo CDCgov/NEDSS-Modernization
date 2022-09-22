@@ -22,6 +22,9 @@ dependencies {
 	// database
 	implementation 'com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17'
 
+	// graphql
+	implementation 'org.springframework.boot:spring-boot-starter-graphql:2.7.2'
+
 	// swagger
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
