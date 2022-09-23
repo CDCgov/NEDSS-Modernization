@@ -1,4 +1,4 @@
-package com.enquizit.nbs.model.patient;
+package com.enquizit.nbs.model.graphql;
 
 import java.time.LocalDateTime;
 
@@ -8,8 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PatientFilter {
-    private int pageNumber;
-    private int pageSize;
+    private GraphQLPage page = new GraphQLPage(50, 0);
     private Long id;
     private String lastName;
     private String firstName;
@@ -29,6 +28,9 @@ public class PatientFilter {
     private String recordStatus;
 
     public String getDeceasedDataValue() {
+        if (this.getDeceased() == null) {
+            return null;
+        }
         switch (this.getDeceased()) {
             case YES:
                 return "Y";

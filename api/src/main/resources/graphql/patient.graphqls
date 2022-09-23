@@ -1,10 +1,16 @@
 type Query {
+    findPatientById(id: ID!): Patient
+    findAllPatients(page: Page): [Patient]
     findPatientsByFilter(filter: PatientFilter!): [Patient]
 }
 
-input PatientFilter {
-    pageNumber: Int
+input Page {
     pageSize: Int
+    pageNumber: Int
+}
+
+input PatientFilter {
+    page: Page
     id: ID
     lastName: String
     firstName: String

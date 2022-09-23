@@ -2,16 +2,21 @@ package com.enquizit.nbs.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.enquizit.nbs.model.graphql.GraphQLPage;
+import com.enquizit.nbs.model.graphql.PatientFilter;
 import com.enquizit.nbs.model.patient.Patient;
-import com.enquizit.nbs.model.patient.PatientFilter;
 import com.enquizit.nbs.model.patient.QPatient;
+import com.enquizit.nbs.repository.PatientRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,12 +29,25 @@ public class PatientService {
     private final int MAX_PAGE_SIZE = 50;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+    private final PatientRepository patientRepository;
+
+    public Optional<Patient> findPatientById(Long id) {
+        return patientRepository.findById(id);
+    }
+
+    public Page<Patient> findAllPatients(GraphQLPage page) {
+        if (page == null) {
+            page = new GraphQLPage(MAX_PAGE_SIZE, 0);
+        }
+        var pageable = PageRequest.of(page.getPageNumber(), Math.min(page.getPageSize(), MAX_PAGE_SIZE));
+        return patientRepository.findAll(pageable);
+    }
 
     public List<Patient> findPatientsByFilter(PatientFilter filter) {
         // limit page size
-        if (filter.getPageSize() == 0 || filter.getPageSize() > MAX_PAGE_SIZE) {
-            filter.setPageSize(MAX_PAGE_SIZE);
+        if (filter.getPage().getPageSize() == 0 || filter.getPage().getPageSize() > MAX_PAGE_SIZE) {
+            filter.getPage().setPageSize(MAX_PAGE_SIZE);
         }
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
@@ -56,8 +74,8 @@ public class PatientService {
         query = applyIfFilterNotNull(query, patient.hmCntryCd::eq, filter.getCountry());
         query = applyIfFilterNotNull(query, patient.ethnicityGroupCd::eq, filter.getEthnicity());
         query = applyIfFilterNotNull(query, patient.recordStatusCd::eq, filter.getRecordStatus());
-        return query.limit(filter.getPageSize())
-                .offset(filter.getPageNumber() * filter.getPageSize()).fetch();
+        return query.limit(filter.getPage().getPageSize())
+                .offset(filter.getPage().getOffset()).fetch();
 
     }
 
@@ -71,6 +89,9 @@ public class PatientService {
     }
 
     private BooleanExpression getDateOfBirthExpression(QPatient patient, LocalDateTime dob, String dobOperator) {
+        if (dob == null) {
+            return null;
+        }
         if (dobOperator == null) {
             return patient.birthTime.eq(dob);
         } else if (dobOperator.toLowerCase().equals("equal")) {

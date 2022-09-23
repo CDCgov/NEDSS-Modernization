@@ -1,6 +1,8 @@
-package com.enquizit.nbs.model.patient;
+package com.enquizit.nbs.model.graphql;
 
 import java.time.LocalDateTime;
+
+import com.enquizit.nbs.model.patient.Patient;
 
 import lombok.Getter;
 import lombok.Setter;
