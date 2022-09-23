@@ -18,7 +18,7 @@ public class PatientFilter {
     private LocalDateTime dateOfBirth;
     private String dateOfBirthOperator;
     private String gender;
-    private String disease;
+    private Deceased deceased;
     private String address;
     private String city;
     private String state;
@@ -27,4 +27,23 @@ public class PatientFilter {
     private String mortalityStatus;
     private String ethnicity;
     private String recordStatus;
+
+    public String getDeceasedDataValue() {
+        switch (this.getDeceased()) {
+            case YES:
+                return "Y";
+            case NO:
+                return "N";
+            case UNKNOWN:
+                return "UNK";
+            default:
+                throw new IllegalArgumentException("Invalid Deceased value provided: " + this.getDeceased());
+        }
+    }
+
+    public static enum Deceased {
+        YES,
+        NO,
+        UNKNOWN
+    }
 }

@@ -49,6 +49,7 @@ public class PatientService {
         query = query
                 .where(getDateOfBirthExpression(patient, filter.getDateOfBirth(), filter.getDateOfBirthOperator()));
         query = applyIfFilterNotNull(query, patient.birthGenderCd::eq, filter.getGender());
+        query = applyIfFilterNotNull(query, patient.deceasedIndCd::eq, filter.getDeceasedDataValue());
         query = applyIfFilterNotNull(query, patient.hmStreetAddr1::eq, filter.getAddress());
         query = applyIfFilterNotNull(query, patient.hmCityCd::eq, filter.getCity());
         query = applyIfFilterNotNull(query, patient.hmStateCd::eq, filter.getState());

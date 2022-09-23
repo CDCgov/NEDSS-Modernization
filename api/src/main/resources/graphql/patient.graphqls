@@ -13,7 +13,7 @@ input PatientFilter {
     DateOfBirth: Date
     DateOfBirthOperator: Operator
     gender: String
-    disease: String
+    deceased: Deceased
     address: String
     city: String
     state: String
@@ -21,13 +21,24 @@ input PatientFilter {
     zip: String
     mortalityStatus: String
     ethnicity: String
-    recordStatus: String
+    recordStatus: RecordStatus
+}
+
+enum Deceased {
+    YES
+    NO
+    UNKNOWN
 }
 
 enum Operator {
-    equal
-    before
-    after
+    EQUAL
+    BEFORE
+    AFTER
+}
+
+enum RecordStatus {
+    ACTIVE
+    LOG_DEL
 }
 
 type Patient {
