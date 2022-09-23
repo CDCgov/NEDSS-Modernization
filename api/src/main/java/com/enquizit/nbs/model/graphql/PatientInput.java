@@ -2,8 +2,6 @@ package com.enquizit.nbs.model.graphql;
 
 import java.time.LocalDateTime;
 
-import com.enquizit.nbs.model.patient.Patient;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -115,23 +113,4 @@ public class PatientInput {
     private String eharsId;
     private String ethnicUnkReasonCd;
     private String sexUnkReasonCd;
-
-    public Patient toPatient(long Id) {
-        return new Patient(Id, addReasonCd, addTime, addUserId, administrativeGenderCd, ageCalc, ageCalcTime,
-                ageCalcUnitCd, ageCategoryCd, ageReported, ageReportedTime, ageReportedUnitCd, birthGenderCd,
-                birthOrderNbr, birthTime, birthTimeCalc, cd, cdDescTxt, currSexCd, deceasedIndCd, deceasedTime,
-                description, educationLevelCd, educationLevelDescTxt, ethnicGroupInd, lastChgReasonCd, lastChgTime,
-                lastChgUserId, localId, maritalStatusCd, maritalStatusDescTxt, mothersMaidenNm, multipleBirthInd,
-                occupationCd, preferredGenderCd, primLangCd, primLangDescTxt, recordStatusCd, recordStatusTime,
-                statusCd, statusTime, survivedIndCd, userAffiliationTxt, firstNm, lastNm, middleNm, nmPrefix, nmSuffix,
-                preferredNm, hmStreetAddr1, hmStreetAddr2, hmCityCd, hmCityDescTxt, hmStateCd, hmZipCd, hmCntyCd,
-                hmCntryCd, hmPhoneNbr, hmPhoneCntryCd, hmEmailAddr, cellPhoneNbr, wkStreetAddr1, wkStreetAddr2,
-                wkCityCd, wkCityDescTxt, wkStateCd, wkZipCd, wkCntyCd, wkCntryCd, wkPhoneNbr, wkPhoneCntryCd,
-                wkEmailAddr, ssn, medicaidNum, dlNum, dlStateCd, raceCd, raceSeqNbr, raceCategoryCd, ethnicityGroupCd,
-                ethnicGroupSeqNbr, adultsInHouseNbr, childrenInHouseNbr, birthCityCd, birthCityDescTxt, birthCntryCd,
-                birthStateCd, raceDescTxt, ethnicGroupDescTxt, versionCtrlNbr, asOfLocalDateTimeAdmin,
-                asOfLocalDateTimeEthnicity, asOfLocalDateTimeGeneral, asOfLocalDateTimeMorbidity, asOfLocalDateTimeSex,
-                electronicInd, personParentUid, dedupMatchInd, groupNbr, groupTime, edxInd, speaksEnglishCd,
-                additionalGenderCd, eharsId, ethnicUnkReasonCd, sexUnkReasonCd);
-    }
 }
