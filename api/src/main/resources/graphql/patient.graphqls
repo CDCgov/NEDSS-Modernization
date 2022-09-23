@@ -11,7 +11,7 @@ input PatientFilter {
     ssn: String
     phoneNumber: String
     DateOfBirth: Date
-    DateOfBirthOperator: Date
+    DateOfBirthOperator: Operator
     gender: String
     disease: String
     address: String
@@ -22,6 +22,12 @@ input PatientFilter {
     mortalityStatus: String
     ethnicity: String
     recordStatus: String
+}
+
+enum Operator {
+    equal
+    before
+    after
 }
 
 type Patient {

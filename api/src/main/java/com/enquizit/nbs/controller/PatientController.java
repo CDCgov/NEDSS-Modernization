@@ -1,6 +1,7 @@
 package com.enquizit.nbs.controller;
 
-import org.springframework.data.domain.Page;
+import java.util.List;
+
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,7 @@ public class PatientController {
     private final PatientService patientService;
 
     @QueryMapping()
-    public Page<Patient> findPatientsByFilter(@Argument PatientFilter filter) {
-        var response = patientService.findPatientsByFilter(filter);
-        return response;
+    public List<Patient> findPatientsByFilter(@Argument PatientFilter filter) {
+        return patientService.findPatientsByFilter(filter);
     }
 }

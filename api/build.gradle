@@ -1,8 +1,17 @@
-plugins {
-	id 'org.springframework.boot' version '2.7.2'
-	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
-	id 'java'
+buildscript {
+    ext {
+        springBootVersion = "2.7.2"
+        queryDslVersion = "5.0.0"
+    }
 }
+plugins {
+	id "org.springframework.boot" version "${springBootVersion}"
+	id "io.spring.dependency-management" version "1.0.12.RELEASE"
+	id "java"
+}
+
+// Adds the generated querydsl files to the classpath
+sourceSets.main.java.srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
 
 configurations {
 	compileOnly {
@@ -16,35 +25,42 @@ repositories {
 
 dependencies {
 	// core
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.2'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.2'
-
-	// database
-	implementation 'com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17'
+	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
 	// graphql
-	implementation 'org.springframework.boot:spring-boot-starter-graphql:2.7.2'
+	implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
+
+	// database
+	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"	
+
+	// querydsl
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
 	// swagger
-	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
 
 	// lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation "org.projectlombok:lombok"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
 
 	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
-tasks.named('test') {
+tasks.named("test") {
 	useJUnitPlatform()
 }
 
 
 processResources {
-	from ('../ui/build') {
-		into 'public'
+	from ("../ui/build") {
+		into "public"
 	}
 }
 
-compileJava.mustRunAfter(':ui:build')
+compileJava.mustRunAfter(":ui:build")
