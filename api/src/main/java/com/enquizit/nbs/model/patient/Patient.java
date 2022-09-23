@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Patient {
     @Id
     @Column(name = "person_uid", nullable = false)
-    private long personUid;
+    private Long personUid;
     @Basic
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
@@ -295,7 +295,7 @@ public class Patient {
     private String ethnicGroupDescTxt;
     @Basic
     @Column(name = "version_ctrl_nbr", nullable = false)
-    private short versionCtrlNbr;
+    private Short versionCtrlNbr;
     @Basic
     @Column(name = "as_of_Date_admin")
     @JsonFormat(pattern = "MM/dd/yyyy")
