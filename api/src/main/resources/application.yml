@@ -1,9 +1,12 @@
 logging.level.org.hibernate.SQL: DEBUG
+spring.graphql.graphiql.enabled: true
+spring.graphql.graphiql.path: /graphiql
 
 spring.jpa.hibernate.ddl-auto: none
 spring.datasource.url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
 spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
 spring.datasource.username: sa
 spring.datasource.password: fake.fake.fake.1234
+spring.jpa.properties.hibernate.format_sql: true
 spring.mvc.pathmatch.matching-strategy: ant_path_matcher
 logging.file.path: ./log/
