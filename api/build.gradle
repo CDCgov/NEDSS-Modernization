@@ -11,7 +11,13 @@ plugins {
 }
 
 // Adds the generated querydsl files to the classpath
-sourceSets.main.java.srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
+sourceSets {
+	main {
+		java {
+			srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
+		}
+	}
+}
 
 configurations {
 	compileOnly {

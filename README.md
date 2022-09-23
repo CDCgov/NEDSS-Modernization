@@ -2,11 +2,30 @@
 
 NEDSS-Modernization
 
-# Potentially useful information
-
 ## GraphQL
 
 The project utilizes GraphQL through the [spring-boot-starter-graphql](https://docs.spring.io/spring-graphql/docs/current/reference/html/) dependency. With the api running an interface is available at [/graphiql](http://localhost:8080/graphiql?path=/graphql#) for testing
+
+## QueryDSL
+
+[QueryDSL](https://github.com/querydsl/querydsl) allows the construction of type-safe SQL queries. The `QPatient` class is generated from the existing `Patient` JPA entity. When a new `@Entity` is added, run `./gradlew build` and the new Q classes will be created under `api/build/generated/sources/annotationProcessor/java/main`
+
+```java
+@PersistenceContext
+private final EntityManager entityManager;
+
+public List<Patient> findPatientsNamedJohn() {
+    JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+    var patient = QPatient.patient;
+    return queryFactory.selectFrom(patient).where(patient.firstNm.like("John")).fetch();
+}
+```
+
+VSCode setup instructions
+
+1. run `./gradlew build`
+1. press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
+1. VSCode should now recognize the generated Q classes
 
 ## Auto Generating Endpoints
 
