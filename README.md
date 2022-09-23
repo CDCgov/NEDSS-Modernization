@@ -2,6 +2,15 @@
 
 NEDSS-Modernization
 
+## Running
+
+### VSCode
+
+1. In the ui directory run `npm install`
+1. In the root directory run `./gradlew build`
+1. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
+1. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
+
 ## GraphQL
 
 The project utilizes GraphQL through the [spring-boot-starter-graphql](https://docs.spring.io/spring-graphql/docs/current/reference/html/) dependency. With the api running an interface is available at [/graphiql](http://localhost:8080/graphiql?path=/graphql#) for testing
@@ -20,12 +29,6 @@ public List<Patient> findPatientsNamedJohn() {
     return queryFactory.selectFrom(patient).where(patient.firstNm.like("John")).fetch();
 }
 ```
-
-VSCode setup instructions
-
-1. run `./gradlew build`
-1. press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
-1. VSCode should now recognize the generated Q classes
 
 ## Auto Generating Endpoints
 
