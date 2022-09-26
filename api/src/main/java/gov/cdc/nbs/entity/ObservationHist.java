@@ -1,0 +1,213 @@
+package gov.cdc.nbs.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import java.time.Instant;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "Observation_hist")
+public class ObservationHist {
+    @EmbeddedId
+    private ObservationHistId id;
+
+    @MapsId("observationUid")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "observation_uid", nullable = false)
+    private Observation observationUid;
+
+    @Column(name = "activity_duration_amt", length = 20)
+    private String activityDurationAmt;
+
+    @Column(name = "activity_duration_unit_cd", length = 20)
+    private String activityDurationUnitCd;
+
+    @Column(name = "activity_from_time")
+    private Instant activityFromTime;
+
+    @Column(name = "activity_to_time")
+    private Instant activityToTime;
+
+    @Column(name = "add_reason_cd", length = 20)
+    private String addReasonCd;
+
+    @Column(name = "add_time")
+    private Instant addTime;
+
+    @Column(name = "add_user_id")
+    private Long addUserId;
+
+    @Column(name = "cd", length = 50)
+    private String cd;
+
+    @Column(name = "cd_desc_txt", length = 1000)
+    private String cdDescTxt;
+
+    @Column(name = "cd_system_cd", length = 300)
+    private String cdSystemCd;
+
+    @Column(name = "cd_system_desc_txt", length = 100)
+    private String cdSystemDescTxt;
+
+    @Column(name = "confidentiality_cd", length = 20)
+    private String confidentialityCd;
+
+    @Column(name = "confidentiality_desc_txt", length = 100)
+    private String confidentialityDescTxt;
+
+    @Column(name = "ctrl_cd_display_form", length = 20)
+    private String ctrlCdDisplayForm;
+
+    @Column(name = "ctrl_cd_user_defined_1", length = 20)
+    private String ctrlCdUserDefined1;
+
+    @Column(name = "ctrl_cd_user_defined_2", length = 20)
+    private String ctrlCdUserDefined2;
+
+    @Column(name = "ctrl_cd_user_defined_3", length = 20)
+    private String ctrlCdUserDefined3;
+
+    @Column(name = "ctrl_cd_user_defined_4", length = 20)
+    private String ctrlCdUserDefined4;
+
+    @Column(name = "derivation_exp")
+    private Short derivationExp;
+
+    @Column(name = "effective_duration_amt", length = 20)
+    private String effectiveDurationAmt;
+
+    @Column(name = "effective_duration_unit_cd", length = 20)
+    private String effectiveDurationUnitCd;
+
+    @Column(name = "effective_from_time")
+    private Instant effectiveFromTime;
+
+    @Column(name = "effective_to_time")
+    private Instant effectiveToTime;
+
+    @Column(name = "electronic_ind")
+    private Character electronicInd;
+
+    @Column(name = "group_level_cd", length = 10)
+    private String groupLevelCd;
+
+    @Column(name = "jurisdiction_cd", length = 20)
+    private String jurisdictionCd;
+
+    @Column(name = "last_chg_reason_cd", length = 20)
+    private String lastChgReasonCd;
+
+    @Column(name = "last_chg_time")
+    private Instant lastChgTime;
+
+    @Column(name = "last_chg_user_id")
+    private Long lastChgUserId;
+
+    @Column(name = "lab_condition_cd", length = 20)
+    private String labConditionCd;
+
+    @Column(name = "local_id", length = 50)
+    private String localId;
+
+    @Column(name = "obs_domain_cd", length = 20)
+    private String obsDomainCd;
+
+    @Column(name = "obs_domain_cd_st_1", length = 10)
+    private String obsDomainCdSt1;
+
+    @Column(name = "pnu_cd")
+    private Character pnuCd;
+
+    @Column(name = "priority_cd", length = 20)
+    private String priorityCd;
+
+    @Column(name = "priority_desc_txt", length = 100)
+    private String priorityDescTxt;
+
+    @Column(name = "prog_area_cd", length = 20)
+    private String progAreaCd;
+
+    @Column(name = "record_status_cd", length = 20)
+    private String recordStatusCd;
+
+    @Column(name = "record_status_time")
+    private Instant recordStatusTime;
+
+    @Column(name = "repeat_nbr")
+    private Short repeatNbr;
+
+    @Column(name = "status_cd")
+    private Character statusCd;
+
+    @Column(name = "status_time")
+    private Instant statusTime;
+
+    @Column(name = "subject_person_uid")
+    private Long subjectPersonUid;
+
+    @Column(name = "target_site_cd", length = 20)
+    private String targetSiteCd;
+
+    @Column(name = "target_site_desc_txt", length = 100)
+    private String targetSiteDescTxt;
+
+    @Column(name = "txt", length = 1000)
+    private String txt;
+
+    @Column(name = "user_affiliation_txt", length = 20)
+    private String userAffiliationTxt;
+
+    @Column(name = "value_cd", length = 20)
+    private String valueCd;
+
+    @Column(name = "ynu_cd")
+    private Character ynuCd;
+
+    @Column(name = "program_jurisdiction_oid")
+    private Long programJurisdictionOid;
+
+    @Column(name = "shared_ind", nullable = false)
+    private Character sharedInd;
+
+    @Column(name = "alt_cd", length = 50)
+    private String altCd;
+
+    @Column(name = "alt_cd_desc_txt", length = 1000)
+    private String altCdDescTxt;
+
+    @Column(name = "alt_cd_system_cd", length = 300)
+    private String altCdSystemCd;
+
+    @Column(name = "alt_cd_system_desc_txt", length = 100)
+    private String altCdSystemDescTxt;
+
+    @Column(name = "cd_derived_ind")
+    private Character cdDerivedInd;
+
+    @Column(name = "rpt_to_state_time")
+    private Instant rptToStateTime;
+
+    @Column(name = "cd_version", length = 50)
+    private String cdVersion;
+
+    @Column(name = "processing_decision_cd", length = 20)
+    private String processingDecisionCd;
+
+    @Column(name = "pregnant_ind_cd", length = 20)
+    private String pregnantIndCd;
+
+    @Column(name = "pregnant_week")
+    private Short pregnantWeek;
+
+    @Column(name = "processing_decision_txt", length = 1000)
+    private String processingDecisionTxt;
+
+}
