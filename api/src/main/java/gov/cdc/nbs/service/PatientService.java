@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import gov.cdc.nbs.entity.Person;
-import gov.cdc.nbs.generated.QPerson;
+import gov.cdc.nbs.entity.QPerson;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
