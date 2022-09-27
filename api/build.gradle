@@ -2,6 +2,7 @@ buildscript {
     ext {
         springBootVersion = "2.7.2"
         queryDslVersion = "5.0.0"
+		cucumberVersion = "7.8.0"
     }
 }
 plugins {
@@ -56,10 +57,18 @@ dependencies {
 
 	// test
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "org.junit.platform:junit-platform-suite"
+	testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+	testImplementation "org.junit.jupiter:junit-jupiter"
 }
 
 tasks.named("test") {
 	useJUnitPlatform()
+	// Work around. Gradle does not include enough information to disambiguate
+    // between different examples and scenarios.
+	systemProperty("cucumber.junit-platform.naming-strategy", "long")
 }
 
 
