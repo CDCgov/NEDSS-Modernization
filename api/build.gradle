@@ -10,25 +10,7 @@ plugins {
 	id "io.spring.dependency-management" version "1.0.12.RELEASE"
 	id "java"
 }
-
-// Adds the generated querydsl files to the classpath
-sourceSets {
-	main {
-		java {
-			srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
-		}
-	}
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
-repositories {
-	mavenCentral()
-}
+apply from:file('logging.gradle')
 
 dependencies {
 	// core
@@ -62,6 +44,26 @@ dependencies {
 	testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
 	testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
 	testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+// Adds the generated querydsl files to the classpath
+sourceSets {
+	main {
+		java {
+			srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
+		}
+	}
+}
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
 }
 
 tasks.named("test") {

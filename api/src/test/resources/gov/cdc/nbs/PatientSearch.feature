@@ -1,6 +1,6 @@
 Feature: Patient Search
 
-  Scenario: I Can  Find a Patient by patient data using one field
+  Scenario: I Can find a Patient by patient data using one field
     Given there are 10 patients
     And I am looking for one of them
     When I search patients by "<field>" "<value>" "<qualifier>"
