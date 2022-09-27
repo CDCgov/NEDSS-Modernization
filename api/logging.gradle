@@ -29,7 +29,7 @@ tasks.named("test") { testTask ->
             "in ${TimeCategory.minus(new Date(result.endTime), new Date(result.startTime))}" +
             "\n" +
             "Report file: ${testTask.reports.html.entryPoint}" + "\n" +
-            "Cucumber report: "
+            "Cucumber report: api/build/reports/tests/test/cucumber-report.html"
 
 
 

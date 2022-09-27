@@ -16,6 +16,6 @@ import org.junit.platform.suite.api.Suite;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "gov.cdc.nbs")
 @ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources")
-class ApplicationTests {
+class RunCucumberTests {
 
 }

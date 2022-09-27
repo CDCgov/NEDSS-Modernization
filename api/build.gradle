@@ -68,9 +68,8 @@ repositories {
 
 tasks.named("test") {
 	useJUnitPlatform()
-	// Work around. Gradle does not include enough information to disambiguate
-    // between different examples and scenarios.
-	systemProperty("cucumber.junit-platform.naming-strategy", "long")
+	// always re-run tests
+	test.outputs.upToDateWhen {false}
 }
 
 
