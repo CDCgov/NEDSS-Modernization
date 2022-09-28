@@ -6,4 +6,8 @@ type Query {
     findOrganizationById(id: ID!): Organization
     findAllOrganizations(page: Page): [Organization]
     findOrganizationsByFilter(filter: OrganizationFilter!): [Organization]
+
+    findPlaceById(id: ID!): Place
+    findAllPlaces(page: Page): [Place]
+    findPlacesByFilter(filter: PlaceFilter!): [Place]
 }
