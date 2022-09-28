@@ -11,6 +11,7 @@ import org.junit.platform.suite.api.Suite;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import io.cucumber.spring.CucumberContextConfiguration;
@@ -25,6 +26,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ContextConfiguration(classes = Application.class, loader = SpringBootContextLoader.class)
 @CucumberContextConfiguration
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.DEFINED_PORT)
+@ActiveProfiles("test")
 class RunCucumberTest {
 
 }

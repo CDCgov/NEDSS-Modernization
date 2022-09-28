@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 
@@ -87,6 +89,7 @@ public class Person {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "deceased_ind_cd", length = 20)
+    @ColumnTransformer(read = "UPPER(deceased_ind_cd)")
     private Deceased deceasedIndCd;
 
     @Column(name = "deceased_time")

@@ -2,6 +2,7 @@ package gov.cdc.nbs;
 
 import static org.junit.Assert.assertTrue;
 
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.Person;
+import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.PatientFilter;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.PersonMother;
@@ -54,14 +56,15 @@ public class PatientSearchStepDefinitions {
     public void i_search_patients_by_field(String field, String qualifier) {
         // generate a filter based on field / value
         PatientFilter filter = getFilterByField(field, qualifier);
+        filter.setPage(new GraphQLPage(1000, 0));
         searchResults = patientController.findPatientsByFilter(filter);
     }
 
     @Then("I find the patient")
     public void i_find_the_patient() {
-        assertTrue(searchResults.size() > 0);
-        assertTrue(searchPatient != null);
-        assertTrue(searchResults.contains(searchPatient));
+        assertTrue("Search patient is not null", searchPatient != null);
+        assertTrue("Search results are not empty", searchResults.size() > 0);
+        assertTrue("Search results contains patient: " + searchPatient.getId(), searchResults.contains(searchPatient));
     }
 
     @Then("I have the option to create a new patient")
@@ -88,13 +91,8 @@ public class PatientSearchStepDefinitions {
                 filter.setPhoneNumber(searchPatient.getHmPhoneNbr());
                 break;
             case "date of birth":
-                filter.setDateOfBirth(searchPatient.getBirthTime());
+                filter.setDateOfBirth(getDobByQualifier(searchPatient, qualifier));
                 filter.setDateOfBirthOperator(qualifier);
-                if (qualifier.equals("before")) {
-                    filter.setDateOfBirth(filter.getDateOfBirth().plus(1, ChronoUnit.YEARS));
-                } else if (qualifier.equals("after")) {
-                    filter.setDateOfBirth(filter.getDateOfBirth().minus(1, ChronoUnit.YEARS));
-                }
                 break;
             case "gender":
                 filter.setGender(searchPatient.getBirthGenderCd());
@@ -118,7 +116,7 @@ public class PatientSearchStepDefinitions {
                 filter.setZip(searchPatient.getHmZipCd());
                 break;
             case "ethnicity":
-                filter.setEthnicity(searchPatient.getEthnicGroupInd());
+                filter.setEthnicity(searchPatient.getEthnicityGroupCd());
                 break;
             case "record status":
                 filter.setRecordStatus(searchPatient.getRecordStatusCd());
@@ -129,4 +127,16 @@ public class PatientSearchStepDefinitions {
         return filter;
     }
 
+    private Instant getDobByQualifier(Person search, String qualifier) {
+        switch (qualifier) {
+            case "before":
+                return search.getBirthTime().plus(15, ChronoUnit.DAYS);
+            case "after":
+                return search.getBirthTime().minus(15, ChronoUnit.DAYS);
+            case "equal":
+                return search.getBirthTime();
+            default:
+                throw new IllegalArgumentException("Invalid date of birth qualifier: " + qualifier);
+        }
+    }
 }

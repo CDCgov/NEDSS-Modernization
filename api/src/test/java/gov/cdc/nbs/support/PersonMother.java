@@ -33,7 +33,8 @@ public class PersonMother {
         person.setHmPhoneNbr("111-222-3333");
         person.setWkPhoneNbr("222-333-4444");
         person.setCellPhoneNbr("333-444-5555");
-        person.setBirthTime(Instant.parse("1980-09-22T14:40:46.137Z"));
+        person.setBirthTime(Instant.parse("1980-09-22T14"));
+        person.setBirthGenderCd('M');
         person.setDeceasedIndCd(Deceased.N);
         person.setHmStreetAddr1("123 Main St");
         person.setHmCityCd("Atlanta");
@@ -49,7 +50,7 @@ public class PersonMother {
         person.setBirthCityCd("Atlanta");
         person.setBirthStateCd("Georgia");
         person.setBirthCntryCd("United States");
-        person.setEthnicGroupInd("2135-2");
+        person.setEthnicityGroupCd("2135-2");
         person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setNBSEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
@@ -66,7 +67,8 @@ public class PersonMother {
         person.setWkPhoneNbr(TestUtil.getRandomPhoneNumber());
         person.setCellPhoneNbr(TestUtil.getRandomPhoneNumber());
         person.setBirthTime(TestUtil.getRandomDateInPast());
-        person.setDeceasedIndCd(TestUtil.getRandomDeceasedValue());
+        person.setBirthGenderCd(TestUtil.getRandomFromArray(new Character[] { 'M', 'F', 'U' }));
+        person.setDeceasedIndCd(TestUtil.getRandomFromArray(new Deceased[] { Deceased.N, Deceased.Y, Deceased.UNK }));
         person.setHmStreetAddr1(TestUtil.getRandomString());
         person.setHmCityCd(TestUtil.getRandomString(8));
         person.setHmStateCd(TestUtil.getRandomState());
@@ -77,12 +79,13 @@ public class PersonMother {
         person.setWkStateCd(TestUtil.getRandomState());
         person.setWkZipCd(TestUtil.getRandomNumericString(5));
         person.setWkCntryCd("United States");
-        person.setCurrSexCd(TestUtil.getRandomSexValue());
+        person.setCurrSexCd(TestUtil.getRandomFromArray(new Character[] { 'F', 'M', 'U' }));
         person.setBirthCityCd(TestUtil.getRandomString());
         person.setBirthStateCd(TestUtil.getRandomState());
         person.setBirthCntryCd("United States");
-        person.setEthnicGroupInd(TestUtil.getRandomNumericString(6));
-        person.setRecordStatusCd(TestUtil.getRandomRecordStatus());
+        person.setEthnicityGroupCd(TestUtil.getRandomNumericString(6));
+        person.setRecordStatusCd(
+                TestUtil.getRandomFromArray(new RecordStatus[] { RecordStatus.ACTIVE, RecordStatus.LOG_DEL }));
         person.setNBSEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         return person;

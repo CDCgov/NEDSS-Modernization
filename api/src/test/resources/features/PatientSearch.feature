@@ -10,23 +10,21 @@ Feature: Patient search
     And I have the option to create a new patient
 
     Examples: 
-      | field            | qualifier |
-      | last name        |           |
-      | last name        |           |
-      | first name       |           |
-      | patient id       |           |
-      | ssn              |           |
-      | phone number     |           |
-      | date of birth    | before    |
-      | date of birth    | after     |
-      | date of birth    | equal     |
-      | gender           |           |
-      | deceased         |           |
-      | address          |           |
-      | city             |           |
-      | state            |           |
-      | country          |           |
-      | zip code         |           |
-      | mortality status |           |
-      | ethnicity        |           |
-      | record status    |           |
+      | field         | qualifier |
+      | last name     |           |
+      | first name    |           |
+      | patient id    |           |
+      | ssn           |           |
+      | phone number  |           |
+      | date of birth | before    |
+      | date of birth | after     |
+      | date of birth | equal     |
+      | gender        |           |
+      | deceased      |           |
+      | address       |           |
+      | city          |           |
+      | state         |           |
+      | country       |           |
+      | zip code      |           |
+      | ethnicity     |           |
+      | record status |           |

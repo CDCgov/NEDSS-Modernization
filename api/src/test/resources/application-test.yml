@@ -1,7 +1,5 @@
-logging.level.org.hibernate.SQL: debug
-logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
-spring.graphql.graphiql.enabled: true
+logging.level.org.hibernate.SQL: warn
+spring.graphql.graphiql.enabled: false
 spring.graphql.graphiql.path: /graphiql
 
 spring.jpa.hibernate.ddl-auto: none
@@ -13,3 +11,5 @@ spring.datasource.password: fake.fake.fake.1234
 spring.jpa.properties.hibernate.format_sql: true
 spring.mvc.pathmatch.matching-strategy: ant_path_matcher
 logging.file.path: ./log/
+
+nbs.max-page-size: 1000

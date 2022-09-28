@@ -1,23 +1,25 @@
 package gov.cdc.nbs.support;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestUtil {
     private static Random random = new Random();
-
+    private static Logger logger = LoggerFactory.getLogger(TestUtil.class);
     static {
         var seed = random.nextLong();
         random.setSeed(seed);
-        System.out.println("Random data generated with seed: " + seed);
+        logger.info("Random data generated with seed: " + seed);
     }
 
     public static void setSeed(long seed) {
         random.setSeed(seed);
-        System.out.println("Random seed updated to: " + seed);
+        logger.info("Random seed updated to: " + seed);
     }
 
     public static int getRandomInt(int bound) {
@@ -36,6 +38,11 @@ public class TestUtil {
 
     public static String getRandomString() {
         return getRandomString(random.nextInt(5, 20));
+    }
+
+    public static <T> T getRandomFromArray(T[] list) {
+        var index = random.nextInt(list.length);
+        return list[index];
     }
 
     public static String getRandomString(int length) {
@@ -65,51 +72,12 @@ public class TestUtil {
     public static Instant getRandomDateInPast() {
         var oneDayMillis = 86_400_000;
         var nowMillis = Instant.now().toEpochMilli() - oneDayMillis;
-        return Instant.ofEpochMilli(random.nextLong(nowMillis));
+        return Instant.ofEpochMilli(random.nextLong(nowMillis)).atZone(ZoneId.systemDefault()).toInstant()
+                .truncatedTo(ChronoUnit.DAYS);
     }
 
     public static String getRandomState() {
         var index = random.nextInt(states.length);
         return states[index];
-    }
-
-    public static Deceased getRandomDeceasedValue() {
-        var value = random.nextInt(3);
-        switch (value) {
-            case 0:
-                return Deceased.N;
-            case 1:
-                return Deceased.Y;
-            case 2:
-                return Deceased.UNK;
-            default:
-                throw new IllegalArgumentException("Invalid random value supplied to determine deceased value");
-        }
-    }
-
-    public static Character getRandomSexValue() {
-        var value = random.nextInt(3);
-        switch (value) {
-            case 0:
-                return 'F';
-            case 1:
-                return 'M';
-            case 2:
-                return 'U';
-            default:
-                throw new IllegalArgumentException("Invalid random value supplied to determine random sex");
-        }
-    }
-
-    public static RecordStatus getRandomRecordStatus() {
-        var value = random.nextInt(2);
-        switch (value) {
-            case 0:
-                return RecordStatus.ACTIVE;
-            case 1:
-                return RecordStatus.LOG_DEL;
-            default:
-                throw new IllegalArgumentException("Invalid random value supplied to determine record status");
-        }
     }
 }
