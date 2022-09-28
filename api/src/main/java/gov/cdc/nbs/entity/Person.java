@@ -1,26 +1,33 @@
 package gov.cdc.nbs.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+
+import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+
 import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
 @Entity
 public class Person {
     @Id
     @Column(name = "person_uid", nullable = false)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity NBSEntity;
 
@@ -78,8 +85,9 @@ public class Person {
     @Column(name = "curr_sex_cd")
     private Character currSexCd;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "deceased_ind_cd", length = 20)
-    private String deceasedIndCd;
+    private Deceased deceasedIndCd;
 
     @Column(name = "deceased_time")
     private Instant deceasedTime;
@@ -132,8 +140,9 @@ public class Person {
     @Column(name = "prim_lang_desc_txt", length = 100)
     private String primLangDescTxt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
+    private RecordStatus recordStatusCd;
 
     @Column(name = "record_status_time")
     private Instant recordStatusTime;

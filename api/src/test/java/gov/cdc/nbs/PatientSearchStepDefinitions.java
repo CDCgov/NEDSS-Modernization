@@ -1,37 +1,132 @@
 package gov.cdc.nbs;
 
+import static org.junit.Assert.assertTrue;
+
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.entity.Person;
+import gov.cdc.nbs.graphql.PatientFilter;
+import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.support.PersonMother;
+import gov.cdc.nbs.support.TestUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class PatientSearchStepDefinitions {
-    
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    PatientController patientController;
+
+    private Person searchPatient;
+    private List<Person> searchResults;
+
     @Given("there are 10 patients")
     public void there_are_10_patients() {
+        // person data is randomly generated but the Ids are always the same.
+        var persons = PersonMother.getRandomPersons();
+
+        // clean out data
+        var existingPersons = personRepository
+                .findAllById(persons.stream().map(p -> p.getId()).collect(Collectors.toList()));
+        personRepository.deleteAll(existingPersons);
+
+        // create clean data
+        personRepository.saveAll(persons);
     }
 
     @Given("I am looking for one of them")
-    public void i_am_looking_for_one_of_them() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new io.cucumber.java.PendingException();
+    public void I_am_looking_for_one_of_them() {
+        // pick one of the 10 existing patients at random
+        var index = TestUtil.getRandomInt(10);
+        searchPatient = PersonMother.getRandomPersons().get(index);
     }
 
-    @When("I search patients by {string} {string} {string}")
-    public void i_search_patients_by_field_john(String field, String value, String qualifier) {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new io.cucumber.java.PendingException();
+    @When("I search patients by {string} {string}")
+    public void i_search_patients_by_field(String field, String qualifier) {
+        // generate a filter based on field / value
+        PatientFilter filter = getFilterByField(field, qualifier);
+        searchResults = patientController.findPatientsByFilter(filter);
     }
 
     @Then("I find the patient")
     public void i_find_the_patient() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new io.cucumber.java.PendingException();
+        assertTrue(searchResults.size() > 0);
+        assertTrue(searchPatient != null);
+        assertTrue(searchResults.contains(searchPatient));
     }
 
     @Then("I have the option to create a new patient")
     public void i_have_the_option_to_create_a_new_patient() {
-        // Write code here that turns the phrase above into concrete actions
-        // throw new io.cucumber.java.PendingException();
+
     }
-    
+
+    private PatientFilter getFilterByField(String field, String qualifier) {
+        var filter = new PatientFilter();
+        switch (field) {
+            case "last name":
+                filter.setLastName(searchPatient.getLastNm());
+                break;
+            case "first name":
+                filter.setFirstName(searchPatient.getFirstNm());
+                break;
+            case "patient id":
+                filter.setId(searchPatient.getId());
+                break;
+            case "ssn":
+                filter.setSsn(searchPatient.getSsn());
+                break;
+            case "phone number":
+                filter.setPhoneNumber(searchPatient.getHmPhoneNbr());
+                break;
+            case "date of birth":
+                filter.setDateOfBirth(searchPatient.getBirthTime());
+                filter.setDateOfBirthOperator(qualifier);
+                if (qualifier.equals("before")) {
+                    filter.setDateOfBirth(filter.getDateOfBirth().plus(1, ChronoUnit.YEARS));
+                } else if (qualifier.equals("after")) {
+                    filter.setDateOfBirth(filter.getDateOfBirth().minus(1, ChronoUnit.YEARS));
+                }
+                break;
+            case "gender":
+                filter.setGender(searchPatient.getBirthGenderCd());
+                break;
+            case "deceased":
+                filter.setDeceased(searchPatient.getDeceasedIndCd());
+                break;
+            case "address":
+                filter.setAddress(searchPatient.getHmStreetAddr1());
+                break;
+            case "city":
+                filter.setCity(searchPatient.getHmCityCd());
+                break;
+            case "state":
+                filter.setState(searchPatient.getHmStateCd());
+                break;
+            case "country":
+                filter.setCountry(searchPatient.getHmCntryCd());
+                break;
+            case "zip code":
+                filter.setZip(searchPatient.getHmZipCd());
+                break;
+            case "ethnicity":
+                filter.setEthnicity(searchPatient.getEthnicGroupInd());
+                break;
+            case "record status":
+                filter.setRecordStatus(searchPatient.getRecordStatusCd());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid field specified: " + field);
+        }
+        return filter;
+    }
+
 }

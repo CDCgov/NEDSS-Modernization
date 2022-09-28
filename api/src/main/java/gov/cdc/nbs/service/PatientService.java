@@ -67,7 +67,7 @@ public class PatientService {
         query = query
                 .where(getDateOfBirthExpression(person, filter.getDateOfBirth(), filter.getDateOfBirthOperator()));
         query = applyIfFilterNotNull(query, person.birthGenderCd::eq, filter.getGender());
-        query = applyIfFilterNotNull(query, person.deceasedIndCd::eq, filter.getDeceasedDataValue());
+        query = applyIfFilterNotNull(query, person.deceasedIndCd::eq, filter.getDeceased());
         query = applyIfFilterNotNull(query, person.hmStreetAddr1::eq, filter.getAddress());
         query = applyIfFilterNotNull(query, person.hmCityCd::eq, filter.getCity());
         query = applyIfFilterNotNull(query, person.hmStateCd::eq, filter.getState());
@@ -80,7 +80,7 @@ public class PatientService {
     }
 
     private <T> JPAQuery<Person> applyIfFilterNotNull(JPAQuery<Person> query,
-                                                      Function<T, BooleanExpression> expression, T parameter) {
+            Function<T, BooleanExpression> expression, T parameter) {
         if (parameter != null) {
             return query.where(expression.apply(parameter));
         } else {

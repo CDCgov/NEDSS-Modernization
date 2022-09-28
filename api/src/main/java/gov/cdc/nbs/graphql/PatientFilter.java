@@ -2,6 +2,8 @@ package gov.cdc.nbs.graphql;
 
 import java.time.Instant;
 
+import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,27 +27,5 @@ public class PatientFilter {
     private String zip;
     private String mortalityStatus;
     private String ethnicity;
-    private String recordStatus;
-
-    public String getDeceasedDataValue() {
-        if (this.getDeceased() == null) {
-            return null;
-        }
-        switch (this.getDeceased()) {
-            case YES:
-                return "Y";
-            case NO:
-                return "N";
-            case UNKNOWN:
-                return "UNK";
-            default:
-                throw new IllegalArgumentException("Invalid Deceased value provided: " + this.getDeceased());
-        }
-    }
-
-    public static enum Deceased {
-        YES,
-        NO,
-        UNKNOWN
-    }
+    private RecordStatus recordStatus;
 }
