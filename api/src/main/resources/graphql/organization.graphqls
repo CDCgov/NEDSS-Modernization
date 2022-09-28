@@ -1,14 +1,3 @@
-type Query {
-    findOrganizationById(id: ID!): Organization
-    findAllOrganizations(page: Page): [Organization]
-    findOrganizationsByFilter(filter: OrganizationFilter!): [Organization]
-}
-
-input Page {
-    pageSize: Int
-    pageNumber: Int
-}
-
 input OrganizationFilter {
     page: Page
     id: ID
