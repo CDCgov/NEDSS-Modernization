@@ -6,7 +6,6 @@ import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accor
 import PersonalDetails, { InputPersonalDetailsFields } from './components/personalDetails/PersonalDetails';
 import ContactFields, { InputContactFields } from './components/contactFields/ContactFields';
 import EthnicityFields, { InputEthnicityFields } from './components/ethnicityFields/EthnicityFields';
-import { Person, PersonControllerService } from '../../generated';
 import { useState } from 'react';
 
 export default function AddPatient() {
@@ -53,44 +52,44 @@ export default function AddPatient() {
     const [asOfDate, setAsOfDate]: [string, (asOfDate: string) => void] = useState(new Date().toISOString());
 
     async function submit(): Promise<void> {
-        const person: Person = {
-            // Name
-            firstNm: nameFields.firstName,
-            middleNm: nameFields.middleName,
-            lastNm: nameFields.lastName,
-            nmSuffix: nameFields.suffix,
-            // Address
-            hmStreetAddr1: addressFields.streetAddress1,
-            hmStreetAddr2: addressFields.streetAddress2,
-            hmCityCd: addressFields.city,
-            hmStateCd: addressFields.state,
-            hmZipCd: addressFields.zip,
-            hmCntyCd: addressFields.county,
-            // TODO census tract?
-            hmCntryCd: addressFields.country,
-            // Personal Details
-            birthTime: personalDetailsFields.dateOfBirth.trim() == '' ? undefined : personalDetailsFields.dateOfBirth,
-            currSexCd: personalDetailsFields.sex,
-            birthGenderCd: personalDetailsFields.birthSex,
-            deceasedIndCd: personalDetailsFields.isPatientDeceased,
-            // TODO HIV case id?
-            maritalStatusCd: personalDetailsFields.maritalStatus,
-            // Contact
-            hmPhoneNbr: contactFields.homePhone,
-            wkPhoneNbr: contactFields.workPhone + 'x' + contactFields.workPhoneExt, // TODO how to store workPhoneExt
-            cellPhoneNbr: contactFields.cellPhone,
-            hmEmailAddr: contactFields.email,
-            // Ethnicity
-            ethnicityGroupCd: ethnicityFields.ethnicity, // TODO how is ethnicity stored
-            // As of
-            asOfDateAdmin: asOfDate,
-            asOfDateEthnicity: asOfDate,
-            asOfDateGeneral: asOfDate,
-            asOfDateMorbidity: asOfDate,
-            asOfDateSex: asOfDate
-        };
-        const newId = await PersonControllerService.createPersonUsingPost({ person });
-        alert('Successfully saved Person with ID: ' + newId);
+        // TODO migrate to use a GraphQL mutation- NYI
+        // const person = {
+        //     // Name
+        //     firstNm: nameFields.firstName,
+        //     middleNm: nameFields.middleName,
+        //     lastNm: nameFields.lastName,
+        //     nmSuffix: nameFields.suffix,
+        //     // Address
+        //     hmStreetAddr1: addressFields.streetAddress1,
+        //     hmStreetAddr2: addressFields.streetAddress2,
+        //     hmCityCd: addressFields.city,
+        //     hmStateCd: addressFields.state,
+        //     hmZipCd: addressFields.zip,
+        //     hmCntyCd: addressFields.county,
+        //     // TODO census tract?
+        //     hmCntryCd: addressFields.country,
+        //     // Personal Details
+        //     birthTime: personalDetailsFields.dateOfBirth.trim() == '' ? undefined : personalDetailsFields.dateOfBirth,
+        //     currSexCd: personalDetailsFields.sex,
+        //     birthGenderCd: personalDetailsFields.birthSex,
+        //     deceasedIndCd: personalDetailsFields.isPatientDeceased,
+        //     // TODO HIV case id?
+        //     maritalStatusCd: personalDetailsFields.maritalStatus,
+        //     // Contact
+        //     hmPhoneNbr: contactFields.homePhone,
+        //     wkPhoneNbr: contactFields.workPhone + 'x' + contactFields.workPhoneExt, // TODO how to store workPhoneExt
+        //     cellPhoneNbr: contactFields.cellPhone,
+        //     hmEmailAddr: contactFields.email,
+        //     // Ethnicity
+        //     ethnicityGroupCd: ethnicityFields.ethnicity, // TODO how is ethnicity stored
+        //     // As of
+        //     asOfDateAdmin: asOfDate,
+        //     asOfDateEthnicity: asOfDate,
+        //     asOfDateGeneral: asOfDate,
+        //     asOfDateMorbidity: asOfDate,
+        //     asOfDateSex: asOfDate
+        // };
+        // const newId = await PersonControllerService.createPersonUsingPost({ person });
     }
 
     function cancel(): void {

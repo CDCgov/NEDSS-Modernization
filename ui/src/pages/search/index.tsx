@@ -1,15 +1,15 @@
 import { Grid, Search } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAllPatients } from '../../hooks/useAllPatients';
+import { useFindAllPatientsQuery } from '../../generated/graphql/schema';
 
 export const SearchEngine = () => {
-    const { data } = useAllPatients();
+    const { data } = useFindAllPatientsQuery();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
     const [searchValue, setSearchValue] = useState<string>('');
-    const [filtered, setFiltered] = useState([]);
+    const [filtered, setFiltered] = useState<any[]>();
 
     useEffect(() => {
         data && getFilteredData(searchParams.get('q') || '');
@@ -24,14 +24,8 @@ export const SearchEngine = () => {
     };
 
     const getFilteredData = (value: string) => {
-        const includedKeys = ['firstNm', 'lastNm'];
-        const filteredValue = value.includes('(') ? value.split('(')[0].trim() : value.trim();
-        const filteredData = data.characters.results.filter((item: any) => {
-            return Object.keys(item).some((key) =>
-                includedKeys.includes(key)
-                    ? item[key]?.toString().toLowerCase().includes(filteredValue.toLowerCase())
-                    : false
-            );
+        const filteredData = data?.findAllPatients?.map((p) => {
+            return { firstNm: p?.firstNm, id: p?.id };
         });
         setFiltered(filteredData);
     };
@@ -46,7 +40,14 @@ export const SearchEngine = () => {
                 <div className="grid-col-12">
                     <h2 className="font-sans-lg text-normal margin-top-0 margin-bottom-3">Results (0)</h2>
                     <Grid row gap={2}>
-                        {filtered?.map((item: any) => (
+                        <ul>
+                            {filtered?.map((entry: { firstNm?: string; id: string }) => (
+                                <li key={entry.id}>
+                                    {entry.id} - {entry.firstNm}
+                                </li>
+                            ))}
+                        </ul>
+                        {/* {filtered?.map((item: any) => (
                             <div className="grid-col-12" key={item.id}>
                                 <h5>{item.firstNm}</h5>
                                 <img src={item.lastNm} alt="" />
@@ -55,10 +56,10 @@ export const SearchEngine = () => {
                         {filtered.length === 0 &&
                             data?.characters?.results?.map((item: any) => (
                                 <div className="grid-col-12" key={item.id}>
-                                <h5>{item.firstNm}</h5>
-                                <img src={item.lastNm} alt="" />
-                            </div>
-                            ))}
+                                    <h5>{item.firstNm}</h5>
+                                    <img src={item.lastNm} alt="" />
+                                </div>
+                            ))} */}
                     </Grid>
                 </div>
             </div>

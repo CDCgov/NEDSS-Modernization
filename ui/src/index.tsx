@@ -9,7 +9,7 @@ import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/c
 
 const client = new ApolloClient({
     link: new HttpLink({
-        uri: 'http://localhost:8081/graphiql',
+        uri: 'http://localhost:3000/graphql'
         // fetchOptions: {
         //   mode: 'no-cors'
         // }
