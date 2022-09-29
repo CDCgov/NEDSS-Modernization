@@ -19,5 +19,4 @@ public class ObservationInterpHist {
     @EmbeddedId
     private ObservationInterpHistId id;
 
-    // TODO [JPA Buddy] generate columns from DB
 }

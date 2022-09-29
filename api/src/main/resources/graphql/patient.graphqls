@@ -33,9 +33,9 @@ input PersonFilter {
 }
 
 enum Deceased {
-    YES
-    NO
-    UNKNOWN
+    Y
+    N
+    UNK
 }
 
 enum Operator {
