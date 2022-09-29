@@ -1,7 +1,7 @@
 type Query {
-    findPatientById(id: ID!): Patient
-    findAllPatients(page: Page): [Patient]
-    findPatientsByFilter(filter: PatientFilter!): [Patient]
+    findPatientById(id: ID!): Person
+    findAllPatients(page: Page): [Person]
+    findPatientsByFilter(filter: PersonFilter!): [Person]
 }
 
 input Page {
@@ -9,7 +9,7 @@ input Page {
     pageNumber: Int
 }
 
-input PatientFilter {
+input PersonFilter {
     page: Page
     id: ID
     lastName: String
@@ -47,8 +47,8 @@ enum RecordStatus {
     LOG_DEL
 }
 
-type Patient {
-    personUid: ID
+type Person {
+    id: ID
     addReasonCd: String
     addTime: Date
     addUserId: ID
