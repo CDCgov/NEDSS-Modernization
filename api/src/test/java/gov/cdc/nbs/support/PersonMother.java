@@ -10,16 +10,14 @@ import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 
 public class PersonMother {
-    private static List<Person> persons = new ArrayList<>();
-    // create 10 random persons
-    static {
+
+    // generates random person data. always starts from the same id
+    public static List<Person> getRandomPersons(int count) {
+        List<Person> persons = new ArrayList<>();
         for (long i = 0; i < 10; i++) {
             long id = 20000000L + i;
             persons.add(generateRandomPerson(id));
         }
-    }
-
-    public static List<Person> getRandomPersons() {
         return persons;
     }
 

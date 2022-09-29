@@ -30,26 +30,27 @@ public class PatientSearchStepDefinitions {
 
     private Person searchPatient;
     private List<Person> searchResults;
+    private List<Person> generatedPersons;
 
-    @Given("there are 10 patients")
-    public void there_are_10_patients() {
+    @Given("there are {int} patients")
+    public void there_are_patients(int patientCount) {
         // person data is randomly generated but the Ids are always the same.
-        var persons = PersonMother.getRandomPersons();
+        generatedPersons = PersonMother.getRandomPersons(patientCount);
 
         // clean out data
         var existingPersons = personRepository
-                .findAllById(persons.stream().map(p -> p.getId()).collect(Collectors.toList()));
+                .findAllById(generatedPersons.stream().map(p -> p.getId()).collect(Collectors.toList()));
         personRepository.deleteAll(existingPersons);
 
         // create clean data
-        personRepository.saveAll(persons);
+        personRepository.saveAll(generatedPersons);
     }
 
     @Given("I am looking for one of them")
     public void I_am_looking_for_one_of_them() {
-        // pick one of the 10 existing patients at random
-        var index = TestUtil.getRandomInt(10);
-        searchPatient = PersonMother.getRandomPersons().get(index);
+        // pick one of the existing patients at random
+        var index = TestUtil.getRandomInt(generatedPersons.size());
+        searchPatient = generatedPersons.get(index);
     }
 
     @When("I search patients by {string} {string}")
