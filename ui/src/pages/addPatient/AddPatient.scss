@@ -1,0 +1,14 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+
+    .usa-form {
+        flex-grow: 1;
+    }
+
+    @media (min-width: 30em) {
+        .usa-form--large {
+            max-width: 40rem;
+        }
+    }
+}
