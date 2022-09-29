@@ -21,40 +21,6 @@ public class PersonMother {
         return persons;
     }
 
-    public static Person person1() {
-        final long id = 999001L;
-        var person = new Person();
-        person.setId(id);
-        person.setFirstNm("John");
-        person.setLastNm("Doe");
-        person.setSsn("123-456-789");
-        person.setHmPhoneNbr("111-222-3333");
-        person.setWkPhoneNbr("222-333-4444");
-        person.setCellPhoneNbr("333-444-5555");
-        person.setBirthTime(Instant.parse("1980-09-22T14"));
-        person.setBirthGenderCd('M');
-        person.setDeceasedIndCd(Deceased.N);
-        person.setHmStreetAddr1("123 Main St");
-        person.setHmCityCd("Atlanta");
-        person.setHmStateCd("Georgia");
-        person.setHmZipCd("30301");
-        person.setHmCntryCd("United States");
-        person.setWkStreetAddr1("123 Work Address");
-        person.setWkCityCd("Atlanta");
-        person.setWkStateCd("Georgia");
-        person.setWkZipCd("30305");
-        person.setWkCntryCd("United States");
-        person.setCurrSexCd('M');
-        person.setBirthCityCd("Atlanta");
-        person.setBirthStateCd("Georgia");
-        person.setBirthCntryCd("United States");
-        person.setEthnicityGroupCd("2135-2");
-        person.setRecordStatusCd(RecordStatus.ACTIVE);
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
-        person.setVersionCtrlNbr((short) 1);
-        return person;
-    }
-
     public static Person generateRandomPerson(long id) {
         var person = new Person();
         person.setId(id);
