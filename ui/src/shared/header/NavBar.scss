@@ -1,0 +1,20 @@
+.nav-bar {
+    .usa-logo__text,
+    .usa-accordion__button {
+        color: white;
+    }
+
+    .usa-nav__link span {
+        color: white;
+    }
+
+    .title {
+        .usa-logo__text {
+            background-image: linear-gradient(rgb(31, 94, 150), rgb(22, 46, 81), rgb(15, 62, 103));
+            width: fit-content;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: solid 2px rgb(10, 57, 98);
+        }
+    }
+}

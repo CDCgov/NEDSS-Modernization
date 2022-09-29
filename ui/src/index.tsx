@@ -1,20 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './settings.scss';
-import Home from './pages/home/Home';
+import NavBar from './shared/header/NavBar';
+import { AppRoutes } from './routes/AppRoutes';
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
+
+const client = new ApolloClient({
+    link: new HttpLink({
+        uri: 'http://localhost:3000/graphql'
+        // fetchOptions: {
+        //   mode: 'no-cors'
+        // }
+    }),
+    cache: new InMemoryCache()
+});
 
 ReactDOM.render(
     <React.StrictMode>
-        <div className="route-content">
+        <ApolloProvider client={client}>
             <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="*" element={<Navigate to="/" />} />
-                </Routes>
+                <NavBar />
+                <div className="route-content">
+                    <AppRoutes />
+                </div>
             </BrowserRouter>
-        </div>
+        </ApolloProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

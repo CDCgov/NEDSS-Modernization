@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@apollo/client": "^3.6.9",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^12",
         "@testing-library/user-event": "^12",
@@ -11,6 +12,7 @@
         "@types/node": "^18.6.3",
         "@types/react": "^18.0.15",
         "@types/react-dom": "^18.0.6",
+        "graphql": "^16.6.0",
         "react": "^17",
         "react-dom": "^17",
         "react-router-dom": "^6.3.0",
@@ -26,9 +28,11 @@
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-        "generate": "npx openapi-typescript-codegen --input http://localhost:8080/v2/api-docs --output ./src/generated/ --useOptions && sed -i '' -e 's/localhost:8080/localhost:3000/' src/generated/core/OpenAPI.ts"
+        "generate": "npm run graphql:gql && npm run graphql:codegen",
+        "graphql:gql": "npx gqlg --schemaFilePath ../api/src/main/resources/graphql/*.graphqls --destDirPath ./src/generated/gql",
+        "graphql:codegen": "graphql-codegen --config codegen.ts"
     },
-    "proxy" : "http://localhost:8080",
+    "proxy": "http://localhost:8080/",
     "eslintConfig": {
         "extends": [
             "react-app",
@@ -55,7 +59,12 @@
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.30.1",
-        "openapi-typescript-codegen": "^0.23.0",
+        "gqlg": "1.0.2",
+        "@graphql-codegen/cli": "^2.13.1",
+        "@graphql-codegen/fragment-matcher": "^3.3.1",
+        "@graphql-codegen/typescript": "^2.7.3",
+        "@graphql-codegen/typescript-operations": "^2.5.3",
+        "@graphql-codegen/typescript-react-apollo": "^3.3.3",
         "prettier": "^2.7.1",
         "sass": "^1.54.0"
     }

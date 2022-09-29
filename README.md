@@ -32,11 +32,11 @@ public List<Patient> findPatientsNamedJohn() {
 
 ## Auto Generating Endpoints
 
-The UI code utilizes [openapi-typescript-codegen](https://github.com/ferdikoomen/openapi-typescript-codegen) to auto generate models and method for the existing Java API endpoints.
+The UI code utilizes [gql-typescript-generator](https://github.com/TheBrainFamily/gql-typescript-generator) and [graphql-code-generator](https://github.com/dotansimha/graphql-code-generator) to auto generate GraphQL API requests.
 
 Workflow:
 
-1. Update the Java code with new controller endpoints
+1. Update the API `.graphqls` schema files
 1. Run the following command in the `ui` folder while the **Java appliction is running**
     ```
     npm run generate

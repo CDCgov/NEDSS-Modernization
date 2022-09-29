@@ -1,3 +1,5 @@
+scalar Date
+
 type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: Page): [Person]
