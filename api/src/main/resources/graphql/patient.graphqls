@@ -2,13 +2,20 @@ scalar Date
 
 type Query {
     findPatientById(id: ID!): Person
-    findAllPatients(page: Page): [Person]
-    findPatientsByFilter(filter: PersonFilter!): [Person]
+    findAllPatients(page: Page): [Person]!
+    findPatientsByFilter(filter: PersonFilter!): [Person]!
+}
+
+type Mutation {
+    createPatient(patient: PersonInput!): Person!
+    deletePatient(id: ID!): Boolean
 }
 
 input Page {
-    pageSize: Int
-    pageNumber: Int
+    pageSize: Int!
+    pageNumber: Int!
+    sortDirection: SortDirection
+    sortField: String
 }
 
 input PersonFilter {
@@ -27,9 +34,25 @@ input PersonFilter {
     state: String
     country: String
     zip: String
-    mortalityStatus: String
     ethnicity: String
     recordStatus: RecordStatus
+}
+
+input PersonInput {
+    lastName: String
+    firstName: String
+    ssn: String
+    phoneNumber: String
+    DateOfBirth: Date
+    DateOfBirthOperator: Operator
+    gender: String
+    deceased: Deceased
+    address: String
+    city: String
+    state: String
+    country: String
+    zip: String
+    ethnicity: String
 }
 
 enum Deceased {
@@ -47,6 +70,11 @@ enum Operator {
 enum RecordStatus {
     ACTIVE
     LOG_DEL
+}
+
+enum SortDirection {
+    ASC
+    DESC
 }
 
 type Person {
