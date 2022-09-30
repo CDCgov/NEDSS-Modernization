@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.Person;
@@ -12,11 +11,11 @@ import gov.cdc.nbs.graphql.PatientFilter;
 import gov.cdc.nbs.graphql.PatientInput;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.PersonMother;
-import io.cucumber.java.en.When;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
-public class PatientCreateStepDefinitions {
+public class PatientCreateDeleteStepDefinitions {
 
     @Autowired
     PersonRepository personRepository;
@@ -37,6 +36,26 @@ public class PatientCreateStepDefinitions {
         if (existing.size() > 0) {
             personRepository.deleteAll(existing);
         }
+    }
+
+    @Given("A patient exists")
+    public void a_patient_does_exist() {
+        person = PersonMother.johnDoe();
+        var filter = new PatientFilter();
+        filter.setFirstName(person.getFirstNm());
+        filter.setLastName(person.getLastNm());
+        filter.setAddress(person.getHmStreetAddr1());
+        filter.setPhoneNumber(person.getHmPhoneNbr());
+        var existing = patientController.findPatientsByFilter(filter);
+        if (existing.size() > 0) {
+            personRepository.deleteAll(existing);
+        }
+        personRepository.save(person);
+    }
+
+    @When("I send a delete patient request")
+    public void i_send_a_delete_patient_request() {
+        patientController.deletePatient(person.getId());
     }
 
     @When("I send a create patient request")
@@ -82,5 +101,17 @@ public class PatientCreateStepDefinitions {
         assertEquals(patient.getHmCntryCd(), person.getHmCntryCd());
         assertEquals(patient.getHmZipCd(), person.getHmZipCd());
         assertEquals(patient.getEthnicityGroupCd(), person.getEthnicityGroupCd());
+    }
+
+    @Then("The patient does not exist")
+    public void the_patient_does_not_exist() {
+        var filter = new PatientFilter();
+        filter.setFirstName(person.getFirstNm());
+        filter.setLastName(person.getLastNm());
+        filter.setAddress(person.getHmStreetAddr1());
+        filter.setPhoneNumber(person.getHmPhoneNbr());
+        filter.setSsn(person.getSsn());
+        var patientSearch = patientController.findPatientsByFilter(filter);
+        assertTrue(patientSearch.size() == 0);
     }
 }

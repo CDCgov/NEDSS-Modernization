@@ -56,7 +56,9 @@ public class PersonMother {
     }
 
     public static Person johnDoe() {
+        final long id = 19000000L;
         var person = new Person();
+        person.setId(id);
         person.setFirstNm("John");
         person.setLastNm("Doe");
         person.setSsn("999-888-7777");
@@ -81,6 +83,9 @@ public class PersonMother {
         person.setBirthStateCd("Georgia");
         person.setBirthCntryCd("United States");
         person.setEthnicityGroupCd("2186-5");
+        person.setRecordStatusCd(RecordStatus.ACTIVE);
+        person.setNBSEntity(new NBSEntity(id, "PSN"));
+        person.setVersionCtrlNbr((short) 1);
         return person;
     }
 
