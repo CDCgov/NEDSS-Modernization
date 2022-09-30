@@ -59,7 +59,7 @@ public class PatientService {
         var query = queryFactory.selectFrom(person);
         query = addParameter(query, person.id::eq, filter.getId());
         query = addParameter(query,
-                (p) -> person.lastNm.likeIgnoreCase(generateLikeString(p), '!'),
+                (p) -> person.lastNm.likeIgnoreCase(p, '!'),
                 generateLikeString(filter.getLastName()));
         query = addParameter(query,
                 (p) -> person.firstNm.likeIgnoreCase(p, '!'),

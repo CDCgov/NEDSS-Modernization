@@ -1,5 +1,6 @@
 package gov.cdc.nbs.support;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,35 @@ public class PersonMother {
                 TestUtil.getRandomFromArray(new RecordStatus[] { RecordStatus.ACTIVE, RecordStatus.LOG_DEL }));
         person.setNBSEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
+        return person;
+    }
+
+    public static Person johnDoe() {
+        var person = new Person();
+        person.setFirstNm("John");
+        person.setLastNm("Doe");
+        person.setSsn("999-888-7777");
+        person.setHmPhoneNbr("111-222-3333");
+        person.setWkPhoneNbr("222-333-4444");
+        person.setCellPhoneNbr("444-555-6666");
+        person.setBirthTime(Instant.parse("1982-11-30T18:35:24.00Z"));
+        person.setBirthGenderCd('M');
+        person.setDeceasedIndCd(Deceased.N);
+        person.setHmStreetAddr1("123 Main St");
+        person.setHmCityCd("Atlanta");
+        person.setHmStateCd("Georgia");
+        person.setHmZipCd("30301");
+        person.setHmCntryCd("United States");
+        person.setWkStreetAddr1("345 Work St");
+        person.setWkCityCd("Atlanta");
+        person.setWkStateCd("Georgia");
+        person.setWkZipCd("30302");
+        person.setWkCntryCd("United States");
+        person.setCurrSexCd('M');
+        person.setBirthCityCd("Savannah");
+        person.setBirthStateCd("Georgia");
+        person.setBirthCntryCd("United States");
+        person.setEthnicityGroupCd("2186-5");
         return person;
     }
 

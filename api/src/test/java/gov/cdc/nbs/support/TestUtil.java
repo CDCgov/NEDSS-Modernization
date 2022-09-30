@@ -12,9 +12,11 @@ public class TestUtil {
     private static Random random = new Random();
     private static Logger logger = LoggerFactory.getLogger(TestUtil.class);
     static {
-        var seed = random.nextLong();
-        random.setSeed(seed);
-        logger.info("Random data generated with seed: " + seed);
+        var randomSeed = random.nextLong();
+        // on test failure, hard code seed to value in failed test run
+        // log. Log located at: api/log/spring.log
+        random.setSeed(randomSeed);
+        logger.info("Random data generated with seed: " + randomSeed);
     }
 
     public static void setSeed(long seed) {

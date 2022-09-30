@@ -1,3 +1,4 @@
+@patient_search
 Feature: Patient search
 
   Background: 
