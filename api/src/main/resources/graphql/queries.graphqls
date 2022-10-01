@@ -2,6 +2,7 @@ type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: Page): [Person]
     findPatientsByFilter(filter: PersonFilter!): [Person]
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!): [Person]
 
     findOrganizationById(id: ID!): Organization
     findAllOrganizations(page: Page): [Organization]
