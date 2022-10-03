@@ -71,8 +71,8 @@ tasks.named("test") {
 	useJUnitPlatform()
 	// always re-run tests
 	test.outputs.upToDateWhen {false}
+	systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
 }
-
 
 processResources {
 	from ("../ui/build") {

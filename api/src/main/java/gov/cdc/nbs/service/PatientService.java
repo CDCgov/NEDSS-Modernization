@@ -4,29 +4,30 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
-import gov.cdc.nbs.entity.*;
-import gov.cdc.nbs.repository.OrganizationRepository;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import gov.cdc.nbs.entity.NBSEntity;
+import gov.cdc.nbs.entity.Organization;
 import gov.cdc.nbs.entity.Person;
+import gov.cdc.nbs.entity.QLabEvent;
 import gov.cdc.nbs.entity.QPerson;
+import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.PatientFilter;
 import gov.cdc.nbs.graphql.OrganizationFilter;
+import gov.cdc.nbs.graphql.PatientFilter;
+import gov.cdc.nbs.graphql.PatientInput;
+import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -49,8 +50,7 @@ public class PatientService {
         if (page == null) {
             page = new GraphQLPage(MAX_PAGE_SIZE, 0);
         }
-        var pageable = PageRequest.of(page.getPageNumber(), Math.min(page.getPageSize(), MAX_PAGE_SIZE));
-        return personRepository.findAll(pageable);
+        return personRepository.findAll(page.toPageable(MAX_PAGE_SIZE));
     }
 
     public List<Person> findPatientsByFilter(PatientFilter filter) {
@@ -64,9 +64,11 @@ public class PatientService {
         var person = QPerson.person;
         var query = queryFactory.selectFrom(person);
         query = addParameter(query, person.id::eq, filter.getId());
-        query = addLikeParameter(query, person.lastNm::likeIgnoreCase,
+        query = addParameter(query,
+                (p) -> person.lastNm.likeIgnoreCase(p, '!'),
                 generateLikeString(filter.getLastName()));
-        query = addLikeParameter(query, person.firstNm::likeIgnoreCase,
+        query = addParameter(query,
+                (p) -> person.firstNm.likeIgnoreCase(p, '!'),
                 generateLikeString(filter.getFirstName()));
         query = addParameter(query, person.ssn::eq, filter.getSsn());
         if (filter.getPhoneNumber() != null) {
@@ -82,7 +84,7 @@ public class PatientService {
         query = addParameter(query, person.hmStreetAddr1::eq, filter.getAddress());
         query = addParameter(query, person.hmCityCd::eq, filter.getCity());
         query = addParameter(query, person.hmZipCd::contains, filter.getZip());
-        query = addParameter(query, person.hmStateCd::eq, filter.getState());
+        query = addParameter(query, person.hmStateCd::equalsIgnoreCase, filter.getState());
         query = addParameter(query, person.hmCntryCd::eq, filter.getCountry());
         query = addParameter(query, person.ethnicityGroupCd::eq, filter.getEthnicity());
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
@@ -91,19 +93,12 @@ public class PatientService {
 
     }
 
+    // checks to see if the filter provided is null, if not add the filter to the
+    // 'query.where' based on the expression supplied
     private <T> JPAQuery<Person> addParameter(JPAQuery<Person> query,
-            Function<T, BooleanExpression> expression, T parameter) {
-        if (parameter != null) {
-            return query.where(expression.apply(parameter));
-        } else {
-            return query;
-        }
-    }
-
-    private <T> JPAQuery<Person> addLikeParameter(JPAQuery<Person> query,
-            BiFunction<T, Character, BooleanExpression> expression, T parameter) {
-        if (parameter != null) {
-            return query.where(expression.apply(parameter, '!'));
+            Function<T, BooleanExpression> expression, T filter) {
+        if (filter != null) {
+            return query.where(expression.apply(filter));
         } else {
             return query;
         }
@@ -135,8 +130,48 @@ public class PatientService {
         return "%" + originalString.replace("[", "![") + "%";
     }
 
+    /**
+     * TODO does not populate related tables (e.g. person_name, person_race,
+     * person_ethnic_group, etc)
+     *
+     * @param patient
+     * @return
+     */
+    public Person createPatient(PatientInput patient) {
+        final long id = personRepository.getMaxId() + 1;
+        var person = new Person();
+        // provided values
+        person.setLastNm(patient.getLastName());
+        person.setFirstNm(patient.getFirstName());
+        person.setSsn(patient.getSsn());
+        person.setHmPhoneNbr(patient.getPhoneNumber());
+        person.setBirthTime(patient.getDateOfBirth());
+        person.setBirthGenderCd(patient.getGender());
+        person.setDeceasedIndCd(patient.getDeceased());
+        person.setHmStreetAddr1(patient.getAddress());
+        person.setHmCityCd(patient.getCity());
+        person.setHmStateCd(patient.getState());
+        person.setHmCntryCd(patient.getCountry());
+        person.setHmZipCd(patient.getZip());
+        person.setEthnicityGroupCd(patient.getEthnicity());
+        // generated / required values
+        person.setId(id);
+        person.setNBSEntity(new NBSEntity(id, "PSN"));
+        person.setVersionCtrlNbr((short) 1);
+        person.setAddTime(Instant.now());
+        return personRepository.save(person);
+    }
+
+    public boolean deletePatient(Long id) {
+        if (personRepository.findById(id).isEmpty()) {
+            throw new QueryException("No patient found with id: " + id);
+        }
+        personRepository.deleteById(id);
+        return true;
+    }
+
     public List<Person> findPatientsByOrganizationFilter(OrganizationFilter filter) {
-        //TODO - Add pagination
+        // TODO - Add pagination
         OrganizationService organizationService = new OrganizationService(entityManager, organizationRepository);
 
         List<Organization> organizationList = organizationService.findOrganizationsByFilter(filter);

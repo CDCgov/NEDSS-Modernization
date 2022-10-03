@@ -6,12 +6,14 @@ import java.util.Optional;
 import gov.cdc.nbs.graphql.OrganizationFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import gov.cdc.nbs.entity.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.PatientFilter;
+import gov.cdc.nbs.graphql.PatientInput;
 import gov.cdc.nbs.service.PatientService;
 
 import lombok.AllArgsConstructor;
@@ -40,5 +42,15 @@ public class PatientController {
     @QueryMapping()
     public Optional<Person> findPatientById(@Argument Long id) {
         return patientService.findPatientById(id);
+    }
+
+    @MutationMapping()
+    public Person createPatient(@Argument PatientInput patient) {
+        return patientService.createPatient(patient);
+    }
+
+    @MutationMapping()
+    public Boolean deletePatient(@Argument Long id) {
+        return patientService.deletePatient(id);
     }
 }

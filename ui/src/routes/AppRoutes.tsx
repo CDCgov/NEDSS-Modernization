@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AddPatient from '../pages/addPatient/AddPatient';
-import Home from '../pages/home/Home';
+import { Home } from '../pages/home/Home';
 import { SearchEngine } from '../pages/search';
 
 export const AppRoutes = () => {

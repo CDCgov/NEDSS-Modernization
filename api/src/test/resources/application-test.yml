@@ -13,3 +13,4 @@ spring.mvc.pathmatch.matching-strategy: ant_path_matcher
 logging.file.path: ./log/
 
 nbs.max-page-size: 1000
+server.port: 8081
