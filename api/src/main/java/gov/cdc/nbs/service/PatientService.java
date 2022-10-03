@@ -1,6 +1,7 @@
 package gov.cdc.nbs.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -9,6 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
+import gov.cdc.nbs.entity.*;
+import gov.cdc.nbs.repository.OrganizationRepository;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,7 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.PatientFilter;
 import gov.cdc.nbs.graphql.PatientInput;
+import gov.cdc.nbs.graphql.OrganizationFilter;
 import gov.cdc.nbs.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +40,7 @@ public class PatientService {
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;
+    private final OrganizationRepository organizationRepository;
 
     public Optional<Person> findPatientById(Long id) {
         return personRepository.findById(id);
@@ -164,4 +170,26 @@ public class PatientService {
         return true;
     }
 
+    public List<Person> findPatientsByOrganizationFilter(OrganizationFilter filter) {
+        //TODO - Add pagination
+        OrganizationService organizationService = new OrganizationService(entityManager, organizationRepository);
+
+        List<Organization> organizationList = organizationService.findOrganizationsByFilter(filter);
+        List<Long> organizationUids = new ArrayList<Long>();
+
+        for (Organization organization : organizationList) {
+            organizationUids.add(organization.getId());
+        }
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        var labEvent = QLabEvent.labEvent;
+        var person = QPerson.person;
+        return queryFactory.selectFrom(person)
+                .innerJoin(labEvent)
+                .on(labEvent.personUid.eq(person.id))
+                .where(labEvent.organizationUid.in(organizationUids))
+                .orderBy(person.lastNm.asc())
+                .orderBy(person.firstNm.asc())
+                .fetch();
+    }
 }
