@@ -1,16 +1,3 @@
-scalar Date
-
-type Query {
-    findPatientById(id: ID!): Person
-    findAllPatients(page: Page): [Person]
-    findPatientsByFilter(filter: PersonFilter!): [Person]
-}
-
-input Page {
-    pageSize: Int
-    pageNumber: Int
-}
-
 input PersonFilter {
     page: Page
     id: ID

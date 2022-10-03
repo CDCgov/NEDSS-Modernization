@@ -3,6 +3,7 @@ package gov.cdc.nbs.controller;
 import java.util.List;
 import java.util.Optional;
 
+import gov.cdc.nbs.graphql.OrganizationFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -24,6 +25,11 @@ public class PatientController {
     @QueryMapping()
     public List<Person> findPatientsByFilter(@Argument PatientFilter filter) {
         return patientService.findPatientsByFilter(filter);
+    }
+
+    @QueryMapping()
+    public List<Person> findPatientsByOrganizationFilter(@Argument OrganizationFilter filter) {
+        return patientService.findPatientsByOrganizationFilter(filter);
     }
 
     @QueryMapping()

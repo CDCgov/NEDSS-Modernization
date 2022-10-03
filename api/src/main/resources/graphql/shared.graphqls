@@ -1,0 +1,6 @@
+scalar Date
+
+input Page {
+    pageSize: Int
+    pageNumber: Int
+}
