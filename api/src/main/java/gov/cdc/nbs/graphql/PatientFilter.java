@@ -3,6 +3,7 @@ package gov.cdc.nbs.graphql;
 import java.time.Instant;
 
 import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class PatientFilter {
     private String phoneNumber;
     private Instant dateOfBirth;
     private String dateOfBirthOperator;
-    private Character gender;
+    private Gender gender;
     private Deceased deceased;
     private String address;
     private String city;

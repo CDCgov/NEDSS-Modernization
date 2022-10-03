@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.ColumnTransformer;
 
 import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 
 import java.time.Instant;
@@ -42,8 +43,9 @@ public class Person {
     @Column(name = "add_user_id")
     private Long addUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "administrative_gender_cd", length = 20)
-    private String administrativeGenderCd;
+    private Gender administrativeGenderCd;
 
     @Column(name = "age_calc")
     private Short ageCalc;
@@ -66,8 +68,9 @@ public class Person {
     @Column(name = "age_reported_unit_cd", length = 20)
     private String ageReportedUnitCd;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "birth_gender_cd")
-    private Character birthGenderCd;
+    private Gender birthGenderCd;
 
     @Column(name = "birth_order_nbr")
     private Short birthOrderNbr;
@@ -134,8 +137,9 @@ public class Person {
     @Column(name = "occupation_cd", length = 20)
     private String occupationCd;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "preferred_gender_cd", length = 20)
-    private String preferredGenderCd;
+    private Gender preferredGenderCd;
 
     @Column(name = "prim_lang_cd", length = 20)
     private String primLangCd;
@@ -340,8 +344,9 @@ public class Person {
     @Column(name = "speaks_english_cd", length = 20)
     private String speaksEnglishCd;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "additional_gender_cd", length = 50)
-    private String additionalGenderCd;
+    private Gender additionalGenderCd;
 
     @Column(name = "ehars_id", length = 20)
     private String eharsId;

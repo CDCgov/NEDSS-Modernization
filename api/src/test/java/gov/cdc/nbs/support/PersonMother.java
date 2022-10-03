@@ -1,12 +1,12 @@
 package gov.cdc.nbs.support;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import gov.cdc.nbs.entity.NBSEntity;
 import gov.cdc.nbs.entity.Person;
 import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 
 public class PersonMother {
@@ -31,7 +31,7 @@ public class PersonMother {
         person.setWkPhoneNbr(TestUtil.getRandomPhoneNumber());
         person.setCellPhoneNbr(TestUtil.getRandomPhoneNumber());
         person.setBirthTime(TestUtil.getRandomDateInPast());
-        person.setBirthGenderCd(TestUtil.getRandomFromArray(new Character[] { 'M', 'F', 'U' }));
+        person.setBirthGenderCd(TestUtil.getRandomFromArray(new Gender[] { Gender.M, Gender.F, Gender.U }));
         person.setDeceasedIndCd(TestUtil.getRandomFromArray(new Deceased[] { Deceased.N, Deceased.Y, Deceased.UNK }));
         person.setHmStreetAddr1(TestUtil.getRandomString());
         person.setHmCityCd(TestUtil.getRandomString(8));

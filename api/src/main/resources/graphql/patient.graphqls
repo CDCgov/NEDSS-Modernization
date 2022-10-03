@@ -60,7 +60,7 @@ type Person {
     addReasonCd: String
     addTime: Date
     addUserId: ID
-    administrativeGenderCd: String
+    administrativeGenderCd: Gender
     ageCalc: Int
     ageCalcTime: Date
     ageCalcUnitCd: String
@@ -68,7 +68,7 @@ type Person {
     ageReported: String
     ageReportedTime: Date
     ageReportedUnitCd: String
-    birthGenderCd: String
+    birthGenderCd: Gender
     birthOrderNbr: Int
     birthTime: Date
     birthTimeCalc: Date
@@ -90,7 +90,7 @@ type Person {
     mothersMaidenNm: String
     multipleBirthInd: String
     occupationCd: String
-    preferredGenderCd: String
+    preferredGenderCd: Gender
     primLangCd: String
     primLangDescTxt: String
     recordStatusCd: String
@@ -158,7 +158,7 @@ type Person {
     groupTime: Date
     edxInd: String
     speaksEnglishCd: String
-    additionalGenderCd: String
+    additionalGenderCd: Gender
     eharsId: String
     ethnicUnkReasonCd: String
     sexUnkReasonCd: String

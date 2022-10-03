@@ -2,6 +2,7 @@ package gov.cdc.nbs.graphql;
 
 import java.time.LocalDateTime;
 
+import gov.cdc.nbs.entity.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ public class PatientInput {
     private String addReasonCd;
     private LocalDateTime addTime;
     private Long addUserId;
-    private String administrativeGenderCd;
+    private Gender administrativeGenderCd;
     private Short ageCalc;
     private LocalDateTime ageCalcTime;
     private String ageCalcUnitCd;
@@ -19,7 +20,7 @@ public class PatientInput {
     private String ageReported;
     private LocalDateTime ageReportedTime;
     private String ageReportedUnitCd;
-    private String birthGenderCd;
+    private Gender birthGenderCd;
     private Short birthOrderNbr;
     private LocalDateTime birthTime;
     private LocalDateTime birthTimeCalc;
@@ -41,7 +42,7 @@ public class PatientInput {
     private String mothersMaidenNm;
     private String multipleBirthInd;
     private String occupationCd;
-    private String preferredGenderCd;
+    private Gender preferredGenderCd;
     private String primLangCd;
     private String primLangDescTxt;
     private String recordStatusCd;
@@ -109,7 +110,7 @@ public class PatientInput {
     private LocalDateTime groupTime;
     private String edxInd;
     private String speaksEnglishCd;
-    private String additionalGenderCd;
+    private Gender additionalGenderCd;
     private String eharsId;
     private String ethnicUnkReasonCd;
     private String sexUnkReasonCd;
