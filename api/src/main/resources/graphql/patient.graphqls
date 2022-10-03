@@ -27,7 +27,7 @@ input PersonFilter {
     phoneNumber: String
     DateOfBirth: Date
     DateOfBirthOperator: Operator
-    gender: String
+    gender: Gender
     deceased: Deceased
     address: String
     city: String
@@ -65,6 +65,12 @@ enum Operator {
     EQUAL
     BEFORE
     AFTER
+}
+
+enum Gender {
+    M
+    F
+    U
 }
 
 enum RecordStatus {
