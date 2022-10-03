@@ -1,10 +1,15 @@
 import { Grid, Search } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useFindAllPatientsQuery } from '../../generated/graphql/schema';
+import { Deceased, PersonFilter, useFindPatientsByFilterQuery } from '../../generated/graphql/schema';
 
 export const SearchEngine = () => {
-    const { data } = useFindAllPatientsQuery();
+    const filterObj: PersonFilter = { deceased: Deceased.N };
+    const { data } = useFindPatientsByFilterQuery({
+        variables: {
+            filter: filterObj
+        }
+    });
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
@@ -24,7 +29,7 @@ export const SearchEngine = () => {
     };
 
     const getFilteredData = (value: string) => {
-        const filteredData = data?.findAllPatients?.map((p) => {
+        const filteredData = data?.findPatientsByFilter?.map((p) => {
             return { firstNm: p?.firstNm, id: p?.id };
         });
         setFiltered(filteredData);

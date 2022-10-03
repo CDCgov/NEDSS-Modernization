@@ -6,6 +6,7 @@ import './settings.scss';
 import NavBar from './shared/header/NavBar';
 import { AppRoutes } from './routes/AppRoutes';
 import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
+import { TopBanner } from './components/TopBanner/TopBanner';
 
 const client = new ApolloClient({
     link: new HttpLink({
@@ -21,6 +22,7 @@ ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
             <BrowserRouter>
+                <TopBanner />
                 <NavBar />
                 <div className="route-content">
                     <AppRoutes />
