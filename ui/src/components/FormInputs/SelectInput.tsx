@@ -17,7 +17,7 @@ export const SelectInput = ({ name, htmlFor, label, id, options, onChange, ...pr
                 <>
                     <option>- Select -</option>
                     {options?.map((item, index) => (
-                        <option key={index} value={item.name.toLowerCase()}>
+                        <option key={index} value={item.value}>
                             {item.name}
                         </option>
                     ))}

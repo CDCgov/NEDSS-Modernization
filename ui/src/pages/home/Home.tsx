@@ -186,9 +186,9 @@ export const Home = () => {
                                                             htmlFor={'gender'}
                                                             label="Gender"
                                                             options={[
-                                                                { name: 'Male', value: 'male' },
-                                                                { name: 'Female', value: 'female' },
-                                                                { name: 'Other', value: 'other' }
+                                                                { name: 'Male', value: 'M' },
+                                                                { name: 'Female', value: 'F' },
+                                                                { name: 'Other', value: 'U' }
                                                             ]}
                                                         />
                                                     )}
