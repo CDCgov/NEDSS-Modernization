@@ -1,6 +1,5 @@
 export const stateList = [
     { value: 'AK', name: 'Alaska' },
-    { value: 'TX', name: 'Texas' },
     { value: 'AL', name: 'Alabama' },
     { value: 'AR', name: 'Arkansas' },
     { value: 'AZ', name: 'Arizona' },
