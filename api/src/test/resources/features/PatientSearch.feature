@@ -8,7 +8,6 @@ Feature: Patient search
   Scenario: I Can find a Patient by patient data using one field
     When I search patients by "<field>" "<qualifier>"
     Then I find the patient
-    And I have the option to create a new patient
 
     Examples: 
       | field         | qualifier |
