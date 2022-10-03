@@ -1,0 +1,36 @@
+query findPlacesByFilter($filter: PlaceFilter!) {
+    findPlacesByFilter(filter: $filter){
+        id
+        addReasonCd
+        addTime
+        addUserId
+        cd
+        cdDescTxt
+        description
+        durationAmt
+        durationUnitCd
+        fromTime
+        lastChgReasonCd
+        lastChgTime
+        lastChgUserId
+        localId
+        nm
+        recordStatusCd
+        recordStatusTime
+        statusCd
+        statusTime
+        toTime
+        userAffiliationTxt
+        streetAddr1
+        streetAddr2
+        cityCd
+        cityDescTxt
+        stateCd
+        zipCd
+        cntyCd
+        cntryCd
+        phoneNbr
+        phoneCntryCd
+        versionCtrlNbr
+    }
+}

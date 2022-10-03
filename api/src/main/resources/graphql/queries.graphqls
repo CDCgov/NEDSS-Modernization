@@ -12,3 +12,8 @@ type Query {
     findAllPlaces(page: Page): [Place]
     findPlacesByFilter(filter: PlaceFilter!): [Place]
 }
+
+type Mutation {
+    createPatient(patient: PersonInput!): Person!
+    deletePatient(id: ID!): Boolean
+}

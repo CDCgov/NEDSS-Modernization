@@ -10,9 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
-import gov.cdc.nbs.entity.*;
-import gov.cdc.nbs.repository.OrganizationRepository;
-import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +18,16 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import gov.cdc.nbs.entity.NBSEntity;
+import gov.cdc.nbs.entity.Organization;
 import gov.cdc.nbs.entity.Person;
+import gov.cdc.nbs.entity.QLabEvent;
 import gov.cdc.nbs.entity.QPerson;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.OrganizationFilter;
 import gov.cdc.nbs.graphql.PatientFilter;
 import gov.cdc.nbs.graphql.PatientInput;
-import gov.cdc.nbs.graphql.OrganizationFilter;
+import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -171,7 +171,7 @@ public class PatientService {
     }
 
     public List<Person> findPatientsByOrganizationFilter(OrganizationFilter filter) {
-        //TODO - Add pagination
+        // TODO - Add pagination
         OrganizationService organizationService = new OrganizationService(entityManager, organizationRepository);
 
         List<Organization> organizationList = organizationService.findOrganizationsByFilter(filter);

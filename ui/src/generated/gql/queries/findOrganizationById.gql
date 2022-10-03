@@ -1,0 +1,40 @@
+query findOrganizationById($id: ID!) {
+    findOrganizationById(id: $id){
+        id
+        addReasonCd
+        addTime
+        addUserId
+        cd
+        cdDescTxt
+        description
+        durationAmt
+        durationUnitCd
+        fromTime
+        lastChgReasonCd
+        lastChgTime
+        lastChgUserId
+        localId
+        recordStatusCd
+        recordStatusTime
+        standardIndustryClassCd
+        standardIndustryDescTxt
+        statusCd
+        statusTime
+        toTime
+        userAffiliationTxt
+        displayNm
+        streetAddr1
+        streetAddr2
+        cityCd
+        cityDescTxt
+        stateCd
+        cntyCd
+        cntryCd
+        zipCd
+        phoneNbr
+        phoneCntryCd
+        versionCtrlNbr
+        electronicInd
+        edxInd
+    }
+}
