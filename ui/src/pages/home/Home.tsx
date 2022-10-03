@@ -149,7 +149,7 @@ export const Home = () => {
                                                     defaultValue={value}
                                                     htmlFor="lastName"
                                                     id="lastName"
-                                                    error={errors?.lastName?.message}
+                                                    error={errors?.lastName && 'Last name is required.'}
                                                 />
                                             )}
                                         />
@@ -168,7 +168,7 @@ export const Home = () => {
                                                     htmlFor="firstName"
                                                     id="firstName"
                                                     required
-                                                    error={errors?.firstName?.message}
+                                                    error={errors?.firstName && 'First name is required.'}
                                                 />
                                             )}
                                         />
