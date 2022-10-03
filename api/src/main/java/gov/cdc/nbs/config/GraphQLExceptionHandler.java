@@ -1,5 +1,7 @@
 package gov.cdc.nbs.config;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.stereotype.Component;
 
 import gov.cdc.nbs.exception.QueryException;
@@ -14,7 +16,8 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
 
     @Override
     // propogates exception message instead of generic: Internal server error
-    public DataFetcherExceptionHandlerResult onException(DataFetcherExceptionHandlerParameters handlerParameters) {
+    public CompletableFuture<DataFetcherExceptionHandlerResult> handleException(
+            DataFetcherExceptionHandlerParameters handlerParameters) {
 
         Throwable exception = handlerParameters.getException();
         String message = "Internal server error for request: "
@@ -31,8 +34,8 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
                 .location(handlerParameters.getSourceLocation())
                 .build();
 
-        return DataFetcherExceptionHandlerResult
+        return CompletableFuture.completedFuture(DataFetcherExceptionHandlerResult
                 .newResult(error)
-                .build();
+                .build());
     }
 }
