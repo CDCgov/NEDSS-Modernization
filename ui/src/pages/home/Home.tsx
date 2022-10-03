@@ -6,7 +6,7 @@ import './home.scss';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
 import { DatePickerInput } from '../../components/FormInputs/DatePickerInput';
 import { TableContent } from '../../components/TableContent/TableContent';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 type FormTypes = {
     firstName: string;
     lastName: string;
-    gender?: string;
+    gender?: Gender | '- Select -';
     state?: string;
     city?: string;
     zip?: string;
@@ -186,9 +186,9 @@ export const Home = () => {
                                                             htmlFor={'gender'}
                                                             label="Gender"
                                                             options={[
-                                                                { name: 'Male', value: 'M' },
-                                                                { name: 'Female', value: 'F' },
-                                                                { name: 'Other', value: 'U' }
+                                                                { name: 'Male', value: Gender.M },
+                                                                { name: 'Female', value: Gender.F },
+                                                                { name: 'Other', value: Gender.U }
                                                             ]}
                                                         />
                                                     )}
