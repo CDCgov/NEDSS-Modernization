@@ -76,7 +76,7 @@ public class PatientService {
         query = addParameter(query, person.hmStreetAddr1::eq, filter.getAddress());
         query = addParameter(query, person.hmCityCd::eq, filter.getCity());
         query = addParameter(query, person.hmZipCd::contains, filter.getZip());
-        query = addParameter(query, person.hmStateCd::eq, filter.getState());
+        query = addParameter(query, person.hmStateCd::equalsIgnoreCase, filter.getState());
         query = addParameter(query, person.hmCntryCd::eq, filter.getCountry());
         query = addParameter(query, person.ethnicityGroupCd::eq, filter.getEthnicity());
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());

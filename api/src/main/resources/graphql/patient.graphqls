@@ -20,7 +20,7 @@ input PersonFilter {
     phoneNumber: String
     DateOfBirth: Date
     DateOfBirthOperator: Operator
-    gender: String
+    gender: Gender
     deceased: Deceased
     address: String
     city: String
@@ -30,6 +30,12 @@ input PersonFilter {
     mortalityStatus: String
     ethnicity: String
     recordStatus: RecordStatus
+}
+
+enum Gender {
+    M
+    F
+    U
 }
 
 enum Deceased {
