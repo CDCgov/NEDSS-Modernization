@@ -52,7 +52,7 @@ public class DsmAlgorithmHist {
     private String eventAction;
 
     @Lob
-    @Column(name = "algorithm_payload")
+    @Column(name = "algorithm_payload", columnDefinition = "TEXT")
     private String algorithmPayload;
 
     @Column(name = "admin_comment", length = 2000)

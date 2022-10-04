@@ -5,7 +5,7 @@ Feature: Patient search
     Given there are 10 patients
     And I am looking for one of them
 
-  Scenario: I Can find a Patient by patient data using one field
+  Scenario: I can find a Patient by patient data using one field
     When I search patients by "<field>" "<qualifier>"
     Then I find the patient
 

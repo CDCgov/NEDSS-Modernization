@@ -29,7 +29,7 @@ public class DataMigrationRecord {
     private String dataMigrationSts;
 
     @Lob
-    @Column(name = "failed_record_txt")
+    @Column(name = "failed_record_txt", columnDefinition = "TEXT")
     private String failedRecordTxt;
 
     @Column(name = "sub_nm", length = 100)

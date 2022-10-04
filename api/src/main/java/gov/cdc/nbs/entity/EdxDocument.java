@@ -24,7 +24,7 @@ public class EdxDocument {
     private Act actUid;
 
     @Lob
-    @Column(name = "payload", nullable = false)
+    @Column(name = "payload", nullable = false, columnDefinition = "XML")
     private String payload;
 
     @Column(name = "record_status_cd", nullable = false, length = 20)
@@ -43,7 +43,6 @@ public class EdxDocument {
     @JoinColumn(name = "nbs_document_metadata_uid", nullable = false)
     private NbsDocumentMetadatum nbsDocumentMetadataUid;
 
-    @Lob
     @Column(name = "original_payload")
     private String originalPayload;
 

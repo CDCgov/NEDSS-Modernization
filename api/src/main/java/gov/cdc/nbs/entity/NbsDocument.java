@@ -21,7 +21,7 @@ public class NbsDocument {
     private Long id;
 
     @Lob
-    @Column(name = "doc_payload", nullable = false)
+    @Column(name = "doc_payload", nullable = false, columnDefinition = "TEXT")
     private String docPayload;
 
     @Column(name = "doc_type_cd", nullable = false, length = 20)
@@ -91,7 +91,7 @@ public class NbsDocument {
     private String sendingAppPatientId;
 
     @Lob
-    @Column(name = "phdc_doc_derived")
+    @Column(name = "phdc_doc_derived", columnDefinition = "TEXT")
     private String phdcDocDerived;
 
     @Column(name = "payload_view_ind_cd", length = 20)

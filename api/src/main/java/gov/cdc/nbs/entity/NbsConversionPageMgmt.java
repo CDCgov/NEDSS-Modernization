@@ -45,7 +45,7 @@ public class NbsConversionPageMgmt {
     private Long lastChgUserId;
 
     @Lob
-    @Column(name = "xml_PayLoad")
+    @Column(name = "xml_Payload", columnDefinition = "TEXT")
     private String xmlPayload;
 
 }

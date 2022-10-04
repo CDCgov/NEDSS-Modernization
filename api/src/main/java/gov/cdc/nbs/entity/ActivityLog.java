@@ -32,7 +32,7 @@ public class ActivityLog {
     private Instant recordStatusTime;
 
     @Lob
-    @Column(name = "message_txt")
+    @Column(name = "message_txt", columnDefinition = "TEXT")
     private String messageTxt;
 
     @Column(name = "action_txt", length = 50)

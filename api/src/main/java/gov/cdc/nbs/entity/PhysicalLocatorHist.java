@@ -33,7 +33,7 @@ public class PhysicalLocatorHist {
     @Column(name = "add_user_id")
     private Long addUserId;
 
-    @Column(name = "image_txt")
+    @Column(name = "image_txt", columnDefinition = "IMAGE")
     private byte[] imageTxt;
 
     @Column(name = "last_chg_reason_cd", length = 20)

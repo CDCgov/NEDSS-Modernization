@@ -16,8 +16,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "Data_Source_CodeData")
-public class DataSourceCodedatum {
+@Table(name = "data_source_codedata")
+public class DataSourceCodedata {
     @Id
     @Column(name = "data_source_codedata_uid", nullable = false)
     private Long id;

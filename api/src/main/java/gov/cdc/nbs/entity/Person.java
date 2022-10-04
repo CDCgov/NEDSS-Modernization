@@ -69,7 +69,7 @@ public class Person {
     private String ageReportedUnitCd;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "birth_gender_cd")
+    @Column(name = "birth_gender_cd", columnDefinition = "CHAR")
     private Gender birthGenderCd;
 
     @Column(name = "birth_order_nbr")

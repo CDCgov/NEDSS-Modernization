@@ -54,7 +54,7 @@ public class CtContactAnswerHist {
     private Short seqNbr;
 
     @Lob
-    @Column(name = "answer_large_txt")
+    @Column(name = "answer_large_txt", columnDefinition = "TEXT")
     private String answerLargeTxt;
 
     @Column(name = "answer_group_seq_nbr")

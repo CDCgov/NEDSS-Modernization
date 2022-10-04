@@ -24,7 +24,7 @@ public class NbsDocumentMetadatum {
     private String xmlSchemaLocation;
 
     @Lob
-    @Column(name = "document_view_xsl", nullable = false)
+    @Column(name = "document_view_xsl", nullable = false, columnDefinition = "TEXT")
     private String documentViewXsl;
 
     @Column(name = "description", length = 250)
@@ -52,7 +52,7 @@ public class NbsDocumentMetadatum {
     private String parserClassNm;
 
     @Lob
-    @Column(name = "document_view_cda_xsl")
+    @Column(name = "document_view_cda_xsl", columnDefinition = "TEXT")
     private String documentViewCdaXsl;
 
     @Column(name = "DOC_TYPE_VERSION_TXT", length = 250)

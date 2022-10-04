@@ -31,7 +31,7 @@ public class NbsPage {
     @Column(name = "desc_txt", length = 2000)
     private String descTxt;
 
-    @Column(name = "jsp_payload")
+    @Column(name = "jsp_payload", columnDefinition = "IMAGE")
     private byte[] jspPayload;
 
     @Column(name = "datamart_nm", length = 21)

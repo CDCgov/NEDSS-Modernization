@@ -33,7 +33,7 @@ public class NbsAttachment {
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
 
-    @Column(name = "attachment")
+    @Column(name = "attachment", columnDefinition = "IMAGE")
     private byte[] attachment;
 
     @Column(name = "file_nm_txt", length = 250)
