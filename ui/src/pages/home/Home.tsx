@@ -279,7 +279,7 @@ export const Home = () => {
                                     <Grid col={6} className="flex-align-self-end">
                                         <div className="grid-row flex-justify-end flex-align-end flex-wrap">
                                             <p className="margin-right-105 text-primary text-bold margin-bottom-05">
-                                                Advance Search
+                                                Advanced Search
                                             </p>
                                             <Button
                                                 type={'button'}
