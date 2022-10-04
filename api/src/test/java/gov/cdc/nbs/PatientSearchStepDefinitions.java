@@ -68,11 +68,6 @@ public class PatientSearchStepDefinitions {
         assertTrue("Search results contains patient: " + searchPatient.getId(), searchResults.contains(searchPatient));
     }
 
-    @Then("I have the option to create a new patient")
-    public void i_have_the_option_to_create_a_new_patient() {
-
-    }
-
     private PatientFilter getFilterByField(String field, String qualifier) {
         var filter = new PatientFilter();
         switch (field) {

@@ -32,8 +32,9 @@
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-        "generate": "npm run graphql:gql && npm run graphql:codegen",
-        "graphql:gql": "npx gqlg --schemaFilePath ../api/src/main/resources/graphql/*.graphqls --destDirPath ./src/generated/gql",
+        "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen",
+        "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
+        "graphql:gql": "npx gqlg --schemaFilePath src/generated/schema.graphqls --destDirPath ./src/generated/gql",
         "graphql:codegen": "graphql-codegen --config codegen.ts"
     },
     "proxy": "http://localhost:8080/",
