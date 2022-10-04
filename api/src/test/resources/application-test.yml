@@ -1,4 +1,4 @@
-logging.level.org.hibernate.SQL: warn
+logging.level.org.hibernate.SQL: debug
 spring.graphql.graphiql.enabled: false
 spring.graphql.graphiql.path: /graphiql
 
