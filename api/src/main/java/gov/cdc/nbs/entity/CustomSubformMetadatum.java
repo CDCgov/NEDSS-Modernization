@@ -41,7 +41,7 @@ public class CustomSubformMetadatum {
     private Integer displayOrderNbr;
 
     @Lob
-    @Column(name = "html_data")
+    @Column(name = "html_data", columnDefinition = "TEXT")
     private String htmlData;
 
     @Column(name = "import_version_nbr", nullable = false)

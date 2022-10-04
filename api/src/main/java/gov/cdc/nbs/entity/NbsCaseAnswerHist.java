@@ -62,7 +62,7 @@ public class NbsCaseAnswerHist {
     private Integer seqNbr;
 
     @Lob
-    @Column(name = "answer_large_txt")
+    @Column(name = "answer_large_txt", columnDefinition = "TEXT")
     private String answerLargeTxt;
 
     @Column(name = "nbs_table_metadata_uid")

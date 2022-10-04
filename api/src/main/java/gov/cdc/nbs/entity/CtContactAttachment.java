@@ -32,7 +32,8 @@ public class CtContactAttachment {
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
 
-    @Column(name = "attachment")
+    @Lob
+    @Column(name = "attachment", columnDefinition = "IMAGE")
     private byte[] attachment;
 
     @Column(name = "file_nm_txt", length = 250)

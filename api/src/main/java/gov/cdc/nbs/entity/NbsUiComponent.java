@@ -27,7 +27,7 @@ public class NbsUiComponent {
     @Column(name = "type_cd_desc", length = 50)
     private String typeCdDesc;
 
-    @Column(name = "ldf_available_ind", length = 10)
+    @Column(name = "ldf_available_ind", length = 10, columnDefinition = "CHAR")
     private String ldfAvailableInd;
 
     @Column(name = "display_order")

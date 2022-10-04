@@ -94,7 +94,7 @@ public class Notification {
     private String localId;
 
     @Lob
-    @Column(name = "message_txt")
+    @Column(name = "message_txt", columnDefinition = "TEXT")
     private String messageTxt;
 
     @Column(name = "method_cd", length = 20)

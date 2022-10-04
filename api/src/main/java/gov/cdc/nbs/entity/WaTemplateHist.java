@@ -27,7 +27,7 @@ public class WaTemplateHist {
     private String templateType;
 
     @Lob
-    @Column(name = "xml_payload")
+    @Column(name = "xml_payload", columnDefinition = "TEXT")
     private String xmlPayload;
 
     @Column(name = "publish_version_nbr")

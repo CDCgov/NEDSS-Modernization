@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @AllArgsConstructor
@@ -23,13 +24,14 @@ public class Dtproperty {
     @Column(name = "objectid")
     private Integer objectid;
 
-    @Column(name = "\"value\"")
+    @Column(name = "value")
     private String value;
 
-    @Column(name = "uvalue")
+    @Column(name = "uvalue", columnDefinition = "NVARCHAR")
     private String uvalue;
 
-    @Column(name = "lvalue")
+    @Lob
+    @Column(name = "lvalue", columnDefinition = "IMAGE")
     private byte[] lvalue;
 
     @Column(name = "version", nullable = false)

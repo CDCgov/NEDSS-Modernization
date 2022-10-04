@@ -35,7 +35,7 @@ public class EdxActivityLog {
     private Instant recordStatusTime;
 
     @Lob
-    @Column(name = "exception_txt")
+    @Column(name = "exception_txt", columnDefinition = "TEXT")
     private String exceptionTxt;
 
     @Column(name = "imp_exp_ind_cd")
@@ -47,7 +47,7 @@ public class EdxActivityLog {
     @Column(name = "target_type_cd", length = 50)
     private String targetTypeCd;
 
-    @Column(name = "business_obj_localId", length = 50)
+    @Column(name = "business_obj_localid", length = 50)
     private String businessObjLocalid;
 
     @Column(name = "doc_nm", length = 250)

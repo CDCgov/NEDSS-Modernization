@@ -46,22 +46,22 @@ public class ExportReceivingFacility {
     @Column(name = "message_recipient")
     private String messageRecipient;
 
-    @Column(name = "public_key_ldapAddress")
+    @Column(name = "public_key_ldapaddress")
     private String publicKeyLdapaddress;
 
-    @Column(name = "public_key_ldapBaseDN", length = 50)
+    @Column(name = "public_key_ldapbasedn", length = 50)
     private String publicKeyLdapbasedn;
 
-    @Column(name = "public_key_ldapDN")
+    @Column(name = "public_key_ldapdn")
     private String publicKeyLdapdn;
 
     @Column(name = "priority_int")
     private Short priorityInt;
 
-    @Column(name = "encrypt", length = 10)
+    @Column(name = "encrypt", length = 10, columnDefinition = "CHAR")
     private String encrypt;
 
-    @Column(name = "signature", length = 10)
+    @Column(name = "signature", length = 10, columnDefinition = "CHAR")
     private String signature;
 
     @Column(name = "receiving_system_short_nm", nullable = false, length = 10)

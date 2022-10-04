@@ -32,7 +32,7 @@ public class ObsValueTxt {
     @Column(name = "txt_type_cd", length = 20)
     private String txtTypeCd;
 
-    @Column(name = "value_image_txt")
+    @Column(name = "value_image_txt", columnDefinition = "IMAGE")
     private byte[] valueImageTxt;
 
     @Column(name = "value_txt", length = 2000)

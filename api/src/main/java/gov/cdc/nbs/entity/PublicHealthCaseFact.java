@@ -15,7 +15,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "publichealthcasefact")
 public class PublicHealthCaseFact {
     @Id
     @Column(name = "public_health_case_uid", nullable = false)
@@ -24,10 +24,10 @@ public class PublicHealthCaseFact {
     @Column(name = "adults_in_house_nbr")
     private Short adultsInHouseNbr;
 
-    @Column(name = "ageInMonths")
+    @Column(name = "ageinmonths")
     private Short ageInMonths;
 
-    @Column(name = "ageInYears")
+    @Column(name = "ageinyears")
     private Short ageInYears;
 
     @Column(name = "age_category_cd", length = 20)
@@ -168,22 +168,22 @@ public class PublicHealthCaseFact {
     @Column(name = "education_level_desc_txt", length = 100)
     private String educationLevelDescTxt;
 
-    @Column(name = "firstNotificationSenddate")
+    @Column(name = "firstnotificationsenddate")
     private Instant firstNotificationSenddate;
 
-    @Column(name = "firstNotificationdate")
+    @Column(name = "firstnotificationdate")
     private Instant firstNotificationdate;
 
-    @Column(name = "firstNotificationStatus", length = 20)
+    @Column(name = "firstnotificationstatus", length = 20)
     private String firstNotificationStatus;
 
-    @Column(name = "firstNotificationSubmittedBy")
+    @Column(name = "firstnotificationsubmittedby")
     private Long firstNotificationSubmittedBy;
 
-    @Column(name = "geoLatitude")
+    @Column(name = "geolatitude")
     private Float geoLatitude;
 
-    @Column(name = "geoLongitude")
+    @Column(name = "geolongitude")
     private Float geoLongitude;
 
     @Column(name = "group_case_cnt", precision = 11, scale = 5)
@@ -192,25 +192,25 @@ public class PublicHealthCaseFact {
     @Column(name = "investigation_status_cd", length = 20)
     private String investigationStatusCd;
 
-    @Column(name = "investigatorAssigneddate")
+    @Column(name = "investigatorassigneddate")
     private Instant investigatorAssigneddate;
 
-    @Column(name = "investigatorName", length = 102)
+    @Column(name = "investigatorname", length = 102)
     private String investigatorName;
 
-    @Column(name = "investigatorPhone", length = 20)
+    @Column(name = "investigatorphone", length = 20)
     private String investigatorPhone;
 
     @Column(name = "jurisdiction_cd", length = 20)
     private String jurisdictionCd;
 
-    @Column(name = "lastNotificationdate")
+    @Column(name = "lastnotificationdate")
     private Instant lastNotificationdate;
 
-    @Column(name = "lastNotificationSenddate")
+    @Column(name = "lastnotificationsenddate")
     private Instant lastNotificationSenddate;
 
-    @Column(name = "lastNotificationSubmittedBy")
+    @Column(name = "lastnotificationsubmittedby")
     private Long lastNotificationSubmittedBy;
 
     @Column(name = "marital_status_cd", length = 20)
@@ -237,22 +237,22 @@ public class PublicHealthCaseFact {
     @Column(name = "multiple_birth_ind", length = 20)
     private String multipleBirthInd;
 
-    @Column(name = "notifCreatedCount")
+    @Column(name = "notifcreatedcount")
     private Integer notifCreatedCount;
 
     @Column(name = "notificationdate")
     private Instant notificationdate;
 
-    @Column(name = "notifSentCount")
+    @Column(name = "notifsentcount")
     private Integer notifSentCount;
 
     @Column(name = "occupation_cd", length = 20)
     private String occupationCd;
 
-    @Column(name = "onSetDate")
+    @Column(name = "onsetdate")
     private Instant onSetDate;
 
-    @Column(name = "organizationName", length = 100)
+    @Column(name = "organizationname", length = 100)
     private String organizationName;
 
     @Column(name = "outcome_cd", length = 20)
@@ -312,10 +312,10 @@ public class PublicHealthCaseFact {
     @Column(name = "prog_area_cd", nullable = false, length = 20)
     private String progAreaCd;
 
-    @Column(name = "providerPhone", length = 20)
+    @Column(name = "providerphone", length = 20)
     private String providerPhone;
 
-    @Column(name = "providerName", length = 102)
+    @Column(name = "providername", length = 102)
     private String providerName;
 
     @Column(name = "PST_record_status_time")
@@ -336,10 +336,10 @@ public class PublicHealthCaseFact {
     @Column(name = "record_status_cd", length = 20)
     private String recordStatusCd;
 
-    @Column(name = "reporterName", length = 102)
+    @Column(name = "reportername", length = 102)
     private String reporterName;
 
-    @Column(name = "reporterPhone", length = 20)
+    @Column(name = "reporterphone", length = 20)
     private String reporterPhone;
 
     @Column(name = "rpt_cnty_cd", length = 20)
@@ -387,7 +387,7 @@ public class PublicHealthCaseFact {
     @Column(name = "zip_cd", length = 20)
     private String zipCd;
 
-    @Column(name = "patientName", length = 102)
+    @Column(name = "patientname", length = 102)
     private String patientName;
 
     @Column(name = "jurisdiction", length = 50)

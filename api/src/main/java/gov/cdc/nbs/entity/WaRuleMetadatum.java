@@ -61,7 +61,7 @@ public class WaRuleMetadatum {
     private String ruleDescTxt;
 
     @Lob
-    @Column(name = "javascript_function", nullable = false)
+    @Column(name = "javascript_function", nullable = false, columnDefinition = "TEXT")
     private String javascriptFunction;
 
     @Column(name = "javascript_function_nm", nullable = false, length = 100)

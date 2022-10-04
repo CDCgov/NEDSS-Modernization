@@ -56,7 +56,7 @@ public class NbsCaseAnswer {
     private Integer seqNbr;
 
     @Lob
-    @Column(name = "answer_large_txt")
+    @Column(name = "answer_large_txt", columnDefinition = "TEXT")
     private String answerLargeTxt;
 
     @ManyToOne(fetch = FetchType.LAZY)

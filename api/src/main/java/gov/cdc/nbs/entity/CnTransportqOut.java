@@ -38,7 +38,7 @@ public class CnTransportqOut {
     private Long lastChgUserId;
 
     @Lob
-    @Column(name = "message_payload")
+    @Column(name = "message_payload", columnDefinition = "TEXT")
     private String messagePayload;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
