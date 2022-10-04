@@ -3,10 +3,11 @@ package gov.cdc.nbs.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.Place;
-import gov.cdc.nbs.entity.QPlace;
+
+import gov.cdc.nbs.entity.odse.QPlace;
+import gov.cdc.nbs.entity.odse.Place;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.PlaceFilter;
+import gov.cdc.nbs.graphql.searchFilter.PlaceFilter;
 import gov.cdc.nbs.repository.PlaceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,7 +67,7 @@ public class PlaceService {
     }
 
     private <T> JPAQuery<Place> applyIfFilterNotNull(JPAQuery<Place> query,
-                                                      Function<T, BooleanExpression> expression, T parameter) {
+            Function<T, BooleanExpression> expression, T parameter) {
         if (parameter != null) {
             return query.where(expression.apply(parameter));
         } else {

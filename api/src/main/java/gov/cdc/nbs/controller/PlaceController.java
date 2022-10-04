@@ -1,8 +1,8 @@
 package gov.cdc.nbs.controller;
 
-import gov.cdc.nbs.entity.Place;
+import gov.cdc.nbs.entity.odse.Place;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.PlaceFilter;
+import gov.cdc.nbs.graphql.searchFilter.PlaceFilter;
 import gov.cdc.nbs.service.PlaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

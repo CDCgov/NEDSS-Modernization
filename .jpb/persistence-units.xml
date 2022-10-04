@@ -7,6 +7,11 @@
           <package value="gov.cdc.nbs" />
         </packages>
       </persistence-unit>
+      <persistence-unit name="SRTE">
+        <packages>
+          <package value="gov.cdc.nbs.entity.srte" />
+        </packages>
+      </persistence-unit>
     </persistence-units>
   </component>
 </project>

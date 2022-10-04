@@ -3,10 +3,11 @@ package gov.cdc.nbs.service;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.Organization;
-import gov.cdc.nbs.entity.QOrganization;
+
+import gov.cdc.nbs.entity.odse.QOrganization;
+import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.OrganizationFilter;
+import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.repository.OrganizationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,7 +67,7 @@ public class OrganizationService {
     }
 
     private <T> JPAQuery<Organization> applyIfFilterNotNull(JPAQuery<Organization> query,
-                                                      Function<T, BooleanExpression> expression, T parameter) {
+            Function<T, BooleanExpression> expression, T parameter) {
         if (parameter != null) {
             return query.where(expression.apply(parameter));
         } else {
