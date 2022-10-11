@@ -1,16 +1,17 @@
 type Query {
     findPatientById(id: ID!): Person
-    findAllPatients(page: Page): [Person]
-    findPatientsByFilter(filter: PersonFilter!): [Person]
-    findPatientsByOrganizationFilter(filter: OrganizationFilter!): [Person]
+    findAllPatients(page: Page): [Person]!
+    findPatientsByFilter(filter: PersonFilter!, page: Page): [Person]!
+    findPatientsByEvent(filter: EventFilter!, page: Page): [Person]!
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: Page): [Person]!
 
     findOrganizationById(id: ID!): Organization
-    findAllOrganizations(page: Page): [Organization]
-    findOrganizationsByFilter(filter: OrganizationFilter!): [Organization]
+    findAllOrganizations(page: Page): [Organization]!
+    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): [Organization]!
 
     findPlaceById(id: ID!): Place
-    findAllPlaces(page: Page): [Place]
-    findPlacesByFilter(filter: PlaceFilter!): [Place]
+    findAllPlaces(page: Page): [Place]!
+    findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
 }
 
 type Mutation {

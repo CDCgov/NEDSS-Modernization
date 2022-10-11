@@ -1,5 +1,4 @@
 input PersonFilter {
-    page: Page
     id: ID
     lastName: String
     firstName: String

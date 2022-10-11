@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrganizationFilter {
-    private GraphQLPage page = new GraphQLPage(50, 0);
     private Long id;
     private String displayNm;
     private String streetAddr1;

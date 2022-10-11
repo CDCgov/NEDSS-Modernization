@@ -18,7 +18,6 @@ import java.util.Set;
 @Table(catalog = "NBS_SRTE", name = "Jurisdiction_code")
 public class JurisdictionCode {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "code", nullable = false, length = 20)
     private String id;
 

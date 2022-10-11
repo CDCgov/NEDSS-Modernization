@@ -1,8 +1,13 @@
 package gov.cdc.nbs.entity.odse;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,4 +30,24 @@ public class Act {
     @Column(name = "mood_cd", nullable = false, length = 10)
     private String moodCd;
 
+    @OneToMany(mappedBy = "actUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Participation> participations;
+
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PublicHealthCase> publicHealthCases;
+
+    @OneToMany(mappedBy = "id.actUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ActId> actIds;
+
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Observation> observations;
+
+    @OneToMany(mappedBy = "targetActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ActRelationship> targetActRelationships;
+
+    @OneToMany(mappedBy = "sourceActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ActRelationship> actRelationships;
 }

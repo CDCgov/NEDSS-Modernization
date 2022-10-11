@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PatientFilter {
-    private GraphQLPage page = new GraphQLPage(50, 0);
     private Long id;
     private String lastName;
     private String firstName;

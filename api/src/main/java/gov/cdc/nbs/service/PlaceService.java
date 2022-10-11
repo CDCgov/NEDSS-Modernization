@@ -34,19 +34,15 @@ public class PlaceService {
     }
 
     public Page<Place> findAllPlaces(GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
         if (page == null) {
             page = new GraphQLPage(MAX_PAGE_SIZE, 0);
         }
-        var pageable = PageRequest.of(page.getPageNumber(), Math.min(page.getPageSize(), MAX_PAGE_SIZE));
         return placeRepository.findAll(pageable);
     }
 
-    public List<Place> findPlacesByFilter(PlaceFilter filter) {
-        // limit page size
-        if (filter.getPage().getPageSize() == 0 || filter.getPage().getPageSize() > MAX_PAGE_SIZE) {
-            filter.getPage().setPageSize(MAX_PAGE_SIZE);
-        }
-
+    public List<Place> findPlacesByFilter(PlaceFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
         var place = QPlace.place;
@@ -62,8 +58,8 @@ public class PlaceService {
         query = applyIfFilterNotNull(query, place.stateCd::eq, filter.getStateCd());
         query = applyIfFilterNotNull(query, place.zipCd::eq, filter.getZipCd());
 
-        return query.limit(filter.getPage().getPageSize())
-                .offset(filter.getPage().getOffset()).fetch();
+        return query.limit(pageable.getPageSize())
+                .offset(pageable.getOffset()).fetch();
     }
 
     private <T> JPAQuery<Place> applyIfFilterNotNull(JPAQuery<Place> query,
