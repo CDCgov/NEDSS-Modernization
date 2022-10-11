@@ -1,24 +1,25 @@
 package gov.cdc.nbs.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import gov.cdc.nbs.entity.odse.QPlace;
 import gov.cdc.nbs.entity.odse.Place;
+import gov.cdc.nbs.entity.odse.QPlace;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.PlaceFilter;
 import gov.cdc.nbs.repository.PlaceRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @AllArgsConstructor

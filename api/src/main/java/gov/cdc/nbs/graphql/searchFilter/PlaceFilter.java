@@ -1,6 +1,5 @@
 package gov.cdc.nbs.graphql.searchFilter;
 
-import gov.cdc.nbs.graphql.GraphQLPage;
 import lombok.Getter;
 import lombok.Setter;
 
