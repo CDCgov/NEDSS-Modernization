@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
-import gov.cdc.nbs.entity.Person;
+import gov.cdc.nbs.entity.odse.Person;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslPredicateExecutor<Person> {

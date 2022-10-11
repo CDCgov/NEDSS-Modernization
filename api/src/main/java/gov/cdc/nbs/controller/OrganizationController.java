@@ -1,10 +1,12 @@
 package gov.cdc.nbs.controller;
 
-import gov.cdc.nbs.entity.Organization;
+import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.OrganizationFilter;
+import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.service.OrganizationService;
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrganizationController {
 
+    @Autowired
     private final OrganizationService organizationService;
 
     @QueryMapping()
