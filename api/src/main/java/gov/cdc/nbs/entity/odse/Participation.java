@@ -27,7 +27,7 @@ public class Participation {
     private Role role;
 
     @MapsId("actUid")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "act_uid", nullable = false)
     private Act actUid;
 

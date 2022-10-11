@@ -4,8 +4,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.cdc.nbs.entity.NBSEntity;
-import gov.cdc.nbs.entity.Person;
+import gov.cdc.nbs.entity.odse.NBSEntity;
+import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;

@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.cdc.nbs.controller.PatientController;
-import gov.cdc.nbs.entity.Person;
-import gov.cdc.nbs.graphql.PatientFilter;
-import gov.cdc.nbs.graphql.PatientInput;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.graphql.input.PatientInput;
+import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.PersonMother;
 import io.cucumber.java.en.Given;
