@@ -1,24 +1,25 @@
 package gov.cdc.nbs.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import gov.cdc.nbs.entity.odse.QPlace;
 import gov.cdc.nbs.entity.odse.Place;
+import gov.cdc.nbs.entity.odse.QPlace;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.PlaceFilter;
 import gov.cdc.nbs.repository.PlaceRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
@@ -34,19 +35,15 @@ public class PlaceService {
     }
 
     public Page<Place> findAllPlaces(GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
         if (page == null) {
             page = new GraphQLPage(MAX_PAGE_SIZE, 0);
         }
-        var pageable = PageRequest.of(page.getPageNumber(), Math.min(page.getPageSize(), MAX_PAGE_SIZE));
         return placeRepository.findAll(pageable);
     }
 
-    public List<Place> findPlacesByFilter(PlaceFilter filter) {
-        // limit page size
-        if (filter.getPage().getPageSize() == 0 || filter.getPage().getPageSize() > MAX_PAGE_SIZE) {
-            filter.getPage().setPageSize(MAX_PAGE_SIZE);
-        }
-
+    public List<Place> findPlacesByFilter(PlaceFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
         var place = QPlace.place;
@@ -62,8 +59,8 @@ public class PlaceService {
         query = applyIfFilterNotNull(query, place.stateCd::eq, filter.getStateCd());
         query = applyIfFilterNotNull(query, place.zipCd::eq, filter.getZipCd());
 
-        return query.limit(filter.getPage().getPageSize())
-                .offset(filter.getPage().getOffset()).fetch();
+        return query.limit(pageable.getPageSize())
+                .offset(pageable.getOffset()).fetch();
     }
 
     private <T> JPAQuery<Place> applyIfFilterNotNull(JPAQuery<Place> query,

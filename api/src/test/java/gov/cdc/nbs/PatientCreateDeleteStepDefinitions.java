@@ -32,7 +32,7 @@ public class PatientCreateDeleteStepDefinitions {
         filter.setLastName(person.getLastNm());
         filter.setAddress(person.getHmStreetAddr1());
         filter.setPhoneNumber(person.getHmPhoneNbr());
-        var existing = patientController.findPatientsByFilter(filter);
+        var existing = patientController.findPatientsByFilter(filter, null);
         if (existing.size() > 0) {
             personRepository.deleteAll(existing);
         }
@@ -46,7 +46,7 @@ public class PatientCreateDeleteStepDefinitions {
         filter.setLastName(person.getLastNm());
         filter.setAddress(person.getHmStreetAddr1());
         filter.setPhoneNumber(person.getHmPhoneNbr());
-        var existing = patientController.findPatientsByFilter(filter);
+        var existing = patientController.findPatientsByFilter(filter, null);
         if (existing.size() > 0) {
             personRepository.deleteAll(existing);
         }
@@ -84,7 +84,7 @@ public class PatientCreateDeleteStepDefinitions {
         filter.setLastName(person.getLastNm());
         filter.setAddress(person.getHmStreetAddr1());
         filter.setPhoneNumber(person.getHmPhoneNbr());
-        var patientSearch = patientController.findPatientsByFilter(filter);
+        var patientSearch = patientController.findPatientsByFilter(filter, null);
         assertTrue(patientSearch.size() > 0);
 
         var patient = patientSearch.get(0);
@@ -111,7 +111,7 @@ public class PatientCreateDeleteStepDefinitions {
         filter.setAddress(person.getHmStreetAddr1());
         filter.setPhoneNumber(person.getHmPhoneNbr());
         filter.setSsn(person.getSsn());
-        var patientSearch = patientController.findPatientsByFilter(filter);
+        var patientSearch = patientController.findPatientsByFilter(filter, null);
         assertTrue(patientSearch.size() == 0);
     }
 }

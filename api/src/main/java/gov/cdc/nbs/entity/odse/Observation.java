@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +24,9 @@ public class Observation {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "observation_uid", nullable = false)
     private Act act;
+
+    @OneToMany(mappedBy = "id.observationUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ObsValueCoded> obsValueCodedList;
 
     @Column(name = "activity_duration_amt", length = 20)
     private String activityDurationAmt;

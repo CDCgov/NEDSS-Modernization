@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,17 +18,19 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import gov.cdc.nbs.entity.odse.QLabEvent;
-import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.QLabEvent;
+import gov.cdc.nbs.entity.odse.QParticipation;
+import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.input.PatientInput;
+import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
-import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -40,24 +43,21 @@ public class PatientService {
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;
-    private final OrganizationRepository organizationRepository;
+    private final OrganizationService organizationService;
+    private final EventService eventService;
 
     public Optional<Person> findPatientById(Long id) {
         return personRepository.findById(id);
     }
 
     public Page<Person> findAllPatients(GraphQLPage page) {
-        if (page == null) {
-            page = new GraphQLPage(MAX_PAGE_SIZE, 0);
-        }
-        return personRepository.findAll(page.toPageable(MAX_PAGE_SIZE));
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        return personRepository.findAll(pageable);
     }
 
-    public List<Person> findPatientsByFilter(PatientFilter filter) {
+    public List<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
         // limit page size
-        if (filter.getPage().getPageSize() == 0 || filter.getPage().getPageSize() > MAX_PAGE_SIZE) {
-            filter.getPage().setPageSize(MAX_PAGE_SIZE);
-        }
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
@@ -88,46 +88,9 @@ public class PatientService {
         query = addParameter(query, person.hmCntryCd::eq, filter.getCountry());
         query = addParameter(query, person.ethnicityGroupCd::eq, filter.getEthnicity());
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
-        return query.limit(filter.getPage().getPageSize())
-                .offset(filter.getPage().getOffset()).fetch();
+        return query.limit(pageable.getPageSize())
+                .offset(pageable.getOffset()).fetch();
 
-    }
-
-    // checks to see if the filter provided is null, if not add the filter to the
-    // 'query.where' based on the expression supplied
-    private <T> JPAQuery<Person> addParameter(JPAQuery<Person> query,
-            Function<T, BooleanExpression> expression, T filter) {
-        if (filter != null) {
-            return query.where(expression.apply(filter));
-        } else {
-            return query;
-        }
-    }
-
-    private BooleanExpression getDateOfBirthExpression(QPerson qPerson, Instant dob, String dobOperator) {
-        if (dob == null) {
-            return null;
-        }
-        if (dobOperator == null) {
-            return qPerson.birthTime.eq(dob);
-        } else if (dobOperator.toLowerCase().equals("equal")) {
-            return qPerson.birthTime.eq(dob);
-        } else if (dobOperator.toLowerCase().equals("before")) {
-            return qPerson.birthTime.before(dob);
-        } else if (dobOperator.toLowerCase().equals("after")) {
-            return qPerson.birthTime.after(dob);
-        } else {
-            throw new IllegalArgumentException("Invalid value for Date of Birth operator");
-        }
-    }
-
-    // MSSQL requires us to escape the '[' character, this is not provided in
-    // querydsl, so we do it here
-    private String generateLikeString(String originalString) {
-        if (originalString == null) {
-            return null;
-        }
-        return "%" + originalString.replace("[", "![") + "%";
     }
 
     /**
@@ -170,11 +133,10 @@ public class PatientService {
         return true;
     }
 
-    public List<Person> findPatientsByOrganizationFilter(OrganizationFilter filter) {
-        // TODO - Add pagination
-        OrganizationService organizationService = new OrganizationService(entityManager, organizationRepository);
+    public List<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
 
-        List<Organization> organizationList = organizationService.findOrganizationsByFilter(filter);
+        List<Organization> organizationList = organizationService.findOrganizationsByFilter(filter, page);
         List<Long> organizationUids = new ArrayList<Long>();
 
         for (Organization organization : organizationList) {
@@ -190,6 +152,76 @@ public class PatientService {
                 .where(labEvent.organizationUid.in(organizationUids))
                 .orderBy(person.lastNm.asc())
                 .orderBy(person.firstNm.asc())
+                .limit(pageable.getPageSize())
+                .offset(pageable.getOffset())
                 .fetch();
+    }
+
+    public List<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        List<Act> acts;
+        switch (filter.getEventType()) {
+            case INVESTIGATION:
+                // Get all Act entries matching filter
+                acts = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), pageable);
+                break;
+            case LABORATORY_REPORT:
+                acts = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), pageable);
+                break;
+            default:
+                throw new QueryException("Invalid event type: " + filter.getEventType());
+        }
+        // Find patients that correspond to the Act entries
+        var actIds = acts.stream().filter(a -> a.getMoodCd().equals("EVN")).map(Act::getId)
+                .collect(Collectors.toList());
+        if (actIds.size() > 0) {
+            var person = QPerson.person;
+            var participation = QParticipation.participation;
+            return queryFactory.selectFrom(person)
+                    .innerJoin(participation)
+                    .on(person.id.eq(participation.id.subjectEntityUid))
+                    .where(participation.actUid.id.in(actIds))
+                    .where(person.cd.eq("PAT")).fetch();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    // checks to see if the filter provided is null, if not add the filter to the
+    // 'query.where' based on the expression supplied
+    private <T> JPAQuery<Person> addParameter(JPAQuery<Person> query,
+            Function<T, BooleanExpression> expression, T filter) {
+        if (filter != null) {
+            return query.where(expression.apply(filter));
+        } else {
+            return query;
+        }
+    }
+
+    private BooleanExpression getDateOfBirthExpression(QPerson qPerson, Instant dob, String dobOperator) {
+        if (dob == null) {
+            return null;
+        }
+        if (dobOperator == null) {
+            return qPerson.birthTime.eq(dob);
+        } else if (dobOperator.toLowerCase().equals("equal")) {
+            return qPerson.birthTime.eq(dob);
+        } else if (dobOperator.toLowerCase().equals("before")) {
+            return qPerson.birthTime.before(dob);
+        } else if (dobOperator.toLowerCase().equals("after")) {
+            return qPerson.birthTime.after(dob);
+        } else {
+            throw new QueryException("Invalid value for Date of Birth operator");
+        }
+    }
+
+    // MSSQL requires us to escape the '[' character, this is not provided in
+    // querydsl, so we do it here
+    private String generateLikeString(String originalString) {
+        if (originalString == null) {
+            return null;
+        }
+        return "%" + originalString.replace("[", "![") + "%";
     }
 }

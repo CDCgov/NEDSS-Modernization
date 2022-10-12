@@ -1,29 +1,32 @@
 package gov.cdc.nbs.service;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import gov.cdc.nbs.entity.odse.QOrganization;
-import gov.cdc.nbs.entity.odse.Organization;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
-import gov.cdc.nbs.repository.OrganizationRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import gov.cdc.nbs.entity.odse.Organization;
+import gov.cdc.nbs.entity.odse.QOrganization;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
+import gov.cdc.nbs.repository.OrganizationRepository;
+import lombok.RequiredArgsConstructor;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrganizationService {
-    private final int MAX_PAGE_SIZE = 50;
+    @Value("${nbs.max-page-size: 50}")
+    private Integer MAX_PAGE_SIZE;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -34,18 +37,13 @@ public class OrganizationService {
     }
 
     public Page<Organization> findAllOrganizations(GraphQLPage page) {
-        if (page == null) {
-            page = new GraphQLPage(MAX_PAGE_SIZE, 0);
-        }
-        var pageable = PageRequest.of(page.getPageNumber(), Math.min(page.getPageSize(), MAX_PAGE_SIZE));
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
         return organizationRepository.findAll(pageable);
     }
 
-    public List<Organization> findOrganizationsByFilter(OrganizationFilter filter) {
+    public List<Organization> findOrganizationsByFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size
-        if (filter.getPage().getPageSize() == 0 || filter.getPage().getPageSize() > MAX_PAGE_SIZE) {
-            filter.getPage().setPageSize(MAX_PAGE_SIZE);
-        }
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
@@ -61,9 +59,7 @@ public class OrganizationService {
         query = applyIfFilterNotNull(query, organization.stateCd::eq, filter.getStateCd());
         query = applyIfFilterNotNull(query, organization.zipCd::eq, filter.getZipCd());
 
-        return query.limit(filter.getPage().getPageSize())
-                .offset(filter.getPage().getOffset()).fetch();
-
+        return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
     private <T> JPAQuery<Organization> applyIfFilterNotNull(JPAQuery<Organization> query,

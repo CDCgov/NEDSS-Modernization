@@ -29,12 +29,14 @@ public class GraphQLPage {
         return this.getPageNumber() * this.getPageSize();
     }
 
-    public Pageable toPageable(int maxPageSize) {
-        int size = Math.min(pageSize, maxPageSize);
-        if (sortDirection != null && sortField != null) {
-            return PageRequest.of(pageNumber, size, Sort.by(sortDirection, sortField));
+    public static Pageable toPageable(GraphQLPage page, int maxPageSize) {
+        if (page == null) {
+            return PageRequest.of(0, maxPageSize);
+        }
+        if (page.sortDirection != null && page.sortField != null) {
+            return PageRequest.of(page.pageNumber, page.pageSize, Sort.by(page.sortDirection, page.sortField));
         } else {
-            return PageRequest.of(pageNumber, size);
+            return PageRequest.of(page.pageNumber, page.pageSize);
         }
     }
 }

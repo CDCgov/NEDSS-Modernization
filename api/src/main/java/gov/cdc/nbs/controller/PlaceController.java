@@ -20,8 +20,8 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @QueryMapping()
-    public List<Place> findPlacesByFilter(@Argument PlaceFilter filter) {
-        return placeService.findPlacesByFilter(filter);
+    public List<Place> findPlacesByFilter(@Argument PlaceFilter filter, @Argument GraphQLPage page) {
+        return placeService.findPlacesByFilter(filter, page);
     }
 
     @QueryMapping()

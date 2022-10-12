@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.input.PatientInput;
+import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.service.PatientService;
@@ -24,14 +25,20 @@ public class PatientController {
 
     private final PatientService patientService;
 
-    @QueryMapping()
-    public List<Person> findPatientsByFilter(@Argument PatientFilter filter) {
-        return patientService.findPatientsByFilter(filter);
+    @QueryMapping
+    public List<Person> findPatientsByEvent(@Argument EventFilter filter, @Argument GraphQLPage page) {
+        return patientService.findPatientsByEvent(filter, page);
     }
 
     @QueryMapping()
-    public List<Person> findPatientsByOrganizationFilter(@Argument OrganizationFilter filter) {
-        return patientService.findPatientsByOrganizationFilter(filter);
+    public List<Person> findPatientsByFilter(@Argument PatientFilter filter, @Argument GraphQLPage page) {
+        return patientService.findPatientsByFilter(filter, page);
+    }
+
+    @QueryMapping()
+    public List<Person> findPatientsByOrganizationFilter(@Argument OrganizationFilter filter,
+            @Argument GraphQLPage page) {
+        return patientService.findPatientsByOrganizationFilter(filter, page);
     }
 
     @QueryMapping()

@@ -1,5 +1,4 @@
 input OrganizationFilter {
-    page: Page
     id: ID
     displayNm: String
     streetAddr1: String

@@ -4,11 +4,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.cdc.nbs.entity.odse.NBSEntity;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.NBSEntity;
+import gov.cdc.nbs.entity.odse.Person;
 
 public class PersonMother {
 
@@ -25,6 +25,7 @@ public class PersonMother {
     public static Person generateRandomPerson(long id) {
         var person = new Person();
         person.setId(id);
+        person.setCd("PAT");
         person.setFirstNm(TestUtil.getRandomString());
         person.setLastNm(TestUtil.getRandomString());
         person.setSsn(TestUtil.getRandomSsn());
@@ -60,6 +61,7 @@ public class PersonMother {
         final long id = 19000000L;
         var person = new Person();
         person.setId(id);
+        person.setCd("PAT");
         person.setFirstNm("John");
         person.setLastNm("Doe");
         person.setSsn("999-888-7777");

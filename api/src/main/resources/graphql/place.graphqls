@@ -1,5 +1,4 @@
 input PlaceFilter {
-    page: Page
     id: ID
     description: String
     nm: String

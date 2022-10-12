@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -20,7 +23,7 @@ public class Organization {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "organization_uid", nullable = false)
     private NBSEntity NBSEntity;
 
@@ -63,8 +66,9 @@ public class Organization {
     @Column(name = "local_id", length = 50)
     private String localId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
+    private RecordStatus recordStatusCd;
 
     @Column(name = "record_status_time")
     private Instant recordStatusTime;

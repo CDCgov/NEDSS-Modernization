@@ -22,7 +22,7 @@ public class PublicHealthCase {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "public_health_case_uid", nullable = false)
     private Act act;
 

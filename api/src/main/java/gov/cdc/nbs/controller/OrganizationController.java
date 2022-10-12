@@ -23,8 +23,9 @@ public class OrganizationController {
     private final OrganizationService organizationService;
 
     @QueryMapping()
-    public List<Organization> findOrganizationsByFilter(@Argument OrganizationFilter filter) {
-        return organizationService.findOrganizationsByFilter(filter);
+    public List<Organization> findOrganizationsByFilter(@Argument OrganizationFilter filter,
+            @Argument GraphQLPage page) {
+        return organizationService.findOrganizationsByFilter(filter, page);
     }
 
     @QueryMapping()

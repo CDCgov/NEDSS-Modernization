@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -67,8 +70,9 @@ public class Participation {
     @Column(name = "last_chg_user_id")
     private Long lastChgUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
+    private RecordStatus recordStatusCd;
 
     @Column(name = "record_status_time")
     private Instant recordStatusTime;
