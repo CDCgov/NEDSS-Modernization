@@ -16,16 +16,142 @@ export type Scalars = {
   Date: any;
 };
 
+export enum CaseStatus {
+  Confirmed = 'CONFIRMED',
+  NotACase = 'NOT_A_CASE',
+  Probable = 'PROBABLE',
+  Suspect = 'SUSPECT',
+  Unknown = 'UNKNOWN'
+}
+
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
   Y = 'Y'
 }
 
+export enum EntryMethod {
+  Electronic = 'ELECTRONIC',
+  Manual = 'MANUAL'
+}
+
+export type EventFilter = {
+  eventType: EventType;
+  investigationFilter?: InputMaybe<InvestigationFilter>;
+  laboratoryReportFilter?: InputMaybe<LaboratoryReportFilter>;
+};
+
+export enum EventStatus {
+  New = 'NEW',
+  Update = 'UPDATE'
+}
+
+export enum EventType {
+  Investigation = 'INVESTIGATION',
+  LaboratoryReport = 'LABORATORY_REPORT'
+}
+
 export enum Gender {
   F = 'F',
   M = 'M',
   U = 'U'
+}
+
+export type InvestigationEventDateSearch = {
+  eventDateType?: InputMaybe<InvestigationEventDateType>;
+  from?: InputMaybe<Scalars['Date']>;
+  to?: InputMaybe<Scalars['Date']>;
+};
+
+export enum InvestigationEventDateType {
+  DateOfReport = 'DATE_OF_REPORT',
+  InvestigationClosedDate = 'INVESTIGATION_CLOSED_DATE',
+  InvestigationCreateDate = 'INVESTIGATION_CREATE_DATE',
+  InvestigationStartDate = 'INVESTIGATION_START_DATE',
+  LastUpdateDate = 'LAST_UPDATE_DATE',
+  NotificationCreateDate = 'NOTIFICATION_CREATE_DATE'
+}
+
+export enum InvestigationEventIdType {
+  AbcsCaseId = 'ABCS_CASE_ID',
+  CityCountyCaseId = 'CITY_COUNTY_CASE_ID',
+  InvestigationId = 'INVESTIGATION_ID',
+  NotificationId = 'NOTIFICATION_ID',
+  StateCaseId = 'STATE_CASE_ID'
+}
+
+export type InvestigationFilter = {
+  caseStatuses?: InputMaybe<Array<InputMaybe<CaseStatus>>>;
+  conditions?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  createdBy?: InputMaybe<Scalars['String']>;
+  eventDateSearch?: InputMaybe<InvestigationEventDateSearch>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventIdType?: InputMaybe<InvestigationEventIdType>;
+  includeUnasignedCaseStatus?: InputMaybe<Scalars['Boolean']>;
+  includeUnassignedNotificationStatus?: InputMaybe<Scalars['Boolean']>;
+  includeUnassignedProcessingStatus?: InputMaybe<Scalars['Boolean']>;
+  investigationStatus?: InputMaybe<InvestigationStatus>;
+  investigatorId?: InputMaybe<Scalars['ID']>;
+  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  lastUpdatedBy?: InputMaybe<Scalars['String']>;
+  notificationStatuses?: InputMaybe<Array<InputMaybe<NotificationStatus>>>;
+  outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  pregnancyStatus?: InputMaybe<PregnancyStatus>;
+  processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
+  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
+};
+
+export enum InvestigationStatus {
+  Closed = 'CLOSED',
+  Open = 'OPEN'
+}
+
+export type LabReportProviderSearch = {
+  providerId?: InputMaybe<Scalars['String']>;
+  providerType?: InputMaybe<ProviderType>;
+};
+
+export type LaboratoryEventDateSearch = {
+  eventDateType?: InputMaybe<LaboratoryReportEventDateType>;
+  from?: InputMaybe<Scalars['Date']>;
+  to?: InputMaybe<Scalars['Date']>;
+};
+
+export enum LaboratoryEventIdType {
+  AccessionNumber = 'ACCESSION_NUMBER',
+  LabId = 'LAB_ID'
+}
+
+export enum LaboratoryReportEventDateType {
+  DateOfReport = 'DATE_OF_REPORT',
+  DateOfSpecimenCollection = 'DATE_OF_SPECIMEN_COLLECTION',
+  DateReceivedByPublicHealth = 'DATE_RECEIVED_BY_PUBLIC_HEALTH',
+  LabReportCreateDate = 'LAB_REPORT_CREATE_DATE',
+  LastUpdateDate = 'LAST_UPDATE_DATE'
+}
+
+export type LaboratoryReportFilter = {
+  codedResult?: InputMaybe<Scalars['String']>;
+  createdBy?: InputMaybe<Scalars['ID']>;
+  enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
+  entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
+  eventDateSearch?: InputMaybe<LaboratoryEventDateSearch>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventIdType?: InputMaybe<LaboratoryEventIdType>;
+  eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
+  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  lastUpdatedBy?: InputMaybe<Scalars['ID']>;
+  pregnancyStatus?: InputMaybe<PregnancyStatus>;
+  processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
+  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  providerSearch?: InputMaybe<LabReportProviderSearch>;
+  resultedTest?: InputMaybe<Scalars['String']>;
+};
+
+export enum LaboratoryReportStatus {
+  Processed = 'PROCESSED',
+  Unprocessed = 'UNPROCESSED'
 }
 
 export type Mutation = {
@@ -43,6 +169,14 @@ export type MutationCreatePatientArgs = {
 export type MutationDeletePatientArgs = {
   id: Scalars['ID'];
 };
+
+export enum NotificationStatus {
+  Approved = 'APPROVED',
+  Completed = 'COMPLETED',
+  MessageFailed = 'MESSAGE_FAILED',
+  PendingApproval = 'PENDING_APPROVAL',
+  Rejected = 'REJECTED'
+}
 
 export enum Operator {
   After = 'AFTER',
@@ -95,7 +229,6 @@ export type OrganizationFilter = {
   cityDescTxt?: InputMaybe<Scalars['String']>;
   displayNm?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
-  page?: InputMaybe<Page>;
   stateCd?: InputMaybe<Scalars['String']>;
   streetAddr1?: InputMaybe<Scalars['String']>;
   streetAddr2?: InputMaybe<Scalars['String']>;
@@ -229,7 +362,6 @@ export type PersonFilter = {
   gender?: InputMaybe<Gender>;
   id?: InputMaybe<Scalars['ID']>;
   lastName?: InputMaybe<Scalars['String']>;
-  page?: InputMaybe<Page>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   recordStatus?: InputMaybe<RecordStatus>;
   ssn?: InputMaybe<Scalars['String']>;
@@ -296,25 +428,51 @@ export type PlaceFilter = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   nm?: InputMaybe<Scalars['String']>;
-  page?: InputMaybe<Page>;
   stateCd?: InputMaybe<Scalars['String']>;
   streetAddr1?: InputMaybe<Scalars['String']>;
   streetAddr2?: InputMaybe<Scalars['String']>;
   zipCd?: InputMaybe<Scalars['String']>;
 };
 
+export enum PregnancyStatus {
+  No = 'NO',
+  Unknown = 'UNKNOWN',
+  Yes = 'YES'
+}
+
+export enum ProcessingStatus {
+  AwaitingInterview = 'AWAITING_INTERVIEW',
+  ClosedCase = 'CLOSED_CASE',
+  FieldFollowUp = 'FIELD_FOLLOW_UP',
+  NoFollowUp = 'NO_FOLLOW_UP',
+  OpenCase = 'OPEN_CASE',
+  SurveillanceFollowUp = 'SURVEILLANCE_FOLLOW_UP'
+}
+
+export type ProviderFacilitySearch = {
+  reportingEntityId?: InputMaybe<Scalars['String']>;
+  reportingEntityType?: InputMaybe<ReportingEntityType>;
+};
+
+export enum ProviderType {
+  OrderingFacility = 'ORDERING_FACILITY',
+  OrderingProvider = 'ORDERING_PROVIDER',
+  ReportingFacility = 'REPORTING_FACILITY'
+}
+
 export type Query = {
   __typename?: 'Query';
-  findAllOrganizations?: Maybe<Array<Maybe<Organization>>>;
-  findAllPatients?: Maybe<Array<Maybe<Person>>>;
-  findAllPlaces?: Maybe<Array<Maybe<Place>>>;
+  findAllOrganizations: Array<Maybe<Organization>>;
+  findAllPatients: Array<Maybe<Person>>;
+  findAllPlaces: Array<Maybe<Place>>;
   findOrganizationById?: Maybe<Organization>;
-  findOrganizationsByFilter?: Maybe<Array<Maybe<Organization>>>;
+  findOrganizationsByFilter: Array<Maybe<Organization>>;
   findPatientById?: Maybe<Person>;
-  findPatientsByFilter?: Maybe<Array<Maybe<Person>>>;
-  findPatientsByOrganizationFilter?: Maybe<Array<Maybe<Person>>>;
+  findPatientsByEvent: Array<Maybe<Person>>;
+  findPatientsByFilter: Array<Maybe<Person>>;
+  findPatientsByOrganizationFilter: Array<Maybe<Person>>;
   findPlaceById?: Maybe<Place>;
-  findPlacesByFilter?: Maybe<Array<Maybe<Place>>>;
+  findPlacesByFilter: Array<Maybe<Place>>;
 };
 
 
@@ -340,6 +498,7 @@ export type QueryFindOrganizationByIdArgs = {
 
 export type QueryFindOrganizationsByFilterArgs = {
   filter: OrganizationFilter;
+  page?: InputMaybe<Page>;
 };
 
 
@@ -348,13 +507,21 @@ export type QueryFindPatientByIdArgs = {
 };
 
 
+export type QueryFindPatientsByEventArgs = {
+  filter: EventFilter;
+  page?: InputMaybe<Page>;
+};
+
+
 export type QueryFindPatientsByFilterArgs = {
   filter: PersonFilter;
+  page?: InputMaybe<Page>;
 };
 
 
 export type QueryFindPatientsByOrganizationFilterArgs = {
   filter: OrganizationFilter;
+  page?: InputMaybe<Page>;
 };
 
 
@@ -365,6 +532,7 @@ export type QueryFindPlaceByIdArgs = {
 
 export type QueryFindPlacesByFilterArgs = {
   filter: PlaceFilter;
+  page?: InputMaybe<Page>;
 };
 
 export enum RecordStatus {
@@ -372,9 +540,19 @@ export enum RecordStatus {
   LogDel = 'LOG_DEL'
 }
 
+export enum ReportingEntityType {
+  Facility = 'FACILITY',
+  Provider = 'PROVIDER'
+}
+
 export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC'
+}
+
+export enum UserType {
+  External = 'EXTERNAL',
+  Internal = 'INTERNAL'
 }
 
 export type CreatePatientMutationVariables = Exact<{
@@ -396,21 +574,21 @@ export type FindAllOrganizationsQueryVariables = Exact<{
 }>;
 
 
-export type FindAllOrganizationsQuery = { __typename?: 'Query', findAllOrganizations?: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> | null };
+export type FindAllOrganizationsQuery = { __typename?: 'Query', findAllOrganizations: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> };
 
 export type FindAllPatientsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllPatientsQuery = { __typename?: 'Query', findAllPatients?: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> | null };
+export type FindAllPatientsQuery = { __typename?: 'Query', findAllPatients: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> };
 
 export type FindAllPlacesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllPlacesQuery = { __typename?: 'Query', findAllPlaces?: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> | null };
+export type FindAllPlacesQuery = { __typename?: 'Query', findAllPlaces: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> };
 
 export type FindOrganizationByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -421,10 +599,11 @@ export type FindOrganizationByIdQuery = { __typename?: 'Query', findOrganization
 
 export type FindOrganizationsByFilterQueryVariables = Exact<{
   filter: OrganizationFilter;
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type FindOrganizationsByFilterQuery = { __typename?: 'Query', findOrganizationsByFilter?: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> | null };
+export type FindOrganizationsByFilterQuery = { __typename?: 'Query', findOrganizationsByFilter: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> };
 
 export type FindPatientByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -433,19 +612,29 @@ export type FindPatientByIdQueryVariables = Exact<{
 
 export type FindPatientByIdQuery = { __typename?: 'Query', findPatientById?: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null };
 
-export type FindPatientsByFilterQueryVariables = Exact<{
-  filter: PersonFilter;
+export type FindPatientsByEventQueryVariables = Exact<{
+  filter: EventFilter;
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter?: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> | null };
+export type FindPatientsByEventQuery = { __typename?: 'Query', findPatientsByEvent: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> };
+
+export type FindPatientsByFilterQueryVariables = Exact<{
+  filter: PersonFilter;
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> };
 
 export type FindPatientsByOrganizationFilterQueryVariables = Exact<{
   filter: OrganizationFilter;
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type FindPatientsByOrganizationFilterQuery = { __typename?: 'Query', findPatientsByOrganizationFilter?: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> | null };
+export type FindPatientsByOrganizationFilterQuery = { __typename?: 'Query', findPatientsByOrganizationFilter: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } | null> };
 
 export type FindPlaceByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -456,10 +645,11 @@ export type FindPlaceByIdQuery = { __typename?: 'Query', findPlaceById?: { __typ
 
 export type FindPlacesByFilterQueryVariables = Exact<{
   filter: PlaceFilter;
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type FindPlacesByFilterQuery = { __typename?: 'Query', findPlacesByFilter?: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> | null };
+export type FindPlacesByFilterQuery = { __typename?: 'Query', findPlacesByFilter: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> };
 
 
 export const CreatePatientDocument = gql`
@@ -978,8 +1168,8 @@ export type FindOrganizationByIdQueryHookResult = ReturnType<typeof useFindOrgan
 export type FindOrganizationByIdLazyQueryHookResult = ReturnType<typeof useFindOrganizationByIdLazyQuery>;
 export type FindOrganizationByIdQueryResult = Apollo.QueryResult<FindOrganizationByIdQuery, FindOrganizationByIdQueryVariables>;
 export const FindOrganizationsByFilterDocument = gql`
-    query findOrganizationsByFilter($filter: OrganizationFilter!) {
-  findOrganizationsByFilter(filter: $filter) {
+    query findOrganizationsByFilter($filter: OrganizationFilter!, $page: Page) {
+  findOrganizationsByFilter(filter: $filter, page: $page) {
     id
     addReasonCd
     addTime
@@ -1033,6 +1223,7 @@ export const FindOrganizationsByFilterDocument = gql`
  * const { data, loading, error } = useFindOrganizationsByFilterQuery({
  *   variables: {
  *      filter: // value for 'filter'
+ *      page: // value for 'page'
  *   },
  * });
  */
@@ -1187,9 +1378,150 @@ export function useFindPatientByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type FindPatientByIdQueryHookResult = ReturnType<typeof useFindPatientByIdQuery>;
 export type FindPatientByIdLazyQueryHookResult = ReturnType<typeof useFindPatientByIdLazyQuery>;
 export type FindPatientByIdQueryResult = Apollo.QueryResult<FindPatientByIdQuery, FindPatientByIdQueryVariables>;
+export const FindPatientsByEventDocument = gql`
+    query findPatientsByEvent($filter: EventFilter!, $page: Page) {
+  findPatientsByEvent(filter: $filter, page: $page) {
+    id
+    addReasonCd
+    addTime
+    addUserId
+    administrativeGenderCd
+    ageCalc
+    ageCalcTime
+    ageCalcUnitCd
+    ageCategoryCd
+    ageReported
+    ageReportedTime
+    ageReportedUnitCd
+    birthGenderCd
+    birthOrderNbr
+    birthTime
+    birthTimeCalc
+    cd
+    cdDescTxt
+    currSexCd
+    deceasedIndCd
+    deceasedTime
+    description
+    educationLevelCd
+    educationLevelDescTxt
+    ethnicGroupInd
+    lastChgReasonCd
+    lastChgTime
+    lastChgUserId
+    localId
+    maritalStatusCd
+    maritalStatusDescTxt
+    mothersMaidenNm
+    multipleBirthInd
+    occupationCd
+    preferredGenderCd
+    primLangCd
+    primLangDescTxt
+    recordStatusCd
+    recordStatusTime
+    statusCd
+    statusTime
+    survivedIndCd
+    userAffiliationTxt
+    firstNm
+    lastNm
+    middleNm
+    nmPrefix
+    nmSuffix
+    preferredNm
+    hmStreetAddr1
+    hmStreetAddr2
+    hmCityCd
+    hmCityDescTxt
+    hmStateCd
+    hmZipCd
+    hmCntyCd
+    hmCntryCd
+    hmPhoneNbr
+    hmPhoneCntryCd
+    hmEmailAddr
+    cellPhoneNbr
+    wkStreetAddr1
+    wkStreetAddr2
+    wkCityCd
+    wkCityDescTxt
+    wkStateCd
+    wkZipCd
+    wkCntyCd
+    wkCntryCd
+    wkPhoneNbr
+    wkPhoneCntryCd
+    wkEmailAddr
+    ssn
+    medicaidNum
+    dlNum
+    dlStateCd
+    raceCd
+    raceSeqNbr
+    raceCategoryCd
+    ethnicityGroupCd
+    ethnicGroupSeqNbr
+    adultsInHouseNbr
+    childrenInHouseNbr
+    birthCityCd
+    birthCityDescTxt
+    birthCntryCd
+    birthStateCd
+    raceDescTxt
+    ethnicGroupDescTxt
+    versionCtrlNbr
+    asOfDateAdmin
+    asOfDateEthnicity
+    asOfDateGeneral
+    asOfDateMorbidity
+    asOfDateSex
+    electronicInd
+    personParentUid
+    dedupMatchInd
+    groupNbr
+    groupTime
+    edxInd
+    speaksEnglishCd
+    additionalGenderCd
+    eharsId
+    ethnicUnkReasonCd
+    sexUnkReasonCd
+  }
+}
+    `;
+
+/**
+ * __useFindPatientsByEventQuery__
+ *
+ * To run a query within a React component, call `useFindPatientsByEventQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPatientsByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindPatientsByEventQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindPatientsByEventQuery(baseOptions: Apollo.QueryHookOptions<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>(FindPatientsByEventDocument, options);
+      }
+export function useFindPatientsByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>(FindPatientsByEventDocument, options);
+        }
+export type FindPatientsByEventQueryHookResult = ReturnType<typeof useFindPatientsByEventQuery>;
+export type FindPatientsByEventLazyQueryHookResult = ReturnType<typeof useFindPatientsByEventLazyQuery>;
+export type FindPatientsByEventQueryResult = Apollo.QueryResult<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>;
 export const FindPatientsByFilterDocument = gql`
-    query findPatientsByFilter($filter: PersonFilter!) {
-  findPatientsByFilter(filter: $filter) {
+    query findPatientsByFilter($filter: PersonFilter!, $page: Page) {
+  findPatientsByFilter(filter: $filter, page: $page) {
     id
     addReasonCd
     addTime
@@ -1313,6 +1645,7 @@ export const FindPatientsByFilterDocument = gql`
  * const { data, loading, error } = useFindPatientsByFilterQuery({
  *   variables: {
  *      filter: // value for 'filter'
+ *      page: // value for 'page'
  *   },
  * });
  */
@@ -1328,8 +1661,8 @@ export type FindPatientsByFilterQueryHookResult = ReturnType<typeof useFindPatie
 export type FindPatientsByFilterLazyQueryHookResult = ReturnType<typeof useFindPatientsByFilterLazyQuery>;
 export type FindPatientsByFilterQueryResult = Apollo.QueryResult<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>;
 export const FindPatientsByOrganizationFilterDocument = gql`
-    query findPatientsByOrganizationFilter($filter: OrganizationFilter!) {
-  findPatientsByOrganizationFilter(filter: $filter) {
+    query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Page) {
+  findPatientsByOrganizationFilter(filter: $filter, page: $page) {
     id
     addReasonCd
     addTime
@@ -1453,6 +1786,7 @@ export const FindPatientsByOrganizationFilterDocument = gql`
  * const { data, loading, error } = useFindPatientsByOrganizationFilterQuery({
  *   variables: {
  *      filter: // value for 'filter'
+ *      page: // value for 'page'
  *   },
  * });
  */
@@ -1534,8 +1868,8 @@ export type FindPlaceByIdQueryHookResult = ReturnType<typeof useFindPlaceByIdQue
 export type FindPlaceByIdLazyQueryHookResult = ReturnType<typeof useFindPlaceByIdLazyQuery>;
 export type FindPlaceByIdQueryResult = Apollo.QueryResult<FindPlaceByIdQuery, FindPlaceByIdQueryVariables>;
 export const FindPlacesByFilterDocument = gql`
-    query findPlacesByFilter($filter: PlaceFilter!) {
-  findPlacesByFilter(filter: $filter) {
+    query findPlacesByFilter($filter: PlaceFilter!, $page: Page) {
+  findPlacesByFilter(filter: $filter, page: $page) {
     id
     addReasonCd
     addTime
@@ -1585,6 +1919,7 @@ export const FindPlacesByFilterDocument = gql`
  * const { data, loading, error } = useFindPlacesByFilterQuery({
  *   variables: {
  *      filter: // value for 'filter'
+ *      page: // value for 'page'
  *   },
  * });
  */

@@ -41,7 +41,7 @@ export const Input = ({
                 name={name || ''}
                 validationStatus={error ? 'error' : undefined}
                 aria-describedby={`${error}-message`}
-                className={classNames('bg-base-lightest', className)}
+                className={classNames(className)}
                 type={type}
             />
             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>

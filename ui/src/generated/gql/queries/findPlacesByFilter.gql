@@ -1,5 +1,5 @@
-query findPlacesByFilter($filter: PlaceFilter!) {
-    findPlacesByFilter(filter: $filter){
+query findPlacesByFilter($filter: PlaceFilter!, $page: Page) {
+    findPlacesByFilter(filter: $filter, page: $page){
         id
         addReasonCd
         addTime

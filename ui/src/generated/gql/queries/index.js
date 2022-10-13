@@ -5,6 +5,7 @@ const path = require('path');
 module.exports.findPatientById = fs.readFileSync(path.join(__dirname, 'findPatientById.gql'), 'utf8');
 module.exports.findAllPatients = fs.readFileSync(path.join(__dirname, 'findAllPatients.gql'), 'utf8');
 module.exports.findPatientsByFilter = fs.readFileSync(path.join(__dirname, 'findPatientsByFilter.gql'), 'utf8');
+module.exports.findPatientsByEvent = fs.readFileSync(path.join(__dirname, 'findPatientsByEvent.gql'), 'utf8');
 module.exports.findPatientsByOrganizationFilter = fs.readFileSync(path.join(__dirname, 'findPatientsByOrganizationFilter.gql'), 'utf8');
 module.exports.findOrganizationById = fs.readFileSync(path.join(__dirname, 'findOrganizationById.gql'), 'utf8');
 module.exports.findAllOrganizations = fs.readFileSync(path.join(__dirname, 'findAllOrganizations.gql'), 'utf8');

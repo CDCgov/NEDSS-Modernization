@@ -4,17 +4,26 @@
         color: white;
     }
 
-    .usa-nav__link span {
-        color: white;
-    }
-
     .title {
         .usa-logo__text {
-            background-image: linear-gradient(rgb(31, 94, 150), rgb(22, 46, 81), rgb(15, 62, 103));
+            background-image: linear-gradient(rgb(53, 113, 165), rgb(76, 103, 143), #005ea2);
             width: fit-content;
             padding: 8px 16px;
             border-radius: 8px;
-            border: solid 2px rgb(10, 57, 98);
+            border: solid 2px #005ea2;
+        }
+    }
+
+    .usa-nav {
+        padding: 0 !important;
+        .usa-nav-item {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            &.active {
+                background-color: #005ea2;
+                color: white;
+            }
         }
     }
 }

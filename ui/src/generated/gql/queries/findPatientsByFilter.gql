@@ -1,5 +1,5 @@
-query findPatientsByFilter($filter: PersonFilter!) {
-    findPatientsByFilter(filter: $filter){
+query findPatientsByFilter($filter: PersonFilter!, $page: Page) {
+    findPatientsByFilter(filter: $filter, page: $page){
         id
         addReasonCd
         addTime
