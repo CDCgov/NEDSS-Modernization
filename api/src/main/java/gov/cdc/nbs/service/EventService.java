@@ -174,10 +174,14 @@ public class EventService {
         // outbreak name
         query = addParameter(query, publicHealthCase.outbreakName.lower()::in, filter.getOutbreakNames());
         // case status / include unassigned
-        if (filter.getCaseStatuses() != null && !filter.getCaseStatuses().isEmpty()) {
-            var statusStrings = filter.getCaseStatuses().stream().map(s -> s.toString().toUpperCase())
+        if (filter.getCaseStatuses() != null) {
+            var cs = filter.getCaseStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty() || cs.getIncludeUnassigned() == null) {
+                throw new QueryException("statusList and includeUnassigned are required when specifying caseStatuses");
+            }
+            var statusStrings = filter.getCaseStatuses().getStatusList().stream().map(s -> s.toString().toUpperCase())
                     .collect(Collectors.toList());
-            if (filter.getIncludeUnasignedCaseStatus()) {
+            if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> publicHealthCase.caseClassCd.upper().in(x).or(publicHealthCase.caseClassCd.isEmpty()),
                         statusStrings);
@@ -186,10 +190,15 @@ public class EventService {
             }
         }
         // notification status / include unassigned
-        if (filter.getNotificationStatuses() != null && !filter.getNotificationStatuses().isEmpty()) {
-            var statusStrings = filter.getNotificationStatuses().stream().map(s -> s.toString().toUpperCase())
+        if (filter.getNotificationStatuses() != null) {
+            var cs = filter.getCaseStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty() || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying notificationStatuses");
+            }
+            var statusStrings = cs.getStatusList().stream().map(s -> s.toString().toUpperCase())
                     .collect(Collectors.toList());
-            if (filter.getIncludeUnassignedNotificationStatus()) {
+            if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> notification.recordStatusCd.upper().in(x)
                                 .or(publicHealthCase.currProcessStateCd.isEmpty()),
@@ -199,10 +208,15 @@ public class EventService {
             }
         }
         // processing status / include unassigned
-        if (filter.getProcessingStatuses() != null && !filter.getProcessingStatuses().isEmpty()) {
-            var statusStrings = filter.getProcessingStatuses().stream().map(s -> s.toString().toUpperCase())
+        if (filter.getProcessingStatuses() != null) {
+            var cs = filter.getProcessingStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty() || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying processingStatuses");
+            }
+            var statusStrings = cs.getStatusList().stream().map(s -> s.toString().toUpperCase())
                     .collect(Collectors.toList());
-            if (filter.getIncludeUnassignedProcessingStatus()) {
+            if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> publicHealthCase.currProcessStateCd.upper().in(x)
                                 .or(publicHealthCase.currProcessStateCd.isEmpty()),
@@ -211,6 +225,7 @@ public class EventService {
                 query = addParameter(query, publicHealthCase.currProcessStateCd.upper()::in, statusStrings);
             }
         }
+
         return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
