@@ -22,6 +22,7 @@ import gov.cdc.nbs.entity.enums.PregnancyStatus;
 import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.entity.srte.JurisdictionCode;
@@ -312,11 +313,10 @@ public class PatientSearchStepDefinitions {
                 filter.setFirstName(searchPatient.getFirstNm());
                 break;
             case "race":
-                filter.setRace("White");
+                filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
                 break;
             case "identification":
-                filter.setIdentification(new Identification("111111000000", qualifier));
-                break;
+                throw new RuntimeException("NYI");
             case "patient id":
                 filter.setId(searchPatient.getId());
                 break;
@@ -324,8 +324,7 @@ public class PatientSearchStepDefinitions {
                 filter.setSsn(searchPatient.getSsn());
                 break;
             case "phone number":
-                filter.setPhoneNumber(searchPatient.getHmPhoneNbr());
-                break;
+                throw new RuntimeException("NYI");
             case "date of birth":
                 filter.setDateOfBirth(getDobByQualifier(searchPatient, qualifier));
                 filter.setDateOfBirthOperator(qualifier);
@@ -337,23 +336,17 @@ public class PatientSearchStepDefinitions {
                 filter.setDeceased(searchPatient.getDeceasedIndCd());
                 break;
             case "address":
-                filter.setAddress(searchPatient.getHmStreetAddr1());
-                break;
+                throw new RuntimeException("NYI");
             case "city":
-                filter.setCity(searchPatient.getHmCityCd());
-                break;
+                throw new RuntimeException("NYI");
             case "state":
-                filter.setState(searchPatient.getHmStateCd());
-                break;
+                throw new RuntimeException("NYI");
             case "country":
-                filter.setCountry(searchPatient.getHmCntryCd());
-                break;
+                throw new RuntimeException("NYI");
             case "zip code":
-                filter.setZip(searchPatient.getHmZipCd());
-                break;
+                throw new RuntimeException("NYI");
             case "ethnicity":
-                filter.setEthnicity(searchPatient.getEthnicityGroupCd());
-                break;
+                throw new RuntimeException("NYI");
             case "record status":
                 filter.setRecordStatus(searchPatient.getRecordStatusCd());
                 break;
