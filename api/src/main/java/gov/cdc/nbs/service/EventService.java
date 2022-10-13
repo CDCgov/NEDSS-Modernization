@@ -412,14 +412,6 @@ public class EventService {
         return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
-    private BooleanExpression getCodedResultExpression(String codedResult) {
-        return QObsValueCoded.obsValueCoded.displayName.eq(codedResult);
-    }
-
-    private BooleanExpression getResultedTestExpression(String resultedTest) {
-        return null;
-    }
-
     // checks to see if the filter provided is null, if not add the filter to the
     // 'query.where' based on the expression supplied
     private <T, I> JPAQuery<I> addParameter(JPAQuery<I> query,
