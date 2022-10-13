@@ -59,8 +59,8 @@ public class InvestigationFilter {
     @Getter
     @Setter
     public static class ProviderFacilitySearch {
-        private ReportingEntityType reportingEntityType;
-        private String reportingEntityId;
+        private ReportingEntityType entityType;
+        private Long id;
     }
 
     public enum IdType {

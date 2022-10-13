@@ -50,14 +50,14 @@ enum PregnancyStatus {
 }
 
 input InvestigationEventDateSearch {
-    eventDateType: InvestigationEventDateType
-    from: Date
-    to: Date
+    eventDateType: InvestigationEventDateType!
+    from: Date!
+    to: Date!
 }
 
 input ProviderFacilitySearch {
-    reportingEntityType: ReportingEntityType
-    reportingEntityId: String
+    entityType: ReportingEntityType
+    id: ID
 }
 
 enum InvestigationEventIdType {
@@ -137,8 +137,8 @@ input LaboratoryEventDateSearch {
 }
 
 input LabReportProviderSearch {
-    providerType: ProviderType
-    providerId: String
+    providerType: ProviderType!
+    providerId: String!
 }
 
 enum LaboratoryEventIdType {

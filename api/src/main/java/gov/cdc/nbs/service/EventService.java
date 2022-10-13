@@ -114,8 +114,8 @@ public class EventService {
         // Event date
         var eds = filter.getEventDateSearch();
         if (eds != null) {
-            if (eds.getFrom() == null || eds.getTo() == null) {
-                throw new QueryException("From and To are required when querying by event date");
+            if (eds.getFrom() == null || eds.getTo() == null || eds.getEventDateType() == null) {
+                throw new QueryException("From, To, and EventDateType are required when querying by event date");
             }
             switch (eds.getEventDateType()) {
                 case DATE_OF_REPORT:
@@ -147,20 +147,20 @@ public class EventService {
         // provider facility
         var pfSearch = filter.getProviderFacilitySearch();
         if (pfSearch != null) {
-            if (pfSearch.getReportingEntityType() == null || pfSearch.getReportingEntityId() == null) {
+            if (pfSearch.getEntityType() == null || pfSearch.getId() == null) {
                 throw new QueryException("Entity type and entity Id required when querying provider/facility");
             }
-            switch (pfSearch.getReportingEntityType()) {
+            switch (pfSearch.getEntityType()) {
                 case PROVIDER:
                     query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
-                            .and(participation.id.subjectEntityUid.like(pfSearch.getReportingEntityId())));
+                            .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
                     break;
                 case FACILITY:
                     query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
-                            .and(participation.id.subjectEntityUid.like(pfSearch.getReportingEntityId())));
+                            .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
                     break;
                 default:
-                    throw new QueryException("Invalid entity type: " + pfSearch.getReportingEntityType());
+                    throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
             }
         }
         // investigator id
@@ -202,7 +202,8 @@ public class EventService {
             if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> notification.recordStatusCd.upper().in(x)
-                                .or(publicHealthCase.currProcessStateCd.isEmpty()),
+                                .or(publicHealthCase.currProcessStateCd.isEmpty()
+                                        .or(publicHealthCase.currProcessStateCd.eq("NF"))),
                         statusStrings);
             } else {
                 query = addParameter(query, notification.recordStatusCd.upper()::in, statusStrings);
@@ -220,7 +221,8 @@ public class EventService {
             if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> publicHealthCase.currProcessStateCd.upper().in(x)
-                                .or(publicHealthCase.currProcessStateCd.isEmpty()),
+                                .or(publicHealthCase.currProcessStateCd.isEmpty()
+                                        .or(publicHealthCase.currProcessStateCd.eq("NF"))),
                         statusStrings);
             } else {
                 query = addParameter(query, publicHealthCase.currProcessStateCd.upper()::in, statusStrings);
