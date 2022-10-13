@@ -167,8 +167,9 @@ public class EventService {
         query = addParameter(query, person.id::eq, filter.getInvestigatorId());
         // investigation status
         if (filter.getInvestigationStatus() != null) {
+            var status = filter.getInvestigationStatus().toString().substring(0, 1);
             query = query.where(publicHealthCase.investigationStatusCd
-                    .equalsIgnoreCase(filter.getInvestigationStatus().toString()));
+                    .equalsIgnoreCase(status));
         }
 
         // outbreak name
