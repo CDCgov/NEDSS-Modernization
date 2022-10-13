@@ -144,27 +144,45 @@ public class EventService {
         query = addParameter(query, publicHealthCase.addUserId::eq, filter.getCreatedBy());
         // Updated By
         query = addParameter(query, publicHealthCase.lastChgUserId::eq, filter.getLastUpdatedBy());
-        // provider facility
+        // provider facility + investigator Id
+
         var pfSearch = filter.getProviderFacilitySearch();
         if (pfSearch != null) {
             if (pfSearch.getEntityType() == null || pfSearch.getId() == null) {
                 throw new QueryException("Entity type and entity Id required when querying provider/facility");
             }
+            // provider/facility and investigator both check for entity uid's. We need to
+            // make sure it does an OR instead of two ANDs
+            var doInvestigatorQuery = filter.getInvestigatorId() != null;
             switch (pfSearch.getEntityType()) {
                 case PROVIDER:
-                    query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
-                            .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
+                    if (doInvestigatorQuery) {
+                        query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId()))
+                                .or(person.id.eq(filter.getInvestigatorId())));
+                    } else {
+                        query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
+                    }
                     break;
                 case FACILITY:
-                    query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
-                            .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
+                    if (doInvestigatorQuery) {
+                        query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId()))
+                                .or(person.id.eq(filter.getInvestigatorId())));
+                    } else {
+                        query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
+                    }
                     break;
                 default:
                     throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
             }
+        } else {
+            // investigator id
+            query = addParameter(query, person.id::eq, filter.getInvestigatorId());
         }
-        // investigator id
-        query = addParameter(query, person.id::eq, filter.getInvestigatorId());
+
         // investigation status
         if (filter.getInvestigationStatus() != null) {
             var status = filter.getInvestigationStatus().toString().substring(0, 1);
