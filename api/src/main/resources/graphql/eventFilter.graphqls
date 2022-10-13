@@ -56,8 +56,8 @@ input InvestigationEventDateSearch {
 }
 
 input ProviderFacilitySearch {
-    entityType: ReportingEntityType
-    id: ID
+    entityType: ReportingEntityType!
+    id: ID!
 }
 
 enum InvestigationEventIdType {
@@ -131,14 +131,14 @@ input LaboratoryReportFilter {
 }
 
 input LaboratoryEventDateSearch {
-    eventDateType: LaboratoryReportEventDateType
-    from: Date
-    to: Date
+    eventDateType: LaboratoryReportEventDateType!
+    from: Date!
+    to: Date!
 }
 
 input LabReportProviderSearch {
     providerType: ProviderType!
-    providerId: String!
+    providerId: ID!
 }
 
 enum LaboratoryEventIdType {

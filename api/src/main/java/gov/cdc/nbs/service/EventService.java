@@ -252,20 +252,23 @@ public class EventService {
 
     public List<Act> findLabReportsByFilter(LaboratoryReportFilter filter, Pageable pageable) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        var actRelationship = QActRelationship.actRelationship;
         var observation = QObservation.observation;
         var act = QAct.act;
         var participation = QParticipation.participation;
         var obsValueCoded = QObsValueCoded.obsValueCoded;
         var actId = QActId.actId;
-        var query = queryFactory.selectDistinct(observation.act).from(observation)
+        var query = queryFactory.selectDistinct(act).from(obsValueCoded)
+                .leftJoin(actRelationship)
+                .on(obsValueCoded.id.observationUid.eq(actRelationship.sourceActUid.id))
                 .leftJoin(act)
-                .on(observation.id.eq(act.id))
+                .on(act.id.eq(actRelationship.targetActUid.id))
                 .leftJoin(participation)
-                .on(observation.id.eq(participation.actUid.id))
-                .leftJoin(obsValueCoded)
-                .on(observation.id.eq(obsValueCoded.id.observationUid))
+                .on(participation.id.actUid.eq(act.id))
+                .leftJoin(observation)
+                .on(observation.id.eq(actRelationship.targetActUid.id))
                 .leftJoin(actId)
-                .on(observation.id.eq(actId.actUid.id));
+                .on(actId.actUid.id.eq(observation.id));
 
         // OBS only for lab reports ?
         query = query.where(act.classCd.eq("OBS"));
@@ -387,33 +390,34 @@ public class EventService {
                 case ORDERING_FACILITY:
                     query = query.where(participation.id.typeCd.eq("ORD")
                             .and(participation.subjectClassCd.eq("ORG"))
-                            .and(participation.id.subjectEntityUid.like(pSearch.getProviderId())));
+                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
                     break;
                 case ORDERING_PROVIDER:
                     query = query.where(participation.id.typeCd.eq("ORD")
                             .and(participation.subjectClassCd.eq("PSN"))
-                            .and(participation.id.subjectEntityUid.like(pSearch.getProviderId())));
+                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
                     break;
                 case REPORTING_FACILITY:
                     query = query.where(participation.id.typeCd.eq("AUT")
-                            .and(participation.id.subjectEntityUid.like(pSearch.getProviderId())));
+                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
                     break;
             }
         }
         // resulted test
         query = addParameter(query, observation.cdDescTxt::like, filter.getResultedTest());
+
         // coded result
         query = addParameter(query, obsValueCoded.displayName::like, filter.getCodedResult());
 
-        var acts = query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+        return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+    }
 
-        // get target acts for act_relationship sources
-        var actIds = acts.stream().map(Act::getId).collect(Collectors.toList());
-        queryFactory = new JPAQueryFactory(entityManager);
-        var actRelationship = QActRelationship.actRelationship;
-        acts.addAll(queryFactory.selectFrom(act).join(actRelationship).on(act.id.eq(actRelationship.targetActUid.id))
-                .where(actRelationship.sourceActUid.id.in(actIds)).fetch());
-        return acts;
+    private BooleanExpression getCodedResultExpression(String codedResult) {
+        return QObsValueCoded.obsValueCoded.displayName.eq(codedResult);
+    }
+
+    private BooleanExpression getResultedTestExpression(String resultedTest) {
+        return null;
     }
 
     // checks to see if the filter provided is null, if not add the filter to the
