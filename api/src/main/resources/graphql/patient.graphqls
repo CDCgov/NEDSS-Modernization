@@ -2,6 +2,8 @@ input PersonFilter {
     id: ID
     lastName: String
     firstName: String
+    race: String
+    identification: Identification
     ssn: String
     phoneNumber: String
     DateOfBirth: Date
@@ -32,6 +34,11 @@ input PersonInput {
     country: String
     zip: String
     ethnicity: String
+}
+
+input Identification {
+    identificationNumber: String!
+    identificationType: String!
 }
 
 enum Gender {

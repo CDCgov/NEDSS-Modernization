@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,8 @@ import gov.cdc.nbs.entity.enums.PregnancyStatus;
 import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.entity.srte.JurisdictionCode;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
@@ -38,14 +41,18 @@ import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProviderType;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.searchFilter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.ActRepository;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.repository.PostalLocatorRepository;
+import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.support.EventMother;
 import gov.cdc.nbs.support.EventMother.Event;
 import gov.cdc.nbs.support.PersonMother;
-import gov.cdc.nbs.support.TestUtil;
+import gov.cdc.nbs.support.util.PersonUtil;
+import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -58,6 +65,7 @@ public class PatientSearchStepDefinitions {
 
     @Test
     public void testForDebugging() {
+        there_are_patients(10);
     }
 
     @Autowired
@@ -68,6 +76,10 @@ public class PatientSearchStepDefinitions {
     private OrganizationRepository orgRepository;
     @Autowired
     private JurisdictionCodeRepository jurisdictionCodeRepository;
+    @Autowired
+    private TeleLocatorRepository teleLocatorRepository;
+    @Autowired
+    private PostalLocatorRepository postalLocatorRepository;
     @Autowired
     PatientController patientController;
 
@@ -86,13 +98,27 @@ public class PatientSearchStepDefinitions {
         personRepository.deleteAll(existingPersons);
 
         // create new persons
-        personRepository.saveAll(generatedPersons);
+        var people = personRepository.saveAll(generatedPersons);
+
+        // create locator entries for each person
+        var teleLocatorEntries = new ArrayList<TeleLocator>();
+        var postalLocatorEntries = new ArrayList<PostalLocator>();
+        people.forEach(person -> {
+            var entry = PersonUtil.createTeleLocatorEntry(person.getNBSEntity());
+            teleLocatorEntries.add(entry.getTeleLocator());
+            postalLocatorEntries.add(entry.getPostalLocator());
+        });
+
+        teleLocatorRepository.saveAll(teleLocatorEntries);
+        postalLocatorRepository.saveAll(postalLocatorEntries);
+        personRepository.saveAll(people);
+
     }
 
     @Given("Investigations exist")
     public void investigations_exist() {
         if (searchPatient == null) {
-            searchPatient = TestUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
+            searchPatient = RandomUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
         }
         var investigation1 = EventMother.investigation_bacterialVaginosis(searchPatient.getId());
         createEvent(investigation1);
@@ -103,7 +129,7 @@ public class PatientSearchStepDefinitions {
     @Given("A lab report exist")
     public void lab_report_exist() {
         if (searchPatient == null) {
-            searchPatient = TestUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
+            searchPatient = RandomUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
         }
         var labReport1 = EventMother.labReport_acidFastStain(searchPatient.getId());
         createEvent(labReport1);
@@ -112,7 +138,7 @@ public class PatientSearchStepDefinitions {
     @Given("I am looking for one of them")
     public void I_am_looking_for_one_of_them() {
         // pick one of the existing patients at random
-        var index = TestUtil.getRandomInt(generatedPersons.size());
+        var index = RandomUtil.getRandomInt(generatedPersons.size());
         searchPatient = generatedPersons.get(index);
     }
 
@@ -284,6 +310,12 @@ public class PatientSearchStepDefinitions {
                 break;
             case "first name":
                 filter.setFirstName(searchPatient.getFirstNm());
+                break;
+            case "race":
+                filter.setRace("White");
+                break;
+            case "identification":
+                filter.setIdentification(new Identification("111111000000", qualifier));
                 break;
             case "patient id":
                 filter.setId(searchPatient.getId());

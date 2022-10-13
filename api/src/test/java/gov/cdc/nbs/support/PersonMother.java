@@ -2,6 +2,7 @@ package gov.cdc.nbs.support;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gov.cdc.nbs.entity.enums.Deceased;
@@ -9,13 +10,18 @@ import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
+import gov.cdc.nbs.entity.odse.PersonEthnicGroupId;
+import gov.cdc.nbs.entity.odse.PersonRace;
+import gov.cdc.nbs.entity.odse.PersonRaceId;
+import gov.cdc.nbs.support.util.RandomUtil;
 
 public class PersonMother {
 
     // generates random person data. always starts from the same id
     public static List<Person> getRandomPersons(int count) {
         List<Person> persons = new ArrayList<>();
-        for (long i = 0; i < 10; i++) {
+        for (long i = 0; i < count; i++) {
             long id = 20000000L + i;
             persons.add(generateRandomPerson(id));
         }
@@ -23,37 +29,39 @@ public class PersonMother {
     }
 
     public static Person generateRandomPerson(long id) {
+        var entity = new NBSEntity(id, "PSN");
         var person = new Person();
         person.setId(id);
         person.setCd("PAT");
-        person.setFirstNm(TestUtil.getRandomString());
-        person.setLastNm(TestUtil.getRandomString());
-        person.setSsn(TestUtil.getRandomSsn());
-        person.setHmPhoneNbr(TestUtil.getRandomPhoneNumber());
-        person.setWkPhoneNbr(TestUtil.getRandomPhoneNumber());
-        person.setCellPhoneNbr(TestUtil.getRandomPhoneNumber());
-        person.setBirthTime(TestUtil.getRandomDateInPast());
-        person.setBirthGenderCd(TestUtil.getRandomFromArray(new Gender[] { Gender.M, Gender.F, Gender.U }));
-        person.setDeceasedIndCd(TestUtil.getRandomFromArray(new Deceased[] { Deceased.N, Deceased.Y, Deceased.UNK }));
-        person.setHmStreetAddr1(TestUtil.getRandomString());
-        person.setHmCityCd(TestUtil.getRandomString(8));
-        person.setHmStateCd(TestUtil.getRandomState());
-        person.setHmZipCd(TestUtil.getRandomNumericString(5));
-        person.setHmCntryCd("United States");
-        person.setWkStreetAddr1(TestUtil.getRandomString());
-        person.setWkCityCd(TestUtil.getRandomString());
-        person.setWkStateCd(TestUtil.getRandomState());
-        person.setWkZipCd(TestUtil.getRandomNumericString(5));
-        person.setWkCntryCd("United States");
-        person.setCurrSexCd(TestUtil.getRandomFromArray(new Character[] { 'F', 'M', 'U' }));
-        person.setBirthCityCd(TestUtil.getRandomString());
-        person.setBirthStateCd(TestUtil.getRandomState());
+        person.setFirstNm(RandomUtil.getRandomString());
+        person.setLastNm(RandomUtil.getRandomString());
+        person.setSsn(RandomUtil.getRandomSsn());
+        person.setBirthTime(RandomUtil.getRandomDateInPast());
+        person.setBirthGenderCd(RandomUtil.getRandomFromArray(new Gender[] { Gender.M, Gender.F, Gender.U }));
+        person.setDeceasedIndCd(RandomUtil.getRandomFromArray(new Deceased[] { Deceased.N, Deceased.Y, Deceased.UNK }));
+        person.setCurrSexCd(RandomUtil.getRandomFromArray(new Character[] { 'F', 'M', 'U' }));
+        person.setBirthCityCd(RandomUtil.getRandomString());
+        person.setBirthStateCd(RandomUtil.getRandomState());
         person.setBirthCntryCd("United States");
-        person.setEthnicityGroupCd(TestUtil.getRandomNumericString(6));
         person.setRecordStatusCd(
-                TestUtil.getRandomFromArray(new RecordStatus[] { RecordStatus.ACTIVE, RecordStatus.LOG_DEL }));
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
+                RandomUtil.getRandomFromArray(new RecordStatus[] { RecordStatus.ACTIVE, RecordStatus.LOG_DEL }));
+        person.setNBSEntity(entity);
         person.setVersionCtrlNbr((short) 1);
+
+        // ethnic group
+        var peg = new PersonEthnicGroup();
+        peg.setId(new PersonEthnicGroupId(id, RandomUtil.getRandomString(10)));
+        peg.setPersonUid(person);
+        peg.setRecordStatusCd("ACTIVE");
+        person.setEthnicGroups(Arrays.asList(peg));
+
+        // race
+        var race = new PersonRace();
+        race.setId(new PersonRaceId(id, RandomUtil.getRandomString(10)));
+        race.setPersonUid(person);
+        race.setRecordStatusCd("ACTIVE");
+        person.setRaces(Arrays.asList(race));
+
         return person;
     }
 

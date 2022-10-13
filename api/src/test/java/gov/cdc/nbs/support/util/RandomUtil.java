@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support;
+package gov.cdc.nbs.support.util;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -8,9 +8,9 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TestUtil {
+public class RandomUtil {
     private static Random random = new Random();
-    private static Logger logger = LoggerFactory.getLogger(TestUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(RandomUtil.class);
     static {
         var randomSeed = random.nextLong();
         // on test failure, hard code seed to value in failed test run
@@ -49,7 +49,7 @@ public class TestUtil {
 
     public static String getRandomString(int length) {
         int leftLimit = 48; // 0
-        int rightLimit = 122; // z
+        int rightLimit = 126; // ~
         return random.ints(leftLimit, rightLimit + 1).limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }

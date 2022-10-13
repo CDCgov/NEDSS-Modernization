@@ -16,6 +16,7 @@ import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +34,18 @@ public class Person {
     @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity NBSEntity;
+
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PersonName> names;
+
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PersonRace> races;
+
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PersonEthnicGroup> ethnicGroups;
+
+    @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<EntityId> entityIds;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;

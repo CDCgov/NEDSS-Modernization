@@ -11,24 +11,26 @@ Feature: Patient search
     Then I find the patient
 
     Examples: 
-      | field         | qualifier |
-      | last name     |           |
-      | first name    |           |
-      | patient id    |           |
-      | ssn           |           |
-      | phone number  |           |
-      | date of birth | before    |
-      | date of birth | after     |
-      | date of birth | equal     |
-      | gender        |           |
-      | deceased      |           |
-      | address       |           |
-      | city          |           |
-      | state         |           |
-      | country       |           |
-      | zip code      |           |
-      | ethnicity     |           |
-      | record status |           |
+      | field          | qualifier               |
+      | last name      |                         |
+      | first name     |                         |
+      | race           |                         |
+      | identification | Driver's license number |
+      | patient id     |                         |
+      | ssn            |                         |
+      | phone number   |                         |
+      | date of birth  | before                  |
+      | date of birth  | after                   |
+      | date of birth  | equal                   |
+      | gender         |                         |
+      | deceased       |                         |
+      | address        |                         |
+      | city           |                         |
+      | state          |                         |
+      | country        |                         |
+      | zip code       |                         |
+      | ethnicity      |                         |
+      | record status  |                         |
 
   @patient_investigation_search
   Scenario: I can find a patient by one field in the investigation data
