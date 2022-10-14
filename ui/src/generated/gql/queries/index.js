@@ -13,3 +13,4 @@ module.exports.findOrganizationsByFilter = fs.readFileSync(path.join(__dirname, 
 module.exports.findPlaceById = fs.readFileSync(path.join(__dirname, 'findPlaceById.gql'), 'utf8');
 module.exports.findAllPlaces = fs.readFileSync(path.join(__dirname, 'findAllPlaces.gql'), 'utf8');
 module.exports.findPlacesByFilter = fs.readFileSync(path.join(__dirname, 'findPlacesByFilter.gql'), 'utf8');
+module.exports.findAllJurisdictions = fs.readFileSync(path.join(__dirname, 'findAllJurisdictions.gql'), 'utf8');

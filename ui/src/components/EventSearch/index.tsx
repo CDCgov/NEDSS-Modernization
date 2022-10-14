@@ -53,8 +53,10 @@ export const EventSearch = () => {
         };
         eventSearchType === EventType.Investigation &&
             (filterData.investigationFilter = {
-                includeUnasignedCaseStatus: true,
-                caseStatuses: [CaseStatus.Confirmed]
+                caseStatuses: {
+                    includeUnassigned: true,
+                    statusList: [CaseStatus.Confirmed]
+                }
             });
 
         // getFilteredData({

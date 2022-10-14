@@ -24,6 +24,11 @@ export enum CaseStatus {
   Unknown = 'UNKNOWN'
 }
 
+export type CaseStatuses = {
+  includeUnassigned: Scalars['Boolean'];
+  statusList: Array<CaseStatus>;
+};
+
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
@@ -58,9 +63,9 @@ export enum Gender {
 }
 
 export type InvestigationEventDateSearch = {
-  eventDateType?: InputMaybe<InvestigationEventDateType>;
-  from?: InputMaybe<Scalars['Date']>;
-  to?: InputMaybe<Scalars['Date']>;
+  eventDateType: InvestigationEventDateType;
+  from: Scalars['Date'];
+  to: Scalars['Date'];
 };
 
 export enum InvestigationEventDateType {
@@ -81,23 +86,20 @@ export enum InvestigationEventIdType {
 }
 
 export type InvestigationFilter = {
-  caseStatuses?: InputMaybe<Array<InputMaybe<CaseStatus>>>;
+  caseStatuses?: InputMaybe<CaseStatuses>;
   conditions?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   createdBy?: InputMaybe<Scalars['String']>;
   eventDateSearch?: InputMaybe<InvestigationEventDateSearch>;
   eventId?: InputMaybe<Scalars['String']>;
   eventIdType?: InputMaybe<InvestigationEventIdType>;
-  includeUnasignedCaseStatus?: InputMaybe<Scalars['Boolean']>;
-  includeUnassignedNotificationStatus?: InputMaybe<Scalars['Boolean']>;
-  includeUnassignedProcessingStatus?: InputMaybe<Scalars['Boolean']>;
   investigationStatus?: InputMaybe<InvestigationStatus>;
   investigatorId?: InputMaybe<Scalars['ID']>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['String']>;
-  notificationStatuses?: InputMaybe<Array<InputMaybe<NotificationStatus>>>;
+  notificationStatuses?: InputMaybe<NotificationStatuses>;
   outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
-  processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
+  processingStatuses?: InputMaybe<ProcessingStatuses>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
 };
@@ -107,15 +109,40 @@ export enum InvestigationStatus {
   Open = 'OPEN'
 }
 
+export type Jurisdiction = {
+  __typename?: 'Jurisdiction';
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSeqNum?: Maybe<Scalars['Int']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  codeSystemCd?: Maybe<Scalars['String']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['Date']>;
+  effectiveToTime?: Maybe<Scalars['Date']>;
+  exportInd?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['String']>;
+  nbsUid?: Maybe<Scalars['ID']>;
+  parentIsCd?: Maybe<Scalars['String']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  stateDomainCd?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
+  statusTime?: Maybe<Scalars['Date']>;
+  typeCd: Scalars['String'];
+};
+
 export type LabReportProviderSearch = {
-  providerId?: InputMaybe<Scalars['String']>;
-  providerType?: InputMaybe<ProviderType>;
+  providerId: Scalars['ID'];
+  providerType: ProviderType;
 };
 
 export type LaboratoryEventDateSearch = {
-  eventDateType?: InputMaybe<LaboratoryReportEventDateType>;
-  from?: InputMaybe<Scalars['Date']>;
-  to?: InputMaybe<Scalars['Date']>;
+  eventDateType: LaboratoryReportEventDateType;
+  from: Scalars['Date'];
+  to: Scalars['Date'];
 };
 
 export enum LaboratoryEventIdType {
@@ -177,6 +204,11 @@ export enum NotificationStatus {
   PendingApproval = 'PENDING_APPROVAL',
   Rejected = 'REJECTED'
 }
+
+export type NotificationStatuses = {
+  includeUnassigned: Scalars['Boolean'];
+  statusList: Array<NotificationStatus>;
+};
 
 export enum Operator {
   After = 'AFTER',
@@ -449,9 +481,14 @@ export enum ProcessingStatus {
   SurveillanceFollowUp = 'SURVEILLANCE_FOLLOW_UP'
 }
 
+export type ProcessingStatuses = {
+  includeUnassigned: Scalars['Boolean'];
+  statusList: Array<ProcessingStatus>;
+};
+
 export type ProviderFacilitySearch = {
-  reportingEntityId?: InputMaybe<Scalars['String']>;
-  reportingEntityType?: InputMaybe<ReportingEntityType>;
+  entityType: ReportingEntityType;
+  id: Scalars['ID'];
 };
 
 export enum ProviderType {
@@ -462,6 +499,7 @@ export enum ProviderType {
 
 export type Query = {
   __typename?: 'Query';
+  findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: Array<Maybe<Organization>>;
   findAllPatients: Array<Maybe<Person>>;
   findAllPlaces: Array<Maybe<Place>>;
@@ -473,6 +511,11 @@ export type Query = {
   findPatientsByOrganizationFilter: Array<Maybe<Person>>;
   findPlaceById?: Maybe<Place>;
   findPlacesByFilter: Array<Maybe<Place>>;
+};
+
+
+export type QueryFindAllJurisdictionsArgs = {
+  page?: InputMaybe<Page>;
 };
 
 
@@ -568,6 +611,13 @@ export type DeletePatientMutationVariables = Exact<{
 
 
 export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient?: boolean | null };
+
+export type FindAllJurisdictionsQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
 
 export type FindAllOrganizationsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -821,6 +871,61 @@ export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
 export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
 export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
+export const FindAllJurisdictionsDocument = gql`
+    query findAllJurisdictions($page: Page) {
+  findAllJurisdictions(page: $page) {
+    id
+    typeCd
+    assigningAuthorityCd
+    assigningAuthorityDescTxt
+    codeDescTxt
+    codeShortDescTxt
+    effectiveFromTime
+    effectiveToTime
+    indentLevelNbr
+    isModifiableInd
+    parentIsCd
+    stateDomainCd
+    statusCd
+    statusTime
+    codeSetNm
+    codeSeqNum
+    nbsUid
+    sourceConceptId
+    codeSystemCd
+    codeSystemDescTxt
+    exportInd
+  }
+}
+    `;
+
+/**
+ * __useFindAllJurisdictionsQuery__
+ *
+ * To run a query within a React component, call `useFindAllJurisdictionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllJurisdictionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllJurisdictionsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllJurisdictionsQuery(baseOptions?: Apollo.QueryHookOptions<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
+      }
+export function useFindAllJurisdictionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
+        }
+export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJurisdictionsQuery>;
+export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
+export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
 export const FindAllOrganizationsDocument = gql`
     query findAllOrganizations($page: Page) {
   findAllOrganizations(page: $page) {
