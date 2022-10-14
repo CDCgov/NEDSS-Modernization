@@ -4,8 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.enums.PregnancyStatus;
 import gov.cdc.nbs.entity.odse.Act;
+import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalLocator;
@@ -41,6 +42,7 @@ import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProviderType;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.searchFilter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.ActRepository;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.OrganizationRepository;
@@ -50,7 +52,6 @@ import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.support.EventMother;
 import gov.cdc.nbs.support.EventMother.Event;
 import gov.cdc.nbs.support.PersonMother;
-import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -78,7 +79,7 @@ public class PatientSearchStepDefinitions {
     @Autowired
     private TeleLocatorRepository teleLocatorRepository;
     @Autowired
-    private PostalLocatorRepository postalLocatorRepository;
+    private PostalLocatorRepository postalLocators;
     @Autowired
     PatientController patientController;
 
@@ -96,28 +97,26 @@ public class PatientSearchStepDefinitions {
                 .findAllById(generatedPersons.stream().map(p -> p.getId()).collect(Collectors.toList()));
         personRepository.deleteAll(existingPersons);
 
+        // create locator entries
+        var teleLocators = generatedPersons.stream().map(p -> p.getNBSEntity().getEntityLocatorParticipations())
+                .flatMap(Collection::stream).filter(elp -> elp.getClassCd().equals("TELE"))
+                .map(elp -> (TeleLocator) elp.getLocator()).collect(Collectors.toList());
+
+        var postalLocatorEntries = generatedPersons.stream().map(p -> p.getNBSEntity().getEntityLocatorParticipations())
+                .flatMap(Collection::stream).filter(elp -> elp.getClassCd().equals("PST"))
+                .map(elp -> (PostalLocator) elp.getLocator()).collect(Collectors.toList());
+
         // create new persons
-        var people = personRepository.saveAll(generatedPersons);
+        teleLocatorRepository.saveAll(teleLocators);
+        postalLocators.saveAll(postalLocatorEntries);
 
-        // create locator entries for each person
-        var teleLocatorEntries = new ArrayList<TeleLocator>();
-        var postalLocatorEntries = new ArrayList<PostalLocator>();
-        people.forEach(person -> {
-            var entry = PersonUtil.createTeleLocatorEntry(person.getNBSEntity());
-            teleLocatorEntries.add(entry.getTeleLocator());
-            postalLocatorEntries.add(entry.getPostalLocator());
-        });
-
-        teleLocatorRepository.saveAll(teleLocatorEntries);
-        postalLocatorRepository.saveAll(postalLocatorEntries);
-        personRepository.saveAll(people);
-
+        personRepository.saveAll(generatedPersons);
     }
 
     @Given("Investigations exist")
     public void investigations_exist() {
         if (searchPatient == null) {
-            searchPatient = RandomUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
+            searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
         var investigation1 = EventMother.investigation_bacterialVaginosis(searchPatient.getId());
         createEvent(investigation1);
@@ -128,7 +127,7 @@ public class PatientSearchStepDefinitions {
     @Given("A lab report exist")
     public void lab_report_exist() {
         if (searchPatient == null) {
-            searchPatient = RandomUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
+            searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
         var labReport1 = EventMother.labReport_acidFastStain(searchPatient.getId());
         createEvent(labReport1);
@@ -314,7 +313,9 @@ public class PatientSearchStepDefinitions {
                 filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
                 break;
             case "identification":
-                throw new RuntimeException("NYI");
+                var patientId = searchPatient.getEntityIds().get(0);
+                filter.setIdentification(new Identification(patientId.getRootExtensionTxt(), patientId.getTypeCd()));
+                break;
             case "patient id":
                 filter.setId(searchPatient.getId());
                 break;
@@ -322,7 +323,9 @@ public class PatientSearchStepDefinitions {
                 filter.setSsn(searchPatient.getSsn());
                 break;
             case "phone number":
-                throw new RuntimeException("NYI");
+                var teleLocator = getTeleLocator(searchPatient.getNBSEntity());
+                filter.setPhoneNumber(teleLocator.getPhoneNbrTxt());
+                break;
             case "date of birth":
                 filter.setDateOfBirth(getDobByQualifier(searchPatient, qualifier));
                 filter.setDateOfBirthOperator(qualifier);
@@ -334,17 +337,28 @@ public class PatientSearchStepDefinitions {
                 filter.setDeceased(searchPatient.getDeceasedIndCd());
                 break;
             case "address":
-                throw new RuntimeException("NYI");
+                var addressLocator = getPostalLocator(searchPatient.getNBSEntity());
+                filter.setAddress(addressLocator.getStreetAddr1());
+                break;
             case "city":
-                throw new RuntimeException("NYI");
+                var cityLocator = getPostalLocator(searchPatient.getNBSEntity());
+                filter.setCity(cityLocator.getCityCd());
+                break;
             case "state":
-                throw new RuntimeException("NYI");
+                var stateLocator = getPostalLocator(searchPatient.getNBSEntity());
+                filter.setState(stateLocator.getStateCd());
+                break;
             case "country":
-                throw new RuntimeException("NYI");
+                var cntryLocator = getPostalLocator(searchPatient.getNBSEntity());
+                filter.setCountry(cntryLocator.getCntryCd());
+                break;
             case "zip code":
-                throw new RuntimeException("NYI");
+                var zipLocator = getPostalLocator(searchPatient.getNBSEntity());
+                filter.setZip(zipLocator.getZipCd());
+                break;
             case "ethnicity":
-                throw new RuntimeException("NYI");
+                filter.setEthnicity(searchPatient.getEthnicGroups().get(0).getId().getEthnicGroupCd());
+                break;
             case "record status":
                 filter.setRecordStatus(searchPatient.getRecordStatusCd());
                 break;
@@ -352,6 +366,18 @@ public class PatientSearchStepDefinitions {
                 throw new IllegalArgumentException("Invalid field specified: " + field);
         }
         return filter;
+    }
+
+    private TeleLocator getTeleLocator(NBSEntity entity) {
+        var teleParticipation = searchPatient.getNBSEntity().getEntityLocatorParticipations().stream()
+                .filter(p -> p.getClassCd().equals("TELE")).findFirst();
+        return (TeleLocator) teleParticipation.get().getLocator();
+    }
+
+    private PostalLocator getPostalLocator(NBSEntity entity) {
+        var teleParticipation = searchPatient.getNBSEntity().getEntityLocatorParticipations().stream()
+                .filter(p -> p.getClassCd().equals("PST")).findFirst();
+        return (PostalLocator) teleParticipation.get().getLocator();
     }
 
     private Instant getDobByQualifier(Person search, String qualifier) {

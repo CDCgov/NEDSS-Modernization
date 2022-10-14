@@ -5,6 +5,8 @@ import java.time.Instant;
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.entity.enums.IdentificationType;
+import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +18,7 @@ public class PatientFilter {
     private Long id;
     private String lastName;
     private String firstName;
-    private String race;
+    private Race race;
     private Identification identification;
     private String ssn;
     private String phoneNumber;
@@ -38,6 +40,6 @@ public class PatientFilter {
     @AllArgsConstructor
     public static class Identification {
         private String identificationNumber;
-        private String identificationType;
+        private IdentificationType identificationType;
     }
 }

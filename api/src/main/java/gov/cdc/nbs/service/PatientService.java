@@ -80,32 +80,26 @@ public class PatientService {
         var teleLocator = QTeleLocator.teleLocator;
         var stateCode = QStateCode.stateCode;
         var countryCode = QCountryCode.countryCode;
-        // physical locator?
         var query = queryFactory.selectFrom(person)
-                .join(personName)
+                .leftJoin(personName)
                 .on(personName.id.personUid.eq(person.id))
-                .join(personRace)
+                .leftJoin(personRace)
                 .on(personRace.id.personUid.eq(person.id))
-                .join(personEthnicGroup)
+                .leftJoin(personEthnicGroup)
                 .on(personEthnicGroup.id.personUid.eq(person.id))
-                .join(entityId)
+                .leftJoin(entityId)
                 .on(entityId.NBSEntityUid.eq(person.NBSEntity))
-                .join(entityLocatorParticipation)
-                .on(entityLocatorParticipation.entityUid.eq(person.NBSEntity))
-                .join(postalLocator)
-                .on(postalLocator.id.eq(entityLocatorParticipation.id.locatorUid))
-                .join(stateCode)
-                .on(stateCode.id.eq(postalLocator.stateCd))
-                .join(countryCode)
-                .on(countryCode.id.eq(postalLocator.cntryCd))
-                .join(teleLocator)
+                .leftJoin(entityLocatorParticipation)
+                .on(person.NBSEntity.eq(entityLocatorParticipation.entityUid))
+                .leftJoin(postalLocator)
+                .on(entityLocatorParticipation.id.locatorUid.eq(postalLocator.id))
+                .leftJoin(stateCode)
+                .on(postalLocator.stateCd.eq(stateCode.id))
+                .leftJoin(countryCode)
+                .on(postalLocator.cntryCd.eq(countryCode.id))
+                .leftJoin(teleLocator)
                 .on(teleLocator.id.eq(entityLocatorParticipation.id.locatorUid));
 
-        // person_name -- done
-        // person_race
-        // person_ethnic_group
-        // entity_id - identifications
-        // entity_locator_participation -> postal_locator / tele_locator -- done
         // Person Id
         query = addParameter(query, person.id::eq, filter.getId());
         // Last Name
@@ -140,12 +134,21 @@ public class PatientService {
         // Zip
         query = addParameter(query, postalLocator.zipCd::eq, filter.getZip());
         // State
-        query = addParameter(query, stateCode.codeDescTxt::equalsIgnoreCase, filter.getState());
+        query = addParameter(query, stateCode.id::eq, filter.getState());
         // Country
-        query = addParameter(query, countryCode.codeDescTxt::eq, filter.getCountry());
+        query = addParameter(query, countryCode.id::eq, filter.getCountry());
         // Ethnicity
         query = addParameter(query, personEthnicGroup.id.ethnicGroupCd::eq, filter.getEthnicity());
+        // Race
+        query = addParameter(query, personRace.id.raceCd::eq, filter.getRace());
+        // Identification
+        query = addParameter(query,
+                (x) -> entityId.typeCd.eq(x.getIdentificationType())
+                        .and(entityId.rootExtensionTxt.eq(x.getIdentificationNumber())),
+                filter.getIdentification());
+        // Record status
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
+
         return query.limit(pageable.getPageSize())
                 .offset(pageable.getOffset()).fetch();
 
@@ -153,7 +156,8 @@ public class PatientService {
 
     /**
      * TODO does not populate related tables (e.g. person_name, person_race,
-     * person_ethnic_group, etc)
+     * person_ethnic_group, entity_id, entity_locator_participation ->
+     * postal/physical?/tele)
      *
      * @param patient
      * @return

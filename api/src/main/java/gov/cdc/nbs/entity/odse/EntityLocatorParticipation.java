@@ -38,7 +38,7 @@ public class EntityLocatorParticipation {
     private NBSEntity entityUid;
 
     @Any(metaColumn = @Column(name = "class_cd"))
-    @AnyMetaDef(name = "PropertyMetaDef", metaType = "string", idType = "long", metaValues = {
+    @AnyMetaDef(metaType = "string", idType = "long", metaValues = {
             @MetaValue(value = "TELE", targetEntity = TeleLocator.class),
             @MetaValue(value = "PST", targetEntity = PostalLocator.class)
     })
