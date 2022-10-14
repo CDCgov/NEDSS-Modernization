@@ -68,7 +68,7 @@ export const EventSearch = () => {
             variables: {
                 filter: filterData,
                 page: {
-                    pageNumber: 1,
+                    pageNumber: 0,
                     pageSize: 50
                 }
             }
