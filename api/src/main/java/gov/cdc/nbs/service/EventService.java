@@ -63,6 +63,9 @@ public class EventService {
                 .on(publicHealthCase.act.id.eq(participation.id.actUid))
                 .leftJoin(person)
                 .on(participation.id.subjectEntityUid.eq(person.id));
+        if (filter == null) {
+            return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+        }
         // investigation type only
         query = query.where(publicHealthCase.caseTypeCd.eq('I'));
         // conditions
@@ -272,6 +275,9 @@ public class EventService {
 
         // OBS only for lab reports ?
         query = query.where(act.classCd.eq("OBS"));
+        if (filter == null) {
+            return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+        }
         // program area
         query = addParameter(query, observation.progAreaCd::in, filter.getProgramAreas());
         // jurisdictions

@@ -1,9 +1,9 @@
 import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
-import { useForm } from 'react-hook-form';
-import { CaseStatus, EventFilter, EventType, useFindPatientsByEventLazyQuery } from '../../generated/graphql/schema';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
-import { EventTypes } from './EventType';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { EventFilter, EventType, useFindPatientsByEventLazyQuery } from '../../generated/graphql/schema';
+import { EventTypes } from './EventType';
 import { GeneralSearch } from './generalSearch';
 
 export const EventSearch = () => {
@@ -51,13 +51,20 @@ export const EventSearch = () => {
         const filterData: EventFilter = {
             eventType: eventSearchType
         };
-        eventSearchType === EventType.Investigation &&
-            (filterData.investigationFilter = {
-                caseStatuses: {
-                    includeUnassigned: true,
-                    statusList: [CaseStatus.Confirmed]
-                }
-            });
+        if (eventSearchType === EventType.Investigation) {
+            filterData.investigationFilter = {
+                // TODO inject actual values
+                conditions: ['Bacterial Vaginosis']
+            };
+        } else if (eventSearchType === EventType.LaboratoryReport) {
+            filterData.laboratoryReportFilter = {
+                // TODO inject actual values
+                resultedTest: 'Acid-Fast Stain'
+            };
+        } else {
+            // no search type selected
+            return;
+        }
 
         // getFilteredData({
         //     variables: {
