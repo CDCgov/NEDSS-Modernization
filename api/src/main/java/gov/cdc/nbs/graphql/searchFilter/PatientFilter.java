@@ -3,6 +3,7 @@ package gov.cdc.nbs.graphql.searchFilter;
 import java.time.Instant;
 
 import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class PatientFilter {
     private String country;
     private String zip;
     private String mortalityStatus;
-    private String ethnicity;
+    private Ethnicity ethnicity;
     private RecordStatus recordStatus;
 
     @Getter

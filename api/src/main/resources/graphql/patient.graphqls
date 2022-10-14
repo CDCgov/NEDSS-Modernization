@@ -15,7 +15,7 @@ input PersonFilter {
     state: String
     country: String
     zip: String
-    ethnicity: String
+    ethnicity: Ethnicity
     recordStatus: RecordStatus
 }
 
@@ -33,12 +33,18 @@ input PersonInput {
     state: String
     country: String
     zip: String
-    ethnicity: String
+    ethnicity: Ethnicity
 }
 
 input Identification {
     identificationNumber: String!
     identificationType: String!
+}
+
+enum Ethnicity {
+    HISPANIC_OR_LATINO
+    NOT_HISPANIC_OR_LATINO
+    UNKNOWN
 }
 
 enum Gender {

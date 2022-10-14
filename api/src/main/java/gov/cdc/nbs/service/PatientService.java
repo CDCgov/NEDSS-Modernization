@@ -22,9 +22,18 @@ import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.QEntityId;
+import gov.cdc.nbs.entity.odse.QEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.entity.odse.QPersonEthnicGroup;
+import gov.cdc.nbs.entity.odse.QPersonName;
+import gov.cdc.nbs.entity.odse.QPersonRace;
+import gov.cdc.nbs.entity.odse.QPostalLocator;
+import gov.cdc.nbs.entity.odse.QTeleLocator;
+import gov.cdc.nbs.entity.srte.QCountryCode;
+import gov.cdc.nbs.entity.srte.QStateCode;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.input.PatientInput;
@@ -62,30 +71,79 @@ public class PatientService {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
         var person = QPerson.person;
-        var query = queryFactory.selectFrom(person);
+        var personName = QPersonName.personName;
+        var personRace = QPersonRace.personRace;
+        var personEthnicGroup = QPersonEthnicGroup.personEthnicGroup;
+        var entityId = QEntityId.entityId;
+        var entityLocatorParticipation = QEntityLocatorParticipation.entityLocatorParticipation;
+        var postalLocator = QPostalLocator.postalLocator;
+        var teleLocator = QTeleLocator.teleLocator;
+        var stateCode = QStateCode.stateCode;
+        var countryCode = QCountryCode.countryCode;
+        // physical locator?
+        var query = queryFactory.selectFrom(person)
+                .join(personName)
+                .on(personName.id.personUid.eq(person.id))
+                .join(personRace)
+                .on(personRace.id.personUid.eq(person.id))
+                .join(personEthnicGroup)
+                .on(personEthnicGroup.id.personUid.eq(person.id))
+                .join(entityId)
+                .on(entityId.NBSEntityUid.eq(person.NBSEntity))
+                .join(entityLocatorParticipation)
+                .on(entityLocatorParticipation.entityUid.eq(person.NBSEntity))
+                .join(postalLocator)
+                .on(postalLocator.id.eq(entityLocatorParticipation.id.locatorUid))
+                .join(stateCode)
+                .on(stateCode.id.eq(postalLocator.stateCd))
+                .join(countryCode)
+                .on(countryCode.id.eq(postalLocator.cntryCd))
+                .join(teleLocator)
+                .on(teleLocator.id.eq(entityLocatorParticipation.id.locatorUid));
+
+        // person_name -- done
+        // person_race
+        // person_ethnic_group
+        // entity_id - identifications
+        // entity_locator_participation -> postal_locator / tele_locator -- done
+        // Person Id
         query = addParameter(query, person.id::eq, filter.getId());
+        // Last Name
         query = addParameter(query,
-                (p) -> person.lastNm.likeIgnoreCase(p, '!'),
+                (p) -> personName.lastNm.likeIgnoreCase(p, '!'),
                 generateLikeString(filter.getLastName()));
+        // First Name
         query = addParameter(query,
-                (p) -> person.firstNm.likeIgnoreCase(p, '!'),
+                (p) -> personName.firstNm.likeIgnoreCase(p, '!'),
                 generateLikeString(filter.getFirstName()));
+        // SSN
         query = addParameter(query, person.ssn::eq, filter.getSsn());
+        // Phone Number
         if (filter.getPhoneNumber() != null) {
-            query = query.where(
-                    person.hmPhoneNbr.eq(filter.getPhoneNumber())
-                            .or(person.wkPhoneNbr.eq(filter.getPhoneNumber()))
-                            .or(person.cellPhoneNbr.eq(filter.getPhoneNumber())));
+            query = query.where(teleLocator.phoneNbrTxt.eq(filter.getPhoneNumber()));
         }
+        // DOB
         query = query
                 .where(getDateOfBirthExpression(person, filter.getDateOfBirth(), filter.getDateOfBirthOperator()));
+        // Gender
         query = addParameter(query, person.birthGenderCd::eq, filter.getGender());
+        // Deceased
         query = addParameter(query, person.deceasedIndCd::eq, filter.getDeceased());
-        query = addParameter(query, person.hmStreetAddr1::eq, filter.getAddress());
-        query = addParameter(query, person.hmCityCd::eq, filter.getCity());
-        query = addParameter(query, person.hmZipCd::contains, filter.getZip());
-        query = addParameter(query, person.hmStateCd::equalsIgnoreCase, filter.getState());
-        query = addParameter(query, person.hmCntryCd::eq, filter.getCountry());
+        // Street Address
+        query = addParameter(query,
+                (x) -> postalLocator.streetAddr1.eq(x).or(postalLocator.streetAddr2.eq(x)),
+                filter.getAddress());
+        // City
+        query = addParameter(query,
+                (x) -> postalLocator.cityCd.eq(x).or(postalLocator.cityDescTxt.eq(x)),
+                filter.getCity());
+        // Zip
+        query = addParameter(query, postalLocator.zipCd::eq, filter.getZip());
+        // State
+        query = addParameter(query, stateCode.codeDescTxt::equalsIgnoreCase, filter.getState());
+        // Country
+        query = addParameter(query, countryCode.codeDescTxt::eq, filter.getCountry());
+        //
         query = addParameter(query, person.ethnicityGroupCd::eq, filter.getEthnicity());
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
         return query.limit(pageable.getPageSize())
