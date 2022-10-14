@@ -143,8 +143,8 @@ public class PatientService {
         query = addParameter(query, stateCode.codeDescTxt::equalsIgnoreCase, filter.getState());
         // Country
         query = addParameter(query, countryCode.codeDescTxt::eq, filter.getCountry());
-        //
-        query = addParameter(query, person.ethnicityGroupCd::eq, filter.getEthnicity());
+        // Ethnicity
+        query = addParameter(query, personEthnicGroup.id.ethnicGroupCd::eq, filter.getEthnicity());
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
         return query.limit(pageable.getPageSize())
                 .offset(pageable.getOffset()).fetch();
