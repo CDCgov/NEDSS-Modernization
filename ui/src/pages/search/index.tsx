@@ -3,28 +3,20 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
-import { Deceased, PersonFilter, useFindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
 import './search.scss';
 import { SearchItems } from './SearchItems';
 
 export const SearchEngine = () => {
-    const filterObj: PersonFilter = { deceased: Deceased.N };
     const [searchType, setSearchType] = useState<string>('search');
-    const { data } = useFindPatientsByFilterQuery({
-        variables: {
-            filter: filterObj
-        }
-    });
-
+    const [searchItems, setSearchItems] = useState<any>([]);
     const [searchParams] = useSearchParams();
+
+    const [getFilteredData] = useFindPatientsByFilterLazyQuery();
     // const navigate = useNavigate();
 
     // const [searchValue, setSearchValue] = useState<string>('');
     // const [filtered, setFiltered] = useState<any[]>();
-
-    useEffect(() => {
-        data && getFilteredData(searchParams.get('q') || '');
-    }, [searchParams, data]);
 
     // const handleSearch = (e: any) => {
     //     e.preventDefault();
@@ -34,12 +26,33 @@ export const SearchEngine = () => {
     //     });
     // };
 
-    const getFilteredData = (value: string) => {
-        // const filteredData = data?.findPatientsByFilter?.map((p) => {
-        //     return { firstNm: p?.firstNm, id: p?.id };
-        // });
-        // setFiltered(filteredData);
+    const onEventSearch = (data: any) => {
+        if (data) {
+            setSearchItems(data?.findPatientsByEvent);
+        }
     };
+
+    useEffect(() => {
+        const rowData: PersonFilter = {
+            firstName: searchParams?.get('firstName') as string,
+            lastName: searchParams?.get('lastName') as string
+        };
+        searchParams?.get('city') && (rowData.city = searchParams?.get('city') as string);
+        searchParams?.get('zip') && (rowData.zip = searchParams?.get('zip') as string);
+        searchParams?.get('id') && (rowData.city = searchParams?.get('id') as string);
+        searchParams?.get('DateOfBirth') && (rowData.DateOfBirth = searchParams?.get('DateOfBirth') as unknown as Date);
+        getFilteredData({
+            variables: {
+                filter: rowData,
+                page: {
+                    pageNumber: 0,
+                    pageSize: 100
+                }
+            }
+        }).then((items: any) => {
+            setSearchItems(items.data.findPatientsByFilter);
+        });
+    }, []);
 
     return (
         <div className="padding-0 search-page-height bg-base-lightest">
@@ -62,11 +75,11 @@ export const SearchEngine = () => {
                                 Event Search
                             </h6>
                         </div>
-                        {searchType === 'search' ? <SimpleSearch /> : <EventSearch />}
+                        {searchType === 'search' ? <SimpleSearch /> : <EventSearch onSearch={onEventSearch} />}
                     </div>
                 </Grid>
                 <Grid col={9}>
-                    <SearchItems />
+                    <SearchItems data={searchItems} />
                 </Grid>
             </Grid>
         </div>

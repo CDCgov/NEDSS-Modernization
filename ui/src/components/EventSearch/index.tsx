@@ -6,7 +6,11 @@ import { EventFilter, EventType, useFindPatientsByEventLazyQuery } from '../../g
 import { EventTypes } from './EventType';
 import { GeneralSearch } from './generalSearch';
 
-export const EventSearch = () => {
+type EventSearchProps = {
+    onSearch: (data: any) => void;
+};
+
+export const EventSearch = ({ onSearch }: EventSearchProps) => {
     // const [getFilteredData] = useFindPatientsByFilterLazyQuery();
     const [getEventSearch] = useFindPatientsByEventLazyQuery();
 
@@ -47,19 +51,28 @@ export const EventSearch = () => {
     ];
 
     const onSubmit: any = (body: any) => {
-        console.log('body:', body);
         const filterData: EventFilter = {
             eventType: eventSearchType
         };
         if (eventSearchType === EventType.Investigation) {
             filterData.investigationFilter = {
                 // TODO inject actual values
-                conditions: ['Bacterial Vaginosis']
+                // conditions: ['Bacterial Vaginosis'],
+                // caseStatuses: {
+                //     includeUnassigned: true,
+                //     statusList: [
+                //         CaseStatus.Confirmed,
+                //         CaseStatus.NotACase,
+                //         CaseStatus.Probable,
+                //         CaseStatus.Suspect,
+                //         CaseStatus.Unknown
+                //     ]
+                // }
             };
         } else if (eventSearchType === EventType.LaboratoryReport) {
             filterData.laboratoryReportFilter = {
                 // TODO inject actual values
-                resultedTest: 'Acid-Fast Stain'
+                // resultedTest: 'Acid-Fast Stain'
             };
         } else {
             // no search type selected
@@ -71,6 +84,39 @@ export const EventSearch = () => {
         //         filter: rowData
         //     }
         // });
+        // const investigationFilter = {
+        //     conditions: ['Chancroid'],
+        //     programAreas: ['STD'],
+        //     jurisdictions: ['130006'], // Clayton County
+        //     pregnancyStatus: 'YES',
+        //     eventIdType: 'INVESTIGATION_ID',
+        //     eventId: 'CAS10001003GA01',
+        //     eventDateSearch: {
+        //         eventDateType: 'INVESTIGATION_CREATE_DATE',
+        //         from: '1970-01-01T00:00:00Z',
+        //         to: '2023-01-01T00:00:00Z'
+        //     },
+        //     createdBy: '10054490', // Id of user
+        //     lastUpdatedBy: '10054490', // Id of user
+        //     providerFacilitySearch: {
+        //         entityType: 'FACILITY',
+        //         id: '10003001'
+        //     }, // investigatorId: "10003004" - investigatorId is mutually exclusive with providerFacilitySearch
+        //     investigationStatus: 'CLOSED',
+        //     outbreakNames: ['WHS'],
+        //     caseStatuses: {
+        //         includeUnassigned: true,
+        //         statusList: ['UNKNOWN']
+        //     }
+        //     // notificationStatuses: {
+        //     // includeUnassigned:true
+        //     // statusList: [APPROVED]
+        //     // }
+        //     // processingStatuses: {
+        //     // includeUnassigned:true
+        //     // statusList: [AWAITING_INTERVIEW]
+        //     // }
+        // };
         getEventSearch({
             variables: {
                 filter: filterData,
@@ -80,7 +126,7 @@ export const EventSearch = () => {
                 }
             }
         }).then((re) => {
-            console.log('re:', re);
+            onSearch(re.data);
         });
     };
 

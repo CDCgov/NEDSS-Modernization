@@ -119,7 +119,18 @@ export const Home = () => {
                                 size="big"
                                 className="flex-justify-end"
                                 placeholder="Search for a patient"
-                                onSubmit={() => console.log('submitted')}
+                                onSubmit={(e: any) => {
+                                    e.preventDefault();
+                                    console.log('e.target.value:', e.target[0].value);
+                                    const formatName = e.target[0].value.split(' ');
+                                    const search = `?firstName=${formatName[0]}&lastName=${
+                                        formatName.length > 1 ? formatName[1] : ''
+                                    }`;
+                                    navigate({
+                                        pathname: '/search',
+                                        search
+                                    });
+                                }}
                             />
                         </Grid>
                     </Grid>
