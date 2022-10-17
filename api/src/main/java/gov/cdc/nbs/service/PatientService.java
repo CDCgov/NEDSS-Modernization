@@ -12,12 +12,14 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Organization;
@@ -226,10 +228,10 @@ public class PatientService {
         switch (filter.getEventType()) {
             case INVESTIGATION:
                 // Get all Act entries matching filter
-                acts = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), pageable);
+                acts = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), PageRequest.of(0, 500));
                 break;
             case LABORATORY_REPORT:
-                acts = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), pageable);
+                acts = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), PageRequest.of(0, 500));
                 break;
             default:
                 throw new QueryException("Invalid event type: " + filter.getEventType());
@@ -244,7 +246,9 @@ public class PatientService {
                     .innerJoin(participation)
                     .on(person.id.eq(participation.id.subjectEntityUid))
                     .where(participation.actUid.id.in(actIds))
-                    .where(person.cd.eq("PAT")).fetch();
+                    .where(person.recordStatusCd.eq(RecordStatus.ACTIVE))
+                    .where(person.cd.eq("PAT"))
+                    .limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
         } else {
             return new ArrayList<>();
         }

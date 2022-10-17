@@ -25,6 +25,8 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
 
         if (exception instanceof QueryException) {
             message = exception.getMessage();
+        } else if (exception instanceof IllegalArgumentException) {
+            message = exception.getMessage();
         }
 
         GraphQLError error = GraphqlErrorBuilder
