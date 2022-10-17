@@ -1,72 +1,47 @@
-import { Header, Menu, NavDropDownButton, NavMenuButton, PrimaryNav, Search, Title } from '@trussworks/react-uswds';
+import { Header, NavMenuButton, PrimaryNav, Title } from '@trussworks/react-uswds';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './NavBar.scss';
 
 export default function NavBar() {
-    const navigate = useNavigate();
-
     const [expanded, setExpanded] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-    const [searchValue, setSearchValue] = useState<string>('');
     const onClick = (): void => setExpanded((prvExpanded) => !prvExpanded);
+    const { pathname } = useLocation();
 
-    const testMenuItems = [
-        <a href="#linkOne" key="one">
-            Current link
-        </a>,
-        <a href="#linkTwo" key="two">
-            Simple link Two
-        </a>
-    ];
-
-    const testItemsMenu = [
+    const navItems = [
         <>
-            <NavDropDownButton
-                menuId="testDropDownOne"
-                onToggle={(): void => {
-                    setIsOpen(!isOpen);
-                }}
-                isOpen={isOpen}
-                label="Nav Label"
-                isCurrent={true}
-            />
-            <Menu key="one" items={testMenuItems} isOpen={isOpen} id="testDropDownOne" />
+            <Link to={'/'} className={`usa-nav-item ${pathname === '/' && 'active'}`}>
+                Home
+            </Link>
         </>,
-        <a href="#two" key="two" className="usa-nav__link">
-            <span>Parent link</span>
-        </a>,
-        <a href="#three" key="three" className="usa-nav__link">
-            <span>Parent link</span>
-        </a>
+        <>
+            <Link to={'/'} className={`usa-nav-item ${pathname === '/my-reports' && 'active'}`}>
+                My Reports
+            </Link>
+        </>,
+        <>
+            <Link to={'/'} className={`usa-nav-item ${pathname === '/system-management' && 'active'}`}>
+                System Management
+            </Link>
+        </>
     ];
 
     return (
         <>
-            <div className="nav-bar bg-primary">
+            <div className="nav-bar bg-white border-bottom border-base-light">
                 <div className={`usa-overlay ${expanded ? 'is-visible' : ''}`}></div>
                 <Header basic={true}>
-                    <div className="usa-nav">
-                        <div className="usa-navbar">
+                    <div className="usa-nav-container height-10">
+                        <div className="usa-navbar width-full">
                             <Title className="title">NBS</Title>
                             <NavMenuButton onClick={onClick} label="Menu" />
                         </div>
-                        <PrimaryNav items={testItemsMenu} mobileExpanded={expanded} onToggleMobileNav={onClick}>
-                            <Search
-                                size="small"
-                                onChange={(e: any) => {
-                                    setSearchValue(e.target.value);
-                                }}
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    searchValue &&
-                                        navigate({
-                                            pathname: '/search',
-                                            search: `?q=${searchValue}`
-                                        });
-                                }}
-                            />
-                        </PrimaryNav>
+                        <PrimaryNav
+                            className="height-10"
+                            items={navItems}
+                            mobileExpanded={expanded}
+                            onToggleMobileNav={onClick}
+                        />
                     </div>
                 </Header>
             </div>

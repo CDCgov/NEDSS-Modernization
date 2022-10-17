@@ -1,7 +1,7 @@
-import { Button, Form, Grid, Search, Table } from '@trussworks/react-uswds';
+import { Alert, Button, Form, Grid, Search, Table } from '@trussworks/react-uswds';
 import { Input } from '../../components/FormInputs/Input';
 import { SelectInput } from '../../components/FormInputs/SelectInput';
-import { stateList } from '../../constant/states';
+// import { stateList } from '../../constant/states';
 import './home.scss';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
@@ -10,7 +10,7 @@ import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../ge
 import { DatePickerInput } from '../../components/FormInputs/DatePickerInput';
 import { TableContent } from '../../components/TableContent/TableContent';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type FormTypes = {
     firstName: string;
@@ -37,6 +37,7 @@ export const Home = () => {
     const [searchParams] = useSearchParams();
 
     const [getFilteredData, { data }] = useFindPatientsByFilterLazyQuery();
+    const [submitted, setSubmitted] = useState(false);
 
     const schema = yup.object().shape({
         firstName: yup.string().required('First name is required.'),
@@ -104,6 +105,7 @@ export const Home = () => {
                 pathname: '/',
                 search
             });
+            setSubmitted(true);
         });
     };
 
@@ -117,7 +119,18 @@ export const Home = () => {
                                 size="big"
                                 className="flex-justify-end"
                                 placeholder="Search for a patient"
-                                onSubmit={() => console.log('submitted')}
+                                onSubmit={(e: any) => {
+                                    e.preventDefault();
+                                    console.log('e.target.value:', e.target[0].value);
+                                    const formatName = e.target[0].value.split(' ');
+                                    const search = `?firstName=${formatName[0]}&lastName=${
+                                        formatName.length > 1 ? formatName[1] : ''
+                                    }`;
+                                    navigate({
+                                        pathname: '/search',
+                                        search
+                                    });
+                                }}
                             />
                         </Grid>
                     </Grid>
@@ -210,7 +223,7 @@ export const Home = () => {
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                    <Grid col={6}>
+                                    {/* <Grid col={6}>
                                         <Controller
                                             control={control}
                                             name="city"
@@ -258,7 +271,7 @@ export const Home = () => {
                                                 />
                                             )}
                                         />
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid col={6}>
                                         <Controller
                                             control={control}
@@ -276,7 +289,7 @@ export const Home = () => {
                                             )}
                                         />
                                     </Grid>
-                                    <Grid col={6} className="flex-align-self-end">
+                                    <Grid col={12} className="flex-align-self-end">
                                         <div className="grid-row flex-justify-end flex-align-end flex-wrap">
                                             <p className="margin-right-105 text-primary text-bold margin-bottom-05">
                                                 Advanced Search
@@ -305,7 +318,7 @@ export const Home = () => {
                     </Grid>
                 </Grid>
 
-                {data?.findPatientsByFilter && (
+                {data?.findPatientsByFilter && data?.findPatientsByFilter.length > 0 && (
                     <Grid desktop={{ col: 10 }} tablet={{ col: true }} className="bg-white margin-top-3 radius-md">
                         <Grid row className="flex-justify-center">
                             <Grid col={12} className="padding-4 border-bottom border-base-lightest">
@@ -326,12 +339,22 @@ export const Home = () => {
                                 <Table bordered={false} fullWidth>
                                     <TableContent tableHead={tableHead} tableBody={data?.findPatientsByFilter} />
                                 </Table>
-                                {data?.findPatientsByFilter && data?.findPatientsByFilter.length < 1 && (
-                                    <p className="text-center font-ui-md">No records found.</p>
-                                )}
                             </Grid>
                         </Grid>
                     </Grid>
+                )}
+                {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.length === 0) && (
+                    <div className="custom-alert" onClick={() => setSubmitted(false)}>
+                        <Alert type="error" heading="No results found" headingLevel="h4">
+                            <div>
+                                Make sure all words are spelled correctly.
+                                <br />
+                                Make sure inputs are in the correct fileds.
+                                <br />
+                                Try searching less fields.
+                            </div>
+                        </Alert>
+                    </div>
                 )}
             </Grid>
         </div>

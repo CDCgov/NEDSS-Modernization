@@ -1,0 +1,23 @@
+type Jurisdiction {
+    id: String!
+    typeCd: String!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: Date
+    effectiveToTime: Date
+    indentLevelNbr: Int
+    isModifiableInd: String
+    parentIsCd: String
+    stateDomainCd: String
+    statusCd: String
+    statusTime: Date
+    codeSetNm: String
+    codeSeqNum: Int
+    nbsUid: ID
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+    exportInd: String
+}

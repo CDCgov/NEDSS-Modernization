@@ -1,73 +1,87 @@
-import { Grid, Search } from '@trussworks/react-uswds';
+import { Grid } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Deceased, PersonFilter, useFindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import { useSearchParams } from 'react-router-dom';
+import { EventSearch } from '../../components/EventSearch';
+import { SimpleSearch } from '../../components/SimpleSearch';
+import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import './search.scss';
+import { SearchItems } from './SearchItems';
 
 export const SearchEngine = () => {
-    const filterObj: PersonFilter = { deceased: Deceased.N };
-    const { data } = useFindPatientsByFilterQuery({
-        variables: {
-            filter: filterObj
-        }
-    });
+    const [searchType, setSearchType] = useState<string>('search');
+    const [searchItems, setSearchItems] = useState<any>([]);
     const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
 
-    const [searchValue, setSearchValue] = useState<string>('');
-    const [filtered, setFiltered] = useState<any[]>();
+    const [getFilteredData] = useFindPatientsByFilterLazyQuery();
+    // const navigate = useNavigate();
+
+    // const [searchValue, setSearchValue] = useState<string>('');
+    // const [filtered, setFiltered] = useState<any[]>();
+
+    // const handleSearch = (e: any) => {
+    //     e.preventDefault();
+    //     navigate({
+    //         pathname: '/search',
+    //         search: `?q=${searchValue}`
+    //     });
+    // };
+
+    const onEventSearch = (data: any) => {
+        if (data) {
+            setSearchItems(data?.findPatientsByEvent);
+        }
+    };
 
     useEffect(() => {
-        data && getFilteredData(searchParams.get('q') || '');
-    }, [searchParams, data]);
-
-    const handleSearch = (e: any) => {
-        e.preventDefault();
-        navigate({
-            pathname: '/search',
-            search: `?q=${searchValue}`
+        const rowData: PersonFilter = {
+            firstName: searchParams?.get('firstName') as string,
+            lastName: searchParams?.get('lastName') as string
+        };
+        searchParams?.get('city') && (rowData.city = searchParams?.get('city') as string);
+        searchParams?.get('zip') && (rowData.zip = searchParams?.get('zip') as string);
+        searchParams?.get('id') && (rowData.city = searchParams?.get('id') as string);
+        searchParams?.get('DateOfBirth') && (rowData.DateOfBirth = searchParams?.get('DateOfBirth') as unknown as Date);
+        getFilteredData({
+            variables: {
+                filter: rowData,
+                page: {
+                    pageNumber: 0,
+                    pageSize: 100
+                }
+            }
+        }).then((items: any) => {
+            setSearchItems(items.data.findPatientsByFilter);
         });
-    };
-
-    const getFilteredData = (value: string) => {
-        const filteredData = data?.findPatientsByFilter?.map((p) => {
-            return { firstNm: p?.firstNm, id: p?.id };
-        });
-        setFiltered(filteredData);
-    };
+    }, []);
 
     return (
-        <div className="padding-2">
-            <div className="bg-base-lighter padding-2 radius-md">
-                <h2 className="font-lang-lg margin-top-0 margin-bottom-3">Search</h2>
-                <Search size="big" onChange={(e: any) => setSearchValue(e.target.value)} onSubmit={handleSearch} />
-            </div>
-            <div className="grid-row margin-y-5">
-                <div className="grid-col-12">
-                    <h2 className="font-sans-lg text-normal margin-top-0 margin-bottom-3">Results (0)</h2>
-                    <Grid row gap={2}>
-                        <ul>
-                            {filtered?.map((entry: { firstNm?: string; id: string }) => (
-                                <li key={entry.id}>
-                                    {entry.id} - {entry.firstNm}
-                                </li>
-                            ))}
-                        </ul>
-                        {/* {filtered?.map((item: any) => (
-                            <div className="grid-col-12" key={item.id}>
-                                <h5>{item.firstNm}</h5>
-                                <img src={item.lastNm} alt="" />
-                            </div>
-                        ))}
-                        {filtered.length === 0 &&
-                            data?.characters?.results?.map((item: any) => (
-                                <div className="grid-col-12" key={item.id}>
-                                    <h5>{item.firstNm}</h5>
-                                    <img src={item.lastNm} alt="" />
-                                </div>
-                            ))} */}
-                    </Grid>
-                </div>
-            </div>
+        <div className="padding-0 search-page-height bg-base-lightest">
+            <Grid row className="search-page-height">
+                <Grid col={3} className="bg-white border-right border-base-light">
+                    <div className="left-searchbar">
+                        <div className="grid-row flex-align-center">
+                            <h6
+                                className={`${
+                                    searchType === 'search' && 'active'
+                                } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer`}
+                                onClick={() => setSearchType('search')}>
+                                Simple Search
+                            </h6>
+                            <h6
+                                className={`${
+                                    searchType !== 'search' && 'active'
+                                } padding-bottom-1 type text-normal font-sans-md cursor-pointer`}
+                                onClick={() => setSearchType('event')}>
+                                Event Search
+                            </h6>
+                        </div>
+                        {searchType === 'search' ? <SimpleSearch /> : <EventSearch onSearch={onEventSearch} />}
+                    </div>
+                </Grid>
+                <Grid col={9}>
+                    <SearchItems data={searchItems} />
+                </Grid>
+            </Grid>
         </div>
     );
 };
