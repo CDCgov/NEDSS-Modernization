@@ -1,0 +1,25 @@
+query findAllJurisdictions($page: Page) {
+    findAllJurisdictions(page: $page){
+        id
+        typeCd
+        assigningAuthorityCd
+        assigningAuthorityDescTxt
+        codeDescTxt
+        codeShortDescTxt
+        effectiveFromTime
+        effectiveToTime
+        indentLevelNbr
+        isModifiableInd
+        parentIsCd
+        stateDomainCd
+        statusCd
+        statusTime
+        codeSetNm
+        codeSeqNum
+        nbsUid
+        sourceConceptId
+        codeSystemCd
+        codeSystemDescTxt
+        exportInd
+    }
+}

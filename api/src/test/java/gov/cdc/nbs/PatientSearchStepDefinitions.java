@@ -200,7 +200,8 @@ public class PatientSearchStepDefinitions {
                 criteria.setEventDateSearch(eds);
                 break;
             case "entry method":
-                criteria.setEntryMethods(Arrays.asList(EntryMethod.MANUAL));
+                criteria.setEntryMethods(Arrays.asList(EntryMethod.ELECTRONIC));
+                criteria.setEnteredBy(Arrays.asList(UserType.EXTERNAL));
                 break;
             case "entered by":
                 criteria.setEnteredBy(Arrays.asList(UserType.EXTERNAL));
@@ -220,7 +221,7 @@ public class PatientSearchStepDefinitions {
             case "provider search":
                 var ps = new LabReportProviderSearch();
                 ps.setProviderType(ProviderType.valueOf(qualifier));
-                ps.setProviderId(searchPatient.getId().toString());
+                ps.setProviderId(searchPatient.getId());
                 break;
             case "resulted test":
                 criteria.setResultedTest("Acid-Fast Stain");

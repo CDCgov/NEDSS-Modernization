@@ -1,5 +1,5 @@
-query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Page) {
-    findPatientsByOrganizationFilter(filter: $filter, page: $page){
+query findPatientsByEvent($filter: EventFilter!, $page: Page) {
+    findPatientsByEvent(filter: $filter, page: $page){
         id
         addReasonCd
         addTime

@@ -13,7 +13,7 @@ export const SelectInput = ({ name, htmlFor, label, id, options, onChange, ...pr
     return (
         <>
             <Label htmlFor={htmlFor || ''}>{label}</Label>
-            <Dropdown onChange={onChange} {...props} className="bg-base-lightest" id={id || ''} name={name || ''}>
+            <Dropdown placeholder="-Select-" onChange={onChange} {...props} id={id || ''} name={name || ''}>
                 <>
                     <option>- Select -</option>
                     {options?.map((item, index) => (

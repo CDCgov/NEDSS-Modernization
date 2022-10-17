@@ -23,12 +23,30 @@ public class InvestigationFilter {
     private Long investigatorId;
     private InvestigationStatus investigationStatus;
     private List<String> outbreakNames;
-    private Boolean includeUnasignedCaseStatus;
-    private List<CaseStatus> caseStatuses;
-    private Boolean includeUnassignedNotificationStatus;
-    private List<NotificationStatus> notificationStatuses;
-    private Boolean includeUnassignedProcessingStatus;
-    private List<ProcessingStatus> processingStatuses;
+    private CaseStatuses caseStatuses;
+    private NotificationStatuses notificationStatuses;
+    private ProcessingStatuses processingStatuses;
+
+    @Getter
+    @Setter
+    public static class CaseStatuses {
+        private Boolean includeUnassigned;
+        private List<CaseStatus> statusList;
+    }
+
+    @Getter
+    @Setter
+    public static class NotificationStatuses {
+        private Boolean includeUnassigned;
+        private List<NotificationStatus> statusList;
+    }
+
+    @Getter
+    @Setter
+    public static class ProcessingStatuses {
+        private Boolean includeUnassigned;
+        private List<ProcessingStatus> statusList;
+    }
 
     @Getter
     @Setter
@@ -41,8 +59,8 @@ public class InvestigationFilter {
     @Getter
     @Setter
     public static class ProviderFacilitySearch {
-        private ReportingEntityType reportingEntityType;
-        private String reportingEntityId;
+        private ReportingEntityType entityType;
+        private Long id;
     }
 
     public enum IdType {

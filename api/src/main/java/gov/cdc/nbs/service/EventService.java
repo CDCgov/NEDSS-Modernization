@@ -63,6 +63,9 @@ public class EventService {
                 .on(publicHealthCase.act.id.eq(participation.id.actUid))
                 .leftJoin(person)
                 .on(participation.id.subjectEntityUid.eq(person.id));
+        if (filter == null) {
+            return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+        }
         // investigation type only
         query = query.where(publicHealthCase.caseTypeCd.eq('I'));
         // conditions
@@ -114,8 +117,8 @@ public class EventService {
         // Event date
         var eds = filter.getEventDateSearch();
         if (eds != null) {
-            if (eds.getFrom() == null || eds.getTo() == null) {
-                throw new QueryException("From and To are required when querying by event date");
+            if (eds.getFrom() == null || eds.getTo() == null || eds.getEventDateType() == null) {
+                throw new QueryException("From, To, and EventDateType are required when querying by event date");
             }
             switch (eds.getEventDateType()) {
                 case DATE_OF_REPORT:
@@ -144,40 +147,63 @@ public class EventService {
         query = addParameter(query, publicHealthCase.addUserId::eq, filter.getCreatedBy());
         // Updated By
         query = addParameter(query, publicHealthCase.lastChgUserId::eq, filter.getLastUpdatedBy());
-        // provider facility
+        // provider facility + investigator Id
+
         var pfSearch = filter.getProviderFacilitySearch();
         if (pfSearch != null) {
-            if (pfSearch.getReportingEntityType() == null || pfSearch.getReportingEntityId() == null) {
+            if (pfSearch.getEntityType() == null || pfSearch.getId() == null) {
                 throw new QueryException("Entity type and entity Id required when querying provider/facility");
             }
-            switch (pfSearch.getReportingEntityType()) {
+            // provider/facility and investigator both check for entity uid's. We need to
+            // make sure it does an OR instead of two ANDs
+            var doInvestigatorQuery = filter.getInvestigatorId() != null;
+            switch (pfSearch.getEntityType()) {
                 case PROVIDER:
-                    query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
-                            .and(participation.id.subjectEntityUid.like(pfSearch.getReportingEntityId())));
+                    if (doInvestigatorQuery) {
+                        query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId()))
+                                .or(person.id.eq(filter.getInvestigatorId())));
+                    } else {
+                        query = query.where(participation.id.typeCd.eq("PerAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
+                    }
                     break;
                 case FACILITY:
-                    query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
-                            .and(participation.id.subjectEntityUid.like(pfSearch.getReportingEntityId())));
+                    if (doInvestigatorQuery) {
+                        query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId()))
+                                .or(person.id.eq(filter.getInvestigatorId())));
+                    } else {
+                        query = query.where(participation.id.typeCd.eq("OrgAsReporterOfPHC")
+                                .and(participation.id.subjectEntityUid.eq(pfSearch.getId())));
+                    }
                     break;
                 default:
-                    throw new QueryException("Invalid entity type: " + pfSearch.getReportingEntityType());
+                    throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
             }
+        } else {
+            // investigator id
+            query = addParameter(query, person.id::eq, filter.getInvestigatorId());
         }
-        // investigator id
-        query = addParameter(query, person.id::eq, filter.getInvestigatorId());
+
         // investigation status
         if (filter.getInvestigationStatus() != null) {
+            var status = filter.getInvestigationStatus().toString().substring(0, 1);
             query = query.where(publicHealthCase.investigationStatusCd
-                    .equalsIgnoreCase(filter.getInvestigationStatus().toString()));
+                    .equalsIgnoreCase(status));
         }
 
         // outbreak name
         query = addParameter(query, publicHealthCase.outbreakName.lower()::in, filter.getOutbreakNames());
         // case status / include unassigned
-        if (filter.getCaseStatuses() != null && !filter.getCaseStatuses().isEmpty()) {
-            var statusStrings = filter.getCaseStatuses().stream().map(s -> s.toString().toUpperCase())
+        if (filter.getCaseStatuses() != null) {
+            var cs = filter.getCaseStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty() || cs.getIncludeUnassigned() == null) {
+                throw new QueryException("statusList and includeUnassigned are required when specifying caseStatuses");
+            }
+            var statusStrings = filter.getCaseStatuses().getStatusList().stream().map(s -> s.toString().toUpperCase())
                     .collect(Collectors.toList());
-            if (filter.getIncludeUnasignedCaseStatus()) {
+            if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> publicHealthCase.caseClassCd.upper().in(x).or(publicHealthCase.caseClassCd.isEmpty()),
                         statusStrings);
@@ -186,53 +212,72 @@ public class EventService {
             }
         }
         // notification status / include unassigned
-        if (filter.getNotificationStatuses() != null && !filter.getNotificationStatuses().isEmpty()) {
-            var statusStrings = filter.getNotificationStatuses().stream().map(s -> s.toString().toUpperCase())
+        if (filter.getNotificationStatuses() != null) {
+            var cs = filter.getCaseStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty() || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying notificationStatuses");
+            }
+            var statusStrings = cs.getStatusList().stream().map(s -> s.toString().toUpperCase())
                     .collect(Collectors.toList());
-            if (filter.getIncludeUnassignedNotificationStatus()) {
+            if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> notification.recordStatusCd.upper().in(x)
-                                .or(publicHealthCase.currProcessStateCd.isEmpty()),
+                                .or(publicHealthCase.currProcessStateCd.isEmpty()
+                                        .or(publicHealthCase.currProcessStateCd.eq("NF"))),
                         statusStrings);
             } else {
                 query = addParameter(query, notification.recordStatusCd.upper()::in, statusStrings);
             }
         }
         // processing status / include unassigned
-        if (filter.getProcessingStatuses() != null && !filter.getProcessingStatuses().isEmpty()) {
-            var statusStrings = filter.getProcessingStatuses().stream().map(s -> s.toString().toUpperCase())
+        if (filter.getProcessingStatuses() != null) {
+            var cs = filter.getProcessingStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty() || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying processingStatuses");
+            }
+            var statusStrings = cs.getStatusList().stream().map(s -> s.toString().toUpperCase())
                     .collect(Collectors.toList());
-            if (filter.getIncludeUnassignedProcessingStatus()) {
+            if (cs.getIncludeUnassigned()) {
                 query = addParameter(query,
                         (x) -> publicHealthCase.currProcessStateCd.upper().in(x)
-                                .or(publicHealthCase.currProcessStateCd.isEmpty()),
+                                .or(publicHealthCase.currProcessStateCd.isEmpty()
+                                        .or(publicHealthCase.currProcessStateCd.eq("NF"))),
                         statusStrings);
             } else {
                 query = addParameter(query, publicHealthCase.currProcessStateCd.upper()::in, statusStrings);
             }
         }
+
         return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
     public List<Act> findLabReportsByFilter(LaboratoryReportFilter filter, Pageable pageable) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        var actRelationship = QActRelationship.actRelationship;
         var observation = QObservation.observation;
         var act = QAct.act;
         var participation = QParticipation.participation;
         var obsValueCoded = QObsValueCoded.obsValueCoded;
         var actId = QActId.actId;
-        var query = queryFactory.selectDistinct(observation.act).from(observation)
+        var query = queryFactory.selectDistinct(act).from(obsValueCoded)
+                .leftJoin(actRelationship)
+                .on(obsValueCoded.id.observationUid.eq(actRelationship.sourceActUid.id))
                 .leftJoin(act)
-                .on(observation.id.eq(act.id))
+                .on(act.id.eq(actRelationship.targetActUid.id))
                 .leftJoin(participation)
-                .on(observation.id.eq(participation.actUid.id))
-                .leftJoin(obsValueCoded)
-                .on(observation.id.eq(obsValueCoded.id.observationUid))
+                .on(participation.id.actUid.eq(act.id))
+                .leftJoin(observation)
+                .on(observation.id.eq(actRelationship.targetActUid.id))
                 .leftJoin(actId)
-                .on(observation.id.eq(actId.actUid.id));
+                .on(actId.actUid.id.eq(observation.id));
 
         // OBS only for lab reports ?
         query = query.where(act.classCd.eq("OBS"));
+        if (filter == null) {
+            return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+        }
         // program area
         query = addParameter(query, observation.progAreaCd::in, filter.getProgramAreas());
         // jurisdictions
@@ -351,33 +396,26 @@ public class EventService {
                 case ORDERING_FACILITY:
                     query = query.where(participation.id.typeCd.eq("ORD")
                             .and(participation.subjectClassCd.eq("ORG"))
-                            .and(participation.id.subjectEntityUid.like(pSearch.getProviderId())));
+                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
                     break;
                 case ORDERING_PROVIDER:
                     query = query.where(participation.id.typeCd.eq("ORD")
                             .and(participation.subjectClassCd.eq("PSN"))
-                            .and(participation.id.subjectEntityUid.like(pSearch.getProviderId())));
+                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
                     break;
                 case REPORTING_FACILITY:
                     query = query.where(participation.id.typeCd.eq("AUT")
-                            .and(participation.id.subjectEntityUid.like(pSearch.getProviderId())));
+                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
                     break;
             }
         }
         // resulted test
         query = addParameter(query, observation.cdDescTxt::like, filter.getResultedTest());
+
         // coded result
         query = addParameter(query, obsValueCoded.displayName::like, filter.getCodedResult());
 
-        var acts = query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
-
-        // get target acts for act_relationship sources
-        var actIds = acts.stream().map(Act::getId).collect(Collectors.toList());
-        queryFactory = new JPAQueryFactory(entityManager);
-        var actRelationship = QActRelationship.actRelationship;
-        acts.addAll(queryFactory.selectFrom(act).join(actRelationship).on(act.id.eq(actRelationship.targetActUid.id))
-                .where(actRelationship.sourceActUid.id.in(actIds)).fetch());
-        return acts;
+        return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
     // checks to see if the filter provided is null, if not add the filter to the

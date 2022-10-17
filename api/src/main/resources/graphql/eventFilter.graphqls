@@ -23,12 +23,24 @@ input InvestigationFilter {
     investigatorId: ID
     investigationStatus: InvestigationStatus
     outbreakNames: [String]
-    includeUnasignedCaseStatus: Boolean
-    caseStatuses: [CaseStatus]
-    includeUnassignedNotificationStatus: Boolean
-    notificationStatuses: [NotificationStatus]
-    includeUnassignedProcessingStatus: Boolean
-    processingStatuses: [ProcessingStatus]
+    caseStatuses: CaseStatuses
+    notificationStatuses: NotificationStatuses
+    processingStatuses: ProcessingStatuses
+}
+
+input CaseStatuses {
+    includeUnassigned: Boolean!
+    statusList: [CaseStatus!]!
+}
+
+input NotificationStatuses {
+    includeUnassigned: Boolean!
+    statusList: [NotificationStatus!]!
+}
+
+input ProcessingStatuses {
+    includeUnassigned: Boolean!
+    statusList: [ProcessingStatus!]!
 }
 
 enum PregnancyStatus {
@@ -38,14 +50,14 @@ enum PregnancyStatus {
 }
 
 input InvestigationEventDateSearch {
-    eventDateType: InvestigationEventDateType
-    from: Date
-    to: Date
+    eventDateType: InvestigationEventDateType!
+    from: Date!
+    to: Date!
 }
 
 input ProviderFacilitySearch {
-    reportingEntityType: ReportingEntityType
-    reportingEntityId: String
+    entityType: ReportingEntityType!
+    id: ID!
 }
 
 enum InvestigationEventIdType {
@@ -119,14 +131,14 @@ input LaboratoryReportFilter {
 }
 
 input LaboratoryEventDateSearch {
-    eventDateType: LaboratoryReportEventDateType
-    from: Date
-    to: Date
+    eventDateType: LaboratoryReportEventDateType!
+    from: Date!
+    to: Date!
 }
 
 input LabReportProviderSearch {
-    providerType: ProviderType
-    providerId: String
+    providerType: ProviderType!
+    providerId: ID!
 }
 
 enum LaboratoryEventIdType {

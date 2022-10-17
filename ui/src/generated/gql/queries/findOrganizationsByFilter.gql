@@ -1,5 +1,5 @@
-query findOrganizationsByFilter($filter: OrganizationFilter!) {
-    findOrganizationsByFilter(filter: $filter){
+query findOrganizationsByFilter($filter: OrganizationFilter!, $page: Page) {
+    findOrganizationsByFilter(filter: $filter, page: $page){
         id
         addReasonCd
         addTime

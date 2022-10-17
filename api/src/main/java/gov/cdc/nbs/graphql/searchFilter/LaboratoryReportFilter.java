@@ -38,7 +38,7 @@ public class LaboratoryReportFilter {
     @Setter
     public static class LabReportProviderSearch {
         private ProviderType providerType;
-        private String providerId;
+        private Long providerId;
     }
 
     public enum LaboratoryEventIdType {
