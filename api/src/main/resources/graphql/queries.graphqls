@@ -18,5 +18,4 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
-    deletePatient(id: ID!): Boolean
 }

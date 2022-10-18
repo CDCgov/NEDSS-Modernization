@@ -65,7 +65,6 @@ public class PatientSearchStepDefinitions {
 
     @Test
     public void testForDebugging() {
-        there_are_patients(10);
     }
 
     @Autowired
@@ -243,18 +242,10 @@ public class PatientSearchStepDefinitions {
         var criteria = filter.getInvestigationFilter();
         switch (field) {
             case "condition":
-                if (qualifier.equals("condition 1")) {
-                    criteria.setConditions(Arrays.asList("Bacterial Vaginosis"));
-                } else {
-                    criteria.setConditions(Arrays.asList("Trichomoniasis"));
-                }
+                criteria.setConditions(Arrays.asList(qualifier));
                 break;
             case "program area":
-                if (qualifier.equals("area 1")) {
-                    criteria.setProgramAreas(Arrays.asList("STD"));
-                } else {
-                    criteria.setProgramAreas(Arrays.asList("ARBO"));
-                }
+                criteria.setProgramAreas(Arrays.asList(qualifier));
                 break;
             case "jurisdiction":
                 if (qualifier.equals("jd1")) {
@@ -358,7 +349,7 @@ public class PatientSearchStepDefinitions {
                 filter.setZip(zipLocator.getZipCd());
                 break;
             case "ethnicity":
-                filter.setEthnicity(searchPatient.getEthnicGroups().get(0).getId().getEthnicGroupCd());
+                filter.setEthnicity(searchPatient.getEthnicGroupInd());
                 break;
             case "record status":
                 filter.setRecordStatus(searchPatient.getRecordStatusCd());

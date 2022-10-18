@@ -17,16 +17,17 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
-import gov.cdc.nbs.entity.odse.PersonEthnicGroupId;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.PersonRaceId;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
+import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.support.util.StateCodeUtil;
 
 public class PersonMother {
 
@@ -51,12 +52,11 @@ public class PersonMother {
         person.setBirthTime(RandomUtil.getRandomDateInPast());
         person.setBirthGenderCd(RandomUtil.getRandomFromArray(Gender.values()));
         person.setDeceasedIndCd(RandomUtil.getRandomFromArray(Deceased.values()));
-        person.setCurrSexCd(RandomUtil.getRandomFromArray(new Character[] { 'F', 'M', 'U' }));
+        person.setCurrSexCd(RandomUtil.getRandomFromArray(Gender.values()));
         person.setBirthCityCd(RandomUtil.getRandomString());
         person.setBirthStateCd(RandomUtil.getRandomStateCode());
         person.setBirthCntryCd("United States");
-        person.setRecordStatusCd(
-                RandomUtil.getRandomFromArray(RecordStatus.values()));
+        person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setNBSEntity(entity);
         person.setVersionCtrlNbr((short) 1);
 
@@ -87,11 +87,7 @@ public class PersonMother {
         person.setNames(Arrays.asList(name));
 
         // ethnic group
-        var peg = new PersonEthnicGroup();
-        peg.setId(new PersonEthnicGroupId(id, RandomUtil.getRandomFromArray(Ethnicity.values())));
-        peg.setPersonUid(person);
-        peg.setRecordStatusCd("ACTIVE");
-        person.setEthnicGroups(Arrays.asList(peg));
+        person.setEthnicGroupInd(RandomUtil.getRandomFromArray(Ethnicity.values()));
 
         // race
         var race = new PersonRace();
@@ -127,7 +123,7 @@ public class PersonMother {
         postalLocator.setStreetAddr1(RandomUtil.getRandomString(8));
         postalLocator.setCntryCd(
                 RandomUtil.getRandomFromArray(CountryCodeUtil.countryCodeMap.values().toArray(new String[0])));
-        postalLocator.setCityCd(RandomUtil.getRandomString(8));
+        postalLocator.setCityDescTxt(RandomUtil.getRandomString(8));
         postalLocator.setStateCd(RandomUtil.getRandomStateCode());
         postalLocator.setZipCd(RandomUtil.getRandomNumericString(5));
         postalLocator.setRecordStatusCd("ACTIVE");
@@ -152,35 +148,133 @@ public class PersonMother {
         final long id = 19000000L;
         var person = new Person();
         person.setId(id);
+        person.setNBSEntity(new NBSEntity(id, "PSN"));
         person.setCd("PAT");
-        person.setFirstNm("John");
-        person.setLastNm("Doe");
-        person.setSsn("999-888-7777");
-        person.setHmPhoneNbr("111-222-3333");
-        person.setWkPhoneNbr("222-333-4444");
-        person.setCellPhoneNbr("444-555-6666");
         person.setBirthTime(Instant.parse("1982-11-30T18:35:24.00Z"));
         person.setBirthGenderCd(Gender.M);
+        person.setCurrSexCd(Gender.M);
         person.setDeceasedIndCd(Deceased.N);
-        person.setHmStreetAddr1("123 Main St");
-        person.setHmCityCd("Atlanta");
-        person.setHmStateCd("Georgia");
-        person.setHmZipCd("30301");
-        person.setHmCntryCd("United States");
-        person.setWkStreetAddr1("345 Work St");
-        person.setWkCityCd("Atlanta");
-        person.setWkStateCd("Georgia");
-        person.setWkZipCd("30302");
-        person.setWkCntryCd("United States");
-        person.setCurrSexCd('M');
-        person.setBirthCityCd("Savannah");
-        person.setBirthStateCd("Georgia");
-        person.setBirthCntryCd("United States");
-        person.setEthnicityGroupCd("2186-5");
+        person.setSsn("999-888-7777");
+
+        // name
+        person.setFirstNm("John");
+        person.setMiddleNm("Bob");
+        person.setLastNm("Doe");
+        var name = new PersonName();
+        name.setId(new PersonNameId(id, (short) 1));
+        name.setPersonUid(person);
+        name.setStatusCd('A');
+        name.setStatusTime(Instant.now());
+        name.setFirstNm(person.getFirstNm());
+        name.setMiddleNm(person.getMiddleNm());
+        name.setLastNm(person.getLastNm());
+        person.setNames(Arrays.asList(name));
+
+        // phone numbers
+        createTeleLocatorEntry("111-222-3333", id + 40000L, person.getNBSEntity(), PhoneType.HOME);
+        createTeleLocatorEntry("222-333-4444", id + 40001L, person.getNBSEntity(), PhoneType.WORK);
+        createTeleLocatorEntry("444-555-6666", id + 40002L, person.getNBSEntity(), PhoneType.CELL);
+
+        // addresses
+
+        var homeAddress = new PostalAddress(
+                "123 Main St",
+                null,
+                "Atlanta",
+                StateCodeUtil.stateCodeMap.get("Georgia"),
+                "13089",
+                CountryCodeUtil.countryCodeMap.get("United States"),
+                "30301",
+                null);
+        createPostalLocatorEntry(id + 80000L, person.getNBSEntity(), homeAddress, "H");
+
+        person.setEthnicGroupInd(Ethnicity.NOT_HISPANIC_OR_LATINO);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
+
+        // race
+        var race = new PersonRace();
+        race.setId(new PersonRaceId(id, Race.WHITE));
+        race.setPersonUid(person);
+        race.setRecordStatusCd("ACTIVE");
+        person.setRaces(Arrays.asList(race));
         return person;
+    }
+
+    private static void createPostalLocatorEntry(Long locatorId, NBSEntity entity, PostalAddress address, String cd) {
+        // Postal locator entry
+        var postalLocator = new PostalLocator();
+        postalLocator.setId(locatorId);
+        postalLocator.setStreetAddr1(address.getStreetAddress1());
+        postalLocator.setStreetAddr2(address.getStreetAddress2());
+        postalLocator.setCntryCd(address.getCountryCode());
+        postalLocator.setCityDescTxt(address.getCity());
+        postalLocator.setStateCd(address.getStateCode());
+        postalLocator.setZipCd(address.getZip());
+        postalLocator.setRecordStatusCd("ACTIVE");
+
+        var elp = new EntityLocatorParticipation();
+        elp.setEntityUid(entity);
+        elp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
+        elp.setCd(cd); // Home
+        elp.setUseCd(cd);
+        elp.setClassCd("PST"); // Postal
+        elp.setRecordStatusCd("ACTIVE");
+        elp.setStatusCd('A');
+        elp.setVersionCtrlNbr((short) 1);
+        elp.setLocator(postalLocator);
+
+        var elpList = new ArrayList<EntityLocatorParticipation>();
+        elpList.add(elp);
+        if (entity.getEntityLocatorParticipations() != null && entity.getEntityLocatorParticipations().size() > 0) {
+            elpList.addAll(entity.getEntityLocatorParticipations());
+        }
+        entity.setEntityLocatorParticipations(elpList);
+    }
+
+    private static void createTeleLocatorEntry(String phoneNumber, Long locatorId, NBSEntity entity,
+            PhoneType phoneType) {
+        // Tele locator entry
+        var teleLocator = new TeleLocator();
+        teleLocator.setId(locatorId);
+        teleLocator.setAddTime(Instant.now());
+        teleLocator.setAddUserId(CREATED_BY_ID);
+        teleLocator.setPhoneNbrTxt(phoneNumber);
+        teleLocator.setRecordStatusCd("ACTIVE");
+
+        EntityLocatorParticipation elp = new EntityLocatorParticipation();
+        elp.setEntityUid(entity);
+        elp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
+        setElpTypeFields(elp, phoneType);
+        elp.setClassCd("TELE");
+        elp.setRecordStatusCd("ACTIVE");
+        elp.setStatusCd('A');
+        elp.setVersionCtrlNbr((short) 1);
+        elp.setLocator(teleLocator);
+
+        var elpList = new ArrayList<EntityLocatorParticipation>();
+        elpList.add(elp);
+        if (entity.getEntityLocatorParticipations() != null && entity.getEntityLocatorParticipations().size() > 0) {
+            elpList.addAll(entity.getEntityLocatorParticipations());
+        }
+        entity.setEntityLocatorParticipations(elpList);
+    }
+
+    private static void setElpTypeFields(EntityLocatorParticipation elp, PhoneType phoneType) {
+        switch (phoneType) {
+            case CELL:
+                elp.setCd("CP");
+                elp.setUseCd("MC");
+                break;
+            case HOME:
+                elp.setCd("PH");
+                elp.setUseCd("H");
+                break;
+            case WORK:
+                elp.setCd("PH");
+                elp.setUseCd("WP");
+                break;
+        }
     }
 
 }

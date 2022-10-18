@@ -47,6 +47,10 @@ public class EthnicityConverter implements AttributeConverter<Ethnicity, String>
                 return Ethnicity.NOT_HISPANIC_OR_LATINO;
             case "UNK":
                 return Ethnicity.UNKNOWN;
+            case "N":
+                return Ethnicity.NOT_HISPANIC_OR_LATINO;
+            case "Y":
+                return Ethnicity.HISPANIC_OR_LATINO;
             default:
                 throw new RuntimeException("Invalid ethnicity value supplied: " + value);
         }

@@ -20,25 +20,61 @@ input PersonFilter {
 }
 
 input PersonInput {
-    lastName: String
-    firstName: String
+    name: Name
     ssn: String
-    phoneNumber: String
     DateOfBirth: Date
-    DateOfBirthOperator: Operator
-    gender: Gender
+    birthGender: Gender
+    currentGender: Gender
     deceased: Deceased
-    address: String
-    city: String
-    state: String
-    country: String
-    zip: String
+    addresses: [PostalAddress]
+    phoneNumbers: [PhoneNumber]
+    emailAddresses: [String]
     ethnicity: Ethnicity
+    race: Race
+}
+input Name {
+    firstName: String
+    middleName: String
+    lastName: String
+    suffix: Suffix
+}
+
+input PostalAddress {
+    streetAddress1: String
+    streetAddress2: String
+    city: String
+    stateCode: String
+    countyCode: String
+    countryCode: String
+    zip: String
+    censusTract: String
+}
+
+input PhoneNumber {
+    phoneNumber: String!
+    extension: String
+    phoneType: PhoneType!
 }
 
 input Identification {
     identificationNumber: String!
     identificationType: IdentificationType!
+}
+
+enum Suffix {
+    ESQ
+    II
+    III
+    IV
+    JR
+    SR
+    V
+}
+
+enum PhoneType {
+    HOME
+    CELL
+    WORK
 }
 
 enum IdentificationType {

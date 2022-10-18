@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+
+import gov.cdc.nbs.entity.enums.Race;
+import gov.cdc.nbs.entity.enums.converter.RaceConverter;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -42,8 +46,9 @@ public class PersonRace {
     @Column(name = "last_chg_user_id")
     private Long lastChgUserId;
 
+    @Convert(converter = RaceConverter.class)
     @Column(name = "race_category_cd", length = 20)
-    private String raceCategoryCd;
+    private Race raceCategoryCd;
 
     @Column(name = "race_desc_txt", length = 100)
     private String raceDescTxt;

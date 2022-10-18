@@ -40,10 +40,10 @@ Feature: Patient search
 
     Examples: 
       | field            | qualifier           |
-      | condition        | condition 1         |
-      | condition        | condition 2         |
-      | program area     | area 1              |
-      | program area     | area 2              |
+      | condition        | Bacterial Vaginosis |
+      | condition        | Trichomoniasis      |
+      | program area     | STD                 |
+      | program area     | ARBO                |
       | jurisdiction     | jd1                 |
       | jurisdiction     | jd2                 |
       | pregnancy status |                     |

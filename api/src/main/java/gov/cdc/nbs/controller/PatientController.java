@@ -56,8 +56,4 @@ public class PatientController {
         return patientService.createPatient(patient);
     }
 
-    @MutationMapping()
-    public Boolean deletePatient(@Argument Long id) {
-        return patientService.deletePatient(id);
-    }
 }
