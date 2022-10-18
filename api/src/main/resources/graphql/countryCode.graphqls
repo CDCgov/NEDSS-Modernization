@@ -1,0 +1,22 @@
+type CountryCode {
+    id: ID
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: Date
+    effectiveToTime: Date
+    excludedTxt: String
+    keyInfoTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: String
+    parentIsCd: String
+    statusCd: String
+    statusTime: Date
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+}

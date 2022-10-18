@@ -107,7 +107,7 @@ public class PatientService {
                 .leftJoin(entityId)
                 .on(entityId.NBSEntityUid.eq(person.NBSEntity))
                 .leftJoin(entityLocatorParticipation)
-                .on(person.NBSEntity.eq(entityLocatorParticipation.entityUid))
+                .on(person.NBSEntity.eq(entityLocatorParticipation.nbsEntity))
                 .leftJoin(postalLocator)
                 .on(entityLocatorParticipation.id.locatorUid.eq(postalLocator.id))
                 .leftJoin(stateCode)
@@ -217,9 +217,9 @@ public class PatientService {
         // postal_locator
         var postalLocators = addPostalLocatorEntries(person, input.getAddresses());
 
+        // Save
         teleLocatorRepository.saveAll(teleLocators);
         postalLocatorRepository.saveAll(postalLocators);
-
         return personRepository.save(person);
     }
 
@@ -291,7 +291,7 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), plId));
-                elp.setEntityUid(person.getNBSEntity());
+                elp.setNbsEntity(person.getNBSEntity());
                 elp.setCd("H");
                 elp.setClassCd("PST");
                 elp.setLastChgTime(now);
@@ -349,7 +349,7 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setEntityUid(person.getNBSEntity());
+                elp.setNbsEntity(person.getNBSEntity());
                 elp.setClassCd("TELE");
                 setElpTypeFields(elp, pn.getPhoneType());
                 elp.setLastChgTime(now);
@@ -377,7 +377,7 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setEntityUid(person.getNBSEntity());
+                elp.setNbsEntity(person.getNBSEntity());
                 elp.setClassCd("TELE");
                 elp.setCd("NET");
                 elp.setUseCd("H");

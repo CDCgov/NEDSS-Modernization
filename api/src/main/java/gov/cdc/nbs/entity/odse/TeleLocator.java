@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import gov.cdc.nbs.entity.odse.EntityLocatorParticipation.Locator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Tele_locator")
-public class TeleLocator {
+public class TeleLocator extends Locator {
     @Id
     @Column(name = "tele_locator_uid", nullable = false)
     private Long id;

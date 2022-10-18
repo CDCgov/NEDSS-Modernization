@@ -106,7 +106,7 @@ public class PersonMother {
         teleLocator.setRecordStatusCd("ACTIVE");
 
         EntityLocatorParticipation teleElp = new EntityLocatorParticipation();
-        teleElp.setEntityUid(entity);
+        teleElp.setNbsEntity(entity);
         teleElp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         teleElp.setCd("PH");
         teleElp.setUseCd("H");
@@ -129,7 +129,7 @@ public class PersonMother {
         postalLocator.setRecordStatusCd("ACTIVE");
 
         var postalElp = new EntityLocatorParticipation();
-        postalElp.setEntityUid(entity);
+        postalElp.setNbsEntity(entity);
         postalElp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         postalElp.setCd("H"); // Home
         postalElp.setUseCd("H");
@@ -214,7 +214,7 @@ public class PersonMother {
         postalLocator.setRecordStatusCd("ACTIVE");
 
         var elp = new EntityLocatorParticipation();
-        elp.setEntityUid(entity);
+        elp.setNbsEntity(entity);
         elp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         elp.setCd(cd); // Home
         elp.setUseCd(cd);
@@ -243,7 +243,7 @@ public class PersonMother {
         teleLocator.setRecordStatusCd("ACTIVE");
 
         EntityLocatorParticipation elp = new EntityLocatorParticipation();
-        elp.setEntityUid(entity);
+        elp.setNbsEntity(entity);
         elp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         setElpTypeFields(elp, phoneType);
         elp.setClassCd("TELE");

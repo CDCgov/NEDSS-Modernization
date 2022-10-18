@@ -14,6 +14,8 @@ type Query {
     findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
 
     findAllJurisdictions(page: Page): [Jurisdiction]!
+    findAllCountryCodes(page: Page): [CountryCode]!
+    findAllStateCodes(page: Page): [StateCode]!
 }
 
 type Mutation {
