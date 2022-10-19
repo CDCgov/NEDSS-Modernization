@@ -1,0 +1,24 @@
+query findAllCountryCodes($page: Page) {
+    findAllCountryCodes(page: $page){
+        id
+        assigningAuthorityCd
+        assigningAuthorityDescTxt
+        codeDescTxt
+        codeShortDescTxt
+        effectiveFromTime
+        effectiveToTime
+        excludedTxt
+        keyInfoTxt
+        indentLevelNbr
+        isModifiableInd
+        parentIsCd
+        statusCd
+        statusTime
+        codeSetNm
+        seqNum
+        nbsUid
+        sourceConceptId
+        codeSystemCd
+        codeSystemDescTxt
+    }
+}

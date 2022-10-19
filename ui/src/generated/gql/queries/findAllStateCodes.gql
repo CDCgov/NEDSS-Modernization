@@ -1,0 +1,24 @@
+query findAllStateCodes($page: Page) {
+    findAllStateCodes(page: $page){
+        id
+        assigningAuthorityCd
+        assigningAuthorityDescTxt
+        stateNm
+        codeDescTxt
+        effectiveFromTime
+        effectiveToTime
+        excludedTxt
+        indentLevelNbr
+        isModifiableInd
+        keyInfoTxt
+        parentIsCd
+        statusCd
+        statusTime
+        codeSetNm
+        seqNum
+        nbsUid
+        sourceConceptId
+        codeSystemCd
+        codeSystemDescTxt
+    }
+}
