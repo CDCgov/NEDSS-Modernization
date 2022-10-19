@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+
+import gov.cdc.nbs.entity.enums.IdentificationType;
+import gov.cdc.nbs.entity.enums.converter.IdentificationTypeConverter;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -75,8 +79,9 @@ public class EntityId {
     @Column(name = "status_time")
     private Instant statusTime;
 
+    @Convert(converter = IdentificationTypeConverter.class)
     @Column(name = "type_cd", length = 50)
-    private String typeCd;
+    private IdentificationType typeCd;
 
     @Column(name = "type_desc_txt", length = 100)
     private String typeDescTxt;

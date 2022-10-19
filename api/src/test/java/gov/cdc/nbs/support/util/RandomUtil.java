@@ -1,16 +1,17 @@
-package gov.cdc.nbs.support;
+package gov.cdc.nbs.support.util;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TestUtil {
+public class RandomUtil {
     private static Random random = new Random();
-    private static Logger logger = LoggerFactory.getLogger(TestUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(RandomUtil.class);
     static {
         var randomSeed = random.nextLong();
         // on test failure, hard code seed to value in failed test run
@@ -28,16 +29,6 @@ public class TestUtil {
         return random.nextInt(bound);
     }
 
-    private static String[] states = new String[] {
-            "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida",
-            "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine",
-            "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
-            "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
-            "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
-            "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
-
-    };
-
     public static String getRandomString() {
         return getRandomString(random.nextInt(5, 20));
     }
@@ -47,9 +38,14 @@ public class TestUtil {
         return list[index];
     }
 
+    public static <T> T getRandomFromArray(List<T> list) {
+        var index = random.nextInt(list.size());
+        return list.get(index);
+    }
+
     public static String getRandomString(int length) {
         int leftLimit = 48; // 0
-        int rightLimit = 122; // z
+        int rightLimit = 126; // ~
         return random.ints(leftLimit, rightLimit + 1).limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }
@@ -78,8 +74,8 @@ public class TestUtil {
                 .truncatedTo(ChronoUnit.DAYS);
     }
 
-    public static String getRandomState() {
-        var index = random.nextInt(states.length);
-        return states[index];
+    public static String getRandomStateCode() {
+        var index = random.nextInt(StateCodeUtil.stateCodeMap.size());
+        return StateCodeUtil.stateCodeMap.values().toArray(new String[0])[index];
     }
 }

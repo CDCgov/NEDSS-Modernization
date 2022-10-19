@@ -1,15 +1,17 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.Instant;
+
+import gov.cdc.nbs.entity.odse.EntityLocatorParticipation.Locator;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "Postal_locator")
-public class PostalLocator {
+public class PostalLocator extends Locator {
     @Id
     @Column(name = "postal_locator_uid", nullable = false)
     private Long id;

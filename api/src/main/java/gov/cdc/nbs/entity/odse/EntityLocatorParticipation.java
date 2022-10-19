@@ -1,13 +1,27 @@
 package gov.cdc.nbs.entity.odse;
 
+import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Any;
+import org.hibernate.annotations.AnyMetaDef;
+import org.hibernate.annotations.MetaValue;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.Instant;
-
+// @AnyMetaDef replacements: @AnyDiscriminator, @AnyDiscriminatorValue not available until 6.0
+@SuppressWarnings("deprecation")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,13 +29,25 @@ import java.time.Instant;
 @Entity
 @Table(name = "Entity_locator_participation")
 public class EntityLocatorParticipation {
+    public static class Locator {
+        protected Long id;
+    }
+
     @EmbeddedId
     private EntityLocatorParticipationId id;
 
     @MapsId("entityUid")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_uid", nullable = false)
-    private NBSEntity entityUid;
+    private NBSEntity nbsEntity;
+
+    @Any(metaColumn = @Column(name = "class_cd"), optional = false)
+    @AnyMetaDef(metaType = "string", idType = "long", metaValues = {
+            @MetaValue(value = "TELE", targetEntity = TeleLocator.class),
+            @MetaValue(value = "PST", targetEntity = PostalLocator.class)
+    })
+    @JoinColumn(name = "locator_uid", nullable = false, insertable = false, updatable = false)
+    private Locator locator;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;

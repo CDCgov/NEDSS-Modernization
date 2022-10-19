@@ -11,24 +11,26 @@ Feature: Patient search
     Then I find the patient
 
     Examples: 
-      | field         | qualifier |
-      | last name     |           |
-      | first name    |           |
-      | patient id    |           |
-      | ssn           |           |
-      | phone number  |           |
-      | date of birth | before    |
-      | date of birth | after     |
-      | date of birth | equal     |
-      | gender        |           |
-      | deceased      |           |
-      | address       |           |
-      | city          |           |
-      | state         |           |
-      | country       |           |
-      | zip code      |           |
-      | ethnicity     |           |
-      | record status |           |
+      | field          | qualifier |
+      | last name      |           |
+      | first name     |           |
+      | race           |           |
+      | identification |           |
+      | patient id     |           |
+      | ssn            |           |
+      | phone number   |           |
+      | date of birth  | before    |
+      | date of birth  | after     |
+      | date of birth  | equal     |
+      | gender         |           |
+      | deceased       |           |
+      | address        |           |
+      | city           |           |
+      | state          |           |
+      | country        |           |
+      | zip code       |           |
+      | ethnicity      |           |
+      | record status  |           |
 
   @patient_investigation_search
   Scenario: I can find a patient by one field in the investigation data
@@ -38,10 +40,10 @@ Feature: Patient search
 
     Examples: 
       | field            | qualifier           |
-      | condition        | condition 1         |
-      | condition        | condition 2         |
-      | program area     | area 1              |
-      | program area     | area 2              |
+      | condition        | Bacterial Vaginosis |
+      | condition        | Trichomoniasis      |
+      | program area     | STD                 |
+      | program area     | ARBO                |
       | jurisdiction     | jd1                 |
       | jurisdiction     | jd2                 |
       | pregnancy status |                     |

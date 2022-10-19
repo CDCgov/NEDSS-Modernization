@@ -29,6 +29,30 @@ export type CaseStatuses = {
   statusList: Array<CaseStatus>;
 };
 
+export type CountryCode = {
+  __typename?: 'CountryCode';
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  codeSystemCd?: Maybe<Scalars['String']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['Date']>;
+  effectiveToTime?: Maybe<Scalars['Date']>;
+  excludedTxt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['String']>;
+  keyInfoTxt?: Maybe<Scalars['String']>;
+  nbsUid?: Maybe<Scalars['Int']>;
+  parentIsCd?: Maybe<Scalars['String']>;
+  seqNum?: Maybe<Scalars['Int']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
+  statusTime?: Maybe<Scalars['Date']>;
+};
+
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
@@ -38,6 +62,12 @@ export enum Deceased {
 export enum EntryMethod {
   Electronic = 'ELECTRONIC',
   Manual = 'MANUAL'
+}
+
+export enum Ethnicity {
+  HispanicOrLatino = 'HISPANIC_OR_LATINO',
+  NotHispanicOrLatino = 'NOT_HISPANIC_OR_LATINO',
+  Unknown = 'UNKNOWN'
 }
 
 export type EventFilter = {
@@ -60,6 +90,34 @@ export enum Gender {
   F = 'F',
   M = 'M',
   U = 'U'
+}
+
+export type Identification = {
+  identificationNumber: Scalars['String'];
+  identificationType: IdentificationType;
+};
+
+export enum IdentificationType {
+  AccountNumber = 'ACCOUNT_NUMBER',
+  AlternatePersonNumber = 'ALTERNATE_PERSON_NUMBER',
+  ChipIdentificationNumber = 'CHIP_IDENTIFICATION_NUMBER',
+  DriversLicenseNumber = 'DRIVERS_LICENSE_NUMBER',
+  ImmunizationRegistryId = 'IMMUNIZATION_REGISTRY_ID',
+  MedicaidNumber = 'MEDICAID_NUMBER',
+  MedicalRecordNumber = 'MEDICAL_RECORD_NUMBER',
+  MedicareNumber = 'MEDICARE_NUMBER',
+  MothersIdentifier = 'MOTHERS_IDENTIFIER',
+  NationalUniqueIndividualIdentifier = 'NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER',
+  Other = 'OTHER',
+  PartnerServicesPatientNumber = 'PARTNER_SERVICES_PATIENT_NUMBER',
+  PatientExternalIdentifier = 'PATIENT_EXTERNAL_IDENTIFIER',
+  PatientInternalIdentifier = 'PATIENT_INTERNAL_IDENTIFIER',
+  PersonNumber = 'PERSON_NUMBER',
+  PrisonIdentificationNumber = 'PRISON_IDENTIFICATION_NUMBER',
+  RyanWhiteIdentifier = 'RYAN_WHITE_IDENTIFIER',
+  SocialSecurity = 'SOCIAL_SECURITY',
+  VisaPassport = 'VISA_PASSPORT',
+  WicIdentifier = 'WIC_IDENTIFIER'
 }
 
 export type InvestigationEventDateSearch = {
@@ -184,7 +242,6 @@ export enum LaboratoryReportStatus {
 export type Mutation = {
   __typename?: 'Mutation';
   createPatient: Person;
-  deletePatient?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -192,9 +249,11 @@ export type MutationCreatePatientArgs = {
   patient: PersonInput;
 };
 
-
-export type MutationDeletePatientArgs = {
-  id: Scalars['ID'];
+export type Name = {
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  middleName?: InputMaybe<Scalars['String']>;
+  suffix?: InputMaybe<Suffix>;
 };
 
 export enum NotificationStatus {
@@ -389,12 +448,14 @@ export type PersonFilter = {
   city?: InputMaybe<Scalars['String']>;
   country?: InputMaybe<Scalars['String']>;
   deceased?: InputMaybe<Deceased>;
-  ethnicity?: InputMaybe<Scalars['String']>;
+  ethnicity?: InputMaybe<Ethnicity>;
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
   id?: InputMaybe<Scalars['ID']>;
+  identification?: InputMaybe<Identification>;
   lastName?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
+  race?: InputMaybe<Race>;
   recordStatus?: InputMaybe<RecordStatus>;
   ssn?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
@@ -403,20 +464,29 @@ export type PersonFilter = {
 
 export type PersonInput = {
   DateOfBirth?: InputMaybe<Scalars['Date']>;
-  DateOfBirthOperator?: InputMaybe<Operator>;
-  address?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
+  addresses?: InputMaybe<Array<InputMaybe<PostalAddress>>>;
+  birthGender?: InputMaybe<Gender>;
+  currentGender?: InputMaybe<Gender>;
   deceased?: InputMaybe<Deceased>;
-  ethnicity?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  gender?: InputMaybe<Gender>;
-  lastName?: InputMaybe<Scalars['String']>;
-  phoneNumber?: InputMaybe<Scalars['String']>;
+  emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  ethnicity?: InputMaybe<Ethnicity>;
+  name?: InputMaybe<Name>;
+  phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
+  race?: InputMaybe<Race>;
   ssn?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
-  zip?: InputMaybe<Scalars['String']>;
 };
+
+export type PhoneNumber = {
+  extension?: InputMaybe<Scalars['String']>;
+  phoneNumber: Scalars['String'];
+  phoneType: PhoneType;
+};
+
+export enum PhoneType {
+  Cell = 'CELL',
+  Home = 'HOME',
+  Work = 'WORK'
+}
 
 export type Place = {
   __typename?: 'Place';
@@ -466,6 +536,17 @@ export type PlaceFilter = {
   zipCd?: InputMaybe<Scalars['String']>;
 };
 
+export type PostalAddress = {
+  censusTract?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  countryCode?: InputMaybe<Scalars['String']>;
+  countyCode?: InputMaybe<Scalars['String']>;
+  stateCode?: InputMaybe<Scalars['String']>;
+  streetAddress1?: InputMaybe<Scalars['String']>;
+  streetAddress2?: InputMaybe<Scalars['String']>;
+  zip?: InputMaybe<Scalars['String']>;
+};
+
 export enum PregnancyStatus {
   No = 'NO',
   Unknown = 'UNKNOWN',
@@ -499,10 +580,12 @@ export enum ProviderType {
 
 export type Query = {
   __typename?: 'Query';
+  findAllCountryCodes: Array<Maybe<CountryCode>>;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: Array<Maybe<Organization>>;
   findAllPatients: Array<Maybe<Person>>;
   findAllPlaces: Array<Maybe<Place>>;
+  findAllStateCodes: Array<Maybe<StateCode>>;
   findOrganizationById?: Maybe<Organization>;
   findOrganizationsByFilter: Array<Maybe<Organization>>;
   findPatientById?: Maybe<Person>;
@@ -511,6 +594,11 @@ export type Query = {
   findPatientsByOrganizationFilter: Array<Maybe<Person>>;
   findPlaceById?: Maybe<Place>;
   findPlacesByFilter: Array<Maybe<Place>>;
+};
+
+
+export type QueryFindAllCountryCodesArgs = {
+  page?: InputMaybe<Page>;
 };
 
 
@@ -530,6 +618,11 @@ export type QueryFindAllPatientsArgs = {
 
 
 export type QueryFindAllPlacesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllStateCodesArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -578,6 +671,18 @@ export type QueryFindPlacesByFilterArgs = {
   page?: InputMaybe<Page>;
 };
 
+export enum Race {
+  AfricanAmerican = 'AFRICAN_AMERICAN',
+  AmericanIndianOrAlaskanNative = 'AMERICAN_INDIAN_OR_ALASKAN_NATIVE',
+  Asian = 'ASIAN',
+  NativeHawaiianOrPacificIslander = 'NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER',
+  NotAsked = 'NOT_ASKED',
+  OtherRace = 'OTHER_RACE',
+  RefusedToAnswer = 'REFUSED_TO_ANSWER',
+  Unknown = 'UNKNOWN',
+  White = 'WHITE'
+}
+
 export enum RecordStatus {
   Active = 'ACTIVE',
   LogDel = 'LOG_DEL'
@@ -593,6 +698,40 @@ export enum SortDirection {
   Desc = 'DESC'
 }
 
+export type StateCode = {
+  __typename?: 'StateCode';
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeSystemCd?: Maybe<Scalars['String']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['Date']>;
+  effectiveToTime?: Maybe<Scalars['Date']>;
+  excludedTxt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['String']>;
+  keyInfoTxt?: Maybe<Scalars['String']>;
+  nbsUid?: Maybe<Scalars['Int']>;
+  parentIsCd?: Maybe<Scalars['String']>;
+  seqNum?: Maybe<Scalars['Int']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  stateNm?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
+  statusTime?: Maybe<Scalars['Date']>;
+};
+
+export enum Suffix {
+  Esq = 'ESQ',
+  Ii = 'II',
+  Iii = 'III',
+  Iv = 'IV',
+  Jr = 'JR',
+  Sr = 'SR',
+  V = 'V'
+}
+
 export enum UserType {
   External = 'EXTERNAL',
   Internal = 'INTERNAL'
@@ -605,12 +744,12 @@ export type CreatePatientMutationVariables = Exact<{
 
 export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null } };
 
-export type DeletePatientMutationVariables = Exact<{
-  id: Scalars['ID'];
+export type FindAllCountryCodesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient?: boolean | null };
+export type FindAllCountryCodesQuery = { __typename?: 'Query', findAllCountryCodes: Array<{ __typename?: 'CountryCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, keyInfoTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
 
 export type FindAllJurisdictionsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -639,6 +778,13 @@ export type FindAllPlacesQueryVariables = Exact<{
 
 
 export type FindAllPlacesQuery = { __typename?: 'Query', findAllPlaces: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> };
+
+export type FindAllStateCodesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllStateCodesQuery = { __typename?: 'Query', findAllStateCodes: Array<{ __typename?: 'StateCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, stateNm?: string | null, codeDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, keyInfoTxt?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
 
 export type FindOrganizationByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -840,37 +986,60 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
-export const DeletePatientDocument = gql`
-    mutation deletePatient($id: ID!) {
-  deletePatient(id: $id)
+export const FindAllCountryCodesDocument = gql`
+    query findAllCountryCodes($page: Page) {
+  findAllCountryCodes(page: $page) {
+    id
+    assigningAuthorityCd
+    assigningAuthorityDescTxt
+    codeDescTxt
+    codeShortDescTxt
+    effectiveFromTime
+    effectiveToTime
+    excludedTxt
+    keyInfoTxt
+    indentLevelNbr
+    isModifiableInd
+    parentIsCd
+    statusCd
+    statusTime
+    codeSetNm
+    seqNum
+    nbsUid
+    sourceConceptId
+    codeSystemCd
+    codeSystemDescTxt
+  }
 }
     `;
-export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutation, DeletePatientMutationVariables>;
 
 /**
- * __useDeletePatientMutation__
+ * __useFindAllCountryCodesQuery__
  *
- * To run a mutation, you first call `useDeletePatientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeletePatientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useFindAllCountryCodesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllCountryCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
+ * const { data, loading, error } = useFindAllCountryCodesQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      page: // value for 'page'
  *   },
  * });
  */
-export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientMutation, DeletePatientMutationVariables>) {
+export function useFindAllCountryCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
+        return Apollo.useQuery<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>(FindAllCountryCodesDocument, options);
       }
-export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
-export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
-export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
+export function useFindAllCountryCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>(FindAllCountryCodesDocument, options);
+        }
+export type FindAllCountryCodesQueryHookResult = ReturnType<typeof useFindAllCountryCodesQuery>;
+export type FindAllCountryCodesLazyQueryHookResult = ReturnType<typeof useFindAllCountryCodesLazyQuery>;
+export type FindAllCountryCodesQueryResult = Apollo.QueryResult<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>;
 export const FindAllJurisdictionsDocument = gql`
     query findAllJurisdictions($page: Page) {
   findAllJurisdictions(page: $page) {
@@ -1202,6 +1371,60 @@ export function useFindAllPlacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindAllPlacesQueryHookResult = ReturnType<typeof useFindAllPlacesQuery>;
 export type FindAllPlacesLazyQueryHookResult = ReturnType<typeof useFindAllPlacesLazyQuery>;
 export type FindAllPlacesQueryResult = Apollo.QueryResult<FindAllPlacesQuery, FindAllPlacesQueryVariables>;
+export const FindAllStateCodesDocument = gql`
+    query findAllStateCodes($page: Page) {
+  findAllStateCodes(page: $page) {
+    id
+    assigningAuthorityCd
+    assigningAuthorityDescTxt
+    stateNm
+    codeDescTxt
+    effectiveFromTime
+    effectiveToTime
+    excludedTxt
+    indentLevelNbr
+    isModifiableInd
+    keyInfoTxt
+    parentIsCd
+    statusCd
+    statusTime
+    codeSetNm
+    seqNum
+    nbsUid
+    sourceConceptId
+    codeSystemCd
+    codeSystemDescTxt
+  }
+}
+    `;
+
+/**
+ * __useFindAllStateCodesQuery__
+ *
+ * To run a query within a React component, call `useFindAllStateCodesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllStateCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllStateCodesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllStateCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>(FindAllStateCodesDocument, options);
+      }
+export function useFindAllStateCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>(FindAllStateCodesDocument, options);
+        }
+export type FindAllStateCodesQueryHookResult = ReturnType<typeof useFindAllStateCodesQuery>;
+export type FindAllStateCodesLazyQueryHookResult = ReturnType<typeof useFindAllStateCodesLazyQuery>;
+export type FindAllStateCodesQueryResult = Apollo.QueryResult<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>;
 export const FindOrganizationByIdDocument = gql`
     query findOrganizationById($id: ID!) {
   findOrganizationById(id: $id) {

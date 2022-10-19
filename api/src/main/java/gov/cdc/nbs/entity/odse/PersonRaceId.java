@@ -6,7 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
+import gov.cdc.nbs.entity.enums.Race;
+import gov.cdc.nbs.entity.enums.converter.RaceConverter;
+
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,8 +25,9 @@ public class PersonRaceId implements Serializable {
     @Column(name = "person_uid", nullable = false)
     private Long personUid;
 
+    @Convert(converter = RaceConverter.class)
     @Column(name = "race_cd", nullable = false, length = 20)
-    private String raceCd;
+    private Race raceCd;
 
     @Override
     public boolean equals(Object o) {

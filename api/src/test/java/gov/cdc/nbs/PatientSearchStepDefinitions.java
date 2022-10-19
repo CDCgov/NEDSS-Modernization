@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.enums.PregnancyStatus;
@@ -38,14 +39,18 @@ import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProviderType;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.searchFilter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.ActRepository;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.repository.PostalLocatorRepository;
+import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.support.EventMother;
 import gov.cdc.nbs.support.EventMother.Event;
 import gov.cdc.nbs.support.PersonMother;
-import gov.cdc.nbs.support.TestUtil;
+import gov.cdc.nbs.support.util.PersonUtil;
+import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -63,6 +68,10 @@ public class PatientSearchStepDefinitions {
     @Autowired
     private PersonRepository personRepository;
     @Autowired
+    private PostalLocatorRepository postalLocatorRepository;
+    @Autowired
+    private TeleLocatorRepository teleLocatorRepository;
+    @Autowired
     private ActRepository actRepository;
     @Autowired
     private OrganizationRepository orgRepository;
@@ -75,24 +84,34 @@ public class PatientSearchStepDefinitions {
     private List<Person> searchResults;
     private List<Person> generatedPersons;
 
+    @Transactional
     @Given("there are {int} patients")
     public void there_are_patients(int patientCount) {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(patientCount);
 
+        var generatedIds = generatedPersons.stream()
+                .map(p -> p.getId()).collect(Collectors.toList());
+        // find existing persons
+        var existingPersons = personRepository.findAllById(generatedIds);
+        // delete existing locator entries
+        var existingPostal = PersonUtil.getPostalLocators(existingPersons);
+        postalLocatorRepository.deleteAll(existingPostal);
+        var existingTele = PersonUtil.getTeleLocators(existingPersons);
+        teleLocatorRepository.deleteAll(existingTele);
         // delete existing persons
-        var existingPersons = personRepository
-                .findAllById(generatedPersons.stream().map(p -> p.getId()).collect(Collectors.toList()));
         personRepository.deleteAll(existingPersons);
 
         // create new persons
+        teleLocatorRepository.saveAll(PersonUtil.getTeleLocators(generatedPersons));
+        postalLocatorRepository.saveAll(PersonUtil.getPostalLocators(generatedPersons));
         personRepository.saveAll(generatedPersons);
     }
 
     @Given("Investigations exist")
     public void investigations_exist() {
         if (searchPatient == null) {
-            searchPatient = TestUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
+            searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
         var investigation1 = EventMother.investigation_bacterialVaginosis(searchPatient.getId());
         createEvent(investigation1);
@@ -103,7 +122,7 @@ public class PatientSearchStepDefinitions {
     @Given("A lab report exist")
     public void lab_report_exist() {
         if (searchPatient == null) {
-            searchPatient = TestUtil.getRandomFromArray(generatedPersons.toArray(new Person[0]));
+            searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
         var labReport1 = EventMother.labReport_acidFastStain(searchPatient.getId());
         createEvent(labReport1);
@@ -112,7 +131,7 @@ public class PatientSearchStepDefinitions {
     @Given("I am looking for one of them")
     public void I_am_looking_for_one_of_them() {
         // pick one of the existing patients at random
-        var index = TestUtil.getRandomInt(generatedPersons.size());
+        var index = RandomUtil.getRandomInt(generatedPersons.size());
         searchPatient = generatedPersons.get(index);
     }
 
@@ -219,18 +238,10 @@ public class PatientSearchStepDefinitions {
         var criteria = filter.getInvestigationFilter();
         switch (field) {
             case "condition":
-                if (qualifier.equals("condition 1")) {
-                    criteria.setConditions(Arrays.asList("Bacterial Vaginosis"));
-                } else {
-                    criteria.setConditions(Arrays.asList("Trichomoniasis"));
-                }
+                criteria.setConditions(Arrays.asList(qualifier));
                 break;
             case "program area":
-                if (qualifier.equals("area 1")) {
-                    criteria.setProgramAreas(Arrays.asList("STD"));
-                } else {
-                    criteria.setProgramAreas(Arrays.asList("ARBO"));
-                }
+                criteria.setProgramAreas(Arrays.asList(qualifier));
                 break;
             case "jurisdiction":
                 if (qualifier.equals("jd1")) {
@@ -286,6 +297,13 @@ public class PatientSearchStepDefinitions {
             case "first name":
                 filter.setFirstName(searchPatient.getFirstNm());
                 break;
+            case "race":
+                filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
+                break;
+            case "identification":
+                var patientId = searchPatient.getEntityIds().get(0);
+                filter.setIdentification(new Identification(patientId.getRootExtensionTxt(), patientId.getTypeCd()));
+                break;
             case "patient id":
                 filter.setId(searchPatient.getId());
                 break;
@@ -293,7 +311,8 @@ public class PatientSearchStepDefinitions {
                 filter.setSsn(searchPatient.getSsn());
                 break;
             case "phone number":
-                filter.setPhoneNumber(searchPatient.getHmPhoneNbr());
+                var teleLocator = PersonUtil.getTeleLocators(searchPatient).get(0);
+                filter.setPhoneNumber(teleLocator.getPhoneNbrTxt());
                 break;
             case "date of birth":
                 filter.setDateOfBirth(getDobByQualifier(searchPatient, qualifier));
@@ -306,22 +325,27 @@ public class PatientSearchStepDefinitions {
                 filter.setDeceased(searchPatient.getDeceasedIndCd());
                 break;
             case "address":
-                filter.setAddress(searchPatient.getHmStreetAddr1());
+                var addressLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setAddress(addressLocator.getStreetAddr1());
                 break;
             case "city":
-                filter.setCity(searchPatient.getHmCityCd());
+                var cityLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setCity(cityLocator.getCityCd());
                 break;
             case "state":
-                filter.setState(searchPatient.getHmStateCd());
+                var stateLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setState(stateLocator.getStateCd());
                 break;
             case "country":
-                filter.setCountry(searchPatient.getHmCntryCd());
+                var cntryLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setCountry(cntryLocator.getCntryCd());
                 break;
             case "zip code":
-                filter.setZip(searchPatient.getHmZipCd());
+                var zipLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setZip(zipLocator.getZipCd());
                 break;
             case "ethnicity":
-                filter.setEthnicity(searchPatient.getEthnicityGroupCd());
+                filter.setEthnicity(searchPatient.getEthnicGroupInd());
                 break;
             case "record status":
                 filter.setRecordStatus(searchPatient.getRecordStatusCd());

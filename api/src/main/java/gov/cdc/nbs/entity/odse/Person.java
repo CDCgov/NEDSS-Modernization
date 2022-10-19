@@ -12,10 +12,14 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.ColumnTransformer;
 
 import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
+import gov.cdc.nbs.graphql.input.PatientInput.Suffix;
 
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +37,15 @@ public class Person {
     @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity NBSEntity;
+
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PersonName> names;
+
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PersonRace> races;
+
+    @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<EntityId> entityIds;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
@@ -87,8 +100,9 @@ public class Person {
     @Column(name = "cd_desc_txt", length = 100)
     private String cdDescTxt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "curr_sex_cd")
-    private Character currSexCd;
+    private Gender currSexCd;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "deceased_ind_cd", length = 20)
@@ -107,8 +121,9 @@ public class Person {
     @Column(name = "education_level_desc_txt", length = 100)
     private String educationLevelDescTxt;
 
+    @Convert(converter = EthnicityConverter.class)
     @Column(name = "ethnic_group_ind", length = 20)
-    private String ethnicGroupInd;
+    private Ethnicity ethnicGroupInd;
 
     @Column(name = "last_chg_reason_cd", length = 20)
     private String lastChgReasonCd;
@@ -178,8 +193,9 @@ public class Person {
     @Column(name = "nm_prefix", length = 20)
     private String nmPrefix;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "nm_suffix", length = 20)
-    private String nmSuffix;
+    private Suffix nmSuffix;
 
     @Column(name = "preferred_nm", length = 50)
     private String preferredNm;

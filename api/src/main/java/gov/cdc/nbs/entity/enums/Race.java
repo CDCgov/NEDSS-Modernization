@@ -1,0 +1,13 @@
+package gov.cdc.nbs.entity.enums;
+
+public enum Race {
+    UNKNOWN,
+    AMERICAN_INDIAN_OR_ALASKAN_NATIVE,
+    ASIAN,
+    AFRICAN_AMERICAN,
+    NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER,
+    WHITE,
+    OTHER_RACE,
+    REFUSED_TO_ANSWER,
+    NOT_ASKED
+}

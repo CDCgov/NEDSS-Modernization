@@ -2,6 +2,8 @@ input PersonFilter {
     id: ID
     lastName: String
     firstName: String
+    race: Race
+    identification: Identification
     ssn: String
     phoneNumber: String
     DateOfBirth: Date
@@ -13,25 +15,107 @@ input PersonFilter {
     state: String
     country: String
     zip: String
-    ethnicity: String
+    ethnicity: Ethnicity
     recordStatus: RecordStatus
 }
 
 input PersonInput {
-    lastName: String
-    firstName: String
+    name: Name
     ssn: String
-    phoneNumber: String
     DateOfBirth: Date
-    DateOfBirthOperator: Operator
-    gender: Gender
+    birthGender: Gender
+    currentGender: Gender
     deceased: Deceased
-    address: String
+    addresses: [PostalAddress]
+    phoneNumbers: [PhoneNumber]
+    emailAddresses: [String]
+    ethnicity: Ethnicity
+    race: Race
+}
+input Name {
+    firstName: String
+    middleName: String
+    lastName: String
+    suffix: Suffix
+}
+
+input PostalAddress {
+    streetAddress1: String
+    streetAddress2: String
     city: String
-    state: String
-    country: String
+    stateCode: String
+    countyCode: String
+    countryCode: String
     zip: String
-    ethnicity: String
+    censusTract: String
+}
+
+input PhoneNumber {
+    phoneNumber: String!
+    extension: String
+    phoneType: PhoneType!
+}
+
+input Identification {
+    identificationNumber: String!
+    identificationType: IdentificationType!
+}
+
+enum Suffix {
+    ESQ
+    II
+    III
+    IV
+    JR
+    SR
+    V
+}
+
+enum PhoneType {
+    HOME
+    CELL
+    WORK
+}
+
+enum IdentificationType {
+    ACCOUNT_NUMBER
+    ALTERNATE_PERSON_NUMBER
+    CHIP_IDENTIFICATION_NUMBER
+    DRIVERS_LICENSE_NUMBER
+    IMMUNIZATION_REGISTRY_ID
+    MEDICAID_NUMBER
+    MEDICAL_RECORD_NUMBER
+    MEDICARE_NUMBER
+    MOTHERS_IDENTIFIER
+    NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER
+    OTHER
+    PARTNER_SERVICES_PATIENT_NUMBER
+    PATIENT_EXTERNAL_IDENTIFIER
+    PATIENT_INTERNAL_IDENTIFIER
+    PERSON_NUMBER
+    PRISON_IDENTIFICATION_NUMBER
+    RYAN_WHITE_IDENTIFIER
+    SOCIAL_SECURITY
+    VISA_PASSPORT
+    WIC_IDENTIFIER
+}
+
+enum Race {
+    UNKNOWN
+    AMERICAN_INDIAN_OR_ALASKAN_NATIVE
+    ASIAN
+    AFRICAN_AMERICAN
+    NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER
+    WHITE
+    OTHER_RACE
+    REFUSED_TO_ANSWER
+    NOT_ASKED
+}
+
+enum Ethnicity {
+    HISPANIC_OR_LATINO
+    NOT_HISPANIC_OR_LATINO
+    UNKNOWN
 }
 
 enum Gender {

@@ -3,8 +3,12 @@ package gov.cdc.nbs.graphql.searchFilter;
 import java.time.Instant;
 
 import gov.cdc.nbs.entity.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.entity.enums.IdentificationType;
+import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +18,8 @@ public class PatientFilter {
     private Long id;
     private String lastName;
     private String firstName;
+    private Race race;
+    private Identification identification;
     private String ssn;
     private String phoneNumber;
     private Instant dateOfBirth;
@@ -26,6 +32,14 @@ public class PatientFilter {
     private String country;
     private String zip;
     private String mortalityStatus;
-    private String ethnicity;
+    private Ethnicity ethnicity;
     private RecordStatus recordStatus;
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class Identification {
+        private String identificationNumber;
+        private IdentificationType identificationType;
+    }
 }

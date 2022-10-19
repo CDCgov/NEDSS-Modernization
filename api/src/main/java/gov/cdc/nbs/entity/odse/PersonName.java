@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+
+import gov.cdc.nbs.graphql.input.PatientInput.Suffix;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -84,8 +87,9 @@ public class PersonName {
     @Column(name = "nm_prefix", length = 20)
     private String nmPrefix;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "nm_suffix", length = 20)
-    private String nmSuffix;
+    private Suffix nmSuffix;
 
     @Column(name = "nm_use_cd", length = 20)
     private String nmUseCd;
