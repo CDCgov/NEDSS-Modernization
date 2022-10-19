@@ -20,13 +20,12 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
             DataFetcherExceptionHandlerParameters handlerParameters) {
 
         Throwable exception = handlerParameters.getException();
-        String message = "Internal server error for request: "
-                + handlerParameters.getDataFetchingEnvironment().getExecutionId();
-
+        String message;
         if (exception instanceof QueryException) {
             message = exception.getMessage();
-        } else if (exception instanceof IllegalArgumentException) {
-            message = exception.getMessage();
+        } else {
+            message = "Internal server error for request: "
+                    + handlerParameters.getDataFetchingEnvironment().getExecutionId();
         }
 
         GraphQLError error = GraphqlErrorBuilder
