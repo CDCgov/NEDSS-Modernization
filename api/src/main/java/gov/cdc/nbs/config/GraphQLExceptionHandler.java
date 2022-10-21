@@ -4,7 +4,6 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Component;
 
-import gov.cdc.nbs.exception.QueryException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.execution.DataFetcherExceptionHandler;
@@ -20,17 +19,10 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
             DataFetcherExceptionHandlerParameters handlerParameters) {
 
         Throwable exception = handlerParameters.getException();
-        String message;
-        if (exception instanceof QueryException) {
-            message = exception.getMessage();
-        } else {
-            message = "Internal server error for request: "
-                    + handlerParameters.getDataFetchingEnvironment().getExecutionId();
-        }
 
         GraphQLError error = GraphqlErrorBuilder
                 .newError()
-                .message(message)
+                .message(exception.getMessage())
                 .path(handlerParameters.getPath())
                 .location(handlerParameters.getSourceLocation())
                 .build();

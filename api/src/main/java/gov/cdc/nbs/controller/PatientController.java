@@ -16,13 +16,11 @@ import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.service.PatientService;
-
 import lombok.AllArgsConstructor;
 
 @Controller
 @AllArgsConstructor
 public class PatientController {
-
     private final PatientService patientService;
 
     @QueryMapping
