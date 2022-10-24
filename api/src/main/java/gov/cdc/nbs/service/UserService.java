@@ -49,6 +49,7 @@ public class UserService implements UserDetailsService {
                 .builder()
                 .username(authUser.getUserId())
                 .password(null)
+                .id(authUser.getId())
                 .authorities(null)
                 .token(token)
                 .build();

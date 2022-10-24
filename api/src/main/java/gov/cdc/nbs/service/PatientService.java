@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
@@ -282,6 +284,8 @@ public class PatientService {
     private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
         var postalLocators = new ArrayList<PostalLocator>();
         if (addresses.size() > 0) {
+            var auth = SecurityContextHolder.getContext().getAuthentication();
+            var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
             var postalLocatorId = postalLocatorRepository.getMaxId() + 1;
             var now = Instant.now();
@@ -295,7 +299,7 @@ public class PatientService {
                 elp.setCd("H");
                 elp.setClassCd("PST");
                 elp.setLastChgTime(now);
-                // elp.setLastChgUserId(); TODO once we authenticate users
+                elp.setLastChgUserId(user.getId());
                 elp.setRecordStatusCd("ACTIVE");
                 elp.setRecordStatusTime(now);
                 elp.setStatusCd('A');
@@ -340,6 +344,8 @@ public class PatientService {
             List<String> emailAddresses) {
         var locatorList = new ArrayList<TeleLocator>();
         if (phoneNumbers.size() > 0 || emailAddresses.size() > 0) {
+            var auth = SecurityContextHolder.getContext().getAuthentication();
+            var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
             var teleLocatorId = teleLocatorRepository.getMaxId() + 1;
             var now = Instant.now();
@@ -353,7 +359,7 @@ public class PatientService {
                 elp.setClassCd("TELE");
                 setElpTypeFields(elp, pn.getPhoneType());
                 elp.setLastChgTime(now);
-                // elp.setLastChgUserId(); TODO once we authenticate users
+                elp.setLastChgUserId(user.getId());
                 elp.setRecordStatusCd("ACTIVE");
                 elp.setRecordStatusTime(now);
                 elp.setStatusCd('A');
@@ -362,7 +368,7 @@ public class PatientService {
                 var locator = new TeleLocator();
                 locator.setId(teleId);
                 locator.setAddTime(now);
-                // locator.setAddUserId(); TODO once we authenticate users
+                locator.setAddUserId(user.getId());
                 locator.setExtensionTxt(pn.getExtension());
                 locator.setPhoneNbrTxt(pn.getPhoneNumber());
                 locator.setRecordStatusCd("ACTIVE");
@@ -382,7 +388,7 @@ public class PatientService {
                 elp.setCd("NET");
                 elp.setUseCd("H");
                 elp.setLastChgTime(now);
-                // elp.setLastChgUserId(); TODO once we authenticate users
+                elp.setLastChgUserId(user.getId());
                 elp.setRecordStatusCd("ACTIVE");
                 elp.setRecordStatusTime(now);
                 elp.setStatusCd('A');
@@ -390,7 +396,7 @@ public class PatientService {
                 var locator = new TeleLocator();
                 locator.setId(teleId);
                 locator.setAddTime(now);
-                // locator.setAddUserId(); TODO once we authenticate users
+                locator.setAddUserId(user.getId());
                 locator.setEmailAddress(email);
                 locator.setRecordStatusCd("ACTIVE");
 
