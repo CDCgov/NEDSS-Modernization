@@ -8,6 +8,7 @@ import { AppRoutes } from './routes/AppRoutes';
 import UserService from './services/UserService';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
+import { Config } from './config';
 // hard coded login for now
 UserService.login('msa', '');
 
@@ -29,7 +30,7 @@ const client = new ApolloClient({
     link: concat(
         authMiddleware,
         new HttpLink({
-            uri: 'http://localhost:3000/graphql'
+            uri: `http://localhost:${Config.port}/graphql`
         })
     ),
     cache: new InMemoryCache()
