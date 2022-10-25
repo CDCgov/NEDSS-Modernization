@@ -43,11 +43,11 @@ public class EventMother {
         private List<Person> people;
         private List<JurisdictionCode> jurisdictionCodes;
 
-        public Event(List<Act> acts) {
+        public Event(List<Act> acts, List<JurisdictionCode> jurisdictionCodes) {
             this.acts = acts;
+            this.jurisdictionCodes = jurisdictionCodes;
             this.orgs = new ArrayList<>();
             this.people = new ArrayList<>();
-            this.jurisdictionCodes = new ArrayList<>();
         }
     }
 
@@ -107,7 +107,7 @@ public class EventMother {
         act.setParticipations(Arrays.asList(p));
         act.setPublicHealthCases(Arrays.asList(phc));
         act.setActIds(Arrays.asList(actId));
-        return new Event(Arrays.asList(act));
+        return new Event(Arrays.asList(act), getJurisdictionCodes());
     }
 
     public static Event investigation_trichomoniasis(Long personId) {
@@ -177,7 +177,7 @@ public class EventMother {
         act.setActIds(Arrays.asList(actId));
         act.setNotifications(Arrays.asList(notification));
 
-        return new Event(Arrays.asList(act));
+        return new Event(Arrays.asList(act), getJurisdictionCodes());
     }
 
     public static Event labReport_acidFastStain(Long personId) {
@@ -186,33 +186,6 @@ public class EventMother {
 
         // person - ordering provider
         var johnX = ProviderMother.johnXerogeanes();
-
-        // jurisdiction codes
-        var jd1 = new JurisdictionCode();
-        jd1.setId(DEKALB_CODE.toString());
-        jd1.setTypeCd("ALL");
-        jd1.setAssigningAuthorityCd("GA");
-        jd1.setAssigningAuthorityDescTxt("GA State");
-        jd1.setCodeDescTxt("Dekalb County");
-        jd1.setCodeShortDescTxt("Dekalb County");
-        jd1.setIndentLevelNbr((short) 1);
-        jd1.setIsModifiableInd('Y');
-        jd1.setStateDomainCd("13");
-        jd1.setCodeSetNm("S_JURDIC_C");
-        jd1.setCodeSeqNum((short) 1);
-
-        var jd2 = new JurisdictionCode();
-        jd2.setId(CLAYTON_CODE.toString());
-        jd2.setTypeCd("ALL");
-        jd2.setAssigningAuthorityCd("GA");
-        jd2.setAssigningAuthorityDescTxt("GA State");
-        jd2.setCodeDescTxt("Clayton County");
-        jd2.setCodeShortDescTxt("Clayton County");
-        jd2.setIndentLevelNbr((short) 1);
-        jd2.setIsModifiableInd('Y');
-        jd2.setStateDomainCd("13");
-        jd2.setCodeSetNm("S_JURDIC_C");
-        jd2.setCodeSeqNum((short) 1);
 
         // acts
         var act1 = new Act();
@@ -417,7 +390,38 @@ public class EventMother {
                 Arrays.asList(act1, act2, act3, act4),
                 Arrays.asList(org),
                 Arrays.asList(johnX),
-                Arrays.asList(jd1, jd2));
+                getJurisdictionCodes());
+    }
+
+    private static List<JurisdictionCode> getJurisdictionCodes() {
+        // jurisdiction codes
+        var jd1 = new JurisdictionCode();
+        jd1.setId(DEKALB_CODE.toString());
+        jd1.setTypeCd("ALL");
+        jd1.setAssigningAuthorityCd("GA");
+        jd1.setAssigningAuthorityDescTxt("GA State");
+        jd1.setCodeDescTxt("Dekalb County");
+        jd1.setCodeShortDescTxt("Dekalb County");
+        jd1.setIndentLevelNbr((short) 1);
+        jd1.setIsModifiableInd('Y');
+        jd1.setStateDomainCd("13");
+        jd1.setCodeSetNm("S_JURDIC_C");
+        jd1.setCodeSeqNum((short) 1);
+
+        var jd2 = new JurisdictionCode();
+        jd2.setId(CLAYTON_CODE.toString());
+        jd2.setTypeCd("ALL");
+        jd2.setAssigningAuthorityCd("GA");
+        jd2.setAssigningAuthorityDescTxt("GA State");
+        jd2.setCodeDescTxt("Clayton County");
+        jd2.setCodeShortDescTxt("Clayton County");
+        jd2.setIndentLevelNbr((short) 1);
+        jd2.setIsModifiableInd('Y');
+        jd2.setStateDomainCd("13");
+        jd2.setCodeSetNm("S_JURDIC_C");
+        jd2.setCodeSeqNum((short) 1);
+
+        return Arrays.asList(jd1, jd2);
     }
 
 }
