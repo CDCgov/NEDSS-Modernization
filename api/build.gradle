@@ -16,7 +16,11 @@ dependencies {
 	// core
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
 	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+
+	// jwt
+	implementation "com.auth0:java-jwt:4.2.0"
 
 	// graphql
 	implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"

@@ -18,7 +18,9 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.support.PersonMother;
+import gov.cdc.nbs.support.UserMother;
 import gov.cdc.nbs.support.util.PersonUtil;
+import gov.cdc.nbs.support.util.SecurityUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -43,6 +45,11 @@ public class PatientCreateStepDefinitions {
     private PatientController patientController;
 
     private Person person;
+
+    @Given("I am logged in")
+    public void I_am_logged_in() {
+        SecurityUtil.setSecurityContext(UserMother.clerical());
+    }
 
     @Given("A patient does not exist")
     public void a_patient_does_not_exist() {

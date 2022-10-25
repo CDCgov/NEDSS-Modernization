@@ -1,20 +1,38 @@
+import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, concat, InMemoryCache } from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { TopBanner } from './components/TopBanner/TopBanner';
+import reportWebVitals from './reportWebVitals';
+import { AppRoutes } from './routes/AppRoutes';
+import UserService from './services/UserService';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
-import { AppRoutes } from './routes/AppRoutes';
-import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
-import { TopBanner } from './components/TopBanner/TopBanner';
+import { Config } from './config';
+// hard coded login for now
+UserService.login('msa', '');
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+    // grab the token from the userService
+    const token = UserService.getUser()?.token;
+    // Use the setContext method to set the HTTP headers.
+    operation.setContext({
+        headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+        }
+    });
+
+    // Call the next link in the middleware chain.
+    return forward(operation);
+});
 
 const client = new ApolloClient({
-    link: new HttpLink({
-        uri: 'http://localhost:3000/graphql'
-        // fetchOptions: {
-        //   mode: 'no-cors'
-        // }
-    }),
+    link: concat(
+        authMiddleware,
+        new HttpLink({
+            uri: `http://localhost:${Config.port}/graphql`
+        })
+    ),
     cache: new InMemoryCache()
 });
 
