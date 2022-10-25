@@ -8,13 +8,12 @@ import { AppRoutes } from './routes/AppRoutes';
 import UserService from './services/UserService';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
-const userService = new UserService();
 // hard coded login for now
-userService.login('msa', '');
+UserService.login('msa', '');
 
 const authMiddleware = new ApolloLink((operation, forward) => {
     // grab the token from the userService
-    const token = userService.getUser()?.token;
+    const token = UserService.getUser()?.token;
     // Use the setContext method to set the HTTP headers.
     operation.setContext({
         headers: {
