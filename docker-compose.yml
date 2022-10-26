@@ -1,0 +1,12 @@
+services:
+  modernization:
+    build: ./
+    container_name: modernization
+    ports:
+      - 8080:8080
+    networks:
+      - nbs
+networks:
+  nbs:
+    name: nbs
+    driver: bridge
