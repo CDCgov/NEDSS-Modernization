@@ -82,7 +82,7 @@ tasks.named("test") {
 
 processResources {
 	from ("../ui/build") {
-		into "public"
+		into "static"
 	}
 }
 
