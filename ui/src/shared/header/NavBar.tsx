@@ -1,62 +1,130 @@
-import { Header, NavMenuButton, PrimaryNav, Title } from '@trussworks/react-uswds';
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import './NavBar.scss';
 
+// eslint-disable-next-line no-undef
+const NBS_URL = process.env.REACT_APP_NBS_URL;
+
 export default function NavBar() {
-    const [expanded, setExpanded] = useState(false);
-    const onClick = (): void => setExpanded((prvExpanded) => !prvExpanded);
-    const { pathname } = useLocation();
-
-    const navItems = [
-        <>
-            <Link to={'/'} className={`usa-nav-item ${pathname === '/' && 'active'}`}>
-                Home
-            </Link>
-        </>,
-        <>
-            <Link to={'/'} className={`usa-nav-item ${pathname === '/my-reports' && 'active'}`}>
-                My Reports
-            </Link>
-        </>,
-        <>
-            <Link to={'/'} className={`usa-nav-item ${pathname === '/system-management' && 'active'}`}>
-                System Management
-            </Link>
-        </>
-    ];
-
     return (
-        <>
-            <div className="nav-bar bg-white border-bottom border-base-light">
-                <div className={`usa-overlay ${expanded ? 'is-visible' : ''}`}></div>
-                <Header basic={true}>
-                    <div className="usa-nav-container height-10">
-                        <div className="usa-navbar width-full">
-                            <Title className="title">NBS</Title>
-                            <NavMenuButton onClick={onClick} label="Menu" />
-                        </div>
-                        <PrimaryNav
-                            className="height-10"
-                            items={navItems}
-                            mobileExpanded={expanded}
-                            onToggleMobileNav={onClick}
-                        />
-                    </div>
-                </Header>
-            </div>
-        </>
-    );
+        <div className="nav-bar">
+            <table role="presentation" className="nedssNavTable">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table role="presentation" align="left">
+                                <tbody>
+                                    <tr>
+                                        <td className="navLink">
+                                            <a href={`${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</a>
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            <span> | </span>{' '}
+                                        </td>
 
-    // return (
-    //     <>
-    //         <Header className="bg-primary">
-    //             <div className="usa-nav-container text-white">
-    //                 <div className="usa-navbar">
-    //                     <Title>NBS NEW</Title>
-    //                 </div>
-    //             </div>{' '}
-    //         </Header>
-    //     </>
-    // );
+                                        <td className="navLink">
+                                            <a href={`${NBS_URL}/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
+                                        </td>
+                                        <td>
+                                            <span> | </span>
+                                        </td>
+
+                                        <td className="navLink">
+                                            <a href={`${NBS_URL}/LoadNavbar1.do?ContextAction=MergePerson`}>
+                                                Merge Patients
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span> | </span>
+                                        </td>
+
+                                        <td className="navLink">
+                                            <a
+                                                href={`${NBS_URL}/LoadNavbar.do?ContextAction=GlobalInvestigations&amp;initLoad=true`}>
+                                                Open Investigations
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span> | </span>
+                                        </td>
+
+                                        <td className="navLink">
+                                            <a href={`${NBS_URL}/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
+                                        </td>
+                                        <td>
+                                            <span> | </span>
+                                        </td>
+
+                                        <td className="navLink">
+                                            <a href={`${NBS_URL}/SystemAdmin.do`}>System Management</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table role="presentation" align="right">
+                                <tbody>
+                                    <tr>
+                                        <td className="navLink">
+                                            <a
+                                                href={`${NBS_URL}/UserGuide.do?method=open`}
+                                                target="_blank"
+                                                rel="noreferrer">
+                                                {' '}
+                                                Help{' '}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span> | </span>
+                                        </td>
+                                        <td className="navLink">
+                                            <a href={`${NBS_URL}/logout`}>Logout</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td style={{ width: '105px' }}>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h1 className="pageHeader" style={{ padding: '0px', margin: '0px', fontSize: '13px', color: '#185394' }}>
+                <table role="presentation" className="nedssPageHeaderAndLogoTable">
+                    <tbody>
+                        <tr>
+                            <td className="pageHeader" style={{ padding: '5px', marginBottom: '0px' }}>
+                                <a> Release 6.0.11-BETA Dashboard </a>
+                            </td>
+
+                            <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
+                                User : Henry Clark
+                            </td>
+
+                            <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
+                                <img
+                                    style={{ background: '#DCDCDC', border: 0 }}
+                                    title="Logo"
+                                    alt="NBS Logo"
+                                    height="32"
+                                    width="80"
+                                    src="/nedssLogo.jpeg"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colSpan={3}
+                                style={{
+                                    padding: '0px',
+                                    margin: '0px',
+                                    height: '9px',
+                                    backgroundImage: 'url(dropshadow.gif)',
+                                    backgroundRepeat: 'repeat-x'
+                                }}></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </h1>
+        </div>
+    );
 }
