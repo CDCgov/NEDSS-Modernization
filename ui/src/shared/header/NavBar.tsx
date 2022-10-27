@@ -111,6 +111,17 @@ export default function NavBar() {
                                 />
                             </td>
                         </tr>
+                        <tr>
+                            <td
+                                colSpan={3}
+                                style={{
+                                    padding: '0px',
+                                    margin: '0px',
+                                    height: '9px',
+                                    backgroundImage: 'url(dropshadow.gif)',
+                                    backgroundRepeat: 'repeat-x'
+                                }}></td>
+                        </tr>
                     </tbody>
                 </table>
             </h1>

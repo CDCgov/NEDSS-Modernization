@@ -27,6 +27,10 @@
         }
     }
 
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
     table.nedssNavTable {
         width: 100%;
         border: 0;
@@ -39,6 +43,8 @@
                 color: #fff;
                 text-decoration: none;
                 font-weight: bold;
+                font-size: 10pt;
+                font-family: Arial, sans-serif;
             }
             a {
                 color: #fff;
@@ -65,7 +71,7 @@
         width: 100%;
         border: 0;
         background: #003470;
-        margin-bottom: 0.5em;
+
         tr td {
             text-align: right;
             color: #000;
@@ -85,6 +91,8 @@
                 color: #fff;
                 text-align: right;
                 font-weight: bold;
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
             }
 
             &.logo {

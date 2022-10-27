@@ -42,9 +42,11 @@ ReactDOM.render(
         <ApolloProvider client={client}>
             <BrowserRouter>
                 {/* <TopBanner /> */}
-                <NavBar />
-                <div className="route-content">
-                    <AppRoutes />
+                <div style={{ padding: '5px' }}>
+                    <NavBar />
+                    <div className="route-content">
+                        <AppRoutes />
+                    </div>
                 </div>
             </BrowserRouter>
         </ApolloProvider>
