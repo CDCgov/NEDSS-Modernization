@@ -96,7 +96,6 @@ export default function NavBar() {
                                 <a> Release 6.0.11-BETA Dashboard </a>
                             </td>
 
-                            <input type="hidden" id="isTestVar" value="false" />
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
                                 User : Henry Clark
                             </td>
