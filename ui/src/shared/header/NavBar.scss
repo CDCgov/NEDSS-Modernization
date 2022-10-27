@@ -26,67 +26,71 @@
             }
         }
     }
-}
 
-table.nedssNavTable {
-    width: 100%;
-    border: 0;
-    background: #003470;
-}
+    table.nedssNavTable {
+        width: 100%;
+        border: 0;
+        background: #003470;
 
-table.nedssNavTable tr td {
-    text-align: center;
-    padding: 3px;
-}
-table.nedssNavTable tr td.navLink a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
+        tr td {
+            text-align: center;
+            padding: 3px;
+            &.navLink a {
+                color: #fff;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            a {
+                color: #fff;
+                text-decoration: none;
+                font-weight: bold;
+            }
+        }
 
-table.nedssNavTable tr td a,
-table.nedssNavTable span {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
+        span {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-table.nedssPageHeaderAndLogoTable {
-    width: 100%;
-    border: 0;
-    background: #003470;
-    margin-bottom: 0.5em;
-}
+        .nedssPageHeaderAndLogoTable {
+            width: 100%;
+            border: 0;
+            background: #003470;
+            margin-bottom: 0.5em;
+        }
+    }
 
-table.nedssPageHeaderAndLogoTable tr td.pageHeader {
-    text-align: left;
-    background: #dcdcdc;
-    font-size: 1.3em;
-    font-weight: bold;
-}
+    .nedssPageHeaderAndLogoTable {
+        width: 100%;
+        border: 0;
+        background: #003470;
+        margin-bottom: 0.5em;
+        tr td {
+            text-align: right;
+            color: #000;
+            padding: 0px 3px 0px 3px;
+            &.pageHeader {
+                text-align: left;
+                background: #dcdcdc;
+                font-size: 1.3em;
+                font-weight: bold;
+                a {
+                    color: #000;
+                    text-decoration: none;
+                }
+            }
 
-table.nedssPageHeaderAndLogoTable tr td {
-    text-align: right;
-    color: #000;
-    padding: 0px 3px 0px 3px;
-}
-table.nedssPageHeaderAndLogoTable tr td.pageHeader a {
-    color: #000;
-    text-decoration: none;
-}
-table.nedssPageHeaderAndLogoTable tr td.currentUser {
-    color: #fff;
-    text-align: right;
-    font-weight: bold;
-}
+            &.currentUser {
+                color: #fff;
+                text-align: right;
+                font-weight: bold;
+            }
 
-table.nedssPageHeaderAndLogoTable tr td.logo {
-    text-align: right;
-    width: 100px;
-}
-
-table.nedssPageHeaderAndLogoTable tr td.currentUser {
-    color: #FFF;
-    text-align: right;
-    font-weight: bold;
+            &.logo {
+                text-align: right;
+                width: 100px;
+            }
+        }
+    }
 }

@@ -5,7 +5,7 @@ const NBS_URL = process.env.REACT_APP_NBS_URL;
 
 export default function NavBar() {
     return (
-        <>
+        <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
                 <tbody>
                     <tr>
@@ -114,6 +114,6 @@ export default function NavBar() {
                     </tbody>
                 </table>
             </h1>
-        </>
+        </div>
     );
 }
