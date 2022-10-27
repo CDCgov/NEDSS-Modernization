@@ -1,10 +1,13 @@
-import { Grid } from '@trussworks/react-uswds';
+import { Grid, Pagination } from '@trussworks/react-uswds';
+import { useEffect, useState } from 'react';
+import './search.scss';
 
 type SearchItemsProps = {
     data: any;
 };
 
 export const SearchItems = ({ data }: SearchItemsProps) => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const _calculateAge = (birthday: Date) => {
         // birthday is a date
         const ageDifMs = Date.now() - birthday.getTime();
@@ -12,8 +15,38 @@ export const SearchItems = ({ data }: SearchItemsProps) => {
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     };
 
+    const handleNext = (type?: any, page?: number) => {
+        switch (type) {
+            case 'current':
+                setCurrentPage(page || 1);
+                break;
+            case 'next':
+                setCurrentPage(currentPage + 1);
+                break;
+            case 'prev':
+                setCurrentPage(currentPage - 1);
+                break;
+        }
+    };
+
+    useEffect(() => {
+        if (currentPage >= 10) {
+            return;
+        }
+        setCurrentPage(currentPage);
+    }, [currentPage]);
+
     return (
         <div className="margin-4">
+            <Pagination
+                style={{ justifyContent: 'flex-end' }}
+                totalPages={10}
+                currentPage={currentPage}
+                pathname={'/search'}
+                onClickNext={() => handleNext('next')}
+                onClickPrevious={() => handleNext('prev')}
+                onClickPageNumber={(_, page) => handleNext('current', page)}
+            />
             {data &&
                 data.length > 0 &&
                 data.map((item: any, index: number) => (
@@ -78,6 +111,15 @@ export const SearchItems = ({ data }: SearchItemsProps) => {
                         </Grid>
                     </div>
                 ))}
+            <Pagination
+                style={{ justifyContent: 'flex-end' }}
+                totalPages={10}
+                currentPage={currentPage}
+                pathname={'/search'}
+                onClickNext={() => handleNext('next')}
+                onClickPrevious={() => handleNext('prev')}
+                onClickPageNumber={(_, page) => handleNext('current', page)}
+            />
         </div>
     );
 };
