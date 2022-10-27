@@ -11,8 +11,6 @@ logging:
         org.hibernate.SQL: debug
         org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-server.servlet.context-path: /mdn
-
 spring:
     graphql:
         path: /graphql

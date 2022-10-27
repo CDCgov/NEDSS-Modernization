@@ -17,7 +17,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingGet(): CancelablePromise<ModelAndView> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -34,7 +34,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingHead(): CancelablePromise<ModelAndView> {
         return __request(OpenAPI, {
             method: 'HEAD',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -51,7 +51,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingPost(): CancelablePromise<ModelAndView | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -69,7 +69,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingPut(): CancelablePromise<ModelAndView | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -86,7 +86,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingDelete(): CancelablePromise<ModelAndView> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -102,7 +102,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingOptions(): CancelablePromise<ModelAndView> {
         return __request(OpenAPI, {
             method: 'OPTIONS',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -118,7 +118,7 @@ export class BasicErrorControllerService {
     public static errorHtmlUsingPatch(): CancelablePromise<ModelAndView> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/mdn/error',
+            url: '/error',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

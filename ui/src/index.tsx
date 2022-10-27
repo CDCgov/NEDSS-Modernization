@@ -9,12 +9,6 @@ import { AppRoutes } from './routes/AppRoutes';
 import UserService from './services/UserService';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
-const basename = document.querySelector('base')?.getAttribute('href') ?? '/';
-
-// redirect if invalid url
-if (!window.location.href.includes(basename)) {
-    window.history.replaceState(undefined, '', `${basename}search`);
-}
 // hard coded login for now
 UserService.login('msa', '');
 
@@ -35,7 +29,7 @@ const client = new ApolloClient({
     link: concat(
         authMiddleware,
         new HttpLink({
-            uri: `http://localhost:${Config.port}${basename}graphql`
+            uri: `http://localhost:${Config.port}/graphql`
         })
     ),
     cache: new InMemoryCache()
@@ -44,7 +38,7 @@ const client = new ApolloClient({
 ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
-            <BrowserRouter basename={basename}>
+            <BrowserRouter>
                 <TopBanner />
                 <NavBar />
                 <div className="route-content">
