@@ -1,14 +1,20 @@
-import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, concat, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache } from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { TopBanner } from './components/TopBanner/TopBanner';
+import { Config } from './config';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from './routes/AppRoutes';
 import UserService from './services/UserService';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
-import { Config } from './config';
+const basename = document.querySelector('base')?.getAttribute('href') ?? '/';
+
+// redirect if invalid url
+if (!window.location.href.includes(basename)) {
+    window.history.replaceState(undefined, '', `${basename}search`);
+}
 // hard coded login for now
 UserService.login('msa', '');
 
@@ -25,12 +31,11 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     // Call the next link in the middleware chain.
     return forward(operation);
 });
-
 const client = new ApolloClient({
     link: concat(
         authMiddleware,
         new HttpLink({
-            uri: `http://localhost:${Config.port}/graphql`
+            uri: `http://localhost:${Config.port}${basename}graphql`
         })
     ),
     cache: new InMemoryCache()
@@ -39,7 +44,7 @@ const client = new ApolloClient({
 ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
-            <BrowserRouter>
+            <BrowserRouter basename={basename}>
                 <TopBanner />
                 <NavBar />
                 <div className="route-content">

@@ -1,5 +1,6 @@
 {
     "name": "ui",
+    "homepage": "/mdn",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -34,8 +35,8 @@
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
         "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
         "graphql:gql": "npx gqlg --schemaFilePath src/generated/schema.graphqls --destDirPath ./src/generated/gql",
-        "graphql:codegen": "export API_TOKEN=$(curl http://localhost:8080/login -X POST --data '{\"username\":\"msa\"}' -H 'Content-Type:Application/JSON' | jq -r '.token') && graphql-codegen --config src/codegen.ts",
-        "openapi:codegen": "npx openapi-typescript-codegen --input http://localhost:8080/v2/api-docs --output ./src/generated/ --useOptions && npm run openapi:set-port ",
+        "graphql:codegen": "export API_TOKEN=$(curl http://localhost:8080/mdn/login -X POST --data '{\"username\":\"msa\"}' -H 'Content-Type:Application/JSON' | jq -r '.token') && graphql-codegen --config src/codegen.ts",
+        "openapi:codegen": "npx openapi-typescript-codegen --input http://localhost:8080/mdn/v2/api-docs --output ./src/generated/ --useOptions && npm run openapi:set-port ",
         "openapi:set-port": "sed -i '' -e \"s/localhost:8080'/localhost:' + Config.port/\" src/generated/core/OpenAPI.ts && echo \"import { Config } from '../../../src/config';\" >> src/generated/core/OpenAPI.ts"
     },
     "proxy": "http://localhost:8080/",

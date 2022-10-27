@@ -44,10 +44,16 @@ public class PersonMother {
     }
 
     public static Person generateRandomPerson(long id) {
+        final String firstName = RandomUtil.getRandomString();
+        final String middleName = RandomUtil.getRandomString();
+        final String lastName = RandomUtil.getRandomString();
         var entity = new NBSEntity(id, "PSN");
         var person = new Person();
         person.setId(id);
         person.setCd("PAT");
+        person.setFirstNm(firstName);
+        person.setMiddleNm(middleName);
+        person.setLastNm(lastName);
         person.setSsn(RandomUtil.getRandomSsn());
         person.setBirthTime(RandomUtil.getRandomDateInPast());
         person.setBirthGenderCd(RandomUtil.getRandomFromArray(Gender.values()));
@@ -82,8 +88,9 @@ public class PersonMother {
         name.setPersonUid(person);
         name.setStatusCd('A');
         name.setStatusTime(Instant.now());
-        name.setFirstNm(RandomUtil.getRandomString());
-        name.setLastNm(RandomUtil.getRandomString());
+        name.setFirstNm(firstName);
+        name.setMiddleNm(middleName);
+        name.setLastNm(lastName);
         person.setNames(Arrays.asList(name));
 
         // ethnic group
@@ -150,6 +157,9 @@ public class PersonMother {
         person.setId(id);
         person.setNBSEntity(new NBSEntity(id, "PSN"));
         person.setCd("PAT");
+        person.setFirstNm("John");
+        person.setMiddleNm("Bob");
+        person.setLastNm("Doe");
         person.setBirthTime(Instant.parse("1982-11-30T18:35:24.00Z"));
         person.setBirthGenderCd(Gender.M);
         person.setCurrSexCd(Gender.M);

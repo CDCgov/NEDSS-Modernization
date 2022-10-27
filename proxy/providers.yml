@@ -1,0 +1,29 @@
+http:
+    routers:
+        # Modernization app is prefixed with /mdn
+        reactForward:
+            service: react
+            rule: 'PathPrefix(`/mdn`)'
+        # NBS search page redirects to modernization app
+        searchForward:
+            service: react
+            rule: 'Path(`/nbs/MyTaskList1.do`)'
+            middlewares:
+                - setSearchPath
+        # Everything else defaults to NBS
+        nbsForward:
+            service: nbs
+            rule: 'PathPrefix(`/`)'
+    middlewares:
+        setSearchPath:
+            replacePath:
+                path: '/mdn/search' # This doesn't actually change the URL so react has a stroke when it catches it
+    services:
+        react:
+            loadBalancer:
+                servers:
+                    - url: 'http://modernization:8080/'
+        nbs:
+            loadBalancer:
+                servers:
+                    - url: 'http://wildfly:7001/'

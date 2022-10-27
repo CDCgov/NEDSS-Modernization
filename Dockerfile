@@ -11,7 +11,7 @@ RUN yum install tar gzip nodejs -y
 # Install node modules
 RUN npm install
 
-# Update application.yml database connection to point to nbs-mssql
+# Update database connections to point to nbs-mssql
 WORKDIR /usr/src/nbs
 RUN sed -i 's/localhost/nbs-mssql/' api/src/main/resources/application.yml
 RUN sed -i 's/localhost/nbs-mssql/' api/src/test/resources/application-test.yml

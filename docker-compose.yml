@@ -2,8 +2,16 @@ services:
   modernization:
     build: ./
     container_name: modernization
+    networks:
+      - nbs
+  reverse-proxy:
+    restart: always
+    image: traefik:v2.9
     ports:
-      - 8080:8080
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ./proxy/:/etc/traefik/
     networks:
       - nbs
 networks:
