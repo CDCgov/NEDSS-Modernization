@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +37,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EventService {
-    @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
 
     @PersistenceContext
     private final EntityManager entityManager;

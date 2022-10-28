@@ -31,7 +31,6 @@ const authMiddleware = setContext(async (_, { headers }) => {
         headers: header
     };
 });
-
 const client = new ApolloClient({
     link: authMiddleware.concat(httpLink),
     cache: new InMemoryCache()

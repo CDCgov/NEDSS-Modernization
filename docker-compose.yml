@@ -1,0 +1,10 @@
+services:
+  modernization:
+    build: ./
+    container_name: modernization
+    networks:
+      - nbs
+networks:
+  nbs:
+    name: nbs
+    driver: bridge

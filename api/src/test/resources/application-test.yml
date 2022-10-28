@@ -4,7 +4,7 @@ logging:
         org.hibernate.SQL: debug
         org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 server:
-    port: 8081
+    port: 9090
 spring:
     graphql:
         graphiql:
