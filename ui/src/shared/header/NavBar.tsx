@@ -1,7 +1,7 @@
 import './NavBar.scss';
 
 // eslint-disable-next-line no-undef
-const NBS_URL = process.env.REACT_APP_NBS_URL;
+const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
 
 export default function NavBar() {
     return (
