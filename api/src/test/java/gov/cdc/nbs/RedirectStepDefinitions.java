@@ -1,4 +1,4 @@
-package gov.cdc.nbs.controller;
+package gov.cdc.nbs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -14,24 +14,45 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import gov.cdc.nbs.Application;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class RedirectControllerTest {
+public class RedirectStepDefinitions {
+    @Test
+    public void testForDebugging() throws Exception {
+    }
+
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    void testRedirectSimpleSearch() throws Exception {
-        var response = mvc.perform(MockMvcRequestBuilders
+    private MockHttpServletResponse response;
+
+    @Given("I send a request to the NBS simple search")
+    public void i_send_a_request_to_the_nbs_simple_search() throws Exception {
+        response = mvc.perform(MockMvcRequestBuilders.post("/nbs/HomePage.do")).andReturn().getResponse();
+    }
+
+    @Then("I am redirected to the simple search react page")
+    public void i_am_redirected_to_the_simple_search_reach_page() {
+        assertEquals(HttpStatus.FOUND.value(), response.getStatus());
+        var redirectUrl = response.getRedirectedUrl();
+        assertNotNull(redirectUrl);
+        assertTrue(redirectUrl.equals("/"));
+    }
+
+    @Given("I send a search request to the NBS simple search")
+    public void I_send_a_search_request_to_the_nbs_simple_search() throws Exception {
+        response = mvc.perform(MockMvcRequestBuilders
                 .post("/nbs/HomePage.do")
                 .param("patientSearchVO.lastName", "Doe")
                 .param("patientSearchVO.firstName", "John")
@@ -42,7 +63,10 @@ public class RedirectControllerTest {
                 .param("patientSearchVO.localID", "1234")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.ALL)).andReturn().getResponse();
-        assertEquals(HttpStatus.FOUND.value(), response.getStatus());
+    }
+
+    @Then("My search params are passed to the simple search react page")
+    public void My_search_params_are_passed_to_the_simple_search_react_page() {
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
         assertTrue(redirectUrl.contains("/?"));
@@ -56,15 +80,17 @@ public class RedirectControllerTest {
         assertTrue(redirectUrl.contains("id=1234"));
     }
 
-    @Test
-    void testRedirectAdvancedSearch() throws Exception {
-        var response = mvc.perform(MockMvcRequestBuilders
-                .get("/nbs/MyTaskList1.do")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .accept(MediaType.ALL)).andReturn().getResponse();
+    @Given("I navigate to the NBS advanced search page")
+    public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
+        response = mvc.perform(MockMvcRequestBuilders.get("/nbs/MyTaskList1.do")).andReturn().getResponse();
+    }
+
+    @Then("I am redirected to the advanced search react page")
+    public void i_am_redirected_to_the_advanced_search_react_page() {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
         assertTrue(redirectUrl.contains("/search"));
     }
+
 }
