@@ -8,11 +8,12 @@
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^12",
         "@testing-library/user-event": "^12",
-        "@trussworks/react-uswds": "^3.1.0",
+        "@trussworks/react-uswds": "^3.2.0",
         "@types/jest": "^28.1.6",
         "@types/react": "^18.0.15",
         "@types/react-dom": "^18.0.6",
         "classnames": "^2.3.2",
+        "cypress-cucumber-preprocessor": "^4.3.1",
         "graphql": "^16.6.0",
         "react": "^17",
         "react-dom": "^17",
@@ -30,6 +31,8 @@
         "eject": "react-scripts eject",
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
+        "cy:headless": "./node_modules/.bin/cypress run",
+        "cy:browser": "./node_modules/.bin/cypress run --headed --no-exit",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
         "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
@@ -63,9 +66,11 @@
         "@graphql-codegen/typescript": "^2.7.3",
         "@graphql-codegen/typescript-operations": "^2.5.3",
         "@graphql-codegen/typescript-react-apollo": "^3.3.3",
+        "@testing-library/cypress": "^8.0.3",
         "@types/node": "^18.11.5",
         "@typescript-eslint/eslint-plugin": "^5.32.0",
         "@typescript-eslint/parser": "^5.32.0",
+        "cypress": "^10.11.0",
         "eslint": "^8.21.0",
         "eslint-config-google": "^0.14.0",
         "eslint-config-prettier": "^8.5.0",
@@ -74,6 +79,10 @@
         "gqlg": "1.0.2",
         "openapi-typescript-codegen": "^0.23.0",
         "prettier": "^2.7.1",
-        "sass": "^1.54.0"
+        "sass": "^1.54.0",
+        "vite": "^3.2.0"
+    },
+    "cypress-cucumber-preprocessor": {
+        "nonGlobalStepDefinitions": true
     }
 }
