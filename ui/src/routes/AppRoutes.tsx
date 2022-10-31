@@ -6,10 +6,13 @@ import { SearchEngine } from '../pages/search';
 export const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/patient" element={<AddPatient />} />
-            <Route path="/search" element={<SearchEngine />} />
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/">
+                <Route path="/search" element={<Home />} />
+                <Route path="/patient" element={<AddPatient />} />
+                <Route path="/advanced-search" element={<SearchEngine />} />
+                <Route path="*" element={<Navigate to="/search" />} />
+                <Route path="/" element={<Navigate to="/search" />} />
+            </Route>
         </Routes>
     );
 };

@@ -20,6 +20,7 @@ const authMiddleware = setContext(async (_, { headers }) => {
     // hard coded login for now
     await UserService.login('msa', '').then(async (response) => {
         // grab the token from the userService
+        localStorage.setItem('loginData', JSON.stringify(response));
         const token = response?.token;
         // Use the setContext method to set the HTTP headers.
         header = {
