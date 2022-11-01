@@ -7,24 +7,12 @@ import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/
 import './search.scss';
 import { SearchItems } from './SearchItems';
 
-export const SearchEngine = () => {
+export const AdvancedSearch = () => {
     const [searchType, setSearchType] = useState<string>('search');
     const [searchItems, setSearchItems] = useState<any>([]);
     const [searchParams] = useSearchParams();
 
     const [getFilteredData] = useFindPatientsByFilterLazyQuery();
-    // const navigate = useNavigate();
-
-    // const [searchValue, setSearchValue] = useState<string>('');
-    // const [filtered, setFiltered] = useState<any[]>();
-
-    // const handleSearch = (e: any) => {
-    //     e.preventDefault();
-    //     navigate({
-    //         pathname: '/search',
-    //         search: `?q=${searchValue}`
-    //     });
-    // };
 
     const onEventSearch = (data: any) => {
         if (data) {

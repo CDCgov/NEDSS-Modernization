@@ -1,16 +1,15 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Alert, Button, Form, Grid, Search, Table } from '@trussworks/react-uswds';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import * as yup from 'yup';
+import { DatePickerInput } from '../../components/FormInputs/DatePickerInput';
 import { Input } from '../../components/FormInputs/Input';
 import { SelectInput } from '../../components/FormInputs/SelectInput';
-// import { stateList } from '../../constant/states';
-import './home.scss';
-import * as yup from 'yup';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
-import { DatePickerInput } from '../../components/FormInputs/DatePickerInput';
 import { TableContent } from '../../components/TableContent/TableContent';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import './home.scss';
 
 type FormTypes = {
     firstName: string;
@@ -32,7 +31,7 @@ const tableHead = [
     { name: 'Action', sortable: false }
 ];
 
-export const Home = () => {
+export const SimpleSearch = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -127,7 +126,7 @@ export const Home = () => {
                                         formatName.length > 1 ? formatName[1] : ''
                                     }`;
                                     navigate({
-                                        pathname: '/search',
+                                        pathname: '/advanced-search',
                                         search
                                     });
                                 }}

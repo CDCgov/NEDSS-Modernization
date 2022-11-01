@@ -34,7 +34,7 @@ public class RedirectController {
         if (user.isPresent()) {
             addUserIdCookie(user.get().getUserId(), response);
             attributes.addAllAttributes(redirectionService.getSearchAttributes(incomingParams));
-            return new RedirectView("/");
+            return new RedirectView("/search");
         } else {
             return new RedirectView("/nbs/timeout");
         }
@@ -49,7 +49,7 @@ public class RedirectController {
         var user = redirectionService.getUserFromSession(request.getCookies());
         if (user.isPresent()) {
             addUserIdCookie(user.get().getUserId(), response);
-            return new RedirectView("/search");
+            return new RedirectView("/advanced-search");
         } else {
             return new RedirectView("/nbs/timeout");
         }

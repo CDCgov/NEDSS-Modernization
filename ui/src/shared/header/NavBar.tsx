@@ -1,9 +1,14 @@
+import { Link } from 'react-router-dom';
+import UserService from '../../services/UserService';
 import './NavBar.scss';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
+const loginData: any = UserService.getUser();
 
 export default function NavBar() {
+    const userName = JSON.parse(loginData)?.username;
+
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -14,7 +19,7 @@ export default function NavBar() {
                                 <tbody>
                                     <tr>
                                         <td className="navLink">
-                                            <a href={`${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</a>
+                                            <Link to={'/search'}>Home</Link>
                                         </td>
                                         <td>
                                             {' '}
@@ -97,7 +102,7 @@ export default function NavBar() {
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : Henry Clark
+                                User : {userName}
                             </td>
 
                             <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>

@@ -26,6 +26,6 @@
     },
     "include": [
         "src",
-        "../ui/node_modules/cypress "
+        "cypress.config.ts"
     ]
 }

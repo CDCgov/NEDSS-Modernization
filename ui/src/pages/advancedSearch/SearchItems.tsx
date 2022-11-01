@@ -42,7 +42,7 @@ export const SearchItems = ({ data }: SearchItemsProps) => {
                 style={{ justifyContent: 'flex-end' }}
                 totalPages={10}
                 currentPage={currentPage}
-                pathname={'/search'}
+                pathname={'/advanced-search'}
                 onClickNext={() => handleNext('next')}
                 onClickPrevious={() => handleNext('prev')}
                 onClickPageNumber={(_, page) => handleNext('current', page)}
@@ -115,7 +115,7 @@ export const SearchItems = ({ data }: SearchItemsProps) => {
                 style={{ justifyContent: 'flex-end' }}
                 totalPages={10}
                 currentPage={currentPage}
-                pathname={'/search'}
+                pathname={'/advanced-search'}
                 onClickNext={() => handleNext('next')}
                 onClickPrevious={() => handleNext('prev')}
                 onClickPageNumber={(_, page) => handleNext('current', page)}
