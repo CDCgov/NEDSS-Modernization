@@ -1,0 +1,11 @@
+.sign-in-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 2%;
+    .sign-in-form {
+        flex-grow: 1;
+        .usa-show-password {
+            cursor: pointer;
+        }
+    }
+}

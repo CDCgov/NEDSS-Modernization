@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
-import './search.scss';
+import './AdvancedSearch.scss';
 import { SearchItems } from './SearchItems';
 
 export const AdvancedSearch = () => {

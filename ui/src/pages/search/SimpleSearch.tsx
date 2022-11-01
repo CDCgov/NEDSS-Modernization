@@ -9,7 +9,7 @@ import { Input } from '../../components/FormInputs/Input';
 import { SelectInput } from '../../components/FormInputs/SelectInput';
 import { TableContent } from '../../components/TableContent/TableContent';
 import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
-import './home.scss';
+import './SimpleSearch.scss';
 
 type FormTypes = {
     firstName: string;
@@ -120,7 +120,6 @@ export const SimpleSearch = () => {
                                 placeholder="Search for a patient"
                                 onSubmit={(e: any) => {
                                     e.preventDefault();
-                                    console.log('e.target.value:', e.target[0].value);
                                     const formatName = e.target[0].value.split(' ');
                                     const search = `?firstName=${formatName[0]}&lastName=${
                                         formatName.length > 1 ? formatName[1] : ''

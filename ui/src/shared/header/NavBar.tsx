@@ -1,14 +1,13 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import UserService from '../../services/UserService';
+import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
-const loginData: any = UserService.getUser();
 
 export default function NavBar() {
-    const userName = JSON.parse(loginData)?.username;
-
+    const { state } = useContext(UserContext);
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -19,7 +18,7 @@ export default function NavBar() {
                                 <tbody>
                                     <tr>
                                         <td className="navLink">
-                                            <Link to={'/search'}>Home</Link>
+                                            <Link to={`/${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</Link>
                                         </td>
                                         <td>
                                             {' '}
@@ -102,7 +101,7 @@ export default function NavBar() {
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : {userName}
+                                User : {state.userId}
                             </td>
 
                             <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
