@@ -17,16 +17,29 @@ const httpLink = createHttpLink({
 
 const authMiddleware = setContext(async (_, { headers }) => {
     let header = {};
-    // hard coded login for now
-    await UserService.login('msa', '').then(async (response) => {
-        // grab the token from the userService
-        const token = response?.token;
-        // Use the setContext method to set the HTTP headers.
+    // We are already logged in, use current user
+    if (UserService.getUser()) {
         header = {
             ...headers,
-            authorization: token ? `Bearer ${token}` : ''
+            authorization: `Bearer ${UserService.getUser()?.token}`
         };
-    });
+    } else {
+        // use the userId cookie set from the proxied request
+        const userId = UserService.getUserIdFromCookie();
+        if (userId) {
+            await UserService.login(userId, '').then(async (response) => {
+                // grab the token from the userService
+                const token = response?.token;
+                // Use the setContext method to set the HTTP headers.
+                header = {
+                    ...headers,
+                    authorization: token ? `Bearer ${token}` : ''
+                };
+            });
+        } else {
+            throw new Error('User not logged in');
+        }
+    }
     return {
         headers: header
     };

@@ -53,7 +53,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     .filter(s -> !s.isEmpty())
                     .map(s -> s.substring(BEARER.length()))
                     .map(s -> verifier.verify(s));
-        } catch (JWTVerificationException ex) {
+        } catch (JWTVerificationException | StringIndexOutOfBoundsException ex) {
             return Optional.empty();
         }
     }
