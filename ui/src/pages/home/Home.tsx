@@ -127,7 +127,7 @@ export const Home = () => {
                                         formatName.length > 1 ? formatName[1] : ''
                                     }`;
                                     navigate({
-                                        pathname: '/search',
+                                        pathname: '/advanced-search',
                                         search
                                     });
                                 }}

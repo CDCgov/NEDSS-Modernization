@@ -23,12 +23,12 @@ public class RedirectController {
     public RedirectView redirectSimpleSearch(HttpServletRequest request, RedirectAttributes attributes,
             @RequestParam Map<String, String> incomingParams) {
         attributes.addAllAttributes(redirectionService.getSearchAttributes(incomingParams));
-        return new RedirectView("/");
+        return new RedirectView("/search");
     }
 
     @GetMapping("/nbs/MyTaskList1.do")
     public RedirectView redirectAdvancedSearch(HttpServletRequest request, RedirectAttributes attributes) {
-        return new RedirectView("/search");
+        return new RedirectView("/advanced-search");
     }
 
 }
