@@ -90,7 +90,7 @@ public class RedirectStepDefinitions {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.equals("/"));
+        assertTrue(redirectUrl.equals("/search"));
     }
 
     @Given("I send a search request to the NBS simple search")
@@ -113,7 +113,7 @@ public class RedirectStepDefinitions {
     public void My_search_params_are_passed_to_the_simple_search_react_page() {
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.contains("/?"));
+        assertTrue(redirectUrl.contains("/search?"));
         assertTrue(redirectUrl.contains("lastName=Doe"));
         assertTrue(redirectUrl.contains("firstName=John"));
         var encodedDate = URLEncoder.encode("01/01/2000", StandardCharsets.UTF_8);
@@ -137,7 +137,7 @@ public class RedirectStepDefinitions {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.contains("/search"));
+        assertTrue(redirectUrl.contains("/advanced-search"));
     }
 
     @Then("I am redirected to the timeout page")
@@ -150,7 +150,7 @@ public class RedirectStepDefinitions {
 
     @Then("the user Id is present in the redirect")
     public void the_user_id_is_present_in_the_redirect() {
-        var userIdCookie = response.getCookie("nbsUserId");
+        var userIdCookie = response.getCookie("nbs_user");
         assertNotNull(userIdCookie);
         assertEquals(UserMother.clerical().getUserId(), userIdCookie.getValue());
     }
