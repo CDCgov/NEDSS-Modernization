@@ -69,8 +69,9 @@ export const UserContextProvider = (props: any) => {
     };
 
     const logout = () => {
-        // delete cookie
+        // delete cookies
         document.cookie = USER_ID + '=; Max-Age=0; path=/;';
+        document.cookie = TOKEN + '=; Max-Age=0; path=/;';
         // reset state
         setState({ ...initialState });
     };

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
 
@@ -7,7 +6,7 @@ import './NavBar.scss';
 const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
 
 export default function NavBar() {
-    const { state } = useContext(UserContext);
+    const { state, logout } = useContext(UserContext);
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -18,7 +17,7 @@ export default function NavBar() {
                                 <tbody>
                                     <tr>
                                         <td className="navLink">
-                                            <Link to={`/${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</Link>
+                                            <a href={`${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</a>
                                         </td>
                                         <td>
                                             {' '}
@@ -82,7 +81,9 @@ export default function NavBar() {
                                             <span> | </span>
                                         </td>
                                         <td className="navLink">
-                                            <a href={`${NBS_URL}/logout`}>Logout</a>
+                                            <a onClick={logout} href={`${NBS_URL}/logout`}>
+                                                Logout
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
