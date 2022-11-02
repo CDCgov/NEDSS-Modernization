@@ -68,7 +68,6 @@ public class WebSecurityConfig {
                     .build();
             res.getWriter().write(mapper.writeValueAsString(error));
         } else if (ex instanceof UsernameNotFoundException) {
-            res.setContentType("application/json;charset=UTF-8");
             res.setStatus(401);
         }
     }

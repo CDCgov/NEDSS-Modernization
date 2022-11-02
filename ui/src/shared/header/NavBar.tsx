@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
-const loginData: any = localStorage.getItem('loginData');
 
 export default function NavBar() {
-    const userName = JSON.parse(loginData)?.username;
-
+    const { state, logout } = useContext(UserContext);
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -18,7 +17,7 @@ export default function NavBar() {
                                 <tbody>
                                     <tr>
                                         <td className="navLink">
-                                            <Link to={'/search'}>Home</Link>
+                                            <a href={`${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</a>
                                         </td>
                                         <td>
                                             {' '}
@@ -82,7 +81,9 @@ export default function NavBar() {
                                             <span> | </span>
                                         </td>
                                         <td className="navLink">
-                                            <a href={`${NBS_URL}/logout`}>Logout</a>
+                                            <a onClick={logout} href={`${NBS_URL}/logout`}>
+                                                Logout
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -101,7 +102,7 @@ export default function NavBar() {
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : {userName}
+                                User : {state.userId}
                             </td>
 
                             <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>

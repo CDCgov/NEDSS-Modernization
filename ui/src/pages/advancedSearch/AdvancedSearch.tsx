@@ -1,30 +1,18 @@
 import { Grid } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { EventSearch } from '../../components/EventSearch';
+import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
-import './search.scss';
+import './AdvancedSearch.scss';
 import { SearchItems } from './SearchItems';
 
-export const SearchEngine = () => {
+export const AdvancedSearch = () => {
     const [searchType, setSearchType] = useState<string>('search');
     const [searchItems, setSearchItems] = useState<any>([]);
     const [searchParams] = useSearchParams();
 
     const [getFilteredData] = useFindPatientsByFilterLazyQuery();
-    // const navigate = useNavigate();
-
-    // const [searchValue, setSearchValue] = useState<string>('');
-    // const [filtered, setFiltered] = useState<any[]>();
-
-    // const handleSearch = (e: any) => {
-    //     e.preventDefault();
-    //     navigate({
-    //         pathname: '/search',
-    //         search: `?q=${searchValue}`
-    //     });
-    // };
 
     const onEventSearch = (data: any) => {
         if (data) {
