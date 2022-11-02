@@ -7,8 +7,13 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import gov.cdc.nbs.entity.enums.SecurityEventType;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -25,8 +30,9 @@ public class SecurityLog {
     @Column(name = "user_id", length = 50)
     private String userId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "event_type_cd", length = 20)
-    private String eventTypeCd;
+    private SecurityEventType eventTypeCd;
 
     @Column(name = "event_time")
     private Instant eventTime;

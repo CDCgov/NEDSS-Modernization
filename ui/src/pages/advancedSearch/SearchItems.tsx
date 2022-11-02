@@ -1,6 +1,6 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
-import './search.scss';
+import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
     data: any;
