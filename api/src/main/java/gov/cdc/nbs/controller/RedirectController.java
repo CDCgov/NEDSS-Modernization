@@ -3,7 +3,6 @@ package gov.cdc.nbs.controller;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,35 +29,20 @@ public class RedirectController {
             HttpServletResponse response,
             RedirectAttributes attributes,
             @RequestParam Map<String, String> incomingParams) throws IOException {
-        var user = redirectionService.getUserFromSession(request.getCookies());
-        if (user.isPresent()) {
-            addUserIdCookie(user.get().getUserId(), response);
+        var redirect = redirectionService.handleRedirect("/search", request, response);
+        var redirectedUrl = redirect.getUrl();
+        if (redirectedUrl != null && redirectedUrl.equals("/search")) {
             attributes.addAllAttributes(redirectionService.getSearchAttributes(incomingParams));
-            return new RedirectView("/search");
-        } else {
-            return new RedirectView("/nbs/timeout");
         }
+        return redirect;
     }
 
     @ApiIgnore
     @GetMapping("/nbs/MyTaskList1.do") // proxy verifies path contains: ?ContextAction=GlobalPatient
     public RedirectView redirectAdvancedSearch(
             HttpServletRequest request,
-            HttpServletResponse response,
-            RedirectAttributes attributes) throws IOException {
-        var user = redirectionService.getUserFromSession(request.getCookies());
-        if (user.isPresent()) {
-            addUserIdCookie(user.get().getUserId(), response);
-            return new RedirectView("/advanced-search");
-        } else {
-            return new RedirectView("/nbs/timeout");
-        }
-    }
-
-    private void addUserIdCookie(String userId, HttpServletResponse response) {
-        var cookie = new Cookie("nbsUserId", userId);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+            HttpServletResponse response) throws IOException {
+        return redirectionService.handleRedirect("/advanced-search", request, response);
     }
 
 }

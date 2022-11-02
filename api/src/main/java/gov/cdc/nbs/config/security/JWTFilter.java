@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +29,8 @@ public class JWTFilter extends OncePerRequestFilter {
     private final static String BEARER = "Bearer ";
     private final UserService userService;
     private final JWTVerifier verifier;
+    private final SecurityProperties securityProperties;
+    private final String TOKEN_COOKIE_NAME = "nbs_token";
 
     /**
      * On every request, validate the JWT, and load user details from the
@@ -38,16 +41,28 @@ public class JWTFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         verifyAndDecodeJWT(request)
                 .map(userService::findUserByToken)
-                .map(userDetails -> buildPreAuthenticatedToken(userDetails, request))
-                .ifPresent(preAuthToken -> SecurityContextHolder.getContext().setAuthentication(preAuthToken));
+                .map(userDetails -> {
+                    response.addCookie(createJWTCookie(userDetails));
+                    return buildPreAuthenticatedToken(userDetails, request);
+                })
+                .ifPresent(preAuthToken -> {
+                    SecurityContextHolder.getContext().setAuthentication(preAuthToken);
+                });
         filterChain.doFilter(request, response);
+    }
+
+    public Cookie createJWTCookie(NbsUserDetails userDetails) {
+        var cookie = new Cookie(TOKEN_COOKIE_NAME, userDetails.getToken());
+        cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
+        cookie.setPath("/");
+        return cookie;
     }
 
     /**
      * Pulls the JWT from the "Authorization" header and validates it against the
      * {@link gov.cdc.nbs.config.security.JWTSecurityConfig#jwtVerifier verifier}
      */
-    private Optional<DecodedJWT> verifyAndDecodeJWT(HttpServletRequest request) {
+    public Optional<DecodedJWT> verifyAndDecodeJWT(HttpServletRequest request) {
         try {
             return Optional.ofNullable(request.getHeader(AUTHORIZATION))
                     .filter(s -> !s.isEmpty())
@@ -63,7 +78,7 @@ public class JWTFilter extends OncePerRequestFilter {
      * {@link org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken}
      * that notifies Spring Security that the request has been authorized
      */
-    private PreAuthenticatedAuthenticationToken buildPreAuthenticatedToken(NbsUserDetails principal,
+    public PreAuthenticatedAuthenticationToken buildPreAuthenticatedToken(NbsUserDetails principal,
             HttpServletRequest request) {
         var pat = new PreAuthenticatedAuthenticationToken(principal, null, principal.getAuthorities());
         pat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

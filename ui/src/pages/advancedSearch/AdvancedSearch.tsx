@@ -1,7 +1,7 @@
 import { Grid } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { EventSearch } from '../../components/EventSearch';
+import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
 import './AdvancedSearch.scss';

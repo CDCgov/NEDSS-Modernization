@@ -1,23 +1,34 @@
 import React, { useEffect } from 'react';
-import { ApiError, LoginResponse } from '../generated';
+import { ApiError } from '../generated';
 import { UserControllerService } from '../generated/services/UserControllerService';
-const USER_ID = 'nbsUserId=';
-const TOKEN = 'token';
+const USER_ID = 'nbs_user=';
+const TOKEN = 'nbs_token=';
 
 interface UserState {
     isLoggedIn: boolean;
     isLoginPending: boolean;
     loginError: string | undefined;
     userId: string | undefined;
-    token: string | undefined;
+    getToken: () => string | undefined;
 }
+
+// Grab token from cookie as it is updated on every request
+const getToken = (): string | undefined => {
+    if (document.cookie.includes(TOKEN)) {
+        const tokenStart = document.cookie.indexOf(TOKEN) + TOKEN.length;
+        const tokenEnd = document.cookie.indexOf(';', tokenStart);
+        return document.cookie.substring(tokenStart, tokenEnd > -1 ? tokenEnd : document.cookie.length);
+    } else {
+        return undefined;
+    }
+};
 
 const initialState: UserState = {
     isLoggedIn: false,
     isLoginPending: false,
     loginError: undefined,
     userId: undefined,
-    token: undefined
+    getToken
 };
 
 export const UserContext = React.createContext<{
@@ -32,72 +43,53 @@ export const UserContext = React.createContext<{
     logout: () => {}
 });
 
-const getUserIdFromCookie = (): string | undefined => {
-    if (document.cookie.includes(USER_ID)) {
-        const userIdStart = document.cookie.indexOf(USER_ID) + USER_ID.length;
-        const userIdEnd = document.cookie.indexOf(';', userIdStart);
-        return document.cookie.substring(userIdStart, userIdEnd > -1 ? userIdEnd : document.cookie.length);
-    } else {
-        return undefined;
-    }
-};
-
-const getUserFromLocalStorage = (): LoginResponse | undefined => {
-    const username = localStorage.getItem(USER_ID);
-    const token = localStorage.getItem(TOKEN);
-    if (username && token) {
-        return {
-            username,
-            token
-        };
-    }
-    return undefined;
-};
-
-const saveUserToLocalStorage = (user: LoginResponse): void => {
-    if (user.token && user.username) {
-        localStorage.setItem(USER_ID, user.username);
-        localStorage.setItem(TOKEN, user.token);
-    }
-};
-
 export const UserContextProvider = (props: any) => {
     const [state, setState] = React.useState({ ...initialState });
-
-    const setLoginPending = (isLoginPending: boolean) => setState({ ...initialState, isLoginPending });
-    const setLoginSuccess = (userId: string, token: string) =>
-        setState({ ...initialState, isLoggedIn: true, userId, token });
+    const setLoginPending = (isLoginPending: boolean) => setState({ ...state, isLoginPending, loginError: undefined });
+    const setLoginSuccess = (userId: string) => setState({ ...initialState, isLoggedIn: true, userId });
     const setLoginError = (loginError: string) => setState({ ...initialState, loginError });
-
     const login = async (username: string, password: string): Promise<boolean> => {
         setLoginPending(true);
-
-        const response: LoginResponse = await UserControllerService.loginUsingPost({
+        const success: boolean = await UserControllerService.loginUsingPost({
             request: { username, password }
-        }).catch((ex: ApiError) => {
-            if (ex.status === 401) {
-                setLoginError('Incorrect username or password');
-            } else {
-                setLoginError('Login failed');
-            }
-            return false;
-        });
-        saveUserToLocalStorage(response);
-        setLoginSuccess(response.username, response.token);
-        return true;
+        })
+            .then((response) => {
+                setLoginSuccess(response.username);
+                return true;
+            })
+            .catch((ex: ApiError) => {
+                if (ex.status === 401) {
+                    setLoginError('Incorrect username or password');
+                } else {
+                    setLoginError('Login failed');
+                }
+                return false;
+            });
+        return success;
     };
 
     const logout = () => {
-        setLoginPending(false);
+        // delete cookie
+        document.cookie = USER_ID + '=; Max-Age=0; path=/;';
+        // reset state
+        setState({ ...initialState });
     };
 
-    // on creation attempt to set user from localStorage or from cookie
+    // proxied requests set the USER_ID cookie. use it on initialization to log in
+    const getUserIdFromCookie = (): string | undefined => {
+        if (document.cookie.includes(USER_ID)) {
+            const userIdStart = document.cookie.indexOf(USER_ID) + USER_ID.length;
+            const userIdEnd = document.cookie.indexOf(';', userIdStart);
+            return document.cookie.substring(userIdStart, userIdEnd > -1 ? userIdEnd : document.cookie.length);
+        } else {
+            return undefined;
+        }
+    };
+
+    // on init attempt to login using USER_ID cookie
     useEffect(() => {
-        const userFromLocalStorage = getUserFromLocalStorage();
         const userIdFromCookie = getUserIdFromCookie();
-        if (userFromLocalStorage) {
-            setLoginSuccess(userFromLocalStorage.username, userFromLocalStorage.token);
-        } else if (userIdFromCookie) {
+        if (userIdFromCookie) {
             login(userIdFromCookie, '');
         }
     }, []);

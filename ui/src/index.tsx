@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import ApolloContext from './providers/ApolloContext';
+import ApolloWrapper from './providers/ApolloContext';
 // import { TopBanner } from './components/TopBanner/TopBanner';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
@@ -12,7 +12,7 @@ import NavBar from './shared/header/NavBar';
 ReactDOM.render(
     <React.StrictMode>
         <UserContextProvider>
-            <ApolloContext>
+            <ApolloWrapper>
                 <BrowserRouter>
                     {/* <TopBanner /> */}
                     <div style={{ padding: '5px' }}>
@@ -22,7 +22,7 @@ ReactDOM.render(
                         </div>
                     </div>
                 </BrowserRouter>
-            </ApolloContext>
+            </ApolloWrapper>
         </UserContextProvider>
     </React.StrictMode>,
     document.getElementById('root')

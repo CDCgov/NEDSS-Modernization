@@ -1,6 +1,7 @@
 package gov.cdc.nbs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
@@ -19,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.model.LoginRequest;
-import gov.cdc.nbs.model.LoginResponse;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.support.UserMother;
 import io.cucumber.java.en.Given;
@@ -59,8 +59,15 @@ public class AuthenticationStepDefinitions {
 
     @Given("I have authenticated as a user")
     public void i_have_authenticated_as_a_user() throws Exception {
-        var response = sendLoginRequest(user.getUserId(), null);
-        token = response.getToken();
+        var response = mvc.perform(MockMvcRequestBuilders
+                .post("/login")
+                .content(mapper.writeValueAsBytes(new LoginRequest(user.getUserId(), "")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        var tokenCookie = response.getResponse().getCookie("nbs_token");
+        assertNotNull(tokenCookie);
+        token = tokenCookie.getValue();
     }
 
     @When("I try to access the patient search API")
@@ -86,18 +93,6 @@ public class AuthenticationStepDefinitions {
     @Then("I get a 403 forbidden response")
     public void i_get_a_403_forbidden_response() {
         assertEquals(403, result.getResponse().getStatus());
-    }
-
-    private LoginResponse sendLoginRequest(String username, String password) throws Exception {
-        var requestJson = mapper.writeValueAsString(new LoginRequest(username, password));
-        var mvcResult = mvc.perform(MockMvcRequestBuilders
-                .post("/login")
-                .content(requestJson)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
-
-        return mapper.readValue(mvcResult.getResponse().getContentAsString(), LoginResponse.class);
     }
 
     private String findAllPatientsQuery() {

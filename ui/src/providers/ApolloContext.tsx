@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { Config } from '../config';
 import { UserContext } from './UserContext';
 
-export default function ApolloContext(props: any) {
+export default function ApolloWrapper(props: any) {
     const { state } = useContext(UserContext);
 
     const httpLink = createHttpLink({
@@ -14,7 +14,7 @@ export default function ApolloContext(props: any) {
         let header = {};
         header = {
             ...headers,
-            authorization: `Bearer ${state.token}`
+            authorization: `Bearer ${state.getToken()}`
         };
         return {
             headers: header
