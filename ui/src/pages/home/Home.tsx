@@ -102,7 +102,7 @@ export const Home = () => {
             }
         }).then(() => {
             navigate({
-                pathname: '/',
+                pathname: '/search',
                 search
             });
             setSubmitted(true);
@@ -116,6 +116,7 @@ export const Home = () => {
                     <Grid row className="flex-justify-end">
                         <Grid col={6}>
                             <Search
+                                id="advancedSearchButton"
                                 size="big"
                                 className="flex-justify-end"
                                 placeholder="Search for a patient"
@@ -291,10 +292,13 @@ export const Home = () => {
                                     </Grid>
                                     <Grid col={12} className="flex-align-self-end">
                                         <div className="grid-row flex-justify-end flex-align-end flex-wrap">
-                                            <p className="margin-right-105 text-primary text-bold margin-bottom-05">
+                                            <p
+                                                id="advanceSearchText"
+                                                className="margin-right-105 text-primary text-bold margin-bottom-05">
                                                 Advanced Search
                                             </p>
                                             <Button
+                                                id="clearButton"
                                                 type={'button'}
                                                 onClick={() =>
                                                     reset({
@@ -309,7 +313,9 @@ export const Home = () => {
                                                 outline>
                                                 Clear
                                             </Button>
-                                            <Button type={'submit'}>Search</Button>
+                                            <Button id="simpleSeachButton" type={'submit'}>
+                                                Search
+                                            </Button>
                                         </div>
                                     </Grid>
                                 </Grid>
