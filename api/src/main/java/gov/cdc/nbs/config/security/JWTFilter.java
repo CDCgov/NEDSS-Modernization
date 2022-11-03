@@ -65,8 +65,7 @@ public class JWTFilter extends OncePerRequestFilter {
     public Optional<DecodedJWT> verifyAndDecodeJWT(HttpServletRequest request) {
         try {
             return Optional.ofNullable(request.getHeader(AUTHORIZATION))
-                    .filter(s -> !s.isEmpty())
-                    .map(s -> s.substring(BEARER.length()))
+                    .map(s -> !s.isBlank() ? s.substring(BEARER.length()) : s)
                     .map(s -> verifier.verify(s));
         } catch (JWTVerificationException | StringIndexOutOfBoundsException ex) {
             return Optional.empty();

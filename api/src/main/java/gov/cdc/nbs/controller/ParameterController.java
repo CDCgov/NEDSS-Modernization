@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.exception.EncryptionException;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.model.EncryptionResponse;
 import io.swagger.annotations.ApiImplicitParam;
 
 @RestController
@@ -35,7 +35,7 @@ public class ParameterController {
 
     @PostMapping("/encrypt")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public String encrypt(@RequestBody PatientFilter object) {
+    public EncryptionResponse encrypt(@RequestBody Object object) {
         try {
             // generate random salt
             var salt = new byte[16];
@@ -61,7 +61,7 @@ public class ParameterController {
                     .array();
 
             // base64 encode
-            return Base64.getEncoder().encodeToString(saltAndEncryptedBytes);
+            return new EncryptionResponse(Base64.getEncoder().encodeToString(saltAndEncryptedBytes));
         } catch (Exception e) {
             throw new EncryptionException("Failed to perform encryption");
         }
@@ -69,7 +69,7 @@ public class ParameterController {
 
     @PostMapping("/decrypt")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public PatientFilter decrypt(@RequestBody String encryptedString) {
+    public Object decrypt(@RequestBody String encryptedString) {
         // decode / decrypt / deserialize
         try {
             // decode Base64 to bytes
@@ -91,7 +91,7 @@ public class ParameterController {
             var serialized = cipher.doFinal(decodedContent);
 
             // deserialize object
-            var object = mapper.readValue(serialized, PatientFilter.class);
+            var object = mapper.readValue(serialized, Object.class);
             return object;
         } catch (Exception e) {
             throw new EncryptionException("Failed to decrypt provied string.");
