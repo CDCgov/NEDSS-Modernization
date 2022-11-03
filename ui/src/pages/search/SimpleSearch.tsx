@@ -71,6 +71,7 @@ export const SimpleSearch = () => {
                 setValue('zip', query.zip);
                 setValue('patientId', query.id);
                 setValue('dob', query.DateOfBirth);
+                setValue('gender', query.gender);
                 getFilteredData({ variables: { filter: query } });
             });
         }
