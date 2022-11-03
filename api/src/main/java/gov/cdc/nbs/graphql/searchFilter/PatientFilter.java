@@ -10,10 +10,12 @@ import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PatientFilter {
     private Long id;
     private String lastName;
@@ -38,6 +40,7 @@ public class PatientFilter {
     @Getter
     @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Identification {
         private String identificationNumber;
         private IdentificationType identificationType;
