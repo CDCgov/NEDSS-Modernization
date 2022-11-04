@@ -3,7 +3,6 @@ package gov.cdc.nbs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,11 +28,7 @@ import io.cucumber.java.en.When;
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class PatientCreateStepDefinitions {
-
-    @Test
-    public void debug() {
-    }
+public class PatientCreateSteps {
 
     @Autowired
     PersonRepository personRepository;

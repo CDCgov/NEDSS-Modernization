@@ -10,7 +10,6 @@ import java.time.Instant;
 
 import javax.servlet.http.Cookie;
 
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,10 +36,7 @@ import io.cucumber.java.en.Then;
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class RedirectStepDefinitions {
-    @Test
-    public void testForDebugging() throws Exception {
-    }
+public class RedirectSteps {
 
     @Autowired
     private MockMvc mvc;
@@ -53,8 +49,8 @@ public class RedirectStepDefinitions {
     private MockHttpServletResponse response;
     private String sessionId;
 
-    @Given("I am logged into NBS")
-    public void i_am_logged_into_nbs() {
+    @Given("I am logged into NBS and a security log entry exists")
+    public void i_am_logged_into_nbs_and_a_security_log_entry_exists() {
         // make sure user exists
         var user = UserMother.clerical();
         UserUtil.insertIfNotExists(user, authUserRepository);
@@ -71,8 +67,8 @@ public class RedirectStepDefinitions {
         securityLogRepository.save(log);
     }
 
-    @Given("I am not logged into NBS")
-    public void i_am_not_logged_into_nbs() {
+    @Given("A sessionId is not set")
+    public void a_session_id_is_not_set() {
         sessionId = null;
     }
 
