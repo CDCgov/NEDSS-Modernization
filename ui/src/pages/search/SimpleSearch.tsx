@@ -64,18 +64,25 @@ export const SimpleSearch = () => {
             ParameterControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
-            }).then((query: PersonFilter) => {
-                setValue('firstName', query.firstName);
-                setValue('lastName', query.lastName);
-                setValue('city', query.city);
-                setValue('zip', query.zip);
-                setValue('patientId', query.id);
-                setValue('dob', query.DateOfBirth);
-                setValue('gender', query.gender);
-                getFilteredData({ variables: { filter: query } });
+            }).then((filter: PersonFilter) => {
+                setValue('firstName', filter.firstName);
+                setValue('lastName', filter.lastName);
+                setValue('city', filter.city);
+                setValue('zip', filter.zip);
+                setValue('patientId', filter.id);
+                setValue('dob', filter.DateOfBirth);
+                setValue('gender', filter.gender);
+                getFilteredData({ variables: { filter } })
+                    // Sometimes 'then' doesn't trigger when using cache
+                    .then(() => {
+                        setSubmitted(true);
+                    })
+                    .finally(() => {
+                        setSubmitted(true);
+                    });
             });
         }
-    }, []);
+    }, [searchParams]);
 
     const onSubmit: any = async (body: FormTypes) => {
         // build filter from user input
@@ -99,13 +106,10 @@ export const SimpleSearch = () => {
         // URI encode encrypted filter
         const search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
 
-        // submit search
-        getFilteredData({ variables: { filter } }).then(() => {
-            navigate({
-                pathname: '/search',
-                search
-            });
-            setSubmitted(true);
+        // Update query param to trigger search
+        navigate({
+            pathname: '/search',
+            search
         });
     };
 
@@ -345,13 +349,13 @@ export const SimpleSearch = () => {
                 {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.length === 0) && (
                     <div className="custom-alert" onClick={() => setSubmitted(false)}>
                         <Alert type="error" heading="No results found" headingLevel="h4">
-                            <div>
+                            <>
                                 Make sure all words are spelled correctly.
                                 <br />
                                 Make sure inputs are in the correct fileds.
                                 <br />
                                 Try searching less fields.
-                            </div>
+                            </>
                         </Alert>
                     </div>
                 )}
