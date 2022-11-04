@@ -70,7 +70,6 @@ public class ParameterController {
     @PostMapping("/decrypt")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public Object decrypt(@RequestBody String encryptedString) {
-        // decode / decrypt / deserialize
         try {
             // decode Base64 to bytes
             byte[] decoded = Base64.getDecoder().decode(encryptedString);
