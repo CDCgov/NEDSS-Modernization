@@ -442,11 +442,11 @@ export type Person = {
 };
 
 export type PersonFilter = {
-  DateOfBirth?: InputMaybe<Scalars['Date']>;
-  DateOfBirthOperator?: InputMaybe<Operator>;
   address?: InputMaybe<Scalars['String']>;
   city?: InputMaybe<Scalars['String']>;
   country?: InputMaybe<Scalars['String']>;
+  dateOfBirth?: InputMaybe<Scalars['Date']>;
+  dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
   ethnicity?: InputMaybe<Ethnicity>;
   firstName?: InputMaybe<Scalars['String']>;
@@ -454,11 +454,14 @@ export type PersonFilter = {
   id?: InputMaybe<Scalars['ID']>;
   identification?: InputMaybe<Identification>;
   lastName?: InputMaybe<Scalars['String']>;
+  mortalityStatus?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   race?: InputMaybe<Race>;
   recordStatus?: InputMaybe<RecordStatus>;
   ssn?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
+  treatmentId?: InputMaybe<Scalars['String']>;
+  vaccinationId?: InputMaybe<Scalars['String']>;
   zip?: InputMaybe<Scalars['String']>;
 };
 

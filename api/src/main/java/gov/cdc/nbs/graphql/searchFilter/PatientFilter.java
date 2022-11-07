@@ -2,6 +2,9 @@ package gov.cdc.nbs.graphql.searchFilter;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
@@ -18,6 +21,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@JsonInclude(Include.NON_NULL)
 public class PatientFilter {
     private Long id;
     private String lastName;
@@ -38,6 +42,8 @@ public class PatientFilter {
     private String mortalityStatus;
     private Ethnicity ethnicity;
     private RecordStatus recordStatus;
+    private String treatmentId;
+    private String vaccinationId;
 
     @Getter
     @Setter

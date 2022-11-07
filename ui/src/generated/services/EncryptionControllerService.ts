@@ -7,7 +7,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class ParameterControllerService {
+export class EncryptionControllerService {
 
     /**
      * decrypt
@@ -26,7 +26,7 @@ export class ParameterControllerService {
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/parameter/decrypt',
+            url: '/encryption/decrypt',
             headers: {
                 'Authorization': authorization,
             },
@@ -57,7 +57,7 @@ export class ParameterControllerService {
     }): CancelablePromise<EncryptionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/parameter/encrypt',
+            url: '/encryption/encrypt',
             headers: {
                 'Authorization': authorization,
             },

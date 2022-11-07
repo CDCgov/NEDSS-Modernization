@@ -28,7 +28,7 @@ export const AdvancedSearch = () => {
         searchParams?.get('city') && (rowData.city = searchParams?.get('city') as string);
         searchParams?.get('zip') && (rowData.zip = searchParams?.get('zip') as string);
         searchParams?.get('id') && (rowData.city = searchParams?.get('id') as string);
-        searchParams?.get('DateOfBirth') && (rowData.DateOfBirth = searchParams?.get('DateOfBirth') as unknown as Date);
+        searchParams?.get('DateOfBirth') && (rowData.dateOfBirth = searchParams?.get('DateOfBirth') as unknown as Date);
         getFilteredData({
             variables: {
                 filter: rowData,
