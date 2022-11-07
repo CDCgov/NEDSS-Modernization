@@ -2,7 +2,10 @@ package gov.cdc.nbs.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -50,9 +53,15 @@ public class UserService implements UserDetailsService {
                 .username(authUser.getUserId())
                 .password(null)
                 .id(authUser.getId())
-                .authorities(null)
+                .authorities(buildUserAuthorities(authUser))
                 .token(token)
                 .build();
+    }
+
+    private List<SimpleGrantedAuthority> buildUserAuthorities(AuthUser user) {
+        var authorities = new ArrayList<SimpleGrantedAuthority>();
+        // execute the query that returns all of the perms. then for each add SGA
+        return authorities;
     }
 
     private String createToken(AuthUser user) {
