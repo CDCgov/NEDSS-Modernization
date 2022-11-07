@@ -1,4 +1,4 @@
-import { Grid } from '@trussworks/react-uswds';
+import { Button, Grid } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
@@ -44,21 +44,30 @@ export const AdvancedSearch = () => {
 
     return (
         <div className="padding-0 search-page-height bg-base-lightest">
+            <Grid row className="page-title-bar bg-white">
+                <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
+                    Search
+                    <Button className="pxadding-x-3 add-patient-button" type={'submit'}>
+                        Add new patient
+                    </Button>
+                </div>
+            </Grid>
             <Grid row className="search-page-height">
                 <Grid col={3} className="bg-white border-right border-base-light">
                     <div className="left-searchbar">
+                        <h3 className="padding-x-2 text-medium margin-bottom-0 refine-text">Refine your search</h3>
                         <div className="grid-row flex-align-center">
                             <h6
                                 className={`${
                                     searchType === 'search' && 'active'
-                                } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer`}
+                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setSearchType('search')}>
-                                Simple Search
+                                Patient Search
                             </h6>
                             <h6
                                 className={`${
                                     searchType !== 'search' && 'active'
-                                } padding-bottom-1 type text-normal font-sans-md cursor-pointer`}
+                                } padding-bottom-1 type text-normal margin-y-3 font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setSearchType('event')}>
                                 Event Search
                             </h6>

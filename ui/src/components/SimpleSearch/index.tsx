@@ -7,6 +7,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
+import { AddressForm } from './AddressForm';
+import { ContactForm } from './ContactForm';
+import { IDForm } from './IdForm';
+import { EthnicityForm } from './EthnicityForm';
 
 export const SimpleSearch = () => {
     const [getFilteredData] = useFindPatientsByFilterLazyQuery();
@@ -28,7 +32,7 @@ export const SimpleSearch = () => {
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
-            title: 'Simple Search',
+            title: 'Basic Info',
             content: (
                 <>
                     <Grid col={12}>
@@ -72,6 +76,15 @@ export const SimpleSearch = () => {
                     <Grid col={12}>
                         <Controller
                             control={control}
+                            name="dob"
+                            render={({ field: { onChange } }) => (
+                                <DatePickerInput onChange={onChange} name="dob" htmlFor={'dob'} label="Date Of Birth" />
+                            )}
+                        />
+                    </Grid>
+                    <Grid col={12}>
+                        <Controller
+                            control={control}
                             name="gender"
                             render={({ field: { onChange } }) => (
                                 <SelectInput
@@ -88,19 +101,42 @@ export const SimpleSearch = () => {
                             )}
                         />
                     </Grid>
-                    <Grid col={12}>
-                        <Controller
-                            control={control}
-                            name="dob"
-                            render={({ field: { onChange } }) => (
-                                <DatePickerInput onChange={onChange} name="dob" htmlFor={'dob'} label="Date Of Birth" />
-                            )}
-                        />
-                    </Grid>
                 </>
             ),
             expanded: true,
             id: '1',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Address',
+            content: <AddressForm control={control} />,
+            expanded: false,
+            id: '2',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Contact',
+            content: <ContactForm control={control} />,
+            expanded: false,
+            id: '3',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'ID',
+            content: <IDForm control={control} />,
+            expanded: false,
+            id: '4',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Race / Ethnicity',
+            content: <EthnicityForm control={control} />,
+            expanded: false,
+            id: '5',
             headingLevel: 'h4',
             className: 'accordian-item'
         }
@@ -134,28 +170,30 @@ export const SimpleSearch = () => {
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
             <Accordion items={simpleSearchItems} multiselectable={true} />
-            <Grid col={12} className="margin-top-5 padding-x-3">
-                <Button className="width-full" type={'submit'}>
-                    Search
-                </Button>
-            </Grid>
-            <Grid col={12} className="padding-x-3">
-                <Button
-                    className="width-full"
-                    type={'button'}
-                    onClick={() =>
-                        reset({
-                            lastName: '',
-                            firstName: '',
-                            city: '',
-                            state: '',
-                            zip: '',
-                            patientId: ''
-                        })
-                    }
-                    outline>
-                    Clear
-                </Button>
+            <Grid row className="bottom-search">
+                <Grid col={12} className="padding-x-2">
+                    <Button className="width-full clear-btn" type={'submit'}>
+                        Search
+                    </Button>
+                </Grid>
+                <Grid col={12} className="padding-x-2">
+                    <Button
+                        className="width-full clear-btn"
+                        type={'button'}
+                        onClick={() =>
+                            reset({
+                                lastName: '',
+                                firstName: '',
+                                city: '',
+                                state: '',
+                                zip: '',
+                                patientId: ''
+                            })
+                        }
+                        outline>
+                        Clear
+                    </Button>
+                </Grid>
             </Grid>
         </Form>
     );
