@@ -34,9 +34,11 @@ public class RedirectController {
         var redirect = redirectionService.handleRedirect("/search", request, response);
         var redirectedUrl = redirect.getUrl();
         if (redirectedUrl != null && redirectedUrl.equals("/search")) {
-            var patientFilter = redirectionService.getPatientFilterFromParams(incomingParams);
-            var encryptedFilter = encryptionService.handleEncryption(patientFilter);
-            attributes.addAttribute("q", encryptedFilter);
+            if (incomingParams.size() > 0) {
+                var patientFilter = redirectionService.getPatientFilterFromParams(incomingParams);
+                var encryptedFilter = encryptionService.handleEncryption(patientFilter);
+                attributes.addAttribute("q", encryptedFilter);
+            }
         }
         return redirect;
     }

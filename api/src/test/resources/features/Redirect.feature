@@ -12,7 +12,7 @@ Feature: NBS routes are redirected successfully
     Given I send a search request to the NBS simple search
     Then My search params are passed to the simple search react page
 
-  Scenario: Simple search is redirected
+  Scenario: Advanced search is redirected
     Given I navigate to the NBS advanced search page
     Then I am redirected to the advanced search react page
 

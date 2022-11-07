@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import gov.cdc.nbs.exception.EncryptionException;
 
@@ -22,12 +23,9 @@ public class EncryptionService {
     @Value("${nbs.security.parameterSecret}")
     private String secret;
 
-    private final ObjectMapper mapper;
-
-    EncryptionService() {
-        mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(Include.NON_NULL);
-    }
+    private final ObjectMapper mapper = new ObjectMapper()
+            .setSerializationInclusion(Include.NON_NULL)
+            .registerModule(new JavaTimeModule());
 
     private final SecureRandom random = new SecureRandom();
 
