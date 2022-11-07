@@ -1,8 +1,9 @@
 package gov.cdc.nbs.service;
 
-import static java.util.Map.entry;
-
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,13 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import gov.cdc.nbs.config.security.SecurityProperties;
+import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.entity.odse.SecurityLog;
+import gov.cdc.nbs.exception.RedirectionException;
+import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import lombok.AllArgsConstructor;
@@ -26,10 +29,18 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class RedirectionService {
+    private final DateTimeFormatter formatter;
     private final SecurityLogRepository securityLogRepository;
     private final AuthUserRepository authUserRepository;
     private final SecurityProperties securityProperties;
     private final String USER_COOKIE_NAME = "nbs_user";
+    private static final String NBS_LAST_NAME = "patientSearchVO.lastName";
+    private static final String NBS_FIRST_NAME = "patientSearchVO.firstName";
+    private static final String NBS_DATE_OF_BIRTH = "patientSearchVO.birthTime";
+    private static final String NBS_SEX = "patientSearchVO.currentSex";
+    private static final String NBS_ID = "patientSearchVO.localID";
+    private static final String NBS_EVENT_TYPE = "patientSearchVO.actType";
+    private static final String NBS_EVENT_ID = "patientSearchVO.actId";
 
     /**
      * Get the user from the session, create userId and token cookies. Create
@@ -53,28 +64,36 @@ public class RedirectionService {
         return cookie;
     }
 
-    private static final Map<String, String> fieldMappings = Map.ofEntries(
-            entry("patientSearchVO.lastName", "lastName"),
-            entry("patientSearchVO.firstName", "firstName"),
-            entry("patientSearchVO.birthTime", "DateOfBirth"),
-            entry("patientSearchVO.currentSex", "sex"),
-            entry("patientSearchVO.actType", "eventType"),
-            entry("patientSearchVO.actId", "eventId"),
-            entry("patientSearchVO.localID", "id")
-
-    );
-
     /**
-     * Maps the www-form-urlencoded search parameters to our search params
+     * Maps the www-form-urlencoded search parameters to a PatientFilter
      */
-    public Map<String, String> getSearchAttributes(Map<String, String> map) {
-        var searchFields = new HashMap<String, String>();
-        fieldMappings.forEach((NBSKey, Key) -> {
-            if (StringUtils.hasText(map.get(NBSKey))) {
-                searchFields.put(Key, map.get(NBSKey));
+    public PatientFilter getPatientFilterFromParams(Map<String, String> map) {
+        var filter = new PatientFilter();
+        filter.setLastName(map.get(NBS_LAST_NAME));
+        filter.setFirstName(map.get(NBS_FIRST_NAME));
+        try {
+            if (map.get(NBS_DATE_OF_BIRTH) != null) {
+                filter.setDateOfBirth(
+                        LocalDateTime.parse(map.get(NBS_DATE_OF_BIRTH), formatter).toInstant(ZoneOffset.UTC));
             }
-        });
-        return searchFields;
+            if (map.get(NBS_SEX) != null) {
+                filter.setGender(Gender.valueOf(map.get(NBS_SEX)));
+            }
+            if (map.get(NBS_ID) != null) {
+                filter.setId(Long.parseLong(map.get(NBS_ID)));
+            }
+            if (map.get(NBS_EVENT_TYPE) != null && map.get(NBS_EVENT_ID) != null) {
+                var type = map.get(NBS_EVENT_TYPE);
+                if (type.equals("P10006")) {// Vaccine
+                    filter.setVaccinationId(map.get(NBS_EVENT_ID));
+                } else if (type.equals("P10005")) { // Treatment
+                    filter.setTreatmentId(map.get(NBS_EVENT_ID));
+                }
+            }
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            throw new RedirectionException("Failed to generate patient filter from search params");
+        }
+        return filter;
     }
 
     public List<SecurityLog> getSecurityLogsForSessionId(String sessionId) {

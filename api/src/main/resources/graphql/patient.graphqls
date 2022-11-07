@@ -16,6 +16,8 @@ input PersonFilter {
     country: String
     zip: String
     ethnicity: Ethnicity
+    vaccinationId: String
+    treatmentId: String
     recordStatus: RecordStatus
 }
 

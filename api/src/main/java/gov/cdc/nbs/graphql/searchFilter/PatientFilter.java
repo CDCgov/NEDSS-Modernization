@@ -38,6 +38,8 @@ public class PatientFilter {
     private String mortalityStatus;
     private Ethnicity ethnicity;
     private RecordStatus recordStatus;
+    private String treatmentId;
+    private String vaccinationId;
 
     @Getter
     @Setter

@@ -21,17 +21,20 @@ import graphql.schema.GraphQLScalarType;
 
 @Configuration
 public class DateScalarConfig {
-    private final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-            .appendOptional(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
-            .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"))
-            .appendOptional(DateTimeFormatter.ISO_INSTANT)
-            .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-            .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-            .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-            .toFormatter().withZone(ZoneOffset.UTC);
+    @Bean
+    public DateTimeFormatter dateTimeFOrmatter() {
+        return new DateTimeFormatterBuilder()
+                .appendOptional(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"))
+                .appendOptional(DateTimeFormatter.ISO_INSTANT)
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .toFormatter().withZone(ZoneOffset.UTC);
+    }
 
     @Bean
-    public RuntimeWiringConfigurer runtimeWiringConfigurer() {
+    public RuntimeWiringConfigurer runtimeWiringConfigurer(DateTimeFormatter formatter) {
         var dateScalar = GraphQLScalarType.newScalar()
                 .name("Date")
                 .description("Java Instant as scalar.")
