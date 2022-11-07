@@ -6,8 +6,8 @@ input PersonFilter {
     identification: Identification
     ssn: String
     phoneNumber: String
-    DateOfBirth: Date
-    DateOfBirthOperator: Operator
+    dateOfBirth: Date
+    dateOfBirthOperator: Operator
     gender: Gender
     deceased: Deceased
     address: String
@@ -15,6 +15,7 @@ input PersonFilter {
     state: String
     country: String
     zip: String
+    mortalityStatus: String
     ethnicity: Ethnicity
     vaccinationId: String
     treatmentId: String

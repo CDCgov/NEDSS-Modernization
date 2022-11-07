@@ -131,7 +131,7 @@ public class PatientService {
                 .on(participation.actUid.id.eq(treatment.id));
 
         // Person Id
-        query = addParameter(query, person.id::eq, filter.getId());
+        query = addParameter(query, (x) -> person.id.eq(x).or(person.localId.eq(generateLocalId(x))), filter.getId());
         // Last Name
         query = addParameter(query,
                 (p) -> personName.lastNm.likeIgnoreCase(p, '!'),
@@ -197,6 +197,20 @@ public class PatientService {
         return query.limit(pageable.getPageSize())
                 .offset(pageable.getOffset()).fetch();
 
+    }
+
+    /*
+     * NBS creates a prefix and suffix for Person.local_id.
+     * The format consists of 3 parts:
+     * 1. prefix -> 'PSN'
+     * 2. value -> the seed: 10000000 + the id
+     * 3. suffix -> 'GA01'
+     * So id of 9999 would turn into 'PSN10009999GA01'
+     */
+    private String generateLocalId(Long id) {
+        final Long seed = 10000000L;
+        final Long nbsId = seed + id;
+        return "PSN" + nbsId + "GA01";
     }
 
     @Transactional

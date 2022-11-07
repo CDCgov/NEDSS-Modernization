@@ -9,7 +9,7 @@ import { Input } from '../../components/FormInputs/Input';
 import { SelectInput } from '../../components/FormInputs/SelectInput';
 import { TableContent } from '../../components/TableContent/TableContent';
 import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
-import { ParameterControllerService } from '../../generated/services/ParameterControllerService';
+import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { UserContext } from '../../providers/UserContext';
 import './SimpleSearch.scss';
 
@@ -60,8 +60,8 @@ export const SimpleSearch = () => {
 
     useEffect(() => {
         const queryParam = searchParams?.get('q');
-        if (queryParam) {
-            ParameterControllerService.decryptUsingPost({
+        if (queryParam && state.isLoggedIn) {
+            EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
             }).then((filter: PersonFilter) => {
@@ -70,7 +70,7 @@ export const SimpleSearch = () => {
                 setValue('city', filter.city);
                 setValue('zip', filter.zip);
                 setValue('patientId', filter.id);
-                setValue('dob', filter.DateOfBirth);
+                setValue('dob', filter.dateOfBirth);
                 setValue('gender', filter.gender);
                 getFilteredData({ variables: { filter } })
                     // Sometimes 'then' doesn't trigger when using cache
@@ -82,7 +82,7 @@ export const SimpleSearch = () => {
                     });
             });
         }
-    }, [searchParams]);
+    }, [searchParams, state.isLoggedIn]);
 
     const onSubmit: any = async (body: FormTypes) => {
         // build filter from user input
@@ -93,12 +93,12 @@ export const SimpleSearch = () => {
         body.city && (filter.city = body.city);
         body.zip && (filter.zip = body.zip);
         body.patientId && (filter.id = body.patientId);
-        body.dob && (filter.DateOfBirth = body.dob);
+        body.dob && (filter.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (filter.gender = body.gender);
         body.state !== '- Select -' && (filter.state = body.state);
 
         // send filter for encryption
-        const encryptedFilter = await ParameterControllerService.encryptUsingPost({
+        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
             authorization: `Bearer ${state.getToken()}`,
             object: filter
         });

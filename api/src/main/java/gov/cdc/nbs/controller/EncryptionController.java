@@ -19,7 +19,7 @@ public class EncryptionController {
     @PostMapping("/encrypt")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public EncryptionResponse encrypt(@RequestBody Object object) {
-        return encryptionService.handleEncryption(object);
+        return new EncryptionResponse(encryptionService.handleEncryption(object));
     }
 
     @PostMapping("/decrypt")

@@ -9,26 +9,29 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.exception.EncryptionException;
-import gov.cdc.nbs.model.EncryptionResponse;
 
 @Service
 public class EncryptionService {
     @Value("${nbs.security.parameterSecret}")
     private String secret;
 
-    @Autowired
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
+
+    EncryptionService() {
+        mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(Include.NON_NULL);
+    }
 
     private final SecureRandom random = new SecureRandom();
 
-    public EncryptionResponse handleEncryption(Object object) {
+    public String handleEncryption(Object object) {
         try {
             // generate random salt
             var salt = new byte[16];
@@ -54,7 +57,7 @@ public class EncryptionService {
                     .array();
 
             // base64 encode
-            return new EncryptionResponse(Base64.getEncoder().encodeToString(saltAndEncryptedBytes));
+            return Base64.getEncoder().encodeToString(saltAndEncryptedBytes);
         } catch (Exception e) {
             throw new EncryptionException("Failed to perform encryption");
         }

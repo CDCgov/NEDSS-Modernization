@@ -25,8 +25,8 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
-    private final static String AUTHORIZATION = "Authorization";
-    private final static String BEARER = "Bearer ";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
     private final UserService userService;
     private final JWTVerifier verifier;
     private final SecurityProperties securityProperties;

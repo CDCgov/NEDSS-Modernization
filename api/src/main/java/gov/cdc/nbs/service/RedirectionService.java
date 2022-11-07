@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import gov.cdc.nbs.config.security.SecurityProperties;
@@ -41,6 +42,8 @@ public class RedirectionService {
     private static final String NBS_ID = "patientSearchVO.localID";
     private static final String NBS_EVENT_TYPE = "patientSearchVO.actType";
     private static final String NBS_EVENT_ID = "patientSearchVO.actId";
+    private static final String VACCINE_TYPE = "P10006";
+    private static final String TREATMENT_TYPE = "P10005";
 
     /**
      * Get the user from the session, create userId and token cookies. Create
@@ -72,21 +75,21 @@ public class RedirectionService {
         filter.setLastName(map.get(NBS_LAST_NAME));
         filter.setFirstName(map.get(NBS_FIRST_NAME));
         try {
-            if (map.get(NBS_DATE_OF_BIRTH) != null) {
+            if (StringUtils.hasText(map.get(NBS_DATE_OF_BIRTH))) {
                 filter.setDateOfBirth(
                         LocalDateTime.parse(map.get(NBS_DATE_OF_BIRTH), formatter).toInstant(ZoneOffset.UTC));
             }
-            if (map.get(NBS_SEX) != null) {
+            if (StringUtils.hasText(map.get(NBS_SEX))) {
                 filter.setGender(Gender.valueOf(map.get(NBS_SEX)));
             }
-            if (map.get(NBS_ID) != null) {
+            if (StringUtils.hasText(map.get(NBS_ID))) {
                 filter.setId(Long.parseLong(map.get(NBS_ID)));
             }
-            if (map.get(NBS_EVENT_TYPE) != null && map.get(NBS_EVENT_ID) != null) {
+            if (StringUtils.hasText(map.get(NBS_EVENT_TYPE)) && StringUtils.hasText(map.get(NBS_EVENT_ID))) {
                 var type = map.get(NBS_EVENT_TYPE);
-                if (type.equals("P10006")) {// Vaccine
+                if (type.equals(VACCINE_TYPE)) {
                     filter.setVaccinationId(map.get(NBS_EVENT_ID));
-                } else if (type.equals("P10005")) { // Treatment
+                } else if (type.equals(TREATMENT_TYPE)) {
                     filter.setTreatmentId(map.get(NBS_EVENT_ID));
                 }
             }
