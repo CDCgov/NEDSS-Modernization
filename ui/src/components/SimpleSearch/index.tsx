@@ -114,7 +114,7 @@ export const SimpleSearch = () => {
         body.city && (rowData.city = body.city);
         body.zip && (rowData.zip = body.zip);
         body.patientId && (rowData.id = body.patientId);
-        body.dob && (rowData.DateOfBirth = body.dob);
+        body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
         body.state !== '- Select -' && (rowData.state = body.state);
 
@@ -122,7 +122,7 @@ export const SimpleSearch = () => {
         rowData.city && (search = `${search}&city=${rowData.city}`);
         rowData.zip && (search = `${search}&zip=${rowData.zip}`);
         rowData.id && (search = `${search}&id=${rowData.id}`);
-        rowData.DateOfBirth && (search = `${search}&DateOfBirth=${rowData.DateOfBirth}`);
+        rowData.dateOfBirth && (search = `${search}&DateOfBirth=${rowData.dateOfBirth}`);
 
         getFilteredData({
             variables: {

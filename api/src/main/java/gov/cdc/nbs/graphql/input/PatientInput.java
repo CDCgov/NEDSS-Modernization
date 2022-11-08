@@ -15,7 +15,7 @@ import lombok.Data;
 public class PatientInput {
     private Name name;
     private String ssn;
-    private Instant DateOfBirth;
+    private Instant dateOfBirth;
     private Gender birthGender;
     private Gender currentGender;
     private Deceased deceased;

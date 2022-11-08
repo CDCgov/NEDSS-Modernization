@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -62,11 +61,7 @@ import io.cucumber.java.en.When;
 @ActiveProfiles("test")
 @Transactional
 @Rollback(false)
-public class PatientSearchStepDefinitions {
-
-    @Test
-    public void testForDebugging() {
-    }
+public class PatientSearchSteps {
 
     @Autowired
     private PersonRepository personRepository;

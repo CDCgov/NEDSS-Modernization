@@ -7,7 +7,7 @@ ext.testsResults = [] // Container for tests summaries
 tasks.named("test") { testTask ->
     testsResults = []
     testLogging {
-        events "passed", "skipped", "failed"
+        events "passed", "failed"
         exceptionFormat TestExceptionFormat.FULL
         showExceptions true
         showCauses true

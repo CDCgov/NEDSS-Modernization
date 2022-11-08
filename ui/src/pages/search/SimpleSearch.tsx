@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Alert, Button, Form, Grid, Search, Table } from '@trussworks/react-uswds';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -9,6 +9,8 @@ import { Input } from '../../components/FormInputs/Input';
 import { SelectInput } from '../../components/FormInputs/SelectInput';
 import { TableContent } from '../../components/TableContent/TableContent';
 import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
+import { UserContext } from '../../providers/UserContext';
 import './SimpleSearch.scss';
 
 type FormTypes = {
@@ -32,6 +34,7 @@ const tableHead = [
 ];
 
 export const SimpleSearch = () => {
+    const { state } = useContext(UserContext);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -56,55 +59,57 @@ export const SimpleSearch = () => {
     } = methods;
 
     useEffect(() => {
-        const rowData: PersonFilter = {
-            firstName: searchParams?.get('firstName') as string,
-            lastName: searchParams?.get('lastName') as string
-        };
-        searchParams?.get('city') && (rowData.city = searchParams?.get('city') as string);
-        searchParams?.get('zip') && (rowData.zip = searchParams?.get('zip') as string);
-        searchParams?.get('id') && (rowData.city = searchParams?.get('id') as string);
-        searchParams?.get('DateOfBirth') && (rowData.DateOfBirth = searchParams?.get('DateOfBirth') as unknown as Date);
-        setValue('firstName', rowData.firstName);
-        setValue('lastName', rowData.lastName);
-        setValue('city', rowData.city);
-        setValue('zip', rowData.zip);
-        setValue('patientId', rowData.id);
-        setValue('dob', rowData.DateOfBirth);
-        getFilteredData({
-            variables: {
-                filter: rowData
-            }
-        });
-    }, []);
+        const queryParam = searchParams?.get('q');
+        if (queryParam && state.isLoggedIn) {
+            EncryptionControllerService.decryptUsingPost({
+                encryptedString: queryParam,
+                authorization: `Bearer ${state.getToken()}`
+            }).then((filter: PersonFilter) => {
+                setValue('firstName', filter.firstName);
+                setValue('lastName', filter.lastName);
+                setValue('city', filter.city);
+                setValue('zip', filter.zip);
+                setValue('patientId', filter.id);
+                setValue('dob', filter.dateOfBirth);
+                setValue('gender', filter.gender);
+                getFilteredData({ variables: { filter } })
+                    // Sometimes 'then' doesn't trigger when using cache
+                    .then(() => {
+                        setSubmitted(true);
+                    })
+                    .finally(() => {
+                        setSubmitted(true);
+                    });
+            });
+        }
+    }, [searchParams, state.isLoggedIn]);
 
-    const onSubmit: any = (body: FormTypes) => {
-        const rowData: PersonFilter = {
+    const onSubmit: any = async (body: FormTypes) => {
+        // build filter from user input
+        const filter: PersonFilter = {
             firstName: body.firstName,
             lastName: body.lastName
         };
-        body.city && (rowData.city = body.city);
-        body.zip && (rowData.zip = body.zip);
-        body.patientId && (rowData.id = body.patientId);
-        body.dob && (rowData.DateOfBirth = body.dob);
-        body.gender !== '- Select -' && (rowData.gender = body.gender);
-        body.state !== '- Select -' && (rowData.state = body.state);
+        body.city && (filter.city = body.city);
+        body.zip && (filter.zip = body.zip);
+        body.patientId && (filter.id = body.patientId);
+        body.dob && (filter.dateOfBirth = body.dob);
+        body.gender !== '- Select -' && (filter.gender = body.gender);
+        body.state !== '- Select -' && (filter.state = body.state);
 
-        let search = `?firstName=${rowData.firstName}&lastName=${rowData.lastName}`;
-        rowData.city && (search = `${search}&city=${rowData.city}`);
-        rowData.zip && (search = `${search}&zip=${rowData.zip}`);
-        rowData.id && (search = `${search}&id=${rowData.id}`);
-        rowData.DateOfBirth && (search = `${search}&DateOfBirth=${rowData.DateOfBirth}`);
+        // send filter for encryption
+        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            object: filter
+        });
 
-        getFilteredData({
-            variables: {
-                filter: rowData
-            }
-        }).then(() => {
-            navigate({
-                pathname: '/',
-                search
-            });
-            setSubmitted(true);
+        // URI encode encrypted filter
+        const search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+
+        // Update query param to trigger search
+        navigate({
+            pathname: '/search',
+            search
         });
     };
 
@@ -344,13 +349,13 @@ export const SimpleSearch = () => {
                 {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.length === 0) && (
                     <div className="custom-alert" onClick={() => setSubmitted(false)}>
                         <Alert type="error" heading="No results found" headingLevel="h4">
-                            <div>
+                            <>
                                 Make sure all words are spelled correctly.
                                 <br />
                                 Make sure inputs are in the correct fileds.
                                 <br />
                                 Try searching less fields.
-                            </div>
+                            </>
                         </Alert>
                     </div>
                 )}

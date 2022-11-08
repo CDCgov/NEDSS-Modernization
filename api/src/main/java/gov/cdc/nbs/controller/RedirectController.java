@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import gov.cdc.nbs.service.EncryptionService;
 import gov.cdc.nbs.service.RedirectionService;
 import lombok.AllArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
@@ -21,6 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @AllArgsConstructor
 public class RedirectController {
     private final RedirectionService redirectionService;
+    private final EncryptionService encryptionService;
 
     @ApiIgnore
     @PostMapping("/nbs/HomePage.do") // proxy verifies path contains: ?method=patientSearchSubmit
@@ -32,7 +34,11 @@ public class RedirectController {
         var redirect = redirectionService.handleRedirect("/search", request, response);
         var redirectedUrl = redirect.getUrl();
         if (redirectedUrl != null && redirectedUrl.equals("/search")) {
-            attributes.addAllAttributes(redirectionService.getSearchAttributes(incomingParams));
+            if (incomingParams.size() > 0) {
+                var patientFilter = redirectionService.getPatientFilterFromParams(incomingParams);
+                var encryptedFilter = encryptionService.handleEncryption(patientFilter);
+                attributes.addAttribute("q", encryptedFilter);
+            }
         }
         return redirect;
     }
