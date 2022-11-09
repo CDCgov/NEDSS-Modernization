@@ -10,4 +10,4 @@ Feature: Authentication
   Scenario: Unauthenticated User
     Given I have not authenticated as a user
     When I try to access the patient search API
-    Then I get a 403 forbidden response
+    Then I get a 401 unauthorized response

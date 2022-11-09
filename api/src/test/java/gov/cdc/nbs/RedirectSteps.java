@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.time.Instant;
 
 import javax.servlet.http.Cookie;
 
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,10 +22,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.SecurityLog;
+import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
+import gov.cdc.nbs.service.EncryptionService;
 import gov.cdc.nbs.support.UserMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.UserUtil;
@@ -37,24 +41,23 @@ import io.cucumber.java.en.Then;
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class RedirectStepDefinitions {
-    @Test
-    public void testForDebugging() throws Exception {
-    }
-
+public class RedirectSteps {
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private SecurityLogRepository securityLogRepository;
     @Autowired
     private AuthUserRepository authUserRepository;
+    @Autowired
+    private EncryptionService encryptionService;
+    @Autowired
+    private ObjectMapper mapper;
 
     private MockHttpServletResponse response;
     private String sessionId;
 
-    @Given("I am logged into NBS")
-    public void i_am_logged_into_nbs() {
+    @Given("I am logged into NBS and a security log entry exists")
+    public void i_am_logged_into_nbs_and_a_security_log_entry_exists() {
         // make sure user exists
         var user = UserMother.clerical();
         UserUtil.insertIfNotExists(user, authUserRepository);
@@ -71,8 +74,8 @@ public class RedirectStepDefinitions {
         securityLogRepository.save(log);
     }
 
-    @Given("I am not logged into NBS")
-    public void i_am_not_logged_into_nbs() {
+    @Given("A sessionId is not set")
+    public void a_session_id_is_not_set() {
         sessionId = null;
     }
 
@@ -86,7 +89,7 @@ public class RedirectStepDefinitions {
     }
 
     @Then("I am redirected to the simple search react page")
-    public void i_am_redirected_to_the_simple_search_reach_page() {
+    public void i_am_redirected_to_the_simple_search_react_page() {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
@@ -110,18 +113,18 @@ public class RedirectStepDefinitions {
     }
 
     @Then("My search params are passed to the simple search react page")
-    public void My_search_params_are_passed_to_the_simple_search_react_page() {
+    public void my_search_params_are_passed_to_the_simple_search_react_page() throws UnsupportedEncodingException {
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
         assertTrue(redirectUrl.contains("/search?"));
-        assertTrue(redirectUrl.contains("lastName=Doe"));
-        assertTrue(redirectUrl.contains("firstName=John"));
-        var encodedDate = URLEncoder.encode("01/01/2000", StandardCharsets.UTF_8);
-        assertTrue(redirectUrl.contains("DateOfBirth=" + encodedDate));
-        assertTrue(redirectUrl.contains("sex=M"));
-        assertTrue(redirectUrl.contains("eventType=1000"));
-        assertTrue(redirectUrl.contains("eventId=9876"));
-        assertTrue(redirectUrl.contains("id=1234"));
+        var q = redirectUrl.substring(redirectUrl.indexOf("?q=") + "?q=".length());
+        q = URLDecoder.decode(q, "UTF-8");
+        var filter = mapper.convertValue(encryptionService.handleDecryption(q), PatientFilter.class);
+        assertEquals("Doe", filter.getLastName());
+        assertEquals("John", filter.getFirstName());
+        assertEquals(Instant.parse("2000-01-01T00:00:00Z"), filter.getDateOfBirth());
+        assertEquals(Gender.M, filter.getGender());
+        assertTrue(1234L == filter.getId());
     }
 
     @Given("I navigate to the NBS advanced search page")

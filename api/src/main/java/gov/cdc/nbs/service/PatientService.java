@@ -38,6 +38,7 @@ import gov.cdc.nbs.entity.odse.PersonRaceId;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.QEntityId;
 import gov.cdc.nbs.entity.odse.QEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.QIntervention;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
@@ -45,6 +46,7 @@ import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.odse.QPersonRace;
 import gov.cdc.nbs.entity.odse.QPostalLocator;
 import gov.cdc.nbs.entity.odse.QTeleLocator;
+import gov.cdc.nbs.entity.odse.QTreatment;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.entity.srte.QCountryCode;
 import gov.cdc.nbs.entity.srte.QStateCode;
@@ -101,6 +103,9 @@ public class PatientService {
         var teleLocator = QTeleLocator.teleLocator;
         var stateCode = QStateCode.stateCode;
         var countryCode = QCountryCode.countryCode;
+        var participation = QParticipation.participation;
+        var intervention = QIntervention.intervention;
+        var treatment = QTreatment.treatment;
         var query = queryFactory.selectDistinct(person).from(person)
                 .leftJoin(personName)
                 .on(personName.id.personUid.eq(person.id))
@@ -117,10 +122,16 @@ public class PatientService {
                 .leftJoin(countryCode)
                 .on(postalLocator.cntryCd.eq(countryCode.id))
                 .leftJoin(teleLocator)
-                .on(entityLocatorParticipation.id.locatorUid.eq(teleLocator.id));
+                .on(entityLocatorParticipation.id.locatorUid.eq(teleLocator.id))
+                .leftJoin(participation)
+                .on(person.id.eq(participation.id.subjectEntityUid))
+                .leftJoin(intervention)
+                .on(participation.actUid.id.eq(intervention.id))
+                .leftJoin(treatment)
+                .on(participation.actUid.id.eq(treatment.id));
 
         // Person Id
-        query = addParameter(query, person.id::eq, filter.getId());
+        query = addParameter(query, (x) -> person.id.eq(x).or(person.localId.eq(generateLocalId(x))), filter.getId());
         // Last Name
         query = addParameter(query,
                 (p) -> personName.lastNm.likeIgnoreCase(p, '!'),
@@ -174,12 +185,32 @@ public class PatientService {
                 (x) -> entityId.typeCd.eq(x.getIdentificationType())
                         .and(entityId.rootExtensionTxt.eq(x.getIdentificationNumber())),
                 filter.getIdentification());
+        // Vaccination Id
+        query = addParameter(query, (x) -> intervention.localId.eq(x).and(participation.id.typeCd.eq("SubOfVacc")),
+                filter.getVaccinationId());
+        // Treatment Id
+        query = addParameter(query, (x) -> treatment.localId.eq(x).and(participation.id.typeCd.eq("SubjOfTrmt")),
+                filter.getTreatmentId());
         // Record status
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
 
         return query.limit(pageable.getPageSize())
                 .offset(pageable.getOffset()).fetch();
 
+    }
+
+    /*
+     * NBS creates a prefix and suffix for Person.local_id.
+     * The format consists of 3 parts:
+     * 1. prefix -> 'PSN'
+     * 2. value -> the seed: 10000000 + the id
+     * 3. suffix -> 'GA01'
+     * So id of 9999 would turn into 'PSN10009999GA01'
+     */
+    private String generateLocalId(Long id) {
+        final Long seed = 10000000L;
+        final Long nbsId = seed + id;
+        return "PSN" + nbsId + "GA01";
     }
 
     @Transactional

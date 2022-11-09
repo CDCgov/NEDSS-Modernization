@@ -5,15 +5,19 @@ import { SelectInput } from '../FormInputs/SelectInput';
 import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import { Gender, PersonFilter } from '../../generated/graphql/schema';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { IDForm } from './IdForm';
 import { EthnicityForm } from './EthnicityForm';
 
-export const SimpleSearch = () => {
-    const [getFilteredData] = useFindPatientsByFilterLazyQuery();
+type SimpleSearchProps = {
+    dynamicHeight: number;
+    handleSubmission: (data: PersonFilter) => void;
+};
+
+export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchProps) => {
     const schema = yup.object().shape({
         firstName: yup.string().required('First name is required.'),
         lastName: yup.string().required('Last name is required.')
@@ -150,7 +154,7 @@ export const SimpleSearch = () => {
         body.city && (rowData.city = body.city);
         body.zip && (rowData.zip = body.zip);
         body.patientId && (rowData.id = body.patientId);
-        body.dob && (rowData.DateOfBirth = body.dob);
+        body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
         body.state !== '- Select -' && (rowData.state = body.state);
 
@@ -158,18 +162,15 @@ export const SimpleSearch = () => {
         rowData.city && (search = `${search}&city=${rowData.city}`);
         rowData.zip && (search = `${search}&zip=${rowData.zip}`);
         rowData.id && (search = `${search}&id=${rowData.id}`);
-        rowData.DateOfBirth && (search = `${search}&DateOfBirth=${rowData.DateOfBirth}`);
-
-        getFilteredData({
-            variables: {
-                filter: rowData
-            }
-        });
+        rowData.dateOfBirth && (search = `${search}&DateOfBirth=${rowData.dateOfBirth}`);
+        handleSubmission(rowData);
     };
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
-            <Accordion items={simpleSearchItems} multiselectable={true} />
+            <div style={{ height: `${dynamicHeight}px`, overflowY: 'auto' }}>
+                <Accordion items={simpleSearchItems} multiselectable={true} />
+            </div>
             <Grid row className="bottom-search">
                 <Grid col={12} className="padding-x-2">
                     <Button className="width-full clear-btn" type={'submit'}>

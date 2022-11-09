@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,13 +39,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .antMatchers("/graphql")
+                .antMatchers("/graphql", "/encryption/*")
                 .authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(this::writeErrorMessage)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .csrf().disable()
                 .addFilterBefore(jwtFilter, RequestHeaderAuthenticationFilter.class)
                 .build();
@@ -58,17 +60,19 @@ public class WebSecurityConfig {
             HttpServletRequest req,
             HttpServletResponse res,
             AuthenticationException ex) throws IOException {
-        if (ex instanceof InsufficientAuthenticationException && req.getRequestURI().contains(graphQLEndpoint)) {
-            res.setContentType("application/json;charset=UTF-8");
-            res.setStatus(403);
-            GraphQLError error = GraphqlErrorBuilder
-                    .newError()
-                    .message(
-                            "Access denied. Please specify a valid 'Authorization' header. Ex: 'Authorization':'Bearer <token>'")
-                    .build();
-            res.getWriter().write(mapper.writeValueAsString(error));
-        } else if (ex instanceof UsernameNotFoundException) {
-            res.setStatus(401);
+        if (ex instanceof InsufficientAuthenticationException || ex instanceof UsernameNotFoundException) {
+            // If graphql endpoint, write graphql error
+            if (req.getRequestURI().contains(graphQLEndpoint)) {
+                res.setContentType("application/json;charset=UTF-8");
+                GraphQLError error = GraphqlErrorBuilder
+                        .newError()
+                        .message(
+                                "Access denied. Please specify a valid 'Authorization' header. Ex: 'Authorization':'Bearer <token>'")
+                        .build();
+                res.getWriter().write(mapper.writeValueAsString(error));
+            }
+            // set unauthorized status
+            res.setStatus(HttpStatus.UNAUTHORIZED.value());
         }
     }
 }

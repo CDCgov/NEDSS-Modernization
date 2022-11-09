@@ -23,9 +23,20 @@ const getToken = (): string | undefined => {
     }
 };
 
+// proxied requests set the USER_ID cookie. use it on initialization to log in
+const getUserIdFromCookie = (): string | undefined => {
+    if (document.cookie.includes(USER_ID)) {
+        const userIdStart = document.cookie.indexOf(USER_ID) + USER_ID.length;
+        const userIdEnd = document.cookie.indexOf(';', userIdStart);
+        return document.cookie.substring(userIdStart, userIdEnd > -1 ? userIdEnd : document.cookie.length);
+    } else {
+        return undefined;
+    }
+};
+
 const initialState: UserState = {
     isLoggedIn: false,
-    isLoginPending: false,
+    isLoginPending: getUserIdFromCookie() ? true : false,
     loginError: undefined,
     userId: undefined,
     getToken
@@ -54,6 +65,7 @@ export const UserContextProvider = (props: any) => {
             request: { username, password }
         })
             .then((response) => {
+                console.log(response);
                 setLoginSuccess(response.username);
                 return true;
             })
@@ -74,17 +86,6 @@ export const UserContextProvider = (props: any) => {
         document.cookie = TOKEN + '=; Max-Age=0; path=/;';
         // reset state
         setState({ ...initialState });
-    };
-
-    // proxied requests set the USER_ID cookie. use it on initialization to log in
-    const getUserIdFromCookie = (): string | undefined => {
-        if (document.cookie.includes(USER_ID)) {
-            const userIdStart = document.cookie.indexOf(USER_ID) + USER_ID.length;
-            const userIdEnd = document.cookie.indexOf(';', userIdStart);
-            return document.cookie.substring(userIdStart, userIdEnd > -1 ? userIdEnd : document.cookie.length);
-        } else {
-            return undefined;
-        }
     };
 
     // on init attempt to login using USER_ID cookie
