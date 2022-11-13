@@ -47,7 +47,7 @@ public class SecurityService {
     /**
      * Generates an Oid from a Jurisdiction Uid and a ProgramArea Id
      * <ol>
-     * <li>Multiple the Jurisdiction id by 100,000
+     * <li>Multiply the Jurisdiction nbs uid by 100,000
      * <li>Add the Program Area Id to the result
      * <p>
      */
