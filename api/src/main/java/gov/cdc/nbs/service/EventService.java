@@ -9,12 +9,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
+import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.QAct;
 import gov.cdc.nbs.entity.odse.QActId;
@@ -37,10 +41,17 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EventService {
+    private final SecurityService securityService;
+    private final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-"
+            + BusinessObjects.INVESTIGATION + "')";
+    private final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+            + BusinessObjects.OBSERVATIONLABREPORT
+            + "')";
 
     @PersistenceContext
     private final EntityManager entityManager;
 
+    @PreAuthorize(VIEW_INVESTIGATION)
     public List<Act> findInvestigationsByFilter(InvestigationFilter filter, Pageable pageable) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         var publicHealthCase = QPublicHealthCase.publicHealthCase;
@@ -60,6 +71,12 @@ public class EventService {
                 .on(publicHealthCase.act.id.eq(participation.id.actUid))
                 .leftJoin(person)
                 .on(participation.id.subjectEntityUid.eq(person.id));
+
+        // Investigations are secured by Program Area and Jurisdiction
+        var userDetails = SecurityUtil.getUserDetails();
+        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+        query.where(publicHealthCase.programJurisdictionOid.in(validOids));
+
         if (filter == null) {
             return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
         }
@@ -250,6 +267,7 @@ public class EventService {
         return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
+    @PreAuthorize(VIEW_LAB_REPORT)
     public List<Act> findLabReportsByFilter(LaboratoryReportFilter filter, Pageable pageable) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         var actRelationship = QActRelationship.actRelationship;
@@ -272,6 +290,12 @@ public class EventService {
 
         // OBS only for lab reports ?
         query = query.where(act.classCd.eq("OBS"));
+
+        // Lab reports are secured by Program Area and Jurisdiction
+        var userDetails = SecurityUtil.getUserDetails();
+        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+        query.where(observation.programJurisdictionOid.in(validOids));
+
         if (filter == null) {
             return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
         }

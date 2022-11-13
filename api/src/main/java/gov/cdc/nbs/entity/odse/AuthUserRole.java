@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -16,6 +21,7 @@ import java.time.Instant;
 @Table(name = "Auth_user_role")
 public class AuthUserRole {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auth_user_role_uid", nullable = false)
     private Long id;
 
@@ -28,6 +34,7 @@ public class AuthUserRole {
     @Column(name = "jurisdiction_cd", length = 100)
     private String jurisdictionCd;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "auth_user_uid", nullable = false)
     private AuthUser authUserUid;
@@ -57,8 +64,9 @@ public class AuthUserRole {
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", nullable = false, length = 20)
-    private String recordStatusCd;
+    private RecordStatus recordStatusCd;
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;

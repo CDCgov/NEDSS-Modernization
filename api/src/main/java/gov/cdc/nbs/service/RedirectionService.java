@@ -99,17 +99,14 @@ public class RedirectionService {
         return filter;
     }
 
-    public List<SecurityLog> getSecurityLogsForSessionId(String sessionId) {
-        return securityLogRepository.findBySessionIdOrderByEventTimeDesc(sessionId);
-    }
-
-    public Optional<AuthUser> getUserFromSession(Cookie[] cookies) {
+    private Optional<AuthUser> getUserFromSession(Cookie[] cookies) {
         return Optional.ofNullable(getJsessionId(cookies))
-                .map(this::getSecurityLogsForSessionId)
+                .map(securityLogRepository::findBySessionIdOrderByEventTimeDesc)
                 .map(this::getUserFromSecurityLogs);
     }
 
     private AuthUser getUserFromSecurityLogs(List<SecurityLog> logs) {
+        // Are there log entries for the session? Has the session been logged out?
         if (logs.isEmpty() ||
                 logs.stream().filter(l -> l.getEventTypeCd().equals(SecurityEventType.LOGOUT))
                         .findFirst()

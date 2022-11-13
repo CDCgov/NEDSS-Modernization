@@ -1,17 +1,23 @@
 package gov.cdc.nbs.entity.odse;
 
 import java.time.Instant;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +34,14 @@ public class AuthUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auth_user_uid", nullable = false)
     private Long id;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "auth_user_uid")
+    private List<AuthUserRole> authUserRoles;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auth_user_uid")
+    private List<AuthProgAreaAdmin> adminProgramAreas;
 
     @Column(name = "user_id", length = 256)
     private String userId;
@@ -87,8 +101,9 @@ public class AuthUser {
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", nullable = false, length = 20)
-    private String recordStatusCd;
+    private RecordStatus recordStatusCd;
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;
