@@ -1,15 +1,22 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.Instant;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +24,10 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "Auth_bus_op_type")
+@Builder
 public class AuthBusOpType {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "auth_bus_op_type_uid", nullable = false)
     private Long id;
 
@@ -40,8 +49,9 @@ public class AuthBusOpType {
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", nullable = false, length = 20)
-    private String recordStatusCd;
+    private RecordStatus recordStatusCd;
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;

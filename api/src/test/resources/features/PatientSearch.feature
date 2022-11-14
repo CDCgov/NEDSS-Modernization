@@ -4,6 +4,8 @@ Feature: Patient search
   Background: 
     Given there are 10 patients
     And I am looking for one of them
+    And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
+    And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "ARBO"
 
   @patient_data_search
   Scenario: I can find a Patient by patient data using one field

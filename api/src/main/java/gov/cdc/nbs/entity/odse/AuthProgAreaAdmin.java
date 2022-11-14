@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -22,6 +25,7 @@ public class AuthProgAreaAdmin {
     @Column(name = "prog_area_cd", length = 100)
     private String progAreaCd;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "auth_user_uid", nullable = false)
     private AuthUser authUserUid;
