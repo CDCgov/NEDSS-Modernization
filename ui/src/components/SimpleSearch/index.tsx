@@ -2,9 +2,7 @@ import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Gender, PersonFilter } from '../../generated/graphql/schema';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { AddressForm } from './AddressForm';
@@ -18,14 +16,7 @@ type SimpleSearchProps = {
 };
 
 export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchProps) => {
-    const schema = yup.object().shape({
-        firstName: yup.string().required('First name is required.'),
-        lastName: yup.string().required('Last name is required.')
-    });
-
-    const methods = useForm({
-        resolver: yupResolver(schema)
-    });
+    const methods = useForm();
 
     const {
         handleSubmit,
@@ -49,7 +40,6 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
                                     type="text"
                                     label="Last Name"
                                     name="lastName"
-                                    required
                                     defaultValue={value}
                                     htmlFor="lastName"
                                     id="lastName"
@@ -71,7 +61,6 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
                                     name="firstName"
                                     htmlFor="firstName"
                                     id="firstName"
-                                    required
                                     error={errors?.firstName && 'First name is required.'}
                                 />
                             )}

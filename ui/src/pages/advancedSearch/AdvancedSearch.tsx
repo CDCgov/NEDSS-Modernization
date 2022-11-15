@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
@@ -51,7 +51,6 @@ export const AdvancedSearch = () => {
     }, []);
 
     const handleSubmit = (data: PersonFilter) => {
-        setInitialSearch(true);
         getFilteredData({
             variables: {
                 filter: data,
@@ -61,6 +60,7 @@ export const AdvancedSearch = () => {
                 }
             }
         }).then((items: any) => {
+            setInitialSearch(true);
             setSearchItems(items.data.findPatientsByFilter);
         });
     };
@@ -109,7 +109,7 @@ export const AdvancedSearch = () => {
                     <Grid
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
-                        {initialSearch && searchItems.length > 0 ? (
+                        {initialSearch ? (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">
                                 <strong>{searchItems.length}</strong> Results for:
                             </p>
@@ -118,25 +118,13 @@ export const AdvancedSearch = () => {
                         )}
                         <div>
                             <ButtonGroup type="default">
-                                {initialSearch && searchItems.length > 0 && (
-                                    <Button className="width-full margin-top-0" type={'button'} outline>
-                                        Sort by
-                                        <Icon.ArrowDropDown />
-                                    </Button>
-                                )}
                                 <Button
-                                    disabled={!initialSearch && searchItems.length === 0}
+                                    disabled={searchItems.length === 0}
                                     className="width-full margin-top-0"
                                     type={'button'}
                                     outline>
-                                    Export
-                                </Button>
-                                <Button
-                                    disabled={!initialSearch && searchItems.length === 0}
-                                    className="width-full margin-top-0"
-                                    type={'button'}
-                                    outline>
-                                    Print
+                                    Sort by
+                                    <Icon.ArrowDropDown />
                                 </Button>
                             </ButtonGroup>
                         </div>
@@ -151,6 +139,26 @@ export const AdvancedSearch = () => {
                                 height: '147px'
                             }}>
                             Perform a search to see results
+                        </div>
+                    )}
+                    {initialSearch && searchItems.length === 0 && (
+                        <div
+                            className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                            style={{
+                                background: 'white',
+                                border: '1px solid #DFE1E2',
+                                borderRadius: '5px',
+                                height: '147px'
+                            }}>
+                            <div className="text-center">
+                                <p>No results found.</p>
+                                <p>
+                                    Try refining your search, or{' '}
+                                    <Link to="/" style={{ color: '#005EA2' }}>
+                                        add a new patient
+                                    </Link>
+                                </p>
+                            </div>
                         </div>
                     )}
                     <SearchItems

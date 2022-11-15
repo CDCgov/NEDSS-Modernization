@@ -86,22 +86,24 @@ export const SearchItems = ({ data, setSearchHeight, initialSearch }: SearchItem
                                     </p>
                                 </Grid>
                                 <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">START DATE</h5>
-                                    <p className="margin-0 font-sans-md margin-top-05 text-bold text-primary">
-                                        {new Date(item.addTime).toLocaleDateString('en-US')}
+                                    <h5 className="margin-0 text-normal text-gray-50">PHONE</h5>
+                                    <p className="margin-0 font-sans-1xs text-normal margin-top-05">
+                                        {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
+                                        {item.cellPhoneNbr || '-'}
                                     </p>
                                 </Grid>
                                 <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">JURISDICTION</h5>
-                                    <p className="margin-0 font-sans-md margin-top-05 text-bold text-primary">
-                                        Fulton County
+                                    <h5 className="margin-0 text-normal text-gray-50">EMAIL</h5>
+                                    <p className="margin-0 font-sans-1xs text-normal margin-top-05">
+                                        {item.hmEmailAddr || '-'}
                                     </p>
                                 </Grid>
                                 <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">STATUS</h5>
-                                    <p className="margin-0 margin-top-05 padding-y-05 padding-x-1 confirm-bage text-semibold width radius-pill text-white bg-mint">
+                                    <h5 className="margin-0 text-normal text-gray-50">DRIVER'S LICENSE</h5>
+                                    {/* <p className="margin-0 margin-top-05 padding-y-05 padding-x-1 confirm-bage text-semibold width radius-pill text-white bg-mint">
                                         Confirmed
-                                    </p>
+                                    </p> */}
+                                    <p className="margin-0 font-sans-1xs text-normal margin-top-05">1238748</p>
                                 </Grid>
                                 <Grid col={3} className="margin-bottom-2">
                                     <div className="grid-row flex-align-center">
@@ -134,6 +136,20 @@ export const SearchItems = ({ data, setSearchHeight, initialSearch }: SearchItem
                                         </h5>
                                         <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
                                     </div>
+                                </Grid>
+                                <Grid col={3} className="margin-bottom-2">
+                                    <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
+                                    <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">
+                                        {item.mothersMaidenNm || 'No data'}
+                                    </p>
+                                </Grid>
+                                <Grid col={3} className="margin-bottom-2">
+                                    <h5 className="margin-0 text-normal text-gray-50">ADDRESS</h5>
+                                    <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">-</p>
+                                </Grid>
+                                <Grid col={3} className="margin-bottom-2">
+                                    <h5 className="margin-0 text-normal text-gray-50">SOCIAL SECURITY</h5>
+                                    <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">-</p>
                                 </Grid>
                             </Grid>
                         </div>
