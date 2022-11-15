@@ -2,8 +2,8 @@
 Feature: Patient create
 
   Background: 
-    Given A patient does not exist
-    And I am logged in
+    Given I have the authorities: "FIND-PATIENT,ADD-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And A patient does not exist
 
   Scenario: I can create a patient
     When I send a create patient request

@@ -12,5 +12,7 @@ public class LoginResponse {
     @ApiModelProperty(required = true)
     private String username;
     @ApiModelProperty(required = true)
+    private String displayName;
+    @ApiModelProperty(required = true)
     private String token;
 }

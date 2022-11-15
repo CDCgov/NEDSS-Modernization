@@ -102,7 +102,7 @@ export default function NavBar() {
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : {state.userId}
+                                User : {state.displayName}
                             </td>
 
                             <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>

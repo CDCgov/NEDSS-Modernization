@@ -10,8 +10,10 @@ import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.Race;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class PatientInput {
     private Name name;
     private String ssn;
@@ -27,6 +29,7 @@ public class PatientInput {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Name {
         private String firstName;
         private String middleName;
@@ -36,6 +39,7 @@ public class PatientInput {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class PostalAddress {
         private String streetAddress1;
         private String streetAddress2;
@@ -49,6 +53,7 @@ public class PatientInput {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class PhoneNumber {
         private String phoneNumber;
         private String extension;

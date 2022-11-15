@@ -9,6 +9,7 @@ interface UserState {
     isLoginPending: boolean;
     loginError: string | undefined;
     userId: string | undefined;
+    displayName: string | undefined;
     getToken: () => string | undefined;
 }
 
@@ -39,6 +40,7 @@ const initialState: UserState = {
     isLoginPending: getUserIdFromCookie() ? true : false,
     loginError: undefined,
     userId: undefined,
+    displayName: undefined,
     getToken
 };
 
@@ -57,7 +59,8 @@ export const UserContext = React.createContext<{
 export const UserContextProvider = (props: any) => {
     const [state, setState] = React.useState({ ...initialState });
     const setLoginPending = (isLoginPending: boolean) => setState({ ...state, isLoginPending, loginError: undefined });
-    const setLoginSuccess = (userId: string) => setState({ ...initialState, isLoggedIn: true, userId });
+    const setLoginSuccess = (userId: string, displayName: string) =>
+        setState({ ...initialState, isLoggedIn: true, userId, displayName });
     const setLoginError = (loginError: string) => setState({ ...initialState, loginError });
     const login = async (username: string, password: string): Promise<boolean> => {
         setLoginPending(true);
@@ -65,8 +68,7 @@ export const UserContextProvider = (props: any) => {
             request: { username, password }
         })
             .then((response) => {
-                console.log(response);
-                setLoginSuccess(response.username);
+                setLoginSuccess(response.username, response.displayName);
                 return true;
             })
             .catch((ex: ApiError) => {

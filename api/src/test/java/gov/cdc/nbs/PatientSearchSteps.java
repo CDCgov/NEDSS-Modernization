@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -51,6 +52,7 @@ import gov.cdc.nbs.support.EventMother.Event;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -81,6 +83,11 @@ public class PatientSearchSteps {
     private Person searchPatient;
     private List<Person> searchResults;
     private List<Person> generatedPersons;
+
+    @Before
+    public void clearAuth() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+    }
 
     @Given("there are {int} patients")
     public void there_are_patients(int patientCount) {
