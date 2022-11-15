@@ -98,11 +98,11 @@ export default function NavBar() {
                     <tbody>
                         <tr>
                             <td className="pageHeader" style={{ padding: '5px', marginBottom: '0px' }}>
-                                <a> Release 6.0.11-BETA Dashboard </a>
+                                <a> Search </a>
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : {state.userId}
+                                User : {state.displayName}
                             </td>
 
                             <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>

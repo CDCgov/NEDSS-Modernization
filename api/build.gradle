@@ -10,6 +10,8 @@ plugins {
 	id "io.spring.dependency-management" version "1.0.12.RELEASE"
 	id "java"
 }
+group = 'gov.cdc'
+version = '0.0.1'
 // Displays cucumber test results
 apply from:file('logging.gradle')
 

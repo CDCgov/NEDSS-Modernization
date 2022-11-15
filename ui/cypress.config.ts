@@ -11,7 +11,7 @@ export default defineConfig({
         },
         specPattern: 'cypress/e2e/**/*.feature',
         scrollBehavior: 'center',
-        baseUrl: 'http://localhost:3000/',
+        baseUrl: 'http://localhost:8080/',
         retries: { runMode: 2, openMode: 0 },
         supportFile: 'cypress/support/e2e.{js,jsx,ts,tsx}'
     },

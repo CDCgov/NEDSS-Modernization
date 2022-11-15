@@ -27,7 +27,9 @@ public class UserController {
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         cookie.setPath("/");
         response.addCookie(cookie);
-        return new LoginResponse(userDetails.getUsername(), userDetails.getToken());
+        return new LoginResponse(userDetails.getUsername(),
+                userDetails.getFirstName() + " " + userDetails.getLastName(),
+                userDetails.getToken());
     }
 
 }

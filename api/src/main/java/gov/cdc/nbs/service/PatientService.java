@@ -23,6 +23,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
@@ -78,6 +79,7 @@ public class PatientService {
     private final TeleLocatorRepository teleLocatorRepository;
     private final PostalLocatorRepository postalLocatorRepository;
     private final EventService eventService;
+    private final SecurityService securityService;
 
     public Optional<Person> findPatientById(Long id) {
         return personRepository.findById(id);
@@ -189,8 +191,14 @@ public class PatientService {
         query = addParameter(query, (x) -> intervention.localId.eq(x).and(participation.id.typeCd.eq("SubOfVacc")),
                 filter.getVaccinationId());
         // Treatment Id
-        query = addParameter(query, (x) -> treatment.localId.eq(x).and(participation.id.typeCd.eq("SubjOfTrmt")),
-                filter.getTreatmentId());
+        if (filter.getTreatmentId() != null) {
+            // Treatment data is secured by Program Area
+            var userDetails = SecurityUtil.getUserDetails();
+            var programAreas = securityService.getProgramAreaCodes(userDetails);
+            query.where(treatment.localId.eq(filter.getTreatmentId())
+                    .and(participation.id.typeCd.eq("SubjOfTrmt")
+                            .and(treatment.progAreaCd.in(programAreas))));
+        }
         // Record status
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
 

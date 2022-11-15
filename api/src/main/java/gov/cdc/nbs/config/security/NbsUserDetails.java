@@ -1,8 +1,7 @@
 package gov.cdc.nbs.config.security;
 
-import java.util.List;
+import java.util.Set;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
@@ -13,30 +12,31 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 public class NbsUserDetails implements UserDetails {
-    private final String username;
-    private final String password;
     private final Long id;
-    private final List<SimpleGrantedAuthority> authorities;
+    private final String username;
+    private final String firstName;
+    private final String lastName;
+    private final boolean isMasterSecurityAdmin;
+    private final boolean isProgramAreaAdmin;
+    private final Set<String> adminProgramAreas;
+    private final String password;
+    private final Set<NbsAuthority> authorities;
     private final String token;
+    private final boolean isEnabled;
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isEnabled;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isEnabled;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
 }
