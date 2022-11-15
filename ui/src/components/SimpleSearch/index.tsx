@@ -2,22 +2,21 @@ import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import { Gender, PersonFilter } from '../../generated/graphql/schema';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
+import { AddressForm } from './AddressForm';
+import { ContactForm } from './ContactForm';
+import { IDForm } from './IdForm';
+import { EthnicityForm } from './EthnicityForm';
 
-export const SimpleSearch = () => {
-    const [getFilteredData] = useFindPatientsByFilterLazyQuery();
-    const schema = yup.object().shape({
-        firstName: yup.string().required('First name is required.'),
-        lastName: yup.string().required('Last name is required.')
-    });
+type SimpleSearchProps = {
+    dynamicHeight: number;
+    handleSubmission: (data: PersonFilter) => void;
+};
 
-    const methods = useForm({
-        resolver: yupResolver(schema)
-    });
+export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchProps) => {
+    const methods = useForm();
 
     const {
         handleSubmit,
@@ -28,7 +27,7 @@ export const SimpleSearch = () => {
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
-            title: 'Simple Search',
+            title: 'Basic Info',
             content: (
                 <>
                     <Grid col={12}>
@@ -41,7 +40,6 @@ export const SimpleSearch = () => {
                                     type="text"
                                     label="Last Name"
                                     name="lastName"
-                                    required
                                     defaultValue={value}
                                     htmlFor="lastName"
                                     id="lastName"
@@ -63,9 +61,17 @@ export const SimpleSearch = () => {
                                     name="firstName"
                                     htmlFor="firstName"
                                     id="firstName"
-                                    required
                                     error={errors?.firstName && 'First name is required.'}
                                 />
+                            )}
+                        />
+                    </Grid>
+                    <Grid col={12}>
+                        <Controller
+                            control={control}
+                            name="dob"
+                            render={({ field: { onChange } }) => (
+                                <DatePickerInput onChange={onChange} name="dob" htmlFor={'dob'} label="Date Of Birth" />
                             )}
                         />
                     </Grid>
@@ -88,19 +94,42 @@ export const SimpleSearch = () => {
                             )}
                         />
                     </Grid>
-                    <Grid col={12}>
-                        <Controller
-                            control={control}
-                            name="dob"
-                            render={({ field: { onChange } }) => (
-                                <DatePickerInput onChange={onChange} name="dob" htmlFor={'dob'} label="Date Of Birth" />
-                            )}
-                        />
-                    </Grid>
                 </>
             ),
             expanded: true,
             id: '1',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Address',
+            content: <AddressForm control={control} />,
+            expanded: false,
+            id: '2',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Contact',
+            content: <ContactForm control={control} />,
+            expanded: false,
+            id: '3',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'ID',
+            content: <IDForm control={control} />,
+            expanded: false,
+            id: '4',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Race / Ethnicity',
+            content: <EthnicityForm control={control} />,
+            expanded: false,
+            id: '5',
             headingLevel: 'h4',
             className: 'accordian-item'
         }
@@ -123,39 +152,38 @@ export const SimpleSearch = () => {
         rowData.zip && (search = `${search}&zip=${rowData.zip}`);
         rowData.id && (search = `${search}&id=${rowData.id}`);
         rowData.dateOfBirth && (search = `${search}&DateOfBirth=${rowData.dateOfBirth}`);
-
-        getFilteredData({
-            variables: {
-                filter: rowData
-            }
-        });
+        handleSubmission(rowData);
     };
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
-            <Accordion items={simpleSearchItems} multiselectable={true} />
-            <Grid col={12} className="margin-top-5 padding-x-3">
-                <Button className="width-full" type={'submit'}>
-                    Search
-                </Button>
-            </Grid>
-            <Grid col={12} className="padding-x-3">
-                <Button
-                    className="width-full"
-                    type={'button'}
-                    onClick={() =>
-                        reset({
-                            lastName: '',
-                            firstName: '',
-                            city: '',
-                            state: '',
-                            zip: '',
-                            patientId: ''
-                        })
-                    }
-                    outline>
-                    Clear
-                </Button>
+            <div style={{ height: `${dynamicHeight}px`, overflowY: 'auto' }}>
+                <Accordion items={simpleSearchItems} multiselectable={true} />
+            </div>
+            <Grid row className="bottom-search">
+                <Grid col={12} className="padding-x-2">
+                    <Button className="width-full clear-btn" type={'submit'}>
+                        Search
+                    </Button>
+                </Grid>
+                <Grid col={12} className="padding-x-2">
+                    <Button
+                        className="width-full clear-btn"
+                        type={'button'}
+                        onClick={() =>
+                            reset({
+                                lastName: '',
+                                firstName: '',
+                                city: '',
+                                state: '',
+                                zip: '',
+                                patientId: ''
+                            })
+                        }
+                        outline>
+                        Clear
+                    </Button>
+                </Grid>
             </Grid>
         </Form>
     );
