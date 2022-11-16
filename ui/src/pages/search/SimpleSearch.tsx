@@ -60,6 +60,8 @@ export const SimpleSearch = () => {
 
     useEffect(() => {
         const queryParam = searchParams?.get('q');
+        console.log(state.isLoggedIn, 'state.isLoggedIn');
+        console.log(queryParam, 'queryParam');
         if (queryParam && state.isLoggedIn) {
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
@@ -294,7 +296,9 @@ export const SimpleSearch = () => {
                                     </Grid>
                                     <Grid col={12} className="flex-align-self-end">
                                         <div className="grid-row flex-justify-end flex-align-end flex-wrap">
-                                            <p className="margin-right-105 text-primary text-bold margin-bottom-05">
+                                            <p
+                                                onClick={() => navigate('/advanced-search')}
+                                                className="margin-right-105 text-primary text-bold margin-bottom-05">
                                                 Advanced Search
                                             </p>
                                             <Button
