@@ -1,0 +1,10 @@
+dist
+.DS_Store
+
+db-restore.zip
+db/restore/restore.d/*.sql
+db/restore/restore.d/*.bak
+
+nifi/repo
+nifi/nifi_conf/conf/flow.json.gz
+archive/

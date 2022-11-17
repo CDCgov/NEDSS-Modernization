@@ -1,0 +1,30 @@
+http:
+  routers:
+    # Modernization app
+    modernizationForward:
+      service: modernization
+      rule: "PathPrefix(`/`)"
+    # Base /nbs forward
+    nbsForward:
+      service: nbs
+      rule: "PathPrefix(`/nbs`)"
+    # NBS to modernization overrides
+    simpleSearch:
+      service: modernization
+      rule: "Path(`/nbs/HomePage.do`) && Query(`method=patientSearchSubmit`)"
+    advancedSearch:
+      service: modernization
+      rule: "Path(`/nbs/MyTaskList1.do`)&& Query(`ContextAction=GlobalPatient`)"
+    # Non '/nbs' NBS routes
+    nbsLogo:
+      service: nbs
+      rule: "Path(`/images/nedssLogo.jpg`)"
+  services:
+    modernization:
+      loadBalancer:
+        servers:
+          - url: "http://modernization:8080/"
+    nbs:
+      loadBalancer:
+        servers:
+          - url: "http://wildfly:7001/"
