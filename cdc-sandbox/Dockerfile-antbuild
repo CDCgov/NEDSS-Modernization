@@ -1,0 +1,19 @@
+FROM amazoncorretto:8-al2-jdk
+
+RUN yum update -y
+RUN yum install -y tar gzip hostname
+WORKDIR /home
+ADD https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.12-bin.tar.gz .
+RUN tar -zxvf apache-ant-1.10.12-bin.tar.gz
+RUN rm apache-ant-1.10.12*.gz
+ENV ANT_HOME=/home/apache-ant-1.10.12
+ADD https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz .
+RUN tar -zxvf apache-maven-3.8.6-bin.tar.gz
+RUN rm apache-maven-3.8.6-bin.tar.gz
+ENV MAVEN_HOME=/home/apache-maven-3.8.6
+ENV JBOSS_HOME=build
+ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=ISO-8859-1
+ADD docker-entrypoint-ant.sh .
+WORKDIR /mnt/src
+VOLUME /root/.m2
+CMD /home/docker-entrypoint-ant.sh

@@ -1,0 +1,90 @@
+#
+# Prequisite for Elasticsearch requires setting vm.max_map_count=262144 see link below for OS specific commands
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+#
+
+services:
+  nbs-mssql:
+    build: ./db
+    container_name: nbs-mssql
+    ports:
+      - 1433:1433
+    volumes:
+      - ./db/restore:/var/opt/db-restore
+      - nbs-mssql-data:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=1
+      - SQLCMDPASSWORD=fake.fake.fake.1234
+      - SA_PASSWORD=fake.fake.fake.1234
+      - FORCE_RESTORE
+    networks:
+      - nbs
+  wildfly: 
+    build: ./
+    container_name: wildfly
+    depends_on:
+      - nbs-mssql
+    ports: 
+      - "9990:9990"
+      - "7001:7001"
+      - "8787:8787" 
+    networks:
+      - nbs
+  reverse-proxy:
+    restart: always
+    image: traefik:v2.9
+    ports:
+      - "8080:8080"
+      - "8081:8081" # traefik dashboard
+    volumes:
+      - ./proxy/:/etc/traefik/
+    networks:
+      - nbs
+  elasticsearch:
+    container_name: elasticsearch
+    image:  docker.elastic.co/elasticsearch/elasticsearch:8.4.2
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    networks:
+      - elastic
+    ports:
+      - 9200:9200 
+      - 9300:9300 
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.4.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    # volumes:
+    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml]   
+  nifi:
+    container_name: nifi
+    image: apache/nifi:1.16.3 # If running Apple M1 chip, run ./nifi/buildImage.sh prior to launching container
+    restart: unless-stopped
+    ports:
+      - 8443:8443
+    environment:
+      - NIFI_SENSITIVE_PROPS_KEY='12345678901234567890A'
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin
+      - SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
+    volumes:
+      - ./nifi/nifi_drivers:/var/opt/nifi_drivers:ro
+      - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw
+    networks:
+      - elastic
+      - nbs
+volumes:
+  nbs-mssql-data:
+networks:
+  elastic:
+    driver: bridge
+  nbs:
+    name: nbs
+    driver: bridge
