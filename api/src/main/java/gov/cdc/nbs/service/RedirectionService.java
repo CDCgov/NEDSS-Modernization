@@ -35,6 +35,7 @@ public class RedirectionService {
     private final AuthUserRepository authUserRepository;
     private final SecurityProperties securityProperties;
     private final String USER_COOKIE_NAME = "nbs_user";
+    private final String JSESSION_COOKIE_NAME = "JSESSIONID";
     private static final String NBS_LAST_NAME = "patientSearchVO.lastName";
     private static final String NBS_FIRST_NAME = "patientSearchVO.firstName";
     private static final String NBS_DATE_OF_BIRTH = "patientSearchVO.birthTime";
@@ -50,18 +51,20 @@ public class RedirectionService {
      * RedirectView from url, or to '/nbs/timeout' if session is invalid
      */
     public RedirectView handleRedirect(String url, HttpServletRequest request, HttpServletResponse response) {
-        var user = getUserFromSession(request.getCookies());
+        var jsessionId = getJsessionId(request.getCookies());
+        var user = getUserFromSession(jsessionId);
         if (user.isPresent()) {
             var userId = user.get().getUserId();
-            response.addCookie(createUserIdCookie(userId));
+            response.addCookie(createCookie(USER_COOKIE_NAME, userId));
+            response.addCookie(createCookie(JSESSION_COOKIE_NAME, jsessionId));
             return new RedirectView(url);
         } else {
             return new RedirectView("/nbs/timeout");
         }
     }
 
-    private Cookie createUserIdCookie(String userId) {
-        var cookie = new Cookie(USER_COOKIE_NAME, userId);
+    private Cookie createCookie(String name, String value) {
+        var cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         return cookie;
@@ -99,8 +102,8 @@ public class RedirectionService {
         return filter;
     }
 
-    private Optional<AuthUser> getUserFromSession(Cookie[] cookies) {
-        return Optional.ofNullable(getJsessionId(cookies))
+    private Optional<AuthUser> getUserFromSession(String jsessionId) {
+        return Optional.ofNullable(jsessionId)
                 .map(securityLogRepository::findBySessionIdOrderByEventTimeDesc)
                 .map(this::getUserFromSecurityLogs);
     }

@@ -11,7 +11,7 @@ plugins {
 	id "java"
 }
 group = 'gov.cdc'
-version = '0.0.1'
+version = '1.0.0'
 // Displays cucumber test results
 apply from:file('logging.gradle')
 
