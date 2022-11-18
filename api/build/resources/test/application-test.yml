@@ -1,0 +1,30 @@
+logging:
+    file.path: ./log/
+    level:
+        org.hibernate.SQL: debug
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+server:
+    port: 9090
+spring:
+    graphql:
+        graphiql:
+            enabled: false
+    jpa:
+        properties:
+            hibernate:
+                ddl-auto: validate
+                default_schema: dbo
+                format_sql: true
+                jdbc.time_zone: UTC
+                dialect: org.hibernate.dialect.SQLServer2012Dialect
+                hbm2ddl:
+                    jdbc_metadata_extraction_strategy: individually
+    datasource:
+        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        username: sa
+        password: fake.fake.fake.1234
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
+
+nbs.max-page-size: 1000

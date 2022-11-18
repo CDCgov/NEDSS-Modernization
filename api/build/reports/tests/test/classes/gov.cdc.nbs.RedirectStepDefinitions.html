@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - RedirectStepDefinitions</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>RedirectStepDefinitions</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/gov.cdc.nbs.html">gov.cdc.nbs</a> &gt; RedirectStepDefinitions</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.004s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testForDebugging()</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2022-10-31 06:11:35.658  INFO 62553 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [gov.cdc.nbs.RedirectStepDefinitions], using SpringBootContextLoader
+2022-10-31 06:11:35.658  INFO 62553 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [gov.cdc.nbs.RedirectStepDefinitions]: no resource found for suffixes {-context.xml, Context.groovy}.
+2022-10-31 06:11:35.660  INFO 62553 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2022-10-31 06:11:35.660  INFO 62553 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@3f37d850, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@12d42ec, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@48bc2fa1, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@7cedd936, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@7d197ba3, org.springframework.test.context.support.DirtiesContextTestExecutionListener@16486cce, org.springframework.test.context.transaction.TransactionalTestExecutionListener@3fa08881, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@2d96c22a, org.springframework.test.context.event.EventPublishingTestExecutionListener@1be46058, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@4e9f41f6, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@75403c24, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@6e5c3734, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@56027c07, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@62a607c0, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@16f3a6ac]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.2)
+
+2022-10-31 06:11:35.692  INFO 62553 --- [    Test worker] gov.cdc.nbs.RedirectStepDefinitions      : Starting RedirectStepDefinitions using Java 17.0.4.1 on Henrys-MBP.lan with PID 62553 (started by henryclark in /Users/henryclark/Desktop/Enquizit/Project/NEDSS-Modernization-1/api)
+2022-10-31 06:11:35.692  INFO 62553 --- [    Test worker] gov.cdc.nbs.RedirectStepDefinitions      : The following 1 profile is active: &quot;test&quot;
+2022-10-31 06:11:35.889  INFO 62553 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-31 06:11:35.917  INFO 62553 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 27 ms. Found 13 JPA repository interfaces.
+2022-10-31 06:11:35.982  INFO 62553 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2022-10-31 06:11:36.040  INFO 62553 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2022-10-31 06:11:36.056  INFO 62553 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-31 06:11:36.066  INFO 62553 --- [    Test worker] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.SQLServer2012Dialect
+2022-10-31 06:11:37.058  INFO 62553 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-31 06:11:37.059  INFO 62553 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-31 06:11:37.444  WARN 62553 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-31 06:11:37.522  INFO 62553 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2e2a6416, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@69552a52, org.springframework.security.web.context.SecurityContextPersistenceFilter@12f6f234, org.springframework.security.web.header.HeaderWriterFilter@43b415a8, org.springframework.security.web.authentication.logout.LogoutFilter@3bcf2712, gov.cdc.nbs.config.security.JWTFilter@7c9b5f9d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@326f18c6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@51954276, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@460ee70f, org.springframework.security.web.session.SessionManagementFilter@6ce4667f, org.springframework.security.web.access.ExceptionTranslationFilter@11f629ed, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2aa6921d]
+2022-10-31 06:11:37.615  INFO 62553 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-10-31 06:11:37.659  INFO 62553 --- [    Test worker] s.b.a.g.s.GraphQlWebMvcAutoConfiguration : GraphQL endpoint HTTP POST /graphql
+2022-10-31 06:11:37.702  INFO 62553 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2022-10-31 06:11:37.702  INFO 62553 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2022-10-31 06:11:37.702  INFO 62553 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2022-10-31 06:11:37.747  INFO 62553 --- [    Test worker] gov.cdc.nbs.RedirectStepDefinitions      : Started RedirectStepDefinitions in 2.077 seconds (JVM running for 58.361)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.5</a> at Oct 31, 2022, 6:11:38 AM</p>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+input EventFilter {
+    eventType: EventType!
+    investigationFilter: InvestigationFilter
+    laboratoryReportFilter: LaboratoryReportFilter
+}
+
+enum EventType {
+    INVESTIGATION
+    LABORATORY_REPORT
+}
+
+input InvestigationFilter {
+    conditions: [String]
+    programAreas: [String]
+    jurisdictions: [ID]
+    pregnancyStatus: PregnancyStatus
+    eventIdType: InvestigationEventIdType
+    eventId: String
+    eventDateSearch: InvestigationEventDateSearch
+    createdBy: String
+    lastUpdatedBy: String
+    providerFacilitySearch: ProviderFacilitySearch
+    investigatorId: ID
+    investigationStatus: InvestigationStatus
+    outbreakNames: [String]
+    caseStatuses: CaseStatuses
+    notificationStatuses: NotificationStatuses
+    processingStatuses: ProcessingStatuses
+}
+
+input CaseStatuses {
+    includeUnassigned: Boolean!
+    statusList: [CaseStatus!]!
+}
+
+input NotificationStatuses {
+    includeUnassigned: Boolean!
+    statusList: [NotificationStatus!]!
+}
+
+input ProcessingStatuses {
+    includeUnassigned: Boolean!
+    statusList: [ProcessingStatus!]!
+}
+
+enum PregnancyStatus {
+    YES
+    NO
+    UNKNOWN
+}
+
+input InvestigationEventDateSearch {
+    eventDateType: InvestigationEventDateType!
+    from: Date!
+    to: Date!
+}
+
+input ProviderFacilitySearch {
+    entityType: ReportingEntityType!
+    id: ID!
+}
+
+enum InvestigationEventIdType {
+    ABCS_CASE_ID
+    CITY_COUNTY_CASE_ID
+    INVESTIGATION_ID
+    NOTIFICATION_ID
+    STATE_CASE_ID
+}
+
+enum ReportingEntityType {
+    FACILITY
+    PROVIDER
+}
+
+enum ProcessingStatus {
+    AWAITING_INTERVIEW
+    CLOSED_CASE
+    FIELD_FOLLOW_UP
+    NO_FOLLOW_UP
+    OPEN_CASE
+    SURVEILLANCE_FOLLOW_UP
+}
+
+enum NotificationStatus {
+    APPROVED
+    COMPLETED
+    MESSAGE_FAILED
+    PENDING_APPROVAL
+    REJECTED
+}
+
+enum CaseStatus {
+    CONFIRMED
+    NOT_A_CASE
+    PROBABLE
+    SUSPECT
+    UNKNOWN
+}
+
+enum InvestigationEventDateType {
+    DATE_OF_REPORT
+    INVESTIGATION_CLOSED_DATE
+    INVESTIGATION_CREATE_DATE
+    INVESTIGATION_START_DATE
+    LAST_UPDATE_DATE
+    NOTIFICATION_CREATE_DATE
+}
+
+enum InvestigationStatus {
+    OPEN
+    CLOSED
+}
+
+input LaboratoryReportFilter {
+    programAreas: [String]
+    jurisdictions: [ID]
+    pregnancyStatus: PregnancyStatus
+    eventIdType: LaboratoryEventIdType
+    eventId: String
+    eventDateSearch: LaboratoryEventDateSearch
+    entryMethods: [EntryMethod]
+    enteredBy: [UserType]
+    eventStatus: [EventStatus]
+    processingStatus: [LaboratoryReportStatus]
+    createdBy: ID
+    lastUpdatedBy: ID
+    providerSearch: LabReportProviderSearch
+    resultedTest: String
+    codedResult: String
+}
+
+input LaboratoryEventDateSearch {
+    eventDateType: LaboratoryReportEventDateType!
+    from: Date!
+    to: Date!
+}
+
+input LabReportProviderSearch {
+    providerType: ProviderType!
+    providerId: ID!
+}
+
+enum LaboratoryEventIdType {
+    ACCESSION_NUMBER
+    LAB_ID
+}
+
+enum LaboratoryReportEventDateType {
+    DATE_OF_REPORT
+    DATE_RECEIVED_BY_PUBLIC_HEALTH
+    DATE_OF_SPECIMEN_COLLECTION
+    LAB_REPORT_CREATE_DATE
+    LAST_UPDATE_DATE
+}
+
+enum EntryMethod {
+    ELECTRONIC
+    MANUAL
+}
+
+enum UserType {
+    INTERNAL
+    EXTERNAL
+}
+
+enum EventStatus {
+    NEW
+    UPDATE
+}
+
+enum LaboratoryReportStatus {
+    PROCESSED
+    UNPROCESSED
+}
+
+enum ProviderType {
+    ORDERING_FACILITY
+    ORDERING_PROVIDER
+    REPORTING_FACILITY
+}

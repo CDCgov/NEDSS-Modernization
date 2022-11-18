@@ -1,0 +1,7 @@
+{
+    "cucumberautocomplete.steps": [
+		"ui/cypress/support/step_definitions/*.ts"
+    ],
+	"cucumberautocomplete.strictGherkinCompletion": true,
+	"java.configuration.updateBuildConfiguration": "interactive"
+}

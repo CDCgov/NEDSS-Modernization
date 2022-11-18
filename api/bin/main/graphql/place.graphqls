@@ -1,0 +1,46 @@
+input PlaceFilter {
+    id: ID
+    description: String
+    nm: String
+    streetAddr1: String
+    streetAddr2: String
+    cityCd: String
+    cityDescTxt: String
+    stateCd: String
+    zipCd: String
+}
+
+type Place {
+    id: ID
+    addReasonCd: String
+    addTime: Date
+    addUserId: Int
+    cd: String
+    cdDescTxt: String
+    description: String
+    durationAmt: String
+    durationUnitCd: String
+    fromTime: Date
+    lastChgReasonCd: String
+    lastChgTime: Date
+    lastChgUserId: Int
+    localId: String
+    nm: String
+    recordStatusCd: String
+    recordStatusTime: Date
+    statusCd: String
+    statusTime: Date
+    toTime: Date
+    userAffiliationTxt: String
+    streetAddr1: String
+    streetAddr2: String
+    cityCd: String
+    cityDescTxt: String
+    stateCd: String
+    zipCd: String
+    cntyCd: String
+    cntryCd: String
+    phoneNbr: String
+    phoneCntryCd: String
+    versionCtrlNbr: Int
+}
