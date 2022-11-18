@@ -1,0 +1,92 @@
+buildscript {
+    ext {
+        springBootVersion = "2.7.2"
+        queryDslVersion = "5.0.0"
+		cucumberVersion = "7.8.0"
+    }
+}
+plugins {
+	id "org.springframework.boot" version "${springBootVersion}"
+	id "io.spring.dependency-management" version "1.0.12.RELEASE"
+	id "java"
+}
+group = 'gov.cdc'
+version = '1.0.0'
+// Displays cucumber test results
+apply from:file('logging.gradle')
+
+dependencies {
+	// core
+	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+
+	// jwt
+	implementation "com.auth0:java-jwt:4.2.0"
+
+	// graphql
+	implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
+
+	// database
+	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"	
+
+	// querydsl
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
+	// swagger
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
+
+	// lombok
+	implementation "org.projectlombok:lombok"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+
+	// test
+	testImplementation "org.projectlombok:lombok"
+	testAnnotationProcessor "org.projectlombok:lombok"
+	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+	testImplementation "org.junit.platform:junit-platform-suite"
+	testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+	testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+	testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+// Adds the generated querydsl files to the classpath
+sourceSets {
+	main {
+		java {
+			srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
+		}
+	}
+}
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+tasks.named("test") {
+	useJUnitPlatform()
+	// always re-run tests
+	test.outputs.upToDateWhen {false}
+	systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
+
+processResources {
+	from ("../ui/build") {
+		into "static"
+	}
+}
+
+compileJava.mustRunAfter(":ui:build")

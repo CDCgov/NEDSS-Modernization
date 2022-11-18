@@ -1,0 +1,14 @@
+entrypoints:
+  traefik:
+    address: ":8081"
+  port:
+    address: ":8080"
+api:
+  insecure: true
+providers:
+  file:
+    filename: /etc/traefik/providers.yml
+
+log:
+  format: json
+  level: DEBUG
