@@ -4,11 +4,10 @@ import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
     data: any;
-    setSearchHeight: (height: number) => void;
     initialSearch: boolean;
 };
 
-export const SearchItems = ({ data, setSearchHeight, initialSearch }: SearchItemsProps) => {
+export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
     const searchItemsRef: any = useRef();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const _calculateAge = (birthday: Date) => {
@@ -38,7 +37,6 @@ export const SearchItems = ({ data, setSearchHeight, initialSearch }: SearchItem
 
     useEffect(() => {
         getListSize();
-        setSearchHeight(getListSize());
     }, [data]);
 
     // Update 'width' and 'height' when the window resizes
@@ -77,9 +75,9 @@ export const SearchItems = ({ data, setSearchHeight, initialSearch }: SearchItem
                     data.map((item: any, index: number) => (
                         <div
                             key={index}
-                            className="padding-5 margin-bottom-3 bg-white border border-base-light radius-md">
-                            <Grid row>
-                                <Grid col={3} className="margin-bottom-2">
+                            className="padding-3 margin-bottom-3 bg-white border border-base-light radius-md">
+                            <Grid row gap={6}>
+                                <Grid col={3} className="margin-bottom-2 large-col">
                                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                                     <p className="margin-0 font-sans-md margin-top-05 text-bold text-primary">
                                         {item.firstNm}, {item.lastNm}
@@ -105,7 +103,7 @@ export const SearchItems = ({ data, setSearchHeight, initialSearch }: SearchItem
                                     </p> */}
                                     <p className="margin-0 font-sans-1xs text-normal margin-top-05">1238748</p>
                                 </Grid>
-                                <Grid col={3} className="margin-bottom-2">
+                                <Grid col={3} className="margin-bottom-2 large-col">
                                     <div className="grid-row flex-align-center">
                                         <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                             DATE OF BIRTH

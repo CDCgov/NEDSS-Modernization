@@ -1,18 +1,20 @@
-import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
 import './AdvancedSearch.scss';
+import Chip from './Chip';
 import { SearchItems } from './SearchItems';
 
 export const AdvancedSearch = () => {
     const [searchType, setSearchType] = useState<string>('search');
     const [searchItems, setSearchItems] = useState<any>([]);
     const [initialSearch, setInitialSearch] = useState<boolean>(false);
-    const [dynamicHeight, setDynamicHeight] = useState<number>(420);
     const [searchParams] = useSearchParams();
+    const [formData, setFormData] = useState<PersonFilter>();
+    const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
 
     const [getFilteredData] = useFindPatientsByFilterLazyQuery();
 
@@ -50,24 +52,92 @@ export const AdvancedSearch = () => {
         }
     }, []);
 
+    function isEmpty(obj: any) {
+        for (const key in obj) {
+            if (obj[key] !== undefined && obj[key] != '') return true;
+        }
+        return false;
+    }
+
     const handleSubmit = (data: PersonFilter) => {
-        getFilteredData({
-            variables: {
-                filter: data,
-                page: {
-                    pageNumber: 0,
-                    pageSize: 10
+        if (isEmpty(data)) {
+            getFilteredData({
+                variables: {
+                    filter: data,
+                    page: {
+                        pageNumber: 0,
+                        pageSize: 200
+                    }
                 }
+            }).then((items: any) => {
+                setFormData(data);
+                setInitialSearch(true);
+                const chips: any = [];
+                Object.entries(data).map((re) => {
+                    if (re[0] !== 'identification') {
+                        let name = re[0];
+                        switch (re[0]) {
+                            case 'lastName':
+                                name = 'last';
+                                break;
+                            case 'firstName':
+                                name = 'first';
+                                break;
+                            case 'gender':
+                                name = 'sex';
+                                break;
+                            case 'dateOfBirth':
+                                name = 'dob';
+                                break;
+                        }
+                        chips.push({
+                            name: name,
+                            value: re[1]
+                        });
+                    }
+                });
+                setResultsChip(chips);
+
+                setSearchItems(items.data.findPatientsByFilter);
+            });
+        }
+    };
+
+    const handleChipClose = (value: string) => {
+        if (formData) {
+            switch (value) {
+                case 'last':
+                    delete formData.lastName;
+                    break;
+                case 'first':
+                    delete formData.firstName;
+                    break;
+                case 'sex':
+                    delete formData.gender;
+                    break;
+                case 'dob':
+                    delete formData.dateOfBirth;
+                    break;
             }
-        }).then((items: any) => {
-            setInitialSearch(true);
-            setSearchItems(items.data.findPatientsByFilter);
-        });
+            setResultsChip(resultsChip.filter((item) => item.name !== value));
+            getFilteredData({
+                variables: {
+                    filter: formData,
+                    page: {
+                        pageNumber: 0,
+                        pageSize: 10
+                    }
+                }
+            }).then((items: any) => {
+                setInitialSearch(true);
+                setSearchItems(items.data.findPatientsByFilter);
+            });
+        }
     };
 
     return (
         <div
-            className={`padding-0 search-page-height bg-light ${
+            className={`padding-0 search-page-height bg-light advanced-search ${
                 searchItems.length > 7 ? 'full-height' : 'partial-height'
             }`}>
             <Grid row className="page-title-bar bg-white">
@@ -99,19 +169,30 @@ export const AdvancedSearch = () => {
                             </h6>
                         </div>
                         {searchType === 'search' ? (
-                            <SimpleSearch handleSubmission={handleSubmit} dynamicHeight={dynamicHeight} />
+                            <SimpleSearch handleSubmission={handleSubmit} />
                         ) : (
                             <EventSearch onSearch={onEventSearch} />
                         )}
                     </div>
                 </Grid>
-                <Grid col={9}>
+                <Grid col={9} className="scrollable-results">
                     <Grid
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {initialSearch ? (
-                            <p className="margin-0 font-sans-md margin-top-05 text-normal">
-                                <strong>{searchItems.length}</strong> Results for:
+                            <p className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
+                                <strong className="margin-right-1">{searchItems.length}</strong> Results for:
+                                {resultsChip.map(
+                                    (re, index) =>
+                                        re.value && (
+                                            <Chip
+                                                key={index}
+                                                name={re.name}
+                                                value={re.value}
+                                                handleClose={handleChipClose}
+                                            />
+                                        )
+                                )}
                             </p>
                         ) : (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
@@ -124,7 +205,10 @@ export const AdvancedSearch = () => {
                                     type={'button'}
                                     outline>
                                     Sort by
-                                    <Icon.ArrowDropDown />
+                                    <img
+                                        style={{ marginLeft: '5px' }}
+                                        src={searchItems.length === 0 ? 'down-arrow-white.svg' : 'down-arrow-blue.svg'}
+                                    />
                                 </Button>
                             </ButtonGroup>
                         </div>
@@ -161,11 +245,7 @@ export const AdvancedSearch = () => {
                             </div>
                         </div>
                     )}
-                    <SearchItems
-                        initialSearch={initialSearch}
-                        setSearchHeight={(height) => setDynamicHeight(height > 0 ? height : 380)}
-                        data={searchItems}
-                    />
+                    <SearchItems initialSearch={initialSearch} data={searchItems} />
                 </Grid>
             </Grid>
         </div>
