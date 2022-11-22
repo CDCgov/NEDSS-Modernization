@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -14,26 +13,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query.Builder;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.json.JsonData;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
-import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.QAct;
-import gov.cdc.nbs.entity.odse.QActId;
-import gov.cdc.nbs.entity.odse.QActRelationship;
-import gov.cdc.nbs.entity.odse.QObsValueCoded;
-import gov.cdc.nbs.entity.odse.QObservation;
-import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter;
@@ -41,6 +30,7 @@ import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.EventStatus;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
 import gov.cdc.nbs.model.InvestigationDocument;
+import gov.cdc.nbs.model.LabReportDocument;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -64,7 +54,6 @@ public class EventService {
         try {
             return client.search(s -> s
                     .index("investigation")
-                    .collapse(t -> t.field("participation_subject_entity_uid"))
                     .size(pageable.getPageSize())
                     .from((int) pageable.getOffset())
                     .query(q -> {
@@ -80,6 +69,8 @@ public class EventService {
 
                         // investigation type only
                         q.match(m -> m.field("public_health_case_case_type_cd").query("I"));
+                        // act must be EVN
+                        q.match(m -> m.field("act_mood_cd").query("EVN"));
                         // conditions
                         addBoolQuery(q, "public_health_case_cd_desc_txt", filter.getConditions());
                         // program areas
@@ -336,185 +327,196 @@ public class EventService {
     }
 
     @PreAuthorize(VIEW_LAB_REPORT)
-    public List<Act> findLabReportsByFilter(LaboratoryReportFilter filter, Pageable pageable) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        var actRelationship = QActRelationship.actRelationship;
-        var observation = QObservation.observation;
-        var act = QAct.act;
-        var participation = QParticipation.participation;
-        var obsValueCoded = QObsValueCoded.obsValueCoded;
-        var actId = QActId.actId;
-        var query = queryFactory.selectDistinct(act).from(obsValueCoded)
-                .leftJoin(actRelationship)
-                .on(obsValueCoded.id.observationUid.eq(actRelationship.sourceActUid.id))
-                .leftJoin(act)
-                .on(act.id.eq(actRelationship.targetActUid.id))
-                .leftJoin(participation)
-                .on(participation.id.actUid.eq(act.id))
-                .leftJoin(observation)
-                .on(observation.id.eq(actRelationship.targetActUid.id))
-                .leftJoin(actId)
-                .on(actId.actUid.id.eq(observation.id));
+    public SearchResponse<LabReportDocument> findLabReportsByFilter(LaboratoryReportFilter filter, Pageable pageable) {
+        try {
+            return client.search(s -> s
+                    .index("lab_report")
+                    .size(pageable.getPageSize())
+                    .from((int) pageable.getOffset())
+                    .query(q -> {
+                        // OBS only for lab reports ?
+                        q.match(m -> m.field("act_class_cd").query("OBS"));
 
-        // OBS only for lab reports ?
-        query = query.where(act.classCd.eq("OBS"));
+                        // act must be EVN
+                        q.match(m -> m.field("act_mood_cd").query("EVN"));
 
-        // Lab reports are secured by Program Area and Jurisdiction
-        var userDetails = SecurityUtil.getUserDetails();
-        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        query.where(observation.programJurisdictionOid.in(validOids));
+                        // Lab reports are secured by Program Area and Jurisdiction
+                        var userDetails = SecurityUtil.getUserDetails();
+                        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+                        var queries = validOids.stream()
+                                .map(search -> MatchQuery.of(m -> m
+                                        .field("observation_program_jurisdiction_oid")
+                                        .query(search))._toQuery())
+                                .collect(Collectors.toList());
+                        q.bool(b -> b.should(queries));
 
-        if (filter == null) {
-            return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
-        }
-        // program area
-        query = addParameter(query, observation.progAreaCd::in, filter.getProgramAreas());
-        // jurisdictions
-        if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            // jurisdictions come in as List<Long> need to cast to List<String> for query
-            var jurisdictionStrings = filter.getJurisdictions().stream().map(Object::toString)
-                    .collect(Collectors.toList());
-            query = query.where(observation.jurisdictionCd.in(jurisdictionStrings));
-        }
-        // pregnancy status
-        if (filter.getPregnancyStatus() != null) {
-            var status = filter.getPregnancyStatus().toString().substring(0, 1);
-            query = query.where(observation.pregnantIndCd.containsIgnoreCase(status));
-        }
-        // event Id
-        if (filter.getEventIdType() != null && filter.getEventId() != null) {
-            switch (filter.getEventIdType()) {
-                case ACCESSION_NUMBER:
-                    query = query.where(
-                            actId.typeDescTxt.eq("Filler Number")
-                                    .and(actId.rootExtensionTxt.eq(filter.getEventId())));
-                    break;
-                case LAB_ID:
-                    query = query.where(observation.localId.eq(filter.getEventId()));
-                    break;
-                default:
-                    throw new QueryException("Invalid event type: " + filter.getEventIdType());
+                        if (filter == null) {
+                            return q;
+                        }
+                        // program area
+                        addBoolQuery(q, "observation_program_area_cd", filter.getProgramAreas());
+                        // jurisdictions
+                        if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
+                            // jurisdictions come in as List<Long> need to cast to List<String> for query
+                            var jurisdictionStrings = filter.getJurisdictions().stream().map(Object::toString)
+                                    .collect(Collectors.toList());
+                            addBoolQuery(q, "observation_jurisdiction_cd", jurisdictionStrings);
+                        }
+                        // pregnancy status
+                        if (filter.getPregnancyStatus() != null) {
+                            var status = filter.getPregnancyStatus().toString().substring(0, 1);
+                            q.match(m -> m.field("observation_pregnant_ind_cd").query(status));
+                        }
+                        // event Id
+                        if (filter.getEventIdType() != null && filter.getEventId() != null) {
+                            switch (filter.getEventIdType()) {
+                                case ACCESSION_NUMBER:
+                                    q.bool(b -> b.should(Arrays.asList(
+                                            MatchQuery.of(
+                                                    m -> m.field("act_id_type_desc_txt")
+                                                            .query("Filler Number"))
+                                                    ._toQuery(),
+                                            MatchQuery.of(
+                                                    m -> m.field("act_id_root_extension_txt")
+                                                            .query(filter.getEventId()))
+                                                    ._toQuery())));
+                                    break;
+                                case LAB_ID:
+                                    q.match(m -> m.field("observation_local_id").query(filter.getEventId()));
+                                    break;
+                                default:
+                                    throw new QueryException("Invalid event type: " + filter.getEventIdType());
+                            }
+                        }
+                        // event date search
+                        if (filter.getEventDateSearch() != null) {
+                            var eds = filter.getEventDateSearch();
+                            if (eds.getFrom() == null || eds.getTo() == null) {
+                                throw new QueryException("'From' and 'To' required when performing event date search");
+                            }
+                            String field;
+                            switch (eds.getEventDateType()) {
+                                case DATE_OF_REPORT:
+                                    field = "observation_activity_to_time";
+                                    break;
+                                case DATE_OF_SPECIMEN_COLLECTION:
+                                    field = "observation_effective_from_time";
+                                    break;
+                                case DATE_RECEIVED_BY_PUBLIC_HEALTH:
+                                    field = "observation_rpt_to_state_time";
+                                    break;
+                                case LAB_REPORT_CREATE_DATE:
+                                    field = "observation_add_time";
+                                    break;
+                                case LAST_UPDATE_DATE:
+                                    field = "observation_last_chg_time";
+                                    break;
+                                default:
+                                    throw new QueryException(
+                                            "Invalid event date type specified: " + eds.getEventDateType());
+                            }
+                            q.bool(b -> b.filter(f -> f.range(r -> r
+                                    .field(field)
+                                    .from(eds.getFrom().toString())
+                                    .to(eds.getTo().toString()))));
+                        }
+                        // entry methods / entered by
+                        /**
+                         * Entry Method Electronic = electronicInd: 'Y'
+                         * Entry Method Manual = electronicInd: 'N'
+                         * Entered by External = electronicInd: 'E
+                         */
+                        if ((filter.getEntryMethods() != null && !filter.getEntryMethods().isEmpty())
+                                || (filter.getEnteredBy() != null && !filter.getEnteredBy().isEmpty())) {
+                            var electronicIndCodes = new ArrayList<String>();
+                            if (filter.getEntryMethods() != null) {
+                                filter.getEntryMethods().forEach(em -> {
+                                    switch (em) {
+                                        case ELECTRONIC:
+                                            electronicIndCodes.add("Y");
+                                            break;
+                                        case MANUAL:
+                                            electronicIndCodes.add("N");
+                                            break;
+                                    }
+                                });
+                            }
+                            if (filter.getEnteredBy() != null) {
+                                if (filter.getEnteredBy().contains(UserType.EXTERNAL)) {
+                                    electronicIndCodes.add("E");
+                                }
+                            }
+                            addBoolQuery(q, "observation_electronic_ind", electronicIndCodes);
+                        }
+                        // event status
+                        if (filter.getEventStatus() != null && !filter.getEventStatus().isEmpty()) {
+                            if (filter.getEventStatus().contains(EventStatus.NEW)) {
+                                if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
+                                    q.range(r -> r
+                                            .field("observation_version_ctrl_nbr")
+                                            .gte(JsonData.of(1L)));
+                                } else {
+                                    q.match(m -> m.field("observation_version_ctrl_nbr").query(1));
+                                }
+                            } else if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
+                                q.range(r -> r
+                                        .field("observation_version_ctrl_nbr")
+                                        .gt(JsonData.of(1L)));
+                            }
+                        }
 
-            }
-        }
-        // event date search
-        if (filter.getEventDateSearch() != null) {
-            var eds = filter.getEventDateSearch();
-            if (eds.getFrom() == null || eds.getTo() == null) {
-                throw new QueryException("'From' and 'To' required when performing event date search");
-            }
-            switch (eds.getEventDateType()) {
-                case DATE_OF_REPORT:
-                    query = query.where(observation.activityToTime.between(eds.getFrom(), eds.getTo()));
-                    break;
-                case DATE_OF_SPECIMEN_COLLECTION:
-                    query = query.where(observation.effectiveFromTime.between(eds.getFrom(), eds.getTo()));
-                    break;
-                case DATE_RECEIVED_BY_PUBLIC_HEALTH:
-                    query = query.where(observation.rptToStateTime.between(eds.getFrom(), eds.getTo()));
-                    break;
-                case LAB_REPORT_CREATE_DATE:
-                    query = query.where(observation.addTime.between(eds.getFrom(), eds.getTo()));
-                    break;
-                case LAST_UPDATE_DATE:
-                    query = query.where(observation.lastChgTime.between(eds.getFrom(), eds.getTo()));
-                    break;
-            }
-        }
-        // entry methods / entered by
-        /**
-         * Entry Method Electronic = electronicInd: 'Y'
-         * Entry Method Manual = electronicInd: 'N'
-         * Entered by External = electronicInd: 'E
-         */
-        if ((filter.getEntryMethods() != null && !filter.getEntryMethods().isEmpty())
-                || (filter.getEnteredBy() != null && !filter.getEnteredBy().isEmpty())) {
-            var electronicIndCodes = new ArrayList<Character>();
-            if (filter.getEntryMethods() != null) {
-                filter.getEntryMethods().forEach(em -> {
-                    switch (em) {
-                        case ELECTRONIC:
-                            electronicIndCodes.add('Y');
-                            break;
-                        case MANUAL:
-                            electronicIndCodes.add('N');
-                            break;
-                    }
-                });
-            }
-            if (filter.getEnteredBy() != null) {
-                if (filter.getEnteredBy().contains(UserType.EXTERNAL)) {
-                    electronicIndCodes.add('E');
-                }
-            }
-            query = query.where(observation.electronicInd.in(electronicIndCodes));
-        }
-        // event status
-        if (filter.getEventStatus() != null && !filter.getEventStatus().isEmpty()) {
-            if (filter.getEventStatus().contains(EventStatus.NEW)) {
-                if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
-                    query = query.where(observation.versionCtrlNbr.goe(1));
-                } else {
-                    query = query.where(observation.versionCtrlNbr.eq((short) 1));
-                }
-            } else if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
-                query = query.where(observation.versionCtrlNbr.gt(1));
-            }
+                        // processing status
+                        if (filter.getProcessingStatus() != null && !filter.getProcessingStatus().isEmpty()) {
+                            var validStatuses = new ArrayList<String>();
+                            if (filter.getProcessingStatus().contains(ProcessingStatus.PROCESSED)) {
+                                validStatuses.add("PROCESSED");
+                            }
+                            if (filter.getProcessingStatus().contains(ProcessingStatus.UNPROCESSED)) {
+                                validStatuses.add("UNPROCESSED");
+                            }
+                            addBoolQuery(q, "observation_record_status_cd", validStatuses);
+                        }
+                        // created by
+                        q.match(m -> m.field("observation_add_user_id").query(filter.getCreatedBy()));
+
+                        // last update
+                        q.match(m -> m.field("observation_add_user_id").query(filter.getLastUpdatedBy()));
+
+                        // event provider/facility
+                        if (filter.getProviderSearch() != null) {
+                            var pSearch = filter.getProviderSearch();
+                            switch (pSearch.getProviderType()) {
+                                case ORDERING_FACILITY:
+                                    q.match(m -> m.field("participation_id_type_cd").query("ORD"));
+                                    q.match(m -> m.field("participation_subject_class_cd").query("ORG"));
+                                    q.match(m -> m.field("participation_subject_entity_uid")
+                                            .query(pSearch.getProviderId()));
+                                    break;
+                                case ORDERING_PROVIDER:
+                                    q.match(m -> m.field("participation_id_type_cd").query("ORD"));
+                                    q.match(m -> m.field("participation_subject_class_cd").query("PSN"));
+                                    q.match(m -> m.field("participation_subject_entity_uid")
+                                            .query(pSearch.getProviderId()));
+                                    break;
+                                case REPORTING_FACILITY:
+                                    q.match(m -> m.field("participation_subject_class_cd").query("AUT"));
+                                    q.match(m -> m.field("participation_subject_entity_uid")
+                                            .query(pSearch.getProviderId()));
+                                    break;
+                            }
+                        }
+                        // resulted test
+                        q.match(m -> m.field("observation_cd_desc_txt").query(filter.getResultedTest()));
+
+                        // coded result
+                        q.match(m -> m.field("ovc_display_name").query(filter.getCodedResult()));
+                        return q;
+                    }),
+                    LabReportDocument.class);
+        } catch (ElasticsearchException | IOException e) {
+            throw new RuntimeException("Failed to query for lab reports");
         }
 
-        // processing status
-        if (filter.getProcessingStatus() != null && !filter.getProcessingStatus().isEmpty()) {
-            var validStatuses = new ArrayList<String>();
-            if (filter.getProcessingStatus().contains(ProcessingStatus.PROCESSED)) {
-                validStatuses.add("PROCESSED");
-            }
-            if (filter.getProcessingStatus().contains(ProcessingStatus.UNPROCESSED)) {
-                validStatuses.add("UNPROCESSED");
-            }
-            query = query.where(observation.recordStatusCd.in(validStatuses));
-        }
-        // created by
-        query = addParameter(query, observation.addUserId::eq, filter.getCreatedBy());
-
-        // last update
-        query = addParameter(query, observation.lastChgUserId::eq, filter.getLastUpdatedBy());
-        // event provider/facility
-        if (filter.getProviderSearch() != null) {
-            var pSearch = filter.getProviderSearch();
-            switch (pSearch.getProviderType()) {
-                case ORDERING_FACILITY:
-                    query = query.where(participation.id.typeCd.eq("ORD")
-                            .and(participation.subjectClassCd.eq("ORG"))
-                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
-                    break;
-                case ORDERING_PROVIDER:
-                    query = query.where(participation.id.typeCd.eq("ORD")
-                            .and(participation.subjectClassCd.eq("PSN"))
-                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
-                    break;
-                case REPORTING_FACILITY:
-                    query = query.where(participation.id.typeCd.eq("AUT")
-                            .and(participation.id.subjectEntityUid.eq(pSearch.getProviderId())));
-                    break;
-            }
-        }
-        // resulted test
-        query = addParameter(query, observation.cdDescTxt::like, filter.getResultedTest());
-
-        // coded result
-        query = addParameter(query, obsValueCoded.displayName::like, filter.getCodedResult());
-
-        return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
     }
 
-    // checks to see if the filter provided is null, if not add the filter to the
-    // 'query.where' based on the expression supplied
-    private <T, I> JPAQuery<I> addParameter(JPAQuery<I> query,
-            Function<T, BooleanExpression> expression, T filter) {
-        if (filter != null) {
-            return query.where(expression.apply(filter));
-        } else {
-            return query;
-        }
-    }
 }
