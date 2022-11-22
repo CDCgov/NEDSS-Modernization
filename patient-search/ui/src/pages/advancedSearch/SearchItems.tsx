@@ -53,7 +53,7 @@ export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
 
     return (
         <div className="margin-x-4">
-            {initialSearch && data.length > 0 && (
+            {initialSearch && data?.length > 0 && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                         Showing {data.length} of {data.length}
@@ -71,8 +71,8 @@ export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
             )}
             <div ref={searchItemsRef}>
                 {data &&
-                    data.length > 0 &&
-                    data.map((item: any, index: number) => (
+                    data?.length > 0 &&
+                    data?.map((item: any, index: number) => (
                         <div
                             key={index}
                             className="padding-3 margin-bottom-3 bg-white border border-base-light radius-md">
@@ -153,7 +153,7 @@ export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
                         </div>
                     ))}
             </div>
-            {initialSearch && data.length > 0 && (
+            {initialSearch && data?.length > 0 && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
                     totalPages={Math.ceil(data.length / data.length)}

@@ -1,5 +1,5 @@
-import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
-import { useEffect, useState } from 'react';
+import { Button, Grid } from '@trussworks/react-uswds';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
@@ -15,6 +15,22 @@ export const AdvancedSearch = () => {
     const [searchParams] = useSearchParams();
     const [formData, setFormData] = useState<PersonFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
+    const [showSorting, setShowSorting] = useState<boolean>(false);
+    const wrapperRef = useRef<any>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: any) {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+                setShowSorting(false);
+            }
+        }
+        // Bind the event listener
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [wrapperRef]);
 
     const [getFilteredData] = useFindPatientsByFilterLazyQuery();
 
@@ -45,7 +61,7 @@ export const AdvancedSearch = () => {
                     }
                 }
             }).then((items: any) => {
-                setSearchItems(items.data.findPatientsByFilter);
+                setSearchItems(items?.data?.findPatientsByFilter);
             });
         } else {
             setInitialSearch(false);
@@ -98,7 +114,7 @@ export const AdvancedSearch = () => {
                 });
                 setResultsChip(chips);
 
-                setSearchItems(items.data.findPatientsByFilter);
+                setSearchItems(items?.data?.findPatientsByFilter);
             });
         }
     };
@@ -107,19 +123,18 @@ export const AdvancedSearch = () => {
         if (formData) {
             switch (value) {
                 case 'last':
-                    delete formData.lastName;
+                    formData.lastName = undefined;
                     break;
                 case 'first':
-                    delete formData.firstName;
+                    formData.firstName = undefined;
                     break;
                 case 'sex':
-                    delete formData.gender;
+                    formData.gender = undefined;
                     break;
                 case 'dob':
-                    delete formData.dateOfBirth;
+                    formData.dateOfBirth = undefined;
                     break;
             }
-            setResultsChip(resultsChip.filter((item) => item.name !== value));
             getFilteredData({
                 variables: {
                     filter: formData,
@@ -129,16 +144,21 @@ export const AdvancedSearch = () => {
                     }
                 }
             }).then((items: any) => {
-                setInitialSearch(true);
-                setSearchItems(items.data.findPatientsByFilter);
+                setResultsChip(resultsChip.filter((item) => item.name !== value));
+                setSearchItems(items?.data?.findPatientsByFilter);
             });
         }
+    };
+
+    const handleSort = () => {
+        setShowSorting(false);
+        console.log('assa');
     };
 
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
-                searchItems.length > 7 ? 'full-height' : 'partial-height'
+                searchItems?.length > 7 ? 'full-height' : 'partial-height'
             }`}>
             <Grid row className="page-title-bar bg-white">
                 <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
@@ -180,8 +200,8 @@ export const AdvancedSearch = () => {
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {initialSearch ? (
-                            <p className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
-                                <strong className="margin-right-1">{searchItems.length}</strong> Results for:
+                            <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
+                                <strong className="margin-right-1">{searchItems?.length}</strong> Results for:
                                 {resultsChip.map(
                                     (re, index) =>
                                         re.value && (
@@ -193,24 +213,60 @@ export const AdvancedSearch = () => {
                                             />
                                         )
                                 )}
-                            </p>
+                            </div>
                         ) : (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
                         )}
                         <div>
-                            <ButtonGroup type="default">
+                            <div className="button-group">
                                 <Button
-                                    disabled={searchItems.length === 0}
+                                    disabled={searchItems?.length === 0}
                                     className="width-full margin-top-0"
                                     type={'button'}
+                                    onClick={() => setShowSorting(!showSorting)}
+                                    // onBlur={() => setShowSorting(false)}
                                     outline>
                                     Sort by
                                     <img
                                         style={{ marginLeft: '5px' }}
-                                        src={searchItems.length === 0 ? 'down-arrow-white.svg' : 'down-arrow-blue.svg'}
+                                        src={searchItems?.length === 0 ? 'down-arrow-white.svg' : 'down-arrow-blue.svg'}
                                     />
                                 </Button>
-                            </ButtonGroup>
+                                {showSorting && (
+                                    <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
+                                        <li className="usa-nav__submenu-item">
+                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                                Patient name (A-Z)
+                                            </Button>
+                                        </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                                Patient name (Z-A)
+                                            </Button>
+                                        </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                                Date of birth (Ascending)
+                                            </Button>
+                                        </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                                Date of birth (Descending)
+                                            </Button>
+                                        </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                                Start Date (Ascending)
+                                            </Button>
+                                        </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                                Start Date (Descending)
+                                            </Button>
+                                        </li>
+                                    </ul>
+                                )}
+                            </div>
                         </div>
                     </Grid>
                     {!initialSearch && (
@@ -225,7 +281,7 @@ export const AdvancedSearch = () => {
                             Perform a search to see results
                         </div>
                     )}
-                    {initialSearch && searchItems.length === 0 && (
+                    {initialSearch && searchItems?.length === 0 && (
                         <div
                             className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
                             style={{

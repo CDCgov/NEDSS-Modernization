@@ -139,16 +139,20 @@ export const SimpleSearch = ({ handleSubmission }: SimpleSearchProps) => {
             firstName: body.firstName,
             lastName: body.lastName
         };
-        body.city && (rowData.city = body.city);
-        body.zip && (rowData.zip = body.zip);
-        body.patientId && (rowData.id = body.patientId);
         body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
+
+        body.address && (rowData.address = body.address);
+        body.city && (rowData.city = body.city);
         body.state !== '- Select -' && (rowData.state = body.state);
+        body.zip && (rowData.zip = body.zip);
+
+        body.phoneNumber && (rowData.phoneNumber = body.phoneNumber);
+
         body.race !== '- Select -' && (rowData.race = body.race);
         body.ethnicity !== '- Select -' && (rowData.ethnicity = body.ethnicity);
 
-        if (body.identificationNumber && body.identificationType) {
+        if (body.identificationNumber && body.identificationType !== '- Select -') {
             rowData.identification = {
                 identificationNumber: body.identificationNumber,
                 identificationType: body.identificationType

@@ -96,3 +96,30 @@
         width: 32% !important;
     }
 }
+
+.button-group {
+    position: relative;
+    .usa-nav__submenu {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: white;
+        width: max-content;
+        filter: drop-shadow(0px 4px 14px rgba(0, 0, 0, 0.15));
+        border-radius: 5px;
+
+        .usa-nav__submenu-item {
+            border-bottom: 1px solid #dfdfdf;
+            padding: 0 0 10px 0;
+            .usa-button--unstyled {
+                margin: 0;
+                color: black;
+                text-decoration: none !important;
+            }
+        }
+        .usa-nav__submenu-item:last-child {
+            border: none;
+            padding: 0;
+        }
+    }
+}
