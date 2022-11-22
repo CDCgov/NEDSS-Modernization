@@ -1,7 +1,9 @@
 package gov.cdc.nbs.config;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -11,6 +13,13 @@ import java.time.temporal.ChronoField;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
@@ -22,15 +31,32 @@ import graphql.schema.GraphQLScalarType;
 @Configuration
 public class DateScalarConfig {
     @Bean
-    public DateTimeFormatter dateTimeFOrmatter() {
+    public DateTimeFormatter dateTimeFormatter() {
         return new DateTimeFormatterBuilder()
                 .appendOptional(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.S"))
+                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SS"))
                 .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"))
                 .appendOptional(DateTimeFormatter.ISO_INSTANT)
                 .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
                 .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
                 .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
                 .toFormatter().withZone(ZoneOffset.UTC);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(DateTimeFormatter formatter) {
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addDeserializer(Instant.class, new StdDeserializer<Instant>(Instant.class) {
+            @Override
+            public Instant deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                    throws IOException, JsonProcessingException {
+                return OffsetDateTime.parse(jsonParser.readValueAs(String.class), formatter).toInstant();
+            }
+        });
+        var mapper = new ObjectMapper();
+        mapper.registerModule(javaTimeModule);
+        return mapper;
     }
 
     @Bean

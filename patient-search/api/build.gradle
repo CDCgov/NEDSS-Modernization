@@ -10,8 +10,21 @@ plugins {
 	id "io.spring.dependency-management" version "1.0.12.RELEASE"
 	id "java"
 }
+
 group = 'gov.cdc'
-version = '1.0.0'
+version = '1.0.0-SNAPSHOT'
+
+bootJar {
+    manifest {
+        attributes 'API-Version': version
+    }
+}
+jar {
+    manifest {
+        attributes 'API-Version': version
+    }
+}
+
 // Displays cucumber test results
 apply from:file('logging.gradle')
 
@@ -35,6 +48,11 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
+	// elasticsearch
+	implementation 'co.elastic.clients:elasticsearch-java:8.5.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+	implementation 'jakarta.json:jakarta.json-api:2.0.1'
 
 	// swagger
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
@@ -64,7 +82,6 @@ sourceSets {
 		}
 	}
 }
-
 
 configurations {
 	compileOnly {

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -61,6 +62,7 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.model.InvestigationDocument;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -504,8 +506,16 @@ public class PatientService {
         switch (filter.getEventType()) {
             case INVESTIGATION:
                 // Get all Act entries matching filter
-                acts = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), PageRequest.of(0, 500));
-                break;
+                var response = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(),
+                        GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+                System.out.println(response);
+                var personIds = response.hits().hits()
+                        .stream()
+                        .map(h -> h.source())
+                        .filter(Objects::nonNull)
+                        .map(InvestigationDocument::getParticipation_subject_entity_uid)
+                        .collect(Collectors.toList());
+                return personRepository.findAllById(personIds);
             case LABORATORY_REPORT:
                 acts = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), PageRequest.of(0, 500));
                 break;
