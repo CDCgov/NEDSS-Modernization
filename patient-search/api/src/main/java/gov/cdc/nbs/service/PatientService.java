@@ -61,8 +61,8 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
-import gov.cdc.nbs.model.InvestigationDocument;
-import gov.cdc.nbs.model.LabReportDocument;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -506,35 +506,28 @@ public class PatientService {
         switch (filter.getEventType()) {
             case INVESTIGATION:
                 var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), pageable);
-                ids = investigations.hits().hits()
+                ids = investigations
                         .stream()
-                        .map(h -> h.source())
+                        .map(h -> h.getContent())
                         .filter(Objects::nonNull)
-                        .filter(h -> h.getPerson_cd().equals("PAT"))
-                        .filter(h -> h.getPerson_record_status_cd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(InvestigationDocument::getParticipation_subject_entity_uid)
+                        .filter(h -> h.getPersonCd().equals("PAT"))
+                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
+                        .map(Investigation::getSubjectEntityUid)
                         .collect(Collectors.toList());
-                var totalHits = investigations.hits().total();
-                if (totalHits != null) {
-                    totalCount = totalHits.value();
-                }
+                totalCount = investigations.getTotalHits();
                 break;
             case LABORATORY_REPORT:
                 var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), pageable);
-                ids = labReports.hits().hits()
+                ids = labReports
                         .stream()
-                        .map(h -> h.source())
+                        .map(h -> h.getContent())
                         .filter(Objects::nonNull)
-                        .filter(h -> h.getPerson_cd().equals("PAT"))
-                        .filter(h -> h.getPerson_record_status_cd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(LabReportDocument::getParticipation_subject_entity_uid)
+                        .filter(h -> h.getPersonCd().equals("PAT"))
+                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
+                        .map(LabReport::getSubjectEntityUid)
                         .collect(Collectors.toList());
 
-                if (labReports.hits().total() != null) {
-                    var hits = labReports.hits().total();
-                    if (hits != null)
-                        totalCount = hits.value();
-                }
+                totalCount = labReports.getTotalHits();
                 break;
             default:
                 throw new QueryException("Invalid event type: " + filter.getEventType());

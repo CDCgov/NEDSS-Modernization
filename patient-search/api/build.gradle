@@ -50,9 +50,7 @@ dependencies {
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
 	// elasticsearch
-	implementation 'co.elastic.clients:elasticsearch-java:8.5.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
-	implementation 'jakarta.json:jakarta.json-api:2.0.1'
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
 
 	// swagger
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
