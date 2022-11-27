@@ -71,7 +71,7 @@ public class EventService {
         }
         // jurisdictions
         if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            addListQuery(builder, "public_health_case_jurisdiction_cd", filter.getJurisdictions());
+            addListQuery(builder, "jurisdiction_cd", filter.getJurisdictions());
         }
         // pregnancy status
         if (filter.getPregnancyStatus() != null) {
@@ -217,7 +217,7 @@ public class EventService {
                 caseStatusQuery.mustNot(QueryBuilders.existsQuery("class_cd"));
                 builder.should(caseStatusQuery);
             } else {
-                addListQuery(builder, "public_health_case_case_class_cd", statusStrings);
+                addListQuery(builder, "class_cd", statusStrings);
             }
         }
         // notification status / include unassigned

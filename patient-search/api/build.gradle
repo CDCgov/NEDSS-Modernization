@@ -70,6 +70,9 @@ dependencies {
 	testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
 	testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
 	testImplementation "org.junit.jupiter:junit-jupiter"
+	testImplementation "org.testcontainers:testcontainers:1.17.6"
+	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+	testImplementation "org.testcontainers:elasticsearch:1.17.6"
 }
 
 // Adds the generated querydsl files to the classpath

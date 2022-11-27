@@ -47,6 +47,8 @@ import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
+import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
+import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
 import gov.cdc.nbs.support.EventMother;
 import gov.cdc.nbs.support.EventMother.Event;
 import gov.cdc.nbs.support.PersonMother;
@@ -78,7 +80,11 @@ public class PatientSearchSteps {
     @Autowired
     private JurisdictionCodeRepository jurisdictionCodeRepository;
     @Autowired
-    PatientController patientController;
+    private PatientController patientController;
+    @Autowired
+    private InvestigationRepository investigationRepository;
+    @Autowired
+    private LabReportRepository labReportRepository;
 
     private Person searchPatient;
     private List<Person> searchResults;
@@ -118,9 +124,9 @@ public class PatientSearchSteps {
             searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
         var investigation1 = EventMother.investigation_bacterialVaginosis(searchPatient.getId());
-        createEvent(investigation1);
+        investigationRepository.save(investigation1);
         var investigation2 = EventMother.investigation_trichomoniasis(searchPatient.getId());
-        createEvent(investigation2);
+        investigationRepository.save(investigation2);
     }
 
     @Given("A lab report exist")

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.ActId;
 import gov.cdc.nbs.entity.odse.ActIdId;
 import gov.cdc.nbs.entity.odse.ActRelationship;
 import gov.cdc.nbs.entity.odse.ActRelationshipId;
-import gov.cdc.nbs.entity.odse.Notification;
 import gov.cdc.nbs.entity.odse.ObsValueCoded;
 import gov.cdc.nbs.entity.odse.ObsValueCodedId;
 import gov.cdc.nbs.entity.odse.Observation;
@@ -19,7 +19,6 @@ import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.entity.srte.JurisdictionCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,133 +57,51 @@ public class EventMother {
         }
     }
 
-    public static Event investigation_bacterialVaginosis(Long personId) {
-        // act
-        var act = new Act();
-        act.setId(90000001L);
-        act.setClassCd("CASE");
-        act.setMoodCd("EVN");
-
-        // actId
-        var actId = new ActId();
-        actId.setActUid(act);
-        actId.setId(new ActIdId(act.getId(), (short) 2));
-        actId.setTypeCd("CITY");
-        actId.setStatusCd('A');
-        actId.setStatusTime(Instant.now());
-        actId.setRootExtensionTxt("CityTypeRootExtensionText");
-
-        // participation - subject
-        var pId = new ParticipationId(personId, act.getId(), "SubjOfPHC");
-        var p = new Participation();
-        p.setId(pId);
-        p.setActUid(act);
-        p.setActClassCd("CASE");
-        p.setAddTime(Instant.now());
-        p.setAddUserId(CREATED_BY);
-        p.setLastChgTime(Instant.now());
-        p.setLastChgUserId(UPDATED_BY);
-        p.setRecordStatusCd(RecordStatus.ACTIVE);
-        p.setStatusCd('A');
-        p.setStatusTime(Instant.now());
-        p.setSubjectClassCd("PSN");
-        p.setTypeDescTxt("Subject Of Public Health Case");
-
-        // public health case
-        var phc = new PublicHealthCase();
-        phc.setId(act.getId());
-        phc.setAct(act);
-        phc.setAddUserId(CREATED_BY);
-        phc.setLastChgUserId(UPDATED_BY);
-        phc.setCaseTypeCd('I');
-        phc.setCd("419760006");
-        phc.setLocalId("CAS10001000GA01");
-        phc.setCdDescTxt("Bacterial Vaginosis");
-        phc.setGroupCaseCnt((short) 1);
-        phc.setInvestigationStatusCd("O");
-        phc.setJurisdictionCd(CLAYTON_CODE.toString());
-        phc.setProgAreaCd("STD");
-        phc.setRecordStatusCd("OPEN");
-        phc.setRecordStatusTime(Instant.now());
-        phc.setStatusCd('A');
-        phc.setProgramJurisdictionOid(CLAYTON_STD_OID);
-        phc.setSharedInd('T');
-        phc.setVersionCtrlNbr((short) 1);
-
-        act.setParticipations(Arrays.asList(p));
-        act.setPublicHealthCases(Arrays.asList(phc));
-        act.setActIds(Arrays.asList(actId));
-        return new Event(Arrays.asList(act), getJurisdictionCodes());
+    public static Investigation investigation_bacterialVaginosis(Long personId) {
+        return Investigation.builder()
+                .id("Test_bacterial_vaginosis")
+                .subjectEntityUid(personId)
+                .classCd("PSN")
+                .personCd("PAT")
+                .caseTypeCd("I")
+                .moodCd("EVN")
+                .cdDescTxt("Bacterial Vaginosis")
+                .prog_area_cd("STD")
+                .jurisdictionCd(CLAYTON_CODE)
+                .pregnantIndCd("Y")
+                .actIdSeq(2)
+                .actIdTypeCd("CITY")
+                .rootExtensionTxt("CityTypeRootExtensionText")
+                .publicHealthCaseLocalId("CAS10001000GA01")
+                .addUserId(CREATED_BY)
+                .lastChgUserId(UPDATED_BY)
+                .personRecordStatusCd("ACTIVE")
+                .programJurisdictionOid(CLAYTON_STD_OID)
+                .build();
     }
 
-    public static Event investigation_trichomoniasis(Long personId) {
-        // act
-        var act = new Act();
-        act.setId(90000002L);
-        act.setClassCd("CASE");
-        act.setMoodCd("EVN");
-
-        // actId
-        var actId = new ActId();
-        actId.setActUid(act);
-        actId.setId(new ActIdId(act.getId(), (short) 1));
-        actId.setTypeCd("STATE");
-        actId.setStatusCd('A');
-        actId.setStatusTime(Instant.now());
-        actId.setRootExtensionTxt("StateRootExtensionText");
-
-        // participation
-        var participationId = new ParticipationId(personId, act.getId(), "SubjOfPHC");
-        var participation = new Participation();
-        participation.setId(participationId);
-        participation.setActUid(act);
-        participation.setActClassCd("CASE");
-        participation.setAddTime(Instant.now());
-        participation.setAddUserId(CREATED_BY);
-        participation.setLastChgTime(Instant.now());
-        participation.setLastChgUserId(UPDATED_BY);
-        participation.setRecordStatusCd(RecordStatus.ACTIVE);
-        participation.setStatusCd('A');
-        participation.setStatusTime(Instant.now());
-        participation.setSubjectClassCd("PSN");
-        participation.setTypeDescTxt("Subject Of Public Health Case");
-
-        // public health case
-        var phc = new PublicHealthCase();
-        phc.setId(act.getId());
-        phc.setAct(act);
-        phc.setAddUserId(CREATED_BY);
-        phc.setLastChgUserId(UPDATED_BY);
-        phc.setCaseTypeCd('I');
-        phc.setCd("35089004");
-        phc.setLocalId("CAS10001002GA01");
-        phc.setCdDescTxt("Trichomoniasis");
-        phc.setGroupCaseCnt((short) 1);
-        phc.setInvestigationStatusCd("O");
-        phc.setJurisdictionCd(DEKALB_CODE.toString());
-        phc.setProgAreaCd("ARBO");
-        phc.setRecordStatusCd("OPEN");
-        phc.setPregnantIndCd("Y");
-        phc.setRecordStatusTime(Instant.now());
-        phc.setStatusCd('A');
-        phc.setProgramJurisdictionOid(DEKALB_ARBO_OID);
-        phc.setSharedInd('T');
-        phc.setVersionCtrlNbr((short) 1);
-
-        // notification
-        var notification = new Notification();
-        notification.setId(act.getId());
-        notification.setAct(act);
-        notification.setSharedInd('N');
-        notification.setVersionCtrlNbr((short) 1);
-        notification.setLocalId("notificationLocalId");
-
-        act.setParticipations(Arrays.asList(participation));
-        act.setPublicHealthCases(Arrays.asList(phc));
-        act.setActIds(Arrays.asList(actId));
-        act.setNotifications(Arrays.asList(notification));
-
-        return new Event(Arrays.asList(act), getJurisdictionCodes());
+    public static Investigation investigation_trichomoniasis(Long personId) {
+        return Investigation.builder()
+                .id("Test_trichomoniasis")
+                .subjectEntityUid(personId)
+                .classCd("PSN")
+                .personCd("PAT")
+                .caseTypeCd("I")
+                .moodCd("EVN")
+                .cdDescTxt("Trichomoniasis")
+                .prog_area_cd("ARBO")
+                .jurisdictionCd(DEKALB_CODE)
+                .pregnantIndCd("Y")
+                .actIdSeq(2)
+                .actIdTypeCd("STATE")
+                .rootExtensionTxt("StateRootExtensionText")
+                .publicHealthCaseLocalId("CAS10001002GA01")
+                .addUserId(CREATED_BY)
+                .lastChgUserId(UPDATED_BY)
+                .personRecordStatusCd("ACTIVE")
+                .programJurisdictionOid(DEKALB_ARBO_OID)
+                .notificationLocalId("notificationLocalId")
+                .build();
     }
 
     public static Event labReport_acidFastStain(Long personId) {
