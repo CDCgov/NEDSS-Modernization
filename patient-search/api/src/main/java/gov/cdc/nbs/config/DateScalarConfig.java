@@ -2,18 +2,20 @@ package gov.cdc.nbs.config;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
@@ -35,8 +37,14 @@ public class DateScalarConfig {
             @Override
             public Instant deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
                     throws IOException, JsonProcessingException {
-
                 return (Instant) converter.read(jsonParser.readValueAs(String.class));
+            }
+        });
+        javaTimeModule.addSerializer(Instant.class, new StdSerializer<Instant>(Instant.class) {
+
+            @Override
+            public void serialize(Instant value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+                gen.writeString((String) converter.write(value));
             }
         });
         var mapper = new ObjectMapper();
@@ -45,7 +53,7 @@ public class DateScalarConfig {
     }
 
     @Bean
-    public RuntimeWiringConfigurer runtimeWiringConfigurer(DateTimeFormatter formatter) {
+    public RuntimeWiringConfigurer runtimeWiringConfigurer() {
         var converter = new InstantConverter();
 
         var dateScalar = GraphQLScalarType.newScalar()
