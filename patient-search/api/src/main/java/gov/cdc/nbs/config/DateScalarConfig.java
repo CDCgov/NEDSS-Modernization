@@ -2,13 +2,8 @@ package gov.cdc.nbs.config;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoField;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
@@ -30,28 +26,17 @@ import graphql.schema.GraphQLScalarType;
 
 @Configuration
 public class DateScalarConfig {
-    @Bean
-    public DateTimeFormatter dateTimeFormatter() {
-        return new DateTimeFormatterBuilder()
-                .appendOptional(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
-                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.S"))
-                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SS"))
-                .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"))
-                .appendOptional(DateTimeFormatter.ISO_INSTANT)
-                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                .toFormatter().withZone(ZoneOffset.UTC);
-    }
 
     @Bean
-    public ObjectMapper objectMapper(DateTimeFormatter formatter) {
+    public ObjectMapper objectMapper() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
+        var converter = new InstantConverter();
         javaTimeModule.addDeserializer(Instant.class, new StdDeserializer<Instant>(Instant.class) {
             @Override
             public Instant deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
                     throws IOException, JsonProcessingException {
-                return OffsetDateTime.parse(jsonParser.readValueAs(String.class), formatter).toInstant();
+
+                return (Instant) converter.read(jsonParser.readValueAs(String.class));
             }
         });
         var mapper = new ObjectMapper();
@@ -61,6 +46,8 @@ public class DateScalarConfig {
 
     @Bean
     public RuntimeWiringConfigurer runtimeWiringConfigurer(DateTimeFormatter formatter) {
+        var converter = new InstantConverter();
+
         var dateScalar = GraphQLScalarType.newScalar()
                 .name("Date")
                 .description("Java Instant as scalar.")
@@ -78,7 +65,7 @@ public class DateScalarConfig {
                     public Instant parseValue(final Object input) {
                         try {
                             if (input instanceof String) {
-                                return LocalDateTime.parse((String) input, formatter).toInstant(ZoneOffset.UTC);
+                                return (Instant) converter.read(input);
                             } else {
                                 throw new CoercingParseValueException("Expected a String");
                             }
@@ -91,8 +78,7 @@ public class DateScalarConfig {
                     public Instant parseLiteral(final Object input) {
                         if (input instanceof StringValue) {
                             try {
-                                return LocalDateTime.parse(((StringValue) input).getValue(), formatter)
-                                        .toInstant(ZoneOffset.UTC);
+                                return (Instant) converter.read(input.toString());
                             } catch (DateTimeParseException e) {
                                 throw new CoercingParseLiteralException(e);
                             }
