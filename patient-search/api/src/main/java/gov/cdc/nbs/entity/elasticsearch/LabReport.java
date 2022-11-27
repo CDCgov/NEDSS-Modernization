@@ -7,7 +7,9 @@ import javax.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,7 @@ public class LabReport {
     @Id
     private String id;
     @Field(name = "last_change", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant lastChange;
     @Field(name = "class_cd", type = FieldType.Keyword)
     private String classCd;
@@ -42,12 +45,16 @@ public class LabReport {
     @Field(name = "local_id", type = FieldType.Keyword)
     private String localId;
     @Field(name = "activity_to_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant activityToTime;
     @Field(name = "effective_from_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant effectiveFromTime;
     @Field(name = "rpt_to_state_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant rptToStateTime;
     @Field(name = "add_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant addTime;
     @Field(name = "electronic_ind", type = FieldType.Keyword)
     private String electronicInd;
@@ -76,11 +83,15 @@ public class LabReport {
     @Field(name = "display_name", type = FieldType.Text)
     private String displayName;
     @Field(name = "participation_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant participationLastChgTime;
     @Field(name = "act_id_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant actIdLastChgTime;
     @Field(name = "person_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant personLastChgTime;
     @Field(name = "observation_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @ValueConverter(InstantConverter.class)
     private Instant observationLastChgTime;
 }
