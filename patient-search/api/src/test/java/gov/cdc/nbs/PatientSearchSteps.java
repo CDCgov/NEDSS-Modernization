@@ -20,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.enums.PregnancyStatus;
-import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.srte.JurisdictionCode;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter.EventType;
@@ -41,16 +38,12 @@ import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProviderType;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter.Identification;
-import gov.cdc.nbs.repository.ActRepository;
-import gov.cdc.nbs.repository.JurisdictionCodeRepository;
-import gov.cdc.nbs.repository.OrganizationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
 import gov.cdc.nbs.support.EventMother;
-import gov.cdc.nbs.support.EventMother.Event;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -73,12 +66,6 @@ public class PatientSearchSteps {
     private PostalLocatorRepository postalLocatorRepository;
     @Autowired
     private TeleLocatorRepository teleLocatorRepository;
-    @Autowired
-    private ActRepository actRepository;
-    @Autowired
-    private OrganizationRepository orgRepository;
-    @Autowired
-    private JurisdictionCodeRepository jurisdictionCodeRepository;
     @Autowired
     private PatientController patientController;
     @Autowired
@@ -134,8 +121,8 @@ public class PatientSearchSteps {
         if (searchPatient == null) {
             searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
-        var labReport1 = EventMother.labReport_acidFastStain(searchPatient.getId());
-        createEvent(labReport1);
+        var labReportEntries = EventMother.labReport_acidFastStain(searchPatient.getId());
+        labReportRepository.saveAll(labReportEntries);
     }
 
     @Given("I am looking for one of them")
@@ -379,29 +366,4 @@ public class PatientSearchSteps {
         }
     }
 
-    private void createEvent(Event event) {
-        // delete if exsits
-        var idList = event.getActs().stream().map(Act::getId).collect(Collectors.toList());
-        var searchResults = actRepository.findAllById(idList);
-        actRepository.deleteAll(searchResults);
-
-        var orgs = event.getOrgs().stream().map(Organization::getId).collect(Collectors.toList());
-        var orgResults = orgRepository.findAllById(orgs);
-        orgRepository.deleteAll(orgResults);
-
-        var personIds = event.getPeople().stream().map(Person::getId).collect(Collectors.toList());
-        var personResults = personRepository.findAllById(personIds);
-        personRepository.deleteAll(personResults);
-
-        var jurisdictionIds = event.getJurisdictionCodes().stream().map(JurisdictionCode::getId)
-                .collect(Collectors.toList());
-        var jurisdictionCodes = jurisdictionCodeRepository.findAllById(jurisdictionIds);
-        jurisdictionCodeRepository.deleteAll(jurisdictionCodes);
-
-        // create new
-        jurisdictionCodeRepository.saveAll(event.getJurisdictionCodes());
-        orgRepository.saveAll(event.getOrgs());
-        personRepository.saveAll(event.getPeople());
-        actRepository.saveAll(event.getActs());
-    }
 }

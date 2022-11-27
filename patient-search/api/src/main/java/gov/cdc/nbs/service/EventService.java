@@ -21,6 +21,7 @@ import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter;
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EventService {
+    private final InstantConverter instantConverter = new InstantConverter();
     private final ElasticsearchOperations operations;
     private final SecurityService securityService;
     private final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-"
@@ -138,7 +140,9 @@ public class EventService {
                     throw new QueryException("Invalid event date type " +
                             eds.getEventDateType());
             }
-            builder.must(QueryBuilders.rangeQuery(field).from(eds.getFrom()).to(eds.getTo()));
+            var from = instantConverter.write(eds.getFrom());
+            var to = instantConverter.write(eds.getTo());
+            builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // Created By
         if (filter.getCreatedBy() != null) {
@@ -349,7 +353,9 @@ public class EventService {
                     throw new QueryException(
                             "Invalid event date type specified: " + eds.getEventDateType());
             }
-            builder.must(QueryBuilders.rangeQuery(field).from(eds.getFrom()).to(eds.getTo()));
+            var from = instantConverter.write(eds.getFrom());
+            var to = instantConverter.write(eds.getTo());
+            builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // entry methods / entered by
         /**
@@ -411,7 +417,7 @@ public class EventService {
 
         // last update
         if (filter.getLastUpdatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("last_chg_user_id", filter.getCreatedBy()));
+            builder.must(QueryBuilders.matchQuery("last_chg_user_id", filter.getLastUpdatedBy()));
         }
 
         // event provider/facility

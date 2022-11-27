@@ -1,5 +1,7 @@
 package gov.cdc.nbs.entity.elasticsearch;
 
+import static gov.cdc.nbs.config.ElasticSearchConfig.DATE_PATTERN;
+
 import java.time.Instant;
 
 import javax.persistence.Id;
@@ -23,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class LabReport {
     @Id
     private String id;
-    @Field(name = "last_change", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "last_change", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant lastChange;
     @Field(name = "class_cd", type = FieldType.Keyword)
@@ -44,16 +46,16 @@ public class LabReport {
     private String pregnantIndCd;
     @Field(name = "local_id", type = FieldType.Keyword)
     private String localId;
-    @Field(name = "activity_to_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "activity_to_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant activityToTime;
-    @Field(name = "effective_from_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "effective_from_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant effectiveFromTime;
-    @Field(name = "rpt_to_state_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "rpt_to_state_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant rptToStateTime;
-    @Field(name = "add_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "add_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant addTime;
     @Field(name = "electronic_ind", type = FieldType.Keyword)
@@ -82,16 +84,16 @@ public class LabReport {
     private String cdDescTxt;
     @Field(name = "display_name", type = FieldType.Text)
     private String displayName;
-    @Field(name = "participation_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "participation_last_chg_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant participationLastChgTime;
-    @Field(name = "act_id_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "act_id_last_chg_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant actIdLastChgTime;
-    @Field(name = "person_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "person_last_chg_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant personLastChgTime;
-    @Field(name = "observation_last_chg_time", type = FieldType.Date, format = {}, pattern = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS")
+    @Field(name = "observation_last_chg_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant observationLastChgTime;
 }

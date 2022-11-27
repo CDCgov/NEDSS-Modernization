@@ -32,7 +32,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "gov.cdc.nbs")
-@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources/features/PatientSearch.feature") // TODO
+@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
 @ContextConfiguration(classes = Application.class, loader = SpringBootContextLoader.class)
 @CucumberContextConfiguration
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.DEFINED_PORT)
