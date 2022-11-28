@@ -38,6 +38,7 @@ import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProviderType;
 import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter.Identification;
+import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -72,6 +73,8 @@ public class PatientSearchSteps {
     private InvestigationRepository investigationRepository;
     @Autowired
     private LabReportRepository labReportRepository;
+    @Autowired
+    private JurisdictionCodeRepository jurisdictionCodeRepository;
 
     private Person searchPatient;
     private List<Person> searchResults;
@@ -107,6 +110,7 @@ public class PatientSearchSteps {
 
     @Given("Investigations exist")
     public void investigations_exist() {
+        addJurisdictionEntries();
         if (searchPatient == null) {
             searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
@@ -118,11 +122,17 @@ public class PatientSearchSteps {
 
     @Given("A lab report exist")
     public void lab_report_exist() {
+        addJurisdictionEntries();
         if (searchPatient == null) {
             searchPatient = RandomUtil.getRandomFromArray(generatedPersons);
         }
         var labReportEntries = EventMother.labReport_acidFastStain(searchPatient.getId());
         labReportRepository.saveAll(labReportEntries);
+    }
+
+    private void addJurisdictionEntries() {
+        var jurisdictions = EventMother.getJurisdictionCodes();
+        jurisdictionCodeRepository.saveAll(jurisdictions);
     }
 
     @Given("I am looking for one of them")
