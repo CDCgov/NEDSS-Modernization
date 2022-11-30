@@ -55,6 +55,8 @@ public class IdentificationTypeConverter implements AttributeConverter<Identific
                 return IdentificationType.PERSON_NUMBER;
             case "PIN":
                 return IdentificationType.PRISON_IDENTIFICATION_NUMBER;
+            case "QEC":
+                return IdentificationType.QUICK_ENTRY_CODE;
             case "RW":
                 return IdentificationType.RYAN_WHITE_IDENTIFIER;
             case "SS":

@@ -1,8 +1,8 @@
 type Query {
     findPatientById(id: ID!): Person
-    findAllPatients(page: Page): [Person]!
+    findAllPatients(page: Page): PersonPage!
     findPatientsByFilter(filter: PersonFilter!, page: Page): [Person]!
-    findPatientsByEvent(filter: EventFilter!, page: Page): [Person]!
+    findPatientsByEvent(filter: EventFilter!, page: Page): PersonPage!
     findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: Page): [Person]!
 
     findOrganizationById(id: ID!): Organization
@@ -20,4 +20,9 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+}
+
+type PersonPage {
+    content: [Person]!
+    total: Int!
 }
