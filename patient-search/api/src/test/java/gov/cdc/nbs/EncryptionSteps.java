@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.entity.enums.Ethnicity;
@@ -27,6 +26,7 @@ import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.model.EncryptionResponse;
 import gov.cdc.nbs.support.util.RandomUtil;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.DatabindException;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -87,7 +87,7 @@ public class EncryptionSteps {
     }
 
     @Then("I receive the original object")
-    public void I_receive_the_original_object() throws StreamReadException, DatabindException, IOException {
+    public void I_receive_the_original_object() throws StreamReadException, IOException {
         assertEquals(HttpStatus.OK.value(), TestContext.response.getResponse().getStatus());
         PatientFilter decryptedFilter = mapper.readValue(
                 TestContext.response.getResponse().getContentAsByteArray(),

@@ -17,7 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import gov.cdc.nbs.containers.NbsElasticsearchContainer;
 import io.cucumber.spring.CucumberContextConfiguration;
 
 @Suite
@@ -26,7 +32,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "gov.cdc.nbs")
-@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources")
+@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
 @ContextConfiguration(classes = Application.class, loader = SpringBootContextLoader.class)
 @CucumberContextConfiguration
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -34,6 +40,20 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @AutoConfigureMockMvc
 @Transactional
 @Rollback(false)
+@Testcontainers
 class RunCucumberTest {
+
+    @Container
+    private static final ElasticsearchContainer elasticsearchContainer;
+
+    static {
+        elasticsearchContainer = new NbsElasticsearchContainer();
+        elasticsearchContainer.start();
+    }
+
+    @DynamicPropertySource
+    public static void overrideProps(DynamicPropertyRegistry registry) {
+        registry.add("nbs.elasticsearch.url", () -> "http://" + elasticsearchContainer.getHttpHostAddress());
+    }
 
 }
