@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,6 @@ import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
@@ -61,6 +61,8 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -497,37 +499,42 @@ public class PatientService {
                 .fetch();
     }
 
-    public List<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
+    public Page<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        List<Act> acts;
+        List<Long> ids;
+        long totalCount = 0L;
         switch (filter.getEventType()) {
             case INVESTIGATION:
-                // Get all Act entries matching filter
-                acts = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), PageRequest.of(0, 500));
+                var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), pageable);
+                ids = investigations
+                        .stream()
+                        .map(h -> h.getContent())
+                        .filter(Objects::nonNull)
+                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
+                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
+                        .map(Investigation::getSubjectEntityUid)
+                        .collect(Collectors.toList());
+                totalCount = investigations.getTotalHits();
                 break;
             case LABORATORY_REPORT:
-                acts = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), PageRequest.of(0, 500));
+                var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), pageable);
+                ids = labReports
+                        .stream()
+                        .map(h -> h.getContent())
+                        .filter(Objects::nonNull)
+                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
+                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
+                        .map(LabReport::getSubjectEntityUid)
+                        .collect(Collectors.toList());
+
+                totalCount = labReports.getTotalHits();
                 break;
             default:
                 throw new QueryException("Invalid event type: " + filter.getEventType());
         }
-        // Find patients that correspond to the Act entries
-        var actIds = acts.stream().filter(a -> a.getMoodCd().equals("EVN")).map(Act::getId)
-                .collect(Collectors.toList());
-        if (actIds.size() > 0) {
-            var person = QPerson.person;
-            var participation = QParticipation.participation;
-            return queryFactory.selectFrom(person)
-                    .innerJoin(participation)
-                    .on(person.id.eq(participation.id.subjectEntityUid))
-                    .where(participation.actUid.id.in(actIds))
-                    .where(person.recordStatusCd.eq(RecordStatus.ACTIVE))
-                    .where(person.cd.eq("PAT"))
-                    .limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
-        } else {
-            return new ArrayList<>();
-        }
+
+        var persons = personRepository.findAllById(ids);
+        return new PageImpl<Person>(persons, pageable, totalCount);
     }
 
     // checks to see if the filter provided is null, if not add the filter to the

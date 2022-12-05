@@ -11,10 +11,12 @@ RUN yum install tar gzip nodejs -y
 # Install node modules
 RUN npm install
 
-# Update database connections to point to nbs-mssql
+# Update database connections
 WORKDIR /usr/src/nbs
-RUN sed -i 's/localhost/nbs-mssql/' api/src/main/resources/application.yml
-RUN sed -i 's/localhost/nbs-mssql/' api/src/test/resources/application-test.yml
+RUN sed -i 's/localhost:1433/nbs-mssql:1433/' api/src/main/resources/application.yml
+RUN sed -i 's/localhost:1433/nbs-mssql:1433/' api/src/test/resources/application-test.yml
+RUN sed -i 's/localhost:9200/elasticsearch:9200/' api/src/main/resources/application.yml
+
 
 # Build app
 RUN ./gradlew clean -x test build --no-daemon

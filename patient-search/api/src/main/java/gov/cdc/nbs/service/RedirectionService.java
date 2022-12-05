@@ -1,8 +1,6 @@
 package gov.cdc.nbs.service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.entity.odse.SecurityLog;
 import gov.cdc.nbs.exception.RedirectionException;
@@ -30,7 +29,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class RedirectionService {
-    private final DateTimeFormatter formatter;
+    private final InstantConverter instantConverter = new InstantConverter();
     private final SecurityLogRepository securityLogRepository;
     private final AuthUserRepository authUserRepository;
     private final SecurityProperties securityProperties;
@@ -79,8 +78,7 @@ public class RedirectionService {
         filter.setFirstName(map.get(NBS_FIRST_NAME));
         try {
             if (StringUtils.hasText(map.get(NBS_DATE_OF_BIRTH))) {
-                filter.setDateOfBirth(
-                        LocalDateTime.parse(map.get(NBS_DATE_OF_BIRTH), formatter).toInstant(ZoneOffset.UTC));
+                filter.setDateOfBirth((Instant) instantConverter.read(map.get(NBS_DATE_OF_BIRTH)));
             }
             if (StringUtils.hasText(map.get(NBS_SEX))) {
                 filter.setGender(Gender.valueOf(map.get(NBS_SEX)));

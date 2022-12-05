@@ -31,7 +31,7 @@ public class PatientController {
 
     @QueryMapping
     @PreAuthorize(FIND_PATIENT)
-    public List<Person> findPatientsByEvent(@Argument EventFilter filter, @Argument GraphQLPage page) {
+    public Page<Person> findPatientsByEvent(@Argument EventFilter filter, @Argument GraphQLPage page) {
         return patientService.findPatientsByEvent(filter, page);
     }
 
