@@ -28,8 +28,7 @@ spring:
                 format_sql: true
                 jdbc.time_zone: UTC
                 dialect: org.hibernate.dialect.SQLServer2012Dialect
-                hbm2ddl:
-                    jdbc_metadata_extraction_strategy: individually
+                hbm2ddl.jdbc_metadata_extraction_strategy: individually
     datasource:
         url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
         username: sa

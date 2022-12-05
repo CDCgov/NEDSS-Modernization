@@ -15,22 +15,25 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
-import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
@@ -41,6 +44,7 @@ import gov.cdc.nbs.entity.odse.QEntityId;
 import gov.cdc.nbs.entity.odse.QEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QIntervention;
 import gov.cdc.nbs.entity.odse.QLabEvent;
+import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
@@ -61,8 +65,6 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -77,26 +79,32 @@ public class PatientService {
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;
-    private final OrganizationService organizationService;
     private final TeleLocatorRepository teleLocatorRepository;
     private final PostalLocatorRepository postalLocatorRepository;
     private final EventService eventService;
     private final SecurityService securityService;
+    private final CriteriaBuilderFactory criteriaBuilderFactory;
 
     public Optional<Person> findPatientById(Long id) {
         return personRepository.findById(id);
     }
 
     public Page<Person> findAllPatients(GraphQLPage page) {
+        var person = QPerson.person;
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        return personRepository.findAll(pageable);
+        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
+                .select(person)
+                .from(person);
+        query = applySort(query, pageable.getSort());
+
+        var results = query.fetchPage((int) pageable.getOffset(),
+                pageable.getPageSize());
+        return new PageImpl<Person>(results, pageable, results.getMaxResults());
     }
 
-    public List<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
+    public Page<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
         // limit page size
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
         var person = QPerson.person;
         var personName = QPersonName.personName;
@@ -110,7 +118,9 @@ public class PatientService {
         var participation = QParticipation.participation;
         var intervention = QIntervention.intervention;
         var treatment = QTreatment.treatment;
-        var query = queryFactory.selectDistinct(person).from(person)
+        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
+                .select(person)
+                .from(person)
                 .leftJoin(personName)
                 .on(personName.id.personUid.eq(person.id))
                 .leftJoin(personRace)
@@ -204,9 +214,142 @@ public class PatientService {
         // Record status
         query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
 
-        return query.limit(pageable.getPageSize())
-                .offset(pageable.getOffset()).fetch();
+        // Sorting
+        query = applySort(query, pageable.getSort());
+        var results = query.fetchPage((int) pageable.getOffset(),
+                pageable.getPageSize());
+        return new PageImpl<Person>(results, pageable, results.getMaxResults());
+    }
 
+    private BlazeJPAQuery<Person> applySort(BlazeJPAQuery<Person> query, Sort sort) {
+        var person = QPerson.person;
+        if (sort == null) {
+            // if no sort provided, default sort by lastNm then Id
+            return query.orderBy(person.lastNm.asc().nullsLast())
+                    .orderBy(person.id.desc().nullsLast());
+        }
+        var sorts = sort.stream().filter(Objects::nonNull).map(s -> {
+            switch (s.getProperty()) {
+                case "lastNm":
+                    return s.getDirection() == Direction.ASC ? person.lastNm.asc().nullsLast()
+                            : person.lastNm.desc().nullsLast();
+                case "birthTime":
+                    return s.getDirection() == Direction.ASC ? person.birthTime.asc().nullsLast()
+                            : person.birthTime.desc().nullsLast();
+                case "addTime":
+                    return s.getDirection() == Direction.ASC ? person.addTime.asc().nullsLast()
+                            : person.addTime.desc().nullsLast();
+                default:
+                    throw new QueryException("Invalid sort value: " + s.getProperty());
+            }
+        }).collect(Collectors.toList());
+        for (var s : sorts) {
+            query = query.orderBy(s);
+        }
+        // required to have a sort by Id
+        return query.orderBy(person.id.desc().nullsLast());
+    }
+
+    public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
+        // limit page size TODO test
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+
+        var organization = QOrganization.organization;
+        var person = QPerson.person;
+        var labEvent = QLabEvent.labEvent;
+        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
+                .from(person)
+                .join(labEvent).on(labEvent.personUid.eq(person.id))
+                .join(organization).on(labEvent.organizationUid.eq(organization.id));
+
+        query = addParameter(query, organization.id::eq, filter.getId());
+        query = addParameter(query, organization.displayNm::likeIgnoreCase, filter.getDisplayNm());
+        query = addParameter(query, organization.streetAddr1::likeIgnoreCase, filter.getStreetAddr1());
+        query = addParameter(query, organization.streetAddr2::likeIgnoreCase, filter.getStreetAddr2());
+        query = addParameter(query, organization.cityDescTxt::likeIgnoreCase, filter.getCityDescTxt());
+        query = addParameter(query, organization.cityCd::eq, filter.getCityCd());
+        query = addParameter(query, organization.stateCd::eq, filter.getStateCd());
+        query = addParameter(query, organization.zipCd::eq, filter.getZipCd());
+        applySort(query, pageable.getSort());
+        var results = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
+        return new PageImpl<Person>(results, pageable, results.getMaxResults());
+    }
+
+    public Page<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        List<Long> ids;
+        long totalCount = 0L;
+        switch (filter.getEventType()) {
+            case INVESTIGATION:
+                var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter());
+                ids = investigations
+                        .stream()
+                        .map(h -> h.getContent())
+                        .filter(Objects::nonNull)
+                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
+                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
+                        .map(Investigation::getSubjectEntityUid)
+                        .distinct()
+                        .collect(Collectors.toList());
+                totalCount = investigations.getTotalHits();
+                break;
+            case LABORATORY_REPORT:
+                var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter());
+                ids = labReports
+                        .stream()
+                        .map(h -> h.getContent())
+                        .filter(Objects::nonNull)
+                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
+                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
+                        .map(LabReport::getSubjectEntityUid)
+                        .distinct()
+                        .collect(Collectors.toList());
+
+                totalCount = labReports.getTotalHits();
+                break;
+            default:
+                throw new QueryException("Invalid event type: " + filter.getEventType());
+        }
+
+        var results = personRepository.findByIdIn(ids, pageable);
+        return new PageImpl<Person>(results.getContent(), pageable, totalCount);
+    }
+
+    // checks to see if the filter provided is null, if not add the filter to the
+    // 'query.where' based on the expression supplied
+    private <T> BlazeJPAQuery<Person> addParameter(BlazeJPAQuery<Person> query,
+            Function<T, BooleanExpression> expression, T filter) {
+        if (filter != null) {
+            return query.where(expression.apply(filter));
+        } else {
+            return query;
+        }
+    }
+
+    private BooleanExpression getDateOfBirthExpression(QPerson qPerson, Instant dob, String dobOperator) {
+        if (dob == null) {
+            return null;
+        }
+        if (dobOperator == null) {
+            return qPerson.birthTime.eq(dob);
+        } else if (dobOperator.toLowerCase().equals("equal")) {
+            return qPerson.birthTime.eq(dob);
+        } else if (dobOperator.toLowerCase().equals("before")) {
+            return qPerson.birthTime.before(dob);
+        } else if (dobOperator.toLowerCase().equals("after")) {
+            return qPerson.birthTime.after(dob);
+        } else {
+            throw new QueryException("Invalid value for Date of Birth operator");
+        }
+    }
+
+    // MSSQL requires us to escape the '[' character, this is not provided in
+    // querydsl, so we do it here
+    private String generateLikeString(String originalString) {
+        if (originalString == null) {
+            return null;
+        }
+        return "%" + originalString.replace("[", "![") + "%";
     }
 
     /*
@@ -473,104 +616,5 @@ public class PatientService {
             default:
                 throw new QueryException("Invalid PhoneType specified: " + phoneType);
         }
-    }
-
-    public List<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-
-        List<Organization> organizationList = organizationService.findOrganizationsByFilter(filter, page);
-        List<Long> organizationUids = new ArrayList<Long>();
-
-        for (Organization organization : organizationList) {
-            organizationUids.add(organization.getId());
-        }
-
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        var labEvent = QLabEvent.labEvent;
-        var person = QPerson.person;
-        return queryFactory.selectFrom(person)
-                .innerJoin(labEvent)
-                .on(labEvent.personUid.eq(person.id))
-                .where(labEvent.organizationUid.in(organizationUids))
-                .orderBy(person.lastNm.asc())
-                .orderBy(person.firstNm.asc())
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetch();
-    }
-
-    public Page<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        List<Long> ids;
-        long totalCount = 0L;
-        switch (filter.getEventType()) {
-            case INVESTIGATION:
-                var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter(), pageable);
-                ids = investigations
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(Investigation::getSubjectEntityUid)
-                        .collect(Collectors.toList());
-                totalCount = investigations.getTotalHits();
-                break;
-            case LABORATORY_REPORT:
-                var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter(), pageable);
-                ids = labReports
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(LabReport::getSubjectEntityUid)
-                        .collect(Collectors.toList());
-
-                totalCount = labReports.getTotalHits();
-                break;
-            default:
-                throw new QueryException("Invalid event type: " + filter.getEventType());
-        }
-
-        var persons = personRepository.findAllById(ids);
-        return new PageImpl<Person>(persons, pageable, totalCount);
-    }
-
-    // checks to see if the filter provided is null, if not add the filter to the
-    // 'query.where' based on the expression supplied
-    private <T> JPAQuery<Person> addParameter(JPAQuery<Person> query,
-            Function<T, BooleanExpression> expression, T filter) {
-        if (filter != null) {
-            return query.where(expression.apply(filter));
-        } else {
-            return query;
-        }
-    }
-
-    private BooleanExpression getDateOfBirthExpression(QPerson qPerson, Instant dob, String dobOperator) {
-        if (dob == null) {
-            return null;
-        }
-        if (dobOperator == null) {
-            return qPerson.birthTime.eq(dob);
-        } else if (dobOperator.toLowerCase().equals("equal")) {
-            return qPerson.birthTime.eq(dob);
-        } else if (dobOperator.toLowerCase().equals("before")) {
-            return qPerson.birthTime.before(dob);
-        } else if (dobOperator.toLowerCase().equals("after")) {
-            return qPerson.birthTime.after(dob);
-        } else {
-            throw new QueryException("Invalid value for Date of Birth operator");
-        }
-    }
-
-    // MSSQL requires us to escape the '[' character, this is not provided in
-    // querydsl, so we do it here
-    private String generateLikeString(String originalString) {
-        if (originalString == null) {
-            return null;
-        }
-        return "%" + originalString.replace("[", "![") + "%";
     }
 }

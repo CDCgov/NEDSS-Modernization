@@ -3,6 +3,7 @@ buildscript {
         springBootVersion = "2.7.2"
         queryDslVersion = "5.0.0"
 		cucumberVersion = "7.8.0"
+		blazePersistenceVersion = "1.6.8"
     }
 }
 plugins {
@@ -48,6 +49,11 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
+	// blazebit for querydsl paging
+	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
 
 	// elasticsearch
 	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
