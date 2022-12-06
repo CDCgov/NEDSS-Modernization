@@ -172,6 +172,7 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
         body.zip && (rowData.zip = body.zip);
 
         body.phoneNumber && (rowData.phoneNumber = body.phoneNumber);
+        body.email && (rowData.email = body.email);
 
         body.race !== '- Select -' && (rowData.race = body.race);
         body.ethnicity !== '- Select -' && (rowData.ethnicity = body.ethnicity);
