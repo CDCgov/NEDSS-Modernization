@@ -132,6 +132,38 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                         {item.firstNm}, {item.lastNm}
                                     </p>
                                 </Grid>
+                                <Grid col={3} className="margin-bottom-2 large-col">
+                                    <div className="grid-row flex-align-center">
+                                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                            DATE OF BIRTH
+                                        </h5>
+                                        <p className="margin-0 font-sans-1xs text-normal">
+                                            {new Date(item.birthTime).toLocaleDateString('en-US')}
+                                            <span className="font-sans-2xs">
+                                                {' '}
+                                                ({_calculateAge(new Date(item.birthTime))} years)
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div className="grid-row flex-align-center">
+                                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                            SEX
+                                        </h5>
+                                        <p className="margin-0 font-sans-1xs text-normal">
+                                            {item.currSexCd === 'M'
+                                                ? 'Male'
+                                                : item.currSexCd === 'F'
+                                                ? 'Female'
+                                                : 'Unknown'}
+                                        </p>
+                                    </div>
+                                    <div className="grid-row flex-align-center">
+                                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                            PATIENT ID
+                                        </h5>
+                                        <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
+                                    </div>
+                                </Grid>
                                 {/* Locator entries */}
                                 {item.NBSEntity.entityLocatorParticipations.map(
                                     (locatorParticipation: LocatorParticipations, idIndex: number) => (
@@ -170,38 +202,7 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                         </Grid>
                                     )
                                 )}
-                                <Grid col={3} className="margin-bottom-2 large-col">
-                                    <div className="grid-row flex-align-center">
-                                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                            DATE OF BIRTH
-                                        </h5>
-                                        <p className="margin-0 font-sans-1xs text-normal">
-                                            {new Date(item.birthTime).toLocaleDateString('en-US')}
-                                            <span className="font-sans-2xs">
-                                                {' '}
-                                                ({_calculateAge(new Date(item.birthTime))} years)
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div className="grid-row flex-align-center">
-                                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                            SEX
-                                        </h5>
-                                        <p className="margin-0 font-sans-1xs text-normal">
-                                            {item.currSexCd === 'M'
-                                                ? 'Male'
-                                                : item.currSexCd === 'F'
-                                                ? 'Female'
-                                                : 'Unknown'}
-                                        </p>
-                                    </div>
-                                    <div className="grid-row flex-align-center">
-                                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                            PATIENT ID
-                                        </h5>
-                                        <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
-                                    </div>
-                                </Grid>
+
                                 <Grid col={3} className="margin-bottom-2">
                                     <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
                                     <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">
