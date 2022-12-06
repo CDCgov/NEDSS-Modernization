@@ -68,7 +68,6 @@ public class RedirectController {
      * to set up the session variables so that we can navigate directly to Add
      * Patient or Patient Details pages
      */
-    @ApiIgnore
     @GetMapping("/preparePatientDetails")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public void preparePatientDetails(HttpServletRequest request) {

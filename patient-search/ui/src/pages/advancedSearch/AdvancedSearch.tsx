@@ -4,19 +4,21 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import {
-    FindPatientsByFilterQueryResult,
+    FindPatientsByFilterQuery,
     PersonFilter,
     PersonSortField,
     SortDirection,
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
+import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
 import { UserContext } from '../../providers/UserContext';
 import './AdvancedSearch.scss';
 import Chip from './Chip';
 import { SearchItems } from './SearchItems';
 
 export const AdvancedSearch = () => {
+    const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
     const { state } = useContext(UserContext);
     const navigate = useNavigate();
     const [searchType, setSearchType] = useState<string>('search');
@@ -25,12 +27,15 @@ export const AdvancedSearch = () => {
         sortField: PersonSortField.LastNm
     });
     const [searchItems, setSearchItems] = useState<any>([]);
-    const [totalResults, setTotalResults] = useState<number | undefined>();
     const [initialSearch, setInitialSearch] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
     const [formData, setFormData] = useState<PersonFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
+    const [getFilteredData, { data }] = useFindPatientsByFilterLazyQuery({
+        onCompleted: handleSearchResults
+    });
+
     const wrapperRef = useRef<any>(null);
     const PAGE_SIZE = 25;
 
@@ -48,8 +53,6 @@ export const AdvancedSearch = () => {
         };
     }, [wrapperRef]);
 
-    const [getFilteredData] = useFindPatientsByFilterLazyQuery();
-
     const onEventSearch = (data: any) => {
         if (data) {
             setSearchItems(data?.findPatientsByEvent);
@@ -62,7 +65,8 @@ export const AdvancedSearch = () => {
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
-            }).then((filter: PersonFilter) => {
+            }).then(async (filter: PersonFilter) => {
+                setFormData(filter);
                 if (!isEmpty(filter)) {
                     getFilteredData({
                         variables: {
@@ -73,8 +77,6 @@ export const AdvancedSearch = () => {
                                 ...sort
                             }
                         }
-                    }).then((items: FindPatientsByFilterQueryResult) => {
-                        handleSearchResults(filter, items);
                     });
                 }
             });
@@ -83,11 +85,10 @@ export const AdvancedSearch = () => {
         }
     }, [searchParams, state.isLoggedIn, sort]);
 
-    function handleSearchResults(filter: PersonFilter, items: FindPatientsByFilterQueryResult) {
-        setFormData(filter);
+    function handleSearchResults(data: FindPatientsByFilterQuery) {
         setInitialSearch(true);
         const chips: any = [];
-        Object.entries(filter).map((re) => {
+        Object.entries(formData as any).map((re) => {
             if (re[0] !== 'identification') {
                 let name = re[0];
                 switch (re[0]) {
@@ -111,8 +112,7 @@ export const AdvancedSearch = () => {
             }
         });
         setResultsChip(chips);
-        setSearchItems(items?.data?.findPatientsByFilter.content);
-        setTotalResults(items?.data?.findPatientsByFilter.total);
+        setSearchItems(data.findPatientsByFilter.content);
     }
 
     function isEmpty(obj: any) {
@@ -154,6 +154,7 @@ export const AdvancedSearch = () => {
                     formData.dateOfBirth = undefined;
                     break;
             }
+            setFormData(formData);
             getFilteredData({
                 variables: {
                     filter: formData,
@@ -174,6 +175,14 @@ export const AdvancedSearch = () => {
         setSort({ sortDirection, sortField });
     };
 
+    function handleAddNewPatientClick(): void {
+        RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
+            () => {
+                window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
+            }
+        );
+    }
+
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
@@ -182,7 +191,10 @@ export const AdvancedSearch = () => {
             <Grid row className="page-title-bar bg-white">
                 <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                     Search
-                    <Button className="pxadding-x-3 add-patient-button" type={'submit'}>
+                    <Button
+                        className="pxadding-x-3 add-patient-button"
+                        type={'submit'}
+                        onClick={handleAddNewPatientClick}>
                         Add new patient
                     </Button>
                 </div>
@@ -340,7 +352,11 @@ export const AdvancedSearch = () => {
                             </div>
                         </div>
                     )}
-                    <SearchItems initialSearch={initialSearch} data={searchItems} totalResults={totalResults} />
+                    <SearchItems
+                        initialSearch={initialSearch}
+                        data={searchItems}
+                        totalResults={data?.findPatientsByFilter.total}
+                    />
                 </Grid>
             </Grid>
         </div>

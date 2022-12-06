@@ -7,6 +7,7 @@ nbs:
     max-page-size: 50
     elasticsearch:
         url: http://localhost:9200
+    wildfly-url: http://localhost:7001
 
 logging:
     file.path: ./log/

@@ -15,11 +15,12 @@ RUN npm install
 WORKDIR /usr/src/nbs
 RUN sed -i 's/localhost:1433/nbs-mssql:1433/' api/src/main/resources/application.yml
 RUN sed -i 's/localhost:1433/nbs-mssql:1433/' api/src/test/resources/application-test.yml
+RUN sed -i 's/localhost:7001/wildfly:7001/' api/src/main/resources/application.yml
 RUN sed -i 's/localhost:9200/elasticsearch:9200/' api/src/main/resources/application.yml
 
 
 # Build app
-RUN ./gradlew clean -x test build --no-daemon
+RUN ./gradlew clean build -x test --no-daemon
 
 RUN mv api/build/libs/api*-plain.jar api/build/libs/plain.jar 
 RUN mv api/build/libs/api*.jar api/build/libs/api.jar 
