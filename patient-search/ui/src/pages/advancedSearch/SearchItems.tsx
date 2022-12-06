@@ -194,7 +194,7 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                             id: { typeDescTxt: String; rootExtensionTxt: String; typeCd: String },
                                             idIndex: number
                                         ) => (
-                                            <Grid key={idIndex} col={3} className="margin-bottom-2">
+                                            <Grid key={idIndex} col={4} className="margin-bottom-2">
                                                 <h5 className="margin-0 text-normal text-gray-50">
                                                     {id.typeCd.replaceAll('_', ' ')}
                                                 </h5>
