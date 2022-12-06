@@ -1,15 +1,15 @@
 import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
+import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Gender, PersonFilter } from '../../generated/graphql/schema';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { Controller, useForm } from 'react-hook-form';
-import { Gender, PersonFilter } from '../../generated/graphql/schema';
-import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
-import { IDForm } from './IdForm';
 import { EthnicityForm } from './EthnicityForm';
-import { useEffect } from 'react';
+import { IDForm } from './IdForm';
 
 type SimpleSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -18,25 +18,35 @@ type SimpleSearchProps = {
 
 export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
     const methods = useForm();
-
-    useEffect(() => {
-        if (data) {
-            methods.setValue('firstName', data.firstName);
-            methods.setValue('lastName', data.lastName);
-            methods.setValue('city', data.city);
-            methods.setValue('zip', data.zip);
-            methods.setValue('patientId', data.id);
-            methods.setValue('dob', data.dateOfBirth);
-            methods.setValue('gender', data.gender);
-        }
-    }, [data]);
-
     const {
         handleSubmit,
         control,
         formState: { errors },
         reset
     } = methods;
+
+    useEffect(() => {
+        if (data) {
+            methods.reset({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                address: data.address,
+                city: data.city,
+                state: data.state,
+                zip: data.zip,
+                patientId: data.id,
+                dob: data.dateOfBirth,
+                gender: data.gender,
+                phoneNumber: data.phoneNumber,
+                email: data.email,
+                identificationNumber: data.identification?.identificationNumber,
+                identificationType: data.identification?.identificationType,
+                ethnicity: data.ethnicity,
+                race: data.race
+            });
+            console.log('values', methods.getValues());
+        }
+    }, [data]);
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
@@ -193,20 +203,7 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
                     </Button>
                 </Grid>
                 <Grid col={12} className="padding-x-2">
-                    <Button
-                        className="width-full clear-btn"
-                        type={'button'}
-                        onClick={() =>
-                            reset({
-                                lastName: '',
-                                firstName: '',
-                                city: '',
-                                state: '',
-                                zip: '',
-                                patientId: ''
-                            })
-                        }
-                        outline>
+                    <Button className="width-full clear-btn" type={'button'} onClick={() => reset({})} outline>
                         Clear all
                     </Button>
                 </Grid>

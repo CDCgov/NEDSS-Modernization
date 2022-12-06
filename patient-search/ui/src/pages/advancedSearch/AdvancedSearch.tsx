@@ -131,6 +131,7 @@ export const AdvancedSearch = () => {
     }
 
     const handleSubmit = async (data: PersonFilter) => {
+        console.log('handleSubmit', data);
         let search = '';
         if (!isEmpty(data)) {
             // send filter for encryption

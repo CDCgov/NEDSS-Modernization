@@ -285,6 +285,7 @@ input PersonFilter {
     identification: Identification
     ssn: String
     phoneNumber: String
+    email: String
     dateOfBirth: Date
     dateOfBirthOperator: Operator
     gender: Gender

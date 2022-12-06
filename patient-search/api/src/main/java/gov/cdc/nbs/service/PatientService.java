@@ -174,6 +174,10 @@ public class PatientService {
                     (x) -> postalLocator.streetAddr1.eq(x).or(postalLocator.streetAddr2.eq(x)),
                     filter.getAddress());
         }
+        // Email
+        if (filter.getEmail() != null) {
+            query = query.where(teleLocator.emailAddress.likeIgnoreCase(filter.getEmail()));
+        }
         // DOB
         query = query
                 .where(getDateOfBirthExpression(person, filter.getDateOfBirth(), filter.getDateOfBirthOperator()));

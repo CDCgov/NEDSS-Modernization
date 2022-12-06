@@ -494,6 +494,7 @@ export type PersonFilter = {
   dateOfBirth?: InputMaybe<Scalars['Date']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
+  email?: InputMaybe<Scalars['String']>;
   ethnicity?: InputMaybe<Ethnicity>;
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
