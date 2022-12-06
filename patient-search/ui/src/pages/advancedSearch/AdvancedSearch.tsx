@@ -1,4 +1,4 @@
-import { Button, Grid } from '@trussworks/react-uswds';
+import { Button, Grid, Alert } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
@@ -16,6 +16,7 @@ export const AdvancedSearch = () => {
     const [formData, setFormData] = useState<PersonFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
+    const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
 
     useEffect(() => {
@@ -76,6 +77,8 @@ export const AdvancedSearch = () => {
     }
 
     const handleSubmit = (data: PersonFilter) => {
+        setSubmitted(true);
+        setFormData(data);
         if (isEmpty(data)) {
             getFilteredData({
                 variables: {
@@ -86,7 +89,6 @@ export const AdvancedSearch = () => {
                     }
                 }
             }).then((items: any) => {
-                setFormData(data);
                 setInitialSearch(true);
                 const chips: any = [];
                 Object.entries(data).map((re) => {
@@ -116,6 +118,10 @@ export const AdvancedSearch = () => {
 
                 setSearchItems(items?.data?.findPatientsByFilter);
             });
+        } else {
+            setInitialSearch(false);
+            setResultsChip([]);
+            setSearchItems([]);
         }
     };
 
@@ -270,16 +276,29 @@ export const AdvancedSearch = () => {
                         </div>
                     </Grid>
                     {!initialSearch && (
-                        <div
-                            className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
-                            style={{
-                                background: 'white',
-                                border: '1px solid #DFE1E2',
-                                borderRadius: '5px',
-                                height: '147px'
-                            }}>
-                            Perform a search to see results
-                        </div>
+                        <>
+                            {submitted && (
+                                <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
+                                    <Alert
+                                        type="error"
+                                        heading="You did not make a search"
+                                        headingLevel="h4"
+                                        className="width-full">
+                                        <>Please make sure to enter atleast one search criteria.</>
+                                    </Alert>
+                                </div>
+                            )}
+                            <div
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                                style={{
+                                    background: 'white',
+                                    border: '1px solid #DFE1E2',
+                                    borderRadius: '5px',
+                                    height: '147px'
+                                }}>
+                                Perform a search to see results
+                            </div>
+                        </>
                     )}
                     {initialSearch && searchItems?.length === 0 && (
                         <div

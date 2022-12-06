@@ -14,7 +14,7 @@ Then('I enter the First Name {string}', (FirstName) => {
 });
 
 Then('I click on search button', () => {
-    cy.get('#simpleSeachButton').click();
+    cy.get('button').contains('Search').click();
 });
 
 // Then('I select gender as a {string}', (Gender) => {
@@ -26,13 +26,17 @@ Then('I click on search button', () => {
 // });
 
 Given('I visit the nbs site', () => {
-    cy.visit('/nbs/login');
+    cy.visit('/login');
 });
 
 Given('I login in with {string}', (username) => {
-    cy.get('#id_UserName').type(username);
+    cy.get('#username').type(username);
     Cypress.on('uncaught:exception', (err, ruunable) => {
         return false;
     });
-    cy.get('#id_Submit_bottom_ToolbarButtonGraphic').click();
+    cy.get('button').contains('Sign in').click();
+});
+
+Then('I click on Advanced Search', () => {
+    cy.get('p').contains('Advanced Search').click();
 });
