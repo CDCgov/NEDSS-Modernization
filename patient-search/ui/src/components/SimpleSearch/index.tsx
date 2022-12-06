@@ -11,11 +11,10 @@ import { IDForm } from './IdForm';
 import { EthnicityForm } from './EthnicityForm';
 
 type SimpleSearchProps = {
-    dynamicHeight: number;
     handleSubmission: (data: PersonFilter) => void;
 };
 
-export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchProps) => {
+export const SimpleSearch = ({ handleSubmission }: SimpleSearchProps) => {
     const methods = useForm();
 
     const {
@@ -140,12 +139,25 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
             firstName: body.firstName,
             lastName: body.lastName
         };
-        body.city && (rowData.city = body.city);
-        body.zip && (rowData.zip = body.zip);
-        body.patientId && (rowData.id = body.patientId);
         body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
+
+        body.address && (rowData.address = body.address);
+        body.city && (rowData.city = body.city);
         body.state !== '- Select -' && (rowData.state = body.state);
+        body.zip && (rowData.zip = body.zip);
+
+        body.phoneNumber && (rowData.phoneNumber = body.phoneNumber);
+
+        body.race !== '- Select -' && (rowData.race = body.race);
+        body.ethnicity !== '- Select -' && (rowData.ethnicity = body.ethnicity);
+
+        if (body.identificationNumber && body.identificationType !== '- Select -') {
+            rowData.identification = {
+                identificationNumber: body.identificationNumber,
+                identificationType: body.identificationType
+            };
+        }
 
         let search = `?firstName=${rowData.firstName}&lastName=${rowData.lastName}`;
         rowData.city && (search = `${search}&city=${rowData.city}`);
@@ -157,7 +169,7 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
-            <div style={{ height: `${dynamicHeight}px`, overflowY: 'auto' }}>
+            <div style={{ height: `calc(100vh - 375px)`, overflowY: 'auto' }}>
                 <Accordion items={simpleSearchItems} multiselectable={true} />
             </div>
             <Grid row className="bottom-search">
@@ -181,7 +193,7 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
                             })
                         }
                         outline>
-                        Clear
+                        Clear all
                     </Button>
                 </Grid>
             </Grid>
