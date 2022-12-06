@@ -131,7 +131,6 @@ export const AdvancedSearch = () => {
     }
 
     const handleSubmit = async (data: PersonFilter) => {
-        console.log('handleSubmit', data);
         let search = '';
         if (!isEmpty(data)) {
             // send filter for encryption
@@ -142,6 +141,8 @@ export const AdvancedSearch = () => {
 
             // URI encode encrypted filter
             search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+        } else {
+            setSearchItems([]);
         }
 
         // Update query param to trigger search
@@ -153,23 +154,35 @@ export const AdvancedSearch = () => {
 
     const handleChipClose = (value: string) => {
         let tempFormData: PersonFilter = formData as PersonFilter;
+        setResultsChip(resultsChip.filter((c) => c.name != value));
         if (formData) {
             switch (value) {
                 case 'last':
                     tempFormData = { ...tempFormData, lastName: undefined };
-                    setResultsChip(resultsChip.filter((c) => c.name != 'last'));
                     break;
                 case 'first':
                     tempFormData = { ...tempFormData, firstName: undefined };
-                    setResultsChip(resultsChip.filter((c) => c.name != 'first'));
                     break;
                 case 'sex':
                     tempFormData = { ...tempFormData, gender: undefined };
-                    setResultsChip(resultsChip.filter((c) => c.name != 'sex'));
                     break;
                 case 'dob':
                     tempFormData = { ...tempFormData, dateOfBirth: undefined };
-                    setResultsChip(resultsChip.filter((c) => c.name != 'dob'));
+                    break;
+                case 'address':
+                    tempFormData = { ...tempFormData, address: undefined };
+                    break;
+                case 'city':
+                    tempFormData = { ...tempFormData, city: undefined };
+                    break;
+                case 'zip':
+                    tempFormData = { ...tempFormData, zip: undefined };
+                    break;
+                case 'phoneNumber':
+                    tempFormData = { ...tempFormData, phoneNumber: undefined };
+                    break;
+                case 'email':
+                    tempFormData = { ...tempFormData, email: undefined };
                     break;
             }
             setFormData(tempFormData);

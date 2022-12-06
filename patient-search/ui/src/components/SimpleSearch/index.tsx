@@ -183,12 +183,6 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
                 identificationType: body.identificationType
             };
         }
-
-        let search = `?firstName=${rowData.firstName}&lastName=${rowData.lastName}`;
-        rowData.city && (search = `${search}&city=${rowData.city}`);
-        rowData.zip && (search = `${search}&zip=${rowData.zip}`);
-        rowData.id && (search = `${search}&id=${rowData.id}`);
-        rowData.dateOfBirth && (search = `${search}&DateOfBirth=${rowData.dateOfBirth}`);
         handleSubmission(rowData);
     };
 
