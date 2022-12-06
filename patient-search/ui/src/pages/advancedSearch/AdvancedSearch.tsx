@@ -1,4 +1,4 @@
-import { Button, Grid } from '@trussworks/react-uswds';
+import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSearch';
@@ -36,6 +36,7 @@ export const AdvancedSearch = () => {
         onCompleted: handleSearchResults
     });
 
+    const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
     const PAGE_SIZE = 25;
 
@@ -62,6 +63,7 @@ export const AdvancedSearch = () => {
     useEffect(() => {
         const queryParam = searchParams?.get('q');
         if (queryParam && state.isLoggedIn) {
+            setSubmitted(true);
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
@@ -314,16 +316,29 @@ export const AdvancedSearch = () => {
                         </div>
                     </Grid>
                     {!initialSearch && (
-                        <div
-                            className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
-                            style={{
-                                background: 'white',
-                                border: '1px solid #DFE1E2',
-                                borderRadius: '5px',
-                                height: '147px'
-                            }}>
-                            Perform a search to see results
-                        </div>
+                        <>
+                            {submitted && (
+                                <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
+                                    <Alert
+                                        type="error"
+                                        heading="You did not make a search"
+                                        headingLevel="h4"
+                                        className="width-full">
+                                        <>Please make sure to enter atleast one search criteria.</>
+                                    </Alert>
+                                </div>
+                            )}
+                            <div
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                                style={{
+                                    background: 'white',
+                                    border: '1px solid #DFE1E2',
+                                    borderRadius: '5px',
+                                    height: '147px'
+                                }}>
+                                Perform a search to see results
+                            </div>
+                        </>
                     )}
                     {initialSearch && searchItems?.length === 0 && (
                         <div
