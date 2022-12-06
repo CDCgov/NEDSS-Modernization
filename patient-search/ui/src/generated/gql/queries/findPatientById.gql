@@ -32,6 +32,7 @@ query findPatientById($id: ID!) {
         }
         entityIds{
             typeDescTxt
+            typeCd
             rootExtensionTxt
             assigningAuthorityCd
             assigningAuthorityDescTxt

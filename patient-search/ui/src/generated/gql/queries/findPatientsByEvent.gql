@@ -33,6 +33,7 @@ query findPatientsByEvent($filter: EventFilter!, $page: PersonPage) {
             }
             entityIds{
                 typeDescTxt
+                typeCd
                 rootExtensionTxt
                 assigningAuthorityCd
                 assigningAuthorityDescTxt

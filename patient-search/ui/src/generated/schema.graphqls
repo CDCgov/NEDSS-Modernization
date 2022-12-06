@@ -430,6 +430,7 @@ enum SortDirection {
 
 type PersonIdentification {
     typeDescTxt: String
+    typeCd: String
     rootExtensionTxt: String
     assigningAuthorityCd: String
     assigningAuthorityDescTxt: String

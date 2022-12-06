@@ -33,6 +33,7 @@ query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Pers
             }
             entityIds{
                 typeDescTxt
+                typeCd
                 rootExtensionTxt
                 assigningAuthorityCd
                 assigningAuthorityDescTxt

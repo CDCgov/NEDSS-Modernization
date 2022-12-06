@@ -1,5 +1,6 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
+import { Locator, LocatorParticipations, Maybe, PersonName } from '../../generated/graphql/schema';
 import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
@@ -52,6 +53,53 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
         setCurrentPage(currentPage);
     }, [currentPage]);
 
+    function getLocatorTypeDisplay(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
+        switch (classCd) {
+            case 'PST':
+                return 'POSTAL ADDRESS';
+            case 'TELE':
+                if (locator?.phoneNbrTxt) {
+                    return 'PHONE NUMBER';
+                } else if (locator?.emailAddress) {
+                    return 'EMAIL';
+                } else {
+                    return 'UNKNOWN';
+                }
+            default:
+                return classCd || '';
+        }
+    }
+
+    function getLocatorDisplayValue(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
+        if (!locator) {
+            return '-';
+        }
+        switch (classCd) {
+            case 'TELE':
+                return locator.phoneNbrTxt || locator.emailAddress || locator.streetAddr1 || '';
+            case 'PST':
+                return `${locator.streetAddr1 ?? ''} ${locator.cityCd ?? ''} ${locator.stateCd ?? ''} ${
+                    locator.zipCd ?? ''
+                } ${locator.cntryCd}`;
+            default:
+                return '';
+        }
+    }
+
+    function getOtherNames(
+        item: { firstNm: String; lastNm: String },
+        names: Array<PersonName> | undefined
+    ): String | undefined {
+        if (!names) {
+            return undefined;
+        }
+        let otherNames = '';
+        names
+            .filter((n) => n.firstNm != item.firstNm || n.lastNm != item.lastNm)
+            .forEach((n) => (otherNames = otherNames + ` ${n.firstNm} ${n.lastNm}`));
+        return otherNames;
+    }
+
     return (
         <div className="margin-x-4">
             {initialSearch && data?.total > 0 && (
@@ -80,30 +128,48 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                             <Grid row gap={6}>
                                 <Grid col={3} className="margin-bottom-2 large-col">
                                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
-                                    <p className="margin-0 font-sans-md margin-top-05 text-bold text-primary">
+                                    <p className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break">
                                         {item.firstNm}, {item.lastNm}
                                     </p>
                                 </Grid>
-                                <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">PHONE</h5>
-                                    <p className="margin-0 font-sans-1xs text-normal margin-top-05">
-                                        {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
-                                        {item.cellPhoneNbr || '-'}
-                                    </p>
-                                </Grid>
-                                <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">EMAIL</h5>
-                                    <p className="margin-0 font-sans-1xs text-normal margin-top-05">
-                                        {item.hmEmailAddr || '-'}
-                                    </p>
-                                </Grid>
-                                <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">DRIVER'S LICENSE</h5>
-                                    {/* <p className="margin-0 margin-top-05 padding-y-05 padding-x-1 confirm-bage text-semibold width radius-pill text-white bg-mint">
-                                        Confirmed
-                                    </p> */}
-                                    <p className="margin-0 font-sans-1xs text-normal margin-top-05">1238748</p>
-                                </Grid>
+                                {/* Locator entries */}
+                                {item.NBSEntity.entityLocatorParticipations.map(
+                                    (locatorParticipation: LocatorParticipations, idIndex: number) => (
+                                        <Grid key={idIndex} col={3} className="margin-bottom-2">
+                                            <h5 className="margin-0 text-normal text-gray-50">
+                                                {getLocatorTypeDisplay(
+                                                    locatorParticipation.classCd,
+                                                    locatorParticipation.locator
+                                                )}
+                                            </h5>
+                                            <p className="margin-0 font-sans-1xs text-normal margin-top-05">
+                                                {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
+                                                {getLocatorDisplayValue(
+                                                    locatorParticipation.classCd,
+                                                    locatorParticipation.locator
+                                                )}
+                                            </p>
+                                        </Grid>
+                                    )
+                                )}
+
+                                {/* Identifications */}
+                                {item.entityIds.map(
+                                    (
+                                        id: { typeDescTxt: String; rootExtensionTxt: String; typeCd: String },
+                                        idIndex: number
+                                    ) => (
+                                        <Grid key={idIndex} col={3} className="margin-bottom-2">
+                                            <h5 className="margin-0 text-normal text-gray-50">
+                                                {id.typeCd.replaceAll('_', ' ')}
+                                            </h5>
+                                            <p className="margin-0 font-sans-1xs text-normal margin-top-05">
+                                                {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
+                                                {id.rootExtensionTxt || '-'}
+                                            </p>
+                                        </Grid>
+                                    )
+                                )}
                                 <Grid col={3} className="margin-bottom-2 large-col">
                                     <div className="grid-row flex-align-center">
                                         <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
@@ -139,16 +205,8 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                 <Grid col={3} className="margin-bottom-2">
                                     <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
                                     <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">
-                                        {item.mothersMaidenNm || 'No data'}
+                                        {getOtherNames(item, item.names) || 'No data'}
                                     </p>
-                                </Grid>
-                                <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">ADDRESS</h5>
-                                    <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">-</p>
-                                </Grid>
-                                <Grid col={3} className="margin-bottom-2">
-                                    <h5 className="margin-0 text-normal text-gray-50">SOCIAL SECURITY</h5>
-                                    <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">-</p>
                                 </Grid>
                             </Grid>
                         </div>

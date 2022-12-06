@@ -32,6 +32,7 @@ mutation createPatient($patient: PersonInput!) {
         }
         entityIds{
             typeDescTxt
+            typeCd
             rootExtensionTxt
             assigningAuthorityCd
             assigningAuthorityDescTxt

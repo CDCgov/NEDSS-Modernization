@@ -33,6 +33,7 @@ query findAllPatients($page: PersonPage) {
             }
             entityIds{
                 typeDescTxt
+                typeCd
                 rootExtensionTxt
                 assigningAuthorityCd
                 assigningAuthorityDescTxt

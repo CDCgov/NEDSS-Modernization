@@ -139,35 +139,28 @@ export const AdvancedSearch = () => {
     };
 
     const handleChipClose = (value: string) => {
+        let tempFormData: PersonFilter = formData as PersonFilter;
         if (formData) {
             switch (value) {
                 case 'last':
-                    formData.lastName = undefined;
+                    tempFormData = { ...tempFormData, lastName: undefined };
+                    setResultsChip(resultsChip.filter((c) => c.name != 'last'));
                     break;
                 case 'first':
-                    formData.firstName = undefined;
+                    tempFormData = { ...tempFormData, firstName: undefined };
+                    setResultsChip(resultsChip.filter((c) => c.name != 'first'));
                     break;
                 case 'sex':
-                    formData.gender = undefined;
+                    tempFormData = { ...tempFormData, gender: undefined };
+                    setResultsChip(resultsChip.filter((c) => c.name != 'sex'));
                     break;
                 case 'dob':
-                    formData.dateOfBirth = undefined;
+                    tempFormData = { ...tempFormData, dateOfBirth: undefined };
+                    setResultsChip(resultsChip.filter((c) => c.name != 'dob'));
                     break;
             }
-            setFormData(formData);
-            getFilteredData({
-                variables: {
-                    filter: formData,
-                    page: {
-                        pageNumber: 0,
-                        pageSize: PAGE_SIZE,
-                        ...sort
-                    }
-                }
-            }).then((items: any) => {
-                setResultsChip(resultsChip.filter((item) => item.name !== value));
-                setSearchItems(items?.data?.findPatientsByFilter.content);
-            });
+            setFormData(tempFormData);
+            handleSubmit(tempFormData);
         }
     };
 

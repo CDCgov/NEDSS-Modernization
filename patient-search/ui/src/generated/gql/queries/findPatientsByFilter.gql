@@ -33,6 +33,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: PersonPage) {
             }
             entityIds{
                 typeDescTxt
+                typeCd
                 rootExtensionTxt
                 assigningAuthorityCd
                 assigningAuthorityDescTxt
