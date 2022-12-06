@@ -50,7 +50,7 @@ public class PatientCreateSteps {
         filter.setAddress(pl.getStreetAddr1());
         filter.setPhoneNumber(tl.getPhoneNbrTxt());
         var existing = patientController.findPatientsByFilter(filter, null);
-        if (existing.size() > 0) {
+        if (existing.getSize() > 0) {
             personRepository.deleteAll(existing);
         }
     }
@@ -72,9 +72,9 @@ public class PatientCreateSteps {
         filter.setPhoneNumber(tl.getPhoneNbrTxt());
 
         var patientSearch = patientController.findPatientsByFilter(filter, null);
-        assertTrue(patientSearch.size() > 0);
+        assertTrue(patientSearch.getSize() > 0);
 
-        var patient = patientSearch.get(0);
+        var patient = patientSearch.toList().get(0);
         assertEquals(patient.getLastNm(), person.getLastNm());
         assertEquals(patient.getFirstNm(), person.getFirstNm());
         assertEquals(patient.getSsn(), person.getSsn());

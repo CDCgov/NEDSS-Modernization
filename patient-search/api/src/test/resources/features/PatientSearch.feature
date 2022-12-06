@@ -34,6 +34,33 @@ Feature: Patient search
       | ethnicity      |           |
       | record status  |           |
 
+  @patient_multi_data_search
+  Scenario: I can find a Patient by patient data using multiple fields
+    When I search patients by "<field>" "<qualifier>" and "<field2>" "<qualifier2>"
+    Then I find the patient
+
+    Examples:
+      | field          | qualifier | field2      | qualifier2
+      | last name      |           | first name  |
+      | first name     |           | ssn         |
+      | race           |           | first name  |
+      | identification |           | first name  |
+      | patient id     |           | first name  |
+      | ssn            |           | first name  |
+      | phone number   |           | first name  |
+      | date of birth  | before    | first name  |
+      | date of birth  | after     | first name  |
+      | date of birth  | equal     | first name  |
+      | gender         |           | first name  |
+      | deceased       |           | first name  |
+      | address        |           | first name  |
+      | city           |           | first name  |
+      | state          |           | first name  |
+      | country        |           | first name  |
+      | zip code       |           | first name  |
+      | ethnicity      |           | first name  |
+      | record status  |           | first name  |
+
   @patient_investigation_search
   Scenario: I can find a patient by one field in the investigation data
     Given Investigations exist
@@ -56,6 +83,29 @@ Feature: Patient search
       | event id         | STATE_CASE_ID       |
       | created by       |                     |
       | updated by       |                     |
+
+  @patient_multi_investigation_search
+  Scenario: I can find a patient using multiple fields in the investigation data
+    Given Investigations exist
+    When I search investigation events by "<field>" "<qualifier>" and "<field2>" "<qualifier2>"
+    Then I find the patient
+
+    Examples:
+      | field            | qualifier           | field2           | qualifier2          |
+      | condition        | Bacterial Vaginosis | jurisdiction     | jd1                 |
+      | condition        | Trichomoniasis      | jurisdiction     | jd1                 |
+      | program area     | STD                 | jurisdiction     | jd1                 |
+      | program area     | ARBO                | jurisdiction     | jd1                 |
+      | jurisdiction     | jd1                 | event id         | ABCS_CASE_ID        |
+      | jurisdiction     | jd2                 | event id         | ABCS_CASE_ID        |
+      | pregnancy status |                     | jurisdiction     | jd1                 |
+      | event id         | ABCS_CASE_ID        | jurisdiction     | jd1                 |
+      | event id         | CITY_COUNTY_CASE_ID | jurisdiction     | jd1                 |
+      | event id         | INVESTIGATION_ID    | jurisdiction     | jd1                 |
+      | event id         | NOTIFICATION_ID     | jurisdiction     | jd1                 |
+      | event id         | STATE_CASE_ID       | jurisdiction     | jd1                 |
+      | created by       |                     | jurisdiction     | jd1                 |
+      | updated by       |                     | jurisdiction     | jd1                 |
 
   @patient_lab_search
   Scenario: I can find a patient by one field in the laboratory report
@@ -86,3 +136,33 @@ Feature: Patient search
       | provider search   | REPORTING_FACILITY             |
       | resulted test     |                                |
       | coded result      |                                |
+
+  @patient_multi_lab_search
+  Scenario: I can find a patient by many fields in the laboratory report
+    Given A lab report exist
+    When I search laboratory events by "<field>" "<qualifier>" and "<field2>" "<qualifier2>"
+    Then I find the patient
+
+    Examples:
+      | field             | qualifier                      | field2             | qualifier2                      |
+      | program area      |                                | jurisdiction       |                                 |
+      | jurisdiction      |                                | event status       |                                 |
+      | pregnancy status  |                                | jurisdiction       |                                 |
+      | event id          | accession number               | jurisdiction       |                                 |
+      | event id          | lab id                         | jurisdiction       |                                 |
+      | event date        | DATE_OF_REPORT                 | jurisdiction       |                                 |
+      | event date        | DATE_RECEIVED_BY_PUBLIC_HEALTH | jurisdiction       |                                 |
+      | event date        | DATE_OF_SPECIMEN_COLLECTION    | jurisdiction       |                                 |
+      | event date        | LAB_REPORT_CREATE_DATE         | jurisdiction       |                                 |
+      | event date        | LAST_UPDATE_DATE               | jurisdiction       |                                 |
+      | entry method      |                                | jurisdiction       |                                 |
+      | entered by        |                                | jurisdiction       |                                 |
+      | event status      |                                | resulted test      |                                 |
+      | processing status |                                | jurisdiction       |                                 |
+      | created by        |                                | jurisdiction       |                                 |
+      | last updated by   |                                | jurisdiction       |                                 |
+      | provider search   | ORDERING_FACILITY              | jurisdiction       |                                 |
+      | provider search   | ORDERING_PROVIDER              | jurisdiction       |                                 |
+      | provider search   | REPORTING_FACILITY             | jurisdiction       |                                 |
+      | resulted test     |                                | jurisdiction       |                                 |
+      | coded result      |                                | jurisdiction       |                                 |

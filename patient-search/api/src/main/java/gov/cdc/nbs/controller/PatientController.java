@@ -44,7 +44,7 @@ public class PatientController {
 
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT)
-    public List<Person> findPatientsByFilter(@Argument PatientFilter filter, @Argument GraphQLPage page) {
+    public Page<Person> findPatientsByFilter(@Argument PatientFilter filter, @Argument GraphQLPage page) {
         return patientService.findPatientsByFilter(filter, page);
     }
 
