@@ -1,6 +1,48 @@
 mutation createPatient($patient: PersonInput!) {
     createPatient(patient: $patient){
         id
+        NBSEntity{
+            entityLocatorParticipations{
+                classCd
+                locator{
+                    emailAddress
+                    extenstionTxt
+                    phoneNbrTxt
+                    urlAddress
+                    censusBlockCd
+                    censusMinorCivilDivisionCd
+                    censusTrackCd
+                    cityCd
+                    cityDescTxt
+                    cntryCd
+                    cntryDescTxt
+                    cntyCd
+                    cntyDescTxt
+                    msaCongressDistrictCd
+                    regionDistrictCd
+                    stateCd
+                    streetAddr1
+                    streetAddr2
+                    zipCd
+                    geocodeMatchInd
+                    withinCityLimitsInd
+                    censusTract
+                }
+            }
+        }
+        entityIds{
+            typeDescTxt
+            rootExtensionTxt
+            assigningAuthorityCd
+            assigningAuthorityDescTxt
+        }
+        names{
+            firstNm
+            middleNm
+            lastNm
+            nmSuffix
+            nmPrefix
+        }
         addReasonCd
         addTime
         addUserId

@@ -325,7 +325,7 @@ export const SimpleSearch = () => {
                     </Grid>
                 </Grid>
 
-                {data?.findPatientsByFilter && data?.findPatientsByFilter.length > 0 && (
+                {data?.findPatientsByFilter && data?.findPatientsByFilter.content.length > 0 && (
                     <Grid desktop={{ col: 10 }} tablet={{ col: true }} className="bg-white margin-top-3 radius-md">
                         <Grid row className="flex-justify-center">
                             <Grid col={12} className="padding-4 border-bottom border-base-lightest">
@@ -350,7 +350,7 @@ export const SimpleSearch = () => {
                         </Grid>
                     </Grid>
                 )}
-                {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.length === 0) && (
+                {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.content.length === 0) && (
                     <div className="custom-alert" onClick={() => setSubmitted(false)}>
                         <Alert type="error" heading="No results found" headingLevel="h4">
                             <>

@@ -145,7 +145,7 @@ public class PatientSearchSteps {
     @When("I search patients by {string} {string}")
     public void i_search_patients_by_field(String field, String qualifier) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
-        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0));
+        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
     }
 
     @When("I search investigation events by {string} {string}")

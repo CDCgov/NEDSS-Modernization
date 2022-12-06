@@ -16,9 +16,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import gov.cdc.nbs.entity.odse.Organization;
-import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
-import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.repository.OrganizationRepository;

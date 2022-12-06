@@ -251,7 +251,7 @@ public class PatientService {
     }
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
-        // limit page size TODO test
+        // limit page size
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
 
         var organization = QOrganization.organization;
