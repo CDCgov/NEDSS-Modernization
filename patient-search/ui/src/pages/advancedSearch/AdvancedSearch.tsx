@@ -3,7 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
-import { PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import {
+    FindPatientsByFilterQueryResult,
+    PersonFilter,
+    useFindPatientsByFilterLazyQuery
+} from '../../generated/graphql/schema';
 import './AdvancedSearch.scss';
 import Chip from './Chip';
 import { SearchItems } from './SearchItems';
@@ -41,10 +45,13 @@ export const AdvancedSearch = () => {
     };
 
     useEffect(() => {
+        // TODO decrypt url parameters (after SimpleSearch is updated to encrypt before redirect)
+        // After decryption we also need to set the value of the input fields
         const rowData: PersonFilter = {
             firstName: searchParams?.get('firstName') as string,
             lastName: searchParams?.get('lastName') as string
         };
+        console.log('rowData', rowData);
         if (rowData.firstName || rowData.lastName) {
             setInitialSearch(true);
             searchParams?.get('city') && (rowData.city = searchParams?.get('city') as string);
@@ -60,8 +67,8 @@ export const AdvancedSearch = () => {
                         pageSize: 10
                     }
                 }
-            }).then((items: any) => {
-                setSearchItems(items?.data?.findPatientsByFilter);
+            }).then((items: FindPatientsByFilterQueryResult) => {
+                setSearchItems(items?.data?.findPatientsByFilter.content);
             });
         } else {
             setInitialSearch(false);
@@ -85,8 +92,8 @@ export const AdvancedSearch = () => {
                         pageSize: 50
                     }
                 }
-            }).then((items: any) => {
-                setFormData(items);
+            }).then((items: FindPatientsByFilterQueryResult) => {
+                setFormData(items as any); // TODO - not sure what this does but I'm pretty sure its broken
                 setInitialSearch(true);
                 const chips: any = [];
                 Object.entries(data).map((re) => {
@@ -113,7 +120,6 @@ export const AdvancedSearch = () => {
                     }
                 });
                 setResultsChip(chips);
-                console.log('items', items);
                 setSearchItems(items?.data?.findPatientsByFilter.content);
             });
         }

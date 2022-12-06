@@ -60,8 +60,6 @@ export const SimpleSearch = () => {
 
     useEffect(() => {
         const queryParam = searchParams?.get('q');
-        console.log(state.isLoggedIn, 'state.isLoggedIn');
-        console.log(queryParam, 'queryParam');
         if (queryParam && state.isLoggedIn) {
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
@@ -128,6 +126,8 @@ export const SimpleSearch = () => {
                                 onSubmit={(e: any) => {
                                     e.preventDefault();
                                     const formatName = e.target[0].value.split(' ');
+                                    // TODO encrypt these parameters, see line 101-107 for an example
+                                    // Tip, instead of just creating a string, create a Filter object and send that for encryption
                                     const search = `?firstName=${formatName[0]}&lastName=${
                                         formatName.length > 1 ? formatName[1] : ''
                                     }`;
