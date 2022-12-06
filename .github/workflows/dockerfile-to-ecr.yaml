@@ -45,13 +45,14 @@ jobs:
    
     - name: Build, tag, and push proxy image to Amazon ECR
       id: proxy
-      env:                
+      env:
+        IMAGE_NAME: proxy                
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
-        IMAGE_TAG: "${{github.repository}}/${{github.job}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
+        IMAGE_TAG: "${{ env.github_repo_name }}-${{env.IMAGE_NAME}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
       run: |
         # Build a docker container and push it to ECR 
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$GITHUB_JOB/
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$IMAGE_NAME/
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
@@ -59,12 +60,13 @@ jobs:
     - name: Build, tag, and push Elasticsearch image to Amazon ECR
       id: elasticsearch
       env:
+        IMAGE_NAME: elasticsearch
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
-        IMAGE_TAG: "${{github.repository}}/${{github.job}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
+        IMAGE_TAG: "${{ env.github_repo_name }}-${{env.IMAGE_NAME}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
       run: |
         # Build a docker container and push it to ECR 
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$GITHUB_JOB/
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$IMAGE_NAME/
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
@@ -72,12 +74,13 @@ jobs:
     - name: Build, tag, and push NIFI image to Amazon ECR
       id: nifi
       env:
+        IMAGE_NAME: nifi
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
-        IMAGE_TAG: "${{github.repository}}/${{github.job}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
+        IMAGE_TAG: "${{ env.github_repo_name }}-${{env.IMAGE_NAME}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
       run: |
         # Build a docker container and push it to ECR 
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$GITHUB_JOB/
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$IMAGE_NAME/
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
@@ -85,12 +88,13 @@ jobs:
     - name: Build, tag, and push common-asset-server image to Amazon ECR
       id: common-asset-server
       env:
+        IMAGE_NAME: common-asset-server
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
-        IMAGE_TAG: "${{github.repository}}/${{github.job}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
+        IMAGE_TAG: "${{ env.github_repo_name }}-${{env.IMAGE_NAME}}-${{ env.github_branch }}-${{ env.github_sha_short }}"
       run: |
         # Build a docker container and push it to ECR 
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$GITHUB_JOB/
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/$IMAGE_NAME/
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
