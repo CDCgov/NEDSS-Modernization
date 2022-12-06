@@ -9,13 +9,27 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { IDForm } from './IdForm';
 import { EthnicityForm } from './EthnicityForm';
+import { useEffect } from 'react';
 
 type SimpleSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
+    data: PersonFilter | undefined;
 };
 
-export const SimpleSearch = ({ handleSubmission }: SimpleSearchProps) => {
+export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
     const methods = useForm();
+
+    useEffect(() => {
+        if (data) {
+            methods.setValue('firstName', data.firstName);
+            methods.setValue('lastName', data.lastName);
+            methods.setValue('city', data.city);
+            methods.setValue('zip', data.zip);
+            methods.setValue('patientId', data.id);
+            methods.setValue('dob', data.dateOfBirth);
+            methods.setValue('gender', data.gender);
+        }
+    }, [data]);
 
     const {
         handleSubmit,

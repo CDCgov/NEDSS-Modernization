@@ -123,14 +123,22 @@ export const SimpleSearch = () => {
                                 size="big"
                                 className="flex-justify-end"
                                 placeholder="Search for a patient"
-                                onSubmit={(e: any) => {
+                                onSubmit={async (e: any) => {
                                     e.preventDefault();
+                                    // build search filter from text
                                     const formatName = e.target[0].value.split(' ');
-                                    // TODO encrypt these parameters, see line 101-107 for an example
-                                    // Tip, instead of just creating a string, create a Filter object and send that for encryption
-                                    const search = `?firstName=${formatName[0]}&lastName=${
-                                        formatName.length > 1 ? formatName[1] : ''
-                                    }`;
+                                    const filter: PersonFilter = {};
+                                    filter.firstName = formatName[0];
+                                    filter.lastName = formatName.length > 1 ? formatName[1] : '';
+                                    // send filter for encryption
+                                    const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+                                        authorization: `Bearer ${state.getToken()}`,
+                                        object: filter
+                                    });
+
+                                    // URI encode encrypted filter
+                                    const search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+
                                     navigate({
                                         pathname: '/advanced-search',
                                         search

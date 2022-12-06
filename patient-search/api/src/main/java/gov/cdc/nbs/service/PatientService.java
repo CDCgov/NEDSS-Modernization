@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
@@ -119,8 +118,8 @@ public class PatientService {
         var participation = QParticipation.participation;
         var intervention = QIntervention.intervention;
         var treatment = QTreatment.treatment;
-        var query = new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
-                .select(person, person.id.countDistinct())
+        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
+                .select(person)
                 .from(person)
                 .groupBy(person.id)
                 .leftJoin(personName)
@@ -221,9 +220,7 @@ public class PatientService {
         var results = query.fetchPage((int) pageable.getOffset(),
                 pageable.getPageSize());
         if (results.getSize() > 0) {
-            var personEntries = results.stream().map(t -> t.get(person)).collect(Collectors.toList());
-            var totalCount = results.get(0).get(person.id.countDistinct());
-            return new PageImpl<Person>(personEntries, pageable, totalCount);
+            return new PageImpl<Person>(results, pageable, results.getTotalSize());
         } else {
             return new PageImpl<Person>(new ArrayList<Person>(), pageable, 0);
         }

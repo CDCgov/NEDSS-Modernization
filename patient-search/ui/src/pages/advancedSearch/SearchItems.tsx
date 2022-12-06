@@ -4,10 +4,11 @@ import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
     data: any;
+    totalResults: number | undefined;
     initialSearch: boolean;
 };
 
-export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
+export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsProps) => {
     const searchItemsRef: any = useRef();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const _calculateAge = (birthday: Date) => {
@@ -32,7 +33,7 @@ export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
     };
 
     const getListSize = () => {
-        return searchItemsRef.current.clientHeight;
+        return searchItemsRef.current?.clientHeight;
     };
 
     useEffect(() => {
@@ -53,14 +54,14 @@ export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
 
     return (
         <div className="margin-x-4">
-            {initialSearch && data?.length > 0 && (
+            {initialSearch && data?.total > 0 && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
-                        Showing {data.length} of {data.length}
+                        Showing {data.content?.length} of {data.total}
                     </p>
                     <Pagination
                         style={{ justifyContent: 'flex-end' }}
-                        totalPages={Math.ceil(data.length / data.length)}
+                        totalPages={Math.ceil(data.content?.length / data.total)}
                         currentPage={currentPage}
                         pathname={'/advanced-search'}
                         onClickNext={() => handleNext('next')}
@@ -153,10 +154,10 @@ export const SearchItems = ({ data, initialSearch }: SearchItemsProps) => {
                         </div>
                     ))}
             </div>
-            {initialSearch && data?.length > 0 && (
+            {initialSearch && totalResults && data?.length > 0 && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
-                    totalPages={Math.ceil(data.length / data.length)}
+                    totalPages={Math.ceil(totalResults / data?.length)}
                     currentPage={currentPage}
                     pathname={'/advanced-search'}
                     onClickNext={() => handleNext('next')}

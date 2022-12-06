@@ -1,26 +1,38 @@
 import { Button, Grid } from '@trussworks/react-uswds';
-import { useEffect, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSerach';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import {
     FindPatientsByFilterQueryResult,
     PersonFilter,
+    PersonSortField,
+    SortDirection,
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
+import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
+import { UserContext } from '../../providers/UserContext';
 import './AdvancedSearch.scss';
 import Chip from './Chip';
 import { SearchItems } from './SearchItems';
 
 export const AdvancedSearch = () => {
+    const { state } = useContext(UserContext);
+    const navigate = useNavigate();
     const [searchType, setSearchType] = useState<string>('search');
+    const [sort, setSort] = useState<{ sortDirection: SortDirection; sortField: PersonSortField }>({
+        sortDirection: SortDirection.Asc,
+        sortField: PersonSortField.LastNm
+    });
     const [searchItems, setSearchItems] = useState<any>([]);
+    const [totalResults, setTotalResults] = useState<number | undefined>();
     const [initialSearch, setInitialSearch] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
     const [formData, setFormData] = useState<PersonFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const wrapperRef = useRef<any>(null);
+    const PAGE_SIZE = 25;
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -45,84 +57,85 @@ export const AdvancedSearch = () => {
     };
 
     useEffect(() => {
-        // TODO decrypt url parameters (after SimpleSearch is updated to encrypt before redirect)
-        // After decryption we also need to set the value of the input fields
-        const rowData: PersonFilter = {
-            firstName: searchParams?.get('firstName') as string,
-            lastName: searchParams?.get('lastName') as string
-        };
-        console.log('rowData', rowData);
-        if (rowData.firstName || rowData.lastName) {
-            setInitialSearch(true);
-            searchParams?.get('city') && (rowData.city = searchParams?.get('city') as string);
-            searchParams?.get('zip') && (rowData.zip = searchParams?.get('zip') as string);
-            searchParams?.get('id') && (rowData.city = searchParams?.get('id') as string);
-            searchParams?.get('DateOfBirth') &&
-                (rowData.dateOfBirth = searchParams?.get('DateOfBirth') as unknown as Date);
-            getFilteredData({
-                variables: {
-                    filter: rowData,
-                    page: {
-                        pageNumber: 0,
-                        pageSize: 10
-                    }
+        const queryParam = searchParams?.get('q');
+        if (queryParam && state.isLoggedIn) {
+            EncryptionControllerService.decryptUsingPost({
+                encryptedString: queryParam,
+                authorization: `Bearer ${state.getToken()}`
+            }).then((filter: PersonFilter) => {
+                if (!isEmpty(filter)) {
+                    getFilteredData({
+                        variables: {
+                            filter: filter,
+                            page: {
+                                pageNumber: 0,
+                                pageSize: PAGE_SIZE,
+                                ...sort
+                            }
+                        }
+                    }).then((items: FindPatientsByFilterQueryResult) => {
+                        handleSearchResults(filter, items);
+                    });
                 }
-            }).then((items: FindPatientsByFilterQueryResult) => {
-                setSearchItems(items?.data?.findPatientsByFilter.content);
             });
         } else {
             setInitialSearch(false);
         }
-    }, []);
+    }, [searchParams, state.isLoggedIn, sort]);
+
+    function handleSearchResults(filter: PersonFilter, items: FindPatientsByFilterQueryResult) {
+        setFormData(filter);
+        setInitialSearch(true);
+        const chips: any = [];
+        Object.entries(filter).map((re) => {
+            if (re[0] !== 'identification') {
+                let name = re[0];
+                switch (re[0]) {
+                    case 'lastName':
+                        name = 'last';
+                        break;
+                    case 'firstName':
+                        name = 'first';
+                        break;
+                    case 'gender':
+                        name = 'sex';
+                        break;
+                    case 'dateOfBirth':
+                        name = 'dob';
+                        break;
+                }
+                chips.push({
+                    name: name,
+                    value: re[1]
+                });
+            }
+        });
+        setResultsChip(chips);
+        setSearchItems(items?.data?.findPatientsByFilter.content);
+        setTotalResults(items?.data?.findPatientsByFilter.total);
+    }
 
     function isEmpty(obj: any) {
         for (const key in obj) {
-            if (obj[key] !== undefined && obj[key] != '') return true;
+            if (obj[key] !== undefined && obj[key] != '') return false;
         }
-        return false;
+        return true;
     }
 
-    const handleSubmit = (data: PersonFilter) => {
-        if (isEmpty(data)) {
-            getFilteredData({
-                variables: {
-                    filter: data,
-                    page: {
-                        pageNumber: 0,
-                        pageSize: 50
-                    }
-                }
-            }).then((items: FindPatientsByFilterQueryResult) => {
-                setFormData(items as any); // TODO - not sure what this does but I'm pretty sure its broken
-                setInitialSearch(true);
-                const chips: any = [];
-                Object.entries(data).map((re) => {
-                    if (re[0] !== 'identification') {
-                        let name = re[0];
-                        switch (re[0]) {
-                            case 'lastName':
-                                name = 'last';
-                                break;
-                            case 'firstName':
-                                name = 'first';
-                                break;
-                            case 'gender':
-                                name = 'sex';
-                                break;
-                            case 'dateOfBirth':
-                                name = 'dob';
-                                break;
-                        }
-                        chips.push({
-                            name: name,
-                            value: re[1]
-                        });
-                    }
-                });
-                setResultsChip(chips);
-                setSearchItems(items?.data?.findPatientsByFilter.content);
-            });
-        }
+    const handleSubmit = async (data: PersonFilter) => {
+        // send filter for encryption
+        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            object: data
+        });
+
+        // URI encode encrypted filter
+        const search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+        // Update query param to trigger search
+        navigate({
+            pathname: '/advanced-search',
+            search
+        });
     };
 
     const handleChipClose = (value: string) => {
@@ -146,19 +159,19 @@ export const AdvancedSearch = () => {
                     filter: formData,
                     page: {
                         pageNumber: 0,
-                        pageSize: 10
+                        pageSize: PAGE_SIZE,
+                        ...sort
                     }
                 }
             }).then((items: any) => {
                 setResultsChip(resultsChip.filter((item) => item.name !== value));
-                setSearchItems(items?.data?.findPatientsByFilter);
+                setSearchItems(items?.data?.findPatientsByFilter.content);
             });
         }
     };
 
-    const handleSort = () => {
-        setShowSorting(false);
-        console.log('assa');
+    const handleSort = (sortDirection: SortDirection, sortField: PersonSortField) => {
+        setSort({ sortDirection, sortField });
     };
 
     return (
@@ -195,7 +208,7 @@ export const AdvancedSearch = () => {
                             </h6>
                         </div>
                         {searchType === 'search' ? (
-                            <SimpleSearch handleSubmission={handleSubmit} />
+                            <SimpleSearch handleSubmission={handleSubmit} data={formData} />
                         ) : (
                             <EventSearch onSearch={onEventSearch} />
                         )}
@@ -241,32 +254,52 @@ export const AdvancedSearch = () => {
                                 {showSorting && (
                                     <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                         <li className="usa-nav__submenu-item">
-                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                            <Button
+                                                onClick={() => handleSort(SortDirection.Asc, PersonSortField.LastNm)}
+                                                type={'button'}
+                                                unstyled>
                                                 Patient name (A-Z)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
-                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                            <Button
+                                                onClick={() => handleSort(SortDirection.Desc, PersonSortField.LastNm)}
+                                                type={'button'}
+                                                unstyled>
                                                 Patient name (Z-A)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
-                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                            <Button
+                                                onClick={() => handleSort(SortDirection.Asc, PersonSortField.BirthTime)}
+                                                type={'button'}
+                                                unstyled>
                                                 Date of birth (Ascending)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
-                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                            <Button
+                                                onClick={() =>
+                                                    handleSort(SortDirection.Desc, PersonSortField.BirthTime)
+                                                }
+                                                type={'button'}
+                                                unstyled>
                                                 Date of birth (Descending)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
-                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                            <Button
+                                                onClick={() => handleSort(SortDirection.Asc, PersonSortField.AddTime)}
+                                                type={'button'}
+                                                unstyled>
                                                 Start Date (Ascending)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
-                                            <Button onClick={() => handleSort()} type={'button'} unstyled>
+                                            <Button
+                                                onClick={() => handleSort(SortDirection.Desc, PersonSortField.AddTime)}
+                                                type={'button'}
+                                                unstyled>
                                                 Start Date (Descending)
                                             </Button>
                                         </li>
@@ -307,7 +340,7 @@ export const AdvancedSearch = () => {
                             </div>
                         </div>
                     )}
-                    <SearchItems initialSearch={initialSearch} data={searchItems} />
+                    <SearchItems initialSearch={initialSearch} data={searchItems} totalResults={totalResults} />
                 </Grid>
             </Grid>
         </div>
