@@ -16,3 +16,5 @@ module.exports.findPlacesByFilter = fs.readFileSync(path.join(__dirname, 'findPl
 module.exports.findAllJurisdictions = fs.readFileSync(path.join(__dirname, 'findAllJurisdictions.gql'), 'utf8');
 module.exports.findAllCountryCodes = fs.readFileSync(path.join(__dirname, 'findAllCountryCodes.gql'), 'utf8');
 module.exports.findAllStateCodes = fs.readFileSync(path.join(__dirname, 'findAllStateCodes.gql'), 'utf8');
+module.exports.findAllProgramAreas = fs.readFileSync(path.join(__dirname, 'findAllProgramAreas.gql'), 'utf8');
+module.exports.findAllConditionCodes = fs.readFileSync(path.join(__dirname, 'findAllConditionCodes.gql'), 'utf8');

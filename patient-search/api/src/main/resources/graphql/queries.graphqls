@@ -16,6 +16,10 @@ type Query {
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllCountryCodes(page: Page): [CountryCode]!
     findAllStateCodes(page: Page): [StateCode]!
+
+    findAllProgramAreas(page: Page): [ProgramAreaCode]!
+
+    findAllConditionCodes(page: Page): [ConditionCode]!
 }
 
 type Mutation {

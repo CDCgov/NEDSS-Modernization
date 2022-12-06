@@ -1,0 +1,9 @@
+type ProgramAreaCode {
+    id: String!
+    progAreaDescTxt: String
+    nbsUid: ID
+    statusCd: String
+    statusTime: Date
+    codeSetNm: String
+    codeSeq: Int
+}

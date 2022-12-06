@@ -29,6 +29,12 @@ export type CaseStatuses = {
   statusList: Array<CaseStatus>;
 };
 
+export type ConditionCode = {
+  __typename?: 'ConditionCode';
+  conditionDescTxt?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
 export type CountryCode = {
   __typename?: 'CountryCode';
   assigningAuthorityCd?: Maybe<Scalars['String']>;
@@ -646,6 +652,17 @@ export type ProcessingStatuses = {
   statusList: Array<ProcessingStatus>;
 };
 
+export type ProgramAreaCode = {
+  __typename?: 'ProgramAreaCode';
+  codeSeq?: Maybe<Scalars['Int']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  nbsUid?: Maybe<Scalars['ID']>;
+  progAreaDescTxt?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
+  statusTime?: Maybe<Scalars['Date']>;
+};
+
 export type ProviderFacilitySearch = {
   entityType: ReportingEntityType;
   id: Scalars['ID'];
@@ -659,11 +676,13 @@ export enum ProviderType {
 
 export type Query = {
   __typename?: 'Query';
+  findAllConditionCodes: Array<Maybe<ConditionCode>>;
   findAllCountryCodes: Array<Maybe<CountryCode>>;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: Array<Maybe<Organization>>;
   findAllPatients: PersonResults;
   findAllPlaces: Array<Maybe<Place>>;
+  findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllStateCodes: Array<Maybe<StateCode>>;
   findOrganizationById?: Maybe<Organization>;
   findOrganizationsByFilter: Array<Maybe<Organization>>;
@@ -673,6 +692,11 @@ export type Query = {
   findPatientsByOrganizationFilter: PersonResults;
   findPlaceById?: Maybe<Place>;
   findPlacesByFilter: Array<Maybe<Place>>;
+};
+
+
+export type QueryFindAllConditionCodesArgs = {
+  page?: InputMaybe<Page>;
 };
 
 
@@ -697,6 +721,11 @@ export type QueryFindAllPatientsArgs = {
 
 
 export type QueryFindAllPlacesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllProgramAreasArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -823,6 +852,13 @@ export type CreatePatientMutationVariables = Exact<{
 
 export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, NBSEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null } };
 
+export type FindAllConditionCodesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllConditionCodesQuery = { __typename?: 'Query', findAllConditionCodes: Array<{ __typename?: 'ConditionCode', id: string, conditionDescTxt?: string | null } | null> };
+
 export type FindAllCountryCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
@@ -857,6 +893,13 @@ export type FindAllPlacesQueryVariables = Exact<{
 
 
 export type FindAllPlacesQuery = { __typename?: 'Query', findAllPlaces: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> };
+
+export type FindAllProgramAreasQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllProgramAreasQuery = { __typename?: 'Query', findAllProgramAreas: Array<{ __typename?: 'ProgramAreaCode', id: string, progAreaDescTxt?: string | null, nbsUid?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeq?: number | null } | null> };
 
 export type FindAllStateCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -1107,6 +1150,42 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
+export const FindAllConditionCodesDocument = gql`
+    query findAllConditionCodes($page: Page) {
+  findAllConditionCodes(page: $page) {
+    id
+    conditionDescTxt
+  }
+}
+    `;
+
+/**
+ * __useFindAllConditionCodesQuery__
+ *
+ * To run a query within a React component, call `useFindAllConditionCodesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllConditionCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllConditionCodesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllConditionCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
+      }
+export function useFindAllConditionCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
+        }
+export type FindAllConditionCodesQueryHookResult = ReturnType<typeof useFindAllConditionCodesQuery>;
+export type FindAllConditionCodesLazyQueryHookResult = ReturnType<typeof useFindAllConditionCodesLazyQuery>;
+export type FindAllConditionCodesQueryResult = Apollo.QueryResult<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>;
 export const FindAllCountryCodesDocument = gql`
     query findAllCountryCodes($page: Page) {
   findAllCountryCodes(page: $page) {
@@ -1537,6 +1616,47 @@ export function useFindAllPlacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindAllPlacesQueryHookResult = ReturnType<typeof useFindAllPlacesQuery>;
 export type FindAllPlacesLazyQueryHookResult = ReturnType<typeof useFindAllPlacesLazyQuery>;
 export type FindAllPlacesQueryResult = Apollo.QueryResult<FindAllPlacesQuery, FindAllPlacesQueryVariables>;
+export const FindAllProgramAreasDocument = gql`
+    query findAllProgramAreas($page: Page) {
+  findAllProgramAreas(page: $page) {
+    id
+    progAreaDescTxt
+    nbsUid
+    statusCd
+    statusTime
+    codeSetNm
+    codeSeq
+  }
+}
+    `;
+
+/**
+ * __useFindAllProgramAreasQuery__
+ *
+ * To run a query within a React component, call `useFindAllProgramAreasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllProgramAreasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllProgramAreasQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllProgramAreasQuery(baseOptions?: Apollo.QueryHookOptions<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
+      }
+export function useFindAllProgramAreasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
+        }
+export type FindAllProgramAreasQueryHookResult = ReturnType<typeof useFindAllProgramAreasQuery>;
+export type FindAllProgramAreasLazyQueryHookResult = ReturnType<typeof useFindAllProgramAreasLazyQuery>;
+export type FindAllProgramAreasQueryResult = Apollo.QueryResult<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>;
 export const FindAllStateCodesDocument = gql`
     query findAllStateCodes($page: Page) {
   findAllStateCodes(page: $page) {

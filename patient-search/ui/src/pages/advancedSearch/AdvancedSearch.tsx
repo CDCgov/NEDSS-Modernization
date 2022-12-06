@@ -1,7 +1,7 @@
 import { Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { EventSearch } from '../../components/EventSearch/EventSerach';
+import { EventSearch } from '../../components/EventSearch/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import {
     FindPatientsByFilterQueryResult,

@@ -13,6 +13,7 @@ type EventSearchProps = {
 export const EventSearch = ({ onSearch }: EventSearchProps) => {
     // const [getFilteredData] = useFindPatientsByFilterLazyQuery();
     const [getEventSearch] = useFindPatientsByEventLazyQuery();
+    const PAGE_SIZE = 25;
 
     const [eventSearchType, setEventSearchType] = useState<any>('');
 
@@ -122,7 +123,7 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
                 filter: filterData,
                 page: {
                     pageNumber: 0,
-                    pageSize: 50
+                    pageSize: PAGE_SIZE
                 }
             }
         }).then((re) => {

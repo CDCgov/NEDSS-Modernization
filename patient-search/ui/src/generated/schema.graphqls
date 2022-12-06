@@ -1,3 +1,7 @@
+type ConditionCode {
+    id: String!
+    conditionDescTxt: String
+}
 type CountryCode {
     id: ID
     assigningAuthorityCd: String
@@ -630,6 +634,15 @@ type Place {
     phoneCntryCd: String
     versionCtrlNbr: Int
 }
+type ProgramAreaCode {
+    id: String!
+    progAreaDescTxt: String
+    nbsUid: ID
+    statusCd: String
+    statusTime: Date
+    codeSetNm: String
+    codeSeq: Int
+}
 type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: PersonPage): PersonResults!
@@ -648,6 +661,10 @@ type Query {
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllCountryCodes(page: Page): [CountryCode]!
     findAllStateCodes(page: Page): [StateCode]!
+
+    findAllProgramAreas(page: Page): [ProgramAreaCode]!
+
+    findAllConditionCodes(page: Page): [ConditionCode]!
 }
 
 type Mutation {
