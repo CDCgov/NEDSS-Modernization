@@ -258,6 +258,7 @@ public class PatientService {
         var person = QPerson.person;
         var labEvent = QLabEvent.labEvent;
         var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
+                .select(person)
                 .from(person)
                 .join(labEvent).on(labEvent.personUid.eq(person.id))
                 .join(organization).on(labEvent.organizationUid.eq(organization.id));

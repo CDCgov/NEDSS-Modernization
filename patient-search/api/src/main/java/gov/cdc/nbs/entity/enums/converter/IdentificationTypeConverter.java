@@ -108,6 +108,8 @@ public class IdentificationTypeConverter implements AttributeConverter<Identific
                 return "PN";
             case PRISON_IDENTIFICATION_NUMBER:
                 return "PIN";
+            case QUICK_ENTRY_CODE:
+                return "QEC";
             case RYAN_WHITE_IDENTIFIER:
                 return "RW";
             case SOCIAL_SECURITY:
@@ -117,7 +119,7 @@ public class IdentificationTypeConverter implements AttributeConverter<Identific
             case WIC_IDENTIFIER:
                 return "WC";
             default:
-                throw new IllegalArgumentException("Invalid Identification Type specified");
+                throw new IllegalArgumentException("Invalid Identification Type specified: " + type);
         }
     }
 
