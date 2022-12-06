@@ -82,11 +82,11 @@ export const AdvancedSearch = () => {
                     filter: data,
                     page: {
                         pageNumber: 0,
-                        pageSize: 200
+                        pageSize: 50
                     }
                 }
             }).then((items: any) => {
-                setFormData(data);
+                setFormData(items);
                 setInitialSearch(true);
                 const chips: any = [];
                 Object.entries(data).map((re) => {
@@ -113,8 +113,8 @@ export const AdvancedSearch = () => {
                     }
                 });
                 setResultsChip(chips);
-
-                setSearchItems(items?.data?.findPatientsByFilter);
+                console.log('items', items);
+                setSearchItems(items?.data?.findPatientsByFilter.content);
             });
         }
     };

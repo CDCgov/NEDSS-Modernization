@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
@@ -118,9 +119,10 @@ public class PatientService {
         var participation = QParticipation.participation;
         var intervention = QIntervention.intervention;
         var treatment = QTreatment.treatment;
-        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-                .select(person)
+        var query = new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
+                .select(person, person.id.countDistinct())
                 .from(person)
+                .groupBy(person.id)
                 .leftJoin(personName)
                 .on(personName.id.personUid.eq(person.id))
                 .leftJoin(personRace)
@@ -218,10 +220,16 @@ public class PatientService {
         query = applySort(query, pageable.getSort());
         var results = query.fetchPage((int) pageable.getOffset(),
                 pageable.getPageSize());
-        return new PageImpl<Person>(results, pageable, results.getMaxResults());
+        if (results.getSize() > 0) {
+            var personEntries = results.stream().map(t -> t.get(person)).collect(Collectors.toList());
+            var totalCount = results.get(0).get(person.id.countDistinct());
+            return new PageImpl<Person>(personEntries, pageable, totalCount);
+        } else {
+            return new PageImpl<Person>(new ArrayList<Person>(), pageable, 0);
+        }
     }
 
-    private BlazeJPAQuery<Person> applySort(BlazeJPAQuery<Person> query, Sort sort) {
+    private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
         if (sort == null) {
             // if no sort provided, default sort by lastNm then Id
@@ -318,8 +326,8 @@ public class PatientService {
 
     // checks to see if the filter provided is null, if not add the filter to the
     // 'query.where' based on the expression supplied
-    private <T> BlazeJPAQuery<Person> addParameter(BlazeJPAQuery<Person> query,
-            Function<T, BooleanExpression> expression, T filter) {
+    private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
+            Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
             return query.where(expression.apply(filter));
         } else {
