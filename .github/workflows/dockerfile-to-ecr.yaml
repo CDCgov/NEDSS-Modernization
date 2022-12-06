@@ -26,8 +26,11 @@ jobs:
     - name: Configure Environment Variables
       run: |
         github_sha_short=$(git rev-parse --short "$GITHUB_SHA")      
-        github_repo_name="$(echo $name | cut -d'/' -f2)"        
+        github_repo_name="$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"        
         github_branch=${GITHUB_REF#refs/heads/}
+        echo $github_sha_short
+        echo $github_repo_name
+        echo $github_branch
         echo "github_sha_short=$github_sha_short" >> $GITHUB_ENV
         echo "github_repo_name=$github_repo_name" >> $GITHUB_ENV
         echo "github_branch=$github_branch" >> $GITHUB_ENV
