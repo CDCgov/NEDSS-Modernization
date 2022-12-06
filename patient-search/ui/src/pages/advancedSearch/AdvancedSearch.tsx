@@ -80,6 +80,12 @@ export const AdvancedSearch = () => {
                             }
                         }
                     });
+                } else {
+                    // empty filter, clear content
+                    setSearchItems([]);
+                    setResultsChip([]);
+                    setInitialSearch(false);
+                    setSubmitted(true);
                 }
             });
         } else {
@@ -125,14 +131,18 @@ export const AdvancedSearch = () => {
     }
 
     const handleSubmit = async (data: PersonFilter) => {
-        // send filter for encryption
-        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
-            authorization: `Bearer ${state.getToken()}`,
-            object: data
-        });
+        let search = '';
+        if (!isEmpty(data)) {
+            // send filter for encryption
+            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+                authorization: `Bearer ${state.getToken()}`,
+                object: data
+            });
 
-        // URI encode encrypted filter
-        const search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+            // URI encode encrypted filter
+            search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+        }
+
         // Update query param to trigger search
         navigate({
             pathname: '/advanced-search',

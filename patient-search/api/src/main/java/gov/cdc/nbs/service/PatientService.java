@@ -326,6 +326,11 @@ public class PatientService {
     private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
             Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
+            if (filter instanceof String s) {
+                if (s.trim().length() == 0) {
+                    return query;
+                }
+            }
             return query.where(expression.apply(filter));
         } else {
             return query;
