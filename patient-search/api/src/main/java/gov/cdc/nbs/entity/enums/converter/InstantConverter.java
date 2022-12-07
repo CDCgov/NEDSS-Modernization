@@ -19,14 +19,14 @@ public class InstantConverter implements PropertyValueConverter {
             .ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneOffset.UTC);
 
     static {
-        formats.add(new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+        formats.add(new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("M/d/[uuuu][uu]"))
                 .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
                 .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
                 .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
                 .toFormatter());
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"));
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.S"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SS"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS"));
     }
 
     @Override
