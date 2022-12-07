@@ -63,7 +63,6 @@ export const AdvancedSearch = () => {
     useEffect(() => {
         const queryParam = searchParams?.get('q');
         if (queryParam && state.isLoggedIn) {
-            setSubmitted(true);
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
@@ -132,6 +131,7 @@ export const AdvancedSearch = () => {
 
     const handleSubmit = async (data: PersonFilter) => {
         let search = '';
+        setSubmitted(true);
         if (!isEmpty(data)) {
             // send filter for encryption
             const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
@@ -141,7 +141,9 @@ export const AdvancedSearch = () => {
 
             // URI encode encrypted filter
             search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+            setInitialSearch(true);
         } else {
+            setInitialSearch(false);
             setSearchItems([]);
         }
 
@@ -201,6 +203,20 @@ export const AdvancedSearch = () => {
             }
         );
     }
+
+    const handlePagination = (page: number) => {
+        formData &&
+            getFilteredData({
+                variables: {
+                    filter: formData,
+                    page: {
+                        pageNumber: page,
+                        pageSize: PAGE_SIZE,
+                        ...sort
+                    }
+                }
+            });
+    };
 
     return (
         <div
@@ -387,7 +403,8 @@ export const AdvancedSearch = () => {
                     <SearchItems
                         initialSearch={initialSearch}
                         data={searchItems}
-                        totalResults={data?.findPatientsByFilter.total}
+                        totalResults={Number(data?.findPatientsByFilter.total)}
+                        handlePagination={handlePagination}
                     />
                 </Grid>
             </Grid>

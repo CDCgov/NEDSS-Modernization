@@ -5,11 +5,12 @@ import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
     data: any;
-    totalResults: number | undefined;
+    totalResults: number;
     initialSearch: boolean;
+    handlePagination: (page: number) => void;
 };
 
-export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsProps) => {
+export const SearchItems = ({ data, initialSearch, totalResults, handlePagination }: SearchItemsProps) => {
     const searchItemsRef: any = useRef();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const _calculateAge = (birthday: Date) => {
@@ -19,18 +20,9 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     };
 
-    const handleNext = (type?: any, page?: number) => {
-        switch (type) {
-            case 'current':
-                setCurrentPage(page || 1);
-                break;
-            case 'next':
-                setCurrentPage(currentPage + 1);
-                break;
-            case 'prev':
-                setCurrentPage(currentPage - 1);
-                break;
-        }
+    const handleNext = (page: number) => {
+        setCurrentPage(page);
+        handlePagination(page - 1);
     };
 
     const getListSize = () => {
@@ -102,19 +94,19 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
 
     return (
         <div className="margin-x-4">
-            {initialSearch && totalResults && data?.length > 0 && (
+            {Boolean(initialSearch && totalResults && data?.length > 0) && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
-                        Showing {data.content?.length} of {data.total}
+                        Showing {data.length} of {totalResults}
                     </p>
                     <Pagination
                         style={{ justifyContent: 'flex-end' }}
-                        totalPages={Math.ceil(totalResults / data?.length)}
+                        totalPages={Math.ceil(totalResults / 25)}
                         currentPage={currentPage}
                         pathname={'/advanced-search'}
-                        onClickNext={() => handleNext('next')}
-                        onClickPrevious={() => handleNext('prev')}
-                        onClickPageNumber={(_, page) => handleNext('current', page)}
+                        onClickNext={() => handleNext(currentPage + 1)}
+                        onClickPrevious={() => handleNext(currentPage - 1)}
+                        onClickPageNumber={(_, page) => handleNext(page)}
                     />
                 </Grid>
             )}
@@ -129,7 +121,9 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                 <Grid col={3}>
                                     <Grid col={12} className="margin-bottom-2">
                                         <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
-                                        <p className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break">
+                                        <p
+                                            className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
+                                            style={{ wordBreak: 'break-word' }}>
                                             {item.firstNm}, {item.lastNm}
                                         </p>
                                     </Grid>
@@ -177,7 +171,9 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                                         locatorParticipation.locator
                                                     )}
                                                 </h5>
-                                                <p className="margin-0 font-sans-1xs text-normal margin-top-05">
+                                                <p
+                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
                                                     {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
                                                     {getLocatorDisplayValue(
                                                         locatorParticipation.classCd,
@@ -198,7 +194,9 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                                                 <h5 className="margin-0 text-normal text-gray-50">
                                                     {id.typeCd.replaceAll('_', ' ')}
                                                 </h5>
-                                                <p className="margin-0 font-sans-1xs text-normal margin-top-05">
+                                                <p
+                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
                                                     {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
                                                     {id.rootExtensionTxt || '-'}
                                                 </p>
@@ -208,7 +206,9 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
 
                                     <Grid col={3} className="margin-bottom-2">
                                         <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
-                                        <p className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05">
+                                        <p
+                                            className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05"
+                                            style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
                                             {getOtherNames(item, item.names) || 'No data'}
                                         </p>
                                     </Grid>
@@ -217,15 +217,15 @@ export const SearchItems = ({ data, initialSearch, totalResults }: SearchItemsPr
                         </div>
                     ))}
             </div>
-            {initialSearch && totalResults && data?.length > 0 && (
+            {Boolean(initialSearch && totalResults && data?.length > 0) && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
                     totalPages={Math.ceil(totalResults / data?.length)}
                     currentPage={currentPage}
                     pathname={'/advanced-search'}
-                    onClickNext={() => handleNext('next')}
-                    onClickPrevious={() => handleNext('prev')}
-                    onClickPageNumber={(_, page) => handleNext('current', page)}
+                    onClickNext={() => handleNext(currentPage + 1)}
+                    onClickPrevious={() => handleNext(currentPage - 1)}
+                    onClickPageNumber={(_, page) => handleNext(page)}
                 />
             )}
         </div>

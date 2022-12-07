@@ -1,5 +1,5 @@
 .break-workd {
-    word-break: break-all;
+    word-break: normal !important;
 }
 .search-page-height {
     position: relative;
@@ -110,10 +110,11 @@
         width: max-content;
         filter: drop-shadow(0px 4px 14px rgba(0, 0, 0, 0.15));
         border-radius: 5px;
+        z-index: 1;
 
         .usa-nav__submenu-item {
             border-bottom: 1px solid #dfdfdf;
-            padding: 0 0 10px 0;
+            padding: 15px;
             .usa-button--unstyled {
                 margin: 0;
                 color: black;
@@ -122,7 +123,7 @@
         }
         .usa-nav__submenu-item:last-child {
             border: none;
-            padding: 0;
+            padding: 15px;
         }
     }
 }
