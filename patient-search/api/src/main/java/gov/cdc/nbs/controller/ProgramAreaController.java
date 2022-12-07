@@ -1,7 +1,6 @@
 package gov.cdc.nbs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -13,15 +12,13 @@ import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
 
 @Controller
 public class ProgramAreaController {
-    @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
 
     @Autowired
     private ProgramAreaCodeRepository programAreaCodeRepository;
 
     @QueryMapping()
     public Page<ProgramAreaCode> findAllProgramAreas(@Argument GraphQLPage page) {
-        return programAreaCodeRepository.findAll(GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return programAreaCodeRepository.findAll(GraphQLPage.toPageable(page, 1000));
     }
 
 }

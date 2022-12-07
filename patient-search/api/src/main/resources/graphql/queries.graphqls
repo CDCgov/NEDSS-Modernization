@@ -13,12 +13,11 @@ type Query {
     findAllPlaces(page: Page): [Place]!
     findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
 
-    findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllCountryCodes(page: Page): [CountryCode]!
     findAllStateCodes(page: Page): [StateCode]!
 
+    findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
-
     findAllConditionCodes(page: Page): [ConditionCode]!
 }
 

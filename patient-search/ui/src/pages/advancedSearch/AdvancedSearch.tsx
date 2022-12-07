@@ -4,10 +4,13 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import {
+    EventFilter,
+    FindPatientsByEventQuery,
     FindPatientsByFilterQuery,
     PersonFilter,
     PersonSortField,
     SortDirection,
+    useFindPatientsByEventLazyQuery,
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
@@ -35,6 +38,9 @@ export const AdvancedSearch = () => {
     const [getFilteredData, { data }] = useFindPatientsByFilterLazyQuery({
         onCompleted: handleSearchResults
     });
+    const [getEventSearch] = useFindPatientsByEventLazyQuery({
+        onCompleted: handleEventSearchResults
+    });
 
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
@@ -54,12 +60,10 @@ export const AdvancedSearch = () => {
         };
     }, [wrapperRef]);
 
-    const onEventSearch = (data: any) => {
-        if (data) {
-            setSearchItems(data?.findPatientsByEvent);
-        }
-    };
-
+    /**
+     * Handles extracting and submitting the query from the q parameter,
+     * this object could either be PersonFilter or EventFilter
+     */
     useEffect(() => {
         const queryParam = searchParams?.get('q');
         if (queryParam && state.isLoggedIn) {
@@ -67,12 +71,13 @@ export const AdvancedSearch = () => {
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
-            }).then(async (filter: PersonFilter) => {
-                setFormData(filter);
-                if (!isEmpty(filter)) {
-                    getFilteredData({
+            }).then(async (filter: PersonFilter | EventFilter) => {
+                // if filter has eventType property, then it is an EventFilter
+                if ((filter as EventFilter).eventType) {
+                    filter = filter as EventFilter;
+                    getEventSearch({
                         variables: {
-                            filter: filter,
+                            filter,
                             page: {
                                 pageNumber: 0,
                                 pageSize: PAGE_SIZE,
@@ -81,11 +86,26 @@ export const AdvancedSearch = () => {
                         }
                     });
                 } else {
-                    // empty filter, clear content
-                    setSearchItems([]);
-                    setResultsChip([]);
-                    setInitialSearch(false);
-                    setSubmitted(true);
+                    filter = filter as PersonFilter;
+                    setFormData(filter);
+                    if (!isEmpty(filter)) {
+                        getFilteredData({
+                            variables: {
+                                filter: filter,
+                                page: {
+                                    pageNumber: 0,
+                                    pageSize: PAGE_SIZE,
+                                    ...sort
+                                }
+                            }
+                        });
+                    } else {
+                        // empty filter, clear content
+                        setSearchItems([]);
+                        setResultsChip([]);
+                        setInitialSearch(false);
+                        setSubmitted(true);
+                    }
                 }
             });
         } else {
@@ -96,31 +116,39 @@ export const AdvancedSearch = () => {
     function handleSearchResults(data: FindPatientsByFilterQuery) {
         setInitialSearch(true);
         const chips: any = [];
-        Object.entries(formData as any).map((re) => {
-            if (re[0] !== 'identification') {
-                let name = re[0];
-                switch (re[0]) {
-                    case 'lastName':
-                        name = 'last';
-                        break;
-                    case 'firstName':
-                        name = 'first';
-                        break;
-                    case 'gender':
-                        name = 'sex';
-                        break;
-                    case 'dateOfBirth':
-                        name = 'dob';
-                        break;
+        if (formData) {
+            Object.entries(formData as any).map((re) => {
+                if (re[0] !== 'identification') {
+                    let name = re[0];
+                    switch (re[0]) {
+                        case 'lastName':
+                            name = 'last';
+                            break;
+                        case 'firstName':
+                            name = 'first';
+                            break;
+                        case 'gender':
+                            name = 'sex';
+                            break;
+                        case 'dateOfBirth':
+                            name = 'dob';
+                            break;
+                    }
+                    chips.push({
+                        name: name,
+                        value: re[1]
+                    });
                 }
-                chips.push({
-                    name: name,
-                    value: re[1]
-                });
-            }
-        });
+            });
+        }
         setResultsChip(chips);
         setSearchItems(data.findPatientsByFilter.content);
+    }
+
+    function handleEventSearchResults(data: FindPatientsByEventQuery) {
+        setInitialSearch(true);
+        setResultsChip([]);
+        setSearchItems(data?.findPatientsByEvent.content);
     }
 
     function isEmpty(obj: any) {
@@ -130,13 +158,15 @@ export const AdvancedSearch = () => {
         return true;
     }
 
-    const handleSubmit = async (data: PersonFilter) => {
+    // handles submit from Person Search and Event Search,
+    // it simply encrypts the filter object and sets it as the query parameter
+    const handleSubmit = async (filter: PersonFilter | EventFilter) => {
         let search = '';
-        if (!isEmpty(data)) {
+        if (!isEmpty(filter)) {
             // send filter for encryption
             const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
                 authorization: `Bearer ${state.getToken()}`,
-                object: data
+                object: filter
             });
 
             // URI encode encrypted filter
@@ -241,7 +271,7 @@ export const AdvancedSearch = () => {
                         {searchType === 'search' ? (
                             <SimpleSearch handleSubmission={handleSubmit} data={formData} />
                         ) : (
-                            <EventSearch onSearch={onEventSearch} />
+                            <EventSearch onSearch={handleSubmit} />
                         )}
                     </div>
                 </Grid>
