@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloWrapper from './providers/ApolloContext';
+import { SearchCriteriaProvider } from './providers/SearchCriteriaContext';
 // import { TopBanner } from './components/TopBanner/TopBanner';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
@@ -13,15 +14,17 @@ ReactDOM.render(
     <React.StrictMode>
         <UserContextProvider>
             <ApolloWrapper>
-                <BrowserRouter>
-                    {/* <TopBanner /> */}
-                    <div style={{ padding: '5px' }}>
-                        <NavBar />
-                        <div className="route-content">
-                            <AppRoutes />
+                <SearchCriteriaProvider>
+                    <BrowserRouter>
+                        {/* <TopBanner /> */}
+                        <div style={{ padding: '5px' }}>
+                            <NavBar />
+                            <div className="route-content">
+                                <AppRoutes />
+                            </div>
                         </div>
-                    </div>
-                </BrowserRouter>
+                    </BrowserRouter>
+                </SearchCriteriaProvider>
             </ApolloWrapper>
         </UserContextProvider>
     </React.StrictMode>,
