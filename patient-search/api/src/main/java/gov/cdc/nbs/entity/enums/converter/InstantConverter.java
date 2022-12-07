@@ -41,15 +41,17 @@ public class InstantConverter implements PropertyValueConverter {
     @Override
     public Object read(Object value) {
         if (value instanceof String s) {
+            if (s.startsWith("StringValue{value='")) {
+                s = s.substring("StringValue{value='".length(), s.length() - 2);
+            }
             for (var format : formats) {
                 try {
-                    return LocalDateTime.parse((String) value, format).toInstant(ZoneOffset.UTC);
+                    return LocalDateTime.parse(s, format).toInstant(ZoneOffset.UTC);
                 } catch (DateTimeParseException e) {
                     // ignore exception until all formats have been tried
                 }
             }
             throw new RuntimeException("Failed to convert String to Instant: " + s);
-
         } else {
             return value;
         }

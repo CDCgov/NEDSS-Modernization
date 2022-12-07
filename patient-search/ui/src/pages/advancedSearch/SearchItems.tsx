@@ -133,11 +133,18 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                                 DATE OF BIRTH
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">
-                                                {new Date(item.birthTime).toLocaleDateString('en-US')}
-                                                <span className="font-sans-2xs">
-                                                    {' '}
-                                                    ({_calculateAge(new Date(item.birthTime))} years)
-                                                </span>
+                                                {item.birthTime && (
+                                                    <>
+                                                        {new Date(item.birthTime).toLocaleDateString('en-US', {
+                                                            timeZone: 'UTC'
+                                                        })}
+                                                        <span className="font-sans-2xs">
+                                                            {' '}
+                                                            ({_calculateAge(new Date(item.birthTime))} years)
+                                                        </span>
+                                                    </>
+                                                )}
+                                                {!item.birthTime && <span className="font-sans-2xs">--</span>}
                                             </p>
                                         </div>
                                         <div className="grid-row flex-align-center">
