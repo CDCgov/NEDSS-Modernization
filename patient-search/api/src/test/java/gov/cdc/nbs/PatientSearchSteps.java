@@ -153,10 +153,11 @@ public class PatientSearchSteps {
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
     }
 
-    @When("I search patients by {string} {string} and {string} {string}")
-    public void i_search_patients_by_multiple_fields(String field, String qualifier, String field2, String qualifier2) {
+    @When("I search patients by {string} {string} {string} {string} {string} {string}")
+    public void i_search_patients_by_multiple_fields(String field, String qualifier, String field2, String qualifier2, String field3, String qualifier3) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         updatePatientDataFilter(filter, field2, qualifier2);
+        updatePatientDataFilter(filter, field3, qualifier3);
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
     }
 
@@ -166,10 +167,11 @@ public class PatientSearchSteps {
         searchResults = patientController.findPatientsByEvent(filter, null).getContent();
     }
 
-    @When("I search investigation events by {string} {string} and {string} {string}")
-    public void i_search_patients_by_investigation_events(String field, String qualifier, String field2, String qualifier2) {
+    @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
+    public void i_search_patients_by_investigation_events(String field, String qualifier, String field2, String qualifier2, String field3, String qualifier3) {
         EventFilter filter = getInvestigationFilter(field, qualifier);
         updateInvestigationFilter(filter, field2, qualifier2);
+        updateInvestigationFilter(filter, field3, qualifier3);
         searchResults = patientController.findPatientsByEvent(filter, null).getContent();
     }
 
@@ -179,10 +181,11 @@ public class PatientSearchSteps {
         searchResults = patientController.findPatientsByEvent(filter, null).getContent();
     }
 
-    @When("I search laboratory events by {string} {string} and {string} {string}")
-    public void i_search_patients_by_laboratory_events(String field, String qualifier, String field2, String qualifier2) {
+    @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
+    public void i_search_patients_by_laboratory_events(String field, String qualifier, String field2, String qualifier2, String field3, String qualifier3) {
         EventFilter filter = getLabReportFilter(field, qualifier);
         updateLabReportFilter(filter, field2, qualifier2);
+        updateLabReportFilter(filter, field3, qualifier3);
         searchResults = patientController.findPatientsByEvent(filter, null).getContent();
     }
 
@@ -200,6 +203,9 @@ public class PatientSearchSteps {
     }
 
     private EventFilter updateLabReportFilter(EventFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
         filter.setEventType(EventType.LABORATORY_REPORT);
         var criteria = filter.getLaboratoryReportFilter();
         switch (field) {
@@ -274,6 +280,9 @@ public class PatientSearchSteps {
     }
 
     private EventFilter updateInvestigationFilter(EventFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
         filter.setEventType(EventType.INVESTIGATION);
         filter.setInvestigationFilter(new InvestigationFilter());
         var criteria = filter.getInvestigationFilter();
@@ -330,6 +339,9 @@ public class PatientSearchSteps {
     }
 
     private PatientFilter updatePatientDataFilter(PatientFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
         switch (field) {
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
