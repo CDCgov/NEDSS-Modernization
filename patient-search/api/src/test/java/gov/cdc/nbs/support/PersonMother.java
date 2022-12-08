@@ -101,6 +101,7 @@ public class PersonMother {
         race.setId(new PersonRaceId(id, RandomUtil.getRandomFromArray(Race.values())));
         race.setPersonUid(person);
         race.setRecordStatusCd("ACTIVE");
+        person.setRaceDescTxt(race.getId().getRaceCd().toString());
         person.setRaces(Arrays.asList(race));
 
         // Tele locator entry
