@@ -31,7 +31,7 @@ export const TableContent = ({ tableHead, tableBody }: TableContentProps) => {
                 </tr>
             </thead>
             <tbody>
-                {tableBody?.map((item: any, index) => (
+                {tableBody?.content.map((item: any, index) => (
                     <tr key={index}>
                         <td>
                             <Checkbox id={`${index}-checkbox`} name="checkbox" label="" />

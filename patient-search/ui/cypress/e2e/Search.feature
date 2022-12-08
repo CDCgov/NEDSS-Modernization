@@ -7,6 +7,7 @@ Feature: I can submit a search
 
   Scenario: I can navigate to the simple search page and perform a search
     When I navigate to the simple search page
+    And I click on Advanced Search
     Then I enter the Last Name "Singh"
     And I enter the First Name "Surma"
     And I click on search button

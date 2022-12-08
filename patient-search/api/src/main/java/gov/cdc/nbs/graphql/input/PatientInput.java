@@ -8,6 +8,7 @@ import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.Race;
+import gov.cdc.nbs.entity.enums.Suffix;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -58,16 +59,6 @@ public class PatientInput {
         private String phoneNumber;
         private String extension;
         private PhoneType phoneType;
-    }
-
-    public enum Suffix {
-        ESQ,
-        II,
-        III,
-        IV,
-        JR,
-        SR,
-        V
     }
 
     public enum PhoneType {

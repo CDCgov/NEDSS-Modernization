@@ -10,8 +10,8 @@ export const AppRoutes = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/search" element={<SimpleSearch />} />
                 <Route path="/advanced-search" element={<AdvancedSearch />} />
-                <Route path="*" element={<Navigate to="/search" />} />
-                <Route path="/" element={<Navigate to="/search" />} />
+                <Route path="*" element={<Navigate to="/advanced-search" />} />
+                <Route path="/" element={<Navigate to="/advanced-search" />} />
             </Route>
         </Routes>
     );

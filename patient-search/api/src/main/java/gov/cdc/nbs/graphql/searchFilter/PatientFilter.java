@@ -30,6 +30,7 @@ public class PatientFilter {
     private Identification identification;
     private String ssn;
     private String phoneNumber;
+    private String email;
     private Instant dateOfBirth;
     private String dateOfBirthOperator;
     private Gender gender;

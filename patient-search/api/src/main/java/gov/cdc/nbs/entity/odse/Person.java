@@ -1,13 +1,21 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.Instant;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ColumnTransformer;
 
@@ -15,11 +23,14 @@ import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
-import gov.cdc.nbs.graphql.input.PatientInput.Suffix;
-
-import java.time.Instant;
-import java.util.List;
+import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,7 +49,7 @@ public class Person {
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity NBSEntity;
 
-    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PersonName> names;
 
     @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -193,7 +204,7 @@ public class Person {
     @Column(name = "nm_prefix", length = 20)
     private String nmPrefix;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = SuffixConverter.class)
     @Column(name = "nm_suffix", length = 20)
     private Suffix nmSuffix;
 

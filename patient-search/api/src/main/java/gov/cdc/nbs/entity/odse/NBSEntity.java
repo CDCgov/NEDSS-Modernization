@@ -35,7 +35,7 @@ public class NBSEntity {
     @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Participation> participations;
 
-    @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<EntityLocatorParticipation> entityLocatorParticipations;
 
 }

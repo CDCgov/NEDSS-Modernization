@@ -1,29 +1,52 @@
 import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
+import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Gender, PersonFilter } from '../../generated/graphql/schema';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { Controller, useForm } from 'react-hook-form';
-import { Gender, PersonFilter } from '../../generated/graphql/schema';
-import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
-import { IDForm } from './IdForm';
 import { EthnicityForm } from './EthnicityForm';
+import { IDForm } from './IdForm';
 
 type SimpleSearchProps = {
-    dynamicHeight: number;
     handleSubmission: (data: PersonFilter) => void;
+    data: PersonFilter | undefined;
 };
 
-export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchProps) => {
+export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
     const methods = useForm();
-
     const {
         handleSubmit,
         control,
         formState: { errors },
         reset
     } = methods;
+
+    useEffect(() => {
+        if (data) {
+            methods.reset({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                address: data.address,
+                city: data.city,
+                state: data.state,
+                zip: data.zip,
+                patientId: data.id,
+                dob: data.dateOfBirth,
+                gender: data.gender,
+                phoneNumber: data.phoneNumber,
+                email: data.email,
+                identificationNumber: data.identification?.identificationNumber,
+                identificationType: data.identification?.identificationType,
+                ethnicity: data.ethnicity,
+                race: data.race
+            });
+            console.log('values', methods.getValues());
+        }
+    }, [data]);
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
@@ -140,24 +163,32 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
             firstName: body.firstName,
             lastName: body.lastName
         };
-        body.city && (rowData.city = body.city);
-        body.zip && (rowData.zip = body.zip);
-        body.patientId && (rowData.id = body.patientId);
         body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
-        body.state !== '- Select -' && (rowData.state = body.state);
 
-        let search = `?firstName=${rowData.firstName}&lastName=${rowData.lastName}`;
-        rowData.city && (search = `${search}&city=${rowData.city}`);
-        rowData.zip && (search = `${search}&zip=${rowData.zip}`);
-        rowData.id && (search = `${search}&id=${rowData.id}`);
-        rowData.dateOfBirth && (search = `${search}&DateOfBirth=${rowData.dateOfBirth}`);
+        body.address && (rowData.address = body.address);
+        body.city && (rowData.city = body.city);
+        body.state !== '- Select -' && (rowData.state = body.state);
+        body.zip && (rowData.zip = body.zip);
+
+        body.phoneNumber && (rowData.phoneNumber = body.phoneNumber);
+        body.email && (rowData.email = body.email);
+
+        body.race !== '- Select -' && (rowData.race = body.race);
+        body.ethnicity !== '- Select -' && (rowData.ethnicity = body.ethnicity);
+
+        if (body.identificationNumber && body.identificationType !== '- Select -') {
+            rowData.identification = {
+                identificationNumber: body.identificationNumber,
+                identificationType: body.identificationType
+            };
+        }
         handleSubmission(rowData);
     };
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
-            <div style={{ height: `${dynamicHeight}px`, overflowY: 'auto' }}>
+            <div style={{ height: `calc(100vh - 375px)`, overflowY: 'auto' }}>
                 <Accordion items={simpleSearchItems} multiselectable={true} />
             </div>
             <Grid row className="bottom-search">
@@ -167,21 +198,8 @@ export const SimpleSearch = ({ dynamicHeight, handleSubmission }: SimpleSearchPr
                     </Button>
                 </Grid>
                 <Grid col={12} className="padding-x-2">
-                    <Button
-                        className="width-full clear-btn"
-                        type={'button'}
-                        onClick={() =>
-                            reset({
-                                lastName: '',
-                                firstName: '',
-                                city: '',
-                                state: '',
-                                zip: '',
-                                patientId: ''
-                            })
-                        }
-                        outline>
-                        Clear
+                    <Button className="width-full clear-btn" type={'button'} onClick={() => reset({})} outline>
+                        Clear all
                     </Button>
                 </Grid>
             </Grid>

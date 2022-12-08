@@ -6,6 +6,7 @@ input PersonFilter {
     identification: Identification
     ssn: String
     phoneNumber: String
+    email: String
     dateOfBirth: Date
     dateOfBirthOperator: Operator
     gender: Gender
@@ -149,8 +150,61 @@ enum SortDirection {
     DESC
 }
 
+type PersonIdentification {
+    typeDescTxt: String
+    typeCd: String
+    rootExtensionTxt: String
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+}
+
+type PersonName {
+    firstNm: String
+    middleNm: String
+    lastNm: String
+    nmSuffix: String
+    nmPrefix: String
+}
+
+type Locator {
+    emailAddress: String
+    extenstionTxt: String
+    phoneNbrTxt: String
+    urlAddress: String
+    censusBlockCd: String
+    censusMinorCivilDivisionCd: String
+    censusTrackCd: String
+    cityCd: String
+    cityDescTxt: String
+    cntryCd: String
+    cntryDescTxt: String
+    cntyCd: String
+    cntyDescTxt: String
+    msaCongressDistrictCd: String
+    regionDistrictCd: String
+    stateCd: String
+    streetAddr1: String
+    streetAddr2: String
+    zipCd: String
+    geocodeMatchInd: String
+    withinCityLimitsInd: String
+    censusTract: String
+}
+
+type LocatorParticipations {
+    classCd: String
+    locator: Locator
+}
+
+type NBSEntity {
+    entityLocatorParticipations: [LocatorParticipations]
+}
+
 type Person {
     id: ID
+    NBSEntity: NBSEntity!
+    entityIds: [PersonIdentification]
+    names: [PersonName]
     addReasonCd: String
     addTime: Date
     addUserId: ID

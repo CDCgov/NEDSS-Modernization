@@ -1,24 +1,28 @@
 package gov.cdc.nbs.entity.elasticsearch;
 
+import static gov.cdc.nbs.config.ElasticSearchConfig.DATE_PATTERN;
+
+import java.time.Instant;
+
+import javax.persistence.Id;
+
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.InnerField;
+import org.springframework.data.elasticsearch.annotations.MultiField;
+import org.springframework.data.elasticsearch.annotations.ValueConverter;
+
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
-import gov.cdc.nbs.graphql.input.PatientInput;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.ValueConverter;
-
-import javax.persistence.Id;
-import java.time.Instant;
-
-import static gov.cdc.nbs.config.ElasticSearchConfig.DATE_PATTERN;
 
 @Data
 @NoArgsConstructor
@@ -74,7 +78,8 @@ public class ElasticsearchPerson {
     @Field(name = "birth_order_nbr", type = FieldType.Short)
     private Short birthOrderNbr;
 
-    @Field(name = "birth_time", type = FieldType.Date)
+    @Field(name = "birth_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @ValueConverter(InstantConverter.class)
     private Instant birthTime;
 
     @Field(name = "birth_time_calc", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
@@ -169,7 +174,10 @@ public class ElasticsearchPerson {
     @Field(name = "first_nm", type = FieldType.Text)
     private String firstNm;
 
-    @Field(name = "last_nm", type = FieldType.Text)
+    // allows sorting
+    @MultiField(mainField = @Field(name = "last_nm", type = FieldType.Keyword), otherFields = {
+            @InnerField(suffix = "text", type = FieldType.Text)
+    })
     private String lastNm;
 
     @Field(name = "middle_nm", type = FieldType.Text)
@@ -179,7 +187,7 @@ public class ElasticsearchPerson {
     private String nmPrefix;
 
     @Field(name = "nm_suffix", type = FieldType.Text)
-    private PatientInput.Suffix nmSuffix;
+    private Suffix nmSuffix;
 
     @Field(name = "preferred_nm", type = FieldType.Text)
     private String preferredNm;

@@ -60,8 +60,6 @@ export const SimpleSearch = () => {
 
     useEffect(() => {
         const queryParam = searchParams?.get('q');
-        console.log(state.isLoggedIn, 'state.isLoggedIn');
-        console.log(queryParam, 'queryParam');
         if (queryParam && state.isLoggedIn) {
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
@@ -125,12 +123,22 @@ export const SimpleSearch = () => {
                                 size="big"
                                 className="flex-justify-end"
                                 placeholder="Search for a patient"
-                                onSubmit={(e: any) => {
+                                onSubmit={async (e: any) => {
                                     e.preventDefault();
+                                    // build search filter from text
                                     const formatName = e.target[0].value.split(' ');
-                                    const search = `?firstName=${formatName[0]}&lastName=${
-                                        formatName.length > 1 ? formatName[1] : ''
-                                    }`;
+                                    const filter: PersonFilter = {};
+                                    filter.firstName = formatName[0];
+                                    filter.lastName = formatName.length > 1 ? formatName[1] : '';
+                                    // send filter for encryption
+                                    const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+                                        authorization: `Bearer ${state.getToken()}`,
+                                        object: filter
+                                    });
+
+                                    // URI encode encrypted filter
+                                    const search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+
                                     navigate({
                                         pathname: '/advanced-search',
                                         search
@@ -325,7 +333,7 @@ export const SimpleSearch = () => {
                     </Grid>
                 </Grid>
 
-                {data?.findPatientsByFilter && data?.findPatientsByFilter.length > 0 && (
+                {data?.findPatientsByFilter && data?.findPatientsByFilter.content.length > 0 && (
                     <Grid desktop={{ col: 10 }} tablet={{ col: true }} className="bg-white margin-top-3 radius-md">
                         <Grid row className="flex-justify-center">
                             <Grid col={12} className="padding-4 border-bottom border-base-lightest">
@@ -350,7 +358,7 @@ export const SimpleSearch = () => {
                         </Grid>
                     </Grid>
                 )}
-                {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.length === 0) && (
+                {submitted && (!data?.findPatientsByFilter || data?.findPatientsByFilter.content.length === 0) && (
                     <div className="custom-alert" onClick={() => setSubmitted(false)}>
                         <Alert type="error" heading="No results found" headingLevel="h4">
                             <>

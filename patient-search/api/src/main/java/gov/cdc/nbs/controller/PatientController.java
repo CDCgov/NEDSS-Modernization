@@ -1,6 +1,5 @@
 package gov.cdc.nbs.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -37,7 +36,7 @@ public class PatientController {
 
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT)
-    public List<Person> findPatientsByOrganizationFilter(@Argument OrganizationFilter filter,
+    public Page<Person> findPatientsByOrganizationFilter(@Argument OrganizationFilter filter,
             @Argument GraphQLPage page) {
         return patientService.findPatientsByOrganizationFilter(filter, page);
     }

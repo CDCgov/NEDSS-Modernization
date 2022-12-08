@@ -2,6 +2,8 @@ import { Grid } from '@trussworks/react-uswds';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
+import { IdentificationType } from '../../generated/graphql/schema';
+import { formatInterfaceString } from '../../utils/util';
 
 export const IDForm = ({ control }: any) => {
     return (
@@ -9,24 +11,34 @@ export const IDForm = ({ control }: any) => {
             <Grid col={12}>
                 <Controller
                     control={control}
-                    name="idType"
+                    name="identificationType"
                     render={({ field: { onChange } }) => (
-                        <SelectInput onChange={onChange} htmlFor={'idType'} label="ID type" options={[]} />
+                        <SelectInput
+                            options={Object.values(IdentificationType).map((type) => {
+                                return {
+                                    name: formatInterfaceString(type),
+                                    value: type
+                                };
+                            })}
+                            onChange={onChange}
+                            htmlFor={'identificationType'}
+                            label="ID type"
+                        />
                     )}
                 />
             </Grid>
             <Grid col={12}>
                 <Controller
                     control={control}
-                    name="idNumber"
+                    name="identificationNumber"
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
                             label="ID number"
-                            htmlFor="idNumber"
-                            id="idNumber"
+                            htmlFor="identificationNumber"
+                            id="identificationNumber"
                         />
                     )}
                 />
