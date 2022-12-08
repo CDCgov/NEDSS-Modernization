@@ -12,11 +12,16 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +31,7 @@ import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
@@ -40,21 +45,10 @@ import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.PersonRaceId;
 import gov.cdc.nbs.entity.odse.PostalLocator;
-import gov.cdc.nbs.entity.odse.QEntityId;
-import gov.cdc.nbs.entity.odse.QEntityLocatorParticipation;
-import gov.cdc.nbs.entity.odse.QIntervention;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
-import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.entity.odse.QPersonName;
-import gov.cdc.nbs.entity.odse.QPersonRace;
-import gov.cdc.nbs.entity.odse.QPostalLocator;
-import gov.cdc.nbs.entity.odse.QTeleLocator;
-import gov.cdc.nbs.entity.odse.QTreatment;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.entity.srte.QCountryCode;
-import gov.cdc.nbs.entity.srte.QStateCode;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.input.PatientInput;
@@ -82,153 +76,8 @@ public class PatientService {
     private final TeleLocatorRepository teleLocatorRepository;
     private final PostalLocatorRepository postalLocatorRepository;
     private final EventService eventService;
-    private final SecurityService securityService;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
-
-    public Optional<Person> findPatientById(Long id) {
-        return personRepository.findById(id);
-    }
-
-    public Page<Person> findAllPatients(GraphQLPage page) {
-        var person = QPerson.person;
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-                .select(person)
-                .from(person);
-        query = applySort(query, pageable.getSort());
-
-        var results = query.fetchPage((int) pageable.getOffset(),
-                pageable.getPageSize());
-        return new PageImpl<Person>(results, pageable, results.getMaxResults());
-    }
-
-    public Page<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
-        // limit page size
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-
-        var person = QPerson.person;
-        var personName = QPersonName.personName;
-        var personRace = QPersonRace.personRace;
-        var entityId = QEntityId.entityId;
-        var entityLocatorParticipation = QEntityLocatorParticipation.entityLocatorParticipation;
-        var postalLocator = QPostalLocator.postalLocator;
-        var teleLocator = QTeleLocator.teleLocator;
-        var stateCode = QStateCode.stateCode;
-        var countryCode = QCountryCode.countryCode;
-        var participation = QParticipation.participation;
-        var intervention = QIntervention.intervention;
-        var treatment = QTreatment.treatment;
-        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-                .select(person)
-                .from(person)
-                .groupBy(person.id)
-                .leftJoin(personName)
-                .on(personName.id.personUid.eq(person.id))
-                .leftJoin(personRace)
-                .on(personRace.id.personUid.eq(person.id))
-                .leftJoin(entityId)
-                .on(entityId.NBSEntityUid.eq(person.NBSEntity))
-                .leftJoin(entityLocatorParticipation)
-                .on(person.NBSEntity.eq(entityLocatorParticipation.nbsEntity))
-                .leftJoin(postalLocator)
-                .on(entityLocatorParticipation.id.locatorUid.eq(postalLocator.id))
-                .leftJoin(stateCode)
-                .on(postalLocator.stateCd.eq(stateCode.id))
-                .leftJoin(countryCode)
-                .on(postalLocator.cntryCd.eq(countryCode.id))
-                .leftJoin(teleLocator)
-                .on(entityLocatorParticipation.id.locatorUid.eq(teleLocator.id))
-                .leftJoin(participation)
-                .on(person.id.eq(participation.id.subjectEntityUid))
-                .leftJoin(intervention)
-                .on(participation.actUid.id.eq(intervention.id))
-                .leftJoin(treatment)
-                .on(participation.actUid.id.eq(treatment.id));
-
-        // Person Id
-        query = addParameter(query, (x) -> person.id.eq(x).or(person.localId.eq(generateLocalId(x))), filter.getId());
-        // Last Name
-        query = addParameter(query,
-                (p) -> personName.lastNm.likeIgnoreCase(p, '!'),
-                generateLikeString(filter.getLastName()));
-        // First Name
-        query = addParameter(query,
-                (p) -> personName.firstNm.likeIgnoreCase(p, '!'),
-                generateLikeString(filter.getFirstName()));
-        // SSN
-        query = addParameter(query, person.ssn::eq, filter.getSsn());
-        // Phone Number and address query combined as both are on
-        // EntityLocatorParticipation
-        if (filter.getPhoneNumber() != null) {
-            // Street Address
-            if (filter.getAddress() != null) {
-                query = query.where(teleLocator.phoneNbrTxt.eq(filter.getPhoneNumber()).or(
-                        postalLocator.streetAddr1.eq(filter.getAddress())
-                                .or(postalLocator.streetAddr2.eq(filter.getAddress()))));
-            } else {
-                query = query.where(teleLocator.phoneNbrTxt.eq(filter.getPhoneNumber()));
-            }
-        } else if (filter.getAddress() != null) {
-            // Street Address
-            query = addParameter(query,
-                    (x) -> postalLocator.streetAddr1.eq(x).or(postalLocator.streetAddr2.eq(x)),
-                    filter.getAddress());
-        }
-        // Email
-        if (filter.getEmail() != null) {
-            query = query.where(teleLocator.emailAddress.likeIgnoreCase(filter.getEmail()));
-        }
-        // DOB
-        query = query
-                .where(getDateOfBirthExpression(person, filter.getDateOfBirth(), filter.getDateOfBirthOperator()));
-        // Gender
-        query = addParameter(query, person.birthGenderCd::eq, filter.getGender());
-        // Deceased
-        query = addParameter(query, person.deceasedIndCd::eq, filter.getDeceased());
-        // City
-        query = addParameter(query,
-                (x) -> postalLocator.cityCd.eq(x).or(postalLocator.cityDescTxt.eq(x)),
-                filter.getCity());
-        // Zip
-        query = addParameter(query, postalLocator.zipCd::eq, filter.getZip());
-        // State
-        query = addParameter(query, stateCode.id::eq, filter.getState());
-        // Country
-        query = addParameter(query, countryCode.id::eq, filter.getCountry());
-        // Ethnicity
-        query = addParameter(query, person.ethnicGroupInd::eq, filter.getEthnicity());
-        // Race
-        query = addParameter(query, personRace.id.raceCd::eq, filter.getRace());
-        // Identification
-        query = addParameter(query,
-                (x) -> entityId.typeCd.eq(x.getIdentificationType())
-                        .and(entityId.rootExtensionTxt.eq(x.getIdentificationNumber())),
-                filter.getIdentification());
-        // Vaccination Id
-        query = addParameter(query, (x) -> intervention.localId.eq(x).and(participation.id.typeCd.eq("SubOfVacc")),
-                filter.getVaccinationId());
-        // Treatment Id
-        if (filter.getTreatmentId() != null) {
-            // Treatment data is secured by Program Area
-            var userDetails = SecurityUtil.getUserDetails();
-            var programAreas = securityService.getProgramAreaCodes(userDetails);
-            query.where(treatment.localId.eq(filter.getTreatmentId())
-                    .and(participation.id.typeCd.eq("SubjOfTrmt")
-                            .and(treatment.progAreaCd.in(programAreas))));
-        }
-        // Record status
-        query = addParameter(query, person.recordStatusCd::eq, filter.getRecordStatus());
-
-        // Sorting
-        query = applySort(query, pageable.getSort());
-        var results = query.fetchPage((int) pageable.getOffset(),
-                pageable.getPageSize());
-        if (results.getSize() > 0) {
-            return new PageImpl<Person>(results, pageable, results.getTotalSize());
-        } else {
-            return new PageImpl<Person>(new ArrayList<Person>(), pageable, 0);
-        }
-    }
+    private final ElasticsearchOperations operations;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -257,6 +106,127 @@ public class PatientService {
         }
         // required to have a sort by Id
         return query.orderBy(person.id.desc().nullsLast());
+    }
+
+    public Optional<Person> findPatientById(Long id) {
+        return personRepository.findById(id);
+    }
+
+    public Page<Person> findAllPatients(GraphQLPage page) {
+        var person = QPerson.person;
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
+                .select(person)
+                .from(person);
+        query = applySort(query, pageable.getSort());
+
+        var results = query.fetchPage((int) pageable.getOffset(),
+                pageable.getPageSize());
+        return new PageImpl<Person>(results, pageable, results.getMaxResults());
+    }
+
+    public Page<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        List<Long> ids;
+        long totalCount = 0L;
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+
+        builder.must(QueryBuilders.matchQuery("cd", "PAT"));
+
+        if (filter.getId() != null) {
+            var idQuery = QueryBuilders.boolQuery();
+            idQuery.must(QueryBuilders.matchQuery("id", filter.getId()));
+            idQuery.must(QueryBuilders.matchQuery("id", generateLocalId(filter.getId())));
+            builder.should(idQuery);
+        }
+
+        if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
+            builder.must(QueryBuilders.wildcardQuery("first_nm", addWildcards(filter.getFirstName())));
+        }
+
+        if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
+            builder.must(QueryBuilders.wildcardQuery("last_nm", addWildcards(filter.getLastName())));
+        }
+
+        if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("SSN", filter.getSsn()));
+        }
+
+        if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("hm_phone_nbr", filter.getPhoneNumber()));
+        }
+
+        if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("hm_street_addr1", filter.getAddress()));
+        }
+
+        if (filter.getGender() != null) {
+            builder.must(QueryBuilders.matchQuery("birth_gender_cd", filter.getGender()));
+        }
+
+        if (filter.getDeceased() != null) {
+            builder.must(QueryBuilders.matchQuery("deceased_ind_cd", filter.getDeceased()));
+        }
+
+        if (filter.getCity() != null && !filter.getCity().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("hm_city_desc_txt", filter.getCity()));
+        }
+
+        if (filter.getZip() != null && !filter.getZip().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("hm_zip_cd", filter.getZip()));
+        }
+
+        if (filter.getState() != null && !filter.getState().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("hm_state_cd", filter.getState()));
+        }
+
+        if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
+            builder.must(QueryBuilders.matchQuery("hm_cntry_cd", filter.getCountry()));
+        }
+
+        if (filter.getEthnicity() != null) {
+            builder.must(QueryBuilders.matchQuery("ethnic_group_ind", filter.getEthnicity()));
+        }
+
+        if (filter.getRace() != null) {
+            builder.must(QueryBuilders.matchQuery("race_desc_txt", filter.getRace()));
+        }
+
+        if (filter.getIdentification() != null) {
+            builder.must(
+                    QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
+        }
+
+        if (filter.getRecordStatus() != null) {
+            builder.must(QueryBuilders.matchQuery("record_status_cd", filter.getRecordStatus()));
+        }
+
+        if (filter.getDateOfBirth() != null) {
+            String dobOperator = filter.getDateOfBirthOperator();
+            if (dobOperator == null || dobOperator.equalsIgnoreCase("equal")) {
+                builder.must(QueryBuilders.matchQuery("birth_time", filter.getDateOfBirth()));
+            } else if (dobOperator.equalsIgnoreCase("before")) {
+                builder.must(QueryBuilders.rangeQuery("birth_time").lt(filter.getDateOfBirth()));
+            } else if (dobOperator.equalsIgnoreCase("after")) {
+                builder.must(QueryBuilders.rangeQuery("birth_time").gt(filter.getDateOfBirth()));
+            }
+        }
+
+        var query = new NativeSearchQueryBuilder().withQuery(builder).withSort(pageable.getSort())
+                .withPageable(pageable).build();
+        SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
+                ElasticsearchPerson.class);
+
+        ids = elasticsearchPersonSearchHits
+                .stream()
+                .map(h -> h.getContent())
+                .filter(Objects::nonNull)
+                .map(ElasticsearchPerson::getPersonUid)
+                .collect(Collectors.toList());
+        totalCount = elasticsearchPersonSearchHits.getTotalHits();
+        var persons = personRepository.findAllById(ids);
+        return new PageImpl<Person>(persons, pageable, totalCount);
+
     }
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
@@ -339,32 +309,6 @@ public class PatientService {
         } else {
             return query;
         }
-    }
-
-    private BooleanExpression getDateOfBirthExpression(QPerson qPerson, Instant dob, String dobOperator) {
-        if (dob == null) {
-            return null;
-        }
-        if (dobOperator == null) {
-            return qPerson.birthTime.eq(dob);
-        } else if (dobOperator.toLowerCase().equals("equal")) {
-            return qPerson.birthTime.eq(dob);
-        } else if (dobOperator.toLowerCase().equals("before")) {
-            return qPerson.birthTime.before(dob);
-        } else if (dobOperator.toLowerCase().equals("after")) {
-            return qPerson.birthTime.after(dob);
-        } else {
-            throw new QueryException("Invalid value for Date of Birth operator");
-        }
-    }
-
-    // MSSQL requires us to escape the '[' character, this is not provided in
-    // querydsl, so we do it here
-    private String generateLikeString(String originalString) {
-        if (originalString == null) {
-            return null;
-        }
-        return "%" + originalString.replace("[", "![") + "%";
     }
 
     /*
@@ -631,5 +575,9 @@ public class PatientService {
             default:
                 throw new QueryException("Invalid PhoneType specified: " + phoneType);
         }
+    }
+
+    private String addWildcards(String searchString) {
+        return "*" + searchString + "*";
     }
 }

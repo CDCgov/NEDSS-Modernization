@@ -160,7 +160,6 @@ export const AdvancedSearch = () => {
     // handles submit from Person Search and Event Search,
     // it simply encrypts the filter object and sets it as the query parameter
     const handleSubmit = async (filter: PersonFilter | EventFilter) => {
-        console.log('hanldleSubmit', filter);
         let search = '';
         setSubmitted(true);
         if (!isEmpty(filter)) {

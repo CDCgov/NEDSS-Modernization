@@ -44,6 +44,7 @@ import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
+import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.support.EventMother;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
@@ -76,6 +77,9 @@ public class PatientSearchSteps {
     @Autowired
     private JurisdictionCodeRepository jurisdictionCodeRepository;
 
+    @Autowired
+    private ElasticsearchPersonRepository elasticsearchPersonRepository;
+
     private Person searchPatient;
     private List<Person> searchResults;
     private List<Person> generatedPersons;
@@ -106,6 +110,7 @@ public class PatientSearchSteps {
         teleLocatorRepository.saveAll(PersonUtil.getTeleLocators(generatedPersons));
         postalLocatorRepository.saveAll(PersonUtil.getPostalLocators(generatedPersons));
         personRepository.saveAll(generatedPersons);
+        elasticsearchPersonRepository.saveAll(PersonUtil.getElasticSearchPersons(generatedPersons));
     }
 
     @Given("Investigations exist")
@@ -148,15 +153,42 @@ public class PatientSearchSteps {
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
     }
 
+    @When("I search patients by {string} {string} {string} {string} {string} {string}")
+    public void i_search_patients_by_multiple_fields(String field, String qualifier, String field2, String qualifier2,
+            String field3, String qualifier3) {
+        PatientFilter filter = getPatientDataFilter(field, qualifier);
+        updatePatientDataFilter(filter, field2, qualifier2);
+        updatePatientDataFilter(filter, field3, qualifier3);
+        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
+    }
+
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
         EventFilter filter = getInvestigationFilter(field, qualifier);
         searchResults = patientController.findPatientsByEvent(filter, null).getContent();
     }
 
+    @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
+    public void i_search_patients_by_investigation_events(String field, String qualifier, String field2,
+            String qualifier2, String field3, String qualifier3) {
+        EventFilter filter = getInvestigationFilter(field, qualifier);
+        updateInvestigationFilter(filter, field2, qualifier2);
+        updateInvestigationFilter(filter, field3, qualifier3);
+        searchResults = patientController.findPatientsByEvent(filter, null).getContent();
+    }
+
     @When("I search laboratory events by {string} {string}")
     public void i_search_patients_by_laboratory_events(String field, String qualifier) {
         EventFilter filter = getLabReportFilter(field, qualifier);
+        searchResults = patientController.findPatientsByEvent(filter, null).getContent();
+    }
+
+    @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
+    public void i_search_patients_by_laboratory_events(String field, String qualifier, String field2, String qualifier2,
+            String field3, String qualifier3) {
+        EventFilter filter = getLabReportFilter(field, qualifier);
+        updateLabReportFilter(filter, field2, qualifier2);
+        updateLabReportFilter(filter, field3, qualifier3);
         searchResults = patientController.findPatientsByEvent(filter, null).getContent();
     }
 
@@ -169,8 +201,15 @@ public class PatientSearchSteps {
 
     private EventFilter getLabReportFilter(String field, String qualifier) {
         var filter = new EventFilter();
-        filter.setEventType(EventType.LABORATORY_REPORT);
         filter.setLaboratoryReportFilter(new LaboratoryReportFilter());
+        return updateLabReportFilter(filter, field, qualifier);
+    }
+
+    private EventFilter updateLabReportFilter(EventFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
+        filter.setEventType(EventType.LABORATORY_REPORT);
         var criteria = filter.getLaboratoryReportFilter();
         switch (field) {
             case "program area":
@@ -240,6 +279,13 @@ public class PatientSearchSteps {
 
     private EventFilter getInvestigationFilter(String field, String qualifier) {
         var filter = new EventFilter();
+        return updateInvestigationFilter(filter, field, qualifier);
+    }
+
+    private EventFilter updateInvestigationFilter(EventFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
         filter.setEventType(EventType.INVESTIGATION);
         filter.setInvestigationFilter(new InvestigationFilter());
         var criteria = filter.getInvestigationFilter();
@@ -295,8 +341,10 @@ public class PatientSearchSteps {
         return filter;
     }
 
-    private PatientFilter getPatientDataFilter(String field, String qualifier) {
-        var filter = new PatientFilter();
+    private PatientFilter updatePatientDataFilter(PatientFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
         switch (field) {
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
@@ -361,6 +409,11 @@ public class PatientSearchSteps {
                 throw new IllegalArgumentException("Invalid field specified: " + field);
         }
         return filter;
+    }
+
+    private PatientFilter getPatientDataFilter(String field, String qualifier) {
+        var filter = new PatientFilter();
+        return updatePatientDataFilter(filter, field, qualifier);
     }
 
     private Instant getDobByQualifier(Person search, String qualifier) {

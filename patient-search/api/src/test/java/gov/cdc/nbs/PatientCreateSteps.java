@@ -38,6 +38,7 @@ public class PatientCreateSteps {
     private PatientController patientController;
 
     private Person person;
+    private Person createdPerson;
 
     @Given("A patient does not exist")
     public void a_patient_does_not_exist() {
@@ -58,29 +59,17 @@ public class PatientCreateSteps {
     @When("I send a create patient request")
     public void i_send_a_create_patient_request() {
         var input = PersonUtil.convertToPatientInput(person);
-        patientController.createPatient(input);
+        createdPerson = patientController.createPatient(input);
     }
 
-    @Then("I can find the patient")
+    @Then("the patient is inserted in the database")
     public void i_can_find_the_patient() {
-        var pl = PersonUtil.getPostalLocators(person).get(0);
-        var tl = PersonUtil.getTeleLocators(person).get(0);
-        var filter = new PatientFilter();
-        filter.setFirstName(person.getFirstNm());
-        filter.setLastName(person.getLastNm());
-        filter.setAddress(pl.getStreetAddr1());
-        filter.setPhoneNumber(tl.getPhoneNbrTxt());
-
-        var patientSearch = patientController.findPatientsByFilter(filter, null);
-        assertTrue(patientSearch.getSize() > 0);
-
-        var patient = patientSearch.getContent().get(0);
-        assertEquals(patient.getLastNm(), person.getLastNm());
-        assertEquals(patient.getFirstNm(), person.getFirstNm());
-        assertEquals(patient.getSsn(), person.getSsn());
-        assertEquals(patient.getBirthTime(), person.getBirthTime());
-        assertEquals(patient.getBirthGenderCd(), person.getBirthGenderCd());
-        assertEquals(patient.getDeceasedIndCd(), person.getDeceasedIndCd());
-        assertEquals(patient.getEthnicityGroupCd(), person.getEthnicityGroupCd());
+        assertEquals(person.getLastNm(), createdPerson.getLastNm());
+        assertEquals(person.getFirstNm(), createdPerson.getFirstNm());
+        assertEquals(person.getSsn(), createdPerson.getSsn());
+        assertEquals(person.getBirthTime(), createdPerson.getBirthTime());
+        assertEquals(person.getBirthGenderCd(), createdPerson.getBirthGenderCd());
+        assertEquals(person.getDeceasedIndCd(), createdPerson.getDeceasedIndCd());
+        assertEquals(person.getEthnicityGroupCd(), createdPerson.getEthnicityGroupCd());
     }
 }

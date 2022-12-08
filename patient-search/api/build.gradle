@@ -81,6 +81,15 @@ dependencies {
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
 }
 
+// Adds the generated querydsl files to the classpath
+sourceSets {
+	main {
+		java {
+			srcDirs = ['build/generated/sources/annotationProcessor/java/main/gov/cdc/nbs/entity/','src/main/java']
+		}
+	}
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
