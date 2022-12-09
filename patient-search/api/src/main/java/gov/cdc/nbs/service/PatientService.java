@@ -36,6 +36,7 @@ import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
@@ -80,6 +81,7 @@ public class PatientService {
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
+    private final EthnicityConverter ethnicityConverter = new EthnicityConverter();
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -136,18 +138,24 @@ public class PatientService {
         builder.must(QueryBuilders.matchQuery("cd", "PAT"));
 
         if (filter.getId() != null) {
-            var idQuery = QueryBuilders.boolQuery();
-            idQuery.must(QueryBuilders.matchQuery("id", filter.getId()));
-            idQuery.must(QueryBuilders.matchQuery("id", generateLocalId(filter.getId())));
-            builder.should(idQuery);
+            var idQuery = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery("id", filter.getId()))
+                    .should(QueryBuilders.matchQuery("id", generateLocalId(filter.getId())));
+            builder.must(idQuery);
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.wildcardQuery("first_nm", addWildcards(filter.getFirstName())));
+            var firstNameQuery = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.wildcardQuery("first_nm", addWildcards(filter.getFirstName())))
+                    .should(QueryBuilders.matchQuery("first_nm", filter.getFirstName()));
+            builder.must(firstNameQuery);
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.wildcardQuery("last_nm", addWildcards(filter.getLastName())));
+            var lastNameQuery = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.wildcardQuery("last_nm", addWildcards(filter.getLastName())))
+                    .should(QueryBuilders.matchQuery("last_nm", filter.getLastName()));
+            builder.must(lastNameQuery);
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
@@ -187,7 +195,7 @@ public class PatientService {
         }
 
         if (filter.getEthnicity() != null) {
-            builder.must(QueryBuilders.matchQuery("ethnic_group_ind", filter.getEthnicity()));
+            builder.must(QueryBuilders.matchQuery("ethnic_group_ind", ethnicityConverter.write(filter.getEthnicity())));
         }
 
         if (filter.getRace() != null) {
