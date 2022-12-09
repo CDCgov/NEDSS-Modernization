@@ -18,6 +18,8 @@ import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.Suffix;
+import gov.cdc.nbs.entity.enums.converter.DeceasedConverter;
+import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -96,6 +98,7 @@ public class ElasticsearchPerson {
     private Gender currSexCd;
 
     @Field(name = "deceased_ind_cd", type = FieldType.Keyword)
+    @ValueConverter(DeceasedConverter.class)
     private Deceased deceasedIndCd;
 
     @Field(name = "deceased_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
@@ -112,6 +115,7 @@ public class ElasticsearchPerson {
     private String educationLevelDescTxt;
 
     @Field(name = "ethnic_group_ind", type = FieldType.Keyword)
+    @ValueConverter(EthnicityConverter.class)
     private Ethnicity ethnicGroupInd;
 
     @Field(name = "last_chg_reason_cd", type = FieldType.Keyword)

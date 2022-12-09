@@ -2,10 +2,16 @@
 
 ## Running
 
+### Prerequisites
+
+1. Java 17
+1. Node / NPM
+1. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
+
 ### VSCode
 
 1. In the ui directory run `npm install`
-1. In the root directory run `./gradlew build`
+1. In the patient-search directory run `./gradlew build`
 1. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 1. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
@@ -20,7 +26,7 @@ To run all tests:
 To execute specific test tags:
 
 ```bash
-./gradlew  -Dcucumber.filter.tags="@patient_create" test
+./gradlew -Dcucumber.filter.tags="@patient_create" test
 ```
 
 ## GraphQL
