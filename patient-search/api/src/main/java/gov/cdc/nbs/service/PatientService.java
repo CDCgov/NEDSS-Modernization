@@ -36,6 +36,7 @@ import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
@@ -78,6 +79,7 @@ public class PatientService {
     private final EventService eventService;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
+    private final InstantConverter instantConverter = new InstantConverter();
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -203,12 +205,13 @@ public class PatientService {
 
         if (filter.getDateOfBirth() != null) {
             String dobOperator = filter.getDateOfBirthOperator();
+            String dobString = (String) instantConverter.write(filter.getDateOfBirth());
             if (dobOperator == null || dobOperator.equalsIgnoreCase("equal")) {
-                builder.must(QueryBuilders.matchQuery("birth_time", filter.getDateOfBirth()));
+                builder.must(QueryBuilders.matchQuery("birth_time", dobString));
             } else if (dobOperator.equalsIgnoreCase("before")) {
-                builder.must(QueryBuilders.rangeQuery("birth_time").lt(filter.getDateOfBirth()));
+                builder.must(QueryBuilders.rangeQuery("birth_time").lt(dobString));
             } else if (dobOperator.equalsIgnoreCase("after")) {
-                builder.must(QueryBuilders.rangeQuery("birth_time").gt(filter.getDateOfBirth()));
+                builder.must(QueryBuilders.rangeQuery("birth_time").gt(dobString));
             }
         }
 
