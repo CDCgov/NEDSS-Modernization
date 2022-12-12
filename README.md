@@ -38,10 +38,6 @@ This repo contains two main components.
    ```sh
    ./nifi/buildImage.sh
    ```
-1. Start NiFi
-   ```sh
-   docker-compose up nifi -d
-   ```
 1. CD into the `patient-search/ui` directory
    ```sh
    cd ../patient-search/ui
@@ -57,6 +53,11 @@ This repo contains two main components.
 1. Start the `modernization` container
    ```sh
    docker-compose up -d
+   ```
+1. CD into the `cdc-sandbox` directory and Start NiFi
+   ```sh
+   cd ../cdc-sandbox
+   docker-compose up nifi -d
    ```
 1. Visit http://localhost:8080/nbs/login
 

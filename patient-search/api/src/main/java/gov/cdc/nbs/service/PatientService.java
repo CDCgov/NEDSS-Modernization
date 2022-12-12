@@ -138,24 +138,18 @@ public class PatientService {
         builder.must(QueryBuilders.matchQuery("cd", "PAT"));
 
         if (filter.getId() != null) {
-            var idQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("id", filter.getId()))
-                    .should(QueryBuilders.matchQuery("id", generateLocalId(filter.getId())));
-            builder.must(idQuery);
+            var idQuery = QueryBuilders.boolQuery();
+            idQuery.must(QueryBuilders.matchQuery("id", filter.getId()));
+            idQuery.must(QueryBuilders.matchQuery("id", generateLocalId(filter.getId())));
+            builder.should(idQuery);
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            var firstNameQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.wildcardQuery("first_nm", addWildcards(filter.getFirstName())))
-                    .should(QueryBuilders.matchQuery("first_nm", filter.getFirstName()));
-            builder.must(firstNameQuery);
+            builder.must(QueryBuilders.wildcardQuery("first_nm", addWildcards(filter.getFirstName())));
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            var lastNameQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.wildcardQuery("last_nm", addWildcards(filter.getLastName())))
-                    .should(QueryBuilders.matchQuery("last_nm", filter.getLastName()));
-            builder.must(lastNameQuery);
+            builder.must(QueryBuilders.wildcardQuery("last_nm", addWildcards(filter.getLastName())));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
