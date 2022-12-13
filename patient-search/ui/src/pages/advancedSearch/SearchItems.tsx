@@ -227,7 +227,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
             {Boolean(initialSearch && totalResults && data?.length > 0) && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
-                    totalPages={Math.ceil(totalResults / data?.length)}
+                    totalPages={Math.ceil(totalResults / 25)}
                     currentPage={currentPage}
                     pathname={'/advanced-search'}
                     onClickNext={() => handleNext(currentPage + 1)}
