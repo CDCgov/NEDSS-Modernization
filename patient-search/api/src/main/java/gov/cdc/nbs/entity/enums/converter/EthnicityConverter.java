@@ -3,19 +3,44 @@ package gov.cdc.nbs.entity.enums.converter;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
+
 import gov.cdc.nbs.entity.enums.Ethnicity;
 
 @Converter
-public class EthnicityConverter implements AttributeConverter<Ethnicity, String> {
+public class EthnicityConverter implements AttributeConverter<Ethnicity, String>, PropertyValueConverter {
 
+    // JPA AttributeConverter conversion
     @Override
     public String convertToDatabaseColumn(Ethnicity ethnicity) {
         return getValueFromEthnicity(ethnicity);
     }
 
+    // JPA AttributeConverter conversion
     @Override
     public Ethnicity convertToEntityAttribute(String dbData) {
         return getEthnicityFromValue(dbData);
+    }
+
+    // Elasticsearch PropertyValueConverter conversion
+    @Override
+    public Object read(Object value) {
+        if (value instanceof String s) {
+            return getEthnicityFromValue(s);
+        } else {
+            return value;
+        }
+    }
+
+    // Elasticsearch PropertyValueConverter conversion
+    @Override
+    public Object write(Object value) {
+        if (value instanceof Ethnicity e) {
+            return getValueFromEthnicity(e);
+        } else {
+            return value;
+        }
+
     }
 
     public static String getValueFromEthnicity(Ethnicity ethnicity) {
