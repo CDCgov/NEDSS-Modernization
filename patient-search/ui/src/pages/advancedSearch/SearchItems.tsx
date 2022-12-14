@@ -47,8 +47,6 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
 
     function getLocatorTypeDisplay(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
         switch (classCd) {
-            case 'PST':
-                return 'POSTAL ADDRESS';
             case 'TELE':
                 if (locator?.phoneNbrTxt) {
                     return 'PHONE NUMBER';
@@ -57,6 +55,8 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                 } else {
                     return 'UNKNOWN';
                 }
+            case 'PST':
+                return 'POSTAL ADDRESS';
             default:
                 return classCd || '';
         }
@@ -91,6 +91,18 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
             .forEach((n) => (otherNames = otherNames + ` ${n.firstNm} ${n.lastNm}`));
         return otherNames;
     }
+
+    const filtered = (arr: any) => {
+        return [...arr].sort(function (a: any, b: any) {
+            if (a.classCd > b.classCd) {
+                return -1;
+            }
+            if (a.classCd < b.classCd) {
+                return 1;
+            }
+            return 0;
+        });
+    };
 
     return (
         <div className="margin-x-4">
@@ -167,39 +179,50 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                         </div>
                                     </Grid>
                                 </Grid>
-                                <Grid row col={9}>
-                                    {/* Locator entries */}
-                                    {item.NBSEntity.entityLocatorParticipations.map(
-                                        (locatorParticipation: LocatorParticipations, idIndex: number) => (
-                                            <Grid key={idIndex} col={4} className="margin-bottom-2">
-                                                <h5 className="margin-0 text-normal text-gray-50">
-                                                    {getLocatorTypeDisplay(
-                                                        locatorParticipation.classCd,
-                                                        locatorParticipation.locator
-                                                    )}
-                                                </h5>
-                                                <p
-                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
-                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                    {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
-                                                    {getLocatorDisplayValue(
-                                                        locatorParticipation.classCd,
-                                                        locatorParticipation.locator
-                                                    )}
-                                                </p>
-                                            </Grid>
-                                        )
-                                    )}
-
+                                <Grid col={6}>
+                                    <Grid row gap={3}>
+                                        {/* Locator entries */}
+                                        {filtered(item.NBSEntity.entityLocatorParticipations).map(
+                                            (locatorParticipation: LocatorParticipations, idIndex: number) => (
+                                                <Grid key={idIndex} col={6} className="margin-bottom-2 margin-0">
+                                                    <h5 className="margin-0 text-normal text-gray-50">
+                                                        {getLocatorTypeDisplay(
+                                                            locatorParticipation.classCd,
+                                                            locatorParticipation.locator
+                                                        )}
+                                                    </h5>
+                                                    <p
+                                                        className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                        style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                        {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
+                                                        {getLocatorDisplayValue(
+                                                            locatorParticipation.classCd,
+                                                            locatorParticipation.locator
+                                                        )}
+                                                    </p>
+                                                </Grid>
+                                            )
+                                        )}
+                                        <Grid col={6} className="margin-bottom-2">
+                                            <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
+                                            <p
+                                                className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05"
+                                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                {getOtherNames(item, item.names) || 'No data'}
+                                            </p>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid col={3}>
                                     {/* Identifications */}
                                     {item.entityIds.map(
                                         (
                                             id: { typeDescTxt: String; rootExtensionTxt: String; typeCd: String },
                                             idIndex: number
                                         ) => (
-                                            <Grid key={idIndex} col={4} className="margin-bottom-2">
-                                                <h5 className="margin-0 text-normal text-gray-50">
-                                                    {id.typeCd.replaceAll('_', ' ')}
+                                            <Grid key={idIndex} col={12} className="margin-bottom-2">
+                                                <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                    {id.typeDescTxt}
                                                 </h5>
                                                 <p
                                                     className="margin-0 font-sans-1xs text-normal margin-top-05"
@@ -210,15 +233,6 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                             </Grid>
                                         )
                                     )}
-
-                                    <Grid col={3} className="margin-bottom-2">
-                                        <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
-                                        <p
-                                            className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05"
-                                            style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                            {getOtherNames(item, item.names) || 'No data'}
-                                        </p>
-                                    </Grid>
                                 </Grid>
                             </Grid>
                         </div>

@@ -12,8 +12,9 @@ export const IDForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="identificationType"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                         <SelectInput
+                            defaultValue={value}
                             options={Object.values(IdentificationType).map((type) => {
                                 return {
                                     name: formatInterfaceString(type),

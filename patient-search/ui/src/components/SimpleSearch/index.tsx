@@ -94,8 +94,14 @@ export const SimpleSearch = ({ handleSubmission, data, clearAll }: SimpleSearchP
                         <Controller
                             control={control}
                             name="dob"
-                            render={({ field: { onChange } }) => (
-                                <DatePickerInput onChange={onChange} name="dob" htmlFor={'dob'} label="Date Of Birth" />
+                            render={({ field: { onChange, value } }) => (
+                                <DatePickerInput
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    name="dob"
+                                    htmlFor={'dob'}
+                                    label="Date Of Birth"
+                                />
                             )}
                         />
                     </Grid>
@@ -103,8 +109,9 @@ export const SimpleSearch = ({ handleSubmission, data, clearAll }: SimpleSearchP
                         <Controller
                             control={control}
                             name="gender"
-                            render={({ field: { onChange } }) => (
+                            render={({ field: { onChange, value } }) => (
                                 <SelectInput
+                                    defaultValue={value}
                                     onChange={onChange}
                                     name="gender"
                                     htmlFor={'gender'}

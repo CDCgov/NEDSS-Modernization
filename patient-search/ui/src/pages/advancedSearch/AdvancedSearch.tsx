@@ -221,6 +221,9 @@ export const AdvancedSearch = () => {
                 case 'city':
                     tempFormData = { ...tempFormData, city: undefined };
                     break;
+                case 'state':
+                    tempFormData = { ...tempFormData, state: undefined };
+                    break;
                 case 'zip':
                     tempFormData = { ...tempFormData, zip: undefined };
                     break;
@@ -229,6 +232,12 @@ export const AdvancedSearch = () => {
                     break;
                 case 'email':
                     tempFormData = { ...tempFormData, email: undefined };
+                    break;
+                case 'race':
+                    tempFormData = { ...tempFormData, race: undefined };
+                    break;
+                case 'ethnicity':
+                    tempFormData = { ...tempFormData, ethnicity: undefined };
                     break;
             }
             handleSubmit(tempFormData);
