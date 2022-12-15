@@ -8,6 +8,9 @@ on:
 env:
   deployment_env: dev
   accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
+  MAJOR_VERSION: 1
+  MINOR_VERSION: 0
+  PATCH_VERSION: 0
 
 jobs:
   pipeline:
