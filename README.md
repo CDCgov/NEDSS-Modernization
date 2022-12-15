@@ -26,6 +26,7 @@ This repo contains two main components.
    ```sh
    ./build.sh
    ```
+1. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1) and place it in `cdc-sandbox/db/restore/restore.d/`
 1. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
    ```sh
    ./run.sh
