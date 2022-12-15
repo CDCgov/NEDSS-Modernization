@@ -45,7 +45,6 @@ export const SimpleSearch = ({ handleSubmission, data, clearAll }: SimpleSearchP
                 ethnicity: data.ethnicity,
                 race: data.race
             });
-            console.log('values', methods.getValues());
         }
     }, [data]);
 

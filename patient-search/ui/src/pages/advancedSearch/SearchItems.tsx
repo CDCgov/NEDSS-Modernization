@@ -8,11 +8,11 @@ type SearchItemsProps = {
     totalResults: number;
     initialSearch: boolean;
     handlePagination: (page: number) => void;
+    currentPage: number;
 };
 
-export const SearchItems = ({ data, initialSearch, totalResults, handlePagination }: SearchItemsProps) => {
+export const SearchItems = ({ data, initialSearch, totalResults, handlePagination, currentPage }: SearchItemsProps) => {
     const searchItemsRef: any = useRef();
-    const [currentPage, setCurrentPage] = useState<number>(1);
     const _calculateAge = (birthday: Date) => {
         // birthday is a date
         const ageDifMs = Date.now() - birthday.getTime();
@@ -21,7 +21,6 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
     };
 
     const handleNext = (page: number) => {
-        setCurrentPage(page);
         handlePagination(page - 1);
     };
 
@@ -38,46 +37,6 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         window.addEventListener('resize', getListSize);
     }, []);
 
-    useEffect(() => {
-        if (currentPage >= 10) {
-            return;
-        }
-        setCurrentPage(currentPage);
-    }, [currentPage]);
-
-    // function getLocatorTypeDisplay(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
-    //     switch (classCd) {
-    //         case 'TELE':
-    //             if (locator?.phoneNbrTxt) {
-    //                 return 'PHONE NUMBER';
-    //             } else if (locator?.emailAddress) {
-    //                 return 'EMAIL';
-    //             } else {
-    //                 return 'UNKNOWN';
-    //             }
-    //         case 'PST':
-    //             return 'POSTAL ADDRESS';
-    //         default:
-    //             return classCd || '';
-    //     }
-    // }
-
-    // function getLocatorDisplayValue(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
-    //     if (!locator) {
-    //         return '-';
-    //     }
-    //     switch (classCd) {
-    //         case 'TELE':
-    //             return locator.phoneNbrTxt || locator.emailAddress || locator.streetAddr1 || '';
-    //         case 'PST':
-    //             return `${locator.streetAddr1 ?? ''} ${locator.cityCd ?? ''} ${locator.stateCd ?? ''} ${
-    //                 locator.zipCd ?? ''
-    //             } ${locator.cntryCd ?? ''}`;
-    //         default:
-    //             return '';
-    //     }
-    // }
-
     function getOtherNames(
         item: { firstNm: String; lastNm: String },
         names: Array<PersonName> | undefined
@@ -88,7 +47,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         let otherNames = '';
         names
             .filter((n) => n.firstNm != item.firstNm || n.lastNm != item.lastNm)
-            .forEach((n) => (otherNames = otherNames + ` ${n.firstNm} ${n.lastNm}`));
+            .forEach((n) => (otherNames = otherNames + ` ${n.firstNm ?? ''} ${n.lastNm ?? ''}`));
         return otherNames;
     }
 
@@ -159,7 +118,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                     <Pagination
                         style={{ justifyContent: 'flex-end' }}
                         totalPages={Math.ceil(totalResults / 25)}
-                        currentPage={currentPage}
+                        currentPage={currentPage + 1}
                         pathname={'/advanced-search'}
                         onClickNext={() => handleNext(currentPage + 1)}
                         onClickPrevious={() => handleNext(currentPage - 1)}
@@ -180,8 +139,8 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                         <Grid
                                             col={12}
                                             style={{
-                                                minHeight: 'auto',
-                                                height: dynamicHeight || 'auto'
+                                                minHeight: 'auto'
+                                                // height: dynamicHeight || 'auto'
                                             }}
                                             className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>

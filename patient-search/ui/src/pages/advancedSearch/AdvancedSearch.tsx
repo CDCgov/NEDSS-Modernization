@@ -6,12 +6,12 @@ import { SimpleSearch } from '../../components/SimpleSearch';
 import {
     EventFilter,
     FindPatientsByEventQuery,
-    useFindPatientsByFilterQuery,
+    FindPatientsByFilterQuery,
     PersonFilter,
     PersonSortField,
     SortDirection,
     useFindPatientsByEventLazyQuery,
-    FindPatientsByFilterQuery
+    useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
@@ -19,7 +19,6 @@ import { UserContext } from '../../providers/UserContext';
 import './AdvancedSearch.scss';
 import Chip from './Chip';
 import { SearchItems } from './SearchItems';
-
 export const AdvancedSearch = () => {
     const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
     const { state } = useContext(UserContext);
@@ -34,8 +33,9 @@ export const AdvancedSearch = () => {
     const [formData, setFormData] = useState<PersonFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState(0);
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
-    const { data, loading, refetch } = useFindPatientsByFilterQuery({
+    const [fetch, { data, loading }] = useFindPatientsByFilterLazyQuery({
         onCompleted: handleSearchResults
     });
     const [getEventSearch] = useFindPatientsByEventLazyQuery({
@@ -125,7 +125,7 @@ export const AdvancedSearch = () => {
                         variables: {
                             filter,
                             page: {
-                                pageNumber: 0,
+                                pageNumber: currentPage,
                                 pageSize: PAGE_SIZE,
                                 ...sort
                             }
@@ -135,16 +135,17 @@ export const AdvancedSearch = () => {
                     filter = filter as PersonFilter;
                     if (!isEmpty(filter)) {
                         JSON.stringify(filter) !== JSON.stringify(formData) &&
-                            refetch({
-                                filter: filter,
-                                page: {
-                                    pageNumber: 0,
-                                    pageSize: PAGE_SIZE,
-                                    ...sort
+                            fetch({
+                                variables: {
+                                    filter: filter,
+                                    page: {
+                                        pageNumber: currentPage,
+                                        pageSize: PAGE_SIZE,
+                                        ...sort
+                                    }
                                 }
-                            }).then(() => {
-                                handleTags(filter);
                             });
+                        handleTags(filter);
                         setFormData(filter);
                     } else {
                         // empty filter, clear content
@@ -280,20 +281,23 @@ export const AdvancedSearch = () => {
         );
     }
 
-    const [currentPage, setCurrentPage] = useState(0);
     const handlePagination = (page: number) => {
-        setCurrentPage(page);
+        page !== currentPage && setCurrentPage(page);
+    };
+
+    useEffect(() => {
         formData &&
-            page !== currentPage &&
-            refetch({
-                filter: formData,
-                page: {
-                    pageNumber: currentPage,
-                    pageSize: PAGE_SIZE,
-                    ...sort
+            fetch({
+                variables: {
+                    filter: formData,
+                    page: {
+                        pageNumber: currentPage,
+                        pageSize: PAGE_SIZE,
+                        ...sort
+                    }
                 }
             });
-    };
+    }, [currentPage]);
 
     return (
         <div
@@ -378,10 +382,8 @@ export const AdvancedSearch = () => {
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {initialSearch ? (
                             <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
-                                <strong className="margin-right-1">
-                                    {data?.findPatientsByFilter?.content?.length}
-                                </strong>{' '}
-                                Results for:
+                                <strong className="margin-right-1">{data?.findPatientsByFilter?.total}</strong> Results
+                                for:
                                 {resultsChip.map(
                                     (re, index) =>
                                         re.value && (
@@ -510,6 +512,7 @@ export const AdvancedSearch = () => {
                                 data={data?.findPatientsByFilter.content}
                                 totalResults={Number(data?.findPatientsByFilter.total)}
                                 handlePagination={handlePagination}
+                                currentPage={currentPage}
                             />
                         )}
                 </Grid>
