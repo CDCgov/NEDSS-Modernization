@@ -1,6 +1,6 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
-import { Locator, LocatorParticipations, Maybe, PersonName } from '../../generated/graphql/schema';
+import { PersonName } from '../../generated/graphql/schema';
 import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
@@ -45,38 +45,38 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         setCurrentPage(currentPage);
     }, [currentPage]);
 
-    function getLocatorTypeDisplay(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
-        switch (classCd) {
-            case 'TELE':
-                if (locator?.phoneNbrTxt) {
-                    return 'PHONE NUMBER';
-                } else if (locator?.emailAddress) {
-                    return 'EMAIL';
-                } else {
-                    return 'UNKNOWN';
-                }
-            case 'PST':
-                return 'POSTAL ADDRESS';
-            default:
-                return classCd || '';
-        }
-    }
+    // function getLocatorTypeDisplay(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
+    //     switch (classCd) {
+    //         case 'TELE':
+    //             if (locator?.phoneNbrTxt) {
+    //                 return 'PHONE NUMBER';
+    //             } else if (locator?.emailAddress) {
+    //                 return 'EMAIL';
+    //             } else {
+    //                 return 'UNKNOWN';
+    //             }
+    //         case 'PST':
+    //             return 'POSTAL ADDRESS';
+    //         default:
+    //             return classCd || '';
+    //     }
+    // }
 
-    function getLocatorDisplayValue(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
-        if (!locator) {
-            return '-';
-        }
-        switch (classCd) {
-            case 'TELE':
-                return locator.phoneNbrTxt || locator.emailAddress || locator.streetAddr1 || '';
-            case 'PST':
-                return `${locator.streetAddr1 ?? ''} ${locator.cityCd ?? ''} ${locator.stateCd ?? ''} ${
-                    locator.zipCd ?? ''
-                } ${locator.cntryCd ?? ''}`;
-            default:
-                return '';
-        }
-    }
+    // function getLocatorDisplayValue(classCd: Maybe<String> | undefined, locator: Maybe<Locator> | undefined): String {
+    //     if (!locator) {
+    //         return '-';
+    //     }
+    //     switch (classCd) {
+    //         case 'TELE':
+    //             return locator.phoneNbrTxt || locator.emailAddress || locator.streetAddr1 || '';
+    //         case 'PST':
+    //             return `${locator.streetAddr1 ?? ''} ${locator.cityCd ?? ''} ${locator.stateCd ?? ''} ${
+    //                 locator.zipCd ?? ''
+    //             } ${locator.cntryCd ?? ''}`;
+    //         default:
+    //             return '';
+    //     }
+    // }
 
     function getOtherNames(
         item: { firstNm: String; lastNm: String },
@@ -92,16 +92,61 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         return otherNames;
     }
 
-    const filtered = (arr: any) => {
-        return [...arr].sort(function (a: any, b: any) {
-            if (a.classCd > b.classCd) {
-                return -1;
+    const [dynamicHeight, setDynamicHeight] = useState(0);
+    const heightArr: any = [];
+    const OrderedData = ({ data, type }: any) => {
+        const heightRef: any = useRef();
+        useEffect(() => {
+            if (heightRef.current?.clientHeight) {
+                heightArr.push(heightRef.current?.clientHeight);
+                setDynamicHeight(Math.max(...heightArr));
             }
-            if (a.classCd < b.classCd) {
-                return 1;
-            }
-            return 0;
-        });
+        }, [heightRef]);
+
+        return (
+            <Grid col={6} className="margin-bottom-2 margin-0">
+                <div ref={heightRef}>
+                    <h5 className="margin-0 text-normal text-gray-50">{type}</h5>
+                    {data && data.length > 0 ? (
+                        data.map((add: string, ind: number) => (
+                            <p
+                                key={ind}
+                                className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                {add}
+                            </p>
+                        ))
+                    ) : (
+                        <p className="text-italic margin-0 text-gray-30">No Data</p>
+                    )}
+                </div>
+            </Grid>
+        );
+    };
+    const newOrderPhone = (data: any) => {
+        const numbers: any = [];
+        data.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
+        return <OrderedData data={numbers} type="Phone Number" />;
+    };
+
+    const newOrderEmail = (data: any) => {
+        const emails: any = [];
+        data.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
+        return <OrderedData data={emails} type="Email" />;
+    };
+
+    const newOrderAddress = (data: any) => {
+        const address: any = [];
+        data.map(
+            (item: any) =>
+                item.classCd === 'PST' &&
+                address.push(
+                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${item.locator.stateCd ?? ''} ${
+                        item.locator.zipCd ?? ''
+                    } ${item.locator.cntryCd ?? ''}`
+                )
+        );
+        return <OrderedData data={address} type="Address" />;
     };
 
     return (
@@ -131,86 +176,80 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                             className="padding-3 margin-bottom-3 bg-white border border-base-light radius-md">
                             <Grid row gap={3}>
                                 <Grid col={3}>
-                                    <Grid col={12} className="margin-bottom-2">
-                                        <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
-                                        <p
-                                            className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                                            style={{ wordBreak: 'break-word' }}>
-                                            {item.firstNm}, {item.lastNm}
-                                        </p>
-                                    </Grid>
-                                    <Grid col={12} className="margin-bottom-2">
-                                        <div className="grid-row flex-align-center">
-                                            <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                                DATE OF BIRTH
-                                            </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.birthTime && (
-                                                    <>
-                                                        {new Date(item.birthTime).toLocaleDateString('en-US', {
-                                                            timeZone: 'UTC'
-                                                        })}
-                                                        <span className="font-sans-2xs">
-                                                            {' '}
-                                                            ({_calculateAge(new Date(item.birthTime))} years)
-                                                        </span>
-                                                    </>
-                                                )}
-                                                {!item.birthTime && <span className="font-sans-2xs">--</span>}
+                                    <Grid row gap={3}>
+                                        <Grid
+                                            col={12}
+                                            style={{
+                                                minHeight: 'auto',
+                                                height: dynamicHeight || 'auto'
+                                            }}
+                                            className="margin-bottom-2">
+                                            <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
+                                            <p
+                                                className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
+                                                style={{ wordBreak: 'break-word' }}>
+                                                {item.firstNm}, {item.lastNm}
                                             </p>
-                                        </div>
-                                        <div className="grid-row flex-align-center">
-                                            <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                                SEX
-                                            </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">
-                                                {item.currSexCd === 'M'
-                                                    ? 'Male'
-                                                    : item.currSexCd === 'F'
-                                                    ? 'Female'
-                                                    : 'Unknown'}
-                                            </p>
-                                        </div>
-                                        <div className="grid-row flex-align-center">
-                                            <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                                PATIENT ID
-                                            </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
-                                        </div>
+                                        </Grid>
+                                        <Grid col={12} className="margin-bottom-2">
+                                            <div className="grid-row flex-align-center">
+                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                    DATE OF BIRTH
+                                                </h5>
+                                                <p className="margin-0 font-sans-1xs text-normal">
+                                                    {item.birthTime && (
+                                                        <>
+                                                            {new Date(item.birthTime).toLocaleDateString('en-US', {
+                                                                timeZone: 'UTC'
+                                                            })}
+                                                            <span className="font-sans-2xs">
+                                                                {' '}
+                                                                ({_calculateAge(new Date(item.birthTime))} years)
+                                                            </span>
+                                                        </>
+                                                    )}
+                                                    {!item.birthTime && <span className="font-sans-2xs">--</span>}
+                                                </p>
+                                            </div>
+                                            <div className="grid-row flex-align-center">
+                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                    SEX
+                                                </h5>
+                                                <p className="margin-0 font-sans-1xs text-normal">
+                                                    {item.currSexCd === 'M'
+                                                        ? 'Male'
+                                                        : item.currSexCd === 'F'
+                                                        ? 'Female'
+                                                        : 'Unknown'}
+                                                </p>
+                                            </div>
+                                            <div className="grid-row flex-align-center">
+                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                    PATIENT ID
+                                                </h5>
+                                                <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
+                                            </div>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid col={6}>
                                     <Grid row gap={3}>
                                         {/* Locator entries */}
-                                        {filtered(item.NBSEntity.entityLocatorParticipations).map(
-                                            (locatorParticipation: LocatorParticipations, idIndex: number) => (
-                                                <Grid key={idIndex} col={6} className="margin-bottom-2 margin-0">
-                                                    <h5 className="margin-0 text-normal text-gray-50">
-                                                        {getLocatorTypeDisplay(
-                                                            locatorParticipation.classCd,
-                                                            locatorParticipation.locator
-                                                        )}
-                                                    </h5>
-                                                    <p
-                                                        className="margin-0 font-sans-1xs text-normal margin-top-05"
-                                                        style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                        {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
-                                                        {getLocatorDisplayValue(
-                                                            locatorParticipation.classCd,
-                                                            locatorParticipation.locator
-                                                        )}
-                                                    </p>
-                                                </Grid>
-                                            )
-                                        )}
+                                        {newOrderPhone(item.NBSEntity.entityLocatorParticipations)}
+                                        {newOrderEmail(item.NBSEntity.entityLocatorParticipations)}
                                         <Grid col={6} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
-                                            <p
-                                                className="margin-0 font-sans-1xs text-gray-50 text-normal margin-top-05"
-                                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                {getOtherNames(item, item.names) || 'No data'}
-                                            </p>
+                                            {getOtherNames(item, item.names) ? (
+                                                <p
+                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                    {getOtherNames(item, item.names)}
+                                                </p>
+                                            ) : (
+                                                <p className="text-italic margin-0 text-gray-30">No Data</p>
+                                            )}
                                         </Grid>
+                                        {newOrderAddress(item.NBSEntity.entityLocatorParticipations)}
                                     </Grid>
                                 </Grid>
                                 <Grid col={3}>
@@ -220,19 +259,38 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                             id: { typeDescTxt: String; rootExtensionTxt: String; typeCd: String },
                                             idIndex: number
                                         ) => (
-                                            <Grid key={idIndex} col={12} className="margin-bottom-2">
+                                            <Grid
+                                                key={idIndex}
+                                                col={12}
+                                                className="margin-bottom-2"
+                                                style={{
+                                                    minHeight: 'auto',
+                                                    height: dynamicHeight || 'auto'
+                                                }}>
                                                 <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
                                                     {id.typeDescTxt}
                                                 </h5>
                                                 <p
                                                     className="margin-0 font-sans-1xs text-normal margin-top-05"
                                                     style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                    {/* {new Date(item.addTime).toLocaleDateString('en-US')} */}
                                                     {id.rootExtensionTxt || '-'}
                                                 </p>
                                             </Grid>
                                         )
                                     )}
+                                    {!item.entityIds ||
+                                        (item.entityIds.length === 0 && (
+                                            <Grid col={12} className="margin-bottom-2">
+                                                <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                    Id Types
+                                                </h5>
+                                                <p
+                                                    className="margin-0 font-sans-1xs margin-top-05 text-italic margin-0 text-gray-30"
+                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                    No Data
+                                                </p>
+                                            </Grid>
+                                        ))}
                                 </Grid>
                             </Grid>
                         </div>

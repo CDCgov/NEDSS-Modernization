@@ -65,6 +65,48 @@ export const AdvancedSearch = () => {
         };
     }, [wrapperRef]);
 
+    const handleTags = (filter: any) => {
+        const chips: any = [];
+        if (filter) {
+            Object.entries(filter as any).map((re: any) => {
+                if (re[0] !== 'identification') {
+                    let name = re[0];
+                    switch (re[0]) {
+                        case 'lastName':
+                            name = 'last';
+                            break;
+                        case 'firstName':
+                            name = 'first';
+                            break;
+                        case 'gender':
+                            name = 'sex';
+                            break;
+                        case 'dateOfBirth':
+                            name = 'dob';
+                            break;
+                    }
+                    chips.push({
+                        name: name,
+                        value: re[1]
+                    });
+                }
+                if (re[0] === 'identification') {
+                    chips.push(
+                        {
+                            name: 'ID Type',
+                            value: re[1]?.identificationType
+                        },
+                        {
+                            name: 'ID Number',
+                            value: re[1]?.identificationNumber
+                        }
+                    );
+                }
+            });
+        }
+        setResultsChip(chips);
+    };
+
     /**
      * Handles extracting and submitting the query from the q parameter,
      * this object could either be PersonFilter or EventFilter
@@ -100,6 +142,8 @@ export const AdvancedSearch = () => {
                                     pageSize: PAGE_SIZE,
                                     ...sort
                                 }
+                            }).then(() => {
+                                handleTags(filter);
                             });
                         setFormData(filter);
                     } else {
@@ -129,33 +173,6 @@ export const AdvancedSearch = () => {
 
     function handleSearchResults(data: FindPatientsByFilterQuery) {
         setInitialSearch(true);
-        const chips: any = [];
-        if (formData) {
-            Object.entries(formData as any).map((re: any) => {
-                if (re[0] !== 'identification') {
-                    let name = re[0];
-                    switch (re[0]) {
-                        case 'lastName':
-                            name = 'last';
-                            break;
-                        case 'firstName':
-                            name = 'first';
-                            break;
-                        case 'gender':
-                            name = 'sex';
-                            break;
-                        case 'dateOfBirth':
-                            name = 'dob';
-                            break;
-                    }
-                    chips.push({
-                        name: name,
-                        value: re[1].replaceAll('_', ' ')
-                    });
-                }
-            });
-        }
-        setResultsChip(chips);
     }
 
     function handleEventSearchResults(data: FindPatientsByEventQuery) {
@@ -239,9 +256,15 @@ export const AdvancedSearch = () => {
                 case 'ethnicity':
                     tempFormData = { ...tempFormData, ethnicity: undefined };
                     break;
+                case 'ID Number':
+                    tempFormData = { ...tempFormData, identification: undefined };
+                    break;
+                case 'ID Type':
+                    tempFormData = { ...tempFormData, identification: undefined };
+                    break;
             }
             handleSubmit(tempFormData);
-            resultsChip.length === 1 && navigate('/');
+            resultsChip.length === 1 || ((value === 'ID Number' || value === 'ID Type') && navigate('/'));
         }
     };
 
