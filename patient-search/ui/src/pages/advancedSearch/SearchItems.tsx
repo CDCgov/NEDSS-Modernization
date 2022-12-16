@@ -278,7 +278,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                             )
                                     )}
                                     {!item.entityIds ||
-                                        (item.entityIds.length === 0 && (
+                                        (item.entityIds?.filter((ent: any) => ent.typeDescTxt).length === 0 && (
                                             <Grid col={12} className="margin-bottom-2">
                                                 <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
                                                     Id Types
