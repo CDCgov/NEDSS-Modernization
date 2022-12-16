@@ -206,6 +206,7 @@ export const AdvancedSearch = () => {
                 pathname: '/advanced-search',
                 search
             });
+            setCurrentPage(1);
             setSubmitted(false);
         } else {
             setSubmitted(true);
