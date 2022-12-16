@@ -8,3 +8,6 @@ ENV SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
 
 COPY ./nifi_drivers/ /var/opt/nifi_drivers/
 COPY ./nifi_conf/conf/ /opt/nifi/nifi-current/conf/
+
+RUN chmod -R a+rwx /var/opt/nifi_drivers/
+RUN chmod -R a+rwx /opt/nifi/
