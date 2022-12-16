@@ -20,8 +20,32 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     };
 
+    const [num, setNum] = useState<any>([]);
+    const [email, setEmail] = useState<any>('');
+
+    useEffect(() => {
+        const newArrOfNumbers: any = [];
+        const newArrOfEmails: any = [];
+        data.map((item: any) => {
+            const tempNumbers: any = [];
+            const tempEmails: any = [];
+            item.NBSEntity.entityLocatorParticipations.forEach((element: any) => {
+                if (element.locator.phoneNbrTxt) {
+                    tempNumbers.push(element.locator.phoneNbrTxt);
+                }
+                if (element.locator.emailAddress) {
+                    tempEmails.push(element.locator.emailAddress);
+                }
+            });
+            newArrOfNumbers.push(tempNumbers);
+            newArrOfEmails.push(tempEmails);
+        });
+        setNum(newArrOfNumbers);
+        setEmail(newArrOfEmails);
+    }, [data]);
+
     const handleNext = (page: number) => {
-        handlePagination(page - 1);
+        handlePagination(page);
     };
 
     const getListSize = () => {
@@ -51,27 +75,21 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         return otherNames;
     }
 
-    const [dynamicHeight, setDynamicHeight] = useState(0);
-    const heightArr: any = [];
     const OrderedData = ({ data, type }: any) => {
-        const heightRef: any = useRef();
-        useEffect(() => {
-            if (heightRef.current?.clientHeight) {
-                heightArr.push(heightRef.current?.clientHeight);
-                setDynamicHeight(Math.max(...heightArr));
-            }
-        }, [heightRef]);
-
         return (
             <Grid col={6} className="margin-bottom-2 margin-0">
-                <div ref={heightRef}>
-                    <h5 className="margin-0 text-normal text-gray-50">{type}</h5>
+                <div>
+                    <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">{type}</h5>
                     {data && data.length > 0 ? (
                         data.map((add: string, ind: number) => (
                             <p
                                 key={ind}
-                                className="margin-0 font-sans-1xs text-normal margin-top-05"
-                                style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                className="margin-0 font-sans-1xs text-normal"
+                                style={{
+                                    wordBreak: 'break-word',
+                                    paddingRight: '15px',
+                                    maxWidth: type === 'EMAIL' ? '165px' : 'auto'
+                                }}>
                                 {add}
                             </p>
                         ))
@@ -82,16 +100,17 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
             </Grid>
         );
     };
+
     const newOrderPhone = (data: any) => {
         const numbers: any = [];
         data.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
-        return <OrderedData data={numbers} type="Phone Number" />;
+        return <OrderedData data={numbers} type="PHONE NUMBER" />;
     };
 
     const newOrderEmail = (data: any) => {
         const emails: any = [];
         data.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
-        return <OrderedData data={emails} type="Email" />;
+        return <OrderedData data={emails} type="EMAIL" />;
     };
 
     const newOrderAddress = (data: any) => {
@@ -105,7 +124,36 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                     } ${item.locator.cntryCd ?? ''}`
                 )
         );
-        return <OrderedData data={address} type="Address" />;
+        return <OrderedData data={address} type="ADDRESS" />;
+    };
+
+    const styleObjHeight = (index: number) => {
+        const em = email[index] ? email[index][0] : null;
+        let emailHeight: any = em?.length > 17 ? 54 : null;
+        const numHeight: any = num[index]?.length === 2 ? 54 : num[index]?.length === 3 ? 74 : null;
+        em?.length > 33 && (emailHeight = 74);
+        return {
+            minHeight:
+                emailHeight || numHeight
+                    ? emailHeight > numHeight
+                        ? `${emailHeight}px`
+                        : emailHeight < numHeight
+                        ? `${numHeight}px`
+                        : 'auto'
+                    : 'auto',
+            height: 'auto'
+        };
+    };
+
+    const filteredEnitityIds = (entity: any) => {
+        const driverLicence = entity.filter((item: any) => item.typeCd === 'DRIVERS_LICENSE_NUMBER')[0];
+        const socialSecurity = entity.filter((item: any) => item.typeCd === 'SOCIAL_SECURITY')[0];
+        const newen = entity
+            .filter((item: any) => item.typeCd !== 'DRIVERS_LICENSE_NUMBER')
+            .filter((item: any) => item.typeCd !== 'SOCIAL_SECURITY');
+        socialSecurity && newen.unshift(socialSecurity);
+        driverLicence && newen.unshift(driverLicence);
+        return newen;
     };
 
     return (
@@ -118,7 +166,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                     <Pagination
                         style={{ justifyContent: 'flex-end' }}
                         totalPages={Math.ceil(totalResults / 25)}
-                        currentPage={currentPage + 1}
+                        currentPage={currentPage}
                         pathname={'/advanced-search'}
                         onClickNext={() => handleNext(currentPage + 1)}
                         onClickPrevious={() => handleNext(currentPage - 1)}
@@ -132,17 +180,11 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                     data?.map((item: any, index: number) => (
                         <div
                             key={index}
-                            className="padding-3 margin-bottom-3 bg-white border border-base-light radius-md">
+                            className="padding-x-3 padding-top-3 padding-bottom-2 margin-bottom-3 bg-white border border-base-light radius-md">
                             <Grid row gap={3}>
-                                <Grid col={3}>
+                                <Grid col={4}>
                                     <Grid row gap={3}>
-                                        <Grid
-                                            col={12}
-                                            style={{
-                                                minHeight: 'auto'
-                                                // height: dynamicHeight || 'auto'
-                                            }}
-                                            className="margin-bottom-2">
+                                        <Grid col={12} style={styleObjHeight(index)} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                                             <p
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
@@ -191,7 +233,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid col={6}>
+                                <Grid col={5}>
                                     <Grid row gap={3}>
                                         {/* Locator entries */}
                                         {newOrderPhone(item.NBSEntity.entityLocatorParticipations)}
@@ -213,29 +255,27 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                 </Grid>
                                 <Grid col={3}>
                                     {/* Identifications */}
-                                    {item.entityIds.map(
+                                    {filteredEnitityIds(item.entityIds).map(
                                         (
                                             id: { typeDescTxt: String; rootExtensionTxt: String; typeCd: String },
                                             idIndex: number
-                                        ) => (
-                                            <Grid
-                                                key={idIndex}
-                                                col={12}
-                                                className="margin-bottom-2"
-                                                style={{
-                                                    minHeight: 'auto',
-                                                    height: dynamicHeight || 'auto'
-                                                }}>
-                                                <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
-                                                    {id.typeDescTxt}
-                                                </h5>
-                                                <p
-                                                    className="margin-0 font-sans-1xs text-normal margin-top-05"
-                                                    style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
-                                                    {id.rootExtensionTxt || '-'}
-                                                </p>
-                                            </Grid>
-                                        )
+                                        ) =>
+                                            id.typeDescTxt && (
+                                                <Grid
+                                                    style={styleObjHeight(idIndex)}
+                                                    key={idIndex}
+                                                    col={12}
+                                                    className="margin-bottom-2">
+                                                    <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                        {id.typeDescTxt}
+                                                    </h5>
+                                                    <p
+                                                        className="margin-0 font-sans-1xs text-normal margin-top-05"
+                                                        style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
+                                                        {id.rootExtensionTxt || '-'}
+                                                    </p>
+                                                </Grid>
+                                            )
                                     )}
                                     {!item.entityIds ||
                                         (item.entityIds.length === 0 && (

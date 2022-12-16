@@ -33,7 +33,7 @@ export const AdvancedSearch = () => {
     const [formData, setFormData] = useState<PersonFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [fetch, { data, loading }] = useFindPatientsByFilterLazyQuery({
         onCompleted: handleSearchResults
@@ -134,17 +134,17 @@ export const AdvancedSearch = () => {
                 } else {
                     filter = filter as PersonFilter;
                     if (!isEmpty(filter)) {
-                        JSON.stringify(filter) !== JSON.stringify(formData) &&
-                            fetch({
-                                variables: {
-                                    filter: filter,
-                                    page: {
-                                        pageNumber: currentPage,
-                                        pageSize: PAGE_SIZE,
-                                        ...sort
-                                    }
+                        // JSON.stringify(filter) !== JSON.stringify(formData) &&
+                        fetch({
+                            variables: {
+                                filter: filter,
+                                page: {
+                                    pageNumber: currentPage - 1,
+                                    pageSize: PAGE_SIZE,
+                                    ...sort
                                 }
-                            });
+                            }
+                        });
                         handleTags(filter);
                         setFormData(filter);
                     } else {
@@ -158,7 +158,7 @@ export const AdvancedSearch = () => {
         } else {
             setInitialSearch(false);
         }
-    }, [searchParams, state.isLoggedIn, sort]);
+    }, [searchParams, state.isLoggedIn, sort, currentPage]);
 
     useEffect(() => {
         if (submitted) {
@@ -282,22 +282,8 @@ export const AdvancedSearch = () => {
     }
 
     const handlePagination = (page: number) => {
-        page !== currentPage && setCurrentPage(page);
+        setCurrentPage(page);
     };
-
-    useEffect(() => {
-        formData &&
-            fetch({
-                variables: {
-                    filter: formData,
-                    page: {
-                        pageNumber: currentPage,
-                        pageSize: PAGE_SIZE,
-                        ...sort
-                    }
-                }
-            });
-    }, [currentPage]);
 
     return (
         <div
@@ -311,7 +297,10 @@ export const AdvancedSearch = () => {
                     Search
                     <div className="button-group">
                         <Button
-                            disabled={data?.findPatientsByFilter?.content?.length === 0}
+                            disabled={
+                                !data?.findPatientsByFilter?.content ||
+                                data?.findPatientsByFilter?.content?.length === 0
+                            }
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
@@ -320,6 +309,7 @@ export const AdvancedSearch = () => {
                             <img
                                 style={{ marginLeft: '5px' }}
                                 src={
+                                    !data?.findPatientsByFilter?.content ||
                                     data?.findPatientsByFilter?.content?.length === 0
                                         ? 'down-arrow-white.svg'
                                         : 'down-arrow-blue.svg'
@@ -402,7 +392,10 @@ export const AdvancedSearch = () => {
                         <div>
                             <div className="button-group">
                                 <Button
-                                    disabled={data?.findPatientsByFilter?.content?.length === 0}
+                                    disabled={
+                                        !data?.findPatientsByFilter?.content ||
+                                        data?.findPatientsByFilter?.content?.length === 0
+                                    }
                                     className="width-full margin-top-0"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
@@ -411,6 +404,7 @@ export const AdvancedSearch = () => {
                                     <img
                                         style={{ marginLeft: '5px' }}
                                         src={
+                                            !data?.findPatientsByFilter?.content ||
                                             data?.findPatientsByFilter?.content?.length === 0
                                                 ? 'down-arrow-white.svg'
                                                 : 'down-arrow-blue.svg'
@@ -464,10 +458,10 @@ export const AdvancedSearch = () => {
                                 <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
                                     <Alert
                                         type="error"
-                                        heading="You did not make a search"
+                                        // heading="You did not make a search"
                                         headingLevel="h4"
                                         className="width-full">
-                                        <>Please make sure to enter atleast one search criteria.</>
+                                        <>You must enter at least one item to search</>
                                     </Alert>
                                 </div>
                             )}
