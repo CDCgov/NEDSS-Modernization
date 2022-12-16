@@ -252,7 +252,7 @@ public class EventService {
             if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
                     || cs.getIncludeUnassigned() == null) {
                 throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying        processingStatuses");
+                        "statusList and includeUnassigned are required when specifying processingStatuses");
             }
             var statusStrings = cs.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())

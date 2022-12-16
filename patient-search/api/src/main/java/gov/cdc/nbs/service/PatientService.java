@@ -276,7 +276,7 @@ public class PatientService {
                         .map(Investigation::getParentUid)
                         .distinct()
                         .collect(Collectors.toList());
-                totalCount = investigations.getTotalHits();
+                totalCount = ids.size();
                 break;
             case LABORATORY_REPORT:
                 var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter());
@@ -290,7 +290,7 @@ public class PatientService {
                         .distinct()
                         .collect(Collectors.toList());
 
-                totalCount = labReports.getTotalHits();
+                totalCount = ids.size();
                 break;
             default:
                 throw new QueryException("Invalid event type: " + filter.getEventType());
