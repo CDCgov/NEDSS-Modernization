@@ -80,6 +80,8 @@ public class LabReport {
     private Long actUid;
     @Field(name = "person_cd", type = FieldType.Keyword)
     private String personCd;
+    @Field(name = "parent_uid", type = FieldType.Long)
+    private Long parentUid;
     @Field(name = "person_record_status_cd", type = FieldType.Keyword)
     private String personRecordStatusCd;
     @Field(name = "cd_desc_txt", type = FieldType.Text)

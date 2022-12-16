@@ -273,7 +273,7 @@ public class PatientService {
                         .filter(Objects::nonNull)
                         .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
                         .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(Investigation::getSubjectEntityUid)
+                        .map(Investigation::getParentUid)
                         .distinct()
                         .collect(Collectors.toList());
                 totalCount = investigations.getTotalHits();
@@ -286,7 +286,7 @@ public class PatientService {
                         .filter(Objects::nonNull)
                         .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
                         .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(LabReport::getSubjectEntityUid)
+                        .map(LabReport::getParentUid)
                         .distinct()
                         .collect(Collectors.toList());
 

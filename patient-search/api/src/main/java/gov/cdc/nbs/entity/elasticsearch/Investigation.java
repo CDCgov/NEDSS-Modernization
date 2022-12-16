@@ -91,6 +91,8 @@ public class Investigation {
     private Instant personLastChgTime;
     @Field(name = "person_cd", type = FieldType.Keyword)
     private String personCd;
+    @Field(name = "parent_uid", type = FieldType.Long)
+    private Long parentUid;
     @Field(name = "person_record_status_cd", type = FieldType.Keyword)
     private String personRecordStatusCd;
     @Field(name = "investigation_status_cd", type = FieldType.Keyword)
