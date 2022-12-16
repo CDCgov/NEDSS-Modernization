@@ -14,9 +14,10 @@ import { IDForm } from './IdForm';
 type SimpleSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
     data: PersonFilter | undefined;
+    clearAll: () => void;
 };
 
-export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
+export const SimpleSearch = ({ handleSubmission, data, clearAll }: SimpleSearchProps) => {
     const methods = useForm();
     const {
         handleSubmit,
@@ -44,7 +45,6 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
                 ethnicity: data.ethnicity,
                 race: data.race
             });
-            console.log('values', methods.getValues());
         }
     }, [data]);
 
@@ -93,8 +93,14 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
                         <Controller
                             control={control}
                             name="dob"
-                            render={({ field: { onChange } }) => (
-                                <DatePickerInput onChange={onChange} name="dob" htmlFor={'dob'} label="Date Of Birth" />
+                            render={({ field: { onChange, value } }) => (
+                                <DatePickerInput
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    name="dob"
+                                    htmlFor={'dob'}
+                                    label="Date Of Birth"
+                                />
                             )}
                         />
                     </Grid>
@@ -102,8 +108,9 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
                         <Controller
                             control={control}
                             name="gender"
-                            render={({ field: { onChange } }) => (
+                            render={({ field: { onChange, value } }) => (
                                 <SelectInput
+                                    defaultValue={value}
                                     onChange={onChange}
                                     name="gender"
                                     htmlFor={'gender'}
@@ -188,7 +195,7 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
-            <div style={{ height: `calc(100vh - 375px)`, overflowY: 'auto' }}>
+            <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
                 <Accordion items={simpleSearchItems} multiselectable={true} />
             </div>
             <Grid row className="bottom-search">
@@ -198,7 +205,30 @@ export const SimpleSearch = ({ handleSubmission, data }: SimpleSearchProps) => {
                     </Button>
                 </Grid>
                 <Grid col={12} className="padding-x-2">
-                    <Button className="width-full clear-btn" type={'button'} onClick={() => reset({})} outline>
+                    <Button
+                        className="width-full clear-btn"
+                        type={'button'}
+                        onClick={() => {
+                            reset({
+                                firstName: '',
+                                lastName: '',
+                                address: '',
+                                city: '',
+                                state: '-Select-',
+                                zip: '',
+                                patientId: '',
+                                dob: '',
+                                gender: '-Select-',
+                                phoneNumber: '',
+                                email: '',
+                                identificationNumber: '',
+                                identificationType: '-Select-',
+                                ethnicity: '-Select-',
+                                race: '-Select-'
+                            });
+                            clearAll();
+                        }}
+                        outline>
                         Clear all
                     </Button>
                 </Grid>

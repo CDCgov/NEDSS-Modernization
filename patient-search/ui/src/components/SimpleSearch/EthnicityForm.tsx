@@ -11,8 +11,9 @@ export const EthnicityForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="ethnicity"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                         <SelectInput
+                            defaultValue={value}
                             onChange={onChange}
                             htmlFor={'ethnicity'}
                             label="Ethnicity"
@@ -30,8 +31,9 @@ export const EthnicityForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="race"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                         <SelectInput
+                            defaultValue={value}
                             onChange={onChange}
                             htmlFor={'race'}
                             label="Race"

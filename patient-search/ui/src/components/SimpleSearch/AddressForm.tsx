@@ -43,8 +43,14 @@ export const AddressForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="state"
-                    render={({ field: { onChange } }) => (
-                        <SelectInput onChange={onChange} htmlFor={'state'} label="State" options={stateList} />
+                    render={({ field: { onChange, value } }) => (
+                        <SelectInput
+                            defaultValue={value}
+                            onChange={onChange}
+                            htmlFor={'state'}
+                            label="State"
+                            options={stateList}
+                        />
                     )}
                 />
             </Grid>

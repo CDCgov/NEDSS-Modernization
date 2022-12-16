@@ -48,6 +48,8 @@
 
 .refine-text {
     font-size: 22px;
+    background: whitesmoke;
+    padding: 22px 1rem;
 }
 
 .bottom-search {
@@ -124,6 +126,21 @@
         .usa-nav__submenu-item:last-child {
             border: none;
             padding: 15px;
+        }
+    }
+
+    .add-patient-menu li {
+        padding: 0 30px 5px 0 !important;
+        font-size: 1.06 re !important;
+    }
+
+    .add-patient-menu {
+        padding-top: 0;
+
+        .usa-nav__submenu-item:last-child {
+            border: none;
+            padding: 0 !important;
+            margin: 0;
         }
     }
 }
