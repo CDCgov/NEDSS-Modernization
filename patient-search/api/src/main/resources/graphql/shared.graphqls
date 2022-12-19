@@ -17,3 +17,8 @@ enum PersonSortField {
     birthTime
     addTime
 }
+
+enum RecordStatus {
+    ACTIVE
+    LOG_DEL
+}
