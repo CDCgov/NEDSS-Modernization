@@ -1,0 +1,11 @@
+query findAllUsers($page: Page) {
+    findAllUsers(page: $page){
+        content{
+            userId
+            userFirstNm
+            userLastNm
+            recordStatusCd
+        }
+        total
+    }
+}
