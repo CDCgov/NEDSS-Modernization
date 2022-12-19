@@ -6,12 +6,12 @@ ENV NIFI_SENSITIVE_PROPS_KEY='12345678901234567890A'
 ENV SINGLE_USER_CREDENTIALS_USERNAME=admin
 ENV SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
 
+COPY ./nifi_drivers /var/opt/nifi_drivers
+# COPY ./nifi_conf/conf /opt/nifi/nifi-current/conf
+
 USER root
 
-COPY ./nifi_drivers/ /var/opt/nifi_drivers/
-COPY ./nifi_conf/conf/ /opt/nifi/nifi-current/conf/
-
-RUN chmod -R a+rwx /var/opt/nifi_drivers/
-RUN chmod -R a+rwx /opt/nifi/
+RUN chown -R nifi:nifi /var/opt/nifi_drivers
+RUN chown -R nifi:nifi /opt/nifi
 
 USER nifi
