@@ -6,8 +6,8 @@ type Query {
     findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: PersonPage): PersonResults!
 
     findOrganizationById(id: ID!): Organization
-    findAllOrganizations(page: Page): [Organization]!
-    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): [Organization]!
+    findAllOrganizations(page: Page): OrganizationResults!
+    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): OrganizationResults!
 
     findPlaceById(id: ID!): Place
     findAllPlaces(page: Page): [Place]!
@@ -15,7 +15,7 @@ type Query {
 
     findAllCountryCodes(page: Page): [CountryCode]!
     findAllStateCodes(page: Page): [StateCode]!
-
+    findAllUsers(page: Page): UserResults!
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
@@ -27,5 +27,15 @@ type Mutation {
 
 type PersonResults {
     content: [Person]!
+    total: Int!
+}
+
+type UserResults {
+    content: [User]!
+    total: Int!
+}
+
+type OrganizationResults {
+    content: [Organization]!
     total: Int!
 }
