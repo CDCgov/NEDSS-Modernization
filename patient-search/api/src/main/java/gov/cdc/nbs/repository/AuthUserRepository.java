@@ -17,6 +17,6 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, Query
 
     public Optional<AuthUser> findByNedssEntryId(Long nedssEntryId);
 
-    @Query("SELECT au FROM AuthUser au WHERE au.id in (SELECT role.authUserUid FROM AuthUserRole role WHERE role.progAreaCd IN :programAreas)")
+    @Query("SELECT au FROM AuthUser au WHERE au.id in (SELECT role.authUserUid.id FROM AuthUserRole role WHERE role.progAreaCd IN :programAreas)")
     public Page<AuthUser> findByProgramAreas(@Param("programAreas") List<String> programAreas, Pageable pageable);
 }
