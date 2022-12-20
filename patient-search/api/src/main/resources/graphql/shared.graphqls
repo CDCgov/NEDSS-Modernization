@@ -20,5 +20,6 @@ enum PersonSortField {
 
 enum RecordStatus {
     ACTIVE
+    INACTIVE
     LOG_DEL
 }

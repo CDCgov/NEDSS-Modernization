@@ -1,5 +1,7 @@
 package gov.cdc.nbs.controller;
 
+import java.util.stream.Collectors;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,10 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.cdc.nbs.config.security.NbsAuthority;
+import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -45,9 +50,20 @@ public class UserController {
                 userDetails.getToken());
     }
 
+    /**
+     * Returns a page of users that share a program area with the current user,
+     * logic copied from legacy NBS - DbAuthDAOImpl.java
+     * "getSecureUserDTListBasedOnProgramArea"
+     */
     @QueryMapping
     public Page<AuthUser> findAllUsers(@Argument GraphQLPage page) {
-        return userRepository.findAll(GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        var loggedInUser = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var userProgramAreas = loggedInUser.getAuthorities()
+                .stream()
+                .map(NbsAuthority::getProgramArea)
+                .distinct()
+                .collect(Collectors.toList());
+        return userRepository.findByProgramAreas(userProgramAreas, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
     }
 
 }
