@@ -2,9 +2,7 @@ name: Build-all images
 on:
   push:
     branches:
-      - main
-      - CNMP-375-actions-build-containers
-            
+      - main         
 env:
   deployment_env: dev
   accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
