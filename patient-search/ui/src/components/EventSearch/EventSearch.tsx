@@ -51,20 +51,23 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
         const filterData: EventFilter = {
             eventType: eventSearchType
         };
+        console.log(body);
         if (eventSearchType === EventType.Investigation) {
             filterData.eventType = EventType.Investigation;
             filterData.investigationFilter = {
-                conditions: body.condition ? [body.condition] : undefined,
-                jurisdictions: body.jurisdiction ? [body.jurisdiction] : undefined,
-                pregnancyStatus: body.pregnancyTest ? body.pregnancyTest : undefined,
-                programAreas: body.programArea ? [body.programArea] : undefined
+                conditions: body.condition && body.condition !== '- Select -' ? [body.condition] : undefined,
+                jurisdictions:
+                    body.jurisdiction && body.jurisdiction !== '- Select -' ? [body.jurisdiction] : undefined,
+                pregnancyStatus:
+                    body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
+                programAreas: body.programArea !== '- Select -' ? [body.programArea] : undefined
             };
         } else if (eventSearchType === EventType.LaboratoryReport) {
             filterData.eventType = EventType.LaboratoryReport;
             filterData.laboratoryReportFilter = {
-                programAreas: body.programArea ? [body.programArea] : undefined,
-                jurisdictions: body.jurisdiction ? [body.jurisdiction] : undefined,
-                pregnancyStatus: body.pregnancyTest ? body.pregnancyTest : undefined
+                programAreas: body.programArea !== '- Select -' ? [body.programArea] : undefined,
+                jurisdictions: body.jurisdiction !== '- Select -' ? [body.jurisdiction] : undefined,
+                pregnancyStatus: body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined
             };
         } else {
             // no search type selected
@@ -75,19 +78,45 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
-            <Accordion items={eventSearchItems} multiselectable={true} />
-            {eventSearchType && eventSearchType !== '- Select -' && (
-                <Accordion items={eventSearchFilteredItem} multiselectable={true} />
-            )}
-            <Grid col={12} className="margin-top-5 padding-x-3">
-                <Button className="width-full" type={'submit'}>
-                    Search
-                </Button>
-            </Grid>
-            <Grid col={12} className="padding-x-3">
-                <Button className="width-full" type={'button'} onClick={() => reset({})} outline>
-                    Clear
-                </Button>
+            <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
+                <Accordion items={eventSearchItems} multiselectable={true} />
+                {eventSearchType && eventSearchType !== '- Select -' && (
+                    <Accordion items={eventSearchFilteredItem} multiselectable={true} />
+                )}
+            </div>
+            <Grid row className="bottom-search">
+                <Grid col={12} className="padding-x-2">
+                    <Button className="width-full clear-btn" type={'submit'}>
+                        Search
+                    </Button>
+                </Grid>
+                <Grid col={12} className="padding-x-2">
+                    <Button
+                        className="width-full clear-btn"
+                        type={'button'}
+                        onClick={() => {
+                            reset({
+                                firstName: '',
+                                lastName: '',
+                                address: '',
+                                city: '',
+                                state: '-Select-',
+                                zip: '',
+                                patientId: '',
+                                dob: '',
+                                gender: '-Select-',
+                                phoneNumber: '',
+                                email: '',
+                                identificationNumber: '',
+                                identificationType: '-Select-',
+                                ethnicity: '-Select-',
+                                race: '-Select-'
+                            });
+                        }}
+                        outline>
+                        Clear all
+                    </Button>
+                </Grid>
             </Grid>
         </Form>
     );
