@@ -7,7 +7,7 @@ ENV SINGLE_USER_CREDENTIALS_USERNAME=admin
 ENV SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
 
 COPY ./nifi_drivers /var/opt/nifi_drivers
-# COPY ./nifi_conf/conf /opt/nifi/nifi-current/conf
+COPY ./nifi_conf/conf /opt/nifi/nifi-current/conf
 
 USER root
 
