@@ -13,5 +13,3 @@ USER root
 
 RUN chown -R nifi:nifi /var/opt/nifi_drivers/
 RUN chown -R nifi:nifi /opt/nifi/
-
-USER nifi
