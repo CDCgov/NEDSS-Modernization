@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -41,12 +40,13 @@ public class EventService {
     private final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
+    private final int MAX_RESULTS = 500;
 
     @PersistenceContext
     private final EntityManager entityManager;
 
     @PreAuthorize(VIEW_INVESTIGATION)
-    public SearchHits<Investigation> findInvestigationsByFilter(InvestigationFilter filter, Pageable pageable) {
+    public SearchHits<Investigation> findInvestigationsByFilter(InvestigationFilter filter) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Investigations are secured by Program Area and Jurisdiction
         var userDetails = SecurityUtil.getUserDetails();
@@ -60,7 +60,7 @@ public class EventService {
         builder.must(QueryBuilders.matchQuery("mood_cd", "EVN"));
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(builder).withPageable(pageable).build();
+            var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
             return operations.search(query, Investigation.class);
         }
         // conditions
@@ -270,7 +270,7 @@ public class EventService {
             }
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withPageable(pageable).build();
+        var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
         return operations.search(query, Investigation.class);
     }
 
@@ -281,7 +281,7 @@ public class EventService {
     }
 
     @PreAuthorize(VIEW_LAB_REPORT)
-    public SearchHits<LabReport> findLabReportsByFilter(LaboratoryReportFilter filter, Pageable pageable) {
+    public SearchHits<LabReport> findLabReportsByFilter(LaboratoryReportFilter filter) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
 
         // OBS only for lab reports ?
@@ -296,7 +296,7 @@ public class EventService {
         addListQuery(builder, "program_jurisdiction_oid", validOids);
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(builder).withPageable(pageable).build();
+            var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
             return operations.search(query, LabReport.class);
         }
         // program area
@@ -450,7 +450,7 @@ public class EventService {
             builder.must(QueryBuilders.matchQuery("display_name", filter.getCodedResult()));
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withPageable(pageable).build();
+        var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
         return operations.search(query, LabReport.class);
     }
 

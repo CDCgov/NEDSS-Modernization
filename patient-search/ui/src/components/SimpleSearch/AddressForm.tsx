@@ -10,15 +10,15 @@ export const AddressForm = ({ control }: any) => {
             <Grid col={12}>
                 <Controller
                     control={control}
-                    name="streetAddress"
+                    name="address"
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
                             type="text"
                             label="Street address"
                             defaultValue={value}
-                            htmlFor="streetAddress"
-                            id="streetAddress"
+                            htmlFor="address"
+                            id="address"
                         />
                     )}
                 />
@@ -43,8 +43,14 @@ export const AddressForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="state"
-                    render={({ field: { onChange } }) => (
-                        <SelectInput onChange={onChange} htmlFor={'state'} label="State" options={stateList} />
+                    render={({ field: { onChange, value } }) => (
+                        <SelectInput
+                            defaultValue={value}
+                            onChange={onChange}
+                            htmlFor={'state'}
+                            label="State"
+                            options={stateList}
+                        />
                     )}
                 />
             </Grid>

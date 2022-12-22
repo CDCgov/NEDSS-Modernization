@@ -1,0 +1,4 @@
+type ConditionCode {
+    id: String!
+    conditionDescTxt: String
+}

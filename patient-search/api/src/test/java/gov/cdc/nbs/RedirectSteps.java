@@ -93,7 +93,7 @@ public class RedirectSteps {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.equals("/search"));
+        assertTrue(redirectUrl.equals("/advanced-search"));
     }
 
     @Given("I send a search request to the NBS simple search")
@@ -116,7 +116,7 @@ public class RedirectSteps {
     public void my_search_params_are_passed_to_the_simple_search_react_page() throws UnsupportedEncodingException {
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.contains("/search?"));
+        assertTrue(redirectUrl.contains("/advanced-search?"));
         var q = redirectUrl.substring(redirectUrl.indexOf("?q=") + "?q=".length());
         q = URLDecoder.decode(q, "UTF-8");
         var filter = mapper.convertValue(encryptionService.handleDecryption(q), PatientFilter.class);

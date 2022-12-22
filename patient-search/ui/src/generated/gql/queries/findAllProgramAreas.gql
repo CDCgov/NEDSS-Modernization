@@ -1,0 +1,11 @@
+query findAllProgramAreas($page: Page) {
+    findAllProgramAreas(page: $page){
+        id
+        progAreaDescTxt
+        nbsUid
+        statusCd
+        statusTime
+        codeSetNm
+        codeSeq
+    }
+}

@@ -19,14 +19,14 @@ public class InstantConverter implements PropertyValueConverter {
             .ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneOffset.UTC);
 
     static {
-        formats.add(new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+        formats.add(new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("M/d/[uuuu][uu]"))
                 .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
                 .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
                 .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
                 .toFormatter());
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SS"));
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.S"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SS"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS"));
     }
 
     @Override
@@ -41,15 +41,17 @@ public class InstantConverter implements PropertyValueConverter {
     @Override
     public Object read(Object value) {
         if (value instanceof String s) {
+            if (s.startsWith("StringValue{value='")) {
+                s = s.substring("StringValue{value='".length(), s.length() - 2);
+            }
             for (var format : formats) {
                 try {
-                    return LocalDateTime.parse((String) value, format).toInstant(ZoneOffset.UTC);
+                    return LocalDateTime.parse(s, format).toInstant(ZoneOffset.UTC);
                 } catch (DateTimeParseException e) {
                     // ignore exception until all formats have been tried
                 }
             }
             throw new RuntimeException("Failed to convert String to Instant: " + s);
-
         } else {
             return value;
         }

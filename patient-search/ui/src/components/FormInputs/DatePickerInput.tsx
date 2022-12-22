@@ -1,4 +1,5 @@
 import { DatePicker, Label } from '@trussworks/react-uswds';
+import { useEffect, useState } from 'react';
 
 type DatePickerProps = {
     id?: string;
@@ -7,13 +8,32 @@ type DatePickerProps = {
     htmlFor?: string;
     onChange?: any;
     className?: string;
+    defaultValue?: string;
 };
 
-export const DatePickerInput = ({ id = '', name = '', label, htmlFor = '', onChange, className }: DatePickerProps) => {
+export const DatePickerInput = ({
+    id = '',
+    name = '',
+    label,
+    htmlFor = '',
+    onChange,
+    className,
+    defaultValue
+}: DatePickerProps) => {
+    const defaultVal: any = defaultValue?.split('/');
+    const [defaultDate, setDefaultDate] = useState('');
+    useEffect(() => {
+        if (defaultVal) {
+            setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
+        }
+    }, [defaultVal]);
     return (
         <>
             <Label htmlFor={htmlFor}>{label}</Label>
-            <DatePicker id={id} onChange={onChange} className={className} name={name} />
+            {defaultDate && (
+                <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
+            )}
+            {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
         </>
     );
 };

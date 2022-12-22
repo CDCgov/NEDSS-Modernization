@@ -42,9 +42,9 @@ public class RedirectController {
             HttpServletResponse response,
             RedirectAttributes attributes,
             @RequestParam Map<String, String> incomingParams) throws IOException {
-        var redirect = redirectionService.handleRedirect("/search", request, response);
+        var redirect = redirectionService.handleRedirect("/advanced-search", request, response);
         var redirectedUrl = redirect.getUrl();
-        if (redirectedUrl != null && redirectedUrl.equals("/search")) {
+        if (redirectedUrl != null && redirectedUrl.equals("/advanced-search")) {
             if (incomingParams.size() > 0) {
                 var patientFilter = redirectionService.getPatientFilterFromParams(incomingParams);
                 var encryptedFilter = encryptionService.handleEncryption(patientFilter);
@@ -68,7 +68,6 @@ public class RedirectController {
      * to set up the session variables so that we can navigate directly to Add
      * Patient or Patient Details pages
      */
-    @ApiIgnore
     @GetMapping("/preparePatientDetails")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public void preparePatientDetails(HttpServletRequest request) {

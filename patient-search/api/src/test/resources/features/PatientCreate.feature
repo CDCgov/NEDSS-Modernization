@@ -7,4 +7,4 @@ Feature: Patient create
 
   Scenario: I can create a patient
     When I send a create patient request
-    Then I can find the patient
+    Then the patient is inserted in the database

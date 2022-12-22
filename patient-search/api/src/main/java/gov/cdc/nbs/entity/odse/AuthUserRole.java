@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "Auth_user_role")
 public class AuthUserRole {
     @Id

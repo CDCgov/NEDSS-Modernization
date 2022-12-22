@@ -4,3 +4,22 @@ input Page {
     pageSize: Int
     pageNumber: Int
 }
+
+input PersonPage {
+    pageSize: Int
+    pageNumber: Int
+    sortField: PersonSortField
+    sortDirection: SortDirection
+}
+
+enum PersonSortField {
+    lastNm
+    birthTime
+    addTime
+}
+
+enum RecordStatus {
+    ACTIVE
+    INACTIVE
+    LOG_DEL
+}

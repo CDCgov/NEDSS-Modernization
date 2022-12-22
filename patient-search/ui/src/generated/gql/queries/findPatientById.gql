@@ -1,6 +1,49 @@
 query findPatientById($id: ID!) {
     findPatientById(id: $id){
         id
+        NBSEntity{
+            entityLocatorParticipations{
+                classCd
+                locator{
+                    emailAddress
+                    extenstionTxt
+                    phoneNbrTxt
+                    urlAddress
+                    censusBlockCd
+                    censusMinorCivilDivisionCd
+                    censusTrackCd
+                    cityCd
+                    cityDescTxt
+                    cntryCd
+                    cntryDescTxt
+                    cntyCd
+                    cntyDescTxt
+                    msaCongressDistrictCd
+                    regionDistrictCd
+                    stateCd
+                    streetAddr1
+                    streetAddr2
+                    zipCd
+                    geocodeMatchInd
+                    withinCityLimitsInd
+                    censusTract
+                }
+            }
+        }
+        entityIds{
+            typeDescTxt
+            typeCd
+            rootExtensionTxt
+            assigningAuthorityCd
+            assigningAuthorityDescTxt
+        }
+        names{
+            firstNm
+            middleNm
+            lastNm
+            nmSuffix
+            nmPrefix
+        }
         addReasonCd
         addTime
         addUserId

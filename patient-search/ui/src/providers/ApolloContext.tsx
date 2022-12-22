@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, createHttpLink, from, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { useContext } from 'react';
 import { Config } from '../config';
@@ -21,7 +21,7 @@ export default function ApolloWrapper(props: any) {
         };
     });
     const client = new ApolloClient({
-        link: authMiddleware.concat(httpLink),
+        link: from([authMiddleware, httpLink]),
         cache: new InMemoryCache()
     });
     return (

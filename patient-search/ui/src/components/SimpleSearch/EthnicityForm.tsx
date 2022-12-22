@@ -2,7 +2,7 @@ import { Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
 import { Ethnicity, Race } from '../../generated/graphql/schema';
-import { formatInterfaceString } from '../../utils';
+import { formatInterfaceString } from '../../utils/util';
 
 export const EthnicityForm = ({ control }: any) => {
     return (
@@ -11,8 +11,9 @@ export const EthnicityForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="ethnicity"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                         <SelectInput
+                            defaultValue={value}
                             onChange={onChange}
                             htmlFor={'ethnicity'}
                             label="Ethnicity"
@@ -30,8 +31,9 @@ export const EthnicityForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="race"
-                    render={({ field: { onChange } }) => (
+                    render={({ field: { onChange, value } }) => (
                         <SelectInput
+                            defaultValue={value}
                             onChange={onChange}
                             htmlFor={'race'}
                             label="Race"

@@ -14,4 +14,5 @@ export type { View } from './models/View';
 
 export { BasicErrorControllerService } from './services/BasicErrorControllerService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';
+export { RedirectControllerService } from './services/RedirectControllerService';
 export { UserControllerService } from './services/UserControllerService';

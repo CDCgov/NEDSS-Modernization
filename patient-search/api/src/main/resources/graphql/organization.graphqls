@@ -24,7 +24,7 @@ type Organization {
     lastChgTime: Date
     lastChgUserId: Int
     localId: String
-    recordStatusCd: String
+    recordStatusCd: RecordStatus
     recordStatusTime: Date
     standardIndustryClassCd: String
     standardIndustryDescTxt: String

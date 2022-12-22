@@ -1,6 +1,5 @@
 package gov.cdc.nbs.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -9,11 +8,12 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.QOrganization;
@@ -31,6 +31,7 @@ public class OrganizationService {
     @PersistenceContext
     private final EntityManager entityManager;
     private final OrganizationRepository organizationRepository;
+    private final CriteriaBuilderFactory criteriaBuilderFactory;
 
     public Optional<Organization> findOrganizationById(Long id) {
         return organizationRepository.findById(id);
@@ -41,14 +42,12 @@ public class OrganizationService {
         return organizationRepository.findAll(pageable);
     }
 
-    public List<Organization> findOrganizationsByFilter(OrganizationFilter filter, GraphQLPage page) {
+    public Page<Organization> findOrganizationsByFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
 
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-
         var organization = QOrganization.organization;
-        var query = queryFactory.selectFrom(organization);
+        var query = new BlazeJPAQuery<Organization>(entityManager, criteriaBuilderFactory);
 
         query = applyIfFilterNotNull(query, organization.id::eq, filter.getId());
         query = applyIfFilterNotNull(query, organization.displayNm::likeIgnoreCase, filter.getDisplayNm());
@@ -59,10 +58,12 @@ public class OrganizationService {
         query = applyIfFilterNotNull(query, organization.stateCd::eq, filter.getStateCd());
         query = applyIfFilterNotNull(query, organization.zipCd::eq, filter.getZipCd());
 
-        return query.limit(pageable.getPageSize()).offset(pageable.getOffset()).fetch();
+        var results = query.fetchPage((int) pageable.getOffset(),
+                pageable.getPageSize());
+        return new PageImpl<Organization>(results, pageable, results.getMaxResults());
     }
 
-    private <T> JPAQuery<Organization> applyIfFilterNotNull(JPAQuery<Organization> query,
+    private <T> BlazeJPAQuery<Organization> applyIfFilterNotNull(BlazeJPAQuery<Organization> query,
             Function<T, BooleanExpression> expression, T parameter) {
         if (parameter != null) {
             return query.where(expression.apply(parameter));

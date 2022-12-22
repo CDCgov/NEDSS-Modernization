@@ -3,6 +3,7 @@ buildscript {
         springBootVersion = "2.7.2"
         queryDslVersion = "5.0.0"
 		cucumberVersion = "7.8.0"
+		blazePersistenceVersion = "1.6.8"
     }
 }
 plugins {
@@ -49,6 +50,11 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
+	// blazebit for querydsl paging
+	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
+
 	// elasticsearch
 	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
 
@@ -73,15 +79,6 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.17.6"
 	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
-}
-
-// Adds the generated querydsl files to the classpath
-sourceSets {
-	main {
-		java {
-			srcDirs = ['build/generated/sources/annotationProcessor/java/main','src/main/java']
-		}
-	}
 }
 
 configurations {

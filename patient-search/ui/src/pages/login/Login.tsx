@@ -17,7 +17,8 @@ export const Login = () => {
 
         const response = await login(username, password);
         if (response) {
-            navigate('/search');
+            document.cookie = `nbs_user=${username}`;
+            navigate('/advanced-search');
         }
     };
 

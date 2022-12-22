@@ -66,6 +66,8 @@ public class LabReport {
     private String typeCd;
     @Field(name = "observation_record_status_cd", type = FieldType.Keyword)
     private String observationRecordStatusCd;
+    @Field(name = "observation_uid", type = FieldType.Keyword)
+    private String observationUid;
     @Field(name = "add_user_id", type = FieldType.Long)
     private Long addUserId;
     @Field(name = "last_chg_user_id", type = FieldType.Long)
