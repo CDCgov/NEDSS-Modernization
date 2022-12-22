@@ -140,11 +140,6 @@ enum Operator {
     AFTER
 }
 
-enum RecordStatus {
-    ACTIVE
-    LOG_DEL
-}
-
 enum SortDirection {
     ASC
     DESC
@@ -241,7 +236,7 @@ type Person {
     preferredGenderCd: Gender
     primLangCd: String
     primLangDescTxt: String
-    recordStatusCd: String
+    recordStatusCd: RecordStatus
     recordStatusTime: Date
     statusCd: String
     statusTime: Date
