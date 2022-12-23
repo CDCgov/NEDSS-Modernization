@@ -132,13 +132,14 @@ public class PermissionSteps {
                     var investigationFilter = new EventFilter();
                     investigationFilter.setEventType(EventType.INVESTIGATION);
                     investigationFilter.setInvestigationFilter(new InvestigationFilter());
-                    response = patientController.findPatientsByEvent(investigationFilter, page);
+                    // TODO response = patientController.findPatientsByEvent(investigationFilter,
+                    // page);
                     break;
                 case "findPatientsByLabReport":
                     var labReportFilter = new EventFilter();
                     labReportFilter.setEventType(EventType.LABORATORY_REPORT);
                     labReportFilter.setLaboratoryReportFilter(new LaboratoryReportFilter());
-                    response = patientController.findPatientsByEvent(labReportFilter, page);
+                    // TODO response = patientController.findPatientsByEvent(labReportFilter, page);
                     break;
                 case "findPatientsByOrganization":
                     var orgFilter = new OrganizationFilter();

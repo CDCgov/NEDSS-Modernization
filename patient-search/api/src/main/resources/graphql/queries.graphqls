@@ -2,7 +2,6 @@ type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: PersonPage): PersonResults!
     findPatientsByFilter(filter: PersonFilter!, page: PersonPage): PersonResults!
-    findPatientsByEvent(filter: EventFilter!, page: PersonPage): PersonResults!
     findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: PersonPage): PersonResults!
 
     findOrganizationById(id: ID!): Organization

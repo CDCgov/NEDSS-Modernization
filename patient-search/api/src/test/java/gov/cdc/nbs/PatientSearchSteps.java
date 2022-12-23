@@ -165,7 +165,8 @@ public class PatientSearchSteps {
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
         EventFilter filter = getInvestigationFilter(field, qualifier);
-        searchResults = patientController.findPatientsByEvent(filter, null).getContent();
+        // TODO searchResults = patientController.findPatientsByEvent(filter,
+        // null).getContent();
     }
 
     @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
@@ -174,13 +175,15 @@ public class PatientSearchSteps {
         EventFilter filter = getInvestigationFilter(field, qualifier);
         updateInvestigationFilter(filter, field2, qualifier2);
         updateInvestigationFilter(filter, field3, qualifier3);
-        searchResults = patientController.findPatientsByEvent(filter, null).getContent();
+        // TODO searchResults = patientController.findPatientsByEvent(filter,
+        // null).getContent();
     }
 
     @When("I search laboratory events by {string} {string}")
     public void i_search_patients_by_laboratory_events(String field, String qualifier) {
         EventFilter filter = getLabReportFilter(field, qualifier);
-        searchResults = patientController.findPatientsByEvent(filter, null).getContent();
+        // TODO searchResults = patientController.findPatientsByEvent(filter,
+        // null).getContent();
     }
 
     @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
@@ -189,7 +192,8 @@ public class PatientSearchSteps {
         EventFilter filter = getLabReportFilter(field, qualifier);
         updateLabReportFilter(filter, field2, qualifier2);
         updateLabReportFilter(filter, field3, qualifier3);
-        searchResults = patientController.findPatientsByEvent(filter, null).getContent();
+        // TODO searchResults = patientController.findPatientsByEvent(filter,
+        // null).getContent();
     }
 
     @Then("I find the patient")

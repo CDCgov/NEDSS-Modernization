@@ -1,14 +1,3 @@
-input EventFilter {
-    eventType: EventType!
-    investigationFilter: InvestigationFilter
-    laboratoryReportFilter: LaboratoryReportFilter
-}
-
-enum EventType {
-    INVESTIGATION
-    LABORATORY_REPORT
-}
-
 input InvestigationFilter {
     conditions: [String]
     programAreas: [String]
@@ -26,6 +15,24 @@ input InvestigationFilter {
     caseStatuses: CaseStatuses
     notificationStatuses: NotificationStatuses
     processingStatuses: ProcessingStatuses
+}
+
+input LaboratoryReportFilter {
+    programAreas: [String]
+    jurisdictions: [ID]
+    pregnancyStatus: PregnancyStatus
+    eventIdType: LaboratoryEventIdType
+    eventId: String
+    eventDateSearch: LaboratoryEventDateSearch
+    entryMethods: [EntryMethod]
+    enteredBy: [UserType]
+    eventStatus: [EventStatus]
+    processingStatus: [LaboratoryReportStatus]
+    createdBy: ID
+    lastUpdatedBy: ID
+    providerSearch: LabReportProviderSearch
+    resultedTest: String
+    codedResult: String
 }
 
 input CaseStatuses {
@@ -110,24 +117,6 @@ enum InvestigationEventDateType {
 enum InvestigationStatus {
     OPEN
     CLOSED
-}
-
-input LaboratoryReportFilter {
-    programAreas: [String]
-    jurisdictions: [ID]
-    pregnancyStatus: PregnancyStatus
-    eventIdType: LaboratoryEventIdType
-    eventId: String
-    eventDateSearch: LaboratoryEventDateSearch
-    entryMethods: [EntryMethod]
-    enteredBy: [UserType]
-    eventStatus: [EventStatus]
-    processingStatus: [LaboratoryReportStatus]
-    createdBy: ID
-    lastUpdatedBy: ID
-    providerSearch: LabReportProviderSearch
-    resultedTest: String
-    codedResult: String
 }
 
 input LaboratoryEventDateSearch {

@@ -32,8 +32,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
@@ -58,7 +56,6 @@ import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
 import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -77,7 +74,6 @@ public class PatientService {
     private final PersonRepository personRepository;
     private final TeleLocatorRepository teleLocatorRepository;
     private final PostalLocatorRepository postalLocatorRepository;
-    private final EventService eventService;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
@@ -258,46 +254,6 @@ public class PatientService {
         applySort(query, pageable.getSort());
         var results = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
         return new PageImpl<Person>(results, pageable, results.getMaxResults());
-    }
-
-    public Page<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        List<Long> ids;
-        long totalCount = 0L;
-        switch (filter.getEventType()) {
-            case INVESTIGATION:
-                var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter());
-                ids = investigations
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(Investigation::getParentUid)
-                        .distinct()
-                        .collect(Collectors.toList());
-                totalCount = ids.size();
-                break;
-            case LABORATORY_REPORT:
-                var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter());
-                ids = labReports
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(LabReport::getParentUid)
-                        .distinct()
-                        .collect(Collectors.toList());
-
-                totalCount = ids.size();
-                break;
-            default:
-                throw new QueryException("Invalid event type: " + filter.getEventType());
-        }
-
-        var results = personRepository.findByIdIn(ids, pageable);
-        return new PageImpl<Person>(results.getContent(), pageable, totalCount);
     }
 
     // checks to see if the filter provided is null, if not add the filter to the
