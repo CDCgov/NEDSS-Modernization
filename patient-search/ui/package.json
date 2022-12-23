@@ -15,6 +15,7 @@
         "classnames": "^2.3.2",
         "cypress-cucumber-preprocessor": "^4.3.1",
         "graphql": "^16.6.0",
+        "multiselect-react-dropdown": "^2.0.25",
         "react": "^17",
         "react-dom": "^17",
         "react-hook-form": "^7.36.1",

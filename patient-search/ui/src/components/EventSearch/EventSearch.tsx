@@ -8,9 +8,10 @@ import { GeneralSearch } from './generalSearch';
 
 type EventSearchProps = {
     onSearch: (filter: EventFilter) => void;
+    data?: EventFilter;
 };
 
-export const EventSearch = ({ onSearch }: EventSearchProps) => {
+export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
     const [eventSearchType, setEventSearchType] = useState<any>('');
 
     const methods = useForm();
@@ -22,6 +23,7 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
             title: 'Event Type',
             content: (
                 <EventTypes
+                    defaultValue={data?.eventType}
                     onChangeMethod={(e) => {
                         setEventSearchType(e);
                     }}
@@ -39,7 +41,7 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
     const eventSearchFilteredItem: AccordionItemProps[] = [
         {
             title: 'General Search',
-            content: <GeneralSearch searchType={eventSearchType} control={control} />,
+            content: <GeneralSearch searchType={data?.eventType || eventSearchType} control={control} data={data} />,
             expanded: true,
             id: '2',
             headingLevel: 'h4',
@@ -49,30 +51,70 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
 
     const onSubmit: any = (body: any) => {
         const filterData: EventFilter = {
-            eventType: eventSearchType
+            eventType: eventSearchType || data?.eventType
         };
         console.log(body);
         if (eventSearchType === EventType.Investigation) {
             filterData.eventType = EventType.Investigation;
             filterData.investigationFilter = {
-                conditions: body.condition && body.condition !== '- Select -' ? [body.condition] : undefined,
-                jurisdictions:
-                    body.jurisdiction && body.jurisdiction !== '- Select -' ? [body.jurisdiction] : undefined,
+                conditions: body.conditon?.length > 0 ? body.conditon : undefined,
+                jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
                 pregnancyStatus:
                     body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
-                programAreas: body.programArea !== '- Select -' ? [body.programArea] : undefined
+                programAreas: body.programArea?.length > 0 ? body.programArea : undefined,
+                eventIdType: body.eventIdType && body.eventIdType !== '- Select -' ? body.eventIdType : undefined,
+                eventId: body.eventId || undefined,
+                createdBy: body.createdBy && body.createdBy !== '- Select -' ? body.createdBy : undefined,
+                lastUpdatedBy:
+                    body.lastUpdatedBy && body.lastUpdatedBy !== '- Select -' ? body.lastUpdatedBy : undefined
             };
         } else if (eventSearchType === EventType.LaboratoryReport) {
             filterData.eventType = EventType.LaboratoryReport;
             filterData.laboratoryReportFilter = {
-                programAreas: body.programArea !== '- Select -' ? [body.programArea] : undefined,
-                jurisdictions: body.jurisdiction !== '- Select -' ? [body.jurisdiction] : undefined,
-                pregnancyStatus: body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined
+                jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
+                pregnancyStatus:
+                    body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
+                programAreas: body.programArea?.length > 0 ? body.programArea : undefined,
+                eventIdType: body.eventIdType && body.eventIdType !== '- Select -' ? body.eventIdType : undefined,
+                eventId: body.eventId || undefined,
+                createdBy: body.createdBy && body.createdBy !== '- Select -' ? body.createdBy : undefined,
+                lastUpdatedBy:
+                    body.lastUpdatedBy && body.lastUpdatedBy !== '- Select -' ? body.lastUpdatedBy : undefined
             };
-        } else {
-            // no search type selected
-            return;
         }
+
+        // Event Date Filters
+        if (body.eventDateType && body.eventDateType !== '- Select -' && body.from && body.to) {
+            const eventDateSearch = {
+                eventDateType: body.eventDateType,
+                from: body.from,
+                to: body.to
+            };
+            if ((filterData.eventType = EventType.LaboratoryReport)) {
+                filterData?.investigationFilter && (filterData.investigationFilter.eventDateSearch = eventDateSearch);
+            } else {
+                filterData?.laboratoryReportFilter &&
+                    (filterData.laboratoryReportFilter.eventDateSearch = eventDateSearch);
+            }
+        }
+
+        // Provider/Facility Type Filter
+        if (body.entityType && body.entityType !== '- Select -' && body.id) {
+            if ((filterData.eventType = EventType.LaboratoryReport)) {
+                filterData?.investigationFilter &&
+                    (filterData.investigationFilter.providerFacilitySearch = {
+                        entityType: body.entityType,
+                        id: body.id
+                    });
+            } else {
+                filterData?.laboratoryReportFilter &&
+                    (filterData.laboratoryReportFilter.providerSearch = {
+                        providerType: body.entityType,
+                        providerId: body.id
+                    });
+            }
+        }
+        console.log(filterData, 'filterData');
         onSearch(filterData);
     };
 
@@ -80,7 +122,7 @@ export const EventSearch = ({ onSearch }: EventSearchProps) => {
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
                 <Accordion items={eventSearchItems} multiselectable={true} />
-                {eventSearchType && eventSearchType !== '- Select -' && (
+                {(data?.eventType || (eventSearchType && eventSearchType !== '- Select -')) && (
                     <Accordion items={eventSearchFilteredItem} multiselectable={true} />
                 )}
             </div>

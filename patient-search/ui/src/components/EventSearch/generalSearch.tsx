@@ -1,32 +1,40 @@
 import { Control, Controller, FieldValues } from 'react-hook-form';
 import {
+    EventFilter,
     EventType,
     InvestigationEventDateType,
     InvestigationEventIdType,
-    PregnancyStatus
+    PregnancyStatus,
+    ProviderType,
+    ReportingEntityType
 } from '../../generated/graphql/schema';
 import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
 import { SelectControl } from '../FormInputs/SelectControl';
 import { formatInterfaceString } from '../../utils/util';
 import { Input } from '../FormInputs/Input';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
+import { MultiSelectControl } from '../FormInputs/MultiSelectControl';
+import { useState } from 'react';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
     searchType?: string;
+    data?: EventFilter;
 };
 
-export const GeneralSearch = ({ control, searchType = '' }: GeneralSearchProps) => {
+export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchProps) => {
+    const [facilityType, setFacilityType] = useState(false);
+
     return (
         <>
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (
                     <>
                         {searchType === EventType.Investigation && (
-                            <SelectControl
-                                // isMulti={true}
+                            <MultiSelectControl
+                                defaultValue={data?.investigationFilter?.conditions}
                                 control={control}
-                                name="condition"
+                                name="conditon"
                                 label="Condition:"
                                 options={searchCriteria.conditions.map((c) => {
                                     return {
@@ -37,7 +45,12 @@ export const GeneralSearch = ({ control, searchType = '' }: GeneralSearchProps) 
                             />
                         )}
 
-                        <SelectControl
+                        <MultiSelectControl
+                            defaultValue={
+                                data?.eventType === EventType.Investigation
+                                    ? data?.investigationFilter?.programAreas
+                                    : data?.laboratoryReportFilter?.programAreas
+                            }
                             control={control}
                             name="programArea"
                             label="Program Area:"
@@ -48,8 +61,14 @@ export const GeneralSearch = ({ control, searchType = '' }: GeneralSearchProps) 
                                 };
                             })}
                         />
-                        <SelectControl
+
+                        <MultiSelectControl
                             control={control}
+                            defaultValue={
+                                data?.eventType === EventType.Investigation
+                                    ? data?.investigationFilter?.jurisdictions
+                                    : data?.laboratoryReportFilter?.jurisdictions
+                            }
                             name="jurisdiction"
                             label="Jurisdiction:"
                             options={searchCriteria.jurisdictions.map((j) => {
@@ -128,6 +147,61 @@ export const GeneralSearch = ({ control, searchType = '' }: GeneralSearchProps) 
                     <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'to'} label="To" />
                 )}
             />
+
+            <SearchCriteriaContext.Consumer>
+                {({ searchCriteria }) => (
+                    <>
+                        <SelectControl
+                            control={control}
+                            name="createdBy"
+                            label="Event Created By User:"
+                            options={searchCriteria.userResults.map((user) => {
+                                return {
+                                    name: `${user.userLastNm}, ${user.userFirstNm}`,
+                                    value: user.userId
+                                };
+                            })}
+                        />
+
+                        <SelectControl
+                            control={control}
+                            name="lastUpdatedBy"
+                            label="Event Updated By User:"
+                            options={searchCriteria.userResults.map((user) => {
+                                return {
+                                    name: `${user.userLastNm}, ${user.userFirstNm}`,
+                                    value: user.userId
+                                };
+                            })}
+                        />
+                    </>
+                )}
+            </SearchCriteriaContext.Consumer>
+
+            <SelectControl
+                control={control}
+                name="entityType"
+                label="Event Provider/Facility Type:"
+                onChangeMethod={(e) => setFacilityType(e.target.value && e.target.value !== '- Select -')}
+                options={Object.values(searchType === EventType.Investigation ? ReportingEntityType : ProviderType).map(
+                    (type) => {
+                        return {
+                            name: formatInterfaceString(type),
+                            value: type
+                        };
+                    }
+                )}
+            />
+
+            {facilityType && (
+                <Controller
+                    control={control}
+                    name="id"
+                    render={({ field: { onChange, value } }) => (
+                        <Input onChange={onChange} defaultValue={value} type="text" label="ID:" htmlFor="id" id="id" />
+                    )}
+                />
+            )}
         </>
     );
 };

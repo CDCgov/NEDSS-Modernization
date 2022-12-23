@@ -4,23 +4,28 @@ import {
     FindAllConditionCodesQuery,
     FindAllJurisdictionsQuery,
     FindAllProgramAreasQuery,
+    FindAllUsersQuery,
     Jurisdiction,
     ProgramAreaCode,
+    User,
     useFindAllConditionCodesLazyQuery,
     useFindAllJurisdictionsLazyQuery,
-    useFindAllProgramAreasLazyQuery
+    useFindAllProgramAreasLazyQuery,
+    useFindAllUsersLazyQuery
 } from '../generated/graphql/schema';
 
 interface SearchCriteria {
     programAreas: ProgramAreaCode[];
     conditions: ConditionCode[];
     jurisdictions: Jurisdiction[];
+    userResults: User[];
 }
 
 const initialState: SearchCriteria = {
     programAreas: [],
     conditions: [],
-    jurisdictions: []
+    jurisdictions: [],
+    userResults: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -34,12 +39,14 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getProgramAreas] = useFindAllProgramAreasLazyQuery({ onCompleted: setProgramAreas });
     const [getConditions] = useFindAllConditionCodesLazyQuery({ onCompleted: setConditions });
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
+    const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
     // on init, load search data from API
     useEffect(() => {
         getProgramAreas();
         getConditions();
         getJurisdictions();
+        getAllUsers();
     }, []);
 
     function setProgramAreas(results: FindAllProgramAreasQuery): void {
@@ -53,6 +60,15 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, programAreas });
+        }
+    }
+
+    function setAllUSers(results: FindAllUsersQuery): void {
+        if (results.findAllUsers) {
+            const userResults: User[] = [];
+            results.findAllUsers.content.forEach((pa) => pa && userResults.push(pa));
+            console.log(userResults[0]);
+            setSearchCriteria({ ...searchCriteria, userResults });
         }
     }
 

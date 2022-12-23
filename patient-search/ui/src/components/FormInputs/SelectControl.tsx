@@ -15,8 +15,17 @@ export const SelectControl = ({ control, name, onChangeMethod, options, label, i
         <Controller
             control={control}
             name={name}
-            render={({ field: { onChange } }) => (
-                <SelectInput isMulti={isMulti} onChange={onChange} label={label} options={options} />
+            render={({ field: { onChange, value } }) => (
+                <SelectInput
+                    defaultValue={value}
+                    isMulti={isMulti}
+                    onChange={(e: any) => {
+                        onChange(e);
+                        onChangeMethod?.(e);
+                    }}
+                    label={label}
+                    options={options}
+                />
             )}
         />
     );
