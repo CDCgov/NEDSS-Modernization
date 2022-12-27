@@ -18,6 +18,8 @@ type Query {
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
+
+    findInvestigations(filter: InvestigationFilter!, page: Page): InvestigationResults!
 }
 
 type Mutation {
@@ -36,5 +38,10 @@ type UserResults {
 
 type OrganizationResults {
     content: [Organization]!
+    total: Int!
+}
+
+type InvestigationResults {
+    content: [Investigation]!
     total: Int!
 }

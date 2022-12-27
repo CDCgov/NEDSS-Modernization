@@ -23,3 +23,9 @@ enum RecordStatus {
     INACTIVE
     LOG_DEL
 }
+
+enum PregnancyStatus {
+    YES
+    NO
+    UNKNOWN
+}

@@ -4,8 +4,6 @@ import static gov.cdc.nbs.config.ElasticSearchConfig.DATE_PATTERN;
 
 import java.time.Instant;
 
-import javax.persistence.Id;
-
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;

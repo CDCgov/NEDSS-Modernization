@@ -1,3 +1,59 @@
+type Investigation {
+    id: ID
+    recordStatus: String
+    lastChangeTime: Date
+    publicHealthCaseUid: Int
+    programJurisdictionOid: Int
+    caseClassCd: String
+    outbreakName: String
+    caseTypeCd: String
+    cdDescTxt: String
+    prog_area_cd: String
+    jurisdictionCd: Int
+    jurisdictionName: String
+    pregnantIndCd: String
+    localId: String
+    rptFormCmpltTime: Date
+    activityToTime: Date
+    activityFromTime: Date
+    addTime: Date
+    publicHealthCaseLastChgTime: Date
+    addUserId: Int
+    lastChangeUserId: Int
+    currProcessStateCd: String
+    investigationStatusCd: String
+    moodCd: String
+    notificationLocalId: String
+    notificationAddTime: Date
+    notificationRecordStatusCd: String
+    notificationLastChgTime: Date
+    participations: [Participation]
+    actIds: [ActId]
+}
+
+type Participation {
+    actUid: Int
+    typeCd: String
+    recordStatus: String
+    entityId: Int
+    firstName: String
+    lastName: String
+    birthTime: Date
+    currSexCd: String
+    organizationName: String
+    personLastChangeTime: Date
+    organizationLastChangeTime: Date
+}
+
+type ActId {
+    id: Int
+    recordStatus: String
+    private Integer actIdSeq;
+    rootExtensionTxt: String
+    typeCd: String
+    lastChangeTime: Date
+}
+
 input InvestigationFilter {
     conditions: [String]
     programAreas: [String]
@@ -17,24 +73,6 @@ input InvestigationFilter {
     processingStatuses: ProcessingStatuses
 }
 
-input LaboratoryReportFilter {
-    programAreas: [String]
-    jurisdictions: [ID]
-    pregnancyStatus: PregnancyStatus
-    eventIdType: LaboratoryEventIdType
-    eventId: String
-    eventDateSearch: LaboratoryEventDateSearch
-    entryMethods: [EntryMethod]
-    enteredBy: [UserType]
-    eventStatus: [EventStatus]
-    processingStatus: [LaboratoryReportStatus]
-    createdBy: ID
-    lastUpdatedBy: ID
-    providerSearch: LabReportProviderSearch
-    resultedTest: String
-    codedResult: String
-}
-
 input CaseStatuses {
     includeUnassigned: Boolean!
     statusList: [CaseStatus!]!
@@ -48,12 +86,6 @@ input NotificationStatuses {
 input ProcessingStatuses {
     includeUnassigned: Boolean!
     statusList: [ProcessingStatus!]!
-}
-
-enum PregnancyStatus {
-    YES
-    NO
-    UNKNOWN
 }
 
 input InvestigationEventDateSearch {
@@ -117,54 +149,4 @@ enum InvestigationEventDateType {
 enum InvestigationStatus {
     OPEN
     CLOSED
-}
-
-input LaboratoryEventDateSearch {
-    eventDateType: LaboratoryReportEventDateType!
-    from: Date!
-    to: Date!
-}
-
-input LabReportProviderSearch {
-    providerType: ProviderType!
-    providerId: ID!
-}
-
-enum LaboratoryEventIdType {
-    ACCESSION_NUMBER
-    LAB_ID
-}
-
-enum LaboratoryReportEventDateType {
-    DATE_OF_REPORT
-    DATE_RECEIVED_BY_PUBLIC_HEALTH
-    DATE_OF_SPECIMEN_COLLECTION
-    LAB_REPORT_CREATE_DATE
-    LAST_UPDATE_DATE
-}
-
-enum EntryMethod {
-    ELECTRONIC
-    MANUAL
-}
-
-enum UserType {
-    INTERNAL
-    EXTERNAL
-}
-
-enum EventStatus {
-    NEW
-    UPDATE
-}
-
-enum LaboratoryReportStatus {
-    PROCESSED
-    UNPROCESSED
-}
-
-enum ProviderType {
-    ORDERING_FACILITY
-    ORDERING_PROVIDER
-    REPORTING_FACILITY
 }
