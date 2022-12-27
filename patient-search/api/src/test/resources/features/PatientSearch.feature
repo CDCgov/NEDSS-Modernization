@@ -63,7 +63,7 @@ Feature: Patient search
   Scenario: I can find a patient by one field in the investigation data
     Given Investigations exist
     When I search investigation events by "<field>" "<qualifier>"
-    Then I find the patient
+    Then I find the investigation
 
     Examples: 
       | field            | qualifier           |

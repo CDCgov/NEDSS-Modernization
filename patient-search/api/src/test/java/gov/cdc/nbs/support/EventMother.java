@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.srte.JurisdictionCode;
@@ -25,49 +27,57 @@ public class EventMother {
         public static Long CLAYTON_STD_OID = (CLAYTON_CODE * 100000L) + STD_ID;
 
         public static Investigation investigation_bacterialVaginosis(Long personId) {
+                var participations = Arrays.asList(ElasticsearchParticipation.builder()
+                                .typeCd("SubjOfPHC")
+                                .entityId(personId)
+                                .build());
+                var actIds = Arrays.asList(ElasticsearchActId.builder()
+                                .actIdSeq(2)
+                                .typeCd("CITY")
+                                .rootExtensionTxt("CityTypeRootExtensionText")
+                                .build());
                 return Investigation.builder()
-                                // TODO .id("Test_bacterial_vaginosis")
-                                // .subjectEntityUid(personId)
-                                // .classCd("PSN")
-                                // .personCd("PAT")
-                                // .caseTypeCd("I")
-                                // .moodCd("EVN")
-                                // .cdDescTxt("Bacterial Vaginosis")
-                                // .prog_area_cd("STD")
-                                // .jurisdictionCd(CLAYTON_CODE)
-                                // .pregnantIndCd("Y")
-                                // .actIdSeq(2)
-                                // .actIdTypeCd("CITY")
-                                // .rootExtensionTxt("CityTypeRootExtensionText")
-                                // .publicHealthCaseLocalId("CAS10001000GA01")
-                                // .addUserId(CREATED_BY)
-                                // .lastChgUserId(UPDATED_BY)
-                                // .personRecordStatusCd("ACTIVE")
-                                // .programJurisdictionOid(CLAYTON_STD_OID)
+                                .id("Test_bacterial_vaginosis")
+                                .participations(participations)
+                                .actIds(actIds)
+                                .caseTypeCd("I")
+                                .moodCd("EVN")
+                                .cdDescTxt("Bacterial Vaginosis")
+                                .prog_area_cd("STD")
+                                .jurisdictionCd(CLAYTON_CODE)
+                                .pregnantIndCd("Y")
+                                .localId("CAS10001000GA01")
+                                .addUserId(CREATED_BY)
+                                .lastChangeUserId(UPDATED_BY)
+                                .programJurisdictionOid(CLAYTON_STD_OID)
                                 .build();
         }
 
         public static Investigation investigation_trichomoniasis(Long personId) {
+                var participations = Arrays.asList(ElasticsearchParticipation.builder()
+                                .typeCd("SubjOfPHC")
+                                .entityId(personId)
+                                .build());
+                var actIds = Arrays.asList(ElasticsearchActId.builder()
+                                .actIdSeq(2)
+                                .typeCd("STATE")
+                                .rootExtensionTxt("StateRootExtensionText")
+                                .build());
                 return Investigation.builder()
                                 .id("Test_trichomoniasis")
-                                // TODO .subjectEntityUid(personId)
-                                // .classCd("PSN")
-                                // .personCd("PAT")
-                                // .caseTypeCd("I")
-                                // .moodCd("EVN")
-                                // .cdDescTxt("Trichomoniasis")
-                                // .prog_area_cd("ARBO")
-                                // .jurisdictionCd(DEKALB_CODE)
-                                // .pregnantIndCd("Y")
-                                // .actIdSeq(2)
-                                // .actIdTypeCd("STATE")
-                                // .rootExtensionTxt("StateRootExtensionText")
-                                // .publicHealthCaseLocalId("CAS10001002GA01")
-                                // .addUserId(CREATED_BY)
-                                // .lastChgUserId(UPDATED_BY)
-                                // .personRecordStatusCd("ACTIVE")
-                                // .programJurisdictionOid(DEKALB_ARBO_OID)
-                                // .notificationLocalId("notificationLocalId")
+                                .participations(participations)
+                                .actIds(actIds)
+                                .caseTypeCd("I")
+                                .moodCd("EVN")
+                                .cdDescTxt("Trichomoniasis")
+                                .prog_area_cd("ARBO")
+                                .jurisdictionCd(DEKALB_CODE)
+                                .pregnantIndCd("Y")
+                                .localId("CAS10001002GA01")
+                                .addUserId(CREATED_BY)
+                                .lastChangeUserId(UPDATED_BY)
+                                .programJurisdictionOid(DEKALB_ARBO_OID)
+                                .notificationLocalId("notificationLocalId")
                                 .build();
         }
 

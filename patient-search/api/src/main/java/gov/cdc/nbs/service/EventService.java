@@ -1,12 +1,12 @@
 package gov.cdc.nbs.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
@@ -284,20 +286,42 @@ public class EventService {
         // Event Id / Type
         if (filter.getEventIdType() != null && filter.getEventId() != null) {
             switch (filter.getEventIdType()) {
-                // TODO -- convert to nested query
                 case ABCS_CASE_ID:
-                    builder.must(QueryBuilders.matchQuery("act_id_seq", 2));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
+                    var abcsCaseIdQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
+                                    2))
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedAbcsCaseQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, abcsCaseIdQuery,
+                            ScoreMode.None);
+                    builder.must(nestedAbcsCaseQuery);
                     break;
                 case CITY_COUNTY_CASE_ID:
-                    builder.must(QueryBuilders.matchQuery("act_id_seq", 2));
-                    builder.must(QueryBuilders.matchQuery("act_id_type_cd", "CITY"));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
+                    var cityCountryCaseId = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
+                                    2))
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
+                                    "CITY"))
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedCityCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, cityCountryCaseId,
+                            ScoreMode.None);
+                    builder.must(nestedCityCountyQuery);
                     break;
                 case STATE_CASE_ID:
-                    builder.must(QueryBuilders.matchQuery("act_id_seq", 2));
-                    builder.must(QueryBuilders.matchQuery("act_id_type_cd", "STATE"));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
+                    var stateCountryCaseId = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
+                                    2))
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
+                                    "STATE"))
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedStateCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, stateCountryCaseId,
+                            ScoreMode.None);
+                    builder.must(nestedStateCountyQuery);
                     break;
                 case INVESTIGATION_ID:
                     builder.must(QueryBuilders.matchQuery(Investigation.LOCAL_ID, filter.getEventId()));
@@ -354,7 +378,14 @@ public class EventService {
         if (filter.getLastUpdatedBy() != null) {
             builder.must(QueryBuilders.matchQuery(Investigation.LAST_CHANGE_USER_ID, filter.getLastUpdatedBy()));
         }
-        // provider facility + investigator Id
+        // investigator id
+        if (filter.getInvestigatorId() != null) {
+            var investigatorQuery = QueryBuilders.boolQuery();
+            investigatorQuery
+                    .must(QueryBuilders.matchQuery(ElasticsearchParticipation.ENTITY_ID, filter.getInvestigatorId()));
+            builder.must(QueryBuilders.nestedQuery(Investigation.PARTICIPATIONS, investigatorQuery, ScoreMode.None));
+        }
+        // provider/facility
         var pfSearch = filter.getProviderFacilitySearch();
         if (pfSearch != null) {
             if (pfSearch.getEntityType() == null || pfSearch.getId() == null) {
@@ -362,37 +393,27 @@ public class EventService {
                         "Entity type and entity Id required when querying provider/facility");
             }
 
-            var doInvestigatorQuery = filter.getInvestigatorId() != null;
+            String typeCd;
             switch (pfSearch.getEntityType()) {
-                // TODO - convert to nested query
                 case PROVIDER:
-                    if (doInvestigatorQuery) {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "PerAsReporterOfPHC"));
-                        addListQuery(builder, "subject_entity_uid",
-                                Arrays.asList(pfSearch.getId(), filter.getInvestigatorId()));
-                    } else {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "PerAsReporterOfPHC"));
-                        builder.must(QueryBuilders.matchQuery("subject_entity_uid", pfSearch.getId()));
-                    }
+                    typeCd = "PerAsReporterOfPHC";
                     break;
                 case FACILITY:
-                    if (doInvestigatorQuery) {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "OrgAsReporterOfPHC"));
-                        addListQuery(builder, "subject_entity_uid",
-                                Arrays.asList(pfSearch.getId(), filter.getInvestigatorId()));
-                    } else {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "OrgAsReporterOfPHC"));
-                        builder.must(QueryBuilders.matchQuery("subject_entity_uid", pfSearch.getId()));
-                    }
+                    typeCd = "OrgAsReporterOfPHC";
                     break;
                 default:
                     throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
             }
-        } else {
-            // investigator id
-            if (filter.getInvestigatorId() != null) {
-                builder.must(QueryBuilders.matchQuery("subject_entity_uid", filter.getInvestigatorId()));
-            }
+            var providerQuery = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery(ElasticsearchParticipation.ENTITY_ID, pfSearch.getId()))
+                    .must(QueryBuilders.matchQuery(ElasticsearchParticipation.TYPE_CD, typeCd));
+
+            var nestedProviderQuery = QueryBuilders.nestedQuery(
+                    Investigation.PARTICIPATIONS,
+                    providerQuery,
+                    ScoreMode.None);
+
+            builder.must(nestedProviderQuery);
         }
 
         // investigation status

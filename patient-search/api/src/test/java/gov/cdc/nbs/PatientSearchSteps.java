@@ -18,7 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.enums.PregnancyStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -71,6 +73,8 @@ public class PatientSearchSteps {
     @Autowired
     private PatientController patientController;
     @Autowired
+    private EventController eventController;
+    @Autowired
     private InvestigationRepository investigationRepository;
     @Autowired
     private LabReportRepository labReportRepository;
@@ -82,6 +86,7 @@ public class PatientSearchSteps {
 
     private Person searchPatient;
     private List<Person> searchResults;
+    private List<Investigation> investigationSearchResults;
     private List<Person> generatedPersons;
 
     @Before
@@ -164,19 +169,18 @@ public class PatientSearchSteps {
 
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
-        EventFilter filter = getInvestigationFilter(field, qualifier);
-        // TODO searchResults = patientController.findPatientsByEvent(filter,
-        // null).getContent();
+        var filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
+        investigationSearchResults = eventController.findInvestigations(filter, null).getContent();
     }
 
     @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier, String field2,
             String qualifier2, String field3, String qualifier3) {
-        EventFilter filter = getInvestigationFilter(field, qualifier);
+        InvestigationFilter filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
         updateInvestigationFilter(filter, field2, qualifier2);
         updateInvestigationFilter(filter, field3, qualifier3);
-        // TODO searchResults = patientController.findPatientsByEvent(filter,
-        // null).getContent();
+        investigationSearchResults = eventController.findInvestigations(filter, null).getContent();
+
     }
 
     @When("I search laboratory events by {string} {string}")
@@ -201,6 +205,11 @@ public class PatientSearchSteps {
         assertTrue("Search patient is not null", searchPatient != null);
         assertTrue("Search results are not empty", searchResults.size() > 0);
         assertTrue("Search results contains patient: " + searchPatient.getId(), searchResults.contains(searchPatient));
+    }
+
+    @Then("I find the investigation")
+    public void i_find_the_investigation() {
+        assertTrue(investigationSearchResults.size() > 0);
     }
 
     private EventFilter getLabReportFilter(String field, String qualifier) {
@@ -281,52 +290,44 @@ public class PatientSearchSteps {
         return filter;
     }
 
-    private EventFilter getInvestigationFilter(String field, String qualifier) {
-        var filter = new EventFilter();
-        return updateInvestigationFilter(filter, field, qualifier);
-    }
-
-    private EventFilter updateInvestigationFilter(EventFilter filter, String field, String qualifier) {
+    private InvestigationFilter updateInvestigationFilter(InvestigationFilter filter, String field, String qualifier) {
         if (field == null || field.isEmpty()) {
             return filter;
         }
-        filter.setEventType(EventType.INVESTIGATION);
-        filter.setInvestigationFilter(new InvestigationFilter());
-        var criteria = filter.getInvestigationFilter();
         switch (field) {
             case "condition":
-                criteria.setConditions(Arrays.asList(qualifier));
+                filter.setConditions(Arrays.asList(qualifier));
                 break;
             case "program area":
-                criteria.setProgramAreas(Arrays.asList(qualifier));
+                filter.setProgramAreas(Arrays.asList(qualifier));
                 break;
             case "jurisdiction":
                 if (qualifier.equals("jd1")) {
-                    criteria.setJurisdictions((Arrays.asList(EventMother.DEKALB_CODE)));
+                    filter.setJurisdictions((Arrays.asList(EventMother.DEKALB_CODE)));
                 } else {
-                    criteria.setJurisdictions(Arrays.asList(EventMother.CLAYTON_CODE));
+                    filter.setJurisdictions(Arrays.asList(EventMother.CLAYTON_CODE));
                 }
                 break;
             case "pregnancy status":
-                criteria.setPregnancyStatus(PregnancyStatus.YES);
+                filter.setPregnancyStatus(PregnancyStatus.YES);
                 break;
             case "event id":
-                criteria.setEventIdType(IdType.valueOf(qualifier));
-                switch (criteria.getEventIdType()) {
+                filter.setEventIdType(IdType.valueOf(qualifier));
+                switch (filter.getEventIdType()) {
                     case ABCS_CASE_ID:
-                        criteria.setEventId("CityTypeRootExtensionText");
+                        filter.setEventId("CityTypeRootExtensionText");
                         break;
                     case CITY_COUNTY_CASE_ID:
-                        criteria.setEventId("CityTypeRootExtensionText");
+                        filter.setEventId("CityTypeRootExtensionText");
                         break;
                     case INVESTIGATION_ID:
-                        criteria.setEventId("CAS10001000GA01");
+                        filter.setEventId("CAS10001000GA01");
                         break;
                     case NOTIFICATION_ID:
-                        criteria.setEventId("notificationLocalId");
+                        filter.setEventId("notificationLocalId");
                         break;
                     case STATE_CASE_ID:
-                        criteria.setEventId("StateRootExtensionText");
+                        filter.setEventId("StateRootExtensionText");
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid event id qualifer specified: " +
@@ -334,10 +335,10 @@ public class PatientSearchSteps {
                 }
                 break;
             case "created by":
-                criteria.setCreatedBy(EventMother.CREATED_BY);
+                filter.setCreatedBy(EventMother.CREATED_BY);
                 break;
             case "updated by":
-                criteria.setLastUpdatedBy(EventMother.UPDATED_BY);
+                filter.setLastUpdatedBy(EventMother.UPDATED_BY);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported field: " + field);

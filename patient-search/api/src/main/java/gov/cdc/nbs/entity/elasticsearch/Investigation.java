@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Document(indexName = "investigation")
 public class Investigation {
     // List of all fields to assist building queries
+    public static final String RECORD_STATUS = "record_status_cd,";
     public static final String LAST_CHANGE_TIME = "last_change_time";
     public static final String PUBLIC_HEALTH_CASE_UID = "public_health_case_uid";
     public static final String PROGRAM_JURISDICTION_OID = "program_jurisdiction_oid";
@@ -51,7 +52,7 @@ public class Investigation {
     public static final String NOTIFICATION_ADD_TIME = "notification_add_time";
     public static final String NOTIFICATION_RECORD_STATUS_CD = "notification_record_status_cd";
     public static final String NOTIFICATION_LAST_CHANGE_TIME = "notification_last_chg_time";
-    public static final String ACT_IDS = "act_ids";
+    public static final String ACT_IDS = "actids";
     public static final String PARTICIPATIONS = "participations";
 
     /*
@@ -59,6 +60,9 @@ public class Investigation {
      */
     @Id
     private String id;
+
+    @Field(name = RECORD_STATUS, type = FieldType.Keyword)
+    private String recordStatus;
 
     @Field(name = LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
