@@ -60,8 +60,10 @@ public class ElasticsearchParticipation {
     private String organizationName;
 
     @Field(name = PERSON_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @ValueConverter(InstantConverter.class)
     private Instant personLastChangeTime;
 
     @Field(name = ORGANIZATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @ValueConverter(InstantConverter.class)
     private Instant organizationLastChangeTime;
 }

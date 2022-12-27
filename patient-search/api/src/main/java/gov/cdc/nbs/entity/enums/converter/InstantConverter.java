@@ -27,6 +27,8 @@ public class InstantConverter implements PropertyValueConverter {
         formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.S"));
         formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SS"));
         formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSS"));
+        formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss"));
     }
 
     @Override

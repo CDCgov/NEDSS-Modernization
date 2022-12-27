@@ -91,6 +91,34 @@ public class InstantConverterTest {
     }
 
     @Test
+    void parseFormat6() throws ParseException {
+        String date = "2022-11-18T22:27:13.317";
+        var instant = converter.read(date);
+        assertNotNull(instant);
+        var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
+        assertEquals(11, ld.getMonthValue());
+        assertEquals(18, ld.getDayOfMonth());
+        assertEquals(2022, ld.getYear());
+        assertEquals(22, ld.getHour());
+        assertEquals(27, ld.getMinute());
+        assertEquals(13, ld.getSecond());
+    }
+
+    @Test
+    void parseFormat7() throws ParseException {
+        String date = "2022-11-18T22:27:13";
+        var instant = converter.read(date);
+        assertNotNull(instant);
+        var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
+        assertEquals(11, ld.getMonthValue());
+        assertEquals(18, ld.getDayOfMonth());
+        assertEquals(2022, ld.getYear());
+        assertEquals(22, ld.getHour());
+        assertEquals(27, ld.getMinute());
+        assertEquals(13, ld.getSecond());
+    }
+
+    @Test
     void testWrite() {
         var now = Instant.now();
         var output = converter.write(now);
