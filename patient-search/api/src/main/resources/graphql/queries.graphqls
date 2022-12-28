@@ -19,7 +19,7 @@ type Query {
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
 
-    findInvestigations(filter: InvestigationFilter!, page: Page): InvestigationResults!
+    findInvestigationsByFilter(filter: InvestigationFilter!, page: Page): InvestigationResults!
 }
 
 type Mutation {

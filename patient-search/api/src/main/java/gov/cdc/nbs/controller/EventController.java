@@ -26,7 +26,8 @@ public class EventController {
 
     @QueryMapping
     @PreAuthorize(FIND_PATIENT_AND_VIEW_INVESTIGATION)
-    public Page<Investigation> findInvestigations(@Argument InvestigationFilter filter, @Argument GraphQLPage page) {
+    public Page<Investigation> findInvestigationsByFilter(@Argument InvestigationFilter filter,
+            @Argument GraphQLPage page) {
         return eventService.findInvestigationsByFilter(filter, page);
     }
 }

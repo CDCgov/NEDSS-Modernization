@@ -170,7 +170,7 @@ public class PatientSearchSteps {
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
         var filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
-        investigationSearchResults = eventController.findInvestigations(filter, null).getContent();
+        investigationSearchResults = eventController.findInvestigationsByFilter(filter, null).getContent();
     }
 
     @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
@@ -179,7 +179,7 @@ public class PatientSearchSteps {
         InvestigationFilter filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
         updateInvestigationFilter(filter, field2, qualifier2);
         updateInvestigationFilter(filter, field3, qualifier3);
-        investigationSearchResults = eventController.findInvestigations(filter, null).getContent();
+        investigationSearchResults = eventController.findInvestigationsByFilter(filter, null).getContent();
 
     }
 
