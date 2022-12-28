@@ -28,19 +28,6 @@ public class EventMother {
         public static Long DEKALB_ARBO_OID = (DEKALB_CODE * 100000L) + ARBO_ID;
         public static Long CLAYTON_STD_OID = (CLAYTON_CODE * 100000L) + STD_ID;
 
-        // // program areas
-        // if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty())
-        // {
-        // addListQuery(builder, Investigation.PROGRAM_AREA_CD,
-        // filter.getProgramAreas());
-        // }
-        // // jurisdictions
-        // if (filter.getJurisdictions() != null &&
-        // !filter.getJurisdictions().isEmpty()) {
-        // addListQuery(builder, Investigation.JURISDICTION_CD,
-        // filter.getJurisdictions());
-        // }
-
         public static Investigation investigation_bacterialVaginosis(Long personId) {
                 var participations = Arrays.asList(ElasticsearchPersonParticipation.builder()
                                 .typeCd("SubjOfPHC")
