@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { EventFilter, EventType } from '../../generated/graphql/schema';
 import { EventTypes } from './EventType';
 import { GeneralSearch } from './generalSearch';
+import { useNavigate } from 'react-router-dom';
+import { SearchCriteria } from './SearchCriteria';
 
 type EventSearchProps = {
     onSearch: (filter: EventFilter) => void;
@@ -12,9 +14,10 @@ type EventSearchProps = {
 };
 
 export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
-    const [eventSearchType, setEventSearchType] = useState<any>('');
-
+    const navigate = useNavigate();
     const methods = useForm();
+
+    const [eventSearchType, setEventSearchType] = useState<any>('');
 
     const { handleSubmit, control, reset } = methods;
 
@@ -44,6 +47,14 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
             content: <GeneralSearch searchType={data?.eventType || eventSearchType} control={control} data={data} />,
             expanded: true,
             id: '2',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Investigation Criteria',
+            content: <SearchCriteria searchType={data?.eventType || eventSearchType} control={control} data={data} />,
+            expanded: false,
+            id: '3',
             headingLevel: 'h4',
             className: 'accordian-item'
         }
@@ -154,6 +165,7 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
                                 ethnicity: '-Select-',
                                 race: '-Select-'
                             });
+                            navigate({ pathname: '/INVESTIGATION' });
                         }}
                         outline>
                         Clear all

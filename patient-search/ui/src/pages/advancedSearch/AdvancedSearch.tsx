@@ -5,6 +5,7 @@ import { EventSearch } from '../../components/EventSearch/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
 import {
     EventFilter,
+    EventType,
     PersonFilter,
     PersonSortField,
     SortDirection,
@@ -194,6 +195,7 @@ export const AdvancedSearch = () => {
         if (searchParams?.get('submitted')) {
             setSubmitted(true);
         }
+        searchParams?.get('eventType') && setSearchType('event');
     }, [searchParams]);
 
     function handleSearchResults() {
@@ -238,8 +240,10 @@ export const AdvancedSearch = () => {
 
     const handleChipClose = (value: string) => {
         let tempFormData: PersonFilter = formData as PersonFilter;
+        let tempEventFormData: EventFilter = formData as EventFilter;
         setResultsChip(resultsChip.filter((c) => c.name != value));
         console.log(formData);
+        console.log(value);
         if (formData) {
             switch (value) {
                 case 'last':
@@ -284,8 +288,11 @@ export const AdvancedSearch = () => {
                 case 'ID Type':
                     tempFormData = { ...tempFormData, identification: undefined };
                     break;
+                case 'Jurisdictions':
+                    tempEventFormData = { ...tempEventFormData, investigationFilter: { jurisdictions: undefined } };
+                    break;
             }
-            handleSubmit(tempFormData);
+            handleSubmit(tempEventFormData?.eventType === EventType.Investigation ? tempEventFormData : tempFormData);
             resultsChip.length === 1 || ((value === 'ID Number' || value === 'ID Type') && navigate('/'));
         }
     };
@@ -320,10 +327,10 @@ export const AdvancedSearch = () => {
                     <div className="button-group">
                         <Button
                             disabled={
-                                !eventData?.findPatientsByEvent.content ||
-                                eventData?.findPatientsByEvent.content?.length === 0 ||
-                                !data?.findPatientsByFilter?.content ||
-                                data?.findPatientsByFilter?.content?.length === 0
+                                (!eventData?.findPatientsByEvent.content ||
+                                    eventData?.findPatientsByEvent.content?.length === 0) &&
+                                (!data?.findPatientsByFilter?.content ||
+                                    data?.findPatientsByFilter?.content?.length === 0)
                             }
                             className="padding-x-3 add-patient-button"
                             type={'button'}
@@ -410,14 +417,14 @@ export const AdvancedSearch = () => {
                         ) : (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
                         )}
-                        <div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
                             <div className="button-group">
                                 <Button
                                     disabled={
-                                        !eventData?.findPatientsByEvent.content ||
-                                        eventData?.findPatientsByEvent.content?.length === 0 ||
-                                        !data?.findPatientsByFilter?.content ||
-                                        data?.findPatientsByFilter?.content?.length === 0
+                                        (!eventData?.findPatientsByEvent.content ||
+                                            eventData?.findPatientsByEvent.content?.length === 0) &&
+                                        (!data?.findPatientsByFilter?.content ||
+                                            data?.findPatientsByFilter?.content?.length === 0)
                                     }
                                     className="width-full margin-top-0"
                                     type={'button'}
@@ -427,10 +434,10 @@ export const AdvancedSearch = () => {
                                     <img
                                         style={{ marginLeft: '5px' }}
                                         src={
-                                            !eventData?.findPatientsByEvent.content ||
-                                            eventData?.findPatientsByEvent.content?.length === 0 ||
-                                            !data?.findPatientsByFilter?.content ||
-                                            data?.findPatientsByFilter?.content?.length === 0
+                                            (!eventData?.findPatientsByEvent.content ||
+                                                eventData?.findPatientsByEvent.content?.length === 0) &&
+                                            (!data?.findPatientsByFilter?.content ||
+                                                data?.findPatientsByFilter?.content?.length === 0)
                                                 ? 'down-arrow-white.svg'
                                                 : 'down-arrow-blue.svg'
                                         }
@@ -475,6 +482,30 @@ export const AdvancedSearch = () => {
                                     </ul>
                                 )}
                             </div>
+                            <Button
+                                disabled={
+                                    (!eventData?.findPatientsByEvent.content ||
+                                        eventData?.findPatientsByEvent.content?.length === 0) &&
+                                    (!data?.findPatientsByFilter?.content ||
+                                        data?.findPatientsByFilter?.content?.length === 0)
+                                }
+                                className="width-full margin-top-0"
+                                type={'button'}
+                                outline>
+                                Export
+                            </Button>
+                            <Button
+                                disabled={
+                                    (!eventData?.findPatientsByEvent.content ||
+                                        eventData?.findPatientsByEvent.content?.length === 0) &&
+                                    (!data?.findPatientsByFilter?.content ||
+                                        data?.findPatientsByFilter?.content?.length === 0)
+                                }
+                                className="width-full margin-top-0"
+                                type={'button'}
+                                outline>
+                                Print
+                            </Button>
                         </div>
                     </Grid>
                     {!initialSearch && !loading && (
