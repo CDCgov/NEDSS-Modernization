@@ -12,6 +12,7 @@ type SearchItemsProps = {
 };
 
 export const SearchItems = ({ data, initialSearch, totalResults, handlePagination, currentPage }: SearchItemsProps) => {
+    console.log(data, 'data');
     const searchItemsRef: any = useRef();
     const _calculateAge = (birthday: Date) => {
         // birthday is a date

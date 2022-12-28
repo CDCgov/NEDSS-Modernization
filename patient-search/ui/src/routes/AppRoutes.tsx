@@ -12,6 +12,7 @@ export const AppRoutes = () => {
                 <Route path="/advanced-search" element={<AdvancedSearch />} />
                 <Route path="*" element={<Navigate to="/advanced-search" />} />
                 <Route path="/" element={<Navigate to="/advanced-search" />} />
+                <Route path="/INVESTIGATION" element={<Navigate to="/advanced-search?eventType=INVESTIGATION" />} />
             </Route>
         </Routes>
     );
