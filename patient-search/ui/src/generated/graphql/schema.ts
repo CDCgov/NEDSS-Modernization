@@ -16,6 +16,16 @@ export type Scalars = {
   Date: any;
 };
 
+export type ActId = {
+  __typename?: 'ActId';
+  actIdSeq?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  lastChangeTime?: Maybe<Scalars['Date']>;
+  recordStatus?: Maybe<Scalars['String']>;
+  rootExtensionTxt?: Maybe<Scalars['String']>;
+  typeCd?: Maybe<Scalars['String']>;
+};
+
 export enum CaseStatus {
   Confirmed = 'CONFIRMED',
   NotACase = 'NOT_A_CASE',
@@ -76,20 +86,9 @@ export enum Ethnicity {
   Unknown = 'UNKNOWN'
 }
 
-export type EventFilter = {
-  eventType: EventType;
-  investigationFilter?: InputMaybe<InvestigationFilter>;
-  laboratoryReportFilter?: InputMaybe<LaboratoryReportFilter>;
-};
-
 export enum EventStatus {
   New = 'NEW',
   Update = 'UPDATE'
-}
-
-export enum EventType {
-  Investigation = 'INVESTIGATION',
-  LaboratoryReport = 'LABORATORY_REPORT'
 }
 
 export enum Gender {
@@ -125,6 +124,41 @@ export enum IdentificationType {
   VisaPassport = 'VISA_PASSPORT',
   WicIdentifier = 'WIC_IDENTIFIER'
 }
+
+export type Investigation = {
+  __typename?: 'Investigation';
+  actIds?: Maybe<Array<Maybe<ActId>>>;
+  activityFromTime?: Maybe<Scalars['Date']>;
+  activityToTime?: Maybe<Scalars['Date']>;
+  addTime?: Maybe<Scalars['Date']>;
+  addUserId?: Maybe<Scalars['Int']>;
+  caseClassCd?: Maybe<Scalars['String']>;
+  caseTypeCd?: Maybe<Scalars['String']>;
+  cdDescTxt?: Maybe<Scalars['String']>;
+  currProcessStateCd?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  investigationStatusCd?: Maybe<Scalars['String']>;
+  jurisdictionCd?: Maybe<Scalars['Int']>;
+  jurisdictionName?: Maybe<Scalars['String']>;
+  lastChangeTime?: Maybe<Scalars['Date']>;
+  lastChangeUserId?: Maybe<Scalars['Int']>;
+  localId?: Maybe<Scalars['String']>;
+  moodCd?: Maybe<Scalars['String']>;
+  notificationAddTime?: Maybe<Scalars['Date']>;
+  notificationLastChgTime?: Maybe<Scalars['Date']>;
+  notificationLocalId?: Maybe<Scalars['String']>;
+  notificationRecordStatusCd?: Maybe<Scalars['String']>;
+  organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
+  outbreakName?: Maybe<Scalars['String']>;
+  personParticipations?: Maybe<Array<Maybe<PersonParticipation>>>;
+  pregnantIndCd?: Maybe<Scalars['String']>;
+  prog_area_cd?: Maybe<Scalars['String']>;
+  programJurisdictionOid?: Maybe<Scalars['Int']>;
+  publicHealthCaseLastChgTime?: Maybe<Scalars['Date']>;
+  publicHealthCaseUid?: Maybe<Scalars['Int']>;
+  recordStatus?: Maybe<Scalars['String']>;
+  rptFormCmpltTime?: Maybe<Scalars['Date']>;
+};
 
 export type InvestigationEventDateSearch = {
   eventDateType: InvestigationEventDateType;
@@ -168,6 +202,12 @@ export type InvestigationFilter = {
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
 };
 
+export type InvestigationResults = {
+  __typename?: 'InvestigationResults';
+  content: Array<Maybe<Investigation>>;
+  total: Scalars['Int'];
+};
+
 export enum InvestigationStatus {
   Closed = 'CLOSED',
   Open = 'OPEN'
@@ -198,9 +238,64 @@ export type Jurisdiction = {
   typeCd: Scalars['String'];
 };
 
+export type LabReport = {
+  __typename?: 'LabReport';
+  actIds?: Maybe<Array<Maybe<ActId>>>;
+  activityToTime?: Maybe<Scalars['Date']>;
+  addTime?: Maybe<Scalars['Date']>;
+  addUserId?: Maybe<Scalars['Int']>;
+  cdDescTxt?: Maybe<Scalars['String']>;
+  classCd?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['Date']>;
+  electronicInd?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  jurisdictionCd?: Maybe<Scalars['Int']>;
+  jurisdictionCodeDescTxt?: Maybe<Scalars['String']>;
+  lastChange?: Maybe<Scalars['Date']>;
+  lastChgUserId?: Maybe<Scalars['Int']>;
+  localId?: Maybe<Scalars['String']>;
+  materialParticipations?: Maybe<Array<Maybe<MaterialParticipation>>>;
+  moodCd?: Maybe<Scalars['String']>;
+  observationLastChgTime?: Maybe<Scalars['Date']>;
+  observationUid?: Maybe<Scalars['Int']>;
+  observations?: Maybe<Array<Maybe<Observation>>>;
+  organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
+  personParticipations?: Maybe<Array<Maybe<PersonParticipation>>>;
+  pregnantIndCd?: Maybe<Scalars['String']>;
+  programAreaCd?: Maybe<Scalars['String']>;
+  programJurisdictionOid?: Maybe<Scalars['Int']>;
+  recordStatusCd?: Maybe<Scalars['String']>;
+  rptToStateTime?: Maybe<Scalars['Date']>;
+  versionCtrlNbr?: Maybe<Scalars['Int']>;
+};
+
+export type LabReportFilter = {
+  codedResult?: InputMaybe<Scalars['String']>;
+  createdBy?: InputMaybe<Scalars['ID']>;
+  enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
+  entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
+  eventDateSearch?: InputMaybe<LaboratoryEventDateSearch>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventIdType?: InputMaybe<LaboratoryEventIdType>;
+  eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
+  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  lastUpdatedBy?: InputMaybe<Scalars['ID']>;
+  pregnancyStatus?: InputMaybe<PregnancyStatus>;
+  processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
+  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  providerSearch?: InputMaybe<LabReportProviderSearch>;
+  resultedTest?: InputMaybe<Scalars['String']>;
+};
+
 export type LabReportProviderSearch = {
   providerId: Scalars['ID'];
   providerType: ProviderType;
+};
+
+export type LabReportResults = {
+  __typename?: 'LabReportResults';
+  content: Array<Maybe<LabReport>>;
+  total: Scalars['Int'];
 };
 
 export type LaboratoryEventDateSearch = {
@@ -221,24 +316,6 @@ export enum LaboratoryReportEventDateType {
   LabReportCreateDate = 'LAB_REPORT_CREATE_DATE',
   LastUpdateDate = 'LAST_UPDATE_DATE'
 }
-
-export type LaboratoryReportFilter = {
-  codedResult?: InputMaybe<Scalars['String']>;
-  createdBy?: InputMaybe<Scalars['ID']>;
-  enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
-  entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
-  eventDateSearch?: InputMaybe<LaboratoryEventDateSearch>;
-  eventId?: InputMaybe<Scalars['String']>;
-  eventIdType?: InputMaybe<LaboratoryEventIdType>;
-  eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
-  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  lastUpdatedBy?: InputMaybe<Scalars['ID']>;
-  pregnancyStatus?: InputMaybe<PregnancyStatus>;
-  processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
-  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  providerSearch?: InputMaybe<LabReportProviderSearch>;
-  resultedTest?: InputMaybe<Scalars['String']>;
-};
 
 export enum LaboratoryReportStatus {
   Processed = 'PROCESSED',
@@ -277,6 +354,19 @@ export type LocatorParticipations = {
   locator?: Maybe<Locator>;
 };
 
+export type MaterialParticipation = {
+  __typename?: 'MaterialParticipation';
+  actUid?: Maybe<Scalars['Int']>;
+  cd?: Maybe<Scalars['String']>;
+  cdDescTxt?: Maybe<Scalars['String']>;
+  entityId?: Maybe<Scalars['String']>;
+  participationLastChangeTime?: Maybe<Scalars['Date']>;
+  participationRecordStatus?: Maybe<Scalars['String']>;
+  subjectClassCd?: Maybe<Scalars['String']>;
+  typeCd?: Maybe<Scalars['String']>;
+  typeDescTxt?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createPatient: Person;
@@ -310,6 +400,22 @@ export enum NotificationStatus {
 export type NotificationStatuses = {
   includeUnassigned: Scalars['Boolean'];
   statusList: Array<NotificationStatus>;
+};
+
+export type Observation = {
+  __typename?: 'Observation';
+  altCd?: Maybe<Scalars['String']>;
+  altCdSystemCd?: Maybe<Scalars['String']>;
+  altDescTxt?: Maybe<Scalars['String']>;
+  cd?: Maybe<Scalars['String']>;
+  cdDescTxt?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  domainCd?: Maybe<Scalars['String']>;
+  ovcAltCdSystemCd?: Maybe<Scalars['String']>;
+  ovcAltCode?: Maybe<Scalars['String']>;
+  ovcAltDescTxt?: Maybe<Scalars['String']>;
+  ovcCode?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
 };
 
 export enum Operator {
@@ -367,6 +473,19 @@ export type OrganizationFilter = {
   streetAddr1?: InputMaybe<Scalars['String']>;
   streetAddr2?: InputMaybe<Scalars['String']>;
   zipCd?: InputMaybe<Scalars['String']>;
+};
+
+export type OrganizationParticipation = {
+  __typename?: 'OrganizationParticipation';
+  actUid?: Maybe<Scalars['Int']>;
+  entityId?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  organizationLastChangeTime?: Maybe<Scalars['Date']>;
+  participationLastChangeTime?: Maybe<Scalars['Date']>;
+  participationRecordStatus?: Maybe<Scalars['String']>;
+  subjectClassCd?: Maybe<Scalars['String']>;
+  typeCd?: Maybe<Scalars['String']>;
+  typeDescTxt?: Maybe<Scalars['String']>;
 };
 
 export type OrganizationResults = {
@@ -557,6 +676,25 @@ export type PersonPage = {
   sortField?: InputMaybe<PersonSortField>;
 };
 
+export type PersonParticipation = {
+  __typename?: 'PersonParticipation';
+  actUid?: Maybe<Scalars['Int']>;
+  birthTime?: Maybe<Scalars['Date']>;
+  currSexCd?: Maybe<Scalars['String']>;
+  entityId?: Maybe<Scalars['Int']>;
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  participationLastChangeTime?: Maybe<Scalars['Date']>;
+  participationRecordStatus?: Maybe<Scalars['String']>;
+  personCd?: Maybe<Scalars['String']>;
+  personLastChangeTime?: Maybe<Scalars['Date']>;
+  personParentUid?: Maybe<Scalars['Int']>;
+  personRecordStatus?: Maybe<Scalars['String']>;
+  subjectClassCd?: Maybe<Scalars['String']>;
+  typeCd?: Maybe<Scalars['String']>;
+  typeDescTxt?: Maybe<Scalars['String']>;
+};
+
 export type PersonResults = {
   __typename?: 'PersonResults';
   content: Array<Maybe<Person>>;
@@ -693,10 +831,11 @@ export type Query = {
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllStateCodes: Array<Maybe<StateCode>>;
   findAllUsers: UserResults;
+  findInvestigationsByFilter: InvestigationResults;
+  findLabReportsByFilter: LabReportResults;
   findOrganizationById?: Maybe<Organization>;
   findOrganizationsByFilter: OrganizationResults;
   findPatientById?: Maybe<Person>;
-  findPatientsByEvent: PersonResults;
   findPatientsByFilter: PersonResults;
   findPatientsByOrganizationFilter: PersonResults;
   findPlaceById?: Maybe<Place>;
@@ -749,6 +888,18 @@ export type QueryFindAllUsersArgs = {
 };
 
 
+export type QueryFindInvestigationsByFilterArgs = {
+  filter: InvestigationFilter;
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindLabReportsByFilterArgs = {
+  filter: LabReportFilter;
+  page?: InputMaybe<Page>;
+};
+
+
 export type QueryFindOrganizationByIdArgs = {
   id: Scalars['ID'];
 };
@@ -762,12 +913,6 @@ export type QueryFindOrganizationsByFilterArgs = {
 
 export type QueryFindPatientByIdArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryFindPatientsByEventArgs = {
-  filter: EventFilter;
-  page?: InputMaybe<PersonPage>;
 };
 
 
@@ -944,6 +1089,22 @@ export type FindAllUsersQueryVariables = Exact<{
 
 export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
 
+export type FindInvestigationsByFilterQueryVariables = Exact<{
+  filter: InvestigationFilter;
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, programJurisdictionOid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, prog_area_cd?: string | null, jurisdictionCd?: number | null, jurisdictionName?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd?: string | null, personParentUid?: number | null, personRecordStatus?: string | null, personLastChangeTime?: any | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
+
+export type FindLabReportsByFilterQueryVariables = Exact<{
+  filter: LabReportFilter;
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programJurisdictionOid?: number | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd?: string | null, personParentUid?: number | null, personRecordStatus?: string | null, personLastChangeTime?: any | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
+
 export type FindOrganizationByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -965,14 +1126,6 @@ export type FindPatientByIdQueryVariables = Exact<{
 
 
 export type FindPatientByIdQuery = { __typename?: 'Query', findPatientById?: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, NBSEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null } | null };
-
-export type FindPatientsByEventQueryVariables = Exact<{
-  filter: EventFilter;
-  page?: InputMaybe<PersonPage>;
-}>;
-
-
-export type FindPatientsByEventQuery = { __typename?: 'Query', findPatientsByEvent: { __typename?: 'PersonResults', total: number, content: Array<{ __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, NBSEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null } | null> } };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -1793,6 +1946,229 @@ export function useFindAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type FindAllUsersQueryHookResult = ReturnType<typeof useFindAllUsersQuery>;
 export type FindAllUsersLazyQueryHookResult = ReturnType<typeof useFindAllUsersLazyQuery>;
 export type FindAllUsersQueryResult = Apollo.QueryResult<FindAllUsersQuery, FindAllUsersQueryVariables>;
+export const FindInvestigationsByFilterDocument = gql`
+    query findInvestigationsByFilter($filter: InvestigationFilter!, $page: Page) {
+  findInvestigationsByFilter(filter: $filter, page: $page) {
+    content {
+      id
+      recordStatus
+      lastChangeTime
+      publicHealthCaseUid
+      programJurisdictionOid
+      caseClassCd
+      outbreakName
+      caseTypeCd
+      cdDescTxt
+      prog_area_cd
+      jurisdictionCd
+      jurisdictionName
+      pregnantIndCd
+      localId
+      rptFormCmpltTime
+      activityToTime
+      activityFromTime
+      addTime
+      publicHealthCaseLastChgTime
+      addUserId
+      lastChangeUserId
+      currProcessStateCd
+      investigationStatusCd
+      moodCd
+      notificationLocalId
+      notificationAddTime
+      notificationRecordStatusCd
+      notificationLastChgTime
+      personParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        participationRecordStatus
+        typeDescTxt
+        participationLastChangeTime
+        firstName
+        lastName
+        birthTime
+        currSexCd
+        personCd
+        personParentUid
+        personRecordStatus
+        personLastChangeTime
+      }
+      organizationParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        typeDescTxt
+        participationRecordStatus
+        participationLastChangeTime
+        name
+        organizationLastChangeTime
+      }
+      actIds {
+        id
+        recordStatus
+        actIdSeq
+        rootExtensionTxt
+        typeCd
+        lastChangeTime
+      }
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindInvestigationsByFilterQuery__
+ *
+ * To run a query within a React component, call `useFindInvestigationsByFilterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindInvestigationsByFilterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindInvestigationsByFilterQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindInvestigationsByFilterQuery(baseOptions: Apollo.QueryHookOptions<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
+      }
+export function useFindInvestigationsByFilterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
+        }
+export type FindInvestigationsByFilterQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterQuery>;
+export type FindInvestigationsByFilterLazyQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterLazyQuery>;
+export type FindInvestigationsByFilterQueryResult = Apollo.QueryResult<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>;
+export const FindLabReportsByFilterDocument = gql`
+    query findLabReportsByFilter($filter: LabReportFilter!, $page: Page) {
+  findLabReportsByFilter(filter: $filter, page: $page) {
+    content {
+      id
+      observationUid
+      lastChange
+      classCd
+      moodCd
+      observationLastChgTime
+      cdDescTxt
+      recordStatusCd
+      programJurisdictionOid
+      programAreaCd
+      jurisdictionCd
+      jurisdictionCodeDescTxt
+      pregnantIndCd
+      localId
+      activityToTime
+      effectiveFromTime
+      rptToStateTime
+      addTime
+      electronicInd
+      versionCtrlNbr
+      addUserId
+      lastChgUserId
+      personParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        participationRecordStatus
+        typeDescTxt
+        participationLastChangeTime
+        firstName
+        lastName
+        birthTime
+        currSexCd
+        personCd
+        personParentUid
+        personRecordStatus
+        personLastChangeTime
+      }
+      organizationParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        typeDescTxt
+        participationRecordStatus
+        participationLastChangeTime
+        name
+        organizationLastChangeTime
+      }
+      materialParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        typeDescTxt
+        participationRecordStatus
+        participationLastChangeTime
+        cd
+        cdDescTxt
+      }
+      observations {
+        cd
+        cdDescTxt
+        domainCd
+        statusCd
+        altCd
+        altDescTxt
+        altCdSystemCd
+        displayName
+        ovcCode
+        ovcAltCode
+        ovcAltDescTxt
+        ovcAltCdSystemCd
+      }
+      actIds {
+        id
+        recordStatus
+        actIdSeq
+        rootExtensionTxt
+        typeCd
+        lastChangeTime
+      }
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindLabReportsByFilterQuery__
+ *
+ * To run a query within a React component, call `useFindLabReportsByFilterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindLabReportsByFilterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindLabReportsByFilterQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindLabReportsByFilterQuery(baseOptions: Apollo.QueryHookOptions<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
+      }
+export function useFindLabReportsByFilterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
+        }
+export type FindLabReportsByFilterQueryHookResult = ReturnType<typeof useFindLabReportsByFilterQuery>;
+export type FindLabReportsByFilterLazyQueryHookResult = ReturnType<typeof useFindLabReportsByFilterLazyQuery>;
+export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>;
 export const FindOrganizationByIdDocument = gql`
     query findOrganizationById($id: ID!) {
   findOrganizationById(id: $id) {
@@ -2120,193 +2496,6 @@ export function useFindPatientByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type FindPatientByIdQueryHookResult = ReturnType<typeof useFindPatientByIdQuery>;
 export type FindPatientByIdLazyQueryHookResult = ReturnType<typeof useFindPatientByIdLazyQuery>;
 export type FindPatientByIdQueryResult = Apollo.QueryResult<FindPatientByIdQuery, FindPatientByIdQueryVariables>;
-export const FindPatientsByEventDocument = gql`
-    query findPatientsByEvent($filter: EventFilter!, $page: PersonPage) {
-  findPatientsByEvent(filter: $filter, page: $page) {
-    content {
-      id
-      NBSEntity {
-        entityLocatorParticipations {
-          classCd
-          locator {
-            emailAddress
-            extenstionTxt
-            phoneNbrTxt
-            urlAddress
-            censusBlockCd
-            censusMinorCivilDivisionCd
-            censusTrackCd
-            cityCd
-            cityDescTxt
-            cntryCd
-            cntryDescTxt
-            cntyCd
-            cntyDescTxt
-            msaCongressDistrictCd
-            regionDistrictCd
-            stateCd
-            streetAddr1
-            streetAddr2
-            zipCd
-            geocodeMatchInd
-            withinCityLimitsInd
-            censusTract
-          }
-        }
-      }
-      entityIds {
-        typeDescTxt
-        typeCd
-        rootExtensionTxt
-        assigningAuthorityCd
-        assigningAuthorityDescTxt
-      }
-      names {
-        firstNm
-        middleNm
-        lastNm
-        nmSuffix
-        nmPrefix
-      }
-      addReasonCd
-      addTime
-      addUserId
-      administrativeGenderCd
-      ageCalc
-      ageCalcTime
-      ageCalcUnitCd
-      ageCategoryCd
-      ageReported
-      ageReportedTime
-      ageReportedUnitCd
-      birthGenderCd
-      birthOrderNbr
-      birthTime
-      birthTimeCalc
-      cd
-      cdDescTxt
-      currSexCd
-      deceasedIndCd
-      deceasedTime
-      description
-      educationLevelCd
-      educationLevelDescTxt
-      ethnicGroupInd
-      lastChgReasonCd
-      lastChgTime
-      lastChgUserId
-      localId
-      maritalStatusCd
-      maritalStatusDescTxt
-      mothersMaidenNm
-      multipleBirthInd
-      occupationCd
-      preferredGenderCd
-      primLangCd
-      primLangDescTxt
-      recordStatusCd
-      recordStatusTime
-      statusCd
-      statusTime
-      survivedIndCd
-      userAffiliationTxt
-      firstNm
-      lastNm
-      middleNm
-      nmPrefix
-      nmSuffix
-      preferredNm
-      hmStreetAddr1
-      hmStreetAddr2
-      hmCityCd
-      hmCityDescTxt
-      hmStateCd
-      hmZipCd
-      hmCntyCd
-      hmCntryCd
-      hmPhoneNbr
-      hmPhoneCntryCd
-      hmEmailAddr
-      cellPhoneNbr
-      wkStreetAddr1
-      wkStreetAddr2
-      wkCityCd
-      wkCityDescTxt
-      wkStateCd
-      wkZipCd
-      wkCntyCd
-      wkCntryCd
-      wkPhoneNbr
-      wkPhoneCntryCd
-      wkEmailAddr
-      ssn
-      medicaidNum
-      dlNum
-      dlStateCd
-      raceCd
-      raceSeqNbr
-      raceCategoryCd
-      ethnicityGroupCd
-      ethnicGroupSeqNbr
-      adultsInHouseNbr
-      childrenInHouseNbr
-      birthCityCd
-      birthCityDescTxt
-      birthCntryCd
-      birthStateCd
-      raceDescTxt
-      ethnicGroupDescTxt
-      versionCtrlNbr
-      asOfDateAdmin
-      asOfDateEthnicity
-      asOfDateGeneral
-      asOfDateMorbidity
-      asOfDateSex
-      electronicInd
-      personParentUid
-      dedupMatchInd
-      groupNbr
-      groupTime
-      edxInd
-      speaksEnglishCd
-      additionalGenderCd
-      eharsId
-      ethnicUnkReasonCd
-      sexUnkReasonCd
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindPatientsByEventQuery__
- *
- * To run a query within a React component, call `useFindPatientsByEventQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindPatientsByEventQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindPatientsByEventQuery({
- *   variables: {
- *      filter: // value for 'filter'
- *      page: // value for 'page'
- *   },
- * });
- */
-export function useFindPatientsByEventQuery(baseOptions: Apollo.QueryHookOptions<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>(FindPatientsByEventDocument, options);
-      }
-export function useFindPatientsByEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>(FindPatientsByEventDocument, options);
-        }
-export type FindPatientsByEventQueryHookResult = ReturnType<typeof useFindPatientsByEventQuery>;
-export type FindPatientsByEventLazyQueryHookResult = ReturnType<typeof useFindPatientsByEventLazyQuery>;
-export type FindPatientsByEventQueryResult = Apollo.QueryResult<FindPatientsByEventQuery, FindPatientsByEventQueryVariables>;
 export const FindPatientsByFilterDocument = gql`
     query findPatientsByFilter($filter: PersonFilter!, $page: PersonPage) {
   findPatientsByFilter(filter: $filter, page: $page) {

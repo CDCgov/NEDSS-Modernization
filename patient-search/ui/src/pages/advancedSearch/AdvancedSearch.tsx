@@ -3,6 +3,8 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
+// TODO - event filter no longer exists, just use InvestigationFilter or LabReportFilter depending on search type
+// TODO - FindPatientsByEventQuery no longer exists, use FindInvestigationsByFilterQuery or FindLabReportsByFilterQuery
 import {
     EventFilter,
     FindPatientsByEventQuery,
