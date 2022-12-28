@@ -7,18 +7,21 @@ type EventTypesProps = {
     onChangeMethod?: (event: any) => void;
     options: any;
     label?: string;
+    isMulti?: boolean;
 };
 
-export const SelectControl = ({ control, name, onChangeMethod, options, label }: EventTypesProps) => {
+export const SelectControl = ({ control, name, onChangeMethod, options, label, isMulti }: EventTypesProps) => {
     return (
         <Controller
             control={control}
             name={name}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <SelectInput
+                    defaultValue={value}
+                    isMulti={isMulti}
                     onChange={(e: any) => {
-                        onChangeMethod?.(e.target.value);
-                        onChange();
+                        onChange(e);
+                        onChangeMethod?.(e);
                     }}
                     label={label}
                     options={options}
