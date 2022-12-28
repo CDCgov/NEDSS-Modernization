@@ -5,11 +5,34 @@ input Page {
     pageNumber: Int
 }
 
-input PersonPage {
-    pageSize: Int
-    pageNumber: Int
-    sortField: PersonSortField
-    sortDirection: SortDirection
+type PersonParticipation {
+    actUid: Int
+    typeCd: String
+    entityId: Int
+    subjectClassCd: String
+    participationRecordStatus: String
+    typeDescTxt: String
+    participationLastChangeTime: Date
+    firstName: String
+    lastName: String
+    birthTime: Date
+    currSexCd: String
+    personCd: String
+    personParentUid: Int
+    personRecordStatus: String
+    personLastChangeTime: Date
+}
+
+type OrganizationParticipation {
+    actUid: Int
+    typeCd: String
+    entityId: Int
+    subjectClassCd: String
+    typeDescTxt: String
+    participationRecordStatus: String
+    participationLastChangeTime: Date
+    name: String
+    organizationLastChangeTime: Date
 }
 
 enum PersonSortField {

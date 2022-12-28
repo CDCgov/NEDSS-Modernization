@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,17 +23,19 @@ import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchParticipation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProcessingStatus;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.EventStatus;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.ProcessingStatus;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.UserType;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -58,11 +59,6 @@ public class EventService {
     @PreAuthorize(VIEW_INVESTIGATION)
     public Page<Investigation> findInvestigationsByFilter(InvestigationFilter filter, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()).withPageable(pageable)
-                    .build();
-            return performSearch(query, Investigation.class);
-        }
         var query = buildInvestigationQuery(filter, pageable);
         return performSearch(query, Investigation.class);
     }
@@ -74,46 +70,70 @@ public class EventService {
     }
 
     @PreAuthorize(VIEW_LAB_REPORT)
-    public SearchHits<LabReport> findLabReportsByFilter(LaboratoryReportFilter filter) {
+    public Page<LabReport> findLabReportsByFilter(LabReportFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var query = buildLabReportQuery(filter, pageable);
+        return performSearch(query, LabReport.class);
+    }
+
+    private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
+        var hits = operations.search(query, clazz);
+        var list = hits.getSearchHits().stream().map(h -> h.getContent()).collect(Collectors.toList());
+        return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
+    }
+
+    private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
-
-        // OBS only for lab reports ?
-        builder.must(QueryBuilders.matchQuery("class_cd", "OBS"));
-
-        // act must be EVN
-        builder.must(QueryBuilders.matchQuery("mood_cd", "EVN"));
-
         // Lab reports are secured by Program Area and Jurisdiction
         var userDetails = SecurityUtil.getUserDetails();
         var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, "program_jurisdiction_oid", validOids);
+        addListQuery(builder, LabReport.PROGRAM_JURISDICTION_OID, validOids);
+
+        // OBS only for lab reports
+        builder.must(QueryBuilders.matchQuery(LabReport.CLASS_CD, "OBS"));
+
+        // act must be EVN
+        builder.must(QueryBuilders.matchQuery(LabReport.MOOD_CD, "EVN"));
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_PAGE_SIZE).build();
-            return operations.search(query, LabReport.class);
+            var query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()).withPageable(pageable)
+                    .build();
+            return query;
         }
+
         // program area
         if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
-            addListQuery(builder, "program_area_cd", filter.getProgramAreas());
+            addListQuery(builder, LabReport.PROGRAM_AREA_CD, filter.getProgramAreas());
         }
         // jurisdictions
         if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            addListQuery(builder, "jurisdiction_cd", filter.getJurisdictions());
+            addListQuery(builder, LabReport.JURISDICTION_CD, filter.getJurisdictions());
         }
         // pregnancy status
         if (filter.getPregnancyStatus() != null) {
             var status = filter.getPregnancyStatus().toString().substring(0, 1);
-            builder.must(QueryBuilders.matchQuery("pregnant_ind_cd", status));
+            builder.must(QueryBuilders.matchQuery(LabReport.PREGNANT_IND_CD, status));
         }
         // event Id
         if (filter.getEventIdType() != null && filter.getEventId() != null) {
             switch (filter.getEventIdType()) {
                 case ACCESSION_NUMBER:
-                    builder.must(QueryBuilders.matchQuery("type_desc_txt", "Filler Number"));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
+                    var accessionNumberQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ACT_IDS + "."
+                                            + ElasticsearchActId.TYPE_CD,
+                                    "Filler Number"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ACT_IDS + "."
+                                            + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedAccessionNumberQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            accessionNumberQuery,
+                            ScoreMode.None);
+                    builder.must(nestedAccessionNumberQuery);
                     break;
                 case LAB_ID:
-                    builder.must(QueryBuilders.matchQuery("local_id", filter.getEventId()));
+                    builder.must(QueryBuilders.matchQuery(LabReport.LOCAL_ID, filter.getEventId()));
                     break;
                 default:
                     throw new QueryException("Invalid event type: " + filter.getEventIdType());
@@ -128,19 +148,19 @@ public class EventService {
             String field;
             switch (eds.getEventDateType()) {
                 case DATE_OF_REPORT:
-                    field = "activity_to_time";
+                    field = LabReport.ACTIVITY_TO_TIME;
                     break;
                 case DATE_OF_SPECIMEN_COLLECTION:
-                    field = "effective_from_time";
+                    field = LabReport.EFFECTIVE_FROM_TIME;
                     break;
                 case DATE_RECEIVED_BY_PUBLIC_HEALTH:
-                    field = "rpt_to_state_time";
+                    field = LabReport.RPT_TO_STATE_TIME;
                     break;
                 case LAB_REPORT_CREATE_DATE:
-                    field = "add_time";
+                    field = LabReport.ADD_TIME;
                     break;
                 case LAST_UPDATE_DATE:
-                    field = "observation_last_chg_time";
+                    field = LabReport.OBSERVATION_LAST_CHG_TIME;
                     break;
                 default:
                     throw new QueryException(
@@ -176,18 +196,18 @@ public class EventService {
                     electronicIndCodes.add("E");
                 }
             }
-            addListQuery(builder, "electronic_ind", electronicIndCodes);
+            addListQuery(builder, LabReport.ELECTRONIC_IND, electronicIndCodes);
         }
         // event status
         if (filter.getEventStatus() != null && !filter.getEventStatus().isEmpty()) {
             if (filter.getEventStatus().contains(EventStatus.NEW)) {
                 if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
-                    builder.must(QueryBuilders.rangeQuery("version_ctrl_nbr").gte(1));
+                    builder.must(QueryBuilders.rangeQuery(LabReport.VERSION_CTRL_NBR).gte(1));
                 } else {
-                    builder.must(QueryBuilders.matchQuery("version_ctrl_nbr", 1));
+                    builder.must(QueryBuilders.matchQuery(LabReport.VERSION_CTRL_NBR, 1));
                 }
             } else if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
-                builder.must(QueryBuilders.rangeQuery("version_ctrl_nbr").gt(1));
+                builder.must(QueryBuilders.rangeQuery(LabReport.VERSION_CTRL_NBR).gt(1));
             }
         }
 
@@ -201,16 +221,16 @@ public class EventService {
                 validStatuses.add("UNPROCESSED");
             }
 
-            addListQuery(builder, "observation_record_status_cd", validStatuses);
+            addListQuery(builder, LabReport.RECORD_STATUS_CD, validStatuses);
         }
         // created by
         if (filter.getCreatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("add_user_id", filter.getCreatedBy()));
+            builder.must(QueryBuilders.matchQuery(LabReport.ADD_USER_ID, filter.getCreatedBy()));
         }
 
         // last update
         if (filter.getLastUpdatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("last_chg_user_id", filter.getLastUpdatedBy()));
+            builder.must(QueryBuilders.matchQuery(LabReport.LAST_CHG_USER_ID, filter.getLastUpdatedBy()));
         }
 
         // event provider/facility
@@ -218,39 +238,82 @@ public class EventService {
             var pSearch = filter.getProviderSearch();
             switch (pSearch.getProviderType()) {
                 case ORDERING_FACILITY:
-                    builder.must(QueryBuilders.matchQuery("type_cd", "ORD"));
-                    builder.must(QueryBuilders.matchQuery("subject_class_cd", "ORG"));
-                    builder.must(QueryBuilders.matchQuery("subject_entity_uid", pSearch.getProviderId()));
+                    var orderingFacilityQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.TYPE_CD,
+                                    "ORD"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                                    "ORG"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.ENTITY_ID,
+                                    pSearch.getProviderId()));
+                    var nestedOrderingFacilityQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            orderingFacilityQuery,
+                            ScoreMode.None);
+                    builder.must(nestedOrderingFacilityQuery);
                     break;
                 case ORDERING_PROVIDER:
-                    builder.must(QueryBuilders.matchQuery("type_cd", "ORD"));
-                    builder.must(QueryBuilders.matchQuery("subject_class_cd", "PSN"));
-                    builder.must(QueryBuilders.matchQuery("subject_entity_uid", pSearch.getProviderId()));
+                    var orderingProviderQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.TYPE_CD,
+                                    "ORD"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.SUBJECT_CLASS_CD,
+                                    "PSN"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.ENTITY_ID,
+                                    pSearch.getProviderId()));
+                    var nestedOrderingProviderQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            orderingProviderQuery,
+                            ScoreMode.None);
+                    builder.must(nestedOrderingProviderQuery);
                     break;
                 case REPORTING_FACILITY:
-                    builder.must(QueryBuilders.matchQuery("subject_class_cd", "AUT"));
-                    builder.must(QueryBuilders.matchQuery("subject_entity_uid", pSearch.getProviderId()));
+                    var reportingFacilityQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                                    "AUT"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.ENTITY_ID,
+                                    pSearch.getProviderId()));
+                    var nestedReportingFacilityQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            reportingFacilityQuery,
+                            ScoreMode.None);
+                    builder.must(nestedReportingFacilityQuery);
                     break;
             }
         }
         // resulted test
         if (filter.getResultedTest() != null) {
-            builder.must(QueryBuilders.matchQuery("cd_desc_txt", filter.getResultedTest()));
+            var resultedTestQuery = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery(LabReport.OBSERVATIONS + "." + ElasticsearchObservation.CD_DESC_TXT,
+                            filter.getResultedTest()));
+            var nestedResultedTestQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS, resultedTestQuery,
+                    ScoreMode.None);
+            builder.must(nestedResultedTestQuery);
         }
 
         // coded result
         if (filter.getCodedResult() != null) {
-            builder.must(QueryBuilders.matchQuery("display_name", filter.getCodedResult()));
+            var codedResultQuery = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery(LabReport.OBSERVATIONS + "." + ElasticsearchObservation.DISPLAY_NAME,
+                            filter.getCodedResult()));
+            var nestedCodedResultQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS, codedResultQuery,
+                    ScoreMode.None);
+            builder.must(nestedCodedResultQuery);
         }
 
         var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_PAGE_SIZE).build();
-        return operations.search(query, LabReport.class);
-    }
-
-    private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
-        var hits = operations.search(query, clazz);
-        var list = hits.getSearchHits().stream().map(h -> h.getContent()).collect(Collectors.toList());
-        return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
+        return query;
     }
 
     private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
@@ -265,6 +328,12 @@ public class EventService {
 
         // act must be EVN
         builder.must(QueryBuilders.matchQuery(Investigation.MOOD_CD, "EVN"));
+
+        if (filter == null) {
+            var query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()).withPageable(pageable)
+                    .build();
+            return query;
+        }
 
         // conditions
         if (filter.getConditions() != null && !filter.getConditions().isEmpty()) {
@@ -382,8 +451,11 @@ public class EventService {
         if (filter.getInvestigatorId() != null) {
             var investigatorQuery = QueryBuilders.boolQuery();
             investigatorQuery
-                    .must(QueryBuilders.matchQuery(ElasticsearchParticipation.ENTITY_ID, filter.getInvestigatorId()));
-            builder.must(QueryBuilders.nestedQuery(Investigation.PARTICIPATIONS, investigatorQuery, ScoreMode.None));
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.ENTITY_ID,
+                            filter.getInvestigatorId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(Investigation.PERSON_PARTICIPATIONS, investigatorQuery, ScoreMode.None));
         }
         // provider/facility
         var pfSearch = filter.getProviderFacilitySearch();
@@ -393,27 +465,39 @@ public class EventService {
                         "Entity type and entity Id required when querying provider/facility");
             }
 
-            String typeCd;
             switch (pfSearch.getEntityType()) {
                 case PROVIDER:
-                    typeCd = "PerAsReporterOfPHC";
+                    var providerQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(ElasticsearchPersonParticipation.ENTITY_ID,
+                                    pfSearch.getId()))
+                            .must(QueryBuilders.matchQuery(ElasticsearchPersonParticipation.TYPE_CD,
+                                    "PerAsReporterOfPHC"));
+
+                    var nestedProviderQuery = QueryBuilders.nestedQuery(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            providerQuery,
+                            ScoreMode.None);
+
+                    builder.must(nestedProviderQuery);
                     break;
                 case FACILITY:
-                    typeCd = "OrgAsReporterOfPHC";
+                    var facilityQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(ElasticsearchOrganizationParticipation.ENTITY_ID,
+                                    pfSearch.getId()))
+                            .must(QueryBuilders.matchQuery(ElasticsearchOrganizationParticipation.TYPE_CD,
+                                    "OrgAsReporterOfPHC"));
+
+                    var nestedFacilityQuery = QueryBuilders.nestedQuery(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            facilityQuery,
+                            ScoreMode.None);
+
+                    builder.must(nestedFacilityQuery);
                     break;
                 default:
                     throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
             }
-            var providerQuery = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.matchQuery(ElasticsearchParticipation.ENTITY_ID, pfSearch.getId()))
-                    .must(QueryBuilders.matchQuery(ElasticsearchParticipation.TYPE_CD, typeCd));
 
-            var nestedProviderQuery = QueryBuilders.nestedQuery(
-                    Investigation.PARTICIPATIONS,
-                    providerQuery,
-                    ScoreMode.None);
-
-            builder.must(nestedProviderQuery);
         }
 
         // investigation status

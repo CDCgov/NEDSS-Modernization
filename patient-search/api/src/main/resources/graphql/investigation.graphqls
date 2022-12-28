@@ -27,22 +27,9 @@ type Investigation {
     notificationAddTime: Date
     notificationRecordStatusCd: String
     notificationLastChgTime: Date
-    participations: [Participation]
+    personParticipations: [PersonParticipation]
+    organizationParticipations: [OrganizationParticipation]
     actIds: [ActId]
-}
-
-type Participation {
-    actUid: Int
-    typeCd: String
-    recordStatus: String
-    entityId: Int
-    firstName: String
-    lastName: String
-    birthTime: Date
-    currSexCd: String
-    organizationName: String
-    personLastChangeTime: Date
-    organizationLastChangeTime: Date
 }
 
 type ActId {

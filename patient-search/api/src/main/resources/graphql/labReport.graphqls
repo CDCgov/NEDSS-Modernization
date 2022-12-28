@@ -1,4 +1,4 @@
-input LaboratoryReportFilter {
+input LabReportFilter {
     programAreas: [String]
     jurisdictions: [ID]
     pregnancyStatus: PregnancyStatus
@@ -14,6 +14,63 @@ input LaboratoryReportFilter {
     providerSearch: LabReportProviderSearch
     resultedTest: String
     codedResult: String
+}
+
+type LabReport {
+    id: String
+    observationUid: Int
+    lastChange: Date
+    classCd: String
+    moodCd: String
+    observationLastChgTime: Date
+    cdDescTxt: String
+    recordStatusCd: String
+    programJurisdictionOid: Int
+    programAreaCd: String
+    jurisdictionCd: Int
+    jurisdictionCodeDescTxt: String
+    pregnantIndCd: String
+    localId: String
+    activityToTime: Date
+    effectiveFromTime: Date
+    rptToStateTime: Date
+    addTime: Date
+    electronicInd: String
+    versionCtrlNbr: Int
+    addUserId: Int
+    lastChgUserId: Int
+    personParticipations: [PersonParticipation]
+    organizationParticipations: [OrganizationParticipation]
+    materialParticipations: [MaterialParticipation]
+    observations: [Observation]
+    actIds: [ActId]
+}
+
+type MaterialParticipation {
+    actUid: Int
+    typeCd: String
+    entityId: String
+    subjectClassCd: String
+    typeDescTxt: String
+    participationRecordStatus: String
+    participationLastChangeTime: Date
+    cd: String
+    cdDescTxt: String
+}
+
+type Observation {
+    cd: String
+    cdDescTxt: String
+    domainCd: String
+    statusCd: String
+    altCd: String
+    altDescTxt: String
+    altCdSystemCd: String
+    displayName: String
+    ovcCode: String
+    ovcAltCode: String
+    ovcAltDescTxt: String
+    ovcAltCdSystemCd: String
 }
 
 input LaboratoryEventDateSearch {

@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LaboratoryReportFilter {
+public class LabReportFilter {
     private List<String> programAreas;
     private List<Long> jurisdictions;
     private PregnancyStatus pregnancyStatus;

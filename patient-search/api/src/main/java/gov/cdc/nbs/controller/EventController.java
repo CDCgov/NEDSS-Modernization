@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
 import gov.cdc.nbs.service.EventService;
 import lombok.AllArgsConstructor;
 
@@ -21,6 +23,10 @@ public class EventController {
     private final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-" + BusinessObjects.INVESTIGATION
             + "')";
     private final String FIND_PATIENT_AND_VIEW_INVESTIGATION = FIND_PATIENT + " and " + VIEW_INVESTIGATION;
+    private final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+            + BusinessObjects.OBSERVATIONLABREPORT
+            + "')";
+    private final String FIND_PATIENT_AND_VIEW_LAB_REPORT = FIND_PATIENT + " and " + VIEW_LAB_REPORT;
 
     private final EventService eventService;
 
@@ -29,5 +35,12 @@ public class EventController {
     public Page<Investigation> findInvestigationsByFilter(@Argument InvestigationFilter filter,
             @Argument GraphQLPage page) {
         return eventService.findInvestigationsByFilter(filter, page);
+    }
+
+    @QueryMapping
+    @PreAuthorize(FIND_PATIENT_AND_VIEW_LAB_REPORT)
+    public Page<LabReport> findLabReportsByFilter(@Argument LabReportFilter filter,
+            @Argument GraphQLPage page) {
+        return eventService.findLabReportsByFilter(filter, page);
     }
 }

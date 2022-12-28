@@ -52,8 +52,9 @@ public class Investigation {
     public static final String NOTIFICATION_ADD_TIME = "notification_add_time";
     public static final String NOTIFICATION_RECORD_STATUS_CD = "notification_record_status_cd";
     public static final String NOTIFICATION_LAST_CHANGE_TIME = "notification_last_chg_time";
-    public static final String ACT_IDS = "actids";
-    public static final String PARTICIPATIONS = "participations";
+    public static final String ACT_IDS = "act_ids";
+    public static final String PERSON_PARTICIPATIONS = "person_participations";
+    public static final String ORGANIZATION_PARTICIPATIONS = "organization_participations";
 
     /*
      * Same as public_health_case_uid
@@ -136,12 +137,6 @@ public class Investigation {
     @Field(name = MOOD_CD, type = FieldType.Keyword)
     private String moodCd;
 
-    @Field(name = PARTICIPATIONS, type = FieldType.Nested)
-    private List<ElasticsearchParticipation> participations;
-
-    @Field(name = ACT_IDS, type = FieldType.Nested)
-    private List<ElasticsearchActId> actIds;
-
     @Field(name = NOTIFICATION_LOCAL_ID, type = FieldType.Keyword)
     private String notificationLocalId;
 
@@ -155,5 +150,15 @@ public class Investigation {
     @Field(name = NOTIFICATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant notificationLastChgTime;
+
+    // nested fields
+    @Field(name = PERSON_PARTICIPATIONS, type = FieldType.Nested)
+    private List<ElasticsearchPersonParticipation> personParticipations;
+
+    @Field(name = ORGANIZATION_PARTICIPATIONS, type = FieldType.Nested)
+    private List<ElasticsearchOrganizationParticipation> organizationParticipations;
+
+    @Field(name = ACT_IDS, type = FieldType.Nested)
+    private List<ElasticsearchActId> actIds;
 
 }

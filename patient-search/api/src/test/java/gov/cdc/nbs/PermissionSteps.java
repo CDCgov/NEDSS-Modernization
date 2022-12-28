@@ -29,7 +29,7 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter.EventType;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
@@ -138,7 +138,7 @@ public class PermissionSteps {
                 case "findPatientsByLabReport":
                     var labReportFilter = new EventFilter();
                     labReportFilter.setEventType(EventType.LABORATORY_REPORT);
-                    labReportFilter.setLaboratoryReportFilter(new LaboratoryReportFilter());
+                    labReportFilter.setLaboratoryReportFilter(new LabReportFilter());
                     // TODO response = patientController.findPatientsByEvent(labReportFilter, page);
                     break;
                 case "findPatientsByOrganization":
