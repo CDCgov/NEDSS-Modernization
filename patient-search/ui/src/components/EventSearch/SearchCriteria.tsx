@@ -1,9 +1,9 @@
 import { Control, FieldValues } from 'react-hook-form';
 import {
     CaseStatus,
-    EventFilter,
-    EventType,
+    InvestigationFilter,
     InvestigationStatus,
+    LabReportFilter,
     NotificationStatus,
     ProcessingStatus
 } from '../../generated/graphql/schema';
@@ -14,11 +14,11 @@ import { CheckBoxControl } from '../FormInputs/CheckBoxControl';
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
     searchType?: string;
-    data?: EventFilter;
+    data?: InvestigationFilter | LabReportFilter;
 };
 
 export const SearchCriteria = ({ control, searchType = '', data }: GeneralSearchProps) => {
-    console.log(searchType === EventType.Investigation);
+    console.log(searchType === 'investigation');
 
     return (
         <>

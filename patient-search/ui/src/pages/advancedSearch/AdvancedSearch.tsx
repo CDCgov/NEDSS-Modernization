@@ -6,13 +6,16 @@ import { SimpleSearch } from '../../components/SimpleSearch';
 // TODO - event filter no longer exists, just use InvestigationFilter or LabReportFilter depending on search type
 // TODO - FindPatientsByEventQuery no longer exists, use FindInvestigationsByFilterQuery or FindLabReportsByFilterQuery
 import {
-    EventFilter,
-    EventType,
+    InvestigationFilter,
     PersonFilter,
     PersonSortField,
     SortDirection,
-    useFindPatientsByEventLazyQuery,
-    useFindPatientsByFilterLazyQuery
+    useFindPatientsByFilterLazyQuery,
+    useFindInvestigationsByFilterLazyQuery,
+    LabReportFilter,
+    useFindLabReportsByFilterLazyQuery,
+    FindInvestigationsByFilterQuery,
+    FindLabReportsByFilterQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
@@ -32,7 +35,7 @@ export const AdvancedSearch = () => {
     });
     const [initialSearch, setInitialSearch] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
-    const [formData, setFormData] = useState<PersonFilter | EventFilter>();
+    const [formData, setFormData] = useState<PersonFilter | InvestigationFilter | LabReportFilter>();
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,14 +43,26 @@ export const AdvancedSearch = () => {
     const [fetch, { data, loading }] = useFindPatientsByFilterLazyQuery({
         onCompleted: handleSearchResults
     });
-    const [getEventSearch, { data: eventData }] = useFindPatientsByEventLazyQuery({
+    const [getInvestigationSearch, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery({
         onCompleted: handleSearchResults
     });
+    const [getLabReportSearch, { data: labReportData }] = useFindLabReportsByFilterLazyQuery({
+        onCompleted: handleSearchResults
+    });
+    const [eventData, setEventData] = useState<
+        | FindInvestigationsByFilterQuery['findInvestigationsByFilter']
+        | FindLabReportsByFilterQuery['findLabReportsByFilter']
+    >();
 
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
     const addPatiendRef = useRef<any>(null);
     const PAGE_SIZE = 25;
+
+    useEffect(() => {
+        investigationData && setEventData(investigationData.findInvestigationsByFilter);
+        labReportData && setEventData(labReportData.findLabReportsByFilter);
+    }, [investigationData, labReportData]);
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -71,7 +86,7 @@ export const AdvancedSearch = () => {
         console.log(filter);
         const chips: any = [];
         if (filter) {
-            Object.entries(filter.investigationFilter as any).map((re: any) => {
+            Object.entries(filter as any).map((re: any) => {
                 if (Array.isArray(re[1])) {
                     re[1].map((item: any) => {
                         chips.push({ name: convertCamelCase(re[0]), value: item });
@@ -132,30 +147,44 @@ export const AdvancedSearch = () => {
 
     /**
      * Handles extracting and submitting the query from the q parameter,
-     * this object could either be PersonFilter or EventFilter
+     * this object could either be PersonFilter or InvestigationFilter
      */
     useEffect(() => {
         const queryParam = searchParams?.get('q');
+        const type = searchParams?.get('type');
         if (queryParam && state.isLoggedIn) {
             EncryptionControllerService.decryptUsingPost({
                 encryptedString: queryParam,
                 authorization: `Bearer ${state.getToken()}`
-            }).then(async (filter: PersonFilter | EventFilter) => {
-                // if filter has eventType property, then it is an EventFilter
-                if ((filter as EventFilter).eventType) {
+            }).then(async (filter: PersonFilter | InvestigationFilter | LabReportFilter) => {
+                // if filter has eventType property, then it is an InvestigationFilter
+                if (filter as InvestigationFilter | LabReportFilter) {
                     console.log(filter, 'filter');
-                    filter = filter as EventFilter;
-                    getEventSearch({
-                        variables: {
-                            filter,
-                            page: {
-                                pageNumber: currentPage - 1,
-                                pageSize: PAGE_SIZE,
-                                ...sort
+                    setSearchType(type || '');
+                    filter = filter as InvestigationFilter | LabReportFilter;
+                    if (type === 'investigation') {
+                        getInvestigationSearch({
+                            variables: {
+                                filter: filter as InvestigationFilter,
+                                page: {
+                                    pageNumber: currentPage - 1,
+                                    pageSize: PAGE_SIZE,
+                                    ...sort
+                                }
                             }
-                        }
-                    });
-                    setSearchType('event');
+                        });
+                    } else {
+                        getLabReportSearch({
+                            variables: {
+                                filter: filter as LabReportFilter,
+                                page: {
+                                    pageNumber: currentPage - 1,
+                                    pageSize: PAGE_SIZE,
+                                    ...sort
+                                }
+                            }
+                        });
+                    }
                     setFormData(filter);
                     handleFilterTags(filter);
                 } else {
@@ -213,7 +242,7 @@ export const AdvancedSearch = () => {
 
     // handles submit from Person Search and Event Search,
     // it simply encrypts the filter object and sets it as the query parameter
-    const handleSubmit = async (filter: PersonFilter | EventFilter) => {
+    const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type?: string) => {
         let search = '';
         if (!isEmpty(filter)) {
             // send filter for encryption
@@ -225,6 +254,7 @@ export const AdvancedSearch = () => {
 
             // URI encode encrypted filter
             search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+            type && (search = `${search}&type=${type}`);
             navigate({
                 pathname: '/advanced-search',
                 search
@@ -242,7 +272,7 @@ export const AdvancedSearch = () => {
 
     const handleChipClose = (value: string) => {
         let tempFormData: PersonFilter = formData as PersonFilter;
-        let tempEventFormData: EventFilter = formData as EventFilter;
+        // let tempEventFormData: InvestigationFilter = formData as InvestigationFilter;
         setResultsChip(resultsChip.filter((c) => c.name != value));
         console.log(formData);
         console.log(value);
@@ -290,11 +320,11 @@ export const AdvancedSearch = () => {
                 case 'ID Type':
                     tempFormData = { ...tempFormData, identification: undefined };
                     break;
-                case 'Jurisdictions':
-                    tempEventFormData = { ...tempEventFormData, investigationFilter: { jurisdictions: undefined } };
-                    break;
+                // case 'Jurisdictions':
+                //     tempEventFormData = { ...tempEventFormData, investigationFilter: { jurisdictions: undefined } };
+                //     break;
             }
-            handleSubmit(tempEventFormData?.eventType === EventType.Investigation ? tempEventFormData : tempFormData);
+            handleSubmit(tempFormData);
             resultsChip.length === 1 || ((value === 'ID Number' || value === 'ID Type') && navigate('/'));
         }
     };
@@ -318,7 +348,7 @@ export const AdvancedSearch = () => {
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
-                (eventData?.findPatientsByEvent.content && eventData.findPatientsByEvent.content.length > 7) ||
+                (eventData?.content && eventData?.content.length > 7) ||
                 (data?.findPatientsByFilter?.content && data?.findPatientsByFilter?.content.length > 7)
                     ? 'full-height'
                     : 'partial-height'
@@ -329,8 +359,7 @@ export const AdvancedSearch = () => {
                     <div className="button-group">
                         <Button
                             disabled={
-                                (!eventData?.findPatientsByEvent.content ||
-                                    eventData?.findPatientsByEvent.content?.length === 0) &&
+                                (!eventData?.content || eventData?.content?.length === 0) &&
                                 (!data?.findPatientsByFilter?.content ||
                                     data?.findPatientsByFilter?.content?.length === 0)
                             }
@@ -390,7 +419,11 @@ export const AdvancedSearch = () => {
                                 clearAll={handleClearAll}
                             />
                         ) : (
-                            <EventSearch onSearch={handleSubmit} data={formData as EventFilter} />
+                            <EventSearch
+                                onSearch={handleSubmit}
+                                data={formData as InvestigationFilter | LabReportFilter}
+                                searchType={searchType}
+                            />
                         )}
                     </div>
                 </Grid>
@@ -401,7 +434,7 @@ export const AdvancedSearch = () => {
                         {initialSearch ? (
                             <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
                                 <strong className="margin-right-1">
-                                    {data?.findPatientsByFilter?.total || eventData?.findPatientsByEvent?.total}
+                                    {data?.findPatientsByFilter?.total || eventData?.total}
                                 </strong>{' '}
                                 Results for:
                                 {resultsChip.map(
@@ -423,8 +456,7 @@ export const AdvancedSearch = () => {
                             <div className="button-group">
                                 <Button
                                     disabled={
-                                        (!eventData?.findPatientsByEvent.content ||
-                                            eventData?.findPatientsByEvent.content?.length === 0) &&
+                                        (!eventData?.content || eventData?.content?.length === 0) &&
                                         (!data?.findPatientsByFilter?.content ||
                                             data?.findPatientsByFilter?.content?.length === 0)
                                     }
@@ -436,8 +468,7 @@ export const AdvancedSearch = () => {
                                     <img
                                         style={{ marginLeft: '5px' }}
                                         src={
-                                            (!eventData?.findPatientsByEvent.content ||
-                                                eventData?.findPatientsByEvent.content?.length === 0) &&
+                                            (!eventData?.content || eventData?.content?.length === 0) &&
                                             (!data?.findPatientsByFilter?.content ||
                                                 data?.findPatientsByFilter?.content?.length === 0)
                                                 ? 'down-arrow-white.svg'
@@ -486,8 +517,7 @@ export const AdvancedSearch = () => {
                             </div>
                             <Button
                                 disabled={
-                                    (!eventData?.findPatientsByEvent.content ||
-                                        eventData?.findPatientsByEvent.content?.length === 0) &&
+                                    (!eventData?.content || eventData?.content?.length === 0) &&
                                     (!data?.findPatientsByFilter?.content ||
                                         data?.findPatientsByFilter?.content?.length === 0)
                                 }
@@ -498,8 +528,7 @@ export const AdvancedSearch = () => {
                             </Button>
                             <Button
                                 disabled={
-                                    (!eventData?.findPatientsByEvent.content ||
-                                        eventData?.findPatientsByEvent.content?.length === 0) &&
+                                    (!eventData?.content || eventData?.content?.length === 0) &&
                                     (!data?.findPatientsByFilter?.content ||
                                         data?.findPatientsByFilter?.content?.length === 0)
                                 }
@@ -536,8 +565,7 @@ export const AdvancedSearch = () => {
                         </>
                     )}
                     {initialSearch &&
-                        (data?.findPatientsByFilter?.content?.length === 0 ||
-                            eventData?.findPatientsByEvent.content?.length === 0) && (
+                        (data?.findPatientsByFilter?.content?.length === 0 || eventData?.content?.length === 0) && (
                             <div
                                 className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
                                 style={{
@@ -569,18 +597,15 @@ export const AdvancedSearch = () => {
                                 currentPage={currentPage}
                             />
                         )}
-                    {!submitted &&
-                        !loading &&
-                        eventData?.findPatientsByEvent?.content &&
-                        eventData?.findPatientsByEvent?.content.length > 0 && (
-                            <SearchItems
-                                initialSearch={initialSearch}
-                                data={eventData?.findPatientsByEvent.content}
-                                totalResults={Number(eventData?.findPatientsByEvent.total)}
-                                handlePagination={handlePagination}
-                                currentPage={currentPage}
-                            />
-                        )}
+                    {!submitted && !loading && eventData?.content && eventData?.content.length > 0 && (
+                        <SearchItems
+                            initialSearch={initialSearch}
+                            data={eventData?.content}
+                            totalResults={Number(eventData?.total)}
+                            handlePagination={handlePagination}
+                            currentPage={currentPage}
+                        />
+                    )}
                 </Grid>
             </Grid>
         </div>

@@ -1,5 +1,4 @@
 import { Control, Controller, FieldValues } from 'react-hook-form';
-import { EventType } from '../../generated/graphql/schema';
 import { SelectInput } from '../FormInputs/SelectInput';
 
 type EventTypesProps = {
@@ -23,8 +22,8 @@ export const EventTypes = ({ control, name, defaultValue, onChangeMethod }: Even
                     }}
                     label="Event Type:"
                     options={[
-                        { name: 'Investigation', value: EventType.Investigation },
-                        { name: 'Laboratory Report', value: EventType.LaboratoryReport }
+                        { name: 'Investigation', value: 'investigation' },
+                        { name: 'Laboratory Report', value: 'labReport' }
                     ]}
                 />
             )}

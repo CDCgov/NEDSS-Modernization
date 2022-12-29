@@ -1,9 +1,9 @@
 import { Control, Controller, FieldValues } from 'react-hook-form';
 import {
-    EventFilter,
-    EventType,
     InvestigationEventDateType,
     InvestigationEventIdType,
+    InvestigationFilter,
+    LabReportFilter,
     PregnancyStatus,
     ProviderType,
     ReportingEntityType
@@ -19,7 +19,7 @@ import { useState } from 'react';
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
     searchType?: string;
-    data?: EventFilter;
+    data?: InvestigationFilter | LabReportFilter;
 };
 
 export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchProps) => {
@@ -30,9 +30,9 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (
                     <>
-                        {searchType === EventType.Investigation && (
+                        {searchType === 'investigation' && (
                             <MultiSelectControl
-                                defaultValue={data?.investigationFilter?.conditions}
+                                // defaultValue={data?.conditions as any}
                                 control={control}
                                 name="conditon"
                                 label="Condition:"
@@ -46,11 +46,7 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
                         )}
 
                         <MultiSelectControl
-                            defaultValue={
-                                data?.eventType === EventType.Investigation
-                                    ? data?.investigationFilter?.programAreas
-                                    : data?.laboratoryReportFilter?.programAreas
-                            }
+                            defaultValue={data?.programAreas}
                             control={control}
                             name="programArea"
                             label="Program Area:"
@@ -64,11 +60,7 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
 
                         <MultiSelectControl
                             control={control}
-                            defaultValue={
-                                data?.eventType === EventType.Investigation
-                                    ? data?.investigationFilter?.jurisdictions
-                                    : data?.laboratoryReportFilter?.jurisdictions
-                            }
+                            defaultValue={data?.jurisdictions}
                             name="jurisdiction"
                             label="Jurisdiction:"
                             options={searchCriteria.jurisdictions.map((j) => {
@@ -183,7 +175,7 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
                 name="entityType"
                 label="Event Provider/Facility Type:"
                 onChangeMethod={(e) => setFacilityType(e.target.value && e.target.value !== '- Select -')}
-                options={Object.values(searchType === EventType.Investigation ? ReportingEntityType : ProviderType).map(
+                options={Object.values(searchType === 'investigation' ? ReportingEntityType : ProviderType).map(
                     (type) => {
                         return {
                             name: formatInterfaceString(type),

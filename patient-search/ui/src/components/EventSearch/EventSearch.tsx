@@ -2,18 +2,19 @@ import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { EventFilter, EventType } from '../../generated/graphql/schema';
+import { InvestigationFilter, LabReportFilter } from '../../generated/graphql/schema';
 import { EventTypes } from './EventType';
 import { GeneralSearch } from './generalSearch';
 import { useNavigate } from 'react-router-dom';
 import { SearchCriteria } from './SearchCriteria';
 
 type EventSearchProps = {
-    onSearch: (filter: EventFilter) => void;
-    data?: EventFilter;
+    onSearch: (filter: InvestigationFilter | LabReportFilter, type: string) => void;
+    data?: InvestigationFilter | LabReportFilter;
+    searchType?: string;
 };
 
-export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
+export const EventSearch = ({ onSearch, data, searchType }: EventSearchProps) => {
     const navigate = useNavigate();
     const methods = useForm();
 
@@ -26,7 +27,7 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
             title: 'Event Type',
             content: (
                 <EventTypes
-                    defaultValue={data?.eventType}
+                    defaultValue={searchType || eventSearchType}
                     onChangeMethod={(e) => {
                         setEventSearchType(e);
                     }}
@@ -44,7 +45,7 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
     const eventSearchFilteredItem: AccordionItemProps[] = [
         {
             title: 'General Search',
-            content: <GeneralSearch searchType={data?.eventType || eventSearchType} control={control} data={data} />,
+            content: <GeneralSearch searchType={searchType || eventSearchType} control={control} data={data} />,
             expanded: true,
             id: '2',
             headingLevel: 'h4',
@@ -52,7 +53,7 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
         },
         {
             title: 'Investigation Criteria',
-            content: <SearchCriteria searchType={data?.eventType || eventSearchType} control={control} data={data} />,
+            content: <SearchCriteria searchType={searchType || eventSearchType} control={control} data={data} />,
             expanded: false,
             id: '3',
             headingLevel: 'h4',
@@ -61,13 +62,11 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
     ];
 
     const onSubmit: any = (body: any) => {
-        const filterData: EventFilter = {
-            eventType: eventSearchType || data?.eventType
-        };
+        let filterData: InvestigationFilter | LabReportFilter = {};
         console.log(body);
-        if (eventSearchType === EventType.Investigation) {
-            filterData.eventType = EventType.Investigation;
-            filterData.investigationFilter = {
+        if (eventSearchType === 'investigation') {
+            // filterData.eventType = EventType.Investigation;
+            filterData = {
                 conditions: body.conditon?.length > 0 ? body.conditon : undefined,
                 jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
                 pregnancyStatus:
@@ -79,9 +78,9 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
                 lastUpdatedBy:
                     body.lastUpdatedBy && body.lastUpdatedBy !== '- Select -' ? body.lastUpdatedBy : undefined
             };
-        } else if (eventSearchType === EventType.LaboratoryReport) {
-            filterData.eventType = EventType.LaboratoryReport;
-            filterData.laboratoryReportFilter = {
+        } else if (eventSearchType === 'labReport') {
+            // filterData.eventType = EventType.LaboratoryReport;
+            filterData = {
                 jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
                 pregnancyStatus:
                     body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
@@ -101,39 +100,34 @@ export const EventSearch = ({ onSearch, data }: EventSearchProps) => {
                 from: body.from,
                 to: body.to
             };
-            if ((filterData.eventType = EventType.LaboratoryReport)) {
-                filterData?.investigationFilter && (filterData.investigationFilter.eventDateSearch = eventDateSearch);
-            } else {
-                filterData?.laboratoryReportFilter &&
-                    (filterData.laboratoryReportFilter.eventDateSearch = eventDateSearch);
-            }
+            filterData.eventDateSearch = eventDateSearch;
         }
 
         // Provider/Facility Type Filter
         if (body.entityType && body.entityType !== '- Select -' && body.id) {
-            if ((filterData.eventType = EventType.LaboratoryReport)) {
-                filterData?.investigationFilter &&
-                    (filterData.investigationFilter.providerFacilitySearch = {
-                        entityType: body.entityType,
-                        id: body.id
-                    });
+            if (eventSearchType === 'investigation' && (filterData as InvestigationFilter)) {
+                filterData = filterData as InvestigationFilter;
+                filterData.providerFacilitySearch = {
+                    entityType: body.entityType,
+                    id: body.id
+                };
             } else {
-                filterData?.laboratoryReportFilter &&
-                    (filterData.laboratoryReportFilter.providerSearch = {
-                        providerType: body.entityType,
-                        providerId: body.id
-                    });
+                filterData = filterData as LabReportFilter;
+                filterData.providerSearch = {
+                    providerType: body.entityType,
+                    providerId: body.id
+                };
             }
         }
         console.log(filterData, 'filterData');
-        onSearch(filterData);
+        onSearch(filterData, eventSearchType);
     };
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
                 <Accordion items={eventSearchItems} multiselectable={true} />
-                {(data?.eventType || (eventSearchType && eventSearchType !== '- Select -')) && (
+                {(searchType || (eventSearchType && eventSearchType !== '- Select -')) && (
                     <Accordion items={eventSearchFilteredItem} multiselectable={true} />
                 )}
             </div>
