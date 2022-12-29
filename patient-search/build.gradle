@@ -18,6 +18,7 @@ sonarqube {
     property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
     property "sonar.organization", "cdcgov"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.sources", "api/src"
   }
 }
 allprojects {
@@ -26,4 +27,12 @@ allprojects {
   }
 }
 
+subprojects {
+    sonarqube {
+        properties {
+            property "sonar.sources", "api/src/main"
+            property "sonar.tests", "api/src/test"
+        }
+    }
+}
 
