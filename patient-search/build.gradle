@@ -30,8 +30,7 @@ allprojects {
 subprojects {
     sonarqube {
         properties {
-            property "sonar.sources", "api/src/main"
-            property "sonar.tests", "api/src/test"
+            property "sonar.sources", "src"
         }
     }
 }
