@@ -36,13 +36,13 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install react dependencies
-        working-directory: ./patient-search/ui
-        run: npm install
+      # - name: Set up Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      # - name: Install react dependencies
+      #   working-directory: ./patient-search/ui
+      #   run: npm install
       - name: Build and analyze
         working-directory: ./patient-search
         env:
