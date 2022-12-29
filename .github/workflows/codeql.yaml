@@ -5,11 +5,11 @@ name: "CodeQL"
 on:
   push:
     paths:
-      - 'patient-search/'
+      - 'patient-search/**'
       - '.github/workflows/codeql.yaml'
   pull_request:
     paths:
-      - 'patient-search/'
+      - 'patient-search/**'
       - '.github/workflows/codeql.yaml'
     
 jobs:
