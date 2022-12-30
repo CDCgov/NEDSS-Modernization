@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef } from 'react';
 import { LabReport, OrganizationParticipation, PersonParticipation } from '../../generated/graphql/schema';
@@ -50,7 +49,7 @@ export const LabReportResults = ({
     };
 
     const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
-        var provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
+        const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -64,7 +63,7 @@ export const LabReportResults = ({
 
     const getDescription = (labReport: LabReport): string => {
         // TODO - there could be multiple tests associated with one lab report. How to display them in UI
-        var observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
+        const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
         if (observation) {
             return `${observation.cdDescTxt} = ${observation.displayName}`;
         } else {
