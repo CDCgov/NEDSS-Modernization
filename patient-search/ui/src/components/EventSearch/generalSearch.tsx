@@ -15,14 +15,15 @@ import { Input } from '../FormInputs/Input';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { MultiSelectControl } from '../FormInputs/MultiSelectControl';
 import { useState } from 'react';
+import { SEARCH_TYPE } from '../../pages/advancedSearch/AdvancedSearch';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
     searchType?: string;
-    data?: InvestigationFilter | LabReportFilter;
+    filter?: InvestigationFilter | LabReportFilter;
 };
 
-export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchProps) => {
+export const GeneralSearch = ({ control, searchType = '', filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
 
     return (
@@ -30,7 +31,7 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (
                     <>
-                        {searchType === 'investigation' && (
+                        {searchType === SEARCH_TYPE.INVESTIGATION && (
                             <MultiSelectControl
                                 // defaultValue={data?.conditions as any}
                                 control={control}
@@ -46,7 +47,7 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
                         )}
 
                         <MultiSelectControl
-                            defaultValue={data?.programAreas}
+                            defaultValue={filter?.programAreas}
                             control={control}
                             name="programArea"
                             label="Program Area:"
@@ -60,7 +61,7 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
 
                         <MultiSelectControl
                             control={control}
-                            defaultValue={data?.jurisdictions}
+                            defaultValue={filter?.jurisdictions}
                             name="jurisdiction"
                             label="Jurisdiction:"
                             options={searchCriteria.jurisdictions.map((j) => {
@@ -175,14 +176,14 @@ export const GeneralSearch = ({ control, searchType = '', data }: GeneralSearchP
                 name="entityType"
                 label="Event Provider/Facility Type:"
                 onChangeMethod={(e) => setFacilityType(e.target.value && e.target.value !== '- Select -')}
-                options={Object.values(searchType === 'investigation' ? ReportingEntityType : ProviderType).map(
-                    (type) => {
-                        return {
-                            name: formatInterfaceString(type),
-                            value: type
-                        };
-                    }
-                )}
+                options={Object.values(
+                    searchType === SEARCH_TYPE.INVESTIGATION ? ReportingEntityType : ProviderType
+                ).map((type) => {
+                    return {
+                        name: formatInterfaceString(type),
+                        value: type
+                    };
+                })}
             />
 
             {facilityType && (

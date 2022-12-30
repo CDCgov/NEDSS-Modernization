@@ -5,23 +5,25 @@ module.exports = {
         jest: true
     },
     extends: [
-        "plugin:react/recommended",
-        "google",
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:prettier/recommended"
+        'plugin:react/recommended',
+        'google',
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:prettier/recommended'
     ],
-    parser: "@typescript-eslint/parser",
+    parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaFeatures: {
             jsx: true
         },
-        ecmaVersion: "latest"
+        ecmaVersion: 'latest'
     },
-    plugins: ["react", "@typescript-eslint"],
+    plugins: ['react', '@typescript-eslint'],
     rules: {
-        "react/react-in-jsx-scope": "off",
-        "require-jsdoc":"off",
-        "react/no-unescaped-entities": 0
+        'react/react-in-jsx-scope': 'off',
+        'require-jsdoc': 'off',
+        'react/no-unescaped-entities': 0,
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'error'
     }
 };

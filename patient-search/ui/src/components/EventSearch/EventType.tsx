@@ -1,4 +1,5 @@
 import { Control, Controller, FieldValues } from 'react-hook-form';
+import { SEARCH_TYPE } from '../../pages/advancedSearch/AdvancedSearch';
 import { SelectInput } from '../FormInputs/SelectInput';
 
 type EventTypesProps = {
@@ -22,8 +23,8 @@ export const EventTypes = ({ control, name, defaultValue, onChangeMethod }: Even
                     }}
                     label="Event Type:"
                     options={[
-                        { name: 'Investigation', value: 'investigation' },
-                        { name: 'Laboratory Report', value: 'labReport' }
+                        { name: 'Investigation', value: SEARCH_TYPE.INVESTIGATION },
+                        { name: 'Laboratory Report', value: SEARCH_TYPE.LAB_REPORT }
                     ]}
                 />
             )}

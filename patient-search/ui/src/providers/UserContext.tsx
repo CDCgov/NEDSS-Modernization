@@ -50,7 +50,7 @@ export const UserContext = React.createContext<{
     logout: () => void;
 }>({
     state: initialState,
-    login: async (a, b) => {
+    login: async () => {
         return true;
     },
     logout: () => {}
