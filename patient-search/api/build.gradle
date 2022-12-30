@@ -19,7 +19,7 @@ sonarqube {
     property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
     property "sonar.organization", "cdcgov"
     property "sonar.host.url", "https://sonarcloud.io"
-    property "sonar.sources", "src"
+
   }
 }
 
