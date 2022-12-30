@@ -416,7 +416,7 @@ export const AdvancedSearch = () => {
                 <Grid col={3} className="bg-white border-right border-base-light">
                     <div className="left-searchbar">
                         <h3 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h3>
-                        <div className="grid-row flex-align-center">
+                        <div className="grid-row flex-align-center" style={{ borderBottom: '1.5px solid lightgray' }}>
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.PERSON && 'active'
@@ -627,27 +627,35 @@ export const AdvancedSearch = () => {
                                 </div>
                             </div>
                         )}
-                    {!submitted && !loading && patientData?.content && patientData.content.length > 0 && (
-                        <SearchItems
-                            initialSearch={initialSearch}
-                            data={patientData.content}
-                            totalResults={patientData.total}
-                            handlePagination={handlePagination}
-                            currentPage={currentPage}
-                        />
-                    )}
-                    {!submitted && !loading && investigationData?.content && investigationData?.content.length > 0 && (
-                        <h1>investigation data result count: {investigationData.total}</h1>
-                        // TODO we won't be able to re-use "SearchItems" for event data.
-                        // Need to make 2 new components, one for Investigations, one for LabReport
-                        // <SearchItems
-                        //     initialSearch={initialSearch}
-                        //     data={eventData?.content}
-                        //     totalResults={Number(eventData?.total)}
-                        //     handlePagination={handlePagination}
-                        //     currentPage={currentPage}
-                        // />
-                    )}
+                    {activeTab === ACTIVE_TAB.PERSON &&
+                        !submitted &&
+                        !loading &&
+                        patientData?.content &&
+                        patientData.content.length > 0 && (
+                            <SearchItems
+                                initialSearch={initialSearch}
+                                data={patientData.content}
+                                totalResults={patientData.total}
+                                handlePagination={handlePagination}
+                                currentPage={currentPage}
+                            />
+                        )}
+                    {activeTab === ACTIVE_TAB.EVENT &&
+                        !submitted &&
+                        !loading &&
+                        investigationData?.content &&
+                        investigationData?.content.length > 0 && (
+                            <h1>investigation data result count: {investigationData.total}</h1>
+                            // TODO we won't be able to re-use "SearchItems" for event data.
+                            // Need to make 2 new components, one for Investigations, one for LabReport
+                            // <SearchItems
+                            //     initialSearch={initialSearch}
+                            //     data={eventData?.content}
+                            //     totalResults={Number(eventData?.total)}
+                            //     handlePagination={handlePagination}
+                            //     currentPage={currentPage}
+                            // />
+                        )}
                 </Grid>
             </Grid>
         </div>

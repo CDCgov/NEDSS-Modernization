@@ -18,7 +18,15 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
         // birthday is a date
         const ageDifMs = Date.now() - birthday.getTime();
         const ageDate = new Date(ageDifMs); // miliseconds from epoch
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
+        if (Math.abs(ageDate.getMonth()) === 0 && Math.abs(ageDate.getUTCFullYear() - 1970) === 0) {
+            return `${Math.abs(ageDate.getDate())} days`;
+        }
+
+        if (Math.abs(ageDate.getUTCFullYear() - 1970) === 0) {
+            return `${Math.abs(ageDate.getMonth())} months`;
+        }
+
+        return `${Math.abs(ageDate.getUTCFullYear() - 1970)} years`;
     };
 
     const [num, setNum] = useState<any>([]);
@@ -206,7 +214,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                                             })}
                                                             <span className="font-sans-2xs">
                                                                 {' '}
-                                                                ({_calculateAge(new Date(item.birthTime))} years)
+                                                                ({_calculateAge(new Date(item.birthTime))})
                                                             </span>
                                                         </>
                                                     )}
