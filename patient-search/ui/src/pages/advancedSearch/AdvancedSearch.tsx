@@ -1,5 +1,5 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSearch';
 import { SimpleSearch } from '../../components/SimpleSearch';
@@ -15,7 +15,8 @@ import {
     LabReportFilter,
     useFindLabReportsByFilterLazyQuery,
     FindInvestigationsByFilterQuery,
-    FindLabReportsByFilterQuery
+    FindLabReportsByFilterQuery,
+    FindPatientsByFilterQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
@@ -24,6 +25,7 @@ import './AdvancedSearch.scss';
 import Chip from './Chip';
 import { SearchItems } from './SearchItems';
 import { convertCamelCase } from '../../utils/util';
+import { EventSearchItems } from './EventSearchItems';
 export const AdvancedSearch = () => {
     const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
     const { state } = useContext(UserContext);
@@ -53,16 +55,22 @@ export const AdvancedSearch = () => {
         | FindInvestigationsByFilterQuery['findInvestigationsByFilter']
         | FindLabReportsByFilterQuery['findLabReportsByFilter']
     >();
+    const [patientData, setPatientData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']>();
 
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
     const addPatiendRef = useRef<any>(null);
     const PAGE_SIZE = 25;
 
-    useEffect(() => {
+    useMemo(() => {
         investigationData && setEventData(investigationData.findInvestigationsByFilter);
         labReportData && setEventData(labReportData.findLabReportsByFilter);
-    }, [investigationData, labReportData]);
+        data && setPatientData(data?.findPatientsByFilter);
+
+        data?.findPatientsByFilter && setEventData({ content: [], total: 0 });
+        (investigationData?.findInvestigationsByFilter || labReportData?.findLabReportsByFilter) &&
+            setPatientData({ content: [], total: 0 });
+    }, [investigationData, labReportData, data]);
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -158,9 +166,9 @@ export const AdvancedSearch = () => {
                 authorization: `Bearer ${state.getToken()}`
             }).then(async (filter: PersonFilter | InvestigationFilter | LabReportFilter) => {
                 // if filter has eventType property, then it is an InvestigationFilter
-                if (filter as InvestigationFilter | LabReportFilter) {
+                if (type === 'investigation' || type === 'labReport') {
+                    setSearchType(type || 'search');
                     console.log(filter, 'filter');
-                    setSearchType(type || '');
                     filter = filter as InvestigationFilter | LabReportFilter;
                     if (type === 'investigation') {
                         getInvestigationSearch({
@@ -168,8 +176,8 @@ export const AdvancedSearch = () => {
                                 filter: filter as InvestigationFilter,
                                 page: {
                                     pageNumber: currentPage - 1,
-                                    pageSize: PAGE_SIZE,
-                                    ...sort
+                                    pageSize: PAGE_SIZE
+                                    // ...sort
                                 }
                             }
                         });
@@ -188,6 +196,7 @@ export const AdvancedSearch = () => {
                     setFormData(filter);
                     handleFilterTags(filter);
                 } else {
+                    setSearchType('search');
                     filter = filter as PersonFilter;
                     if (!isEmpty(filter)) {
                         // JSON.stringify(filter) !== JSON.stringify(formData) &&
@@ -231,6 +240,8 @@ export const AdvancedSearch = () => {
 
     function handleSearchResults() {
         setInitialSearch(true);
+        console.log('patientData', patientData);
+        console.log('eventData', eventData);
     }
 
     function isEmpty(obj: any) {
@@ -349,7 +360,7 @@ export const AdvancedSearch = () => {
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
                 (eventData?.content && eventData?.content.length > 7) ||
-                (data?.findPatientsByFilter?.content && data?.findPatientsByFilter?.content.length > 7)
+                (patientData?.content && patientData?.content.length > 7)
                     ? 'full-height'
                     : 'partial-height'
             }`}>
@@ -360,8 +371,7 @@ export const AdvancedSearch = () => {
                         <Button
                             disabled={
                                 (!eventData?.content || eventData?.content?.length === 0) &&
-                                (!data?.findPatientsByFilter?.content ||
-                                    data?.findPatientsByFilter?.content?.length === 0)
+                                (!patientData?.content || patientData?.content?.length === 0)
                             }
                             className="padding-x-3 add-patient-button"
                             type={'button'}
@@ -396,7 +406,7 @@ export const AdvancedSearch = () => {
                 <Grid col={3} className="bg-white border-right border-base-light">
                     <div className="left-searchbar">
                         <h3 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h3>
-                        <div className="grid-row flex-align-center">
+                        <div className="grid-row flex-align-center" style={{ borderBottom: '1.5px solid lightgray' }}>
                             <h6
                                 className={`${
                                     searchType === 'search' && 'active'
@@ -433,9 +443,7 @@ export const AdvancedSearch = () => {
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {initialSearch ? (
                             <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
-                                <strong className="margin-right-1">
-                                    {data?.findPatientsByFilter?.total || eventData?.total}
-                                </strong>{' '}
+                                <strong className="margin-right-1">{patientData?.total || eventData?.total}</strong>{' '}
                                 Results for:
                                 {resultsChip.map(
                                     (re, index) =>
@@ -457,8 +465,7 @@ export const AdvancedSearch = () => {
                                 <Button
                                     disabled={
                                         (!eventData?.content || eventData?.content?.length === 0) &&
-                                        (!data?.findPatientsByFilter?.content ||
-                                            data?.findPatientsByFilter?.content?.length === 0)
+                                        (!patientData?.content || patientData?.content?.length === 0)
                                     }
                                     className="width-full margin-top-0"
                                     type={'button'}
@@ -469,8 +476,7 @@ export const AdvancedSearch = () => {
                                         style={{ marginLeft: '5px' }}
                                         src={
                                             (!eventData?.content || eventData?.content?.length === 0) &&
-                                            (!data?.findPatientsByFilter?.content ||
-                                                data?.findPatientsByFilter?.content?.length === 0)
+                                            (!patientData?.content || patientData?.content?.length === 0)
                                                 ? 'down-arrow-white.svg'
                                                 : 'down-arrow-blue.svg'
                                         }
@@ -515,28 +521,30 @@ export const AdvancedSearch = () => {
                                     </ul>
                                 )}
                             </div>
-                            <Button
-                                disabled={
-                                    (!eventData?.content || eventData?.content?.length === 0) &&
-                                    (!data?.findPatientsByFilter?.content ||
-                                        data?.findPatientsByFilter?.content?.length === 0)
-                                }
-                                className="width-full margin-top-0"
-                                type={'button'}
-                                outline>
-                                Export
-                            </Button>
-                            <Button
-                                disabled={
-                                    (!eventData?.content || eventData?.content?.length === 0) &&
-                                    (!data?.findPatientsByFilter?.content ||
-                                        data?.findPatientsByFilter?.content?.length === 0)
-                                }
-                                className="width-full margin-top-0"
-                                type={'button'}
-                                outline>
-                                Print
-                            </Button>
+                            {searchType !== 'search' && (
+                                <Button
+                                    disabled={
+                                        (!eventData?.content || eventData?.content?.length === 0) &&
+                                        (!patientData?.content || patientData?.content?.length === 0)
+                                    }
+                                    className="width-full margin-top-0"
+                                    type={'button'}
+                                    outline>
+                                    Export
+                                </Button>
+                            )}
+                            {searchType !== 'search' && (
+                                <Button
+                                    disabled={
+                                        (!eventData?.content || eventData?.content?.length === 0) &&
+                                        (!patientData?.content || patientData?.content?.length === 0)
+                                    }
+                                    className="width-full margin-top-0"
+                                    type={'button'}
+                                    outline>
+                                    Print
+                                </Button>
+                            )}
                         </div>
                     </Grid>
                     {!initialSearch && !loading && (
@@ -564,41 +572,37 @@ export const AdvancedSearch = () => {
                             </div>
                         </>
                     )}
-                    {initialSearch &&
-                        (data?.findPatientsByFilter?.content?.length === 0 || eventData?.content?.length === 0) && (
-                            <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
-                                style={{
-                                    background: 'white',
-                                    border: '1px solid #DFE1E2',
-                                    borderRadius: '5px',
-                                    height: '147px'
-                                }}>
-                                <div className="text-center">
-                                    <p>No results found.</p>
-                                    <p>
-                                        Try refining your search, or{' '}
-                                        <Link to="/" style={{ color: '#005EA2' }}>
-                                            add a new patient
-                                        </Link>
-                                    </p>
-                                </div>
+                    {initialSearch && patientData?.content?.length === 0 && eventData?.content?.length === 0 && (
+                        <div
+                            className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                            style={{
+                                background: 'white',
+                                border: '1px solid #DFE1E2',
+                                borderRadius: '5px',
+                                height: '147px'
+                            }}>
+                            <div className="text-center">
+                                <p>No results found.</p>
+                                <p>
+                                    Try refining your search, or{' '}
+                                    <Link to="/" style={{ color: '#005EA2' }}>
+                                        add a new patient
+                                    </Link>
+                                </p>
                             </div>
-                        )}
-                    {!submitted &&
-                        !loading &&
-                        data?.findPatientsByFilter?.content &&
-                        data?.findPatientsByFilter?.content.length > 0 && (
-                            <SearchItems
-                                initialSearch={initialSearch}
-                                data={data?.findPatientsByFilter.content}
-                                totalResults={Number(data?.findPatientsByFilter.total)}
-                                handlePagination={handlePagination}
-                                currentPage={currentPage}
-                            />
-                        )}
-                    {!submitted && !loading && eventData?.content && eventData?.content.length > 0 && (
+                        </div>
+                    )}
+                    {!submitted && !loading && patientData?.content && patientData?.content.length > 0 && (
                         <SearchItems
+                            initialSearch={initialSearch}
+                            data={patientData.content}
+                            totalResults={Number(patientData.total)}
+                            handlePagination={handlePagination}
+                            currentPage={currentPage}
+                        />
+                    )}
+                    {!submitted && eventData?.content && eventData?.content?.length > 0 && (
+                        <EventSearchItems
                             initialSearch={initialSearch}
                             data={eventData?.content}
                             totalResults={Number(eventData?.total)}
