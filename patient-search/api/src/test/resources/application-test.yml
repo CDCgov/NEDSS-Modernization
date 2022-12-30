@@ -36,7 +36,7 @@ spring:
         pathmatch:
             matching-strategy: ant_path_matcher
 kafka:
-    bootstrap-servers:
+    bootstrap-servers: localhost:9092
     listener:
       ack-mode: record
     producer:
