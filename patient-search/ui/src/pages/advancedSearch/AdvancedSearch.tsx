@@ -426,7 +426,7 @@ export const AdvancedSearch = () => {
                             </h6>
                             <h6
                                 className={`${
-                                    activeTab === ACTIVE_TAB.PERSON && 'active'
+                                    activeTab === ACTIVE_TAB.EVENT && 'active'
                                 } padding-bottom-1 type text-normal margin-y-3 font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
                                 Event Search
