@@ -1,3 +1,7 @@
+plugins {
+	id "org.sonarqube" version "3.5.0.2730"
+}
+
 apply plugin: "com.moowork.node"
  apply plugin: "base"
  
@@ -5,9 +9,7 @@ apply plugin: "com.moowork.node"
  args = ["run", "build"]
  }
 
-plugins {
-	id "org.sonarqube" version "3.5.0.2730"
-}
+
 
 sonarqube {
   properties {
