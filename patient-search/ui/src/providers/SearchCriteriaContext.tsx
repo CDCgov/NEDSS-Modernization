@@ -67,7 +67,6 @@ export const SearchCriteriaProvider = (props: any) => {
         if (results.findAllUsers) {
             const userResults: User[] = [];
             results.findAllUsers.content.forEach((pa) => pa && userResults.push(pa));
-            console.log(userResults[0]);
             setSearchCriteria({ ...searchCriteria, userResults });
         }
     }

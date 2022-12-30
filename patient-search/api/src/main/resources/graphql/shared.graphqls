@@ -6,9 +6,10 @@ input Page {
 }
 
 type PersonParticipation {
-    actUid: Int
+    actUid: Int!
+    localId: String
     typeCd: String
-    entityId: Int
+    entityId: Int!
     subjectClassCd: String
     participationRecordStatus: String
     typeDescTxt: String
@@ -17,9 +18,9 @@ type PersonParticipation {
     lastName: String
     birthTime: Date
     currSexCd: String
-    personCd: String
+    personCd: String!
     personParentUid: Int
-    personRecordStatus: String
+    personRecordStatus: String!
     personLastChangeTime: Date
 }
 

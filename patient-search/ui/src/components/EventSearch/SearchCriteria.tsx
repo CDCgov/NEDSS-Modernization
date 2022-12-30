@@ -13,13 +13,10 @@ import { CheckBoxControl } from '../FormInputs/CheckBoxControl';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
-    searchType?: string;
     filter?: InvestigationFilter | LabReportFilter;
 };
 
-export const SearchCriteria = ({ control, searchType = '' }: GeneralSearchProps) => {
-    console.log(searchType === 'investigation');
-
+export const SearchCriteria = ({ control }: GeneralSearchProps) => {
     return (
         <>
             <SelectControl

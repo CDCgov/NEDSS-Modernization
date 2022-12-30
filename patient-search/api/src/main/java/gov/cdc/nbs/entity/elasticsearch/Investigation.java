@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Document(indexName = "investigation")
 public class Investigation {
     // List of all fields to assist building queries
-    public static final String RECORD_STATUS = "record_status_cd,";
+    public static final String RECORD_STATUS = "record_status_cd";
     public static final String LAST_CHANGE_TIME = "last_change_time";
     public static final String PUBLIC_HEALTH_CASE_UID = "public_health_case_uid";
     public static final String PROGRAM_JURISDICTION_OID = "program_jurisdiction_oid";
@@ -35,7 +35,7 @@ public class Investigation {
     public static final String CD_DESC_TXT = "cd_desc_txt";
     public static final String PROGRAM_AREA_CD = "prog_area_cd";
     public static final String JURISDICTION_CD = "jurisdiction_cd";
-    public static final String JURISDICTION_NAME = "jurisdiction_name";
+    public static final String JURISDICTION_CODE_DESC_TXT = "jurisdiction_code_desc_txt";
     public static final String PREGNANT_IND_CD = "pregnant_ind_cd";
     public static final String LOCAL_ID = "local_id";
     public static final String RPT_FORM_COMPLETE_TIME = "rpt_form_cmplt_time";
@@ -93,8 +93,8 @@ public class Investigation {
     @Field(name = JURISDICTION_CD, type = FieldType.Long)
     private Long jurisdictionCd;
 
-    @Field(name = JURISDICTION_NAME)
-    private String jurisdictionName;
+    @Field(name = JURISDICTION_CODE_DESC_TXT, type = FieldType.Text)
+    private String jurisdictionCodeDescTxt;
 
     @Field(name = PREGNANT_IND_CD, type = FieldType.Keyword)
     private String pregnantIndCd;

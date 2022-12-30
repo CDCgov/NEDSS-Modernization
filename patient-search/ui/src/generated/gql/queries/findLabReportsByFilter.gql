@@ -25,6 +25,7 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: Page) {
             lastChgUserId
             personParticipations{
                 actUid
+                localId
                 typeCd
                 entityId
                 subjectClassCd

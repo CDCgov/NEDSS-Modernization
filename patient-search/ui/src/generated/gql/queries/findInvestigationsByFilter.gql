@@ -12,7 +12,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: Page) {
             cdDescTxt
             prog_area_cd
             jurisdictionCd
-            jurisdictionName
+            jurisdictionCodeDescTxt
             pregnantIndCd
             localId
             rptFormCmpltTime
@@ -31,6 +31,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: Page) {
             notificationLastChgTime
             personParticipations{
                 actUid
+                localId
                 typeCd
                 entityId
                 subjectClassCd

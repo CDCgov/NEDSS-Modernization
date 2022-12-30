@@ -10,7 +10,7 @@ type Investigation {
     cdDescTxt: String
     prog_area_cd: String
     jurisdictionCd: Int
-    jurisdictionName: String
+    jurisdictionCodeDescTxt: String
     pregnantIndCd: String
     localId: String
     rptFormCmpltTime: Date

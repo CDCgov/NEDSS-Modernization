@@ -12,3 +12,18 @@ export const convertCamelCase = (str: string) => {
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult || str;
 };
+
+export const calculateAge = (birthday: Date) => {
+    // birthday is a date
+    const ageDifMs = Date.now() - birthday.getTime();
+    const ageDate = new Date(ageDifMs); // miliseconds from epoch
+    if (Math.abs(ageDate.getMonth()) === 0 && Math.abs(ageDate.getUTCFullYear() - 1970) === 0) {
+        return `${Math.abs(ageDate.getDate())} days`;
+    }
+
+    if (Math.abs(ageDate.getUTCFullYear() - 1970) === 0) {
+        return `${Math.abs(ageDate.getMonth())} months`;
+    }
+
+    return `${Math.abs(ageDate.getUTCFullYear() - 1970)} years`;
+};

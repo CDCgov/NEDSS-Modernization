@@ -36,7 +36,7 @@ type Investigation {
     cdDescTxt: String
     prog_area_cd: String
     jurisdictionCd: Int
-    jurisdictionName: String
+    jurisdictionCodeDescTxt: String
     pregnantIndCd: String
     localId: String
     rptFormCmpltTime: Date
@@ -791,9 +791,10 @@ input Page {
 }
 
 type PersonParticipation {
-    actUid: Int
+    actUid: Int!
+    localId: String
     typeCd: String
-    entityId: Int
+    entityId: Int!
     subjectClassCd: String
     participationRecordStatus: String
     typeDescTxt: String
@@ -802,9 +803,9 @@ type PersonParticipation {
     lastName: String
     birthTime: Date
     currSexCd: String
-    personCd: String
+    personCd: String!
     personParentUid: Int
-    personRecordStatus: String
+    personRecordStatus: String!
     personLastChangeTime: Date
 }
 

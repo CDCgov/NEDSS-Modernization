@@ -1,6 +1,6 @@
 import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { InvestigationFilter, LabReportFilter } from '../../generated/graphql/schema';
@@ -18,10 +18,17 @@ type EventSearchProps = {
 export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: EventSearchProps) => {
     const navigate = useNavigate();
     const methods = useForm();
-
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
-
     const { handleSubmit, control, reset } = methods;
+
+    // on page load, if an event search was performed set the selected event type
+    useEffect(() => {
+        if (investigationFilter) {
+            setEventSearchType(SEARCH_TYPE.INVESTIGATION);
+        } else if (labReportFilter) {
+            setEventSearchType(SEARCH_TYPE.LAB_REPORT);
+        }
+    }, [investigationFilter, labReportFilter]);
 
     const eventSearchItems: AccordionItemProps[] = [
         {
@@ -62,7 +69,6 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
             title: 'Investigation Criteria',
             content: (
                 <SearchCriteria
-                    searchType={eventSearchType}
                     control={control}
                     filter={eventSearchType == SEARCH_TYPE.INVESTIGATION ? investigationFilter : labReportFilter}
                 />
@@ -133,7 +139,6 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
                 };
             }
         }
-        console.log(filterData, 'filterData');
         onSearch(filterData, eventSearchType);
     };
 

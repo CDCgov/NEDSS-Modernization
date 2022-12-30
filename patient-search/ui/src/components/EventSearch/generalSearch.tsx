@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Control, Controller, FieldValues } from 'react-hook-form';
 import {
     InvestigationEventDateType,
@@ -8,14 +9,13 @@ import {
     ProviderType,
     ReportingEntityType
 } from '../../generated/graphql/schema';
-import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
-import { SelectControl } from '../FormInputs/SelectControl';
-import { formatInterfaceString } from '../../utils/util';
-import { Input } from '../FormInputs/Input';
-import { DatePickerInput } from '../FormInputs/DatePickerInput';
-import { MultiSelectControl } from '../FormInputs/MultiSelectControl';
-import { useState } from 'react';
 import { SEARCH_TYPE } from '../../pages/advancedSearch/AdvancedSearch';
+import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
+import { formatInterfaceString } from '../../utils/util';
+import { DatePickerInput } from '../FormInputs/DatePickerInput';
+import { Input } from '../FormInputs/Input';
+import { MultiSelectControl } from '../FormInputs/MultiSelectControl';
+import { SelectControl } from '../FormInputs/SelectControl';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;

@@ -26,7 +26,6 @@ export const MultiSelectControl = ({ control, name, options, label, defaultValue
                 item.value === re && tempArr.push(item);
             });
         });
-        console.log(value);
         return tempArr;
     };
 

@@ -1,6 +1,7 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
 import { PersonName } from '../../generated/graphql/schema';
+import { calculateAge } from '../../utils/util';
 import './AdvancedSearch.scss';
 
 type SearchItemsProps = {
@@ -11,23 +12,15 @@ type SearchItemsProps = {
     currentPage: number;
 };
 
-export const SearchItems = ({ data, initialSearch, totalResults, handlePagination, currentPage }: SearchItemsProps) => {
+export const PatientResults = ({
+    data,
+    initialSearch,
+    totalResults,
+    handlePagination,
+    currentPage
+}: SearchItemsProps) => {
     console.log(data, 'data');
     const searchItemsRef: any = useRef();
-    const _calculateAge = (birthday: Date) => {
-        // birthday is a date
-        const ageDifMs = Date.now() - birthday.getTime();
-        const ageDate = new Date(ageDifMs); // miliseconds from epoch
-        if (Math.abs(ageDate.getMonth()) === 0 && Math.abs(ageDate.getUTCFullYear() - 1970) === 0) {
-            return `${Math.abs(ageDate.getDate())} days`;
-        }
-
-        if (Math.abs(ageDate.getUTCFullYear() - 1970) === 0) {
-            return `${Math.abs(ageDate.getMonth())} months`;
-        }
-
-        return `${Math.abs(ageDate.getUTCFullYear() - 1970)} years`;
-    };
 
     const [num, setNum] = useState<any>([]);
     const [email, setEmail] = useState<any>('');
@@ -214,7 +207,7 @@ export const SearchItems = ({ data, initialSearch, totalResults, handlePaginatio
                                                             })}
                                                             <span className="font-sans-2xs">
                                                                 {' '}
-                                                                ({_calculateAge(new Date(item.birthTime))})
+                                                                ({calculateAge(new Date(item.birthTime))})
                                                             </span>
                                                         </>
                                                     )}

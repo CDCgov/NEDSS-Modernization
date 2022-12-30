@@ -90,7 +90,7 @@ public class LabReport {
     @Field(name = JURISDICTION_CD, type = FieldType.Long)
     private Long jurisdictionCd;
 
-    @Field(name = JURISDICTION_CODE_DESC_TXT)
+    @Field(name = JURISDICTION_CODE_DESC_TXT, type = FieldType.Text)
     private String jurisdictionCodeDescTxt;
 
     @Field(name = PREGNANT_IND_CD, type = FieldType.Keyword)

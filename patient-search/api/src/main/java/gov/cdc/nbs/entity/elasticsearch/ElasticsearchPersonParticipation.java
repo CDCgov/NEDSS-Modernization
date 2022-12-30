@@ -20,6 +20,7 @@ public class ElasticsearchPersonParticipation {
     public static final String ACT_UID = "act_uid";
     public static final String TYPE_CD = "type_cd";
     public static final String ENTITY_ID = "entity_id";
+    public static final String LOCAL_ID = "local_id";
     public static final String SUBJECT_CLASS_CD = "subject_class_cd";
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
@@ -41,6 +42,9 @@ public class ElasticsearchPersonParticipation {
 
     @Field(name = ENTITY_ID, type = FieldType.Long)
     private Long entityId;
+
+    @Field(name = LOCAL_ID, type = FieldType.Keyword)
+    private String localId;
 
     @Field(name = SUBJECT_CLASS_CD, type = FieldType.Keyword)
     private String subjectClassCd;
