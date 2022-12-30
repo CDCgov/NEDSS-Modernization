@@ -11,6 +11,7 @@ plugins {
 	id "io.spring.dependency-management" version "1.0.12.RELEASE"
 	id "java"
 	id "org.sonarqube" version "3.5.0.2730"
+	id "jacoco"
 }
 
 sonarqube {
@@ -19,8 +20,14 @@ sonarqube {
     property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
     property "sonar.organization", "cdcgov"
     property "sonar.host.url", "https://sonarcloud.io"
-
+	
   }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
 
 group = 'gov.cdc'
