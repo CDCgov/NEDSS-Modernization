@@ -37,3 +37,28 @@ spring:
     mvc:
         pathmatch:
             matching-strategy: ant_path_matcher
+kafka:
+    bootstrap-servers:
+    listener:
+      ack-mode: record
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    properties:
+      schema:
+        registry:
+          url: http://localhost:9091
+      topic:
+        suffix: "-event"
+        partition.count: 3
+        replication.factor: 3
+      message.max.attempt: 5
+      retry.naming.pattern: -neds-part-retry
+      dlt.naming.pattern: -neds-part-dlt
+kafkadef:
+  patient-search:
+    topics:
+      request:
+        patient: request-patient-search.patientsearch
+      event:
+        patient: event-patient-search.patientsearch
