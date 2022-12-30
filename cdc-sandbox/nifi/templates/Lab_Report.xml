@@ -2215,7 +2215,8 @@ FROM
               p.record_status_cd AS [participation_record_status], 
               p.last_chg_time AS [participation_last_change_time], 
               p.type_desc_txt AS [type_desc_txt],
-              person.first_nm AS [first_name], 
+              person.first_nm AS [first_name],
+              person.local_id AS [local_id],
               person.last_nm AS [last_name], 
               person.birth_time AS [birth_time], 
               person.curr_sex_cd AS [curr_sex_cd], 
@@ -2518,5 +2519,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/28/2022 21:25:06 UTC</timestamp>
+    <timestamp>12/30/2022 17:12:25 UTC</timestamp>
 </template>
