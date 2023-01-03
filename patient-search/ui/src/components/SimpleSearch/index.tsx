@@ -11,13 +11,13 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 
-type SimpleSearchProps = {
+type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
     data: PersonFilter | undefined;
     clearAll: () => void;
 };
 
-export const SimpleSearch = ({ handleSubmission, data, clearAll }: SimpleSearchProps) => {
+export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearchProps) => {
     const methods = useForm();
     const {
         handleSubmit,

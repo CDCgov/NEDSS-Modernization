@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
-import { SimpleSearch } from '../pages/search/SimpleSearch';
+import { SimpleSearch } from '../pages/advancedSearch/components/patientSearch/PatientSearch';
 
 export const AppRoutes = () => {
     return (

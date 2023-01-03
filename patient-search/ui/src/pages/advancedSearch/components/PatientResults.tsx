@@ -1,20 +1,20 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
 import { useEffect, useRef, useState } from 'react';
-import { PersonName } from '../../generated/graphql/schema';
-import { calculateAge } from '../../utils/util';
-import './AdvancedSearch.scss';
+import { PersonName } from '../../../generated/graphql/schema';
+import { calculateAge } from '../../../utils/util';
+import '../AdvancedSearch.scss';
 
 type SearchItemsProps = {
     data: any;
     totalResults: number;
-    initialSearch: boolean;
+    validSearch: boolean;
     handlePagination: (page: number) => void;
     currentPage: number;
 };
 
 export const PatientResults = ({
     data,
-    initialSearch,
+    validSearch,
     totalResults,
     handlePagination,
     currentPage
@@ -160,7 +160,7 @@ export const PatientResults = ({
 
     return (
         <div className="margin-x-4">
-            {Boolean(initialSearch && totalResults && data?.length > 0) && (
+            {Boolean(validSearch && totalResults && data?.length > 0) && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                         Showing {data.length} of {totalResults}
@@ -297,7 +297,7 @@ export const PatientResults = ({
                         </div>
                     ))}
             </div>
-            {Boolean(initialSearch && totalResults && data?.length > 0) && (
+            {Boolean(validSearch && totalResults && data?.length > 0) && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
                     totalPages={Math.ceil(totalResults / 25)}

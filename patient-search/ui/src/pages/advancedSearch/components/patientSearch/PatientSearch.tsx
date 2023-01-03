@@ -4,14 +4,14 @@ import { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { DatePickerInput } from '../../components/FormInputs/DatePickerInput';
-import { Input } from '../../components/FormInputs/Input';
-import { SelectInput } from '../../components/FormInputs/SelectInput';
-import { TableContent } from '../../components/TableContent/TableContent';
-import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
-import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
-import { UserContext } from '../../providers/UserContext';
-import './SimpleSearch.scss';
+import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
+import { Input } from '../../../../components/FormInputs/Input';
+import { SelectInput } from '../../../../components/FormInputs/SelectInput';
+import { TableContent } from '../../../../components/TableContent/TableContent';
+import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../../../generated/graphql/schema';
+import { EncryptionControllerService } from '../../../../generated/services/EncryptionControllerService';
+import { UserContext } from '../../../../providers/UserContext';
+import './PatientSearch.scss';
 
 type FormTypes = {
     firstName: string;
