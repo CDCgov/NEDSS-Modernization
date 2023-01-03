@@ -2138,8 +2138,8 @@ we can do Upsert when ingesting data</label>
 <key>SQL select query</key>
 <value>-- Lab Report
 SELECT 
-last_change_time,
-  act.class_cd,
+  last_change_time, 
+  act.class_cd, 
   act.mood_cd, 
   act.act_uid, 
   o.observation_uid, 
@@ -2160,11 +2160,12 @@ last_change_time,
   o.last_chg_user_id last_chg_user_id, 
   o.last_chg_time observation_last_chg_time, 
   jc.code_desc_txt jurisdiction_code_desc_txt, 
-  nesteddata.person_participations,
-  nesteddata.organization_participations,
-  nesteddata.material_participations,
-  nesteddata.observations,
-  nesteddata.act_ids
+  nesteddata.person_participations, 
+  nesteddata.organization_participations, 
+  nesteddata.material_participations, 
+  nesteddata.observations, 
+  nesteddata.associated_investigations, 
+  nesteddata.act_ids 
 FROM 
   Observation o 
   JOIN act ON o.observation_uid = act.act_uid 
@@ -2214,10 +2215,10 @@ FROM
               p.subject_class_cd AS [subject_class_cd], 
               p.record_status_cd AS [participation_record_status], 
               p.last_chg_time AS [participation_last_change_time], 
-              p.type_desc_txt AS [type_desc_txt],
-              person.first_nm AS [first_name],
-              person.local_id AS [local_id],
+              p.type_desc_txt AS [type_desc_txt], 
+              person.first_nm AS [first_name], 
               person.last_nm AS [last_name], 
+              person.local_id AS [local_id], 
               person.birth_time AS [birth_time], 
               person.curr_sex_cd AS [curr_sex_cd], 
               person.cd AS [person_cd], 
@@ -2226,12 +2227,18 @@ FROM
               person.last_chg_time AS [person_last_chg_time] 
             FROM 
               participation p 
-              JOIN person ON person.person_uid = p.subject_entity_uid 
+              JOIN person ON person.person_uid = (
+                select 
+                  person.person_parent_uid 
+                from 
+                  person 
+                where 
+                  person.person_uid = p.subject_entity_uid
+              ) 
             WHERE 
               p.act_uid = o.observation_uid FOR json path
           ) AS person_participations
       ) AS person_participations, 
-      --
       -- organizations associated with observation
       (
         SELECT 
@@ -2242,7 +2249,7 @@ FROM
               p.subject_entity_uid AS [entity_id], 
               p.subject_class_cd AS [subject_class_cd], 
               p.record_status_cd AS [record_status], 
-            p.type_desc_txt AS [type_desc_txt],
+              p.type_desc_txt AS [type_desc_txt], 
               p.last_chg_time AS [last_change_time], 
               org.display_nm AS [name], 
               org.last_chg_time AS [org_last_change_time] 
@@ -2262,8 +2269,8 @@ FROM
               p.type_cd AS [type_cd], 
               p.subject_entity_uid AS [entity_id], 
               p.subject_class_cd AS [subject_class_cd], 
-              p.record_status_cd AS [record_status],
-              p.type_desc_txt AS [type_desc_txt],
+              p.record_status_cd AS [record_status], 
+              p.type_desc_txt AS [type_desc_txt], 
               p.last_chg_time AS [last_change_time], 
               m.cd AS [material_cd], 
               m.cd_desc_txt AS [material_cd_desc_txt] 
@@ -2292,6 +2299,32 @@ FROM
               act_uid = o.observation_uid FOR json path
           ) AS act_ids
       ) AS act_ids, 
+      -- public health cases associated with lab report
+      (
+        SELECT 
+          (
+            SELECT 
+              phc.public_health_case_uid AS [public_health_case_uid], 
+              phc.last_chg_time AS [last_change_time], 
+              phc.cd_desc_txt AS [cd_desc_txt], 
+              phc.local_id AS [local_id], 
+              ar.last_chg_time AS [act_relationship_last_change_time] 
+            FROM 
+              Public_health_case phc 
+              JOIN Act_relationship ar ON ar.target_act_uid = phc.public_health_case_uid 
+            WHERE 
+              phc.public_health_case_uid = (
+                SELECT 
+                  ar.target_act_uid 
+                FROM 
+                  Act_relationship ar 
+                WHERE 
+                  ar.source_act_uid = o.observation_uid 
+                  AND source_class_cd = 'OBS' 
+                  AND target_class_cd = 'CASE'
+              ) FOR JSON path
+          ) AS associated_investigations
+      ) as associated_investigations, 
       (
         SELECT 
           (
@@ -2314,6 +2347,7 @@ FROM
                   ), 
                   -- observation last change time
                   (o.last_chg_time), 
+                  -- act_relationship last change time
                   (
                     (
                       SELECT 
@@ -2321,7 +2355,8 @@ FROM
                       FROM 
                         Act_relationship 
                       WHERE 
-                        act_relationship.target_act_uid = o.observation_uid
+                        act_relationship.target_act_uid = o.observation_uid 
+                        OR act_relationship.source_act_uid = o.observation_uid
                     )
                   )
               ) AS value (v)
@@ -2335,9 +2370,10 @@ WHERE
     FROM 
       act_relationship
   ) 
-  AND o.record_status_cd &lt;&gt; 'LOG_DEL'
-  AND last_change_time &gt; '${es_last_change}'
-  ORDER BY last_change_time ASC;
+  AND o.record_status_cd &lt;&gt; 'LOG_DEL' 
+  AND last_change_time &gt; '${es_last_change}' 
+ORDER BY 
+  last_change_time ASC;
 </value>
                             </entry>
                             <entry>
@@ -2519,5 +2555,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/30/2022 17:12:25 UTC</timestamp>
+    <timestamp>01/03/2023 21:34:38 UTC</timestamp>
 </template>
