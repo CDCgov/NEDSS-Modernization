@@ -205,21 +205,26 @@ export const LabReportResults = ({
                                 <Grid col={2}>
                                     <Grid row gap={3}>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50">STATUS</h5>
-                                            <p
-                                                className="margin-0 font-sans-1xs text-normal status"
-                                                style={{ backgroundColor: '#2cb844' }}>
-                                                Confirmed
-                                            </p>
-                                        </Grid>
-                                        <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                 ASSOCIATED WITH
                                             </h5>
-                                            <p className="margin-0 font-sans-1xs text-normal">
-                                                NYI
-                                                {/* TODO */}
-                                            </p>
+                                            <div className="margin-0 font-sans-1xs text-normal">
+                                                {(!item.associatedInvestigations ||
+                                                    item.associatedInvestigations.length == 0) &&
+                                                    '--'}
+                                                {item.associatedInvestigations &&
+                                                    item.associatedInvestigations?.length > 0 &&
+                                                    item.associatedInvestigations?.map((i, index) => (
+                                                        <div key={index}>
+                                                            <p
+                                                                className="margin-0 text-primary text-bold"
+                                                                style={{ wordBreak: 'break-word' }}>
+                                                                {i?.localId}
+                                                            </p>
+                                                            <p className="margin-0">{i?.cdDescTxt}</p>
+                                                        </div>
+                                                    ))}
+                                            </div>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">

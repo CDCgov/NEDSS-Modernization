@@ -1,9 +1,9 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Input } from '../FormInputs/Input';
-import { SelectInput } from '../FormInputs/SelectInput';
+import { Input } from '../../../../components/FormInputs/Input';
+import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { IdentificationType } from '../../generated/graphql/schema';
-import { formatInterfaceString } from '../../utils/util';
+import { IdentificationType } from '../../../../generated/graphql/schema';
+import { formatInterfaceString } from '../../../../utils/util';
 
 export const IDForm = ({ control }: any) => {
     return (

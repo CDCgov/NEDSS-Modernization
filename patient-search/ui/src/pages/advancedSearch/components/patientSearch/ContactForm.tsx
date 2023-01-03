@@ -1,5 +1,5 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Input } from '../FormInputs/Input';
+import { Input } from '../../../../components/FormInputs/Input';
 import { Controller } from 'react-hook-form';
 
 export const ContactForm = ({ control }: any) => {
