@@ -2,8 +2,11 @@ import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { EventSearch } from '../../components/EventSearch/EventSearch';
-import { SimpleSearch } from '../../components/SimpleSearch';
+import { PatientSearch } from '../../components/SimpleSearch';
 import {
+    FindInvestigationsByFilterQuery,
+    FindLabReportsByFilterQuery,
+    FindPatientsByFilterQuery,
     Investigation,
     InvestigationFilter,
     LabReport,
@@ -20,10 +23,10 @@ import { RedirectControllerService } from '../../generated/services/RedirectCont
 import { UserContext } from '../../providers/UserContext';
 import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
-import Chip from './Chip';
-import { InvestigationResults } from './InvestigationResults';
-import { LabReportResults } from './LabReportResults';
-import { PatientResults } from './PatientResults';
+import Chip from './components/Chip';
+import { InvestigationResults } from './components/InvestigationResults';
+import { LabReportResults } from './components/LabReportResults';
+import { PatientResults } from './components/PatientResults';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -43,7 +46,7 @@ export const AdvancedSearch = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'person' | 'event'>('person');
     const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
-    const [initialSearch, setInitialSearch] = useState<boolean>(false);
+    const [validSearch, setValidSearch] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
@@ -61,24 +64,25 @@ export const AdvancedSearch = () => {
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
-    const [findPatients, { data: { findPatientsByFilter: patientData = undefined } = {} }] =
-        useFindPatientsByFilterLazyQuery({
-            onCompleted: handleSearchResults
-        });
+    const [patientData, setPatientData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']>();
+    const [findPatients] = useFindPatientsByFilterLazyQuery({
+        onCompleted: handlePatientSearchResults
+    });
 
     // investigation search variables
+    const [investigationData, setInvestigationData] =
+        useState<FindInvestigationsByFilterQuery['findInvestigationsByFilter']>();
     const [investigationFilter, setInvestigationFilter] = useState<InvestigationFilter>();
-    const [findInvestigations, { data: { findInvestigationsByFilter: investigationData = undefined } = {} }] =
-        useFindInvestigationsByFilterLazyQuery({
-            onCompleted: handleSearchResults
-        });
+    const [findInvestigations] = useFindInvestigationsByFilterLazyQuery({
+        onCompleted: handleInvestigationSearchResults
+    });
 
     // lab report search variables
+    const [labReportData, setLabReportData] = useState<FindLabReportsByFilterQuery['findLabReportsByFilter']>();
     const [labReportFilter, setLabReportFilter] = useState<LabReportFilter>();
-    const [findLabReports, { data: { findLabReportsByFilter: labReportData = undefined } = {} }] =
-        useFindLabReportsByFilterLazyQuery({
-            onCompleted: handleSearchResults
-        });
+    const [findLabReports] = useFindLabReportsByFilterLazyQuery({
+        onCompleted: handleLabReportSearchResults
+    });
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -107,7 +111,11 @@ export const AdvancedSearch = () => {
         const type = searchParams?.get('type');
         if (!queryParam || !state.isLoggedIn) {
             // no query parameters specified or user is not logged in
-            setInitialSearch(false);
+            setActiveTab('person');
+
+            setResultsChip([]);
+            setValidSearch(false);
+            setLoading(false);
             return;
         }
 
@@ -117,9 +125,10 @@ export const AdvancedSearch = () => {
             authorization: `Bearer ${state.getToken()}`
         }).then(async (filter: any) => {
             if (isEmpty(filter)) {
+                console.log('empty filter:', filter);
                 // empty filter, clear content
                 setResultsChip([]);
-                setInitialSearch(false);
+                setValidSearch(false);
                 setSubmitted(true);
             }
             // perform the search based on the 'type' parameter
@@ -230,6 +239,7 @@ export const AdvancedSearch = () => {
                 }
             }
         });
+        console.log('setting filter:', filter);
         setLastSearchType(SEARCH_TYPE.INVESTIGATION);
         setActiveTab(ACTIVE_TAB.EVENT);
         handleEventTags(filter);
@@ -253,10 +263,22 @@ export const AdvancedSearch = () => {
         setLabReportFilter(filter);
     };
 
-    function handleSearchResults() {
-        console.log('handleSearch results called');
+    function handlePatientSearchResults(data: FindPatientsByFilterQuery) {
+        setPatientData(data.findPatientsByFilter);
         setLoading(false);
-        setInitialSearch(true);
+        setValidSearch(true);
+    }
+
+    function handleInvestigationSearchResults(data: FindInvestigationsByFilterQuery) {
+        setInvestigationData(data.findInvestigationsByFilter);
+        setLoading(false);
+        setValidSearch(true);
+    }
+
+    function handleLabReportSearchResults(data: FindLabReportsByFilterQuery) {
+        setLabReportData(data.findLabReportsByFilter);
+        setLoading(false);
+        setValidSearch(true);
     }
 
     function isEmpty(obj: any) {
@@ -276,7 +298,7 @@ export const AdvancedSearch = () => {
                 authorization: `Bearer ${state.getToken()}`,
                 object: filter
             });
-            setInitialSearch(true);
+            setValidSearch(true);
 
             // URI encode encrypted filter
             search = `?q=${encodeURIComponent(encryptedFilter.value)}&type=${type}`;
@@ -288,7 +310,7 @@ export const AdvancedSearch = () => {
             setSubmitted(false);
         } else {
             setLoading(false);
-            setInitialSearch(false);
+            setValidSearch(false);
             setSubmitted(true);
         }
     };
@@ -317,14 +339,21 @@ export const AdvancedSearch = () => {
     };
 
     const handleInvestigationChipClose = (value: string) => {
-        // TODO
         console.log('value', value);
         let tempInvestigationFilter = investigationFilter as InvestigationFilter;
-        setResultsChip(resultsChip.filter((c) => c.name != value));
+        // remove the closed chip from the display
+        const newChips = resultsChip.filter((c) => c.name != value);
+        setResultsChip(newChips);
+        // the last chip was removed, go to blank search
+        if (newChips.length === 0) {
+            navigate('/advanced-search');
+        }
+        // clear the filter criteria associated with closed chip
         if (investigationFilter) {
             switch (value) {
                 case 'Program Areas':
-                    tempInvestigationFilter = { ...tempInvestigationFilter, programAreas: [] };
+                    tempInvestigationFilter = { ...tempInvestigationFilter, programAreas: undefined };
+                    // TODO - it doesn't clear the value from the multi select
                     break;
             }
             handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
@@ -465,7 +494,7 @@ export const AdvancedSearch = () => {
                             </h6>
                         </div>
                         {activeTab === ACTIVE_TAB.PERSON ? (
-                            <SimpleSearch
+                            <PatientSearch
                                 handleSubmission={(data: PersonFilter) => {
                                     handleSubmit(data, SEARCH_TYPE.PERSON);
                                 }}
@@ -485,7 +514,7 @@ export const AdvancedSearch = () => {
                     <Grid
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
-                        {initialSearch ? (
+                        {validSearch ? (
                             <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
                                 <strong className="margin-right-1">
                                     {patientData?.total || investigationData?.total || labReportData?.total}
@@ -611,7 +640,7 @@ export const AdvancedSearch = () => {
                             </Button>
                         </div>
                     </Grid>
-                    {!initialSearch && !loading && (
+                    {!validSearch && !loading && (
                         <>
                             {submitted && (
                                 <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
@@ -636,7 +665,8 @@ export const AdvancedSearch = () => {
                             </div>
                         </>
                     )}
-                    {(!investigationData?.content || investigationData?.content?.length === 0) &&
+                    {validSearch &&
+                        (!investigationData?.content || investigationData?.content?.length === 0) &&
                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                         (!patientData?.content || patientData?.content?.length === 0) && (
                             <div
@@ -664,7 +694,7 @@ export const AdvancedSearch = () => {
                         patientData?.content &&
                         patientData.content.length > 0 && (
                             <PatientResults
-                                initialSearch={initialSearch}
+                                validSearch={validSearch}
                                 data={patientData.content}
                                 totalResults={patientData.total}
                                 handlePagination={handlePagination}
@@ -677,7 +707,7 @@ export const AdvancedSearch = () => {
                         investigationData?.content &&
                         investigationData?.content?.length > 0 && (
                             <InvestigationResults
-                                initialSearch={initialSearch}
+                                validSearch={validSearch}
                                 data={investigationData?.content as [Investigation]}
                                 totalResults={investigationData?.total}
                                 handlePagination={handlePagination}
@@ -690,7 +720,7 @@ export const AdvancedSearch = () => {
                         labReportData?.content &&
                         labReportData?.content?.length > 0 && (
                             <LabReportResults
-                                initialSearch={initialSearch}
+                                validSearch={validSearch}
                                 data={labReportData?.content as [LabReport]}
                                 totalResults={labReportData?.total}
                                 handlePagination={handlePagination}
