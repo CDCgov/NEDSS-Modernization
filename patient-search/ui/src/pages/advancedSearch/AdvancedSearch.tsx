@@ -1,7 +1,7 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { EventSearch } from '../../components/EventSearch/EventSearch';
+import { EventSearch } from './components/eventSearch/EventSearch';
 import { PatientSearch } from '../../components/SimpleSearch';
 import {
     FindInvestigationsByFilterQuery,
@@ -517,7 +517,9 @@ export const AdvancedSearch = () => {
                         {validSearch ? (
                             <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
                                 <strong className="margin-right-1">
-                                    {patientData?.total || investigationData?.total || labReportData?.total}
+                                    {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                    {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
+                                    {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                 </strong>{' '}
                                 Results for:
                                 {resultsChip.map(
@@ -688,7 +690,7 @@ export const AdvancedSearch = () => {
                                 </div>
                             </div>
                         )}
-                    {activeTab === ACTIVE_TAB.PERSON &&
+                    {lastSearchType === SEARCH_TYPE.PERSON &&
                         !submitted &&
                         !loading &&
                         patientData?.content &&
@@ -701,8 +703,7 @@ export const AdvancedSearch = () => {
                                 currentPage={currentPage}
                             />
                         )}
-                    {activeTab === ACTIVE_TAB.EVENT &&
-                        lastSearchType === SEARCH_TYPE.INVESTIGATION &&
+                    {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
                         !submitted &&
                         investigationData?.content &&
                         investigationData?.content?.length > 0 && (
@@ -714,8 +715,7 @@ export const AdvancedSearch = () => {
                                 currentPage={currentPage}
                             />
                         )}
-                    {activeTab === ACTIVE_TAB.EVENT &&
-                        lastSearchType === SEARCH_TYPE.LAB_REPORT &&
+                    {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
                         !submitted &&
                         labReportData?.content &&
                         labReportData?.content?.length > 0 && (
