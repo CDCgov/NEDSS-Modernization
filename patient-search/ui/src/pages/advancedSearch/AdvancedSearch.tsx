@@ -327,7 +327,7 @@ export const AdvancedSearch = () => {
         setSubmitted(false);
         setValidSearch(false);
         setLastSearchType(undefined);
-        // navigate('/advanced-search');
+        navigate('/advanced-search');
     };
 
     const handleChipClose = (name: string, value: string) => {
