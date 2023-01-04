@@ -6,3 +6,9 @@ export const formatInterfaceString = (str: string) => {
     }
     return frags.join(' ');
 };
+
+export const convertCamelCase = (str: string) => {
+    const result = str.replace(/([A-Z])/g, ' $1');
+    const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+    return finalResult || str;
+};

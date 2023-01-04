@@ -8,14 +8,26 @@ type SelectProps = {
     options: { name: string; value: string }[];
     onChange?: any;
     defaultValue?: string;
+    isMulti?: boolean;
 };
 
-export const SelectInput = ({ name, htmlFor, label, id, options, onChange, defaultValue, ...props }: SelectProps) => {
+export const SelectInput = ({
+    name,
+    htmlFor,
+    label,
+    id,
+    options,
+    onChange,
+    defaultValue,
+    isMulti,
+    ...props
+}: SelectProps) => {
     return (
         <>
             <Label htmlFor={htmlFor || ''}>{label}</Label>
             {defaultValue && (
                 <Dropdown
+                    multiple={isMulti}
                     defaultValue={defaultValue}
                     placeholder="-Select-"
                     onChange={onChange}
@@ -33,7 +45,13 @@ export const SelectInput = ({ name, htmlFor, label, id, options, onChange, defau
                 </Dropdown>
             )}
             {!defaultValue && (
-                <Dropdown placeholder="-Select-" onChange={onChange} {...props} id={id || ''} name={name || ''}>
+                <Dropdown
+                    multiple={isMulti}
+                    placeholder="-Select-"
+                    onChange={onChange}
+                    {...props}
+                    id={id || ''}
+                    name={name || ''}>
                     <>
                         <option>- Select -</option>
                         {options?.map((item, index) => (
