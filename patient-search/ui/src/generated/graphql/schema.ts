@@ -504,6 +504,24 @@ export type OrganizationResults = {
   total: Scalars['Int'];
 };
 
+export type Outbreak = {
+  __typename?: 'Outbreak';
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  id: OutbreakId;
+};
+
+export type OutbreakId = {
+  __typename?: 'OutbreakId';
+  code: Scalars['String'];
+  codeSetNm: Scalars['String'];
+};
+
+export type OutbreakResults = {
+  __typename?: 'OutbreakResults';
+  content: Array<Maybe<Outbreak>>;
+  total: Scalars['Int'];
+};
+
 export type Page = {
   pageNumber: Scalars['Int'];
   pageSize: Scalars['Int'];
@@ -824,6 +842,7 @@ export type Query = {
   findAllCountryCodes: Array<Maybe<CountryCode>>;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: OrganizationResults;
+  findAllOutbreaks: OutbreakResults;
   findAllPatients: PersonResults;
   findAllPlaces: Array<Maybe<Place>>;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
@@ -857,6 +876,11 @@ export type QueryFindAllJurisdictionsArgs = {
 
 
 export type QueryFindAllOrganizationsArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllOutbreaksArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1063,6 +1087,13 @@ export type FindAllOrganizationsQueryVariables = Exact<{
 
 
 export type FindAllOrganizationsQuery = { __typename?: 'Query', findAllOrganizations: { __typename?: 'OrganizationResults', total: number, content: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> } };
+
+export type FindAllOutbreaksQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllOutbreaksQuery = { __typename?: 'Query', findAllOutbreaks: { __typename?: 'OutbreakResults', total: number, content: Array<{ __typename?: 'Outbreak', codeShortDescTxt?: string | null, id: { __typename?: 'OutbreakId', codeSetNm: string, code: string } } | null> } };
 
 export type FindAllPatientsQueryVariables = Exact<{
   page?: InputMaybe<SortablePage>;
@@ -1568,6 +1599,48 @@ export function useFindAllOrganizationsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type FindAllOrganizationsQueryHookResult = ReturnType<typeof useFindAllOrganizationsQuery>;
 export type FindAllOrganizationsLazyQueryHookResult = ReturnType<typeof useFindAllOrganizationsLazyQuery>;
 export type FindAllOrganizationsQueryResult = Apollo.QueryResult<FindAllOrganizationsQuery, FindAllOrganizationsQueryVariables>;
+export const FindAllOutbreaksDocument = gql`
+    query findAllOutbreaks($page: Page) {
+  findAllOutbreaks(page: $page) {
+    content {
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllOutbreaksQuery__
+ *
+ * To run a query within a React component, call `useFindAllOutbreaksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllOutbreaksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllOutbreaksQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllOutbreaksQuery(baseOptions?: Apollo.QueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
+      }
+export function useFindAllOutbreaksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
+        }
+export type FindAllOutbreaksQueryHookResult = ReturnType<typeof useFindAllOutbreaksQuery>;
+export type FindAllOutbreaksLazyQueryHookResult = ReturnType<typeof useFindAllOutbreaksLazyQuery>;
+export type FindAllOutbreaksQueryResult = Apollo.QueryResult<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>;
 export const FindAllPatientsDocument = gql`
     query findAllPatients($page: SortablePage) {
   findAllPatients(page: $page) {

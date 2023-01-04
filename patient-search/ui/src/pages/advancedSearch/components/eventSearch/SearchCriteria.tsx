@@ -10,6 +10,7 @@ import {
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { formatInterfaceString } from '../../../../utils/util';
 import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
+import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
@@ -31,19 +32,26 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <SelectControl
-                control={control}
-                name="outbreakNames"
-                label="Outbreak Name:"
-                options={Object.values(NotificationStatus).map((type) => {
-                    return {
-                        name: formatInterfaceString(type),
-                        value: type
-                    };
-                })}
-            />
+            <SearchCriteriaContext.Consumer>
+                {({ searchCriteria }) => (
+                    <>
+                        <SelectControl
+                            control={control}
+                            name="outbreakNames"
+                            label="Outbreak Name:"
+                            options={Object.values(searchCriteria.outbreaks).map((outbreak) => {
+                                return {
+                                    name: formatInterfaceString(outbreak.codeShortDescTxt ?? ''),
+                                    value: outbreak.id.code
+                                };
+                            })}
+                        />
 
-            <CheckBoxControl control={control} id="case" name="case" label="Including unassigned status" />
+                        <CheckBoxControl control={control} id="case" name="case" label="Including unassigned status" />
+                    </>
+                )}
+            </SearchCriteriaContext.Consumer>
+
             <SelectControl
                 control={control}
                 name="statusList"

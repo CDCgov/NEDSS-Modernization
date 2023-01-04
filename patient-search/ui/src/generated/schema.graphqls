@@ -368,6 +368,15 @@ type Organization {
     electronicInd: String
     edxInd: String
 }
+type Outbreak {
+    id: OutbreakId!
+    codeShortDescTxt: String
+}
+
+type OutbreakId {
+    codeSetNm: String!
+    code: String!
+}
 input PersonFilter {
     id: ID
     lastName: String
@@ -751,7 +760,7 @@ type Query {
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
-
+    findAllOutbreaks(page: Page): OutbreakResults!
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
 
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
@@ -759,6 +768,11 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+}
+
+type OutbreakResults {
+    content: [Outbreak]!
+    total: Int!
 }
 
 type PersonResults {
