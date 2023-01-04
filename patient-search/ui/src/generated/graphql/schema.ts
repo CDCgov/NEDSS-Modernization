@@ -505,8 +505,8 @@ export type OrganizationResults = {
 };
 
 export type Page = {
-  pageNumber?: InputMaybe<Scalars['Int']>;
-  pageSize?: InputMaybe<Scalars['Int']>;
+  pageNumber: Scalars['Int'];
+  pageSize: Scalars['Int'];
 };
 
 export type Person = {
@@ -679,13 +679,6 @@ export type PersonName = {
   nmSuffix?: Maybe<Scalars['String']>;
 };
 
-export type PersonPage = {
-  pageNumber?: InputMaybe<Scalars['Int']>;
-  pageSize?: InputMaybe<Scalars['Int']>;
-  sortDirection?: InputMaybe<SortDirection>;
-  sortField?: InputMaybe<PersonSortField>;
-};
-
 export type PersonParticipation = {
   __typename?: 'PersonParticipation';
   actUid: Scalars['Int'];
@@ -711,12 +704,6 @@ export type PersonResults = {
   content: Array<Maybe<Person>>;
   total: Scalars['Int'];
 };
-
-export enum PersonSortField {
-  AddTime = 'addTime',
-  BirthTime = 'birthTime',
-  LastNm = 'lastNm'
-}
 
 export type PhoneNumber = {
   extension?: InputMaybe<Scalars['String']>;
@@ -875,7 +862,7 @@ export type QueryFindAllOrganizationsArgs = {
 
 
 export type QueryFindAllPatientsArgs = {
-  page?: InputMaybe<PersonPage>;
+  page?: InputMaybe<SortablePage>;
 };
 
 
@@ -901,13 +888,13 @@ export type QueryFindAllUsersArgs = {
 
 export type QueryFindInvestigationsByFilterArgs = {
   filter: InvestigationFilter;
-  page?: InputMaybe<Page>;
+  page?: InputMaybe<SortablePage>;
 };
 
 
 export type QueryFindLabReportsByFilterArgs = {
   filter: LabReportFilter;
-  page?: InputMaybe<Page>;
+  page?: InputMaybe<SortablePage>;
 };
 
 
@@ -929,13 +916,13 @@ export type QueryFindPatientByIdArgs = {
 
 export type QueryFindPatientsByFilterArgs = {
   filter: PersonFilter;
-  page?: InputMaybe<PersonPage>;
+  page?: InputMaybe<SortablePage>;
 };
 
 
 export type QueryFindPatientsByOrganizationFilterArgs = {
   filter: OrganizationFilter;
-  page?: InputMaybe<PersonPage>;
+  page?: InputMaybe<SortablePage>;
 };
 
 
@@ -976,6 +963,18 @@ export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC'
 }
+
+export enum SortField {
+  BirthTime = 'birthTime',
+  LastNm = 'lastNm'
+}
+
+export type SortablePage = {
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  sortDirection?: InputMaybe<SortDirection>;
+  sortField?: InputMaybe<SortField>;
+};
 
 export type StateCode = {
   __typename?: 'StateCode';
@@ -1066,7 +1065,7 @@ export type FindAllOrganizationsQueryVariables = Exact<{
 export type FindAllOrganizationsQuery = { __typename?: 'Query', findAllOrganizations: { __typename?: 'OrganizationResults', total: number, content: Array<{ __typename?: 'Organization', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, standardIndustryClassCd?: string | null, standardIndustryDescTxt?: string | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, displayNm?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, zipCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null, electronicInd?: string | null, edxInd?: string | null } | null> } };
 
 export type FindAllPatientsQueryVariables = Exact<{
-  page?: InputMaybe<PersonPage>;
+  page?: InputMaybe<SortablePage>;
 }>;
 
 
@@ -1102,7 +1101,7 @@ export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typena
 
 export type FindInvestigationsByFilterQueryVariables = Exact<{
   filter: InvestigationFilter;
-  page?: InputMaybe<Page>;
+  page?: InputMaybe<SortablePage>;
 }>;
 
 
@@ -1110,7 +1109,7 @@ export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvest
 
 export type FindLabReportsByFilterQueryVariables = Exact<{
   filter: LabReportFilter;
-  page?: InputMaybe<Page>;
+  page?: InputMaybe<SortablePage>;
 }>;
 
 
@@ -1140,7 +1139,7 @@ export type FindPatientByIdQuery = { __typename?: 'Query', findPatientById?: { _
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
-  page?: InputMaybe<PersonPage>;
+  page?: InputMaybe<SortablePage>;
 }>;
 
 
@@ -1148,7 +1147,7 @@ export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFi
 
 export type FindPatientsByOrganizationFilterQueryVariables = Exact<{
   filter: OrganizationFilter;
-  page?: InputMaybe<PersonPage>;
+  page?: InputMaybe<SortablePage>;
 }>;
 
 
@@ -1570,7 +1569,7 @@ export type FindAllOrganizationsQueryHookResult = ReturnType<typeof useFindAllOr
 export type FindAllOrganizationsLazyQueryHookResult = ReturnType<typeof useFindAllOrganizationsLazyQuery>;
 export type FindAllOrganizationsQueryResult = Apollo.QueryResult<FindAllOrganizationsQuery, FindAllOrganizationsQueryVariables>;
 export const FindAllPatientsDocument = gql`
-    query findAllPatients($page: PersonPage) {
+    query findAllPatients($page: SortablePage) {
   findAllPatients(page: $page) {
     content {
       id
@@ -1958,7 +1957,7 @@ export type FindAllUsersQueryHookResult = ReturnType<typeof useFindAllUsersQuery
 export type FindAllUsersLazyQueryHookResult = ReturnType<typeof useFindAllUsersLazyQuery>;
 export type FindAllUsersQueryResult = Apollo.QueryResult<FindAllUsersQuery, FindAllUsersQueryVariables>;
 export const FindInvestigationsByFilterDocument = gql`
-    query findInvestigationsByFilter($filter: InvestigationFilter!, $page: Page) {
+    query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage) {
   findInvestigationsByFilter(filter: $filter, page: $page) {
     content {
       id
@@ -2061,7 +2060,7 @@ export type FindInvestigationsByFilterQueryHookResult = ReturnType<typeof useFin
 export type FindInvestigationsByFilterLazyQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterLazyQuery>;
 export type FindInvestigationsByFilterQueryResult = Apollo.QueryResult<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>;
 export const FindLabReportsByFilterDocument = gql`
-    query findLabReportsByFilter($filter: LabReportFilter!, $page: Page) {
+    query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage) {
   findLabReportsByFilter(filter: $filter, page: $page) {
     content {
       id
@@ -2517,7 +2516,7 @@ export type FindPatientByIdQueryHookResult = ReturnType<typeof useFindPatientByI
 export type FindPatientByIdLazyQueryHookResult = ReturnType<typeof useFindPatientByIdLazyQuery>;
 export type FindPatientByIdQueryResult = Apollo.QueryResult<FindPatientByIdQuery, FindPatientByIdQueryVariables>;
 export const FindPatientsByFilterDocument = gql`
-    query findPatientsByFilter($filter: PersonFilter!, $page: PersonPage) {
+    query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage) {
   findPatientsByFilter(filter: $filter, page: $page) {
     content {
       id
@@ -2704,7 +2703,7 @@ export type FindPatientsByFilterQueryHookResult = ReturnType<typeof useFindPatie
 export type FindPatientsByFilterLazyQueryHookResult = ReturnType<typeof useFindPatientsByFilterLazyQuery>;
 export type FindPatientsByFilterQueryResult = Apollo.QueryResult<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>;
 export const FindPatientsByOrganizationFilterDocument = gql`
-    query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: PersonPage) {
+    query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: SortablePage) {
   findPatientsByOrganizationFilter(filter: $filter, page: $page) {
     content {
       id

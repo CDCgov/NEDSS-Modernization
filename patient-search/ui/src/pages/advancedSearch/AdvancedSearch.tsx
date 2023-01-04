@@ -12,8 +12,8 @@ import {
     LabReport,
     LabReportFilter,
     PersonFilter,
-    PersonSortField,
     SortDirection,
+    SortField,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
@@ -51,15 +51,15 @@ export const AdvancedSearch = () => {
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [sort, setSort] = useState<{ sortDirection: SortDirection; sortField: SortField }>({
+        sortDirection: SortDirection.Asc,
+        sortField: SortField.LastNm
+    });
     const PAGE_SIZE = 25;
 
     // patient search variables
     const [personFilter, setPersonFilter] = useState<PersonFilter>();
     const addPatiendRef = useRef<any>(null);
-    const [personSort, setPersonSort] = useState<{ sortDirection: SortDirection; sortField: PersonSortField }>({
-        sortDirection: SortDirection.Asc,
-        sortField: PersonSortField.LastNm
-    });
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -146,7 +146,7 @@ export const AdvancedSearch = () => {
                     throw new Error('Invalid search type specified: ' + type);
             }
         });
-    }, [searchParams, state.isLoggedIn, personSort, currentPage]);
+    }, [searchParams, state.isLoggedIn, sort, currentPage]);
 
     const handleEventTags = (filter: any) => {
         const chips: any = [];
@@ -218,7 +218,7 @@ export const AdvancedSearch = () => {
                 page: {
                     pageNumber: currentPage - 1,
                     pageSize: PAGE_SIZE,
-                    ...personSort
+                    ...sort
                 }
             }
         });
@@ -235,7 +235,8 @@ export const AdvancedSearch = () => {
                 filter: filter,
                 page: {
                     pageNumber: currentPage - 1,
-                    pageSize: PAGE_SIZE
+                    pageSize: PAGE_SIZE,
+                    ...sort
                 }
             }
         });
@@ -252,7 +253,8 @@ export const AdvancedSearch = () => {
                 filter: filter,
                 page: {
                     pageNumber: currentPage - 1,
-                    pageSize: PAGE_SIZE
+                    pageSize: PAGE_SIZE,
+                    ...sort
                 }
             }
         });
@@ -275,6 +277,7 @@ export const AdvancedSearch = () => {
     }
 
     function handleLabReportSearchResults(data: FindLabReportsByFilterQuery) {
+        console.log('hanldeSearchResults', data);
         setLabReportData(data.findLabReportsByFilter);
         setLoading(false);
         setValidSearch(true);
@@ -630,9 +633,9 @@ export const AdvancedSearch = () => {
                                         <li className="usa-nav__submenu-item">
                                             <Button
                                                 onClick={() =>
-                                                    setPersonSort({
+                                                    setSort({
                                                         sortDirection: SortDirection.Asc,
-                                                        sortField: PersonSortField.LastNm
+                                                        sortField: SortField.LastNm
                                                     })
                                                 }
                                                 type={'button'}
@@ -643,9 +646,9 @@ export const AdvancedSearch = () => {
                                         <li className="usa-nav__submenu-item">
                                             <Button
                                                 onClick={() =>
-                                                    setPersonSort({
+                                                    setSort({
                                                         sortDirection: SortDirection.Desc,
-                                                        sortField: PersonSortField.LastNm
+                                                        sortField: SortField.LastNm
                                                     })
                                                 }
                                                 type={'button'}
@@ -656,9 +659,9 @@ export const AdvancedSearch = () => {
                                         <li className="usa-nav__submenu-item">
                                             <Button
                                                 onClick={() =>
-                                                    setPersonSort({
+                                                    setSort({
                                                         sortDirection: SortDirection.Asc,
-                                                        sortField: PersonSortField.BirthTime
+                                                        sortField: SortField.BirthTime
                                                     })
                                                 }
                                                 type={'button'}
@@ -669,9 +672,9 @@ export const AdvancedSearch = () => {
                                         <li className="usa-nav__submenu-item">
                                             <Button
                                                 onClick={() =>
-                                                    setPersonSort({
+                                                    setSort({
                                                         sortDirection: SortDirection.Desc,
-                                                        sortField: PersonSortField.BirthTime
+                                                        sortField: SortField.BirthTime
                                                     })
                                                 }
                                                 type={'button'}

@@ -306,10 +306,3 @@ type LocatorParticipations {
 type NBSEntity {
     entityLocatorParticipations: [LocatorParticipations]
 }
-
-input PersonPage {
-    pageSize: Int
-    pageNumber: Int
-    sortField: PersonSortField
-    sortDirection: SortDirection
-}

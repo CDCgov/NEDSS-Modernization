@@ -676,13 +676,6 @@ type LocatorParticipations {
 type NBSEntity {
     entityLocatorParticipations: [LocatorParticipations]
 }
-
-input PersonPage {
-    pageSize: Int
-    pageNumber: Int
-    sortField: PersonSortField
-    sortDirection: SortDirection
-}
 input PlaceFilter {
     id: ID
     description: String
@@ -740,9 +733,9 @@ type ProgramAreaCode {
 }
 type Query {
     findPatientById(id: ID!): Person
-    findAllPatients(page: PersonPage): PersonResults!
-    findPatientsByFilter(filter: PersonFilter!, page: PersonPage): PersonResults!
-    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: PersonPage): PersonResults!
+    findAllPatients(page: SortablePage): PersonResults!
+    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
 
     findOrganizationById(id: ID!): Organization
     findAllOrganizations(page: Page): OrganizationResults!
@@ -759,9 +752,9 @@ type Query {
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
 
-    findInvestigationsByFilter(filter: InvestigationFilter!, page: Page): InvestigationResults!
+    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
 
-    findLabReportsByFilter(filter: LabReportFilter!, page: Page): LabReportResults!
+    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
 }
 
 type Mutation {
@@ -795,8 +788,15 @@ type LabReportResults {
 scalar Date
 
 input Page {
+    pageSize: Int!
+    pageNumber: Int!
+}
+
+input SortablePage {
     pageSize: Int
     pageNumber: Int
+    sortField: SortField
+    sortDirection: SortDirection
 }
 
 type PersonParticipation {
@@ -830,10 +830,9 @@ type OrganizationParticipation {
     organizationLastChangeTime: Date
 }
 
-enum PersonSortField {
+enum SortField {
     lastNm
     birthTime
-    addTime
 }
 
 enum RecordStatus {

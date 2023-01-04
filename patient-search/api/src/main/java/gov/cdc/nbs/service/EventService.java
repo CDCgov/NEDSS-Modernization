@@ -1,6 +1,7 @@
 package gov.cdc.nbs.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -9,10 +10,17 @@ import javax.persistence.PersistenceContext;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.NestedSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -96,9 +104,11 @@ public class EventService {
         builder.must(QueryBuilders.matchQuery(LabReport.MOOD_CD, "EVN"));
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()).withPageable(pageable)
+            return new NativeSearchQueryBuilder()
+                    .withQuery(builder)
+                    .withSorts(buildLabReportSort(builder, pageable))
+                    .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                     .build();
-            return query;
         }
 
         // program area
@@ -312,7 +322,11 @@ public class EventService {
             builder.must(nestedCodedResultQuery);
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_PAGE_SIZE).build();
+        var query = new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(buildLabReportSort(builder, pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
         return query;
     }
 
@@ -330,7 +344,10 @@ public class EventService {
         builder.must(QueryBuilders.matchQuery(Investigation.MOOD_CD, "EVN"));
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(QueryBuilders.boolQuery()).withPageable(pageable)
+            var query = new NativeSearchQueryBuilder()
+                    .withQuery(builder)
+                    .withSorts(buildInvestigationSort(builder, pageable))
+                    .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                     .build();
             return query;
         }
@@ -579,7 +596,95 @@ public class EventService {
             }
         }
 
-        return new NativeSearchQueryBuilder().withQuery(builder).withPageable(pageable).build();
+        var sort = buildInvestigationSort(builder, pageable);
+        return new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(sort)
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
     }
 
+    private Collection<SortBuilder<?>> buildInvestigationSort(BoolQueryBuilder builder, Pageable pageable) {
+
+        if (pageable.getSort() == null) {
+            return null;
+        }
+        return pageable.getSort().stream().map(sort -> {
+            switch (sort.getProperty()) {
+                case "lastNm":
+                    return createNestedSortWithFilter(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "SubjOfPHC",
+                            sort.getDirection());
+                case "birthTime":
+                    return createNestedSortWithFilter(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.BIRTH_TIME,
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "SubjOfPHC",
+                            sort.getDirection());
+                default:
+                    throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
+            }
+        }).collect(Collectors.toList());
+    }
+
+    private Collection<SortBuilder<?>> buildLabReportSort(BoolQueryBuilder builder, Pageable pageable) {
+        if (pageable.getSort() == null) {
+            return null;
+        }
+        return pageable.getSort().stream().map(sort -> {
+            switch (sort.getProperty()) {
+                case "lastNm":
+                    return createNestedSortWithFilter(
+                            LabReport.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "PATSBJ",
+                            sort.getDirection());
+                case "birthTime":
+                    return createNestedSortWithFilter(
+                            LabReport.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.BIRTH_TIME,
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "PATSBJ",
+                            sort.getDirection());
+                default:
+                    throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
+            }
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * 
+     * Creates a sort that adhere to the following format
+     * 
+     * <pre>
+     * "sort" : [
+     *  {
+     *    "nestedField.childField": {
+     *      "order" : "asc",
+     *      "nested": {
+     *        "path": "nestedField",
+     *        "filter": {
+     *          "term" : {"nestedField.filterField" : "filterValue"}
+     *        }
+     *      }
+     *   }
+     *  }
+     *]
+     *
+     * </pre>
+     */
+    private FieldSortBuilder createNestedSortWithFilter(String nestedField, String childField, String filterField,
+            String filterValue, Direction direction) {
+        return SortBuilders
+                .fieldSort(nestedField + "." + childField)
+                .order(direction == Direction.ASC ? SortOrder.ASC : SortOrder.DESC)
+                .setNestedSort(new NestedSortBuilder(nestedField)
+                        .setFilter(
+                                QueryBuilders.termQuery(nestedField + "." + filterField, filterValue)));
+    }
 }

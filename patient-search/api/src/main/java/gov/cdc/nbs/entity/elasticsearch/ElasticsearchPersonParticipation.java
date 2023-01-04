@@ -6,6 +6,8 @@ import java.time.Instant;
 
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.InnerField;
+import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
@@ -62,7 +64,10 @@ public class ElasticsearchPersonParticipation {
     @Field(name = FIRST_NAME, type = FieldType.Text)
     private String firstName;
 
-    @Field(name = LAST_NAME, type = FieldType.Text)
+    // allows sorting
+    @MultiField(mainField = @Field(name = LAST_NAME, type = FieldType.Text), otherFields = {
+            @InnerField(suffix = "keyword", type = FieldType.Keyword, normalizer = "lowercase")
+    })
     private String lastName;
 
     @Field(name = BIRTH_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
