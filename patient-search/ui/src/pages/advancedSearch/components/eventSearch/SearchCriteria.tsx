@@ -6,10 +6,10 @@ import {
     LabReportFilter,
     NotificationStatus,
     ProcessingStatus
-} from '../../generated/graphql/schema';
-import { SelectControl } from '../FormInputs/SelectControl';
-import { formatInterfaceString } from '../../utils/util';
-import { CheckBoxControl } from '../FormInputs/CheckBoxControl';
+} from '../../../../generated/graphql/schema';
+import { SelectControl } from '../../../../components/FormInputs/SelectControl';
+import { formatInterfaceString } from '../../../../utils/util';
+import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;

@@ -51,6 +51,7 @@ public class LabReport {
     public static final String MATERIAL_PARTICIPATIONS = "material_participations";
     public static final String OBSERVATIONS = "observations";
     public static final String ACT_IDS = "act_ids";
+    public static final String ASSOCIATED_INVESTIGATIONS = "associated_investigations";
 
     /*
      * Same as observation_uid
@@ -144,4 +145,6 @@ public class LabReport {
     @Field(name = ACT_IDS, type = FieldType.Nested)
     private List<ElasticsearchActId> actIds;
 
+    @Field(name = ASSOCIATED_INVESTIGATIONS, type = FieldType.Nested)
+    private List<AssociatedInvestigation> associatedInvestigations;
 }

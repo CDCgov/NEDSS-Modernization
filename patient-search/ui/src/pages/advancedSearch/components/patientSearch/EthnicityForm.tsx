@@ -1,8 +1,8 @@
 import { Grid } from '@trussworks/react-uswds';
-import { SelectInput } from '../FormInputs/SelectInput';
+import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { Ethnicity, Race } from '../../generated/graphql/schema';
-import { formatInterfaceString } from '../../utils/util';
+import { Ethnicity, Race } from '../../../../generated/graphql/schema';
+import { formatInterfaceString } from '../../../../utils/util';
 
 export const EthnicityForm = ({ control }: any) => {
     return (

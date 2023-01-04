@@ -1,8 +1,8 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { EventSearch } from '../../components/EventSearch/EventSearch';
-import { PatientSearch } from '../../components/SimpleSearch';
+import { EventSearch } from './components/eventSearch/EventSearch';
+import { PatientSearch } from './components/patientSearch/PatientSearch';
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
@@ -239,7 +239,6 @@ export const AdvancedSearch = () => {
                 }
             }
         });
-        console.log('setting filter:', filter);
         setLastSearchType(SEARCH_TYPE.INVESTIGATION);
         setActiveTab(ACTIVE_TAB.EVENT);
         handleEventTags(filter);
@@ -316,55 +315,121 @@ export const AdvancedSearch = () => {
     };
 
     const handleClearAll = () => {
-        navigate('/');
+        setPatientData(undefined);
+        setPersonFilter({});
+        setInvestigationData(undefined);
+        setInvestigationFilter({});
+        setLabReportData(undefined);
+        setLabReportFilter({});
+        setSubmitted(false);
+        setValidSearch(false);
+        setLastSearchType(undefined);
+        // navigate('/advanced-search');
     };
 
-    const handleChipClose = (value: string) => {
+    const handleChipClose = (name: string, value: string) => {
         switch (lastSearchType) {
             case SEARCH_TYPE.PERSON:
-                handlePersonChipClose(value);
+                handlePersonChipClose(name, value);
                 return;
             case SEARCH_TYPE.INVESTIGATION:
-                handleInvestigationChipClose(value);
+                handleInvestigationChipClose(name, value);
                 return;
             case SEARCH_TYPE.LAB_REPORT:
-                handleLabReportChipClose(value);
+                handleLabReportChipClose(name, value);
                 return;
         }
     };
 
-    const handleLabReportChipClose = (value: string) => {
-        // TODO
-        console.log('labreport chip close', value);
+    const handleLabReportChipClose = (name: string, value: string) => {
+        let tempLabReportFilter = labReportFilter as LabReportFilter;
+        // remove the closed chip from the display
+        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
+        setResultsChip(newChips);
+
+        // if the last chip was removed, reset search
+        if (newChips.length === 0) {
+            handleClearAll();
+            return;
+        }
+
+        // remove the filter criteria associated with closed chip and resubmit search
+        switch (name) {
+            case 'Program Areas':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    programAreas: tempLabReportFilter?.programAreas?.filter((pa) => pa !== value)
+                };
+                break;
+            case 'Jurisdictions':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    jurisdictions: tempLabReportFilter?.jurisdictions?.filter((j) => j !== value)
+                };
+                break;
+            // TODO - add other fields
+        }
+        handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
     };
 
-    const handleInvestigationChipClose = (value: string) => {
-        console.log('value', value);
+    const handleInvestigationChipClose = (name: string, value: string) => {
         let tempInvestigationFilter = investigationFilter as InvestigationFilter;
         // remove the closed chip from the display
-        const newChips = resultsChip.filter((c) => c.name != value);
+        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
         setResultsChip(newChips);
-        // the last chip was removed, go to blank search
+
+        // if the last chip was removed, reset search
         if (newChips.length === 0) {
-            navigate('/advanced-search');
+            handleClearAll();
+            return;
         }
-        // clear the filter criteria associated with closed chip
-        if (investigationFilter) {
-            switch (value) {
-                case 'Program Areas':
-                    tempInvestigationFilter = { ...tempInvestigationFilter, programAreas: undefined };
-                    // TODO - it doesn't clear the value from the multi select
-                    break;
-            }
-            handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
+
+        // remove the filter criteria associated with closed chip and resubmit search
+        switch (name) {
+            case 'Conditions':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    conditions: tempInvestigationFilter?.conditions?.filter((c) => c !== value)
+                };
+                break;
+            case 'Program Areas':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    programAreas: tempInvestigationFilter?.programAreas?.filter((pa) => pa !== value)
+                };
+                break;
+            case 'Jurisdictions':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    jurisdictions: tempInvestigationFilter?.jurisdictions?.filter((j) => j !== value)
+                };
+                break;
+            // TODO - add other fields
         }
+        handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
     };
 
-    const handlePersonChipClose = (value: string) => {
+    const handlePersonChipClose = (name: string, value: string) => {
         let tempPersonFilter = personFilter as PersonFilter;
-        setResultsChip(resultsChip.filter((c) => c.name != value));
+        // remove the closed chip from the display
+        let newChips = resultsChip.filter((c) => c.name != name || c.value != value);
+
+        // ID Number and ID Type are separate chips but invalid if not together
+        if (name === 'ID Number' || name === 'ID Type') {
+            newChips = newChips.filter((c) => c.name != 'ID Number' && c.name != 'ID Type');
+        }
+        setResultsChip(newChips);
+
+        // if the last chip was removed, reset search
+        if (newChips.length === 0) {
+            console.log('length = 0');
+            handleClearAll();
+            return;
+        }
+
+        // remove the filter criteria associated with closed chip and resubmit search
         if (personFilter) {
-            switch (value) {
+            switch (name) {
                 case 'last':
                     tempPersonFilter = { ...tempPersonFilter, lastName: undefined };
                     break;
@@ -409,7 +474,6 @@ export const AdvancedSearch = () => {
                     break;
             }
             handleSubmit(tempPersonFilter, SEARCH_TYPE.PERSON);
-            resultsChip.length === 1 || ((value === 'ID Number' || value === 'ID Type') && navigate('/'));
         }
     };
 
@@ -517,7 +581,9 @@ export const AdvancedSearch = () => {
                         {validSearch ? (
                             <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
                                 <strong className="margin-right-1">
-                                    {patientData?.total || investigationData?.total || labReportData?.total}
+                                    {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                    {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
+                                    {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                 </strong>{' '}
                                 Results for:
                                 {resultsChip.map(
@@ -688,7 +754,7 @@ export const AdvancedSearch = () => {
                                 </div>
                             </div>
                         )}
-                    {activeTab === ACTIVE_TAB.PERSON &&
+                    {lastSearchType === SEARCH_TYPE.PERSON &&
                         !submitted &&
                         !loading &&
                         patientData?.content &&
@@ -701,8 +767,7 @@ export const AdvancedSearch = () => {
                                 currentPage={currentPage}
                             />
                         )}
-                    {activeTab === ACTIVE_TAB.EVENT &&
-                        lastSearchType === SEARCH_TYPE.INVESTIGATION &&
+                    {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
                         !submitted &&
                         investigationData?.content &&
                         investigationData?.content?.length > 0 && (
@@ -714,8 +779,7 @@ export const AdvancedSearch = () => {
                                 currentPage={currentPage}
                             />
                         )}
-                    {activeTab === ACTIVE_TAB.EVENT &&
-                        lastSearchType === SEARCH_TYPE.LAB_REPORT &&
+                    {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
                         !submitted &&
                         labReportData?.content &&
                         labReportData?.content?.length > 0 && (

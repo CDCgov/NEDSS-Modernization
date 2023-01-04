@@ -1,8 +1,8 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Input } from '../FormInputs/Input';
-import { SelectInput } from '../FormInputs/SelectInput';
+import { Input } from '../../../../components/FormInputs/Input';
+import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { stateList } from '../../constant/states';
+import { stateList } from '../../../../constant/states';
 
 export const AddressForm = ({ control }: any) => {
     return (

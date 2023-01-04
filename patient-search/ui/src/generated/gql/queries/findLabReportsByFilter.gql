@@ -85,6 +85,13 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: Page) {
                 typeCd
                 lastChangeTime
             }
+            associatedInvestigations{
+                publicHealthCaseUid
+                cdDescTxt
+                localId
+                lastChgTime
+                actRelationshipLastChgTime
+            }
         }
         total
     }

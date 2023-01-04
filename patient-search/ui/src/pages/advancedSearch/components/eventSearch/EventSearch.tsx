@@ -3,10 +3,10 @@ import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accor
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { InvestigationFilter, LabReportFilter } from '../../generated/graphql/schema';
-import { SEARCH_TYPE } from '../../pages/advancedSearch/AdvancedSearch';
+import { InvestigationFilter, LabReportFilter } from '../../../../generated/graphql/schema';
+import { SEARCH_TYPE } from '../../AdvancedSearch';
 import { EventTypes } from './EventType';
-import { GeneralSearch } from './generalSearch';
+import { GeneralSearch } from './GeneralSearch';
 import { SearchCriteria } from './SearchCriteria';
 
 type EventSearchProps = {

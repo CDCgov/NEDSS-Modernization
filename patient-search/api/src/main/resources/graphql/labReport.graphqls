@@ -44,6 +44,7 @@ type LabReport {
     materialParticipations: [MaterialParticipation]
     observations: [Observation]
     actIds: [ActId]
+    associatedInvestigations: [AssociatedInvestigation]
 }
 
 type MaterialParticipation {
@@ -71,6 +72,14 @@ type Observation {
     ovcAltCode: String
     ovcAltDescTxt: String
     ovcAltCdSystemCd: String
+}
+
+type AssociatedInvestigation {
+    publicHealthCaseUid: Int
+    cdDescTxt: String
+    localId: String
+    lastChgTime: Date
+    actRelationshipLastChgTime: Date
 }
 
 input LaboratoryEventDateSearch {

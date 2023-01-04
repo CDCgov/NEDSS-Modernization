@@ -8,14 +8,14 @@ import {
     PregnancyStatus,
     ProviderType,
     ReportingEntityType
-} from '../../generated/graphql/schema';
-import { SEARCH_TYPE } from '../../pages/advancedSearch/AdvancedSearch';
-import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
-import { formatInterfaceString } from '../../utils/util';
-import { DatePickerInput } from '../FormInputs/DatePickerInput';
-import { Input } from '../FormInputs/Input';
-import { MultiSelectControl } from '../FormInputs/MultiSelectControl';
-import { SelectControl } from '../FormInputs/SelectControl';
+} from '../../../../generated/graphql/schema';
+import { SEARCH_TYPE } from '../../AdvancedSearch';
+import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { formatInterfaceString } from '../../../../utils/util';
+import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
+import { Input } from '../../../../components/FormInputs/Input';
+import { MultiSelectControl } from '../../../../components/FormInputs/MultiSelectControl';
+import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
