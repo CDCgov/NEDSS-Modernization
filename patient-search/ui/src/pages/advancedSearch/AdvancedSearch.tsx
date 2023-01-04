@@ -112,7 +112,6 @@ export const AdvancedSearch = () => {
         if (!queryParam || !state.isLoggedIn) {
             // no query parameters specified or user is not logged in
             setActiveTab('person');
-
             setResultsChip([]);
             setValidSearch(false);
             setLoading(false);
@@ -125,7 +124,6 @@ export const AdvancedSearch = () => {
             authorization: `Bearer ${state.getToken()}`
         }).then(async (filter: any) => {
             if (isEmpty(filter)) {
-                console.log('empty filter:', filter);
                 // empty filter, clear content
                 setResultsChip([]);
                 setValidSearch(false);
@@ -265,20 +263,28 @@ export const AdvancedSearch = () => {
     };
 
     function handlePatientSearchResults(data: FindPatientsByFilterQuery) {
-        setPatientData(data.findPatientsByFilter);
+        // Using a timeout fixes an issue where the apollo cache fails to update the data
+        setTimeout(() => {
+            setPatientData(data.findPatientsByFilter);
+        }, 10);
         setLoading(false);
         setValidSearch(true);
     }
 
     function handleInvestigationSearchResults(data: FindInvestigationsByFilterQuery) {
-        setInvestigationData(data.findInvestigationsByFilter);
+        // Using a timeout fixes an issue where the apollo cache fails to update the data
+        setTimeout(() => {
+            setInvestigationData(data.findInvestigationsByFilter);
+        }, 10);
         setLoading(false);
         setValidSearch(true);
     }
 
     function handleLabReportSearchResults(data: FindLabReportsByFilterQuery) {
-        console.log('hanldeSearchResults', data);
-        setLabReportData(data.findLabReportsByFilter);
+        // Using a timeout fixes an issue where the apollo cache fails to update the data
+        setTimeout(() => {
+            setLabReportData(data.findLabReportsByFilter);
+        }, 10);
         setLoading(false);
         setValidSearch(true);
     }
