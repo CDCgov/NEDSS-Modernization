@@ -17,7 +17,7 @@ import gov.cdc.nbs.repository.LabTestRepository;
 import gov.cdc.nbs.repository.LoincCodeRepository;
 
 @Controller
-public class ResultedTestController {
+public class LabTestController {
     @Value("${nbs.max-page-size: 50}")
     private Integer MAX_PAGE_SIZE;
 
@@ -34,7 +34,7 @@ public class ResultedTestController {
 
     @QueryMapping
     public Page<LabTest> findLocalLabTest(@Argument String searchText, @Argument GraphQLPage page) {
-        return labTestRepository.findTest(searchText, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return labTestRepository.findTests(searchText, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
     }
 
     @QueryMapping

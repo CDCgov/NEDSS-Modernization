@@ -21,5 +21,7 @@ module.exports.findAllConditionCodes = fs.readFileSync(path.join(__dirname, 'fin
 module.exports.findAllOutbreaks = fs.readFileSync(path.join(__dirname, 'findAllOutbreaks.gql'), 'utf8');
 module.exports.findLocalLabTest = fs.readFileSync(path.join(__dirname, 'findLocalLabTest.gql'), 'utf8');
 module.exports.findLoincLabTest = fs.readFileSync(path.join(__dirname, 'findLoincLabTest.gql'), 'utf8');
+module.exports.findLocalCodedResults = fs.readFileSync(path.join(__dirname, 'findLocalCodedResults.gql'), 'utf8');
+module.exports.findSnomedCodedResults = fs.readFileSync(path.join(__dirname, 'findSnomedCodedResults.gql'), 'utf8');
 module.exports.findInvestigationsByFilter = fs.readFileSync(path.join(__dirname, 'findInvestigationsByFilter.gql'), 'utf8');
 module.exports.findLabReportsByFilter = fs.readFileSync(path.join(__dirname, 'findLabReportsByFilter.gql'), 'utf8');

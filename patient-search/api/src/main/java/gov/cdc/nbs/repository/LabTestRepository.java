@@ -13,6 +13,6 @@ public interface LabTestRepository extends JpaRepository<LabTest, LabTestId> {
 
     // query from NBS code - ObservationProcessor.java line 671
     @Query("SELECT lt FROM LabTest lt WHERE lt.testTypeCd = 'R' AND (UPPER(lt.labTestDescTxt) like %:searchString% OR UPPER(lt.id.labTestCd) like %:searchString%)")
-    Page<LabTest> findTest(@Param("searchString") String searchString, Pageable pageable);
+    Page<LabTest> findTests(@Param("searchString") String searchString, Pageable pageable);
 
 }

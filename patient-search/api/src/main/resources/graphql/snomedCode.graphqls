@@ -1,0 +1,4 @@
+type SnomedCode {
+    id: String
+    snomedDescTxt: String
+}

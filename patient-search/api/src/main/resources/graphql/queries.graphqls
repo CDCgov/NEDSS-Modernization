@@ -21,6 +21,8 @@ type Query {
     findAllOutbreaks(page: Page): OutbreakResults!
     findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
+    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
+    findSnomedCodedResults(searchText: String!, page: Page): SnomedCodedResults!
 
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
@@ -28,6 +30,16 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+}
+
+type SnomedCodedResults {
+    content: [SnomedCode]!
+    total: Int!
+}
+
+type LocalCodedResults {
+    content: [LabResult]!
+    total: Int!
 }
 
 type LoincLabTestResults {

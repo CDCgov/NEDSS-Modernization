@@ -37,8 +37,14 @@ public class KafkaConfig {
     @Value("${kafkadef.patient-search.topics.request.patient}")
     private String patientSearchTopic;
 
+    @Value("${kafka.enabled}")
+    private Boolean kafkaEnabled;
+
     @Bean
     public NewTopic createPatientSearchTopic() {
+        if (!kafkaEnabled) {
+            return null;
+        }
         return TopicBuilder.name(patientSearchTopic)
                 .partitions(topicPartitionCount)
                 .replicas(topicReplicationFactor)
@@ -48,14 +54,19 @@ public class KafkaConfig {
 
     @Bean
     public ProducerFactory<String, EnvelopeRequest> producerFactoryPatientSearch() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put("schema.registry.url", schemaRegistryUrl);
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        if (!kafkaEnabled) {
+            return new DefaultKafkaProducerFactory<String, EnvelopeRequest>(new HashMap<>(), new StringSerializer(),
+                    new JsonSerializer<EnvelopeRequest>());
+        } else {
+            Map<String, Object> config = new HashMap<>();
+            config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+            config.put("schema.registry.url", schemaRegistryUrl);
+            config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        return new DefaultKafkaProducerFactory<String, EnvelopeRequest>(config, new StringSerializer(),
-                new JsonSerializer<EnvelopeRequest>());
+            return new DefaultKafkaProducerFactory<String, EnvelopeRequest>(config, new StringSerializer(),
+                    new JsonSerializer<EnvelopeRequest>());
+        }
     }
 
     @Bean
