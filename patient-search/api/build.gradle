@@ -122,6 +122,7 @@ tasks.named("test") {
 	// always re-run tests
 	test.outputs.upToDateWhen {false}
 	systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+	finalizedBy jacocoTestReport
 }
 
 processResources {
