@@ -61,7 +61,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
 
 	// database
-	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"	
+	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
 
 	// querydsl
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
@@ -97,6 +97,13 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.17.6"
 	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
+	testImplementation 'com.github.javafaker:javafaker:1.0.2'
+	testImplementation 'org.yaml:snakeyaml:1.33'
+	
+	// Kafka dependencies
+	implementation("org.springframework.kafka:spring-kafka")
+	implementation("io.confluent:kafka-avro-serializer:7.1.1")
+	testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 configurations {
@@ -107,6 +114,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven{ url 'https://packages.confluent.io/maven/' }
 }
 
 tasks.named("test") {
