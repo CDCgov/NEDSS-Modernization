@@ -1,0 +1,8 @@
+type LoincCode {
+    id: String
+    componentName: String
+    methodType: String
+    systemCd: String
+    property: String
+    relatedClassCd: String
+}
