@@ -1,6 +1,6 @@
 # This workflow is used to perform static code analysis on a gradle build
 
-name: "CodeQL"
+name: "Sonar Scanner"
 
 on:
   push:
