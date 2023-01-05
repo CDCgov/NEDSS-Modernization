@@ -9,12 +9,6 @@ apply plugin: "com.moowork.node"
  args = ["run", "build"]
  }
 
-jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
-}
-
 sonarqube {
   properties {
     property "sonar.sourceEncoding", "UTF-8"
