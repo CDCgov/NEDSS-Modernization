@@ -151,7 +151,7 @@ public class PatientService {
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.regexpQuery("name.lastNm",addWildcards(filter.getLastName())), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.wildcardQuery("name.lastNm",addWildcards(filter.getLastName())), ScoreMode.Avg));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
@@ -163,7 +163,7 @@ public class PatientService {
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.streetAddr1",filter.getAddress()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.wildcardQuery("address.streetAddr1",addWildcards(filter.getAddress())), ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
@@ -585,6 +585,6 @@ public class PatientService {
     }
 
     private String addWildcards(String searchString) {
-        return  ".*" + searchString + ".*" ;
+        return  "*" + searchString + "*" ;
     }
 }

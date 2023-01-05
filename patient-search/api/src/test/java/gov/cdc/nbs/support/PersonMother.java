@@ -129,7 +129,7 @@ public class PersonMother {
         locatorId = id + 80000L;
         var postalLocator = new PostalLocator();
         postalLocator.setId(locatorId);
-        postalLocator.setStreetAddr1(RandomUtil.getRandomString(8));
+        postalLocator.setStreetAddr1(faker.address().streetAddress());
         postalLocator.setCntryCd(
                 RandomUtil.getRandomFromArray(CountryCodeUtil.countryCodeMap.values().toArray(new String[0])));
         postalLocator.setCityDescTxt(RandomUtil.getRandomString(8));
