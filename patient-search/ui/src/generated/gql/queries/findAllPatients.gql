@@ -1,4 +1,4 @@
-query findAllPatients($page: PersonPage) {
+query findAllPatients($page: SortablePage) {
     findAllPatients(page: $page){
         content{
             id

@@ -1,8 +1,15 @@
 scalar Date
 
 input Page {
+    pageSize: Int!
+    pageNumber: Int!
+}
+
+input SortablePage {
     pageSize: Int
     pageNumber: Int
+    sortField: SortField
+    sortDirection: SortDirection
 }
 
 type PersonParticipation {
@@ -36,10 +43,9 @@ type OrganizationParticipation {
     organizationLastChangeTime: Date
 }
 
-enum PersonSortField {
+enum SortField {
     lastNm
     birthTime
-    addTime
 }
 
 enum RecordStatus {

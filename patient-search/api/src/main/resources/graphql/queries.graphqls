@@ -1,8 +1,8 @@
 type Query {
     findPatientById(id: ID!): Person
-    findAllPatients(page: PersonPage): PersonResults!
-    findPatientsByFilter(filter: PersonFilter!, page: PersonPage): PersonResults!
-    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: PersonPage): PersonResults!
+    findAllPatients(page: SortablePage): PersonResults!
+    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
 
     findOrganizationById(id: ID!): Organization
     findAllOrganizations(page: Page): OrganizationResults!
@@ -18,14 +18,19 @@ type Query {
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
+    findAllOutbreaks(page: Page): OutbreakResults!
+    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
 
-    findInvestigationsByFilter(filter: InvestigationFilter!, page: Page): InvestigationResults!
-
-    findLabReportsByFilter(filter: LabReportFilter!, page: Page): LabReportResults!
+    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
 }
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+}
+
+type OutbreakResults {
+    content: [Outbreak]!
+    total: Int!
 }
 
 type PersonResults {

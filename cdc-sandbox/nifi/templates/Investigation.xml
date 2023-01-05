@@ -1301,7 +1301,7 @@ SELECT
   phc.curr_process_state_cd curr_process_state_cd, 
   phc.investigation_status_cd, 
   phc.record_status_cd, 
-  jc.code_desc_txt, 
+  jc.code_desc_txt jurisdiction_code_desc_txt, 
   act.mood_cd, 
   notification.local_id notification_local_id, 
   notification.add_time notification_add_time, 
@@ -1324,7 +1324,7 @@ FROM
       * 
     FROM 
       (
-        -- persons associated with observation
+        -- persons associated with public_health_case
         SELECT 
           (
             SELECT 
@@ -1336,7 +1336,7 @@ FROM
               p.last_chg_time AS [participation_last_change_time], 
               person.first_nm AS [first_name], 
               person.last_nm AS [last_name],
-              person.local_id AS [local_id],
+          	  person.local_id AS [local_id],
               person.birth_time AS [birth_time], 
               person.curr_sex_cd AS [curr_sex_cd], 
               person.cd AS [person_cd], 
@@ -1345,7 +1345,14 @@ FROM
               person.last_chg_time AS [person_last_chg_time] 
             FROM 
               participation p 
-              JOIN person ON person.person_uid = p.subject_entity_uid 
+              JOIN person ON person.person_uid = (
+                select 
+                  person.person_parent_uid 
+                from 
+                  person 
+                where 
+                  person.person_uid = p.subject_entity_uid
+              ) 
             WHERE 
               p.record_status_cd &lt;&gt; 'LOG_DEL' 
               AND person.record_status_cd &lt;&gt; 'LOG_DEL' 
@@ -1353,7 +1360,7 @@ FROM
           ) AS person_participations
       ) AS person_participations, 
       --
-      -- organizations associated with observation
+      -- organizations associated with public_health_case
       (
         SELECT 
           (
@@ -1408,7 +1415,14 @@ FROM
                         max(person.last_chg_time) 
                       FROM 
                         participation p 
-                        JOIN person ON person.person_uid = p.subject_entity_uid 
+                        JOIN person ON person.person_uid = (
+                          select 
+                            person.person_parent_uid 
+                          from 
+                            person 
+                          where 
+                            person.person_uid = p.subject_entity_uid
+                        ) 
                       WHERE 
                         p.act_uid = phc.public_health_case_uid
                     )
@@ -1442,9 +1456,9 @@ FROM
               ) AS value (v)
           ) AS last_change_time
       ) AS last_change_time
-  ) AS nesteddata WHERE 
-  phc.record_status_cd &lt;&gt; 'LOG_DEL' 
-  -- only return results with last_change_time greater than what is already indexed
+  ) AS nesteddata 
+WHERE 
+  phc.record_status_cd &lt;&gt; 'LOG_DEL' -- only return results with last_change_time greater than what is already indexed
   AND last_change_time &gt; '${es_last_change}' 
 ORDER BY 
   last_change_time ASC;
@@ -2513,5 +2527,5 @@ ORDER BY
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>12/30/2022 17:12:03 UTC</timestamp>
+    <timestamp>01/04/2023 21:45:15 UTC</timestamp>
 </template>

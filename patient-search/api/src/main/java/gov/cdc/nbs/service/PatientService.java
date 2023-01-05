@@ -197,6 +197,8 @@ public class PatientService {
                     QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
         }
 
+        // TODO check permission for allowing deleted / superceeded - await
+        // clarification from Henry Tavarez on if it will be included in UI
         if (filter.getRecordStatus() != null) {
             builder.must(QueryBuilders.matchQuery("record_status_cd", filter.getRecordStatus()));
         }

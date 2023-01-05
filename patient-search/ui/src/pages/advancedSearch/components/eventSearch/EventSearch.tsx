@@ -7,7 +7,9 @@ import { InvestigationFilter, LabReportFilter } from '../../../../generated/grap
 import { SEARCH_TYPE } from '../../AdvancedSearch';
 import { EventTypes } from './EventType';
 import { GeneralSearch } from './GeneralSearch';
+import { LabGeneralSearch } from './LabGeneralSearch';
 import { SearchCriteria } from './SearchCriteria';
+import { LabSearchCriteria } from './LabSearchCriteria';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
@@ -50,16 +52,10 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
         }
     ];
 
-    const eventSearchFilteredItem: AccordionItemProps[] = [
+    const investigationSearchFilteredItem: AccordionItemProps[] = [
         {
             title: 'General Search',
-            content: (
-                <GeneralSearch
-                    searchType={eventSearchType}
-                    control={control}
-                    filter={eventSearchType == SEARCH_TYPE.INVESTIGATION ? investigationFilter : labReportFilter}
-                />
-            ),
+            content: <GeneralSearch control={control} filter={investigationFilter} />,
             expanded: true,
             id: '2',
             headingLevel: 'h4',
@@ -67,12 +63,26 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
         },
         {
             title: 'Investigation Criteria',
-            content: (
-                <SearchCriteria
-                    control={control}
-                    filter={eventSearchType == SEARCH_TYPE.INVESTIGATION ? investigationFilter : labReportFilter}
-                />
-            ),
+            content: <SearchCriteria control={control} filter={investigationFilter} />,
+            expanded: false,
+            id: '3',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        }
+    ];
+
+    const labReportSearchItem: AccordionItemProps[] = [
+        {
+            title: 'General Search',
+            content: <LabGeneralSearch control={control} filter={labReportFilter} />,
+            expanded: true,
+            id: '2',
+            headingLevel: 'h4',
+            className: 'accordian-item'
+        },
+        {
+            title: 'Lab Report Criteria',
+            content: <LabSearchCriteria control={control} filter={labReportFilter} />,
             expanded: false,
             id: '3',
             headingLevel: 'h4',
@@ -146,7 +156,13 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
                 <Accordion items={eventSearchItems} multiselectable={true} />
-                {eventSearchType && <Accordion items={eventSearchFilteredItem} multiselectable={true} />}
+                {eventSearchType === SEARCH_TYPE.INVESTIGATION && (
+                    <Accordion items={investigationSearchFilteredItem} multiselectable={true} />
+                )}
+
+                {eventSearchType === SEARCH_TYPE.LAB_REPORT && (
+                    <Accordion items={labReportSearchItem} multiselectable={true} />
+                )}
             </div>
             <Grid row className="bottom-search">
                 <Grid col={12} className="padding-x-2">

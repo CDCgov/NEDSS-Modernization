@@ -1,4 +1,4 @@
-query findInvestigationsByFilter($filter: InvestigationFilter!, $page: Page) {
+query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage) {
     findInvestigationsByFilter(filter: $filter, page: $page){
         content{
             id

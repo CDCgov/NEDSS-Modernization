@@ -2340,7 +2340,14 @@ FROM
                         max(person.last_chg_time) 
                       FROM 
                         participation p 
-                        JOIN person ON person.person_uid = p.subject_entity_uid 
+                        JOIN person ON person.person_uid = (
+                          select 
+                            person.person_parent_uid 
+                          from 
+                            person 
+                          where 
+                            person.person_uid = p.subject_entity_uid
+                        )
                       WHERE 
                         p.act_uid = o.observation_uid
                     )
@@ -2555,5 +2562,5 @@ ORDER BY
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/03/2023 21:34:38 UTC</timestamp>
+    <timestamp>01/04/2023 21:45:20 UTC</timestamp>
 </template>

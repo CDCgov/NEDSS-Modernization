@@ -1,4 +1,4 @@
-query findLabReportsByFilter($filter: LabReportFilter!, $page: Page) {
+query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage) {
     findLabReportsByFilter(filter: $filter, page: $page){
         content{
             id

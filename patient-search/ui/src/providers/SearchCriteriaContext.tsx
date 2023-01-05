@@ -11,7 +11,10 @@ import {
     useFindAllConditionCodesLazyQuery,
     useFindAllJurisdictionsLazyQuery,
     useFindAllProgramAreasLazyQuery,
-    useFindAllUsersLazyQuery
+    useFindAllUsersLazyQuery,
+    useFindAllOutbreaksLazyQuery,
+    FindAllOutbreaksQuery,
+    Outbreak
 } from '../generated/graphql/schema';
 
 interface SearchCriteria {
@@ -19,13 +22,15 @@ interface SearchCriteria {
     conditions: ConditionCode[];
     jurisdictions: Jurisdiction[];
     userResults: User[];
+    outbreaks: Outbreak[];
 }
 
 const initialState: SearchCriteria = {
     programAreas: [],
     conditions: [],
     jurisdictions: [],
-    userResults: []
+    userResults: [],
+    outbreaks: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -39,6 +44,7 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getProgramAreas] = useFindAllProgramAreasLazyQuery({ onCompleted: setProgramAreas });
     const [getConditions] = useFindAllConditionCodesLazyQuery({ onCompleted: setConditions });
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
+    const [getOutbreaks] = useFindAllOutbreaksLazyQuery({ onCompleted: setOutbreaks });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
     // on init, load search data from API
@@ -47,7 +53,22 @@ export const SearchCriteriaProvider = (props: any) => {
         getConditions();
         getJurisdictions();
         getAllUsers();
+        getOutbreaks();
     }, []);
+
+    function setOutbreaks(results: FindAllOutbreaksQuery): void {
+        if (results.findAllOutbreaks) {
+            const outbreaks: Outbreak[] = [];
+            results.findAllOutbreaks.content.forEach((o) => o && outbreaks.push(o));
+            outbreaks.sort((a, b) => {
+                if (a.codeShortDescTxt && b.codeShortDescTxt) {
+                    return a.codeShortDescTxt?.localeCompare(b.codeShortDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, outbreaks });
+        }
+    }
 
     function setProgramAreas(results: FindAllProgramAreasQuery): void {
         if (results.findAllProgramAreas) {

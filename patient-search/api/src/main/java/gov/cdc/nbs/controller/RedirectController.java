@@ -32,7 +32,7 @@ public class RedirectController {
     private EncryptionService encryptionService;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${nbs.wildfly-url:http://wildfly:7001}")
+    @Value("${nbs.wildfly.url:http://wildfly:7001}")
     private String wildFlyUrl;
 
     @ApiIgnore
