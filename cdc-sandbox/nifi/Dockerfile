@@ -1,5 +1,5 @@
 # Dockerfile to build nifi image
-FROM apache/nifi:1.16.3
+FROM apache/nifi:1.19.0
 
 # Set environment variables
 ENV NIFI_SENSITIVE_PROPS_KEY='12345678901234567890A'
