@@ -46,12 +46,11 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                                 };
                             })}
                         />
-
-                        <CheckBoxControl control={control} id="case" name="case" label="Including unassigned status" />
                     </>
                 )}
             </SearchCriteriaContext.Consumer>
 
+            <CheckBoxControl control={control} id="case" name="case" label="Including unassigned status" />
             <SelectControl
                 control={control}
                 name="statusList"

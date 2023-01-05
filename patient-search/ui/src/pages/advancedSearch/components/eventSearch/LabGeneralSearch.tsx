@@ -31,7 +31,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <MultiSelectControl
                             defaultValue={filter?.programAreas}
                             control={control}
-                            name="programArea"
+                            name="labprogramArea"
                             label="Program Area:"
                             options={searchCriteria.programAreas.map((p) => {
                                 return {
@@ -44,7 +44,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <MultiSelectControl
                             control={control}
                             defaultValue={filter?.jurisdictions}
-                            name="jurisdiction"
+                            name="labjurisdiction"
                             label="Jurisdiction:"
                             options={searchCriteria.jurisdictions.map((j) => {
                                 return {
@@ -59,7 +59,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <SelectControl
                 control={control}
-                name="pregnancyTest"
+                name="labpregnancyTest"
                 label="Pregnancy Test:"
                 options={[
                     { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
@@ -70,7 +70,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <SelectControl
                 control={control}
-                name="eventIdType"
+                name="labeventIdType"
                 label="Event ID Type:"
                 options={Object.values(LaboratoryEventIdType).map((event) => {
                     return {
@@ -82,7 +82,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <Controller
                 control={control}
-                name="eventId"
+                name="labeventId"
                 render={({ field: { onChange, value } }) => (
                     <Input
                         onChange={onChange}
@@ -97,7 +97,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <SelectControl
                 control={control}
-                name="eventDateType"
+                name="labeventDateType"
                 label="Event Date Type:"
                 options={Object.values(LaboratoryReportEventDateType).map((type) => {
                     return {
@@ -109,7 +109,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <Controller
                 control={control}
-                name="from"
+                name="labfrom"
                 render={({ field: { onChange, value } }) => (
                     <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'from'} label="From" />
                 )}
@@ -117,7 +117,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <Controller
                 control={control}
-                name="to"
+                name="labto"
                 render={({ field: { onChange, value } }) => (
                     <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'to'} label="To" />
                 )}
@@ -128,7 +128,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                     <>
                         <SelectControl
                             control={control}
-                            name="createdBy"
+                            name="labcreatedBy"
                             label="Event Created By User:"
                             options={searchCriteria.userResults.map((user) => {
                                 return {
@@ -140,7 +140,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
                         <SelectControl
                             control={control}
-                            name="lastUpdatedBy"
+                            name="lablastUpdatedBy"
                             label="Event Updated By User:"
                             options={searchCriteria.userResults.map((user) => {
                                 return {
@@ -155,7 +155,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
 
             <SelectControl
                 control={control}
-                name="entityType"
+                name="labentityType"
                 label="Event Provider/Facility Type:"
                 onChangeMethod={(e) => setFacilityType(e.target.value && e.target.value !== '- Select -')}
                 options={Object.values(ProviderType).map((type) => {
@@ -169,7 +169,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             {facilityType && (
                 <Controller
                     control={control}
-                    name="id"
+                    name="labid"
                     render={({ field: { onChange, value } }) => (
                         <Input onChange={onChange} defaultValue={value} type="text" label="ID:" htmlFor="id" id="id" />
                     )}

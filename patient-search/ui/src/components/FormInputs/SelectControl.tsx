@@ -10,20 +10,21 @@ type EventTypesProps = {
     isMulti?: boolean;
 };
 
-export const SelectControl = ({ control, name, onChangeMethod, options, label, isMulti }: EventTypesProps) => {
+export const SelectControl = ({ control, name, onChangeMethod, options, label }: EventTypesProps) => {
     return (
         <Controller
             control={control}
             name={name}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value, name } }) => (
                 <SelectInput
+                    name={name}
                     defaultValue={value}
-                    isMulti={isMulti}
                     onChange={(e: any) => {
-                        onChange(e);
                         onChangeMethod?.(e);
+                        return onChange(e);
                     }}
                     label={label}
+                    htmlFor={name}
                     options={options}
                 />
             )}

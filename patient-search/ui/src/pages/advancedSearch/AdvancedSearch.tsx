@@ -141,7 +141,7 @@ export const AdvancedSearch = () => {
                     performLabReportSearch(filter);
                     break;
                 default:
-                    throw new Error('Invalid search type specified: ' + type);
+                    performPatientSearch(filter);
             }
         });
     }, [searchParams, state.isLoggedIn, sort, currentPage]);
@@ -156,7 +156,13 @@ export const AdvancedSearch = () => {
                     });
                 } else if (re[1] && typeof re[1] === 'object' && re[1].constructor === Object) {
                     Object.entries(re[1] as any).map((obj: any) => {
-                        chips.push({ name: convertCamelCase(obj[0]), value: obj[1] });
+                        if (obj[0] !== 'includeUnassigned') {
+                            if (obj[0] === 'statusList') {
+                                chips.push({ name: convertCamelCase(re[0]), value: obj[1] });
+                            } else {
+                                chips.push({ name: convertCamelCase(obj[0]), value: obj[1] });
+                            }
+                        }
                     });
                 } else {
                     chips.push({ name: convertCamelCase(re[0]), value: re[1] });
@@ -363,7 +369,7 @@ export const AdvancedSearch = () => {
         }
 
         // remove the filter criteria associated with closed chip and resubmit search
-        switch (name) {
+        switch (name.trim()) {
             case 'Program Areas':
                 tempLabReportFilter = {
                     ...tempLabReportFilter,
@@ -376,7 +382,48 @@ export const AdvancedSearch = () => {
                     jurisdictions: tempLabReportFilter?.jurisdictions?.filter((j) => j !== value)
                 };
                 break;
-            // TODO - add other fields
+            case 'Pregnancy Status':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    pregnancyStatus: undefined
+                };
+                break;
+            case 'Event Id Type':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    eventIdType: undefined
+                };
+                break;
+            case 'Event Id':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    eventId: undefined
+                };
+                break;
+            case 'Event Date Type' || 'From' || 'To':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    eventDateSearch: undefined
+                };
+                break;
+            case 'Created By':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    createdBy: undefined
+                };
+                break;
+            case 'Last Updated By':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    lastUpdatedBy: undefined
+                };
+                break;
+            case 'Entity Type' || 'Id':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    providerSearch: undefined
+                };
+                break;
         }
         handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
     };
@@ -392,6 +439,8 @@ export const AdvancedSearch = () => {
             handleClearAll();
             return;
         }
+
+        console.log(name);
 
         // remove the filter criteria associated with closed chip and resubmit search
         switch (name) {
@@ -413,7 +462,78 @@ export const AdvancedSearch = () => {
                     jurisdictions: tempInvestigationFilter?.jurisdictions?.filter((j) => j !== value)
                 };
                 break;
-            // TODO - add other fields
+            case 'Investigation Status':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    investigationStatus: undefined
+                };
+                break;
+            case 'Outbreak Names':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    outbreakNames: undefined
+                };
+                break;
+            case 'Case Statuses':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    caseStatuses: undefined
+                };
+                break;
+            case 'Processing Statuses':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    processingStatuses: undefined
+                };
+                break;
+            case 'Notification Statuses':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    notificationStatuses: undefined
+                };
+                break;
+            case 'Pregnancy Status':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    pregnancyStatus: undefined
+                };
+                break;
+            case 'Event Id Type':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    eventIdType: undefined
+                };
+                break;
+            case 'Event Id':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    eventId: undefined
+                };
+                break;
+            case 'Event Date Type' || 'From' || 'To':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    eventDateSearch: undefined
+                };
+                break;
+            case 'Created By':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    createdBy: undefined
+                };
+                break;
+            case 'Last Updated By':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    lastUpdatedBy: undefined
+                };
+                break;
+            case 'Entity Type' || 'Id':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    providerFacilitySearch: undefined
+                };
+                break;
         }
         handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
     };
@@ -588,7 +708,9 @@ export const AdvancedSearch = () => {
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {validSearch ? (
-                            <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
+                            <div
+                                className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                style={{ maxWidth: '55%' }}>
                                 <strong className="margin-right-1">
                                     {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
                                     {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
