@@ -1,6 +1,7 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Config } from '../../config';
 import {
     ExportControllerService,
     InvestigationFilter as ExportInvestigation,
@@ -47,7 +48,7 @@ enum ACTIVE_TAB {
 
 export const AdvancedSearch = () => {
     // shared variables
-    const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
+    const NBS_URL = Config.nbsUrl;
     const { state } = useContext(UserContext);
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'person' | 'event'>('person');
