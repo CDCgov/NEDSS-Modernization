@@ -502,9 +502,8 @@
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <destination>
                         <groupId>7f0f79fb-3433-3603-0000-000000000000</groupId>
-                        <id>5cd759ef-16d4-3dd1-0000-000000000000</id>
+                        <id>13067522-fcd0-3198-0000-000000000000</id>
                         <type>PROCESSOR</type>
-                        <versionedComponentId>26e37cc5-07a4-3da3-9da6-fd8b29d8d219</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>1</labelIndex>
@@ -548,6 +547,32 @@
                         <id>0b260d52-188b-3253-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>1fca4bf6-4e0c-3d64-95dd-4d2c19816019</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>80bb788b-ed77-3339-0000-000000000000</id>
+                    <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>7f0f79fb-3433-3603-0000-000000000000</groupId>
+                        <id>0b260d52-188b-3253-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>1fca4bf6-4e0c-3d64-95dd-4d2c19816019</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>singleObject</selectedRelationships>
+                    <source>
+                        <groupId>7f0f79fb-3433-3603-0000-000000000000</groupId>
+                        <id>13067522-fcd0-3198-0000-000000000000</id>
+                        <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -669,6 +694,32 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>c577cb07-f18f-3169-0000-000000000000</id>
+                    <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>7f0f79fb-3433-3603-0000-000000000000</groupId>
+                        <id>5cd759ef-16d4-3dd1-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>26e37cc5-07a4-3da3-9da6-fd8b29d8d219</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>unmatched</selectedRelationships>
+                    <source>
+                        <groupId>7f0f79fb-3433-3603-0000-000000000000</groupId>
+                        <id>13067522-fcd0-3198-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>dfb36ebb-067e-30fd-0000-000000000000</id>
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -727,7 +778,7 @@
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
                         <x>720.0</x>
-                        <y>1256.0</y>
+                        <y>1280.0</y>
                     </position>
                     <height>88.0</height>
                     <label>Unescape the nested fields json</label>
@@ -783,8 +834,8 @@ later than the latest"last_change"</label>
                     <id>d9b4e7d8-6fed-3fb7-0000-000000000000</id>
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1374.000070899617</x>
-                        <y>1248.0000139927092</y>
+                        <x>1376.0</x>
+                        <y>1272.0</y>
                     </position>
                     <versionedComponentId>112b65c2-33c9-32d5-9d83-f8d588efcacd</versionedComponentId>
                     <height>88.0</height>
@@ -906,8 +957,8 @@ we can do Upsert when ingesting data</label>
                     <id>0b260d52-188b-3253-0000-000000000000</id>
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1358.000070899617</x>
-                        <y>1360.0000139927092</y>
+                        <x>1360.0</x>
+                        <y>1384.0</y>
                     </position>
                     <versionedComponentId>1fca4bf6-4e0c-3d64-95dd-4d2c19816019</versionedComponentId>
                     <bundle>
@@ -1006,11 +1057,98 @@ we can do Upsert when ingesting data</label>
                     <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                 </processors>
                 <processors>
+                    <id>13067522-fcd0-3198-0000-000000000000</id>
+                    <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1960.0</x>
+                        <y>1368.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.16.3</version>
+                    </bundle>
+                    <config>
+                        <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Match Requirement</key>
+<value>
+    <name>Match Requirement</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Character Set</key>
+<value>
+    <name>Character Set</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Content Buffer Size</key>
+<value>
+    <name>Content Buffer Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>singleObject</key>
+<value>
+    <name>singleObject</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Match Requirement</key>
+<value>content must contain match</value>
+                            </entry>
+                            <entry>
+<key>Character Set</key>
+<value>UTF-8</value>
+                            </entry>
+                            <entry>
+<key>Content Buffer Size</key>
+<value>1 MB</value>
+                            </entry>
+                            <entry>
+<key>singleObject</key>
+<value>^\{.*</value>
+                            </entry>
+                        </properties>
+                        <retryCount>10</retryCount>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>Check if single object</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>singleObject</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>unmatched</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.RouteOnContent</type>
+                </processors>
+                <processors>
                     <id>1b576b67-af75-3b09-0000-000000000000</id>
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
-                        <x>56.0</x>
-                        <y>1624.0</y>
+                        <x>656.0</x>
+                        <y>1640.0</y>
                     </position>
                     <versionedComponentId>3134fd63-7cce-311b-a7d2-24b408f68ec7</versionedComponentId>
                     <bundle>
@@ -1535,7 +1673,7 @@ ORDER BY
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
                         <x>704.0</x>
-                        <y>1368.0</y>
+                        <y>1392.0</y>
                     </position>
                     <versionedComponentId>52452a26-94da-332d-89c9-0d7c6b6b14e0</versionedComponentId>
                     <bundle>
@@ -1653,8 +1791,8 @@ ORDER BY
                     <id>5cd759ef-16d4-3dd1-0000-000000000000</id>
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1958.000070899617</x>
-                        <y>1360.0000139927092</y>
+                        <x>1968.0</x>
+                        <y>1624.0</y>
                     </position>
                     <versionedComponentId>26e37cc5-07a4-3da3-9da6-fd8b29d8d219</versionedComponentId>
                     <bundle>
@@ -1726,8 +1864,8 @@ ORDER BY
                     <id>65a37313-534b-3c58-0000-000000000000</id>
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1358.000070899617</x>
-                        <y>1608.0000139927092</y>
+                        <x>1360.0</x>
+                        <y>1632.0</y>
                     </position>
                     <versionedComponentId>e44f6b11-1196-3d16-b73a-13262b5de47a</versionedComponentId>
                     <bundle>
@@ -2284,7 +2422,7 @@ ORDER BY
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
                         <x>696.0</x>
-                        <y>1616.0</y>
+                        <y>1640.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -2360,7 +2498,7 @@ ORDER BY
                     <parentGroupId>7f0f79fb-3433-3603-0000-000000000000</parentGroupId>
                     <position>
                         <x>56.0</x>
-                        <y>1376.0</y>
+                        <y>1400.0</y>
                     </position>
                     <versionedComponentId>3b7672b5-1ffe-362a-9652-192dd14f6ee2</versionedComponentId>
                     <bundle>
@@ -2523,9 +2661,9 @@ ORDER BY
             <defaultFlowFileExpiration>0 sec</defaultFlowFileExpiration>
             <flowfileConcurrency>UNBOUNDED</flowfileConcurrency>
             <flowfileOutboundPolicy>STREAM_WHEN_AVAILABLE</flowfileOutboundPolicy>
-            <name>Event Search - Investigation</name>
+            <name>Investigation</name>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/04/2023 21:45:15 UTC</timestamp>
+    <timestamp>01/05/2023 17:34:28 UTC</timestamp>
 </template>

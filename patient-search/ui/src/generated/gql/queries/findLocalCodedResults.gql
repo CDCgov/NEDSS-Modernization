@@ -1,0 +1,13 @@
+query findLocalCodedResults($searchText: String!, $page: Page) {
+    findLocalCodedResults(searchText: $searchText, page: $page){
+        content{
+            id{
+                labResultCd
+                laboratoryId
+            }
+            nbsUid
+            labResultDescTxt
+        }
+        total
+    }
+}

@@ -361,9 +361,8 @@
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <destination>
                         <groupId>57e39e7b-7c11-393e-0000-000000000000</groupId>
-                        <id>9bb2e2a0-83aa-3b76-0000-000000000000</id>
+                        <id>aebb52c1-ef35-34a5-0000-000000000000</id>
                         <type>PROCESSOR</type>
-                        <versionedComponentId>d5c32859-ff01-3336-a4b0-559fe1f48ec3</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>1</labelIndex>
@@ -601,6 +600,32 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>a4007fe1-3050-3c5d-0000-000000000000</id>
+                    <parentGroupId>57e39e7b-7c11-393e-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>57e39e7b-7c11-393e-0000-000000000000</groupId>
+                        <id>54c0991c-6b98-3878-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>3425957b-6fb5-3469-b063-97798f620724</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>singleObject</selectedRelationships>
+                    <source>
+                        <groupId>57e39e7b-7c11-393e-0000-000000000000</groupId>
+                        <id>aebb52c1-ef35-34a5-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>aa0262d7-9cb4-312e-0000-000000000000</id>
                     <parentGroupId>57e39e7b-7c11-393e-0000-000000000000</parentGroupId>
                     <versionedComponentId>ce863792-b6d3-3eff-9376-445a76740ae5</versionedComponentId>
@@ -684,6 +709,32 @@
                         <id>54c0991c-6b98-3878-0000-000000000000</id>
                         <type>PROCESSOR</type>
                         <versionedComponentId>3425957b-6fb5-3469-b063-97798f620724</versionedComponentId>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
+                    <id>c29e7fbf-ae30-39d7-0000-000000000000</id>
+                    <parentGroupId>57e39e7b-7c11-393e-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>57e39e7b-7c11-393e-0000-000000000000</groupId>
+                        <id>9bb2e2a0-83aa-3b76-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>d5c32859-ff01-3336-a4b0-559fe1f48ec3</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>unmatched</selectedRelationships>
+                    <source>
+                        <groupId>57e39e7b-7c11-393e-0000-000000000000</groupId>
+                        <id>aebb52c1-ef35-34a5-0000-000000000000</id>
+                        <type>PROCESSOR</type>
                     </source>
                     <zIndex>0</zIndex>
                 </connections>
@@ -1742,8 +1793,8 @@ we can do Upsert when ingesting data</label>
                     <id>9bb2e2a0-83aa-3b76-0000-000000000000</id>
                     <parentGroupId>57e39e7b-7c11-393e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>2024.0</x>
-                        <y>1360.0</y>
+                        <x>2032.0</x>
+                        <y>1592.0</y>
                     </position>
                     <versionedComponentId>d5c32859-ff01-3336-a4b0-559fe1f48ec3</versionedComponentId>
                     <bundle>
@@ -1810,6 +1861,93 @@ we can do Upsert when ingesting data</label>
                     <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
+                </processors>
+                <processors>
+                    <id>aebb52c1-ef35-34a5-0000-000000000000</id>
+                    <parentGroupId>57e39e7b-7c11-393e-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>2032.0</x>
+                        <y>1344.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.16.3</version>
+                    </bundle>
+                    <config>
+                        <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Match Requirement</key>
+<value>
+    <name>Match Requirement</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Character Set</key>
+<value>
+    <name>Character Set</name>
+</value>
+                            </entry>
+                            <entry>
+<key>Content Buffer Size</key>
+<value>
+    <name>Content Buffer Size</name>
+</value>
+                            </entry>
+                            <entry>
+<key>singleObject</key>
+<value>
+    <name>singleObject</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Match Requirement</key>
+<value>content must contain match</value>
+                            </entry>
+                            <entry>
+<key>Character Set</key>
+<value>UTF-8</value>
+                            </entry>
+                            <entry>
+<key>Content Buffer Size</key>
+<value>1 MB</value>
+                            </entry>
+                            <entry>
+<key>singleObject</key>
+<value>^\{.*</value>
+                            </entry>
+                        </properties>
+                        <retryCount>10</retryCount>
+                        <runDurationMillis>0</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>Check if single object</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>singleObject</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>unmatched</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.RouteOnContent</type>
                 </processors>
                 <processors>
                     <id>b11c5209-206c-333b-0000-000000000000</id>
@@ -2558,9 +2696,9 @@ ORDER BY
             <defaultFlowFileExpiration>0 sec</defaultFlowFileExpiration>
             <flowfileConcurrency>UNBOUNDED</flowfileConcurrency>
             <flowfileOutboundPolicy>STREAM_WHEN_AVAILABLE</flowfileOutboundPolicy>
-            <name>Event Search - Lab Report</name>
+            <name>Lab Report</name>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/04/2023 21:45:20 UTC</timestamp>
+    <timestamp>01/05/2023 17:34:33 UTC</timestamp>
 </template>

@@ -19,13 +19,37 @@ type Query {
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
     findAllOutbreaks(page: Page): OutbreakResults!
-    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
+    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
+    findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
+    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
+    findSnomedCodedResults(searchText: String!, page: Page): SnomedCodedResults!
 
+    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
 }
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+}
+
+type SnomedCodedResults {
+    content: [SnomedCode]!
+    total: Int!
+}
+
+type LocalCodedResults {
+    content: [LabResult]!
+    total: Int!
+}
+
+type LoincLabTestResults {
+    content: [LoincCode]!
+    total: Int!
+}
+
+type LocalLabTestResults {
+    content: [LabTest]!
+    total: Int!
 }
 
 type OutbreakResults {
