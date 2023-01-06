@@ -1,15 +1,14 @@
 package gov.cdc.nbs.support.util;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PostalLocator;
-import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.entity.elasticsearch.*;
+import gov.cdc.nbs.entity.odse.*;
 import gov.cdc.nbs.graphql.input.PatientInput;
 import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
@@ -24,24 +23,44 @@ public class PersonUtil {
 
     public static ElasticsearchPerson getElasticSearchPerson(Person person) {
         Long id = person.getId();
+
+        var name = new NestedName();
+        name.setFirstNm(person.getFirstNm());
+        name.setLastNm(person.getLastNm());
+
+        var race = new NestedRace();
+        race.setRaceCd(person.getRaceCd());
+        race.setRaceDescTxt(person.getRaceDescTxt());
+
+        var address = new NestedAddress();
+        PostalLocator pl = PersonUtil.getPostalLocators(person).get(0);
+        address.setStreetAddr1(pl.getStreetAddr1());
+        address.setStreetAddr2(pl.getStreetAddr2());
+        address.setCity(pl.getCityDescTxt());
+        address.setState(pl.getStateCd());
+        address.setCntyCd(pl.getCntyCd());
+        address.setCntryCd(pl.getCntryCd());
+        address.setZip(pl.getZipCd());
+
+        var phone = new NestedPhone();
+        phone.setTelephoneNbr(PersonUtil.getTeleLocators(person).get(0).getPhoneNbrTxt());
+
+        var email = new NestedEmail();
+        email.setEmailAddress(person.getHmEmailAddr());
+
         return ElasticsearchPerson.builder()
                 .id(String.valueOf(id))
                 .personUid(id)
-                .firstNm(person.getFirstNm())
-                .lastNm(person.getLastNm())
+                .name(Arrays.asList(name))
                 .ssn(person.getSsn())
                 .birthGenderCd(person.getBirthGenderCd())
-                .hmStreetAddr1(PersonUtil.getPostalLocators(person).get(0).getStreetAddr1())
-                .hmStreetAddr2(PersonUtil.getPostalLocators(person).get(0).getStreetAddr2())
-                .hmCityDescTxt(PersonUtil.getPostalLocators(person).get(0).getCityDescTxt())
-                .hmStateCd(PersonUtil.getPostalLocators(person).get(0).getStateCd())
-                .hmCntryCd(PersonUtil.getPostalLocators(person).get(0).getCntryCd())
-                .hmZipCd(PersonUtil.getPostalLocators(person).get(0).getZipCd())
-                .hmPhoneNbr(PersonUtil.getTeleLocators(person).get(0).getPhoneNbrTxt())
+                .email(Arrays.asList(email))
+                .phone(Arrays.asList(phone))
+                .address(Arrays.asList(address))
                 .recordStatusCd(person.getRecordStatusCd())
                 .ethnicGroupInd(person.getEthnicGroupInd())
                 .birthTime(person.getBirthTime())
-                .raceDescTxt(person.getRaceDescTxt())
+                .race(Arrays.asList(race))
                 .deceasedIndCd(person.getDeceasedIndCd())
                 .cd(person.getCd())
                 .build();

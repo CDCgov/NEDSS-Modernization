@@ -1,0 +1,60 @@
+version: "3.8"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2191:2191"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2191
+      ZOOKEEPER_TICK_TIME: 2000
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "29092:29092"
+      - "29095:29095"
+      - "9092:9092"
+      - "9095:9095"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2191
+      KAFKA_ADVERTISED_LISTENERS: LISTENER://localhost:9092, LISTENER_HOST://kafka-local:9095
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER:PLAINTEXT, LISTENER_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    depends_on:
+      - zookeeper
+    networks:
+      default:
+        aliases:
+          - 'kafka-local'
+
+  schema:
+    image: confluentinc/cp-schema-registry:latest
+    container_name: schema
+    hostname: schema
+    ports:
+      - "9091:9091"
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka-local:9095'
+      SCHEMA_REGISTRY_HOST_NAME: schema
+      SCHEMA_REGISTRY_LISTENERS: http://schema:9091
+    depends_on:
+      - kafka
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8008:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=nedss-modernization
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-local:9095
+    depends_on:
+      - kafka

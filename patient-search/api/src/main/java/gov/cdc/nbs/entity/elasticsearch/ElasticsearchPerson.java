@@ -3,6 +3,7 @@ package gov.cdc.nbs.entity.elasticsearch;
 import static gov.cdc.nbs.config.ElasticSearchConfig.DATE_PATTERN;
 
 import java.time.Instant;
+import java.util.List;
 
 import javax.persistence.Id;
 
@@ -369,4 +370,19 @@ public class ElasticsearchPerson {
 
     @Field(name = "sex_unk_reason_cd", type = FieldType.Keyword)
     private String sexUnkReasonCd;
+
+    @Field( type = FieldType.Nested)
+    private List<NestedName> name;
+
+    @Field( type = FieldType.Nested)
+    private List<NestedAddress> address;
+
+    @Field( type = FieldType.Nested)
+    private List<NestedPhone> phone;
+
+    @Field( type = FieldType.Nested)
+    private List<NestedEmail> email;
+
+    @Field( type = FieldType.Nested)
+    private List<NestedRace> race;
 }
