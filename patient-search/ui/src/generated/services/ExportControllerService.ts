@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type { InvestigationFilter } from '../models/InvestigationFilter';
 import type { LabReportFilter } from '../models/LabReportFilter';
-import type { Resource } from '../models/Resource';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -12,12 +11,12 @@ import { request as __request } from '../core/request';
 export class ExportControllerService {
 
     /**
-     * generateExportCsv
+     * generateInvestigationCsv
      * @returns string OK
      * @returns any Created
      * @throws ApiError
      */
-    public static generateExportCsvUsingPost({
+    public static generateInvestigationCsvUsingPost({
         authorization,
         filter,
     }: {
@@ -29,7 +28,7 @@ export class ExportControllerService {
     }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/investigations/export/csv',
+            url: '/investigation/export/csv',
             headers: {
                 'Authorization': authorization,
             },
@@ -43,12 +42,12 @@ export class ExportControllerService {
     }
 
     /**
-     * generateExportPdf
-     * @returns Resource OK
+     * generateInvestigationPdf
+     * @returns string OK
      * @returns any Created
      * @throws ApiError
      */
-    public static generateExportPdfUsingPost({
+    public static generateInvestigationPdfUsingPost({
         authorization,
         filter,
     }: {
@@ -57,10 +56,10 @@ export class ExportControllerService {
          * filter
          */
         filter: InvestigationFilter,
-    }): CancelablePromise<Resource | any> {
+    }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/investigations/export/pdf',
+            url: '/investigation/export/pdf',
             headers: {
                 'Authorization': authorization,
             },
@@ -74,12 +73,12 @@ export class ExportControllerService {
     }
 
     /**
-     * generateExportCsv
+     * generateLabReportCsv
      * @returns string OK
      * @returns any Created
      * @throws ApiError
      */
-    public static generateExportCsvUsingPost1({
+    public static generateLabReportCsvUsingPost({
         authorization,
         filter,
     }: {
@@ -105,12 +104,12 @@ export class ExportControllerService {
     }
 
     /**
-     * generateExport
-     * @returns Resource OK
+     * generateLabReportPdf
+     * @returns string OK
      * @returns any Created
      * @throws ApiError
      */
-    public static generateExportUsingPost({
+    public static generateLabReportPdfUsingPost({
         authorization,
         filter,
     }: {
@@ -119,7 +118,7 @@ export class ExportControllerService {
          * filter
          */
         filter: LabReportFilter,
-    }): CancelablePromise<Resource | any> {
+    }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/labreport/export/pdf',

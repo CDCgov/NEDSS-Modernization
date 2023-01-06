@@ -1,8 +1,8 @@
 package gov.cdc.nbs.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,60 +28,64 @@ public class ExportController {
     @Autowired
     private EventService eventService;
 
-    @PostMapping("/investigations/export/pdf")
+    @PostMapping(value = "/investigation/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public ResponseEntity<Resource> generateExportPdf(@RequestBody InvestigationFilter filter)
-            throws DocumentException {
+    public ResponseEntity<byte[]> generateInvestigationPdf(@RequestBody InvestigationFilter filter)
+            throws DocumentException, IOException {
         var investigations = eventService.findInvestigationsByFilterForExport(filter);
         var pdf = exportService.generateInvestigationPdf(investigations);
-        var pdfResource = new ByteArrayResource(pdf);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
-                .contentLength(pdfResource.contentLength())
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename("InvestigationSearchResults.pdf").build().toString())
-                .body(pdfResource);
+                        ContentDisposition.attachment()
+                                .filename("InvestigationSearchResults.pdf").build()
+                                .toString())
+                .body(pdf);
     }
 
-    @PostMapping("/investigations/export/csv")
+    @PostMapping("/investigation/export/csv")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public ResponseEntity<String> generateExportCsv(@RequestBody InvestigationFilter filter) throws DocumentException {
+    public ResponseEntity<String> generateInvestigationCsv(@RequestBody InvestigationFilter filter)
+            throws DocumentException {
         var investigations = eventService.findInvestigationsByFilterForExport(filter);
         var csv = exportService.generateInvestigationCsv(investigations);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename("InvestigationSearchResults.csv").build().toString())
+                        ContentDisposition.attachment()
+                                .filename("InvestigationSearchResults.csv").build()
+                                .toString())
                 .body(csv);
     }
 
-    @PostMapping("/labreport/export/pdf")
+    @PostMapping(value = "/labreport/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public ResponseEntity<Resource> generateExport(@RequestBody LabReportFilter filter) throws DocumentException {
+    public ResponseEntity<byte[]> generateLabReportPdf(@RequestBody LabReportFilter filter)
+            throws DocumentException, IOException {
         var labReports = eventService.findLabReportsByFilterForExport(filter);
         var pdf = exportService.generateLabReportPdf(labReports);
-        var pdfResource = new ByteArrayResource(pdf);
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
-                .contentLength(pdfResource.contentLength())
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename("LabReportSearchResults.pdf").build().toString())
-                .body(pdfResource);
+                        ContentDisposition.attachment().filename("LabReportSearchResults.pdf")
+                                .build().toString())
+                .body(pdf);
     }
 
     @PostMapping("/labreport/export/csv")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public ResponseEntity<String> generateExportCsv(@RequestBody LabReportFilter filter) throws DocumentException {
+    public ResponseEntity<String> generateLabReportCsv(@RequestBody LabReportFilter filter)
+            throws DocumentException {
         var labReports = eventService.findLabReportsByFilterForExport(filter);
         var csv = exportService.generateLabReportCsv(labReports);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        ContentDisposition.attachment().filename("LabReportSearchResults.csv").build().toString())
+                        ContentDisposition.attachment().filename("LabReportSearchResults.csv")
+                                .build().toString())
                 .body(csv);
     }
 }

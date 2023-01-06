@@ -1,8 +1,12 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { EventSearch } from './components/eventSearch/EventSearch';
-import { PatientSearch } from './components/patientSearch/PatientSearch';
+import {
+    ExportControllerService,
+    InvestigationFilter as ExportInvestigation,
+    LabReportFilter as ExportLabReport,
+    OpenAPI
+} from '../../generated';
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
@@ -24,9 +28,11 @@ import { UserContext } from '../../providers/UserContext';
 import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
 import Chip from './components/Chip';
+import { EventSearch } from './components/eventSearch/EventSearch';
 import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
+import { PatientSearch } from './components/patientSearch/PatientSearch';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -327,6 +333,94 @@ export const AdvancedSearch = () => {
             setValidSearch(false);
             setSubmitted(true);
         }
+    };
+
+    // Generates a CSV of the results
+    const handleExportClick = () => {
+        switch (lastSearchType) {
+            case SEARCH_TYPE.INVESTIGATION:
+                if (investigationFilter) {
+                    ExportControllerService.generateInvestigationCsvUsingPost({
+                        filter: investigationFilter as ExportInvestigation,
+                        authorization: `Bearer ${state.getToken()}`
+                    }).then((response) => {
+                        triggerDownload(response, 'InvestigationSearchResults.csv');
+                    });
+                }
+                break;
+            case SEARCH_TYPE.LAB_REPORT:
+                if (labReportFilter) {
+                    ExportControllerService.generateLabReportCsvUsingPost({
+                        filter: labReportFilter as ExportLabReport,
+                        authorization: `Bearer ${state.getToken()}`
+                    }).then((response) => {
+                        triggerDownload(response, 'LabReportSearchResults.csv');
+                    });
+                }
+                break;
+            case SEARCH_TYPE.PERSON:
+                // NYI
+                break;
+        }
+    };
+
+    // Generates a PDF of the results
+    const handlePrintClick = () => {
+        switch (lastSearchType) {
+            case SEARCH_TYPE.INVESTIGATION:
+                // auto generated methods dont allow direct conversion to blob
+                fetch(`${OpenAPI.BASE}/investigation/export/pdf`, {
+                    method: 'POST',
+                    body: JSON.stringify(investigationFilter),
+                    headers: {
+                        Accept: 'application/pdf',
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${state.getToken()}`
+                    }
+                })
+                    .then((response) => response.blob())
+                    .then((blob) => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'InvestigationSearchResults.pdf';
+                        a.click();
+                    });
+                break;
+            case SEARCH_TYPE.LAB_REPORT:
+                if (labReportFilter) {
+                    // auto generated methods dont allow direct conversion to blob
+                    fetch(`${OpenAPI.BASE}/labreport/export/pdf`, {
+                        method: 'POST',
+                        body: JSON.stringify(labReportFilter),
+                        headers: {
+                            Accept: 'application/pdf',
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${state.getToken()}`
+                        }
+                    })
+                        .then((response) => response.blob())
+                        .then((blob) => {
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'LabReportSearchResults.pdf';
+                            a.click();
+                        });
+                }
+                break;
+            case SEARCH_TYPE.PERSON:
+                // NYI
+                break;
+        }
+    };
+
+    const triggerDownload = (response: any, filename: string) => {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
     };
 
     const handleClearAll = () => {
@@ -821,6 +915,7 @@ export const AdvancedSearch = () => {
                                 }
                                 className="width-full margin-top-0"
                                 type={'button'}
+                                onClick={handleExportClick}
                                 outline>
                                 Export
                             </Button>
@@ -832,6 +927,7 @@ export const AdvancedSearch = () => {
                                 }
                                 className="width-full margin-top-0"
                                 type={'button'}
+                                onClick={handlePrintClick}
                                 outline>
                                 Print
                             </Button>

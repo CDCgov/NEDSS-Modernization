@@ -1,6 +1,7 @@
 package gov.cdc.nbs.service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -134,7 +135,7 @@ public class ExportService {
         return sb.toString();
     }
 
-    public byte[] generateInvestigationPdf(Page<Investigation> investigations) throws DocumentException {
+    public byte[] generateInvestigationPdf(Page<Investigation> investigations) throws DocumentException, IOException {
         var outputStream = new ByteArrayOutputStream();
         Document document = new Document();
         document.setPageSize(PageSize.A4.rotate());
@@ -148,11 +149,12 @@ public class ExportService {
         investigations.getContent().forEach(i -> addRows(table, i));
         document.add(table);
         document.close();
+        outputStream.close();
 
         return outputStream.toByteArray();
     }
 
-    public byte[] generateLabReportPdf(Page<LabReport> labReports) throws DocumentException {
+    public byte[] generateLabReportPdf(Page<LabReport> labReports) throws DocumentException, IOException {
         var outputStream = new ByteArrayOutputStream();
         Document document = new Document();
         document.setPageSize(PageSize.A4.rotate());
@@ -166,6 +168,7 @@ public class ExportService {
         labReports.getContent().forEach(i -> addRows(table, i));
         document.add(table);
         document.close();
+        outputStream.close();
 
         return outputStream.toByteArray();
     }

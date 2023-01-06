@@ -8,7 +8,6 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { CaseStatuses } from './models/CaseStatuses';
 export type { EncryptionResponse } from './models/EncryptionResponse';
-export type { InputStream } from './models/InputStream';
 export { InvestigationEventDateSearch } from './models/InvestigationEventDateSearch';
 export { InvestigationFilter } from './models/InvestigationFilter';
 export { LaboratoryEventDateSearch } from './models/LaboratoryEventDateSearch';
@@ -20,7 +19,6 @@ export { ModelAndView } from './models/ModelAndView';
 export type { NotificationStatuses } from './models/NotificationStatuses';
 export type { ProcessingStatuses } from './models/ProcessingStatuses';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
-export type { Resource } from './models/Resource';
 export type { View } from './models/View';
 
 export { BasicErrorControllerService } from './services/BasicErrorControllerService';
