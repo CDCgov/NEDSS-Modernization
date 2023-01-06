@@ -37,7 +37,7 @@ public class KafkaConfig {
     @Value("${kafkadef.patient-search.topics.request.patient}")
     private String patientSearchTopic;
 
-    @Value("${kafka.enabled}")
+    @Value("${kafka.enabled:true}")
     private Boolean kafkaEnabled;
 
     @Bean
