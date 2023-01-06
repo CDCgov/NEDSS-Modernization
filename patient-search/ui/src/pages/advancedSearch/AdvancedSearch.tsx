@@ -2,12 +2,7 @@ import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
-import {
-    ExportControllerService,
-    InvestigationFilter as ExportInvestigation,
-    LabReportFilter as ExportLabReport,
-    OpenAPI
-} from '../../generated';
+
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
@@ -26,6 +21,12 @@ import {
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
 import { UserContext } from '../../providers/UserContext';
+import {
+    downloadInvestigationSearchResultCsv,
+    downloadInvestigationSearchResultPdf,
+    downloadLabReportSearchResultCsv,
+    downloadLabReportSearchResultPdf
+} from '../../utils/ExportUtil';
 import { convertCamelCase } from '../../utils/util';
 import './AdvancedSearch.scss';
 import Chip from './components/Chip';
@@ -338,90 +339,36 @@ export const AdvancedSearch = () => {
 
     // Generates a CSV of the results
     const handleExportClick = () => {
+        const token = state.getToken();
         switch (lastSearchType) {
             case SEARCH_TYPE.INVESTIGATION:
-                if (investigationFilter) {
-                    ExportControllerService.generateInvestigationCsvUsingPost({
-                        filter: investigationFilter as ExportInvestigation,
-                        authorization: `Bearer ${state.getToken()}`
-                    }).then((response) => {
-                        triggerDownload(response, 'InvestigationSearchResults.csv');
-                    });
+                if (investigationFilter && token) {
+                    downloadInvestigationSearchResultCsv(investigationFilter, token);
                 }
                 break;
             case SEARCH_TYPE.LAB_REPORT:
-                if (labReportFilter) {
-                    ExportControllerService.generateLabReportCsvUsingPost({
-                        filter: labReportFilter as ExportLabReport,
-                        authorization: `Bearer ${state.getToken()}`
-                    }).then((response) => {
-                        triggerDownload(response, 'LabReportSearchResults.csv');
-                    });
+                if (labReportFilter && token) {
+                    downloadLabReportSearchResultCsv(labReportFilter, token);
                 }
-                break;
-            case SEARCH_TYPE.PERSON:
-                // NYI
                 break;
         }
     };
 
     // Generates a PDF of the results
     const handlePrintClick = () => {
+        const token = state.getToken();
         switch (lastSearchType) {
             case SEARCH_TYPE.INVESTIGATION:
-                // auto generated methods dont allow direct conversion to blob
-                fetch(`${OpenAPI.BASE}/investigation/export/pdf`, {
-                    method: 'POST',
-                    body: JSON.stringify(investigationFilter),
-                    headers: {
-                        Accept: 'application/pdf',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${state.getToken()}`
-                    }
-                })
-                    .then((response) => response.blob())
-                    .then((blob) => {
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'InvestigationSearchResults.pdf';
-                        a.click();
-                    });
-                break;
-            case SEARCH_TYPE.LAB_REPORT:
-                if (labReportFilter) {
-                    // auto generated methods dont allow direct conversion to blob
-                    fetch(`${OpenAPI.BASE}/labreport/export/pdf`, {
-                        method: 'POST',
-                        body: JSON.stringify(labReportFilter),
-                        headers: {
-                            Accept: 'application/pdf',
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${state.getToken()}`
-                        }
-                    })
-                        .then((response) => response.blob())
-                        .then((blob) => {
-                            const url = window.URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = 'LabReportSearchResults.pdf';
-                            a.click();
-                        });
+                if (investigationFilter && token) {
+                    downloadInvestigationSearchResultPdf(investigationFilter, token);
                 }
                 break;
-            case SEARCH_TYPE.PERSON:
-                // NYI
+            case SEARCH_TYPE.LAB_REPORT:
+                if (labReportFilter && token) {
+                    downloadLabReportSearchResultPdf(labReportFilter, token);
+                }
                 break;
         }
-    };
-
-    const triggerDownload = (response: any, filename: string) => {
-        const url = window.URL.createObjectURL(new Blob([response]));
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
     };
 
     const handleClearAll = () => {

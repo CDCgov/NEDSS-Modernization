@@ -24,10 +24,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
+import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter.EventType;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
 import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
@@ -52,6 +51,8 @@ public class PermissionSteps {
     PatientController patientController;
     @Autowired
     ProgramAreaCodeRepository programAreaCodeRepository;
+    @Autowired
+    EventController eventController;
 
     @Before
     public void clearAuth() {
@@ -128,18 +129,11 @@ public class PermissionSteps {
                     patientFilter.setFirstName("John");
                     response = patientController.findPatientsByFilter(patientFilter, page);
                     break;
-                case "findPatientsByInvestigation":
-                    var investigationFilter = new EventFilter();
-                    investigationFilter.setEventType(EventType.INVESTIGATION);
-                    investigationFilter.setInvestigationFilter(new InvestigationFilter());
-                    // TODO response = patientController.findPatientsByEvent(investigationFilter,
-                    // page);
+                case "findInvestigation":
+                    response = eventController.findInvestigationsByFilter(new InvestigationFilter(), page);
                     break;
-                case "findPatientsByLabReport":
-                    var labReportFilter = new EventFilter();
-                    labReportFilter.setEventType(EventType.LABORATORY_REPORT);
-                    labReportFilter.setLaboratoryReportFilter(new LabReportFilter());
-                    // TODO response = patientController.findPatientsByEvent(labReportFilter, page);
+                case "findLabReport":
+                    response = eventController.findLabReportsByFilter(new LabReportFilter(), page);
                     break;
                 case "findPatientsByOrganization":
                     var orgFilter = new OrganizationFilter();
