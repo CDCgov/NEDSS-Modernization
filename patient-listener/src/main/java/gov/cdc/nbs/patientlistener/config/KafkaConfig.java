@@ -15,6 +15,23 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class KafkaConfig {
+
+    @Value("${kafka.properties.topic.partition.count}")
+    private int topicPartitionCount;
+    
+    @Value("${kafka.properties.topic.replication.factor}")
+    private int topicReplicationFactor;
+ 
+    @Value("${kafka.bootstrap-servers}")
+    private String bootstrapServers;
+ 
+    @Value("${kafka.properties.schema.registry.url}")
+    private String schemaRegistryUrl;
+ 
+    // general topic
+    @Value("${kafkadef.patient-search.topics.request.patient}")
+    private String patientSearchTopic;
+    
     public ConsumerFactory<String, String> consumerFactory()
     {
         Map<String, Object> config = new HashMap<>();
