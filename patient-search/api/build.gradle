@@ -10,7 +10,16 @@ plugins {
 	id "org.springframework.boot" version "${springBootVersion}"
 	id "io.spring.dependency-management" version "1.0.12.RELEASE"
 	id "java"
+	id "jacoco"
 }
+
+jacocoTestReport {
+	dependsOn test
+    reports {
+        xml.enabled true
+    }
+}
+
 
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
@@ -104,6 +113,7 @@ tasks.named("test") {
 	// always re-run tests
 	test.outputs.upToDateWhen {false}
 	systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+	finalizedBy jacocoTestReport
 }
 
 processResources {
