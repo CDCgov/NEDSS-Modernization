@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -249,7 +250,7 @@ public class ExportService {
 
     private String getCaseStatusString(String caseClassCd) {
         if (caseClassCd != null) {
-            return caseClassCd.equals("C") ? "Confirmed" : "";
+            return caseClassCd.equals("C") ? "Confirmed" : caseClassCd;
         }
         return "";
     }
@@ -315,7 +316,13 @@ public class ExportService {
         }
         String birthString = "";
         if (p.getBirthTime() != null) {
-            birthString = dateFormatter.format(p.getBirthTime());
+            var years = ChronoUnit.YEARS.between(p.getBirthTime().atZone(ZoneId.systemDefault()),
+                    Instant.now().atZone(ZoneId.systemDefault()));
+            if (years > 0) {
+                birthString = dateFormatter.format(p.getBirthTime()) + " (" + years + " Years)";
+            } else {
+                birthString = dateFormatter.format(p.getBirthTime());
+            }
         }
         String currentSexString = "";
         if (p.getCurrSexCd() != null) {
