@@ -433,6 +433,10 @@ public class PatientSearchSteps {
                 var addressLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
                 filter.setAddress(RandomUtil.randomPartialDataSearchString(addressLocator.getStreetAddr1()));
                 break;
+            case "city":
+                var cityLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setCity(RandomUtil.randomPartialDataSearchString(cityLocator.getCityDescTxt()));
+                break;
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
         }

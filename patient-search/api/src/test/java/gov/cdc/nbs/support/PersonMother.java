@@ -132,7 +132,7 @@ public class PersonMother {
         postalLocator.setStreetAddr1(faker.address().streetAddress());
         postalLocator.setCntryCd(
                 RandomUtil.getRandomFromArray(CountryCodeUtil.countryCodeMap.values().toArray(new String[0])));
-        postalLocator.setCityDescTxt(RandomUtil.getRandomString(8));
+        postalLocator.setCityDescTxt(faker.address().city());
         postalLocator.setStateCd(RandomUtil.getRandomStateCode());
         postalLocator.setZipCd(RandomUtil.getRandomNumericString(5));
         postalLocator.setRecordStatusCd("ACTIVE");

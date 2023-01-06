@@ -68,10 +68,12 @@ Feature: Patient search
       | field         | qualifier | field2     | qualifier2 |
       | last name     |           |            |            |
       | first name    |           |            |            |
-      | last name     |           | first name |            |
       | address       |           |            |            |
+      | city          |           |            |            |
+      | last name     |           | first name |            |
       | first name    |           | address    |            |
       | last name     |           | address    |            |
+      | last name     |           | city       |            |
 
   @patient_investigation_search
   Scenario: I can find a patient by one field in the investigation data

@@ -175,7 +175,7 @@ public class PatientService {
         }
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.city",filter.getCity()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.wildcardQuery("address.city",addWildcards(filter.getCity())), ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
