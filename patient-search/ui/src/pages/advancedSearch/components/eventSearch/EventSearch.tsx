@@ -11,11 +11,27 @@ import { LabGeneralSearch } from './LabGeneralSearch';
 import { SearchCriteria } from './SearchCriteria';
 import { LabSearchCriteria } from './LabSearchCriteria';
 import { setInvestigationFilters, setLabReportFilters } from '../../../../utils/util';
+import debounce from 'lodash.debounce';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
     investigationFilter?: InvestigationFilter;
     labReportFilter?: LabReportFilter;
+};
+
+const getFilteredItem = (query: string) => {
+    console.log(query, 'Debounced Query');
+    const items = [
+        { label: 'To Autocomplete', value: 'auto' },
+        { label: 'New Auto', value: 'new-auto' },
+        { label: 'A to B to C', value: 'abc' },
+        { label: 'D to E to f', value: 'def' },
+        { label: 'G to H to I', value: 'ghi' }
+    ];
+    if (!query) {
+        return [];
+    }
+    return items.filter((data: any) => data?.label.toLowerCase().includes(query));
 };
 
 export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: EventSearchProps) => {
@@ -74,6 +90,17 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
         }
     ];
 
+    const [query, setQuery] = useState('');
+
+    const filteredItems = getFilteredItem(query);
+    const debouncedSearch = debounce(async (criteria) => {
+        setQuery(await criteria);
+    }, 500);
+
+    const handleResultChange = (e: any) => {
+        debouncedSearch(e.target.value);
+    };
+
     const labReportSearchItem: AccordionItemProps[] = [
         {
             title: 'General Search',
@@ -85,7 +112,14 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
         },
         {
             title: 'Lab Report Criteria',
-            content: <LabSearchCriteria control={control} filter={labReportFilter} />,
+            content: (
+                <LabSearchCriteria
+                    resultsTestOptions={filteredItems}
+                    resultChanges={handleResultChange}
+                    control={control}
+                    filter={labReportFilter}
+                />
+            ),
             expanded: false,
             id: '3',
             headingLevel: 'h4',
