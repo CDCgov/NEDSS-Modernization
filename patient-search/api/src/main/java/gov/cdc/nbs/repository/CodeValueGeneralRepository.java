@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
+import gov.cdc.nbs.entity.srte.CodeValueGeneralId;
 
-public interface CodeValueGeneralRepository extends JpaRepository<CodeValueGeneral, Long> {
+public interface CodeValueGeneralRepository extends JpaRepository<CodeValueGeneral, CodeValueGeneralId> {
 
     @Query("SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.codeSetNm=:name")
     Page<CodeValueGeneral> findAllByCodeSetName(@Param("name") String name, Pageable pageable);
