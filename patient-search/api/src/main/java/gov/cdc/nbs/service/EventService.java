@@ -71,6 +71,12 @@ public class EventService {
         return performSearch(query, Investigation.class);
     }
 
+    @PreAuthorize(VIEW_INVESTIGATION)
+    public Page<Investigation> findInvestigationsByFilterForExport(InvestigationFilter filter) {
+        var query = buildInvestigationQuery(filter, Pageable.ofSize(1000));
+        return performSearch(query, Investigation.class);
+    }
+
     private <T> void addListQuery(BoolQueryBuilder builder, String field, Iterable<T> searchItems) {
         var shouldQuery = QueryBuilders.boolQuery();
         searchItems.forEach(i -> shouldQuery.should(QueryBuilders.matchQuery(field, i)));
@@ -81,6 +87,12 @@ public class EventService {
     public Page<LabReport> findLabReportsByFilter(LabReportFilter filter, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
         var query = buildLabReportQuery(filter, pageable);
+        return performSearch(query, LabReport.class);
+    }
+
+    @PreAuthorize(VIEW_LAB_REPORT)
+    public Page<LabReport> findLabReportsByFilterForExport(LabReportFilter filter) {
+        var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
         return performSearch(query, LabReport.class);
     }
 

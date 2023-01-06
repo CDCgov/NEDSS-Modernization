@@ -14,7 +14,7 @@ public class ElasticsearchObservation {
 
     public static final String CD = "cd";
     public static final String CD_DESC_TXT = "cd_desc_txt";
-    public static final String DOMAIN_CD = "obs_domain_cd_st_1";
+    public static final String DOMAIN_CD = "domain_cd_st_1";
     public static final String STATUS_CD = "status_cd";
     public static final String ALT_CD = "alt_cd";
     public static final String ALT_DESC_TXT = "alt_cd_desc_txt";
