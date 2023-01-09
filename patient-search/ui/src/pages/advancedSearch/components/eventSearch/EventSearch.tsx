@@ -30,8 +30,8 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
     const { handleSubmit, control, reset } = methods;
 
-    const [getLocalResusltedTests] = useFindLocalLabTestLazyQuery();
-    const [getCodedResusltedTests] = useFindLocalCodedResultsLazyQuery();
+    const [getLocalResultedTests] = useFindLocalLabTestLazyQuery();
+    const [getCodedResultedTests] = useFindLocalCodedResultsLazyQuery();
 
     // on page load, if an event search was performed set the selected event type
     useEffect(() => {
@@ -101,7 +101,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
 
     const [resultData, setResultsData] = useState<{ label: string; value: string }[]>([]);
     const debouncedSearchResults = debounce(async (criteria) => {
-        getLocalResusltedTests({ variables: { searchText: criteria } }).then((re) => {
+        getLocalResultedTests({ variables: { searchText: criteria } }).then((re) => {
             const tempArr: { label: string; value: string }[] = [];
             re.data?.findLocalLabTest.content.map((res) => {
                 tempArr.push({ label: res?.labTestDescTxt || '', value: res?.labTestDescTxt || '' });
@@ -116,7 +116,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
 
     const [codedResults, setCodedResults] = useState<{ label: string; value: string }[]>([]);
     const debouncedCodedSearchResults = debounce(async (criteria) => {
-        getCodedResusltedTests({ variables: { searchText: criteria } }).then((re) => {
+        getCodedResultedTests({ variables: { searchText: criteria } }).then((re) => {
             const tempArr: { label: string; value: string }[] = [];
             re.data?.findLocalCodedResults.content.map((res) => {
                 tempArr.push({ label: res?.labResultDescTxt || '', value: res?.labResultDescTxt || '' });
