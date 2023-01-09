@@ -61,9 +61,11 @@ public class LoincCode {
     private Character paDerivationExcludeCd;
 
     @OneToMany(mappedBy = "loincCd")
+    @Builder.Default
     private Set<LabtestLoinc> labtestLoincs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "loincCd")
+    @Builder.Default
     private Set<LoincSnomedCondition> loincSnomedConditions = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "loincCode")

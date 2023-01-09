@@ -64,6 +64,7 @@ public class LabTest {
     private Character paDerivationExcludeCd;
 
     @OneToMany(mappedBy = "labTest")
+    @Builder.Default
     private Set<LabtestLoinc> labtestLoincs = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "labTest")

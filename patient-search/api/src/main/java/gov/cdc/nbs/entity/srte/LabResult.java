@@ -72,6 +72,7 @@ public class LabResult {
     private String codeSetNm;
 
     @OneToMany(mappedBy = "labResult")
+    @Builder.Default
     private Set<LabResultSnomed> labResultSnomeds = new LinkedHashSet<>();
 
 }

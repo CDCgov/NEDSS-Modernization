@@ -52,9 +52,11 @@ public class LabCodingSystem {
     private Long nbsUid;
 
     @OneToMany(mappedBy = "laboratory")
+    @Builder.Default
     private Set<LabResult> labResults = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "laboratory")
+    @Builder.Default
     private Set<LabTest> labTests = new LinkedHashSet<>();
 
 }
