@@ -670,6 +670,10 @@ export const AdvancedSearch = () => {
         );
     }
 
+    function handleAddNewLabReportClick(): void {
+        window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
+    }
+
     const handlePagination = (page: number) => {
         setCurrentPage(page);
     };
@@ -710,10 +714,7 @@ export const AdvancedSearch = () => {
                                     </Button>
                                 </li>
                                 <li className="usa-nav__submenu-item">
-                                    <Button
-                                        onClick={() => console.log('Clicked Add New Lab Report')}
-                                        type={'button'}
-                                        unstyled>
+                                    <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
                                         Add New Lab Report
                                     </Button>
                                 </li>

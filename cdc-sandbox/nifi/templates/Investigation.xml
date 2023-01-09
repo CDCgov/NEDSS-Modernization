@@ -1492,9 +1492,7 @@ FROM
                   person.person_uid = p.subject_entity_uid
               ) 
             WHERE 
-              p.record_status_cd &lt;&gt; 'LOG_DEL' 
-              AND person.record_status_cd &lt;&gt; 'LOG_DEL' 
-              AND p.act_uid = phc.public_health_case_uid FOR json path
+               p.act_uid = phc.public_health_case_uid FOR json path
           ) AS person_participations
       ) AS person_participations, 
       --
@@ -1515,9 +1513,7 @@ FROM
               participation p 
               JOIN organization org ON org.organization_uid = p.subject_entity_uid 
             WHERE 
-              p.record_status_cd &lt;&gt; 'LOG_DEL' 
-              AND org.record_status_cd &lt;&gt; 'LOG_DEL' 
-              AND p.act_uid = phc.public_health_case_uid FOR json path
+              p.act_uid = phc.public_health_case_uid FOR json path
           ) AS organization_participations
       ) AS organization_participations, 
       -- act_ids associated with public health case
@@ -2665,5 +2661,5 @@ ORDER BY
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/05/2023 17:34:28 UTC</timestamp>
+    <timestamp>01/09/2023 21:40:56 UTC</timestamp>
 </template>
