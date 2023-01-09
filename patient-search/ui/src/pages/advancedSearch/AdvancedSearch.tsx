@@ -255,6 +255,7 @@ export const AdvancedSearch = () => {
         setLastSearchType(SEARCH_TYPE.INVESTIGATION);
         setActiveTab(ACTIVE_TAB.EVENT);
         handleEventTags(filter);
+        setLabReportFilter(undefined);
         setInvestigationFilter(filter);
     };
 
@@ -273,6 +274,7 @@ export const AdvancedSearch = () => {
         setLastSearchType(SEARCH_TYPE.LAB_REPORT);
         setActiveTab(ACTIVE_TAB.EVENT);
         handleEventTags(filter);
+        setInvestigationFilter(undefined);
         setLabReportFilter(filter);
     };
 

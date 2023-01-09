@@ -69,6 +69,8 @@ export const setLabReportFilters = (labReportFilter: LabReportFilter) => {
         labcreatedBy: labReportFilter.createdBy,
         lablastUpdatedBy: labReportFilter.lastUpdatedBy,
         labentityType: labReportFilter.providerSearch?.providerType,
-        labid: labReportFilter.providerSearch?.providerId
+        labid: labReportFilter.providerSearch?.providerId,
+        resultedTest: labReportFilter?.resultedTest,
+        codedResult: labReportFilter?.codedResult
     };
 };

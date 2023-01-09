@@ -3,7 +3,12 @@ import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accor
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { InvestigationFilter, LabReportFilter } from '../../../../generated/graphql/schema';
+import {
+    InvestigationFilter,
+    LabReportFilter,
+    useFindLocalCodedResultsLazyQuery,
+    useFindLocalLabTestLazyQuery
+} from '../../../../generated/graphql/schema';
 import { SEARCH_TYPE } from '../../AdvancedSearch';
 import { EventTypes } from './EventType';
 import { GeneralSearch } from './GeneralSearch';
@@ -19,26 +24,14 @@ type EventSearchProps = {
     labReportFilter?: LabReportFilter;
 };
 
-const getFilteredItem = (query: string) => {
-    console.log(query, 'Debounced Query');
-    const items = [
-        { label: 'To Autocomplete', value: 'auto' },
-        { label: 'New Auto', value: 'new-auto' },
-        { label: 'A to B to C', value: 'abc' },
-        { label: 'D to E to f', value: 'def' },
-        { label: 'G to H to I', value: 'ghi' }
-    ];
-    if (!query) {
-        return [];
-    }
-    return items.filter((data: any) => data?.label.toLowerCase().includes(query));
-};
-
 export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: EventSearchProps) => {
     const navigate = useNavigate();
     const methods = useForm();
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
     const { handleSubmit, control, reset } = methods;
+
+    const [getLocalResusltedTests] = useFindLocalLabTestLazyQuery();
+    const [getCodedResusltedTests] = useFindLocalCodedResultsLazyQuery();
 
     // on page load, if an event search was performed set the selected event type
     useEffect(() => {
@@ -90,15 +83,50 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
         }
     ];
 
-    const [query, setQuery] = useState('');
+    const removeDuplicates = (items: any) => {
+        const newArray: any = [];
+        const uniqueObject: any = {};
+        for (const i in items) {
+            if (items[i]['value']) {
+                uniqueObject[items[i]['value']] = items[i];
+            }
+        }
+        for (const i in uniqueObject) {
+            if (uniqueObject[i]) {
+                newArray.push(uniqueObject[i]);
+            }
+        }
+        return newArray;
+    };
 
-    const filteredItems = getFilteredItem(query);
-    const debouncedSearch = debounce(async (criteria) => {
-        setQuery(await criteria);
-    }, 500);
+    const [resultData, setResultsData] = useState<{ label: string; value: string }[]>([]);
+    const debouncedSearchResults = debounce(async (criteria) => {
+        getLocalResusltedTests({ variables: { searchText: criteria } }).then((re) => {
+            const tempArr: { label: string; value: string }[] = [];
+            re.data?.findLocalLabTest.content.map((res) => {
+                tempArr.push({ label: res?.labTestDescTxt || '', value: res?.labTestDescTxt || '' });
+            });
+            setResultsData(removeDuplicates(tempArr));
+        });
+    }, 300);
 
     const handleResultChange = (e: any) => {
-        debouncedSearch(e.target.value);
+        debouncedSearchResults(e.target.value);
+    };
+
+    const [codedResults, setCodedResults] = useState<{ label: string; value: string }[]>([]);
+    const debouncedCodedSearchResults = debounce(async (criteria) => {
+        getCodedResusltedTests({ variables: { searchText: criteria } }).then((re) => {
+            const tempArr: { label: string; value: string }[] = [];
+            re.data?.findLocalCodedResults.content.map((res) => {
+                tempArr.push({ label: res?.labResultDescTxt || '', value: res?.labResultDescTxt || '' });
+            });
+            setCodedResults(removeDuplicates(tempArr));
+        });
+    }, 300);
+
+    const handleCodedResultChange = (e: any) => {
+        debouncedCodedSearchResults(e.target.value);
     };
 
     const labReportSearchItem: AccordionItemProps[] = [
@@ -114,7 +142,9 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
             title: 'Lab Report Criteria',
             content: (
                 <LabSearchCriteria
-                    resultsTestOptions={filteredItems}
+                    resultsTestOptions={resultData}
+                    codedResults={codedResults}
+                    codedResultsChange={handleCodedResultChange}
                     resultChanges={handleResultChange}
                     control={control}
                     filter={labReportFilter}
@@ -128,6 +158,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
     ];
 
     const onSubmit: any = (body: any) => {
+        console.log(body, 'body');
         let filterData: InvestigationFilter | LabReportFilter = {};
         if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
             // filterData.eventType = EventType.Investigation;
@@ -231,9 +262,15 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
             }
         }
 
+        if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
+            filterData = filterData as LabReportFilter;
+            body.resultedTest && (filterData.resultedTest = body.resultedTest);
+            body.codedResult && (filterData.codedResult = body.codedResult);
+        }
+
         onSearch(filterData, eventSearchType);
     };
-
+    console.log(eventSearchType);
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
