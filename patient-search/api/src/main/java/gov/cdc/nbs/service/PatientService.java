@@ -585,6 +585,7 @@ public class PatientService {
     }
 
     private String addWildcards(String searchString) {
-        return  "*" + searchString + "*" ;
+        // wildcard does not default to case insensitive searching
+        return  '*' + searchString.toLowerCase() + "*" ;
     }
 }

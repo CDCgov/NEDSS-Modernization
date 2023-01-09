@@ -73,6 +73,7 @@ Feature: Patient search
       | last name     |           | first name |            |
       | first name    |           | address    |            |
       | last name     |           | address    |            |
+      | city          |           |            |            |
       | last name     |           | city       |            |
 
   @patient_investigation_search
