@@ -468,6 +468,18 @@ export const AdvancedSearch = () => {
                     providerSearch: undefined
                 };
                 break;
+            case 'Resulted Test':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    resultedTest: undefined
+                };
+                break;
+            case 'Coded Result':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    codedResult: undefined
+                };
+                break;
         }
         handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
     };
