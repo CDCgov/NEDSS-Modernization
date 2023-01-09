@@ -80,20 +80,10 @@ public class RandomUtil {
     }
 
     public static String randomPartialDataSearchString(String data) {
-        int random = new Random().nextInt(3);
         int len = data.length();
         if (len<=1) {
             return data;
         }
-        // make sure prefix, suffix, and interior substring are tested evenly
-        switch(random) {
-            case 0: // prefix
-                return data.substring(0, 1);
-            case 1: // suffix
-                return data.substring(len-1, len);
-            case 2: // interior substring
-                return data.substring(1, len-1);
-        }
-        return data;
+        return data.substring(0, new Random().nextInt(len - 1) + 1);
     }
 }
