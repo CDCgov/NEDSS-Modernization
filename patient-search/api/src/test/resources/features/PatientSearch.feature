@@ -59,6 +59,23 @@ Feature: Patient search
       | ethnicity     |           | first name |            | race    |            |
       | record status |           | first name |            | city    |            |
 
+  @patient_multi_data_partial_search
+  Scenario: I can find a Patient by patient data using multiple partial fields
+    When I search patients using partial data "<field>" "<qualifier>" "<field2>" "<qualifier2>"
+    Then I find the patient
+
+    Examples:
+      | field         | qualifier | field2     | qualifier2 |
+      | last name     |           |            |            |
+      | first name    |           |            |            |
+      | address       |           |            |            |
+      | city          |           |            |            |
+      | last name     |           | first name |            |
+      | first name    |           | address    |            |
+      | last name     |           | address    |            |
+      | city          |           |            |            |
+      | last name     |           | city       |            |
+
   @patient_investigation_search
   Scenario: I can find a patient by one field in the investigation data
     Given Investigations exist

@@ -147,11 +147,11 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.wildcardQuery("name.firstNm",addWildcards(filter.getFirstName())), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"), ScoreMode.Avg));
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.regexpQuery("name.lastNm",addWildcards(filter.getLastName())), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"), ScoreMode.Avg));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
@@ -163,7 +163,7 @@ public class PatientService {
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.streetAddr1",filter.getAddress()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"), ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
@@ -175,7 +175,7 @@ public class PatientService {
         }
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.city",filter.getCity()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"), ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
@@ -585,6 +585,7 @@ public class PatientService {
     }
 
     private String addWildcards(String searchString) {
-        return  ".*" + searchString + ".*" ;
+        // wildcard does not default to case insensitive searching
+        return  searchString.toLowerCase() + "*" ;
     }
 }

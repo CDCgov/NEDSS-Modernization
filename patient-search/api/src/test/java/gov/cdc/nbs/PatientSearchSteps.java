@@ -162,6 +162,13 @@ public class PatientSearchSteps {
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
     }
 
+    @When("I search patients using partial data {string} {string} {string} {string}")
+    public void i_search_patients_using_partial_data(String field, String qualifier, String field2, String qualifier2) {
+        PatientFilter filter = getPatientPartialDataFilter(field, qualifier);
+        updatePatientPartialDataFilter(filter, field2, qualifier2);
+        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
+    }
+
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
         EventFilter filter = getInvestigationFilter(field, qualifier);
@@ -411,9 +418,39 @@ public class PatientSearchSteps {
         return filter;
     }
 
+    private PatientFilter updatePatientPartialDataFilter(PatientFilter filter, String field, String qualifier) {
+        if (field == null || field.isEmpty()) {
+            return filter;
+        }
+        switch (field) {
+            case "last name":
+                filter.setLastName(RandomUtil.randomPartialDataSearchString(searchPatient.getLastNm()));
+                break;
+            case "first name":
+                filter.setFirstName(RandomUtil.randomPartialDataSearchString(searchPatient.getFirstNm()));
+                break;
+            case "address":
+                var addressLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setAddress(RandomUtil.randomPartialDataSearchString(addressLocator.getStreetAddr1()));
+                break;
+            case "city":
+                var cityLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setCity(RandomUtil.randomPartialDataSearchString(cityLocator.getCityDescTxt()));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid field specified: " + field);
+        }
+        return filter;
+    }
+
     private PatientFilter getPatientDataFilter(String field, String qualifier) {
         var filter = new PatientFilter();
         return updatePatientDataFilter(filter, field, qualifier);
+    }
+
+    private PatientFilter getPatientPartialDataFilter(String field, String qualifier) {
+        var filter = new PatientFilter();
+        return updatePatientPartialDataFilter(filter, field, qualifier);
     }
 
     private Instant getDobByQualifier(Person search, String qualifier) {
