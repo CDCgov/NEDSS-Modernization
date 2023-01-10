@@ -1,5 +1,4 @@
 const prod = {
-    port: 8080,
     nbsUrl: process.env.REACT_APP_NBS_URL
         ? process.env.REACT_APP_NBS_URL
         : `${window.location.protocol}//${window.location.host}/nbs`,
@@ -7,7 +6,6 @@ const prod = {
 };
 
 const dev = {
-    port: 3000,
     nbsUrl: `${window.location.protocol}//${window.location.host}/nbs`,
     modernizationUrl: `${window.location.protocol}//${window.location.host}`
 };
