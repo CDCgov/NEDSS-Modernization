@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
@@ -141,11 +142,15 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.wildcardQuery("first_nm", addWildcards(filter.getFirstName())));
+            builder.must(QueryBuilders.nestedQuery("name",
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.wildcardQuery("last_nm", addWildcards(filter.getLastName())));
+            builder.must(QueryBuilders.nestedQuery("name",
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
@@ -153,11 +158,14 @@ public class PatientService {
         }
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("hm_phone_nbr", filter.getPhoneNumber()));
+            builder.must(QueryBuilders.nestedQuery("phone",
+                    QueryBuilders.matchQuery("phone.telephoneNbr", filter.getPhoneNumber()), ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("hm_street_addr1", filter.getAddress()));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders
+                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
@@ -169,19 +177,24 @@ public class PatientService {
         }
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("hm_city_desc_txt", filter.getCity()));
+            builder.must(QueryBuilders.nestedQuery("address",
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("hm_zip_cd", filter.getZip()));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.zip", filter.getZip()),
+                    ScoreMode.Avg));
         }
 
         if (filter.getState() != null && !filter.getState().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("hm_state_cd", filter.getState()));
+            builder.must(QueryBuilders.nestedQuery("address",
+                    QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
         }
 
         if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("hm_cntry_cd", filter.getCountry()));
+            builder.must(QueryBuilders.nestedQuery("address",
+                    QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
         }
 
         if (filter.getEthnicity() != null) {
@@ -189,7 +202,8 @@ public class PatientService {
         }
 
         if (filter.getRace() != null) {
-            builder.must(QueryBuilders.matchQuery("race_desc_txt", filter.getRace()));
+            builder.must(QueryBuilders.nestedQuery("race",
+                    QueryBuilders.matchQuery("race.raceDescTxt", filter.getRace()), ScoreMode.Avg));
         }
 
         if (filter.getIdentification() != null) {
@@ -541,6 +555,7 @@ public class PatientService {
     }
 
     private String addWildcards(String searchString) {
-        return "*" + searchString + "*";
+        // wildcard does not default to case insensitive searching
+        return searchString.toLowerCase() + "*";
     }
 }

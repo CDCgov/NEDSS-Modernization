@@ -28,7 +28,7 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
-
+import com.github.javafaker.Faker;
 public class PersonMother {
 
     private static final Long CREATED_BY_ID = 999999L;
@@ -44,9 +44,10 @@ public class PersonMother {
     }
 
     public static Person generateRandomPerson(long id) {
-        final String firstName = RandomUtil.getRandomString();
+        Faker faker = new Faker();
+        final String firstName = faker.name().firstName();
         final String middleName = RandomUtil.getRandomString();
-        final String lastName = RandomUtil.getRandomString();
+        final String lastName = faker.name().lastName();
         var entity = new NBSEntity(id, "PSN");
         var person = new Person();
         person.setId(id);
@@ -128,10 +129,10 @@ public class PersonMother {
         locatorId = id + 80000L;
         var postalLocator = new PostalLocator();
         postalLocator.setId(locatorId);
-        postalLocator.setStreetAddr1(RandomUtil.getRandomString(8));
+        postalLocator.setStreetAddr1(faker.address().streetAddress());
         postalLocator.setCntryCd(
                 RandomUtil.getRandomFromArray(CountryCodeUtil.countryCodeMap.values().toArray(new String[0])));
-        postalLocator.setCityDescTxt(RandomUtil.getRandomString(8));
+        postalLocator.setCityDescTxt(faker.address().city());
         postalLocator.setStateCd(RandomUtil.getRandomStateCode());
         postalLocator.setZipCd(RandomUtil.getRandomNumericString(5));
         postalLocator.setRecordStatusCd("ACTIVE");

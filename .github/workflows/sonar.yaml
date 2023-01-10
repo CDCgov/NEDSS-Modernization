@@ -1,0 +1,51 @@
+# This workflow is used to perform static code analysis on a gradle build
+
+name: "Sonar Scanner"
+
+on:
+  push:
+    paths:
+      - 'patient-search/**'
+      - '.github/workflows/codeql.yaml'
+  pull_request:
+    paths:
+      - 'patient-search/**'
+      - '.github/workflows/codeql.yaml'
+    
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 18
+        uses: actions/setup-java@v1
+        with:
+          java-version: 18
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install react dependencies
+        working-directory: ./patient-search/ui
+        run: npm install
+      - name: Build and analyze
+        working-directory: ./patient-search
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build jacocoTestReport sonar -Dcucumber.filter.tags="@none"
