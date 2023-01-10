@@ -158,7 +158,6 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
     ];
 
     const onSubmit: any = (body: any) => {
-        console.log(body, 'body');
         let filterData: InvestigationFilter | LabReportFilter = {};
         if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
             // filterData.eventType = EventType.Investigation;
@@ -270,7 +269,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
 
         onSearch(filterData, eventSearchType);
     };
-    console.log(eventSearchType);
+
     return (
         <Form onSubmit={handleSubmit(onSubmit)} className="width-full maxw-full">
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>

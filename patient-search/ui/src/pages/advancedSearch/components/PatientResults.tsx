@@ -19,7 +19,6 @@ export const PatientResults = ({
     handlePagination,
     currentPage
 }: SearchItemsProps) => {
-    console.log(data, 'data');
     const searchItemsRef: any = useRef();
 
     const [num, setNum] = useState<any>([]);

@@ -496,8 +496,6 @@ export const AdvancedSearch = () => {
             return;
         }
 
-        console.log(name);
-
         // remove the filter criteria associated with closed chip and resubmit search
         switch (name) {
             case 'Conditions':
@@ -607,7 +605,6 @@ export const AdvancedSearch = () => {
 
         // if the last chip was removed, reset search
         if (newChips.length === 0) {
-            console.log('length = 0');
             handleClearAll();
             return;
         }

@@ -18,7 +18,6 @@ export const LabSearchCriteria = ({
     codedResults,
     codedResultsChange
 }: GeneralSearchProps) => {
-    console.log(control._formValues?.codedResult);
     return (
         <>
             <Label htmlFor={'resultedTest'}>Resulted Test:</Label>

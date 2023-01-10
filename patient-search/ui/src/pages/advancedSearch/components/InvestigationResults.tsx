@@ -57,6 +57,17 @@ export const InvestigationResults = ({
         }
     };
 
+    const getInvestigationStatusString = (investigation: Investigation): string => {
+        switch (investigation.investigationStatusCd) {
+            case 'O':
+                return 'OPEN';
+            case 'C':
+                return 'CLOSED';
+            default:
+                return investigation.investigationStatusCd ?? '';
+        }
+    };
+
     const buildPatientDetails = (investigation: Investigation) => {
         const patient = getPatient(investigation);
         let name = '';
@@ -182,7 +193,7 @@ export const InvestigationResults = ({
                                             <p
                                                 className="margin-0 font-sans-1xs text-normal status"
                                                 style={{ backgroundColor: '#2cb844' }}>
-                                                {item.recordStatus}
+                                                {getInvestigationStatusString(item)}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
