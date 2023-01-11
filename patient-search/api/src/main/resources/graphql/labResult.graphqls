@@ -1,0 +1,10 @@
+type LabResult {
+    id: LabResultId
+    nbsUid: ID
+    labResultDescTxt: String
+}
+
+type LabResultId {
+    labResultCd: String
+    laboratoryId: String
+}

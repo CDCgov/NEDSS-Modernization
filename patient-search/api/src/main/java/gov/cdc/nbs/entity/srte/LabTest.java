@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.srte;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_test")
 public class LabTest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +64,7 @@ public class LabTest {
     private Character paDerivationExcludeCd;
 
     @OneToMany(mappedBy = "labTest")
+    @Builder.Default
     private Set<LabtestLoinc> labtestLoincs = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "labTest")

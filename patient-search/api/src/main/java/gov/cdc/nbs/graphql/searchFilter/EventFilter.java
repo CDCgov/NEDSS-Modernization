@@ -8,7 +8,7 @@ import lombok.Setter;
 public class EventFilter {
     private EventType eventType;
     private InvestigationFilter investigationFilter;
-    private LaboratoryReportFilter laboratoryReportFilter;
+    private LabReportFilter laboratoryReportFilter;
 
     public enum EventType {
         INVESTIGATION,

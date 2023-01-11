@@ -24,15 +24,47 @@ type CountryCode {
     codeSystemCd: String
     codeSystemDescTxt: String
 }
-input EventFilter {
-    eventType: EventType!
-    investigationFilter: InvestigationFilter
-    laboratoryReportFilter: LaboratoryReportFilter
+type Investigation {
+    id: ID
+    recordStatus: String
+    lastChangeTime: Date
+    publicHealthCaseUid: Int
+    programJurisdictionOid: Int
+    caseClassCd: String
+    outbreakName: String
+    caseTypeCd: String
+    cdDescTxt: String
+    prog_area_cd: String
+    jurisdictionCd: Int
+    jurisdictionCodeDescTxt: String
+    pregnantIndCd: String
+    localId: String
+    rptFormCmpltTime: Date
+    activityToTime: Date
+    activityFromTime: Date
+    addTime: Date
+    publicHealthCaseLastChgTime: Date
+    addUserId: Int
+    lastChangeUserId: Int
+    currProcessStateCd: String
+    investigationStatusCd: String
+    moodCd: String
+    notificationLocalId: String
+    notificationAddTime: Date
+    notificationRecordStatusCd: String
+    notificationLastChgTime: Date
+    personParticipations: [PersonParticipation]
+    organizationParticipations: [OrganizationParticipation]
+    actIds: [ActId]
 }
 
-enum EventType {
-    INVESTIGATION
-    LABORATORY_REPORT
+type ActId {
+    id: Int
+    recordStatus: String
+    actIdSeq: Int
+    rootExtensionTxt: String
+    typeCd: String
+    lastChangeTime: Date
 }
 
 input InvestigationFilter {
@@ -67,12 +99,6 @@ input NotificationStatuses {
 input ProcessingStatuses {
     includeUnassigned: Boolean!
     statusList: [ProcessingStatus!]!
-}
-
-enum PregnancyStatus {
-    YES
-    NO
-    UNKNOWN
 }
 
 input InvestigationEventDateSearch {
@@ -137,8 +163,30 @@ enum InvestigationStatus {
     OPEN
     CLOSED
 }
-
-input LaboratoryReportFilter {
+type Jurisdiction {
+    id: String!
+    typeCd: String!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: Date
+    effectiveToTime: Date
+    indentLevelNbr: Int
+    isModifiableInd: String
+    parentIsCd: String
+    stateDomainCd: String
+    statusCd: String
+    statusTime: Date
+    codeSetNm: String
+    codeSeqNum: Int
+    nbsUid: ID
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+    exportInd: String
+}
+input LabReportFilter {
     programAreas: [String]
     jurisdictions: [ID]
     pregnancyStatus: PregnancyStatus
@@ -156,6 +204,72 @@ input LaboratoryReportFilter {
     codedResult: String
 }
 
+type LabReport {
+    id: String
+    observationUid: Int
+    lastChange: Date
+    classCd: String
+    moodCd: String
+    observationLastChgTime: Date
+    cdDescTxt: String
+    recordStatusCd: String
+    programJurisdictionOid: Int
+    programAreaCd: String
+    jurisdictionCd: Int
+    jurisdictionCodeDescTxt: String
+    pregnantIndCd: String
+    localId: String
+    activityToTime: Date
+    effectiveFromTime: Date
+    rptToStateTime: Date
+    addTime: Date
+    electronicInd: String
+    versionCtrlNbr: Int
+    addUserId: Int
+    lastChgUserId: Int
+    personParticipations: [PersonParticipation]
+    organizationParticipations: [OrganizationParticipation]
+    materialParticipations: [MaterialParticipation]
+    observations: [Observation]
+    actIds: [ActId]
+    associatedInvestigations: [AssociatedInvestigation]
+}
+
+type MaterialParticipation {
+    actUid: Int
+    typeCd: String
+    entityId: String
+    subjectClassCd: String
+    typeDescTxt: String
+    participationRecordStatus: String
+    participationLastChangeTime: Date
+    cd: String
+    cdDescTxt: String
+}
+
+type Observation {
+    cd: String
+    cdDescTxt: String
+    domainCd: String
+    statusCd: String
+    altCd: String
+    altDescTxt: String
+    altCdSystemCd: String
+    displayName: String
+    ovcCode: String
+    ovcAltCode: String
+    ovcAltDescTxt: String
+    ovcAltCdSystemCd: String
+}
+
+type AssociatedInvestigation {
+    publicHealthCaseUid: Int
+    cdDescTxt: String
+    localId: String
+    lastChgTime: Date
+    actRelationshipLastChgTime: Date
+}
+
 input LaboratoryEventDateSearch {
     eventDateType: LaboratoryReportEventDateType!
     from: Date!
@@ -165,6 +279,12 @@ input LaboratoryEventDateSearch {
 input LabReportProviderSearch {
     providerType: ProviderType!
     providerId: ID!
+}
+
+enum ProviderType {
+    ORDERING_FACILITY
+    ORDERING_PROVIDER
+    REPORTING_FACILITY
 }
 
 enum LaboratoryEventIdType {
@@ -199,34 +319,33 @@ enum LaboratoryReportStatus {
     PROCESSED
     UNPROCESSED
 }
-
-enum ProviderType {
-    ORDERING_FACILITY
-    ORDERING_PROVIDER
-    REPORTING_FACILITY
-}
-type Jurisdiction {
-    id: String!
-    typeCd: String!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
-    indentLevelNbr: Int
-    isModifiableInd: String
-    parentIsCd: String
-    stateDomainCd: String
-    statusCd: String
-    statusTime: Date
-    codeSetNm: String
-    codeSeqNum: Int
+type LabResult {
+    id: LabResultId
     nbsUid: ID
-    sourceConceptId: String
-    codeSystemCd: String
-    codeSystemDescTxt: String
-    exportInd: String
+    labResultDescTxt: String
+}
+
+type LabResultId {
+    labResultCd: String
+    laboratoryId: String
+}
+type LabTest {
+    id: LabTestId
+    labTestDescTxt: String
+    organismResultTestInd: String
+}
+
+type LabTestId {
+    labTestCd: String
+    laboratoryId: String
+}
+type LoincCode {
+    id: String
+    componentName: String
+    methodType: String
+    systemCd: String
+    property: String
+    relatedClassCd: String
 }
 input OrganizationFilter {
     id: ID
@@ -277,6 +396,15 @@ type Organization {
     electronicInd: String
     edxInd: String
 }
+type Outbreak {
+    id: OutbreakId!
+    codeShortDescTxt: String
+}
+
+type OutbreakId {
+    codeSetNm: String!
+    code: String!
+}
 input PersonFilter {
     id: ID
     lastName: String
@@ -300,6 +428,118 @@ input PersonFilter {
     vaccinationId: String
     treatmentId: String
     recordStatus: RecordStatus
+}
+
+type Person {
+    id: ID
+    NBSEntity: NBSEntity!
+    entityIds: [PersonIdentification]
+    names: [PersonName]
+    addReasonCd: String
+    addTime: Date
+    addUserId: ID
+    administrativeGenderCd: Gender
+    ageCalc: Int
+    ageCalcTime: Date
+    ageCalcUnitCd: String
+    ageCategoryCd: String
+    ageReported: String
+    ageReportedTime: Date
+    ageReportedUnitCd: String
+    birthGenderCd: Gender
+    birthOrderNbr: Int
+    birthTime: Date
+    birthTimeCalc: Date
+    cd: String
+    cdDescTxt: String
+    currSexCd: String
+    deceasedIndCd: String
+    deceasedTime: Date
+    description: String
+    educationLevelCd: String
+    educationLevelDescTxt: String
+    ethnicGroupInd: String
+    lastChgReasonCd: String
+    lastChgTime: Date
+    lastChgUserId: ID
+    localId: String
+    maritalStatusCd: String
+    maritalStatusDescTxt: String
+    mothersMaidenNm: String
+    multipleBirthInd: String
+    occupationCd: String
+    preferredGenderCd: Gender
+    primLangCd: String
+    primLangDescTxt: String
+    recordStatusCd: RecordStatus
+    recordStatusTime: Date
+    statusCd: String
+    statusTime: Date
+    survivedIndCd: String
+    userAffiliationTxt: String
+    firstNm: String
+    lastNm: String
+    middleNm: String
+    nmPrefix: String
+    nmSuffix: String
+    preferredNm: String
+    hmStreetAddr1: String
+    hmStreetAddr2: String
+    hmCityCd: String
+    hmCityDescTxt: String
+    hmStateCd: String
+    hmZipCd: String
+    hmCntyCd: String
+    hmCntryCd: String
+    hmPhoneNbr: String
+    hmPhoneCntryCd: String
+    hmEmailAddr: String
+    cellPhoneNbr: String
+    wkStreetAddr1: String
+    wkStreetAddr2: String
+    wkCityCd: String
+    wkCityDescTxt: String
+    wkStateCd: String
+    wkZipCd: String
+    wkCntyCd: String
+    wkCntryCd: String
+    wkPhoneNbr: String
+    wkPhoneCntryCd: String
+    wkEmailAddr: String
+    ssn: String
+    medicaidNum: String
+    dlNum: String
+    dlStateCd: String
+    raceCd: String
+    raceSeqNbr: Int
+    raceCategoryCd: String
+    ethnicityGroupCd: String
+    ethnicGroupSeqNbr: Int
+    adultsInHouseNbr: Int
+    childrenInHouseNbr: Int
+    birthCityCd: String
+    birthCityDescTxt: String
+    birthCntryCd: String
+    birthStateCd: String
+    raceDescTxt: String
+    ethnicGroupDescTxt: String
+    versionCtrlNbr: Int
+    asOfDateAdmin: Date
+    asOfDateEthnicity: Date
+    asOfDateGeneral: Date
+    asOfDateMorbidity: Date
+    asOfDateSex: Date
+    electronicInd: String
+    personParentUid: ID
+    dedupMatchInd: String
+    groupNbr: Int
+    groupTime: Date
+    edxInd: String
+    speaksEnglishCd: String
+    additionalGenderCd: Gender
+    eharsId: String
+    ethnicUnkReasonCd: String
+    sexUnkReasonCd: String
 }
 
 input PersonInput {
@@ -473,118 +713,6 @@ type LocatorParticipations {
 type NBSEntity {
     entityLocatorParticipations: [LocatorParticipations]
 }
-
-type Person {
-    id: ID
-    NBSEntity: NBSEntity!
-    entityIds: [PersonIdentification]
-    names: [PersonName]
-    addReasonCd: String
-    addTime: Date
-    addUserId: ID
-    administrativeGenderCd: Gender
-    ageCalc: Int
-    ageCalcTime: Date
-    ageCalcUnitCd: String
-    ageCategoryCd: String
-    ageReported: String
-    ageReportedTime: Date
-    ageReportedUnitCd: String
-    birthGenderCd: Gender
-    birthOrderNbr: Int
-    birthTime: Date
-    birthTimeCalc: Date
-    cd: String
-    cdDescTxt: String
-    currSexCd: String
-    deceasedIndCd: String
-    deceasedTime: Date
-    description: String
-    educationLevelCd: String
-    educationLevelDescTxt: String
-    ethnicGroupInd: String
-    lastChgReasonCd: String
-    lastChgTime: Date
-    lastChgUserId: ID
-    localId: String
-    maritalStatusCd: String
-    maritalStatusDescTxt: String
-    mothersMaidenNm: String
-    multipleBirthInd: String
-    occupationCd: String
-    preferredGenderCd: Gender
-    primLangCd: String
-    primLangDescTxt: String
-    recordStatusCd: RecordStatus
-    recordStatusTime: Date
-    statusCd: String
-    statusTime: Date
-    survivedIndCd: String
-    userAffiliationTxt: String
-    firstNm: String
-    lastNm: String
-    middleNm: String
-    nmPrefix: String
-    nmSuffix: String
-    preferredNm: String
-    hmStreetAddr1: String
-    hmStreetAddr2: String
-    hmCityCd: String
-    hmCityDescTxt: String
-    hmStateCd: String
-    hmZipCd: String
-    hmCntyCd: String
-    hmCntryCd: String
-    hmPhoneNbr: String
-    hmPhoneCntryCd: String
-    hmEmailAddr: String
-    cellPhoneNbr: String
-    wkStreetAddr1: String
-    wkStreetAddr2: String
-    wkCityCd: String
-    wkCityDescTxt: String
-    wkStateCd: String
-    wkZipCd: String
-    wkCntyCd: String
-    wkCntryCd: String
-    wkPhoneNbr: String
-    wkPhoneCntryCd: String
-    wkEmailAddr: String
-    ssn: String
-    medicaidNum: String
-    dlNum: String
-    dlStateCd: String
-    raceCd: String
-    raceSeqNbr: Int
-    raceCategoryCd: String
-    ethnicityGroupCd: String
-    ethnicGroupSeqNbr: Int
-    adultsInHouseNbr: Int
-    childrenInHouseNbr: Int
-    birthCityCd: String
-    birthCityDescTxt: String
-    birthCntryCd: String
-    birthStateCd: String
-    raceDescTxt: String
-    ethnicGroupDescTxt: String
-    versionCtrlNbr: Int
-    asOfDateAdmin: Date
-    asOfDateEthnicity: Date
-    asOfDateGeneral: Date
-    asOfDateMorbidity: Date
-    asOfDateSex: Date
-    electronicInd: String
-    personParentUid: ID
-    dedupMatchInd: String
-    groupNbr: Int
-    groupTime: Date
-    edxInd: String
-    speaksEnglishCd: String
-    additionalGenderCd: Gender
-    eharsId: String
-    ethnicUnkReasonCd: String
-    sexUnkReasonCd: String
-}
 input PlaceFilter {
     id: ID
     description: String
@@ -642,10 +770,9 @@ type ProgramAreaCode {
 }
 type Query {
     findPatientById(id: ID!): Person
-    findAllPatients(page: PersonPage): PersonResults!
-    findPatientsByFilter(filter: PersonFilter!, page: PersonPage): PersonResults!
-    findPatientsByEvent(filter: EventFilter!, page: PersonPage): PersonResults!
-    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: PersonPage): PersonResults!
+    findAllPatients(page: SortablePage): PersonResults!
+    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
 
     findOrganizationById(id: ID!): Organization
     findAllOrganizations(page: Page): OrganizationResults!
@@ -661,10 +788,43 @@ type Query {
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
+    findAllOutbreaks(page: Page): OutbreakResults!
+    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
+    findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
+    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
+    findSnomedCodedResults(searchText: String!, page: Page): SnomedCodedResults!
+
+    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
+    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
 }
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+}
+
+type SnomedCodedResults {
+    content: [SnomedCode]!
+    total: Int!
+}
+
+type LocalCodedResults {
+    content: [LabResult]!
+    total: Int!
+}
+
+type LoincLabTestResults {
+    content: [LoincCode]!
+    total: Int!
+}
+
+type LocalLabTestResults {
+    content: [LabTest]!
+    total: Int!
+}
+
+type OutbreakResults {
+    content: [Outbreak]!
+    total: Int!
 }
 
 type PersonResults {
@@ -681,30 +841,80 @@ type OrganizationResults {
     content: [Organization]!
     total: Int!
 }
+
+type InvestigationResults {
+    content: [Investigation]!
+    total: Int!
+}
+
+type LabReportResults {
+    content: [LabReport]!
+    total: Int!
+}
 scalar Date
 
 input Page {
-    pageSize: Int
-    pageNumber: Int
+    pageSize: Int!
+    pageNumber: Int!
 }
 
-input PersonPage {
+input SortablePage {
     pageSize: Int
     pageNumber: Int
-    sortField: PersonSortField
+    sortField: SortField
     sortDirection: SortDirection
 }
 
-enum PersonSortField {
+type PersonParticipation {
+    actUid: Int!
+    localId: String
+    typeCd: String
+    entityId: Int!
+    subjectClassCd: String
+    participationRecordStatus: String
+    typeDescTxt: String
+    participationLastChangeTime: Date
+    firstName: String
+    lastName: String
+    birthTime: Date
+    currSexCd: String
+    personCd: String!
+    personParentUid: Int
+    personRecordStatus: String!
+    personLastChangeTime: Date
+}
+
+type OrganizationParticipation {
+    actUid: Int
+    typeCd: String
+    entityId: Int
+    subjectClassCd: String
+    typeDescTxt: String
+    participationRecordStatus: String
+    participationLastChangeTime: Date
+    name: String
+    organizationLastChangeTime: Date
+}
+
+enum SortField {
     lastNm
     birthTime
-    addTime
 }
 
 enum RecordStatus {
     ACTIVE
     INACTIVE
     LOG_DEL
+}
+
+enum PregnancyStatus {
+    YES
+    NO
+    UNKNOWN
+}
+type SnomedCode {
+    id: String
+    snomedDescTxt: String
 }
 type StateCode {
     id: String

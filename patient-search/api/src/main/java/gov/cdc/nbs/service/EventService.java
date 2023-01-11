@@ -1,16 +1,28 @@
 package gov.cdc.nbs.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.NestedSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -18,20 +30,28 @@ import org.springframework.stereotype.Service;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.ProcessingStatus;
-import gov.cdc.nbs.graphql.searchFilter.LaboratoryReportFilter.UserType;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.EventStatus;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.ProcessingStatus;
+import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.UserType;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class EventService {
+    @Value("${nbs.max-page-size: 50}")
+    private Integer MAX_PAGE_SIZE;
+
     private final InstantConverter instantConverter = new InstantConverter();
     private final ElasticsearchOperations operations;
     private final SecurityService securityService;
@@ -40,238 +60,21 @@ public class EventService {
     private final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
-    private final int MAX_RESULTS = 500;
 
     @PersistenceContext
     private final EntityManager entityManager;
 
     @PreAuthorize(VIEW_INVESTIGATION)
-    public SearchHits<Investigation> findInvestigationsByFilter(InvestigationFilter filter) {
-        BoolQueryBuilder builder = QueryBuilders.boolQuery();
-        // Investigations are secured by Program Area and Jurisdiction
-        var userDetails = SecurityUtil.getUserDetails();
-        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, "program_jurisdiction_oid", validOids);
+    public Page<Investigation> findInvestigationsByFilter(InvestigationFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var query = buildInvestigationQuery(filter, pageable);
+        return performSearch(query, Investigation.class);
+    }
 
-        // investigation type only
-        builder.must(QueryBuilders.matchQuery("case_type_cd", "I"));
-
-        // act must be EVN
-        builder.must(QueryBuilders.matchQuery("mood_cd", "EVN"));
-
-        if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
-            return operations.search(query, Investigation.class);
-        }
-        // conditions
-        if (filter.getConditions() != null && !filter.getConditions().isEmpty()) {
-            addListQuery(builder, "cd_desc_txt", filter.getConditions());
-        }
-        // program areas
-        if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
-            addListQuery(builder, "prog_area_cd", filter.getProgramAreas());
-        }
-        // jurisdictions
-        if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            addListQuery(builder, "jurisdiction_cd", filter.getJurisdictions());
-        }
-        // pregnancy status
-        if (filter.getPregnancyStatus() != null) {
-            var status = filter.getPregnancyStatus().toString().substring(0, 1);
-            builder.must(QueryBuilders.matchQuery("pregnant_ind_cd", status));
-        }
-        // Event Id / Type
-        if (filter.getEventIdType() != null && filter.getEventId() != null) {
-            switch (filter.getEventIdType()) {
-                case ABCS_CASE_ID:
-                    builder.must(QueryBuilders.matchQuery("act_id_seq", 2));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
-                    break;
-                case CITY_COUNTY_CASE_ID:
-                    builder.must(QueryBuilders.matchQuery("act_id_seq", 2));
-                    builder.must(QueryBuilders.matchQuery("act_id_type_cd", "CITY"));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
-                    break;
-                case STATE_CASE_ID:
-                    builder.must(QueryBuilders.matchQuery("act_id_seq", 2));
-                    builder.must(QueryBuilders.matchQuery("act_id_type_cd", "STATE"));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
-                    break;
-                case INVESTIGATION_ID:
-                    builder.must(QueryBuilders.matchQuery("public_health_case_local_id", filter.getEventId()));
-                    break;
-                case NOTIFICATION_ID:
-                    builder.must(QueryBuilders.matchQuery("notification_local_id", filter.getEventId()));
-                    break;
-
-                default:
-                    throw new QueryException("Invalid event id type: " +
-                            filter.getEventIdType());
-            }
-        }
-        // Event date
-        var eds = filter.getEventDateSearch();
-        if (eds != null) {
-            if (eds.getFrom() == null || eds.getTo() == null || eds.getEventDateType() == null) {
-                throw new QueryException(
-                        "From, To, and EventDateType are required when querying by event date");
-            }
-            String field;
-            switch (eds.getEventDateType()) {
-                case DATE_OF_REPORT:
-                    field = "rpt_form_cmplt_time";
-                    break;
-                case INVESTIGATION_CLOSED_DATE:
-                    field = "activity_to_time";
-                    break;
-                case INVESTIGATION_CREATE_DATE:
-                    field = "add_time";
-                    break;
-                case INVESTIGATION_START_DATE:
-                    field = "activity_from_time";
-                    break;
-                case LAST_UPDATE_DATE:
-                    field = "public_health_case_last_chg_time";
-                    break;
-                case NOTIFICATION_CREATE_DATE:
-                    field = "notification_add_time";
-                    break;
-                default:
-                    throw new QueryException("Invalid event date type " +
-                            eds.getEventDateType());
-            }
-            var from = instantConverter.write(eds.getFrom());
-            var to = instantConverter.write(eds.getTo());
-            builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
-        }
-        // Created By
-        if (filter.getCreatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("add_user_id", filter.getCreatedBy()));
-        }
-        // Updated By
-        if (filter.getLastUpdatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("last_chg_user_id", filter.getLastUpdatedBy()));
-        }
-        // provider facility + investigator Id
-        var pfSearch = filter.getProviderFacilitySearch();
-        if (pfSearch != null) {
-            if (pfSearch.getEntityType() == null || pfSearch.getId() == null) {
-                throw new QueryException(
-                        "Entity type and entity Id required when querying provider/facility");
-            }
-
-            var doInvestigatorQuery = filter.getInvestigatorId() != null;
-            switch (pfSearch.getEntityType()) {
-                case PROVIDER:
-                    if (doInvestigatorQuery) {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "PerAsReporterOfPHC"));
-                        addListQuery(builder, "subject_entity_uid",
-                                Arrays.asList(pfSearch.getId(), filter.getInvestigatorId()));
-                    } else {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "PerAsReporterOfPHC"));
-                        builder.must(QueryBuilders.matchQuery("subject_entity_uid", pfSearch.getId()));
-                    }
-                    break;
-                case FACILITY:
-                    if (doInvestigatorQuery) {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "OrgAsReporterOfPHC"));
-                        addListQuery(builder, "subject_entity_uid",
-                                Arrays.asList(pfSearch.getId(), filter.getInvestigatorId()));
-                    } else {
-                        builder.must(QueryBuilders.matchQuery("participation_type_cd", "OrgAsReporterOfPHC"));
-                        builder.must(QueryBuilders.matchQuery("subject_entity_uid", pfSearch.getId()));
-                    }
-                    break;
-                default:
-                    throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
-            }
-        } else {
-            // investigator id
-            if (filter.getInvestigatorId() != null) {
-                builder.must(QueryBuilders.matchQuery("subject_entity_uid", filter.getInvestigatorId()));
-            }
-        }
-
-        // investigation status
-        if (filter.getInvestigationStatus() != null) {
-            var status = filter.getInvestigationStatus().toString().substring(0, 1);
-            builder.must(QueryBuilders.matchQuery("investigation_status_cd", status));
-        }
-
-        // outbreak name
-        if (filter.getOutbreakNames() != null && !filter.getOutbreakNames().isEmpty()) {
-            addListQuery(builder, "outbreak_name", filter.getOutbreakNames());
-        }
-
-        // case status / include unassigned
-        if (filter.getCaseStatuses() != null) {
-            var cs = filter.getCaseStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || cs.getIncludeUnassigned() == null) {
-                throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying caseStatuses");
-            }
-            var statusStrings = filter.getCaseStatuses().getStatusList().stream()
-                    .map(status -> status.toString().toUpperCase())
-                    .collect(Collectors.toList());
-            if (cs.getIncludeUnassigned()) {
-                // value is in list, or null
-                var caseStatusQuery = QueryBuilders.boolQuery();
-                statusStrings.forEach(s -> caseStatusQuery.should(QueryBuilders.matchQuery("class_cd", s)));
-                caseStatusQuery.mustNot(QueryBuilders.existsQuery("class_cd"));
-                builder.should(caseStatusQuery);
-            } else {
-                addListQuery(builder, "class_cd", statusStrings);
-            }
-        }
-        // notification status / include unassigned
-        if (filter.getNotificationStatuses() != null) {
-            var cs = filter.getCaseStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || cs.getIncludeUnassigned() == null) {
-                throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying        notificationStatuses");
-            }
-            var statusStrings = cs.getStatusList().stream()
-                    .map(status -> status.toString().toUpperCase())
-                    .collect(Collectors.toList());
-            if (cs.getIncludeUnassigned()) {
-                // value is in list, or null
-                var notificationStatusQuery = QueryBuilders.boolQuery();
-                statusStrings.forEach(s -> notificationStatusQuery
-                        .should(QueryBuilders.matchQuery("notification_record_status_cd", s)));
-                notificationStatusQuery.mustNot(QueryBuilders.existsQuery("notification_record_status_cd"));
-                builder.should(notificationStatusQuery);
-            } else {
-                addListQuery(builder, "notification_record_status_cd", statusStrings);
-            }
-        }
-        // processing status / include unassigned
-        if (filter.getProcessingStatuses() != null) {
-            var cs = filter.getProcessingStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || cs.getIncludeUnassigned() == null) {
-                throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying        processingStatuses");
-            }
-            var statusStrings = cs.getStatusList().stream()
-                    .map(status -> status.toString().toUpperCase())
-                    .collect(Collectors.toList());
-            if (cs.getIncludeUnassigned()) {
-                // value is in list, or null
-                var notificationStatusQuery = QueryBuilders.boolQuery();
-                statusStrings.forEach(s -> notificationStatusQuery
-                        .should(QueryBuilders.matchQuery("curr_process_state_cd", s)));
-                notificationStatusQuery.mustNot(QueryBuilders.existsQuery("curr_process_state_cd"));
-                builder.should(notificationStatusQuery);
-
-            } else {
-                addListQuery(builder, "curr_process_state_cd", statusStrings);
-            }
-        }
-
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
-        return operations.search(query, Investigation.class);
+    @PreAuthorize(VIEW_INVESTIGATION)
+    public Page<Investigation> findInvestigationsByFilterForExport(InvestigationFilter filter) {
+        var query = buildInvestigationQuery(filter, Pageable.ofSize(1000));
+        return performSearch(query, Investigation.class);
     }
 
     private <T> void addListQuery(BoolQueryBuilder builder, String field, Iterable<T> searchItems) {
@@ -281,46 +84,78 @@ public class EventService {
     }
 
     @PreAuthorize(VIEW_LAB_REPORT)
-    public SearchHits<LabReport> findLabReportsByFilter(LaboratoryReportFilter filter) {
+    public Page<LabReport> findLabReportsByFilter(LabReportFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var query = buildLabReportQuery(filter, pageable);
+        return performSearch(query, LabReport.class);
+    }
+
+    @PreAuthorize(VIEW_LAB_REPORT)
+    public Page<LabReport> findLabReportsByFilterForExport(LabReportFilter filter) {
+        var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
+        return performSearch(query, LabReport.class);
+    }
+
+    private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
+        var hits = operations.search(query, clazz);
+        var list = hits.getSearchHits().stream().map(h -> h.getContent()).collect(Collectors.toList());
+        return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
+    }
+
+    private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
-
-        // OBS only for lab reports ?
-        builder.must(QueryBuilders.matchQuery("class_cd", "OBS"));
-
-        // act must be EVN
-        builder.must(QueryBuilders.matchQuery("mood_cd", "EVN"));
-
         // Lab reports are secured by Program Area and Jurisdiction
         var userDetails = SecurityUtil.getUserDetails();
         var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, "program_jurisdiction_oid", validOids);
+        addListQuery(builder, LabReport.PROGRAM_JURISDICTION_OID, validOids);
+
+        // OBS only for lab reports
+        builder.must(QueryBuilders.matchQuery(LabReport.CLASS_CD, "OBS"));
+
+        // act must be EVN
+        builder.must(QueryBuilders.matchQuery(LabReport.MOOD_CD, "EVN"));
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
-            return operations.search(query, LabReport.class);
+            return new NativeSearchQueryBuilder()
+                    .withQuery(builder)
+                    .withSorts(buildLabReportSort(builder, pageable))
+                    .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                    .build();
         }
+
         // program area
         if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
-            addListQuery(builder, "program_area_cd", filter.getProgramAreas());
+            addListQuery(builder, LabReport.PROGRAM_AREA_CD, filter.getProgramAreas());
         }
         // jurisdictions
         if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            addListQuery(builder, "jurisdiction_cd", filter.getJurisdictions());
+            addListQuery(builder, LabReport.JURISDICTION_CD, filter.getJurisdictions());
         }
         // pregnancy status
         if (filter.getPregnancyStatus() != null) {
             var status = filter.getPregnancyStatus().toString().substring(0, 1);
-            builder.must(QueryBuilders.matchQuery("pregnant_ind_cd", status));
+            builder.must(QueryBuilders.matchQuery(LabReport.PREGNANT_IND_CD, status));
         }
         // event Id
         if (filter.getEventIdType() != null && filter.getEventId() != null) {
             switch (filter.getEventIdType()) {
                 case ACCESSION_NUMBER:
-                    builder.must(QueryBuilders.matchQuery("type_desc_txt", "Filler Number"));
-                    builder.must(QueryBuilders.matchQuery("root_extension_txt", filter.getEventId()));
+                    var accessionNumberQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ACT_IDS + "."
+                                            + ElasticsearchActId.TYPE_CD,
+                                    "Filler Number"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ACT_IDS + "."
+                                            + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedAccessionNumberQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            accessionNumberQuery,
+                            ScoreMode.None);
+                    builder.must(nestedAccessionNumberQuery);
                     break;
                 case LAB_ID:
-                    builder.must(QueryBuilders.matchQuery("local_id", filter.getEventId()));
+                    builder.must(QueryBuilders.matchQuery(LabReport.LOCAL_ID, filter.getEventId()));
                     break;
                 default:
                     throw new QueryException("Invalid event type: " + filter.getEventIdType());
@@ -335,19 +170,19 @@ public class EventService {
             String field;
             switch (eds.getEventDateType()) {
                 case DATE_OF_REPORT:
-                    field = "activity_to_time";
+                    field = LabReport.ACTIVITY_TO_TIME;
                     break;
                 case DATE_OF_SPECIMEN_COLLECTION:
-                    field = "effective_from_time";
+                    field = LabReport.EFFECTIVE_FROM_TIME;
                     break;
                 case DATE_RECEIVED_BY_PUBLIC_HEALTH:
-                    field = "rpt_to_state_time";
+                    field = LabReport.RPT_TO_STATE_TIME;
                     break;
                 case LAB_REPORT_CREATE_DATE:
-                    field = "add_time";
+                    field = LabReport.ADD_TIME;
                     break;
                 case LAST_UPDATE_DATE:
-                    field = "observation_last_chg_time";
+                    field = LabReport.OBSERVATION_LAST_CHG_TIME;
                     break;
                 default:
                     throw new QueryException(
@@ -383,18 +218,18 @@ public class EventService {
                     electronicIndCodes.add("E");
                 }
             }
-            addListQuery(builder, "electronic_ind", electronicIndCodes);
+            addListQuery(builder, LabReport.ELECTRONIC_IND, electronicIndCodes);
         }
         // event status
         if (filter.getEventStatus() != null && !filter.getEventStatus().isEmpty()) {
             if (filter.getEventStatus().contains(EventStatus.NEW)) {
                 if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
-                    builder.must(QueryBuilders.rangeQuery("version_ctrl_nbr").gte(1));
+                    builder.must(QueryBuilders.rangeQuery(LabReport.VERSION_CTRL_NBR).gte(1));
                 } else {
-                    builder.must(QueryBuilders.matchQuery("version_ctrl_nbr", 1));
+                    builder.must(QueryBuilders.matchQuery(LabReport.VERSION_CTRL_NBR, 1));
                 }
             } else if (filter.getEventStatus().contains(EventStatus.UPDATE)) {
-                builder.must(QueryBuilders.rangeQuery("version_ctrl_nbr").gt(1));
+                builder.must(QueryBuilders.rangeQuery(LabReport.VERSION_CTRL_NBR).gt(1));
             }
         }
 
@@ -408,16 +243,16 @@ public class EventService {
                 validStatuses.add("UNPROCESSED");
             }
 
-            addListQuery(builder, "observation_record_status_cd", validStatuses);
+            addListQuery(builder, LabReport.RECORD_STATUS_CD, validStatuses);
         }
         // created by
         if (filter.getCreatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("add_user_id", filter.getCreatedBy()));
+            builder.must(QueryBuilders.matchQuery(LabReport.ADD_USER_ID, filter.getCreatedBy()));
         }
 
         // last update
         if (filter.getLastUpdatedBy() != null) {
-            builder.must(QueryBuilders.matchQuery("last_chg_user_id", filter.getLastUpdatedBy()));
+            builder.must(QueryBuilders.matchQuery(LabReport.LAST_CHG_USER_ID, filter.getLastUpdatedBy()));
         }
 
         // event provider/facility
@@ -425,33 +260,443 @@ public class EventService {
             var pSearch = filter.getProviderSearch();
             switch (pSearch.getProviderType()) {
                 case ORDERING_FACILITY:
-                    builder.must(QueryBuilders.matchQuery("type_cd", "ORD"));
-                    builder.must(QueryBuilders.matchQuery("subject_class_cd", "ORG"));
-                    builder.must(QueryBuilders.matchQuery("subject_entity_uid", pSearch.getProviderId()));
+                    var orderingFacilityQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.TYPE_CD,
+                                    "ORD"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                                    "ORG"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.ENTITY_ID,
+                                    pSearch.getProviderId()));
+                    var nestedOrderingFacilityQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            orderingFacilityQuery,
+                            ScoreMode.None);
+                    builder.must(nestedOrderingFacilityQuery);
                     break;
                 case ORDERING_PROVIDER:
-                    builder.must(QueryBuilders.matchQuery("type_cd", "ORD"));
-                    builder.must(QueryBuilders.matchQuery("subject_class_cd", "PSN"));
-                    builder.must(QueryBuilders.matchQuery("subject_entity_uid", pSearch.getProviderId()));
+                    var orderingProviderQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.TYPE_CD,
+                                    "ORD"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.SUBJECT_CLASS_CD,
+                                    "PSN"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.PERSON_PARTICIPATIONS + "."
+                                            + ElasticsearchPersonParticipation.ENTITY_ID,
+                                    pSearch.getProviderId()));
+                    var nestedOrderingProviderQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            orderingProviderQuery,
+                            ScoreMode.None);
+                    builder.must(nestedOrderingProviderQuery);
                     break;
                 case REPORTING_FACILITY:
-                    builder.must(QueryBuilders.matchQuery("subject_class_cd", "AUT"));
-                    builder.must(QueryBuilders.matchQuery("subject_entity_uid", pSearch.getProviderId()));
+                    var reportingFacilityQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.SUBJECT_CLASS_CD,
+                                    "AUT"))
+                            .must(QueryBuilders.matchQuery(
+                                    LabReport.ORGANIZATION_PARTICIPATIONS + "."
+                                            + ElasticsearchOrganizationParticipation.ENTITY_ID,
+                                    pSearch.getProviderId()));
+                    var nestedReportingFacilityQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                            reportingFacilityQuery,
+                            ScoreMode.None);
+                    builder.must(nestedReportingFacilityQuery);
                     break;
             }
         }
         // resulted test
         if (filter.getResultedTest() != null) {
-            builder.must(QueryBuilders.matchQuery("cd_desc_txt", filter.getResultedTest()));
+            var resultedTestQuery = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery(LabReport.OBSERVATIONS + "." + ElasticsearchObservation.CD_DESC_TXT,
+                            filter.getResultedTest()));
+            var nestedResultedTestQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS, resultedTestQuery,
+                    ScoreMode.None);
+            builder.must(nestedResultedTestQuery);
         }
 
         // coded result
         if (filter.getCodedResult() != null) {
-            builder.must(QueryBuilders.matchQuery("display_name", filter.getCodedResult()));
+            var codedResultQuery = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery(LabReport.OBSERVATIONS + "." + ElasticsearchObservation.DISPLAY_NAME,
+                            filter.getCodedResult()));
+            var nestedCodedResultQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS, codedResultQuery,
+                    ScoreMode.None);
+            builder.must(nestedCodedResultQuery);
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withMaxResults(MAX_RESULTS).build();
-        return operations.search(query, LabReport.class);
+        var query = new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(buildLabReportSort(builder, pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
+        return query;
     }
 
+    private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        // Investigations are secured by Program Area and Jurisdiction
+        var userDetails = SecurityUtil.getUserDetails();
+        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+        addListQuery(builder, Investigation.PROGRAM_JURISDICTION_OID, validOids);
+
+        // investigation type only
+        builder.must(QueryBuilders.matchQuery(Investigation.CASE_TYPE_CD, "I"));
+
+        // act must be EVN
+        builder.must(QueryBuilders.matchQuery(Investigation.MOOD_CD, "EVN"));
+
+        if (filter == null) {
+            var query = new NativeSearchQueryBuilder()
+                    .withQuery(builder)
+                    .withSorts(buildInvestigationSort(builder, pageable))
+                    .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                    .build();
+            return query;
+        }
+
+        // conditions
+        if (filter.getConditions() != null && !filter.getConditions().isEmpty()) {
+            addListQuery(builder, Investigation.CD_DESC_TXT, filter.getConditions());
+        }
+        // program areas
+        if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
+            addListQuery(builder, Investigation.PROGRAM_AREA_CD, filter.getProgramAreas());
+        }
+        // jurisdictions
+        if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
+            addListQuery(builder, Investigation.JURISDICTION_CD, filter.getJurisdictions());
+        }
+        // pregnancy status
+        if (filter.getPregnancyStatus() != null) {
+            var status = filter.getPregnancyStatus().toString().substring(0, 1);
+            builder.must(QueryBuilders.matchQuery(Investigation.PREGNANT_IND_CD, status));
+        }
+        // Event Id / Type
+        if (filter.getEventIdType() != null && filter.getEventId() != null) {
+            switch (filter.getEventIdType()) {
+                case ABCS_CASE_ID:
+                    var abcsCaseIdQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
+                                    2))
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedAbcsCaseQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, abcsCaseIdQuery,
+                            ScoreMode.None);
+                    builder.must(nestedAbcsCaseQuery);
+                    break;
+                case CITY_COUNTY_CASE_ID:
+                    var cityCountryCaseId = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
+                                    2))
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
+                                    "CITY"))
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedCityCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, cityCountryCaseId,
+                            ScoreMode.None);
+                    builder.must(nestedCityCountyQuery);
+                    break;
+                case STATE_CASE_ID:
+                    var stateCountryCaseId = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
+                                    2))
+                            .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.TYPE_CD,
+                                    "STATE"))
+                            .must(QueryBuilders.matchQuery(
+                                    Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
+                                    filter.getEventId()));
+                    var nestedStateCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, stateCountryCaseId,
+                            ScoreMode.None);
+                    builder.must(nestedStateCountyQuery);
+                    break;
+                case INVESTIGATION_ID:
+                    builder.must(QueryBuilders.matchQuery(Investigation.LOCAL_ID, filter.getEventId()));
+                    break;
+                case NOTIFICATION_ID:
+                    builder.must(QueryBuilders.matchQuery(Investigation.NOTIFICATION_LOCAL_ID, filter.getEventId()));
+                    break;
+
+                default:
+                    throw new QueryException("Invalid event id type: " +
+                            filter.getEventIdType());
+            }
+        }
+        // Event date
+        var eds = filter.getEventDateSearch();
+        if (eds != null) {
+            if (eds.getFrom() == null || eds.getTo() == null || eds.getEventDateType() == null) {
+                throw new QueryException(
+                        "From, To, and EventDateType are required when querying by event date");
+            }
+            String field;
+            switch (eds.getEventDateType()) {
+                case DATE_OF_REPORT:
+                    field = Investigation.RPT_FORM_COMPLETE_TIME;
+                    break;
+                case INVESTIGATION_CLOSED_DATE:
+                    field = Investigation.ACTIVITY_TO_TIME;
+                    break;
+                case INVESTIGATION_CREATE_DATE:
+                    field = Investigation.ADD_TIME;
+                    break;
+                case INVESTIGATION_START_DATE:
+                    field = Investigation.ACTIVITY_FROM_TIME;
+                    break;
+                case LAST_UPDATE_DATE:
+                    field = Investigation.PUBLIC_HEALTH_CASE_LAST_CHANGE_TIME;
+                    break;
+                case NOTIFICATION_CREATE_DATE:
+                    field = Investigation.NOTIFICATION_ADD_TIME;
+                    break;
+                default:
+                    throw new QueryException("Invalid event date type " +
+                            eds.getEventDateType());
+            }
+            var from = instantConverter.write(eds.getFrom());
+            var to = instantConverter.write(eds.getTo());
+            builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
+        }
+        // Created By
+        if (filter.getCreatedBy() != null) {
+            builder.must(QueryBuilders.matchQuery(Investigation.ADD_USER_ID, filter.getCreatedBy()));
+        }
+        // Updated By
+        if (filter.getLastUpdatedBy() != null) {
+            builder.must(QueryBuilders.matchQuery(Investigation.LAST_CHANGE_USER_ID, filter.getLastUpdatedBy()));
+        }
+        // investigator id
+        if (filter.getInvestigatorId() != null) {
+            var investigatorQuery = QueryBuilders.boolQuery();
+            investigatorQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.ENTITY_ID,
+                            filter.getInvestigatorId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(Investigation.PERSON_PARTICIPATIONS, investigatorQuery, ScoreMode.None));
+        }
+        // provider/facility
+        var pfSearch = filter.getProviderFacilitySearch();
+        if (pfSearch != null) {
+            if (pfSearch.getEntityType() == null || pfSearch.getId() == null) {
+                throw new QueryException(
+                        "Entity type and entity Id required when querying provider/facility");
+            }
+
+            switch (pfSearch.getEntityType()) {
+                case PROVIDER:
+                    var providerQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(ElasticsearchPersonParticipation.ENTITY_ID,
+                                    pfSearch.getId()))
+                            .must(QueryBuilders.matchQuery(ElasticsearchPersonParticipation.TYPE_CD,
+                                    "PerAsReporterOfPHC"));
+
+                    var nestedProviderQuery = QueryBuilders.nestedQuery(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            providerQuery,
+                            ScoreMode.None);
+
+                    builder.must(nestedProviderQuery);
+                    break;
+                case FACILITY:
+                    var facilityQuery = QueryBuilders.boolQuery()
+                            .must(QueryBuilders.matchQuery(ElasticsearchOrganizationParticipation.ENTITY_ID,
+                                    pfSearch.getId()))
+                            .must(QueryBuilders.matchQuery(ElasticsearchOrganizationParticipation.TYPE_CD,
+                                    "OrgAsReporterOfPHC"));
+
+                    var nestedFacilityQuery = QueryBuilders.nestedQuery(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            facilityQuery,
+                            ScoreMode.None);
+
+                    builder.must(nestedFacilityQuery);
+                    break;
+                default:
+                    throw new QueryException("Invalid entity type: " + pfSearch.getEntityType());
+            }
+
+        }
+
+        // investigation status
+        if (filter.getInvestigationStatus() != null) {
+            var status = filter.getInvestigationStatus().toString().substring(0, 1);
+            builder.must(QueryBuilders.matchQuery(Investigation.INVESTIGATION_STATUS_CD, status));
+        }
+
+        // outbreak name
+        if (filter.getOutbreakNames() != null && !filter.getOutbreakNames().isEmpty()) {
+            addListQuery(builder, Investigation.OUTBREAK_NAME, filter.getOutbreakNames());
+        }
+
+        // case status / include unassigned
+        if (filter.getCaseStatuses() != null) {
+            var cs = filter.getCaseStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
+                    || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying caseStatuses");
+            }
+            var statusStrings = filter.getCaseStatuses().getStatusList().stream()
+                    .map(status -> status.toString().toUpperCase())
+                    .collect(Collectors.toList());
+            if (cs.getIncludeUnassigned()) {
+                // value is in list, or null
+                var caseStatusQuery = QueryBuilders.boolQuery();
+                statusStrings
+                        .forEach(s -> caseStatusQuery.should(QueryBuilders.matchQuery(Investigation.CASE_CLASS_CD, s)));
+                caseStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.CASE_CLASS_CD));
+                builder.should(caseStatusQuery);
+            } else {
+                addListQuery(builder, Investigation.CASE_CLASS_CD, statusStrings);
+            }
+        }
+        // notification status / include unassigned
+        if (filter.getNotificationStatuses() != null) {
+            var cs = filter.getCaseStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
+                    || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying notificationStatuses");
+            }
+            var statusStrings = cs.getStatusList().stream()
+                    .map(status -> status.toString().toUpperCase())
+                    .collect(Collectors.toList());
+            if (cs.getIncludeUnassigned()) {
+                // value is in list, or null
+                var notificationStatusQuery = QueryBuilders.boolQuery();
+                statusStrings.forEach(s -> notificationStatusQuery
+                        .should(QueryBuilders.matchQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD, s)));
+                notificationStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD));
+                builder.should(notificationStatusQuery);
+            } else {
+                addListQuery(builder, Investigation.NOTIFICATION_RECORD_STATUS_CD, statusStrings);
+            }
+        }
+        // processing status / include unassigned
+        if (filter.getProcessingStatuses() != null) {
+            var cs = filter.getProcessingStatuses();
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
+                    || cs.getIncludeUnassigned() == null) {
+                throw new QueryException(
+                        "statusList and includeUnassigned are required when specifying processingStatuses");
+            }
+            var statusStrings = cs.getStatusList().stream()
+                    .map(status -> status.toString().toUpperCase())
+                    .collect(Collectors.toList());
+            if (cs.getIncludeUnassigned()) {
+                // value is in list, or null
+                var notificationStatusQuery = QueryBuilders.boolQuery();
+                statusStrings.forEach(s -> notificationStatusQuery
+                        .should(QueryBuilders.matchQuery(Investigation.CURR_PROCESS_STATUS_CD, s)));
+                notificationStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.CURR_PROCESS_STATUS_CD));
+                builder.should(notificationStatusQuery);
+
+            } else {
+                addListQuery(builder, Investigation.CURR_PROCESS_STATUS_CD, statusStrings);
+            }
+        }
+
+        var sort = buildInvestigationSort(builder, pageable);
+        return new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(sort)
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
+    }
+
+    private Collection<SortBuilder<?>> buildInvestigationSort(BoolQueryBuilder builder, Pageable pageable) {
+
+        if (pageable.getSort().isEmpty()) {
+            return null;
+        }
+        return pageable.getSort().stream().map(sort -> {
+            switch (sort.getProperty()) {
+                case "lastNm":
+                    return createNestedSortWithFilter(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "SubjOfPHC",
+                            sort.getDirection());
+                case "birthTime":
+                    return createNestedSortWithFilter(
+                            Investigation.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.BIRTH_TIME,
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "SubjOfPHC",
+                            sort.getDirection());
+                default:
+                    throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
+            }
+        }).collect(Collectors.toList());
+    }
+
+    private Collection<SortBuilder<?>> buildLabReportSort(BoolQueryBuilder builder, Pageable pageable) {
+        if (pageable.getSort().isEmpty()) {
+            return null;
+        }
+        return pageable.getSort().stream().map(sort -> {
+            switch (sort.getProperty()) {
+                case "lastNm":
+                    return createNestedSortWithFilter(
+                            LabReport.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "PATSBJ",
+                            sort.getDirection());
+                case "birthTime":
+                    return createNestedSortWithFilter(
+                            LabReport.PERSON_PARTICIPATIONS,
+                            ElasticsearchPersonParticipation.BIRTH_TIME,
+                            ElasticsearchPersonParticipation.TYPE_CD,
+                            "PATSBJ",
+                            sort.getDirection());
+                default:
+                    throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
+            }
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * 
+     * Creates a sort that adhere to the following format
+     * 
+     * <pre>
+     * "sort" : [
+     *  {
+     *    "nestedField.childField": {
+     *      "order" : "asc",
+     *      "nested": {
+     *        "path": "nestedField",
+     *        "filter": {
+     *          "term" : {"nestedField.filterField" : "filterValue"}
+     *        }
+     *      }
+     *   }
+     *  }
+     *]
+     *
+     * </pre>
+     */
+    private FieldSortBuilder createNestedSortWithFilter(String nestedField, String childField, String filterField,
+            String filterValue, Direction direction) {
+        return SortBuilders
+                .fieldSort(nestedField + "." + childField)
+                .order(direction == Direction.ASC ? SortOrder.ASC : SortOrder.DESC)
+                .setNestedSort(new NestedSortBuilder(nestedField)
+                        .setFilter(
+                                QueryBuilders.termQuery(nestedField + "." + filterField, filterValue)));
+    }
 }

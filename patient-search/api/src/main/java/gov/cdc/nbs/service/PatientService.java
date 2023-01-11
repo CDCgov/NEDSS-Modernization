@@ -14,7 +14,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,8 +33,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
@@ -60,7 +57,6 @@ import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
 import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -79,7 +75,6 @@ public class PatientService {
     private final PersonRepository personRepository;
     private final TeleLocatorRepository teleLocatorRepository;
     private final PostalLocatorRepository postalLocatorRepository;
-    private final EventService eventService;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
@@ -147,11 +142,15 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("name",
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("name",
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
@@ -159,11 +158,14 @@ public class PatientService {
         }
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("phone", QueryBuilders.matchQuery("phone.telephoneNbr",filter.getPhoneNumber()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("phone",
+                    QueryBuilders.matchQuery("phone.telephoneNbr", filter.getPhoneNumber()), ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders
+                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
@@ -175,19 +177,24 @@ public class PatientService {
         }
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address",
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.zip",filter.getZip()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.zip", filter.getZip()),
+                    ScoreMode.Avg));
         }
 
         if (filter.getState() != null && !filter.getState().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.state",filter.getState()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address",
+                    QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
         }
 
         if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.cntryCd",filter.getCountry()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("address",
+                    QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
         }
 
         if (filter.getEthnicity() != null) {
@@ -195,7 +202,8 @@ public class PatientService {
         }
 
         if (filter.getRace() != null) {
-            builder.must(QueryBuilders.nestedQuery("race", QueryBuilders.matchQuery("race.raceDescTxt",filter.getRace()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery("race",
+                    QueryBuilders.matchQuery("race.raceDescTxt", filter.getRace()), ScoreMode.Avg));
         }
 
         if (filter.getIdentification() != null) {
@@ -203,6 +211,8 @@ public class PatientService {
                     QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
         }
 
+        // TODO check permission for allowing deleted / superceeded - await
+        // clarification from Henry Tavarez on if it will be included in UI
         if (filter.getRecordStatus() != null) {
             builder.must(QueryBuilders.matchQuery("record_status_cd", filter.getRecordStatus()));
         }
@@ -219,8 +229,7 @@ public class PatientService {
             }
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withSort(pageable.getSort())
-                .withPageable(pageable).build();
+        var query = new NativeSearchQueryBuilder().withQuery(builder).build();
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
                 ElasticsearchPerson.class);
 
@@ -260,46 +269,6 @@ public class PatientService {
         applySort(query, pageable.getSort());
         var results = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
         return new PageImpl<Person>(results, pageable, results.getMaxResults());
-    }
-
-    public Page<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        List<Long> ids;
-        long totalCount = 0L;
-        switch (filter.getEventType()) {
-            case INVESTIGATION:
-                var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter());
-                ids = investigations
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(Investigation::getSubjectEntityUid)
-                        .distinct()
-                        .collect(Collectors.toList());
-                totalCount = investigations.getTotalHits();
-                break;
-            case LABORATORY_REPORT:
-                var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter());
-                ids = labReports
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(LabReport::getSubjectEntityUid)
-                        .distinct()
-                        .collect(Collectors.toList());
-
-                totalCount = labReports.getTotalHits();
-                break;
-            default:
-                throw new QueryException("Invalid event type: " + filter.getEventType());
-        }
-
-        var results = personRepository.findByIdIn(ids, pageable);
-        return new PageImpl<Person>(results.getContent(), pageable, totalCount);
     }
 
     // checks to see if the filter provided is null, if not add the filter to the
@@ -586,6 +555,6 @@ public class PatientService {
 
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
-        return  searchString.toLowerCase() + "*" ;
+        return searchString.toLowerCase() + "*";
     }
 }

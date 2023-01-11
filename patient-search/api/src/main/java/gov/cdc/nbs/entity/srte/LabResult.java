@@ -1,20 +1,33 @@
 package gov.cdc.nbs.entity.srte;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_result")
 public class LabResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +72,7 @@ public class LabResult {
     private String codeSetNm;
 
     @OneToMany(mappedBy = "labResult")
+    @Builder.Default
     private Set<LabResultSnomed> labResultSnomeds = new LinkedHashSet<>();
 
 }

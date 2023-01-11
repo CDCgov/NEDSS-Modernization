@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.srte;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "Snomed_code")
 public class SnomedCode {
     @Id
@@ -49,15 +51,19 @@ public class SnomedCode {
     private Character paDerivationExcludeCd;
 
     @OneToMany(mappedBy = "snomedCd")
+    @Builder.Default
     private Set<LabResultSnomed> labResultSnomeds = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "snomedCd")
+    @Builder.Default
     private Set<LoincSnomedCondition> loincSnomedConditions = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "snomedCd")
+    @Builder.Default
     private Set<CodeValueClinical> codeValueClinicals = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "id.snomedCd")
+    @Builder.Default
     private Set<SnomedCondition> snomedConditions = new LinkedHashSet<>();
 
 }

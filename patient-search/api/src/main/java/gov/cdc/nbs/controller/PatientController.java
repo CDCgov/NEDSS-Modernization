@@ -14,7 +14,6 @@ import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.service.PatientService;
@@ -27,12 +26,6 @@ public class PatientController {
     private final String FIND_PATIENT = "hasAuthority('" + Operations.FIND + "-" + BusinessObjects.PATIENT + "')";
     private final String ADD_PATIENT = "hasAuthority('" + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
     private final String ADD_AND_FIND_PATIENT = ADD_PATIENT + " and " + FIND_PATIENT;
-
-    @QueryMapping
-    @PreAuthorize(FIND_PATIENT)
-    public Page<Person> findPatientsByEvent(@Argument EventFilter filter, @Argument GraphQLPage page) {
-        return patientService.findPatientsByEvent(filter, page);
-    }
 
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT)

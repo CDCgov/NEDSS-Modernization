@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.srte;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "LOINC_code")
 public class LoincCode {
     @Id
@@ -59,9 +61,11 @@ public class LoincCode {
     private Character paDerivationExcludeCd;
 
     @OneToMany(mappedBy = "loincCd")
+    @Builder.Default
     private Set<LabtestLoinc> labtestLoincs = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "loincCd")
+    @Builder.Default
     private Set<LoincSnomedCondition> loincSnomedConditions = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "loincCode")

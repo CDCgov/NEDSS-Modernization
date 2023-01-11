@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.srte;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_coding_system")
 public class LabCodingSystem {
     @Id
@@ -50,9 +52,11 @@ public class LabCodingSystem {
     private Long nbsUid;
 
     @OneToMany(mappedBy = "laboratory")
+    @Builder.Default
     private Set<LabResult> labResults = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "laboratory")
+    @Builder.Default
     private Set<LabTest> labTests = new LinkedHashSet<>();
 
 }
