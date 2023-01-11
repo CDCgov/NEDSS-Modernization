@@ -18,6 +18,7 @@ logging:
     level:
         org.hibernate.SQL: debug
         org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+        org.springframework.data.elasticsearch.client.WIRE: trace
 
 spring:
     graphql:

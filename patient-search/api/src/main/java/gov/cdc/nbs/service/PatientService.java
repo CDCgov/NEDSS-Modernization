@@ -229,8 +229,7 @@ public class PatientService {
             }
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withSort(pageable.getSort())
-                .withPageable(pageable).build();
+        var query = new NativeSearchQueryBuilder().withQuery(builder).build();
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
                 ElasticsearchPerson.class);
 
