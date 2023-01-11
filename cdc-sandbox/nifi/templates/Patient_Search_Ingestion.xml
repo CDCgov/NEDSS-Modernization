@@ -2,7 +2,7 @@
 <template encoding-version="1.3">
     <description></description>
     <groupId>7b5a15bb-0185-1000-0baf-22c87c9e61be</groupId>
-    <name>Person Ingestion</name>
+    <name>Patient Search Ingestion</name>
     <snippet>
         <connections>
             <id>35a6c1a9-5086-39af-0000-000000000000</id>
@@ -156,12 +156,176 @@
             <zIndex>0</zIndex>
         </connections>
         <controllerServices>
-            <id>62c3887d-58ce-34ba-0000-000000000000</id>
+            <id>2b36a355-37bd-3e23-0000-000000000000</id>
             <parentGroupId>9cc809c8-8f5f-3f31-0000-000000000000</parentGroupId>
+            <versionedComponentId>2b36a355-37bd-3e23-998d-86429a18ecf7</versionedComponentId>
+            <bulletinLevel>WARN</bulletinLevel>
+            <bundle>
+                <artifact>nifi-elasticsearch-client-service-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.19.0</version>
+            </bundle>
+            <comments></comments>
+            <descriptors>
+                <entry>
+                    <key>el-cs-http-hosts</key>
+                    <value>
+                        <name>el-cs-http-hosts</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>authorization-scheme</key>
+                    <value>
+                        <name>authorization-scheme</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-username</key>
+                    <value>
+                        <dependencies>
+                            <dependentValues>BASIC</dependentValues>
+                            <propertyName>authorization-scheme</propertyName>
+                        </dependencies>
+                        <name>el-cs-username</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-password</key>
+                    <value>
+                        <dependencies>
+                            <dependentValues>BASIC</dependentValues>
+                            <propertyName>authorization-scheme</propertyName>
+                        </dependencies>
+                        <name>el-cs-password</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>api-key-id</key>
+                    <value>
+                        <dependencies>
+                            <dependentValues>API_KEY</dependentValues>
+                            <propertyName>authorization-scheme</propertyName>
+                        </dependencies>
+                        <name>api-key-id</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>api-key</key>
+                    <value>
+                        <dependencies>
+                            <dependentValues>API_KEY</dependentValues>
+                            <propertyName>authorization-scheme</propertyName>
+                        </dependencies>
+                        <name>api-key</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-ssl-context-service</key>
+                    <value>
+                        <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                        <name>el-cs-ssl-context-service</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>proxy-configuration-service</key>
+                    <value>
+                        <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
+                        <name>proxy-configuration-service</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-connect-timeout</key>
+                    <value>
+                        <name>el-cs-connect-timeout</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-socket-timeout</key>
+                    <value>
+                        <name>el-cs-socket-timeout</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-retry-timeout</key>
+                    <value>
+                        <name>el-cs-retry-timeout</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-charset</key>
+                    <value>
+                        <name>el-cs-charset</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>el-cs-suppress-nulls</key>
+                    <value>
+                        <name>el-cs-suppress-nulls</name>
+                    </value>
+                </entry>
+            </descriptors>
+            <name>ElasticSearchClientServiceImpl</name>
+            <persistsState>false</persistsState>
+            <properties>
+                <entry>
+                    <key>el-cs-http-hosts</key>
+                    <value>${ELASTICSEARCH_HTTP_HOSTS}</value>
+                </entry>
+                <entry>
+                    <key>authorization-scheme</key>
+                    <value>BASIC</value>
+                </entry>
+                <entry>
+                    <key>el-cs-username</key>
+                </entry>
+                <entry>
+                    <key>el-cs-password</key>
+                </entry>
+                <entry>
+                    <key>api-key-id</key>
+                </entry>
+                <entry>
+                    <key>api-key</key>
+                </entry>
+                <entry>
+                    <key>el-cs-ssl-context-service</key>
+                </entry>
+                <entry>
+                    <key>proxy-configuration-service</key>
+                </entry>
+                <entry>
+                    <key>el-cs-connect-timeout</key>
+                    <value>5000</value>
+                </entry>
+                <entry>
+                    <key>el-cs-socket-timeout</key>
+                    <value>60000</value>
+                </entry>
+                <entry>
+                    <key>el-cs-retry-timeout</key>
+                    <value>60000</value>
+                </entry>
+                <entry>
+                    <key>el-cs-charset</key>
+                    <value>UTF-8</value>
+                </entry>
+                <entry>
+                    <key>el-cs-suppress-nulls</key>
+                    <value>always-suppress</value>
+                </entry>
+            </properties>
+            <state>ENABLED</state>
+            <type>org.apache.nifi.elasticsearch.ElasticSearchClientServiceImpl</type>
+        </controllerServices>
+        <controllerServices>
+            <id>62dfbc9b-35ed-3170-0000-000000000000</id>
+            <parentGroupId>9cc809c8-8f5f-3f31-0000-000000000000</parentGroupId>
+            <versionedComponentId>62dfbc9b-35ed-3170-9740-018ee543de2f</versionedComponentId>
+            <bulletinLevel>WARN</bulletinLevel>
             <bundle>
                 <artifact>nifi-dbcp-service-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <comments></comments>
             <descriptors>
@@ -281,7 +445,7 @@
             <properties>
                 <entry>
                     <key>Database Connection URL</key>
-                    <value>jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=fake.fake.fake.1234;authenticationScheme=nativeAuthentication;</value>
+                    <value>${JDBC_CONNECTION_STRING}</value>
                 </entry>
                 <entry>
                     <key>Database Driver Class Name</key>
@@ -289,7 +453,7 @@
                 </entry>
                 <entry>
                     <key>database-driver-locations</key>
-                    <value>/var/opt/nifi_drivers/mssql-jdbc-11.2.0.jre8.jar</value>
+                    <value>${JDBC_DRIVER}</value>
                 </entry>
                 <entry>
                     <key>kerberos-user-service</key>
@@ -349,13 +513,15 @@
             <type>org.apache.nifi.dbcp.DBCPConnectionPool</type>
         </controllerServices>
         <controllerServices>
-            <id>769d02d9-7ab1-3ca2-0000-000000000000</id>
+            <id>effe00e5-013f-3a2d-0000-000000000000</id>
             <parentGroupId>9cc809c8-8f5f-3f31-0000-000000000000</parentGroupId>
+            <bulletinLevel>WARN</bulletinLevel>
             <bundle>
                 <artifact>nifi-record-serialization-services-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
+            <comments></comments>
             <descriptors>
                 <entry>
                     <key>schema-access-strategy</key>
@@ -445,6 +611,24 @@
                     </value>
                 </entry>
                 <entry>
+                    <key>schema-application-strategy</key>
+                    <value>
+                        <dependencies>
+                            <dependentValues>confluent-encoded</dependentValues>
+                            <dependentValues>schema-name</dependentValues>
+                            <dependentValues>schema-text-property</dependentValues>
+                            <dependentValues>hwx-schema-ref-attributes</dependentValues>
+                            <dependentValues>hwx-content-encoded-schema</dependentValues>
+                            <propertyName>schema-access-strategy</propertyName>
+                        </dependencies>
+                        <dependencies>
+                            <dependentValues>NESTED_FIELD</dependentValues>
+                            <propertyName>starting-field-strategy</propertyName>
+                        </dependencies>
+                        <name>schema-application-strategy</name>
+                    </value>
+                </entry>
+                <entry>
                     <key>Date Format</key>
                     <value>
                         <name>Date Format</name>
@@ -498,6 +682,10 @@
                     <key>starting-field-name</key>
                 </entry>
                 <entry>
+                    <key>schema-application-strategy</key>
+                    <value>SELECTED_PART</value>
+                </entry>
+                <entry>
                     <key>Date Format</key>
                 </entry>
                 <entry>
@@ -510,122 +698,6 @@
             <state>ENABLED</state>
             <type>org.apache.nifi.json.JsonTreeReader</type>
         </controllerServices>
-        <controllerServices>
-            <id>e31245e2-dd20-351d-0000-000000000000</id>
-            <parentGroupId>9cc809c8-8f5f-3f31-0000-000000000000</parentGroupId>
-            <bundle>
-                <artifact>nifi-elasticsearch-client-service-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.16.3</version>
-            </bundle>
-            <comments></comments>
-            <descriptors>
-                <entry>
-                    <key>el-cs-http-hosts</key>
-                    <value>
-                        <name>el-cs-http-hosts</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-username</key>
-                    <value>
-                        <name>el-cs-username</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-password</key>
-                    <value>
-                        <name>el-cs-password</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-ssl-context-service</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
-                        <name>el-cs-ssl-context-service</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>proxy-configuration-service</key>
-                    <value>
-                        <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
-                        <name>proxy-configuration-service</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-connect-timeout</key>
-                    <value>
-                        <name>el-cs-connect-timeout</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-socket-timeout</key>
-                    <value>
-                        <name>el-cs-socket-timeout</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-retry-timeout</key>
-                    <value>
-                        <name>el-cs-retry-timeout</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-charset</key>
-                    <value>
-                        <name>el-cs-charset</name>
-                    </value>
-                </entry>
-                <entry>
-                    <key>el-cs-suppress-nulls</key>
-                    <value>
-                        <name>el-cs-suppress-nulls</name>
-                    </value>
-                </entry>
-            </descriptors>
-            <name>ElasticSearchClientServiceImpl</name>
-            <persistsState>false</persistsState>
-            <properties>
-                <entry>
-                    <key>el-cs-http-hosts</key>
-                    <value>http://elasticsearch:9200/</value>
-                </entry>
-                <entry>
-                    <key>el-cs-username</key>
-                </entry>
-                <entry>
-                    <key>el-cs-password</key>
-                </entry>
-                <entry>
-                    <key>el-cs-ssl-context-service</key>
-                </entry>
-                <entry>
-                    <key>proxy-configuration-service</key>
-                </entry>
-                <entry>
-                    <key>el-cs-connect-timeout</key>
-                    <value>5000</value>
-                </entry>
-                <entry>
-                    <key>el-cs-socket-timeout</key>
-                    <value>60000</value>
-                </entry>
-                <entry>
-                    <key>el-cs-retry-timeout</key>
-                    <value>60000</value>
-                </entry>
-                <entry>
-                    <key>el-cs-charset</key>
-                    <value>UTF-8</value>
-                </entry>
-                <entry>
-                    <key>el-cs-suppress-nulls</key>
-                    <value>always-suppress</value>
-                </entry>
-            </properties>
-            <state>ENABLED</state>
-            <type>org.apache.nifi.elasticsearch.ElasticSearchClientServiceImpl</type>
-        </controllerServices>
         <processors>
             <id>257cb8dc-0f81-3127-0000-000000000000</id>
             <parentGroupId>9cc809c8-8f5f-3f31-0000-000000000000</parentGroupId>
@@ -636,7 +708,7 @@
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -706,7 +778,7 @@
             <bundle>
                 <artifact>nifi-scripting-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -760,6 +832,7 @@ java_import Java::org.apache.nifi.processors.script.ExecuteScript
 import java.nio.charset.StandardCharsets
 require 'json'
 require 'net/http'
+require 'uri'
 
 def initialize_person_index
     req = Net::HTTP::Put.new('/person')
@@ -788,7 +861,8 @@ json = &lt;&lt;-JSON
 JSON
   req.body = json
   req['Content-Type'] = 'application/json'
-  resp = Net::HTTP.start('elasticsearch', 9200) { |client| client.request(req) }
+  uri = URI.parse(ENV["ELASTICSEARCH_HTTP_HOSTS"])
+  resp = Net::HTTP.start(uri.host, uri.port) { |client| client.request(req) }
 end
 
 $person_by_uid = {}
@@ -931,6 +1005,7 @@ def convert_person_data_into_person_list_with_nested_fields
     $person_list = []
     $person_by_uid.each do |uid, person|
         hash = person.dup
+		hash['id'] = uid.to_s
         hash['address'] = $addresses_by_uid[uid]
         hash['phone'] = $phones_by_uid[uid]
         hash['email'] = $emails_by_uid[uid]
@@ -964,10 +1039,10 @@ class JRubyInputStreamCallback
     end
 end
   
+flowFile = session.get()
 initialize_person_index
 jrubyInputStreamCallback = JRubyInputStreamCallback.new
 jrubyOutputStreamCallback = JRubyOutputStreamCallback.new
-flowFile = session.get()
 if flowFile != nil
   session.read(flowFile, jrubyInputStreamCallback)
   session.write(flowFile, jrubyOutputStreamCallback)
@@ -1011,7 +1086,7 @@ end
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -1081,7 +1156,7 @@ end
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -1151,7 +1226,7 @@ end
             <bundle>
                 <artifact>nifi-elasticsearch-restapi-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -1299,7 +1374,7 @@ end
                 <properties>
                     <entry>
                         <key>put-es-record-index-op</key>
-                        <value>index</value>
+                        <value>upsert</value>
                     </entry>
                     <entry>
                         <key>el-rest-fetch-index</key>
@@ -1313,11 +1388,11 @@ end
                     </entry>
                     <entry>
                         <key>el-rest-client-service</key>
-                        <value>e31245e2-dd20-351d-0000-000000000000</value>
+                        <value>2b36a355-37bd-3e23-0000-000000000000</value>
                     </entry>
                     <entry>
                         <key>put-es-record-reader</key>
-                        <value>769d02d9-7ab1-3ca2-0000-000000000000</value>
+                        <value>effe00e5-013f-3a2d-0000-000000000000</value>
                     </entry>
                     <entry>
                         <key>put-es-record-batch-size</key>
@@ -1325,6 +1400,7 @@ end
                     </entry>
                     <entry>
                         <key>put-es-record-id-path</key>
+                        <value>/id</value>
                     </entry>
                     <entry>
                         <key>put-es-record-retain-id-field</key>
@@ -1414,7 +1490,7 @@ end
             <bundle>
                 <artifact>nifi-avro-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -1490,7 +1566,7 @@ end
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
                 <group>org.apache.nifi</group>
-                <version>1.16.3</version>
+                <version>1.19.0</version>
             </bundle>
             <config>
                 <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
@@ -1591,7 +1667,7 @@ end
                 <properties>
                     <entry>
                         <key>Database Connection Pooling Service</key>
-                        <value>62c3887d-58ce-34ba-0000-000000000000</value>
+                        <value>62dfbc9b-35ed-3170-0000-000000000000</value>
                     </entry>
                     <entry>
                         <key>sql-pre-query</key>
@@ -1794,7 +1870,7 @@ WHERE
                 <runDurationMillis>0</runDurationMillis>
                 <schedulingPeriod>1 sec</schedulingPeriod>
                 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
+                <yieldDuration>1 min</yieldDuration>
             </config>
             <executionNodeRestricted>false</executionNodeRestricted>
             <name>ExecuteSQL</name>
@@ -1813,5 +1889,5 @@ WHERE
             <type>org.apache.nifi.processors.standard.ExecuteSQL</type>
         </processors>
     </snippet>
-    <timestamp>01/04/2023 06:27:24 UTC</timestamp>
+    <timestamp>01/11/2023 07:49:59 UTC</timestamp>
 </template>
