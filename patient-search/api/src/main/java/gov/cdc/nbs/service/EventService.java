@@ -618,7 +618,7 @@ public class EventService {
 
     private Collection<SortBuilder<?>> buildInvestigationSort(BoolQueryBuilder builder, Pageable pageable) {
 
-        if (pageable.getSort() == null) {
+        if (pageable.getSort().isEmpty()) {
             return null;
         }
         return pageable.getSort().stream().map(sort -> {
@@ -644,7 +644,7 @@ public class EventService {
     }
 
     private Collection<SortBuilder<?>> buildLabReportSort(BoolQueryBuilder builder, Pageable pageable) {
-        if (pageable.getSort() == null) {
+        if (pageable.getSort().isEmpty()) {
             return null;
         }
         return pageable.getSort().stream().map(sort -> {
