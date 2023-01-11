@@ -1,14 +1,21 @@
 package gov.cdc.nbs.support.util;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gov.cdc.nbs.entity.elasticsearch.*;
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
+import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
+import gov.cdc.nbs.entity.elasticsearch.NestedName;
+import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
+import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.graphql.input.PatientInput;
 import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
