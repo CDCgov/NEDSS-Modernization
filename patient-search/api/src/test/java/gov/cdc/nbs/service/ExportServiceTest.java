@@ -24,7 +24,7 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 
-public class ExportServiceTest {
+class ExportServiceTest {
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter
             .ofPattern("dd/MM/yyyy")
             .withZone(ZoneId.of("UTC"));
