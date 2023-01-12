@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -28,22 +28,27 @@ public class EncryptionService {
             .registerModule(new JavaTimeModule());
 
     private final SecureRandom random = new SecureRandom();
+    public static final int SALT_LENGTH = 16;
 
     public String handleEncryption(Object object) {
         try {
             // generate random salt
-            var salt = new byte[16];
+            var salt = new byte[SALT_LENGTH];
             random.nextBytes(salt);
 
             // serialize object
             var serialized = mapper.writeValueAsBytes(object);
 
             // initialize cipher with salt
-            var cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            var cipher = Cipher.getInstance("AES/GCM/NoPadding");
+
+            // parameter spec for GCM
+            var gcmParameterSpec = new GCMParameterSpec(SALT_LENGTH * 8, salt);
+
             cipher.init(
                     Cipher.ENCRYPT_MODE,
                     new SecretKeySpec(secret.getBytes(), "AES"),
-                    new IvParameterSpec(salt));
+                    gcmParameterSpec);
 
             // encrypt object
             byte[] encrypted = cipher.doFinal(serialized);
@@ -67,16 +72,20 @@ public class EncryptionService {
             byte[] decoded = Base64.getDecoder().decode(encryptedString);
 
             // extract salt from first 16 bytes
-            var salt = Arrays.copyOfRange(decoded, 0, 16);
+            var salt = Arrays.copyOfRange(decoded, 0, SALT_LENGTH);
 
             // extract content from remaining bytes
-            var decodedContent = Arrays.copyOfRange(decoded, 16, decoded.length);
+            var decodedContent = Arrays.copyOfRange(decoded, SALT_LENGTH, decoded.length);
 
             // initialize cipher with salt
-            var cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            var cipher = Cipher.getInstance("AES/GCM/NoPadding");
+
+            // parameter spec for GCM
+            var gcmParameterSpec = new GCMParameterSpec(SALT_LENGTH * 8, salt);
+
             cipher.init(Cipher.DECRYPT_MODE,
                     new SecretKeySpec(secret.getBytes(), "AES"),
-                    new IvParameterSpec(salt));
+                    gcmParameterSpec);
 
             // decrypt content
             var serialized = cipher.doFinal(decodedContent);
