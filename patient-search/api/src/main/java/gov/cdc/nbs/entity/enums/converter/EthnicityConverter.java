@@ -56,7 +56,7 @@ public class EthnicityConverter implements AttributeConverter<Ethnicity, String>
             case UNKNOWN:
                 return "UNK";
             default:
-                throw new RuntimeException("Invalid ethnicity supplied: " + ethnicity);
+                throw new IllegalArgumentException("Invalid ethnicity supplied: " + ethnicity);
         }
     }
 
@@ -77,7 +77,7 @@ public class EthnicityConverter implements AttributeConverter<Ethnicity, String>
             case "Y":
                 return Ethnicity.HISPANIC_OR_LATINO;
             default:
-                throw new RuntimeException("Invalid ethnicity value supplied: " + value);
+                throw new IllegalArgumentException("Invalid ethnicity value supplied: " + value);
         }
     }
 
