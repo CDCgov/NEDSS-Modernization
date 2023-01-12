@@ -24,10 +24,8 @@ public class DisplayColumn {
     private DataSourceColumn columnUid;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "data_source_uid", referencedColumnName = "data_source_uid", nullable = false),
-            @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false)
-    })
+    @JoinColumn(name = "data_source_uid", referencedColumnName = "data_source_uid", nullable = false)
+    @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false)
     private Report report;
 
     @Column(name = "sequence_nbr", nullable = false)
