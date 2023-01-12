@@ -29,6 +29,7 @@ import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
 import com.github.javafaker.Faker;
+
 public class PersonMother {
 
     private static final Long CREATED_BY_ID = 999999L;
@@ -70,7 +71,7 @@ public class PersonMother {
         // Identification
         var entityId = new EntityId();
         entityId.setId(new EntityIdId(id, (short) 1));
-        entityId.setNBSEntityUid(entity);
+        entityId.setNbsEntityUid(entity);
         entityId.setAddTime(Instant.now());
         entityId.setAssigningAuthorityCd("GA");
         entityId.setAssigningAuthorityDescTxt("GA");

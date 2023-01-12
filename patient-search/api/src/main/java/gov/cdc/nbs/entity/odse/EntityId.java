@@ -26,7 +26,7 @@ public class EntityId {
     @MapsId("entityUid")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_uid", nullable = false)
-    private NBSEntity NBSEntityUid;
+    private NBSEntity NbsEntityUid;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
