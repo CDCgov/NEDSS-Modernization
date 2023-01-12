@@ -2,7 +2,6 @@ package gov.cdc.nbs.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,7 +50,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EventService {
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     private final InstantConverter instantConverter = new InstantConverter();
     private final ElasticsearchOperations operations;
@@ -66,7 +66,7 @@ public class EventService {
 
     @PreAuthorize(VIEW_INVESTIGATION)
     public Page<Investigation> findInvestigationsByFilter(InvestigationFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         var query = buildInvestigationQuery(filter, pageable);
         return performSearch(query, Investigation.class);
     }
@@ -85,7 +85,7 @@ public class EventService {
 
     @PreAuthorize(VIEW_LAB_REPORT)
     public Page<LabReport> findLabReportsByFilter(LabReportFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         var query = buildLabReportQuery(filter, pageable);
         return performSearch(query, LabReport.class);
     }
@@ -98,7 +98,7 @@ public class EventService {
 
     private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
         var hits = operations.search(query, clazz);
-        var list = hits.getSearchHits().stream().map(h -> h.getContent()).collect(Collectors.toList());
+        var list = hits.getSearchHits().stream().map(SearchHit::getContent).toList();
         return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
     }
 
@@ -118,7 +118,7 @@ public class EventService {
         if (filter == null) {
             return new NativeSearchQueryBuilder()
                     .withQuery(builder)
-                    .withSorts(buildLabReportSort(builder, pageable))
+                    .withSorts(buildLabReportSort(pageable))
                     .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                     .build();
         }
@@ -338,7 +338,7 @@ public class EventService {
 
         var query = new NativeSearchQueryBuilder()
                 .withQuery(builder)
-                .withSorts(buildLabReportSort(builder, pageable))
+                .withSorts(buildLabReportSort(pageable))
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
         return query;
@@ -358,12 +358,11 @@ public class EventService {
         builder.must(QueryBuilders.matchQuery(Investigation.MOOD_CD, "EVN"));
 
         if (filter == null) {
-            var query = new NativeSearchQueryBuilder()
+            return new NativeSearchQueryBuilder()
                     .withQuery(builder)
-                    .withSorts(buildInvestigationSort(builder, pageable))
+                    .withSorts(buildInvestigationSort(pageable))
                     .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                     .build();
-            return query;
         }
 
         // conditions
@@ -552,7 +551,7 @@ public class EventService {
             }
             var statusStrings = filter.getCaseStatuses().getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
-                    .collect(Collectors.toList());
+                    .toList();
             if (cs.getIncludeUnassigned()) {
                 // value is in list, or null
                 var caseStatusQuery = QueryBuilders.boolQuery();
@@ -574,7 +573,7 @@ public class EventService {
             }
             var statusStrings = cs.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
-                    .collect(Collectors.toList());
+                    .toList();
             if (cs.getIncludeUnassigned()) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
@@ -596,7 +595,7 @@ public class EventService {
             }
             var statusStrings = cs.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
-                    .collect(Collectors.toList());
+                    .toList();
             if (cs.getIncludeUnassigned()) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
@@ -610,65 +609,68 @@ public class EventService {
             }
         }
 
-        var sort = buildInvestigationSort(builder, pageable);
         return new NativeSearchQueryBuilder()
                 .withQuery(builder)
-                .withSorts(sort)
+                .withSorts(buildInvestigationSort(pageable))
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
     }
 
-    private Collection<SortBuilder<?>> buildInvestigationSort(BoolQueryBuilder builder, Pageable pageable) {
+    private Collection<SortBuilder<?>> buildInvestigationSort(Pageable pageable) {
 
         if (pageable.getSort().isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
-        return pageable.getSort().stream().map(sort -> {
+        Collection<SortBuilder<?>> sorts = new ArrayList<>();
+        pageable.getSort().stream().forEach(sort -> {
             switch (sort.getProperty()) {
                 case "lastNm":
-                    return createNestedSortWithFilter(
+                    sorts.add(createNestedSortWithFilter(
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "SubjOfPHC",
-                            sort.getDirection());
+                            sort.getDirection()));
                 case "birthTime":
-                    return createNestedSortWithFilter(
+                    sorts.add(createNestedSortWithFilter(
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "SubjOfPHC",
-                            sort.getDirection());
+                            sort.getDirection()));
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
             }
-        }).collect(Collectors.toList());
+        });
+        return sorts;
     }
 
-    private Collection<SortBuilder<?>> buildLabReportSort(BoolQueryBuilder builder, Pageable pageable) {
+    private Collection<SortBuilder<?>> buildLabReportSort(Pageable pageable) {
         if (pageable.getSort().isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
-        return pageable.getSort().stream().map(sort -> {
+        Collection<SortBuilder<?>> sorts = new ArrayList<>();
+        pageable.getSort().stream().forEach(sort -> {
             switch (sort.getProperty()) {
                 case "lastNm":
-                    return createNestedSortWithFilter(
+                    sorts.add(createNestedSortWithFilter(
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "PATSBJ",
-                            sort.getDirection());
+                            sort.getDirection()));
                 case "birthTime":
-                    return createNestedSortWithFilter(
+                    sorts.add(createNestedSortWithFilter(
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "PATSBJ",
-                            sort.getDirection());
+                            sort.getDirection()));
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
             }
-        }).collect(Collectors.toList());
+        });
+        return sorts;
     }
 
     /**
