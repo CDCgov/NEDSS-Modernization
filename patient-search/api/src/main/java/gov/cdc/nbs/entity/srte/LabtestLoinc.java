@@ -21,10 +21,8 @@ public class LabtestLoinc {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "lab_test_cd", referencedColumnName = "lab_test_cd", nullable = false),
-            @JoinColumn(name = "laboratory_id", referencedColumnName = "laboratory_id", nullable = false)
-    })
+    @JoinColumn(name = "lab_test_cd", referencedColumnName = "lab_test_cd", nullable = false)
+    @JoinColumn(name = "laboratory_id", referencedColumnName = "laboratory_id", nullable = false)
     private LabTest labTest;
 
     @MapsId("loincCd")

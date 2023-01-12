@@ -32,7 +32,7 @@ import gov.cdc.nbs.service.KafkaRequestProducerService;
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration
-public class KafkaProducerTest {
+class KafkaProducerTest {
 
 	@Mock
 	private KafkaTemplate<String, EnvelopeRequest> kafkaTemplate;

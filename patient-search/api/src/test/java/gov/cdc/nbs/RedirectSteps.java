@@ -93,7 +93,7 @@ public class RedirectSteps {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.equals("/advanced-search"));
+        assertEquals("/advanced-search", redirectUrl);
     }
 
     @Given("I send a search request to the NBS simple search")
@@ -124,7 +124,7 @@ public class RedirectSteps {
         assertEquals("John", filter.getFirstName());
         assertEquals(Instant.parse("2000-01-01T00:00:00Z"), filter.getDateOfBirth());
         assertEquals(Gender.M, filter.getGender());
-        assertTrue(1234L == filter.getId());
+        assertEquals(Long.valueOf(1234L), filter.getId());
     }
 
     @Given("I navigate to the NBS advanced search page")

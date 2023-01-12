@@ -6,6 +6,7 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 
 import javax.transaction.Transactional;
 
+import org.junit.Test;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
@@ -42,6 +43,10 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @Rollback(false)
 @Testcontainers
 class RunCucumberTest {
+
+    @Test
+    void contextLoads() {
+    }
 
     @Container
     private static final ElasticsearchContainer elasticsearchContainer;

@@ -11,8 +11,10 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-public class InstantConverterTest {
+class InstantConverterTest {
     private final InstantConverter converter = new InstantConverter();
 
     @Test
@@ -21,9 +23,9 @@ public class InstantConverterTest {
         var instant = converter.read(date);
         assertNotNull(instant);
         var ld = LocalDate.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(ld.getMonthValue(), 1);
-        assertEquals(ld.getDayOfMonth(), 1);
-        assertEquals(ld.getYear(), 2022);
+        assertEquals(1, ld.getMonthValue());
+        assertEquals(1, ld.getDayOfMonth());
+        assertEquals(2022, ld.getYear());
     }
 
     @Test
@@ -48,66 +50,16 @@ public class InstantConverterTest {
         assertEquals(2022, ld.getYear());
     }
 
-    @Test
-    void parseFormat3() throws ParseException {
-        String date = "2022-11-18 22:27:13.302";
-        var instant = converter.read(date);
-        assertNotNull(instant);
-        var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(11, ld.getMonthValue());
-        assertEquals(18, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
-        assertEquals(22, ld.getHour());
-        assertEquals(27, ld.getMinute());
-        assertEquals(13, ld.getSecond());
-    }
-
-    @Test
-    void parseFormat4() throws ParseException {
-        String date = "2022-11-18 22:27:13.83";
-        var instant = converter.read(date);
-        assertNotNull(instant);
-        var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(11, ld.getMonthValue());
-        assertEquals(18, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
-        assertEquals(22, ld.getHour());
-        assertEquals(27, ld.getMinute());
-        assertEquals(13, ld.getSecond());
-    }
-
-    @Test
-    void parseFormat5() throws ParseException {
-        String date = "2022-11-18 22:27:13.8";
-        var instant = converter.read(date);
-        assertNotNull(instant);
-        var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(11, ld.getMonthValue());
-        assertEquals(18, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
-        assertEquals(22, ld.getHour());
-        assertEquals(27, ld.getMinute());
-        assertEquals(13, ld.getSecond());
-    }
-
-    @Test
-    void parseFormat6() throws ParseException {
-        String date = "2022-11-18T22:27:13.317";
-        var instant = converter.read(date);
-        assertNotNull(instant);
-        var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(11, ld.getMonthValue());
-        assertEquals(18, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
-        assertEquals(22, ld.getHour());
-        assertEquals(27, ld.getMinute());
-        assertEquals(13, ld.getSecond());
-    }
-
-    @Test
-    void parseFormat7() throws ParseException {
-        String date = "2022-11-18T22:27:13";
-        var instant = converter.read(date);
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "2022-11-18 22:27:13.302",
+            "2022-11-18 22:27:13.83",
+            "2022-11-18 22:27:13.8",
+            "2022-11-18T22:27:13.317",
+            "2022-11-18T22:27:13"
+    })
+    void otherFormats(String dateString) {
+        var instant = converter.read(dateString);
         assertNotNull(instant);
         var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
         assertEquals(11, ld.getMonthValue());

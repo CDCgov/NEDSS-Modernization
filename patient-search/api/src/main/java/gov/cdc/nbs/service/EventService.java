@@ -41,6 +41,7 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
@@ -49,17 +50,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EventService {
+    private static final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-"
+            + BusinessObjects.INVESTIGATION + "')";
+    private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+            + BusinessObjects.OBSERVATIONLABREPORT
+            + "')";
+
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
 
     private final InstantConverter instantConverter = new InstantConverter();
     private final ElasticsearchOperations operations;
     private final SecurityService securityService;
-    private final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-"
-            + BusinessObjects.INVESTIGATION + "')";
-    private final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
-            + BusinessObjects.OBSERVATIONLABREPORT
-            + "')";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -203,20 +205,15 @@ public class EventService {
             var electronicIndCodes = new ArrayList<String>();
             if (filter.getEntryMethods() != null) {
                 filter.getEntryMethods().forEach(em -> {
-                    switch (em) {
-                        case ELECTRONIC:
-                            electronicIndCodes.add("Y");
-                            break;
-                        case MANUAL:
-                            electronicIndCodes.add("N");
-                            break;
+                    if (em.equals(EntryMethod.ELECTRONIC)) {
+                        electronicIndCodes.add("Y");
+                    } else if (em.equals(EntryMethod.MANUAL)) {
+                        electronicIndCodes.add("N");
                     }
                 });
             }
-            if (filter.getEnteredBy() != null) {
-                if (filter.getEnteredBy().contains(UserType.EXTERNAL)) {
-                    electronicIndCodes.add("E");
-                }
+            if (filter.getEnteredBy() != null && filter.getEnteredBy().contains(UserType.EXTERNAL)) {
+                electronicIndCodes.add("E");
             }
             addListQuery(builder, LabReport.ELECTRONIC_IND, electronicIndCodes);
         }
@@ -336,12 +333,11 @@ public class EventService {
             builder.must(nestedCodedResultQuery);
         }
 
-        var query = new NativeSearchQueryBuilder()
+        return new NativeSearchQueryBuilder()
                 .withQuery(builder)
                 .withSorts(buildLabReportSort(pageable))
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
-        return query;
     }
 
     private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
@@ -545,14 +541,14 @@ public class EventService {
         if (filter.getCaseStatuses() != null) {
             var cs = filter.getCaseStatuses();
             if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || cs.getIncludeUnassigned() == null) {
+                    || !cs.isIncludeUnassigned()) {
                 throw new QueryException(
                         "statusList and includeUnassigned are required when specifying caseStatuses");
             }
             var statusStrings = filter.getCaseStatuses().getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (cs.getIncludeUnassigned()) {
+            if (cs.isIncludeUnassigned()) {
                 // value is in list, or null
                 var caseStatusQuery = QueryBuilders.boolQuery();
                 statusStrings
@@ -565,16 +561,16 @@ public class EventService {
         }
         // notification status / include unassigned
         if (filter.getNotificationStatuses() != null) {
-            var cs = filter.getCaseStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || cs.getIncludeUnassigned() == null) {
+            var ns = filter.getNotificationStatuses();
+            if (ns.getStatusList() == null || ns.getStatusList().isEmpty()
+                    || !ns.isIncludeUnassigned()) {
                 throw new QueryException(
                         "statusList and includeUnassigned are required when specifying notificationStatuses");
             }
-            var statusStrings = cs.getStatusList().stream()
+            var statusStrings = ns.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (cs.getIncludeUnassigned()) {
+            if (ns.isIncludeUnassigned()) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
                 statusStrings.forEach(s -> notificationStatusQuery
@@ -587,16 +583,16 @@ public class EventService {
         }
         // processing status / include unassigned
         if (filter.getProcessingStatuses() != null) {
-            var cs = filter.getProcessingStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || cs.getIncludeUnassigned() == null) {
+            var ps = filter.getProcessingStatuses();
+            if (ps.getStatusList() == null || ps.getStatusList().isEmpty()
+                    || !ps.isIncludeUnassigned()) {
                 throw new QueryException(
                         "statusList and includeUnassigned are required when specifying processingStatuses");
             }
-            var statusStrings = cs.getStatusList().stream()
+            var statusStrings = ps.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (cs.getIncludeUnassigned()) {
+            if (ps.isIncludeUnassigned()) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
                 statusStrings.forEach(s -> notificationStatusQuery

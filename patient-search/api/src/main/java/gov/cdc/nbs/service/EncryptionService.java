@@ -91,8 +91,7 @@ public class EncryptionService {
             var serialized = cipher.doFinal(decodedContent);
 
             // deserialize object
-            var object = mapper.readValue(serialized, Object.class);
-            return object;
+            return mapper.readValue(serialized, Object.class);
         } catch (Exception e) {
             throw new EncryptionException("Failed to decrypt provied string.");
         }

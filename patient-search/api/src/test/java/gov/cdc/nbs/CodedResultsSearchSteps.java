@@ -70,9 +70,11 @@ public class CodedResultsSearchSteps {
             case "found":
                 assertTrue(localResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
+            case "not found":
                 assertEquals(0, localResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);
         }
     }
 
@@ -87,9 +89,11 @@ public class CodedResultsSearchSteps {
             case "found":
                 assertTrue(snomedResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
+            case "not found":
                 assertEquals(0, snomedResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);
         }
     }
 

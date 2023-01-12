@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrganizationService {
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -38,13 +38,13 @@ public class OrganizationService {
     }
 
     public Page<Organization> findAllOrganizations(GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         return organizationRepository.findAll(pageable);
     }
 
     public Page<Organization> findOrganizationsByFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
 
         var organization = QOrganization.organization;
         var query = new BlazeJPAQuery<Organization>(entityManager, criteriaBuilderFactory);
@@ -60,7 +60,7 @@ public class OrganizationService {
 
         var results = query.fetchPage((int) pageable.getOffset(),
                 pageable.getPageSize());
-        return new PageImpl<Organization>(results, pageable, results.getMaxResults());
+        return new PageImpl<>(results, pageable, results.getMaxResults());
     }
 
     private <T> BlazeJPAQuery<Organization> applyIfFilterNotNull(BlazeJPAQuery<Organization> query,

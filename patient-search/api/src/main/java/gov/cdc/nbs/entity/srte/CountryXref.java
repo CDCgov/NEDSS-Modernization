@@ -33,11 +33,9 @@ public class CountryXref {
     private String fromCodeDescTxt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "to_code_set_nm", referencedColumnName = "code_set_nm", nullable = false),
-            @JoinColumn(name = "to_seq_num", referencedColumnName = "seq_num", nullable = false),
-            @JoinColumn(name = "to_code", referencedColumnName = "code", nullable = false)
-    })
+    @JoinColumn(name = "to_code_set_nm", referencedColumnName = "code_set_nm", nullable = false)
+    @JoinColumn(name = "to_seq_num", referencedColumnName = "seq_num", nullable = false)
+    @JoinColumn(name = "to_code", referencedColumnName = "code", nullable = false)
     private CountryCodeIso countryCodeIso;
 
     @Column(name = "to_code_desc_txt", length = 50)

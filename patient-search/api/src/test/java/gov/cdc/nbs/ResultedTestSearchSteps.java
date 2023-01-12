@@ -73,9 +73,11 @@ public class ResultedTestSearchSteps {
             case "found":
                 assertTrue(localTestResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
+            case "not found":
                 assertEquals(0, localTestResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid expected result: " + expectedResult);
         }
     }
 
@@ -85,9 +87,11 @@ public class ResultedTestSearchSteps {
             case "found":
                 assertTrue(loincTestResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
+            case "not found":
                 assertEquals(0, loincTestResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid expected result: " + expectedResult);
         }
     }
 

@@ -24,7 +24,7 @@ public class TargetValue {
     private TargetField targetFieldUid;
 
     @Column(name = "target_value", length = 50)
-    private String targetValue;
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "error_message_uid", nullable = false)

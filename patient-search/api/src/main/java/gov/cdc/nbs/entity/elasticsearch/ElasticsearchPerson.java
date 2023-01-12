@@ -33,356 +33,468 @@ import lombok.NoArgsConstructor;
 @Builder
 @Document(indexName = "person")
 public class ElasticsearchPerson {
+    public static final String PERSON_UID = "person_uid";
+    public static final String ADD_REASON_CD = "add_reason_cd";
+    public static final String ADD_TIME = "add_time";
+    public static final String ADD_USER_ID = "add_user_id";
+    public static final String ADMINISTRATIVE_GENDER_CD = "administrative_gender_cd";
+    public static final String AGE_CALC = "age_calc";
+    public static final String AGE_CALC_TIME = "age_calc_time";
+    public static final String AGE_CALC_UNIT_CD = "age_calc_unit_cd";
+    public static final String AGE_CATEGORY_CD = "age_category_cd";
+    public static final String AGE_REPORTED = "age_reported";
+    public static final String AGE_REPORTED_TIME = "age_reported_time";
+    public static final String AGE_REPORTED_UNIT_CD = "age_reported_unit_cd";
+    public static final String BIRTH_GENDER_CD = "birth_gender_cd";
+    public static final String BIRTH_ORDER_NBR = "birth_order_nbr";
+    public static final String BIRTH_TIME = "birth_time";
+    public static final String BIRTH_TIME_CALC = "birth_time_calc";
+    public static final String CD = "cd";
+    public static final String CD_DESC_TXT = "cd_desc_txt";
+    public static final String CURR_SEX_CD = "curr_sex_cd";
+    public static final String DECEASED_IND_CD = "deceased_ind_cd";
+    public static final String DECEASED_TIME = "deceased_time";
+    public static final String DESCRIPTION = "description";
+    public static final String EDUCATION_LEVEL_CD = "education_level_cd";
+    public static final String EDUCATION_LEVEL_DESC_TXT = "education_level_desc_txt";
+    public static final String ETHNIC_GROUP_IND = "ethnic_group_ind";
+    public static final String LAST_CHG_REASON_CD = "last_chg_reason_cd";
+    public static final String LAST_CHG_TIME = "last_chg_time";
+    public static final String LAST_CHG_USER_ID = "last_chg_user_id";
+    public static final String LOCAL_ID = "local_id";
+    public static final String MARITAL_STATUS_CD = "marital_status_cd";
+    public static final String MARITAL_STATUS_DESC_TXT = "marital_status_desc_txt";
+    public static final String MOTHERS_MAIDEN_NM = "mothers_maiden_nm";
+    public static final String MULTIPLE_BIRTH_IND = "multiple_birth_ind";
+    public static final String OCCUPATION_CD = "occupation_cd";
+    public static final String PREFERRED_GENDER_CD = "preferred_gender_cd";
+    public static final String PRIM_LANG_CD = "prim_lang_cd";
+    public static final String PRIM_LANG_DESC_TXT = "prim_lang_desc_txt";
+    public static final String RECORD_STATUS_CD = "record_status_cd";
+    public static final String RECORD_STATUS_TIME = "record_status_time";
+    public static final String STATUS_CD = "status_cd";
+    public static final String STATUS_TIME = "status_time";
+    public static final String SURVIVED_IND_CD = "survived_ind_cd";
+    public static final String USER_AFFILIATION_TXT = "user_affiliation_txt";
+    public static final String FIRST_NM = "first_nm";
+    public static final String LAST_NM_KEYWORD = "last_nm";
+    public static final String TEXT = "text";
+    public static final String MIDDLE_NM = "middle_nm";
+    public static final String NM_PREFIX = "nm_prefix";
+    public static final String NM_SUFFIX = "nm_suffix";
+    public static final String PREFERRED_NM = "preferred_nm";
+    public static final String HM_STREET_ADDR1 = "hm_street_addr1";
+    public static final String HM_STREET_ADDR2 = "hm_street_addr2";
+    public static final String HM_CITY_CD = "hm_city_cd";
+    public static final String HM_CITY_DESC_TXT = "hm_city_desc_txt";
+    public static final String HM_STATE_CD = "hm_state_cd";
+    public static final String HM_ZIP_CD = "hm_zip_cd";
+    public static final String HM_CNTY_CD = "hm_cnty_cd";
+    public static final String HM_CNTRY_CD = "hm_cntry_cd";
+    public static final String HM_PHONE_NBR = "hm_phone_nbr";
+    public static final String HM_PHONE_CNTRY_CD = "hm_phone_cntry_cd";
+    public static final String HM_EMAIL_ADDR = "hm_email_addr";
+    public static final String CELL_PHONE_NBR = "cell_phone_nbr";
+    public static final String WK_STREET_ADDR1 = "wk_street_addr1";
+    public static final String WK_STREET_ADDR2 = "wk_street_addr2";
+    public static final String WK_CITY_CD = "wk_city_cd";
+    public static final String WK_CITY_DESC_TXT = "wk_city_desc_txt";
+    public static final String WK_STATE_CD = "wk_state_cd";
+    public static final String WK_ZIP_CD = "wk_zip_cd";
+    public static final String WK_CNTY_CD = "wk_cnty_cd";
+    public static final String WK_CNTRY_CD = "wk_cntry_cd";
+    public static final String WK_PHONE_NBR = "wk_phone_nbr";
+    public static final String WK_PHONE_CNTRY_CD = "wk_phone_cntry_cd";
+    public static final String WK_EMAIL_ADDR = "wk_email_addr";
+    public static final String SSN = "SSN";
+    public static final String MEDICAID_NUM = "medicaid_num";
+    public static final String DL_NUM = "dl_num";
+    public static final String DL_STATE_CD = "dl_state_cd";
+    public static final String RACE_CD = "race_cd";
+    public static final String RACE_SEQ_NBR = "race_seq_nbr";
+    public static final String RACE_CATEGORY_CD = "race_category_cd";
+    public static final String ETHNICITY_GROUP_CD = "ethnicity_group_cd";
+    public static final String ETHNIC_GROUP_SEQ_NBR = "ethnic_group_seq_nbr";
+    public static final String ADULTS_IN_HOUSE_NBR = "adults_in_house_nbr";
+    public static final String CHILDREN_IN_HOUSE_NBR = "children_in_house_nbr";
+    public static final String BIRTH_CITY_CD = "birth_city_cd";
+    public static final String BIRTH_CITY_DESC_TXT = "birth_city_desc_txt";
+    public static final String BIRTH_CNTRY_CD = "birth_cntry_cd";
+    public static final String BIRTH_STATE_CD = "birth_state_cd";
+    public static final String RACE_DESC_TXT = "race_desc_txt";
+    public static final String ETHNIC_GROUP_DESC_TXT = "ethnic_group_desc_txt";
+    public static final String VERSION_CTRL_NBR = "version_ctrl_nbr";
+    public static final String AS_OF_DATE_ADMIN = "as_of_date_admin";
+    public static final String AS_OF_DATE_ETHNICITY = "as_of_date_ethnicity";
+    public static final String AS_OF_DATE_GENERAL = "as_of_date_general";
+    public static final String AS_OF_DATE_MORBIDITY = "as_of_date_morbidity";
+    public static final String AS_OF_DATE_SEX = "as_of_date_sex";
+    public static final String ELECTRONIC_IND = "electronic_ind";
+    public static final String DEDUP_MATCH_IND = "dedup_match_ind";
+    public static final String GROUP_NBR = "group_nbr";
+    public static final String GROUP_TIME = "group_time";
+    public static final String EDX_IND = "edx_ind";
+    public static final String SPEAKS_ENGLISH_CD = "speaks_english_cd";
+    public static final String ADDITIONAL_GENDER_CD = "additional_gender_cd";
+    public static final String EHARS_ID = "ehars_id";
+    public static final String ETHNIC_UNK_REASON_CD = "ethnic_unk_reason_cd";
+    public static final String SEX_UNK_REASON_CD = "sex_unk_reason_cd";
+    public static final String NAME = "name";
+    public static final String ADDRESS = "address";
+    public static final String PHONE = "phone";
+    public static final String EMAIL = "email";
+    public static final String RACE = "race";
+
     @Id
     private String id;
 
-    @Field(name = "person_uid", type = FieldType.Long)
+    @Field(name = PERSON_UID, type = FieldType.Long)
     private Long personUid;
 
-    @Field(name = "add_reason_cd", type = FieldType.Keyword)
+    @Field(name = ADD_REASON_CD, type = FieldType.Keyword)
     private String addReasonCd;
 
-    @Field(name = "add_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = ADD_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant addTime;
 
-    @Field(name = "add_user_id", type = FieldType.Long)
+    @Field(name = ADD_USER_ID, type = FieldType.Long)
     private Long addUserId;
 
-    @Field(name = "administrative_gender_cd", type = FieldType.Keyword)
+    @Field(name = ADMINISTRATIVE_GENDER_CD, type = FieldType.Keyword)
     private String administrativeGenderCd;
 
-    @Field(name = "age_calc", type = FieldType.Short)
+    @Field(name = AGE_CALC, type = FieldType.Short)
     private Short ageCalc;
 
-    @Field(name = "age_calc_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AGE_CALC_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant ageCalcTime;
 
-    @Field(name = "age_calc_unit_cd", type = FieldType.Keyword)
+    @Field(name = AGE_CALC_UNIT_CD, type = FieldType.Keyword)
     private Character ageCalcUnitCd;
 
-    @Field(name = "age_category_cd", type = FieldType.Keyword)
+    @Field(name = AGE_CATEGORY_CD, type = FieldType.Keyword)
     private String ageCategoryCd;
 
-    @Field(name = "age_reported", type = FieldType.Keyword)
+    @Field(name = AGE_REPORTED, type = FieldType.Keyword)
     private String ageReported;
 
-    @Field(name = "age_reported_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AGE_REPORTED_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant ageReportedTime;
 
-    @Field(name = "age_reported_unit_cd", type = FieldType.Keyword)
+    @Field(name = AGE_REPORTED_UNIT_CD, type = FieldType.Keyword)
     private String ageReportedUnitCd;
 
-    @Field(name = "birth_gender_cd", type = FieldType.Keyword)
+    @Field(name = BIRTH_GENDER_CD, type = FieldType.Keyword)
     private Gender birthGenderCd;
 
-    @Field(name = "birth_order_nbr", type = FieldType.Short)
+    @Field(name = BIRTH_ORDER_NBR, type = FieldType.Short)
     private Short birthOrderNbr;
 
-    @Field(name = "birth_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = BIRTH_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant birthTime;
 
-    @Field(name = "birth_time_calc", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = BIRTH_TIME_CALC, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant birthTimeCalc;
 
-    @Field(name = "cd", type = FieldType.Keyword)
+    @Field(name = CD, type = FieldType.Keyword)
     private String cd;
 
-    @Field(name = "cd_desc_txt", type = FieldType.Text)
+    @Field(name = CD_DESC_TXT, type = FieldType.Text)
     private String cdDescTxt;
 
-    @Field(name = "curr_sex_cd", type = FieldType.Keyword)
+    @Field(name = CURR_SEX_CD, type = FieldType.Keyword)
     private Gender currSexCd;
 
-    @Field(name = "deceased_ind_cd", type = FieldType.Keyword)
+    @Field(name = DECEASED_IND_CD, type = FieldType.Keyword)
     @ValueConverter(DeceasedConverter.class)
     private Deceased deceasedIndCd;
 
-    @Field(name = "deceased_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = DECEASED_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant deceasedTime;
 
-    @Field(name = "description", type = FieldType.Text)
+    @Field(name = DESCRIPTION, type = FieldType.Text)
     private String description;
 
-    @Field(name = "education_level_cd", type = FieldType.Keyword)
+    @Field(name = EDUCATION_LEVEL_CD, type = FieldType.Keyword)
     private String educationLevelCd;
 
-    @Field(name = "education_level_desc_txt", type = FieldType.Text)
+    @Field(name = EDUCATION_LEVEL_DESC_TXT, type = FieldType.Text)
     private String educationLevelDescTxt;
 
-    @Field(name = "ethnic_group_ind", type = FieldType.Keyword)
+    @Field(name = ETHNIC_GROUP_IND, type = FieldType.Keyword)
     @ValueConverter(EthnicityConverter.class)
     private Ethnicity ethnicGroupInd;
 
-    @Field(name = "last_chg_reason_cd", type = FieldType.Keyword)
+    @Field(name = LAST_CHG_REASON_CD, type = FieldType.Keyword)
     private String lastChgReasonCd;
 
-    @Field(name = "last_chg_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = LAST_CHG_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant lastChgTime;
 
-    @Field(name = "last_chg_user_id", type = FieldType.Long)
+    @Field(name = LAST_CHG_USER_ID, type = FieldType.Long)
     private Long lastChgUserId;
 
-    @Field(name = "local_id", type = FieldType.Keyword)
+    @Field(name = LOCAL_ID, type = FieldType.Keyword)
     private String localId;
 
-    @Field(name = "marital_status_cd", type = FieldType.Keyword)
+    @Field(name = MARITAL_STATUS_CD, type = FieldType.Keyword)
     private String maritalStatusCd;
 
-    @Field(name = "marital_status_desc_txt", type = FieldType.Text)
+    @Field(name = MARITAL_STATUS_DESC_TXT, type = FieldType.Text)
     private String maritalStatusDescTxt;
 
-    @Field(name = "mothers_maiden_nm", type = FieldType.Text)
+    @Field(name = MOTHERS_MAIDEN_NM, type = FieldType.Text)
     private String mothersMaidenNm;
 
-    @Field(name = "multiple_birth_ind", type = FieldType.Keyword)
+    @Field(name = MULTIPLE_BIRTH_IND, type = FieldType.Keyword)
     private String multipleBirthInd;
 
-    @Field(name = "occupation_cd", type = FieldType.Keyword)
+    @Field(name = OCCUPATION_CD, type = FieldType.Keyword)
     private String occupationCd;
 
-    @Field(name = "preferred_gender_cd", type = FieldType.Keyword)
+    @Field(name = PREFERRED_GENDER_CD, type = FieldType.Keyword)
     private Gender preferredGenderCd;
 
-    @Field(name = "prim_lang_cd", type = FieldType.Keyword)
+    @Field(name = PRIM_LANG_CD, type = FieldType.Keyword)
     private String primLangCd;
 
-    @Field(name = "prim_lang_desc_txt", type = FieldType.Text)
+    @Field(name = PRIM_LANG_DESC_TXT, type = FieldType.Text)
     private String primLangDescTxt;
 
-    @Field(name = "record_status_cd", type = FieldType.Keyword)
+    @Field(name = RECORD_STATUS_CD, type = FieldType.Keyword)
     private RecordStatus recordStatusCd;
 
-    @Field(name = "record_status_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = RECORD_STATUS_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant recordStatusTime;
 
-    @Field(name = "status_cd", type = FieldType.Keyword)
+    @Field(name = STATUS_CD, type = FieldType.Keyword)
     private Character statusCd;
 
-    @Field(name = "status_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = STATUS_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant statusTime;
 
-    @Field(name = "survived_ind_cd", type = FieldType.Keyword)
+    @Field(name = SURVIVED_IND_CD, type = FieldType.Keyword)
     private Character survivedIndCd;
 
-    @Field(name = "user_affiliation_txt", type = FieldType.Text)
+    @Field(name = USER_AFFILIATION_TXT, type = FieldType.Text)
     private String userAffiliationTxt;
 
-    @Field(name = "first_nm", type = FieldType.Text)
+    @Field(name = FIRST_NM, type = FieldType.Text)
     private String firstNm;
 
     // allows sorting
-    @MultiField(mainField = @Field(name = "last_nm", type = FieldType.Keyword), otherFields = {
-            @InnerField(suffix = "text", type = FieldType.Text)
+    @MultiField(mainField = @Field(name = LAST_NM_KEYWORD, type = FieldType.Keyword), otherFields = {
+            @InnerField(suffix = TEXT, type = FieldType.Text)
     })
     private String lastNm;
 
-    @Field(name = "middle_nm", type = FieldType.Text)
+    @Field(name = MIDDLE_NM, type = FieldType.Text)
     private String middleNm;
 
-    @Field(name = "nm_prefix", type = FieldType.Text)
+    @Field(name = NM_PREFIX, type = FieldType.Text)
     private String nmPrefix;
 
-    @Field(name = "nm_suffix", type = FieldType.Text)
+    @Field(name = NM_SUFFIX, type = FieldType.Text)
     private Suffix nmSuffix;
 
-    @Field(name = "preferred_nm", type = FieldType.Text)
+    @Field(name = PREFERRED_NM, type = FieldType.Text)
     private String preferredNm;
 
-    @Field(name = "hm_street_addr1", type = FieldType.Text)
+    @Field(name = HM_STREET_ADDR1, type = FieldType.Text)
     private String hmStreetAddr1;
 
-    @Field(name = "hm_street_addr2", type = FieldType.Text)
+    @Field(name = HM_STREET_ADDR2, type = FieldType.Text)
     private String hmStreetAddr2;
 
-    @Field(name = "hm_city_cd", type = FieldType.Keyword)
+    @Field(name = HM_CITY_CD, type = FieldType.Keyword)
     private String hmCityCd;
 
-    @Field(name = "hm_city_desc_txt", type = FieldType.Text)
+    @Field(name = HM_CITY_DESC_TXT, type = FieldType.Text)
     private String hmCityDescTxt;
 
-    @Field(name = "hm_state_cd", type = FieldType.Keyword)
+    @Field(name = HM_STATE_CD, type = FieldType.Keyword)
     private String hmStateCd;
 
-    @Field(name = "hm_zip_cd", type = FieldType.Keyword)
+    @Field(name = HM_ZIP_CD, type = FieldType.Keyword)
     private String hmZipCd;
 
-    @Field(name = "hm_cnty_cd", type = FieldType.Keyword)
+    @Field(name = HM_CNTY_CD, type = FieldType.Keyword)
     private String hmCntyCd;
 
-    @Field(name = "hm_cntry_cd", type = FieldType.Keyword)
+    @Field(name = HM_CNTRY_CD, type = FieldType.Keyword)
     private String hmCntryCd;
 
-    @Field(name = "hm_phone_nbr", type = FieldType.Text)
+    @Field(name = HM_PHONE_NBR, type = FieldType.Text)
     private String hmPhoneNbr;
 
-    @Field(name = "hm_phone_cntry_cd", type = FieldType.Keyword)
+    @Field(name = HM_PHONE_CNTRY_CD, type = FieldType.Keyword)
     private String hmPhoneCntryCd;
 
-    @Field(name = "hm_email_addr", type = FieldType.Keyword)
+    @Field(name = HM_EMAIL_ADDR, type = FieldType.Keyword)
     private String hmEmailAddr;
 
-    @Field(name = "cell_phone_nbr", type = FieldType.Keyword)
+    @Field(name = CELL_PHONE_NBR, type = FieldType.Keyword)
     private String cellPhoneNbr;
 
-    @Field(name = "wk_street_addr1", type = FieldType.Text)
+    @Field(name = WK_STREET_ADDR1, type = FieldType.Text)
     private String wkStreetAddr1;
 
-    @Field(name = "wk_street_addr2", type = FieldType.Text)
+    @Field(name = WK_STREET_ADDR2, type = FieldType.Text)
     private String wkStreetAddr2;
 
-    @Field(name = "wk_city_cd", type = FieldType.Keyword)
+    @Field(name = WK_CITY_CD, type = FieldType.Keyword)
     private String wkCityCd;
 
-    @Field(name = "wk_city_desc_txt", type = FieldType.Text)
+    @Field(name = WK_CITY_DESC_TXT, type = FieldType.Text)
     private String wkCityDescTxt;
 
-    @Field(name = "wk_state_cd", type = FieldType.Keyword)
+    @Field(name = WK_STATE_CD, type = FieldType.Keyword)
     private String wkStateCd;
 
-    @Field(name = "wk_zip_cd", type = FieldType.Keyword)
+    @Field(name = WK_ZIP_CD, type = FieldType.Keyword)
     private String wkZipCd;
 
-    @Field(name = "wk_cnty_cd", type = FieldType.Keyword)
+    @Field(name = WK_CNTY_CD, type = FieldType.Keyword)
     private String wkCntyCd;
 
-    @Field(name = "wk_cntry_cd", type = FieldType.Keyword)
+    @Field(name = WK_CNTRY_CD, type = FieldType.Keyword)
     private String wkCntryCd;
 
-    @Field(name = "wk_phone_nbr", type = FieldType.Keyword)
+    @Field(name = WK_PHONE_NBR, type = FieldType.Keyword)
     private String wkPhoneNbr;
 
-    @Field(name = "wk_phone_cntry_cd", type = FieldType.Keyword)
+    @Field(name = WK_PHONE_CNTRY_CD, type = FieldType.Keyword)
     private String wkPhoneCntryCd;
 
-    @Field(name = "wk_email_addr", type = FieldType.Keyword)
+    @Field(name = WK_EMAIL_ADDR, type = FieldType.Keyword)
     private String wkEmailAddr;
 
-    @Field(name = "SSN", type = FieldType.Keyword)
+    @Field(name = SSN, type = FieldType.Keyword)
     private String ssn;
 
-    @Field(name = "medicaid_num", type = FieldType.Keyword)
+    @Field(name = MEDICAID_NUM, type = FieldType.Keyword)
     private String medicaidNum;
 
-    @Field(name = "dl_num", type = FieldType.Keyword)
+    @Field(name = DL_NUM, type = FieldType.Keyword)
     private String dlNum;
 
-    @Field(name = "dl_state_cd", type = FieldType.Keyword)
+    @Field(name = DL_STATE_CD, type = FieldType.Keyword)
     private String dlStateCd;
 
-    @Field(name = "race_cd", type = FieldType.Keyword)
+    @Field(name = RACE_CD, type = FieldType.Keyword)
     private String raceCd;
 
-    @Field(name = "race_seq_nbr", type = FieldType.Short)
+    @Field(name = RACE_SEQ_NBR, type = FieldType.Short)
     private Short raceSeqNbr;
 
-    @Field(name = "race_category_cd", type = FieldType.Keyword)
+    @Field(name = RACE_CATEGORY_CD, type = FieldType.Keyword)
     private String raceCategoryCd;
 
-    @Field(name = "ethnicity_group_cd", type = FieldType.Keyword)
+    @Field(name = ETHNICITY_GROUP_CD, type = FieldType.Keyword)
     private String ethnicityGroupCd;
 
-    @Field(name = "ethnic_group_seq_nbr", type = FieldType.Short)
+    @Field(name = ETHNIC_GROUP_SEQ_NBR, type = FieldType.Short)
     private Short ethnicGroupSeqNbr;
 
-    @Field(name = "adults_in_house_nbr", type = FieldType.Short)
+    @Field(name = ADULTS_IN_HOUSE_NBR, type = FieldType.Short)
     private Short adultsInHouseNbr;
 
-    @Field(name = "children_in_house_nbr", type = FieldType.Short)
+    @Field(name = CHILDREN_IN_HOUSE_NBR, type = FieldType.Short)
     private Short childrenInHouseNbr;
 
-    @Field(name = "birth_city_cd", type = FieldType.Keyword)
+    @Field(name = BIRTH_CITY_CD, type = FieldType.Keyword)
     private String birthCityCd;
 
-    @Field(name = "birth_city_desc_txt", type = FieldType.Text)
+    @Field(name = BIRTH_CITY_DESC_TXT, type = FieldType.Text)
     private String birthCityDescTxt;
 
-    @Field(name = "birth_cntry_cd", type = FieldType.Keyword)
+    @Field(name = BIRTH_CNTRY_CD, type = FieldType.Keyword)
     private String birthCntryCd;
 
-    @Field(name = "birth_state_cd", type = FieldType.Keyword)
+    @Field(name = BIRTH_STATE_CD, type = FieldType.Keyword)
     private String birthStateCd;
 
-    @Field(name = "race_desc_txt", type = FieldType.Text)
+    @Field(name = RACE_DESC_TXT, type = FieldType.Text)
     private String raceDescTxt;
 
-    @Field(name = "ethnic_group_desc_txt", type = FieldType.Text)
+    @Field(name = ETHNIC_GROUP_DESC_TXT, type = FieldType.Text)
     private String ethnicGroupDescTxt;
 
-    @Field(name = "version_ctrl_nbr", type = FieldType.Short)
+    @Field(name = VERSION_CTRL_NBR, type = FieldType.Short)
     private Short versionCtrlNbr;
 
-    @Field(name = "as_of_date_admin", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AS_OF_DATE_ADMIN, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant asOfDateAdmin;
 
-    @Field(name = "as_of_date_ethnicity", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AS_OF_DATE_ETHNICITY, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant asOfDateEthnicity;
 
-    @Field(name = "as_of_date_general", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AS_OF_DATE_GENERAL, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant asOfDateGeneral;
 
-    @Field(name = "as_of_date_morbidity", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AS_OF_DATE_MORBIDITY, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant asOfDateMorbidity;
 
-    @Field(name = "as_of_date_sex", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = AS_OF_DATE_SEX, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant asOfDateSex;
 
-    @Field(name = "electronic_ind", type = FieldType.Keyword)
+    @Field(name = ELECTRONIC_IND, type = FieldType.Keyword)
     private Character electronicInd;
 
-    @Field(name = "dedup_match_ind", type = FieldType.Keyword)
+    @Field(name = DEDUP_MATCH_IND, type = FieldType.Keyword)
     private Character dedupMatchInd;
 
-    @Field(name = "group_nbr")
+    @Field(name = GROUP_NBR)
     private Integer groupNbr;
 
-    @Field(name = "group_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = GROUP_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(InstantConverter.class)
     private Instant groupTime;
 
-    @Field(name = "edx_ind", type = FieldType.Keyword)
+    @Field(name = EDX_IND, type = FieldType.Keyword)
     private String edxInd;
 
-    @Field(name = "speaks_english_cd", type = FieldType.Keyword)
+    @Field(name = SPEAKS_ENGLISH_CD, type = FieldType.Keyword)
     private String speaksEnglishCd;
 
-    @Field(name = "additional_gender_cd", type = FieldType.Keyword)
+    @Field(name = ADDITIONAL_GENDER_CD, type = FieldType.Keyword)
     private Gender additionalGenderCd;
 
-    @Field(name = "ehars_id", type = FieldType.Keyword)
+    @Field(name = EHARS_ID, type = FieldType.Keyword)
     private String eharsId;
 
-    @Field(name = "ethnic_unk_reason_cd", type = FieldType.Keyword)
+    @Field(name = ETHNIC_UNK_REASON_CD, type = FieldType.Keyword)
     private String ethnicUnkReasonCd;
 
-    @Field(name = "sex_unk_reason_cd", type = FieldType.Keyword)
+    @Field(name = SEX_UNK_REASON_CD, type = FieldType.Keyword)
     private String sexUnkReasonCd;
 
-    @Field( type = FieldType.Nested)
+    @Field(name = NAME, type = FieldType.Nested)
     private List<NestedName> name;
 
-    @Field( type = FieldType.Nested)
+    @Field(name = ADDRESS, type = FieldType.Nested)
     private List<NestedAddress> address;
 
-    @Field( type = FieldType.Nested)
+    @Field(name = PHONE, type = FieldType.Nested)
     private List<NestedPhone> phone;
 
-    @Field( type = FieldType.Nested)
+    @Field(name = EMAIL, type = FieldType.Nested)
     private List<NestedEmail> email;
 
-    @Field( type = FieldType.Nested)
+    @Field(name = RACE, type = FieldType.Nested)
     private List<NestedRace> race;
 }

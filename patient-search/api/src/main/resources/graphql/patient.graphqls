@@ -167,7 +167,7 @@ input PostalAddress {
 }
 
 input PhoneNumber {
-    phoneNumber: String!
+    number: String!
     extension: String
     phoneType: PhoneType!
 }
