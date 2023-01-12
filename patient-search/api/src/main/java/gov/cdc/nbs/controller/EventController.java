@@ -19,26 +19,28 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class EventController {
-    private final String FIND_PATIENT = "hasAuthority('" + Operations.FIND + "-" + BusinessObjects.PATIENT + "')";
-    private final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-" + BusinessObjects.INVESTIGATION
+    private static final String hasAuthority = "hasAuthority('";
+    private static final String and = " and ";
+    private static final String findPatient = hasAuthority + Operations.FIND + "-" + BusinessObjects.PATIENT + "')";
+    private static final String viewInvestigation = hasAuthority + Operations.VIEW + "-" + BusinessObjects.INVESTIGATION
             + "')";
-    private final String FIND_PATIENT_AND_VIEW_INVESTIGATION = FIND_PATIENT + " and " + VIEW_INVESTIGATION;
-    private final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+    private static final String findPatientAndViewInvestigation = findPatient + and + viewInvestigation;
+    private static final String viewLabReport = hasAuthority + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
-    private final String FIND_PATIENT_AND_VIEW_LAB_REPORT = FIND_PATIENT + " and " + VIEW_LAB_REPORT;
+    private static final String findPatientAndViewLabReport = findPatient + and + viewLabReport;
 
     private final EventService eventService;
 
     @QueryMapping
-    @PreAuthorize(FIND_PATIENT_AND_VIEW_INVESTIGATION)
+    @PreAuthorize(findPatientAndViewInvestigation)
     public Page<Investigation> findInvestigationsByFilter(@Argument InvestigationFilter filter,
             @Argument GraphQLPage page) {
         return eventService.findInvestigationsByFilter(filter, page);
     }
 
     @QueryMapping
-    @PreAuthorize(FIND_PATIENT_AND_VIEW_LAB_REPORT)
+    @PreAuthorize(findPatientAndViewLabReport)
     public Page<LabReport> findLabReportsByFilter(@Argument LabReportFilter filter,
             @Argument GraphQLPage page) {
         return eventService.findLabReportsByFilter(filter, page);
