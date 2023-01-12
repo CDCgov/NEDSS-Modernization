@@ -190,7 +190,7 @@ export const PatientResults = ({
                                             <p
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{ wordBreak: 'break-word' }}>
-                                                {item.firstNm}, {item.lastNm}
+                                                {item.lastNm}, {item.firstNm}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
