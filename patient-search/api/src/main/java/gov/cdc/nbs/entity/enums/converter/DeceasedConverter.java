@@ -25,8 +25,7 @@ public class DeceasedConverter implements PropertyValueConverter {
                     return Deceased.N;
                 case "UNK":
                     return Deceased.UNK;
-                case "FALSE":
-                case "false":
+                case "FALSE", "false":
                     return Deceased.FALSE;
                 default:
                     throw new IllegalArgumentException("Invalid Deceased string value: " + s);
