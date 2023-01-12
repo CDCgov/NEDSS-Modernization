@@ -31,12 +31,12 @@ public class NbsUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return isEnabled;
+        return isAccountNonExpired();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isEnabled;
+        return isAccountNonExpired();
     }
 
 }
