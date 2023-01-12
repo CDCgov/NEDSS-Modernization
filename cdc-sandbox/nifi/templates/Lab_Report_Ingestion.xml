@@ -1511,8 +1511,7 @@ WHERE
     FROM 
       act_relationship
   ) 
-  AND o.record_status_cd &lt;&gt; 'LOG_DEL' 
-  AND last_change_time &gt; '${es_last_change}' 
+  last_change_time &gt; '${es_last_change}' 
 ORDER BY 
   last_change_time ASC;
 </value>
@@ -2745,5 +2744,5 @@ ORDER BY
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/12/2023 20:05:22 UTC</timestamp>
+    <timestamp>01/12/2023 20:28:20 UTC</timestamp>
 </template>
