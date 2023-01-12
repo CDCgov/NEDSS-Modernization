@@ -13,9 +13,9 @@ import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.service.PatientService;
 import lombok.AllArgsConstructor;
 

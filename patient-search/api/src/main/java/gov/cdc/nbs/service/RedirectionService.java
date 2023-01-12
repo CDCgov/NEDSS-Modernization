@@ -21,7 +21,7 @@ import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.entity.odse.SecurityLog;
 import gov.cdc.nbs.exception.RedirectionException;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import lombok.AllArgsConstructor;

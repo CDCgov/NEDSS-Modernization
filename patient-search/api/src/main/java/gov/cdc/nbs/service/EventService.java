@@ -39,11 +39,11 @@ import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
-import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
-import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.ProcessingStatus;
-import gov.cdc.nbs.graphql.searchFilter.LabReportFilter.UserType;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter;
+import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
 import lombok.RequiredArgsConstructor;
 
 @Service

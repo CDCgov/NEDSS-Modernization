@@ -274,7 +274,7 @@ public class ExportService {
     }
 
     private String getDescriptionString(LabReport labReport) {
-        return labReport.getObservationsField()
+        return labReport.getObservations()
                 .stream()
                 .filter(o -> o.getDomainCd() != null && o.getDomainCd().equals("Result"))
                 .findFirst()

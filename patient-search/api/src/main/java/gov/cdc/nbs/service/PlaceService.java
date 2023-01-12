@@ -17,7 +17,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.odse.Place;
 import gov.cdc.nbs.entity.odse.QPlace;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.PlaceFilter;
+import gov.cdc.nbs.graphql.filter.PlaceFilter;
 import gov.cdc.nbs.repository.PlaceRepository;
 import lombok.AllArgsConstructor;
 

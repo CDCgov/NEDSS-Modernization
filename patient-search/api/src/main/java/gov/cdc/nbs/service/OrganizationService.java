@@ -18,7 +18,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.entity.odse.Organization;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 

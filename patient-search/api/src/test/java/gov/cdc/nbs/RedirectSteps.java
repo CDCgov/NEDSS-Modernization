@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.SecurityLog;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import gov.cdc.nbs.service.EncryptionService;
