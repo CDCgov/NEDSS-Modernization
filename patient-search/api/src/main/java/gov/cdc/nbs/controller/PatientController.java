@@ -22,10 +22,13 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class PatientController {
+    private static final String HAS_AUTHORITY = "hasAuthority('";
+    private static final String FIND_PATIENT = HAS_AUTHORITY + Operations.FIND + "-" + BusinessObjects.PATIENT
+            + "')";
+    private static final String ADD_PATIENT = HAS_AUTHORITY + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
+    private static final String ADD_AND_FIND_PATIENT = ADD_PATIENT + " and " + FIND_PATIENT;
+
     private final PatientService patientService;
-    private final String FIND_PATIENT = "hasAuthority('" + Operations.FIND + "-" + BusinessObjects.PATIENT + "')";
-    private final String ADD_PATIENT = "hasAuthority('" + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
-    private final String ADD_AND_FIND_PATIENT = ADD_PATIENT + " and " + FIND_PATIENT;
 
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT)
