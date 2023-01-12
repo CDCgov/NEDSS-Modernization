@@ -1,5 +1,6 @@
 package gov.cdc.nbs;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -70,7 +71,7 @@ public class CodedResultsSearchSteps {
                 assertTrue(localResponse.getTotalElements() > 0);
                 break;
             case "nout found":
-                assertTrue(localResponse.getTotalElements() == 0);
+                assertEquals(0, localResponse.getTotalElements());
                 break;
         }
     }
@@ -87,7 +88,7 @@ public class CodedResultsSearchSteps {
                 assertTrue(snomedResponse.getTotalElements() > 0);
                 break;
             case "nout found":
-                assertTrue(snomedResponse.getTotalElements() == 0);
+                assertEquals(0, snomedResponse.getTotalElements());
                 break;
         }
     }
