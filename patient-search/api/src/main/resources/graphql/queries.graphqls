@@ -58,7 +58,7 @@ type OutbreakResults {
 }
 
 type PersonResults {
-    content: [Person]!
+    content: [Person!]!
     total: Int!
 }
 

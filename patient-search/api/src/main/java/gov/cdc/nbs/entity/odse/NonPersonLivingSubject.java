@@ -23,7 +23,7 @@ public class NonPersonLivingSubject {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "non_person_uid", nullable = false)
-    private NBSEntity NBSEntity;
+    private NBSEntity NbsEntity;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;

@@ -22,11 +22,9 @@ public class Participation {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("cd")
-    @JoinColumns({
-            @JoinColumn(name = "subject_entity_uid", nullable = false),
-            @JoinColumn(name = "role_seq"),
-            @JoinColumn(name = "cd")
-    })
+    @JoinColumn(name = "subject_entity_uid", nullable = false)
+    @JoinColumn(name = "role_seq")
+    @JoinColumn(name = "cd")
     private Role role;
 
     @MapsId("actUid")

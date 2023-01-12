@@ -307,7 +307,7 @@ public class PatientService {
         var person = new Person();
         // generated / required values
         person.setId(id);
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
+        person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         person.setAddTime(Instant.now());
         person.setRecordStatusCd(RecordStatus.ACTIVE);
@@ -414,7 +414,7 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), plId));
-                elp.setNbsEntity(person.getNBSEntity());
+                elp.setNbsEntity(person.getNbsEntity());
                 elp.setCd("H");
                 elp.setClassCd("PST");
                 elp.setLastChgTime(now);
@@ -445,10 +445,10 @@ public class PatientService {
                 elpList.add(elp);
             }
             // Add generated ELPs to Person.NBSEntity
-            if (person.getNBSEntity().getEntityLocatorParticipations() == null) {
-                person.getNBSEntity().setEntityLocatorParticipations(elpList);
+            if (person.getNbsEntity().getEntityLocatorParticipations() == null) {
+                person.getNbsEntity().setEntityLocatorParticipations(elpList);
             } else {
-                person.getNBSEntity().getEntityLocatorParticipations().addAll(elpList);
+                person.getNbsEntity().getEntityLocatorParticipations().addAll(elpList);
             }
         }
         return postalLocators;
@@ -474,7 +474,7 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setNbsEntity(person.getNBSEntity());
+                elp.setNbsEntity(person.getNbsEntity());
                 elp.setClassCd("TELE");
                 setElpTypeFields(elp, pn.getPhoneType());
                 elp.setLastChgTime(now);
@@ -502,7 +502,7 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setNbsEntity(person.getNBSEntity());
+                elp.setNbsEntity(person.getNbsEntity());
                 elp.setClassCd("TELE");
                 elp.setCd("NET");
                 elp.setUseCd("H");
@@ -525,11 +525,11 @@ public class PatientService {
             }
 
             // Add generated ELPs to Person.NBSEntity
-            var existingElp = person.getNBSEntity().getEntityLocatorParticipations();
+            var existingElp = person.getNbsEntity().getEntityLocatorParticipations();
             if (existingElp != null && existingElp.size() > 0) {
                 elpList.addAll(existingElp);
             }
-            person.getNBSEntity().setEntityLocatorParticipations(elpList);
+            person.getNbsEntity().setEntityLocatorParticipations(elpList);
         }
         return locatorList;
     }

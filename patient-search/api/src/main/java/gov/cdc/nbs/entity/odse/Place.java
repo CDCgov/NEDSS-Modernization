@@ -22,7 +22,7 @@ public class Place {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "place_uid", nullable = false)
-    private NBSEntity NBSEntity;
+    private NBSEntity NbsEntity;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;

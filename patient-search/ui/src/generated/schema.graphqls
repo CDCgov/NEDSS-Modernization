@@ -432,7 +432,7 @@ input PersonFilter {
 
 type Person {
     id: ID
-    NBSEntity: NBSEntity!
+    NbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
@@ -828,7 +828,7 @@ type OutbreakResults {
 }
 
 type PersonResults {
-    content: [Person]!
+    content: [Person!]!
     total: Int!
 }
 

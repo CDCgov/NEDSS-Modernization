@@ -1,7 +1,7 @@
 mutation createPatient($patient: PersonInput!) {
     createPatient(patient: $patient){
         id
-        NBSEntity{
+        NbsEntity{
             entityLocatorParticipations{
                 classCd
                 locator{
