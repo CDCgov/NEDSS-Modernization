@@ -38,7 +38,7 @@ public class KafkaConfig {
     private String patientSearchTopic;
 
     @Value("${kafka.enabled:true}")
-    private Boolean kafkaEnabled;
+    private boolean kafkaEnabled;
 
     @Bean
     public NewTopic createPatientSearchTopic() {
@@ -55,8 +55,8 @@ public class KafkaConfig {
     @Bean
     public ProducerFactory<String, EnvelopeRequest> producerFactoryPatientSearch() {
         if (!kafkaEnabled) {
-            return new DefaultKafkaProducerFactory<String, EnvelopeRequest>(new HashMap<>(), new StringSerializer(),
-                    new JsonSerializer<EnvelopeRequest>());
+            return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(),
+                    new JsonSerializer<>());
         } else {
             Map<String, Object> config = new HashMap<>();
             config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -64,8 +64,8 @@ public class KafkaConfig {
             config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
             config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-            return new DefaultKafkaProducerFactory<String, EnvelopeRequest>(config, new StringSerializer(),
-                    new JsonSerializer<EnvelopeRequest>());
+            return new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
+                    new JsonSerializer<>());
         }
     }
 
