@@ -27,10 +27,10 @@ import lombok.RequiredArgsConstructor;
 public class JWTFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
+    private static final String TOKEN_COOKIE_NAME = "nbs_token";
     private final UserService userService;
     private final JWTVerifier verifier;
     private final SecurityProperties securityProperties;
-    private final String TOKEN_COOKIE_NAME = "nbs_token";
 
     /**
      * On every request, validate the JWT, and load user details from the
@@ -45,9 +45,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     response.addCookie(createJWTCookie(userDetails));
                     return buildPreAuthenticatedToken(userDetails, request);
                 })
-                .ifPresent(preAuthToken -> {
-                    SecurityContextHolder.getContext().setAuthentication(preAuthToken);
-                });
+                .ifPresent(preAuthToken -> SecurityContextHolder.getContext().setAuthentication(preAuthToken));
         filterChain.doFilter(request, response);
     }
 
@@ -66,7 +64,7 @@ public class JWTFilter extends OncePerRequestFilter {
         try {
             return Optional.ofNullable(request.getHeader(AUTHORIZATION))
                     .map(s -> !s.isBlank() ? s.substring(BEARER.length()) : s)
-                    .map(s -> verifier.verify(s));
+                    .map(verifier::verify);
         } catch (JWTVerificationException | StringIndexOutOfBoundsException ex) {
             return Optional.empty();
         }
