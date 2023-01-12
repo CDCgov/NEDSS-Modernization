@@ -317,9 +317,10 @@ public class EventService {
         // resulted test
         if (filter.getResultedTest() != null) {
             var resultedTestQuery = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.matchQuery(LabReport.OBSERVATIONS + "." + ElasticsearchObservation.CD_DESC_TXT,
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.OBSERVATIONS_FIELD + "." + ElasticsearchObservation.CD_DESC_TXT,
                             filter.getResultedTest()));
-            var nestedResultedTestQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS, resultedTestQuery,
+            var nestedResultedTestQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS_FIELD, resultedTestQuery,
                     ScoreMode.None);
             builder.must(nestedResultedTestQuery);
         }
@@ -327,9 +328,10 @@ public class EventService {
         // coded result
         if (filter.getCodedResult() != null) {
             var codedResultQuery = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.matchQuery(LabReport.OBSERVATIONS + "." + ElasticsearchObservation.DISPLAY_NAME,
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.OBSERVATIONS_FIELD + "." + ElasticsearchObservation.DISPLAY_NAME,
                             filter.getCodedResult()));
-            var nestedCodedResultQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS, codedResultQuery,
+            var nestedCodedResultQuery = QueryBuilders.nestedQuery(LabReport.OBSERVATIONS_FIELD, codedResultQuery,
                     ScoreMode.None);
             builder.must(nestedCodedResultQuery);
         }

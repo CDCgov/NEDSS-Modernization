@@ -49,7 +49,7 @@ public class LabReport {
     public static final String PERSON_PARTICIPATIONS = "person_participations";
     public static final String ORGANIZATION_PARTICIPATIONS = "organization_participations";
     public static final String MATERIAL_PARTICIPATIONS = "material_participations";
-    public static final String OBSERVATIONS = "observations";
+    public static final String OBSERVATIONS_FIELD = "observations";
     public static final String ACT_IDS = "act_ids";
     public static final String ASSOCIATED_INVESTIGATIONS = "associated_investigations";
 
@@ -139,7 +139,7 @@ public class LabReport {
     @Field(name = MATERIAL_PARTICIPATIONS, type = FieldType.Nested)
     private List<ElasticsearchMaterialParticipation> materialParticipations;
 
-    @Field(name = OBSERVATIONS, type = FieldType.Nested)
+    @Field(name = OBSERVATIONS_FIELD, type = FieldType.Nested)
     private List<ElasticsearchObservation> observations;
 
     @Field(name = ACT_IDS, type = FieldType.Nested)
