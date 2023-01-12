@@ -886,12 +886,12 @@ def add_email(uid, person)
 end
 
 def add_race(uid, person)
-    race_cd = person['race_cd']
-    race_desc_txt = person['race_desc_txt']
-    race_cd = nil if race_cd == ''
-    race_desc_txt = nil if race_desc_txt == ''
-    return if race_cd.nil? &amp;&amp; race_desc_txt.nil?
-    race = {"race_cd": race_cd, "race_desc_txt": race_desc_txt}
+    raceCd = person['raceCd']
+    raceDescTxt = person['raceDescTxt']
+    raceCd = nil if raceCd == ''
+    raceDescTxt = nil if raceDescTxt == ''
+    return if raceCd.nil? &amp;&amp; raceDescTxt.nil?
+    race = {"raceCd": raceCd, "raceDescTxt": raceDescTxt}
     races_by_uid = $races_by_uid[uid]
     if races_by_uid
         $races_by_uid[uid].append(race) unless races_by_uid.include?(race)
@@ -941,20 +941,20 @@ def add_address(uid, person)
 end
 
 def add_name(uid, person)
-    last_nm = person['last_nm']
-    middle_nm = person['middle_nm']
-    first_nm = person['first_nm']
+    lastNm = person['lastNm']
+    middleNm = person['middleNm']
+    firstNm = person['firstNm']
     nm_use_cd = person['nm_use_cd']
-    nm_suffix = person['nm_suffix']
-    nm_degree = person['nm_degree']
-    last_nm = nil if last_nm == ''
-    middle_nm = nil if middle_nm == ''
-    first_nm = nil if first_nm == ''
+    nmSuffix = person['nmSuffix']
+    nmDegree = person['nmDegree']
+    lastNm = nil if lastNm == ''
+    middleNm = nil if middleNm == ''
+    firstNm = nil if firstNm == ''
     nm_use_cd = nil if nm_use_cd == ''
-    nm_suffix = nil if nm_suffix == ''
-    nm_degree = nil if nm_degree == ''
-    return if last_nm.nil? &amp;&amp; middle_nm.nil? &amp;&amp; first_nm.nil? &amp;&amp; nm_suffix.nil? &amp;&amp; nm_degree.nil?
-    name = {"last_nm": last_nm, "middle_nm": middle_nm, "first_nm": first_nm, "nm_use_cd": nm_use_cd, "nm_suffix": nm_suffix, "nm_degree": nm_degree}
+    nmSuffix = nil if nmSuffix == ''
+    nmDegree = nil if nmDegree == ''
+    return if lastNm.nil? &amp;&amp; middleNm.nil? &amp;&amp; firstNm.nil? &amp;&amp; nmSuffix.nil? &amp;&amp; nmDegree.nil?
+    name = {"lastNm": lastNm, "middleNm": middleNm, "firstNm": firstNm, "nm_use_cd": nm_use_cd, "nmSuffix": nmSuffix, "nmDegree": nmDegree}
     names_by_uid = $names_by_uid[uid]
     if names_by_uid
         $names_by_uid[uid].append(name) unless names_by_uid.include?(name)
@@ -988,17 +988,17 @@ def delete_nested_keys_from_person_at_to_level(person)
     person.delete('telephoneNbr')
     person.delete('extensionTxt')
 
-    person.delete('race_cd')
-    person.delete('race_desc_txt')
+    person.delete('raceCd')
+    person.delete('raceDescTxt')
 
     person.delete('emailAddress')
 
-    person.delete('last_nm')
-    person.delete('middle_nm')
-    person.delete('first_nm')
+    person.delete('lastNm')
+    person.delete('middleNm')
+    person.delete('firstNm')
     person.delete('nm_use_cd')
-    person.delete('nm_suffix')
-    person.delete('nm_degree')
+    person.delete('nmSuffix')
+    person.delete('nmDegree')
 end
 
 def convert_person_data_into_person_list_with_nested_fields
@@ -1772,14 +1772,19 @@ end
   p.additional_gender_cd,
   p.ehars_id,
   p.dedup_match_ind,
-  pn.last_nm,
-  pn.middle_nm,
-  pn.first_nm,
+  p.first_nm,
+  p.middle_nm,
+  p.last_nm,
+  p.nm_suffix,
+  pn.last_nm lastNm,
+  pn.middle_nm middleNm,
+  pn.first_nm firstNm,
   pn.nm_use_cd,
-  pn.nm_suffix,
+  pn.nm_suffix nmSuffix,
+  pn.nm_prefix nmPrefix,
   pn.nm_degree,
-  pr.race_cd,
-  pr.race_desc_txt,
+  pr.race_cd raceCd,
+  pr.race_desc_txt raceDescTxt,
   plx.streetAddr1,
   plx.streetAddr2,
   plx.city,
@@ -1868,7 +1873,7 @@ WHERE
                 </properties>
                 <retryCount>10</retryCount>
                 <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>1 sec</schedulingPeriod>
+                <schedulingPeriod>1 min</schedulingPeriod>
                 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                 <yieldDuration>1 min</yieldDuration>
             </config>
@@ -1889,5 +1894,5 @@ WHERE
             <type>org.apache.nifi.processors.standard.ExecuteSQL</type>
         </processors>
     </snippet>
-    <timestamp>01/11/2023 07:49:59 UTC</timestamp>
+    <timestamp>01/12/2023 07:54:47 UTC</timestamp>
 </template>
