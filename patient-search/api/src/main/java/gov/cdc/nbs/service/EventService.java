@@ -631,6 +631,7 @@ public class EventService {
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "SubjOfPHC",
                             sort.getDirection()));
+                    break;
                 case "birthTime":
                     sorts.add(createNestedSortWithFilter(
                             Investigation.PERSON_PARTICIPATIONS,
@@ -638,6 +639,7 @@ public class EventService {
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "SubjOfPHC",
                             sort.getDirection()));
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
             }
@@ -659,6 +661,7 @@ public class EventService {
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "PATSBJ",
                             sort.getDirection()));
+                    break;
                 case "birthTime":
                     sorts.add(createNestedSortWithFilter(
                             LabReport.PERSON_PARTICIPATIONS,
@@ -666,6 +669,7 @@ public class EventService {
                             ElasticsearchPersonParticipation.TYPE_CD,
                             "PATSBJ",
                             sort.getDirection()));
+                    break;
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
             }
