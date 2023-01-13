@@ -49,12 +49,12 @@ public class ElasticsearchPerson {
     public static final String BIRTH_ORDER_NBR = "birth_order_nbr";
     public static final String BIRTH_TIME = "birth_time";
     public static final String BIRTH_TIME_CALC = "birth_time_calc";
-    public static final String CD = "cd";
+    public static final String CD_FIELD = "cd";
     public static final String CD_DESC_TXT = "cd_desc_txt";
     public static final String CURR_SEX_CD = "curr_sex_cd";
     public static final String DECEASED_IND_CD = "deceased_ind_cd";
     public static final String DECEASED_TIME = "deceased_time";
-    public static final String DESCRIPTION = "description";
+    public static final String DESCRIPTION_FIELD = "description";
     public static final String EDUCATION_LEVEL_CD = "education_level_cd";
     public static final String EDUCATION_LEVEL_DESC_TXT = "education_level_desc_txt";
     public static final String ETHNIC_GROUP_IND = "ethnic_group_ind";
@@ -106,7 +106,7 @@ public class ElasticsearchPerson {
     public static final String WK_PHONE_NBR = "wk_phone_nbr";
     public static final String WK_PHONE_CNTRY_CD = "wk_phone_cntry_cd";
     public static final String WK_EMAIL_ADDR = "wk_email_addr";
-    public static final String SSN = "SSN";
+    public static final String SSN_FIELD = "SSN";
     public static final String MEDICAID_NUM = "medicaid_num";
     public static final String DL_NUM = "dl_num";
     public static final String DL_STATE_CD = "dl_state_cd";
@@ -139,11 +139,11 @@ public class ElasticsearchPerson {
     public static final String EHARS_ID = "ehars_id";
     public static final String ETHNIC_UNK_REASON_CD = "ethnic_unk_reason_cd";
     public static final String SEX_UNK_REASON_CD = "sex_unk_reason_cd";
-    public static final String NAME = "name";
-    public static final String ADDRESS = "address";
-    public static final String PHONE = "phone";
-    public static final String EMAIL = "email";
-    public static final String RACE = "race";
+    public static final String NAME_FIELD = "name";
+    public static final String ADDRESS_FIELD = "address";
+    public static final String PHONE_FIELD = "phone";
+    public static final String EMAIL_FIELD = "email";
+    public static final String RACE_FIELD = "race";
 
     @Id
     private String id;
@@ -201,7 +201,7 @@ public class ElasticsearchPerson {
     @ValueConverter(InstantConverter.class)
     private Instant birthTimeCalc;
 
-    @Field(name = CD, type = FieldType.Keyword)
+    @Field(name = CD_FIELD, type = FieldType.Keyword)
     private String cd;
 
     @Field(name = CD_DESC_TXT, type = FieldType.Text)
@@ -218,7 +218,7 @@ public class ElasticsearchPerson {
     @ValueConverter(InstantConverter.class)
     private Instant deceasedTime;
 
-    @Field(name = DESCRIPTION, type = FieldType.Text)
+    @Field(name = DESCRIPTION_FIELD, type = FieldType.Text)
     private String description;
 
     @Field(name = EDUCATION_LEVEL_CD, type = FieldType.Keyword)
@@ -378,7 +378,7 @@ public class ElasticsearchPerson {
     @Field(name = WK_EMAIL_ADDR, type = FieldType.Keyword)
     private String wkEmailAddr;
 
-    @Field(name = SSN, type = FieldType.Keyword)
+    @Field(name = SSN_FIELD, type = FieldType.Keyword)
     private String ssn;
 
     @Field(name = MEDICAID_NUM, type = FieldType.Keyword)
@@ -483,18 +483,18 @@ public class ElasticsearchPerson {
     @Field(name = SEX_UNK_REASON_CD, type = FieldType.Keyword)
     private String sexUnkReasonCd;
 
-    @Field(name = NAME, type = FieldType.Nested)
+    @Field(name = NAME_FIELD, type = FieldType.Nested)
     private List<NestedName> name;
 
-    @Field(name = ADDRESS, type = FieldType.Nested)
+    @Field(name = ADDRESS_FIELD, type = FieldType.Nested)
     private List<NestedAddress> address;
 
-    @Field(name = PHONE, type = FieldType.Nested)
+    @Field(name = PHONE_FIELD, type = FieldType.Nested)
     private List<NestedPhone> phone;
 
-    @Field(name = EMAIL, type = FieldType.Nested)
+    @Field(name = EMAIL_FIELD, type = FieldType.Nested)
     private List<NestedEmail> email;
 
-    @Field(name = RACE, type = FieldType.Nested)
+    @Field(name = RACE_FIELD, type = FieldType.Nested)
     private List<NestedRace> race;
 }

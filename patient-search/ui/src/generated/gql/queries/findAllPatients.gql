@@ -2,7 +2,7 @@ query findAllPatients($page: SortablePage) {
     findAllPatients(page: $page){
         content{
             id
-            NbsEntity{
+            nbsEntity{
                 entityLocatorParticipations{
                     classCd
                     locator{

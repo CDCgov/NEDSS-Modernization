@@ -2,7 +2,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage) {
     findPatientsByFilter(filter: $filter, page: $page){
         content{
             id
-            NbsEntity{
+            nbsEntity{
                 entityLocatorParticipations{
                     classCd
                     locator{

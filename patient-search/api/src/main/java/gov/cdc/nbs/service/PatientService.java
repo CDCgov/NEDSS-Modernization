@@ -132,7 +132,7 @@ public class PatientService {
         List<Long> ids;
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
 
-        builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD, "PAT"));
+        builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD_FIELD, "PAT"));
 
         if (filter.getId() != null) {
             var idQuery = QueryBuilders.boolQuery();
@@ -142,28 +142,28 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
                     ScoreMode.Avg));
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
                     ScoreMode.Avg));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.SSN, filter.getSsn()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.SSN_FIELD, filter.getSsn()));
         }
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
                     QueryBuilders.matchQuery("phone.telephoneNbr", filter.getPhoneNumber()), ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS, QueryBuilders
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
                     .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
                     ScoreMode.Avg));
         }
@@ -177,24 +177,24 @@ public class PatientService {
         }
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"),
                     ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
                     QueryBuilders.matchQuery("address.zip", filter.getZip()),
                     ScoreMode.Avg));
         }
 
         if (filter.getState() != null && !filter.getState().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
                     QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
         }
 
         if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
                     QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
         }
 
@@ -204,7 +204,7 @@ public class PatientService {
         }
 
         if (filter.getRace() != null) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.RACE,
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.RACE_FIELD,
                     QueryBuilders.matchQuery("race.raceDescTxt", filter.getRace()), ScoreMode.Avg));
         }
 

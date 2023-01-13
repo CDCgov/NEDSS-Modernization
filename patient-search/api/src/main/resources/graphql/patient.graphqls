@@ -25,7 +25,7 @@ input PersonFilter {
 
 type Person {
     id: ID
-    NbsEntity: NBSEntity!
+    nbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
