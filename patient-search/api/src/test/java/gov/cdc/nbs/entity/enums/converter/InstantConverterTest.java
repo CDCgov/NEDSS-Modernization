@@ -23,7 +23,7 @@ class InstantConverterTest {
             "12/30/22,12,30,2022",
             "12/30/2022,12,30,2022"
     })
-    void simpleFormats(String dateString, int month, int day, int year) {
+    void shortFormat(String dateString, int month, int day, int year) {
         var instant = converter.read(dateString);
         assertNotNull(instant);
         var ld = LocalDate.ofInstant((Instant) instant, ZoneId.of("UTC"));
@@ -40,7 +40,7 @@ class InstantConverterTest {
             "2022-11-18T22:27:13.317",
             "2022-11-18T22:27:13"
     })
-    void otherFormats(String dateString) {
+    void longFormat(String dateString) {
         var instant = converter.read(dateString);
         assertNotNull(instant);
         var ld = LocalDateTime.ofInstant((Instant) instant, ZoneId.of("UTC"));
