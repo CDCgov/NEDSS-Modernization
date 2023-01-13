@@ -123,7 +123,7 @@ public class RedirectionService {
             return null;
         }
         for (var cookie : cookies) {
-            if (cookie.getName().equals("JSESSIONID")) {
+            if (cookie.getName().equals(JSESSION_COOKIE_NAME)) {
                 var value = cookie.getValue();
                 if (value != null && value.indexOf(".") > -1) {
                     value = value.substring(0, value.indexOf("."));

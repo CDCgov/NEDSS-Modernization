@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,7 +20,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_test")
-public class LabTest {
+public class LabTest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EmbeddedId
     private LabTestId id;

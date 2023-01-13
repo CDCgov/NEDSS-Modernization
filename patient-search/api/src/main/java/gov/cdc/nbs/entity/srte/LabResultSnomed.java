@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -14,7 +16,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Lab_result_Snomed")
-public class LabResultSnomed {
+public class LabResultSnomed implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EmbeddedId
     private LabResultSnomedId id;

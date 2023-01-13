@@ -3,7 +3,6 @@ package gov.cdc.nbs.entity.enums.converter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,42 +11,25 @@ import java.time.ZoneOffset;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class InstantConverterTest {
     private final InstantConverter converter = new InstantConverter();
 
-    @Test
-    void parseFormat0() throws ParseException {
-        String date = "1/1/2022";
-        var instant = converter.read(date);
+    @ParameterizedTest
+    @CsvSource({
+            "1/1/2022,1,1,2022",
+            "12/30/22,12,30,2022",
+            "12/30/2022,12,30,2022"
+    })
+    void simpleFormats(String dateString, int month, int day, int year) {
+        var instant = converter.read(dateString);
         assertNotNull(instant);
         var ld = LocalDate.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(1, ld.getMonthValue());
-        assertEquals(1, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
-    }
-
-    @Test
-    void parseFormat1() throws ParseException {
-        String date = "12/30/22";
-        var instant = converter.read(date);
-        assertNotNull(instant);
-        var ld = LocalDate.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(12, ld.getMonthValue());
-        assertEquals(30, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
-    }
-
-    @Test
-    void parseFormat2() throws ParseException {
-        String date = "12/30/2022";
-        var instant = converter.read(date);
-        assertNotNull(instant);
-        var ld = LocalDate.ofInstant((Instant) instant, ZoneId.of("UTC"));
-        assertEquals(12, ld.getMonthValue());
-        assertEquals(30, ld.getDayOfMonth());
-        assertEquals(2022, ld.getYear());
+        assertEquals(month, ld.getMonthValue());
+        assertEquals(day, ld.getDayOfMonth());
+        assertEquals(year, ld.getYear());
     }
 
     @ParameterizedTest
