@@ -22,7 +22,7 @@ public class Material {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "material_uid", nullable = false)
-    private NBSEntity NbsEntity;
+    private NBSEntity nbsEntity;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;

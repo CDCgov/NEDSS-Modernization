@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,7 +20,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_coding_system")
-public class LabCodingSystem {
+public class LabCodingSystem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "laboratory_id", nullable = false, length = 20)

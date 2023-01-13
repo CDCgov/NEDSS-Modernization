@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -13,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Labtest_Progarea_Mapping")
-public class LabtestProgareaMapping {
+public class LabtestProgareaMapping implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EmbeddedId
     private LabtestProgareaMappingId id;

@@ -30,7 +30,6 @@ import lombok.Setter;
 @Table(name = "Entity_locator_participation")
 public class EntityLocatorParticipation {
     public interface Locator {
-        public Long id = null;
     }
 
     @EmbeddedId
