@@ -17,12 +17,12 @@ public class OutbreakController {
     private CodeValueGeneralRepository codeValueGeneralRepository;
 
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @QueryMapping()
     public Page<CodeValueGeneral> findAllOutbreaks(@Argument GraphQLPage page) {
         return codeValueGeneralRepository.findAllByCodeSetName("OUTBREAK_NM",
-                GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+                GraphQLPage.toPageable(page, maxPageSize));
     }
 
 }

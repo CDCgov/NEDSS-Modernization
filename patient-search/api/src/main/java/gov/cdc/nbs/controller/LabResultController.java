@@ -16,7 +16,7 @@ import gov.cdc.nbs.repository.SnomedCodeRepository;
 @Controller
 public class LabResultController {
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @Autowired
     private LabResultRepository labResultRepository;
@@ -26,11 +26,11 @@ public class LabResultController {
 
     @QueryMapping
     public Page<LabResult> findLocalCodedResults(@Argument String searchText, @Argument GraphQLPage page) {
-        return labResultRepository.findLabResults(searchText, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return labResultRepository.findLabResults(searchText, GraphQLPage.toPageable(page, maxPageSize));
     }
 
     @QueryMapping
     public Page<SnomedCode> findSnomedCodedResults(@Argument String searchText, @Argument GraphQLPage page) {
-        return snomedCodeRepository.findSnomedCodes(searchText, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return snomedCodeRepository.findSnomedCodes(searchText, GraphQLPage.toPageable(page, maxPageSize));
     }
 }

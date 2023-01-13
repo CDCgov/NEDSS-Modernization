@@ -1,6 +1,5 @@
 package gov.cdc.nbs.controller;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +25,8 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 public class RedirectController {
+    private static final String ADVANCED_SEARCH = "/advanced-search";
+
     @Autowired
     private RedirectionService redirectionService;
     @Autowired
@@ -41,15 +42,13 @@ public class RedirectController {
             HttpServletRequest request,
             HttpServletResponse response,
             RedirectAttributes attributes,
-            @RequestParam Map<String, String> incomingParams) throws IOException {
-        var redirect = redirectionService.handleRedirect("/advanced-search", request, response);
+            @RequestParam Map<String, String> incomingParams) {
+        var redirect = redirectionService.handleRedirect(ADVANCED_SEARCH, request, response);
         var redirectedUrl = redirect.getUrl();
-        if (redirectedUrl != null && redirectedUrl.equals("/advanced-search")) {
-            if (incomingParams.size() > 0) {
-                var patientFilter = redirectionService.getPatientFilterFromParams(incomingParams);
-                var encryptedFilter = encryptionService.handleEncryption(patientFilter);
-                attributes.addAttribute("q", encryptedFilter);
-            }
+        if (redirectedUrl != null && redirectedUrl.equals(ADVANCED_SEARCH) && incomingParams.size() > 0) {
+            var patientFilter = redirectionService.getPatientFilterFromParams(incomingParams);
+            var encryptedFilter = encryptionService.handleEncryption(patientFilter);
+            attributes.addAttribute("q", encryptedFilter);
         }
         return redirect;
     }
@@ -58,8 +57,8 @@ public class RedirectController {
     @GetMapping("/nbs/MyTaskList1.do") // proxy verifies path contains: ?ContextAction=GlobalPatient
     public RedirectView redirectAdvancedSearch(
             HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
-        return redirectionService.handleRedirect("/advanced-search", request, response);
+            HttpServletResponse response) {
+        return redirectionService.handleRedirect(ADVANCED_SEARCH, request, response);
     }
 
     /**

@@ -21,10 +21,8 @@ public class ObsValueNumericHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "observation_uid", referencedColumnName = "observation_uid", nullable = false),
-            @JoinColumn(name = "obs_value_numeric_seq", referencedColumnName = "obs_value_numeric_seq", nullable = false)
-    })
+    @JoinColumn(name = "observation_uid", referencedColumnName = "observation_uid", nullable = false)
+    @JoinColumn(name = "obs_value_numeric_seq", referencedColumnName = "obs_value_numeric_seq", nullable = false)
     private ObsValueNumeric obsValueNumeric;
 
     @Column(name = "high_range", length = 20)

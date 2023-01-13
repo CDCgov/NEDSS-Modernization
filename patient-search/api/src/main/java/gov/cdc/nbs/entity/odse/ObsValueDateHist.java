@@ -21,10 +21,8 @@ public class ObsValueDateHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "observation_uid", referencedColumnName = "observation_uid", nullable = false),
-            @JoinColumn(name = "obs_value_date_seq", referencedColumnName = "obs_value_date_seq", nullable = false)
-    })
+    @JoinColumn(name = "observation_uid", referencedColumnName = "observation_uid", nullable = false)
+    @JoinColumn(name = "obs_value_date_seq", referencedColumnName = "obs_value_date_seq", nullable = false)
     private ObsValueDate obsValueDate;
 
     @Column(name = "duration_amt", length = 20)

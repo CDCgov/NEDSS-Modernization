@@ -82,14 +82,14 @@ public class PersonUtil {
     }
 
     public static List<TeleLocator> getTeleLocators(Person person) {
-        return person.getNBSEntity().getEntityLocatorParticipations().stream()
+        return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(elp -> elp.getClassCd().equals("TELE"))
                 .map(elp -> (TeleLocator) elp.getLocator())
                 .collect(Collectors.toList());
     }
 
     public static List<PostalLocator> getPostalLocators(Person person) {
-        return person.getNBSEntity().getEntityLocatorParticipations().stream()
+        return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(elp -> elp.getClassCd().equals("PST"))
                 .map(elp -> (PostalLocator) elp.getLocator())
                 .collect(Collectors.toList());
@@ -110,7 +110,7 @@ public class PersonUtil {
         input.setDeceased(person.getDeceasedIndCd());
         input.setEthnicity(person.getEthnicGroupInd());
 
-        var elpList = person.getNBSEntity().getEntityLocatorParticipations();
+        var elpList = person.getNbsEntity().getEntityLocatorParticipations();
         if (elpList != null && elpList.size() > 0) {
             input.setAddresses(new ArrayList<>());
             input.setPhoneNumbers(new ArrayList<>());

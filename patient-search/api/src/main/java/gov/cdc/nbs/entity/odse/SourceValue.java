@@ -24,7 +24,7 @@ public class SourceValue {
     private SourceField sourceFieldUid;
 
     @Column(name = "source_value", length = 50)
-    private String sourceValue;
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "operator_type_uid", nullable = false)

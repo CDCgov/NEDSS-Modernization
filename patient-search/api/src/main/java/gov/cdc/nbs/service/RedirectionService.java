@@ -21,7 +21,7 @@ import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.entity.odse.SecurityLog;
 import gov.cdc.nbs.exception.RedirectionException;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import lombok.AllArgsConstructor;
@@ -29,12 +29,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class RedirectionService {
-    private final InstantConverter instantConverter = new InstantConverter();
-    private final SecurityLogRepository securityLogRepository;
-    private final AuthUserRepository authUserRepository;
-    private final SecurityProperties securityProperties;
-    private final String USER_COOKIE_NAME = "nbs_user";
-    private final String JSESSION_COOKIE_NAME = "JSESSIONID";
+    private static final String USER_COOKIE_NAME = "nbs_user";
+    private static final String JSESSION_COOKIE_NAME = "JSESSIONID";
     private static final String NBS_LAST_NAME = "patientSearchVO.lastName";
     private static final String NBS_FIRST_NAME = "patientSearchVO.firstName";
     private static final String NBS_DATE_OF_BIRTH = "patientSearchVO.birthTime";
@@ -44,6 +40,11 @@ public class RedirectionService {
     private static final String NBS_EVENT_ID = "patientSearchVO.actId";
     private static final String VACCINE_TYPE = "P10006";
     private static final String TREATMENT_TYPE = "P10005";
+
+    private final InstantConverter instantConverter = new InstantConverter();
+    private final SecurityLogRepository securityLogRepository;
+    private final AuthUserRepository authUserRepository;
+    private final SecurityProperties securityProperties;
 
     /**
      * Get the user from the session, create userId and token cookies. Create
@@ -109,9 +110,7 @@ public class RedirectionService {
     private AuthUser getUserFromSecurityLogs(List<SecurityLog> logs) {
         // Are there log entries for the session? Has the session been logged out?
         if (logs.isEmpty() ||
-                logs.stream().filter(l -> l.getEventTypeCd().equals(SecurityEventType.LOGOUT))
-                        .findFirst()
-                        .isPresent()) {
+                logs.stream().anyMatch(l -> l.getEventTypeCd().equals(SecurityEventType.LOGOUT))) {
             return null;
         } else {
             var entryId = logs.get(0).getNedssEntryId();
@@ -124,7 +123,7 @@ public class RedirectionService {
             return null;
         }
         for (var cookie : cookies) {
-            if (cookie.getName().equals("JSESSIONID")) {
+            if (cookie.getName().equals(JSESSION_COOKIE_NAME)) {
                 var value = cookie.getValue();
                 if (value != null && value.indexOf(".") > -1) {
                     value = value.substring(0, value.indexOf("."));

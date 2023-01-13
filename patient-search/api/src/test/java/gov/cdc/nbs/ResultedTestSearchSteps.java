@@ -1,5 +1,6 @@
 package gov.cdc.nbs;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.runner.RunWith;
@@ -72,9 +73,11 @@ public class ResultedTestSearchSteps {
             case "found":
                 assertTrue(localTestResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
-                assertTrue(localTestResponse.getTotalElements() == 0);
+            case "not found":
+                assertEquals(0, localTestResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid expected result: " + expectedResult);
         }
     }
 
@@ -84,9 +87,11 @@ public class ResultedTestSearchSteps {
             case "found":
                 assertTrue(loincTestResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
-                assertTrue(loincTestResponse.getTotalElements() == 0);
+            case "not found":
+                assertEquals(0, loincTestResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid expected result: " + expectedResult);
         }
     }
 

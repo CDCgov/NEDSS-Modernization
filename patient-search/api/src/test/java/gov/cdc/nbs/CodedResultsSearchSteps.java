@@ -1,5 +1,6 @@
 package gov.cdc.nbs;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -69,9 +70,11 @@ public class CodedResultsSearchSteps {
             case "found":
                 assertTrue(localResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
-                assertTrue(localResponse.getTotalElements() == 0);
+            case "not found":
+                assertEquals(0, localResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);
         }
     }
 
@@ -86,9 +89,11 @@ public class CodedResultsSearchSteps {
             case "found":
                 assertTrue(snomedResponse.getTotalElements() > 0);
                 break;
-            case "nout found":
-                assertTrue(snomedResponse.getTotalElements() == 0);
+            case "not found":
+                assertEquals(0, snomedResponse.getTotalElements());
                 break;
+            default:
+                throw new IllegalArgumentException("Inavlid expected result type: " + expectedResult);
         }
     }
 

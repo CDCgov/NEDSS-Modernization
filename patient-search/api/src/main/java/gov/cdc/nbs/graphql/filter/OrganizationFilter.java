@@ -1,4 +1,4 @@
-package gov.cdc.nbs.graphql.searchFilter;
+package gov.cdc.nbs.graphql.filter;
 
 import lombok.Getter;
 import lombok.Setter;

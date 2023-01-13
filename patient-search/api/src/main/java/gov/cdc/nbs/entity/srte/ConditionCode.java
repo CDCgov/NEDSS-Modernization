@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,7 +18,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Condition_code")
-public class ConditionCode {
+public class ConditionCode implements Serializable {
     @Id
     @Column(name = "condition_cd", nullable = false, length = 20)
     private String id;

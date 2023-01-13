@@ -1,4 +1,4 @@
-package gov.cdc.nbs.graphql.searchFilter;
+package gov.cdc.nbs.graphql.filter;
 
 import java.time.Instant;
 import java.util.List;
@@ -30,21 +30,21 @@ public class InvestigationFilter {
     @Getter
     @Setter
     public static class CaseStatuses {
-        private Boolean includeUnassigned;
+        private boolean includeUnassigned;
         private List<CaseStatus> statusList;
     }
 
     @Getter
     @Setter
     public static class NotificationStatuses {
-        private Boolean includeUnassigned;
+        private boolean includeUnassigned;
         private List<NotificationStatus> statusList;
     }
 
     @Getter
     @Setter
     public static class ProcessingStatuses {
-        private Boolean includeUnassigned;
+        private boolean includeUnassigned;
         private List<ProcessingStatus> statusList;
     }
 

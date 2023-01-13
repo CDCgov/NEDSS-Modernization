@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ElasticsearchActId {
-    public static final String ID = "id";
+    public static final String ID_FIELD = "id";
     public static final String ACT_ID_SEQ = "act_id_seq";
     public static final String RECORD_STATUS = "record_status";
     public static final String ROOT_EXTENSION_TXT = "root_extension_txt";
@@ -25,7 +25,7 @@ public class ElasticsearchActId {
     public static final String TYPE_DESC_TXT = "type_desc_txt";
     public static final String LAST_CHANGE_TIME = "last_change_time";
 
-    @Field(name = ID, type = FieldType.Long)
+    @Field(name = ID_FIELD, type = FieldType.Long)
     private Long id;
 
     @Field(name = ACT_ID_SEQ, type = FieldType.Integer)

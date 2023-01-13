@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.net.HttpHeaders;
 import com.itextpdf.text.DocumentException;
 
-import gov.cdc.nbs.graphql.searchFilter.InvestigationFilter;
-import gov.cdc.nbs.graphql.searchFilter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter;
+import gov.cdc.nbs.graphql.filter.LabReportFilter;
 import gov.cdc.nbs.service.EventService;
 import gov.cdc.nbs.service.ExportService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -46,8 +46,7 @@ public class ExportController {
 
     @PostMapping("/investigation/export/csv")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public ResponseEntity<String> generateInvestigationCsv(@RequestBody InvestigationFilter filter)
-            throws DocumentException {
+    public ResponseEntity<String> generateInvestigationCsv(@RequestBody InvestigationFilter filter) {
         var investigations = eventService.findInvestigationsByFilterForExport(filter);
         var csv = exportService.generateInvestigationCsv(investigations);
 
@@ -76,8 +75,7 @@ public class ExportController {
 
     @PostMapping("/labreport/export/csv")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
-    public ResponseEntity<String> generateLabReportCsv(@RequestBody LabReportFilter filter)
-            throws DocumentException {
+    public ResponseEntity<String> generateLabReportCsv(@RequestBody LabReportFilter filter) {
         var labReports = eventService.findLabReportsByFilterForExport(filter);
         var csv = exportService.generateLabReportCsv(labReports);
 
