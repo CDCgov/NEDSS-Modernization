@@ -27,7 +27,7 @@ type Query {
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
 
-    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults
+    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
 }
 
 type Mutation {
