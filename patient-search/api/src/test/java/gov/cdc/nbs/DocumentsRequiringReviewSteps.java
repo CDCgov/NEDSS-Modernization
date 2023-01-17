@@ -50,7 +50,10 @@ public class DocumentsRequiringReviewSteps {
         var firstPerson = personPage.getContent().get(0);
         var report = EventMother.labReport_acidFastStain(firstPerson.getPersonUid());
         assertEquals("UNPROCESSED", report.getRecordStatusCd());
+        var processedReport = EventMother.labReport_acidFastStain_complete(firstPerson.getPersonUid());
+        assertEquals("PROCESSED", processedReport.getRecordStatusCd());
         labReportRepository.save(report);
+        labReportRepository.save(processedReport);
     }
 
     @Given("a patient does not have documents requiring review")
@@ -73,6 +76,7 @@ public class DocumentsRequiringReviewSteps {
     public void i_receive_a_list_of_documents_requiring_review() {
         assertNotNull(labReportResults);
         assertFalse(labReportResults.isEmpty());
+        assertEquals(1, labReportResults.getTotalElements());
     }
 
     @Then("none are returned")

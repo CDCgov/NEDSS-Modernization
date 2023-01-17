@@ -146,6 +146,69 @@ public class EventMother {
                                 .build();
         }
 
+        public static LabReport labReport_acidFastStain_complete(Long personId) {
+                var now = Instant.now();
+                var actIds = Arrays.asList(
+                                ElasticsearchActId.builder()
+                                                .actIdSeq(2)
+                                                .typeDescTxt("Filler Number")
+                                                .rootExtensionTxt("accession number")
+                                                .build());
+                var orgParticipations = Arrays.asList(
+                                ElasticsearchOrganizationParticipation.builder()
+                                                .typeCd("ORG")
+                                                .subjectClassCd("ORG")
+                                                .build(),
+                                ElasticsearchOrganizationParticipation.builder()
+                                                .typeCd("ORG")
+                                                .subjectClassCd("AUT")
+                                                .entityId(personId)
+                                                .build());
+                var personParticipations = Arrays.asList(
+                                ElasticsearchPersonParticipation.builder()
+                                                .entityId(personId)
+                                                .personCd("PAT")
+                                                .personRecordStatus("ACTIVE")
+                                                .personParentUid(personId)
+                                                .build(),
+                                ElasticsearchPersonParticipation.builder()
+                                                .typeCd("ORG")
+                                                .subjectClassCd("PSN")
+                                                .personRecordStatus("ACTIVE")
+                                                .entityId(personId)
+                                                .build());
+                var observations = Arrays.asList(
+                                ElasticsearchObservation.builder()
+                                                .cdDescTxt("Acid-Fast Stain")
+                                                .displayName("abnormal")
+                                                .build());
+                return LabReport.builder()
+                                .id("Test_acid-fast-stain-complete")
+                                .classCd("OBS")
+                                .moodCd("EVN")
+                                .programJurisdictionOid(CLAYTON_STD_OID)
+                                .programAreaCd("STD")
+                                .jurisdictionCd(CLAYTON_CODE)
+                                .pregnantIndCd("Y")
+                                .localId("OBS10003025GA01")
+                                .activityToTime(now)
+                                .effectiveFromTime(now)
+                                .rptToStateTime(now)
+                                .addTime(now)
+                                .observationLastChgTime(now)
+                                .electronicInd("E")
+                                .addUserId(CREATED_BY)
+                                .lastChange(now)
+                                .lastChgUserId(UPDATED_BY)
+                                .versionCtrlNbr(1L)
+                                .recordStatusCd("PROCESSED")
+                                .actIds(actIds)
+                                .organizationParticipations(orgParticipations)
+                                .personParticipations(personParticipations)
+                                .observations(observations)
+                                .build();
+        }
+
         public static List<JurisdictionCode> getJurisdictionCodes() {
                 // jurisdiction codes
                 var jd1 = new JurisdictionCode();
