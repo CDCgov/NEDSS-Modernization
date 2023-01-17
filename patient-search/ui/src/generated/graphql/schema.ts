@@ -902,6 +902,7 @@ export type Query = {
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllStateCodes: Array<Maybe<StateCode>>;
   findAllUsers: UserResults;
+  findDocumentsRequiringReviewForPatient?: Maybe<LabReportResults>;
   findInvestigationsByFilter: InvestigationResults;
   findLabReportsByFilter: LabReportResults;
   findLocalCodedResults: LocalCodedResults;
@@ -965,6 +966,12 @@ export type QueryFindAllStateCodesArgs = {
 
 export type QueryFindAllUsersArgs = {
   page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindDocumentsRequiringReviewForPatientArgs = {
+  page?: InputMaybe<Page>;
+  patientId: Scalars['Int'];
 };
 
 
@@ -1223,6 +1230,14 @@ export type FindAllUsersQueryVariables = Exact<{
 
 
 export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
+
+export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
+  patientId: Scalars['Int'];
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindDocumentsRequiringReviewForPatientQuery = { __typename?: 'Query', findDocumentsRequiringReviewForPatient?: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, observationUid?: number | null, lastChange?: any | null, classCd?: string | null, moodCd?: string | null, observationLastChgTime?: any | null, cdDescTxt?: string | null, recordStatusCd?: string | null, programJurisdictionOid?: number | null, programAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, activityToTime?: any | null, effectiveFromTime?: any | null, rptToStateTime?: any | null, addTime?: any | null, electronicInd?: string | null, versionCtrlNbr?: number | null, addUserId?: number | null, lastChgUserId?: number | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, materialParticipations?: Array<{ __typename?: 'MaterialParticipation', actUid?: number | null, typeCd?: string | null, entityId?: string | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, cd?: string | null, cdDescTxt?: string | null } | null> | null, observations?: Array<{ __typename?: 'Observation', cd?: string | null, cdDescTxt?: string | null, domainCd?: string | null, statusCd?: string | null, altCd?: string | null, altDescTxt?: string | null, altCdSystemCd?: string | null, displayName?: string | null, ovcCode?: string | null, ovcAltCode?: string | null, ovcAltDescTxt?: string | null, ovcAltCdSystemCd?: string | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null, associatedInvestigations?: Array<{ __typename?: 'AssociatedInvestigation', publicHealthCaseUid?: number | null, cdDescTxt?: string | null, localId?: string | null, lastChgTime?: any | null, actRelationshipLastChgTime?: any | null } | null> | null } | null> } | null };
 
 export type FindInvestigationsByFilterQueryVariables = Exact<{
   filter: InvestigationFilter;
@@ -2155,6 +2170,135 @@ export function useFindAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type FindAllUsersQueryHookResult = ReturnType<typeof useFindAllUsersQuery>;
 export type FindAllUsersLazyQueryHookResult = ReturnType<typeof useFindAllUsersLazyQuery>;
 export type FindAllUsersQueryResult = Apollo.QueryResult<FindAllUsersQuery, FindAllUsersQueryVariables>;
+export const FindDocumentsRequiringReviewForPatientDocument = gql`
+    query findDocumentsRequiringReviewForPatient($patientId: Int!, $page: Page) {
+  findDocumentsRequiringReviewForPatient(patientId: $patientId, page: $page) {
+    content {
+      id
+      observationUid
+      lastChange
+      classCd
+      moodCd
+      observationLastChgTime
+      cdDescTxt
+      recordStatusCd
+      programJurisdictionOid
+      programAreaCd
+      jurisdictionCd
+      jurisdictionCodeDescTxt
+      pregnantIndCd
+      localId
+      activityToTime
+      effectiveFromTime
+      rptToStateTime
+      addTime
+      electronicInd
+      versionCtrlNbr
+      addUserId
+      lastChgUserId
+      personParticipations {
+        actUid
+        localId
+        typeCd
+        entityId
+        subjectClassCd
+        participationRecordStatus
+        typeDescTxt
+        participationLastChangeTime
+        firstName
+        lastName
+        birthTime
+        currSexCd
+        personCd
+        personParentUid
+        personRecordStatus
+        personLastChangeTime
+      }
+      organizationParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        typeDescTxt
+        participationRecordStatus
+        participationLastChangeTime
+        name
+        organizationLastChangeTime
+      }
+      materialParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        typeDescTxt
+        participationRecordStatus
+        participationLastChangeTime
+        cd
+        cdDescTxt
+      }
+      observations {
+        cd
+        cdDescTxt
+        domainCd
+        statusCd
+        altCd
+        altDescTxt
+        altCdSystemCd
+        displayName
+        ovcCode
+        ovcAltCode
+        ovcAltDescTxt
+        ovcAltCdSystemCd
+      }
+      actIds {
+        id
+        recordStatus
+        actIdSeq
+        rootExtensionTxt
+        typeCd
+        lastChangeTime
+      }
+      associatedInvestigations {
+        publicHealthCaseUid
+        cdDescTxt
+        localId
+        lastChgTime
+        actRelationshipLastChgTime
+      }
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindDocumentsRequiringReviewForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindDocumentsRequiringReviewForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDocumentsRequiringReviewForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindDocumentsRequiringReviewForPatientQuery({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindDocumentsRequiringReviewForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
+      }
+export function useFindDocumentsRequiringReviewForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
+        }
+export type FindDocumentsRequiringReviewForPatientQueryHookResult = ReturnType<typeof useFindDocumentsRequiringReviewForPatientQuery>;
+export type FindDocumentsRequiringReviewForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsRequiringReviewForPatientLazyQuery>;
+export type FindDocumentsRequiringReviewForPatientQueryResult = Apollo.QueryResult<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>;
 export const FindInvestigationsByFilterDocument = gql`
     query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage) {
   findInvestigationsByFilter(filter: $filter, page: $page) {
