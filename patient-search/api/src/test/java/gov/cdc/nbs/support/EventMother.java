@@ -106,6 +106,7 @@ public class EventMother {
                                                 .entityId(personId)
                                                 .personCd("PAT")
                                                 .personRecordStatus("ACTIVE")
+                                                .personParentUid(personId)
                                                 .build(),
                                 ElasticsearchPersonParticipation.builder()
                                                 .typeCd("ORG")
