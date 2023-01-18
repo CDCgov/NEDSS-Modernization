@@ -565,6 +565,32 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>859b68d3-8536-33f3-0000-000000000000</id>
+                    <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>c85ca7e9-6865-3af1-0000-000000000000</groupId>
+                        <id>287c645e-7dd1-3270-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>127a909a-e938-369f-9cff-b6c81c889dc3</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>matched</selectedRelationships>
+                    <source>
+                        <groupId>c85ca7e9-6865-3af1-0000-000000000000</groupId>
+                        <id>12ae4a75-e7bd-34c4-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>93679aab-5829-335a-0000-000000000000</id>
                     <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
                     <versionedComponentId>2deae02f-28f6-3a42-9ca1-e752078741eb</versionedComponentId>
@@ -729,6 +755,32 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <connections>
+                    <id>e53b2e4c-ba92-324f-0000-000000000000</id>
+                    <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
+                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <destination>
+                        <groupId>c85ca7e9-6865-3af1-0000-000000000000</groupId>
+                        <id>f7623e20-2a33-3b95-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                        <versionedComponentId>d30b547f-f92d-3229-8cd3-892a479737d7</versionedComponentId>
+                    </destination>
+                    <flowFileExpiration>0 sec</flowFileExpiration>
+                    <labelIndex>1</labelIndex>
+                    <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                    <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                    <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                    <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                    <name></name>
+                    <selectedRelationships>unmatched</selectedRelationships>
+                    <source>
+                        <groupId>c85ca7e9-6865-3af1-0000-000000000000</groupId>
+                        <id>12ae4a75-e7bd-34c4-0000-000000000000</id>
+                        <type>PROCESSOR</type>
+                    </source>
+                    <zIndex>0</zIndex>
+                </connections>
+                <connections>
                     <id>f15d1f80-07ff-384f-0000-000000000000</id>
                     <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -762,9 +814,8 @@
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <destination>
                         <groupId>c85ca7e9-6865-3af1-0000-000000000000</groupId>
-                        <id>f7623e20-2a33-3b95-0000-000000000000</id>
+                        <id>12ae4a75-e7bd-34c4-0000-000000000000</id>
                         <type>PROCESSOR</type>
-                        <versionedComponentId>d30b547f-f92d-3229-8cd3-892a479737d7</versionedComponentId>
                     </destination>
                     <flowFileExpiration>0 sec</flowFileExpiration>
                     <labelIndex>1</labelIndex>
@@ -812,6 +863,25 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <labels>
+                    <id>b3cf35ba-f96a-350a-0000-000000000000</id>
+                    <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1408.0</x>
+                        <y>696.0</y>
+                    </position>
+                    <height>48.0</height>
+                    <label>Check if Elasticsearch returned a last_change_time
+If it did not, forward flow file directly to SQL query</label>
+                    <style>
+                        <entry>
+                            <key>font-size</key>
+                            <value>16px</value>
+                        </entry>
+                    </style>
+                    <width>376.0</width>
+                    <zIndex>0</zIndex>
+                </labels>
+                <labels>
                     <id>c4cbad74-07f0-3d2f-0000-000000000000</id>
                     <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
                     <position>
@@ -855,11 +925,11 @@ later than the latest"last_change"</label>
                     <id>f2a56411-21d9-35e2-0000-000000000000</id>
                     <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
                     <position>
-                        <x>792.0</x>
-                        <y>624.0</y>
+                        <x>600.0</x>
+                        <y>696.0</y>
                     </position>
                     <versionedComponentId>eac24c65-8e26-332a-9b42-fb6dec276a6c</versionedComponentId>
-                    <height>88.0</height>
+                    <height>40.0</height>
                     <label>Find the latest "last_change" date in ES</label>
                     <style>
                         <entry>
@@ -1150,6 +1220,73 @@ later than the latest"last_change"</label>
                     <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
+                </processors>
+                <processors>
+                    <id>12ae4a75-e7bd-34c4-0000-000000000000</id>
+                    <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
+                    <position>
+                        <x>1416.0</x>
+                        <y>768.0</y>
+                    </position>
+                    <bundle>
+                        <artifact>nifi-standard-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.19.0</version>
+                    </bundle>
+                    <config>
+                        <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                        <bulletinLevel>WARN</bulletinLevel>
+                        <comments></comments>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                        <descriptors>
+                            <entry>
+<key>Routing Strategy</key>
+<value>
+    <name>Routing Strategy</name>
+</value>
+                            </entry>
+                            <entry>
+<key>hit.count</key>
+<value>
+    <name>hit.count</name>
+</value>
+                            </entry>
+                        </descriptors>
+                        <executionNode>ALL</executionNode>
+                        <lossTolerant>false</lossTolerant>
+                        <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                        <penaltyDuration>30 sec</penaltyDuration>
+                        <properties>
+                            <entry>
+<key>Routing Strategy</key>
+<value>Route to 'match' if all match</value>
+                            </entry>
+                            <entry>
+<key>hit.count</key>
+<value>${hit.count:equals(0)}</value>
+                            </entry>
+                        </properties>
+                        <retryCount>10</retryCount>
+                        <runDurationMillis>25</runDurationMillis>
+                        <schedulingPeriod>0 sec</schedulingPeriod>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                        <yieldDuration>1 sec</yieldDuration>
+                    </config>
+                    <executionNodeRestricted>false</executionNodeRestricted>
+                    <name>RouteOnAttribute</name>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>matched</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <relationships>
+                        <autoTerminate>false</autoTerminate>
+                        <name>unmatched</name>
+                        <retry>false</retry>
+                    </relationships>
+                    <state>RUNNING</state>
+                    <style/>
+                    <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
                 <processors>
                     <id>287c645e-7dd1-3270-0000-000000000000</id>
@@ -1511,6 +1648,8 @@ WHERE
     FROM 
       act_relationship
   ) 
+AND
+o.ctrl_cd_display_form = 'LabReport' 
 AND
   last_change_time &gt; '${es_last_change}' 
 ORDER BY 
@@ -2477,7 +2616,7 @@ ORDER BY
                     <id>c4cd2521-5968-3fc9-0000-000000000000</id>
                     <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
                     <position>
-                        <x>776.0</x>
+                        <x>584.0</x>
                         <y>768.0</y>
                     </position>
                     <versionedComponentId>b106898c-00c0-3dc9-9e96-007535e7662d</versionedComponentId>
@@ -2637,8 +2776,8 @@ ORDER BY
                     <id>f7623e20-2a33-3b95-0000-000000000000</id>
                     <parentGroupId>c85ca7e9-6865-3af1-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1424.0</x>
-                        <y>768.0</y>
+                        <x>1416.0</x>
+                        <y>1032.0</y>
                     </position>
                     <versionedComponentId>d30b547f-f92d-3229-8cd3-892a479737d7</versionedComponentId>
                     <bundle>
@@ -2746,5 +2885,5 @@ ORDER BY
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/12/2023 23:51:43 UTC</timestamp>
+    <timestamp>01/18/2023 16:51:50 UTC</timestamp>
 </template>
