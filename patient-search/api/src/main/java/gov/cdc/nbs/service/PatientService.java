@@ -3,6 +3,7 @@ package gov.cdc.nbs.service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,8 +18,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -231,7 +236,11 @@ public class PatientService {
             }
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).build();
+        var query = new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(buildPatientSort(pageable))
+                .build();
+
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
                 ElasticsearchPerson.class);
 
@@ -555,5 +564,25 @@ public class PatientService {
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
         return searchString.toLowerCase() + "*";
+    }
+
+    private Collection<SortBuilder<?>> buildPatientSort(Pageable pageable) {
+        if (pageable.getSort().isEmpty()) {
+            return new ArrayList<>();
+        }
+        Collection<SortBuilder<?>> sorts = new ArrayList<>();
+        pageable.getSort().stream().forEach(sort -> {
+            switch (sort.getProperty()) {
+                case "lastNm":
+                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                    break;
+                case "birthTime":
+                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
+            }
+        });
+        return sorts;
     }
 }
