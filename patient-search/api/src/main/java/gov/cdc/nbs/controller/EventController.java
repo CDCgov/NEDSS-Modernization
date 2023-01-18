@@ -46,4 +46,11 @@ public class EventController {
             @Argument GraphQLPage page) {
         return eventService.findLabReportsByFilter(filter, page);
     }
+
+    @QueryMapping
+    @PreAuthorize(FIND_PATIENT_AND_VIEW_LAB_REPORT)
+    public Page<LabReport> findDocumentsRequiringReviewForPatient(@Argument Long patientId,
+            @Argument GraphQLPage page) {
+        return eventService.findDocumentsRequiringReviewForPatient(patientId, page);
+    }
 }

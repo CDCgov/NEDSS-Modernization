@@ -703,4 +703,42 @@ public class EventService {
                         .setFilter(
                                 QueryBuilders.termQuery(nestedField + "." + filterField, filterValue)));
     }
+
+    /**
+     * Return a list of lab reports that the user has access to, are associated
+     * with a particular patient, and have the status of "UNPROCESSED"
+     *
+     * This currently only returns lab reports as those are the only documents
+     * ingested in elasticsearch, but in the future will also include morbidity
+     * reports and case reports
+     */
+    public Page<LabReport> findDocumentsRequiringReviewForPatient(Long patientId, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
+
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        // Lab reports are secured by Program Area and Jurisdiction
+        var userDetails = SecurityUtil.getUserDetails();
+        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+        addListQuery(builder, LabReport.PROGRAM_JURISDICTION_OID, validOids);
+
+        // Patient id - must match parent uid as this is the Master Patient Record Id
+        var patientIdQuery = QueryBuilders.boolQuery();
+        patientIdQuery.must(
+                QueryBuilders.matchQuery(
+                        LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                        patientId));
+
+        builder.must(
+                QueryBuilders.nestedQuery(LabReport.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
+
+        // Status is Unprocessed
+        builder.must(QueryBuilders.matchQuery(LabReport.RECORD_STATUS_CD, "UNPROCESSED"));
+
+        var query = new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(buildInvestigationSort(pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
+        return performSearch(query, LabReport.class);
+    }
 }
