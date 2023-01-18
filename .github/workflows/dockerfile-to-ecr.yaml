@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - CNPT-727-proxy-rewrite-urls
        
 env:
   deployment_env: dev
