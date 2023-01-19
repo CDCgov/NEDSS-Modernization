@@ -12,7 +12,10 @@ import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@Slf4j
 @SuppressWarnings("deprecation")
 public class ElasticSearchConfig {
 
@@ -35,6 +38,7 @@ public class ElasticSearchConfig {
     @SuppressWarnings("squid:S2095") // Sonar cube false positive - resource should be closed
     public RestHighLevelClient client() throws MalformedURLException {
         URL url = new URL(elasticSearchUrl);
+        log.info("Connecting to Elasticsearch with url: " + url);
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(url.getHost() + ":" + url.getPort())
                 .build();
