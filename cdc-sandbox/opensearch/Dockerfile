@@ -1,4 +1,4 @@
-# Dockerfile to build elasticsearch image
+# Dockerfile to build opensearch image
 FROM opensearchproject/opensearch:2.4.1
 
 # Relaxes security and sets node to single
