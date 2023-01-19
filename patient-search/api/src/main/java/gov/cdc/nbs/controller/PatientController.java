@@ -28,6 +28,13 @@ public class PatientController {
             + "')";
     private static final String ADD_PATIENT = HAS_AUTHORITY + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
     private static final String ADD_AND_FIND_PATIENT = ADD_PATIENT + " and " + FIND_PATIENT;
+    
+    private static final String EDIT_PATIENT = HAS_AUTHORITY + Operations.EDIT + "-" + BusinessObjects.PATIENT
+            + "')"; 
+    
+    private static final String VIEW_PATIENT = HAS_AUTHORITY + Operations.VIEW + "-" + BusinessObjects.PATIENT 
+    		+ "')";
+    private static final String FIND_AND_EDIT_AND_VIEW = FIND_PATIENT + " and " + EDIT_PATIENT  + " and " + VIEW_PATIENT;  
 
     private final PatientService patientService;
 
@@ -63,7 +70,7 @@ public class PatientController {
     }
     
 	@MutationMapping()
-	@PreAuthorize(FIND_PATIENT)
+	@PreAuthorize(FIND_AND_EDIT_AND_VIEW)
 	public PatientUpdateResponse updatePatient(@Argument Long id, @Argument PatientInput patient) {
 		return patientService.sendUpdatePatientEvent(id, patient);
 	}
