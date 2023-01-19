@@ -42,7 +42,7 @@ public class RedirectController {
      * the request to the modernization search page
      */
     @ApiIgnore
-    @PostMapping("/redirect/simpleSearch")
+    @PostMapping("/nbs/redirect/simpleSearch")
     public RedirectView redirectSimpleSearch(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -64,7 +64,7 @@ public class RedirectController {
      * page
      */
     @ApiIgnore
-    @GetMapping("/redirect/advancedSearch")
+    @GetMapping("/nbs/redirect/advancedSearch")
     public RedirectView redirectAdvancedSearch(
             HttpServletRequest request,
             HttpServletResponse response) {
