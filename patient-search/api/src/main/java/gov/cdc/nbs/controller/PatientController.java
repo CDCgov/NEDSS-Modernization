@@ -17,6 +17,7 @@ import gov.cdc.nbs.graphql.input.PatientInput;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.service.PatientService;
 import lombok.AllArgsConstructor;
 
@@ -64,5 +65,11 @@ public class PatientController {
     public Person createPatient(@Argument PatientInput patient) {
         return patientService.createPatient(patient);
     }
+    
+	@MutationMapping()
+	@PreAuthorize(FIND_PATIENT)
+	public PatientUpdateResponse updatePatient(@Argument Long id, @Argument PatientInput patient) {
+		return patientService.sendUpdatePatientEvent(id, patient);
+	}
 
 }

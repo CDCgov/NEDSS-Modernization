@@ -19,6 +19,8 @@ import org.springframework.kafka.listener.LoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import gov.cdc.nbs.message.EnvelopeRequest;
+import gov.cdc.nbs.message.KafkaMessageSerializer;
+import gov.cdc.nbs.message.PatientUpdateRequest;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,11 +63,26 @@ public class KafkaConfig {
        return new DefaultKafkaProducerFactory(config, new StringSerializer(), new JsonSerializer());
    }
    
-   @Bean
-   public KafkaTemplate<String, EnvelopeRequest> kafkaTemplateDocusign() {
-       return new KafkaTemplate<>(producerFactoryPatientSearch());
-   }
+	@Bean
+	public ProducerFactory<String, PatientUpdateRequest> producerFactoryPatientUpdate() {
+		Map<String, Object> config = new HashMap<>();
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		config.put("schema.registry.url", schemaRegistryUrl);
+		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
+		return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
+	}
+
+	@Bean
+	public KafkaTemplate<String, PatientUpdateRequest> kafkaTemplatePatientUpdate() {
+		return new KafkaTemplate<>(producerFactoryPatientUpdate());
+	}
+
+	@Bean
+	public KafkaTemplate<String, EnvelopeRequest> kafkaTemplatePatientSearch() {
+		return new KafkaTemplate<>(producerFactoryPatientSearch());
+	}
    
    @Bean
    public LoggingErrorHandler errorHandler() {

@@ -60,5 +60,7 @@ kafkadef:
     topics:
       request:
         patient: request-patient-search.patientsearch
+        patientupdate: request-patient-search.patientupdate
       event:
         patient: event-patient-search.patientsearch
+        patientupdate: request-patient-search.patientupdate 

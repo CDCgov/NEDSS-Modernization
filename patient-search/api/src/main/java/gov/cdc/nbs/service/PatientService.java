@@ -1,11 +1,13 @@
 package gov.cdc.nbs.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +30,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.BeanUtils;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
@@ -43,6 +47,7 @@ import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
+import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
@@ -53,6 +58,7 @@ import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.exception.FieldUpdateException;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.input.PatientInput;
@@ -63,13 +69,19 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.graphql.searchFilter.EventFilter;
 import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
 import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.message.PatientUpdateParams;
+import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
+import gov.cdc.nbs.service.util.Constants;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PatientService {
     @Value("${nbs.max-page-size: 50}")
     private Integer MAX_PAGE_SIZE;
@@ -84,6 +96,9 @@ public class PatientService {
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
     private final EthnicityConverter ethnicityConverter = new EthnicityConverter();
+
+   @Autowired
+    private KafkaRequestProducerService producer;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -374,12 +389,75 @@ public class PatientService {
         postalLocatorRepository.saveAll(postalLocators);
         return personRepository.save(person);
     }
+    
+    
+    /**
+     * Send updated Person Event to kakfa topic to be picekd up and updated.
+     * @param id
+     * @param input
+     * @return
+     */
+	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
+		Person updatePerson = updatePatient(id, input);
+		String requestId = null;
+		if (updatePerson != null) {
+			var teleUptLocators = addTeleLocatorEntries(updatePerson, input.getPhoneNumbers(),
+					input.getEmailAddresses());
+			var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
+
+			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
+					.postalLocators(postalLocators).teleLocators(teleUptLocators).build();
+
+			requestId = getRequestID();
+			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
+			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
+		}
+
+		PatientUpdateResponse response = PatientUpdateResponse.builder().requestId(requestId)
+				.updatedPerson(updatePerson).build();
+
+		return response;
+	}
+
+	/**
+	 * Find a patient and update information / demographic information that needs to
+	 * be updated
+	 * @param id
+	 * @param input
+	 * @return
+	 */
+	public Person updatePatient(Long id, PatientInput input) {
+		// find existing patient in system
+		Person old = null;
+		try {
+
+			Optional<Person> result = findPatientById(id);
+			old = (result.isPresent()) ? result.get() : null;
+
+			if (old == null || input == null) {
+				return null;
+			}
+
+			Person updated = buildPersonFromInput(id, input);
+
+			// person_name
+			addPersonNameEntry(updated, input.getName());
+
+			// person_race
+			addPersonRaceEntry(updated, input.getRace());
+			BeanUtils.copyProperties(updated, old);
+			return old;
+		} catch (Exception e) {
+			throw new FieldUpdateException();
+		}
+
+	}
 
     /*
      * Creates a PersonRace entry and adds it to the Person object
      */
     private void addPersonRaceEntry(Person person, Race race) {
-        if (race == null) {
+        if (person == null || race == null) {
             return;
         }
         var now = Instant.now();
@@ -401,6 +479,9 @@ public class PatientService {
      * Creates a PersonName entry and adds it to the Person object
      */
     private void addPersonNameEntry(Person person, Name name) {
+    	if(person == null || name == null) {
+    	return;
+    	}
         var now = Instant.now();
         var personName = new PersonName();
         personName.setId(new PersonNameId(person.getId(), (short) 1));
@@ -433,7 +514,7 @@ public class PatientService {
      */
     private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
         var postalLocators = new ArrayList<PostalLocator>();
-        if (addresses.size() > 0) {
+        if (addresses!=null && addresses.size() > 0) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -493,7 +574,7 @@ public class PatientService {
     private List<TeleLocator> addTeleLocatorEntries(Person person, List<PhoneNumber> phoneNumbers,
             List<String> emailAddresses) {
         var locatorList = new ArrayList<TeleLocator>();
-        if (phoneNumbers.size() > 0 || emailAddresses.size() > 0) {
+        if ( (phoneNumbers!=null && phoneNumbers.size() > 0) || (emailAddresses!=null && emailAddresses.size() > 0) ) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -587,4 +668,36 @@ public class PatientService {
     private String addWildcards(String searchString) {
         return  ".*" + searchString + ".*" ;
     }
+    
+	private Person buildPersonFromInput(Long id, PatientInput input) {
+		Person person = new Person();
+
+		if (input.getName() != null) {
+			person.setFirstNm(input.getName().getFirstName());
+			person.setLastNm(input.getName().getLastName());
+			person.setMiddleNm(input.getName().getMiddleName());
+			person.setNmSuffix(input.getName().getSuffix());
+		}
+
+		person.setSsn(input.getSsn());
+		person.setBirthTime(input.getDateOfBirth());
+
+		person.setBirthGenderCd(input.getBirthGender());
+		person.setCurrSexCd(input.getCurrentGender());
+		person.setDeceasedIndCd(input.getDeceased());
+		person.setEthnicGroupInd(input.getEthnicity());
+
+		NBSEntity entity = new NBSEntity();
+		entity.setEntityLocatorParticipations(new ArrayList<EntityLocatorParticipation>());
+		entity.setParticipations(new ArrayList<Participation>());
+		person.setNBSEntity(entity);
+
+		return person;
+
+	}
+
+	private String getRequestID() {
+		return String.format(Constants.APP_ID + "_" + UUID.randomUUID());
+	}
+
 }

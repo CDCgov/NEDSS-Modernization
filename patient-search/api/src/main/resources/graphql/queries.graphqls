@@ -23,6 +23,12 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
+}
+
+type UpdateResult {
+    updatedPerson: Person
+    requestId: String
 }
 
 type PersonResults {
