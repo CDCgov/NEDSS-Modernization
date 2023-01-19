@@ -26,10 +26,10 @@ http:
   middlewares:
     simpleSearchRewritepath:
       replacePath:
-        path: /redirect/simpleSearch
+        path: /nbs/redirect/simpleSearch
     advancedSearchRewritepath:
       replacePath:
-        path: /redirect/advancedSearch
+        path: /nbs/redirect/advancedSearch
   services:
     modernization:
       loadBalancer:
