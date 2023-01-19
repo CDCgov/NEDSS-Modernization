@@ -46,7 +46,7 @@ import gov.cdc.nbs.service.PatientService;
 
 @SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
 @RunWith(SpringRunner.class)
-public class PatientUpdate {
+public class PatientUpdateTest {
 	@Mock
 	PersonRepository personRepository;
 	@Mock
@@ -63,7 +63,7 @@ public class PatientUpdate {
 	Person person;
 	Long ID;
 
-	public PatientUpdate() {
+	public PatientUpdateTest() {
 		MockitoAnnotations.openMocks(this);
 		patientService = new PatientService(null, personRepository, teleLocatorRepository, postalLocatorRepository,
 				null, null);

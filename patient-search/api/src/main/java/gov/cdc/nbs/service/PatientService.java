@@ -43,7 +43,6 @@ import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
-import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
@@ -481,7 +480,7 @@ public class PatientService {
      */
     private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
         var postalLocators = new ArrayList<PostalLocator>();
-        if (!addresses.isEmpty()& addresses.size() > 0) {
+        if (!addresses.isEmpty()) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -541,7 +540,7 @@ public class PatientService {
     private List<TeleLocator> addTeleLocatorEntries(Person person, List<PhoneNumber> phoneNumbers,
             List<String> emailAddresses) {
         var locatorList = new ArrayList<TeleLocator>();
-        if ( (!phoneNumbers.isEmpty()&&  phoneNumbers.size() > 0) || (!emailAddresses.isEmpty() && emailAddresses.size() > 0) ) {
+        if ( !phoneNumbers.isEmpty() || !emailAddresses.isEmpty()) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
