@@ -66,7 +66,7 @@ public class PatientUpdate {
 	public PatientUpdate() {
 		MockitoAnnotations.openMocks(this);
 		patientService = new PatientService(null, personRepository, teleLocatorRepository, postalLocatorRepository,
-				null, null, null);
+				null, null);
 		Long id = UUID.randomUUID().getMostSignificantBits();
 		Person old = buildPersonFromInput();
 		person = old;
@@ -107,7 +107,7 @@ public class PatientUpdate {
 		assertEquals(person.getMiddleNm(), updatedPerson.getMiddleNm());
 		assertEquals(person.getLastNm(), updatedPerson.getLastNm());
 		assertEquals(person.getNames(), updatedPerson.getNames());
-		assertEquals(person.getNBSEntity(), updatedPerson.getNBSEntity());
+		assertEquals(person.getNbsEntity() , updatedPerson.getNbsEntity());	
 		assertEquals(person.getRaces(), updatedPerson.getRaces());
 		assertEquals(person.getRaces(), updatedPerson.getRaces());
 		assertEquals(person.getDeceasedIndCd(), updatedPerson.getDeceasedIndCd());
@@ -161,7 +161,7 @@ public class PatientUpdate {
 	private PhoneNumber phoneNumber() {
 		PhoneNumber number = new PhoneNumber();
 
-		number.setPhoneNumber("555-555-5555");
+		number.setNumber("555-555-5555");
 		number.setExtension("001");
 		number.setPhoneType(PhoneType.CELL);
 
@@ -184,7 +184,7 @@ public class PatientUpdate {
 		person.setEthnicGroupInd(Ethnicity.NOT_HISPANIC_OR_LATINO);
 
 		NBSEntity nbsEntity = new NBSEntity();
-		person.setNBSEntity(nbsEntity);
+		person.setNbsEntity(nbsEntity);
 		nbsEntity.setId(UUID.randomUUID().getMostSignificantBits());
 		nbsEntity.setClassCd("classIDTest");
 		EntityLocatorParticipation entityLocPart = new EntityLocatorParticipation();
