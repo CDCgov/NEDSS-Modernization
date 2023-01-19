@@ -45,7 +45,7 @@ services:
     #   - ./proxy/:/etc/traefik/    
   elasticsearch:
     container_name: elasticsearch
-    build:  ./elasticsearch
+    build:  ./opensearch
     networks:
       - nbs
     ports:
