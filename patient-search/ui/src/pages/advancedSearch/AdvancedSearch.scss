@@ -188,3 +188,16 @@
         outline: none !important;
     }
 }
+
+.status {
+    color: white;
+    border-radius: 22px;
+    width: max-content;
+    padding: 2px 8px;
+    font-size: 12px;
+}
+
+.fill-height {
+    height: 100%;
+    align-content: space-between;
+}

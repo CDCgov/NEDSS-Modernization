@@ -1,11 +1,14 @@
 package gov.cdc.nbs.entity.srte;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,8 +18,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_coding_system")
-public class LabCodingSystem {
+public class LabCodingSystem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "laboratory_id", nullable = false, length = 20)
@@ -50,9 +54,11 @@ public class LabCodingSystem {
     private Long nbsUid;
 
     @OneToMany(mappedBy = "laboratory")
+    @Builder.Default
     private Set<LabResult> labResults = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "laboratory")
+    @Builder.Default
     private Set<LabTest> labTests = new LinkedHashSet<>();
 
 }

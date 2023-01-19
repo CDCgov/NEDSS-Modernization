@@ -1,25 +1,61 @@
 scalar Date
 
 input Page {
-    pageSize: Int
-    pageNumber: Int
+    pageSize: Int!
+    pageNumber: Int!
 }
 
-input PersonPage {
+input SortablePage {
     pageSize: Int
     pageNumber: Int
-    sortField: PersonSortField
+    sortField: SortField
     sortDirection: SortDirection
 }
 
-enum PersonSortField {
+type PersonParticipation {
+    actUid: Int!
+    localId: String
+    typeCd: String
+    entityId: Int!
+    subjectClassCd: String
+    participationRecordStatus: String
+    typeDescTxt: String
+    participationLastChangeTime: Date
+    firstName: String
+    lastName: String
+    birthTime: Date
+    currSexCd: String
+    personCd: String!
+    personParentUid: Int
+    personRecordStatus: String!
+    personLastChangeTime: Date
+}
+
+type OrganizationParticipation {
+    actUid: Int
+    typeCd: String
+    entityId: Int
+    subjectClassCd: String
+    typeDescTxt: String
+    participationRecordStatus: String
+    participationLastChangeTime: Date
+    name: String
+    organizationLastChangeTime: Date
+}
+
+enum SortField {
     lastNm
     birthTime
-    addTime
 }
 
 enum RecordStatus {
     ACTIVE
     INACTIVE
     LOG_DEL
+}
+
+enum PregnancyStatus {
+    YES
+    NO
+    UNKNOWN
 }

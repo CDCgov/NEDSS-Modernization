@@ -29,8 +29,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Entity_locator_participation")
 public class EntityLocatorParticipation {
-    public static class Locator {
-        protected Long id;
+    public interface Locator {
     }
 
     @EmbeddedId

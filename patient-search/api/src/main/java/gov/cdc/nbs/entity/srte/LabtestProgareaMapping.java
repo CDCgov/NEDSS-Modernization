@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -13,17 +15,15 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Labtest_Progarea_Mapping")
-public class LabtestProgareaMapping {
+public class LabtestProgareaMapping implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EmbeddedId
     private LabtestProgareaMappingId id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "lab_test_cd", referencedColumnName = "lab_test_cd", nullable = false),
-            @JoinColumn(name = "laboratory_id", referencedColumnName = "laboratory_id", nullable = false)
-    })
+    @JoinColumn(name = "lab_test_cd", referencedColumnName = "lab_test_cd", nullable = false)
+    @JoinColumn(name = "laboratory_id", referencedColumnName = "laboratory_id", nullable = false)
     private LabTest labTest;
 
     @Column(name = "lab_test_desc_txt", length = 100)

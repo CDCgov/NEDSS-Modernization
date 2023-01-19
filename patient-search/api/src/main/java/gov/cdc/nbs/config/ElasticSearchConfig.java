@@ -18,7 +18,7 @@ public class ElasticSearchConfig {
 
     @Value("${nbs.elasticsearch.url:http://localhost:9200}")
     private String elasticSearchUrl;
-    public static final String DATE_PATTERN = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS";
+    public static final String DATE_PATTERN = "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS";
 
     /**
      * RestHighLevelClient is deprecated but no viable alternatives exist for
@@ -32,6 +32,7 @@ public class ElasticSearchConfig {
      * 
      */
     @Bean
+    @SuppressWarnings("squid:S2095") // Sonar cube false positive - resource should be closed
     public RestHighLevelClient client() throws MalformedURLException {
         URL url = new URL(elasticSearchUrl);
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()

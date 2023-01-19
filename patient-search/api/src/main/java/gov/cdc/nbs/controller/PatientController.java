@@ -13,10 +13,9 @@ import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter;
-import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.service.PatientService;
 import lombok.AllArgsConstructor;
@@ -24,16 +23,13 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class PatientController {
-    private final PatientService patientService;
-    private final String FIND_PATIENT = "hasAuthority('" + Operations.FIND + "-" + BusinessObjects.PATIENT + "')";
-    private final String ADD_PATIENT = "hasAuthority('" + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
-    private final String ADD_AND_FIND_PATIENT = ADD_PATIENT + " and " + FIND_PATIENT;
+    private static final String HAS_AUTHORITY = "hasAuthority('";
+    private static final String FIND_PATIENT = HAS_AUTHORITY + Operations.FIND + "-" + BusinessObjects.PATIENT
+            + "')";
+    private static final String ADD_PATIENT = HAS_AUTHORITY + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
+    private static final String ADD_AND_FIND_PATIENT = ADD_PATIENT + " and " + FIND_PATIENT;
 
-    @QueryMapping
-    @PreAuthorize(FIND_PATIENT)
-    public Page<Person> findPatientsByEvent(@Argument EventFilter filter, @Argument GraphQLPage page) {
-        return patientService.findPatientsByEvent(filter, page);
-    }
+    private final PatientService patientService;
 
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT)

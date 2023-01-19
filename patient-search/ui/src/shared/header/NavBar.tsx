@@ -1,9 +1,10 @@
 import { useContext } from 'react';
+import { Config } from '../../config';
 import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
 
 // eslint-disable-next-line no-undef
-const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
+const NBS_URL = Config.nbsUrl;
 
 export default function NavBar() {
     const { state, logout } = useContext(UserContext);

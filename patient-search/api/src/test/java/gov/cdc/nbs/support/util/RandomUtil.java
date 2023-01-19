@@ -78,4 +78,12 @@ public class RandomUtil {
         var index = random.nextInt(StateCodeUtil.stateCodeMap.size());
         return StateCodeUtil.stateCodeMap.values().toArray(new String[0])[index];
     }
+
+    public static String randomPartialDataSearchString(String data) {
+        int len = data.length();
+        if (len<=1) {
+            return data;
+        }
+        return data.substring(0, new Random().nextInt(len - 1) + 1);
+    }
 }

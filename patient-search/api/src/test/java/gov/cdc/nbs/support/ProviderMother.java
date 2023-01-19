@@ -17,7 +17,7 @@ public class ProviderMother {
         person.setLocalId("PSN10064000GA01");
         person.setStatusCd('A');
         person.setRecordStatusCd(RecordStatus.ACTIVE);
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
+        person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         return person;
     }
@@ -26,7 +26,7 @@ public class ProviderMother {
         final long id = 19200000L;
         var org = new Organization();
         org.setId(id);
-        org.setNBSEntity(new NBSEntity(id, "ORG"));
+        org.setNbsEntity(new NBSEntity(id, "ORG"));
         org.setLocalId("ORG10000000GA01");
         org.setRecordStatusCd(RecordStatus.ACTIVE);
         org.setStandardIndustryClassCd("62");

@@ -1,8 +1,8 @@
-query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: PersonPage) {
+query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: SortablePage) {
     findPatientsByOrganizationFilter(filter: $filter, page: $page){
         content{
             id
-            NBSEntity{
+            nbsEntity{
                 entityLocatorParticipations{
                     classCd
                     locator{

@@ -15,6 +15,7 @@
         "classnames": "^2.3.2",
         "cypress-cucumber-preprocessor": "^4.3.1",
         "graphql": "^16.6.0",
+        "lodash.debounce": "^4.0.8",
         "multiselect-react-dropdown": "^2.0.25",
         "react": "^17",
         "react-dom": "^17",
@@ -40,7 +41,7 @@
         "graphql:gql": "npx gqlg --schemaFilePath src/generated/schema.graphqls --destDirPath ./src/generated/gql",
         "graphql:codegen": "export API_TOKEN=$(curl http://localhost:8080/login -X POST --data '{\"username\":\"msa\"}' -H 'Content-Type:Application/JSON' | jq -r '.token') && graphql-codegen --config src/codegen.ts",
         "openapi:codegen": "npx openapi-typescript-codegen --input http://localhost:8080/v2/api-docs --output ./src/generated/ --useOptions && npm run openapi:set-port ",
-        "openapi:set-port": "sed -i '' -e \"s/localhost:8080'/localhost:' + Config.port/\" src/generated/core/OpenAPI.ts && echo \"import { Config } from '../../../src/config';\" >> src/generated/core/OpenAPI.ts"
+        "openapi:set-port": "sed -i '' -e \"s/'http:\\/\\/localhost:8080'/Config.modernizationUrl/\" src/generated/core/OpenAPI.ts && echo \"import { Config } from '../../../src/config';\" >> src/generated/core/OpenAPI.ts"
     },
     "proxy": "http://localhost:8080/",
     "eslintConfig": {
@@ -68,6 +69,7 @@
         "@graphql-codegen/typescript-operations": "^2.5.3",
         "@graphql-codegen/typescript-react-apollo": "^3.3.3",
         "@testing-library/cypress": "^8.0.3",
+        "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.11.5",
         "@typescript-eslint/eslint-plugin": "^5.32.0",
         "@typescript-eslint/parser": "^5.32.0",

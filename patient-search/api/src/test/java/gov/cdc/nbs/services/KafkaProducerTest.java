@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -35,7 +34,7 @@ import gov.cdc.nbs.service.KafkaRequestProducerService;
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration
-public class KafkaProducerTest {
+class KafkaProducerTest {
 
 	@Mock
 	private KafkaTemplate<String, EnvelopeRequest> kafkaTemplate;

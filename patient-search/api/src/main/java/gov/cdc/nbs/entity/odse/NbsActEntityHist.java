@@ -35,7 +35,7 @@ public class NbsActEntityHist {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_uid", nullable = false)
-    private NBSEntity NBSEntityUid;
+    private NBSEntity nbsEntityUid;
 
     @Column(name = "entity_version_ctrl_nbr", nullable = false)
     private Short entityVersionCtrlNbr;

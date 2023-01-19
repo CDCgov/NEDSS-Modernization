@@ -26,7 +26,6 @@ export const MultiSelectControl = ({ control, name, options, label, defaultValue
                 item.value === re && tempArr.push(item);
             });
         });
-        console.log(value);
         return tempArr;
     };
 
@@ -38,7 +37,7 @@ export const MultiSelectControl = ({ control, name, options, label, defaultValue
             <Controller
                 control={control}
                 name={name}
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange } }) => (
                     <Multiselect
                         selectedValues={handleSelectedOptions(defaultValue)}
                         placeholder="- Select -"

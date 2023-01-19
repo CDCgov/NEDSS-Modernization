@@ -56,7 +56,7 @@ public class PatientInput {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class PhoneNumber {
-        private String phoneNumber;
+        private String number;
         private String extension;
         private PhoneType phoneType;
     }

@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Tele_locator")
-public class TeleLocator extends Locator {
+public class TeleLocator implements Locator {
     @Id
     @Column(name = "tele_locator_uid", nullable = false)
     private Long id;

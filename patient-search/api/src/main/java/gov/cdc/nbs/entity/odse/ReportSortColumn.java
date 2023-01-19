@@ -27,10 +27,8 @@ public class ReportSortColumn {
     private Integer reportSortSequenceNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "data_source_uid", referencedColumnName = "data_source_uid"),
-            @JoinColumn(name = "report_uid", referencedColumnName = "report_uid")
-    })
+    @JoinColumn(name = "data_source_uid", referencedColumnName = "data_source_uid")
+    @JoinColumn(name = "report_uid", referencedColumnName = "report_uid")
     private Report report;
 
     @Column(name = "column_uid")

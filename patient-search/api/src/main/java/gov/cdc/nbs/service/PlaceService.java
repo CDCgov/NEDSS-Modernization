@@ -7,6 +7,7 @@ import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,15 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.odse.Place;
 import gov.cdc.nbs.entity.odse.QPlace;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.PlaceFilter;
+import gov.cdc.nbs.graphql.filter.PlaceFilter;
 import gov.cdc.nbs.repository.PlaceRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PlaceService {
-    private final int MAX_PAGE_SIZE = 50;
+    @Value("${nbs.max-page-size: 50}")
+    private Integer maxPageSize;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -35,15 +37,12 @@ public class PlaceService {
     }
 
     public Page<Place> findAllPlaces(GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        if (page == null) {
-            page = new GraphQLPage(MAX_PAGE_SIZE, 0);
-        }
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         return placeRepository.findAll(pageable);
     }
 
     public List<Place> findPlacesByFilter(PlaceFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
         var place = QPlace.place;

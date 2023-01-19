@@ -29,6 +29,7 @@ import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
 import com.github.javafaker.Faker;
+
 public class PersonMother {
 
     private static final Long CREATED_BY_ID = 999999L;
@@ -64,13 +65,13 @@ public class PersonMother {
         person.setBirthStateCd(RandomUtil.getRandomStateCode());
         person.setBirthCntryCd("United States");
         person.setRecordStatusCd(RecordStatus.ACTIVE);
-        person.setNBSEntity(entity);
+        person.setNbsEntity(entity);
         person.setVersionCtrlNbr((short) 1);
 
         // Identification
         var entityId = new EntityId();
         entityId.setId(new EntityIdId(id, (short) 1));
-        entityId.setNBSEntityUid(entity);
+        entityId.setNbsEntityUid(entity);
         entityId.setAddTime(Instant.now());
         entityId.setAssigningAuthorityCd("GA");
         entityId.setAssigningAuthorityDescTxt("GA");
@@ -129,10 +130,10 @@ public class PersonMother {
         locatorId = id + 80000L;
         var postalLocator = new PostalLocator();
         postalLocator.setId(locatorId);
-        postalLocator.setStreetAddr1(RandomUtil.getRandomString(8));
+        postalLocator.setStreetAddr1(faker.address().streetAddress());
         postalLocator.setCntryCd(
                 RandomUtil.getRandomFromArray(CountryCodeUtil.countryCodeMap.values().toArray(new String[0])));
-        postalLocator.setCityDescTxt(RandomUtil.getRandomString(8));
+        postalLocator.setCityDescTxt(faker.address().city());
         postalLocator.setStateCd(RandomUtil.getRandomStateCode());
         postalLocator.setZipCd(RandomUtil.getRandomNumericString(5));
         postalLocator.setRecordStatusCd("ACTIVE");
@@ -157,7 +158,7 @@ public class PersonMother {
         final long id = 19000000L;
         var person = new Person();
         person.setId(id);
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
+        person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setCd("PAT");
         person.setFirstNm("John");
         person.setMiddleNm("Bob");
@@ -183,9 +184,9 @@ public class PersonMother {
         person.setNames(Arrays.asList(name));
 
         // phone numbers
-        createTeleLocatorEntry("111-222-3333", id + 40000L, person.getNBSEntity(), PhoneType.HOME);
-        createTeleLocatorEntry("222-333-4444", id + 40001L, person.getNBSEntity(), PhoneType.WORK);
-        createTeleLocatorEntry("444-555-6666", id + 40002L, person.getNBSEntity(), PhoneType.CELL);
+        createTeleLocatorEntry("111-222-3333", id + 40000L, person.getNbsEntity(), PhoneType.HOME);
+        createTeleLocatorEntry("222-333-4444", id + 40001L, person.getNbsEntity(), PhoneType.WORK);
+        createTeleLocatorEntry("444-555-6666", id + 40002L, person.getNbsEntity(), PhoneType.CELL);
 
         // addresses
 
@@ -198,7 +199,7 @@ public class PersonMother {
                 CountryCodeUtil.countryCodeMap.get("United States"),
                 "30301",
                 null);
-        createPostalLocatorEntry(id + 80000L, person.getNBSEntity(), homeAddress, "H");
+        createPostalLocatorEntry(id + 80000L, person.getNbsEntity(), homeAddress, "H");
 
         person.setEthnicGroupInd(Ethnicity.NOT_HISPANIC_OR_LATINO);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
