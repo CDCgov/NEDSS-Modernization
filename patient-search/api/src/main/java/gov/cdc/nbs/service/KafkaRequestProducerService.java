@@ -20,7 +20,7 @@ public class KafkaRequestProducerService {
 	private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopTemplate;
 
 	@Autowired
-	private KafkaTemplate<String, PatientUpdateRequest> KafkaPatientUpdateTemplate;
+	private KafkaTemplate<String, PatientUpdateRequest> kafkaPatientUpdateTemplate;
 
 	@Value("${kafkadef.patient-search.topics.request.patient}")
 	private String patientSearchTopic;
@@ -34,7 +34,7 @@ public class KafkaRequestProducerService {
 	}
 
 	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
-		send(KafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
+		send(kafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
 	}
 
 	private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {

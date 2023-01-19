@@ -10,12 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Slf4j
-public class KafkaMessageSerializer implements Serializer {
-	@Override
-	public void configure(Map map, boolean b) {
-
-	}
-
+public class KafkaMessageSerializer implements Serializer<Object> {
+	
 	@Override
 	public byte[] serialize(String s, Object o) {
 		byte[] retVal = null;
@@ -28,9 +24,5 @@ public class KafkaMessageSerializer implements Serializer {
 		}
 		return retVal;
 	}
-
-	@Override
-	public void close() {
-
-	}
+	
 }

@@ -381,10 +381,9 @@ public class PatientService {
 			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
 		}
 
-		PatientUpdateResponse response = PatientUpdateResponse.builder().requestId(requestId)
+		return PatientUpdateResponse.builder().requestId(requestId)
 				.updatedPerson(updatePerson).build();
-
-		return response;
+		
 	}
 
 	/**
@@ -482,7 +481,7 @@ public class PatientService {
      */
     private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
         var postalLocators = new ArrayList<PostalLocator>();
-        if (addresses!=null && addresses.size() > 0) {
+        if (!addresses.isEmpty()& addresses.size() > 0) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -542,7 +541,7 @@ public class PatientService {
     private List<TeleLocator> addTeleLocatorEntries(Person person, List<PhoneNumber> phoneNumbers,
             List<String> emailAddresses) {
         var locatorList = new ArrayList<TeleLocator>();
-        if ( (phoneNumbers!=null && phoneNumbers.size() > 0) || (emailAddresses!=null && emailAddresses.size() > 0) ) {
+        if ( (!phoneNumbers.isEmpty()&&  phoneNumbers.size() > 0) || (!emailAddresses.isEmpty() && emailAddresses.size() > 0) ) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -648,6 +647,7 @@ public class PatientService {
 			person.setNmSuffix(input.getName().getSuffix());
 		}
 
+		person.setId(id);
 		person.setSsn(input.getSsn());
 		person.setBirthTime(input.getDateOfBirth());
 
@@ -657,8 +657,8 @@ public class PatientService {
 		person.setEthnicGroupInd(input.getEthnicity());
 
 		NBSEntity entity = new NBSEntity();
-		entity.setEntityLocatorParticipations(new ArrayList<EntityLocatorParticipation>());
-		entity.setParticipations(new ArrayList<Participation>());
+		entity.setEntityLocatorParticipations(new ArrayList<>());
+		entity.setParticipations(new ArrayList<>());
 		person.setNbsEntity(entity);
 
 		return person;
@@ -666,7 +666,7 @@ public class PatientService {
 	}
 
 	private String getRequestID() {
-		return String.format(Constants.APP_ID + "_" + UUID.randomUUID());
+		return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
 	}
 
 }
