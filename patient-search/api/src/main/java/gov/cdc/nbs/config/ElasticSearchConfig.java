@@ -35,6 +35,7 @@ public class ElasticSearchConfig {
      * 
      */
     @Bean
+    @SuppressWarnings("squid:S2095") // Sonar cube false positive - resource should be closed
     public RestHighLevelClient client() throws MalformedURLException {
         URL url = new URL(elasticSearchUrl);
         log.info("Connecting to Elasticsearch with url: " + url);
