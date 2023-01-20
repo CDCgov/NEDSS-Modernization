@@ -46,7 +46,7 @@ import gov.cdc.nbs.service.PatientService;
 
 @SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
 @RunWith(SpringRunner.class)
-public class PatientUpdateTest {
+class PatientUpdateTest {
 	@Mock
 	PersonRepository personRepository;
 	@Mock

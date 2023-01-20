@@ -66,6 +66,7 @@ public class KafkaConfig {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
 	public ProducerFactory<String, PatientUpdateRequest> producerFactoryPatientUpdate() {
 		Map<String, Object> config = new HashMap<>();
