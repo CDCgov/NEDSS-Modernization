@@ -36,8 +36,13 @@ public class RedirectController {
     @Value("${nbs.wildfly.url:http://wildfly:7001}")
     private String wildFlyUrl;
 
+    /**
+     * Intercepts legacy home page search requests, pulls out the current user from
+     * the JSESSIONID, the search criteria from the incomingParams map, and forwards
+     * the request to the modernization search page
+     */
     @ApiIgnore
-    @PostMapping("/nbs/HomePage.do") // proxy verifies path contains: ?method=patientSearchSubmit
+    @PostMapping("/nbs/redirect/simpleSearch")
     public RedirectView redirectSimpleSearch(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -53,8 +58,13 @@ public class RedirectController {
         return redirect;
     }
 
+    /**
+     * Intercepts legacy advanced search page requests, pulls out the current user
+     * from the JSESSIONID, and forwards the request to the modernization search
+     * page
+     */
     @ApiIgnore
-    @GetMapping("/nbs/MyTaskList1.do") // proxy verifies path contains: ?ContextAction=GlobalPatient
+    @GetMapping("/nbs/redirect/advancedSearch")
     public RedirectView redirectAdvancedSearch(
             HttpServletRequest request,
             HttpServletResponse response) {
