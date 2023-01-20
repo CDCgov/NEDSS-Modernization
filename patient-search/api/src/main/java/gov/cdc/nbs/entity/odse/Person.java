@@ -31,7 +31,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +38,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@ToString
 public class Person {
     @Id
     @Column(name = "person_uid", nullable = false)
