@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class PatientController {
-	private static final String AND = "and";
+	private static final String AND = " and ";
     private static final String HAS_AUTHORITY = "hasAuthority('";
     private static final String FIND_PATIENT = HAS_AUTHORITY + Operations.FIND + "-" + BusinessObjects.PATIENT
             + "')";
