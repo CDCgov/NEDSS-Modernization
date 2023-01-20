@@ -19,7 +19,7 @@ import gov.cdc.nbs.repository.LoincCodeRepository;
 @Controller
 public class LabTestController {
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @Autowired
     private LabTestRepository labTestRepository;
@@ -34,11 +34,11 @@ public class LabTestController {
 
     @QueryMapping
     public Page<LabTest> findLocalLabTest(@Argument String searchText, @Argument GraphQLPage page) {
-        return labTestRepository.findTests(searchText, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return labTestRepository.findTests(searchText, GraphQLPage.toPageable(page, maxPageSize));
     }
 
     @QueryMapping
     public Page<LoincCode> findLoincLabTest(@Argument String searchText, @Argument GraphQLPage page) {
-        return loincCodeRepository.findTest(searchText, relatedClassCodes, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return loincCodeRepository.findTest(searchText, relatedClassCodes, GraphQLPage.toPageable(page, maxPageSize));
     }
 }

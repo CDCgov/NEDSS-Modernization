@@ -10,7 +10,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             outbreakName
             caseTypeCd
             cdDescTxt
-            prog_area_cd
+            progAreaCd
             jurisdictionCd
             jurisdictionCodeDescTxt
             pregnantIndCd

@@ -20,10 +20,8 @@ public class OrganizationNameHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "organization_uid", referencedColumnName = "organization_uid", nullable = false),
-            @JoinColumn(name = "organization_name_seq", referencedColumnName = "organization_name_seq", nullable = false)
-    })
+    @JoinColumn(name = "organization_uid", referencedColumnName = "organization_uid", nullable = false)
+    @JoinColumn(name = "organization_name_seq", referencedColumnName = "organization_name_seq", nullable = false)
     private OrganizationName organizationName;
 
     @Column(name = "nm_txt", length = 100)

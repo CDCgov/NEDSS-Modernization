@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
+import gov.cdc.nbs.exception.ConversionException;
+
 public class InstantConverter implements PropertyValueConverter {
 
     private static final List<DateTimeFormatter> formats = new ArrayList<>();
@@ -53,7 +55,7 @@ public class InstantConverter implements PropertyValueConverter {
                     // ignore exception until all formats have been tried
                 }
             }
-            throw new RuntimeException("Failed to convert String to Instant: " + s);
+            throw new ConversionException("Failed to convert String to Instant: " + s);
         } else {
             return value;
         }

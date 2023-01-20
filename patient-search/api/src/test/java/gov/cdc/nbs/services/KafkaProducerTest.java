@@ -14,6 +14,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ import org.springframework.util.concurrent.SettableListenableFuture;
 
 import gov.cdc.nbs.Application;
 import gov.cdc.nbs.message.EnvelopeRequest;
+import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.service.KafkaRequestProducerService;
 
@@ -32,14 +34,22 @@ import gov.cdc.nbs.service.KafkaRequestProducerService;
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration
-public class KafkaProducerTest {
+class KafkaProducerTest {
 
 	@Mock
 	private KafkaTemplate<String, EnvelopeRequest> kafkaTemplate;
+	
+	@Mock
+	private KafkaTemplate<String, PatientUpdateRequest> KafkaPatientUpdateTemplate;
 
 	@InjectMocks
 	private KafkaRequestProducerService producer;
 
+     public KafkaProducerTest() {
+    	 MockitoAnnotations.openMocks(this);
+    	 producer = new KafkaRequestProducerService();
+    	 
+     }
 	@Test
 	void testPatientSearchEvent() {
 		List<TemplateInput> msgVariables = new ArrayList<TemplateInput>();

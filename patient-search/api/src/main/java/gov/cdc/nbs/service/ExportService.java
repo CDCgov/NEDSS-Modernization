@@ -297,7 +297,7 @@ public class ExportService {
                 .stream()
                 .filter(p -> p.getTypeCd() != null && p.getTypeCd().equals("SubjOfPHC"))
                 .findFirst()
-                .map(i -> formatPatientInfo(i))
+                .map(this::formatPatientInfo)
                 .orElse("");
     }
 
@@ -306,7 +306,7 @@ public class ExportService {
                 .stream()
                 .filter(p -> p.getTypeDescTxt() != null && p.getTypeDescTxt().equals("Patient subject"))
                 .findFirst()
-                .map(i -> formatPatientInfo(i))
+                .map(this::formatPatientInfo)
                 .orElse("");
     }
 
@@ -336,6 +336,8 @@ public class ExportService {
                 case "UNK":
                     currentSexString = "Unknown";
                     break;
+                default:
+                    throw new IllegalArgumentException("Unrecognized value for currSexCd: " + p.getCurrSexCd());
             }
         }
         return p.getLastName() + ", " + p.getFirstName() + "\n" + "Patient ID: " + p.getEntityId() + "\n"

@@ -4,6 +4,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 import gov.cdc.nbs.entity.enums.Race;
+import gov.cdc.nbs.exception.ConversionException;
 
 @Converter
 public class RaceConverter implements AttributeConverter<Race, String> {
@@ -44,7 +45,7 @@ public class RaceConverter implements AttributeConverter<Race, String> {
             case WHITE:
                 return "2106-3";
             default:
-                throw new RuntimeException("Invalid race supplied: " + race);
+                throw new ConversionException("Invalid race supplied: " + race);
 
         }
     }
@@ -73,7 +74,7 @@ public class RaceConverter implements AttributeConverter<Race, String> {
             case "2106-3":
                 return Race.WHITE;
             default:
-                throw new RuntimeException("Invalid race value supplied: " + value);
+                throw new ConversionException("Invalid race value supplied: " + value);
         }
     }
 

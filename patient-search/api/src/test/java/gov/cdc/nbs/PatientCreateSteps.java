@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;

@@ -1,6 +1,7 @@
 package gov.cdc.nbs;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -20,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter.Identification;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -117,9 +118,9 @@ public class PatientSearchSteps {
 
     @Then("I find the patient")
     public void i_find_the_patient() {
-        assertTrue("Search patient is not null", searchPatient != null);
-        assertTrue("Search results are not empty", searchResults.size() > 0);
-        assertTrue("Search results contains patient: " + searchPatient.getId(), searchResults.contains(searchPatient));
+        assertNotNull(searchPatient);
+        assertTrue(searchResults.size() > 0);
+        assertTrue(searchResults.contains(searchPatient));
     }
 
     private PatientFilter updatePatientDataFilter(PatientFilter filter, String field, String qualifier) {

@@ -25,7 +25,7 @@ input PersonFilter {
 
 type Person {
     id: ID
-    NBSEntity: NBSEntity!
+    nbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
@@ -167,7 +167,7 @@ input PostalAddress {
 }
 
 input PhoneNumber {
-    phoneNumber: String!
+    number: String!
     extension: String
     phoneType: PhoneType!
 }

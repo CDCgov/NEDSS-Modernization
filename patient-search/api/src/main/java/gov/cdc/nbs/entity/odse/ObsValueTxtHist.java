@@ -20,10 +20,8 @@ public class ObsValueTxtHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "observation_uid", referencedColumnName = "observation_uid", nullable = false),
-            @JoinColumn(name = "obs_value_txt_seq", referencedColumnName = "obs_value_txt_seq", nullable = false)
-    })
+    @JoinColumn(name = "observation_uid", referencedColumnName = "observation_uid", nullable = false)
+    @JoinColumn(name = "obs_value_txt_seq", referencedColumnName = "obs_value_txt_seq", nullable = false)
     private ObsValueTxt obsValueTxt;
 
     @Column(name = "data_subtype_cd", length = 20)

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 public class ElasticsearchObservation {
 
-    public static final String CD = "cd";
+    public static final String CD_FIELD = "cd";
     public static final String CD_DESC_TXT = "cd_desc_txt";
     public static final String DOMAIN_CD = "domain_cd_st_1";
     public static final String STATUS_CD = "status_cd";
@@ -25,7 +25,7 @@ public class ElasticsearchObservation {
     public static final String OVC_ALT_DESC_TXT = "ovc_alt_cd_desc_txt";
     public static final String OVC_ALT_CD_SYSTEM_CD = "ovc_alt_cd_system_cd";
 
-    @Field(name = CD, type = FieldType.Keyword)
+    @Field(name = CD_FIELD, type = FieldType.Keyword)
     private String cd;
 
     @Field(name = CD_DESC_TXT, type = FieldType.Keyword)

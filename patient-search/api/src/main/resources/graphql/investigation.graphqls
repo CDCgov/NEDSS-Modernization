@@ -8,7 +8,7 @@ type Investigation {
     outbreakName: String
     caseTypeCd: String
     cdDescTxt: String
-    prog_area_cd: String
+    progAreaCd: String
     jurisdictionCd: Int
     jurisdictionCodeDescTxt: String
     pregnantIndCd: String

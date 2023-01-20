@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.srte;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Entity
 @Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_result")
-public class LabResult {
+public class LabResult implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EmbeddedId
     private LabResultId id;

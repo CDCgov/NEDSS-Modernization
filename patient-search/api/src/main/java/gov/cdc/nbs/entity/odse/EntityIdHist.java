@@ -21,10 +21,8 @@ public class EntityIdHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "entity_uid", referencedColumnName = "entity_uid", nullable = false),
-            @JoinColumn(name = "entity_id_seq", referencedColumnName = "entity_id_seq", nullable = false)
-    })
+    @JoinColumn(name = "entity_uid", referencedColumnName = "entity_uid", nullable = false)
+    @JoinColumn(name = "entity_id_seq", referencedColumnName = "entity_id_seq", nullable = false)
     private EntityId entity;
 
     @Column(name = "add_reason_cd", length = 20)

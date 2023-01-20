@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -14,7 +16,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Loinc_condition")
-public class LoincCondition {
+public class LoincCondition implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "loinc_cd", nullable = false, length = 20)

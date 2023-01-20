@@ -34,7 +34,7 @@ type Investigation {
     outbreakName: String
     caseTypeCd: String
     cdDescTxt: String
-    prog_area_cd: String
+    progAreaCd: String
     jurisdictionCd: Int
     jurisdictionCodeDescTxt: String
     pregnantIndCd: String
@@ -432,7 +432,7 @@ input PersonFilter {
 
 type Person {
     id: ID
-    NBSEntity: NBSEntity!
+    nbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
@@ -574,7 +574,7 @@ input PostalAddress {
 }
 
 input PhoneNumber {
-    phoneNumber: String!
+    number: String!
     extension: String
     phoneType: PhoneType!
 }
@@ -796,6 +796,8 @@ type Query {
 
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
+
+    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
 }
 
 type Mutation {
@@ -828,7 +830,7 @@ type OutbreakResults {
 }
 
 type PersonResults {
-    content: [Person]!
+    content: [Person!]!
     total: Int!
 }
 

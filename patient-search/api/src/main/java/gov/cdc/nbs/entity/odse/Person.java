@@ -31,6 +31,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,6 +39,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@ToString
 public class Person {
     @Id
     @Column(name = "person_uid", nullable = false)
@@ -47,7 +49,7 @@ public class Person {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_uid", nullable = false)
-    private NBSEntity NBSEntity;
+    private NBSEntity nbsEntity;
 
     @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PersonName> names;

@@ -88,7 +88,7 @@ public class Investigation {
     private String cdDescTxt;
 
     @Field(name = PROGRAM_AREA_CD, type = FieldType.Keyword)
-    private String prog_area_cd;
+    private String progAreaCd;
 
     @Field(name = JURISDICTION_CD, type = FieldType.Long)
     private Long jurisdictionCd;
