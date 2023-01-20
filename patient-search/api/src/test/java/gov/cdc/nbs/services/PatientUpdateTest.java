@@ -63,6 +63,7 @@ class PatientUpdateTest {
 	Person person;
 	Long ID;
 
+	@SuppressWarnings("deprecation")
 	public PatientUpdateTest() {
 		MockitoAnnotations.openMocks(this);
 		patientService = new PatientService(null, personRepository, teleLocatorRepository, postalLocatorRepository,
@@ -77,10 +78,10 @@ class PatientUpdateTest {
 
 		Authentication auth = Mockito.mock(Authentication.class);
 		SecurityContext secCont = Mockito.mock(SecurityContext.class);
-		securitContextHolder.setContext(secCont);
+		SecurityContextHolder.setContext(secCont);
 
 		when(teleLocatorRepository.getMaxId()).thenReturn(ID + 1);
-		when(securitContextHolder.getContext().getAuthentication()).thenReturn(auth);
+		when(SecurityContextHolder.getContext().getAuthentication()).thenReturn(auth);
 
 		NbsUserDetails principal = new NbsUserDetails(id, "testUserName", "testFirstName", null, false, false, null,
 				null, null, null, false);
@@ -107,7 +108,7 @@ class PatientUpdateTest {
 		assertEquals(person.getMiddleNm(), updatedPerson.getMiddleNm());
 		assertEquals(person.getLastNm(), updatedPerson.getLastNm());
 		assertEquals(person.getNames(), updatedPerson.getNames());
-		assertEquals(person.getNbsEntity() , updatedPerson.getNbsEntity());	
+		assertEquals(person.getNbsEntity(), updatedPerson.getNbsEntity());
 		assertEquals(person.getRaces(), updatedPerson.getRaces());
 		assertEquals(person.getRaces(), updatedPerson.getRaces());
 		assertEquals(person.getDeceasedIndCd(), updatedPerson.getDeceasedIndCd());
