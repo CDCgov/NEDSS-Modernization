@@ -530,7 +530,7 @@ type Person {
     asOfDateMorbidity: Date
     asOfDateSex: Date
     electronicInd: String
-    personParentUid: ID
+    personParentUid: personParentUid
     dedupMatchInd: String
     groupNbr: Int
     groupTime: Date
@@ -540,6 +540,10 @@ type Person {
     eharsId: String
     ethnicUnkReasonCd: String
     sexUnkReasonCd: String
+}
+
+type personParentUid {
+    id: ID
 }
 
 input PersonInput {

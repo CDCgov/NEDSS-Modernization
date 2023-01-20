@@ -140,7 +140,9 @@ query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Sort
             asOfDateMorbidity
             asOfDateSex
             electronicInd
-            personParentUid
+            personParentUid{
+                id
+            }
             dedupMatchInd
             groupNbr
             groupTime
