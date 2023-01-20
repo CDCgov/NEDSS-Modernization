@@ -434,10 +434,17 @@ export type MaterialParticipation = {
 export type Mutation = {
   __typename?: 'Mutation';
   createPatient: Person;
+  updatePatient?: Maybe<UpdateResult>;
 };
 
 
 export type MutationCreatePatientArgs = {
+  patient: PersonInput;
+};
+
+
+export type MutationUpdatePatientArgs = {
+  id: Scalars['ID'];
   patient: PersonInput;
 };
 
@@ -908,6 +915,7 @@ export type Query = {
   findLocalCodedResults: LocalCodedResults;
   findLocalLabTest: LocalLabTestResults;
   findLoincLabTest: LoincLabTestResults;
+  findOpenInvestigationsForPatient: InvestigationResults;
   findOrganizationById?: Maybe<Organization>;
   findOrganizationsByFilter: OrganizationResults;
   findPatientById?: Maybe<Person>;
@@ -1002,6 +1010,12 @@ export type QueryFindLocalLabTestArgs = {
 export type QueryFindLoincLabTestArgs = {
   page?: InputMaybe<Page>;
   searchText: Scalars['String'];
+};
+
+
+export type QueryFindOpenInvestigationsForPatientArgs = {
+  page?: InputMaybe<Page>;
+  patientId: Scalars['Int'];
 };
 
 
@@ -1135,6 +1149,12 @@ export enum Suffix {
   V = 'V'
 }
 
+export type UpdateResult = {
+  __typename?: 'UpdateResult';
+  requestId?: Maybe<Scalars['String']>;
+  updatedPerson?: Maybe<Person>;
+};
+
 export type User = {
   __typename?: 'User';
   recordStatusCd?: Maybe<RecordStatus>;
@@ -1160,6 +1180,14 @@ export type CreatePatientMutationVariables = Exact<{
 
 
 export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, nbsEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null } };
+
+export type UpdatePatientMutationVariables = Exact<{
+  id: Scalars['ID'];
+  patient: PersonInput;
+}>;
+
+
+export type UpdatePatientMutation = { __typename?: 'Mutation', updatePatient?: { __typename?: 'UpdateResult', requestId?: string | null, updatedPerson?: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, personParentUid?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, nbsEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null } | null } | null };
 
 export type FindAllConditionCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -1278,6 +1306,14 @@ export type FindLoincLabTestQueryVariables = Exact<{
 
 
 export type FindLoincLabTestQuery = { __typename?: 'Query', findLoincLabTest: { __typename?: 'LoincLabTestResults', total: number, content: Array<{ __typename?: 'LoincCode', id?: string | null, componentName?: string | null, methodType?: string | null, systemCd?: string | null, property?: string | null, relatedClassCd?: string | null } | null> } };
+
+export type FindOpenInvestigationsForPatientQueryVariables = Exact<{
+  patientId: Scalars['Int'];
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindOpenInvestigationsForPatientQuery = { __typename?: 'Query', findOpenInvestigationsForPatient: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, programJurisdictionOid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, progAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
 
 export type FindOrganizationByIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1522,6 +1558,191 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
+export const UpdatePatientDocument = gql`
+    mutation updatePatient($id: ID!, $patient: PersonInput!) {
+  updatePatient(id: $id, patient: $patient) {
+    updatedPerson {
+      id
+      nbsEntity {
+        entityLocatorParticipations {
+          classCd
+          locator {
+            emailAddress
+            extenstionTxt
+            phoneNbrTxt
+            urlAddress
+            censusBlockCd
+            censusMinorCivilDivisionCd
+            censusTrackCd
+            cityCd
+            cityDescTxt
+            cntryCd
+            cntryDescTxt
+            cntyCd
+            cntyDescTxt
+            msaCongressDistrictCd
+            regionDistrictCd
+            stateCd
+            streetAddr1
+            streetAddr2
+            zipCd
+            geocodeMatchInd
+            withinCityLimitsInd
+            censusTract
+          }
+        }
+      }
+      entityIds {
+        typeDescTxt
+        typeCd
+        rootExtensionTxt
+        assigningAuthorityCd
+        assigningAuthorityDescTxt
+      }
+      names {
+        firstNm
+        middleNm
+        lastNm
+        nmSuffix
+        nmPrefix
+      }
+      addReasonCd
+      addTime
+      addUserId
+      administrativeGenderCd
+      ageCalc
+      ageCalcTime
+      ageCalcUnitCd
+      ageCategoryCd
+      ageReported
+      ageReportedTime
+      ageReportedUnitCd
+      birthGenderCd
+      birthOrderNbr
+      birthTime
+      birthTimeCalc
+      cd
+      cdDescTxt
+      currSexCd
+      deceasedIndCd
+      deceasedTime
+      description
+      educationLevelCd
+      educationLevelDescTxt
+      ethnicGroupInd
+      lastChgReasonCd
+      lastChgTime
+      lastChgUserId
+      localId
+      maritalStatusCd
+      maritalStatusDescTxt
+      mothersMaidenNm
+      multipleBirthInd
+      occupationCd
+      preferredGenderCd
+      primLangCd
+      primLangDescTxt
+      recordStatusCd
+      recordStatusTime
+      statusCd
+      statusTime
+      survivedIndCd
+      userAffiliationTxt
+      firstNm
+      lastNm
+      middleNm
+      nmPrefix
+      nmSuffix
+      preferredNm
+      hmStreetAddr1
+      hmStreetAddr2
+      hmCityCd
+      hmCityDescTxt
+      hmStateCd
+      hmZipCd
+      hmCntyCd
+      hmCntryCd
+      hmPhoneNbr
+      hmPhoneCntryCd
+      hmEmailAddr
+      cellPhoneNbr
+      wkStreetAddr1
+      wkStreetAddr2
+      wkCityCd
+      wkCityDescTxt
+      wkStateCd
+      wkZipCd
+      wkCntyCd
+      wkCntryCd
+      wkPhoneNbr
+      wkPhoneCntryCd
+      wkEmailAddr
+      ssn
+      medicaidNum
+      dlNum
+      dlStateCd
+      raceCd
+      raceSeqNbr
+      raceCategoryCd
+      ethnicityGroupCd
+      ethnicGroupSeqNbr
+      adultsInHouseNbr
+      childrenInHouseNbr
+      birthCityCd
+      birthCityDescTxt
+      birthCntryCd
+      birthStateCd
+      raceDescTxt
+      ethnicGroupDescTxt
+      versionCtrlNbr
+      asOfDateAdmin
+      asOfDateEthnicity
+      asOfDateGeneral
+      asOfDateMorbidity
+      asOfDateSex
+      electronicInd
+      personParentUid
+      dedupMatchInd
+      groupNbr
+      groupTime
+      edxInd
+      speaksEnglishCd
+      additionalGenderCd
+      eharsId
+      ethnicUnkReasonCd
+      sexUnkReasonCd
+    }
+    requestId
+  }
+}
+    `;
+export type UpdatePatientMutationFn = Apollo.MutationFunction<UpdatePatientMutation, UpdatePatientMutationVariables>;
+
+/**
+ * __useUpdatePatientMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientMutation, { data, loading, error }] = useUpdatePatientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      patient: // value for 'patient'
+ *   },
+ * });
+ */
+export function useUpdatePatientMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientMutation, UpdatePatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientMutation, UpdatePatientMutationVariables>(UpdatePatientDocument, options);
+      }
+export type UpdatePatientMutationHookResult = ReturnType<typeof useUpdatePatientMutation>;
+export type UpdatePatientMutationResult = Apollo.MutationResult<UpdatePatientMutation>;
+export type UpdatePatientMutationOptions = Apollo.BaseMutationOptions<UpdatePatientMutation, UpdatePatientMutationVariables>;
 export const FindAllConditionCodesDocument = gql`
     query findAllConditionCodes($page: Page) {
   findAllConditionCodes(page: $page) {
@@ -2663,6 +2884,109 @@ export function useFindLoincLabTestLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type FindLoincLabTestQueryHookResult = ReturnType<typeof useFindLoincLabTestQuery>;
 export type FindLoincLabTestLazyQueryHookResult = ReturnType<typeof useFindLoincLabTestLazyQuery>;
 export type FindLoincLabTestQueryResult = Apollo.QueryResult<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>;
+export const FindOpenInvestigationsForPatientDocument = gql`
+    query findOpenInvestigationsForPatient($patientId: Int!, $page: Page) {
+  findOpenInvestigationsForPatient(patientId: $patientId, page: $page) {
+    content {
+      id
+      recordStatus
+      lastChangeTime
+      publicHealthCaseUid
+      programJurisdictionOid
+      caseClassCd
+      outbreakName
+      caseTypeCd
+      cdDescTxt
+      progAreaCd
+      jurisdictionCd
+      jurisdictionCodeDescTxt
+      pregnantIndCd
+      localId
+      rptFormCmpltTime
+      activityToTime
+      activityFromTime
+      addTime
+      publicHealthCaseLastChgTime
+      addUserId
+      lastChangeUserId
+      currProcessStateCd
+      investigationStatusCd
+      moodCd
+      notificationLocalId
+      notificationAddTime
+      notificationRecordStatusCd
+      notificationLastChgTime
+      personParticipations {
+        actUid
+        localId
+        typeCd
+        entityId
+        subjectClassCd
+        participationRecordStatus
+        typeDescTxt
+        participationLastChangeTime
+        firstName
+        lastName
+        birthTime
+        currSexCd
+        personCd
+        personParentUid
+        personRecordStatus
+        personLastChangeTime
+      }
+      organizationParticipations {
+        actUid
+        typeCd
+        entityId
+        subjectClassCd
+        typeDescTxt
+        participationRecordStatus
+        participationLastChangeTime
+        name
+        organizationLastChangeTime
+      }
+      actIds {
+        id
+        recordStatus
+        actIdSeq
+        rootExtensionTxt
+        typeCd
+        lastChangeTime
+      }
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindOpenInvestigationsForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindOpenInvestigationsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindOpenInvestigationsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindOpenInvestigationsForPatientQuery({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindOpenInvestigationsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>(FindOpenInvestigationsForPatientDocument, options);
+      }
+export function useFindOpenInvestigationsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>(FindOpenInvestigationsForPatientDocument, options);
+        }
+export type FindOpenInvestigationsForPatientQueryHookResult = ReturnType<typeof useFindOpenInvestigationsForPatientQuery>;
+export type FindOpenInvestigationsForPatientLazyQueryHookResult = ReturnType<typeof useFindOpenInvestigationsForPatientLazyQuery>;
+export type FindOpenInvestigationsForPatientQueryResult = Apollo.QueryResult<FindOpenInvestigationsForPatientQuery, FindOpenInvestigationsForPatientQueryVariables>;
 export const FindOrganizationByIdDocument = gql`
     query findOrganizationById($id: ID!) {
   findOrganizationById(id: $id) {

@@ -798,10 +798,17 @@ type Query {
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
 
     findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
+    findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
 }
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
+}
+
+type UpdateResult {
+    updatedPerson: Person
+    requestId: String
 }
 
 type SnomedCodedResults {
