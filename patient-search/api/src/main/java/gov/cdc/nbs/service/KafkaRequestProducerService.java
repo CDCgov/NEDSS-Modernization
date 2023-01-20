@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaRequestProducerService {
 
 	@Autowired
-	private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopTemplate;
+	private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
 
 	@Autowired
 	private KafkaTemplate<String, PatientUpdateRequest> kafkaPatientUpdateTemplate;
@@ -29,7 +29,7 @@ public class KafkaRequestProducerService {
 	private String patientUpdateTopic;
 
 	public void requestEnvelope(EnvelopeRequest kafkaMessage) {
-		send(kafkaEnvelopTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
+		send(kafkaEnvelopeTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
 
 	}
 
