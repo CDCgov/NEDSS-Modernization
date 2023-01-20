@@ -83,7 +83,7 @@ public class RedirectSteps {
     public void i_send_a_request_to_the_nbs_simple_search() throws Exception {
         response = mvc
                 .perform(
-                        MockMvcRequestBuilders.post("/nbs/HomePage.do")
+                        MockMvcRequestBuilders.post("/nbs/redirect/simpleSearch")
                                 .cookie(new Cookie("JSESSIONID", sessionId)))
                 .andReturn().getResponse();
     }
@@ -99,7 +99,7 @@ public class RedirectSteps {
     @Given("I send a search request to the NBS simple search")
     public void I_send_a_search_request_to_the_nbs_simple_search() throws Exception {
         response = mvc.perform(MockMvcRequestBuilders
-                .post("/nbs/HomePage.do")
+                .post("/nbs/redirect/simpleSearch")
                 .param("patientSearchVO.lastName", "Doe")
                 .param("patientSearchVO.firstName", "John")
                 .param("patientSearchVO.birthTime", "01/01/2000")
@@ -130,7 +130,7 @@ public class RedirectSteps {
     @Given("I navigate to the NBS advanced search page")
     public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
         response = mvc.perform(
-                MockMvcRequestBuilders.get("/nbs/MyTaskList1.do")
+                MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
                         .cookie(new Cookie("JSESSIONID", sessionId)))
                 .andReturn().getResponse();
     }

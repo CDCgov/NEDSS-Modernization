@@ -14,6 +14,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,7 @@ import org.springframework.util.concurrent.SettableListenableFuture;
 
 import gov.cdc.nbs.Application;
 import gov.cdc.nbs.message.EnvelopeRequest;
+import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.service.KafkaRequestProducerService;
 
@@ -35,10 +37,18 @@ import gov.cdc.nbs.service.KafkaRequestProducerService;
 class KafkaProducerTest {
 
 	@Mock
-	private KafkaTemplate<String, EnvelopeRequest> kafkaTemplate;
+	private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
+
+	@Mock
+	private KafkaTemplate<String, PatientUpdateRequest> KafkaPatientUpdateTemplate;
 
 	@InjectMocks
 	private KafkaRequestProducerService producer;
+
+	public KafkaProducerTest() {
+		MockitoAnnotations.openMocks(this);
+		producer = new KafkaRequestProducerService();
+	}
 
 	@Test
 	void testPatientSearchEvent() {
@@ -50,17 +60,17 @@ class KafkaProducerTest {
 
 		EnvelopeRequest message = new EnvelopeRequest("Request-ID", msgVariables);
 		ListenableFuture<SendResult<String, EnvelopeRequest>> future = new SettableListenableFuture<SendResult<String, EnvelopeRequest>>();
-		Mockito.when(kafkaTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
+		Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
 		producer.requestEnvelope(message);
 
 		ArgumentCaptor<EnvelopeRequest> envelopeEventArgumentCaptor = ArgumentCaptor.forClass(EnvelopeRequest.class);
-		verify(kafkaTemplate).send(eq(null), eq("Request-ID"), envelopeEventArgumentCaptor.capture());
+		verify(kafkaEnvelopeTemplate).send(eq(null), eq("Request-ID"), envelopeEventArgumentCaptor.capture());
 
 		EnvelopeRequest actualRecord = envelopeEventArgumentCaptor.getValue();
 		assertThat(actualRecord.getRequestId()).isEqualTo("Request-ID");
 		assertThat(actualRecord.getVars().get(0).getValue()).isEqualTo("Hello World.");
 
-		verifyNoMoreInteractions(kafkaTemplate);
+		verifyNoMoreInteractions(kafkaEnvelopeTemplate);
 	}
 }
