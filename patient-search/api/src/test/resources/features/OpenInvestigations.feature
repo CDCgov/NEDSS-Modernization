@@ -2,7 +2,7 @@
 Feature: Open Investigations
 
   Background: 
-    Given I have the authorities: "VIEW-PATIENT-FILE,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
+    Given I have the authorities: "VIEWWORKUP-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
     And there are 2 patients
 
   Scenario: I can retrieve open investigations for a particular patient
