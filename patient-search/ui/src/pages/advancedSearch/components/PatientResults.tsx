@@ -1,8 +1,11 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
+import { useNavigate } from 'react-router';
+import { EncryptionControllerService } from '../../../generated';
+import { UserContext } from '../../../providers/UserContext';
 
 type SearchItemsProps = {
     data: any;
@@ -23,6 +26,8 @@ export const PatientResults = ({
 
     const [num, setNum] = useState<any>([]);
     const [email, setEmail] = useState<any>('');
+    const navigate = useNavigate();
+    const { state } = useContext(UserContext);
 
     useEffect(() => {
         const newArrOfNumbers: any = [];
@@ -188,8 +193,20 @@ export const PatientResults = ({
                                         <Grid col={12} style={styleObjHeight(index)} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                                             <p
+                                                onClick={async () => {
+                                                    const encryptedFilter =
+                                                        await EncryptionControllerService.encryptUsingPost({
+                                                            authorization: `Bearer ${state.getToken()}`,
+                                                            object: item
+                                                        });
+                                                    navigate(
+                                                        `/patient-profile/${item.localId}?data=${encodeURIComponent(
+                                                            encryptedFilter.value
+                                                        )}`
+                                                    );
+                                                }}
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                                                style={{ wordBreak: 'break-word' }}>
+                                                style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                                                 {item.lastNm}, {item.firstNm}
                                             </p>
                                         </Grid>
