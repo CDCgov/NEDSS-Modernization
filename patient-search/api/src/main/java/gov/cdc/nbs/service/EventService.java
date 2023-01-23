@@ -107,9 +107,7 @@ public class EventService {
     private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Lab reports are secured by Program Area and Jurisdiction
-        var userDetails = SecurityUtil.getUserDetails();
-        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, LabReport.PROGRAM_JURISDICTION_OID, validOids);
+        addProgramAreaJurisdictionQuery(builder, LabReport.PROGRAM_JURISDICTION_OID);
 
         // OBS only for lab reports
         builder.must(QueryBuilders.matchQuery(LabReport.CLASS_CD, "OBS"));
@@ -343,9 +341,7 @@ public class EventService {
     private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Investigations are secured by Program Area and Jurisdiction
-        var userDetails = SecurityUtil.getUserDetails();
-        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, Investigation.PROGRAM_JURISDICTION_OID, validOids);
+        addProgramAreaJurisdictionQuery(builder, Investigation.PROGRAM_JURISDICTION_OID);
 
         // investigation type only
         builder.must(QueryBuilders.matchQuery(Investigation.CASE_TYPE_CD, "I"));
@@ -717,9 +713,7 @@ public class EventService {
 
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Lab reports are secured by Program Area and Jurisdiction
-        var userDetails = SecurityUtil.getUserDetails();
-        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, LabReport.PROGRAM_JURISDICTION_OID, validOids);
+        addProgramAreaJurisdictionQuery(builder, LabReport.PROGRAM_JURISDICTION_OID);
 
         // Patient id - must match parent uid as this is the Master Patient Record Id
         var patientIdQuery = QueryBuilders.boolQuery();
@@ -736,9 +730,47 @@ public class EventService {
 
         var query = new NativeSearchQueryBuilder()
                 .withQuery(builder)
-                .withSorts(buildInvestigationSort(pageable))
+                .withSorts(buildLabReportSort(pageable))
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
         return performSearch(query, LabReport.class);
+    }
+
+    public Page<Investigation> findOpenInvestigationsForPatient(Long patientId, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+
+        // Investigations are secured by Program Area and Jurisdiction
+        addProgramAreaJurisdictionQuery(builder, Investigation.PROGRAM_JURISDICTION_OID);
+
+        // Patient id - must match parent uid as this is the Master Patient Record Id
+        var patientIdQuery = QueryBuilders.boolQuery();
+        patientIdQuery.must(
+                QueryBuilders.matchQuery(
+                        Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                        patientId));
+
+        builder.must(
+                QueryBuilders.nestedQuery(Investigation.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
+
+        // Status is 'O'
+        builder.must(QueryBuilders.matchQuery(Investigation.INVESTIGATION_STATUS_CD, "O"));
+
+        var query = new NativeSearchQueryBuilder()
+                .withQuery(builder)
+                .withSorts(buildInvestigationSort(pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
+        return performSearch(query, Investigation.class);
+    }
+
+    /**
+     * Adds a query to only return documents that the user has access to based on
+     * the users program area and jurisdiction access
+     */
+    private void addProgramAreaJurisdictionQuery(BoolQueryBuilder builder, String programJurisdictionField) {
+        var userDetails = SecurityUtil.getUserDetails();
+        var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+        addListQuery(builder, programJurisdictionField, validOids);
     }
 }

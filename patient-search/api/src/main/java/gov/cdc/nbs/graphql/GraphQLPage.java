@@ -26,6 +26,11 @@ public class GraphQLPage {
         this.pageNumber = pageNumber;
     }
 
+    public GraphQLPage(int pageSize) {
+        this.pageSize = pageSize;
+        this.pageNumber = 0;
+    }
+
     public int getOffset() {
         return this.getPageNumber() * this.getPageSize();
     }

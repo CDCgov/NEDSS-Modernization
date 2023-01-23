@@ -139,7 +139,9 @@ query findPatientById($id: ID!) {
         asOfDateMorbidity
         asOfDateSex
         electronicInd
-        personParentUid
+        personParentUid{
+            id
+        }
         dedupMatchInd
         groupNbr
         groupTime

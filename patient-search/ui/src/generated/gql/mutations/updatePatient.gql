@@ -1,6 +1,6 @@
-query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: SortablePage) {
-    findPatientsByOrganizationFilter(filter: $filter, page: $page){
-        content{
+mutation updatePatient($id: ID!, $patient: PersonInput!) {
+    updatePatient(id: $id, patient: $patient){
+        updatedPerson{
             id
             nbsEntity{
                 entityLocatorParticipations{
@@ -153,6 +153,6 @@ query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Sort
             ethnicUnkReasonCd
             sexUnkReasonCd
         }
-        total
+        requestId
     }
 }
