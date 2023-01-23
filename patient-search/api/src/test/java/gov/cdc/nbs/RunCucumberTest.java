@@ -58,16 +58,22 @@ public class RunCucumberTest {
     }
 
     @Container
-    private static final ElasticsearchContainer elasticsearchContainer;
+    public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;
 
     static {
-        elasticsearchContainer = new NbsElasticsearchContainer();
-        elasticsearchContainer.start();
+        // instantiate docker once for all tests and test the instance itself in ElasticSearchTest
+        ELASTICSEARCH_CONTAINER = new NbsElasticsearchContainer();
+        try {
+            ELASTICSEARCH_CONTAINER.startWithPlugins();
+        }
+        catch (Exception e) {       
+            throw new RuntimeException("Failed to start NbsElasticsearchContainer with plugins");  
+        }
     }
 
     @DynamicPropertySource
     public static void overrideProps(DynamicPropertyRegistry registry) {
-        registry.add("nbs.elasticsearch.url", () -> "http://" + elasticsearchContainer.getHttpHostAddress());
+        registry.add("nbs.elasticsearch.url", () -> "http://" + ELASTICSEARCH_CONTAINER.getHttpHostAddress());
     }
 
 }
