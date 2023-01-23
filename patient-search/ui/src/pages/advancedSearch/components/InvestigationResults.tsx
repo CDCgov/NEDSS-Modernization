@@ -93,8 +93,19 @@ export const InvestigationResults = ({
                 <Grid col={12} className="margin-bottom-2">
                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                     <p
+                        onClick={async () => {
+                            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+                                authorization: `Bearer ${state.getToken()}`,
+                                object: investigation
+                            });
+                            navigate(
+                                `/patient-profile/${investigation.localId}?data=${encodeURIComponent(
+                                    encryptedFilter.value
+                                )}`
+                            );
+                        }}
                         className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                        style={{ wordBreak: 'break-word' }}>
+                        style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                         {name}
                     </p>
                 </Grid>

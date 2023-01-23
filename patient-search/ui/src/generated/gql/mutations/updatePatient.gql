@@ -140,9 +140,7 @@ mutation updatePatient($id: ID!, $patient: PersonInput!) {
             asOfDateMorbidity
             asOfDateSex
             electronicInd
-            personParentUid{
-                id
-            }
+            personParentUid
             dedupMatchInd
             groupNbr
             groupTime

@@ -2,7 +2,7 @@ query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Sort
     findPatientsByOrganizationFilter(filter: $filter, page: $page){
         content{
             id
-            NBSEntity{
+            nbsEntity{
                 entityLocatorParticipations{
                     classCd
                     locator{
