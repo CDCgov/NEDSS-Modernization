@@ -26,3 +26,4 @@ module.exports.findSnomedCodedResults = fs.readFileSync(path.join(__dirname, 'fi
 module.exports.findInvestigationsByFilter = fs.readFileSync(path.join(__dirname, 'findInvestigationsByFilter.gql'), 'utf8');
 module.exports.findLabReportsByFilter = fs.readFileSync(path.join(__dirname, 'findLabReportsByFilter.gql'), 'utf8');
 module.exports.findDocumentsRequiringReviewForPatient = fs.readFileSync(path.join(__dirname, 'findDocumentsRequiringReviewForPatient.gql'), 'utf8');
+module.exports.findOpenInvestigationsForPatient = fs.readFileSync(path.join(__dirname, 'findOpenInvestigationsForPatient.gql'), 'utf8');
