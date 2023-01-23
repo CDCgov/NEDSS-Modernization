@@ -41,19 +41,30 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @Transactional
 @Rollback(false)
 @Testcontainers
-class RunCucumberTest {
+public class RunCucumberTest {
 
     @Container
-    private static final ElasticsearchContainer elasticsearchContainer;
+    public static final ElasticsearchContainer ELASTICSEARCH_CONTAINER;
 
     static {
-        elasticsearchContainer = new NbsElasticsearchContainer();
-        elasticsearchContainer.start();
+        // instantiate docker once for all tests and test the instance itself in ElasticSearchTest
+        ELASTICSEARCH_CONTAINER = new NbsElasticsearchContainer();
+        ELASTICSEARCH_CONTAINER.start();
+        try {
+            ELASTICSEARCH_CONTAINER.execInContainer(
+                "/usr/share/elasticsearch/bin/elasticsearch-plugin",
+                "install",
+                "analysis-phonetic"
+            );
+        }
+        catch (Exception e) {       
+            throw new RuntimeException("Failed to install ElasticSearch plugin");  
+        }
     }
 
     @DynamicPropertySource
     public static void overrideProps(DynamicPropertyRegistry registry) {
-        registry.add("nbs.elasticsearch.url", () -> "http://" + elasticsearchContainer.getHttpHostAddress());
+        registry.add("nbs.elasticsearch.url", () -> "http://" + ELASTICSEARCH_CONTAINER.getHttpHostAddress());
     }
 
 }
