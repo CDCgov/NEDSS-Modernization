@@ -1,13 +1,16 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
+import React from 'react';
 
 type TableContentProps = {
     tableHeader?: string;
+    tableSubHeader?: React.ReactNode | React.ReactNode[] | string;
     tableHead: { name: string; sortable: boolean }[];
     tableBody: any[];
     isPagination?: boolean;
     totalResults?: number;
     currentPage?: number;
     handleNext?: (page: number) => void;
+    buttons?: React.ReactNode | React.ReactNode[];
 };
 
 export const TableComponent = ({
@@ -17,12 +20,18 @@ export const TableComponent = ({
     isPagination = false,
     totalResults = 20,
     currentPage = 1,
-    handleNext
+    handleNext,
+    buttons,
+    tableSubHeader
 }: TableContentProps) => {
     return (
         <div className="">
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
-                <p className="font-sans-lg text-bold margin-0">{tableHeader}</p>
+                <p className="font-sans-lg text-bold margin-0">
+                    {tableHeader}
+                    {tableSubHeader}
+                </p>
+                {buttons}
             </div>
             <Table bordered={false} fullWidth>
                 <thead>
@@ -42,25 +51,31 @@ export const TableComponent = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {tableBody.map((item: any, index) => (
-                        <tr key={index}>
-                            {item.tableDetails.map((td: any, ind: number) =>
-                                td.title ? (
-                                    <td key={ind}>{td.title}</td>
-                                ) : (
-                                    <td
-                                        key={ind}
-                                        style={{ color: '#747474', fontStyle: 'italic' }}
-                                        className="font-sans-md">
-                                        No data
-                                    </td>
-                                )
-                            )}
+                    {tableBody?.length > 0 ? (
+                        tableBody.map((item: any, index) => (
+                            <tr key={index}>
+                                {item.tableDetails.map((td: any, ind: number) =>
+                                    td.title ? (
+                                        <td key={ind}>{td.title}</td>
+                                    ) : (
+                                        <td
+                                            key={ind}
+                                            style={{ color: '#747474', fontStyle: 'italic' }}
+                                            className="font-sans-md">
+                                            No data
+                                        </td>
+                                    )
+                                )}
+                            </tr>
+                        ))
+                    ) : (
+                        <tr className="text-center" style={{ color: '#747474', fontStyle: 'italic' }}>
+                            No entries
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </Table>
-            {isPagination && (
+            {isPagination && tableBody.length > 9 && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
                     totalPages={Math.ceil(totalResults / 10)}
