@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+#exit on failure
+set -e
 
 SCRIPT_DIR=$(dirname $(readlink -f $0))
-nifi_version="1.16.3"
+nifi_version="1.19.0"
 
 image_tag="apache/nifi:${nifi_version}"
 

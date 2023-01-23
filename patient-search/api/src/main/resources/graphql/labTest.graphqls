@@ -1,0 +1,10 @@
+type LabTest {
+    id: LabTestId
+    labTestDescTxt: String
+    organismResultTestInd: String
+}
+
+type LabTestId {
+    labTestCd: String
+    laboratoryId: String
+}

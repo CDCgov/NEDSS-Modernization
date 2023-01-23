@@ -12,13 +12,16 @@ import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@Slf4j
 @SuppressWarnings("deprecation")
 public class ElasticSearchConfig {
 
     @Value("${nbs.elasticsearch.url:http://localhost:9200}")
     private String elasticSearchUrl;
-    public static final String DATE_PATTERN = "uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS";
+    public static final String DATE_PATTERN = "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS";
 
     /**
      * RestHighLevelClient is deprecated but no viable alternatives exist for
@@ -32,8 +35,10 @@ public class ElasticSearchConfig {
      * 
      */
     @Bean
+    @SuppressWarnings("squid:S2095") // Sonar cube false positive - resource should be closed
     public RestHighLevelClient client() throws MalformedURLException {
         URL url = new URL(elasticSearchUrl);
+        log.info("Connecting to Elasticsearch with url: " + url);
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(url.getHost() + ":" + url.getPort())
                 .build();

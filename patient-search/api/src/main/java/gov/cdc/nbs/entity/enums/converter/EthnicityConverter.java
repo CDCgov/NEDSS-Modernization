@@ -6,6 +6,7 @@ import javax.persistence.Converter;
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
 import gov.cdc.nbs.entity.enums.Ethnicity;
+import gov.cdc.nbs.exception.ConversionException;
 
 @Converter
 public class EthnicityConverter implements AttributeConverter<Ethnicity, String>, PropertyValueConverter {
@@ -56,7 +57,7 @@ public class EthnicityConverter implements AttributeConverter<Ethnicity, String>
             case UNKNOWN:
                 return "UNK";
             default:
-                throw new RuntimeException("Invalid ethnicity supplied: " + ethnicity);
+                throw new ConversionException("Invalid ethnicity supplied: " + ethnicity);
         }
     }
 
@@ -77,7 +78,7 @@ public class EthnicityConverter implements AttributeConverter<Ethnicity, String>
             case "Y":
                 return Ethnicity.HISPANIC_OR_LATINO;
             default:
-                throw new RuntimeException("Invalid ethnicity value supplied: " + value);
+                throw new ConversionException("Invalid ethnicity value supplied: " + value);
         }
     }
 

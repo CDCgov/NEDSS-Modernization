@@ -1,51 +1,96 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { EventSearch } from '../../components/EventSearch/EventSearch';
-import { SimpleSearch } from '../../components/SimpleSearch';
+import { Config } from '../../config';
+
 import {
-    EventFilter,
-    EventType,
+    FindInvestigationsByFilterQuery,
+    FindLabReportsByFilterQuery,
+    FindPatientsByFilterQuery,
+    Investigation,
+    InvestigationFilter,
+    LabReport,
+    LabReportFilter,
     PersonFilter,
-    PersonSortField,
     SortDirection,
-    useFindPatientsByEventLazyQuery,
+    SortField,
+    useFindInvestigationsByFilterLazyQuery,
+    useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
 import { UserContext } from '../../providers/UserContext';
-import './AdvancedSearch.scss';
-import Chip from './Chip';
-import { SearchItems } from './SearchItems';
+import {
+    downloadInvestigationSearchResultCsv,
+    downloadInvestigationSearchResultPdf,
+    downloadLabReportSearchResultCsv,
+    downloadLabReportSearchResultPdf
+} from '../../utils/ExportUtil';
 import { convertCamelCase } from '../../utils/util';
+import './AdvancedSearch.scss';
+import Chip from './components/Chip';
+import { EventSearch } from './components/eventSearch/EventSearch';
+import { InvestigationResults } from './components/InvestigationResults';
+import { LabReportResults } from './components/LabReportResults';
+import { PatientResults } from './components/PatientResults';
+import { PatientSearch } from './components/patientSearch/PatientSearch';
+
+export enum SEARCH_TYPE {
+    PERSON = 'search',
+    INVESTIGATION = 'investigation',
+    LAB_REPORT = 'labReport'
+}
+
+enum ACTIVE_TAB {
+    PERSON = 'person',
+    EVENT = 'event'
+}
+
 export const AdvancedSearch = () => {
-    const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
+    // shared variables
+    const NBS_URL = Config.nbsUrl;
     const { state } = useContext(UserContext);
     const navigate = useNavigate();
-    const [searchType, setSearchType] = useState<string>('search');
-    const [sort, setSort] = useState<{ sortDirection: SortDirection; sortField: PersonSortField }>({
-        sortDirection: SortDirection.Asc,
-        sortField: PersonSortField.LastNm
-    });
-    const [initialSearch, setInitialSearch] = useState<boolean>(false);
+    const [activeTab, setActiveTab] = useState<'person' | 'event'>('person');
+    const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
+    const [validSearch, setValidSearch] = useState<boolean>(true);
     const [searchParams] = useSearchParams();
-    const [formData, setFormData] = useState<PersonFilter | EventFilter>();
+    const [submitted, setSubmitted] = useState(false);
+    const wrapperRef = useRef<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [sort, setSort] = useState<{ sortDirection: SortDirection; sortField: SortField }>({
+        sortDirection: SortDirection.Asc,
+        sortField: SortField.LastNm
+    });
+    const PAGE_SIZE = 25;
+
+    // patient search variables
+    const [personFilter, setPersonFilter] = useState<PersonFilter>();
+    const addPatiendRef = useRef<any>(null);
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
-    const [fetch, { data, loading }] = useFindPatientsByFilterLazyQuery({
-        onCompleted: handleSearchResults
-    });
-    const [getEventSearch, { data: eventData }] = useFindPatientsByEventLazyQuery({
-        onCompleted: handleSearchResults
+    const [patientData, setPatientData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']>();
+    const [findPatients] = useFindPatientsByFilterLazyQuery({
+        onCompleted: handlePatientSearchResults
     });
 
-    const [submitted, setSubmitted] = useState(false);
-    const wrapperRef = useRef<any>(null);
-    const addPatiendRef = useRef<any>(null);
-    const PAGE_SIZE = 25;
+    // investigation search variables
+    const [investigationData, setInvestigationData] =
+        useState<FindInvestigationsByFilterQuery['findInvestigationsByFilter']>();
+    const [investigationFilter, setInvestigationFilter] = useState<InvestigationFilter>();
+    const [findInvestigations] = useFindInvestigationsByFilterLazyQuery({
+        onCompleted: handleInvestigationSearchResults
+    });
+
+    // lab report search variables
+    const [labReportData, setLabReportData] = useState<FindLabReportsByFilterQuery['findLabReportsByFilter']>();
+    const [labReportFilter, setLabReportFilter] = useState<LabReportFilter>();
+    const [findLabReports] = useFindLabReportsByFilterLazyQuery({
+        onCompleted: handleLabReportSearchResults
+    });
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -65,18 +110,69 @@ export const AdvancedSearch = () => {
         };
     }, [wrapperRef]);
 
-    const handleFilterTags = (filter: any) => {
-        console.log(filter);
+    /**
+     * Handles extracting and submitting the query from the q parameter,
+     * this object could be a PersonFilter, InvestigationFilter or LabReportFilter
+     */
+    useEffect(() => {
+        const queryParam = searchParams?.get('q');
+        const type = searchParams?.get('type');
+        if (!queryParam || !state.isLoggedIn) {
+            // no query parameters specified or user is not logged in
+            setActiveTab('person');
+            setResultsChip([]);
+            console.log('asd');
+            setValidSearch(false);
+            setLoading(false);
+            return;
+        }
+
+        // decrypt the filter parameter
+        EncryptionControllerService.decryptUsingPost({
+            encryptedString: queryParam,
+            authorization: `Bearer ${state.getToken()}`
+        }).then(async (filter: any) => {
+            if (isEmpty(filter)) {
+                // empty filter, clear content
+                setResultsChip([]);
+                console.log('asd');
+                setValidSearch(false);
+                setSubmitted(true);
+            }
+            // perform the search based on the 'type' parameter
+            switch (type) {
+                case SEARCH_TYPE.PERSON:
+                    performPatientSearch(filter);
+                    break;
+                case SEARCH_TYPE.INVESTIGATION:
+                    performInvestigationSearch(filter);
+                    break;
+                case SEARCH_TYPE.LAB_REPORT:
+                    performLabReportSearch(filter);
+                    break;
+                default:
+                    performPatientSearch(filter);
+            }
+        });
+    }, [searchParams, state.isLoggedIn, sort, currentPage]);
+
+    const handleEventTags = (filter: any) => {
         const chips: any = [];
         if (filter) {
-            Object.entries(filter.investigationFilter as any).map((re: any) => {
+            Object.entries(filter as any).map((re: any) => {
                 if (Array.isArray(re[1])) {
                     re[1].map((item: any) => {
                         chips.push({ name: convertCamelCase(re[0]), value: item });
                     });
                 } else if (re[1] && typeof re[1] === 'object' && re[1].constructor === Object) {
                     Object.entries(re[1] as any).map((obj: any) => {
-                        chips.push({ name: convertCamelCase(obj[0]), value: obj[1] });
+                        if (obj[0] !== 'includeUnassigned') {
+                            if (obj[0] === 'statusList') {
+                                chips.push({ name: convertCamelCase(re[0]), value: obj[1] });
+                            } else {
+                                chips.push({ name: convertCamelCase(obj[0]), value: obj[1] });
+                            }
+                        }
                     });
                 } else {
                     chips.push({ name: convertCamelCase(re[0]), value: re[1] });
@@ -86,7 +182,7 @@ export const AdvancedSearch = () => {
         }
     };
 
-    const handleTags = (filter: any) => {
+    const handlePersonTags = (filter: any) => {
         const chips: any = [];
         if (filter) {
             Object.entries(filter as any).map((re: any) => {
@@ -128,78 +224,87 @@ export const AdvancedSearch = () => {
         setResultsChip(chips);
     };
 
-    /**
-     * Handles extracting and submitting the query from the q parameter,
-     * this object could either be PersonFilter or EventFilter
-     */
-    useEffect(() => {
-        const queryParam = searchParams?.get('q');
-        if (queryParam && state.isLoggedIn) {
-            EncryptionControllerService.decryptUsingPost({
-                encryptedString: queryParam,
-                authorization: `Bearer ${state.getToken()}`
-            }).then(async (filter: PersonFilter | EventFilter) => {
-                // if filter has eventType property, then it is an EventFilter
-                if ((filter as EventFilter).eventType) {
-                    console.log(filter, 'filter');
-                    filter = filter as EventFilter;
-                    getEventSearch({
-                        variables: {
-                            filter,
-                            page: {
-                                pageNumber: currentPage - 1,
-                                pageSize: PAGE_SIZE,
-                                ...sort
-                            }
-                        }
-                    });
-                    setSearchType('event');
-                    setFormData(filter);
-                    handleFilterTags(filter);
-                } else {
-                    filter = filter as PersonFilter;
-                    if (!isEmpty(filter)) {
-                        // JSON.stringify(filter) !== JSON.stringify(formData) &&
-                        fetch({
-                            variables: {
-                                filter: filter,
-                                page: {
-                                    pageNumber: currentPage - 1,
-                                    pageSize: PAGE_SIZE,
-                                    ...sort
-                                }
-                            }
-                        });
-                        handleTags(filter);
-                        setFormData(filter);
-                    } else {
-                        // empty filter, clear content
-                        setResultsChip([]);
-                        setInitialSearch(false);
-                        setSubmitted(true);
-                    }
+    const performPatientSearch = (filter: PersonFilter) => {
+        setLoading(true);
+        findPatients({
+            variables: {
+                filter: filter,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: PAGE_SIZE,
+                    ...sort
                 }
-            });
-        } else {
-            setInitialSearch(false);
-        }
-    }, [searchParams, state.isLoggedIn, sort, currentPage]);
+            }
+        });
+        setLastSearchType(SEARCH_TYPE.PERSON);
+        setActiveTab(ACTIVE_TAB.PERSON);
+        handlePersonTags(filter);
+        setPersonFilter(filter);
+    };
 
-    useEffect(() => {
-        if (submitted) {
-            navigate({ pathname: '/advanced-search', search: `submitted=${true}` });
-        }
-    }, [submitted]);
+    const performInvestigationSearch = (filter: InvestigationFilter) => {
+        setLoading(true);
+        findInvestigations({
+            variables: {
+                filter: filter,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: PAGE_SIZE,
+                    ...sort
+                }
+            }
+        });
+        setLastSearchType(SEARCH_TYPE.INVESTIGATION);
+        setActiveTab(ACTIVE_TAB.EVENT);
+        handleEventTags(filter);
+        setLabReportFilter(undefined);
+        setInvestigationFilter(filter);
+    };
 
-    useEffect(() => {
-        if (searchParams?.get('submitted')) {
-            setSubmitted(true);
-        }
-        searchParams?.get('eventType') && setSearchType('event');
-    }, [searchParams]);
+    const performLabReportSearch = (filter: LabReportFilter) => {
+        setLoading(true);
+        findLabReports({
+            variables: {
+                filter: filter,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: PAGE_SIZE,
+                    ...sort
+                }
+            }
+        });
+        setLastSearchType(SEARCH_TYPE.LAB_REPORT);
+        setActiveTab(ACTIVE_TAB.EVENT);
+        handleEventTags(filter);
+        setInvestigationFilter(undefined);
+        setLabReportFilter(filter);
+    };
 
-    function handleSearchResults() {
-        setInitialSearch(true);
+    function handlePatientSearchResults(data: FindPatientsByFilterQuery) {
+        // Using a timeout fixes an issue where the apollo cache fails to update the data
+        setTimeout(() => {
+            setPatientData(data.findPatientsByFilter);
+        }, 10);
+        setLoading(false);
+        setValidSearch(true);
+    }
+
+    function handleInvestigationSearchResults(data: FindInvestigationsByFilterQuery) {
+        // Using a timeout fixes an issue where the apollo cache fails to update the data
+        setTimeout(() => {
+            setInvestigationData(data.findInvestigationsByFilter);
+        }, 10);
+        setLoading(false);
+        setValidSearch(true);
+    }
+
+    function handleLabReportSearchResults(data: FindLabReportsByFilterQuery) {
+        // Using a timeout fixes an issue where the apollo cache fails to update the data
+        setTimeout(() => {
+            setLabReportData(data.findLabReportsByFilter);
+        }, 10);
+        setLoading(false);
+        setValidSearch(true);
     }
 
     function isEmpty(obj: any) {
@@ -211,7 +316,7 @@ export const AdvancedSearch = () => {
 
     // handles submit from Person Search and Event Search,
     // it simply encrypts the filter object and sets it as the query parameter
-    const handleSubmit = async (filter: PersonFilter | EventFilter) => {
+    const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
         if (!isEmpty(filter)) {
             // send filter for encryption
@@ -219,10 +324,10 @@ export const AdvancedSearch = () => {
                 authorization: `Bearer ${state.getToken()}`,
                 object: filter
             });
-            setInitialSearch(true);
+            setValidSearch(true);
 
             // URI encode encrypted filter
-            search = `?q=${encodeURIComponent(encryptedFilter.value)}`;
+            search = `?q=${encodeURIComponent(encryptedFilter.value)}&type=${type}`;
             navigate({
                 pathname: '/advanced-search',
                 search
@@ -230,75 +335,332 @@ export const AdvancedSearch = () => {
             setCurrentPage(1);
             setSubmitted(false);
         } else {
+            setLoading(false);
+            console.log('asd');
+            setValidSearch(false);
             setSubmitted(true);
         }
     };
 
-    const handleClearAll = () => {
-        navigate('/');
-    };
-
-    const handleChipClose = (value: string) => {
-        let tempFormData: PersonFilter = formData as PersonFilter;
-        let tempEventFormData: EventFilter = formData as EventFilter;
-        setResultsChip(resultsChip.filter((c) => c.name != value));
-        console.log(formData);
-        console.log(value);
-        if (formData) {
-            switch (value) {
-                case 'last':
-                    tempFormData = { ...tempFormData, lastName: undefined };
-                    break;
-                case 'first':
-                    tempFormData = { ...tempFormData, firstName: undefined };
-                    break;
-                case 'sex':
-                    tempFormData = { ...tempFormData, gender: undefined };
-                    break;
-                case 'dob':
-                    tempFormData = { ...tempFormData, dateOfBirth: undefined };
-                    break;
-                case 'address':
-                    tempFormData = { ...tempFormData, address: undefined };
-                    break;
-                case 'city':
-                    tempFormData = { ...tempFormData, city: undefined };
-                    break;
-                case 'state':
-                    tempFormData = { ...tempFormData, state: undefined };
-                    break;
-                case 'zip':
-                    tempFormData = { ...tempFormData, zip: undefined };
-                    break;
-                case 'phoneNumber':
-                    tempFormData = { ...tempFormData, phoneNumber: undefined };
-                    break;
-                case 'email':
-                    tempFormData = { ...tempFormData, email: undefined };
-                    break;
-                case 'race':
-                    tempFormData = { ...tempFormData, race: undefined };
-                    break;
-                case 'ethnicity':
-                    tempFormData = { ...tempFormData, ethnicity: undefined };
-                    break;
-                case 'ID Number':
-                    tempFormData = { ...tempFormData, identification: undefined };
-                    break;
-                case 'ID Type':
-                    tempFormData = { ...tempFormData, identification: undefined };
-                    break;
-                case 'Jurisdictions':
-                    tempEventFormData = { ...tempEventFormData, investigationFilter: { jurisdictions: undefined } };
-                    break;
-            }
-            handleSubmit(tempEventFormData?.eventType === EventType.Investigation ? tempEventFormData : tempFormData);
-            resultsChip.length === 1 || ((value === 'ID Number' || value === 'ID Type') && navigate('/'));
+    // Generates a CSV of the results
+    const handleExportClick = () => {
+        const token = state.getToken();
+        switch (lastSearchType) {
+            case SEARCH_TYPE.INVESTIGATION:
+                if (investigationFilter && token) {
+                    downloadInvestigationSearchResultCsv(investigationFilter, token);
+                }
+                break;
+            case SEARCH_TYPE.LAB_REPORT:
+                if (labReportFilter && token) {
+                    downloadLabReportSearchResultCsv(labReportFilter, token);
+                }
+                break;
         }
     };
 
-    const handleSort = (sortDirection: SortDirection, sortField: PersonSortField) => {
-        setSort({ sortDirection, sortField });
+    // Generates a PDF of the results
+    const handlePrintClick = () => {
+        const token = state.getToken();
+        switch (lastSearchType) {
+            case SEARCH_TYPE.INVESTIGATION:
+                if (investigationFilter && token) {
+                    downloadInvestigationSearchResultPdf(investigationFilter, token);
+                }
+                break;
+            case SEARCH_TYPE.LAB_REPORT:
+                if (labReportFilter && token) {
+                    downloadLabReportSearchResultPdf(labReportFilter, token);
+                }
+                break;
+        }
+    };
+
+    const handleClearAll = () => {
+        setPatientData(undefined);
+        setPersonFilter({});
+        setInvestigationData(undefined);
+        setInvestigationFilter({});
+        setLabReportData(undefined);
+        setLabReportFilter({});
+        setSubmitted(false);
+        console.log('asd');
+        setValidSearch(false);
+        setLastSearchType(undefined);
+        navigate('/advanced-search');
+    };
+
+    const handleChipClose = (name: string, value: string) => {
+        switch (lastSearchType) {
+            case SEARCH_TYPE.PERSON:
+                handlePersonChipClose(name, value);
+                return;
+            case SEARCH_TYPE.INVESTIGATION:
+                handleInvestigationChipClose(name, value);
+                return;
+            case SEARCH_TYPE.LAB_REPORT:
+                handleLabReportChipClose(name, value);
+                return;
+        }
+    };
+
+    const handleLabReportChipClose = (name: string, value: string) => {
+        let tempLabReportFilter = labReportFilter as LabReportFilter;
+        // remove the closed chip from the display
+        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
+        setResultsChip(newChips);
+
+        // if the last chip was removed, reset search
+        if (newChips.length === 0) {
+            handleClearAll();
+            return;
+        }
+
+        // remove the filter criteria associated with closed chip and resubmit search
+        switch (name.trim()) {
+            case 'Program Areas':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    programAreas: tempLabReportFilter?.programAreas?.filter((pa) => pa !== value)
+                };
+                break;
+            case 'Jurisdictions':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    jurisdictions: tempLabReportFilter?.jurisdictions?.filter((j) => j !== value)
+                };
+                break;
+            case 'Pregnancy Status':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    pregnancyStatus: undefined
+                };
+                break;
+            case 'Event Id Type':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    eventIdType: undefined
+                };
+                break;
+            case 'Event Id':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    eventId: undefined
+                };
+                break;
+            case 'Event Date Type' || 'From' || 'To':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    eventDateSearch: undefined
+                };
+                break;
+            case 'Created By':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    createdBy: undefined
+                };
+                break;
+            case 'Last Updated By':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    lastUpdatedBy: undefined
+                };
+                break;
+            case 'Entity Type' || 'Id':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    providerSearch: undefined
+                };
+                break;
+            case 'Resulted Test':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    resultedTest: undefined
+                };
+                break;
+            case 'Coded Result':
+                tempLabReportFilter = {
+                    ...tempLabReportFilter,
+                    codedResult: undefined
+                };
+                break;
+        }
+        handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
+    };
+
+    const handleInvestigationChipClose = (name: string, value: string) => {
+        let tempInvestigationFilter = investigationFilter as InvestigationFilter;
+        // remove the closed chip from the display
+        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
+        setResultsChip(newChips);
+
+        // if the last chip was removed, reset search
+        if (newChips.length === 0) {
+            handleClearAll();
+            return;
+        }
+
+        // remove the filter criteria associated with closed chip and resubmit search
+        switch (name) {
+            case 'Conditions':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    conditions: tempInvestigationFilter?.conditions?.filter((c) => c !== value)
+                };
+                break;
+            case 'Program Areas':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    programAreas: tempInvestigationFilter?.programAreas?.filter((pa) => pa !== value)
+                };
+                break;
+            case 'Jurisdictions':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    jurisdictions: tempInvestigationFilter?.jurisdictions?.filter((j) => j !== value)
+                };
+                break;
+            case 'Investigation Status':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    investigationStatus: undefined
+                };
+                break;
+            case 'Outbreak Names':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    outbreakNames: undefined
+                };
+                break;
+            case 'Case Statuses':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    caseStatuses: undefined
+                };
+                break;
+            case 'Processing Statuses':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    processingStatuses: undefined
+                };
+                break;
+            case 'Notification Statuses':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    notificationStatuses: undefined
+                };
+                break;
+            case 'Pregnancy Status':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    pregnancyStatus: undefined
+                };
+                break;
+            case 'Event Id Type':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    eventIdType: undefined
+                };
+                break;
+            case 'Event Id':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    eventId: undefined
+                };
+                break;
+            case 'Event Date Type' || 'From' || 'To':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    eventDateSearch: undefined
+                };
+                break;
+            case 'Created By':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    createdBy: undefined
+                };
+                break;
+            case 'Last Updated By':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    lastUpdatedBy: undefined
+                };
+                break;
+            case 'Entity Type' || 'Id':
+                tempInvestigationFilter = {
+                    ...tempInvestigationFilter,
+                    providerFacilitySearch: undefined
+                };
+                break;
+        }
+        handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
+    };
+
+    const handlePersonChipClose = (name: string, value: string) => {
+        let tempPersonFilter = personFilter as PersonFilter;
+        // remove the closed chip from the display
+        let newChips = resultsChip.filter((c) => c.name != name || c.value != value);
+
+        // ID Number and ID Type are separate chips but invalid if not together
+        if (name === 'ID Number' || name === 'ID Type') {
+            newChips = newChips.filter((c) => c.name != 'ID Number' && c.name != 'ID Type');
+        }
+        setResultsChip(newChips);
+
+        // if the last chip was removed, reset search
+        if (newChips.length === 0) {
+            handleClearAll();
+            return;
+        }
+
+        // remove the filter criteria associated with closed chip and resubmit search
+        if (personFilter) {
+            switch (name) {
+                case 'last':
+                    tempPersonFilter = { ...tempPersonFilter, lastName: undefined };
+                    break;
+                case 'first':
+                    tempPersonFilter = { ...tempPersonFilter, firstName: undefined };
+                    break;
+                case 'sex':
+                    tempPersonFilter = { ...tempPersonFilter, gender: undefined };
+                    break;
+                case 'dob':
+                    tempPersonFilter = { ...tempPersonFilter, dateOfBirth: undefined };
+                    break;
+                case 'address':
+                    tempPersonFilter = { ...tempPersonFilter, address: undefined };
+                    break;
+                case 'city':
+                    tempPersonFilter = { ...tempPersonFilter, city: undefined };
+                    break;
+                case 'state':
+                    tempPersonFilter = { ...tempPersonFilter, state: undefined };
+                    break;
+                case 'zip':
+                    tempPersonFilter = { ...tempPersonFilter, zip: undefined };
+                    break;
+                case 'phoneNumber':
+                    tempPersonFilter = { ...tempPersonFilter, phoneNumber: undefined };
+                    break;
+                case 'email':
+                    tempPersonFilter = { ...tempPersonFilter, email: undefined };
+                    break;
+                case 'race':
+                    tempPersonFilter = { ...tempPersonFilter, race: undefined };
+                    break;
+                case 'ethnicity':
+                    tempPersonFilter = { ...tempPersonFilter, ethnicity: undefined };
+                    break;
+                case 'ID Number':
+                    tempPersonFilter = { ...tempPersonFilter, identification: undefined };
+                    break;
+                case 'ID Type':
+                    tempPersonFilter = { ...tempPersonFilter, identification: undefined };
+                    break;
+            }
+            handleSubmit(tempPersonFilter, SEARCH_TYPE.PERSON);
+        }
     };
 
     function handleAddNewPatientClick(): void {
@@ -309,6 +671,10 @@ export const AdvancedSearch = () => {
         );
     }
 
+    function handleAddNewLabReportClick(): void {
+        window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
+    }
+
     const handlePagination = (page: number) => {
         setCurrentPage(page);
     };
@@ -316,8 +682,9 @@ export const AdvancedSearch = () => {
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
-                (eventData?.findPatientsByEvent.content && eventData.findPatientsByEvent.content.length > 7) ||
-                (data?.findPatientsByFilter?.content && data?.findPatientsByFilter?.content.length > 7)
+                (investigationData?.content && investigationData.content.length > 7) ||
+                (labReportData?.content && labReportData.content.length > 7) ||
+                (patientData?.content && patientData.content.length > 7)
                     ? 'full-height'
                     : 'partial-height'
             }`}>
@@ -327,10 +694,9 @@ export const AdvancedSearch = () => {
                     <div className="button-group">
                         <Button
                             disabled={
-                                (!eventData?.findPatientsByEvent.content ||
-                                    eventData?.findPatientsByEvent.content?.length === 0) &&
-                                (!data?.findPatientsByFilter?.content ||
-                                    data?.findPatientsByFilter?.content?.length === 0)
+                                (!patientData?.content || patientData.content.length === 0) &&
+                                (!labReportData?.content || labReportData.total === 0) &&
+                                (!investigationData?.content || investigationData.total === 0)
                             }
                             className="padding-x-3 add-patient-button"
                             type={'button'}
@@ -349,10 +715,7 @@ export const AdvancedSearch = () => {
                                     </Button>
                                 </li>
                                 <li className="usa-nav__submenu-item">
-                                    <Button
-                                        onClick={() => handleSort(SortDirection.Desc, PersonSortField.LastNm)}
-                                        type={'button'}
-                                        unstyled>
+                                    <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
                                         Add New Lab Report
                                     </Button>
                                 </li>
@@ -365,30 +728,36 @@ export const AdvancedSearch = () => {
                 <Grid col={3} className="bg-white border-right border-base-light">
                     <div className="left-searchbar">
                         <h3 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h3>
-                        <div className="grid-row flex-align-center">
+                        <div className="grid-row flex-align-center" style={{ borderBottom: '1.5px solid lightgray' }}>
                             <h6
                                 className={`${
-                                    searchType === 'search' && 'active'
+                                    activeTab === ACTIVE_TAB.PERSON && 'active'
                                 } text-normal type margin-y-3 font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
-                                onClick={() => setSearchType('search')}>
+                                onClick={() => setActiveTab(ACTIVE_TAB.PERSON)}>
                                 Patient Search
                             </h6>
                             <h6
                                 className={`${
-                                    searchType !== 'search' && 'active'
+                                    activeTab === ACTIVE_TAB.EVENT && 'active'
                                 } padding-bottom-1 type text-normal margin-y-3 font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
-                                onClick={() => setSearchType('event')}>
+                                onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
                                 Event Search
                             </h6>
                         </div>
-                        {searchType === 'search' ? (
-                            <SimpleSearch
-                                handleSubmission={handleSubmit}
-                                data={formData as PersonFilter}
+                        {activeTab === ACTIVE_TAB.PERSON ? (
+                            <PatientSearch
+                                handleSubmission={(data: PersonFilter) => {
+                                    handleSubmit(data, SEARCH_TYPE.PERSON);
+                                }}
+                                data={personFilter}
                                 clearAll={handleClearAll}
                             />
                         ) : (
-                            <EventSearch onSearch={handleSubmit} data={formData as EventFilter} />
+                            <EventSearch
+                                onSearch={handleSubmit}
+                                investigationFilter={investigationFilter}
+                                labReportFilter={labReportFilter}
+                            />
                         )}
                     </div>
                 </Grid>
@@ -396,10 +765,14 @@ export const AdvancedSearch = () => {
                     <Grid
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
-                        {initialSearch ? (
-                            <div className="margin-0 font-sans-md margin-top-05 text-normal grid-row">
+                        {validSearch ? (
+                            <div
+                                className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                style={{ maxWidth: '55%' }}>
                                 <strong className="margin-right-1">
-                                    {data?.findPatientsByFilter?.total || eventData?.findPatientsByEvent?.total}
+                                    {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                    {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
+                                    {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                 </strong>{' '}
                                 Results for:
                                 {resultsChip.map(
@@ -421,10 +794,9 @@ export const AdvancedSearch = () => {
                             <div className="button-group">
                                 <Button
                                     disabled={
-                                        (!eventData?.findPatientsByEvent.content ||
-                                            eventData?.findPatientsByEvent.content?.length === 0) &&
-                                        (!data?.findPatientsByFilter?.content ||
-                                            data?.findPatientsByFilter?.content?.length === 0)
+                                        (!investigationData?.content || investigationData?.content?.length === 0) &&
+                                        (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                        (!patientData?.content || patientData?.content?.length === 0)
                                     }
                                     className="width-full margin-top-0"
                                     type={'button'}
@@ -434,10 +806,9 @@ export const AdvancedSearch = () => {
                                     <img
                                         style={{ marginLeft: '5px' }}
                                         src={
-                                            (!eventData?.findPatientsByEvent.content ||
-                                                eventData?.findPatientsByEvent.content?.length === 0) &&
-                                            (!data?.findPatientsByFilter?.content ||
-                                                data?.findPatientsByFilter?.content?.length === 0)
+                                            (!investigationData?.content || investigationData?.content?.length === 0) &&
+                                            (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                            (!patientData?.content || patientData?.content?.length === 0)
                                                 ? 'down-arrow-white.svg'
                                                 : 'down-arrow-blue.svg'
                                         }
@@ -447,7 +818,12 @@ export const AdvancedSearch = () => {
                                     <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() => handleSort(SortDirection.Asc, PersonSortField.LastNm)}
+                                                onClick={() =>
+                                                    setSort({
+                                                        sortDirection: SortDirection.Asc,
+                                                        sortField: SortField.LastNm
+                                                    })
+                                                }
                                                 type={'button'}
                                                 unstyled>
                                                 Patient name (A-Z)
@@ -455,7 +831,12 @@ export const AdvancedSearch = () => {
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() => handleSort(SortDirection.Desc, PersonSortField.LastNm)}
+                                                onClick={() =>
+                                                    setSort({
+                                                        sortDirection: SortDirection.Desc,
+                                                        sortField: SortField.LastNm
+                                                    })
+                                                }
                                                 type={'button'}
                                                 unstyled>
                                                 Patient name (Z-A)
@@ -463,7 +844,12 @@ export const AdvancedSearch = () => {
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() => handleSort(SortDirection.Asc, PersonSortField.BirthTime)}
+                                                onClick={() =>
+                                                    setSort({
+                                                        sortDirection: SortDirection.Asc,
+                                                        sortField: SortField.BirthTime
+                                                    })
+                                                }
                                                 type={'button'}
                                                 unstyled>
                                                 Date of birth (Ascending)
@@ -472,7 +858,10 @@ export const AdvancedSearch = () => {
                                         <li className="usa-nav__submenu-item">
                                             <Button
                                                 onClick={() =>
-                                                    handleSort(SortDirection.Desc, PersonSortField.BirthTime)
+                                                    setSort({
+                                                        sortDirection: SortDirection.Desc,
+                                                        sortField: SortField.BirthTime
+                                                    })
                                                 }
                                                 type={'button'}
                                                 unstyled>
@@ -484,31 +873,31 @@ export const AdvancedSearch = () => {
                             </div>
                             <Button
                                 disabled={
-                                    (!eventData?.findPatientsByEvent.content ||
-                                        eventData?.findPatientsByEvent.content?.length === 0) &&
-                                    (!data?.findPatientsByFilter?.content ||
-                                        data?.findPatientsByFilter?.content?.length === 0)
+                                    (!investigationData?.content || investigationData?.content?.length === 0) &&
+                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                    (!patientData?.content || patientData?.content?.length === 0)
                                 }
                                 className="width-full margin-top-0"
                                 type={'button'}
+                                onClick={handleExportClick}
                                 outline>
                                 Export
                             </Button>
                             <Button
                                 disabled={
-                                    (!eventData?.findPatientsByEvent.content ||
-                                        eventData?.findPatientsByEvent.content?.length === 0) &&
-                                    (!data?.findPatientsByFilter?.content ||
-                                        data?.findPatientsByFilter?.content?.length === 0)
+                                    (!investigationData?.content || investigationData?.content?.length === 0) &&
+                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                    (!patientData?.content || patientData?.content?.length === 0)
                                 }
                                 className="width-full margin-top-0"
                                 type={'button'}
+                                onClick={handlePrintClick}
                                 outline>
                                 Print
                             </Button>
                         </div>
                     </Grid>
-                    {!initialSearch && !loading && (
+                    {!validSearch && !loading && (
                         <>
                             {submitted && (
                                 <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
@@ -533,9 +922,10 @@ export const AdvancedSearch = () => {
                             </div>
                         </>
                     )}
-                    {initialSearch &&
-                        (data?.findPatientsByFilter?.content?.length === 0 ||
-                            eventData?.findPatientsByEvent.content?.length === 0) && (
+                    {validSearch &&
+                        (!investigationData?.content || investigationData?.content?.length === 0) &&
+                        (!labReportData?.content || labReportData?.content?.length === 0) &&
+                        (!patientData?.content || patientData?.content?.length === 0) && (
                             <div
                                 className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
                                 style={{
@@ -555,26 +945,38 @@ export const AdvancedSearch = () => {
                                 </div>
                             </div>
                         )}
-                    {!submitted &&
-                        !loading &&
-                        data?.findPatientsByFilter?.content &&
-                        data?.findPatientsByFilter?.content.length > 0 && (
-                            <SearchItems
-                                initialSearch={initialSearch}
-                                data={data?.findPatientsByFilter.content}
-                                totalResults={Number(data?.findPatientsByFilter.total)}
+                    {lastSearchType === SEARCH_TYPE.PERSON &&
+                        !submitted &&
+                        patientData?.content &&
+                        patientData.content.length > 0 && (
+                            <PatientResults
+                                validSearch={validSearch}
+                                data={patientData.content}
+                                totalResults={patientData.total}
                                 handlePagination={handlePagination}
                                 currentPage={currentPage}
                             />
                         )}
-                    {!submitted &&
-                        !loading &&
-                        eventData?.findPatientsByEvent?.content &&
-                        eventData?.findPatientsByEvent?.content.length > 0 && (
-                            <SearchItems
-                                initialSearch={initialSearch}
-                                data={eventData?.findPatientsByEvent.content}
-                                totalResults={Number(eventData?.findPatientsByEvent.total)}
+                    {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
+                        !submitted &&
+                        investigationData?.content &&
+                        investigationData?.content?.length > 0 && (
+                            <InvestigationResults
+                                validSearch={validSearch}
+                                data={investigationData?.content as [Investigation]}
+                                totalResults={investigationData?.total}
+                                handlePagination={handlePagination}
+                                currentPage={currentPage}
+                            />
+                        )}
+                    {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
+                        !submitted &&
+                        labReportData?.content &&
+                        labReportData?.content?.length > 0 && (
+                            <LabReportResults
+                                validSearch={validSearch}
+                                data={labReportData?.content as [LabReport]}
+                                totalResults={labReportData?.total}
                                 handlePagination={handlePagination}
                                 currentPage={currentPage}
                             />

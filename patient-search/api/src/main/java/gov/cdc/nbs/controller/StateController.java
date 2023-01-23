@@ -14,13 +14,13 @@ import gov.cdc.nbs.repository.StateCodeRepository;
 @Controller
 public class StateController {
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @Autowired
     private StateCodeRepository stateCodeRepository;
 
     @QueryMapping()
     public Page<StateCode> findAllStateCodes(@Argument GraphQLPage page) {
-        return stateCodeRepository.findAll(GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return stateCodeRepository.findAll(GraphQLPage.toPageable(page, maxPageSize));
     }
 }

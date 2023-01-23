@@ -1,12 +1,15 @@
 import { useContext } from 'react';
+import { Config } from '../../config';
 import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
+import { useLocation } from 'react-router-dom';
 
 // eslint-disable-next-line no-undef
-const NBS_URL = process.env.REACT_APP_NBS_URL ? process.env.REACT_APP_NBS_URL : '/nbs';
+const NBS_URL = Config.nbsUrl;
 
 export default function NavBar() {
     const { state, logout } = useContext(UserContext);
+    const location = useLocation();
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -98,7 +101,9 @@ export default function NavBar() {
                     <tbody>
                         <tr>
                             <td className="pageHeader" style={{ padding: '5px', marginBottom: '0px' }}>
-                                <a> Search </a>
+                                <a style={{ textTransform: 'capitalize' }}>
+                                    {location?.pathname?.split('/')[1]?.split('-').join(' ')}
+                                </a>
                             </td>
 
                             <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.model.EncryptionResponse;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.DatabindException;

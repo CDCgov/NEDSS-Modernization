@@ -20,7 +20,7 @@ public class EdxEntityMatch {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_UID", nullable = false)
-    private NBSEntity NBSEntityUid;
+    private NBSEntity nbsEntityUid;
 
     @Column(name = "match_string", nullable = false, length = 2000)
     private String matchString;

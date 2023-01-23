@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.SecurityLog;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import gov.cdc.nbs.service.EncryptionService;
@@ -83,7 +83,7 @@ public class RedirectSteps {
     public void i_send_a_request_to_the_nbs_simple_search() throws Exception {
         response = mvc
                 .perform(
-                        MockMvcRequestBuilders.post("/nbs/HomePage.do")
+                        MockMvcRequestBuilders.post("/nbs/redirect/simpleSearch")
                                 .cookie(new Cookie("JSESSIONID", sessionId)))
                 .andReturn().getResponse();
     }
@@ -93,13 +93,13 @@ public class RedirectSteps {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.equals("/advanced-search"));
+        assertEquals("/advanced-search", redirectUrl);
     }
 
     @Given("I send a search request to the NBS simple search")
     public void I_send_a_search_request_to_the_nbs_simple_search() throws Exception {
         response = mvc.perform(MockMvcRequestBuilders
-                .post("/nbs/HomePage.do")
+                .post("/nbs/redirect/simpleSearch")
                 .param("patientSearchVO.lastName", "Doe")
                 .param("patientSearchVO.firstName", "John")
                 .param("patientSearchVO.birthTime", "01/01/2000")
@@ -124,13 +124,13 @@ public class RedirectSteps {
         assertEquals("John", filter.getFirstName());
         assertEquals(Instant.parse("2000-01-01T00:00:00Z"), filter.getDateOfBirth());
         assertEquals(Gender.M, filter.getGender());
-        assertTrue(1234L == filter.getId());
+        assertEquals(Long.valueOf(1234L), filter.getId());
     }
 
     @Given("I navigate to the NBS advanced search page")
     public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
         response = mvc.perform(
-                MockMvcRequestBuilders.get("/nbs/MyTaskList1.do")
+                MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
                         .cookie(new Cookie("JSESSIONID", sessionId)))
                 .andReturn().getResponse();
     }

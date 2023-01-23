@@ -3,13 +3,17 @@ package gov.cdc.nbs;
 import static io.cucumber.junit.platform.engine.Constants.FEATURES_PROPERTY_NAME;
 import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.transaction.Transactional;
 
+import org.junit.Test;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +23,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import gov.cdc.nbs.containers.NbsElasticsearchContainer;
+import gov.cdc.nbs.controller.PatientController;
 import io.cucumber.spring.CucumberContextConfiguration;
 
 @Suite
@@ -41,7 +47,15 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @Transactional
 @Rollback(false)
 @Testcontainers
+@RunWith(SpringRunner.class)
 public class RunCucumberTest {
+    @Autowired
+    private PatientController patientController;
+
+    @Test
+    public void contextLoads() {
+        assertNotNull(patientController);
+    }
 
     @Container
     public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;

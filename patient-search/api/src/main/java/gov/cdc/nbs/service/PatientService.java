@@ -6,16 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +27,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.BeanUtils;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
@@ -34,8 +35,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
@@ -53,37 +52,45 @@ import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.exception.FieldUpdateException;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.input.PatientInput;
 import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
 import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
-import gov.cdc.nbs.graphql.searchFilter.EventFilter;
-import gov.cdc.nbs.graphql.searchFilter.OrganizationFilter;
-import gov.cdc.nbs.graphql.searchFilter.PatientFilter;
+import gov.cdc.nbs.message.PatientUpdateParams;
+import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
+import gov.cdc.nbs.service.util.Constants;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PatientService {
+    private static final String ACTIVE = "ACTIVE";
+
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;
     private final TeleLocatorRepository teleLocatorRepository;
     private final PostalLocatorRepository postalLocatorRepository;
-    private final EventService eventService;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
     private final EthnicityConverter ethnicityConverter = new EthnicityConverter();
+
+   @Autowired
+    private KafkaRequestProducerService producer;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -106,7 +113,7 @@ public class PatientService {
                 default:
                     throw new QueryException("Invalid sort value: " + s.getProperty());
             }
-        }).collect(Collectors.toList());
+        }).toList();
         for (var s : sorts) {
             query = query.orderBy(s);
         }
@@ -120,7 +127,7 @@ public class PatientService {
 
     public Page<Person> findAllPatients(GraphQLPage page) {
         var person = QPerson.person;
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
                 .select(person)
                 .from(person);
@@ -128,16 +135,15 @@ public class PatientService {
 
         var results = query.fetchPage((int) pageable.getOffset(),
                 pageable.getPageSize());
-        return new PageImpl<Person>(results, pageable, results.getMaxResults());
+        return new PageImpl<>(results, pageable, results.getMaxResults());
     }
 
     public Page<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
         List<Long> ids;
-        long totalCount = 0L;
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
 
-        builder.must(QueryBuilders.matchQuery("cd", "PAT"));
+        builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD_FIELD, "PAT"));
 
         if (filter.getId() != null) {
             var idQuery = QueryBuilders.boolQuery();
@@ -147,55 +153,70 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("name", QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery("SSN", filter.getSsn()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.SSN_FIELD, filter.getSsn()));
         }
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("phone", QueryBuilders.matchQuery("phone.telephoneNbr",filter.getPhoneNumber()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
+                    QueryBuilders.matchQuery("phone.telephoneNbr", filter.getPhoneNumber()), ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
+                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
-            builder.must(QueryBuilders.matchQuery("birth_gender_cd", filter.getGender()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.BIRTH_GENDER_CD, filter.getGender()));
         }
 
         if (filter.getDeceased() != null) {
-            builder.must(QueryBuilders.matchQuery("deceased_ind_cd", filter.getDeceased()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.DECEASED_IND_CD, filter.getDeceased()));
         }
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
+                    QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.zip",filter.getZip()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
+                    QueryBuilders.matchQuery("address.zip", filter.getZip()),
+                    ScoreMode.Avg));
         }
 
         if (filter.getState() != null && !filter.getState().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.state",filter.getState()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
+                    QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
         }
 
         if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery("address", QueryBuilders.matchQuery("address.cntryCd",filter.getCountry()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
+                    QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
         }
 
         if (filter.getEthnicity() != null) {
-            builder.must(QueryBuilders.matchQuery("ethnic_group_ind", ethnicityConverter.write(filter.getEthnicity())));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.ETHNIC_GROUP_IND,
+                    ethnicityConverter.write(filter.getEthnicity())));
         }
 
         if (filter.getRace() != null) {
-            builder.must(QueryBuilders.nestedQuery("race", QueryBuilders.matchQuery("race.raceDescTxt",filter.getRace()), ScoreMode.Avg));
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.RACE_FIELD,
+                    QueryBuilders.matchQuery("race.raceDescTxt", filter.getRace()), ScoreMode.Avg));
         }
 
         if (filter.getIdentification() != null) {
@@ -203,24 +224,25 @@ public class PatientService {
                     QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
         }
 
+        // TODO check permission for allowing deleted / superceeded - await
+        // clarification from Henry Tavarez on if it will be included in UI
         if (filter.getRecordStatus() != null) {
-            builder.must(QueryBuilders.matchQuery("record_status_cd", filter.getRecordStatus()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.RECORD_STATUS_CD, filter.getRecordStatus()));
         }
 
         if (filter.getDateOfBirth() != null) {
             String dobOperator = filter.getDateOfBirthOperator();
             String dobString = (String) instantConverter.write(filter.getDateOfBirth());
             if (dobOperator == null || dobOperator.equalsIgnoreCase("equal")) {
-                builder.must(QueryBuilders.matchQuery("birth_time", dobString));
+                builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.BIRTH_TIME, dobString));
             } else if (dobOperator.equalsIgnoreCase("before")) {
-                builder.must(QueryBuilders.rangeQuery("birth_time").lt(dobString));
+                builder.must(QueryBuilders.rangeQuery(ElasticsearchPerson.BIRTH_TIME).lt(dobString));
             } else if (dobOperator.equalsIgnoreCase("after")) {
-                builder.must(QueryBuilders.rangeQuery("birth_time").gt(dobString));
+                builder.must(QueryBuilders.rangeQuery(ElasticsearchPerson.BIRTH_TIME).gt(dobString));
             }
         }
 
-        var query = new NativeSearchQueryBuilder().withQuery(builder).withSort(pageable.getSort())
-                .withPageable(pageable).build();
+        var query = new NativeSearchQueryBuilder().withQuery(builder).build();
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
                 ElasticsearchPerson.class);
 
@@ -229,16 +251,15 @@ public class PatientService {
                 .map(h -> h.getContent())
                 .filter(Objects::nonNull)
                 .map(ElasticsearchPerson::getPersonUid)
-                .collect(Collectors.toList());
-        totalCount = elasticsearchPersonSearchHits.getTotalHits();
+                .toList();
         var persons = personRepository.findAllById(ids);
-        return new PageImpl<Person>(persons, pageable, totalCount);
+        return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
 
     }
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
 
         var organization = QOrganization.organization;
         var person = QPerson.person;
@@ -259,47 +280,7 @@ public class PatientService {
         query = addParameter(query, organization.zipCd::eq, filter.getZipCd());
         applySort(query, pageable.getSort());
         var results = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
-        return new PageImpl<Person>(results, pageable, results.getMaxResults());
-    }
-
-    public Page<Person> findPatientsByEvent(EventFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, MAX_PAGE_SIZE);
-        List<Long> ids;
-        long totalCount = 0L;
-        switch (filter.getEventType()) {
-            case INVESTIGATION:
-                var investigations = eventService.findInvestigationsByFilter(filter.getInvestigationFilter());
-                ids = investigations
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(Investigation::getSubjectEntityUid)
-                        .distinct()
-                        .collect(Collectors.toList());
-                totalCount = investigations.getTotalHits();
-                break;
-            case LABORATORY_REPORT:
-                var labReports = eventService.findLabReportsByFilter(filter.getLaboratoryReportFilter());
-                ids = labReports
-                        .stream()
-                        .map(h -> h.getContent())
-                        .filter(Objects::nonNull)
-                        .filter(h -> h.getPersonCd() != null && h.getPersonCd().equals("PAT"))
-                        .filter(h -> h.getPersonRecordStatusCd().equals(RecordStatus.ACTIVE.toString()))
-                        .map(LabReport::getSubjectEntityUid)
-                        .distinct()
-                        .collect(Collectors.toList());
-
-                totalCount = labReports.getTotalHits();
-                break;
-            default:
-                throw new QueryException("Invalid event type: " + filter.getEventType());
-        }
-
-        var results = personRepository.findByIdIn(ids, pageable);
-        return new PageImpl<Person>(results.getContent(), pageable, totalCount);
+        return new PageImpl<>(results, pageable, results.getMaxResults());
     }
 
     // checks to see if the filter provided is null, if not add the filter to the
@@ -307,10 +288,8 @@ public class PatientService {
     private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
             Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
-            if (filter instanceof String s) {
-                if (s.trim().length() == 0) {
-                    return query;
-                }
+            if (filter instanceof String s && s.trim().length() == 0) {
+                return query;
             }
             return query.where(expression.apply(filter));
         } else {
@@ -338,7 +317,7 @@ public class PatientService {
         var person = new Person();
         // generated / required values
         person.setId(id);
-        person.setNBSEntity(new NBSEntity(id, "PSN"));
+        person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         person.setAddTime(Instant.now());
         person.setRecordStatusCd(RecordStatus.ACTIVE);
@@ -374,12 +353,74 @@ public class PatientService {
         postalLocatorRepository.saveAll(postalLocators);
         return personRepository.save(person);
     }
+    
+    
+    /**
+     * Send updated Person Event to kakfa topic to be picekd up and updated.
+     * @param id
+     * @param input
+     * @return
+     */
+	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
+		Person updatePerson = updatePatient(id, input);
+		String requestId = null;
+		if (updatePerson != null) {
+			var teleUptLocators = addTeleLocatorEntries(updatePerson, input.getPhoneNumbers(),
+					input.getEmailAddresses());
+			var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
+
+			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
+					.postalLocators(postalLocators).teleLocators(teleUptLocators).build();
+
+			requestId = getRequestID();
+			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
+			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
+		}
+
+		return PatientUpdateResponse.builder().requestId(requestId)
+				.updatedPerson(updatePerson).build();
+		
+	}
+
+	/**
+	 * Find a patient and update information / demographic information that needs to
+	 * be updated
+	 * @param id
+	 * @param input
+	 * @return
+	 */
+	public Person updatePatient(Long id, PatientInput input) {
+		// find existing patient in system
+		Person old = null;
+		try {
+
+			Optional<Person> result = findPatientById(id);
+			old = (result.isPresent()) ? result.get() : null;
+
+			if (old == null || input == null) {
+				return null;
+			}
+
+			Person updated = buildPersonFromInput(id, input);
+
+			// person_name
+			addPersonNameEntry(updated, input.getName());
+
+			// person_race
+			addPersonRaceEntry(updated, input.getRace());
+			BeanUtils.copyProperties(updated, old);
+			return old;
+		} catch (Exception e) {
+			throw new FieldUpdateException();
+		}
+
+	}
 
     /*
      * Creates a PersonRace entry and adds it to the Person object
      */
     private void addPersonRaceEntry(Person person, Race race) {
-        if (race == null) {
+        if (person == null || race == null) {
             return;
         }
         var now = Instant.now();
@@ -388,7 +429,7 @@ public class PatientService {
         personRace.setPersonUid(person);
         personRace.setAddTime(now);
         personRace.setRaceCategoryCd(race);
-        personRace.setRecordStatusCd("ACTIVE");
+        personRace.setRecordStatusCd(ACTIVE);
 
         if (person.getRaces() == null) {
             person.setRaces(Arrays.asList(personRace));
@@ -401,6 +442,9 @@ public class PatientService {
      * Creates a PersonName entry and adds it to the Person object
      */
     private void addPersonNameEntry(Person person, Name name) {
+    	if(person == null || name == null) {
+    	return;
+    	}
         var now = Instant.now();
         var personName = new PersonName();
         personName.setId(new PersonNameId(person.getId(), (short) 1));
@@ -410,11 +454,11 @@ public class PatientService {
         personName.setFirstNm(name.getFirstName());
         // personName.setFirstNmSndx(); TODO how to generate sndx
         personName.setLastNm(name.getLastName());
-        // personName.setLastNmSndx();
+        // personName.setLastNmSndx(); TODO
         personName.setMiddleNm(name.getMiddleName());
         personName.setNmSuffix(name.getSuffix());
         personName.setNmUseCd("L"); // L = legal, AL = alias. per NEDSSConstants
-        personName.setRecordStatusCd("ACTIVE");
+        personName.setRecordStatusCd(ACTIVE);
         personName.setRecordStatusTime(now);
         personName.setStatusCd('A');
         personName.setStatusTime(now);
@@ -433,7 +477,7 @@ public class PatientService {
      */
     private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
         var postalLocators = new ArrayList<PostalLocator>();
-        if (addresses.size() > 0) {
+        if (!addresses.isEmpty()) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -445,12 +489,12 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), plId));
-                elp.setNbsEntity(person.getNBSEntity());
+                elp.setNbsEntity(person.getNbsEntity());
                 elp.setCd("H");
                 elp.setClassCd("PST");
                 elp.setLastChgTime(now);
                 elp.setLastChgUserId(user.getId());
-                elp.setRecordStatusCd("ACTIVE");
+                elp.setRecordStatusCd(ACTIVE);
                 elp.setRecordStatusTime(now);
                 elp.setStatusCd('A');
                 elp.setStatusTime(now);
@@ -468,7 +512,7 @@ public class PatientService {
                 locator.setStreetAddr2(address.getStreetAddress2());
                 locator.setZipCd(address.getZip());
                 locator.setCensusTract(address.getCensusTract());
-                locator.setRecordStatusCd("ACTIVE");
+                locator.setRecordStatusCd(ACTIVE);
                 locator.setRecordStatusTime(now);
 
                 elp.setLocator(locator);
@@ -476,10 +520,10 @@ public class PatientService {
                 elpList.add(elp);
             }
             // Add generated ELPs to Person.NBSEntity
-            if (person.getNBSEntity().getEntityLocatorParticipations() == null) {
-                person.getNBSEntity().setEntityLocatorParticipations(elpList);
+            if (person.getNbsEntity().getEntityLocatorParticipations() == null) {
+                person.getNbsEntity().setEntityLocatorParticipations(elpList);
             } else {
-                person.getNBSEntity().getEntityLocatorParticipations().addAll(elpList);
+                person.getNbsEntity().getEntityLocatorParticipations().addAll(elpList);
             }
         }
         return postalLocators;
@@ -493,7 +537,7 @@ public class PatientService {
     private List<TeleLocator> addTeleLocatorEntries(Person person, List<PhoneNumber> phoneNumbers,
             List<String> emailAddresses) {
         var locatorList = new ArrayList<TeleLocator>();
-        if (phoneNumbers.size() > 0 || emailAddresses.size() > 0) {
+        if ( !phoneNumbers.isEmpty() || !emailAddresses.isEmpty()) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -505,12 +549,12 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setNbsEntity(person.getNBSEntity());
+                elp.setNbsEntity(person.getNbsEntity());
                 elp.setClassCd("TELE");
                 setElpTypeFields(elp, pn.getPhoneType());
                 elp.setLastChgTime(now);
                 elp.setLastChgUserId(user.getId());
-                elp.setRecordStatusCd("ACTIVE");
+                elp.setRecordStatusCd(ACTIVE);
                 elp.setRecordStatusTime(now);
                 elp.setStatusCd('A');
                 elp.setStatusTime(now);
@@ -520,8 +564,8 @@ public class PatientService {
                 locator.setAddTime(now);
                 locator.setAddUserId(user.getId());
                 locator.setExtensionTxt(pn.getExtension());
-                locator.setPhoneNbrTxt(pn.getPhoneNumber());
-                locator.setRecordStatusCd("ACTIVE");
+                locator.setPhoneNbrTxt(pn.getNumber());
+                locator.setRecordStatusCd(ACTIVE);
 
                 elp.setLocator(locator);
                 locatorList.add(locator);
@@ -533,13 +577,13 @@ public class PatientService {
                 // entity locator participation ties person to locator entry
                 var elp = new EntityLocatorParticipation();
                 elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setNbsEntity(person.getNBSEntity());
+                elp.setNbsEntity(person.getNbsEntity());
                 elp.setClassCd("TELE");
                 elp.setCd("NET");
                 elp.setUseCd("H");
                 elp.setLastChgTime(now);
                 elp.setLastChgUserId(user.getId());
-                elp.setRecordStatusCd("ACTIVE");
+                elp.setRecordStatusCd(ACTIVE);
                 elp.setRecordStatusTime(now);
                 elp.setStatusCd('A');
                 elp.setVersionCtrlNbr((short) 1);
@@ -548,7 +592,7 @@ public class PatientService {
                 locator.setAddTime(now);
                 locator.setAddUserId(user.getId());
                 locator.setEmailAddress(email);
-                locator.setRecordStatusCd("ACTIVE");
+                locator.setRecordStatusCd(ACTIVE);
 
                 elp.setLocator(locator);
                 locatorList.add(locator);
@@ -556,11 +600,11 @@ public class PatientService {
             }
 
             // Add generated ELPs to Person.NBSEntity
-            var existingElp = person.getNBSEntity().getEntityLocatorParticipations();
+            var existingElp = person.getNbsEntity().getEntityLocatorParticipations();
             if (existingElp != null && existingElp.size() > 0) {
                 elpList.addAll(existingElp);
             }
-            person.getNBSEntity().setEntityLocatorParticipations(elpList);
+            person.getNbsEntity().setEntityLocatorParticipations(elpList);
         }
         return locatorList;
     }
@@ -586,6 +630,39 @@ public class PatientService {
 
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
-        return  searchString.toLowerCase() + "*" ;
+        return searchString.toLowerCase() + "*";
     }
+    
+	private Person buildPersonFromInput(Long id, PatientInput input) {
+		Person person = new Person();
+
+		if (input.getName() != null) {
+			person.setFirstNm(input.getName().getFirstName());
+			person.setLastNm(input.getName().getLastName());
+			person.setMiddleNm(input.getName().getMiddleName());
+			person.setNmSuffix(input.getName().getSuffix());
+		}
+
+		person.setId(id);
+		person.setSsn(input.getSsn());
+		person.setBirthTime(input.getDateOfBirth());
+
+		person.setBirthGenderCd(input.getBirthGender());
+		person.setCurrSexCd(input.getCurrentGender());
+		person.setDeceasedIndCd(input.getDeceased());
+		person.setEthnicGroupInd(input.getEthnicity());
+
+		NBSEntity entity = new NBSEntity();
+		entity.setEntityLocatorParticipations(new ArrayList<>());
+		entity.setParticipations(new ArrayList<>());
+		person.setNbsEntity(entity);
+
+		return person;
+
+	}
+
+	private String getRequestID() {
+		return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
+	}
+
 }

@@ -4,11 +4,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtil {
 
+    private SecurityUtil() {
+    }
+
     public static NbsUserDetails getUserDetails() {
         return (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static class Operations {
+        private Operations() {
+        }
+
         public static final String ADD = "ADD";
         public static final String ANY = "ANY";
         public static final String VIEW = "VIEW";
@@ -77,6 +83,9 @@ public class SecurityUtil {
     }
 
     public static class BusinessObjects {
+        private BusinessObjects() {
+        }
+
         public static final String SRT = "SRT";
         public static final String PLACE = "PLACE";
         public static final String QUEUES = "QUEUES";

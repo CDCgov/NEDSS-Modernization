@@ -21,10 +21,8 @@ public class ManufacturedMaterialHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "material_uid", referencedColumnName = "material_uid", nullable = false),
-            @JoinColumn(name = "manufactured_material_seq", referencedColumnName = "manufactured_material_seq", nullable = false)
-    })
+    @JoinColumn(name = "material_uid", referencedColumnName = "material_uid", nullable = false)
+    @JoinColumn(name = "manufactured_material_seq", referencedColumnName = "manufactured_material_seq", nullable = false)
     private ManufacturedMaterial manufacturedMaterial;
 
     @Column(name = "add_reason_cd", length = 20)

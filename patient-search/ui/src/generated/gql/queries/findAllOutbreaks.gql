@@ -1,0 +1,12 @@
+query findAllOutbreaks($page: Page) {
+    findAllOutbreaks(page: $page){
+        content{
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
+        }
+        total
+    }
+}

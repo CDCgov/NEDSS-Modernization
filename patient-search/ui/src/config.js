@@ -1,9 +1,11 @@
 const prod = {
-    port: 8080
+    nbsUrl: `${window.location.protocol}//${window.location.host}/nbs`,
+    modernizationUrl: `${window.location.protocol}//${window.location.host}`
 };
 
 const dev = {
-    port: 3000
+    nbsUrl: `${window.location.protocol}//${window.location.host}/nbs`,
+    modernizationUrl: `${window.location.protocol}//${window.location.host}`
 };
 
 // eslint-disable-next-line no-undef

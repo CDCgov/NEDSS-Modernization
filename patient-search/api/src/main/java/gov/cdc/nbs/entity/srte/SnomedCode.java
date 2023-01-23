@@ -1,11 +1,14 @@
 package gov.cdc.nbs.entity.srte;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,8 +18,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "Snomed_code")
-public class SnomedCode {
+public class SnomedCode implements Serializable {
     @Id
     @Column(name = "snomed_cd", nullable = false, length = 20)
     private String id;
@@ -49,15 +53,19 @@ public class SnomedCode {
     private Character paDerivationExcludeCd;
 
     @OneToMany(mappedBy = "snomedCd")
+    @Builder.Default
     private Set<LabResultSnomed> labResultSnomeds = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "snomedCd")
+    @Builder.Default
     private Set<LoincSnomedCondition> loincSnomedConditions = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "snomedCd")
+    @Builder.Default
     private Set<CodeValueClinical> codeValueClinicals = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "id.snomedCd")
+    @Builder.Default
     private Set<SnomedCondition> snomedConditions = new LinkedHashSet<>();
 
 }

@@ -5,3 +5,19 @@
 $theme-image-path: '~uswds/src/img';
 $theme-font-path: '~uswds/src/fonts';
 $theme-hero-image: '~uswds/src/img/hero.png';
+
+.common-card {
+    background: white;
+    border: 1px solid #dfe1e2;
+    border-radius: 5px;
+    min-height: 147px;
+    height: auto;
+}
+
+.font-sans-xl {
+    font-size: 32px !important;
+}
+
+.font-sans-xl {
+    font-family: sans-serif !important;
+}

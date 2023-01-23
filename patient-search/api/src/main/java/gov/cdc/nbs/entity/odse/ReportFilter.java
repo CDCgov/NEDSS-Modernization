@@ -20,10 +20,8 @@ public class ReportFilter {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "data_source_uid", referencedColumnName = "data_source_uid", nullable = false),
-            @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false)
-    })
+    @JoinColumn(name = "data_source_uid", referencedColumnName = "data_source_uid", nullable = false)
+    @JoinColumn(name = "report_uid", referencedColumnName = "report_uid", nullable = false)
     private Report report;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

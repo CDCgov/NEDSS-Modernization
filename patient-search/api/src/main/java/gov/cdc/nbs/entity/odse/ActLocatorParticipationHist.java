@@ -20,11 +20,9 @@ public class ActLocatorParticipationHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "entity_uid", referencedColumnName = "entity_uid", nullable = false),
-            @JoinColumn(name = "locator_uid", referencedColumnName = "locator_uid", nullable = false),
-            @JoinColumn(name = "act_uid", referencedColumnName = "act_uid", nullable = false)
-    })
+    @JoinColumn(name = "entity_uid", referencedColumnName = "entity_uid", nullable = false)
+    @JoinColumn(name = "locator_uid", referencedColumnName = "locator_uid", nullable = false)
+    @JoinColumn(name = "act_uid", referencedColumnName = "act_uid", nullable = false)
     private ActLocatorParticipation actLocatorParticipation;
 
     @Column(name = "add_reason_cd", length = 20)

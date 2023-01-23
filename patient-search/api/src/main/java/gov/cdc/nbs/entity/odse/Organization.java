@@ -25,7 +25,7 @@ public class Organization {
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "organization_uid", nullable = false)
-    private NBSEntity NBSEntity;
+    private NBSEntity nbsEntity;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
     ConditionCode,
     FindAllConditionCodesQuery,
@@ -11,21 +11,27 @@ import {
     useFindAllConditionCodesLazyQuery,
     useFindAllJurisdictionsLazyQuery,
     useFindAllProgramAreasLazyQuery,
-    useFindAllUsersLazyQuery
+    useFindAllUsersLazyQuery,
+    useFindAllOutbreaksLazyQuery,
+    FindAllOutbreaksQuery,
+    Outbreak
 } from '../generated/graphql/schema';
+import { UserContext } from './UserContext';
 
 interface SearchCriteria {
     programAreas: ProgramAreaCode[];
     conditions: ConditionCode[];
     jurisdictions: Jurisdiction[];
     userResults: User[];
+    outbreaks: Outbreak[];
 }
 
 const initialState: SearchCriteria = {
     programAreas: [],
     conditions: [],
     jurisdictions: [],
-    userResults: []
+    userResults: [],
+    outbreaks: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -35,19 +41,38 @@ export const SearchCriteriaContext = React.createContext<{
 });
 
 export const SearchCriteriaProvider = (props: any) => {
+    const { state } = useContext(UserContext);
     const [searchCriteria, setSearchCriteria] = React.useState({ ...initialState });
     const [getProgramAreas] = useFindAllProgramAreasLazyQuery({ onCompleted: setProgramAreas });
     const [getConditions] = useFindAllConditionCodesLazyQuery({ onCompleted: setConditions });
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
+    const [getOutbreaks] = useFindAllOutbreaksLazyQuery({ onCompleted: setOutbreaks });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
     // on init, load search data from API
     useEffect(() => {
-        getProgramAreas();
-        getConditions();
-        getJurisdictions();
-        getAllUsers();
-    }, []);
+        if (state.isLoggedIn) {
+            getProgramAreas();
+            getConditions();
+            getJurisdictions();
+            getAllUsers();
+            getOutbreaks();
+        }
+    }, [state.isLoggedIn]);
+
+    function setOutbreaks(results: FindAllOutbreaksQuery): void {
+        if (results.findAllOutbreaks) {
+            const outbreaks: Outbreak[] = [];
+            results.findAllOutbreaks.content.forEach((o) => o && outbreaks.push(o));
+            outbreaks.sort((a, b) => {
+                if (a.codeShortDescTxt && b.codeShortDescTxt) {
+                    return a.codeShortDescTxt?.localeCompare(b.codeShortDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, outbreaks });
+        }
+    }
 
     function setProgramAreas(results: FindAllProgramAreasQuery): void {
         if (results.findAllProgramAreas) {
@@ -67,7 +92,6 @@ export const SearchCriteriaProvider = (props: any) => {
         if (results.findAllUsers) {
             const userResults: User[] = [];
             results.findAllUsers.content.forEach((pa) => pa && userResults.push(pa));
-            console.log(userResults[0]);
             setSearchCriteria({ ...searchCriteria, userResults });
         }
     }

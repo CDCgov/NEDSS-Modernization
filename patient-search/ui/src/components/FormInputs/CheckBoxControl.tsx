@@ -13,8 +13,8 @@ export const CheckBoxControl = ({ control, name, id, label }: EventTypesProps) =
         <Controller
             control={control}
             name={name}
-            render={({ field: { onChange } }) => (
-                <Checkbox onChange={onChange} id={id || ''} name={name} label={label} />
+            render={({ field: { onChange, value } }) => (
+                <Checkbox checked={value} onChange={onChange} id={id || ''} name={name} label={label} />
             )}
         />
     );

@@ -75,6 +75,9 @@ dependencies {
 	compileOnly "org.projectlombok:lombok"
 	annotationProcessor "org.projectlombok:lombok"
 
+	// itext pdf generation
+	implementation "com.itextpdf:itextpdf:5.5.13.3"
+
 	// test
 	testImplementation "org.projectlombok:lombok"
 	testAnnotationProcessor "org.projectlombok:lombok"

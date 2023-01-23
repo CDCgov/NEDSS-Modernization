@@ -21,10 +21,8 @@ public class TreatmentProcedureHist {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "treatment_uid", referencedColumnName = "treatment_uid", nullable = false),
-            @JoinColumn(name = "treatment_procedure_seq", referencedColumnName = "treatment_procedure_seq", nullable = false)
-    })
+    @JoinColumn(name = "treatment_uid", referencedColumnName = "treatment_uid", nullable = false)
+    @JoinColumn(name = "treatment_procedure_seq", referencedColumnName = "treatment_procedure_seq", nullable = false)
     private TreatmentProcedure treatmentProcedure;
 
     @Column(name = "approach_site_cd", length = 20)

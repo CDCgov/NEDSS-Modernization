@@ -1,7 +1,5 @@
 package gov.cdc.nbs.controller;
 
-import java.util.stream.Collectors;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,16 +25,17 @@ import gov.cdc.nbs.service.UserService;
 
 @RestController
 public class UserController {
+    private static final String TOKEN_COOKIE_NAME = "nbs_token";
+
     @Autowired
     private UserService userService;
     @Autowired
     private SecurityProperties securityProperties;
     @Autowired
     private AuthUserRepository userRepository;
-    private final String TOKEN_COOKIE_NAME = "nbs_token";
 
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
@@ -62,8 +61,8 @@ public class UserController {
                 .stream()
                 .map(NbsAuthority::getProgramArea)
                 .distinct()
-                .collect(Collectors.toList());
-        return userRepository.findByProgramAreas(userProgramAreas, GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+                .toList();
+        return userRepository.findByProgramAreas(userProgramAreas, GraphQLPage.toPageable(page, maxPageSize));
     }
 
 }

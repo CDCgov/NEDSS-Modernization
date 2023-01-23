@@ -14,13 +14,13 @@ import gov.cdc.nbs.repository.CountryCodeRepository;
 @Controller
 public class CountryController {
     @Value("${nbs.max-page-size: 50}")
-    private Integer MAX_PAGE_SIZE;
+    private Integer maxPageSize;
 
     @Autowired
     private CountryCodeRepository countryCodeRepository;
 
     @QueryMapping()
     public Page<CountryCode> findAllCountryCodes(@Argument GraphQLPage page) {
-        return countryCodeRepository.findAll(GraphQLPage.toPageable(page, MAX_PAGE_SIZE));
+        return countryCodeRepository.findAll(GraphQLPage.toPageable(page, maxPageSize));
     }
 }

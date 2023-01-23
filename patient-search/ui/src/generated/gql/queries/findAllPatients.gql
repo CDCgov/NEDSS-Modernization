@@ -1,8 +1,8 @@
-query findAllPatients($page: PersonPage) {
+query findAllPatients($page: SortablePage) {
     findAllPatients(page: $page){
         content{
             id
-            NBSEntity{
+            nbsEntity{
                 entityLocatorParticipations{
                     classCd
                     locator{
