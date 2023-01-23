@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
     ConditionCode,
     FindAllConditionCodesQuery,
@@ -16,7 +16,6 @@ import {
     FindAllOutbreaksQuery,
     Outbreak
 } from '../generated/graphql/schema';
-import { UserContext } from './UserContext';
 
 interface SearchCriteria {
     programAreas: ProgramAreaCode[];
@@ -41,7 +40,6 @@ export const SearchCriteriaContext = React.createContext<{
 });
 
 export const SearchCriteriaProvider = (props: any) => {
-    const { state } = useContext(UserContext);
     const [searchCriteria, setSearchCriteria] = React.useState({ ...initialState });
     const [getProgramAreas] = useFindAllProgramAreasLazyQuery({ onCompleted: setProgramAreas });
     const [getConditions] = useFindAllConditionCodesLazyQuery({ onCompleted: setConditions });
@@ -51,14 +49,12 @@ export const SearchCriteriaProvider = (props: any) => {
 
     // on init, load search data from API
     useEffect(() => {
-        if (state.isLoggedIn) {
-            getProgramAreas();
-            getConditions();
-            getJurisdictions();
-            getAllUsers();
-            getOutbreaks();
-        }
-    }, [state.isLoggedIn]);
+        getProgramAreas();
+        getConditions();
+        getJurisdictions();
+        getAllUsers();
+        getOutbreaks();
+    }, []);
 
     function setOutbreaks(results: FindAllOutbreaksQuery): void {
         if (results.findAllOutbreaks) {

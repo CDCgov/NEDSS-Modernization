@@ -34,7 +34,7 @@ type Investigation {
     outbreakName: String
     caseTypeCd: String
     cdDescTxt: String
-    progAreaCd: String
+    prog_area_cd: String
     jurisdictionCd: Int
     jurisdictionCodeDescTxt: String
     pregnantIndCd: String
@@ -432,7 +432,7 @@ input PersonFilter {
 
 type Person {
     id: ID
-    nbsEntity: NBSEntity!
+    NBSEntity: NBSEntity!
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
@@ -578,7 +578,7 @@ input PostalAddress {
 }
 
 input PhoneNumber {
-    number: String!
+    phoneNumber: String!
     extension: String
     phoneType: PhoneType!
 }
@@ -800,9 +800,12 @@ type Query {
 
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
+<<<<<<< HEAD
 
     findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
     findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
+=======
+>>>>>>> f0987278 (adding progress for tables in demographics and pop up message for delete funcionality)
 }
 
 type Mutation {
@@ -841,7 +844,7 @@ type OutbreakResults {
 }
 
 type PersonResults {
-    content: [Person!]!
+    content: [Person]!
     total: Int!
 }
 

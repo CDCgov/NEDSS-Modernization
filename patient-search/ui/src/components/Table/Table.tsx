@@ -1,7 +1,7 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
 import React from 'react';
 
-type TableContentProps = {
+export type TableContentProps = {
     tableHeader?: string;
     tableSubHeader?: React.ReactNode | React.ReactNode[] | string;
     tableHead: { name: string; sortable: boolean }[];
@@ -75,17 +75,23 @@ export const TableComponent = ({
                     )}
                 </tbody>
             </Table>
-            {isPagination && tableBody.length > 9 && (
-                <Pagination
-                    style={{ justifyContent: 'flex-end' }}
-                    totalPages={Math.ceil(totalResults / 10)}
-                    currentPage={currentPage}
-                    pathname={'/patient-profile'}
-                    onClickNext={() => handleNext?.(currentPage + 1)}
-                    onClickPrevious={() => handleNext?.(currentPage - 1)}
-                    onClickPageNumber={(_, page) => handleNext?.(page)}
-                />
-            )}
+            <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
+                <p style={{ color: '#71767A' }} className="margin-0">
+                    Showing {tableBody?.length} of {tableBody?.length}
+                </p>
+                {isPagination && tableBody.length > 9 && (
+                    <Pagination
+                        className="margin-0"
+                        style={{ justifyContent: 'flex-end' }}
+                        totalPages={Math.ceil(totalResults / 10)}
+                        currentPage={currentPage}
+                        pathname={'/patient-profile'}
+                        onClickNext={() => handleNext?.(currentPage + 1)}
+                        onClickPrevious={() => handleNext?.(currentPage - 1)}
+                        onClickPageNumber={(_, page) => handleNext?.(page)}
+                    />
+                )}
+            </div>
         </div>
     );
 };

@@ -1,6 +1,16 @@
-import { Button, Grid, Icon } from '@trussworks/react-uswds';
+import {
+    Button,
+    ButtonGroup,
+    Grid,
+    Icon,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton
+} from '@trussworks/react-uswds';
 import './style.scss';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { EncryptionControllerService } from '../../generated';
 import { useSearchParams } from 'react-router-dom';
 import { UserContext } from '../../providers/UserContext';
@@ -19,6 +29,7 @@ enum ACTIVE_TAB {
 export const PatientProfile = () => {
     const { state } = useContext(UserContext);
     const [searchParams] = useSearchParams();
+    const modalRef = useRef<ModalRef>(null);
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -45,10 +56,43 @@ export const PatientProfile = () => {
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>
-                    <Button className="delete-btn" style={{ display: 'inline-flex' }} type={'submit'}>
+                    <ModalToggleButton
+                        modalRef={modalRef}
+                        opener
+                        className="delete-btn"
+                        style={{ display: 'inline-flex' }}
+                        type={'submit'}>
                         <Icon.Delete className="margin-right-05" />
                         Delete Patient
-                    </Button>
+                    </ModalToggleButton>
+                    <Modal
+                        ref={modalRef}
+                        id="example-modal-1"
+                        aria-labelledby="modal-1-heading"
+                        className="padding-0"
+                        aria-describedby="modal-1-description">
+                        <ModalHeading
+                            id="modal-1-heading"
+                            className="border-bottom border-base-lighter font-sans-lg padding-2">
+                            Permanently delete patient?
+                        </ModalHeading>
+                        <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                            <Icon.Warning className="font-sans-2xl margin-x-2" />
+                            <p id="modal-1-description">
+                                Would you like to permenantly delete patient record #12345, Smith, John?
+                            </p>
+                        </div>
+                        <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                            <ButtonGroup>
+                                <ModalToggleButton outline modalRef={modalRef} closer>
+                                    No, go back
+                                </ModalToggleButton>
+                                <ModalToggleButton modalRef={modalRef} closer className="padding-105 text-center">
+                                    Yes, delete
+                                </ModalToggleButton>
+                            </ButtonGroup>
+                        </ModalFooter>
+                    </Modal>
                 </div>
             </div>
             <div className="main-body">

@@ -25,5 +25,8 @@ module.exports.findLocalCodedResults = fs.readFileSync(path.join(__dirname, 'fin
 module.exports.findSnomedCodedResults = fs.readFileSync(path.join(__dirname, 'findSnomedCodedResults.gql'), 'utf8');
 module.exports.findInvestigationsByFilter = fs.readFileSync(path.join(__dirname, 'findInvestigationsByFilter.gql'), 'utf8');
 module.exports.findLabReportsByFilter = fs.readFileSync(path.join(__dirname, 'findLabReportsByFilter.gql'), 'utf8');
+<<<<<<< HEAD
 module.exports.findDocumentsRequiringReviewForPatient = fs.readFileSync(path.join(__dirname, 'findDocumentsRequiringReviewForPatient.gql'), 'utf8');
 module.exports.findOpenInvestigationsForPatient = fs.readFileSync(path.join(__dirname, 'findOpenInvestigationsForPatient.gql'), 'utf8');
+=======
+>>>>>>> f0987278 (adding progress for tables in demographics and pop up message for delete funcionality)

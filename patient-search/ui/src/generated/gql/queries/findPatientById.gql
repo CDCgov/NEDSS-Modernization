@@ -1,7 +1,7 @@
 query findPatientById($id: ID!) {
     findPatientById(id: $id){
         id
-        nbsEntity{
+        NBSEntity{
             entityLocatorParticipations{
                 classCd
                 locator{
