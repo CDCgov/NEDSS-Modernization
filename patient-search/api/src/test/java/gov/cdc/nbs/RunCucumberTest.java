@@ -44,21 +44,16 @@ import io.cucumber.spring.CucumberContextConfiguration;
 public class RunCucumberTest {
 
     @Container
-    public static final ElasticsearchContainer ELASTICSEARCH_CONTAINER;
+    public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;
 
     static {
         // instantiate docker once for all tests and test the instance itself in ElasticSearchTest
         ELASTICSEARCH_CONTAINER = new NbsElasticsearchContainer();
-        ELASTICSEARCH_CONTAINER.start();
         try {
-            ELASTICSEARCH_CONTAINER.execInContainer(
-                "/usr/share/elasticsearch/bin/elasticsearch-plugin",
-                "install",
-                "analysis-phonetic"
-            );
+            ELASTICSEARCH_CONTAINER.startWithPlugins();
         }
         catch (Exception e) {       
-            throw new RuntimeException("Failed to install ElasticSearch plugin");  
+            throw new RuntimeException("Failed to start NbsElasticsearchContainer with plugins");  
         }
     }
 
