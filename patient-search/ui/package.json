@@ -35,6 +35,7 @@
         "lint:fix": "eslint --fix",
         "cy:headless": "./node_modules/.bin/cypress run",
         "cy:browser": "./node_modules/.bin/cypress run --headed --no-exit",
+        "cy:browser:open": "./node_modules/.bin/cypress open",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
         "generate": "npm run consolidate-graphqls && npm run graphql:gql && npm run graphql:codegen && npm run openapi:codegen",
         "consolidate-graphqls": "rm -f src/generated/schema.graphqls && for f in ../api/src/main/resources/graphql/*.graphqls; do cat $f >> src/generated/schema.graphqls; done",
