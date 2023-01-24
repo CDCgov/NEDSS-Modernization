@@ -75,3 +75,15 @@ Feature: Patient search
       | last name  |           | address    |            |
       | city       |           |            |            |
       | last name  |           | city       |            |
+
+  @patient_search_with_sorting
+  Scenario: I can find the right patient when there are multiple ordered results
+    When I search for patients sorted by "<search field>" "<qualifier>" "<sort field>" "<direction>"
+    Then I find the patients sorted
+
+    Examples:
+      | search field  | qualifier | sort field  | direction|
+      | record status |           | lastNm      | asc      |
+      | record status |           | lastNm      | desc     |
+      | record status |           | birthTime   | asc      |
+      | record status |           | birthTime   | desc     |
