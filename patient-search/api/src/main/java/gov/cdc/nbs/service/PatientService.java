@@ -66,6 +66,7 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
+import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -251,8 +252,8 @@ public class PatientService {
                 .map(ElasticsearchPerson::getPersonUid)
                 .toList();
         var persons = personRepository.findAllById(ids);
+        persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
         return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
-
     }
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
@@ -574,10 +575,10 @@ public class PatientService {
         pageable.getSort().stream().forEach(sort -> {
             switch (sort.getProperty()) {
                 case "lastNm":
-                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 case "birthTime":
-                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());

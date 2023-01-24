@@ -20,7 +20,9 @@ import gov.cdc.nbs.graphql.input.PatientInput;
 import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;;
+import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import java.time.Instant;
 
 public class PersonUtil {
 
@@ -55,9 +57,12 @@ public class PersonUtil {
         var email = new NestedEmail();
         email.setEmailAddress(person.getHmEmailAddr());
 
+        InstantConverter instantConverter = new InstantConverter();
         return ElasticsearchPerson.builder()
                 .id(String.valueOf(id))
                 .personUid(id)
+                .firstNm(person.getFirstNm())
+                .lastNm(person.getLastNm())
                 .name(Arrays.asList(name))
                 .ssn(person.getSsn())
                 .birthGenderCd(person.getBirthGenderCd())
@@ -66,7 +71,7 @@ public class PersonUtil {
                 .address(Arrays.asList(address))
                 .recordStatusCd(person.getRecordStatusCd())
                 .ethnicGroupInd(person.getEthnicGroupInd())
-                .birthTime(person.getBirthTime())
+                .birthTime((Instant) instantConverter.read(person.getBirthTime()))
                 .race(Arrays.asList(race))
                 .deceasedIndCd(person.getDeceasedIndCd())
                 .cd(person.getCd())
