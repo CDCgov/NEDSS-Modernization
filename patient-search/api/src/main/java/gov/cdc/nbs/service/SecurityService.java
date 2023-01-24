@@ -50,9 +50,11 @@ public class SecurityService {
      * <li>Multiply the Jurisdiction nbs uid by 100,000
      * <li>Add the Program Area Id to the result
      * <p>
+     *
+     * Functionality copied from legacy NBS: ProgramAreaJurisdictionUtil.getPAJHash
      */
     private Long generateOid(Integer jurisdictionNbsUid, Integer programAreaId) {
-        return (jurisdictionNbsUid * 100000L) + programAreaId;
+        return (jurisdictionNbsUid * 100_000L) + programAreaId;
     }
 
     /**

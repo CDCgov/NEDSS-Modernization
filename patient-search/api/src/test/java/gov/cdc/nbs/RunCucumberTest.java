@@ -12,6 +12,7 @@ import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootContextLoader;
@@ -22,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -45,26 +47,33 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @Transactional
 @Rollback(false)
 @Testcontainers
-class RunCucumberTest {
+@RunWith(SpringRunner.class)
+public class RunCucumberTest {
     @Autowired
     private PatientController patientController;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
         assertNotNull(patientController);
     }
 
     @Container
-    private static final ElasticsearchContainer elasticsearchContainer;
+    public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;
 
     static {
-        elasticsearchContainer = new NbsElasticsearchContainer();
-        elasticsearchContainer.start();
+        // instantiate docker once for all tests and test the instance itself in ElasticSearchTest
+        ELASTICSEARCH_CONTAINER = new NbsElasticsearchContainer();
+        try {
+            ELASTICSEARCH_CONTAINER.startWithPlugins();
+        }
+        catch (Exception e) {       
+            throw new RuntimeException("Failed to start NbsElasticsearchContainer with plugins");  
+        }
     }
 
     @DynamicPropertySource
     public static void overrideProps(DynamicPropertyRegistry registry) {
-        registry.add("nbs.elasticsearch.url", () -> "http://" + elasticsearchContainer.getHttpHostAddress());
+        registry.add("nbs.elasticsearch.url", () -> "http://" + ELASTICSEARCH_CONTAINER.getHttpHostAddress());
     }
 
 }

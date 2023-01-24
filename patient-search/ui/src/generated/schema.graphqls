@@ -530,7 +530,7 @@ type Person {
     asOfDateMorbidity: Date
     asOfDateSex: Date
     electronicInd: String
-    personParentUid: ID
+    personParentUid: personParentUid
     dedupMatchInd: String
     groupNbr: Int
     groupTime: Date
@@ -540,6 +540,10 @@ type Person {
     eharsId: String
     ethnicUnkReasonCd: String
     sexUnkReasonCd: String
+}
+
+type personParentUid {
+    id: ID
 }
 
 input PersonInput {
@@ -796,10 +800,19 @@ type Query {
 
     findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
     findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
+
+    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
+    findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
 }
 
 type Mutation {
     createPatient(patient: PersonInput!): Person!
+    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
+}
+
+type UpdateResult {
+    updatedPerson: Person
+    requestId: String
 }
 
 type SnomedCodedResults {

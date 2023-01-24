@@ -54,7 +54,7 @@ export const AdvancedSearch = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'person' | 'event'>('person');
     const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
-    const [validSearch, setValidSearch] = useState<boolean>(false);
+    const [validSearch, setValidSearch] = useState<boolean>(true);
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
@@ -121,6 +121,7 @@ export const AdvancedSearch = () => {
             // no query parameters specified or user is not logged in
             setActiveTab('person');
             setResultsChip([]);
+            console.log('asd');
             setValidSearch(false);
             setLoading(false);
             return;
@@ -134,6 +135,7 @@ export const AdvancedSearch = () => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
                 setResultsChip([]);
+                console.log('asd');
                 setValidSearch(false);
                 setSubmitted(true);
             }
@@ -334,6 +336,7 @@ export const AdvancedSearch = () => {
             setSubmitted(false);
         } else {
             setLoading(false);
+            console.log('asd');
             setValidSearch(false);
             setSubmitted(true);
         }
@@ -381,6 +384,7 @@ export const AdvancedSearch = () => {
         setLabReportData(undefined);
         setLabReportFilter({});
         setSubmitted(false);
+        console.log('asd');
         setValidSearch(false);
         setLastSearchType(undefined);
         navigate('/advanced-search');
@@ -943,7 +947,6 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.PERSON &&
                         !submitted &&
-                        !loading &&
                         patientData?.content &&
                         patientData.content.length > 0 && (
                             <PatientResults

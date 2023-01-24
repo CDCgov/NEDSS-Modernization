@@ -140,7 +140,9 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage) {
             asOfDateMorbidity
             asOfDateSex
             electronicInd
-            personParentUid
+            personParentUid{
+                id
+            }
             dedupMatchInd
             groupNbr
             groupTime
