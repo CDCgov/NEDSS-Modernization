@@ -69,6 +69,7 @@
         "@graphql-codegen/typescript-operations": "^2.5.3",
         "@graphql-codegen/typescript-react-apollo": "^3.3.3",
         "@testing-library/cypress": "^8.0.3",
+        "@testing-library/react-hooks": "^7.0.2",
         "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.11.5",
         "@typescript-eslint/eslint-plugin": "^5.32.0",
