@@ -1,0 +1,18 @@
+.tableHead {
+    display: flex;
+    border: none;
+    align-items: center;
+}
+
+.no-data {
+    color: #747474;
+    font-style: italic;
+}
+
+.show-length-text {
+    color: #71767a;
+}
+
+.pagination {
+    justify-content: flex-end;
+}

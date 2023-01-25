@@ -91,22 +91,20 @@ export const LabReportResults = ({
             sex = patient.currSexCd === 'M' ? 'Male' : patient.currSexCd === 'F' ? 'Female' : 'Unknown';
         }
 
+        const redirectPatientProfile = async () => {
+            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+                authorization: `Bearer ${state.getToken()}`,
+                object: labReport
+            });
+            navigate(`/patient-profile/${labReport.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+        };
+
         return (
             <Grid row gap={3}>
                 <Grid col={12} className="margin-bottom-2">
                     <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                     <p
-                        onClick={async () => {
-                            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
-                                authorization: `Bearer ${state.getToken()}`,
-                                object: labReport
-                            });
-                            navigate(
-                                `/patient-profile/${labReport.localId}?data=${encodeURIComponent(
-                                    encryptedFilter.value
-                                )}`
-                            );
-                        }}
+                        onClick={redirectPatientProfile}
                         className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                         style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                         {name}

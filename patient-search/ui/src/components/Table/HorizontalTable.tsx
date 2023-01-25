@@ -1,5 +1,6 @@
 import { Button, Grid, Icon } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
+import './style.scss';
 
 type TableProps = {
     tableHeader?: string;
@@ -28,7 +29,7 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData }: TableProps)
                         <Grid col={6}>{item.title}</Grid>
                         {item.text && <Grid col={6}>{item.text}</Grid>}
                         {!item.text && (
-                            <Grid col={6} style={{ color: '#747474', fontStyle: 'italic' }} className="font-sans-md">
+                            <Grid col={6} className="font-sans-md no-data">
                                 No data
                             </Grid>
                         )}

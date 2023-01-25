@@ -46,21 +46,18 @@ export const PatientProfile = () => {
     }, []);
 
     return (
-        <div style={{ backgroundColor: '#F1F6F9' }} className="height-full">
-            <div
-                className="bg-white grid-row flex-align-center flex-justify"
-                style={{ borderBottom: '1px solid #DFE1E2' }}>
+        <div className="height-full main-banner">
+            <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
                 <h1 className="font-sans-xl text-medium">Patient Profile</h1>
                 <div>
-                    <Button style={{ display: 'inline-flex' }} type={'submit'}>
+                    <Button className="display-inline-flex" type={'submit'}>
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>
                     <ModalToggleButton
                         modalRef={modalRef}
                         opener
-                        className="delete-btn"
-                        style={{ display: 'inline-flex' }}
+                        className="delete-btn display-inline-flex"
                         type={'submit'}>
                         <Icon.Delete className="margin-right-05" />
                         Delete Patient
@@ -169,10 +166,7 @@ export const PatientProfile = () => {
                     </Grid>
                 </div>
 
-                <div
-                    className="grid-row flex-align-center"
-                    // style={{ borderBottom: '1.5px solid lightgray' }}
-                >
+                <div className="grid-row flex-align-center">
                     <h6
                         className={`${
                             activeTab === ACTIVE_TAB.SUMMARY && 'active'

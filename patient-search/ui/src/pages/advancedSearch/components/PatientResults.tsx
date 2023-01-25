@@ -162,6 +162,14 @@ export const PatientResults = ({
         return newen;
     };
 
+    const redirectPatientProfile = async (item) => {
+        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            object: item
+        });
+        navigate(`/patient-profile/${item.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+    };
+
     return (
         <div className="margin-x-4">
             {Boolean(validSearch && totalResults && data?.length > 0) && (
@@ -193,18 +201,7 @@ export const PatientResults = ({
                                         <Grid col={12} style={styleObjHeight(index)} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                                             <p
-                                                onClick={async () => {
-                                                    const encryptedFilter =
-                                                        await EncryptionControllerService.encryptUsingPost({
-                                                            authorization: `Bearer ${state.getToken()}`,
-                                                            object: item
-                                                        });
-                                                    navigate(
-                                                        `/patient-profile/${item.localId}?data=${encodeURIComponent(
-                                                            encryptedFilter.value
-                                                        )}`
-                                                    );
-                                                }}
+                                                onClick={() => redirectPatientProfile(item)}
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                                                 {item.lastNm}, {item.firstNm}

@@ -1,11 +1,23 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
 import React from 'react';
+import './style.scss';
+
+export type TableDetail = {
+    id: string | number;
+    title: React.ReactNode | React.ReactNode[] | string;
+};
+
+export type TableBody = {
+    id: number | string;
+    checkbox?: boolean;
+    tableDetails: TableDetail[];
+};
 
 export type TableContentProps = {
     tableHeader?: string;
     tableSubHeader?: React.ReactNode | React.ReactNode[] | string;
     tableHead: { name: string; sortable: boolean }[];
-    tableBody: any[];
+    tableBody: TableBody[];
     isPagination?: boolean;
     totalResults?: number;
     currentPage?: number;
@@ -25,7 +37,7 @@ export const TableComponent = ({
     tableSubHeader
 }: TableContentProps) => {
     return (
-        <div className="">
+        <div>
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
                 <p className="font-sans-lg text-bold margin-0">
                     {tableHeader}
@@ -38,7 +50,7 @@ export const TableComponent = ({
                     <tr>
                         {tableHead.map((head: any, index) => (
                             <th key={index} scope="col">
-                                <div style={{ display: 'flex', border: 'none', alignItems: 'center' }}>
+                                <div className="tableHead">
                                     {head.name}
                                     {head.sortable && (
                                         <Button className="usa-button--unstyled" type={'button'}>
@@ -58,10 +70,7 @@ export const TableComponent = ({
                                     td.title ? (
                                         <td key={ind}>{td.title}</td>
                                     ) : (
-                                        <td
-                                            key={ind}
-                                            style={{ color: '#747474', fontStyle: 'italic' }}
-                                            className="font-sans-md">
+                                        <td key={ind} className="font-sans-md no-data">
                                             No data
                                         </td>
                                     )
@@ -69,20 +78,17 @@ export const TableComponent = ({
                             </tr>
                         ))
                     ) : (
-                        <tr className="text-center" style={{ color: '#747474', fontStyle: 'italic' }}>
-                            No entries
-                        </tr>
+                        <tr className="text-center no-data">No entries</tr>
                     )}
                 </tbody>
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
-                <p style={{ color: '#71767A' }} className="margin-0">
+                <p className="margin-0 show-length-text">
                     Showing {tableBody?.length} of {tableBody?.length}
                 </p>
                 {isPagination && tableBody.length > 9 && (
                     <Pagination
-                        className="margin-0"
-                        style={{ justifyContent: 'flex-end' }}
+                        className="margin-0 pagination"
                         totalPages={Math.ceil(totalResults / 10)}
                         currentPage={currentPage}
                         pathname={'/patient-profile'}
