@@ -1,8 +1,8 @@
 Feature: I can perform a patient search
 
   Background: Go to nbs site and login
-   Given I visit the "/login" page
-   Given I login in with "hclark"
+   When I visit the "/login" page
+   Given I sign in with "hclark"
 
   Scenario: I can navigate to the simple search page and perform a search
     When I visit the "/advanced-search" page
@@ -12,4 +12,3 @@ Feature: I can perform a patient search
     And I intercept the "POST" method of "**/encryption/encrypt" alias "encriptionRequest" api
     And I click the ".left-searchbar button[type='submit']" button
     And I expect the "encriptionRequest" api to be called with '{"firstName":"Surma","gender":"M","lastName":"Singh"}'
-

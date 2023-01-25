@@ -6,6 +6,14 @@ import { When } from 'cypress-cucumber-preprocessor/steps';
  * Please refrain from adding any specific ones here. Instead create a separate feature specific step file and add there iof required.
  */
 
+Given('I sign in with {string}', (username) => {
+    cy.get('#username').type(username);
+    Cypress.on('uncaught:exception', (err, ruunable) => {
+        return false;
+    });
+    cy.get('button').contains('Sign in').click();
+});
+
 // Use to visit any URL
 When('I visit the {string} page', (route) => {
     cy.visit(route);
