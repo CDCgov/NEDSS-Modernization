@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,6 +35,8 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.data.domain.Sort.Direction;
+import java.util.Comparator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -57,6 +60,8 @@ public class PatientSearchSteps {
     private Person searchPatient;
     private List<Person> searchResults;
     private List<Person> generatedPersons;
+    private Direction sortDirection;
+    private String sortField;
 
     @Before
     public void clearAuth() {
@@ -116,11 +121,26 @@ public class PatientSearchSteps {
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
     }
 
+    @When("I search for patients sorted by {string} {string} {string} {string}")
+    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField, String aSortDirection) {
+        PatientFilter filter = getPatientDataFilter(field, qualifier);
+        sortDirection = aSortDirection.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
+        sortField = aSortField;
+        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
+    }
+
     @Then("I find the patient")
     public void i_find_the_patient() {
         assertNotNull(searchPatient);
         assertTrue(searchResults.size() > 0);
         assertTrue(searchResults.contains(searchPatient));
+    }
+
+    @Then("I find the patients sorted")
+    public void i_find_the_sorted_patients() {
+        Comparator<Person> comparator = getPersonSortComparator(sortField, sortDirection);
+        List<Person> sortedPersons = generatedPersons.stream().sorted(comparator).collect(Collectors.toList());
+        Assert.assertEquals(searchResults, sortedPersons);
     }
 
     private PatientFilter updatePatientDataFilter(PatientFilter filter, String field, String qualifier) {
@@ -241,4 +261,19 @@ public class PatientSearchSteps {
         }
     }
 
+    private Comparator<Person> getPersonSortComparator(String field, Direction direction) {
+        Comparator<Person> personSortComparator = (h1, h2) -> h1.getLastNm().compareTo(h2.getLastNm());
+        if (direction == Direction.DESC) {
+            if (field.equals("lastNm")) {
+                personSortComparator = (h1, h2) -> h2.getLastNm().compareTo(h1.getLastNm());
+            } else if (field.equals("birthTime")) {
+                personSortComparator = (h1, h2) -> h2.getBirthTime().compareTo(h1.getBirthTime());
+            }
+        } else {
+            if (field.equals("birthTime")) {
+                personSortComparator = (h1, h2) -> h1.getBirthTime().compareTo(h2.getBirthTime());
+            }
+        }
+        return personSortComparator;
+    }
 }
