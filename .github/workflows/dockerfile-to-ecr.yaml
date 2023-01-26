@@ -65,7 +65,7 @@ jobs:
         IMAGE_NAME: elasticsearch
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
-        IMAGE_TAG: "${{ env.github_repo_name }}-elasticsearch-${{ env.github_branch }}-${{ env.github_sha_short }}"
+        IMAGE_TAG: "${{ env.github_repo_name }}-opensearch-${{ env.github_branch }}-${{ env.github_sha_short }}"
       run: |
         # Build a docker container and push it to ECR 
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./cdc-sandbox/opensearch/
