@@ -2,26 +2,26 @@ package gov.cdc.nbs.containers;
 
 import java.io.IOException;
 
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.opensearch.testcontainers.OpensearchContainer;
 import org.testcontainers.utility.DockerImageName;
 
-public class NbsElasticsearchContainer extends ElasticsearchContainer {
-    private static final String ELASTIC_SEARCH_DOCKER = "elasticsearch:7.17.7";
+public class NbsElasticsearchContainer extends OpensearchContainer {
+    private static final String OPENSEARCH_DOCKER = "opensearchproject/opensearch:2.4.1";
 
     private static final String CLUSTER_NAME = "cluster.name";
 
-    private static final String ELASTIC_SEARCH = "elasticsearch";
+    private static final String OPENSEARCH = "opensearch";
 
     public NbsElasticsearchContainer() {
-        super(DockerImageName.parse(ELASTIC_SEARCH_DOCKER)
-                .asCompatibleSubstituteFor("docker.elastic.co/elasticsearch/elasticsearch"));
-        this.addEnv(CLUSTER_NAME, ELASTIC_SEARCH);
+        super(DockerImageName.parse(OPENSEARCH_DOCKER)
+                .asCompatibleSubstituteFor("opensearchproject/opensearch"));
+        this.addEnv(CLUSTER_NAME, OPENSEARCH);
     }
 
     public void startWithPlugins() throws UnsupportedOperationException, IOException, InterruptedException {
         start();
         execInContainer(
-            "/usr/share/elasticsearch/bin/elasticsearch-plugin",
+            "/usr/share/opensearch/bin/opensearch-plugin",
             "install",
             "analysis-phonetic"
         );
