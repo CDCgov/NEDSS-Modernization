@@ -109,19 +109,19 @@ export const PatientResults = ({
 
     const newOrderPhone = (data: any) => {
         const numbers: any = [];
-        data.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
+        data?.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
         return <OrderedData data={numbers} type="PHONE NUMBER" />;
     };
 
     const newOrderEmail = (data: any) => {
         const emails: any = [];
-        data.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
+        data?.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
         return <OrderedData data={emails} type="EMAIL" />;
     };
 
     const newOrderAddress = (data: any) => {
         const address: any = [];
-        data.map(
+        data?.map(
             (item: any) =>
                 item.classCd === 'PST' &&
                 address.push(
@@ -162,7 +162,7 @@ export const PatientResults = ({
         return newen;
     };
 
-    const redirectPatientProfile = async (item) => {
+    const redirectPatientProfile = async (item: any) => {
         const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
             authorization: `Bearer ${state.getToken()}`,
             object: item
@@ -251,8 +251,8 @@ export const PatientResults = ({
                                 <Grid col={5}>
                                     <Grid row gap={3}>
                                         {/* Locator entries */}
-                                        {newOrderPhone(item.NBSEntity.entityLocatorParticipations)}
-                                        {newOrderEmail(item.NBSEntity.entityLocatorParticipations)}
+                                        {newOrderPhone(item?.NBSEntity?.entityLocatorParticipations)}
+                                        {newOrderEmail(item?.NBSEntity?.entityLocatorParticipations)}
                                         <Grid col={6} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
                                             {getOtherNames(item, item.names) ? (
@@ -265,7 +265,7 @@ export const PatientResults = ({
                                                 <p className="text-italic margin-0 text-gray-30">No Data</p>
                                             )}
                                         </Grid>
-                                        {newOrderAddress(item.NBSEntity.entityLocatorParticipations)}
+                                        {newOrderAddress(item?.NBSEntity?.entityLocatorParticipations)}
                                     </Grid>
                                 </Grid>
                                 <Grid col={3}>
