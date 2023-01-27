@@ -2980,7 +2980,7 @@ FROM
                             </entry>
                             <entry>
 <key>gen-table-fetch-partition-size</key>
-<value>500</value>
+<value>5000</value>
                             </entry>
                             <entry>
 <key>gen-table-column-for-val-partitioning</key>
@@ -3034,7 +3034,7 @@ FROM
                         <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
                         <bulletinLevel>WARN</bulletinLevel>
                         <comments></comments>
-                        <concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
+                        <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                         <descriptors>
                             <entry>
 <key>Database Connection Pooling Service</key>
@@ -3166,7 +3166,7 @@ FROM
                             </entry>
                             <entry>
 <key>esql-max-rows</key>
-<value>0</value>
+<value>500</value>
                             </entry>
                             <entry>
 <key>esql-output-batch-size</key>
@@ -3303,5 +3303,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/27/2023 22:11:06 UTC</timestamp>
+    <timestamp>01/27/2023 22:25:37 UTC</timestamp>
 </template>
