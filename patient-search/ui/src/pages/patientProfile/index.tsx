@@ -190,7 +190,7 @@ export const PatientProfile = () => {
                     </h6>
                 </div>
 
-                {activeTab === ACTIVE_TAB.SUMMARY && <Summary />}
+                {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profileData} />}
                 {activeTab === ACTIVE_TAB.EVENT && <Events />}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics />}
 

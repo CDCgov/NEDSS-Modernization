@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
+import { useFindOpenInvestigationsForPatientLazyQuery } from '../../generated/graphql/schema';
 
-export const Summary = () => {
+type SummaryProp = {
+    profileData: any;
+};
+
+export const Summary = ({ profileData }: SummaryProp) => {
+    const [getAllInvestigations, { data }] = useFindOpenInvestigationsForPatientLazyQuery();
+
     const [tableBody, setTableBody] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [documentReviewBody, setDocumentReviewBody] = useState<any>([]);
@@ -84,6 +91,21 @@ export const Summary = () => {
         setTableBody(tempArr);
     }, []);
 
+    useEffect(() => {
+        if (profileData) {
+            getAllInvestigations({
+                variables: {
+                    patientId: parseInt(profileData.id),
+                    page: {
+                        pageNumber: 0,
+                        pageSize: 10
+                    }
+                }
+            });
+        }
+    }, [profileData]);
+
+    console.log(data, 'data');
     return (
         <>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">

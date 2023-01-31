@@ -35,7 +35,7 @@ export const PatientResults = ({
         data.map((item: any) => {
             const tempNumbers: any = [];
             const tempEmails: any = [];
-            item.NBSEntity.entityLocatorParticipations.forEach((element: any) => {
+            item?.NBSEntity?.entityLocatorParticipations?.forEach((element: any) => {
                 if (element.locator.phoneNbrTxt) {
                     tempNumbers.push(element.locator.phoneNbrTxt);
                 }

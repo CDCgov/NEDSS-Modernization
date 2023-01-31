@@ -43,3 +43,12 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 }
+
+.modal-form .modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.modal-form .usa-button {
+    margin-top: 0 !important;
+}

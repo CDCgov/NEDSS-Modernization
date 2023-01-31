@@ -1,12 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
-import { Button, Grid, Icon } from '@trussworks/react-uswds';
+import { Button, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { HorizontalTable } from '../../components/Table/HorizontalTable';
+import { AddCommentModal } from './components/AddCommentModal';
+import { AddNameModal } from './components/AddNameModal';
+import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
+import { AddAddressModal } from './components/AddressModal';
 
 export const Demographics = () => {
     const [tableBody, setTableBody] = useState<any>([]);
     const [nameTableBody, setNameTableBody] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const addCommentModalRef = useRef<ModalRef>(null);
+    const addNameModalRef = useRef<ModalRef>(null);
+    const addAddressModalRef = useRef<ModalRef>(null);
+    const addPhoneEmailRef = useRef<ModalRef>(null);
 
     useEffect(() => {
         const tempArr = [];
@@ -81,10 +89,11 @@ export const Demographics = () => {
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <ModalToggleButton modalRef={addCommentModalRef} opener className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add comment
-                            </Button>
+                            </ModalToggleButton>
+                            <AddCommentModal modalRef={addCommentModalRef} />
                         </div>
                     }
                     tableHeader={'Administrative'}
@@ -104,10 +113,11 @@ export const Demographics = () => {
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <ModalToggleButton modalRef={addNameModalRef} opener className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add name
-                            </Button>
+                            </ModalToggleButton>
+                            <AddNameModal modalRef={addNameModalRef} />
                         </div>
                     }
                     tableHeader={'Name'}
@@ -131,10 +141,11 @@ export const Demographics = () => {
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <ModalToggleButton modalRef={addAddressModalRef} opener className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add address
-                            </Button>
+                            </ModalToggleButton>
+                            <AddAddressModal modalRef={addAddressModalRef} />
                         </div>
                     }
                     tableHeader={'Address'}
@@ -197,10 +208,11 @@ export const Demographics = () => {
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <ModalToggleButton modalRef={addPhoneEmailRef} opener className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add phone & email
-                            </Button>
+                            </ModalToggleButton>
+                            <AddPhoneEmailModal modalRef={addPhoneEmailRef} />
                         </div>
                     }
                     tableHeader={'Phone & email'}
