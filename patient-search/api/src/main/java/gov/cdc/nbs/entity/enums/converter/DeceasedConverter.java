@@ -3,7 +3,6 @@ package gov.cdc.nbs.entity.enums.converter;
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.exception.ConversionException;
 
 public class DeceasedConverter implements PropertyValueConverter {
 
@@ -20,16 +19,14 @@ public class DeceasedConverter implements PropertyValueConverter {
     public Object read(Object value) {
         if (value instanceof String s) {
             switch (s) {
-                case "Y":
+                case "Y", "true":
                     return Deceased.Y;
-                case "N":
+                case "N", "FALSE", "false":
                     return Deceased.N;
                 case "UNK":
                     return Deceased.UNK;
-                case "FALSE", "false":
-                    return Deceased.FALSE;
                 default:
-                    throw new ConversionException("Invalid Deceased string value: " + s);
+                    return null;
             }
         } else {
             return value;

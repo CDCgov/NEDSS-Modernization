@@ -16,7 +16,7 @@ import gov.cdc.nbs.controller.CodeValueGeneralController;
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
-import gov.cdc.nbs.support.EthnicityMother;
+import gov.cdc.nbs.support.RaceMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,7 +27,7 @@ import io.cucumber.java.en.When;
 @ActiveProfiles("test")
 @Transactional
 @Rollback(false)
-public class EthnicitySearchSteps {
+public class RaceSearchSteps {
 
     @Autowired
     private CodeValueGeneralRepository codeValueGeneralRepository;
@@ -36,31 +36,31 @@ public class EthnicitySearchSteps {
 
     private Page<CodeValueGeneral> response;
 
-    @Given("Ethnicities exist")
-    public void ethnicities_exist() {
-        var hispanicOrLatino = EthnicityMother.hispanicOrLatino();
-        if (!codeValueGeneralRepository.existsById(hispanicOrLatino.getId())) {
-            codeValueGeneralRepository.save(hispanicOrLatino);
+    @Given("Races exist")
+    public void races_exist() {
+        var asian = RaceMother.asian();
+        if (!codeValueGeneralRepository.existsById(asian.getId())) {
+            codeValueGeneralRepository.save(asian);
         }
-        var notHispanicOrLatino = EthnicityMother.notHispanicOrLatino();
-        if (!codeValueGeneralRepository.existsById(notHispanicOrLatino.getId())) {
-            codeValueGeneralRepository.save(notHispanicOrLatino);
+        var blackOrAfricanAmerican = RaceMother.blackOrAfricanAmerican();
+        if (!codeValueGeneralRepository.existsById(blackOrAfricanAmerican.getId())) {
+            codeValueGeneralRepository.save(blackOrAfricanAmerican);
         }
-        var unknown = EthnicityMother.unknown();
-        if (!codeValueGeneralRepository.existsById(unknown.getId())) {
-            codeValueGeneralRepository.save(unknown);
+        var white = RaceMother.white();
+        if (!codeValueGeneralRepository.existsById(white.getId())) {
+            codeValueGeneralRepository.save(white);
         }
     }
 
-    @When("I search for ethnicities")
-    public void i_search_for_ethnicities() {
-        response = codeValueGeneralController.findAllEthnicityValues(new GraphQLPage(50, 0));
+    @When("I search for races")
+    public void i_search_for_races() {
+        response = codeValueGeneralController.findAllRaceValues(new GraphQLPage(50, 0));
     }
 
-    @Then("I find ethnicities")
-    public void i_find_ethnicities() {
+    @Then("I find races")
+    public void i_find_races() {
         assertTrue(response.getTotalElements() > 0);
-        EthnicityMother.ETHNICITY_LIST.forEach(raceCode -> {
+        RaceMother.RACE_LIST.forEach(raceCode -> {
             assertTrue(response.getContent().stream()
                     .filter(e -> e.getId().getCode().equalsIgnoreCase(raceCode))
                     .findFirst()

@@ -25,7 +25,8 @@ describe('EthnicityForm component tests', () => {
             conditions: [],
             jurisdictions: [],
             userResults: [],
-            outbreaks: []
+            outbreaks: [],
+            races: []
         };
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>
@@ -40,10 +41,26 @@ describe('EthnicityForm component tests', () => {
 
     it('should render Race dropdown with correct options', () => {
         const { result } = renderHook(() => useForm());
-        const { container } = render(<EthnicityForm control={result.current.control} />);
+        const races: Race[] = [];
+        races.push({ codeDescTxt: 'Asian', id: { code: '2028-9' } });
+        races.push({ codeDescTxt: 'White', id: { code: '2106-3' } });
+        const searchCriteria: SearchCriteria = {
+            races,
+            ethnicities: [],
+            programAreas: [],
+            conditions: [],
+            jurisdictions: [],
+            userResults: [],
+            outbreaks: []
+        };
+        const { container } = render(
+            <SearchCriteriaContext.Provider value={{ searchCriteria }}>
+                <EthnicityForm control={result.current.control} />
+            </SearchCriteriaContext.Provider>
+        );
         const options = container.querySelectorAll('div select')[1].childNodes;
-        Object.values(Race).forEach((value, idx) => {
-            expect(formatInterfaceString(value)).toBe(options[idx + 1].textContent);
+        Object.values(races).forEach((value, idx) => {
+            expect(formatInterfaceString(value.codeDescTxt)).toBe(options[idx + 1].textContent);
         });
     });
 });

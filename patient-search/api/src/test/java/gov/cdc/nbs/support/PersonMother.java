@@ -8,7 +8,6 @@ import java.util.List;
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.IdentificationType;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
@@ -99,7 +98,7 @@ public class PersonMother {
 
         // race
         var race = new PersonRace();
-        race.setId(new PersonRaceId(id, RandomUtil.getRandomFromArray(Race.values())));
+        race.setId(new PersonRaceId(id, RandomUtil.getRandomFromArray(RaceMother.RACE_LIST)));
         race.setPersonUid(person);
         race.setRecordStatusCd("ACTIVE");
         person.setRaceDescTxt(race.getId().getRaceCd().toString());
@@ -200,13 +199,13 @@ public class PersonMother {
                 null);
         createPostalLocatorEntry(id + 80000L, person.getNbsEntity(), homeAddress, "H");
 
-        person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO);
+        person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO_CODE);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setVersionCtrlNbr((short) 1);
 
         // race
         var race = new PersonRace();
-        race.setId(new PersonRaceId(id, Race.WHITE));
+        race.setId(new PersonRaceId(id, RaceMother.WHITE_CODE));
         race.setPersonUid(person);
         race.setRecordStatusCd("ACTIVE");
         person.setRaces(Arrays.asList(race));

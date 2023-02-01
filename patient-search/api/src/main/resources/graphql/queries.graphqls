@@ -20,6 +20,7 @@ type Query {
     findAllConditionCodes(page: Page): [ConditionCode]!
     findAllOutbreaks(page: Page): OutbreakResults!
     findAllEthnicityValues(page: Page): EthnicityResults!
+    findAllRaceValues(page: Page): RaceResults!
     findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
     findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
@@ -69,6 +70,11 @@ type OutbreakResults {
 
 type EthnicityResults {
     content: [Ethnicity]!
+    total: Int!
+}
+
+type RaceResults {
+    content: [Race]!
     total: Int!
 }
 

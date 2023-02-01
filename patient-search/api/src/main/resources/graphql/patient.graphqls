@@ -2,7 +2,7 @@ input PersonFilter {
     id: ID
     lastName: String
     firstName: String
-    race: Race
+    race: String
     identification: Identification
     ssn: String
     phoneNumber: String
@@ -150,7 +150,7 @@ input PersonInput {
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
     ethnicity: String
-    race: Race
+    race: String
 }
 input Name {
     firstName: String
@@ -218,18 +218,6 @@ enum IdentificationType {
     SOCIAL_SECURITY
     VISA_PASSPORT
     WIC_IDENTIFIER
-}
-
-enum Race {
-    UNKNOWN
-    AMERICAN_INDIAN_OR_ALASKAN_NATIVE
-    ASIAN
-    AFRICAN_AMERICAN
-    NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER
-    WHITE
-    OTHER_RACE
-    REFUSED_TO_ANSWER
-    NOT_ASKED
 }
 
 enum Gender {

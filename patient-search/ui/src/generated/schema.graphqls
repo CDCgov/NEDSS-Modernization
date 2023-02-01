@@ -1,11 +1,3 @@
-type Ethnicity {
-    id: EthnicityId!
-    codeDescTxt: String!
-}
-
-type EthnicityId {
-    code: String!
-}
 type ConditionCode {
     id: String!
     conditionDescTxt: String
@@ -31,6 +23,14 @@ type CountryCode {
     sourceConceptId: String
     codeSystemCd: String
     codeSystemDescTxt: String
+}
+type Ethnicity {
+    id: EthnicityId!
+    codeDescTxt: String!
+}
+
+type EthnicityId {
+    code: String!
 }
 type Investigation {
     id: ID
@@ -417,7 +417,7 @@ input PersonFilter {
     id: ID
     lastName: String
     firstName: String
-    race: Race
+    race: String
     identification: Identification
     ssn: String
     phoneNumber: String
@@ -565,7 +565,7 @@ input PersonInput {
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
     ethnicity: String
-    race: Race
+    race: String
 }
 input Name {
     firstName: String
@@ -633,18 +633,6 @@ enum IdentificationType {
     SOCIAL_SECURITY
     VISA_PASSPORT
     WIC_IDENTIFIER
-}
-
-enum Race {
-    UNKNOWN
-    AMERICAN_INDIAN_OR_ALASKAN_NATIVE
-    ASIAN
-    AFRICAN_AMERICAN
-    NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER
-    WHITE
-    OTHER_RACE
-    REFUSED_TO_ANSWER
-    NOT_ASKED
 }
 
 enum Gender {
@@ -796,6 +784,7 @@ type Query {
     findAllConditionCodes(page: Page): [ConditionCode]!
     findAllOutbreaks(page: Page): OutbreakResults!
     findAllEthnicityValues(page: Page): EthnicityResults!
+    findAllRaceValues(page: Page): RaceResults!
     findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
     findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
@@ -848,6 +837,11 @@ type EthnicityResults {
     total: Int!
 }
 
+type RaceResults {
+    content: [Race]!
+    total: Int!
+}
+
 type PersonResults {
     content: [Person!]!
     total: Int!
@@ -871,6 +865,14 @@ type InvestigationResults {
 type LabReportResults {
     content: [LabReport]!
     total: Int!
+}
+type Race {
+    id: RaceId!
+    codeDescTxt: String!
+}
+
+type RaceId {
+    code: String!
 }
 scalar Date
 
@@ -926,6 +928,7 @@ enum RecordStatus {
     ACTIVE
     INACTIVE
     LOG_DEL
+    SUPERCEDED
 }
 
 enum PregnancyStatus {

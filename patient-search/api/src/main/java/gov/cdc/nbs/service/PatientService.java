@@ -40,7 +40,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
@@ -428,7 +427,7 @@ public class PatientService {
     /*
      * Creates a PersonRace entry and adds it to the Person object
      */
-    private void addPersonRaceEntry(Person person, Race race) {
+    private void addPersonRaceEntry(Person person, String race) {
         if (person == null || race == null) {
             return;
         }

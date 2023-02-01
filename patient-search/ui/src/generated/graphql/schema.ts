@@ -728,7 +728,7 @@ export type PersonFilter = {
   lastName?: InputMaybe<Scalars['String']>;
   mortalityStatus?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
-  race?: InputMaybe<Race>;
+  race?: InputMaybe<Scalars['String']>;
   recordStatus?: InputMaybe<RecordStatus>;
   ssn?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
@@ -756,7 +756,7 @@ export type PersonInput = {
   ethnicity?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Name>;
   phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
-  race?: InputMaybe<Race>;
+  race?: InputMaybe<Scalars['String']>;
   ssn?: InputMaybe<Scalars['String']>;
 };
 
@@ -919,6 +919,7 @@ export type Query = {
   findAllPatients: PersonResults;
   findAllPlaces: Array<Maybe<Place>>;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
+  findAllRaceValues: RaceResults;
   findAllStateCodes: Array<Maybe<StateCode>>;
   findAllUsers: UserResults;
   findDocumentsRequiringReviewForPatient: LabReportResults;
@@ -980,6 +981,11 @@ export type QueryFindAllPlacesArgs = {
 
 
 export type QueryFindAllProgramAreasArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllRaceValuesArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1080,22 +1086,28 @@ export type QueryFindSnomedCodedResultsArgs = {
   searchText: Scalars['String'];
 };
 
-export enum Race {
-  AfricanAmerican = 'AFRICAN_AMERICAN',
-  AmericanIndianOrAlaskanNative = 'AMERICAN_INDIAN_OR_ALASKAN_NATIVE',
-  Asian = 'ASIAN',
-  NativeHawaiianOrPacificIslander = 'NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER',
-  NotAsked = 'NOT_ASKED',
-  OtherRace = 'OTHER_RACE',
-  RefusedToAnswer = 'REFUSED_TO_ANSWER',
-  Unknown = 'UNKNOWN',
-  White = 'WHITE'
-}
+export type Race = {
+  __typename?: 'Race';
+  codeDescTxt: Scalars['String'];
+  id: RaceId;
+};
+
+export type RaceId = {
+  __typename?: 'RaceId';
+  code: Scalars['String'];
+};
+
+export type RaceResults = {
+  __typename?: 'RaceResults';
+  content: Array<Maybe<Race>>;
+  total: Scalars['Int'];
+};
 
 export enum RecordStatus {
   Active = 'ACTIVE',
   Inactive = 'INACTIVE',
-  LogDel = 'LOG_DEL'
+  LogDel = 'LOG_DEL',
+  Superceded = 'SUPERCEDED'
 }
 
 export enum ReportingEntityType {
@@ -1273,6 +1285,13 @@ export type FindAllProgramAreasQueryVariables = Exact<{
 
 
 export type FindAllProgramAreasQuery = { __typename?: 'Query', findAllProgramAreas: Array<{ __typename?: 'ProgramAreaCode', id: string, progAreaDescTxt?: string | null, nbsUid?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeq?: number | null } | null> };
+
+export type FindAllRaceValuesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllRaceValuesQuery = { __typename?: 'Query', findAllRaceValues: { __typename?: 'RaceResults', total: number, content: Array<{ __typename?: 'Race', codeDescTxt: string, id: { __typename?: 'RaceId', code: string } } | null> } };
 
 export type FindAllStateCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2372,6 +2391,47 @@ export function useFindAllProgramAreasLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type FindAllProgramAreasQueryHookResult = ReturnType<typeof useFindAllProgramAreasQuery>;
 export type FindAllProgramAreasLazyQueryHookResult = ReturnType<typeof useFindAllProgramAreasLazyQuery>;
 export type FindAllProgramAreasQueryResult = Apollo.QueryResult<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>;
+export const FindAllRaceValuesDocument = gql`
+    query findAllRaceValues($page: Page) {
+  findAllRaceValues(page: $page) {
+    content {
+      id {
+        code
+      }
+      codeDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllRaceValuesQuery__
+ *
+ * To run a query within a React component, call `useFindAllRaceValuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllRaceValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllRaceValuesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllRaceValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
+      }
+export function useFindAllRaceValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
+        }
+export type FindAllRaceValuesQueryHookResult = ReturnType<typeof useFindAllRaceValuesQuery>;
+export type FindAllRaceValuesLazyQueryHookResult = ReturnType<typeof useFindAllRaceValuesLazyQuery>;
+export type FindAllRaceValuesQueryResult = Apollo.QueryResult<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>;
 export const FindAllStateCodesDocument = gql`
     query findAllStateCodes($page: Page) {
   findAllStateCodes(page: $page) {

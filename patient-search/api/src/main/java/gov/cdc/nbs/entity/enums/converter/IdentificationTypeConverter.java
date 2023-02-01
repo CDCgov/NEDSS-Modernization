@@ -4,7 +4,6 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 import gov.cdc.nbs.entity.enums.IdentificationType;
-import gov.cdc.nbs.exception.ConversionException;
 
 @Converter
 public class IdentificationTypeConverter implements AttributeConverter<IdentificationType, String> {
@@ -24,7 +23,7 @@ public class IdentificationTypeConverter implements AttributeConverter<Identific
             return null;
         }
         switch (value) {
-            case "AN":
+            case "AN", "ACN":
                 return IdentificationType.ACCOUNT_NUMBER;
             case "APT":
                 return IdentificationType.ALTERNATE_PERSON_NUMBER;
@@ -67,7 +66,7 @@ public class IdentificationTypeConverter implements AttributeConverter<Identific
             case "WC":
                 return IdentificationType.WIC_IDENTIFIER;
             default:
-                throw new ConversionException("Invalid value specified for Identification Type");
+                return null;
         }
     }
 
@@ -120,7 +119,7 @@ public class IdentificationTypeConverter implements AttributeConverter<Identific
             case WIC_IDENTIFIER:
                 return "WC";
             default:
-                throw new ConversionException("Invalid Identification Type specified: " + type);
+                return null;
         }
     }
 

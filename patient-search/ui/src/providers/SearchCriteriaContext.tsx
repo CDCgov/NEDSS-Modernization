@@ -17,7 +17,10 @@ import {
     Outbreak,
     useFindAllEthnicityValuesLazyQuery,
     FindAllEthnicityValuesQuery,
-    Ethnicity
+    Ethnicity,
+    useFindAllRaceValuesLazyQuery,
+    Race,
+    FindAllRaceValuesQuery
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
@@ -28,6 +31,7 @@ export interface SearchCriteria {
     userResults: User[];
     outbreaks: Outbreak[];
     ethnicities: Ethnicity[];
+    races: Race[];
 }
 
 const initialState: SearchCriteria = {
@@ -36,7 +40,8 @@ const initialState: SearchCriteria = {
     jurisdictions: [],
     userResults: [],
     outbreaks: [],
-    ethnicities: []
+    ethnicities: [],
+    races: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -53,6 +58,7 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
     const [getOutbreaks] = useFindAllOutbreaksLazyQuery({ onCompleted: setOutbreaks });
     const [getEthnicities] = useFindAllEthnicityValuesLazyQuery({ onCompleted: setEthnicities });
+    const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
     // on init, load search data from API
@@ -64,6 +70,7 @@ export const SearchCriteriaProvider = (props: any) => {
             getAllUsers();
             getOutbreaks();
             getEthnicities();
+            getRaces();
         }
     }, [state.isLoggedIn]);
 
@@ -92,6 +99,20 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, ethnicities });
+        }
+    }
+
+    function setRaces(results: FindAllRaceValuesQuery): void {
+        if (results.findAllRaceValues) {
+            const races: Race[] = [];
+            results.findAllRaceValues.content.forEach((r) => r && races.push(r));
+            races.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt?.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, races });
         }
     }
 
