@@ -14,6 +14,8 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 
 @Controller
 public class CodeValueGeneralController {
+    private static final String ETHNICITY_CODE_SET_NM = "PHVS_ETHNICITYGROUP_CDC_UNK";
+    private static final String OUTBREAK_CODE_SET_NM = "OUTBREAK_NM";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -28,13 +30,13 @@ public class CodeValueGeneralController {
 
     @QueryMapping()
     public Page<CodeValueGeneral> findAllEthnicityValues(@Argument GraphQLPage page) {
-        return codeValueGeneralRepository.findAllByCodeSetName("PHVS_ETHNICITYGROUP_CDC_UNK",
+        return codeValueGeneralRepository.findAllByCodeSetName(ETHNICITY_CODE_SET_NM,
                 GraphQLPage.toPageable(page, maxPageSize));
     }
 
     @QueryMapping()
     public Page<CodeValueGeneral> findAllOutbreaks(@Argument GraphQLPage page) {
-        return codeValueGeneralRepository.findAllByCodeSetName("OUTBREAK_NM",
+        return codeValueGeneralRepository.findAllByCodeSetName(OUTBREAK_CODE_SET_NM,
                 GraphQLPage.toPageable(page, maxPageSize));
     }
 }
