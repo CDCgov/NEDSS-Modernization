@@ -89,11 +89,22 @@ export enum EntryMethod {
   Manual = 'MANUAL'
 }
 
-export enum Ethnicity {
-  HispanicOrLatino = 'HISPANIC_OR_LATINO',
-  NotHispanicOrLatino = 'NOT_HISPANIC_OR_LATINO',
-  Unknown = 'UNKNOWN'
-}
+export type Ethnicity = {
+  __typename?: 'Ethnicity';
+  codeDescTxt: Scalars['String'];
+  id: EthnicityId;
+};
+
+export type EthnicityId = {
+  __typename?: 'EthnicityId';
+  code: Scalars['String'];
+};
+
+export type EthnicityResults = {
+  __typename?: 'EthnicityResults';
+  content: Array<Maybe<Ethnicity>>;
+  total: Scalars['Int'];
+};
 
 export enum EventStatus {
   New = 'NEW',
@@ -709,7 +720,7 @@ export type PersonFilter = {
   dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
   email?: InputMaybe<Scalars['String']>;
-  ethnicity?: InputMaybe<Ethnicity>;
+  ethnicity?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
   id?: InputMaybe<Scalars['ID']>;
@@ -742,7 +753,7 @@ export type PersonInput = {
   currentGender?: InputMaybe<Gender>;
   deceased?: InputMaybe<Deceased>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicity?: InputMaybe<Ethnicity>;
+  ethnicity?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Name>;
   phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
   race?: InputMaybe<Race>;
@@ -901,6 +912,7 @@ export type Query = {
   __typename?: 'Query';
   findAllConditionCodes: Array<Maybe<ConditionCode>>;
   findAllCountryCodes: Array<Maybe<CountryCode>>;
+  findAllEthnicityValues: EthnicityResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: OrganizationResults;
   findAllOutbreaks: OutbreakResults;
@@ -933,6 +945,11 @@ export type QueryFindAllConditionCodesArgs = {
 
 
 export type QueryFindAllCountryCodesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllEthnicityValuesArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1207,6 +1224,13 @@ export type FindAllCountryCodesQueryVariables = Exact<{
 
 
 export type FindAllCountryCodesQuery = { __typename?: 'Query', findAllCountryCodes: Array<{ __typename?: 'CountryCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, keyInfoTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
+
+export type FindAllEthnicityValuesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllEthnicityValuesQuery = { __typename?: 'Query', findAllEthnicityValues: { __typename?: 'EthnicityResults', total: number, content: Array<{ __typename?: 'Ethnicity', codeDescTxt: string, id: { __typename?: 'EthnicityId', code: string } } | null> } };
 
 export type FindAllJurisdictionsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -1842,6 +1866,47 @@ export function useFindAllCountryCodesLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type FindAllCountryCodesQueryHookResult = ReturnType<typeof useFindAllCountryCodesQuery>;
 export type FindAllCountryCodesLazyQueryHookResult = ReturnType<typeof useFindAllCountryCodesLazyQuery>;
 export type FindAllCountryCodesQueryResult = Apollo.QueryResult<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>;
+export const FindAllEthnicityValuesDocument = gql`
+    query findAllEthnicityValues($page: Page) {
+  findAllEthnicityValues(page: $page) {
+    content {
+      id {
+        code
+      }
+      codeDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllEthnicityValuesQuery__
+ *
+ * To run a query within a React component, call `useFindAllEthnicityValuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllEthnicityValuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllEthnicityValuesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllEthnicityValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
+      }
+export function useFindAllEthnicityValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
+        }
+export type FindAllEthnicityValuesQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesQuery>;
+export type FindAllEthnicityValuesLazyQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesLazyQuery>;
+export type FindAllEthnicityValuesQueryResult = Apollo.QueryResult<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>;
 export const FindAllJurisdictionsDocument = gql`
     query findAllJurisdictions($page: Page) {
   findAllJurisdictions(page: $page) {

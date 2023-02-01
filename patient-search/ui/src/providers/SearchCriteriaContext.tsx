@@ -14,16 +14,20 @@ import {
     useFindAllUsersLazyQuery,
     useFindAllOutbreaksLazyQuery,
     FindAllOutbreaksQuery,
-    Outbreak
+    Outbreak,
+    useFindAllEthnicityValuesLazyQuery,
+    FindAllEthnicityValuesQuery,
+    Ethnicity
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
-interface SearchCriteria {
+export interface SearchCriteria {
     programAreas: ProgramAreaCode[];
     conditions: ConditionCode[];
     jurisdictions: Jurisdiction[];
     userResults: User[];
     outbreaks: Outbreak[];
+    ethnicities: Ethnicity[];
 }
 
 const initialState: SearchCriteria = {
@@ -31,7 +35,8 @@ const initialState: SearchCriteria = {
     conditions: [],
     jurisdictions: [],
     userResults: [],
-    outbreaks: []
+    outbreaks: [],
+    ethnicities: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -47,6 +52,7 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getConditions] = useFindAllConditionCodesLazyQuery({ onCompleted: setConditions });
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
     const [getOutbreaks] = useFindAllOutbreaksLazyQuery({ onCompleted: setOutbreaks });
+    const [getEthnicities] = useFindAllEthnicityValuesLazyQuery({ onCompleted: setEthnicities });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
     // on init, load search data from API
@@ -57,6 +63,7 @@ export const SearchCriteriaProvider = (props: any) => {
             getJurisdictions();
             getAllUsers();
             getOutbreaks();
+            getEthnicities();
         }
     }, [state.isLoggedIn]);
 
@@ -71,6 +78,20 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, outbreaks });
+        }
+    }
+
+    function setEthnicities(results: FindAllEthnicityValuesQuery): void {
+        if (results.findAllEthnicityValues) {
+            const ethnicities: Ethnicity[] = [];
+            results.findAllEthnicityValues.content.forEach((e) => e && ethnicities.push(e));
+            ethnicities.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt?.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, ethnicities });
         }
     }
 

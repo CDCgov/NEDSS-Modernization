@@ -19,6 +19,7 @@ module.exports.findAllJurisdictions = fs.readFileSync(path.join(__dirname, 'find
 module.exports.findAllProgramAreas = fs.readFileSync(path.join(__dirname, 'findAllProgramAreas.gql'), 'utf8');
 module.exports.findAllConditionCodes = fs.readFileSync(path.join(__dirname, 'findAllConditionCodes.gql'), 'utf8');
 module.exports.findAllOutbreaks = fs.readFileSync(path.join(__dirname, 'findAllOutbreaks.gql'), 'utf8');
+module.exports.findAllEthnicityValues = fs.readFileSync(path.join(__dirname, 'findAllEthnicityValues.gql'), 'utf8');
 module.exports.findLocalLabTest = fs.readFileSync(path.join(__dirname, 'findLocalLabTest.gql'), 'utf8');
 module.exports.findLoincLabTest = fs.readFileSync(path.join(__dirname, 'findLoincLabTest.gql'), 'utf8');
 module.exports.findLocalCodedResults = fs.readFileSync(path.join(__dirname, 'findLocalCodedResults.gql'), 'utf8');

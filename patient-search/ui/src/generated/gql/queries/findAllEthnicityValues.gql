@@ -1,0 +1,11 @@
+query findAllEthnicityValues($page: Page) {
+    findAllEthnicityValues(page: $page){
+        content{
+            id{
+                code
+            }
+            codeDescTxt
+        }
+        total
+    }
+}

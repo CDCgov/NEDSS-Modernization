@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.controller.OutbreakController;
+import gov.cdc.nbs.controller.CodeValueGeneralController;
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
@@ -32,7 +32,7 @@ public class OutbreakSearchSteps {
     @Autowired
     private CodeValueGeneralRepository codeValueGeneralRepository;
     @Autowired
-    private OutbreakController outbreakController;
+    private CodeValueGeneralController codeValueGeneralController;
 
     private Page<CodeValueGeneral> response;
 
@@ -46,7 +46,7 @@ public class OutbreakSearchSteps {
 
     @When("I search for outbreaks")
     public void i_search_for_outbreaks() {
-        response = outbreakController.findAllOutbreaks(new GraphQLPage(10, 0));
+        response = codeValueGeneralController.findAllOutbreaks(new GraphQLPage(10, 0));
     }
 
     @Then("I find outbreaks")

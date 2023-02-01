@@ -17,7 +17,7 @@ input PersonFilter {
     country: String
     zip: String
     mortalityStatus: String
-    ethnicity: Ethnicity
+    ethnicity: String
     vaccinationId: String
     treatmentId: String
     recordStatus: RecordStatus
@@ -149,7 +149,7 @@ input PersonInput {
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
-    ethnicity: Ethnicity
+    ethnicity: String
     race: Race
 }
 input Name {
@@ -230,12 +230,6 @@ enum Race {
     OTHER_RACE
     REFUSED_TO_ANSWER
     NOT_ASKED
-}
-
-enum Ethnicity {
-    HISPANIC_OR_LATINO
-    NOT_HISPANIC_OR_LATINO
-    UNKNOWN
 }
 
 enum Gender {

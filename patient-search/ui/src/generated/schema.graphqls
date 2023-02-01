@@ -1,3 +1,11 @@
+type Ethnicity {
+    id: EthnicityId!
+    codeDescTxt: String!
+}
+
+type EthnicityId {
+    code: String!
+}
 type ConditionCode {
     id: String!
     conditionDescTxt: String
@@ -424,7 +432,7 @@ input PersonFilter {
     country: String
     zip: String
     mortalityStatus: String
-    ethnicity: Ethnicity
+    ethnicity: String
     vaccinationId: String
     treatmentId: String
     recordStatus: RecordStatus
@@ -556,7 +564,7 @@ input PersonInput {
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
-    ethnicity: Ethnicity
+    ethnicity: String
     race: Race
 }
 input Name {
@@ -637,12 +645,6 @@ enum Race {
     OTHER_RACE
     REFUSED_TO_ANSWER
     NOT_ASKED
-}
-
-enum Ethnicity {
-    HISPANIC_OR_LATINO
-    NOT_HISPANIC_OR_LATINO
-    UNKNOWN
 }
 
 enum Gender {
@@ -793,6 +795,7 @@ type Query {
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
     findAllOutbreaks(page: Page): OutbreakResults!
+    findAllEthnicityValues(page: Page): EthnicityResults!
     findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
     findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
@@ -837,6 +840,11 @@ type LocalLabTestResults {
 
 type OutbreakResults {
     content: [Outbreak]!
+    total: Int!
+}
+
+type EthnicityResults {
+    content: [Ethnicity]!
     total: Int!
 }
 

@@ -1,32 +1,37 @@
 import { Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { Ethnicity, Race } from '../../../../generated/graphql/schema';
+import { Race } from '../../../../generated/graphql/schema';
 import { formatInterfaceString } from '../../../../utils/util';
+import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 export const EthnicityForm = ({ control }: any) => {
     return (
         <>
-            <Grid col={12}>
-                <Controller
-                    control={control}
-                    name="ethnicity"
-                    render={({ field: { onChange, value } }) => (
-                        <SelectInput
-                            defaultValue={value}
-                            onChange={onChange}
-                            htmlFor={'ethnicity'}
-                            label="Ethnicity"
-                            options={Object.values(Ethnicity).map((ethnicity) => {
-                                return {
-                                    name: formatInterfaceString(ethnicity),
-                                    value: ethnicity
-                                };
-                            })}
+            <SearchCriteriaContext.Consumer>
+                {({ searchCriteria }) => (
+                    <Grid col={12}>
+                        <Controller
+                            control={control}
+                            name="ethnicity"
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    htmlFor={'ethnicity'}
+                                    label="Ethnicity"
+                                    options={Object.values(searchCriteria.ethnicities).map((ethnicity) => {
+                                        return {
+                                            name: ethnicity.codeDescTxt,
+                                            value: ethnicity.id.code
+                                        };
+                                    })}
+                                />
+                            )}
                         />
-                    )}
-                />
-            </Grid>
+                    </Grid>
+                )}
+            </SearchCriteriaContext.Consumer>
             <Grid col={12}>
                 <Controller
                     control={control}
