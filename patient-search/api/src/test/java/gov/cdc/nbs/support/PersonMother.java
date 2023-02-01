@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.IdentificationType;
 import gov.cdc.nbs.entity.enums.Race;
@@ -96,7 +95,7 @@ public class PersonMother {
         person.setNames(Arrays.asList(name));
 
         // ethnic group
-        person.setEthnicGroupInd(RandomUtil.getRandomFromArray(Ethnicity.values()));
+        person.setEthnicGroupInd(RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST));
 
         // race
         var race = new PersonRace();
@@ -201,7 +200,7 @@ public class PersonMother {
                 null);
         createPostalLocatorEntry(id + 80000L, person.getNbsEntity(), homeAddress, "H");
 
-        person.setEthnicGroupInd(Ethnicity.NOT_HISPANIC_OR_LATINO);
+        person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setVersionCtrlNbr((short) 1);
 

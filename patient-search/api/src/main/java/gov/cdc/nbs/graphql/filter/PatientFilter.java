@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.IdentificationType;
 import gov.cdc.nbs.entity.enums.Race;
@@ -41,7 +40,7 @@ public class PatientFilter {
     private String country;
     private String zip;
     private String mortalityStatus;
-    private Ethnicity ethnicity;
+    private String ethnicity;
     private RecordStatus recordStatus;
     private String treatmentId;
     private String vaccinationId;

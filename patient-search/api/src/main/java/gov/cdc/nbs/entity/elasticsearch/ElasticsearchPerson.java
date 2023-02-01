@@ -15,12 +15,10 @@ import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.DeceasedConverter;
-import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -228,8 +226,7 @@ public class ElasticsearchPerson {
     private String educationLevelDescTxt;
 
     @Field(name = ETHNIC_GROUP_IND, type = FieldType.Keyword)
-    @ValueConverter(EthnicityConverter.class)
-    private Ethnicity ethnicGroupInd;
+    private String ethnicGroupInd;
 
     @Field(name = LAST_CHG_REASON_CD, type = FieldType.Keyword)
     private String lastChgReasonCd;
