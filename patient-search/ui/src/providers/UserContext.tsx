@@ -37,7 +37,7 @@ const getUserIdFromCookie = (): string | undefined => {
 
 const initialState: UserState = {
     isLoggedIn: false,
-    isLoginPending: getUserIdFromCookie() ? true : false,
+    isLoginPending: false,
     loginError: undefined,
     userId: undefined,
     displayName: undefined,
@@ -60,8 +60,8 @@ export const UserContextProvider = (props: any) => {
     const [state, setState] = React.useState({ ...initialState });
     const setLoginPending = (isLoginPending: boolean) => setState({ ...state, isLoginPending, loginError: undefined });
     const setLoginSuccess = (userId: string, displayName: string) =>
-        setState({ ...initialState, isLoggedIn: true, userId, displayName });
-    const setLoginError = (loginError: string) => setState({ ...initialState, loginError });
+        setState({ ...initialState, isLoginPending: false, isLoggedIn: true, userId, displayName });
+    const setLoginError = (loginError: string) => setState({ ...initialState, isLoginPending: false, loginError });
     const login = async (username: string, password: string): Promise<boolean> => {
         setLoginPending(true);
         const success: boolean = await UserControllerService.loginUsingPost({

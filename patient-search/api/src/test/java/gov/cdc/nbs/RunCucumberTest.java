@@ -24,7 +24,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -61,13 +60,13 @@ public class RunCucumberTest {
     public static final NbsElasticsearchContainer ELASTICSEARCH_CONTAINER;
 
     static {
-        // instantiate docker once for all tests and test the instance itself in ElasticSearchTest
+        // instantiate docker once for all tests and test the instance itself in
+        // ElasticSearchTest
         ELASTICSEARCH_CONTAINER = new NbsElasticsearchContainer();
         try {
             ELASTICSEARCH_CONTAINER.startWithPlugins();
-        }
-        catch (Exception e) {       
-            throw new RuntimeException("Failed to start NbsElasticsearchContainer with plugins");  
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to start NbsElasticsearchContainer with plugins");
         }
     }
 

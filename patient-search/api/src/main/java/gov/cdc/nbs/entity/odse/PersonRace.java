@@ -1,17 +1,20 @@
 package gov.cdc.nbs.entity.odse;
 
+import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-
-import gov.cdc.nbs.entity.enums.Race;
-import gov.cdc.nbs.entity.enums.converter.RaceConverter;
-
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,9 +49,8 @@ public class PersonRace {
     @Column(name = "last_chg_user_id")
     private Long lastChgUserId;
 
-    @Convert(converter = RaceConverter.class)
     @Column(name = "race_category_cd", length = 20)
-    private Race raceCategoryCd;
+    private String raceCategoryCd;
 
     @Column(name = "race_desc_txt", length = 100)
     private String raceDescTxt;

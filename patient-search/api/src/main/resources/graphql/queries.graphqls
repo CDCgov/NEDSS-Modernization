@@ -19,6 +19,9 @@ type Query {
     findAllProgramAreas(page: Page): [ProgramAreaCode]!
     findAllConditionCodes(page: Page): [ConditionCode]!
     findAllOutbreaks(page: Page): OutbreakResults!
+    findAllEthnicityValues(page: Page): EthnicityResults!
+    findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
+    findAllRaceValues(page: Page): RaceResults!
     findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
     findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
@@ -63,6 +66,21 @@ type LocalLabTestResults {
 
 type OutbreakResults {
     content: [Outbreak]!
+    total: Int!
+}
+
+type EthnicityResults {
+    content: [Ethnicity]!
+    total: Int!
+}
+
+type PatientIdentificationTypeResults {
+    content: [IdentificationType]!
+    total: Int!
+}
+
+type RaceResults {
+    content: [Race]!
     total: Int!
 }
 

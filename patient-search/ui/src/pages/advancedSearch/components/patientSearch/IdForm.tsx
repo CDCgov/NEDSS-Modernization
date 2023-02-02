@@ -2,32 +2,36 @@ import { Grid } from '@trussworks/react-uswds';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
-import { IdentificationType } from '../../../../generated/graphql/schema';
 import { formatInterfaceString } from '../../../../utils/util';
+import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 export const IDForm = ({ control }: any) => {
     return (
         <>
-            <Grid col={12}>
-                <Controller
-                    control={control}
-                    name="identificationType"
-                    render={({ field: { onChange, value } }) => (
-                        <SelectInput
-                            defaultValue={value}
-                            options={Object.values(IdentificationType).map((type) => {
-                                return {
-                                    name: formatInterfaceString(type),
-                                    value: type
-                                };
-                            })}
-                            onChange={onChange}
-                            htmlFor={'identificationType'}
-                            label="ID type"
+            <SearchCriteriaContext.Consumer>
+                {({ searchCriteria }) => (
+                    <Grid col={12}>
+                        <Controller
+                            control={control}
+                            name="identificationType"
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    defaultValue={value}
+                                    options={Object.values(searchCriteria.identificationTypes).map((type) => {
+                                        return {
+                                            name: formatInterfaceString(type.codeDescTxt),
+                                            value: type.id.code
+                                        };
+                                    })}
+                                    onChange={onChange}
+                                    htmlFor={'identificationType'}
+                                    label="ID type"
+                                />
+                            )}
                         />
-                    )}
-                />
-            </Grid>
+                    </Grid>
+                )}
+            </SearchCriteriaContext.Consumer>
             <Grid col={12}>
                 <Controller
                     control={control}

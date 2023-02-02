@@ -21,10 +21,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.model.EncryptionResponse;
+import gov.cdc.nbs.support.EthnicityMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.DatabindException;
 import io.cucumber.java.Before;
@@ -106,7 +106,7 @@ public class EncryptionSteps {
         filter.setCountry(RandomUtil.getRandomString());
         filter.setDateOfBirth(RandomUtil.getRandomDateInPast());
         filter.setGender(RandomUtil.getRandomFromArray(Gender.values()));
-        filter.setEthnicity(RandomUtil.getRandomFromArray(Ethnicity.values()));
+        filter.setEthnicity(RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST));
         return filter;
     }
 }

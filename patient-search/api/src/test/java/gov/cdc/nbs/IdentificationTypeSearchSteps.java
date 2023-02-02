@@ -16,7 +16,7 @@ import gov.cdc.nbs.controller.CodeValueGeneralController;
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
-import gov.cdc.nbs.support.OutbreakMother;
+import gov.cdc.nbs.support.IdentificationMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,7 +27,7 @@ import io.cucumber.java.en.When;
 @ActiveProfiles("test")
 @Transactional
 @Rollback(false)
-public class OutbreakSearchSteps {
+public class IdentificationTypeSearchSteps {
 
     @Autowired
     private CodeValueGeneralRepository codeValueGeneralRepository;
@@ -36,22 +36,32 @@ public class OutbreakSearchSteps {
 
     private Page<CodeValueGeneral> response;
 
-    @Given("Outbreaks exist")
-    public void outbreaks_exist() {
-        var outbreak = OutbreakMother.testOutbreak();
-        if (!codeValueGeneralRepository.existsById(outbreak.getId())) {
-            codeValueGeneralRepository.save(outbreak);
+    @Given("Identification types exist")
+    public void identification_types_exist() {
+        var driversLicense = IdentificationMother.driversLicense();
+        if (!codeValueGeneralRepository.existsById(driversLicense.getId())) {
+            codeValueGeneralRepository.save(driversLicense);
+        }
+        var socialSecurity = IdentificationMother.socialSecurity();
+        if (!codeValueGeneralRepository.existsById(socialSecurity.getId())) {
+            codeValueGeneralRepository.save(socialSecurity);
         }
     }
 
-    @When("I search for outbreaks")
-    public void i_search_for_outbreaks() {
-        response = codeValueGeneralController.findAllOutbreaks(new GraphQLPage(10, 0));
+    @When("I search for identification types")
+    public void i_search_for_identification_types() {
+        response = codeValueGeneralController.findAllPatientIdentificationTypes(new GraphQLPage(50, 0));
     }
 
-    @Then("I find outbreaks")
-    public void i_find_outbreaks() {
+    @Then("I find identification types")
+    public void i_find_identification_types() {
         assertTrue(response.getTotalElements() > 0);
+        IdentificationMother.IDENTIFICATION_CODE_LIST.forEach(idCode -> {
+            assertTrue(response.getContent().stream()
+                    .filter(e -> e.getId().getCode().equalsIgnoreCase(idCode))
+                    .findFirst()
+                    .isPresent());
+        });
     }
 
 }
