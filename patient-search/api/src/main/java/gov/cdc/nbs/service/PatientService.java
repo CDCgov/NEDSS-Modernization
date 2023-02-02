@@ -74,6 +74,7 @@ import gov.cdc.nbs.repository.TeleLocatorRepository;
 import graphql.com.google.common.collect.Ordering;
 import gov.cdc.nbs.service.util.Constants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -248,6 +249,7 @@ public class PatientService {
         var query = new NativeSearchQueryBuilder()
                 .withQuery(builder)
                 .withSorts(buildPatientSort(pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
 
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
