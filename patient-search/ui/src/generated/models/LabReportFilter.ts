@@ -16,6 +16,7 @@ export type LabReportFilter = {
     eventStatus?: Array<'NEW' | 'UPDATE'>;
     jurisdictions?: Array<number>;
     lastUpdatedBy?: number;
+    patientId?: number;
     pregnancyStatus?: LabReportFilter.pregnancyStatus;
     processingStatus?: Array<'PROCESSED' | 'UNPROCESSED'>;
     programAreas?: Array<string>;

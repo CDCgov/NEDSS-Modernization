@@ -1,4 +1,5 @@
 input LabReportFilter {
+    patientId: Int
     programAreas: [String]
     jurisdictions: [ID]
     pregnancyStatus: PregnancyStatus

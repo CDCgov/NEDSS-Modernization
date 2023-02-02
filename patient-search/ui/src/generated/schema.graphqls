@@ -1,3 +1,11 @@
+type Ethnicity {
+    id: EthnicityId!
+    codeDescTxt: String!
+}
+
+type EthnicityId {
+    code: String!
+}
 type ConditionCode {
     id: String!
     conditionDescTxt: String
@@ -23,14 +31,6 @@ type CountryCode {
     sourceConceptId: String
     codeSystemCd: String
     codeSystemDescTxt: String
-}
-type Ethnicity {
-    id: EthnicityId!
-    codeDescTxt: String!
-}
-
-type EthnicityId {
-    code: String!
 }
 type IdentificationType {
     id: IdentificationTypeId!
@@ -84,6 +84,7 @@ type ActId {
 }
 
 input InvestigationFilter {
+    patientId: Int
     conditions: [String]
     programAreas: [String]
     jurisdictions: [ID]
@@ -203,6 +204,7 @@ type Jurisdiction {
     exportInd: String
 }
 input LabReportFilter {
+    patientId: Int
     programAreas: [String]
     jurisdictions: [ID]
     pregnancyStatus: PregnancyStatus

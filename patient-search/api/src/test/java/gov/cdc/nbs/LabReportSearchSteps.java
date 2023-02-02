@@ -149,6 +149,9 @@ public class LabReportSearchSteps {
             case "coded result":
                 filter.setCodedResult("abnormal");
                 break;
+            case "patient id":
+                filter.setPatientId(PATIENT_ID);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported field: " + field);
         }
