@@ -55,6 +55,8 @@ public class EventService {
     private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
+    private static final String SUBJ_OF_PHC = "SubjOfPHC";
+    private static final String PATSBJ = "PATSBJ";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -98,6 +100,9 @@ public class EventService {
         return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and if not appending to the query
     private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Lab reports are secured by Program Area and Jurisdiction
@@ -243,6 +248,20 @@ public class EventService {
             builder.must(QueryBuilders.matchQuery(LabReport.LAST_CHG_USER_ID, filter.getLastUpdatedBy()));
         }
 
+        if (filter.getPatientId() != null) {
+            var patientIdQuery = QueryBuilders.boolQuery();
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
+                            PATSBJ));
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                            filter.getPatientId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(LabReport.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
+        }
+
         // event provider/facility
         if (filter.getProviderSearch() != null) {
             var pSearch = filter.getProviderSearch();
@@ -331,6 +350,9 @@ public class EventService {
                 .build();
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and if not appending to the query
     private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Investigations are secured by Program Area and Jurisdiction
@@ -461,6 +483,21 @@ public class EventService {
         // Updated By
         if (filter.getLastUpdatedBy() != null) {
             builder.must(QueryBuilders.matchQuery(Investigation.LAST_CHANGE_USER_ID, filter.getLastUpdatedBy()));
+        }
+        // Patient id
+        if (filter.getPatientId() != null) {
+            var patientIdQuery = QueryBuilders.boolQuery();
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
+                            SUBJ_OF_PHC));
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "."
+                                    + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                            filter.getPatientId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(Investigation.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
         }
         // investigator id
         if (filter.getInvestigatorId() != null) {
@@ -614,7 +651,7 @@ public class EventService {
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC",
+                            SUBJ_OF_PHC,
                             sort.getDirection()));
                     break;
                 case "birthTime":
@@ -622,7 +659,7 @@ public class EventService {
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC",
+                            SUBJ_OF_PHC,
                             sort.getDirection()));
                     break;
                 default:
@@ -644,7 +681,7 @@ public class EventService {
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ",
+                            PATSBJ,
                             sort.getDirection()));
                     break;
                 case "birthTime":
@@ -652,7 +689,7 @@ public class EventService {
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ",
+                            PATSBJ,
                             sort.getDirection()));
                     break;
                 default:

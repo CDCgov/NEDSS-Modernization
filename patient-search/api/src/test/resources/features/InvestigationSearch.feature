@@ -27,6 +27,7 @@ Feature: Investigation search
       | event id         | STATE_CASE_ID       |
       | created by       |                     |
       | updated by       |                     |
+      | patient id       |                     |
 
   @investigation_search_multi_field
   Scenario: I can find an investigation using multiple fields in the investigation data
@@ -50,3 +51,4 @@ Feature: Investigation search
       | event id         | STATE_CASE_ID       | jurisdiction | jd1             | program area | ARBO         |
       | created by       |                     | jurisdiction | jd1             | program area | ARBO         |
       | updated by       |                     | jurisdiction | jd1             | program area | ARBO         |
+      | patient id       |                     | jurisdiction | jd1             | program area | ARBO         |

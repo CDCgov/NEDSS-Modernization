@@ -204,6 +204,7 @@ export type InvestigationFilter = {
   lastUpdatedBy?: InputMaybe<Scalars['String']>;
   notificationStatuses?: InputMaybe<NotificationStatuses>;
   outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  patientId?: InputMaybe<Scalars['Int']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatuses?: InputMaybe<ProcessingStatuses>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -289,6 +290,7 @@ export type LabReportFilter = {
   eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['ID']>;
+  patientId?: InputMaybe<Scalars['Int']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InvestigationFilter {
+    private Long patientId;
     private List<String> conditions;
     private List<String> programAreas;
     private List<Long> jurisdictions;
