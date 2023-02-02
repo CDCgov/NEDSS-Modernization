@@ -119,31 +119,19 @@ export enum Gender {
 
 export type Identification = {
   identificationNumber: Scalars['String'];
-  identificationType: IdentificationType;
+  identificationType: Scalars['String'];
 };
 
-export enum IdentificationType {
-  AccountNumber = 'ACCOUNT_NUMBER',
-  AlternatePersonNumber = 'ALTERNATE_PERSON_NUMBER',
-  ChipIdentificationNumber = 'CHIP_IDENTIFICATION_NUMBER',
-  DriversLicenseNumber = 'DRIVERS_LICENSE_NUMBER',
-  ImmunizationRegistryId = 'IMMUNIZATION_REGISTRY_ID',
-  MedicaidNumber = 'MEDICAID_NUMBER',
-  MedicalRecordNumber = 'MEDICAL_RECORD_NUMBER',
-  MedicareNumber = 'MEDICARE_NUMBER',
-  MothersIdentifier = 'MOTHERS_IDENTIFIER',
-  NationalUniqueIndividualIdentifier = 'NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER',
-  Other = 'OTHER',
-  PartnerServicesPatientNumber = 'PARTNER_SERVICES_PATIENT_NUMBER',
-  PatientExternalIdentifier = 'PATIENT_EXTERNAL_IDENTIFIER',
-  PatientInternalIdentifier = 'PATIENT_INTERNAL_IDENTIFIER',
-  PersonNumber = 'PERSON_NUMBER',
-  PrisonIdentificationNumber = 'PRISON_IDENTIFICATION_NUMBER',
-  RyanWhiteIdentifier = 'RYAN_WHITE_IDENTIFIER',
-  SocialSecurity = 'SOCIAL_SECURITY',
-  VisaPassport = 'VISA_PASSPORT',
-  WicIdentifier = 'WIC_IDENTIFIER'
-}
+export type IdentificationType = {
+  __typename?: 'IdentificationType';
+  codeDescTxt: Scalars['String'];
+  id: IdentificationTypeId;
+};
+
+export type IdentificationTypeId = {
+  __typename?: 'IdentificationTypeId';
+  code: Scalars['String'];
+};
 
 export type Investigation = {
   __typename?: 'Investigation';
@@ -599,6 +587,12 @@ export type Page = {
   pageSize: Scalars['Int'];
 };
 
+export type PatientIdentificationTypeResults = {
+  __typename?: 'PatientIdentificationTypeResults';
+  content: Array<Maybe<IdentificationType>>;
+  total: Scalars['Int'];
+};
+
 export type Person = {
   __typename?: 'Person';
   addReasonCd?: Maybe<Scalars['String']>;
@@ -916,6 +910,7 @@ export type Query = {
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: OrganizationResults;
   findAllOutbreaks: OutbreakResults;
+  findAllPatientIdentificationTypes: PatientIdentificationTypeResults;
   findAllPatients: PersonResults;
   findAllPlaces: Array<Maybe<Place>>;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
@@ -966,6 +961,11 @@ export type QueryFindAllOrganizationsArgs = {
 
 
 export type QueryFindAllOutbreaksArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllPatientIdentificationTypesArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -1264,6 +1264,13 @@ export type FindAllOutbreaksQueryVariables = Exact<{
 
 
 export type FindAllOutbreaksQuery = { __typename?: 'Query', findAllOutbreaks: { __typename?: 'OutbreakResults', total: number, content: Array<{ __typename?: 'Outbreak', codeShortDescTxt?: string | null, id: { __typename?: 'OutbreakId', codeSetNm: string, code: string } } | null> } };
+
+export type FindAllPatientIdentificationTypesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllPatientIdentificationTypesQuery = { __typename?: 'Query', findAllPatientIdentificationTypes: { __typename?: 'PatientIdentificationTypeResults', total: number, content: Array<{ __typename?: 'IdentificationType', codeDescTxt: string, id: { __typename?: 'IdentificationTypeId', code: string } } | null> } };
 
 export type FindAllPatientsQueryVariables = Exact<{
   page?: InputMaybe<SortablePage>;
@@ -2096,6 +2103,47 @@ export function useFindAllOutbreaksLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type FindAllOutbreaksQueryHookResult = ReturnType<typeof useFindAllOutbreaksQuery>;
 export type FindAllOutbreaksLazyQueryHookResult = ReturnType<typeof useFindAllOutbreaksLazyQuery>;
 export type FindAllOutbreaksQueryResult = Apollo.QueryResult<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>;
+export const FindAllPatientIdentificationTypesDocument = gql`
+    query findAllPatientIdentificationTypes($page: Page) {
+  findAllPatientIdentificationTypes(page: $page) {
+    content {
+      id {
+        code
+      }
+      codeDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllPatientIdentificationTypesQuery__
+ *
+ * To run a query within a React component, call `useFindAllPatientIdentificationTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllPatientIdentificationTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllPatientIdentificationTypesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllPatientIdentificationTypesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
+      }
+export function useFindAllPatientIdentificationTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
+        }
+export type FindAllPatientIdentificationTypesQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesQuery>;
+export type FindAllPatientIdentificationTypesLazyQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesLazyQuery>;
+export type FindAllPatientIdentificationTypesQueryResult = Apollo.QueryResult<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>;
 export const FindAllPatientsDocument = gql`
     query findAllPatients($page: SortablePage) {
   findAllPatients(page: $page) {

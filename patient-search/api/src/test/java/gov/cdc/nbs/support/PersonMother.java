@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.javafaker.Faker;
+
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.IdentificationType;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
@@ -26,7 +27,6 @@ import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
-import com.github.javafaker.Faker;
 
 public class PersonMother {
 
@@ -78,7 +78,7 @@ public class PersonMother {
         entityId.setStatusTime(Instant.now());
         entityId.setStatusCd('A');
         entityId.setRootExtensionTxt(RandomUtil.getRandomNumericString(8)); // the Id number
-        entityId.setTypeCd(RandomUtil.getRandomFromArray(IdentificationType.values()));
+        entityId.setTypeCd(RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST));
         entityId.setTypeDescTxt("TEST GENERATED");
         person.setEntityIds(Arrays.asList(entityId));
 

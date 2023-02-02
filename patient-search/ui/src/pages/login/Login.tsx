@@ -35,6 +35,7 @@ export const Login = () => {
                             type="text"
                             autoCapitalize="off"
                             autoCorrect="off"
+                            disabled={state.isLoginPending}
                         />
                         <Label htmlFor="password-sign-in">Password</Label>
                         <TextInput
@@ -57,7 +58,9 @@ export const Login = () => {
                         </a>
                     </p>
 
-                    <Button type="submit">Sign in</Button>
+                    <Button type="submit" disabled={state.isLoginPending}>
+                        Sign in
+                    </Button>
                 </Fieldset>
             </Form>
         </div>

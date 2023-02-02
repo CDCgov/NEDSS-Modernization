@@ -20,7 +20,10 @@ import {
     Ethnicity,
     useFindAllRaceValuesLazyQuery,
     Race,
-    FindAllRaceValuesQuery
+    FindAllRaceValuesQuery,
+    IdentificationType,
+    useFindAllPatientIdentificationTypesLazyQuery,
+    FindAllPatientIdentificationTypesQuery
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
@@ -32,6 +35,7 @@ export interface SearchCriteria {
     outbreaks: Outbreak[];
     ethnicities: Ethnicity[];
     races: Race[];
+    identificationTypes: IdentificationType[];
 }
 
 const initialState: SearchCriteria = {
@@ -41,7 +45,8 @@ const initialState: SearchCriteria = {
     userResults: [],
     outbreaks: [],
     ethnicities: [],
-    races: []
+    races: [],
+    identificationTypes: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -58,6 +63,9 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
     const [getOutbreaks] = useFindAllOutbreaksLazyQuery({ onCompleted: setOutbreaks });
     const [getEthnicities] = useFindAllEthnicityValuesLazyQuery({ onCompleted: setEthnicities });
+    const [getIdentificationTypes] = useFindAllPatientIdentificationTypesLazyQuery({
+        onCompleted: setIdentificationTypes
+    });
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
@@ -71,6 +79,7 @@ export const SearchCriteriaProvider = (props: any) => {
             getOutbreaks();
             getEthnicities();
             getRaces();
+            getIdentificationTypes();
         }
     }, [state.isLoggedIn]);
 
@@ -99,6 +108,19 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, ethnicities });
+        }
+    }
+    function setIdentificationTypes(results: FindAllPatientIdentificationTypesQuery): void {
+        if (results.findAllPatientIdentificationTypes) {
+            const identificationTypes: IdentificationType[] = [];
+            results.findAllPatientIdentificationTypes.content.forEach((id) => id && identificationTypes.push(id));
+            identificationTypes.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt?.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, identificationTypes });
         }
     }
 

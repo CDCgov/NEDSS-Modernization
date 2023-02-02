@@ -32,6 +32,14 @@ type Ethnicity {
 type EthnicityId {
     code: String!
 }
+type IdentificationType {
+    id: IdentificationTypeId!
+    codeDescTxt: String!
+}
+
+type IdentificationTypeId {
+    code: String!
+}
 type Investigation {
     id: ID
     recordStatus: String
@@ -593,7 +601,7 @@ input PhoneNumber {
 
 input Identification {
     identificationNumber: String!
-    identificationType: IdentificationType!
+    identificationType: String!
 }
 
 enum Suffix {
@@ -610,29 +618,6 @@ enum PhoneType {
     HOME
     CELL
     WORK
-}
-
-enum IdentificationType {
-    ACCOUNT_NUMBER
-    ALTERNATE_PERSON_NUMBER
-    CHIP_IDENTIFICATION_NUMBER
-    DRIVERS_LICENSE_NUMBER
-    IMMUNIZATION_REGISTRY_ID
-    MEDICAID_NUMBER
-    MEDICAL_RECORD_NUMBER
-    MEDICARE_NUMBER
-    MOTHERS_IDENTIFIER
-    NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER
-    OTHER
-    PARTNER_SERVICES_PATIENT_NUMBER
-    PATIENT_EXTERNAL_IDENTIFIER
-    PATIENT_INTERNAL_IDENTIFIER
-    PERSON_NUMBER
-    PRISON_IDENTIFICATION_NUMBER
-    RYAN_WHITE_IDENTIFIER
-    SOCIAL_SECURITY
-    VISA_PASSPORT
-    WIC_IDENTIFIER
 }
 
 enum Gender {
@@ -784,6 +769,7 @@ type Query {
     findAllConditionCodes(page: Page): [ConditionCode]!
     findAllOutbreaks(page: Page): OutbreakResults!
     findAllEthnicityValues(page: Page): EthnicityResults!
+    findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
     findAllRaceValues(page: Page): RaceResults!
     findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
@@ -834,6 +820,11 @@ type OutbreakResults {
 
 type EthnicityResults {
     content: [Ethnicity]!
+    total: Int!
+}
+
+type PatientIdentificationTypeResults {
+    content: [IdentificationType]!
     total: Int!
 }
 

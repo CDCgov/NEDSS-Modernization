@@ -17,6 +17,7 @@ public class CodeValueGeneralController {
     private static final String RACE_CODE_SET_NM = "RACE_CALCULATED";
     private static final String ETHNICITY_CODE_SET_NM = "PHVS_ETHNICITYGROUP_CDC_UNK";
     private static final String OUTBREAK_CODE_SET_NM = "OUTBREAK_NM";
+    private static final String PATIENT_IDENTIFICATION_TYPES = "EI_TYPE_PAT";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -38,6 +39,12 @@ public class CodeValueGeneralController {
     @QueryMapping()
     public Page<CodeValueGeneral> findAllEthnicityValues(@Argument GraphQLPage page) {
         return codeValueGeneralRepository.findAllByCodeSetName(ETHNICITY_CODE_SET_NM,
+                GraphQLPage.toPageable(page, maxPageSize));
+    }
+
+    @QueryMapping()
+    public Page<CodeValueGeneral> findAllPatientIdentificationTypes(@Argument GraphQLPage page) {
+        return codeValueGeneralRepository.findAllByCodeSetName(PATIENT_IDENTIFICATION_TYPES,
                 GraphQLPage.toPageable(page, maxPageSize));
     }
 

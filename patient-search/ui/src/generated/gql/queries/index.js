@@ -20,6 +20,7 @@ module.exports.findAllProgramAreas = fs.readFileSync(path.join(__dirname, 'findA
 module.exports.findAllConditionCodes = fs.readFileSync(path.join(__dirname, 'findAllConditionCodes.gql'), 'utf8');
 module.exports.findAllOutbreaks = fs.readFileSync(path.join(__dirname, 'findAllOutbreaks.gql'), 'utf8');
 module.exports.findAllEthnicityValues = fs.readFileSync(path.join(__dirname, 'findAllEthnicityValues.gql'), 'utf8');
+module.exports.findAllPatientIdentificationTypes = fs.readFileSync(path.join(__dirname, 'findAllPatientIdentificationTypes.gql'), 'utf8');
 module.exports.findAllRaceValues = fs.readFileSync(path.join(__dirname, 'findAllRaceValues.gql'), 'utf8');
 module.exports.findLocalLabTest = fs.readFileSync(path.join(__dirname, 'findLocalLabTest.gql'), 'utf8');
 module.exports.findLoincLabTest = fs.readFileSync(path.join(__dirname, 'findLoincLabTest.gql'), 'utf8');

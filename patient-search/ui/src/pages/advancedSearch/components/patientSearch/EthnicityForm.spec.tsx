@@ -26,7 +26,8 @@ describe('EthnicityForm component tests', () => {
             jurisdictions: [],
             userResults: [],
             outbreaks: [],
-            races: []
+            races: [],
+            identificationTypes: []
         };
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>
@@ -35,7 +36,7 @@ describe('EthnicityForm component tests', () => {
         );
         const options = container.querySelectorAll('div select')[0].childNodes;
         Object.values(ethnicities).forEach((value, idx) => {
-            expect(value.codeDescTxt).toBe(options[idx + 1].textContent);
+            expect(formatInterfaceString(value.codeDescTxt)).toBe(options[idx + 1].textContent);
         });
     });
 
@@ -51,7 +52,8 @@ describe('EthnicityForm component tests', () => {
             conditions: [],
             jurisdictions: [],
             userResults: [],
-            outbreaks: []
+            outbreaks: [],
+            identificationTypes: []
         };
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>

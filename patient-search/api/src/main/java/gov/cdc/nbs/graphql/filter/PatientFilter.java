@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.IdentificationType;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -50,6 +49,6 @@ public class PatientFilter {
     @NoArgsConstructor
     public static class Identification {
         private String identificationNumber;
-        private IdentificationType identificationType;
+        private String identificationType;
     }
 }

@@ -3,7 +3,9 @@ package gov.cdc.nbs.entity.enums.converter;
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
 import gov.cdc.nbs.entity.enums.Deceased;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DeceasedConverter implements PropertyValueConverter {
 
     @Override
@@ -26,6 +28,7 @@ public class DeceasedConverter implements PropertyValueConverter {
                 case "UNK":
                     return Deceased.UNK;
                 default:
+                    log.warn("Failed to convert from String to Deceased enum. String value: {}", value);
                     return null;
             }
         } else {

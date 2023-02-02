@@ -36,9 +36,9 @@ spring:
                 dialect: org.hibernate.dialect.SQLServer2012Dialect
                 hbm2ddl.jdbc_metadata_extraction_strategy: individually
     datasource:
-        url: jdbc:sqlserver://cdc-nbs-legacy-rds-mssql-large.cngszkuxlge9.us-east-1.rds.amazonaws.com;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;authenticationScheme=nativeAuthentication;
-        username: admin
-        password: EqNBS!Dev2022
+        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        username: sa
+        password: fake.fake.fake.1234
     mvc:
         pathmatch:
             matching-strategy: ant_path_matcher
