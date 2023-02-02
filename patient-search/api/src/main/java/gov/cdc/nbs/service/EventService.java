@@ -243,6 +243,20 @@ public class EventService {
             builder.must(QueryBuilders.matchQuery(LabReport.LAST_CHG_USER_ID, filter.getLastUpdatedBy()));
         }
 
+        if (filter.getPatientId() != null) {
+            var patientIdQuery = QueryBuilders.boolQuery();
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
+                            "PATSBJ"));
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                            filter.getPatientId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(LabReport.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
+        }
+
         // event provider/facility
         if (filter.getProviderSearch() != null) {
             var pSearch = filter.getProviderSearch();
@@ -461,6 +475,21 @@ public class EventService {
         // Updated By
         if (filter.getLastUpdatedBy() != null) {
             builder.must(QueryBuilders.matchQuery(Investigation.LAST_CHANGE_USER_ID, filter.getLastUpdatedBy()));
+        }
+        // Patient id
+        if (filter.getPatientId() != null) {
+            var patientIdQuery = QueryBuilders.boolQuery();
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
+                            "SubjOfPHC"));
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "."
+                                    + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                            filter.getPatientId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(Investigation.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
         }
         // investigator id
         if (filter.getInvestigatorId() != null) {

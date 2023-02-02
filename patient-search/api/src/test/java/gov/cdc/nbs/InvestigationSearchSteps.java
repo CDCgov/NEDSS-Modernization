@@ -128,6 +128,9 @@ public class InvestigationSearchSteps {
             case "updated by":
                 filter.setLastUpdatedBy(EventMother.UPDATED_BY);
                 break;
+            case "patient id":
+                filter.setPatientId(personId);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported field: " + field);
         }
