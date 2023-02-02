@@ -100,6 +100,9 @@ public class EventService {
         return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and if not appending to the query
     private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Lab reports are secured by Program Area and Jurisdiction
@@ -347,6 +350,9 @@ public class EventService {
                 .build();
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and if not appending to the query
     private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Investigations are secured by Program Area and Jurisdiction
