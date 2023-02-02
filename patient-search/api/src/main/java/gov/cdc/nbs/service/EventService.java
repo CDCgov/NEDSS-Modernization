@@ -253,7 +253,7 @@ public class EventService {
             patientIdQuery
                     .must(QueryBuilders.matchQuery(
                             LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ"));
+                            PATSBJ));
             patientIdQuery
                     .must(QueryBuilders.matchQuery(
                             LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
@@ -490,7 +490,7 @@ public class EventService {
             patientIdQuery
                     .must(QueryBuilders.matchQuery(
                             Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC"));
+                            SUBJ_OF_PHC));
             patientIdQuery
                     .must(QueryBuilders.matchQuery(
                             Investigation.PERSON_PARTICIPATIONS + "."
