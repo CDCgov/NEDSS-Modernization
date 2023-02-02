@@ -55,6 +55,8 @@ public class EventService {
     private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
+    private static final String SUBJ_OF_PHC = "SubjOfPHC";
+    private static final String PATSBJ = "PATSBJ";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -643,7 +645,7 @@ public class EventService {
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC",
+                            SUBJ_OF_PHC,
                             sort.getDirection()));
                     break;
                 case "birthTime":
@@ -651,7 +653,7 @@ public class EventService {
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC",
+                            SUBJ_OF_PHC,
                             sort.getDirection()));
                     break;
                 default:
@@ -673,7 +675,7 @@ public class EventService {
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ",
+                            PATSBJ,
                             sort.getDirection()));
                     break;
                 case "birthTime":
@@ -681,7 +683,7 @@ public class EventService {
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ",
+                            PATSBJ,
                             sort.getDirection()));
                     break;
                 default:
