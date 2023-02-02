@@ -1,6 +1,7 @@
 import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
-import React from 'react';
+import React, { useState } from 'react';
 import './style.scss';
+import { TOTAL_TABLE_DATA } from '../../utils/util';
 
 export type TableDetail = {
     id: string | number;
@@ -8,7 +9,7 @@ export type TableDetail = {
 };
 
 export type TableBody = {
-    id: number | string;
+    id: number | string | undefined | null;
     checkbox?: boolean;
     tableDetails: TableDetail[];
 };
@@ -23,6 +24,7 @@ export type TableContentProps = {
     currentPage?: number;
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
+    sortData?: (name: string, type: string) => void;
 };
 
 export const TableComponent = ({
@@ -34,8 +36,14 @@ export const TableComponent = ({
     currentPage = 1,
     handleNext,
     buttons,
-    tableSubHeader
+    tableSubHeader,
+    sortData
 }: TableContentProps) => {
+    const [sort, setSort] = useState<boolean>(false);
+    const handleSort = (headerName: string) => {
+        setSort(!sort);
+        sortData?.(headerName, !sort ? 'asc' : 'desc');
+    };
     return (
         <div>
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
@@ -53,7 +61,10 @@ export const TableComponent = ({
                                 <div className="tableHead">
                                     {head.name}
                                     {head.sortable && (
-                                        <Button className="usa-button--unstyled" type={'button'}>
+                                        <Button
+                                            className="usa-button--unstyled"
+                                            type={'button'}
+                                            onClick={() => handleSort(head.name)}>
                                             <Icon.SortArrow color="black" />
                                         </Button>
                                     )}
@@ -86,10 +97,10 @@ export const TableComponent = ({
                 <p className="margin-0 show-length-text">
                     Showing {tableBody?.length} of {tableBody?.length}
                 </p>
-                {isPagination && tableBody.length > 9 && (
+                {isPagination && tableBody.length >= TOTAL_TABLE_DATA && (
                     <Pagination
                         className="margin-0 pagination"
-                        totalPages={Math.ceil(totalResults / 10)}
+                        totalPages={Math.ceil(totalResults / TOTAL_TABLE_DATA)}
                         currentPage={currentPage}
                         pathname={'/patient-profile'}
                         onClickNext={() => handleNext?.(currentPage + 1)}

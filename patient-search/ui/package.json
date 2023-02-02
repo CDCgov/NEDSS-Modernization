@@ -16,6 +16,7 @@
         "cypress-cucumber-preprocessor": "^4.3.1",
         "graphql": "^16.6.0",
         "lodash.debounce": "^4.0.8",
+        "moment": "^2.29.4",
         "multiselect-react-dropdown": "^2.0.25",
         "react": "^17",
         "react-dom": "^17",

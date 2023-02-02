@@ -1,5 +1,7 @@
 import { InvestigationFilter, LabReportFilter } from '../generated/graphql/schema';
 
+export const TOTAL_TABLE_DATA = 10;
+
 export const formatInterfaceString = (str: string) => {
     let i;
     const frags = str.split('_');
