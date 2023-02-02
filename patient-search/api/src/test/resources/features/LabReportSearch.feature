@@ -34,6 +34,7 @@ Feature: Lab report search
       | provider search   | REPORTING_FACILITY             |
       | resulted test     |                                |
       | coded result      |                                |
+      | patient id        |                                |
 
   @lab_report_search_multi_field
   Scenario: I can find a lab report by many fields in the laboratory report
@@ -64,3 +65,4 @@ Feature: Lab report search
       | provider search   | REPORTING_FACILITY             | jurisdiction  |            | event id     | lab id     |
       | resulted test     |                                | jurisdiction  |            | event id     | lab id     |
       | coded result      |                                | jurisdiction  |            | event id     | lab id     |
+      | patient id        |                                | jurisdiction  |            | event id     | lab id     |
