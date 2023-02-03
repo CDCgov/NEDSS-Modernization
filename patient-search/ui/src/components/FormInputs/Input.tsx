@@ -29,10 +29,12 @@ export const Input = ({
 }: InputProps) => {
     return (
         <>
-            <Label htmlFor={htmlFor}>
-                {label}
-                <small className="text-red">{required && ' *'}</small>
-            </Label>
+            {label && (
+                <Label htmlFor={htmlFor}>
+                    {label}
+                    <small className="text-red">{required && ' *'}</small>
+                </Label>
+            )}
             <TextInput
                 {...props}
                 id={id}

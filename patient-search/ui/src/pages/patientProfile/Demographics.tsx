@@ -321,6 +321,7 @@ export const Demographics = () => {
                     <Grid row>
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
+                                type="race"
                                 tableHeader="Race"
                                 tableData={[
                                     { title: 'As of:', text: '09/19/2020' },
@@ -332,6 +333,7 @@ export const Demographics = () => {
 
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
+                                type="ethnicity"
                                 tableHeader="Ethnicity"
                                 tableData={[
                                     { title: 'As of:', text: '09/19/2020' },
@@ -344,7 +346,8 @@ export const Demographics = () => {
 
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
-                                tableHeader="Ethnicity"
+                                type="general"
+                                tableHeader="General Patient Information"
                                 tableData={[
                                     { title: 'As of:', text: '09/19/2020' },
                                     { title: 'Marital status::', text: 'Married' },
@@ -365,6 +368,7 @@ export const Demographics = () => {
                     <Grid row>
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
+                                type="mortality"
                                 tableHeader="Mortality"
                                 tableData={[
                                     { title: 'As of:', text: '09/19/2020' },
@@ -380,6 +384,7 @@ export const Demographics = () => {
 
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
+                                type="sex"
                                 tableHeader="Sex & Birth"
                                 tableData={[
                                     { title: 'As of:', text: '09/19/2020' },
