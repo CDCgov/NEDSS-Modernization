@@ -52,6 +52,7 @@ enum RecordStatus {
     ACTIVE
     INACTIVE
     LOG_DEL
+    SUPERCEDED
 }
 
 enum PregnancyStatus {

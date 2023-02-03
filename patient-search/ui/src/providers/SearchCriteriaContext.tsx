@@ -14,15 +14,27 @@ import {
     useFindAllUsersLazyQuery,
     useFindAllOutbreaksLazyQuery,
     FindAllOutbreaksQuery,
-    Outbreak
+    Outbreak,
+    useFindAllEthnicityValuesLazyQuery,
+    FindAllEthnicityValuesQuery,
+    Ethnicity,
+    useFindAllRaceValuesLazyQuery,
+    Race,
+    FindAllRaceValuesQuery,
+    IdentificationType,
+    useFindAllPatientIdentificationTypesLazyQuery,
+    FindAllPatientIdentificationTypesQuery
 } from '../generated/graphql/schema';
 
-interface SearchCriteria {
+export interface SearchCriteria {
     programAreas: ProgramAreaCode[];
     conditions: ConditionCode[];
     jurisdictions: Jurisdiction[];
     userResults: User[];
     outbreaks: Outbreak[];
+    ethnicities: Ethnicity[];
+    races: Race[];
+    identificationTypes: IdentificationType[];
 }
 
 const initialState: SearchCriteria = {
@@ -30,7 +42,10 @@ const initialState: SearchCriteria = {
     conditions: [],
     jurisdictions: [],
     userResults: [],
-    outbreaks: []
+    outbreaks: [],
+    ethnicities: [],
+    races: [],
+    identificationTypes: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -45,16 +60,26 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getConditions] = useFindAllConditionCodesLazyQuery({ onCompleted: setConditions });
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery({ onCompleted: setJurisdictions });
     const [getOutbreaks] = useFindAllOutbreaksLazyQuery({ onCompleted: setOutbreaks });
+    const [getEthnicities] = useFindAllEthnicityValuesLazyQuery({ onCompleted: setEthnicities });
+    const [getIdentificationTypes] = useFindAllPatientIdentificationTypesLazyQuery({
+        onCompleted: setIdentificationTypes
+    });
+    const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
 
     // on init, load search data from API
     useEffect(() => {
-        getProgramAreas();
-        getConditions();
-        getJurisdictions();
-        getAllUsers();
-        getOutbreaks();
-    }, []);
+        if (state.isLoggedIn) {
+            getProgramAreas();
+            getConditions();
+            getJurisdictions();
+            getAllUsers();
+            getOutbreaks();
+            getEthnicities();
+            getRaces();
+            getIdentificationTypes();
+        }
+    }, [state.isLoggedIn]);
 
     function setOutbreaks(results: FindAllOutbreaksQuery): void {
         if (results.findAllOutbreaks) {
@@ -67,6 +92,47 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, outbreaks });
+        }
+    }
+
+    function setEthnicities(results: FindAllEthnicityValuesQuery): void {
+        if (results.findAllEthnicityValues) {
+            const ethnicities: Ethnicity[] = [];
+            results.findAllEthnicityValues.content.forEach((e) => e && ethnicities.push(e));
+            ethnicities.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt?.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, ethnicities });
+        }
+    }
+    function setIdentificationTypes(results: FindAllPatientIdentificationTypesQuery): void {
+        if (results.findAllPatientIdentificationTypes) {
+            const identificationTypes: IdentificationType[] = [];
+            results.findAllPatientIdentificationTypes.content.forEach((id) => id && identificationTypes.push(id));
+            identificationTypes.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt?.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, identificationTypes });
+        }
+    }
+
+    function setRaces(results: FindAllRaceValuesQuery): void {
+        if (results.findAllRaceValues) {
+            const races: Race[] = [];
+            results.findAllRaceValues.content.forEach((r) => r && races.push(r));
+            races.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt?.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, races });
         }
     }
 

@@ -55,6 +55,8 @@ public class EventService {
     private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
+    private static final String SUBJ_OF_PHC = "SubjOfPHC";
+    private static final String PATSBJ = "PATSBJ";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -79,12 +81,6 @@ public class EventService {
         return performSearch(query, Investigation.class);
     }
 
-    private <T> void addListQuery(BoolQueryBuilder builder, String field, Iterable<T> searchItems) {
-        var shouldQuery = QueryBuilders.boolQuery();
-        searchItems.forEach(i -> shouldQuery.should(QueryBuilders.matchQuery(field, i)));
-        builder.must(shouldQuery);
-    }
-
     @PreAuthorize(VIEW_LAB_REPORT)
     public Page<LabReport> findLabReportsByFilter(LabReportFilter filter, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
@@ -104,6 +100,9 @@ public class EventService {
         return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and if not appending to the query
     private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Lab reports are secured by Program Area and Jurisdiction
@@ -125,11 +124,11 @@ public class EventService {
 
         // program area
         if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
-            addListQuery(builder, LabReport.PROGRAM_AREA_CD, filter.getProgramAreas());
+            builder.must(QueryBuilders.termsQuery(LabReport.PROGRAM_AREA_CD, filter.getProgramAreas()));
         }
         // jurisdictions
         if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            addListQuery(builder, LabReport.JURISDICTION_CD, filter.getJurisdictions());
+            builder.must(QueryBuilders.termsQuery(LabReport.JURISDICTION_CD, filter.getJurisdictions()));
         }
         // pregnancy status
         if (filter.getPregnancyStatus() != null) {
@@ -213,7 +212,7 @@ public class EventService {
             if (filter.getEnteredBy() != null && filter.getEnteredBy().contains(UserType.EXTERNAL)) {
                 electronicIndCodes.add("E");
             }
-            addListQuery(builder, LabReport.ELECTRONIC_IND, electronicIndCodes);
+            builder.must(QueryBuilders.termsQuery(LabReport.ELECTRONIC_IND, electronicIndCodes));
         }
         // event status
         if (filter.getEventStatus() != null && !filter.getEventStatus().isEmpty()) {
@@ -237,8 +236,7 @@ public class EventService {
             if (filter.getProcessingStatus().contains(ProcessingStatus.UNPROCESSED)) {
                 validStatuses.add("UNPROCESSED");
             }
-
-            addListQuery(builder, LabReport.RECORD_STATUS_CD, validStatuses);
+            builder.must(QueryBuilders.termsQuery(LabReport.RECORD_STATUS_CD, validStatuses));
         }
         // created by
         if (filter.getCreatedBy() != null) {
@@ -248,6 +246,20 @@ public class EventService {
         // last update
         if (filter.getLastUpdatedBy() != null) {
             builder.must(QueryBuilders.matchQuery(LabReport.LAST_CHG_USER_ID, filter.getLastUpdatedBy()));
+        }
+
+        if (filter.getPatientId() != null) {
+            var patientIdQuery = QueryBuilders.boolQuery();
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
+                            PATSBJ));
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                            filter.getPatientId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(LabReport.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
         }
 
         // event provider/facility
@@ -338,6 +350,9 @@ public class EventService {
                 .build();
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and if not appending to the query
     private NativeSearchQuery buildInvestigationQuery(InvestigationFilter filter, Pageable pageable) {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Investigations are secured by Program Area and Jurisdiction
@@ -359,15 +374,15 @@ public class EventService {
 
         // conditions
         if (filter.getConditions() != null && !filter.getConditions().isEmpty()) {
-            addListQuery(builder, Investigation.CD_DESC_TXT, filter.getConditions());
+            builder.must(QueryBuilders.termsQuery(Investigation.CD_DESC_TXT, filter.getConditions()));
         }
         // program areas
         if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
-            addListQuery(builder, Investigation.PROGRAM_AREA_CD, filter.getProgramAreas());
+            builder.must(QueryBuilders.termsQuery(Investigation.PROGRAM_AREA_CD, filter.getProgramAreas()));
         }
         // jurisdictions
         if (filter.getJurisdictions() != null && !filter.getJurisdictions().isEmpty()) {
-            addListQuery(builder, Investigation.JURISDICTION_CD, filter.getJurisdictions());
+            builder.must(QueryBuilders.termsQuery(Investigation.JURISDICTION_CD, filter.getJurisdictions()));
         }
         // pregnancy status
         if (filter.getPregnancyStatus() != null) {
@@ -469,6 +484,21 @@ public class EventService {
         if (filter.getLastUpdatedBy() != null) {
             builder.must(QueryBuilders.matchQuery(Investigation.LAST_CHANGE_USER_ID, filter.getLastUpdatedBy()));
         }
+        // Patient id
+        if (filter.getPatientId() != null) {
+            var patientIdQuery = QueryBuilders.boolQuery();
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.TYPE_CD,
+                            SUBJ_OF_PHC));
+            patientIdQuery
+                    .must(QueryBuilders.matchQuery(
+                            Investigation.PERSON_PARTICIPATIONS + "."
+                                    + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
+                            filter.getPatientId()));
+            builder.must(
+                    QueryBuilders.nestedQuery(Investigation.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
+        }
         // investigator id
         if (filter.getInvestigatorId() != null) {
             var investigatorQuery = QueryBuilders.boolQuery();
@@ -530,7 +560,7 @@ public class EventService {
 
         // outbreak name
         if (filter.getOutbreakNames() != null && !filter.getOutbreakNames().isEmpty()) {
-            addListQuery(builder, Investigation.OUTBREAK_NAME, filter.getOutbreakNames());
+            builder.must(QueryBuilders.termsQuery(Investigation.OUTBREAK_NAME, filter.getOutbreakNames()));
         }
 
         // case status / include unassigned
@@ -552,7 +582,7 @@ public class EventService {
                 caseStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.CASE_CLASS_CD));
                 builder.should(caseStatusQuery);
             } else {
-                addListQuery(builder, Investigation.CASE_CLASS_CD, statusStrings);
+                builder.must(QueryBuilders.termsQuery(Investigation.CASE_CLASS_CD, statusStrings));
             }
         }
         // notification status / include unassigned
@@ -574,7 +604,7 @@ public class EventService {
                 notificationStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD));
                 builder.should(notificationStatusQuery);
             } else {
-                addListQuery(builder, Investigation.NOTIFICATION_RECORD_STATUS_CD, statusStrings);
+                builder.must(QueryBuilders.termsQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD, statusStrings));
             }
         }
         // processing status / include unassigned
@@ -597,7 +627,7 @@ public class EventService {
                 builder.should(notificationStatusQuery);
 
             } else {
-                addListQuery(builder, Investigation.CURR_PROCESS_STATUS_CD, statusStrings);
+                builder.must(QueryBuilders.termsQuery(Investigation.CURR_PROCESS_STATUS_CD, statusStrings));
             }
         }
 
@@ -621,7 +651,7 @@ public class EventService {
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC",
+                            SUBJ_OF_PHC,
                             sort.getDirection()));
                     break;
                 case "birthTime":
@@ -629,7 +659,7 @@ public class EventService {
                             Investigation.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "SubjOfPHC",
+                            SUBJ_OF_PHC,
                             sort.getDirection()));
                     break;
                 default:
@@ -651,7 +681,7 @@ public class EventService {
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ",
+                            PATSBJ,
                             sort.getDirection()));
                     break;
                 case "birthTime":
@@ -659,7 +689,7 @@ public class EventService {
                             LabReport.PERSON_PARTICIPATIONS,
                             ElasticsearchPersonParticipation.BIRTH_TIME,
                             ElasticsearchPersonParticipation.TYPE_CD,
-                            "PATSBJ",
+                            PATSBJ,
                             sort.getDirection()));
                     break;
                 default:
@@ -771,6 +801,6 @@ public class EventService {
     private void addProgramAreaJurisdictionQuery(BoolQueryBuilder builder, String programJurisdictionField) {
         var userDetails = SecurityUtil.getUserDetails();
         var validOids = securityService.getProgramAreaJurisdictionOids(userDetails);
-        addListQuery(builder, programJurisdictionField, validOids);
+        builder.must(QueryBuilders.termsQuery(programJurisdictionField, validOids));
     }
 }

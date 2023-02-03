@@ -27,9 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import gov.cdc.nbs.Application;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Participation;
@@ -43,6 +41,8 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.service.PatientService;
+import gov.cdc.nbs.support.EthnicityMother;
+import gov.cdc.nbs.support.RaceMother;
 
 @SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
 @RunWith(SpringRunner.class)
@@ -141,8 +141,8 @@ class PatientUpdateTest {
 		numbers.add(phoneNumber());
 		input.setPhoneNumbers(numbers);
 		input.setEmailAddresses(List.of("test@test.com"));
-		input.setEthnicity(Ethnicity.NOT_HISPANIC_OR_LATINO);
-		input.setRace(Race.AFRICAN_AMERICAN);
+		input.setEthnicity(EthnicityMother.NOT_HISPANIC_OR_LATINO_CODE);
+		input.setRace(RaceMother.BLACK_OR_AFRICAN_AMERICAN_CODE);
 		return input;
 
 	}
@@ -182,7 +182,7 @@ class PatientUpdateTest {
 		person.setBirthGenderCd(Gender.F);
 		person.setCurrSexCd(Gender.F);
 		person.setDeceasedIndCd(Deceased.FALSE);
-		person.setEthnicGroupInd(Ethnicity.NOT_HISPANIC_OR_LATINO);
+		person.setEthnicGroupInd(EthnicityMother.NOT_HISPANIC_OR_LATINO_CODE);
 
 		NBSEntity nbsEntity = new NBSEntity();
 		person.setNbsEntity(nbsEntity);

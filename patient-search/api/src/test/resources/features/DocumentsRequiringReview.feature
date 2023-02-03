@@ -2,7 +2,7 @@
 Feature: Documents Requiring Review
 
   Background: 
-    Given I have the authorities: "FIND-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
+    Given I have the authorities: "VIEWWORKUP-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
     And there are 2 patients
 
   Scenario: I can retrieve documents requiring review for a particular patient

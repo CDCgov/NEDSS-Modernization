@@ -1,0 +1,11 @@
+query findAllPatientIdentificationTypes($page: Page) {
+    findAllPatientIdentificationTypes(page: $page){
+        content{
+            id{
+                code
+            }
+            codeDescTxt
+        }
+        total
+    }
+}

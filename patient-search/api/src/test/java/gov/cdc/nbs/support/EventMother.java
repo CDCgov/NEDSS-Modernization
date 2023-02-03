@@ -139,6 +139,7 @@ public class EventMother {
                                 ElasticsearchPersonParticipation.builder()
                                                 .entityId(personId)
                                                 .personCd("PAT")
+                                                .typeCd("PATSBJ")
                                                 .personRecordStatus("ACTIVE")
                                                 .personParentUid(personId)
                                                 .build(),
@@ -202,6 +203,7 @@ public class EventMother {
                                 ElasticsearchPersonParticipation.builder()
                                                 .entityId(personId)
                                                 .personCd("PAT")
+                                                .typeCd("PATSBJ")
                                                 .personRecordStatus("ACTIVE")
                                                 .personParentUid(personId)
                                                 .build(),

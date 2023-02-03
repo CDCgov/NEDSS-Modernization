@@ -20,11 +20,9 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.ColumnTransformer;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.Suffix;
-import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -132,9 +130,8 @@ public class Person {
     @Column(name = "education_level_desc_txt", length = 100)
     private String educationLevelDescTxt;
 
-    @Convert(converter = EthnicityConverter.class)
     @Column(name = "ethnic_group_ind", length = 20)
-    private Ethnicity ethnicGroupInd;
+    private String ethnicGroupInd;
 
     @Column(name = "last_chg_reason_cd", length = 20)
     private String lastChgReasonCd;

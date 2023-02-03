@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.Suffix;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +23,8 @@ public class PatientInput {
     private List<PostalAddress> addresses = new ArrayList<>();
     private List<PhoneNumber> phoneNumbers = new ArrayList<>();
     private List<String> emailAddresses = new ArrayList<>();
-    private Ethnicity ethnicity;
-    private Race race;
+    private String ethnicity;
+    private String race;
 
     @Data
     @AllArgsConstructor

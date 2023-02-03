@@ -1,0 +1,8 @@
+type Race {
+    id: RaceId!
+    codeDescTxt: String!
+}
+
+type RaceId {
+    code: String!
+}

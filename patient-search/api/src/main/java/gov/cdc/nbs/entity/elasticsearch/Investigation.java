@@ -84,7 +84,7 @@ public class Investigation {
     @Field(name = CASE_TYPE_CD, type = FieldType.Keyword)
     private String caseTypeCd;
 
-    @Field(name = CD_DESC_TXT, type = FieldType.Text)
+    @Field(name = CD_DESC_TXT, type = FieldType.Keyword)
     private String cdDescTxt;
 
     @Field(name = PROGRAM_AREA_CD, type = FieldType.Keyword)
