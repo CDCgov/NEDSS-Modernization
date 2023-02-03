@@ -374,6 +374,7 @@
                 <connections>
                     <id>031305c3-a4f2-357f-0000-000000000000</id>
                     <parentGroupId>d15fe31a-31b6-31c4-0000-000000000000</parentGroupId>
+                    <versionedComponentId>031305c3-a4f2-357f-996c-48269a123b4c</versionedComponentId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <destination>
@@ -1975,12 +1976,6 @@ FROM
 </value>
                             </entry>
                             <entry>
-<key>lab_report_id</key>
-<value>
-    <name>lab_report_id</name>
-</value>
-                            </entry>
-                            <entry>
 <key>lab_report_ids</key>
 <value>
     <name>lab_report_ids</name>
@@ -2007,10 +2002,6 @@ FROM
                             <entry>
 <key>Null Value Representation</key>
 <value>empty string</value>
-                            </entry>
-                            <entry>
-<key>lab_report_id</key>
-<value>$.observation_uid</value>
                             </entry>
                             <entry>
 <key>lab_report_ids</key>
@@ -3109,7 +3100,7 @@ FROM
                             </entry>
                             <entry>
 <key>lab_report_ids</key>
-<value>${allAttributes("lab_report_ids","lab_report_id"):replace('[',''):replace(']',''):join(" "):replaceAll("^ +",""):replaceAll(" +$",""):replace(" ",","):join("")}</value>
+<value>${lab_report_ids:replaceAll("[\[\]]","")}</value>
                             </entry>
                         </properties>
                         <retryCount>10</retryCount>
@@ -3178,7 +3169,7 @@ FROM
                             </entry>
                             <entry>
 <key>Wrap Single Record</key>
-<value>false</value>
+<value>true</value>
                             </entry>
                             <entry>
 <key>Avro schema</key>
@@ -3611,5 +3602,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/02/2023 19:44:11 UTC</timestamp>
+    <timestamp>02/02/2023 21:05:09 UTC</timestamp>
 </template>
