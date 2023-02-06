@@ -16,6 +16,7 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.input.PatientInput;
+import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.service.PatientService;
 import lombok.AllArgsConstructor;
@@ -36,7 +37,8 @@ public class PatientController {
     private static final String VIEW_PATIENT = HAS_AUTHORITY + Operations.VIEW + "-" + BusinessObjects.PATIENT 
     		+ "')";
     private static final String FIND_AND_EDIT_AND_VIEW = FIND_PATIENT + AND + EDIT_PATIENT  + AND + VIEW_PATIENT;  
-
+    private static final String DELETE_PATIENT = HAS_AUTHORITY + Operations.DELETE + "-" + BusinessObjects.PATIENT
+    + "')";
     private final PatientService patientService;
 
     @QueryMapping()
@@ -62,6 +64,12 @@ public class PatientController {
     @PreAuthorize(FIND_PATIENT)
     public Optional<Person> findPatientById(@Argument Long id) {
         return patientService.findPatientById(id);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(DELETE_PATIENT)
+    public PatientDeleteResponse deletePatient(@Argument Long id, @Argument PatientInput patient) {
+        return patientService.sendDeletePatientEvent(id, patient);
     }
 
     @MutationMapping()
