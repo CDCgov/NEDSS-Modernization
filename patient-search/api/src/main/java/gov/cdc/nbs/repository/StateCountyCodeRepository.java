@@ -13,7 +13,7 @@ public interface StateCountyCodeRepository
         /**
          * Finds all counties within the specified state
          * 
-         * @param stateCode refers to the value of a {@link StateCode#id}
+         * @param stateCode refers to {@link gov.cdc.nbs.entity.srte.StateCode#id}
          * @param pageable
          * @return
          */
