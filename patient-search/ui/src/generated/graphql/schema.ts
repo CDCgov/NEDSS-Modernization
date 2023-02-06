@@ -78,6 +78,13 @@ export type CountryCode = {
   statusTime?: Maybe<Scalars['Date']>;
 };
 
+export type CountyCode = {
+  __typename?: 'CountyCode';
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
+
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
@@ -906,6 +913,7 @@ export type Query = {
   __typename?: 'Query';
   findAllConditionCodes: Array<Maybe<ConditionCode>>;
   findAllCountryCodes: Array<Maybe<CountryCode>>;
+  findAllCountyCodesForState: Array<Maybe<CountyCode>>;
   findAllEthnicityValues: EthnicityResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
   findAllOrganizations: OrganizationResults;
@@ -942,6 +950,12 @@ export type QueryFindAllConditionCodesArgs = {
 
 export type QueryFindAllCountryCodesArgs = {
   page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllCountyCodesForStateArgs = {
+  page?: InputMaybe<Page>;
+  stateCode: Scalars['String'];
 };
 
 
@@ -1236,6 +1250,14 @@ export type FindAllCountryCodesQueryVariables = Exact<{
 
 
 export type FindAllCountryCodesQuery = { __typename?: 'Query', findAllCountryCodes: Array<{ __typename?: 'CountryCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, keyInfoTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
+
+export type FindAllCountyCodesForStateQueryVariables = Exact<{
+  stateCode: Scalars['String'];
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllCountyCodesForStateQuery = { __typename?: 'Query', findAllCountyCodesForState: Array<{ __typename?: 'CountyCode', id: string, codeDescTxt?: string | null, codeShortDescTxt?: string | null } | null> };
 
 export type FindAllEthnicityValuesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -1892,6 +1914,44 @@ export function useFindAllCountryCodesLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type FindAllCountryCodesQueryHookResult = ReturnType<typeof useFindAllCountryCodesQuery>;
 export type FindAllCountryCodesLazyQueryHookResult = ReturnType<typeof useFindAllCountryCodesLazyQuery>;
 export type FindAllCountryCodesQueryResult = Apollo.QueryResult<FindAllCountryCodesQuery, FindAllCountryCodesQueryVariables>;
+export const FindAllCountyCodesForStateDocument = gql`
+    query findAllCountyCodesForState($stateCode: String!, $page: Page) {
+  findAllCountyCodesForState(stateCode: $stateCode, page: $page) {
+    id
+    codeDescTxt
+    codeShortDescTxt
+  }
+}
+    `;
+
+/**
+ * __useFindAllCountyCodesForStateQuery__
+ *
+ * To run a query within a React component, call `useFindAllCountyCodesForStateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllCountyCodesForStateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllCountyCodesForStateQuery({
+ *   variables: {
+ *      stateCode: // value for 'stateCode'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllCountyCodesForStateQuery(baseOptions: Apollo.QueryHookOptions<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>(FindAllCountyCodesForStateDocument, options);
+      }
+export function useFindAllCountyCodesForStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>(FindAllCountyCodesForStateDocument, options);
+        }
+export type FindAllCountyCodesForStateQueryHookResult = ReturnType<typeof useFindAllCountyCodesForStateQuery>;
+export type FindAllCountyCodesForStateLazyQueryHookResult = ReturnType<typeof useFindAllCountyCodesForStateLazyQuery>;
+export type FindAllCountyCodesForStateQueryResult = Apollo.QueryResult<FindAllCountyCodesForStateQuery, FindAllCountyCodesForStateQueryVariables>;
 export const FindAllEthnicityValuesDocument = gql`
     query findAllEthnicityValues($page: Page) {
   findAllEthnicityValues(page: $page) {

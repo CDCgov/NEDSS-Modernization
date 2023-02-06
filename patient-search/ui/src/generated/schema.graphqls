@@ -32,6 +32,11 @@ type CountryCode {
     codeSystemCd: String
     codeSystemDescTxt: String
 }
+type CountyCode {
+    id: String!
+    codeDescTxt: String
+    codeShortDescTxt: String
+}
 type IdentificationType {
     id: IdentificationTypeId!
     codeDescTxt: String!
@@ -763,6 +768,7 @@ type Query {
 
     findAllCountryCodes(page: Page): [CountryCode]!
     findAllStateCodes(page: Page): [StateCode]!
+    findAllCountyCodesForState(stateCode: String!, page: Page): [CountyCode]!
     findAllUsers(page: Page): UserResults!
     findAllJurisdictions(page: Page): [Jurisdiction]!
     findAllProgramAreas(page: Page): [ProgramAreaCode]!

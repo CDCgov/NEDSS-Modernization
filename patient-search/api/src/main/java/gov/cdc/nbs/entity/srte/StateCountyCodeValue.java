@@ -75,10 +75,10 @@ public class StateCountyCodeValue {
     @Column(name = "code_system_desc_txt", length = 100)
     private String codeSystemDescTxt;
 
-    @OneToMany(mappedBy = "cntyCode")
+    @OneToMany(mappedBy = "cntyCode", fetch = FetchType.LAZY)
     private Set<CntycityCodeValue> cntycityCodeValues = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "cntyCode")
+    @OneToMany(mappedBy = "cntyCode", fetch = FetchType.LAZY)
     private Set<ZipcntyCodeValue> zipcntyCodeValues = new LinkedHashSet<>();
 
 }

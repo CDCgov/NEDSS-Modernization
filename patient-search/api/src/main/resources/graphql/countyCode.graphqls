@@ -1,0 +1,5 @@
+type CountyCode {
+    id: String!
+    codeDescTxt: String
+    codeShortDescTxt: String
+}
