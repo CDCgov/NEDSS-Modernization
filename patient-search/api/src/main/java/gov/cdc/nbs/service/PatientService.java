@@ -65,8 +65,10 @@ import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
 import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
@@ -389,6 +391,21 @@ public class PatientService {
         return PatientUpdateResponse.builder().requestId(requestId)
                 .updatedPerson(updatePerson).build();
 
+    }
+    public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
+        Person deletePerson = deletePatient(id, input);
+        String requestId = getRequestID();
+        if (deletePerson != null) {
+            var patientDeleteRequest = new PatientDeleteRequest(requestId);
+            producer.requestPatientDeleteEnvelope(patientDeleteRequest);
+        }
+
+        return PatientDeleteResponse.builder().requestId(requestId).build();
+
+    }
+
+    private Person deletePatient(Long id, PatientInput input) {
+        return null;
     }
 
     /**
