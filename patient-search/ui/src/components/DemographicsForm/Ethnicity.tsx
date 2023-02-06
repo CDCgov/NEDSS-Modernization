@@ -2,8 +2,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { Ethnicity } from '../../generated/graphql/schema';
 import { formatInterfaceString } from '../../utils/util';
+import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
 
 export const EthnicityForm = ({ setEthnicityForm }: any) => {
     const methods = useForm();
@@ -40,23 +40,27 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                     Race:
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="ethnicity"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'ethnicity'}
-                                options={Object.values(Ethnicity).map((ethnicity) => {
-                                    return {
-                                        name: formatInterfaceString(ethnicity),
-                                        value: ethnicity
-                                    };
-                                })}
+                    <SearchCriteriaContext.Consumer>
+                        {({ searchCriteria }) => (
+                            <Controller
+                                control={control}
+                                name="ethnicity"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'ethnicity'}
+                                        options={Object.values(searchCriteria.ethnicities).map((ethnicity) => {
+                                            return {
+                                                name: formatInterfaceString(ethnicity.codeDescTxt),
+                                                value: ethnicity.id.code
+                                            };
+                                        })}
+                                    />
+                                )}
                             />
                         )}
-                    />
+                    </SearchCriteriaContext.Consumer>
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
@@ -90,13 +94,13 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
                     <Button type="button" className="margin-top-0" outline onClick={setEthnicityForm}>
-                        Go back
+                        Cancel
                     </Button>
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">
-                        Add
+                        Save
                     </Button>
                 </ButtonGroup>
             </div>

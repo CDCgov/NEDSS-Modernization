@@ -14,7 +14,11 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { EncryptionControllerService } from '../../generated';
 import { useSearchParams } from 'react-router-dom';
 import { UserContext } from '../../providers/UserContext';
-import { FindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import {
+    FindPatientsByFilterQuery,
+    useFindInvestigationsByFilterLazyQuery,
+    useFindLabReportsByFilterLazyQuery
+} from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
 import { Events } from './Events';
@@ -31,6 +35,9 @@ export const PatientProfile = () => {
     const [searchParams] = useSearchParams();
     const modalRef = useRef<ModalRef>(null);
 
+    const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
+    const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
+
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
@@ -41,8 +48,21 @@ export const PatientProfile = () => {
             encryptedString: searchParams?.get('data') || '',
             authorization: `Bearer ${state.getToken()}`
         }).then(async (data: any) => {
-            console.log(data, 'data');
             setProfileData(data);
+            getPatientInvestigationData({
+                variables: {
+                    filter: {
+                        patientId: data.id
+                    }
+                }
+            });
+            getPatientLabReportData({
+                variables: {
+                    filter: {
+                        patientId: data.id
+                    }
+                }
+            });
         });
     }, []);
 
@@ -192,7 +212,12 @@ export const PatientProfile = () => {
                 </div>
 
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profileData} />}
-                {activeTab === ACTIVE_TAB.EVENT && <Events />}
+                {activeTab === ACTIVE_TAB.EVENT && (
+                    <Events
+                        investigationData={investigationData?.findInvestigationsByFilter}
+                        labReports={labReportData?.findLabReportsByFilter}
+                    />
+                )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics />}
 
                 <div className="text-center margin-y-5">

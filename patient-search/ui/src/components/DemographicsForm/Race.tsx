@@ -2,9 +2,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { Race } from '../../generated/graphql/schema';
 import { formatInterfaceString } from '../../utils/util';
 import { Input } from '../FormInputs/Input';
+import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
 
 export const RaceForm = ({ setRaceForm }: any) => {
     const methods = useForm();
@@ -41,23 +41,27 @@ export const RaceForm = ({ setRaceForm }: any) => {
                     Race:
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="race"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'race'}
-                                options={Object.values(Race).map((race) => {
-                                    return {
-                                        name: formatInterfaceString(race),
-                                        value: race
-                                    };
-                                })}
+                    <SearchCriteriaContext.Consumer>
+                        {({ searchCriteria }) => (
+                            <Controller
+                                control={control}
+                                name="race"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'race'}
+                                        options={Object.values(searchCriteria.races).map((race) => {
+                                            return {
+                                                name: formatInterfaceString(race.codeDescTxt),
+                                                value: race.id.code
+                                            };
+                                        })}
+                                    />
+                                )}
                             />
                         )}
-                    />
+                    </SearchCriteriaContext.Consumer>
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
@@ -83,13 +87,13 @@ export const RaceForm = ({ setRaceForm }: any) => {
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
                     <Button type="button" className="margin-top-0" outline onClick={setRaceForm}>
-                        Go back
+                        Cancel
                     </Button>
                     <Button
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">
-                        Add
+                        Save
                     </Button>
                 </ButtonGroup>
             </div>

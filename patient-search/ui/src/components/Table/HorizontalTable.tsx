@@ -3,6 +3,8 @@ import { ReactNode, useState } from 'react';
 import './style.scss';
 import { RaceForm } from '../DemographicsForm/Race';
 import { EthnicityForm } from '../DemographicsForm/Ethnicity';
+import { MortalityForm } from '../DemographicsForm/Mortality';
+import { GeneralPatientInformation } from '../DemographicsForm/GenearalPatientData';
 
 export type TableProps = {
     tableHeader?: string;
@@ -30,7 +32,7 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
             <div className="padding-2">
                 {raceForm !== type &&
                     tableData?.map((item, index) => (
-                        <Grid row key={index} className="padding-2 border-bottom wall-design">
+                        <Grid row key={index} className="padding-x-2 padding-y-3 border-bottom wall-design">
                             <Grid col={6}>{item.title}</Grid>
                             {item.text && <Grid col={6}>{item.text}</Grid>}
                             {!item.text && (
@@ -43,6 +45,8 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
             </div>
             {raceForm === 'race' && <RaceForm setRaceForm={() => setRaceForm(undefined)} />}
             {raceForm === 'ethnicity' && <EthnicityForm setEthnicityForm={() => setRaceForm(undefined)} />}
+            {raceForm === 'mortality' && <MortalityForm setMortalityForm={() => setRaceForm(undefined)} />}
+            {raceForm === 'general' && <GeneralPatientInformation setGeneralForm={() => setRaceForm(undefined)} />}
         </div>
     );
 };

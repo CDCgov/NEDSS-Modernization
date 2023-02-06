@@ -53,7 +53,7 @@ export const TableComponent = ({
                 </p>
                 {buttons}
             </div>
-            <Table bordered={false} fullWidth>
+            <Table scrollable bordered={false} fullWidth>
                 <thead>
                     <tr>
                         {tableHead.map((head: any, index) => (
@@ -97,7 +97,7 @@ export const TableComponent = ({
                 <p className="margin-0 show-length-text">
                     Showing {tableBody?.length} of {tableBody?.length}
                 </p>
-                {isPagination && tableBody.length >= TOTAL_TABLE_DATA && (
+                {isPagination && tableBody?.length >= TOTAL_TABLE_DATA && (
                     <Pagination
                         className="margin-0 pagination"
                         totalPages={Math.ceil(totalResults / TOTAL_TABLE_DATA)}

@@ -12,6 +12,7 @@ type InputProps = {
     error?: any;
     onChange?: any;
     defaultValue?: string;
+    placeholder?: string;
 };
 
 export const Input = ({
@@ -25,6 +26,7 @@ export const Input = ({
     error,
     onChange,
     defaultValue,
+    placeholder,
     ...props
 }: InputProps) => {
     return (
@@ -36,6 +38,7 @@ export const Input = ({
                 </Label>
             )}
             <TextInput
+                placeholder={placeholder}
                 {...props}
                 id={id}
                 onChange={onChange}

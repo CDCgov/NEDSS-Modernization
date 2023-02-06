@@ -69,17 +69,15 @@ export const SearchCriteriaProvider = (props: any) => {
 
     // on init, load search data from API
     useEffect(() => {
-        if (state.isLoggedIn) {
-            getProgramAreas();
-            getConditions();
-            getJurisdictions();
-            getAllUsers();
-            getOutbreaks();
-            getEthnicities();
-            getRaces();
-            getIdentificationTypes();
-        }
-    }, [state.isLoggedIn]);
+        getProgramAreas();
+        getConditions();
+        getJurisdictions();
+        getAllUsers();
+        getOutbreaks();
+        getEthnicities();
+        getRaces();
+        getIdentificationTypes();
+    }, []);
 
     function setOutbreaks(results: FindAllOutbreaksQuery): void {
         if (results.findAllOutbreaks) {
