@@ -401,9 +401,6 @@ public class PatientService {
 
     }
 
-    private Person deletePatient(Long id, PatientInput input) {
-        return null;
-    }
 
     /**
      * Find a patient and update information / demographic information that needs to
