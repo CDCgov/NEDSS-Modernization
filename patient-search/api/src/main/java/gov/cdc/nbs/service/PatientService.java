@@ -184,7 +184,7 @@ public class PatientService {
         }
 
         if (filter.getGender() != null) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.BIRTH_GENDER_CD, filter.getGender()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CURR_SEX_CD, filter.getGender()));
         }
 
         if (filter.getDeceased() != null) {
