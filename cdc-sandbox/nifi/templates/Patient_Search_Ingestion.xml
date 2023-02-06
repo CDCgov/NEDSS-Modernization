@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
     <description></description>
-    <groupId>a69478d2-0185-1000-0e66-63e53bfb886a</groupId>
+    <groupId>13b1e0e6-0186-1000-8ca0-0c6bd472ed3f</groupId>
     <name>Patient Search Ingestion</name>
     <snippet>
         <connections>
-            <id>1276e981-cb0a-337a-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>1e734148-e3f7-316e-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>6c594db8-449c-39b3-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>ba2b0cc8-3c57-30ff-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -23,120 +23,20 @@
             <name></name>
             <selectedRelationships>success</selectedRelationships>
             <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>d8a0bc16-b5ba-368e-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>04d4b3e6-0e75-39b2-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </source>
             <zIndex>0</zIndex>
         </connections>
         <connections>
-            <id>20a0f9c3-564d-3635-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>2002a2b2-3933-313d-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>d8a0bc16-b5ba-368e-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>success</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>6a8b8e33-6cb7-30de-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>447e29f5-416d-375e-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>51e7e237-591b-3618-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>success</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>56e8ac81-bf24-3c55-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>4ec9f955-f7c7-3a33-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>8845c571-d40a-30e8-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>success</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>51e7e237-591b-3618-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>627d17e1-5fa8-3f08-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>6a8b8e33-6cb7-30de-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>success</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>ef80d276-d0f4-332c-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>6b5c2516-a9d8-30e3-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>307d6174-949b-32c2-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>ebdae87b-7c20-34bc-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -148,20 +48,45 @@
             <name></name>
             <selectedRelationships>failure</selectedRelationships>
             <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>8845c571-d40a-30e8-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>97210494-0ad5-3e07-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </source>
             <zIndex>0</zIndex>
         </connections>
         <connections>
-            <id>757d3f82-6cdb-3c42-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>3df025c1-c8ce-3932-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>ae324122-bbb1-398e-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>ee7ad6c0-bdee-368f-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>8bbacc78-49e7-3452-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>7955a60d-2da6-3b5e-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>241114ed-a6aa-3acb-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -173,20 +98,170 @@
             <name></name>
             <selectedRelationships>failure</selectedRelationships>
             <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>ef80d276-d0f4-332c-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>04d4b3e6-0e75-39b2-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </source>
             <zIndex>0</zIndex>
         </connections>
         <connections>
-            <id>7cbf452c-346f-3448-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>79d1ce75-0ad3-3d8b-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
             <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>5ac212ae-b538-3f3d-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>97210494-0ad5-3e07-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>ee7ad6c0-bdee-368f-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>7b55d053-abba-31a2-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>e4c234ac-82ee-3f3f-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>97210494-0ad5-3e07-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>a910b375-5931-3a5d-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>0906dc9d-89ec-384a-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>matched</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>e4c234ac-82ee-3f3f-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>ae21b5f4-6156-36ae-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>7a82f819-55b5-3e8c-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>0906dc9d-89ec-384a-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>d09a014e-2f96-311d-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>04d4b3e6-0e75-39b2-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>7a82f819-55b5-3e8c-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>d47d34e7-1b15-35e2-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>949d504a-67cc-30de-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>failure</selectedRelationships>
+            <source>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>0906dc9d-89ec-384a-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>f6d7a748-6cc9-36b6-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>c953c3b7-a3cb-345c-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </destination>
             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -199,90 +274,15 @@
             <selectedRelationships>errors</selectedRelationships>
             <selectedRelationships>failure</selectedRelationships>
             <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>6c594db8-449c-39b3-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>a6432259-7c2e-3ec5-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>bc7f5c26-bb2c-35a3-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>failure</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>d8a0bc16-b5ba-368e-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>bad7a58e-223e-3882-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>ef80d276-d0f4-332c-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>matched</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>abed314d-64ad-302d-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </source>
-            <zIndex>0</zIndex>
-        </connections>
-        <connections>
-            <id>bea13c6a-1a7d-3528-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-            <destination>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>abed314d-64ad-302d-0000-000000000000</id>
-                <type>PROCESSOR</type>
-            </destination>
-            <flowFileExpiration>0 sec</flowFileExpiration>
-            <labelIndex>1</labelIndex>
-            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-            <name></name>
-            <selectedRelationships>success</selectedRelationships>
-            <source>
-                <groupId>74943425-6102-3f02-0000-000000000000</groupId>
-                <id>8845c571-d40a-30e8-0000-000000000000</id>
+                <groupId>61fc03dc-4e0d-3693-0000-000000000000</groupId>
+                <id>ba2b0cc8-3c57-30ff-0000-000000000000</id>
                 <type>PROCESSOR</type>
             </source>
             <zIndex>0</zIndex>
         </connections>
         <controllerServices>
             <id>2b36a355-37bd-3e23-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <versionedComponentId>2b36a355-37bd-3e23-998d-86429a18ecf7</versionedComponentId>
             <bulletinLevel>WARN</bulletinLevel>
             <bundle>
@@ -444,7 +444,7 @@
         </controllerServices>
         <controllerServices>
             <id>62dfbc9b-35ed-3170-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <versionedComponentId>62dfbc9b-35ed-3170-9740-018ee543de2f</versionedComponentId>
             <bulletinLevel>WARN</bulletinLevel>
             <bundle>
@@ -639,7 +639,8 @@
         </controllerServices>
         <controllerServices>
             <id>effe00e5-013f-3a2d-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <versionedComponentId>effe00e5-013f-3a2d-8d41-a7188c007924</versionedComponentId>
             <bulletinLevel>WARN</bulletinLevel>
             <bundle>
                 <artifact>nifi-record-serialization-services-nar</artifact>
@@ -824,26 +825,8 @@
             <type>org.apache.nifi.json.JsonTreeReader</type>
         </controllerServices>
         <labels>
-            <id>2e9bc23b-303b-3769-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <position>
-                <x>1224.0</x>
-                <y>136.0</y>
-            </position>
-            <height>32.0</height>
-            <label>Convert uids to comma separated string for a future in clause</label>
-            <style>
-                <entry>
-                    <key>font-size</key>
-                    <value>12px</value>
-                </entry>
-            </style>
-            <width>352.0</width>
-            <zIndex>0</zIndex>
-        </labels>
-        <labels>
-            <id>7fe98eac-cde9-38aa-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>02b151d5-61e5-3b8c-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>72.0</x>
                 <y>128.0</y>
@@ -860,8 +843,8 @@
             <zIndex>0</zIndex>
         </labels>
         <labels>
-            <id>a32a7b2d-973d-38d9-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>0a9096ab-5318-3060-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>64.0</x>
                 <y>0.0</y>
@@ -878,8 +861,44 @@
             <zIndex>0</zIndex>
         </labels>
         <labels>
-            <id>a8d41b47-986f-3ebf-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>372f9479-1459-355a-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <position>
+                <x>1224.0</x>
+                <y>136.0</y>
+            </position>
+            <height>32.0</height>
+            <label>Convert uids to comma separated string for a future in clause</label>
+            <style>
+                <entry>
+                    <key>font-size</key>
+                    <value>12px</value>
+                </entry>
+            </style>
+            <width>352.0</width>
+            <zIndex>0</zIndex>
+        </labels>
+        <labels>
+            <id>f379d5ec-51fd-3f61-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <position>
+                <x>1871.9999999999998</x>
+                <y>488.0</y>
+            </position>
+            <height>32.0</height>
+            <label>Fetch pages of persons with person_parent_uids</label>
+            <style>
+                <entry>
+                    <key>font-size</key>
+                    <value>12px</value>
+                </entry>
+            </style>
+            <width>304.0</width>
+            <zIndex>0</zIndex>
+        </labels>
+        <labels>
+            <id>f4e230f8-0bc4-3631-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>632.0</x>
                 <y>480.0</y>
@@ -895,30 +914,699 @@
             <width>304.0</width>
             <zIndex>0</zIndex>
         </labels>
-        <labels>
-            <id>b2a27f8f-5883-386f-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <position>
-                <x>1872.0</x>
-                <y>488.0</y>
-            </position>
-            <height>32.0</height>
-            <label>Fetch pages of persons with person_parent_uids</label>
-            <style>
-                <entry>
-                    <key>font-size</key>
-                    <value>12px</value>
-                </entry>
-            </style>
-            <width>304.0</width>
-            <zIndex>0</zIndex>
-        </labels>
         <processors>
-            <id>307d6174-949b-32c2-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>04d4b3e6-0e75-39b2-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
-                <x>1232.0</x>
-                <y>392.0</y>
+                <x>608.0</x>
+                <y>536.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-scripting-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.19.0</version>
+            </bundle>
+            <config>
+                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Script Engine</key>
+                        <value>
+                            <name>Script Engine</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Script File</key>
+                        <value>
+                            <name>Script File</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Script Body</key>
+                        <value>
+                            <name>Script Body</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Module Directory</key>
+                        <value>
+                            <name>Module Directory</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Script Engine</key>
+                        <value>ruby</value>
+                    </entry>
+                    <entry>
+                        <key>Script File</key>
+                    </entry>
+                    <entry>
+                        <key>Script Body</key>
+                        <value>java_import org.apache.commons.io.IOUtils
+java_import org.apache.nifi.processor.io.InputStreamCallback
+java_import org.apache.nifi.processor.io.OutputStreamCallback
+java_import Java::org.apache.nifi.processors.script.ExecuteScript
+import java.nio.charset.StandardCharsets
+require 'json'
+require 'net/http'
+require 'uri'
+
+def initialize_person_index
+    req = Net::HTTP::Put.new('/person')
+json = &lt;&lt;-JSON
+{
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "soundex_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase",
+                        "soundex_filter"
+                    ]
+                }
+            },
+            "filter": {
+                "soundex_filter": {
+                    "type": "phonetic",
+                    "encoder": "soundex",
+                    "replace": false
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "address": {
+                "type": "nested"
+            },
+            "phone": {
+                "type": "nested"
+            },
+            "email": {
+                "type": "nested"
+            },
+            "name": {
+                "type": "nested",
+                "properties": {
+                    "first_nm_sndx": {
+                        "type": "text",
+                        "analyzer": "soundex_analyzer"
+                    },
+                    "last_nm_sndx": {
+                        "type": "text",
+                        "analyzer": "soundex_analyzer"
+                    }
+                }
+            },
+            "race": {
+                "type": "nested"
+            }
+        }
+    }
+}
+JSON
+  req.body = json
+  req['Content-Type'] = 'application/json'
+  uri = URI.parse(ENV["ELASTICSEARCH_HTTP_HOSTS"])
+  resp = Net::HTTP.start(uri.host, uri.port) { |client| client.request(req) }
+end
+
+$person_by_uid = {}
+$phones_by_uid = {}
+$emails_by_uid = {}
+$names_by_uid = {}
+$races_by_uid = {}
+$addresses_by_uid = {}
+
+def add_email(uid, person)
+    emailAddress = person['emailAddress']
+    emailAddress = nil if emailAddress == ''
+    return if emailAddress.nil?
+    email = {"emailAddress": emailAddress&amp;.downcase}
+    emails_by_uid = $emails_by_uid[uid]
+    if emails_by_uid
+        $emails_by_uid[uid].append(email) unless emails_by_uid.include?(email)
+    else
+        $emails_by_uid[uid]=[email]
+    end
+end
+
+def add_race(uid, person)
+    raceCd = person['raceCd']
+    raceDescTxt = person['raceDescTxt']
+    raceCd = nil if raceCd == ''
+    raceDescTxt = nil if raceDescTxt == ''
+    return if raceCd.nil? &amp;&amp; raceDescTxt.nil?
+    race = {"raceCd": raceCd, "raceDescTxt": raceDescTxt}
+    races_by_uid = $races_by_uid[uid]
+    if races_by_uid
+        $races_by_uid[uid].append(race) unless races_by_uid.include?(race)
+    else
+        $races_by_uid[uid]=[race]
+    end
+end
+
+def add_phone(uid, person)
+    telephoneNbr = person['telephoneNbr']
+    extensionTxt = person['extensionTxt']
+    telephoneNbr = nil if telephoneNbr == ''
+    extensionTxt = nil if extensionTxt == ''
+    return if telephoneNbr.nil? &amp;&amp; extensionTxt.nil?
+    phone = {"telephoneNbr": telephoneNbr, "extensionTxt": extensionTxt}
+    phones_by_uid = $phones_by_uid[uid]
+    if phones_by_uid
+        $phones_by_uid[uid].append(phone) unless phones_by_uid.include?(phone)
+    else
+        $phones_by_uid[uid]=[phone]
+    end
+end
+
+def add_address(uid, person)
+    streetAddr1 = person['streetAddr1']
+    streetAddr2 = person['streetAddr2']
+    city = person['city']
+    zip = person['zip']
+    cntyCd = person['cntyCd']
+    state = person['state']
+    cntryCd = person['cntryCd']
+    streetAddr1 = nil if streetAddr1 == ''
+    streetAddr2 = nil if streetAddr2 == ''
+    city = nil if city == ''
+    zip = nil if zip == ''
+    cntyCd = nil if cntyCd == ''
+    state = nil if state == ''
+    cntryCd = nil if cntryCd == ''
+    return if streetAddr1.nil? &amp;&amp; streetAddr2.nil? &amp;&amp; city.nil? &amp;&amp; zip.nil? &amp;&amp; cntyCd.nil? &amp;&amp; state.nil? &amp;&amp; cntryCd.nil?
+    address = {"streetAddr1": streetAddr1, "streetAddr2": streetAddr2, "city": city, "zip": zip, "cntyCd": cntyCd, "state": state, "cntryCd": cntryCd}
+    addresses_by_uid = $addresses_by_uid[uid]
+    if addresses_by_uid
+        $addresses_by_uid[uid].append(address) unless addresses_by_uid.include?(address)
+    else
+        $addresses_by_uid[uid]=[address]
+    end
+end
+
+def add_name(uid, person)
+    lastNm = person['lastNm']
+    lastNmSndx = person['lastNmSndx']
+    middleNm = person['middleNm']
+    firstNm = person['firstNm']
+    firstNmSndx = person['firstNmSndx']
+    nm_use_cd = person['nm_use_cd']
+    nmSuffix = person['nmSuffix']
+    nmDegree = person['nmDegree']
+    lastNm = nil if lastNm == ''
+    lastNmSndx = nil if lastNmSndx == ''
+    middleNm = nil if middleNm == ''
+    firstNm = nil if firstNm == ''
+    firstNmSndx = nil if firstNmSndx == ''
+    nm_use_cd = nil if nm_use_cd == ''
+    nmSuffix = nil if nmSuffix == ''
+    nmDegree = nil if nmDegree == ''
+    return if lastNm.nil? &amp;&amp; lastNmSndx.nil? &amp;&amp; middleNm.nil? &amp;&amp; firstNm.nil? &amp;&amp; firstNmSndx.nil? &amp;&amp; nmSuffix.nil? &amp;&amp; nmDegree.nil?
+    name = {"lastNm": lastNm, "lastNmSndx": lastNmSndx, "middleNm": middleNm, "firstNm": firstNm, "firstNmSndx": firstNmSndx, "nm_use_cd": nm_use_cd, "nmSuffix": nmSuffix, "nmDegree": nmDegree}
+    names_by_uid = $names_by_uid[uid]
+    if names_by_uid
+        $names_by_uid[uid].append(name) unless names_by_uid.include?(name)
+    else
+        $names_by_uid[uid]=[name]
+    end
+end
+
+def process_person_row_from_db(person)
+    uid = person['person_uid']
+    return unless uid
+    person.compact!
+    unless $person_by_uid[uid]
+        $person_by_uid[uid] = person
+    end
+    add_name(uid, person)
+    add_race(uid, person)
+    add_email(uid, person)
+    add_phone(uid, person)
+    add_address(uid, person)
+end
+
+def delete_nested_keys_from_person_at_to_level(person)
+    person.delete('streetAddr1')
+    person.delete('streetAddr2')
+    person.delete('city')
+    person.delete('zip')
+    person.delete('cntyCd')
+    person.delete('state')
+    person.delete('cntryCd')
+
+    person.delete('telephoneNbr')
+    person.delete('extensionTxt')
+
+    person.delete('raceCd')
+    person.delete('raceDescTxt')
+
+    person.delete('emailAddress')
+
+    person.delete('lastNm')
+    person.delete('lastNmSndx')
+    person.delete('middleNm')
+    person.delete('firstNm')
+    person.delete('firstNmSndx')
+    person.delete('nm_use_cd')
+    person.delete('nmSuffix')
+    person.delete('nmDegree')
+end
+
+def convert_person_data_into_person_list_with_nested_fields
+    $person_list = []
+    $person_by_uid.each do |uid, person|
+    		person['id'] = uid.to_s
+        person['address'] = $addresses_by_uid[uid]
+        person['phone'] = $phones_by_uid[uid]
+        person['email'] = $emails_by_uid[uid]
+        person['name'] = $names_by_uid[uid]
+        person['race'] = $races_by_uid[uid]
+        delete_nested_keys_from_person_at_to_level(person)
+        $person_list.append(person)
+    end
+    $person_list
+end
+
+class JRubyOutputStreamCallback
+  include OutputStreamCallback
+  def process(outputStream)
+    person_list = convert_person_data_into_person_list_with_nested_fields
+    data = person_list.to_json
+    outputStream.write(data.to_java.getBytes(StandardCharsets::UTF_8))
+  end
+end
+  
+class JRubyInputStreamCallback
+    include InputStreamCallback
+    def process(inputStream)
+        text = IOUtils.toString(inputStream)
+        hash = JSON.parse(text)
+        if hash
+            hash.each do |person_hash|
+                process_person_row_from_db(person_hash)
+            end
+        end
+    end
+end
+  
+flowFile = session.get()
+initialize_person_index
+jrubyInputStreamCallback = JRubyInputStreamCallback.new
+jrubyOutputStreamCallback = JRubyOutputStreamCallback.new
+if flowFile != nil
+  session.read(flowFile, jrubyInputStreamCallback)
+  flowFile2 = session.create()
+  session.write(flowFile2, jrubyOutputStreamCallback)
+  session.transfer(flowFile2, ExecuteScript::REL_SUCCESS)
+  session.remove(flowFile)
+end
+</value>
+                    </entry>
+                    <entry>
+                        <key>Module Directory</key>
+                    </entry>
+                </properties>
+                <retryCount>10</retryCount>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>ExecuteScript</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>failure</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+                <retry>false</retry>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.script.ExecuteScript</type>
+        </processors>
+        <processors>
+            <id>0906dc9d-89ec-384a-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <position>
+                <x>1855.9999999999998</x>
+                <y>544.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.19.0</version>
+            </bundle>
+            <config>
+                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Database Connection Pooling Service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+                            <name>Database Connection Pooling Service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>sql-pre-query</key>
+                        <value>
+                            <name>sql-pre-query</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>SQL select query</key>
+                        <value>
+                            <name>SQL select query</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>sql-post-query</key>
+                        <value>
+                            <name>sql-post-query</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Max Wait Time</key>
+                        <value>
+                            <name>Max Wait Time</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>dbf-normalize</key>
+                        <value>
+                            <name>dbf-normalize</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>dbf-user-logical-types</key>
+                        <value>
+                            <name>dbf-user-logical-types</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>compression-format</key>
+                        <value>
+                            <name>compression-format</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-precision</key>
+                        <value>
+                            <name>dbf-default-precision</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-scale</key>
+                        <value>
+                            <name>dbf-default-scale</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>esql-max-rows</key>
+                        <value>
+                            <name>esql-max-rows</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>esql-output-batch-size</key>
+                        <value>
+                            <name>esql-output-batch-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>esql-fetch-size</key>
+                        <value>
+                            <name>esql-fetch-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>esql-auto-commit</key>
+                        <value>
+                            <name>esql-auto-commit</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Database Connection Pooling Service</key>
+                        <value>62dfbc9b-35ed-3170-0000-000000000000</value>
+                    </entry>
+                    <entry>
+                        <key>sql-pre-query</key>
+                    </entry>
+                    <entry>
+                        <key>SQL select query</key>
+                        <value>SELECT distinct
+  p.person_parent_uid person_uid,
+  p.administrative_gender_cd, 
+  p.add_reason_cd, 
+  p.add_time, 
+  p.add_user_id, 
+  p.age_calc, 
+  p.age_calc_time, 
+  p.age_calc_unit_cd, 
+  p.age_category_cd, 
+  p.age_reported, 
+  p.age_reported_time, 
+  p.age_reported_unit_cd, 
+  p.as_of_date_admin, 
+  p.as_of_date_ethnicity, 
+  p.as_of_date_general, 
+  p.as_of_date_morbidity, 
+  p.as_of_date_sex, 
+  p.birth_gender_cd, 
+  p.birth_order_nbr,
+  p.birth_time,
+  p.birth_time_calc,
+  p.cd,
+  p.cd_desc_txt,
+  p.curr_sex_cd, 
+  p.deceased_ind_cd,
+  p.deceased_time,
+  p.description,
+  p.education_level_cd,
+  p.education_level_desc_txt,
+  p.electronic_ind,
+  p.ethnic_group_ind,
+  p.last_chg_reason_cd,
+  p.last_chg_time,
+  p.last_chg_user_id,
+  p.marital_status_cd,
+  p.marital_status_desc_txt,
+  p.mothers_maiden_nm,
+  p.multiple_birth_ind,
+  p.occupation_cd,
+  p.preferred_gender_cd,
+  p.prim_lang_cd,
+  p.prim_lang_desc_txt,
+  p.record_status_cd,
+  p.record_status_time,
+  p.status_cd,
+  p.status_time,
+  p.survived_ind_cd,
+  p.user_affiliation_txt,
+  p.nm_prefix,
+  p.preferred_nm,
+  p.hm_street_addr1,
+  p.hm_street_addr2,
+  p.hm_city_cd,
+  p.hm_city_desc_txt, 
+  p.hm_state_cd, 
+  p.hm_zip_cd, 
+  p.hm_cnty_cd, 
+  p.hm_cntry_cd,
+  p.hm_phone_nbr, 
+  p.hm_phone_cntry_cd,
+  p.hm_email_addr,
+  p.cell_phone_nbr,
+  p.wk_street_addr1,
+  p.wk_street_addr2, 
+  p.wk_city_cd, 
+  p.wk_city_desc_txt,
+  p.wk_state_cd,
+  p.wk_zip_cd,
+  p.wk_cnty_cd,
+  p.wk_cntry_cd,
+  p.wk_phone_nbr,
+  p.wk_phone_cntry_cd, 
+  p.wk_email_addr, 
+  p.SSN, 
+  p.medicaid_num, 
+  p.dl_num,
+  p.dl_state_cd,
+  p.race_seq_nbr,
+  p.race_category_cd, 
+  p.ethnicity_group_cd,
+  p.ethnic_group_seq_nbr,
+  p.ethnic_group_desc_txt, 
+  p.adults_in_house_nbr,
+  p.children_in_house_nbr,
+  p.birth_city_cd, 
+  p.birth_city_desc_txt,
+  p.birth_cntry_cd, 
+  p.birth_state_cd,
+  p.local_id, 
+  p.version_ctrl_nbr ,
+  p.group_nbr, 
+  p.group_time,
+  p.edx_ind,
+  p.speaks_english_cd,
+  p.additional_gender_cd,
+  p.ehars_id,
+  p.dedup_match_ind,
+  p.first_nm,
+  p.middle_nm,
+  p.last_nm,
+  p.nm_suffix,
+  pn.last_nm lastNm,
+  pn.last_nm_sndx lastNmSndx,
+  pn.middle_nm middleNm,
+  pn.first_nm firstNm,
+  pn.first_nm_sndx firstNmSndx,
+  pn.nm_use_cd,
+  pn.nm_suffix nmSuffix,
+  pn.nm_prefix nmPrefix,
+  pn.nm_degree,
+  pr.race_cd raceCd,
+  pr.race_desc_txt raceDescTxt,
+  plx.streetAddr1,
+  plx.streetAddr2,
+  plx.city,
+  plx.zip,
+  plx.cntyCd,
+  plx."state",
+  plx.cntryCd,
+  plt.locatorUid,
+  plt.telephoneNbr,
+  plt.extensionTxt,
+  plt.emailAddress
+FROM Person p
+  left join Person_name pn on p.person_uid=pn.person_uid
+  left join person_race pr on p.person_uid=pr.person_uid
+  left join (
+    select elpa.entity_uid elpa_entity_uid, 
+    pl.street_addr1 streetAddr1,
+    pl.street_addr2 streetAddr2,
+    pl.city_desc_txt city,
+    pl.zip_cd zip,
+    pl.cnty_cd cntyCd,
+    pl.state_cd "state",
+    pl.cntry_cd cntryCd
+    from entity_locator_participation elpa, postal_locator pl
+    where
+    pl.postal_locator_uid=elpa.locator_uid and elpa.class_cd='PST' and elpa.status_cd='A'   
+  ) plx on elpa_entity_uid=p.person_uid
+  left join(
+    select
+      elpt.entity_uid elpt_entity_uid, 
+      tl.tele_locator_uid locatorUid,
+      tl.phone_nbr_txt telephoneNbr,
+      tl.extension_txt extensionTxt,
+      tl.email_address emailAddress
+    from
+      entity_locator_participation elpt, tele_locator tl
+    WHERE
+      tl.tele_locator_uid=elpt.locator_uid and elpt.class_cd='TELE' and elpt.status_cd='A'   
+  ) plt on elpt_entity_uid=p.person_uid
+WHERE
+  p.person_parent_uid in (${person_parent_uids})
+</value>
+                    </entry>
+                    <entry>
+                        <key>sql-post-query</key>
+                    </entry>
+                    <entry>
+                        <key>Max Wait Time</key>
+                        <value>0 seconds</value>
+                    </entry>
+                    <entry>
+                        <key>dbf-normalize</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>dbf-user-logical-types</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>compression-format</key>
+                        <value>NONE</value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-precision</key>
+                        <value>10</value>
+                    </entry>
+                    <entry>
+                        <key>dbf-default-scale</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>esql-max-rows</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>esql-output-batch-size</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>esql-fetch-size</key>
+                        <value>0</value>
+                    </entry>
+                    <entry>
+                        <key>esql-auto-commit</key>
+                        <value>true</value>
+                    </entry>
+                </properties>
+                <retryCount>10</retryCount>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>ExecuteSQL</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>failure</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+                <retry>false</retry>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.ExecuteSQL</type>
+        </processors>
+        <processors>
+            <id>241114ed-a6aa-3acb-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
+            <position>
+                <x>600.0</x>
+                <y>856.0</y>
             </position>
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
@@ -979,16 +1667,16 @@
                 <name>success</name>
                 <retry>false</retry>
             </relationships>
-            <state>STOPPED</state>
+            <state>RUNNING</state>
             <style/>
             <type>org.apache.nifi.processors.standard.LogMessage</type>
         </processors>
         <processors>
-            <id>51e7e237-591b-3618-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>7a82f819-55b5-3e8c-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
-                <x>608.0</x>
-                <y>192.0</y>
+                <x>1232.0</x>
+                <y>552.0</y>
             </position>
             <bundle>
                 <artifact>nifi-avro-nar</artifact>
@@ -1060,8 +1748,8 @@
             <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
         </processors>
         <processors>
-            <id>56e8ac81-bf24-3c55-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>8bbacc78-49e7-3452-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>0.0</x>
                 <y>192.0</y>
@@ -1282,11 +1970,11 @@
             <type>org.apache.nifi.processors.standard.QueryDatabaseTable</type>
         </processors>
         <processors>
-            <id>5ac212ae-b538-3f3d-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>949d504a-67cc-30de-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
-                <x>8.0</x>
-                <y>848.0</y>
+                <x>1855.9999999999998</x>
+                <y>864.0</y>
             </position>
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
@@ -1325,13 +2013,14 @@
                 <properties>
                     <entry>
                         <key>log-level</key>
-                        <value>error</value>
+                        <value>info</value>
                     </entry>
                     <entry>
                         <key>log-prefix</key>
                     </entry>
                     <entry>
                         <key>log-message</key>
+                        <value>${executesql.error.message}</value>
                     </entry>
                 </properties>
                 <retryCount>10</retryCount>
@@ -1347,19 +2036,19 @@
                 <name>success</name>
                 <retry>false</retry>
             </relationships>
-            <state>STOPPED</state>
+            <state>RUNNING</state>
             <style/>
             <type>org.apache.nifi.processors.standard.LogMessage</type>
         </processors>
         <processors>
-            <id>6a8b8e33-6cb7-30de-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>97210494-0ad5-3e07-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>1232.0</x>
-                <y>552.0</y>
+                <y>192.0</y>
             </position>
             <bundle>
-                <artifact>nifi-avro-nar</artifact>
+                <artifact>nifi-scripting-nar</artifact>
                 <group>org.apache.nifi</group>
                 <version>1.19.0</version>
             </bundle>
@@ -1370,21 +2059,27 @@
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
-                        <key>JSON container options</key>
+                        <key>Script Engine</key>
                         <value>
-                            <name>JSON container options</name>
+                            <name>Script Engine</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Wrap Single Record</key>
+                        <key>Script File</key>
                         <value>
-                            <name>Wrap Single Record</name>
+                            <name>Script File</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Avro schema</key>
+                        <key>Script Body</key>
                         <value>
-                            <name>Avro schema</name>
+                            <name>Script Body</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Module Directory</key>
+                        <value>
+                            <name>Module Directory</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -1394,15 +2089,57 @@
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
-                        <key>JSON container options</key>
-                        <value>array</value>
+                        <key>Script Engine</key>
+                        <value>ruby</value>
                     </entry>
                     <entry>
-                        <key>Wrap Single Record</key>
-                        <value>false</value>
+                        <key>Script File</key>
                     </entry>
                     <entry>
-                        <key>Avro schema</key>
+                        <key>Script Body</key>
+                        <value>java_import org.apache.commons.io.IOUtils
+java_import org.apache.nifi.processor.io.InputStreamCallback
+java_import org.apache.nifi.processor.io.OutputStreamCallback
+java_import Java::org.apache.nifi.processors.script.ExecuteScript
+import java.nio.charset.StandardCharsets
+require 'json'
+
+$person_parent_uids = []
+
+class JRubyOutputStreamCallback
+  include OutputStreamCallback
+  def process(outputStream)
+    data = {"person_parent_uids": $person_parent_uids.join(',')}.to_json
+    outputStream.write(data.to_java.getBytes(StandardCharsets::UTF_8))
+  end
+end
+  
+class JRubyInputStreamCallback
+    include InputStreamCallback
+    def process(inputStream)
+        text = IOUtils.toString(inputStream)
+        list = JSON.parse(text)
+        if list
+            list.each do |person_hash|
+                person_parent_uid = person_hash['person_parent_uid']
+                $person_parent_uids.append(person_parent_uid) if person_parent_uid &amp;&amp; person_parent_uid!=''
+            end
+        end
+    end
+end
+  
+flowFile = session.get()
+jrubyInputStreamCallback = JRubyInputStreamCallback.new
+jrubyOutputStreamCallback = JRubyOutputStreamCallback.new
+if flowFile != nil
+  session.read(flowFile, jrubyInputStreamCallback)
+  session.write(flowFile, jrubyOutputStreamCallback)
+  session.transfer(flowFile, ExecuteScript::REL_SUCCESS)
+end
+</value>
+                    </entry>
+                    <entry>
+                        <key>Module Directory</key>
                     </entry>
                 </properties>
                 <retryCount>10</retryCount>
@@ -1412,9 +2149,9 @@
                 <yieldDuration>1 sec</yieldDuration>
             </config>
             <executionNodeRestricted>false</executionNodeRestricted>
-            <name>ConvertAvroToJSON</name>
+            <name>ExecuteScript</name>
             <relationships>
-                <autoTerminate>true</autoTerminate>
+                <autoTerminate>false</autoTerminate>
                 <name>failure</name>
                 <retry>false</retry>
             </relationships>
@@ -1425,11 +2162,11 @@
             </relationships>
             <state>RUNNING</state>
             <style/>
-            <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
+            <type>org.apache.nifi.processors.script.ExecuteScript</type>
         </processors>
         <processors>
-            <id>6c594db8-449c-39b3-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>ba2b0cc8-3c57-30ff-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>8.0</x>
                 <y>544.0</y>
@@ -1692,14 +2429,14 @@
             <type>org.apache.nifi.processors.elasticsearch.PutElasticsearchRecord</type>
         </processors>
         <processors>
-            <id>8845c571-d40a-30e8-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>c953c3b7-a3cb-345c-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
-                <x>1232.0</x>
-                <y>192.0</y>
+                <x>8.0</x>
+                <y>848.0</y>
             </position>
             <bundle>
-                <artifact>nifi-scripting-nar</artifact>
+                <artifact>nifi-standard-nar</artifact>
                 <group>org.apache.nifi</group>
                 <version>1.19.0</version>
             </bundle>
@@ -1710,27 +2447,21 @@
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
-                        <key>Script Engine</key>
+                        <key>log-level</key>
                         <value>
-                            <name>Script Engine</name>
+                            <name>log-level</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Script File</key>
+                        <key>log-prefix</key>
                         <value>
-                            <name>Script File</name>
+                            <name>log-prefix</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Script Body</key>
+                        <key>log-message</key>
                         <value>
-                            <name>Script Body</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Module Directory</key>
-                        <value>
-                            <name>Module Directory</name>
+                            <name>log-message</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -1740,86 +2471,38 @@
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
-                        <key>Script Engine</key>
-                        <value>ruby</value>
+                        <key>log-level</key>
+                        <value>error</value>
                     </entry>
                     <entry>
-                        <key>Script File</key>
+                        <key>log-prefix</key>
                     </entry>
                     <entry>
-                        <key>Script Body</key>
-                        <value>java_import org.apache.commons.io.IOUtils
-java_import org.apache.nifi.processor.io.InputStreamCallback
-java_import org.apache.nifi.processor.io.OutputStreamCallback
-java_import Java::org.apache.nifi.processors.script.ExecuteScript
-import java.nio.charset.StandardCharsets
-require 'json'
-
-$person_parent_uids = []
-
-class JRubyOutputStreamCallback
-  include OutputStreamCallback
-  def process(outputStream)
-    data = {"person_parent_uids": $person_parent_uids.join(',')}.to_json
-    outputStream.write(data.to_java.getBytes(StandardCharsets::UTF_8))
-  end
-end
-  
-class JRubyInputStreamCallback
-    include InputStreamCallback
-    def process(inputStream)
-        text = IOUtils.toString(inputStream)
-        list = JSON.parse(text)
-        if list
-            list.each do |person_hash|
-                person_parent_uid = person_hash['person_parent_uid']
-                $person_parent_uids.append(person_parent_uid) if person_parent_uid &amp;&amp; person_parent_uid!=''
-            end
-        end
-    end
-end
-  
-flowFile = session.get()
-jrubyInputStreamCallback = JRubyInputStreamCallback.new
-jrubyOutputStreamCallback = JRubyOutputStreamCallback.new
-if flowFile != nil
-  session.read(flowFile, jrubyInputStreamCallback)
-  session.write(flowFile, jrubyOutputStreamCallback)
-  session.transfer(flowFile, ExecuteScript::REL_SUCCESS)
-end
-</value>
-                    </entry>
-                    <entry>
-                        <key>Module Directory</key>
+                        <key>log-message</key>
                     </entry>
                 </properties>
                 <retryCount>10</retryCount>
-                <runDurationMillis>0</runDurationMillis>
+                <runDurationMillis>25</runDurationMillis>
                 <schedulingPeriod>0 sec</schedulingPeriod>
                 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                 <yieldDuration>1 sec</yieldDuration>
             </config>
             <executionNodeRestricted>false</executionNodeRestricted>
-            <name>ExecuteScript</name>
+            <name>LogMessage</name>
             <relationships>
-                <autoTerminate>false</autoTerminate>
-                <name>failure</name>
-                <retry>false</retry>
-            </relationships>
-            <relationships>
-                <autoTerminate>false</autoTerminate>
+                <autoTerminate>true</autoTerminate>
                 <name>success</name>
                 <retry>false</retry>
             </relationships>
             <state>RUNNING</state>
             <style/>
-            <type>org.apache.nifi.processors.script.ExecuteScript</type>
+            <type>org.apache.nifi.processors.standard.LogMessage</type>
         </processors>
         <processors>
-            <id>abed314d-64ad-302d-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>e4c234ac-82ee-3f3f-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
-                <x>1856.0</x>
+                <x>1855.9999999999998</x>
                 <y>184.0</y>
             </position>
             <bundle>
@@ -1918,82 +2601,11 @@ end
             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
         </processors>
         <processors>
-            <id>ae324122-bbb1-398e-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>ebdae87b-7c20-34bc-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
-                <x>1856.0</x>
-                <y>864.0</y>
-            </position>
-            <bundle>
-                <artifact>nifi-standard-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.19.0</version>
-            </bundle>
-            <config>
-                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
-                <bulletinLevel>WARN</bulletinLevel>
-                <comments></comments>
-                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                <descriptors>
-                    <entry>
-                        <key>log-level</key>
-                        <value>
-                            <name>log-level</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>log-prefix</key>
-                        <value>
-                            <name>log-prefix</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>log-message</key>
-                        <value>
-                            <name>log-message</name>
-                        </value>
-                    </entry>
-                </descriptors>
-                <executionNode>ALL</executionNode>
-                <lossTolerant>false</lossTolerant>
-                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                <penaltyDuration>30 sec</penaltyDuration>
-                <properties>
-                    <entry>
-                        <key>log-level</key>
-                        <value>info</value>
-                    </entry>
-                    <entry>
-                        <key>log-prefix</key>
-                    </entry>
-                    <entry>
-                        <key>log-message</key>
-                        <value>${executesql.error.message}</value>
-                    </entry>
-                </properties>
-                <retryCount>10</retryCount>
-                <runDurationMillis>25</runDurationMillis>
-                <schedulingPeriod>0 sec</schedulingPeriod>
-                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
-            </config>
-            <executionNodeRestricted>false</executionNodeRestricted>
-            <name>LogMessage</name>
-            <relationships>
-                <autoTerminate>true</autoTerminate>
-                <name>success</name>
-                <retry>false</retry>
-            </relationships>
-            <state>STOPPED</state>
-            <style/>
-            <type>org.apache.nifi.processors.standard.LogMessage</type>
-        </processors>
-        <processors>
-            <id>bc7f5c26-bb2c-35a3-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <position>
-                <x>600.0</x>
-                <y>856.0</y>
+                <x>1232.0</x>
+                <y>392.0</y>
             </position>
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
@@ -2054,19 +2666,19 @@ end
                 <name>success</name>
                 <retry>false</retry>
             </relationships>
-            <state>STOPPED</state>
+            <state>RUNNING</state>
             <style/>
             <type>org.apache.nifi.processors.standard.LogMessage</type>
         </processors>
         <processors>
-            <id>d8a0bc16-b5ba-368e-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
+            <id>ee7ad6c0-bdee-368f-0000-000000000000</id>
+            <parentGroupId>61fc03dc-4e0d-3693-0000-000000000000</parentGroupId>
             <position>
                 <x>608.0</x>
-                <y>536.0</y>
+                <y>192.0</y>
             </position>
             <bundle>
-                <artifact>nifi-scripting-nar</artifact>
+                <artifact>nifi-avro-nar</artifact>
                 <group>org.apache.nifi</group>
                 <version>1.19.0</version>
             </bundle>
@@ -2077,27 +2689,21 @@ end
                 <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                 <descriptors>
                     <entry>
-                        <key>Script Engine</key>
+                        <key>JSON container options</key>
                         <value>
-                            <name>Script Engine</name>
+                            <name>JSON container options</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Script File</key>
+                        <key>Wrap Single Record</key>
                         <value>
-                            <name>Script File</name>
+                            <name>Wrap Single Record</name>
                         </value>
                     </entry>
                     <entry>
-                        <key>Script Body</key>
+                        <key>Avro schema</key>
                         <value>
-                            <name>Script Body</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Module Directory</key>
-                        <value>
-                            <name>Module Directory</name>
+                            <name>Avro schema</name>
                         </value>
                     </entry>
                 </descriptors>
@@ -2107,243 +2713,15 @@ end
                 <penaltyDuration>30 sec</penaltyDuration>
                 <properties>
                     <entry>
-                        <key>Script Engine</key>
-                        <value>ruby</value>
+                        <key>JSON container options</key>
+                        <value>array</value>
                     </entry>
                     <entry>
-                        <key>Script File</key>
+                        <key>Wrap Single Record</key>
+                        <value>false</value>
                     </entry>
                     <entry>
-                        <key>Script Body</key>
-                        <value>java_import org.apache.commons.io.IOUtils
-java_import org.apache.nifi.processor.io.InputStreamCallback
-java_import org.apache.nifi.processor.io.OutputStreamCallback
-java_import Java::org.apache.nifi.processors.script.ExecuteScript
-import java.nio.charset.StandardCharsets
-require 'json'
-require 'net/http'
-require 'uri'
-
-def initialize_person_index
-    req = Net::HTTP::Put.new('/person')
-json = &lt;&lt;-JSON
-{
-  "mappings": {
-    "properties": {
-      "address": {
-        "type": "nested" 
-      },
-      "phone": {
-        "type": "nested" 
-      },
-      "email": {
-        "type": "nested" 
-      },
-      "name": {
-        "type": "nested" 
-      },
-      "race": {
-        "type": "nested" 
-      }
-    }
-  }
-}
-JSON
-  req.body = json
-  req['Content-Type'] = 'application/json'
-  uri = URI.parse(ENV["ELASTICSEARCH_HTTP_HOSTS"])
-  resp = Net::HTTP.start(uri.host, uri.port) { |client| client.request(req) }
-end
-
-$person_by_uid = {}
-$phones_by_uid = {}
-$emails_by_uid = {}
-$names_by_uid = {}
-$races_by_uid = {}
-$addresses_by_uid = {}
-
-def add_email(uid, person)
-    emailAddress = person['emailAddress']
-    emailAddress = nil if emailAddress == ''
-    return if emailAddress.nil?
-    email = {"emailAddress": emailAddress&amp;.downcase}
-    emails_by_uid = $emails_by_uid[uid]
-    if emails_by_uid
-        $emails_by_uid[uid].append(email) unless emails_by_uid.include?(email)
-    else
-        $emails_by_uid[uid]=[email]
-    end
-end
-
-def add_race(uid, person)
-    raceCd = person['raceCd']
-    raceDescTxt = person['raceDescTxt']
-    raceCd = nil if raceCd == ''
-    raceDescTxt = nil if raceDescTxt == ''
-    return if raceCd.nil? &amp;&amp; raceDescTxt.nil?
-    race = {"raceCd": raceCd, "raceDescTxt": raceDescTxt}
-    races_by_uid = $races_by_uid[uid]
-    if races_by_uid
-        $races_by_uid[uid].append(race) unless races_by_uid.include?(race)
-    else
-        $races_by_uid[uid]=[race]
-    end
-end
-
-def add_phone(uid, person)
-    telephoneNbr = person['telephoneNbr']
-    extensionTxt = person['extensionTxt']
-    telephoneNbr = nil if telephoneNbr == ''
-    extensionTxt = nil if extensionTxt == ''
-    return if telephoneNbr.nil? &amp;&amp; extensionTxt.nil?
-    phone = {"telephoneNbr": telephoneNbr, "extensionTxt": extensionTxt}
-    phones_by_uid = $phones_by_uid[uid]
-    if phones_by_uid
-        $phones_by_uid[uid].append(phone) unless phones_by_uid.include?(phone)
-    else
-        $phones_by_uid[uid]=[phone]
-    end
-end
-
-def add_address(uid, person)
-    streetAddr1 = person['streetAddr1']
-    streetAddr2 = person['streetAddr2']
-    city = person['city']
-    zip = person['zip']
-    cntyCd = person['cntyCd']
-    state = person['state']
-    cntryCd = person['cntryCd']
-    streetAddr1 = nil if streetAddr1 == ''
-    streetAddr2 = nil if streetAddr2 == ''
-    city = nil if city == ''
-    zip = nil if zip == ''
-    cntyCd = nil if cntyCd == ''
-    state = nil if state == ''
-    cntryCd = nil if cntryCd == ''
-    return if streetAddr1.nil? &amp;&amp; streetAddr2.nil? &amp;&amp; city.nil? &amp;&amp; zip.nil? &amp;&amp; cntyCd.nil? &amp;&amp; state.nil? &amp;&amp; cntryCd.nil?
-    address = {"streetAddr1": streetAddr1, "streetAddr2": streetAddr2, "city": city, "zip": zip, "cntyCd": cntyCd, "state": state, "cntryCd": cntryCd}
-    addresses_by_uid = $addresses_by_uid[uid]
-    if addresses_by_uid
-        $addresses_by_uid[uid].append(address) unless addresses_by_uid.include?(address)
-    else
-        $addresses_by_uid[uid]=[address]
-    end
-end
-
-def add_name(uid, person)
-    lastNm = person['lastNm']
-    middleNm = person['middleNm']
-    firstNm = person['firstNm']
-    nm_use_cd = person['nm_use_cd']
-    nmSuffix = person['nmSuffix']
-    nmDegree = person['nmDegree']
-    lastNm = nil if lastNm == ''
-    middleNm = nil if middleNm == ''
-    firstNm = nil if firstNm == ''
-    nm_use_cd = nil if nm_use_cd == ''
-    nmSuffix = nil if nmSuffix == ''
-    nmDegree = nil if nmDegree == ''
-    return if lastNm.nil? &amp;&amp; middleNm.nil? &amp;&amp; firstNm.nil? &amp;&amp; nmSuffix.nil? &amp;&amp; nmDegree.nil?
-    name = {"lastNm": lastNm, "middleNm": middleNm, "firstNm": firstNm, "nm_use_cd": nm_use_cd, "nmSuffix": nmSuffix, "nmDegree": nmDegree}
-    names_by_uid = $names_by_uid[uid]
-    if names_by_uid
-        $names_by_uid[uid].append(name) unless names_by_uid.include?(name)
-    else
-        $names_by_uid[uid]=[name]
-    end
-end
-
-def process_person_row_from_db(person)
-    uid = person['person_uid']
-    return unless uid
-    person.compact!
-    unless $person_by_uid[uid]
-        $person_by_uid[uid] = person
-    end
-    add_name(uid, person)
-    add_race(uid, person)
-    add_email(uid, person)
-    add_phone(uid, person)
-    add_address(uid, person)
-end
-
-def delete_nested_keys_from_person_at_to_level(person)
-    person.delete('streetAddr1')
-    person.delete('streetAddr2')
-    person.delete('city')
-    person.delete('zip')
-    person.delete('cntyCd')
-    person.delete('state')
-    person.delete('cntryCd')
-
-    person.delete('telephoneNbr')
-    person.delete('extensionTxt')
-
-    person.delete('raceCd')
-    person.delete('raceDescTxt')
-
-    person.delete('emailAddress')
-
-    person.delete('lastNm')
-    person.delete('middleNm')
-    person.delete('firstNm')
-    person.delete('nm_use_cd')
-    person.delete('nmSuffix')
-    person.delete('nmDegree')
-end
-
-def convert_person_data_into_person_list_with_nested_fields
-    $person_list = []
-    $person_by_uid.each do |uid, person|
-    		person['id'] = uid.to_s
-        person['address'] = $addresses_by_uid[uid]
-        person['phone'] = $phones_by_uid[uid]
-        person['email'] = $emails_by_uid[uid]
-        person['name'] = $names_by_uid[uid]
-        person['race'] = $races_by_uid[uid]
-        delete_nested_keys_from_person_at_to_level(person)
-        $person_list.append(person)
-    end
-    $person_list
-end
-
-class JRubyOutputStreamCallback
-  include OutputStreamCallback
-  def process(outputStream)
-    person_list = convert_person_data_into_person_list_with_nested_fields
-    data = person_list.to_json
-    outputStream.write(data.to_java.getBytes(StandardCharsets::UTF_8))
-  end
-end
-  
-class JRubyInputStreamCallback
-    include InputStreamCallback
-    def process(inputStream)
-        text = IOUtils.toString(inputStream)
-        hash = JSON.parse(text)
-        if hash
-            hash.each do |person_hash|
-                process_person_row_from_db(person_hash)
-            end
-        end
-    end
-end
-  
-flowFile = session.get()
-initialize_person_index
-jrubyInputStreamCallback = JRubyInputStreamCallback.new
-jrubyOutputStreamCallback = JRubyOutputStreamCallback.new
-if flowFile != nil
-  session.read(flowFile, jrubyInputStreamCallback)
-  flowFile2 = session.create()
-  session.write(flowFile2, jrubyOutputStreamCallback)
-  session.transfer(flowFile2, ExecuteScript::REL_SUCCESS)
-  session.remove(flowFile)
-end
-</value>
-                    </entry>
-                    <entry>
-                        <key>Module Directory</key>
+                        <key>Avro schema</key>
                     </entry>
                 </properties>
                 <retryCount>10</retryCount>
@@ -2353,9 +2731,9 @@ end
                 <yieldDuration>1 sec</yieldDuration>
             </config>
             <executionNodeRestricted>false</executionNodeRestricted>
-            <name>ExecuteScript</name>
+            <name>ConvertAvroToJSON</name>
             <relationships>
-                <autoTerminate>false</autoTerminate>
+                <autoTerminate>true</autoTerminate>
                 <name>failure</name>
                 <retry>false</retry>
             </relationships>
@@ -2366,346 +2744,8 @@ end
             </relationships>
             <state>RUNNING</state>
             <style/>
-            <type>org.apache.nifi.processors.script.ExecuteScript</type>
-        </processors>
-        <processors>
-            <id>ef80d276-d0f4-332c-0000-000000000000</id>
-            <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-            <position>
-                <x>1856.0</x>
-                <y>544.0</y>
-            </position>
-            <bundle>
-                <artifact>nifi-standard-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.19.0</version>
-            </bundle>
-            <config>
-                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
-                <bulletinLevel>WARN</bulletinLevel>
-                <comments></comments>
-                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                <descriptors>
-                    <entry>
-                        <key>Database Connection Pooling Service</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
-                            <name>Database Connection Pooling Service</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>sql-pre-query</key>
-                        <value>
-                            <name>sql-pre-query</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>SQL select query</key>
-                        <value>
-                            <name>SQL select query</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>sql-post-query</key>
-                        <value>
-                            <name>sql-post-query</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Max Wait Time</key>
-                        <value>
-                            <name>Max Wait Time</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>dbf-normalize</key>
-                        <value>
-                            <name>dbf-normalize</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>dbf-user-logical-types</key>
-                        <value>
-                            <name>dbf-user-logical-types</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>compression-format</key>
-                        <value>
-                            <name>compression-format</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-precision</key>
-                        <value>
-                            <name>dbf-default-precision</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-scale</key>
-                        <value>
-                            <name>dbf-default-scale</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>esql-max-rows</key>
-                        <value>
-                            <name>esql-max-rows</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>esql-output-batch-size</key>
-                        <value>
-                            <name>esql-output-batch-size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>esql-fetch-size</key>
-                        <value>
-                            <name>esql-fetch-size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>esql-auto-commit</key>
-                        <value>
-                            <name>esql-auto-commit</name>
-                        </value>
-                    </entry>
-                </descriptors>
-                <executionNode>ALL</executionNode>
-                <lossTolerant>false</lossTolerant>
-                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                <penaltyDuration>30 sec</penaltyDuration>
-                <properties>
-                    <entry>
-                        <key>Database Connection Pooling Service</key>
-                        <value>62dfbc9b-35ed-3170-0000-000000000000</value>
-                    </entry>
-                    <entry>
-                        <key>sql-pre-query</key>
-                    </entry>
-                    <entry>
-                        <key>SQL select query</key>
-                        <value>SELECT distinct
-  p.person_parent_uid person_uid,
-  p.administrative_gender_cd, 
-  p.add_reason_cd, 
-  p.add_time, 
-  p.add_user_id, 
-  p.age_calc, 
-  p.age_calc_time, 
-  p.age_calc_unit_cd, 
-  p.age_category_cd, 
-  p.age_reported, 
-  p.age_reported_time, 
-  p.age_reported_unit_cd, 
-  p.as_of_date_admin, 
-  p.as_of_date_ethnicity, 
-  p.as_of_date_general, 
-  p.as_of_date_morbidity, 
-  p.as_of_date_sex, 
-  p.birth_gender_cd, 
-  p.birth_order_nbr,
-  p.birth_time,
-  p.birth_time_calc,
-  p.cd,
-  p.cd_desc_txt,
-  p.curr_sex_cd, 
-  p.deceased_ind_cd,
-  p.deceased_time,
-  p.description,
-  p.education_level_cd,
-  p.education_level_desc_txt,
-  p.electronic_ind,
-  p.ethnic_group_ind,
-  p.last_chg_reason_cd,
-  p.last_chg_time,
-  p.last_chg_user_id,
-  p.marital_status_cd,
-  p.marital_status_desc_txt,
-  p.mothers_maiden_nm,
-  p.multiple_birth_ind,
-  p.occupation_cd,
-  p.preferred_gender_cd,
-  p.prim_lang_cd,
-  p.prim_lang_desc_txt,
-  p.record_status_cd,
-  p.record_status_time,
-  p.status_cd,
-  p.status_time,
-  p.survived_ind_cd,
-  p.user_affiliation_txt,
-  p.nm_prefix,
-  p.preferred_nm,
-  p.hm_street_addr1,
-  p.hm_street_addr2,
-  p.hm_city_cd,
-  p.hm_city_desc_txt, 
-  p.hm_state_cd, 
-  p.hm_zip_cd, 
-  p.hm_cnty_cd, 
-  p.hm_cntry_cd,
-  p.hm_phone_nbr, 
-  p.hm_phone_cntry_cd,
-  p.hm_email_addr,
-  p.cell_phone_nbr,
-  p.wk_street_addr1,
-  p.wk_street_addr2, 
-  p.wk_city_cd, 
-  p.wk_city_desc_txt,
-  p.wk_state_cd,
-  p.wk_zip_cd,
-  p.wk_cnty_cd,
-  p.wk_cntry_cd,
-  p.wk_phone_nbr,
-  p.wk_phone_cntry_cd, 
-  p.wk_email_addr, 
-  p.SSN, 
-  p.medicaid_num, 
-  p.dl_num,
-  p.dl_state_cd,
-  p.race_seq_nbr,
-  p.race_category_cd, 
-  p.ethnicity_group_cd,
-  p.ethnic_group_seq_nbr,
-  p.ethnic_group_desc_txt, 
-  p.adults_in_house_nbr,
-  p.children_in_house_nbr,
-  p.birth_city_cd, 
-  p.birth_city_desc_txt,
-  p.birth_cntry_cd, 
-  p.birth_state_cd,
-  p.local_id, 
-  p.version_ctrl_nbr ,
-  p.group_nbr, 
-  p.group_time,
-  p.edx_ind,
-  p.speaks_english_cd,
-  p.additional_gender_cd,
-  p.ehars_id,
-  p.dedup_match_ind,
-  p.first_nm,
-  p.middle_nm,
-  p.last_nm,
-  p.nm_suffix,
-  pn.last_nm lastNm,
-  pn.middle_nm middleNm,
-  pn.first_nm firstNm,
-  pn.nm_use_cd,
-  pn.nm_suffix nmSuffix,
-  pn.nm_prefix nmPrefix,
-  pn.nm_degree,
-  pr.race_cd raceCd,
-  pr.race_desc_txt raceDescTxt,
-  plx.streetAddr1,
-  plx.streetAddr2,
-  plx.city,
-  plx.zip,
-  plx.cntyCd,
-  plx."state",
-  plx.cntryCd,
-  plt.locatorUid,
-  plt.telephoneNbr,
-  plt.extensionTxt,
-  plt.emailAddress
-FROM Person p
-  left join Person_name pn on p.person_uid=pn.person_uid
-  left join person_race pr on p.person_uid=pr.person_uid
-  left join (
-    select elpa.entity_uid elpa_entity_uid, 
-    pl.street_addr1 streetAddr1,
-    pl.street_addr2 streetAddr2,
-    pl.city_desc_txt city,
-    pl.zip_cd zip,
-    pl.cnty_cd cntyCd,
-    pl.state_cd "state",
-    pl.cntry_cd cntryCd
-    from entity_locator_participation elpa, postal_locator pl
-    where
-    pl.postal_locator_uid=elpa.locator_uid and elpa.class_cd='PST' and elpa.status_cd='A'   
-  ) plx on elpa_entity_uid=p.person_uid
-  left join(
-    select
-      elpt.entity_uid elpt_entity_uid, 
-      tl.tele_locator_uid locatorUid,
-      tl.phone_nbr_txt telephoneNbr,
-      tl.extension_txt extensionTxt,
-      tl.email_address emailAddress
-    from
-      entity_locator_participation elpt, tele_locator tl
-    WHERE
-      tl.tele_locator_uid=elpt.locator_uid and elpt.class_cd='TELE' and elpt.status_cd='A'   
-  ) plt on elpt_entity_uid=p.person_uid
-WHERE
-  p.person_parent_uid in (${person_parent_uids})
-</value>
-                    </entry>
-                    <entry>
-                        <key>sql-post-query</key>
-                    </entry>
-                    <entry>
-                        <key>Max Wait Time</key>
-                        <value>0 seconds</value>
-                    </entry>
-                    <entry>
-                        <key>dbf-normalize</key>
-                        <value>false</value>
-                    </entry>
-                    <entry>
-                        <key>dbf-user-logical-types</key>
-                        <value>false</value>
-                    </entry>
-                    <entry>
-                        <key>compression-format</key>
-                        <value>NONE</value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-precision</key>
-                        <value>10</value>
-                    </entry>
-                    <entry>
-                        <key>dbf-default-scale</key>
-                        <value>0</value>
-                    </entry>
-                    <entry>
-                        <key>esql-max-rows</key>
-                        <value>0</value>
-                    </entry>
-                    <entry>
-                        <key>esql-output-batch-size</key>
-                        <value>0</value>
-                    </entry>
-                    <entry>
-                        <key>esql-fetch-size</key>
-                        <value>0</value>
-                    </entry>
-                    <entry>
-                        <key>esql-auto-commit</key>
-                        <value>true</value>
-                    </entry>
-                </properties>
-                <retryCount>10</retryCount>
-                <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>0 sec</schedulingPeriod>
-                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
-            </config>
-            <executionNodeRestricted>false</executionNodeRestricted>
-            <name>ExecuteSQL</name>
-            <relationships>
-                <autoTerminate>false</autoTerminate>
-                <name>failure</name>
-                <retry>false</retry>
-            </relationships>
-            <relationships>
-                <autoTerminate>false</autoTerminate>
-                <name>success</name>
-                <retry>false</retry>
-            </relationships>
-            <state>RUNNING</state>
-            <style/>
-            <type>org.apache.nifi.processors.standard.ExecuteSQL</type>
+            <type>org.apache.nifi.processors.avro.ConvertAvroToJSON</type>
         </processors>
     </snippet>
-    <timestamp>02/01/2023 18:25:21 UTC</timestamp>
+    <timestamp>02/06/2023 07:16:21 UTC</timestamp>
 </template>
