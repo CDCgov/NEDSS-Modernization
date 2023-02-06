@@ -5,7 +5,6 @@ query findOpenInvestigationsForPatient($patientId: Int!, $page: Page) {
             recordStatus
             lastChangeTime
             publicHealthCaseUid
-            programJurisdictionOid
             caseClassCd
             outbreakName
             caseTypeCd

@@ -3,7 +3,6 @@ type Investigation {
     recordStatus: String
     lastChangeTime: Date
     publicHealthCaseUid: Int
-    programJurisdictionOid: Int
     caseClassCd: String
     outbreakName: String
     caseTypeCd: String
