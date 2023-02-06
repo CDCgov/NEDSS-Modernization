@@ -16,7 +16,7 @@ import gov.cdc.nbs.controller.CodeValueGeneralController;
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
-import gov.cdc.nbs.support.OutbreakMother;
+import gov.cdc.nbs.support.EthnicityMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,7 +27,7 @@ import io.cucumber.java.en.When;
 @ActiveProfiles("test")
 @Transactional
 @Rollback(false)
-public class OutbreakSearchSteps {
+public class EthnicitySearchSteps {
 
     @Autowired
     private CodeValueGeneralRepository codeValueGeneralRepository;
@@ -36,22 +36,36 @@ public class OutbreakSearchSteps {
 
     private Page<CodeValueGeneral> response;
 
-    @Given("Outbreaks exist")
-    public void outbreaks_exist() {
-        var outbreak = OutbreakMother.testOutbreak();
-        if (!codeValueGeneralRepository.existsById(outbreak.getId())) {
-            codeValueGeneralRepository.save(outbreak);
+    @Given("Ethnicities exist")
+    public void ethnicities_exist() {
+        var hispanicOrLatino = EthnicityMother.hispanicOrLatino();
+        if (!codeValueGeneralRepository.existsById(hispanicOrLatino.getId())) {
+            codeValueGeneralRepository.save(hispanicOrLatino);
+        }
+        var notHispanicOrLatino = EthnicityMother.notHispanicOrLatino();
+        if (!codeValueGeneralRepository.existsById(notHispanicOrLatino.getId())) {
+            codeValueGeneralRepository.save(notHispanicOrLatino);
+        }
+        var unknown = EthnicityMother.unknown();
+        if (!codeValueGeneralRepository.existsById(unknown.getId())) {
+            codeValueGeneralRepository.save(unknown);
         }
     }
 
-    @When("I search for outbreaks")
-    public void i_search_for_outbreaks() {
-        response = codeValueGeneralController.findAllOutbreaks(new GraphQLPage(10, 0));
+    @When("I search for ethnicities")
+    public void i_search_for_ethnicities() {
+        response = codeValueGeneralController.findAllEthnicityValues(new GraphQLPage(50, 0));
     }
 
-    @Then("I find outbreaks")
-    public void i_find_outbreaks() {
+    @Then("I find ethnicities")
+    public void i_find_ethnicities() {
         assertTrue(response.getTotalElements() > 0);
+        EthnicityMother.ETHNICITY_LIST.forEach(raceCode -> {
+            assertTrue(response.getContent().stream()
+                    .filter(e -> e.getId().getCode().equalsIgnoreCase(raceCode))
+                    .findFirst()
+                    .isPresent());
+        });
     }
 
 }

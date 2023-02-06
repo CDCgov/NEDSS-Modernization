@@ -2,7 +2,7 @@ input PersonFilter {
     id: ID
     lastName: String
     firstName: String
-    race: Race
+    race: String
     identification: Identification
     ssn: String
     phoneNumber: String
@@ -17,7 +17,7 @@ input PersonFilter {
     country: String
     zip: String
     mortalityStatus: String
-    ethnicity: Ethnicity
+    ethnicity: String
     vaccinationId: String
     treatmentId: String
     recordStatus: RecordStatus
@@ -149,8 +149,8 @@ input PersonInput {
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
-    ethnicity: Ethnicity
-    race: Race
+    ethnicity: String
+    race: String
 }
 input Name {
     firstName: String
@@ -178,7 +178,7 @@ input PhoneNumber {
 
 input Identification {
     identificationNumber: String!
-    identificationType: IdentificationType!
+    identificationType: String!
 }
 
 enum Suffix {
@@ -195,47 +195,6 @@ enum PhoneType {
     HOME
     CELL
     WORK
-}
-
-enum IdentificationType {
-    ACCOUNT_NUMBER
-    ALTERNATE_PERSON_NUMBER
-    CHIP_IDENTIFICATION_NUMBER
-    DRIVERS_LICENSE_NUMBER
-    IMMUNIZATION_REGISTRY_ID
-    MEDICAID_NUMBER
-    MEDICAL_RECORD_NUMBER
-    MEDICARE_NUMBER
-    MOTHERS_IDENTIFIER
-    NATIONAL_UNIQUE_INDIVIDUAL_IDENTIFIER
-    OTHER
-    PARTNER_SERVICES_PATIENT_NUMBER
-    PATIENT_EXTERNAL_IDENTIFIER
-    PATIENT_INTERNAL_IDENTIFIER
-    PERSON_NUMBER
-    PRISON_IDENTIFICATION_NUMBER
-    RYAN_WHITE_IDENTIFIER
-    SOCIAL_SECURITY
-    VISA_PASSPORT
-    WIC_IDENTIFIER
-}
-
-enum Race {
-    UNKNOWN
-    AMERICAN_INDIAN_OR_ALASKAN_NATIVE
-    ASIAN
-    AFRICAN_AMERICAN
-    NATIVE_HAWAIIAN_OR_PACIFIC_ISLANDER
-    WHITE
-    OTHER_RACE
-    REFUSED_TO_ANSWER
-    NOT_ASKED
-}
-
-enum Ethnicity {
-    HISPANIC_OR_LATINO
-    NOT_HISPANIC_OR_LATINO
-    UNKNOWN
 }
 
 enum Gender {

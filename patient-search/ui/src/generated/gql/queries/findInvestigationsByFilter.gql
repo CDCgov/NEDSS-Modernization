@@ -5,7 +5,6 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             recordStatus
             lastChangeTime
             publicHealthCaseUid
-            programJurisdictionOid
             caseClassCd
             outbreakName
             caseTypeCd

@@ -33,6 +33,9 @@ public class InstantConverter implements PropertyValueConverter {
         formats.add(DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss"));
     }
 
+    /**
+     * Attempts to convert an Instant to a String
+     */
     @Override
     public Object write(Object value) {
         if (value instanceof Instant instant) {
@@ -42,6 +45,9 @@ public class InstantConverter implements PropertyValueConverter {
         }
     }
 
+    /**
+     * Attempts to convert a String to an Instant
+     */
     @Override
     public Object read(Object value) {
         if (value instanceof String s) {

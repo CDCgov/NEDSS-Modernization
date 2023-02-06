@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LabReportFilter {
+    private Long patientId;
     private List<String> programAreas;
     private List<Long> jurisdictions;
     private PregnancyStatus pregnancyStatus;

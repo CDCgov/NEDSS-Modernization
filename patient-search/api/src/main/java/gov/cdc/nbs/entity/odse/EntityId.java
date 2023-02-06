@@ -1,17 +1,20 @@
 package gov.cdc.nbs.entity.odse;
 
+import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-
-import gov.cdc.nbs.entity.enums.IdentificationType;
-import gov.cdc.nbs.entity.enums.converter.IdentificationTypeConverter;
-
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -79,9 +82,8 @@ public class EntityId {
     @Column(name = "status_time")
     private Instant statusTime;
 
-    @Convert(converter = IdentificationTypeConverter.class)
     @Column(name = "type_cd", length = 50)
-    private IdentificationType typeCd;
+    private String typeCd;
 
     @Column(name = "type_desc_txt", length = 100)
     private String typeDescTxt;

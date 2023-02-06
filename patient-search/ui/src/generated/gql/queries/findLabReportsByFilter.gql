@@ -9,7 +9,6 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage) {
             observationLastChgTime
             cdDescTxt
             recordStatusCd
-            programJurisdictionOid
             programAreaCd
             jurisdictionCd
             jurisdictionCodeDescTxt

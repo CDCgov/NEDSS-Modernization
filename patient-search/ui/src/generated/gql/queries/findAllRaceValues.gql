@@ -1,0 +1,11 @@
+query findAllRaceValues($page: Page) {
+    findAllRaceValues(page: $page){
+        content{
+            id{
+                code
+            }
+            codeDescTxt
+        }
+        total
+    }
+}

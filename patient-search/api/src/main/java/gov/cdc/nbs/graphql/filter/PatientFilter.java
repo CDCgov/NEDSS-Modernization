@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Ethnicity;
 import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.IdentificationType;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,7 +23,7 @@ public class PatientFilter {
     private Long id;
     private String lastName;
     private String firstName;
-    private Race race;
+    private String race;
     private Identification identification;
     private String ssn;
     private String phoneNumber;
@@ -41,7 +38,7 @@ public class PatientFilter {
     private String country;
     private String zip;
     private String mortalityStatus;
-    private Ethnicity ethnicity;
+    private String ethnicity;
     private RecordStatus recordStatus;
     private String treatmentId;
     private String vaccinationId;
@@ -52,6 +49,6 @@ public class PatientFilter {
     @NoArgsConstructor
     public static class Identification {
         private String identificationNumber;
-        private IdentificationType identificationType;
+        private String identificationType;
     }
 }

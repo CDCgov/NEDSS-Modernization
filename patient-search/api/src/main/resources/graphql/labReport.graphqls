@@ -1,4 +1,5 @@
 input LabReportFilter {
+    patientId: Int
     programAreas: [String]
     jurisdictions: [ID]
     pregnancyStatus: PregnancyStatus
@@ -25,7 +26,6 @@ type LabReport {
     observationLastChgTime: Date
     cdDescTxt: String
     recordStatusCd: String
-    programJurisdictionOid: Int
     programAreaCd: String
     jurisdictionCd: Int
     jurisdictionCodeDescTxt: String

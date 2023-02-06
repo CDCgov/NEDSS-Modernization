@@ -16,7 +16,7 @@ import gov.cdc.nbs.controller.CodeValueGeneralController;
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
-import gov.cdc.nbs.support.OutbreakMother;
+import gov.cdc.nbs.support.RaceMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -27,7 +27,7 @@ import io.cucumber.java.en.When;
 @ActiveProfiles("test")
 @Transactional
 @Rollback(false)
-public class OutbreakSearchSteps {
+public class RaceSearchSteps {
 
     @Autowired
     private CodeValueGeneralRepository codeValueGeneralRepository;
@@ -36,22 +36,36 @@ public class OutbreakSearchSteps {
 
     private Page<CodeValueGeneral> response;
 
-    @Given("Outbreaks exist")
-    public void outbreaks_exist() {
-        var outbreak = OutbreakMother.testOutbreak();
-        if (!codeValueGeneralRepository.existsById(outbreak.getId())) {
-            codeValueGeneralRepository.save(outbreak);
+    @Given("Races exist")
+    public void races_exist() {
+        var asian = RaceMother.asian();
+        if (!codeValueGeneralRepository.existsById(asian.getId())) {
+            codeValueGeneralRepository.save(asian);
+        }
+        var blackOrAfricanAmerican = RaceMother.blackOrAfricanAmerican();
+        if (!codeValueGeneralRepository.existsById(blackOrAfricanAmerican.getId())) {
+            codeValueGeneralRepository.save(blackOrAfricanAmerican);
+        }
+        var white = RaceMother.white();
+        if (!codeValueGeneralRepository.existsById(white.getId())) {
+            codeValueGeneralRepository.save(white);
         }
     }
 
-    @When("I search for outbreaks")
-    public void i_search_for_outbreaks() {
-        response = codeValueGeneralController.findAllOutbreaks(new GraphQLPage(10, 0));
+    @When("I search for races")
+    public void i_search_for_races() {
+        response = codeValueGeneralController.findAllRaceValues(new GraphQLPage(50, 0));
     }
 
-    @Then("I find outbreaks")
-    public void i_find_outbreaks() {
+    @Then("I find races")
+    public void i_find_races() {
         assertTrue(response.getTotalElements() > 0);
+        RaceMother.RACE_LIST.forEach(raceCode -> {
+            assertTrue(response.getContent().stream()
+                    .filter(e -> e.getId().getCode().equalsIgnoreCase(raceCode))
+                    .findFirst()
+                    .isPresent());
+        });
     }
 
 }

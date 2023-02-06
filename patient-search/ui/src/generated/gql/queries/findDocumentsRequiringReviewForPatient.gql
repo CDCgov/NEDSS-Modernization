@@ -9,7 +9,6 @@ query findDocumentsRequiringReviewForPatient($patientId: Int!, $page: Page) {
             observationLastChgTime
             cdDescTxt
             recordStatusCd
-            programJurisdictionOid
             programAreaCd
             jurisdictionCd
             jurisdictionCodeDescTxt

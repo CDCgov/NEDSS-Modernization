@@ -40,9 +40,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.converter.EthnicityConverter;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
@@ -76,6 +74,7 @@ import gov.cdc.nbs.repository.TeleLocatorRepository;
 import graphql.com.google.common.collect.Ordering;
 import gov.cdc.nbs.service.util.Constants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -93,9 +92,8 @@ public class PatientService {
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
-    private final EthnicityConverter ethnicityConverter = new EthnicityConverter();
 
-   @Autowired
+    @Autowired
     private KafkaRequestProducerService producer;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
@@ -217,7 +215,7 @@ public class PatientService {
 
         if (filter.getEthnicity() != null) {
             builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.ETHNIC_GROUP_IND,
-                    ethnicityConverter.write(filter.getEthnicity())));
+                    filter.getEthnicity()));
         }
 
         if (filter.getRace() != null) {
@@ -251,6 +249,7 @@ public class PatientService {
         var query = new NativeSearchQueryBuilder()
                 .withQuery(builder)
                 .withSorts(buildPatientSort(pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
 
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
@@ -363,73 +362,74 @@ public class PatientService {
         postalLocatorRepository.saveAll(postalLocators);
         return personRepository.save(person);
     }
-    
-    
+
     /**
      * Send updated Person Event to kakfa topic to be picekd up and updated.
+     * 
      * @param id
      * @param input
      * @return
      */
-	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-		Person updatePerson = updatePatient(id, input);
-		String requestId = null;
-		if (updatePerson != null) {
-			var teleUptLocators = addTeleLocatorEntries(updatePerson, input.getPhoneNumbers(),
-					input.getEmailAddresses());
-			var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
+    public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
+        Person updatePerson = updatePatient(id, input);
+        String requestId = null;
+        if (updatePerson != null) {
+            var teleUptLocators = addTeleLocatorEntries(updatePerson, input.getPhoneNumbers(),
+                    input.getEmailAddresses());
+            var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
 
-			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
-					.postalLocators(postalLocators).teleLocators(teleUptLocators).build();
+            PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
+                    .postalLocators(postalLocators).teleLocators(teleUptLocators).build();
 
-			requestId = getRequestID();
-			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
-			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
-		}
+            requestId = getRequestID();
+            var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
+            producer.requestPatientUpdateEnvelope(patientUpdateRequest);
+        }
 
-		return PatientUpdateResponse.builder().requestId(requestId)
-				.updatedPerson(updatePerson).build();
-		
-	}
+        return PatientUpdateResponse.builder().requestId(requestId)
+                .updatedPerson(updatePerson).build();
 
-	/**
-	 * Find a patient and update information / demographic information that needs to
-	 * be updated
-	 * @param id
-	 * @param input
-	 * @return
-	 */
-	public Person updatePatient(Long id, PatientInput input) {
-		// find existing patient in system
-		Person old = null;
-		try {
+    }
 
-			Optional<Person> result = findPatientById(id);
-			old = (result.isPresent()) ? result.get() : null;
+    /**
+     * Find a patient and update information / demographic information that needs to
+     * be updated
+     * 
+     * @param id
+     * @param input
+     * @return
+     */
+    public Person updatePatient(Long id, PatientInput input) {
+        // find existing patient in system
+        Person old = null;
+        try {
 
-			if (old == null || input == null) {
-				return null;
-			}
+            Optional<Person> result = findPatientById(id);
+            old = (result.isPresent()) ? result.get() : null;
 
-			Person updated = buildPersonFromInput(id, input);
+            if (old == null || input == null) {
+                return null;
+            }
 
-			// person_name
-			addPersonNameEntry(updated, input.getName());
+            Person updated = buildPersonFromInput(id, input);
 
-			// person_race
-			addPersonRaceEntry(updated, input.getRace());
-			BeanUtils.copyProperties(updated, old);
-			return old;
-		} catch (Exception e) {
-			throw new FieldUpdateException();
-		}
+            // person_name
+            addPersonNameEntry(updated, input.getName());
 
-	}
+            // person_race
+            addPersonRaceEntry(updated, input.getRace());
+            BeanUtils.copyProperties(updated, old);
+            return old;
+        } catch (Exception e) {
+            throw new FieldUpdateException();
+        }
+
+    }
 
     /*
      * Creates a PersonRace entry and adds it to the Person object
      */
-    private void addPersonRaceEntry(Person person, Race race) {
+    private void addPersonRaceEntry(Person person, String race) {
         if (person == null || race == null) {
             return;
         }
@@ -452,9 +452,9 @@ public class PatientService {
      * Creates a PersonName entry and adds it to the Person object
      */
     private void addPersonNameEntry(Person person, Name name) {
-    	if(person == null || name == null) {
-    	return;
-    	}
+        if (person == null || name == null) {
+            return;
+        }
         var now = Instant.now();
         var personName = new PersonName();
         personName.setId(new PersonNameId(person.getId(), (short) 1));
@@ -547,7 +547,7 @@ public class PatientService {
     private List<TeleLocator> addTeleLocatorEntries(Person person, List<PhoneNumber> phoneNumbers,
             List<String> emailAddresses) {
         var locatorList = new ArrayList<TeleLocator>();
-        if ( !phoneNumbers.isEmpty() || !emailAddresses.isEmpty()) {
+        if (!phoneNumbers.isEmpty() || !emailAddresses.isEmpty()) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             var user = (NbsUserDetails) auth.getPrincipal();
             // Grab highest Id from DB -- eventually fix db to auto increment
@@ -651,10 +651,12 @@ public class PatientService {
         pageable.getSort().stream().forEach(sort -> {
             switch (sort.getProperty()) {
                 case "lastNm":
-                sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD)
+                            .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 case "birthTime":
-                sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME).order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                    sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME)
+                            .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
@@ -662,36 +664,36 @@ public class PatientService {
         });
         return sorts;
     }
-    
-	private Person buildPersonFromInput(Long id, PatientInput input) {
-		Person person = new Person();
 
-		if (input.getName() != null) {
-			person.setFirstNm(input.getName().getFirstName());
-			person.setLastNm(input.getName().getLastName());
-			person.setMiddleNm(input.getName().getMiddleName());
-			person.setNmSuffix(input.getName().getSuffix());
-		}
+    private Person buildPersonFromInput(Long id, PatientInput input) {
+        Person person = new Person();
 
-		person.setId(id);
-		person.setSsn(input.getSsn());
-		person.setBirthTime(input.getDateOfBirth());
+        if (input.getName() != null) {
+            person.setFirstNm(input.getName().getFirstName());
+            person.setLastNm(input.getName().getLastName());
+            person.setMiddleNm(input.getName().getMiddleName());
+            person.setNmSuffix(input.getName().getSuffix());
+        }
 
-		person.setBirthGenderCd(input.getBirthGender());
-		person.setCurrSexCd(input.getCurrentGender());
-		person.setDeceasedIndCd(input.getDeceased());
-		person.setEthnicGroupInd(input.getEthnicity());
+        person.setId(id);
+        person.setSsn(input.getSsn());
+        person.setBirthTime(input.getDateOfBirth());
 
-		NBSEntity entity = new NBSEntity();
-		entity.setEntityLocatorParticipations(new ArrayList<>());
-		entity.setParticipations(new ArrayList<>());
-		person.setNbsEntity(entity);
+        person.setBirthGenderCd(input.getBirthGender());
+        person.setCurrSexCd(input.getCurrentGender());
+        person.setDeceasedIndCd(input.getDeceased());
+        person.setEthnicGroupInd(input.getEthnicity());
 
-		return person;
+        NBSEntity entity = new NBSEntity();
+        entity.setEntityLocatorParticipations(new ArrayList<>());
+        entity.setParticipations(new ArrayList<>());
+        person.setNbsEntity(entity);
 
-	}
+        return person;
 
-	private String getRequestID() {
-		return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
-	}
+    }
+
+    private String getRequestID() {
+        return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
+    }
 }

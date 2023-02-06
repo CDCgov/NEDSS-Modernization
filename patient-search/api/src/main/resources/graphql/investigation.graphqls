@@ -3,7 +3,6 @@ type Investigation {
     recordStatus: String
     lastChangeTime: Date
     publicHealthCaseUid: Int
-    programJurisdictionOid: Int
     caseClassCd: String
     outbreakName: String
     caseTypeCd: String
@@ -42,6 +41,7 @@ type ActId {
 }
 
 input InvestigationFilter {
+    patientId: Int
     conditions: [String]
     programAreas: [String]
     jurisdictions: [ID]

@@ -1,19 +1,17 @@
 package gov.cdc.nbs.entity.odse;
 
+import java.io.Serializable;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import org.hibernate.Hibernate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
-
-import gov.cdc.nbs.entity.enums.Race;
-import gov.cdc.nbs.entity.enums.converter.RaceConverter;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Embeddable;
-import java.io.Serializable;
-import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,9 +23,8 @@ public class PersonRaceId implements Serializable {
     @Column(name = "person_uid", nullable = false)
     private Long personUid;
 
-    @Convert(converter = RaceConverter.class)
     @Column(name = "race_cd", nullable = false, length = 20)
-    private Race raceCd;
+    private String raceCd;
 
     @Override
     public boolean equals(Object o) {

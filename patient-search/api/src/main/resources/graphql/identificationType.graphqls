@@ -1,0 +1,8 @@
+type IdentificationType {
+    id: IdentificationTypeId!
+    codeDescTxt: String!
+}
+
+type IdentificationTypeId {
+    code: String!
+}

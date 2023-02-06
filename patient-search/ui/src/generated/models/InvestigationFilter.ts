@@ -21,6 +21,7 @@ export type InvestigationFilter = {
     lastUpdatedBy?: number;
     notificationStatuses?: NotificationStatuses;
     outbreakNames?: Array<string>;
+    patientId?: number;
     pregnancyStatus?: InvestigationFilter.pregnancyStatus;
     processingStatuses?: ProcessingStatuses;
     programAreas?: Array<string>;
