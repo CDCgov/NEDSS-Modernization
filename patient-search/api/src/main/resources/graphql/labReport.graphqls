@@ -26,7 +26,6 @@ type LabReport {
     observationLastChgTime: Date
     cdDescTxt: String
     recordStatusCd: String
-    programJurisdictionOid: Int
     programAreaCd: String
     jurisdictionCd: Int
     jurisdictionCodeDescTxt: String

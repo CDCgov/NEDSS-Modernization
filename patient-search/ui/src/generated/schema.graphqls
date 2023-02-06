@@ -45,7 +45,6 @@ type Investigation {
     recordStatus: String
     lastChangeTime: Date
     publicHealthCaseUid: Int
-    programJurisdictionOid: Int
     caseClassCd: String
     outbreakName: String
     caseTypeCd: String
@@ -231,7 +230,6 @@ type LabReport {
     observationLastChgTime: Date
     cdDescTxt: String
     recordStatusCd: String
-    programJurisdictionOid: Int
     programAreaCd: String
     jurisdictionCd: Int
     jurisdictionCodeDescTxt: String
