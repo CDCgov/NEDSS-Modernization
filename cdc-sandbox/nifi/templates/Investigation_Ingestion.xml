@@ -432,6 +432,7 @@
                 <connections>
                     <id>39e64c54-4b12-30c2-0000-000000000000</id>
                     <parentGroupId>af1e2f1f-ccdc-3288-0000-000000000000</parentGroupId>
+                    <versionedComponentId>39e64c54-4b12-30c2-ab45-003f5f26b456</versionedComponentId>
                     <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                     <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                     <destination>
@@ -1418,12 +1419,6 @@ processor</label>
 </value>
                             </entry>
                             <entry>
-<key>investigation_id</key>
-<value>
-    <name>investigation_id</name>
-</value>
-                            </entry>
-                            <entry>
 <key>investigation_ids</key>
 <value>
     <name>investigation_ids</name>
@@ -1450,10 +1445,6 @@ processor</label>
                             <entry>
 <key>Null Value Representation</key>
 <value>empty string</value>
-                            </entry>
-                            <entry>
-<key>investigation_id</key>
-<value>$.public_health_case_uid</value>
                             </entry>
                             <entry>
 <key>investigation_ids</key>
@@ -2230,7 +2221,7 @@ processor</label>
                             </entry>
                             <entry>
 <key>Wrap Single Record</key>
-<value>false</value>
+<value>true</value>
                             </entry>
                             <entry>
 <key>Avro schema</key>
@@ -2973,7 +2964,7 @@ FROM
                             </entry>
                             <entry>
 <key>investigation_ids</key>
-<value>${allAttributes("investigation_ids","investigation_id"):replaceAll('[\[\]]',''):join(" "):replaceAll("^ +",""):replaceAll(" +$",""):replace(" ",","):join("")}</value>
+<value>${investigation_ids:replaceAll('[\[\]]','')}</value>
                             </entry>
                         </properties>
                         <retryCount>10</retryCount>
@@ -3501,5 +3492,5 @@ FROM
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/02/2023 19:44:06 UTC</timestamp>
+    <timestamp>02/02/2023 21:05:03 UTC</timestamp>
 </template>
