@@ -1,7 +1,0 @@
-{
-  "projects": {
-    "api": {
-      "includes": ["api/src/main/resources/graphql/*.graphqls"]
-    }
-  }
-}

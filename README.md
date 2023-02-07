@@ -1,11 +1,13 @@
 # NEDSS-Modernization
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CDCgov_NEDSS-Modernization&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CDCgov_NEDSS-Modernization)
+
 ### Getting started
 
 This repo contains two main components.
 
 1. [CDC Sandbox](cdc-sandbox/README.md) - primarily consists of a docker-compose containing the bulk of the supporting infrastructure for the modernization app
-1. [Patient Search](patient-search/README.md) - contains the Modernization app (Java/Spring Boot, React)
+1. [NBS Modernization](nbs-modernization/README.md) - contains the Modernization app (Java/Spring Boot, React), as well as the Kafka listener applications
 
 ## TLDR: Running everything inside docker
 
@@ -39,21 +41,21 @@ This repo contains two main components.
    ```sh
    ./nifi/buildImage.sh
    ```
-1. CD into the `patient-search/ui` directory
+1. CD into the `nbs-modernization/ui` directory
    ```sh
-   cd ../patient-search/ui
+   cd ../nbs-modernization/ui
    ```
 1. Run `npm install`
    ```sh
    npm i
    ```
-1. CD to the `patient-serch` directory
+1. CD to the `nbs-modernization` directory
    ```sh
    cd ..
    ```
 1. Start the `modernization` container
    ```sh
-   docker-compose up -d
+   docker-compose up modernization -d
    ```
 1. CD into the `cdc-sandbox` directory and Start NiFi
    ```sh

@@ -5,11 +5,11 @@ name: "Sonar Scanner"
 on:
   push:
     paths:
-      - 'patient-search/**'
+      - 'nbs-modernization/**'
       - '.github/workflows/codeql.yaml'
   pull_request:
     paths:
-      - 'patient-search/**'
+      - 'nbs-modernization/**'
       - '.github/workflows/codeql.yaml'
     
 jobs:
@@ -41,10 +41,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install react dependencies
-        working-directory: ./patient-search/ui
+        working-directory: ./nbs-modernization/ui
         run: npm install
       - name: Build and analyze
-        working-directory: ./patient-search
+        working-directory: ./nbs-modernization
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

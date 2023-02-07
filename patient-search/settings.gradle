@@ -1,2 +1,0 @@
-rootProject.name = 'nbs-modernization'
-include ':api', ':ui'

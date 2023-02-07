@@ -1,0 +1,12 @@
+services:
+  modernization:
+    build:
+      context: ./
+      dockerfile: ./api/Dockerfile
+    container_name: modernization
+    networks:
+      - nbs
+networks:
+  nbs:
+    name: nbs
+    driver: bridge
