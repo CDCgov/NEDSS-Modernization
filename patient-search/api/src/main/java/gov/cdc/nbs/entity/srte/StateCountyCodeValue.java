@@ -1,20 +1,28 @@
 package gov.cdc.nbs.entity.srte;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(catalog = "NBS_SRTE", name = "State_county_code_value")
 public class StateCountyCodeValue {
     @Id
@@ -75,10 +83,12 @@ public class StateCountyCodeValue {
     @Column(name = "code_system_desc_txt", length = 100)
     private String codeSystemDescTxt;
 
-    @OneToMany(mappedBy = "cntyCode")
+    @Builder.Default
+    @OneToMany(mappedBy = "cntyCode", fetch = FetchType.LAZY)
     private Set<CntycityCodeValue> cntycityCodeValues = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "cntyCode")
+    @Builder.Default
+    @OneToMany(mappedBy = "cntyCode", fetch = FetchType.LAZY)
     private Set<ZipcntyCodeValue> zipcntyCodeValues = new LinkedHashSet<>();
 
 }
