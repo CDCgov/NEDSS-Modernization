@@ -50,7 +50,9 @@ export const LabReportResults = ({
     };
 
     const getPatient = (labReport: LabReport): PersonParticipation | undefined | null => {
-        return labReport.personParticipations?.find((p) => p?.typeDescTxt === 'Patient subject');
+        return labReport.personParticipations?.find(
+            (p) => p?.typeDescTxt === 'Patient subject' || p?.typeCd === 'PATSBJ'
+        );
     };
 
     const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
