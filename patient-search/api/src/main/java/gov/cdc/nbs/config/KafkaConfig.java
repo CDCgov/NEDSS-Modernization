@@ -18,6 +18,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
+import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
 
 @Configuration
@@ -56,12 +57,7 @@ public class KafkaConfig {
 		if (!kafkaEnabled) {
 			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
 		} else {
-			Map<String, Object> config = new HashMap<>();
-			config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-			config.put("schema.registry.url", schemaRegistryUrl);
-			config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-			config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-
+			var config = getKafkaConfig();
 			return new DefaultKafkaProducerFactory<>(config, new StringSerializer(), new JsonSerializer<>());
 		}
 	}
@@ -69,13 +65,32 @@ public class KafkaConfig {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
 	public ProducerFactory<String, PatientUpdateRequest> producerFactoryPatientUpdate() {
+		if (!kafkaEnabled) {
+			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
+		} else {
+			var config = getKafkaConfig();
+			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Bean
+	public ProducerFactory<String, PatientDeleteRequest> producerFactoryPatientDelete() {
+		if (!kafkaEnabled) {
+			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
+		} else {
+			var config = getKafkaConfig();
+			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
+		}
+	}
+
+	private Map<String, Object> getKafkaConfig() {
 		Map<String, Object> config = new HashMap<>();
 		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		config.put("schema.registry.url", schemaRegistryUrl);
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-
-		return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
+		return config;
 	}
 
 	@Bean
@@ -86,6 +101,11 @@ public class KafkaConfig {
 	@Bean
 	public KafkaTemplate<String, EnvelopeRequest> kafkaTemplatePatientSearch() {
 		return new KafkaTemplate<>(producerFactoryPatientSearch());
+	}
+
+	@Bean
+	public KafkaTemplate<String, PatientDeleteRequest> kafkaTemplatePatientDelete() {
+		return new KafkaTemplate<>(producerFactoryPatientDelete());
 	}
 
 	@Bean
