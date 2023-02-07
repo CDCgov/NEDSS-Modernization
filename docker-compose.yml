@@ -1,9 +1,11 @@
 services:
-  modernization:
+  api:
     build:
       context: ./
       dockerfile: ./api/Dockerfile
-    container_name: modernization
+    container_name: api
+    ports:
+      - 8080:8080
     networks:
       - nbs
 networks:

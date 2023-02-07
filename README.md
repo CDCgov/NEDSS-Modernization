@@ -2,12 +2,12 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CDCgov_NEDSS-Modernization&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CDCgov_NEDSS-Modernization)
 
-### Getting started
+## About
 
-This repo contains two main components.
-
-1. [CDC Sandbox](cdc-sandbox/README.md) - primarily consists of a docker-compose containing the bulk of the supporting infrastructure for the modernization app
-1. [NBS Modernization](nbs-modernization/README.md) - contains the Modernization app (Java/Spring Boot, React), as well as the Kafka listener applications
+- [API](api/README.md)
+- [UI](ui/README.md)
+- [Patient Listener](patient-listener/README.md)
+- [CDC Sandbox](cdc-sandbox/README.md)
 
 ## TLDR: Running everything inside docker
 
