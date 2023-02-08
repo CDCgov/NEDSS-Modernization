@@ -1,2 +1,12 @@
 rootProject.name = 'nbs-modernization'
-include ':api', ':ui', ':common', ':patient-listener'
+// apps
+include ':modernization-api'
+project(':modernization-api').projectDir = new File('apps/modernization-api')
+include ':modernization-ui'
+project(':modernization-ui').projectDir = new File('apps/modernization-ui')
+include ':patient-listener'
+project(':patient-listener').projectDir = new File('apps/patient-listener')
+
+// libs
+include ':common'
+project(':common').projectDir = new File('libs/common')

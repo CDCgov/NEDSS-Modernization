@@ -4,9 +4,9 @@
 
 ## About
 
-- [API](api/README.md)
-- [UI](ui/README.md)
-- [Patient Listener](patient-listener/README.md)
+- [Modernization API](apps/modernization-api/README.md)
+- [Modernization UI](apps/modernization-ui/README.md)
+- [Patient Listener](apps/patient-listener/README.md)
 - [CDC Sandbox](cdc-sandbox/README.md)
 
 ## TLDR: Running everything inside docker
@@ -37,25 +37,21 @@
    ```sh
    docker-compose up elasticsearch kibana reverse-proxy -d
    ```
-1. Run the NiFi [build script](cdc-sandbox/nifi/buildImage.sh) to build an M1 compatibile image (if not on ARM architecture, skip this step)
+1. CD into the `apps/ui` directory
    ```sh
-   ./nifi/buildImage.sh
-   ```
-1. CD into the `nbs-modernization/ui` directory
-   ```sh
-   cd ../nbs-modernization/ui
+   cd ../apps/ui
    ```
 1. Run `npm install`
    ```sh
    npm i
    ```
-1. CD to the `nbs-modernization` directory
+1. CD to the `apps/modernization-api` directory
    ```sh
-   cd ..
+   cd ../modernization-api
    ```
-1. Start the `modernization` container
+1. Start the `modernization-api` container
    ```sh
-   docker-compose up modernization -d
+   docker-compose up modernization-api -d
    ```
 1. CD into the `cdc-sandbox` directory and Start NiFi
    ```sh

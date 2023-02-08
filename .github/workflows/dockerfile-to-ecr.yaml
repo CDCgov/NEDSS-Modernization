@@ -102,11 +102,11 @@ jobs:
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Build, tag, and push nbs-modernization image to Amazon ECR
-      id: patient-seatch
+      id: modernization-api
       env:        
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
-        IMAGE_TAG: "${{ env.github_repo_name }}-patient-search-${{ env.github_branch }}-${{ env.github_sha_short }}"
+        IMAGE_TAG: "${{ env.github_repo_name }}-modernization-api-${{ env.github_branch }}-${{ env.github_sha_short }}"
       run: |
         # Build a docker container and push it to ECR 
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./nbs-modernization

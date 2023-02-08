@@ -11,7 +11,7 @@
 ### VSCode
 
 1. In the ui directory run `npm install`
-1. In the nbs-modernization directory run `./gradlew build`
+1. In the modernization-api directory run `./gradlew build`
 1. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 1. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
@@ -26,7 +26,7 @@ To run all tests:
 To execute specific test tags:
 
 ```bash
-./gradlew -Dcucumber.filter.tags="@patient_create" test
+./gradlew test -Dcucumber.filter.tags="@patient_create" --tests "RunCucumberTest"
 ```
 
 ## GraphQL
@@ -35,7 +35,7 @@ The project utilizes GraphQL through the [spring-boot-starter-graphql](https://d
 
 ## QueryDSL
 
-[QueryDSL](https://github.com/querydsl/querydsl) allows the construction of type-safe SQL queries. The `QPatient` class is generated from the existing `Patient` JPA entity. When a new `@Entity` is added, run `./gradlew build` and the new Q classes will be created under `api/build/generated/sources/annotationProcessor/java/main`
+[QueryDSL](https://github.com/querydsl/querydsl) allows the construction of type-safe SQL queries. The `QPatient` class is generated from the existing `Patient` JPA entity. When a new `@Entity` is added, run `./gradlew build` and the new Q classes will be created under `modernization-api/build/generated/sources/annotationProcessor/java/main`
 
 ### Example query:
 

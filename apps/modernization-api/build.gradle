@@ -123,9 +123,9 @@ tasks.named("test") {
 }
 
 processResources {
-	from ("../ui/build") {
+	from ("../modernization-ui/build") {
 		into "static"
 	}
 }
 
-compileJava.mustRunAfter(":ui:build")
+compileJava.mustRunAfter(":modernization-ui:build")
