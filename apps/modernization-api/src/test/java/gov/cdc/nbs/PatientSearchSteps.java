@@ -149,8 +149,7 @@ public class PatientSearchSteps {
         }
         switch (field) {
             case "email":
-                var teleLocator = PersonUtil.getTeleLocators(searchPatient).get(0);
-                filter.setPhoneNumber(teleLocator.getEmailAddress());
+                filter.setPhoneNumber(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
                 break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
@@ -172,8 +171,7 @@ public class PatientSearchSteps {
                 filter.setSsn(searchPatient.getSsn());
                 break;
             case "phone number":
-                var teleLocator = PersonUtil.getTeleLocators(searchPatient).get(0);
-                filter.setPhoneNumber(teleLocator.getPhoneNbrTxt());
+                filter.setPhoneNumber(PersonUtil.getTeleLocators(searchPatient).get(0).getPhoneNbrTxt());
                 break;
             case "date of birth":
                 filter.setDateOfBirth(getDobByQualifier(searchPatient, qualifier));
