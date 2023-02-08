@@ -10,7 +10,7 @@ public class GraphQLConfig {
     @Bean
     // Sets our GraphQLExceptionHanlder as the default exception handler
     public GraphQlSourceBuilderCustomizer sourceBuilderCustomizer() {
-        return (builder) -> builder.configureGraphQl(
+        return builder -> builder.configureGraphQl(
                 graphQlBuilder -> graphQlBuilder.defaultDataFetcherExceptionHandler(new GraphQLExceptionHandler()));
     }
 }

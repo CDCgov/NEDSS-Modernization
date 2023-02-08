@@ -34,7 +34,7 @@ http:
     modernization:
       loadBalancer:
         servers:
-          - url: "http://modernization:8080/"
+          - url: "http://modernization-api:8080/"
     nbs:
       loadBalancer:
         servers:

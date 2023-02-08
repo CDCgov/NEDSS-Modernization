@@ -144,6 +144,9 @@ public class PatientService {
         return new PageImpl<>(results, pageable, results.getMaxResults());
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and appending to the query
     public Page<Person> findPatientsByFilter(PatientFilter filter, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
         List<Long> ids;
@@ -392,6 +395,7 @@ public class PatientService {
                 .updatedPerson(updatePerson).build();
 
     }
+
     public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
         String requestId = getRequestID();
         var patientDeleteRequest = new PatientDeleteRequest(requestId);
@@ -400,7 +404,6 @@ public class PatientService {
         return PatientDeleteResponse.builder().requestId(requestId).build();
 
     }
-
 
     /**
      * Find a patient and update information / demographic information that needs to
@@ -622,7 +625,7 @@ public class PatientService {
 
             // Add generated ELPs to Person.NBSEntity
             var existingElp = person.getNbsEntity().getEntityLocatorParticipations();
-            if (existingElp != null && existingElp.size() > 0) {
+            if (existingElp != null && !existingElp.isEmpty()) {
                 elpList.addAll(existingElp);
             }
             person.getNbsEntity().setEntityLocatorParticipations(elpList);
