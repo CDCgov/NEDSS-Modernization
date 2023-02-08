@@ -65,8 +65,10 @@ import gov.cdc.nbs.graphql.input.PatientInput.Name;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
 import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
@@ -184,7 +186,7 @@ public class PatientService {
         }
 
         if (filter.getGender() != null) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.BIRTH_GENDER_CD, filter.getGender()));
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CURR_SEX_CD, filter.getGender()));
         }
 
         if (filter.getDeceased() != null) {
@@ -390,6 +392,15 @@ public class PatientService {
                 .updatedPerson(updatePerson).build();
 
     }
+    public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
+        String requestId = getRequestID();
+        var patientDeleteRequest = new PatientDeleteRequest(requestId);
+        producer.requestPatientDeleteEnvelope(patientDeleteRequest);
+
+        return PatientDeleteResponse.builder().requestId(requestId).build();
+
+    }
+
 
     /**
      * Find a patient and update information / demographic information that needs to
