@@ -44,7 +44,7 @@ jobs:
         working-directory: ./apps/modernization-ui
         run: npm install
       - name: Build and analyze
-        working-directory: ./apps/modernization-api
+        working-directory: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
