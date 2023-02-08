@@ -37,9 +37,9 @@
    ```sh
    docker-compose up elasticsearch kibana reverse-proxy -d
    ```
-1. CD into the `apps/ui` directory
+1. CD into the `apps/modernization-ui` directory
    ```sh
-   cd ../apps/ui
+   cd ../apps/modernization-ui
    ```
 1. Run `npm install`
    ```sh

@@ -5,13 +5,13 @@ name: "Sonar Scanner"
 on:
   push:
     paths:
-      - 'nbs-modernization/**'
-      - '.github/workflows/codeql.yaml'
+      - "apps/modernization-api/**"
+      - ".github/workflows/codeql.yaml"
   pull_request:
     paths:
-      - 'nbs-modernization/**'
-      - '.github/workflows/codeql.yaml'
-    
+      - "apps/modernization-api/**"
+      - ".github/workflows/codeql.yaml"
+
 jobs:
   build:
     name: Build and analyze
@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 18
         uses: actions/setup-java@v1
         with:
@@ -41,11 +41,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install react dependencies
-        working-directory: ./nbs-modernization/ui
+        working-directory: ./apps/modernization-ui
         run: npm install
       - name: Build and analyze
-        working-directory: ./nbs-modernization
+        working-directory: ./apps/modernization-api
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build jacocoTestReport sonar -Dcucumber.filter.tags="@none"

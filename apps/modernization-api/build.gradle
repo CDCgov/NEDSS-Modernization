@@ -129,3 +129,4 @@ processResources {
 }
 
 compileJava.mustRunAfter(":modernization-ui:build")
+compileJava.mustRunAfter(":common:build")
