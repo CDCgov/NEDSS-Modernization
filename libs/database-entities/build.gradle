@@ -1,0 +1,42 @@
+buildscript {
+    ext {
+        springBootVersion = "2.7.2"
+		queryDslVersion = "5.0.0"
+    }
+}
+plugins {
+	id 'org.springframework.boot' version "${springBootVersion}" apply false
+	id "io.spring.dependency-management" version "1.0.12.RELEASE"
+	id 'java'
+}
+
+group = 'gov.cdc'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+}
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+    // Spring
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+
+    // lombok
+	implementation "org.projectlombok:lombok"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+
+	// querydsl
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+}
