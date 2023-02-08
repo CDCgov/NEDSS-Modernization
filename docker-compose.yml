@@ -4,8 +4,6 @@ services:
       context: ./
       dockerfile: ./apps/modernization-api/Dockerfile
     container_name: modernization-api
-    ports:
-      - 8080:8080
     networks:
       - nbs
 networks:

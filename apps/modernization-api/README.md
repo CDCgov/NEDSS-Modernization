@@ -35,7 +35,7 @@ The project utilizes GraphQL through the [spring-boot-starter-graphql](https://d
 
 ## QueryDSL
 
-[QueryDSL](https://github.com/querydsl/querydsl) allows the construction of type-safe SQL queries. The `QPatient` class is generated from the existing `Patient` JPA entity. When a new `@Entity` is added, run `./gradlew build` and the new Q classes will be created under `modernization-api/build/generated/sources/annotationProcessor/java/main`
+[QueryDSL](https://github.com/querydsl/querydsl) allows the construction of type-safe SQL queries. The `QPatient` class is generated from the existing `Patient` JPA entity. When a new `@Entity` is added, run `./gradlew build` and the new Q classes will be created under `libs/database-entities/build/generated/sources/annotationProcessor/java/main`
 
 ### Example query:
 

@@ -18,4 +18,3 @@ apply plugin: "com.moowork.node"
  }
  
  assemble.dependsOn(appNpmBuild) 
- 
