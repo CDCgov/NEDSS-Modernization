@@ -3,8 +3,8 @@ import { Input } from '../components/FormInputs/Input';
 
 export default {
     title: 'Components/Input',
-    component: Input,
-  } as ComponentMeta<typeof Input>;
+    component: Input
+} as ComponentMeta<typeof Input>;
 
 const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
 

@@ -12,5 +12,5 @@ export const SampleBannerFlag = Template.bind({});
 SampleBannerFlag.args = {
     className: 'custom-class',
     alt: 'img',
-    src: "/us_flag_small.png"
+    src: '/us_flag_small.png'
 };

@@ -10,7 +10,7 @@ const Template: ComponentStory<typeof TableComponent> = (args) => <TableComponen
 
 export const BasicTable = Template.bind({});
 BasicTable.args = {
-    tableHeader: "Table Header",
+    tableHeader: 'Table Header',
     tableHead: [
         { name: 'Start Date', sortable: false },
         { name: 'Condition', sortable: false },
@@ -21,88 +21,89 @@ BasicTable.args = {
         { name: 'Investigation #', sortable: false },
         { name: 'Co-infection #', sortable: false }
     ],
-    tableBody:[
+    tableBody: [
         {
-        "id": 1,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/1/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": null
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/2/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": "Completed"
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    }]
+            id: 1,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/1/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: null
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        },
+        {
+            id: 2,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/2/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: 'Completed'
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        }
+    ]
 };
 
 export const TableWithPagination = Template.bind({});
 TableWithPagination.args = {
-    tableHeader: "Table Header",
+    tableHeader: 'Table Header',
     tableHead: [
         { name: 'Start Date', sortable: false },
         { name: 'Condition', sortable: false },
@@ -113,89 +114,90 @@ TableWithPagination.args = {
         { name: 'Investigation #', sortable: false },
         { name: 'Co-infection #', sortable: false }
     ],
-    tableBody:[{
-        "id": 1,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/1/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": null
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/2/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": "Completed"
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    }
-],
+    tableBody: [
+        {
+            id: 1,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/1/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: null
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        },
+        {
+            id: 2,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/2/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: 'Completed'
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        }
+    ],
     isPagination: true
 };
 
 export const TableWithSorting = Template.bind({});
 TableWithSorting.args = {
-    tableHeader: "Table Header",
+    tableHeader: 'Table Header',
     tableHead: [
         { name: 'Start Date', sortable: true },
         { name: 'Condition', sortable: true },
@@ -206,88 +208,89 @@ TableWithSorting.args = {
         { name: 'Investigation #', sortable: true },
         { name: 'Co-infection #', sortable: true }
     ],
-    tableBody:[
+    tableBody: [
         {
-        "id": 1,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/1/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": null
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/2/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": "Completed"
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    }]
+            id: 1,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/1/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: null
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        },
+        {
+            id: 2,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/2/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: 'Completed'
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        }
+    ]
 };
 
 export const TableWithSetCurrentPage = Template.bind({});
 TableWithSetCurrentPage.args = {
-    tableHeader: "Table Header",
+    tableHeader: 'Table Header',
     tableHead: [
         { name: 'Start Date', sortable: true },
         { name: 'Condition', sortable: true },
@@ -298,83 +301,84 @@ TableWithSetCurrentPage.args = {
         { name: 'Investigation #', sortable: true },
         { name: 'Co-infection #', sortable: true }
     ],
-    tableBody:[
+    tableBody: [
         {
-        "id": 1,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/1/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": null
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "checkbox": true,
-        "tableDetails": [
-            {
-                "id": 1,
-                "title": "12/2/2021"
-            },
-            {
-                "id": 2,
-                "title": "Acute flaccid myelitis"
-            },
-            {
-                "id": 3,
-                "title": null
-            },
-            {
-                "id": 4,
-                "title": "Completed"
-            },
-            {
-                "id": 5,
-                "title": "Cobb County"
-            },
-            {
-                "id": 6,
-                "title": null
-            },
-            {
-                "id": 7,
-                "title": "CAS10004022GA01"
-            },
-            {
-                "id": 8,
-                "title": null
-            }
-        ]
-    }],
+            id: 1,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/1/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: null
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        },
+        {
+            id: 2,
+            checkbox: true,
+            tableDetails: [
+                {
+                    id: 1,
+                    title: '12/2/2021'
+                },
+                {
+                    id: 2,
+                    title: 'Acute flaccid myelitis'
+                },
+                {
+                    id: 3,
+                    title: null
+                },
+                {
+                    id: 4,
+                    title: 'Completed'
+                },
+                {
+                    id: 5,
+                    title: 'Cobb County'
+                },
+                {
+                    id: 6,
+                    title: null
+                },
+                {
+                    id: 7,
+                    title: 'CAS10004022GA01'
+                },
+                {
+                    id: 8,
+                    title: null
+                }
+            ]
+        }
+    ],
     isPagination: true,
     currentPage: 2
 };

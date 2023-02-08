@@ -10,6 +10,6 @@ const Template: ComponentStory<typeof BannerLockImage> = (args) => <BannerLockIm
 
 export const SampleBannerLockImage = Template.bind({});
 SampleBannerLockImage.args = {
-    title:'Lock',
+    title: 'Lock',
     description: 'A locked padlock'
 };

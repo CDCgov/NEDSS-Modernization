@@ -6,7 +6,9 @@ export default {
     component: BannerContent
 } as ComponentMeta<typeof BannerContent>;
 
-const Template: ComponentStory<typeof BannerContent> = (args) => <BannerContent {...args}>Official websites use .gov</BannerContent>;
+const Template: ComponentStory<typeof BannerContent> = (args) => (
+    <BannerContent {...args}>Official websites use .gov</BannerContent>
+);
 
 export const SampleBannerContent = Template.bind({});
 SampleBannerContent.args = {

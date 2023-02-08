@@ -10,7 +10,7 @@ export default {
 const Template: ComponentStory<typeof CheckBoxControl> = (args) => {
     const methods = useForm();
     args.control = methods.control;
-    return <CheckBoxControl {...args} />
+    return <CheckBoxControl {...args} />;
 };
 
 export const CheckBox = Template.bind({});

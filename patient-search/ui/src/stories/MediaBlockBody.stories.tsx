@@ -1,4 +1,4 @@
-import { MediaBlockBody } from "../components/MediaBlockBody/MediaBlockBody";
+import { MediaBlockBody } from '../components/MediaBlockBody/MediaBlockBody';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 export default {
@@ -6,7 +6,11 @@ export default {
     component: MediaBlockBody
 } as ComponentMeta<typeof MediaBlockBody>;
 
-const Template: ComponentStory<typeof MediaBlockBody> = (args) => <MediaBlockBody {...args}><p>Sample content</p></MediaBlockBody>;
+const Template: ComponentStory<typeof MediaBlockBody> = (args) => (
+    <MediaBlockBody {...args}>
+        <p>Sample content</p>
+    </MediaBlockBody>
+);
 
 export const SampleMediaBlockBody = Template.bind({});
 SampleMediaBlockBody.args = {

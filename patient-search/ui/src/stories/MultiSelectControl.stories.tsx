@@ -10,7 +10,7 @@ export default {
 const Template: ComponentStory<typeof MultiSelectControl> = (args) => {
     const methods = useForm();
     args.control = methods.control;
-    return <MultiSelectControl {...args} />
+    return <MultiSelectControl {...args} />;
 };
 
 export const BasicMultiSelect = Template.bind({});
@@ -19,8 +19,8 @@ BasicMultiSelect.args = {
     name: 'case',
     label: 'Multi Select',
     options: [
-        { name: 'option 1', value: 'option 1'},
-        { name: 'option 2', value: 'option 2'},
-        { name: 'option 3', value: 'option 3'},
+        { name: 'option 1', value: 'option 1' },
+        { name: 'option 2', value: 'option 2' },
+        { name: 'option 3', value: 'option 3' }
     ]
 };

@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { DatePickerInput } from "../components/FormInputs/DatePickerInput";
+import { DatePickerInput } from '../components/FormInputs/DatePickerInput';
 
 export default {
     title: 'Components/DatePickerInput',

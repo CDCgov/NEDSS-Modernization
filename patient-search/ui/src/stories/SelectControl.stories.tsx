@@ -10,7 +10,7 @@ export default {
 const Template: ComponentStory<typeof SelectControl> = (args) => {
     const methods = useForm();
     args.control = methods.control;
-    return <SelectControl {...args} />
+    return <SelectControl {...args} />;
 };
 
 export const SampleSelect = Template.bind({});
@@ -18,9 +18,9 @@ SampleSelect.args = {
     name: 'case',
     label: 'Multi Select',
     options: [
-        { name: 'option 1', value: 'option 1'},
-        { name: 'option 2', value: 'option 2'},
-        { name: 'option 3', value: 'option 3'},
+        { name: 'option 1', value: 'option 1' },
+        { name: 'option 2', value: 'option 2' },
+        { name: 'option 3', value: 'option 3' }
     ],
     isMulti: false
 };
@@ -30,9 +30,9 @@ MultiSelect.args = {
     name: 'case',
     label: 'Multi Select',
     options: [
-        { name: 'option 1', value: 'option 1'},
-        { name: 'option 2', value: 'option 2'},
-        { name: 'option 3', value: 'option 3'},
+        { name: 'option 1', value: 'option 1' },
+        { name: 'option 2', value: 'option 2' },
+        { name: 'option 3', value: 'option 3' }
     ],
     isMulti: true
 };

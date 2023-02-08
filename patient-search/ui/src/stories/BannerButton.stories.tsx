@@ -13,5 +13,5 @@ SampleBannerButton.args = {
     className: 'usa-accordion__button usa-banner__button',
     isOpen: false,
     type: 'button',
-    "aria-controls": 'custom-controls'
+    'aria-controls': 'custom-controls'
 };

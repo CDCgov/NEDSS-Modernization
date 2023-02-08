@@ -11,7 +11,7 @@ const Template: ComponentStory<typeof BannerHeader> = (args) => <BannerHeader {.
 export const SampleBannerHeader = Template.bind({});
 SampleBannerHeader.args = {
     isOpen: true,
-    flagImg: <img src= '/us_flag_small.png' alt='U.S. flag'></img>,
+    flagImg: <img src="/us_flag_small.png" alt="U.S. flag"></img>,
     headerText: 'An official website of the United States government',
     headerActionText: 'Here"s how you know'
 };
