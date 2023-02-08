@@ -5,11 +5,13 @@ name: "Sonar Scanner"
 on:
   push:
     paths:
-      - "apps/modernization-api/**"
+      - "apps/**"
+      - "libs/**"
       - ".github/workflows/codeql.yaml"
   pull_request:
     paths:
-      - "apps/modernization-api/**"
+      - "apps/**"
+      - "libs/**"
       - ".github/workflows/codeql.yaml"
 
 jobs:
