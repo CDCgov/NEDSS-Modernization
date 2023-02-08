@@ -1,0 +1,75 @@
+nbs:
+    security:
+        tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
+        tokenIssuer: gov.cdc.nbs
+        tokenExpirationMillis: 1800000 # 30 minutes
+        parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
+    max-page-size: 50
+    elasticsearch:
+        url: http://localhost:9200
+    wildfly:
+        url: http://localhost:7001
+    uid:
+        suffix: GA01
+        seed: 10000000
+
+logging:
+    file.path: ./log/
+    level:
+        org.hibernate.SQL: debug
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+        org.springframework.data.elasticsearch.client.WIRE: trace
+
+spring:
+    graphql:
+        path: /graphql
+        graphiql:
+            enabled: true
+            path: /graphiql
+    jpa:
+        properties:
+            hibernate:
+                ddl-auto: validate
+                default_schema: dbo
+                format_sql: true
+                jdbc.time_zone: UTC
+                dialect: org.hibernate.dialect.SQLServer2012Dialect
+                hbm2ddl.jdbc_metadata_extraction_strategy: individually
+    datasource:
+        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        username: sa
+        password: fake.fake.fake.1234
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
+
+kafka:
+    enabled: false
+    bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
+    listener:
+        ack-mode: record
+    producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    properties:
+        schema:
+            registry:
+                url: http://localhost:9091
+        topic:
+            suffix: '-event'
+            partition.count: 3
+            replication.factor: 3
+        message.max.attempt: 5
+        retry.naming.pattern: -neds-part-retry
+        dlt.naming.pattern: -neds-part-dlt
+kafkadef:
+    patient-search:
+        topics:
+            request:
+                patient: request-patient-search.patientsearch
+                patientupdate: request-patient-search.patientupdate
+                patientdelete: request-patient-search.patientdelete
+            event:
+                patient: event-patient-search.patientsearch
+                patientupdate: request-patient-search.patientupdate
+                patientdelete: request-patient-search.patientdelete

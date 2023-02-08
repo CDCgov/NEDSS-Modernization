@@ -1,0 +1,12 @@
+rootProject.name = 'nbs-modernization'
+// apps
+include ':modernization-api'
+project(':modernization-api').projectDir = new File('apps/modernization-api')
+include ':modernization-ui'
+project(':modernization-ui').projectDir = new File('apps/modernization-ui')
+include ':patient-listener'
+project(':patient-listener').projectDir = new File('apps/patient-listener')
+
+// libs
+include ':database-entities'
+project(':database-entities').projectDir = new File('libs/database-entities')
