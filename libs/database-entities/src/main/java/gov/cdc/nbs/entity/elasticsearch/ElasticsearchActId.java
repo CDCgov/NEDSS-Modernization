@@ -1,6 +1,6 @@
 package gov.cdc.nbs.entity.elasticsearch;
 
-import static gov.cdc.nbs.config.ElasticSearchConfig.DATE_PATTERN;
+import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
 
 import java.time.Instant;
 

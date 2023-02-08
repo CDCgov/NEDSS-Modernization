@@ -8,5 +8,5 @@ include ':patient-listener'
 project(':patient-listener').projectDir = new File('apps/patient-listener')
 
 // libs
-include ':common'
-project(':common').projectDir = new File('libs/common')
+include ':database-entities'
+project(':database-entities').projectDir = new File('libs/database-entities')

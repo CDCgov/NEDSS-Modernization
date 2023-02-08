@@ -46,7 +46,7 @@ dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
 	// common
-	implementation project(':common')
+	implementation project(':database-entities')
 
 	// jwt
 	implementation "com.auth0:java-jwt:4.2.0"
@@ -129,4 +129,4 @@ processResources {
 }
 
 compileJava.mustRunAfter(":modernization-ui:build")
-compileJava.mustRunAfter(":common:build")
+compileJava.mustRunAfter(":database-entities:build")
