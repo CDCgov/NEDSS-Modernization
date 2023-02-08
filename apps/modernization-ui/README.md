@@ -25,3 +25,13 @@ Workflow:
     npm run generate
     ```
 1. Use the newly generated methods to make API calls from typescript
+
+## Storybook
+
+Storybook is a component library thats gives inforation on how to use the reusable react components like button,checkbox, table and so on. Run storybook locally to see what components are already available.
+
+```sh
+npm run storybook.
+```
+
+The no lint option is to ensure there aren't any lint errors as of now. This could be an effort going forward.
