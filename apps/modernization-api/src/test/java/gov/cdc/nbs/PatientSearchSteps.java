@@ -149,7 +149,7 @@ public class PatientSearchSteps {
         }
         switch (field) {
             case "email":
-                filter.setPhoneNumber(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
+                filter.setEmail(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
                 break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
