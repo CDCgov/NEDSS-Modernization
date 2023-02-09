@@ -176,13 +176,13 @@ public class PatientService {
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getPhoneNumber())).defaultField("phone.telephoneNbr"),
+                    QueryBuilders.queryStringQuery(filter.getPhoneNumber()).defaultField("phone.telephoneNbr"),
                     ScoreMode.Avg));
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getEmail())).defaultField("email.emailAddress"),
+                    QueryBuilders.queryStringQuery(filter.getEmail()).defaultField("email.emailAddress"),
                     ScoreMode.Avg));
         }
 
