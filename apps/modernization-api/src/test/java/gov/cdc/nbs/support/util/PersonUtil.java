@@ -1,5 +1,6 @@
 package gov.cdc.nbs.support.util;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,17 +13,16 @@ import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
 import gov.cdc.nbs.entity.elasticsearch.NestedName;
 import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
 import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.input.PatientInput.Name;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
-import java.time.Instant;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.Name;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PostalAddress;
 
 public class PersonUtil {
 
@@ -113,7 +113,7 @@ public class PersonUtil {
         input.setBirthGender(person.getBirthGenderCd());
         input.setCurrentGender(person.getBirthGenderCd());
         input.setDeceased(person.getDeceasedIndCd());
-        input.setEthnicity(person.getEthnicGroupInd());
+        input.setEthnicityCode(person.getEthnicGroupInd());
 
         var elpList = person.getNbsEntity().getEntityLocatorParticipations();
         if (elpList != null && elpList.size() > 0) {

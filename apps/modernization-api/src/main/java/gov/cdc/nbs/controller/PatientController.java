@@ -15,7 +15,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.graphql.input.PatientInput;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
 import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.service.PatientService;
@@ -24,21 +24,21 @@ import lombok.AllArgsConstructor;
 @Controller
 @AllArgsConstructor
 public class PatientController {
-	private static final String AND = " and ";
+    private static final String AND = " and ";
     private static final String HAS_AUTHORITY = "hasAuthority('";
     private static final String FIND_PATIENT = HAS_AUTHORITY + Operations.FIND + "-" + BusinessObjects.PATIENT
             + "')";
     private static final String ADD_PATIENT = HAS_AUTHORITY + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
     private static final String ADD_AND_FIND_PATIENT = ADD_PATIENT + AND + FIND_PATIENT;
-    
+
     private static final String EDIT_PATIENT = HAS_AUTHORITY + Operations.EDIT + "-" + BusinessObjects.PATIENT
-            + "')"; 
-    
-    private static final String VIEW_PATIENT = HAS_AUTHORITY + Operations.VIEW + "-" + BusinessObjects.PATIENT 
-    		+ "')";
-    private static final String FIND_AND_EDIT_AND_VIEW = FIND_PATIENT + AND + EDIT_PATIENT  + AND + VIEW_PATIENT;  
+            + "')";
+
+    private static final String VIEW_PATIENT = HAS_AUTHORITY + Operations.VIEW + "-" + BusinessObjects.PATIENT
+            + "')";
+    private static final String FIND_AND_EDIT_AND_VIEW = FIND_PATIENT + AND + EDIT_PATIENT + AND + VIEW_PATIENT;
     private static final String DELETE_PATIENT = HAS_AUTHORITY + Operations.DELETE + "-" + BusinessObjects.PATIENT
-    + "')";
+            + "')";
     private final PatientService patientService;
 
     @QueryMapping()
@@ -74,14 +74,14 @@ public class PatientController {
 
     @MutationMapping()
     @PreAuthorize(ADD_AND_FIND_PATIENT)
-    public Person createPatient(@Argument PatientInput patient) {
-        return patientService.createPatient(patient);
+    public String createPatient(@Argument PatientInput patient) {
+        return patientService.sendCreatePatientRequest(patient);
     }
-    
-	@MutationMapping()
-	@PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-	public PatientUpdateResponse updatePatient(@Argument Long id, @Argument PatientInput patient) {
-		return patientService.sendUpdatePatientEvent(id, patient);
-	}
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientUpdateResponse updatePatient(@Argument Long id, @Argument PatientInput patient) {
+        return patientService.sendUpdatePatientEvent(id, patient);
+    }
 
 }

@@ -47,6 +47,7 @@ dependencies {
 
 	// common
 	implementation project(':database-entities')
+	implementation project(':event-schema')
 
 	// jwt
 	implementation "com.auth0:java-jwt:4.2.0"

@@ -2,17 +2,15 @@ package gov.cdc.nbs.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
-
-import java.time.Instant;
-
-import org.springframework.security.core.Authentication;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,11 +31,11 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.input.PatientInput.Name;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.Name;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PostalAddress;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -67,7 +66,7 @@ class PatientUpdateTest {
 	public PatientUpdateTest() {
 		MockitoAnnotations.openMocks(this);
 		patientService = new PatientService(null, personRepository, teleLocatorRepository, postalLocatorRepository,
-				null, null);
+				null, null, null);
 		Long id = UUID.randomUUID().getMostSignificantBits();
 		Person old = buildPersonFromInput();
 		person = old;
@@ -141,8 +140,8 @@ class PatientUpdateTest {
 		numbers.add(phoneNumber());
 		input.setPhoneNumbers(numbers);
 		input.setEmailAddresses(List.of("test@test.com"));
-		input.setEthnicity(EthnicityMother.NOT_HISPANIC_OR_LATINO_CODE);
-		input.setRace(RaceMother.BLACK_OR_AFRICAN_AMERICAN_CODE);
+		input.setEthnicityCode(EthnicityMother.NOT_HISPANIC_OR_LATINO_CODE);
+		input.setRaceCodes(Arrays.asList(RaceMother.BLACK_OR_AFRICAN_AMERICAN_CODE));
 		return input;
 
 	}

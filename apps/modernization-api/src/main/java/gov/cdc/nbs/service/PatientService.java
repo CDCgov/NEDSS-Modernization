@@ -16,23 +16,22 @@ import javax.persistence.PersistenceContext;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.BeanUtils;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
@@ -40,7 +39,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
@@ -60,11 +58,12 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.input.PatientInput.Name;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientCreateRequest;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.Name;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
@@ -73,10 +72,9 @@ import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
-import graphql.com.google.common.collect.Ordering;
 import gov.cdc.nbs.service.util.Constants;
+import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -94,9 +92,7 @@ public class PatientService {
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
-
-    @Autowired
-    private KafkaRequestProducerService producer;
+    private final KafkaRequestProducerService producer;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -325,47 +321,18 @@ public class PatientService {
         return "PSN" + nbsId + "GA01";
     }
 
-    @Transactional
-    public Person createPatient(PatientInput input) {
-        final long id = personRepository.getMaxId() + 1;
-        var person = new Person();
-        // generated / required values
-        person.setId(id);
-        person.setNbsEntity(new NBSEntity(id, "PSN"));
-        person.setVersionCtrlNbr((short) 1);
-        person.setAddTime(Instant.now());
-        person.setRecordStatusCd(RecordStatus.ACTIVE);
-
-        // person table
-        if (input.getName() != null) {
-            person.setLastNm(input.getName().getLastName());
-            person.setFirstNm(input.getName().getFirstName());
-            person.setMiddleNm(input.getName().getMiddleName());
-            person.setNmSuffix(input.getName().getSuffix());
-        }
-        person.setSsn(input.getSsn());
-        person.setBirthTime(input.getDateOfBirth());
-        person.setBirthGenderCd(input.getBirthGender());
-        person.setCurrSexCd(input.getCurrentGender());
-        person.setDeceasedIndCd(input.getDeceased());
-        person.setEthnicGroupInd(input.getEthnicity());
-
-        // person_name
-        addPersonNameEntry(person, input.getName());
-
-        // person_race
-        addPersonRaceEntry(person, input.getRace());
-
-        // tele_locator
-        var teleLocators = addTeleLocatorEntries(person, input.getPhoneNumbers(), input.getEmailAddresses());
-
-        // postal_locator
-        var postalLocators = addPostalLocatorEntries(person, input.getAddresses());
-
-        // Save
-        teleLocatorRepository.saveAll(teleLocators);
-        postalLocatorRepository.saveAll(postalLocators);
-        return personRepository.save(person);
+    public String sendCreatePatientRequest(PatientInput input) {
+        // create 'create patient' message and post to kafka
+        var requestId = getRequestID();
+        var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var createRequest = PatientCreateRequest.builder()
+                .userId(user.getUsername())
+                .patientInput(input)
+                .requestId(requestId)
+                .build();
+        producer.requestPatientCreateEnvelope(createRequest);
+        // return a request Id for the 'create message'
+        return requestId;
     }
 
     /**
@@ -431,7 +398,7 @@ public class PatientService {
             addPersonNameEntry(updated, input.getName());
 
             // person_race
-            addPersonRaceEntry(updated, input.getRace());
+            input.getRaceCodes().forEach(race -> addPersonRaceEntry(updated, race));
             BeanUtils.copyProperties(updated, old);
             return old;
         } catch (Exception e) {
@@ -696,7 +663,7 @@ public class PatientService {
         person.setBirthGenderCd(input.getBirthGender());
         person.setCurrSexCd(input.getCurrentGender());
         person.setDeceasedIndCd(input.getDeceased());
-        person.setEthnicGroupInd(input.getEthnicity());
+        person.setEthnicGroupInd(input.getEthnicityCode());
 
         NBSEntity entity = new NBSEntity();
         entity.setEntityLocatorParticipations(new ArrayList<>());

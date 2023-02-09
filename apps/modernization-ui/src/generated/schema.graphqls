@@ -1,11 +1,3 @@
-type Ethnicity {
-    id: EthnicityId!
-    codeDescTxt: String!
-}
-
-type EthnicityId {
-    code: String!
-}
 type ConditionCode {
     id: String!
     conditionDescTxt: String
@@ -36,6 +28,14 @@ type CountyCode {
     id: String!
     codeDescTxt: String
     codeShortDescTxt: String
+}
+type Ethnicity {
+    id: EthnicityId!
+    codeDescTxt: String!
+}
+
+type EthnicityId {
+    code: String!
 }
 type IdentificationType {
     id: IdentificationTypeId!
@@ -790,7 +790,7 @@ type Query {
 }
 
 type Mutation {
-    createPatient(patient: PersonInput!): Person!
+    createPatient(patient: PersonInput!): String!
     updatePatient(id: ID!, patient: PersonInput!): UpdateResult
 }
 

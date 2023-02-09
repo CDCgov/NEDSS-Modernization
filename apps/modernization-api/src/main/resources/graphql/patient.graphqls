@@ -146,11 +146,14 @@ input PersonInput {
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
+    deceasedTime: Date
+    maritalStatus: String
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
-    ethnicity: String
-    race: String
+    identifications: [Identification]
+    ethnicityCode: String
+    raceCodes: [String]
 }
 input Name {
     firstName: String
@@ -179,6 +182,7 @@ input PhoneNumber {
 input Identification {
     identificationNumber: String!
     identificationType: String!
+    assigningAuthority: String
 }
 
 enum Suffix {

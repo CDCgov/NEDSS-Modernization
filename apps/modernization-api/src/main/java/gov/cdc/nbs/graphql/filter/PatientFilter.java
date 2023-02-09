@@ -49,6 +49,7 @@ public class PatientFilter {
     @NoArgsConstructor
     public static class Identification {
         private String identificationNumber;
+        private String assigningAuthority;
         private String identificationType;
     }
 }

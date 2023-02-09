@@ -10,3 +10,5 @@ project(':patient-listener').projectDir = new File('apps/patient-listener')
 // libs
 include ':database-entities'
 project(':database-entities').projectDir = new File('libs/database-entities')
+include ':event-schema'
+project(':event-schema').projectDir = new File('libs/event-schema')

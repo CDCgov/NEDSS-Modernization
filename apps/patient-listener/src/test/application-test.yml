@@ -1,0 +1,8 @@
+spring:
+    kafka:
+        consumer:
+            auto-offset-reset: earliest
+            group-id: gov.cdc.nbs
+kafka:
+    listener:
+        topics: request-patient-search.patientsearch,request-patient-search.patientupdate,request-patient-search.patientdelete,request-patient-search.patientcreate
