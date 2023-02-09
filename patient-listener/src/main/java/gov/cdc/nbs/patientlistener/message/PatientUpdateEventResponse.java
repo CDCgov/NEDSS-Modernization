@@ -1,19 +1,24 @@
-package gov.cdc.nbs.message;
+package gov.cdc.nbs.patientlistener.message;
+
+
+
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TemplateInput {
-	String key;
-	Object value;
+public class PatientUpdateEventResponse {
+	Long personId;
+	String requestId;
+	String status;
+	String message;
 
 }

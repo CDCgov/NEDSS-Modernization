@@ -1,18 +1,3 @@
-nbs:
-    security:
-        tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
-        tokenIssuer: gov.cdc.nbs
-        tokenExpirationMillis: 1800000 # 30 minutes
-        parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
-    max-page-size: 50
-    elasticsearch:
-        url: http://localhost:9200
-    wildfly:
-        url: http://localhost:7001
-    uid:
-        suffix: GA01
-        seed: 10000000
-
 logging:
     file.path: ./log/
     level:
@@ -21,11 +6,6 @@ logging:
         org.springframework.data.elasticsearch.client.WIRE: trace
 
 spring:
-    graphql:
-        path: /graphql
-        graphiql:
-            enabled: true
-            path: /graphiql
     jpa:
         properties:
             hibernate:
@@ -42,15 +22,28 @@ spring:
     mvc:
         pathmatch:
             matching-strategy: ant_path_matcher
-
+            
 kafka:
     enabled: false
     bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
-    listener:
-        ack-mode: record
     producer:
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    consumer:
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      group-id: patient-search
+      properties:
+        # Delegate deserializers
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        specific:
+          avro:
+            reader: true
+    listener:
+        ack-mode: record
     properties:
         schema:
             registry:
@@ -70,4 +63,4 @@ kafkadef:
         patientupdate: request-patient-search.patientupdate
       event:
         patient: event-patient-search.patientsearch
-        patientupdate: event-patient-search.patientupdate 
+        patientupdate: event-patient-search.patientupdate

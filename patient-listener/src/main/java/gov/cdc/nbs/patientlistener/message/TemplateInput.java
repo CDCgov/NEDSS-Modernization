@@ -1,4 +1,5 @@
-package gov.cdc.nbs.message;
+package gov.cdc.nbs.patientlistener.message;
+
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TemplateInput {
 	String key;
-	Object value;
+	String value;
 
 }

@@ -19,6 +19,8 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
 import gov.cdc.nbs.message.PatientUpdateRequest;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
 
 @Configuration
 public class KafkaConfig {
@@ -74,6 +76,15 @@ public class KafkaConfig {
 		config.put("schema.registry.url", schemaRegistryUrl);
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		
+		 KafkaAvroSerializer kafkaAvroSerializer = new KafkaAvroSerializer();
+		kafkaAvroSerializer.configure(config, false);
+		
+		/*KafkaJsonSchemaSerializer kafkaJsonSerializer= new KafkaJsonSchemaSerializer();
+		kafkaJsonSerializer.configure(config, false);*/
+		
+		//JsonSerializer jsonSerializer = new JsonSerializer();
+		//jsonSerializer.configure(config, false);
 
 		return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
 	}

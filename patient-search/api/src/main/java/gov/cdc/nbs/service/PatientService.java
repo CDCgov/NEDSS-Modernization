@@ -69,6 +69,7 @@ import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
 import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
@@ -379,10 +380,33 @@ public class PatientService {
 					input.getEmailAddresses());
 			var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
 
+			NBSEntity nbsEntity = updatePerson.getNbsEntity();
+
+			List<TemplateInput> templateInputs = new ArrayList<TemplateInput>();
+			List<EntityLocatorParticipation> postChain = new ArrayList<EntityLocatorParticipation>();
+
+			for (EntityLocatorParticipation entry : nbsEntity.getEntityLocatorParticipations()) {
+				TemplateInput item = new TemplateInput();
+				item.setKey(entry.getId() + "_" + entry.getNbsEntity().getId());
+				templateInputs.add(item);
+				entry.setNbsEntity(null);
+				postChain.add(entry);
+			}
+			nbsEntity.setEntityLocatorParticipations(postChain);
+			updatePerson.setNbsEntity(nbsEntity);
+			
+			updatePerson.setRaces(null);
+			updatePerson.setNames(null);
+			updatePerson.setEntityIds(null);		
+			
 			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
-					.postalLocators(postalLocators).teleLocators(teleUptLocators).build();
+					.templateInputs(templateInputs).postalLocators(postalLocators).teleLocators(teleUptLocators)
+					.build();
 
 			requestId = getRequestID();
+			System.out.println("SENDINGREQUEST: " + requestId);
+			System.out.println("SENDINGPatientUpdateParams: " + patientUpdatedPayLoad);
+			
 			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
 			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
 		}
