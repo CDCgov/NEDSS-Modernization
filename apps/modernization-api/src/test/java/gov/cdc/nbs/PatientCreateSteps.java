@@ -1,74 +1,90 @@
 package gov.cdc.nbs;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.concurrent.TimeUnit;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.controller.PatientController;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.PostalLocatorRepository;
-import gov.cdc.nbs.repository.TeleLocatorRepository;
+import gov.cdc.nbs.message.PatientCreateRequest;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.model.PatientCreateResponse;
+import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class PatientCreateSteps {
 
     @Autowired
-    PersonRepository personRepository;
-    @Autowired
-    TeleLocatorRepository teleLocatorRepository;
-    @Autowired
-    PostalLocatorRepository postalLocatorRepository;
-    @Autowired
     private PatientController patientController;
 
-    private Person person;
-    private Person createdPerson;
+    @Autowired
+    private KafkaTestConsumer consumer;
 
-    @Given("A patient does not exist")
-    public void a_patient_does_not_exist() {
-        person = PersonMother.johnDoe();
-        var pl = PersonUtil.getPostalLocators(person).get(0);
-        var tl = PersonUtil.getTeleLocators(person).get(0);
-        var filter = new PatientFilter();
-        filter.setFirstName(person.getFirstNm());
-        filter.setLastName(person.getLastNm());
-        filter.setAddress(pl.getStreetAddr1());
-        filter.setPhoneNumber(tl.getPhoneNbrTxt());
-        var existing = patientController.findPatientsByFilter(filter, null);
-        if (existing.getSize() > 0) {
-            personRepository.deleteAll(existing);
-        }
-    }
+    @Autowired
+    private ObjectMapper mapper;
+
+    private PatientCreateResponse createPersonRequestId;
+    private PatientInput input;
+    private AccessDeniedException accessDeniedException;
 
     @When("I send a create patient request")
     public void i_send_a_create_patient_request() {
-        var input = PersonUtil.convertToPatientInput(person);
-        createdPerson = patientController.createPatient(input);
+        input = PersonUtil.convertToPatientInput(PersonMother.generateRandomPerson(1234));
+        try {
+            createPersonRequestId = patientController.createPatient(input);
+        } catch (AccessDeniedException e) {
+            accessDeniedException = e;
+        }
     }
 
-    @Then("the patient is inserted in the database")
-    public void i_can_find_the_patient() {
-        assertEquals(person.getLastNm(), createdPerson.getLastNm());
-        assertEquals(person.getFirstNm(), createdPerson.getFirstNm());
-        assertEquals(person.getSsn(), createdPerson.getSsn());
-        assertEquals(person.getBirthTime(), createdPerson.getBirthTime());
-        assertEquals(person.getBirthGenderCd(), createdPerson.getBirthGenderCd());
-        assertEquals(person.getDeceasedIndCd(), createdPerson.getDeceasedIndCd());
-        assertEquals(person.getEthnicityGroupCd(), createdPerson.getEthnicityGroupCd());
+    @Then("I get an access denied exception")
+    public void i_get_an_access_denied_exception() {
+        assertNotNull(accessDeniedException);
+        assertNull(createPersonRequestId);
+    }
+
+    @Then("the patient create request is posted to kafka")
+    public void the_patient_create_request_is_posted_to_kafka()
+            throws InterruptedException, JsonMappingException, JsonProcessingException {
+        assertNull(accessDeniedException);
+        assertNotNull(createPersonRequestId);
+        boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
+
+        assertTrue(messageConsumed);
+
+        var key = consumer.getKey();
+        assertEquals(createPersonRequestId.getRequestId(), key);
+
+        var payload = mapper.readValue((String) consumer.getPayload(), PatientCreateRequest.class);
+        assertNotNull(payload);
+
+        assertEquals(createPersonRequestId.getRequestId(), payload.getRequestId());
+        var currentUserId = getCurrentUserId();
+        assertEquals(currentUserId, payload.getUsername());
+        assertEquals(input, payload.getPatientInput());
+    }
+
+    private String getCurrentUserId() {
+        return ((NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getUsername();
     }
 }

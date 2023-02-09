@@ -1,8 +1,56 @@
 package gov.cdc.nbs.service;
 
-import java.time.Instant;
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.querydsl.BlazeJPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.QLabEvent;
+import gov.cdc.nbs.entity.odse.QOrganization;
+import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.PatientCreateRequest;
+import gov.cdc.nbs.message.PatientDeleteRequest;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientUpdateParams;
+import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.model.PatientCreateResponse;
+import gov.cdc.nbs.model.PatientDeleteResponse;
+import gov.cdc.nbs.model.PatientUpdateResponse;
+import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.service.IdGeneratorService.EntityType;
+import gov.cdc.nbs.service.util.Constants;
+import graphql.com.google.common.collect.Ordering;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.language.Soundex;
+import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -10,80 +58,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.apache.commons.codec.language.Soundex;
-import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.Operator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.elasticsearch.search.sort.SortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.BeanUtils;
-
-import com.blazebit.persistence.CriteriaBuilderFactory;
-import com.blazebit.persistence.querydsl.BlazeJPAQuery;
-import com.querydsl.core.types.dsl.BooleanExpression;
-
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
-import gov.cdc.nbs.entity.odse.NBSEntity;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonName;
-import gov.cdc.nbs.entity.odse.PersonNameId;
-import gov.cdc.nbs.entity.odse.PersonRace;
-import gov.cdc.nbs.entity.odse.PersonRaceId;
-import gov.cdc.nbs.entity.odse.PostalLocator;
-import gov.cdc.nbs.entity.odse.QLabEvent;
-import gov.cdc.nbs.entity.odse.QOrganization;
-import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.exception.FieldUpdateException;
-import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.OrganizationFilter;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.input.PatientInput.Name;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
-import gov.cdc.nbs.message.PatientDeleteRequest;
-import gov.cdc.nbs.message.PatientUpdateParams;
-import gov.cdc.nbs.message.PatientUpdateRequest;
-import gov.cdc.nbs.model.PatientDeleteResponse;
-import gov.cdc.nbs.model.PatientUpdateResponse;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.PostalLocatorRepository;
-import gov.cdc.nbs.repository.TeleLocatorRepository;
-import graphql.com.google.common.collect.Ordering;
-import gov.cdc.nbs.service.util.Constants;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-
 @Service
 @RequiredArgsConstructor
 public class PatientService {
-    private static final String ACTIVE = "ACTIVE";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -91,14 +68,11 @@ public class PatientService {
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;
-    private final TeleLocatorRepository teleLocatorRepository;
-    private final PostalLocatorRepository postalLocatorRepository;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
-
-    @Autowired
-    private KafkaRequestProducerService producer;
+    private final KafkaRequestProducerService producer;
+    private final IdGeneratorService idGeneratorService;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -339,89 +313,56 @@ public class PatientService {
         }
     }
 
-    /*
-     * NBS creates a prefix and suffix for Person.local_id.
-     * The format consists of 3 parts:
-     * 1. prefix -> 'PSN'
-     * 2. value -> the seed: 10000000 + the id
-     * 3. suffix -> 'GA01'
-     * So id of 9999 would turn into 'PSN10009999GA01'
+    /**
+     * Generates a patient id and localId. Posts the request along with Id's to
+     * Kafka
      */
-    private String generateLocalId(Long id) {
-        final Long seed = 10000000L;
-        final Long nbsId = seed + id;
-        return "PSN" + nbsId + "GA01";
-    }
-
-    @Transactional
-    public Person createPatient(PatientInput input) {
-        final long id = personRepository.getMaxId() + 1;
-        var person = new Person();
-        // generated / required values
-        person.setId(id);
-        person.setNbsEntity(new NBSEntity(id, "PSN"));
-        person.setVersionCtrlNbr((short) 1);
-        person.setAddTime(Instant.now());
-        person.setRecordStatusCd(RecordStatus.ACTIVE);
-
-        // person table
-        if (input.getName() != null) {
-            person.setLastNm(input.getName().getLastName());
-            person.setFirstNm(input.getName().getFirstName());
-            person.setMiddleNm(input.getName().getMiddleName());
-            person.setNmSuffix(input.getName().getSuffix());
-        }
-        person.setSsn(input.getSsn());
-        person.setBirthTime(input.getDateOfBirth());
-        person.setBirthGenderCd(input.getBirthGender());
-        person.setCurrSexCd(input.getCurrentGender());
-        person.setDeceasedIndCd(input.getDeceased());
-        person.setEthnicGroupInd(input.getEthnicity());
-
-        // person_name
-        addPersonNameEntry(person, input.getName());
-
-        // person_race
-        addPersonRaceEntry(person, input.getRace());
-
-        // tele_locator
-        var teleLocators = addTeleLocatorEntries(person, input.getPhoneNumbers(), input.getEmailAddresses());
-
-        // postal_locator
-        var postalLocators = addPostalLocatorEntries(person, input.getAddresses());
-
-        // Save
-        teleLocatorRepository.saveAll(teleLocators);
-        postalLocatorRepository.saveAll(postalLocators);
-        return personRepository.save(person);
+    public PatientCreateResponse sendCreatePatientRequest(PatientInput input) {
+        // create 'create patient' message and post to kafka
+        var requestId = getRequestID();
+        var patientId = generateNbsId();
+        var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var createRequest = PatientCreateRequest.builder()
+                .username(user.getUsername())
+                .patientId(patientId)
+                .patientLocalId(generateLocalId())
+                .patientInput(input)
+                .requestId(requestId)
+                .build();
+        producer.requestPatientCreateEnvelope(createRequest);
+        return new PatientCreateResponse(requestId, patientId);
     }
 
     /**
-     * Send updated Person Event to kakfa topic to be picekd up and updated.
+     * Calls the id generator service and constructs the localId with
+     * the format "prefix + id + suffix"
+     */
+    private String generateLocalId() {
+        var generatedId = idGeneratorService.getNextValidId(EntityType.PERSON);
+        return generatedId.getPrefix() + generatedId.getId() + generatedId.getSuffix();
+    }
+
+    /**
+     * Calls the id generator service to retrieve the next available Id for an
+     * entity
+     */
+    private Long generateNbsId() {
+        var generatedId = idGeneratorService.getNextValidId(EntityType.NBS);
+        return generatedId.getId();
+    }
+
+    /**
+     * Send updated Person Event to kakfa topic to be picked up and updated.
      * 
      * @param id
      * @param input
      * @return
      */
     public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-        Person updatePerson = updatePatient(id, input);
-        String requestId = null;
-        if (updatePerson != null) {
-            var teleUptLocators = addTeleLocatorEntries(updatePerson, input.getPhoneNumbers(),
-                    input.getEmailAddresses());
-            var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
-
-            PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
-                    .postalLocators(postalLocators).teleLocators(teleUptLocators).build();
-
-            requestId = getRequestID();
-            var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
-            producer.requestPatientUpdateEnvelope(patientUpdateRequest);
-        }
-
-        return PatientUpdateResponse.builder().requestId(requestId)
-                .updatedPerson(updatePerson).build();
-
+        String requestId = getRequestID();
+        var updateRequest = new PatientUpdateRequest(requestId, new PatientUpdateParams(input, new ArrayList<>()));
+        producer.requestPatientUpdateEnvelope(updateRequest);
+        return new PatientUpdateResponse(requestId);
     }
 
     public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
@@ -431,251 +372,6 @@ public class PatientService {
 
         return PatientDeleteResponse.builder().requestId(requestId).build();
 
-    }
-
-    /**
-     * Find a patient and update information / demographic information that needs to
-     * be updated
-     * 
-     * @param id
-     * @param input
-     * @return
-     */
-    public Person updatePatient(Long id, PatientInput input) {
-        // find existing patient in system
-        Person old = null;
-        try {
-
-            Optional<Person> result = findPatientById(id);
-            old = (result.isPresent()) ? result.get() : null;
-
-            if (old == null || input == null) {
-                return null;
-            }
-
-            Person updated = buildPersonFromInput(id, input);
-
-            // person_name
-            addPersonNameEntry(updated, input.getName());
-
-            // person_race
-            addPersonRaceEntry(updated, input.getRace());
-            BeanUtils.copyProperties(updated, old);
-            return old;
-        } catch (Exception e) {
-            throw new FieldUpdateException();
-        }
-
-    }
-
-    /*
-     * Creates a PersonRace entry and adds it to the Person object
-     */
-    private void addPersonRaceEntry(Person person, String race) {
-        if (person == null || race == null) {
-            return;
-        }
-        var now = Instant.now();
-        var personRace = new PersonRace();
-        personRace.setId(new PersonRaceId(person.getId(), race));
-        personRace.setPersonUid(person);
-        personRace.setAddTime(now);
-        personRace.setRaceCategoryCd(race);
-        personRace.setRecordStatusCd(ACTIVE);
-
-        if (person.getRaces() == null) {
-            person.setRaces(Arrays.asList(personRace));
-        } else {
-            person.getRaces().add(personRace);
-        }
-    }
-
-    /*
-     * Creates a PersonName entry and adds it to the Person object
-     */
-    private void addPersonNameEntry(Person person, Name name) {
-        if (person == null || name == null) {
-            return;
-        }
-        var now = Instant.now();
-        var personName = new PersonName();
-        personName.setId(new PersonNameId(person.getId(), (short) 1));
-        personName.setPersonUid(person);
-        personName.setAddReasonCd("Add");
-        personName.setAddTime(now);
-        personName.setFirstNm(name.getFirstName());
-        personName.setLastNm(name.getLastName());
-        personName.setMiddleNm(name.getMiddleName());
-        personName.setNmSuffix(name.getSuffix());
-        personName.setNmUseCd("L"); // L = legal, AL = alias. per NEDSSConstants
-        personName.setRecordStatusCd(ACTIVE);
-        personName.setRecordStatusTime(now);
-        personName.setStatusCd('A');
-        personName.setStatusTime(now);
-
-        if (person.getNames() == null) {
-            person.setNames(Arrays.asList(personName));
-        } else {
-            person.getNames().add(personName);
-        }
-    }
-
-    /**
-     * Creates an EntityLocatorParticipation and a PostalLocator object for each
-     * address. PostalLocators are added to the EntityLocatorParticipation which is
-     * then added to the Person.NBSEntity
-     */
-    private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
-        var postalLocators = new ArrayList<PostalLocator>();
-        if (!addresses.isEmpty()) {
-            var auth = SecurityContextHolder.getContext().getAuthentication();
-            var user = (NbsUserDetails) auth.getPrincipal();
-            // Grab highest Id from DB -- eventually fix db to auto increment
-            var postalLocatorId = postalLocatorRepository.getMaxId() + 1;
-            var now = Instant.now();
-            var elpList = new ArrayList<EntityLocatorParticipation>();
-            for (PostalAddress address : addresses) {
-                var plId = postalLocatorId++;
-                // entity locator participation ties person to locator entry
-                var elp = new EntityLocatorParticipation();
-                elp.setId(new EntityLocatorParticipationId(person.getId(), plId));
-                elp.setNbsEntity(person.getNbsEntity());
-                elp.setCd("H");
-                elp.setClassCd("PST");
-                elp.setLastChgTime(now);
-                elp.setLastChgUserId(user.getId());
-                elp.setRecordStatusCd(ACTIVE);
-                elp.setRecordStatusTime(now);
-                elp.setStatusCd('A');
-                elp.setStatusTime(now);
-                elp.setUseCd("H");
-                elp.setVersionCtrlNbr((short) 1);
-
-                var locator = new PostalLocator();
-                locator.setId(plId);
-                locator.setAddTime(now);
-                locator.setCityDescTxt(address.getCity());
-                locator.setCntryCd(address.getCountryCode());
-                locator.setCntyCd(address.getCountyCode());
-                locator.setStateCd(address.getStateCode());
-                locator.setStreetAddr1(address.getStreetAddress1());
-                locator.setStreetAddr2(address.getStreetAddress2());
-                locator.setZipCd(address.getZip());
-                locator.setCensusTract(address.getCensusTract());
-                locator.setRecordStatusCd(ACTIVE);
-                locator.setRecordStatusTime(now);
-
-                elp.setLocator(locator);
-                postalLocators.add(locator);
-                elpList.add(elp);
-            }
-            // Add generated ELPs to Person.NBSEntity
-            if (person.getNbsEntity().getEntityLocatorParticipations() == null) {
-                person.getNbsEntity().setEntityLocatorParticipations(elpList);
-            } else {
-                person.getNbsEntity().getEntityLocatorParticipations().addAll(elpList);
-            }
-        }
-        return postalLocators;
-    }
-
-    /*
-     * Creates an EntityLocatorParticipation and a TeleLocator object for each phone
-     * number and email address. TeleLocators are added to the
-     * EntityLocatorParticipation, which is then added to the Person NBSEntity
-     */
-    private List<TeleLocator> addTeleLocatorEntries(Person person, List<PhoneNumber> phoneNumbers,
-            List<String> emailAddresses) {
-        var locatorList = new ArrayList<TeleLocator>();
-        if (!phoneNumbers.isEmpty() || !emailAddresses.isEmpty()) {
-            var auth = SecurityContextHolder.getContext().getAuthentication();
-            var user = (NbsUserDetails) auth.getPrincipal();
-            // Grab highest Id from DB -- eventually fix db to auto increment
-            var teleLocatorId = teleLocatorRepository.getMaxId() + 1;
-            var now = Instant.now();
-            var elpList = new ArrayList<EntityLocatorParticipation>();
-            for (PhoneNumber pn : phoneNumbers) {
-                var teleId = teleLocatorId++;
-                // entity locator participation ties person to locator entry
-                var elp = new EntityLocatorParticipation();
-                elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setNbsEntity(person.getNbsEntity());
-                elp.setClassCd("TELE");
-                setElpTypeFields(elp, pn.getPhoneType());
-                elp.setLastChgTime(now);
-                elp.setLastChgUserId(user.getId());
-                elp.setRecordStatusCd(ACTIVE);
-                elp.setRecordStatusTime(now);
-                elp.setStatusCd('A');
-                elp.setStatusTime(now);
-                elp.setVersionCtrlNbr((short) 1);
-                var locator = new TeleLocator();
-                locator.setId(teleId);
-                locator.setAddTime(now);
-                locator.setAddUserId(user.getId());
-                locator.setExtensionTxt(pn.getExtension());
-                locator.setPhoneNbrTxt(pn.getNumber());
-                locator.setRecordStatusCd(ACTIVE);
-
-                elp.setLocator(locator);
-                locatorList.add(locator);
-                elpList.add(elp);
-            }
-
-            for (String email : emailAddresses) {
-                var teleId = teleLocatorId++;
-                // entity locator participation ties person to locator entry
-                var elp = new EntityLocatorParticipation();
-                elp.setId(new EntityLocatorParticipationId(person.getId(), teleId));
-                elp.setNbsEntity(person.getNbsEntity());
-                elp.setClassCd("TELE");
-                elp.setCd("NET");
-                elp.setUseCd("H");
-                elp.setLastChgTime(now);
-                elp.setLastChgUserId(user.getId());
-                elp.setRecordStatusCd(ACTIVE);
-                elp.setRecordStatusTime(now);
-                elp.setStatusCd('A');
-                elp.setVersionCtrlNbr((short) 1);
-                var locator = new TeleLocator();
-                locator.setId(teleId);
-                locator.setAddTime(now);
-                locator.setAddUserId(user.getId());
-                locator.setEmailAddress(email);
-                locator.setRecordStatusCd(ACTIVE);
-
-                elp.setLocator(locator);
-                locatorList.add(locator);
-                elpList.add(elp);
-            }
-
-            // Add generated ELPs to Person.NBSEntity
-            var existingElp = person.getNbsEntity().getEntityLocatorParticipations();
-            if (existingElp != null && !existingElp.isEmpty()) {
-                elpList.addAll(existingElp);
-            }
-            person.getNbsEntity().setEntityLocatorParticipations(elpList);
-        }
-        return locatorList;
-    }
-
-    private void setElpTypeFields(EntityLocatorParticipation elp, PhoneType phoneType) {
-        switch (phoneType) {
-            case CELL:
-                elp.setCd("CP");
-                elp.setUseCd("MC");
-                break;
-            case HOME:
-                elp.setCd("PH");
-                elp.setUseCd("H");
-                break;
-            case WORK:
-                elp.setCd("PH");
-                elp.setUseCd("WP");
-                break;
-            default:
-                throw new QueryException("Invalid PhoneType specified: " + phoneType);
-        }
     }
 
     private String addWildcards(String searchString) {
@@ -703,34 +399,6 @@ public class PatientService {
             }
         });
         return sorts;
-    }
-
-    private Person buildPersonFromInput(Long id, PatientInput input) {
-        Person person = new Person();
-
-        if (input.getName() != null) {
-            person.setFirstNm(input.getName().getFirstName());
-            person.setLastNm(input.getName().getLastName());
-            person.setMiddleNm(input.getName().getMiddleName());
-            person.setNmSuffix(input.getName().getSuffix());
-        }
-
-        person.setId(id);
-        person.setSsn(input.getSsn());
-        person.setBirthTime(input.getDateOfBirth());
-
-        person.setBirthGenderCd(input.getBirthGender());
-        person.setCurrSexCd(input.getCurrentGender());
-        person.setDeceasedIndCd(input.getDeceased());
-        person.setEthnicGroupInd(input.getEthnicity());
-
-        NBSEntity entity = new NBSEntity();
-        entity.setEntityLocatorParticipations(new ArrayList<>());
-        entity.setParticipations(new ArrayList<>());
-        person.setNbsEntity(entity);
-
-        return person;
-
     }
 
     private String getRequestID() {

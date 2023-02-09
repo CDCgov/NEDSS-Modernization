@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import gov.cdc.nbs.entity.enums.Suffix;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

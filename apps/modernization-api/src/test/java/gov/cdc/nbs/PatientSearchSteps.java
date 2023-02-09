@@ -127,11 +127,13 @@ public class PatientSearchSteps {
     }
 
     @When("I search for patients sorted by {string} {string} {string} {string}")
-    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField, String aSortDirection) {
+    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField,
+            String aSortDirection) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         sortDirection = aSortDirection.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
         sortField = aSortField;
-        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
+        searchResults = patientController
+                .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
     }
 
     @Then("I find the patient")
@@ -175,7 +177,8 @@ public class PatientSearchSteps {
                 break;
             case "identification":
                 var patientId = searchPatient.getEntityIds().get(0);
-                filter.setIdentification(new Identification(patientId.getRootExtensionTxt(), patientId.getTypeCd()));
+                filter.setIdentification(
+                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "patient id":
                 filter.setId(searchPatient.getLocalId());

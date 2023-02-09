@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = "2.7.2"
+        springBootVersion = "2.7.8"
 		queryDslVersion = "5.0.0"
     }
 }
@@ -25,10 +25,13 @@ dependencyManagement {
 
 dependencies {
     // Spring
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+
+	// event-schema
+	implementation project(':event-schema')
 
     // lombok
 	implementation "org.projectlombok:lombok"

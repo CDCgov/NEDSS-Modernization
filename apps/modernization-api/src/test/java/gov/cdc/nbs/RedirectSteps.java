@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.SecurityLog;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
@@ -124,7 +124,7 @@ public class RedirectSteps {
         assertEquals("John", filter.getFirstName());
         assertEquals(Instant.parse("2000-01-01T00:00:00Z"), filter.getDateOfBirth());
         assertEquals(Gender.M, filter.getGender());
-        assertEquals(Long.valueOf(1234L), filter.getId());
+        assertEquals("1234", filter.getId());
     }
 
     @Given("I navigate to the NBS advanced search page")

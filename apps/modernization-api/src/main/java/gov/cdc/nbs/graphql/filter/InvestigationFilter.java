@@ -3,7 +3,7 @@ package gov.cdc.nbs.graphql.filter;
 import java.time.Instant;
 import java.util.List;
 
-import gov.cdc.nbs.entity.enums.PregnancyStatus;
+import gov.cdc.nbs.message.enums.PregnancyStatus;
 import lombok.Getter;
 import lombok.Setter;
 

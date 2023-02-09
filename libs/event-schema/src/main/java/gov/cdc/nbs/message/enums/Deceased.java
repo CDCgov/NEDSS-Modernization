@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.enums;
+package gov.cdc.nbs.message.enums;
 
 public enum Deceased {
     Y,

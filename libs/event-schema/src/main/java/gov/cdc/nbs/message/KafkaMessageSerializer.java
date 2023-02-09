@@ -10,11 +10,16 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class KafkaMessageSerializer implements Serializer<Object> {
+	private final ObjectMapper objectMapper;
+
+	public KafkaMessageSerializer(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	@Override
 	public byte[] serialize(String s, Object o) {
 		byte[] retVal = null;
-		ObjectMapper objectMapper = new ObjectMapper();
+
 		try {
 			objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 			retVal = objectMapper.writeValueAsString(o).getBytes(StandardCharsets.UTF_8);

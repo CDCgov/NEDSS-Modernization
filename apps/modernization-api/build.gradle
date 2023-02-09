@@ -48,6 +48,8 @@ dependencies {
 	// common
 	implementation project(':modernization-ui')
 	implementation project(':database-entities')
+	implementation project(':event-schema')
+	implementation project(':authentication')
 
 	// jwt
 	implementation "com.auth0:java-jwt:4.2.0"
@@ -114,7 +116,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-	maven{ url 'https://packages.confluent.io/maven/' }
 }
 
 tasks.named("test") {
@@ -133,3 +134,5 @@ processResources {
 
 compileJava.mustRunAfter(":modernization-ui:build")
 compileJava.mustRunAfter(":database-entities:build")
+compileJava.mustRunAfter(":event-schema:build")
+compileJava.mustRunAfter(":authentication:build")

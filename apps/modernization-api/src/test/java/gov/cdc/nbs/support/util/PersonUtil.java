@@ -1,5 +1,6 @@
 package gov.cdc.nbs.support.util;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,17 +15,16 @@ import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
 import gov.cdc.nbs.entity.elasticsearch.NestedName;
 import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
 import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.input.PatientInput.Name;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
-import java.time.Instant;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientInput.Name;
+import gov.cdc.nbs.message.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientInput.PostalAddress;
 
 public class PersonUtil {
 
@@ -109,18 +109,18 @@ public class PersonUtil {
 
     public static PatientInput convertToPatientInput(Person person) {
         var input = new PatientInput();
-        input.setName(
+        input.setNames(Arrays.asList(
                 new Name(person.getFirstNm(),
                         person.getMiddleNm(),
                         person.getLastNm(),
-                        person.getNmSuffix()));
+                        person.getNmSuffix(), null)));
 
         input.setSsn(person.getSsn());
         input.setDateOfBirth(person.getBirthTime());
         input.setBirthGender(person.getBirthGenderCd());
         input.setCurrentGender(person.getBirthGenderCd());
         input.setDeceased(person.getDeceasedIndCd());
-        input.setEthnicity(person.getEthnicGroupInd());
+        input.setEthnicityCode(person.getEthnicGroupInd());
 
         var elpList = person.getNbsEntity().getEntityLocatorParticipations();
         if (elpList != null && elpList.size() > 0) {

@@ -7,8 +7,8 @@ import java.util.List;
 
 import com.github.javafaker.Faker;
 
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
@@ -22,8 +22,8 @@ import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.PersonRaceId;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
@@ -51,7 +51,7 @@ public class PersonMother {
         var person = new Person();
         person.setId(id);
         person.setCd("PAT");
-        person.setLocalId("PSN" + Long.toString(id+10000000L));
+        person.setLocalId("PSN" + Long.toString(id + 10000000L));
         person.setFirstNm(firstName);
         person.setMiddleNm(middleName);
         person.setLastNm(lastName);

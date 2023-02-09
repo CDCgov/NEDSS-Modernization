@@ -36,7 +36,7 @@ type Query {
 }
 
 type Mutation {
-    createPatient(patient: PersonInput!): Person!
+    createPatient(patient: PersonInput!): String!
     updatePatient(id: ID!, patient: PersonInput!): UpdateResult
 }
 

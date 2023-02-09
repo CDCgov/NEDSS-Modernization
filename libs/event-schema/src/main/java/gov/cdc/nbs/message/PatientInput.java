@@ -1,12 +1,12 @@
-package gov.cdc.nbs.graphql.input;
+package gov.cdc.nbs.message;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.Suffix;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,17 +14,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PatientInput {
-    private Name name;
+    private List<Name> names;
     private String ssn;
     private Instant dateOfBirth;
     private Gender birthGender;
     private Gender currentGender;
     private Deceased deceased;
+    private Instant deceasedTime;
+    private String maritalStatus;
     private List<PostalAddress> addresses = new ArrayList<>();
     private List<PhoneNumber> phoneNumbers = new ArrayList<>();
     private List<String> emailAddresses = new ArrayList<>();
-    private String ethnicity;
-    private String race;
+    private List<Identification> identifications = new ArrayList<>();
+    private String ethnicityCode;
+    private List<String> raceCodes;
 
     @Data
     @AllArgsConstructor
@@ -34,6 +37,7 @@ public class PatientInput {
         private String middleName;
         private String lastName;
         private Suffix suffix;
+        private NameUseCd nameUseCd;
     }
 
     @Data
@@ -59,10 +63,35 @@ public class PatientInput {
         private PhoneType phoneType;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Identification {
+        private String identificationNumber;
+        private String assigningAuthority;
+        private String identificationType;
+    }
+
     public enum PhoneType {
         HOME,
         CELL,
         WORK
+    }
+
+    public enum NameUseCd {
+        AD, // Adopted Name
+        AL, // Alias Name
+        A, // Artist/Stage Name
+        S, // Coded Pseudo
+        I, // Indigenous/Tribal
+        L, // Legal
+        C, // License
+        M, // Maiden Name
+        MO, // Mother's Name
+        BR, // Name at Birth
+        P, // Name of Partner/Spouse
+        R, // Religious
+        U
     }
 
 }

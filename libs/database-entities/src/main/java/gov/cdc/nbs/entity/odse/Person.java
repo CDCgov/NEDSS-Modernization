@@ -19,10 +19,10 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ColumnTransformer;
 
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.Suffix;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
