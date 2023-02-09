@@ -1,0 +1,90 @@
+buildscript {
+    ext {
+        //springBootVersion = "3.0.1"
+        springBootVersion = "2.7.2"
+        queryDslVersion = "5.0.0"
+		blazePersistenceVersion = "1.6.8"
+    }
+}
+plugins {
+	id 'java'
+	//id 'org.springframework.boot' version '3.0.1'
+	id "org.springframework.boot" version "${springBootVersion}"
+	id "io.spring.dependency-management" version "1.0.12.RELEASE"
+	//id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'gov.cdc.nbs'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	//maven{ url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}") 
+	
+	
+	implementation 'org.springframework.boot:spring-boot-starter'
+
+	// Kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	// lombok
+	implementation "org.projectlombok:lombok"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	
+	// database
+	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+	
+	
+	// querydsl
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+	
+	
+	//implementation "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
+	//implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+	//annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
+	//annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
+	
+	// blazebit for querydsl paging
+	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
+	
+	
+	// elasticsearch
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+	
+	// test
+	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+	testImplementation "org.junit.platform:junit-platform-suite"
+	testImplementation "org.junit.jupiter:junit-jupiter"
+	testImplementation "org.testcontainers:testcontainers:1.17.6"
+	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+	testImplementation "org.testcontainers:elasticsearch:1.17.6"
+	testImplementation 'com.github.javafaker:javafaker:1.0.2'
+	testImplementation 'org.yaml:snakeyaml:1.33'
+	
+	
+	// lombok
+	implementation "org.projectlombok:lombok"
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+	testImplementation "org.projectlombok:lombok"
+	testAnnotationProcessor "org.projectlombok:lombok"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
