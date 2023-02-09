@@ -51,6 +51,7 @@ public class PersonMother {
         var person = new Person();
         person.setId(id);
         person.setCd("PAT");
+        person.setLocalId("PSN" + Long.toString(id+10000000L));
         person.setFirstNm(firstName);
         person.setMiddleNm(middleName);
         person.setLastNm(lastName);
