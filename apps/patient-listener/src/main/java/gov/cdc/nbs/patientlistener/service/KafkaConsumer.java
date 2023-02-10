@@ -1,13 +1,27 @@
 package gov.cdc.nbs.patientlistener.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import gov.cdc.nbs.config.security.NbsAuthority;
+import gov.cdc.nbs.message.PatientCreateRequest;
+import gov.cdc.nbs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Slf4j
+@Component
 public class KafkaConsumer {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @KafkaListener(topics = "patientSearchTopic", groupId = "group_id")
     public void consume(String message) {
@@ -19,9 +33,33 @@ public class KafkaConsumer {
         log.info("message = {}", message);
     }
 
+    @Transactional
     @KafkaListener(topics = "#{'${kafkadef.patient-search.topics.request.patientcreate}'}", groupId = "group_id")
     public void createConsume(String message) {
-        log.info("message = {}", message);
+        log.debug("Receieved patientcreate message: '{}'", message);
+        // convert message to Object
+        try {
+            var createRequest = objectMapper.readValue(message, PatientCreateRequest.class);
+            var userId = createRequest.getUserId();
+            // validate user has ADD-PATIENT and FIND-PATIENT permissions
+            try {
+                var userDetails = userService.loadUserByUsername(userId);
+                var userPermissions = userDetails.getAuthorities().stream().map(NbsAuthority::getAuthority).toList();
+                if (userPermissions.contains("FIND-PATIENT") && userPermissions.contains("ADD-PATIENT")) {
+                    // user has permission. performt the creation
+                    log.info("User permission validated. Performing patient create");
+                } else {
+                    // user does not have permission
+                    log.info("User lacks permission for patient create");
+                }
+
+            } catch (Exception e) {
+                log.warn("Failed to find user credentials for userId: {}", userId);
+            }
+            // create the patient
+        } catch (JsonProcessingException e) {
+            log.warn("Failed to map message to PatientCreateRequest object. Message: '{}'", message);
+        }
 
         // final long id = personRepository.getMaxId() + 1;
         // var person = new Person();

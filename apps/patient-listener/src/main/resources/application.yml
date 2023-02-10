@@ -1,3 +1,27 @@
+nbs:
+    security:
+        tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
+        tokenIssuer: gov.cdc.nbs
+        tokenExpirationMillis: 1800000 # 30 minutes
+    elasticsearch:
+        url: http://localhost:9200
+    wildfly:
+        url: http://localhost:7001
+spring:
+    jpa:
+        properties:
+            hibernate:
+                ddl-auto: validate
+                default_schema: dbo
+                format_sql: true
+                jdbc.time_zone: UTC
+                dialect: org.hibernate.dialect.SQLServer2012Dialect
+                hbm2ddl.jdbc_metadata_extraction_strategy: individually
+    datasource:
+        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        username: sa
+        password: fake.fake.fake.1234
+
 kafka:
     enabled: false
     bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
@@ -30,3 +54,7 @@ kafkadef:
                 patientupdate: request-patient-search.patientupdate
                 patientdelete: request-patient-search.patientdelete
                 patientcreate: request-patient-search.patientcreate
+
+logging:
+    level:
+        root: INFO

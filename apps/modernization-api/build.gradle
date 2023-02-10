@@ -48,6 +48,7 @@ dependencies {
 	// common
 	implementation project(':database-entities')
 	implementation project(':event-schema')
+	implementation project(':authentication')
 
 	// jwt
 	implementation "com.auth0:java-jwt:4.2.0"
@@ -131,3 +132,5 @@ processResources {
 
 compileJava.mustRunAfter(":modernization-ui:build")
 compileJava.mustRunAfter(":database-entities:build")
+compileJava.mustRunAfter(":event-schema:build")
+compileJava.mustRunAfter(":authentication:build")
