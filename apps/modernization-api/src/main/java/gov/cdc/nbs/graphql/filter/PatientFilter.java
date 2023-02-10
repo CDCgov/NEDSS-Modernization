@@ -20,7 +20,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 @JsonInclude(Include.NON_NULL)
 public class PatientFilter {
-    private Long id;
+    private String id;
     private String lastName;
     private String firstName;
     private String race;
