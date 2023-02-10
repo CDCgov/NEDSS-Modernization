@@ -25,18 +25,17 @@ dependencyManagement {
 
 dependencies {
     // Spring
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	compileOnly 'org.springframework.boot:spring-boot-starter'
+	compileOnly "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
-	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+	compileOnly 'org.springframework.data:spring-data-elasticsearch:4.4.6'
 
     // lombok
-	implementation "org.projectlombok:lombok"
 	compileOnly "org.projectlombok:lombok"
 	annotationProcessor "org.projectlombok:lombok"
 
 	// querydsl
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	compileOnly "com.querydsl:querydsl-apt:${queryDslVersion}"
+	compileOnly "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 }
