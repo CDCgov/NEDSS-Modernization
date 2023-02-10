@@ -1,0 +1,54 @@
+buildscript {
+    ext {
+        springBootVersion = "2.7.2"
+        queryDslVersion = "5.0.0"
+    }
+}
+plugins {
+	id 'org.springframework.boot' version "${springBootVersion}" apply false
+	id "io.spring.dependency-management" version "1.0.12.RELEASE"
+	id 'java'
+}
+
+group = 'gov.cdc'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+	maven{ url 'https://packages.confluent.io/maven/' }
+}
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+    // Spring
+	compileOnly 'org.springframework.boot:spring-boot-starter'
+	compileOnly "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    compileOnly "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+
+    // common
+	implementation project(':database-entities')
+
+    // querydsl
+	compileOnly "com.querydsl:querydsl-apt:${queryDslVersion}"
+	compileOnly "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
+	// jwt
+	compileOnly "com.auth0:java-jwt:4.2.0"
+
+    // lombok
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+
+    // Kafka
+	compileOnly("org.springframework.kafka:spring-kafka")
+	compileOnly ("io.confluent:kafka-avro-serializer:7.1.1")
+	testImplementation("org.springframework.kafka:spring-kafka-test")
+}
+
+compileJava.mustRunAfter(":database-entities:build")
