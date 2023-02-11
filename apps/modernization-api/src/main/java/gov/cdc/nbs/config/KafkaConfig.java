@@ -15,11 +15,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import gov.cdc.nbs.message.EnvelopeRequest;
-import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientDeleteRequest;
-import gov.cdc.nbs.message.PatientUpdateRequest;
-
 @Configuration
 public class KafkaConfig {
 
@@ -52,22 +47,7 @@ public class KafkaConfig {
 	}
 
 	@Bean
-	public KafkaTemplate<String, PatientUpdateRequest> kafkaTemplatePatientUpdate() {
-		return buildKafkaTemplate();
-	}
-
-	@Bean
-	public KafkaTemplate<String, EnvelopeRequest> kafkaTemplatePatientSearch() {
-		return buildKafkaTemplate();
-	}
-
-	@Bean
-	public KafkaTemplate<String, PatientDeleteRequest> kafkaTemplatePatientDelete() {
-		return buildKafkaTemplate();
-	}
-
-	@Bean
-	public KafkaTemplate<String, PatientCreateRequest> kafkaTemplatePatientCreate() {
+	public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
 		return buildKafkaTemplate();
 	}
 

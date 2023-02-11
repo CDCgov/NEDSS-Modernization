@@ -31,11 +31,11 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.Name;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneNumber;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneType;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientInput.Name;
+import gov.cdc.nbs.message.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -124,7 +124,7 @@ class PatientUpdateTest {
 		pName.setLastName("UnitTestLastName");
 		pName.setMiddleName("UnitTestMiddleName");
 
-		input.setName(pName);
+		input.setNames(Arrays.asList(pName));
 
 		input.setSsn("111-11-11111");
 		Instant instant = Instant.parse("2023-01-03T10:15:30.00Z");

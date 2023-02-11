@@ -59,12 +59,12 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.Name;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneNumber;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneType;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientDeleteRequest;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientInput.Name;
+import gov.cdc.nbs.message.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.model.PatientDeleteResponse;
@@ -395,7 +395,18 @@ public class PatientService {
             Person updated = buildPersonFromInput(id, input);
 
             // person_name
-            addPersonNameEntry(updated, input.getName());
+            for (int i = 0; i < input.getNames().size(); i++) {
+                addPersonNameEntry(updated, input.getNames().get(i), i + 1);
+            }
+
+            // set 'primary' name on person record
+            if (updated.getNames() != null && !updated.getNames().isEmpty()) {
+                var name = updated.getNames().get(0);
+                updated.setFirstNm(name.getFirstNm());
+                updated.setLastNm(name.getLastNm());
+                updated.setMiddleNm(name.getMiddleNm());
+                updated.setNmSuffix(name.getNmSuffix());
+            }
 
             // person_race
             input.getRaceCodes().forEach(race -> addPersonRaceEntry(updated, race));
@@ -432,20 +443,18 @@ public class PatientService {
     /*
      * Creates a PersonName entry and adds it to the Person object
      */
-    private void addPersonNameEntry(Person person, Name name) {
+    private void addPersonNameEntry(Person person, Name name, int sequence) {
         if (person == null || name == null) {
             return;
         }
         var now = Instant.now();
         var personName = new PersonName();
-        personName.setId(new PersonNameId(person.getId(), (short) 1));
+        personName.setId(new PersonNameId(person.getId(), (short) sequence));
         personName.setPersonUid(person);
         personName.setAddReasonCd("Add");
         personName.setAddTime(now);
         personName.setFirstNm(name.getFirstName());
-        // personName.setFirstNmSndx(); TODO how to generate sndx
         personName.setLastNm(name.getLastName());
-        // personName.setLastNmSndx(); TODO
         personName.setMiddleNm(name.getMiddleName());
         personName.setNmSuffix(name.getSuffix());
         personName.setNmUseCd("L"); // L = legal, AL = alias. per NEDSSConstants
@@ -648,13 +657,6 @@ public class PatientService {
 
     private Person buildPersonFromInput(Long id, PatientInput input) {
         Person person = new Person();
-
-        if (input.getName() != null) {
-            person.setFirstNm(input.getName().getFirstName());
-            person.setLastNm(input.getName().getLastName());
-            person.setMiddleNm(input.getName().getMiddleName());
-            person.setNmSuffix(input.getName().getSuffix());
-        }
 
         person.setId(id);
         person.setSsn(input.getSsn());

@@ -18,11 +18,11 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.Name;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneNumber;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PhoneType;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientInput.Name;
+import gov.cdc.nbs.message.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientInput.PostalAddress;
 
 public class PersonUtil {
 
@@ -102,11 +102,11 @@ public class PersonUtil {
 
     public static PatientInput convertToPatientInput(Person person) {
         var input = new PatientInput();
-        input.setName(
+        input.setNames(Arrays.asList(
                 new Name(person.getFirstNm(),
                         person.getMiddleNm(),
                         person.getLastNm(),
-                        person.getNmSuffix()));
+                        person.getNmSuffix(), null)));
 
         input.setSsn(person.getSsn());
         input.setDateOfBirth(person.getBirthTime());

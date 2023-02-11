@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
+import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;

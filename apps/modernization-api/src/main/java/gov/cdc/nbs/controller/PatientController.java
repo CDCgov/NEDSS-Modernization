@@ -15,7 +15,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.PatientCreateRequest.PatientInput;
+import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.service.PatientService;
