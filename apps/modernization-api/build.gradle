@@ -46,6 +46,7 @@ dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
 	// common
+	implementation project(':modernization-ui')
 	implementation project(':database-entities')
 
 	// jwt

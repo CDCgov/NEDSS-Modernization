@@ -27,8 +27,8 @@ WORKDIR /usr/src/nbs
 # Build the UI
 RUN ./gradlew :modernization-ui:build -x test --no-daemon 
 
-# Build just the modernization-api and it's dependents
-RUN ./gradlew :modernization-api:buildDependents -x test --no-daemon
+# Build just the modernization-api and any required library
+RUN ./gradlew :modernization-api:buildNeeded --no-daemon
 
 FROM amazoncorretto:17
 
