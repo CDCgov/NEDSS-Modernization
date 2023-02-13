@@ -69,9 +69,4 @@ kafkadef:
                 patient: request-patient-search.patientsearch
                 patientupdate: request-patient-search.patientupdate
                 patientdelete: request-patient-search.patientdelete
-                patientcreate: request-patient-search.patientcreate
-            event:
-                patient: event-patient-search.patientsearch
-                patientupdate: request-patient-search.patientupdate
-                patientdelete: request-patient-search.patientdelete
-                patientcreate: request-patient-search.patientcreate
+                patientcreate: patient-create

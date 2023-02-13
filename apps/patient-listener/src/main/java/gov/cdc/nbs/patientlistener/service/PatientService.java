@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +15,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
+import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
+import gov.cdc.nbs.entity.elasticsearch.NestedName;
+import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
+import gov.cdc.nbs.entity.elasticsearch.NestedRace;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
@@ -27,16 +33,18 @@ import gov.cdc.nbs.entity.odse.PersonRaceId;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.RequestStatus;
+import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientInput.Name;
 import gov.cdc.nbs.message.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.patientlistener.exception.PatientCreateException;
 import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
+import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +52,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PatientService {
     private static final String ACTIVE = "ACTIVE";
+
+    @Value("${nbs.uid.seed}")
+    private long seed;
+
+    @Value("${nbs.uid.suffix}")
+    private String suffix;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -61,6 +75,9 @@ public class PatientService {
     private PostalLocatorRepository postalLocatorRepository;
 
     @Autowired
+    private ElasticsearchPersonRepository elasticsearchPersonRepository;
+
+    @Autowired
     private KafkaProducer producer;
 
     public void handlePatientCreate(String message, String key) {
@@ -74,30 +91,31 @@ public class PatientService {
             return;
         }
         var userId = createRequest.getUserId();
-
+        List<String> userPermissions;
+        NbsUserDetails userDetails;
         try {
             log.debug("Attempting to validate permissions for user: {}", userId);
             // validate user has ADD-PATIENT and FIND-PATIENT permissions
-            var userDetails = userService.loadUserByUsername(userId);
-            var userPermissions = userDetails.getAuthorities().stream().map(NbsAuthority::getAuthority).toList();
-            if (userPermissions.contains("FIND-PATIENT") && userPermissions.contains("ADD-PATIENT")) {
-                // user has permission. perform the creation
-                log.debug("User permission validated. Creating patient");
-                var newPatient = createPatient(createRequest, userDetails.getId());
-
-                // post success message to status topic
-                sendPatientCreateStatus(true, key, "Successfully created patient", newPatient.getId());
-                return;
-            } else {
-                // user does not have permission
-                log.debug("User lacks permission for patient create");
-                sendPatientCreateStatus(false, key, "User not authorized to perform this operation");
-                return;
-            }
-
+            userDetails = userService.loadUserByUsername(userId);
+            userPermissions = userDetails.getAuthorities().stream().map(NbsAuthority::getAuthority).toList();
         } catch (Exception e) {
             log.warn("Failed to find user credentials for userId: {}", userId);
             sendPatientCreateStatus(false, key, "Failed to find user in system");
+            return;
+        }
+        if (userPermissions.contains("FIND-PATIENT") && userPermissions.contains("ADD-PATIENT")) {
+            // user has permission. perform the creation
+            log.debug("User permission validated. Creating patient");
+            var newPatient = createPatient(createRequest.getPatientInput(), userDetails.getId());
+            createElasticsearchPatient(newPatient);
+
+            // post success message to status topic
+            sendPatientCreateStatus(true, key, "Successfully created patient", newPatient.getId());
+            return;
+        } else {
+            // user does not have permission
+            log.debug("User lacks permission for patient create");
+            sendPatientCreateStatus(false, key, "User not authorized to perform this operation");
             return;
         }
 
@@ -117,18 +135,25 @@ public class PatientService {
         producer.requestPatientCreateStatusEnvelope(status);
     }
 
+    /**
+     * Creates a Person entity from the PatientInput and persists it to the database
+     */
     @Transactional
-    private Person createPatient(PatientCreateRequest request, Long userId) {
-        var input = request.getPatientInput();
+    private Person createPatient(PatientInput input, Long userId) {
         var now = Instant.now();
         final long id = personRepository.getMaxId() + 1;
         var person = new Person();
         // generated / required values
         person.setId(id);
+        person.setLocalId(generateLocalId(id));
         person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         person.setAddTime(now);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
+        person.setCd("PAT");
+        person.setElectronicInd('N');
+        person.setEdxInd("Y");
+        person.setDedupMatchInd('F');
 
         person.setSsn(input.getSsn());
         person.setBirthTime(input.getDateOfBirth());
@@ -166,12 +191,157 @@ public class PatientService {
                 userId);
 
         // postal_locator
-        var postalLocators = addPostalLocatorEntries(person, input.getAddresses());
+        var postalLocators = addPostalLocatorEntries(person, input.getAddresses(), userId);
 
         // Save
         teleLocatorRepository.saveAll(teleLocators);
         postalLocatorRepository.saveAll(postalLocators);
         return personRepository.save(person);
+    }
+
+    private String generateLocalId(Long id) {
+        final Long nbsId = seed + id;
+        return "PSN" + nbsId + suffix;
+    }
+
+    /**
+     * Converts a Person entity into an ElasticsearchPerson Document and persists it
+     * to ES
+     */
+    private void createElasticsearchPatient(Person person) {
+        var esPerson = ElasticsearchPerson.builder()
+                .id(person.getId().toString())
+                .firstNm(person.getFirstNm())
+                .lastNm(person.getLastNm())
+                .middleNm(person.getMiddleNm())
+                .addTime(person.getAddTime())
+                .addUserId(person.getAddUserId())
+                .birthTime(person.getBirthTime())
+                .birthTimeCalc(person.getBirthTimeCalc())
+                .cd(person.getCd())
+                .currSexCd(person.getCurrSexCd())
+                .deceasedIndCd(person.getDeceasedIndCd())
+                .deceasedTime(person.getDeceasedTime())
+                .electronicInd(person.getElectronicInd())
+                .ethnicGroupInd(person.getEthnicGroupInd())
+                .lastChgTime(person.getLastChgTime())
+                .maritalStatusCd(person.getMaritalStatusCd())
+                .recordStatusCd(person.getRecordStatusCd())
+                .statusCd(person.getStatusCd())
+                .statusTime(person.getStatusTime())
+                .localId(person.getLocalId())
+                .versionCtrlNbr(person.getVersionCtrlNbr())
+                .edxInd(person.getEdxInd())
+                .dedupMatchInd(person.getDedupMatchInd())
+                .address(getAddresses(person))
+                .phone(getPhones(person))
+                .email(getEmails(person))
+                .name(getNames(person))
+                .race(getRaces(person))
+                .build();
+        elasticsearchPersonRepository.save(esPerson);
+    }
+
+    private List<NestedRace> getRaces(Person person) {
+        if (person.getRaces() == null || person.getRaces().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return person.getRaces()
+                .stream()
+                .map(race -> {
+                    return NestedRace.builder()
+                            .raceCd(race.getRaceCategoryCd())
+                            .raceDescTxt(race.getRaceDescTxt())
+                            .build();
+                }).toList();
+    }
+
+    private List<NestedName> getNames(Person person) {
+        if (person.getNames() == null || person.getNames().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return person.getNames()
+                .stream()
+                .map(n -> {
+                    return NestedName.builder()
+                            .firstNm(n.getFirstNm())
+                            .firstNmSndx(n.getFirstNmSndx())
+                            .middleNm(n.getMiddleNm())
+                            .lastNm(n.getLastNm())
+                            .lastNmSndx(n.getLastNmSndx())
+                            .nmPrefix(n.getNmPrefix())
+                            .nmSuffix(n.getNmSuffix() != null ? n.getNmSuffix().toString() : null)
+                            .build();
+                }).toList();
+    }
+
+    private List<NestedEmail> getEmails(Person person) {
+        if (person == null
+                || person.getNbsEntity().getEntityLocatorParticipations() == null
+                || person.getNbsEntity().getEntityLocatorParticipations().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return person.getNbsEntity()
+                .getEntityLocatorParticipations()
+                .stream()
+                .filter(elp -> elp.getClassCd().equals("TELE")
+                        && ((TeleLocator) elp.getLocator()).getEmailAddress() != null
+                        && !((TeleLocator) elp.getLocator()).getEmailAddress().isEmpty()) // email Tele locators only
+                .map(elp -> {
+                    var teleLocator = (TeleLocator) elp.getLocator();
+
+                    return NestedEmail.builder()
+                            .emailAddress(teleLocator.getEmailAddress())
+                            .build();
+                }).toList();
+    }
+
+    private List<NestedPhone> getPhones(Person person) {
+        if (person == null
+                || person.getNbsEntity().getEntityLocatorParticipations() == null
+                || person.getNbsEntity().getEntityLocatorParticipations().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return person.getNbsEntity()
+                .getEntityLocatorParticipations()
+                .stream()
+                .filter(elp -> elp.getClassCd().equals("TELE")
+                        && ((TeleLocator) elp.getLocator()).getPhoneNbrTxt() != null
+                        && !((TeleLocator) elp.getLocator()).getPhoneNbrTxt().isEmpty()) // phone Tele locators only
+                .map(elp -> {
+                    var teleLocator = (TeleLocator) elp.getLocator();
+
+                    return NestedPhone.builder()
+                            .telephoneNbr(teleLocator.getPhoneNbrTxt())
+                            .extensionTxt(teleLocator.getExtensionTxt())
+                            .build();
+                }).toList();
+    }
+
+    private List<NestedAddress> getAddresses(Person person) {
+        if (person == null
+                || person.getNbsEntity().getEntityLocatorParticipations() == null
+                || person.getNbsEntity().getEntityLocatorParticipations().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return person.getNbsEntity()
+                .getEntityLocatorParticipations()
+                .stream()
+                .filter(elp -> elp.getClassCd().equals("PST")) // postal locators only
+                .map(elp -> {
+                    var postalLocator = (PostalLocator) elp.getLocator();
+
+                    return NestedAddress.builder()
+                            .streetAddr1(postalLocator.getStreetAddr1())
+                            .streetAddr2(postalLocator.getStreetAddr2())
+                            .city(postalLocator.getCityCd())
+                            .state(postalLocator.getStateCd())
+                            .zip(postalLocator.getZipCd())
+                            .cntyCd(postalLocator.getCntyCd())
+                            .cntryCd(postalLocator.getCntryCd())
+                            .build();
+                }).toList();
+
     }
 
     private void addPersonNameEntry(Person person, Name name, int sequence) {
@@ -342,13 +512,11 @@ public class PatientService {
      * address. PostalLocators are added to the EntityLocatorParticipation which is
      * then added to the Person.NBSEntity
      */
-    private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses) {
+    private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses, Long userId) {
         var postalLocators = new ArrayList<PostalLocator>();
         if (addresses != null && !addresses.isEmpty()) {
             return postalLocators;
         }
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        var user = (NbsUserDetails) auth.getPrincipal();
         // Grab highest Id from DB -- eventually fix db to auto increment
         var postalLocatorId = postalLocatorRepository.getMaxId() + 1;
         var now = Instant.now();
@@ -362,7 +530,9 @@ public class PatientService {
             elp.setCd("H");
             elp.setClassCd("PST");
             elp.setLastChgTime(now);
-            elp.setLastChgUserId(user.getId());
+            elp.setLastChgUserId(userId);
+            elp.setAddUserId(userId);
+            elp.setAddTime(now);
             elp.setRecordStatusCd(ACTIVE);
             elp.setRecordStatusTime(now);
             elp.setStatusCd('A');
@@ -373,6 +543,9 @@ public class PatientService {
             var locator = new PostalLocator();
             locator.setId(plId);
             locator.setAddTime(now);
+            locator.setAddUserId(userId);
+            locator.setLastChgTime(now);
+            locator.setLastChgUserId(userId);
             locator.setCityDescTxt(address.getCity());
             locator.setCntryCd(address.getCountryCode());
             locator.setCntyCd(address.getCountyCode());

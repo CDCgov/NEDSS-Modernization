@@ -14,15 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class KafkaProducer {
-    private static final String STATUS = "status-";
-    @Value("${kafkadef.patient-search.topics.request.patientcreate}")
+    private static final String STATUS = "-status";
+    @Value("${kafkadef.patient-search.topics.request.patient-create}")
     private String patientCreateTopic;
 
     @Autowired
     private KafkaTemplate<String, RequestStatus> kafkaOperationStatusTemplate;
 
     public void requestPatientCreateStatusEnvelope(RequestStatus status) {
-        send(kafkaOperationStatusTemplate, STATUS + patientCreateTopic, status.getRequestId(), status);
+        send(kafkaOperationStatusTemplate, patientCreateTopic + STATUS, status.getRequestId(), status);
     }
 
     private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {

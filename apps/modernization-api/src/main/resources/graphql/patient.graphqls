@@ -140,7 +140,7 @@ type personParentUid {
 }
 
 input PersonInput {
-    name: Name
+    names: [Name]
     ssn: String
     DateOfBirth: Date
     birthGender: Gender

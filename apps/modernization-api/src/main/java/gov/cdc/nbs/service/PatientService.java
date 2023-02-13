@@ -84,6 +84,12 @@ public class PatientService {
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
 
+    @Value("${nbs.uid.seed}")
+    private long seed;
+
+    @Value("${nbs.uid.suffix}")
+    private String suffix;
+
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;
@@ -307,18 +313,21 @@ public class PatientService {
         }
     }
 
-    /*
+    /**
      * NBS creates a prefix and suffix for Person.local_id.
      * The format consists of 3 parts:
-     * 1. prefix -> 'PSN'
-     * 2. value -> the seed: 10000000 + the id
-     * 3. suffix -> 'GA01'
+     * 
+     * <pre>
+     *1. prefix -> the entity type ('PSN')
+     *2. value -> the seed + the id
+     *3. suffix -> the configured suffix ('GA01')
+     * </pre>
+     * 
      * So id of 9999 would turn into 'PSN10009999GA01'
      */
     private String generateLocalId(Long id) {
-        final Long seed = 10000000L;
         final Long nbsId = seed + id;
-        return "PSN" + nbsId + "GA01";
+        return "PSN" + nbsId + suffix;
     }
 
     public String sendCreatePatientRequest(PatientInput input) {
