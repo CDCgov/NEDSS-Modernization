@@ -1,29 +1,42 @@
-FROM amazoncorretto:17
+FROM amazoncorretto:17 as builder
+
+# Copy project configuration
+COPY gradle /usr/src/nbs/gradle
+COPY gradlew /usr/src/nbs/gradlew
+COPY build.gradle /usr/src/nbs/build.gradle
+COPY settings.gradle /usr/src/nbs/settings.gradle
+
+# Copy required sources
+COPY apps /usr/src/nbs/apps
+COPY libs /usr/src/nbs/libs
 
 COPY . /usr/src/nbs
 
+# Preparation for the modernization-ui build
 # Install node
-WORKDIR /usr/src/nbs/apps/modernization-ui
-RUN yum update -y
-RUN curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum install tar gzip nodejs -y
+RUN yum update -y \
+    && curl --silent --location https://rpm.nodesource.com/setup_16.x | bash - \
+    && yum install tar gzip nodejs -y
 
 # Install node modules
+WORKDIR /usr/src/nbs/apps/modernization-ui
 RUN npm install
 
-# Update database connections
 WORKDIR /usr/src/nbs
-RUN sed -i 's/localhost:1433/nbs-mssql:1433/' apps/modernization-api/src/main/resources/application.yml
-RUN sed -i 's/localhost:1433/nbs-mssql:1433/' apps/modernization-api/src/test/resources/application-test.yml
-RUN sed -i 's/localhost:7001/wildfly:7001/' apps/modernization-api/src/main/resources/application.yml
-RUN sed -i 's/localhost:9200/elasticsearch:9200/' apps/modernization-api/src/main/resources/application.yml
 
+# Build the UI
+RUN ./gradlew :modernization-ui:build -x test --no-daemon 
 
-# Build app
-RUN ./gradlew clean build -x test --no-daemon
+# Build just the modernization-api and any required library
+RUN ./gradlew :modernization-api:buildNeeded --no-daemon
 
-RUN mv apps/modernization-api/build/libs/modernization-api*-plain.jar apps/modernization-api/build/libs/plain.jar 
-RUN mv apps/modernization-api/build/libs/modernization-api*.jar apps/modernization-api/build/libs/api.jar 
+FROM amazoncorretto:17
+
+COPY --from=builder /usr/src/nbs/apps/modernization-api/build/libs/modernization-api*.jar api.jar 
+
+ENV NBS_DATASOURCE_SERVER=nbs-mssql
+ENV NBS_ELASTICSEARCH_SERVER=elasticsearch
+ENV NBS_WILDFLY_SERVER=wildfly
 
 # Run jar
-CMD ["java", "-jar", "apps/modernization-api/build/libs/api.jar"]
+CMD ["java", "-jar", "api.jar"]

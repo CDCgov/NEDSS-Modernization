@@ -4,9 +4,13 @@ services:
       context: ./
       dockerfile: ./apps/modernization-api/Dockerfile
     container_name: modernization-api
+    environment:
+      - NBS_DATASOURCE_SERVER=nbs-mssql
+      - NBS_ELASTICSEARCH_SERVER=elasticsearch
+      - NBS_WILDFLY_SERVER=wildfly
     networks:
       - nbs
 networks:
   nbs:
     name: nbs
-    driver: bridge
+    external: true      
