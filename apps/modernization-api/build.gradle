@@ -29,10 +29,10 @@ bootJar {
         attributes 'API-Version': version
     }
 }
+
 jar {
-    manifest {
-        attributes 'API-Version': version
-    }
+	//  packages the application and spring into one jar
+	enabled = false
 }
 
 // Displays cucumber test results
