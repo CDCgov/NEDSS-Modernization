@@ -1,7 +1,8 @@
 buildscript {
     ext {
-        springBootVersion = "2.7.2"
+        springBootVersion = "2.7.8"
         queryDslVersion = "5.0.0"
+        blazePersistenceVersion = "1.6.8"
     }
 }
 plugins {
@@ -13,42 +14,42 @@ plugins {
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
 
-repositories {
-	mavenCentral()
-	maven{ url 'https://packages.confluent.io/maven/' }
-}
-
 dependencyManagement {
 	imports {
 		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
 	}
 }
-
 dependencies {
-    // Spring
-	compileOnly 'org.springframework.boot:spring-boot-starter'
-	compileOnly "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    compileOnly "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+	// core
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
-    // common
 	implementation project(':database-entities')
 
-    // querydsl
-	compileOnly "com.querydsl:querydsl-apt:${queryDslVersion}"
-	compileOnly "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	// jwt
+	implementation "com.auth0:java-jwt:4.2.0"
+
+	// database
+	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+
+	// querydsl
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
-	// jwt
-	compileOnly "com.auth0:java-jwt:4.2.0"
+	// blazebit for querydsl paging
+	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
+	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
 
-    // lombok
+	// lombok
+	implementation "org.projectlombok:lombok"
 	compileOnly "org.projectlombok:lombok"
 	annotationProcessor "org.projectlombok:lombok"
 
-    // Kafka
-	compileOnly("org.springframework.kafka:spring-kafka")
-	compileOnly ("io.confluent:kafka-avro-serializer:7.1.1")
+	// Kafka
+	implementation("org.springframework.kafka:spring-kafka")
+	implementation("io.confluent:kafka-avro-serializer:7.1.1")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 }
-
-compileJava.mustRunAfter(":database-entities:build")
