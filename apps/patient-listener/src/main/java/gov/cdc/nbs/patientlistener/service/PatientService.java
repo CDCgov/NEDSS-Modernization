@@ -216,7 +216,6 @@ public class PatientService {
                 .addTime(person.getAddTime())
                 .addUserId(person.getAddUserId())
                 .birthTime(person.getBirthTime())
-                .birthTimeCalc(person.getBirthTimeCalc())
                 .cd(person.getCd())
                 .currSexCd(person.getCurrSexCd())
                 .deceasedIndCd(person.getDeceasedIndCd())
@@ -333,7 +332,7 @@ public class PatientService {
                     return NestedAddress.builder()
                             .streetAddr1(postalLocator.getStreetAddr1())
                             .streetAddr2(postalLocator.getStreetAddr2())
-                            .city(postalLocator.getCityCd())
+                            .city(postalLocator.getCityDescTxt())
                             .state(postalLocator.getStateCd())
                             .zip(postalLocator.getZipCd())
                             .cntyCd(postalLocator.getCntyCd())
@@ -512,7 +511,7 @@ public class PatientService {
      */
     private List<PostalLocator> addPostalLocatorEntries(Person person, List<PostalAddress> addresses, Long userId) {
         var postalLocators = new ArrayList<PostalLocator>();
-        if (addresses != null && !addresses.isEmpty()) {
+        if (addresses != null && addresses.isEmpty()) {
             return postalLocators;
         }
         // Grab highest Id from DB -- eventually fix db to auto increment

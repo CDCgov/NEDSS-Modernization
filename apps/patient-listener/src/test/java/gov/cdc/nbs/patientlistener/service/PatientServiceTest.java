@@ -107,7 +107,7 @@ public class PatientServiceTest {
         verify(personRepository).save(personCaptor.capture());
         verify(elasticsearchPersonRepository).save(elasticsearchPersonCaptor.capture());
         verifyPersonMatchesInput(personCaptor.getValue(), input);
-        assertTrue(elasticsearchPersonMatchesPerson(elasticsearchPersonCaptor.getValue(), personCaptor.getValue()));
+        verifyElasticsearchPerson(elasticsearchPersonCaptor.getValue(), personCaptor.getValue());
 
         // verify patient create status was posted to topic
         verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
@@ -116,7 +116,7 @@ public class PatientServiceTest {
         assertEquals(personCaptor.getValue().getId(), statusCaptor.getValue().getEntityId());
     }
 
-    private void verifyPersonMatchesInput(Person person, PatientInput input) throws Exception {
+    private void verifyPersonMatchesInput(Person person, PatientInput input) {
         assertEquals(input.getSsn(), person.getSsn());
         assertEquals(input.getDateOfBirth(), person.getBirthTime());
         assertEquals(input.getBirthGender(), person.getBirthGenderCd());
@@ -137,30 +137,30 @@ public class PatientServiceTest {
         assertEquals(alias.getSuffix(), personAlias.getNmSuffix());
 
         for (int i = 0; i < input.getRaceCodes().size(); i++) {
-            assertEquals(input.getRaceCodes().get(i), person.getRaces().get(i));
+            assertEquals(input.getRaceCodes().get(i), person.getRaces().get(i).getId().getRaceCd());
         }
 
         var personPhones = person.getNbsEntity()
                 .getEntityLocatorParticipations()
                 .stream()
-                .filter(elp -> elp.getCd().equals("TELE")
+                .filter(elp -> elp.getClassCd().equals("TELE")
                         && ((TeleLocator) elp.getLocator()).getPhoneNbrTxt() != null
                         && !((TeleLocator) elp.getLocator()).getPhoneNbrTxt().isEmpty())
                 .map(elp -> ((TeleLocator) elp.getLocator()))
                 .toList();
         for (int i = 0; i < input.getPhoneNumbers().size(); i++) {
             var inputPhone = input.getPhoneNumbers().get(i);
-            personPhones.stream()
+            var matchingRecord = personPhones.stream()
                     .filter(p -> p.getPhoneNbrTxt().equals(inputPhone.getNumber())
                             && p.getExtensionTxt().equals(inputPhone.getExtension()))
-                    .findAny()
-                    .orElseThrow(() -> new Exception("Failed to find phone entry"));
+                    .findAny();
+            assertTrue(matchingRecord.isPresent());
         }
 
         var personEmails = person.getNbsEntity()
                 .getEntityLocatorParticipations()
                 .stream()
-                .filter(elp -> elp.getCd().equals("TELE")
+                .filter(elp -> elp.getClassCd().equals("TELE")
                         && ((TeleLocator) elp.getLocator()).getEmailAddress() != null
                         && !((TeleLocator) elp.getLocator()).getEmailAddress().isEmpty())
                 .map(elp -> ((TeleLocator) elp.getLocator()).getEmailAddress())
@@ -170,31 +170,128 @@ public class PatientServiceTest {
             assertTrue(personEmails.contains(inputEmail));
         }
 
-        // postal_locator
         var personAddresses = person.getNbsEntity()
                 .getEntityLocatorParticipations()
                 .stream()
-                .filter(elp -> elp.getCd().equals("PST"))
+                .filter(elp -> elp.getClassCd().equals("PST"))
                 .map(elp -> ((PostalLocator) elp.getLocator()))
                 .toList();
         for (int i = 0; i < input.getAddresses().size(); i++) {
             var inputAddress = input.getAddresses().get(i);
-            personAddresses.stream()
+            var matchingRecord = personAddresses.stream()
                     .filter(p -> p.getStreetAddr1().equals(inputAddress.getStreetAddress1())
                             && p.getStreetAddr2().equals(inputAddress.getStreetAddress2())
-                            && p.getCityCd().equals(inputAddress.getCity())
+                            && p.getCityDescTxt().equals(inputAddress.getCity())
                             && p.getStateCd().equals(inputAddress.getStateCode())
                             && p.getCntyCd().equals(inputAddress.getCountyCode())
                             && p.getZipCd().equals(inputAddress.getZip())
                             && p.getCntryCd().equals(inputAddress.getCountryCode())
                             && p.getCensusTract().equals(inputAddress.getCensusTract()))
-                    .findAny()
-                    .orElseThrow(() -> new Exception("Failed to find address entry"));
+                    .findAny();
+            assertTrue(matchingRecord.isPresent());
         }
     }
 
-    private boolean elasticsearchPersonMatchesPerson(ElasticsearchPerson value, Person value2) {
-        return true; // TODO
+    private void verifyElasticsearchPerson(ElasticsearchPerson esPerson, Person person) {
+        assertEquals(person.getId().toString(), esPerson.getId());
+        assertEquals(person.getFirstNm(), esPerson.getFirstNm());
+        assertEquals(person.getLastNm(), esPerson.getLastNm());
+        assertEquals(person.getMiddleNm(), esPerson.getMiddleNm());
+        assertEquals(person.getAddUserId(), esPerson.getAddUserId());
+        assertEquals(person.getBirthTime(), esPerson.getBirthTime());
+        assertEquals(person.getCd(), esPerson.getCd());
+        assertEquals(person.getCurrSexCd(), esPerson.getCurrSexCd());
+        assertEquals(person.getDeceasedIndCd(), esPerson.getDeceasedIndCd());
+        assertEquals(person.getDeceasedTime(), esPerson.getDeceasedTime());
+        assertEquals(person.getElectronicInd(), esPerson.getElectronicInd());
+        assertEquals(person.getEthnicGroupInd(), esPerson.getEthnicGroupInd());
+        assertEquals(person.getMaritalStatusCd(), esPerson.getMaritalStatusCd());
+        assertEquals(person.getRecordStatusCd(), esPerson.getRecordStatusCd());
+        assertEquals(person.getLocalId(), esPerson.getLocalId());
+        assertEquals(person.getVersionCtrlNbr(), esPerson.getVersionCtrlNbr());
+        assertEquals(person.getDedupMatchInd(), esPerson.getDedupMatchInd());
+
+        // Addresses
+        var personAddresses = person.getNbsEntity()
+                .getEntityLocatorParticipations()
+                .stream()
+                .filter(elp -> elp.getClassCd().equals("PST"))
+                .map(elp -> ((PostalLocator) elp.getLocator()))
+                .toList();
+
+        for (int i = 0; i < personAddresses.size(); i++) {
+            var pa = personAddresses.get(i);
+            var matchingRecord = esPerson.getAddress().stream()
+                    .filter(esAddress -> esAddress.getStreetAddr1().equals(pa.getStreetAddr1())
+                            && esAddress.getStreetAddr2().equals(pa.getStreetAddr2())
+                            && esAddress.getCity().equals(pa.getCityDescTxt())
+                            && esAddress.getState().equals(pa.getStateCd())
+                            && esAddress.getCntyCd().equals(pa.getCntyCd())
+                            && esAddress.getZip().equals(pa.getZipCd())
+                            && esAddress.getCntryCd().equals(pa.getCntryCd()))
+                    .findFirst();
+            assertTrue(matchingRecord.isPresent());
+        }
+
+        // Phone numbers
+        var personPhones = person.getNbsEntity()
+                .getEntityLocatorParticipations()
+                .stream()
+                .filter(elp -> elp.getClassCd().equals("TELE")
+                        && ((TeleLocator) elp.getLocator()).getPhoneNbrTxt() != null
+                        && !((TeleLocator) elp.getLocator()).getPhoneNbrTxt().isEmpty())
+                .map(elp -> ((TeleLocator) elp.getLocator()))
+                .toList();
+
+        for (int i = 0; i < personPhones.size(); i++) {
+            var pp = personPhones.get(i);
+            var matchingRecord = esPerson.getPhone().stream()
+                    .filter(esPhone -> esPhone.getTelephoneNbr().equals(pp.getPhoneNbrTxt())
+                            && esPhone.getExtensionTxt().equals(pp.getExtensionTxt()))
+                    .findFirst();
+            assertTrue(matchingRecord.isPresent());
+        }
+
+        // Email addresses
+        var personEmails = person.getNbsEntity()
+                .getEntityLocatorParticipations()
+                .stream()
+                .filter(elp -> elp.getClassCd().equals("TELE")
+                        && ((TeleLocator) elp.getLocator()).getEmailAddress() != null
+                        && !((TeleLocator) elp.getLocator()).getEmailAddress().isEmpty())
+                .map(elp -> ((TeleLocator) elp.getLocator()))
+                .toList();
+
+        for (int i = 0; i < personEmails.size(); i++) {
+            var pe = personEmails.get(i);
+            var matchingRecord = esPerson.getEmail().stream()
+                    .filter(esEmail -> esEmail.getEmailAddress().equals(pe.getEmailAddress()))
+                    .findFirst();
+            assertTrue(matchingRecord.isPresent());
+        }
+
+        // Names
+        var personNames = person.getNames();
+        for (int i = 0; i < personNames.size(); i++) {
+            var pn = personNames.get(i);
+            var matchingRecord = esPerson.getName().stream()
+                    .filter(esName -> esName.getFirstNm().equals(pn.getFirstNm())
+                            && esName.getMiddleNm().equals(pn.getMiddleNm())
+                            && esName.getLastNm().equals(pn.getLastNm())
+                            && esName.getNmSuffix().equals(pn.getNmSuffix().toString()))
+                    .findFirst();
+            assertTrue(matchingRecord.isPresent());
+        }
+
+        // Races
+        var personRaces = person.getRaces();
+        for (int i = 0; i < personRaces.size(); i++) {
+            var pr = personRaces.get(i);
+            var matchingRecord = esPerson.getRace().stream()
+                    .filter(esRace -> esRace.getRaceCd().equals(pr.getRaceCategoryCd()))
+                    .findFirst();
+            assertTrue(matchingRecord.isPresent());
+        }
     }
 
     private NbsUserDetails validUserDetails() {

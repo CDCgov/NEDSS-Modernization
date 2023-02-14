@@ -60,6 +60,7 @@ dependencies {
 	testImplementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
+	testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 tasks.named('test') {
