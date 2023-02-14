@@ -121,7 +121,6 @@ export const AdvancedSearch = () => {
             // no query parameters specified or user is not logged in
             setActiveTab('person');
             setResultsChip([]);
-            console.log('asd');
             setValidSearch(false);
             setLoading(false);
             return;
@@ -135,7 +134,6 @@ export const AdvancedSearch = () => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
                 setResultsChip([]);
-                console.log('asd');
                 setValidSearch(false);
                 setSubmitted(true);
             }
@@ -336,7 +334,6 @@ export const AdvancedSearch = () => {
             setSubmitted(false);
         } else {
             setLoading(false);
-            console.log('asd');
             setValidSearch(false);
             setSubmitted(true);
         }
@@ -384,7 +381,6 @@ export const AdvancedSearch = () => {
         setLabReportData(undefined);
         setLabReportFilter({});
         setSubmitted(false);
-        console.log('asd');
         setValidSearch(false);
         setLastSearchType(undefined);
         navigate('/advanced-search');
