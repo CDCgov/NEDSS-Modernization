@@ -2,7 +2,6 @@ package gov.cdc.nbs.patientlistener.service;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -367,10 +366,9 @@ public class PatientService {
         personName.setLastChgTime(now);
 
         if (person.getNames() == null) {
-            person.setNames(Arrays.asList(personName));
-        } else {
-            person.getNames().add(personName);
+            person.setNames(new ArrayList<>());
         }
+        person.getNames().add(personName);
     }
 
     /*
@@ -394,10 +392,10 @@ public class PatientService {
         personRace.setLastChgUserId(userId);
 
         if (person.getRaces() == null) {
-            person.setRaces(Arrays.asList(personRace));
-        } else {
-            person.getRaces().add(personRace);
+            person.setRaces(new ArrayList<>());
         }
+        person.getRaces().add(personRace);
+
     }
 
     /*

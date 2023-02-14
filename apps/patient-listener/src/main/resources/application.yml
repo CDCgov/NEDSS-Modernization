@@ -26,7 +26,6 @@ spring:
         password: fake.fake.fake.1234
 
 kafka:
-    enabled: false
     bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
     listener:
         ack-mode: record
