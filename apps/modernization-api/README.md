@@ -12,6 +12,7 @@
 
 1. In the ui directory run `npm install`
 1. In the modernization-api directory run `./gradlew build`
+    - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
 1. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 1. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
@@ -28,6 +29,17 @@ To execute specific test tags:
 ```bash
 ./gradlew test -Dcucumber.filter.tags="@patient_create" --tests "RunCucumberTest"
 ```
+
+## Running
+
+The Modernization API can be started from the root directory by runninng:
+
+```bash
+./gradlew :modernization-api:bootRun
+```
+
+It assumes that ElasticSeach and MSSQL Server are running on `localhost`.  Preconfigured containers are avaiable in the [CDC Sandbox](../../cdc-sandbox/README.md), `cdc-sandbox/elasticsearch` and `cdc-sandbox/db`
+
 
 ## GraphQL
 
@@ -53,3 +65,16 @@ public List<Patient> findPatientsNamedJohn() {
 ## Swagger
 
 A swagger page is available at [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+
+## Configuration
+
+Spring Config allows configuration values to be overwritten at runtime.  Values can be set through Java System Variables, Environment Variable, and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config).  The default profile contains the following properties configuration most likely to change.
+
+| Name                     | Default   | Description                                       |
+|--------------------------|-----------|---------------------------------------------------|
+| nbs.elasticsearch.server | localhost | The host name of the server running ElasticSearch |
+| nbs.elasticsearch.port   | 9200      | The port in which ElasticSearch is listening      |
+| nbs.wildfly.server       | localhost | The host name of the server running NBS Classic   |
+| nbs.wildfly.port         | 7001      | The port in which NBS Classic is listening        |
+| nbs.datasource.server    | localhost | The host name of the server running MS SQL Server |
