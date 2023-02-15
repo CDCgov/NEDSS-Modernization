@@ -3,15 +3,15 @@ package gov.cdc.nbs.service;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.boot.test.context.TestComponent;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
-@TestComponent
+@Component
 public class KafkaTestConsumer {
 
     private CountDownLatch latch = new CountDownLatch(1);
@@ -26,7 +26,7 @@ public class KafkaTestConsumer {
     @KafkaListener(topics = { "request-patient-search.patientsearch",
             "request-patient-search.patientupdate",
             "request-patient-search.patientdelete",
-            "request-patient-search.patientcreate"
+            "patient-create-test"
     })
     public void receive(ConsumerRecord<?, ?> consumerRecord) {
         payload = consumerRecord.value();

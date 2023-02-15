@@ -4,40 +4,40 @@ buildscript {
     }
 }
 plugins {
-	id 'org.springframework.boot' version "${springBootVersion}" apply false
-	id "io.spring.dependency-management" version "1.0.12.RELEASE"
-	id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id "io.spring.dependency-management" version "1.0.12.RELEASE"
+    id 'java'
 }
 
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencyManagement {
-	imports {
-		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-	}
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
 }
 
 dependencies {
     // Spring
-	compileOnly "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-	compileOnly "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 
     // common
-	implementation project(':database-entities')
+    implementation project(':database-entities')
 
     // lombok
-	compileOnly "org.projectlombok:lombok"
-	annotationProcessor "org.projectlombok:lombok"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
 
     // Kafka
-	compileOnly("org.springframework.kafka:spring-kafka")
-	compileOnly ("io.confluent:kafka-avro-serializer:7.1.1")
-	testImplementation("org.springframework.kafka:spring-kafka-test")
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation ("io.confluent:kafka-avro-serializer:7.1.1")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 compileJava.mustRunAfter(":database-entities:build")

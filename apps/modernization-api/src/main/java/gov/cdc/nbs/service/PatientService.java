@@ -84,12 +84,6 @@ public class PatientService {
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
 
-    @Value("${nbs.uid.seed}")
-    private long seed;
-
-    @Value("${nbs.uid.suffix}")
-    private String suffix;
-
     @PersistenceContext
     private final EntityManager entityManager;
     private final PersonRepository personRepository;

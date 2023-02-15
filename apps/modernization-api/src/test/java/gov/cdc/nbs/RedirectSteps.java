@@ -124,7 +124,7 @@ public class RedirectSteps {
         assertEquals("John", filter.getFirstName());
         assertEquals(Instant.parse("2000-01-01T00:00:00Z"), filter.getDateOfBirth());
         assertEquals(Gender.M, filter.getGender());
-        assertEquals(Long.valueOf(1234L), filter.getId());
+        assertEquals("1234", filter.getId());
     }
 
     @Given("I navigate to the NBS advanced search page")

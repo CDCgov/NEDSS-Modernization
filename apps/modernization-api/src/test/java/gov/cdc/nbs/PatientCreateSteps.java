@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,6 +29,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 public class PatientCreateSteps {
 
     @Autowired
