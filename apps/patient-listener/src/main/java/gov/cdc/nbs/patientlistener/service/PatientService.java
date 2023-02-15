@@ -151,15 +151,21 @@ public class PatientService {
         var person = new Person();
         // generated / required values
         person.setId(id);
+        person.setPersonParentUid(person);
         person.setLocalId(localId);
         person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         person.setAddTime(now);
+        person.setAddUserId(userId);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setCd("PAT");
         person.setElectronicInd('N');
         person.setEdxInd("Y");
         person.setDedupMatchInd('F');
+        person.setLastChgTime(now);
+        person.setLastChgUserId(userId);
+        person.setStatusCd('A');
+        person.setStatusTime(now);
 
         person.setSsn(input.getSsn());
         person.setBirthTime(input.getDateOfBirth());
