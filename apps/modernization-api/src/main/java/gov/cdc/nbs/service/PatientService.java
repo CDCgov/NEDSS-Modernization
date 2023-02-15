@@ -317,23 +317,6 @@ public class PatientService {
         }
     }
 
-    /**
-     * NBS creates a prefix and suffix for Person.local_id.
-     * The format consists of 3 parts:
-     * 
-     * <pre>
-     *1. prefix -> the entity type ('PSN')
-     *2. value -> the seed + the id
-     *3. suffix -> the configured suffix ('GA01')
-     * </pre>
-     * 
-     * So id of 9999 would turn into 'PSN10009999GA01'
-     */
-    private String generateLocalId(Long id) {
-        final Long nbsId = seed + id;
-        return "PSN" + nbsId + suffix;
-    }
-
     public String sendCreatePatientRequest(PatientInput input) {
         // create 'create patient' message and post to kafka
         var requestId = getRequestID();
