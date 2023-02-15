@@ -231,6 +231,7 @@ public class PatientServiceTest {
 
     private void verifyElasticsearchPerson(ElasticsearchPerson esPerson, Person person) {
         assertEquals(person.getId().toString(), esPerson.getId());
+        assertEquals(person.getId(), esPerson.getPersonUid());
         assertEquals(person.getFirstNm(), esPerson.getFirstNm());
         assertEquals(person.getLastNm(), esPerson.getLastNm());
         assertEquals(person.getMiddleNm(), esPerson.getMiddleNm());

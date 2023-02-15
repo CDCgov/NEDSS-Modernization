@@ -28,7 +28,7 @@ public class KafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "#{'${kafkadef.patient-search.topics.request.patientcreate}'}", groupId = "group_id")
+    @KafkaListener(topics = "#{'${kafkadef.patient-search.topics.request.patient-create}'}", groupId = "group_id")
     public void createConsume(String message, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
         log.debug("Receieved patientcreate message: '{}'", message);
         patientService.handlePatientCreate(message, key);

@@ -39,7 +39,7 @@ public class KafkaRequestProducerService {
 	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
 	private String patientDeleteTopic;
 
-	@Value("${kafkadef.patient-search.topics.request.patientcreate}")
+	@Value("${kafkadef.patient-search.topics.request.patient-create}")
 	private String patientCreateTopic;
 
 	public void requestEnvelope(EnvelopeRequest kafkaMessage) {

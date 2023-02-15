@@ -160,7 +160,7 @@ input Name {
     middleName: String
     lastName: String
     suffix: Suffix
-    nameType: NameUseCd!
+    nameUseCd: NameUseCd!
 }
 
 input PostalAddress {

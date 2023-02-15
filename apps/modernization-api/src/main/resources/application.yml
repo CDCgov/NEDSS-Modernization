@@ -75,4 +75,4 @@ kafkadef:
                 patient: request-patient-search.patientsearch
                 patientupdate: request-patient-search.patientupdate
                 patientdelete: request-patient-search.patientdelete
-                patientcreate: patient-create
+                patient-create: patient-create

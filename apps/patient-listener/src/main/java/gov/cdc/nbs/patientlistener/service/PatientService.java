@@ -227,6 +227,7 @@ public class PatientService {
     private void createElasticsearchPatient(Person person) {
         var esPerson = ElasticsearchPerson.builder()
                 .id(person.getId().toString())
+                .personUid(person.getId())
                 .firstNm(person.getFirstNm())
                 .lastNm(person.getLastNm())
                 .middleNm(person.getMiddleNm())
