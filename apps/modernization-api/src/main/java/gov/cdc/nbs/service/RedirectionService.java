@@ -85,7 +85,7 @@ public class RedirectionService {
                 filter.setGender(Gender.valueOf(map.get(NBS_SEX)));
             }
             if (StringUtils.hasText(map.get(NBS_ID))) {
-                filter.setId(Long.parseLong(map.get(NBS_ID)));
+                filter.setId(map.get(NBS_ID));
             }
             if (StringUtils.hasText(map.get(NBS_EVENT_TYPE)) && StringUtils.hasText(map.get(NBS_EVENT_ID))) {
                 var type = map.get(NBS_EVENT_TYPE);

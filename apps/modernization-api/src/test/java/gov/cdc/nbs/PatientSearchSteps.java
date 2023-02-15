@@ -150,6 +150,9 @@ public class PatientSearchSteps {
             return filter;
         }
         switch (field) {
+            case "email":
+                filter.setEmail(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
+                break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
                 break;
@@ -165,21 +168,20 @@ public class PatientSearchSteps {
                         new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "patient id":
-                filter.setId(searchPatient.getId());
+                filter.setId(searchPatient.getLocalId());
                 break;
             case "ssn":
                 filter.setSsn(searchPatient.getSsn());
                 break;
             case "phone number":
-                var teleLocator = PersonUtil.getTeleLocators(searchPatient).get(0);
-                filter.setPhoneNumber(teleLocator.getPhoneNbrTxt());
+                filter.setPhoneNumber(PersonUtil.getTeleLocators(searchPatient).get(0).getPhoneNbrTxt());
                 break;
             case "date of birth":
                 filter.setDateOfBirth(getDobByQualifier(searchPatient, qualifier));
                 filter.setDateOfBirthOperator(qualifier);
                 break;
             case "gender":
-                filter.setGender(searchPatient.getBirthGenderCd());
+                filter.setGender(searchPatient.getCurrSexCd());
                 break;
             case "deceased":
                 filter.setDeceased(searchPatient.getDeceasedIndCd());

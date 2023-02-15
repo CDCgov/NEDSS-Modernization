@@ -157,10 +157,7 @@ public class PatientService {
         builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD_FIELD, "PAT"));
 
         if (filter.getId() != null) {
-            var idQuery = QueryBuilders.boolQuery();
-            idQuery.must(QueryBuilders.matchQuery("id", filter.getId()));
-            idQuery.must(QueryBuilders.matchQuery("id", generateLocalId(filter.getId())));
-            builder.should(idQuery);
+            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, filter.getId()));
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
@@ -181,7 +178,14 @@ public class PatientService {
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                    QueryBuilders.matchQuery("phone.telephoneNbr", filter.getPhoneNumber()), ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getPhoneNumber()).defaultField("phone.telephoneNbr"),
+                    ScoreMode.Avg));
+        }
+
+        if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
+                    QueryBuilders.queryStringQuery(filter.getEmail()).defaultField("email.emailAddress"),
+                    ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {

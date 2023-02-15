@@ -5,6 +5,9 @@ nbs:
         tokenExpirationMillis: 60000
         parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
     max-page-size: 1000
+    datasource:
+        server: localhost
+
 logging:
     file.path: ./log/
     level:
@@ -29,7 +32,7 @@ spring:
                 hbm2ddl:
                     jdbc_metadata_extraction_strategy: individually
     datasource:
-        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
         username: sa
         password: fake.fake.fake.1234
     mvc:
