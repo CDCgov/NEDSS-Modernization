@@ -125,6 +125,7 @@ export enum Gender {
 }
 
 export type Identification = {
+  assigningAuthority?: InputMaybe<Scalars['String']>;
   identificationNumber: Scalars['String'];
   identificationType: Scalars['String'];
 };
@@ -463,8 +464,37 @@ export type Name = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   middleName?: InputMaybe<Scalars['String']>;
+  nameUseCd: NameUseCd;
   suffix?: InputMaybe<Suffix>;
 };
+
+export enum NameUseCd {
+  /**  Alias Name */
+  A = 'A',
+  Ad = 'AD',
+  /**  Adopted Name */
+  Al = 'AL',
+  /**  Mother's Name */
+  Br = 'BR',
+  /**  Legal */
+  C = 'C',
+  /**  Coded Pseudo */
+  I = 'I',
+  /**  Indigenous/Tribal */
+  L = 'L',
+  /**  License */
+  M = 'M',
+  /**  Maiden Name */
+  Mo = 'MO',
+  /**  Name at Birth */
+  P = 'P',
+  /**  Name of Partner/Spouse */
+  R = 'R',
+  /**  Artist/Stage Name */
+  S = 'S',
+  /**  Religious */
+  U = 'U'
+}
 
 export enum NotificationStatus {
   Approved = 'APPROVED',
@@ -753,11 +783,14 @@ export type PersonInput = {
   birthGender?: InputMaybe<Gender>;
   currentGender?: InputMaybe<Gender>;
   deceased?: InputMaybe<Deceased>;
+  deceasedTime?: InputMaybe<Scalars['Date']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicity?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Name>;
+  ethnicityCode?: InputMaybe<Scalars['String']>;
+  identifications?: InputMaybe<Array<InputMaybe<Identification>>>;
+  maritalStatus?: InputMaybe<Scalars['String']>;
+  names?: InputMaybe<Array<InputMaybe<Name>>>;
   phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
-  race?: InputMaybe<Scalars['String']>;
+  raceCodes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   ssn?: InputMaybe<Scalars['String']>;
 };
 
