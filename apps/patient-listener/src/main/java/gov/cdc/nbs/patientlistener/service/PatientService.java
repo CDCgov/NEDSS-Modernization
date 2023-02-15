@@ -40,6 +40,7 @@ import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.patientlistener.exception.PatientCreateException;
 import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
+import gov.cdc.nbs.patientlistener.service.IdGeneratorService.EntityType;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
@@ -60,6 +61,9 @@ public class PatientService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private IdGeneratorService idGeneratorService;
 
     @Autowired
     private UserService userService;
@@ -99,24 +103,25 @@ public class PatientService {
             userPermissions = userDetails.getAuthorities().stream().map(NbsAuthority::getAuthority).toList();
         } catch (Exception e) {
             log.warn("Failed to find user credentials for userId: {}", userId);
-            sendPatientCreateStatus(false, key, "Failed to find user in system");
+            sendPatientCreateStatus(false, key, "Failed to find user in system: " + userId);
             return;
         }
-        if (userPermissions.contains("FIND-PATIENT") && userPermissions.contains("ADD-PATIENT")) {
-            // user has permission. perform the creation
-            log.debug("User permission validated. Creating patient");
-            var newPatient = createPatient(createRequest.getPatientInput(), userDetails.getId());
-            createElasticsearchPatient(newPatient);
 
-            // post success message to status topic
-            sendPatientCreateStatus(true, key, "Successfully created patient", newPatient.getId());
-            return;
-        } else {
-            // user does not have permission
+        // check if user has permissions required to perform create
+        if (!userPermissions.contains("FIND-PATIENT") || !userPermissions.contains("ADD-PATIENT")) {
             log.debug("User lacks permission for patient create");
             sendPatientCreateStatus(false, key, "User not authorized to perform this operation");
             return;
         }
+
+        // perform the creation
+        log.debug("User permission validated. Creating patient");
+        var newPatient = createPatient(createRequest.getPatientInput(), userDetails.getId());
+        createElasticsearchPatient(newPatient);
+
+        // post success message to status topic
+        sendPatientCreateStatus(true, key, "Successfully created patient", newPatient.getId());
+        return;
 
     }
 
@@ -140,11 +145,13 @@ public class PatientService {
     @Transactional
     private Person createPatient(PatientInput input, Long userId) {
         var now = Instant.now();
-        final long id = personRepository.getMaxId() + 1;
+        final long id = idGeneratorService.getNextValidId(EntityType.NBS).getId();
+        final String localId = generateLocalId();
+
         var person = new Person();
         // generated / required values
         person.setId(id);
-        person.setLocalId(generateLocalId(id));
+        person.setLocalId(localId);
         person.setNbsEntity(new NBSEntity(id, "PSN"));
         person.setVersionCtrlNbr((short) 1);
         person.setAddTime(now);
@@ -198,9 +205,13 @@ public class PatientService {
         return personRepository.save(person);
     }
 
-    private String generateLocalId(Long id) {
-        final Long nbsId = seed + id;
-        return "PSN" + nbsId + suffix;
+    /**
+     * Calls the id generator service and constructs the localId with
+     * the format "prefix + id + suffix"
+     */
+    private String generateLocalId() {
+        var generatedId = idGeneratorService.getNextValidId(EntityType.PERSON);
+        return generatedId.getPrefix() + generatedId.getId() + generatedId.getSuffix();
     }
 
     /**

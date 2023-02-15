@@ -1,8 +1,9 @@
 package gov.cdc.nbs.patientlistener.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,12 +20,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -45,16 +45,15 @@ import gov.cdc.nbs.message.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.RequestStatus;
-import gov.cdc.nbs.patientlistener.PatientListenerApplication;
 import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
+import gov.cdc.nbs.patientlistener.service.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;;
 
-@SpringBootTest(classes = PatientListenerApplication.class)
-@ContextConfiguration(classes = PatientListenerApplication.class, loader = SpringBootContextLoader.class)
+@SpringBootTest()
 @ActiveProfiles("test")
 public class PatientServiceTest {
 
@@ -70,6 +69,8 @@ public class PatientServiceTest {
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
     @Mock
     private KafkaProducer producer;
+    @Mock
+    private IdGeneratorService idGeneratorService;
 
     @InjectMocks
     private PatientService patientService;
@@ -88,17 +89,13 @@ public class PatientServiceTest {
 
     @Test
     void testHandlePatientCreate() throws Exception {
-        // build input
-        var input = getPatientInput();
-        var request = new PatientCreateRequest();
-        request.setRequestId("RequestId");
-        request.setUserId("SomeUser");
-        request.setPatientInput(input);
-
-        // Mock
+        // Mock methods
         when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(validUserDetails());
-        doNothing().when(producer).requestPatientCreateStatusEnvelope(Mockito.any());
         when(personRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+        when(idGeneratorService.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1L, "prefix", "suffix"));
+
+        // build create patient request
+        var request = buildPatientCreateRequest();
 
         // call handlePatientCreate
         patientService.handlePatientCreate(mapper.writeValueAsString(request), request.getRequestId());
@@ -106,14 +103,49 @@ public class PatientServiceTest {
         // verify proper data saved to repositories
         verify(personRepository).save(personCaptor.capture());
         verify(elasticsearchPersonRepository).save(elasticsearchPersonCaptor.capture());
-        verifyPersonMatchesInput(personCaptor.getValue(), input);
+        verifyPersonMatchesInput(personCaptor.getValue(), request.getPatientInput());
         verifyElasticsearchPerson(elasticsearchPersonCaptor.getValue(), personCaptor.getValue());
 
-        // verify patient create status was posted to topic
+        // verify successful patient create status was posted to topic
         verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
         assertTrue(statusCaptor.getValue().isSuccessful());
         assertEquals(request.getRequestId(), statusCaptor.getValue().getRequestId());
         assertEquals(personCaptor.getValue().getId(), statusCaptor.getValue().getEntityId());
+    }
+
+    @Test
+    void testInvalidMessage() {
+        // Send an invalid message
+        patientService.handlePatientCreate("bad message", "bad key");
+
+        // Verify error status is set
+        verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
+        assertFalse(statusCaptor.getValue().isSuccessful());
+
+        // Verify nothing was saved
+        verify(personRepository, never()).save(Mockito.any());
+        verify(elasticsearchPersonRepository, never()).save(Mockito.any());
+    }
+
+    @Test
+    void testInvalidPermissions() throws JsonProcessingException {
+        // set invalid user credentials
+        when(userService.loadUserByUsername(Mockito.anyString())).thenReturn(invalidUserDetails());
+
+        // build create patient request
+        var request = buildPatientCreateRequest();
+
+        // Send the request
+        patientService.handlePatientCreate(mapper.writeValueAsString(request), request.getRequestId());
+
+         // Verify error status is set
+         verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
+         assertFalse(statusCaptor.getValue().isSuccessful());
+ 
+         // Verify nothing was saved
+         verify(personRepository, never()).save(Mockito.any());
+         verify(elasticsearchPersonRepository, never()).save(Mockito.any());
+
     }
 
     private void verifyPersonMatchesInput(Person person, PatientInput input) {
@@ -300,6 +332,12 @@ public class PatientServiceTest {
                 .build();
     }
 
+    private NbsUserDetails invalidUserDetails() {
+        return NbsUserDetails.builder()
+                .authorities(addPatientAuthority())
+                .build();
+    }
+
     private Set<NbsAuthority> addAndFindPatientAuthority() {
         var authorities = new HashSet<NbsAuthority>();
         authorities.add(new NbsAuthority("ADD", "PATIENT", "", 123, "ALL", "ADD-PATIENT"));
@@ -307,7 +345,13 @@ public class PatientServiceTest {
         return authorities;
     }
 
-    private PatientInput getPatientInput() {
+    private Set<NbsAuthority> addPatientAuthority() {
+        var authorities = new HashSet<NbsAuthority>();
+        authorities.add(new NbsAuthority("ADD", "PATIENT", "", 123, "ALL", "ADD-PATIENT"));
+        return authorities;
+    }
+
+    private PatientCreateRequest buildPatientCreateRequest() {
         var now = Instant.now();
         var patientInput = new PatientInput();
         patientInput.setNames(
@@ -330,6 +374,11 @@ public class PatientServiceTest {
         patientInput.setRaceCodes(Arrays.asList("Race Code1", "Race Code2"));
         patientInput.setPhoneNumbers(Arrays.asList(new PhoneNumber(
                 "Phone Number", "Extension", PhoneType.CELL)));
-        return patientInput;
+
+        var request = new PatientCreateRequest();
+        request.setRequestId("RequestId");
+        request.setUserId("SomeUser");
+        request.setPatientInput(patientInput);
+        return request;
     }
 }
