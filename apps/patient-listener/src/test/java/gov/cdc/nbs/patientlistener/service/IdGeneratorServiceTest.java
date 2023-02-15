@@ -9,11 +9,12 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
 
 import gov.cdc.nbs.entity.odse.LocalUidGenerator;
@@ -21,7 +22,6 @@ import gov.cdc.nbs.patientlistener.service.IdGeneratorService.EntityType;
 import gov.cdc.nbs.patientlistener.service.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.repository.LocalUidGeneratorRepository;
 
-@SpringBootTest()
 @ActiveProfiles("test")
 public class IdGeneratorServiceTest {
 
@@ -30,6 +30,11 @@ public class IdGeneratorServiceTest {
 
     @InjectMocks
     private IdGeneratorService idGeneratorService;
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testGetNextValidId_NBS() {

@@ -13,15 +13,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,8 +55,6 @@ import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;;
 
-@SpringBootTest()
-@ActiveProfiles("test")
 public class PatientServiceTest {
 
     @Mock
@@ -88,6 +86,11 @@ public class PatientServiceTest {
     private final ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(Include.NON_NULL)
             .registerModule(new JavaTimeModule());
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testHandlePatientCreate() throws Exception {
