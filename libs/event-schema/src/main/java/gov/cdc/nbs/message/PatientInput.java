@@ -37,7 +37,7 @@ public class PatientInput {
         private String middleName;
         private String lastName;
         private Suffix suffix;
-        private String nameUseCd;
+        private NameUseCd nameUseCd;
     }
 
     @Data
@@ -76,6 +76,22 @@ public class PatientInput {
         HOME,
         CELL,
         WORK
+    }
+
+    public enum NameUseCd {
+        AD, // Adopted Name
+        AL, // Alias Name
+        A, // Artist/Stage Name
+        S, // Coded Pseudo
+        I, // Indigenous/Tribal
+        L, // Legal
+        C, // License
+        M, // Maiden Name
+        MO, // Mother's Name
+        BR, // Name at Birth
+        P, // Name of Partner/Spouse
+        R, // Religious
+        U
     }
 
 }

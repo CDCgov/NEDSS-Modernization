@@ -33,6 +33,7 @@ import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.Deceased;
 import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.Suffix;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalLocator;
@@ -41,6 +42,7 @@ import gov.cdc.nbs.message.PatientCreateRequest;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientInput.Identification;
 import gov.cdc.nbs.message.PatientInput.Name;
+import gov.cdc.nbs.message.PatientInput.NameUseCd;
 import gov.cdc.nbs.message.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
@@ -103,7 +105,7 @@ public class PatientServiceTest {
         // verify proper data saved to repositories
         verify(personRepository).save(personCaptor.capture());
         verify(elasticsearchPersonRepository).save(elasticsearchPersonCaptor.capture());
-        verifyPersonMatchesInput(personCaptor.getValue(), request.getPatientInput());
+        verifyPersonData(personCaptor.getValue(), request.getPatientInput());
         verifyElasticsearchPerson(elasticsearchPersonCaptor.getValue(), personCaptor.getValue());
 
         // verify successful patient create status was posted to topic
@@ -148,7 +150,9 @@ public class PatientServiceTest {
 
     }
 
-    private void verifyPersonMatchesInput(Person person, PatientInput input) {
+    private void verifyPersonData(Person person, PatientInput input) {
+        assertEquals('A', person.getStatusCd());
+        assertEquals(RecordStatus.ACTIVE, person.getRecordStatusCd());
         assertEquals(input.getSsn(), person.getSsn());
         assertEquals(input.getDateOfBirth(), person.getBirthTime());
         assertEquals(input.getBirthGender(), person.getBirthGenderCd());
@@ -167,6 +171,7 @@ public class PatientServiceTest {
         assertEquals(alias.getMiddleName(), personAlias.getMiddleNm());
         assertEquals(alias.getLastName(), personAlias.getLastNm());
         assertEquals(alias.getSuffix(), personAlias.getNmSuffix());
+        assertEquals(alias.getNameUseCd().toString(), personAlias.getNmUseCd());
 
         for (int i = 0; i < input.getRaceCodes().size(); i++) {
             assertEquals(input.getRaceCodes().get(i), person.getRaces().get(i).getId().getRaceCd());
@@ -356,8 +361,18 @@ public class PatientServiceTest {
         var patientInput = new PatientInput();
         patientInput.setNames(
                 Arrays.asList(
-                        new Name("First", "Middle", "Last", Suffix.JR, "L"),
-                        new Name("Second", "SecondMiddle", "SecondLast", Suffix.SR, "A")));
+                        new Name(
+                                "First",
+                                "Middle",
+                                "Last",
+                                Suffix.JR,
+                                NameUseCd.L),
+                        new Name(
+                                "Second",
+                                "SecondMiddle",
+                                "SecondLast",
+                                Suffix.SR,
+                                NameUseCd.AL)));
         patientInput.setAddresses(Arrays
                 .asList(new PostalAddress("SA1", "SA2", "City", "State", "County", "Country", "Zip",
                         "Census Tract")));

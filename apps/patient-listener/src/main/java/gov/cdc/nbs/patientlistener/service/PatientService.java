@@ -373,7 +373,7 @@ public class PatientService {
         personName.setMiddleNm(name.getMiddleName());
         personName.setLastNm(name.getLastName());
         personName.setNmSuffix(name.getSuffix());
-        personName.setNmUseCd(name.getNameUseCd());
+        personName.setNmUseCd(name.getNameUseCd().toString());
         personName.setRecordStatusCd(ACTIVE);
         personName.setRecordStatusTime(now);
         personName.setStatusCd('A');

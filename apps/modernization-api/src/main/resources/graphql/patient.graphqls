@@ -160,6 +160,7 @@ input Name {
     middleName: String
     lastName: String
     suffix: Suffix
+    nameType: NameUseCd!
 }
 
 input PostalAddress {
@@ -183,6 +184,22 @@ input Identification {
     identificationNumber: String!
     identificationType: String!
     assigningAuthority: String
+}
+
+enum NameUseCd {
+    AD # Adopted Name
+    AL # Alias Name
+    A # Artist/Stage Name
+    S # Coded Pseudo
+    I # Indigenous/Tribal
+    L # Legal
+    C # License
+    M # Maiden Name
+    MO # Mother's Name
+    BR # Name at Birth
+    P # Name of Partner/Spouse
+    R # Religious
+    U
 }
 
 enum Suffix {
