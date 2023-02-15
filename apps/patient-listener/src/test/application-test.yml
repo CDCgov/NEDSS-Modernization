@@ -32,7 +32,7 @@ kafkadef:
                 patient: request-patient-search.patientsearch
                 patientupdate: request-patient-search.patientupdate
                 patientdelete: request-patient-search.patientdelete
-                patient-create: patient-create
+                patient-create: patient-create-test
 
 logging:
     level:
