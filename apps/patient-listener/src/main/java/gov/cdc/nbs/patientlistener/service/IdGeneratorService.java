@@ -65,7 +65,7 @@ public class IdGeneratorService {
      * other than the NBS entry. Which references the type_cd column
      * as the class_name_cd for type NBS is dynamic based on the jurisdiction
      */
-    public static enum EntityType {
+    public enum EntityType {
         NBS,
         CLINICAL_DOCUMENT,
         COINFECTION_GROUP,

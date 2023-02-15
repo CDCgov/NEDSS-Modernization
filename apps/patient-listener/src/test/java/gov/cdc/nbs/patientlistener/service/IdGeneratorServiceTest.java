@@ -23,7 +23,7 @@ import gov.cdc.nbs.patientlistener.service.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.repository.LocalUidGeneratorRepository;
 
 @ActiveProfiles("test")
-public class IdGeneratorServiceTest {
+class IdGeneratorServiceTest {
 
     @Mock
     private LocalUidGeneratorRepository localUidGeneratorRepository;

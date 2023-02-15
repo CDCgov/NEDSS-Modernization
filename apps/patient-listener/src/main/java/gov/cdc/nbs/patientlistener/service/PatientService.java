@@ -83,6 +83,7 @@ public class PatientService {
     @Autowired
     private KafkaProducer producer;
 
+    @Transactional
     public void handlePatientCreate(String message, String key) {
         PatientCreateRequest createRequest;
         try {
@@ -121,8 +122,6 @@ public class PatientService {
 
         // post success message to status topic
         sendPatientCreateStatus(true, key, "Successfully created patient", newPatient.getId());
-        return;
-
     }
 
     private void sendPatientCreateStatus(boolean successful, String key, String message) {
@@ -142,7 +141,6 @@ public class PatientService {
     /**
      * Creates a Person entity from the PatientInput and persists it to the database
      */
-    @Transactional
     private Person createPatient(PatientInput input, Long userId) {
         var now = Instant.now();
         final long id = idGeneratorService.getNextValidId(EntityType.NBS).getId();
@@ -264,12 +262,11 @@ public class PatientService {
         }
         return person.getRaces()
                 .stream()
-                .map(race -> {
-                    return NestedRace.builder()
-                            .raceCd(race.getRaceCategoryCd())
-                            .raceDescTxt(race.getRaceDescTxt())
-                            .build();
-                }).toList();
+                .map(race -> NestedRace.builder()
+                        .raceCd(race.getRaceCategoryCd())
+                        .raceDescTxt(race.getRaceDescTxt())
+                        .build())
+                .toList();
     }
 
     private List<NestedName> getNames(Person person) {
@@ -278,17 +275,16 @@ public class PatientService {
         }
         return person.getNames()
                 .stream()
-                .map(n -> {
-                    return NestedName.builder()
-                            .firstNm(n.getFirstNm())
-                            .firstNmSndx(n.getFirstNmSndx())
-                            .middleNm(n.getMiddleNm())
-                            .lastNm(n.getLastNm())
-                            .lastNmSndx(n.getLastNmSndx())
-                            .nmPrefix(n.getNmPrefix())
-                            .nmSuffix(n.getNmSuffix() != null ? n.getNmSuffix().toString() : null)
-                            .build();
-                }).toList();
+                .map(n -> NestedName.builder()
+                        .firstNm(n.getFirstNm())
+                        .firstNmSndx(n.getFirstNmSndx())
+                        .middleNm(n.getMiddleNm())
+                        .lastNm(n.getLastNm())
+                        .lastNmSndx(n.getLastNmSndx())
+                        .nmPrefix(n.getNmPrefix())
+                        .nmSuffix(n.getNmSuffix() != null ? n.getNmSuffix().toString() : null)
+                        .build())
+                .toList();
     }
 
     private List<NestedEmail> getEmails(Person person) {

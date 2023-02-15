@@ -75,7 +75,7 @@ public class KafkaConfig {
 
     private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
         var config = getKafkaConfig();
-        return new KafkaTemplate<String, T>(
+        return new KafkaTemplate<>(
                 new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
                         new JsonSerializer<>()));
     }

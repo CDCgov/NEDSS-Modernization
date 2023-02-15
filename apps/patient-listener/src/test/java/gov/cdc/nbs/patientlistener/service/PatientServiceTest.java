@@ -55,7 +55,7 @@ import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;;
 
-public class PatientServiceTest {
+class PatientServiceTest {
 
     @Mock
     private UserService userService;
