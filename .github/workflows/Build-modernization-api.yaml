@@ -3,8 +3,7 @@ on:
   push:
     branches:
       - main
-      - rel-**
-      - sgz-update-container-build-process    
+      - rel-**  
     paths-ignore:
       - 'cdc-sandbox/**'
       - 'docker-compose.yml'      
