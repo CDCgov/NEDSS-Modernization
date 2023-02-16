@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - sgz-update-container-build-process 
        
 env:
   deployment_env: dev
