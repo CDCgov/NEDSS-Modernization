@@ -12,12 +12,13 @@ on:
       - '.github/workflows/Build-common-asset-server.yaml'
       - '.github/workflows/Build-nifi.yaml'
       - '.github/workflows/Build-elasticsearch.yaml'
+      - '.github/workflows/dockerfile-to-ecr.yaml'
       - '.github/workflows/sonar.yaml'
 
 # Microservice name must correspond to an existing ECR          
 env:
   microservice_name: modernization-api
-  dockerfile_relative_path: ./apps/modernization-api
+  dockerfile_relative_path: -f ./apps/modernization-api/Dockerfile .
   accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
 
 jobs:
@@ -60,6 +61,7 @@ jobs:
         BRANCH_ENV=${{env.github_branch}}
         VERSION_TAG="${BRANCH_ENV//rel-/v}"
         echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
+
     - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for dev
       if: ${{ startsWith( env.github_branch, 'rel-' ) != true}}
       id: build-image-develop
@@ -78,6 +80,7 @@ jobs:
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN" >> $GITHUB_OUTPUT
+
     - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for release
       if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
       id: build-image-release
