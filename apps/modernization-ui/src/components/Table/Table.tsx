@@ -95,7 +95,7 @@ export const TableComponent = ({
                             </tr>
                         ))
                     ) : (
-                        <tr className="text-center no-data">No entries</tr>
+                        <tr className="text-center no-data">Not Available</tr>
                     )}
                 </tbody>
             </Table>

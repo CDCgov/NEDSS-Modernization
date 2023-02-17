@@ -17,6 +17,7 @@ type EventTabProp = {
 
 export const Events = ({ investigationData, labReports }: EventTabProp) => {
     const [tableBody, setTableBody] = useState<any>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [contactRecords, setContactRecords] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -445,7 +446,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                         { name: 'Associated with', sortable: true },
                         { name: 'Event #', sortable: true }
                     ]}
-                    tableBody={contactRecords}
+                    tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
