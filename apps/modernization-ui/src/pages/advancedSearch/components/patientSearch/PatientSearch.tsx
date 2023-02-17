@@ -178,7 +178,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         body.state !== '- Select -' && (rowData.state = body.state);
         body.zip && (rowData.zip = body.zip);
 
-        body.phoneNumber && (rowData.phoneNumber = body.phoneNumber);
+        body.phoneNumber && validatePhone(body.phoneNumber) && (rowData.phoneNumber = body.phoneNumber);
         body.email && (rowData.email = body.email);
 
         body.race !== '- Select -' && (rowData.race = body.race);
@@ -191,6 +191,16 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
             };
         }
         handleSubmission(rowData);
+    };
+
+    const validatePhone = (text: string) => {
+        const validPhone = /^[0-9]{1,10}$/;
+        const validPhoneFormatted = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        if (text.match(validPhone) || text.match(validPhoneFormatted)) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     return (
