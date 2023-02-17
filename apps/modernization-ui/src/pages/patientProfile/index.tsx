@@ -17,7 +17,8 @@ import { UserContext } from '../../providers/UserContext';
 import {
     FindPatientsByFilterQuery,
     useFindInvestigationsByFilterLazyQuery,
-    useFindLabReportsByFilterLazyQuery
+    useFindLabReportsByFilterLazyQuery,
+    useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
@@ -37,6 +38,7 @@ export const PatientProfile = () => {
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
+    const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -48,6 +50,7 @@ export const PatientProfile = () => {
             encryptedString: searchParams?.get('data') || '',
             authorization: `Bearer ${state.getToken()}`
         }).then(async (data: any) => {
+            console.log(data, 'data');
             setProfileData(data);
             getPatientInvestigationData({
                 variables: {
@@ -60,6 +63,13 @@ export const PatientProfile = () => {
                 variables: {
                     filter: {
                         patientId: data.id
+                    }
+                }
+            });
+            getPatientProfileData({
+                variables: {
+                    filter: {
+                        id: data.localId
                     }
                 }
             });
@@ -218,7 +228,9 @@ export const PatientProfile = () => {
                         labReports={labReportData?.findLabReportsByFilter}
                     />
                 )}
-                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics />}
+                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
+                    <Demographics patientProfileData={patientProfileData?.findPatientsByFilter} />
+                )}
 
                 <div className="text-center margin-y-5">
                     <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

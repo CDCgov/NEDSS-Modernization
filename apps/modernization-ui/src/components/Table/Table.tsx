@@ -79,7 +79,13 @@ export const TableComponent = ({
                             <tr key={index}>
                                 {item.tableDetails.map((td: any, ind: number) =>
                                     td.title ? (
-                                        <td key={ind}>{td.title}</td>
+                                        td.title === 'Not available yet' ? (
+                                            <td key={ind} className="font-sans-md no-data">
+                                                {td.title}
+                                            </td>
+                                        ) : (
+                                            <td key={ind}>{td.title}</td>
+                                        )
                                     ) : (
                                         <td key={ind} className="font-sans-md no-data">
                                             No data

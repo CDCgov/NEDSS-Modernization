@@ -35,7 +35,7 @@ export const PatientResults = ({
         data.map((item: any) => {
             const tempNumbers: any = [];
             const tempEmails: any = [];
-            item?.NBSEntity?.entityLocatorParticipations?.forEach((element: any) => {
+            item?.nbsEntity?.entityLocatorParticipations?.forEach((element: any) => {
                 if (element.locator.phoneNbrTxt) {
                     tempNumbers.push(element.locator.phoneNbrTxt);
                 }
@@ -251,8 +251,8 @@ export const PatientResults = ({
                                 <Grid col={5}>
                                     <Grid row gap={3}>
                                         {/* Locator entries */}
-                                        {newOrderPhone(item?.NBSEntity?.entityLocatorParticipations)}
-                                        {newOrderEmail(item?.NBSEntity?.entityLocatorParticipations)}
+                                        {newOrderPhone(item?.nbsEntity?.entityLocatorParticipations)}
+                                        {newOrderEmail(item?.nbsEntity?.entityLocatorParticipations)}
                                         <Grid col={6} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
                                             {getOtherNames(item, item.names) ? (
@@ -265,7 +265,7 @@ export const PatientResults = ({
                                                 <p className="text-italic margin-0 text-gray-30">No Data</p>
                                             )}
                                         </Grid>
-                                        {newOrderAddress(item?.NBSEntity?.entityLocatorParticipations)}
+                                        {newOrderAddress(item?.nbsEntity?.entityLocatorParticipations)}
                                     </Grid>
                                 </Grid>
                                 <Grid col={3}>

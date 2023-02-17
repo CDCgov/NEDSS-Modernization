@@ -5,6 +5,7 @@ import { RaceForm } from '../DemographicsForm/Race';
 import { EthnicityForm } from '../DemographicsForm/Ethnicity';
 import { MortalityForm } from '../DemographicsForm/Mortality';
 import { GeneralPatientInformation } from '../DemographicsForm/GenearalPatientData';
+import { SexBirthForm } from '../DemographicsForm/SexBirth';
 
 export type TableProps = {
     tableHeader?: string;
@@ -47,6 +48,7 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
             {raceForm === 'ethnicity' && <EthnicityForm setEthnicityForm={() => setRaceForm(undefined)} />}
             {raceForm === 'mortality' && <MortalityForm setMortalityForm={() => setRaceForm(undefined)} />}
             {raceForm === 'general' && <GeneralPatientInformation setGeneralForm={() => setRaceForm(undefined)} />}
+            {raceForm === 'sex' && <SexBirthForm setSexBirthForm={() => setRaceForm(undefined)} />}
         </div>
     );
 };

@@ -6,10 +6,19 @@ import { AddCommentModal } from './components/AddCommentModal';
 import { AddNameModal } from './components/AddNameModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
+import { FindPatientsByFilterQuery } from '../../generated/graphql/schema';
 
-export const Demographics = () => {
+type DemographicProps = {
+    patientProfileData: FindPatientsByFilterQuery['findPatientsByFilter'] | undefined;
+};
+
+export const Demographics = ({ patientProfileData }: DemographicProps) => {
     const [tableBody, setTableBody] = useState<any>([]);
     const [nameTableBody, setNameTableBody] = useState<any>([]);
+    const [addressTableBody, setAddressTableBody] = useState<any>([]);
+    const [phoneEmailTableBody, setPhoneEmailTableBody] = useState<any>([]);
+    const [identificationTableBody, setIdentificationTableBody] = useState<any>([]);
+
     const [currentPage, setCurrentPage] = useState<number>(1);
     const addCommentModalRef = useRef<ModalRef>(null);
     const addNameModalRef = useRef<ModalRef>(null);
@@ -79,8 +88,188 @@ export const Demographics = () => {
                 ]
             }
         ]);
-        setNameTableBody(tempArr);
     }, []);
+
+    const namesTableData = (names: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['names']) => {
+        const tempArr: any = [];
+        names?.map((item, i: number) => {
+            tempArr.push({
+                id: i + 1,
+                checkbox: true,
+                tableDetails: [
+                    {
+                        id: 1,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 2,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 3,
+                        title: item?.nmPrefix
+                    },
+                    {
+                        id: 4,
+                        title: `${item?.lastNm}, ${item?.firstNm} ${item?.middleNm}`
+                    },
+                    {
+                        id: 5,
+                        title: item?.nmSuffix
+                    },
+                    {
+                        id: 6,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 7,
+                        title: (
+                            <Button type="button" unstyled>
+                                <Icon.MoreHoriz />
+                            </Button>
+                        )
+                    }
+                ]
+            });
+        });
+        setNameTableBody(tempArr);
+    };
+
+    const idTableData = (entityIds: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['entityIds']) => {
+        const tempArr: any = [];
+        entityIds?.map((item, i: number) => {
+            tempArr.push({
+                id: i + 1,
+                checkbox: true,
+                tableDetails: [
+                    {
+                        id: 1,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 2,
+                        title: item?.typeDescTxt
+                    },
+                    {
+                        id: 3,
+                        title: item?.assigningAuthorityDescTxt
+                    },
+                    {
+                        id: 4,
+                        title: item?.rootExtensionTxt
+                    },
+                    {
+                        id: 5,
+                        title: (
+                            <Button type="button" unstyled>
+                                <Icon.MoreHoriz />
+                            </Button>
+                        )
+                    }
+                ]
+            });
+        });
+        setIdentificationTableBody(tempArr);
+    };
+
+    const phoneEmailTableData = (
+        phoneEmailData: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['nbsEntity']['entityLocatorParticipations']
+    ) => {
+        const tempArr: any = [];
+        phoneEmailData?.map((element, i: number) => {
+            if (element?.classCd !== 'PST') {
+                tempArr.push({
+                    id: i + 1,
+                    checkbox: true,
+                    tableDetails: [
+                        {
+                            id: 1,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 2,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 3,
+                            title: element?.locator?.phoneNbrTxt
+                        },
+                        {
+                            id: 4,
+                            title: element?.locator?.emailAddress
+                        },
+                        {
+                            id: 5,
+                            title: (
+                                <Button type="button" unstyled>
+                                    <Icon.MoreHoriz />
+                                </Button>
+                            )
+                        }
+                    ]
+                });
+            }
+        });
+        setPhoneEmailTableBody(tempArr);
+    };
+
+    const addressTableData = (
+        entityLocatorParticipations: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['nbsEntity']['entityLocatorParticipations']
+    ) => {
+        const tempArr: any = [];
+        entityLocatorParticipations?.forEach((element, i: number) => {
+            if (element?.classCd === 'PST') {
+                tempArr.push({
+                    id: i + 1,
+                    checkbox: true,
+                    tableDetails: [
+                        {
+                            id: 1,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 2,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 3,
+                            title: element?.locator?.streetAddr1 + ' ' + element?.locator?.streetAddr1
+                        },
+                        {
+                            id: 4,
+                            title: element?.locator?.cityDescTxt
+                        },
+                        {
+                            id: 5,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 6,
+                            title: element?.locator?.zipCd
+                        },
+                        {
+                            id: 7,
+                            title: (
+                                <Button type="button" unstyled>
+                                    <Icon.MoreHoriz />
+                                </Button>
+                            )
+                        }
+                    ]
+                });
+            }
+        });
+        setAddressTableBody(tempArr);
+    };
+
+    useEffect(() => {
+        if (patientProfileData && patientProfileData?.content?.length > 0) {
+            namesTableData(patientProfileData?.content[0].names);
+            idTableData(patientProfileData?.content[0].entityIds);
+            addressTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
+            phoneEmailTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
+        }
+    }, [patientProfileData]);
 
     return (
         <>
@@ -158,46 +347,7 @@ export const Demographics = () => {
                         { name: 'Zip', sortable: true },
                         { name: 'Actions', sortable: true }
                     ]}
-                    tableBody={[
-                        {
-                            id: 1,
-                            checkbox: true,
-                            tableDetails: [
-                                {
-                                    id: 1,
-                                    title: '07/27/2022'
-                                },
-                                {
-                                    id: 2,
-                                    title: 'House / Home'
-                                },
-                                {
-                                    id: 3,
-                                    title: '123 Main St.'
-                                },
-                                {
-                                    id: 4,
-                                    title: 'Atlanta'
-                                },
-                                {
-                                    id: 5,
-                                    title: 'Georgia'
-                                },
-                                {
-                                    id: 6,
-                                    title: '30024'
-                                },
-                                {
-                                    id: 7,
-                                    title: (
-                                        <Button type="button" unstyled>
-                                            <Icon.MoreHoriz />
-                                        </Button>
-                                    )
-                                }
-                            ]
-                        }
-                    ]}
+                    tableBody={addressTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
@@ -223,38 +373,7 @@ export const Demographics = () => {
                         { name: 'Email address', sortable: true },
                         { name: 'Actions', sortable: true }
                     ]}
-                    tableBody={[
-                        {
-                            id: 1,
-                            checkbox: true,
-                            tableDetails: [
-                                {
-                                    id: 1,
-                                    title: '07/27/2022'
-                                },
-                                {
-                                    id: 2,
-                                    title: 'Cellular phone / Mobile contact'
-                                },
-                                {
-                                    id: 3,
-                                    title: '555-555-5555'
-                                },
-                                {
-                                    id: 4,
-                                    title: 'sjohn@helloworld.com'
-                                },
-                                {
-                                    id: 5,
-                                    title: (
-                                        <Button type="button" unstyled>
-                                            <Icon.MoreHoriz />
-                                        </Button>
-                                    )
-                                }
-                            ]
-                        }
-                    ]}
+                    tableBody={phoneEmailTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
@@ -271,7 +390,7 @@ export const Demographics = () => {
                             </Button>
                         </div>
                     }
-                    tableHeader={'Indentification'}
+                    tableHeader={'Identification'}
                     tableHead={[
                         { name: 'As of', sortable: true },
                         { name: 'Type', sortable: true },
@@ -279,38 +398,7 @@ export const Demographics = () => {
                         { name: 'Value', sortable: true },
                         { name: 'Actions', sortable: true }
                     ]}
-                    tableBody={[
-                        {
-                            id: 1,
-                            checkbox: true,
-                            tableDetails: [
-                                {
-                                    id: 1,
-                                    title: '07/27/2022'
-                                },
-                                {
-                                    id: 2,
-                                    title: 'Account number'
-                                },
-                                {
-                                    id: 3,
-                                    title: 'GA'
-                                },
-                                {
-                                    id: 4,
-                                    title: '3453453533'
-                                },
-                                {
-                                    id: 5,
-                                    title: (
-                                        <Button type="button" unstyled>
-                                            <Icon.MoreHoriz />
-                                        </Button>
-                                    )
-                                }
-                            ]
-                        }
-                    ]}
+                    tableBody={identificationTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
