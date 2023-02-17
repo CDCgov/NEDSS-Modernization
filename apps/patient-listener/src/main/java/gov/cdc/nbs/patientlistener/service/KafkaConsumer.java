@@ -16,7 +16,7 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics = "patientDeleteTopic", groupId = "group_id")
-    public void deleteConsume(Long id, PatientInput patient) {
+    public void deleteConsume(Long id, PatientInput patient, String message) {
         patient.removeIf(t -> t.getId().equals(id));
         log.info("message = {}", message);
     }
