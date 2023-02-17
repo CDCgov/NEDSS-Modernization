@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.Operator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -176,13 +177,17 @@ public class PatientService {
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getPhoneNumber()).defaultField("phone.telephoneNbr"),
+                    QueryBuilders.queryStringQuery(filter.getPhoneNumber())
+                    .defaultField("phone.telephoneNbr")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getEmail()).defaultField("email.emailAddress"),
+                    QueryBuilders.queryStringQuery(filter.getEmail())
+                    .defaultField("email.emailAddress")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
