@@ -121,7 +121,6 @@ export const AdvancedSearch = () => {
             // no query parameters specified or user is not logged in
             setActiveTab('person');
             setResultsChip([]);
-            console.log('asd');
             setValidSearch(false);
             setLoading(false);
             return;
@@ -135,7 +134,6 @@ export const AdvancedSearch = () => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
                 setResultsChip([]);
-                console.log('asd');
                 setValidSearch(false);
                 setSubmitted(true);
             }
@@ -336,7 +334,6 @@ export const AdvancedSearch = () => {
             setSubmitted(false);
         } else {
             setLoading(false);
-            console.log('asd');
             setValidSearch(false);
             setSubmitted(true);
         }
@@ -384,7 +381,6 @@ export const AdvancedSearch = () => {
         setLabReportData(undefined);
         setLabReportFilter({});
         setSubmitted(false);
-        console.log('asd');
         setValidSearch(false);
         setLastSearchType(undefined);
         navigate('/advanced-search');
@@ -664,6 +660,7 @@ export const AdvancedSearch = () => {
     };
 
     function handleAddNewPatientClick(): void {
+        setShowAddNewDropDown(false);
         RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
             () => {
                 window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
@@ -672,6 +669,7 @@ export const AdvancedSearch = () => {
     }
 
     function handleAddNewLabReportClick(): void {
+        setShowAddNewDropDown(false);
         window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
     }
 
@@ -818,25 +816,28 @@ export const AdvancedSearch = () => {
                                     <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Asc,
                                                         sortField: SortField.LastNm
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
+                                                outline={sort.sortDirection === SortDirection.Asc}
                                                 unstyled>
                                                 Patient name (A-Z)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Desc,
                                                         sortField: SortField.LastNm
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
                                                 unstyled>
                                                 Patient name (Z-A)
@@ -844,12 +845,13 @@ export const AdvancedSearch = () => {
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Asc,
                                                         sortField: SortField.BirthTime
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
                                                 unstyled>
                                                 Date of birth (Ascending)
@@ -857,12 +859,13 @@ export const AdvancedSearch = () => {
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Desc,
                                                         sortField: SortField.BirthTime
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
                                                 unstyled>
                                                 Date of birth (Descending)
