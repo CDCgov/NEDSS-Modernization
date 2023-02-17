@@ -33,31 +33,17 @@ export const Input = ({
                 {label}
                 <small className="text-red">{required && ' *'}</small>
             </Label>
-            {type === 'tel' ? (
-                <TextInput
-                    {...props}
-                    id={id}
-                    onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
-                    name={name || ''}
-                    validationStatus={error ? 'error' : undefined}
-                    aria-describedby={`${error}-message`}
-                    className={classNames(className)}
-                    type={type}
-                />
-            ) : (
-                <TextInput
-                    {...props}
-                    id={id}
-                    onChange={onChange}
-                    value={defaultValue ? defaultValue : ''}
-                    name={name || ''}
-                    validationStatus={error ? 'error' : undefined}
-                    aria-describedby={`${error}-message`}
-                    className={classNames(className)}
-                    type={type}
-                />
-            )}
+            <TextInput
+                {...props}
+                id={id}
+                onChange={onChange}
+                value={defaultValue ? defaultValue : ''}
+                name={name || ''}
+                validationStatus={error ? 'error' : undefined}
+                aria-describedby={`${error}-message`}
+                className={classNames(className)}
+                type={type}
+            />
             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
         </>
     );
