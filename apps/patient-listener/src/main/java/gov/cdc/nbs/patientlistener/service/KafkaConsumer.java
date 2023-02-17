@@ -3,6 +3,7 @@ package gov.cdc.nbs.patientlistener.service;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import gov.cdc.nbs.graphql.input.PatientInput;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -15,7 +16,8 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics = "patientDeleteTopic", groupId = "group_id")
-    public void deleteConsume(String message) {
+    public void deleteConsume(Long id, PatientInput patient) {
+        patient.removeIf(t -> t.getId().equals(id));
         log.info("message = {}", message);
     }
 }
