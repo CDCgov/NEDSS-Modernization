@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, Label } from '@trussworks/react-uswds';
 import { validatePhoneNumber } from '../../../utils/PhoneValidation';
 
@@ -10,8 +10,16 @@ type PhoneNumberInputProps = {
 
 export const PhoneNumberInput = ({ label, defaultValue, onChange, ...props }: PhoneNumberInputProps) => {
     const [valid, setValid] = useState(true);
+
+    useEffect(() => {
+        if (defaultValue) {
+            validatePhone(defaultValue);
+        }
+    }, []);
     const validatePhone = (number: string) => {
-        onChange(number);
+        if (onChange) {
+            onChange(number);
+        }
         setValid(validatePhoneNumber(number));
     };
     return (
