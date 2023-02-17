@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TextInput, Label } from '@trussworks/react-uswds';
+import { validatePhoneNumber } from '../../../utils/PhoneValidation';
 
 type PhoneNumberInputProps = {
     label?: string;
@@ -9,15 +10,9 @@ type PhoneNumberInputProps = {
 
 export const PhoneNumberInput = ({ label, defaultValue, onChange, ...props }: PhoneNumberInputProps) => {
     const [valid, setValid] = useState(true);
-    const validatePhone = (e: any) => {
-        const validPhone = /^[0-9]{1,10}$/;
-        const validPhoneFormatted = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        onChange(e.target.value);
-        if (e.target.value.match(validPhone) || e.target.value.match(validPhoneFormatted)) {
-            setValid(true);
-        } else {
-            setValid(false);
-        }
+    const validatePhone = (number: string) => {
+        onChange(number);
+        setValid(validatePhoneNumber(number));
     };
     return (
         <>
@@ -25,7 +20,7 @@ export const PhoneNumberInput = ({ label, defaultValue, onChange, ...props }: Ph
             <TextInput
                 {...props}
                 id="phoneNumber"
-                onChange={(e) => validatePhone(e)}
+                onChange={(e) => validatePhone(e.target.value)}
                 value={defaultValue ? defaultValue : ''}
                 name="phoneNumber"
                 validationStatus={!valid ? 'error' : undefined}
