@@ -369,56 +369,32 @@ public class PatientService {
         return personRepository.save(person);
     }
 
-    /**
-     * Send updated Person Event to kakfa topic to be picekd up and updated.
-     * 
-     * @param id
-     * @param input
-     * @return
-     */
-    public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-        Person updatePerson = updatePatient(id, input);
-        String requestId = null;
-        if (updatePerson != null) {
-            var teleUptLocators = addTeleLocatorEntries(updatePerson, input.getPhoneNumbers(),
-                    input.getEmailAddresses());
-            var postalLocators = addPostalLocatorEntries(updatePerson, input.getAddresses());
+	/**
+	 * Send updated Person Event to kakfa topic to be picked up and updated.
+	 * 
+	 * @param id
+	 * @param input
+	 * @return
+	 */
+	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
+		Person updatePerson = updatePatient(id, input);
+		String requestId = null;
 
-			NBSEntity nbsEntity = updatePerson.getNbsEntity();
-
+		if (updatePerson != null) {
 			List<TemplateInput> templateInputs = new ArrayList<TemplateInput>();
-			List<EntityLocatorParticipation> postChain = new ArrayList<EntityLocatorParticipation>();
 
-			for (EntityLocatorParticipation entry : nbsEntity.getEntityLocatorParticipations()) {
-				TemplateInput item = new TemplateInput();
-				item.setKey(entry.getId() + "_" + entry.getNbsEntity().getId());
-				templateInputs.add(item);
-				entry.setNbsEntity(null);
-				postChain.add(entry);
-			}
-			nbsEntity.setEntityLocatorParticipations(postChain);
-			updatePerson.setNbsEntity(nbsEntity);
-			
-			updatePerson.setRaces(null);
-			updatePerson.setNames(null);
-			updatePerson.setEntityIds(null);		
-			
-			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().updatePerson(updatePerson)
-					.templateInputs(templateInputs).postalLocators(postalLocators).teleLocators(teleUptLocators)
-					.build();
+			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
+					.templateInputs(templateInputs).build();
 
 			requestId = getRequestID();
-			System.out.println("SENDINGREQUEST: " + requestId);
-			System.out.println("SENDINGPatientUpdateParams: " + patientUpdatedPayLoad);
-			
+
 			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
 			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
 		}
 
-        return PatientUpdateResponse.builder().requestId(requestId)
-                .updatedPerson(updatePerson).build();
+		return PatientUpdateResponse.builder().requestId(requestId).updatedPerson(updatePerson).build();
 
-    }
+	}
 
     public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
         String requestId = getRequestID();

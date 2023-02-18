@@ -1,6 +1,5 @@
 buildscript {
     ext {
-        //springBootVersion = "3.0.1"
         springBootVersion = "2.7.2"
         queryDslVersion = "5.0.0"
 		blazePersistenceVersion = "1.6.8"
@@ -8,10 +7,8 @@ buildscript {
 }
 plugins {
 	id 'java'
-	//id 'org.springframework.boot' version '3.0.1'
 	id "org.springframework.boot" version "${springBootVersion}"
 	id "io.spring.dependency-management" version "1.0.12.RELEASE"
-	//id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'gov.cdc.nbs'
@@ -20,7 +17,6 @@ sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
-	//maven{ url 'https://packages.confluent.io/maven/' }
 }
 
 dependencies {
@@ -52,11 +48,6 @@ dependencies {
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 	
 	
-	//implementation "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
-	//implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
-	//annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
-	//annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
-	
 	// blazebit for querydsl paging
 	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
 	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
@@ -65,6 +56,9 @@ dependencies {
 	
 	// elasticsearch
 	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
 	
 	// test
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"

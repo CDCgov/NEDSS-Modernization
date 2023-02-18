@@ -1,0 +1,22 @@
+package gov.cdc.nbs.patientlistener.elasticsearch;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+public class NestedAddress {
+    private String streetAddr1;
+    private String streetAddr2;
+    private String city;
+    private String state;
+    private String zip;
+    private String cntyCd;
+    private String cntryCd;
+}

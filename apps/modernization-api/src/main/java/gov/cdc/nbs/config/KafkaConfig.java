@@ -71,6 +71,8 @@ public class KafkaConfig {
 			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
 		} else {
 			var config = getKafkaConfig();
+			config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageSerializer.class);
+				
 			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
 		}
 	}
@@ -93,16 +95,7 @@ public class KafkaConfig {
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		
-		 KafkaAvroSerializer kafkaAvroSerializer = new KafkaAvroSerializer();
-		kafkaAvroSerializer.configure(config, false);
-		
-		/*KafkaJsonSchemaSerializer kafkaJsonSerializer= new KafkaJsonSchemaSerializer();
-		kafkaJsonSerializer.configure(config, false);*/
-		
-		//JsonSerializer jsonSerializer = new JsonSerializer();
-		//jsonSerializer.configure(config, false);
-
-		return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
+		return config;
 	}
 
 	@Bean

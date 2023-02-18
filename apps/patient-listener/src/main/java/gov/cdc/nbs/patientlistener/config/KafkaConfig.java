@@ -19,16 +19,17 @@ import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import gov.cdc.nbs.patientlistener.message.KafkaMessageDeSerializer;
 import gov.cdc.nbs.patientlistener.message.PatientUpdateEvent;
 import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @EnableKafka
 @Configuration
 public class KafkaConfig {
-	
 
 	@Value("${kafka.bootstrap-servers}")
 	private String bootstrapServers;
@@ -40,43 +41,40 @@ public class KafkaConfig {
 	private String groupId;
 
 	// patient update topic
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
 	public ProducerFactory<String, PatientUpdateEventResponse> producerFactoryPatientUpdateResponse() {
-			Map<String, Object> config = new HashMap<>();
-			config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-			config.put("schema.registry.url", schemaRegistryUrl);
-			config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-			config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		Map<String, Object> config = new HashMap<>();
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		config.put("schema.registry.url", schemaRegistryUrl);
+		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageDeSerializer.class);
 
-			return new DefaultKafkaProducerFactory<>(config, new StringSerializer(), new JsonSerializer<>());
+		return new DefaultKafkaProducerFactory(config, new StringSerializer(),
+				new gov.cdc.nbs.patientlistener.message.KafkaMessageSerializer());
 	}
-	
+
 	@Bean
 	public KafkaTemplate<String, PatientUpdateEventResponse> kafkaTemplatePatientUpdateResponse() {
 		return new KafkaTemplate<>(producerFactoryPatientUpdateResponse());
 	}
-
-	
 
 	public ConsumerFactory<String, String> consumerFactory() {
 		Map<String, Object> config = new HashMap<>();
 		config.putAll(commonConsumerConfigs());
 		return new DefaultKafkaConsumerFactory<>(config);
 	}
-    @Value("${kafkadef.patient-search.topics.request.patientdelete}")
-    private String patientDeleteTopic;
 
-    public ConsumerFactory<String, String> consumerFactory() {
-        Map<String, Object> config = new HashMap<>();
+	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
+	private String patientDeleteTopic;
 
 	@Bean
 	public ConsumerFactory<String, PatientUpdateEvent> consumerFactoryPatientUpdate() {
 		Map<String, Object> config = new HashMap<>();
 		config.putAll(commonConsumerConfigs());
 
-		JsonDeserializer<PatientUpdateEvent> deserializer = new JsonDeserializer<>(PatientUpdateEvent.class);
-		deserializer.addTrustedPackages("*");
+		KafkaMessageDeSerializer deserializer = new KafkaMessageDeSerializer();
 
 		return new DefaultKafkaConsumerFactory(config, new StringDeserializer(), deserializer);
 	}
@@ -112,10 +110,5 @@ public class KafkaConfig {
 
 		return config;
 	}
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
+
 }
