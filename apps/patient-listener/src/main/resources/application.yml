@@ -32,14 +32,27 @@ kafka:
     producer:
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    consumer:
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      group-id: patient-search
+      properties:
+        # Delegate deserializers
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        specific:
+          avro:
+            reader: true
     properties:
         schema:
             registry:
                 url: http://localhost:9091
         topic:
             suffix: '-event'
-            partition.count: 3
-            replication.factor: 3
+            partition.count: 1
+            replication.factor: 1
         message.max.attempt: 5
         retry.naming.pattern: -neds-part-retry
         dlt.naming.pattern: -neds-part-dlt
@@ -51,7 +64,7 @@ kafkadef:
                 patientupdate: request-patient-search.patientupdate
                 patientdelete: request-patient-search.patientdelete
                 patient-create: patient-create
-
-logging:
-    level:
-        root: INFO
+            event:
+                patient: event-patient-search.patientsearch
+                patientupdate: response-patient-search.patientupdate
+                patientdelete: request-patient-search.patientdelete

@@ -381,6 +381,32 @@ public class PatientService {
         producer.requestPatientUpdateEnvelope(updateRequest);
         return new PatientUpdateResponse(requestId);
     }
+	/**
+	 * Send updated Person Event to kakfa topic to be picked up and updated.
+	 * 
+	 * @param id
+	 * @param input
+	 * @return
+	 */
+	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
+		Person updatePerson = updatePatient(id, input);
+		String requestId = null;
+
+		if (updatePerson != null) {
+			List<TemplateInput> templateInputs = new ArrayList<TemplateInput>();
+
+			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
+					.templateInputs(templateInputs).build();
+
+			requestId = getRequestID();
+
+			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
+			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
+		}
+
+		return PatientUpdateResponse.builder().requestId(requestId).updatedPerson(updatePerson).build();
+
+	}
 
     public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
         String requestId = getRequestID();

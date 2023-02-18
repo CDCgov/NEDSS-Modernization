@@ -1,11 +1,8 @@
-package gov.cdc.nbs.message;
+package gov.cdc.nbs.patientlistener.message;
 
 import java.util.List;
 
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PostalLocator;
-import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.graphql.input.PatientInput;
+import gov.cdc.nbs.patientlistener.odse.PatientInput;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

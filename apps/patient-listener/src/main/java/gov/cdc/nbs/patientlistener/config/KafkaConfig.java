@@ -20,6 +20,14 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import gov.cdc.nbs.patientlistener.message.KafkaMessageDeSerializer;
+import gov.cdc.nbs.patientlistener.message.PatientUpdateEvent;
+import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @EnableKafka
 @Configuration
 public class KafkaConfig {
@@ -33,59 +41,73 @@ public class KafkaConfig {
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${kafka.properties.schema.registry.url}")
-    private String schemaRegistryUrl;
+	// patient update topic
 
-    // general topic
-    @Value("${kafkadef.patient-search.topics.request.patient}")
-    private String patientSearchTopic;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Bean
+	public ProducerFactory<String, PatientUpdateEventResponse> producerFactoryPatientUpdateResponse() {
+		Map<String, Object> config = new HashMap<>();
+		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		config.put("schema.registry.url", schemaRegistryUrl);
+		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageDeSerializer.class);
 
-    @Value("${kafkadef.patient-search.topics.request.patientdelete}")
-    private String patientDeleteTopic;
+		return new DefaultKafkaProducerFactory(config, new StringSerializer(),
+				new gov.cdc.nbs.patientlistener.message.KafkaMessageSerializer());
+	}
 
-    public ConsumerFactory<String, String> consumerFactory() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+	@Bean
+	public KafkaTemplate<String, PatientUpdateEventResponse> kafkaTemplatePatientUpdateResponse() {
+		return new KafkaTemplate<>(producerFactoryPatientUpdateResponse());
+	}
+
+	public ConsumerFactory<String, String> consumerFactory() {
+		Map<String, Object> config = new HashMap<>();
+		config.putAll(commonConsumerConfigs());
+		return new DefaultKafkaConsumerFactory<>(config);
+	}
+
+	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
+	private String patientDeleteTopic;
 
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
+		KafkaMessageDeSerializer deserializer = new KafkaMessageDeSerializer();
 
-    // Producer config
+		return new DefaultKafkaConsumerFactory(config, new StringDeserializer(), deserializer);
+	}
 
-    @Bean
-    public NewTopic createPatientSearchTopic() {
-        return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
-                .compact().build();
-    }
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(consumerFactory());
+		return factory;
+	}
 
-    @Bean
-    public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
-        return buildKafkaTemplate();
-    }
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, PatientUpdateEvent> kafkaPatientUpdateListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, PatientUpdateEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(consumerFactoryPatientUpdate());
+		ContainerProperties props = factory.getContainerProperties();
+		props.setAckMode(ContainerProperties.AckMode.RECORD);
+		return factory;
+	}
 
-    private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
-        var config = getKafkaConfig();
-        return new KafkaTemplate<>(
-                new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
-                        new JsonSerializer<>()));
-    }
+	private Map<String, Object> commonConsumerConfigs() {
+		Map<String, Object> config = new HashMap<>();
 
-    private Map<String, Object> getKafkaConfig() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put("schema.registry.url", schemaRegistryUrl);
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        return config;
-    }
+		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		config.put("schema.registry.url", schemaRegistryUrl);
+		config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
+		config.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
+		config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
+		config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+		config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+
+		return config;
+	}
+
 }
