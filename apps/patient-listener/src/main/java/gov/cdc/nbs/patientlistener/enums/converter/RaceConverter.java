@@ -2,9 +2,6 @@ package gov.cdc.nbs.patientlistener.enums.converter;
 
 import gov.cdc.nbs.patientlistener.enums.Race;
 
-/*
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;*/
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

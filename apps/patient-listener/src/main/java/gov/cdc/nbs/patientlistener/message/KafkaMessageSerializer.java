@@ -15,10 +15,6 @@ public class KafkaMessageSerializer implements Serializer<Object> {
 		ObjectMapper mapper = new ObjectMapper();
 
 		try {
-			// mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-			 log.info("==============STRING: " + s);
-			 log.info("==============OBJECT: " + o);
-			//retVal =  mapper.writeValueAsString(o).getBytes(StandardCharsets.UTF_8);
 			 retVal = mapper.writeValueAsBytes(o);
 		} catch (Exception e) {
 			log.error("Unable to serialize Kafka object", e);

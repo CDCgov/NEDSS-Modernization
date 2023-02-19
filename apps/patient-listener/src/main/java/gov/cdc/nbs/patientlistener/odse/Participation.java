@@ -3,33 +3,15 @@ package gov.cdc.nbs.patientlistener.odse;
 import java.time.Instant;
 
 import gov.cdc.nbs.patientlistener.enums.RecordStatus;
-/*
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;*/
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
 

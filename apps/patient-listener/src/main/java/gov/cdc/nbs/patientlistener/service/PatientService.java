@@ -60,7 +60,7 @@ public class PatientService {
 
 			return event;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.warn("Error while updating patientProfile: ", e);
 			PatientUpdateEventResponse event = PatientUpdateEventResponse.builder().personId(personId)
 					.requestId(requestId).status(Constants.FAILED).message(e.getMessage()).build();
 
