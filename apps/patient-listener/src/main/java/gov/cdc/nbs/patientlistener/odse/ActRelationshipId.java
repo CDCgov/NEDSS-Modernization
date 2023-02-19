@@ -2,9 +2,6 @@ package gov.cdc.nbs.patientlistener.odse;
 
 import java.io.Serializable;
 import java.util.Objects;
-/*
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;*/
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

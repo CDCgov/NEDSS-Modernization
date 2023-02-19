@@ -28,7 +28,7 @@ public class KafkaRequestProducerService {
 		send(kafkaPatientUpdateTemplate, patientUpdateResponseTopic, kafkaMessage.getRequestId(), kafkaMessage);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			log.error("Error sending patientUpdateResponse Kafka message", e);
 		}
 	}
 	

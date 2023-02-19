@@ -5,17 +5,6 @@ import java.time.Instant;
 import gov.cdc.nbs.patientlistener.enums.Suffix;
 import gov.cdc.nbs.patientlistener.enums.converter.SuffixConverter;
 
-/*
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;*/
-
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -26,14 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
-import javax.persistence.Embeddable;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
 
 
 import lombok.AllArgsConstructor;

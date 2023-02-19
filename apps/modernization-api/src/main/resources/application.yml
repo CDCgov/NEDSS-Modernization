@@ -50,7 +50,7 @@ spring:
             matching-strategy: ant_path_matcher
 
 kafka:
-    enabled: true
+    enabled: false
     bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
     listener:
         ack-mode: record
@@ -63,8 +63,8 @@ kafka:
                 url: localhost:9091
         topic:
             suffix: '-event'
-            partition.count: 1
-            replication.factor: 1
+            partition.count: 3
+            replication.factor: 3
         message.max.attempt: 5
         retry.naming.pattern: -neds-part-retry
         dlt.naming.pattern: -neds-part-dlt
