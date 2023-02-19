@@ -1,3 +1,9 @@
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'nbs-modernization'
 // apps
 include ':modernization-api'
