@@ -161,9 +161,18 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+            BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
+            firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
                     ScoreMode.Avg));
+
+            Soundex soundex = new Soundex();
+            String firstNmSndx = soundex.encode(filter.getFirstName());
+            firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+                    QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
+                    ScoreMode.Avg));
+        
+            builder.must(firstNameBuilder);
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
