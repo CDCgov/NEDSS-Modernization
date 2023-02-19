@@ -13,6 +13,7 @@ import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -166,9 +167,18 @@ public class PatientService {
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+            BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
+            lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
                     ScoreMode.Avg));
+
+            Soundex soundex = new Soundex();
+            String lastNmSndx = soundex.encode(filter.getLastName());
+            lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+                    QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
+                    ScoreMode.Avg));
+
+            builder.must(lastNameBuilder);
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
