@@ -1,0 +1,92 @@
+name: Build and Push elasticsearch image to ECR
+on:
+  push:
+    branches:
+      - main
+      - rel-**
+    paths:
+      - 'cdc-sandbox/elasticsearch/**'
+      - '.github/workflows/Build-elasticsearch.yaml'
+
+# Microservice name must correspond to an existing ECR          
+env:
+  microservice_name: elasticsearch
+  dockerfile_relative_path: ./cdc-sandbox/elasticsearch
+  accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
+
+jobs:
+  deploy:
+    name: Build and store container
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    # New comment
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Configure Environment Variables
+      run: |
+        github_sha_short=$(git rev-parse --short "$GITHUB_SHA")      
+        github_repo_name="$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"        
+        github_branch=${GITHUB_REF#refs/heads/}
+        echo "github_sha_short=$github_sha_short" >> $GITHUB_ENV
+        echo "github_repo_name=$github_repo_name" >> $GITHUB_ENV
+        echo "github_branch=$github_branch" >> $GITHUB_ENV
+    - name: Configure AWS credentials from Test account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: "arn:aws:iam::${{ env.accountid }}:role/cdc-github-${{ env.github_repo_name }}-dev-role"
+        role-session-name: deploy-infrastructure
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Prep tags if release branch
+      if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
+      id: configure-tags     
+      run: |
+        BRANCH_ENV=${{env.github_branch}}
+        VERSION_TAG="${BRANCH_ENV//rel-/v}"
+        echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
+    - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for dev
+      if: ${{ startsWith( env.github_branch, 'rel-' ) != true}}
+      id: build-image-develop
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.ECR_REPO_BASE_NAME }}/${{ env.microservice_name }}
+        IMAGE_TAG_SHA_SHORT: "${{ env.github_sha_short }}"
+        IMAGE_BRANCH_ORIGIN: "${{ env.github_branch }}-${{ github.run_number }}"
+      run: |
+        # Build a docker container and push it to ECR 
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT ${{ env.dockerfile_relative_path}}
+        echo "Pushing image to ECR..."
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT" >> $GITHUB_OUTPUT
+        echo "Pushing Retagging and pushing image to ECR..."
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN" >> $GITHUB_OUTPUT
+    - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for release
+      if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
+      id: build-image-release
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.ECR_REPO_BASE_NAME }}/${{ env.microservice_name }}
+        IMAGE_TAG_SHA_SHORT: "${{ env.github_sha_short }}"
+        IMAGE_VERSION: "${{ env.VERSION_TAG }}"
+      run: |
+        # Build a docker container and push it to ECR 
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT ${{ env.dockerfile_relative_path}}
+        echo "Pushing image to ECR..."
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT" >> $GITHUB_OUTPUT
+        echo "Pushing Retagging and pushing image to ECR..."
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_VERSION
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_VERSION
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_VERSION" >> $GITHUB_OUTPUT

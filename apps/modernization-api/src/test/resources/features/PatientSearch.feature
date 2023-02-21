@@ -32,6 +32,7 @@ Feature: Patient search
       | zip code      |           |
       | ethnicity     |           |
       | record status |           |
+      | email         |           |
 
   @patient_multi_data_search
   Scenario: I can find a Patient by patient data using multiple fields
