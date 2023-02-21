@@ -82,6 +82,8 @@ dependencies {
 	// itext pdf generation
 	implementation "com.itextpdf:itextpdf:5.5.13.3"
 
+	implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+
 	// test
 	testImplementation "org.projectlombok:lombok"
 	testAnnotationProcessor "org.projectlombok:lombok"
