@@ -20,9 +20,12 @@ import gov.cdc.nbs.patientlistener.odse.TeleLocator;
 import java.time.Instant;
 
 public class PersonUtil {
+	
+	private PersonUtil() {}
 
     public static List<ElasticsearchPerson> getElasticSearchPersons(List<Person> personList) {
-        return personList.stream().flatMap(p -> Stream.of(getElasticSearchPerson(p))).collect(Collectors.toList());
+        return personList.stream().flatMap(p -> Stream.of(getElasticSearchPerson(p))).toList();   
+        		
     }
 
     public static ElasticsearchPerson getElasticSearchPerson(Person person) {
@@ -74,11 +77,11 @@ public class PersonUtil {
     }
     
     public static List<TeleLocator> getTeleLocators(List<Person> personList) {
-        return personList.stream().flatMap(p -> getTeleLocators(p).stream()).collect(Collectors.toList());
+        return personList.stream().flatMap(p -> getTeleLocators(p).stream()).toList();
     }
     
     public static List<PostalLocator> getPostalLocators(List<Person> personList) {
-        return personList.stream().flatMap(p -> getPostalLocators(p).stream()).collect(Collectors.toList());
+        return personList.stream().flatMap(p -> getPostalLocators(p).stream()).toList();
     }
 
     

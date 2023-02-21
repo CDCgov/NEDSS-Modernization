@@ -18,7 +18,10 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import gov.cdc.nbs.patientlistener.message.KafkaMessageDeSerializer;
 import gov.cdc.nbs.patientlistener.message.PatientUpdateEvent;
@@ -26,7 +29,6 @@ import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @EnableKafka
 @Configuration
@@ -70,14 +72,19 @@ public class KafkaConfig {
 	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
 	private String patientDeleteTopic;
 
-        return new DefaultKafkaConsumerFactory<>(config);
-    }
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Bean
+	public ConsumerFactory<String, PatientUpdateEvent> consumerFactoryPatientUpdate() {
+		Map<String, Object> config = new HashMap<>();
+		config.putAll(commonConsumerConfigs());
 
 		KafkaMessageDeSerializer deserializer = new KafkaMessageDeSerializer();
 
 		return new DefaultKafkaConsumerFactory(config, new StringDeserializer(), deserializer);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();

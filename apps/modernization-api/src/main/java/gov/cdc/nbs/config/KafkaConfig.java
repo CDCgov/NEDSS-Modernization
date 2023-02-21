@@ -15,6 +15,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import gov.cdc.nbs.message.EnvelopeRequest;
+import gov.cdc.nbs.message.KafkaMessageSerializer;
+import gov.cdc.nbs.message.PatientDeleteRequest;
+import gov.cdc.nbs.message.PatientUpdateRequest;
+
 @Configuration
 public class KafkaConfig {
 

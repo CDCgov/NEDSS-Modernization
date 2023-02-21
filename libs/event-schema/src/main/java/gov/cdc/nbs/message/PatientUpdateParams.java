@@ -2,9 +2,7 @@ package gov.cdc.nbs.message;
 
 import java.util.List;
 
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PostalLocator;
-import gov.cdc.nbs.entity.odse.TeleLocator;
+
 import gov.cdc.nbs.graphql.input.PatientInput;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
