@@ -173,7 +173,7 @@ public class PatientSearchSteps {
                 filter.setFirstName("John"); // finds Jon
                 break;
             case "race":
-                filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
+                filter.setRace(searchPatient.getRaces().get(0).getRaceCd());
                 break;
             case "identification":
                 var patientId = searchPatient.getEntityIds().get(0);

@@ -1,36 +1,34 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
+import gov.cdc.nbs.patient.PatientCommand;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.Instant;
 
-import org.hibernate.annotations.Any;
-import org.hibernate.annotations.AnyMetaDef;
-import org.hibernate.annotations.MetaValue;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-// @AnyMetaDef replacements: @AnyDiscriminator, @AnyDiscriminatorValue not available until 6.0
-@SuppressWarnings("deprecation")
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "Entity_locator_participation")
-public class EntityLocatorParticipation {
-    public interface Locator {
-    }
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "class_cd", discriminatorType = DiscriminatorType.STRING)
+public abstract class EntityLocatorParticipation {
 
     @EmbeddedId
     private EntityLocatorParticipationId id;
@@ -39,14 +37,6 @@ public class EntityLocatorParticipation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_uid", nullable = false)
     private NBSEntity nbsEntity;
-
-    @Any(metaColumn = @Column(name = "class_cd"), optional = false)
-    @AnyMetaDef(metaType = "string", idType = "long", metaValues = {
-            @MetaValue(value = "TELE", targetEntity = TeleLocator.class),
-            @MetaValue(value = "PST", targetEntity = PostalLocator.class)
-    })
-    @JoinColumn(name = "locator_uid", nullable = false, insertable = false, updatable = false)
-    private Locator locator;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
@@ -58,13 +48,10 @@ public class EntityLocatorParticipation {
     private Long addUserId;
 
     @Column(name = "cd", length = 50)
-    private String cd;
+    protected String cd;
 
     @Column(name = "cd_desc_txt", length = 100)
     private String cdDescTxt;
-
-    @Column(name = "class_cd", length = 10)
-    private String classCd;
 
     @Column(name = "duration_amt", length = 20)
     private String durationAmt;
@@ -103,7 +90,7 @@ public class EntityLocatorParticipation {
     private Instant toTime;
 
     @Column(name = "use_cd", length = 20)
-    private String useCd;
+    protected String useCd;
 
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
@@ -117,4 +104,32 @@ public class EntityLocatorParticipation {
     @Column(name = "as_of_date")
     private Instant asOfDate;
 
+    protected EntityLocatorParticipation() {}
+
+    protected EntityLocatorParticipation(
+            final PatientCommand command,
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier
+    ) {
+        this.id = identifier;
+        this.nbsEntity = nbs;
+
+        this.addUserId = command.requester();
+        this.addTime = command.requestedOn();
+
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.requester();
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = command.requestedOn();
+
+        this.statusCd = 'A';
+        this.statusTime = command.requestedOn();
+
+        this.asOfDate = command.requestedOn();
+
+        this.versionCtrlNbr = 1;
+    }
+
+    public abstract Locator getLocator();
 }

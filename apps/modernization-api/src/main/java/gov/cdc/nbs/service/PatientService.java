@@ -22,8 +22,8 @@ import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.model.PatientCreateResponse;
 import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
+import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.service.IdGeneratorService.EntityType;
 import gov.cdc.nbs.service.util.Constants;
 import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +72,7 @@ public class PatientService {
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
     private final KafkaRequestProducerService producer;
-    private final IdGeneratorService idGeneratorService;
+    private final PatientCreateRequestResolver createRequestResolver;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -186,7 +186,7 @@ public class PatientService {
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                            .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
                     ScoreMode.Avg));
         }
 
@@ -302,7 +302,7 @@ public class PatientService {
     // checks to see if the filter provided is null, if not add the filter to the
     // 'query.where' based on the expression supplied
     private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
-            Function<I, BooleanExpression> expression, I filter) {
+                                                 Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
             if (filter instanceof String s && s.trim().length() == 0) {
                 return query;
@@ -320,40 +320,19 @@ public class PatientService {
     public PatientCreateResponse sendCreatePatientRequest(PatientInput input) {
         // create 'create patient' message and post to kafka
         var requestId = getRequestID();
-        var patientId = generateNbsId();
         var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var createRequest = PatientCreateRequest.builder()
-                .username(user.getUsername())
-                .patientId(patientId)
-                .patientLocalId(generateLocalId())
-                .patientInput(input)
-                .requestId(requestId)
-                .build();
+
+        PatientCreateRequest createRequest = this.createRequestResolver.create(user.getId(), requestId, input);
         producer.requestPatientCreateEnvelope(createRequest);
-        return new PatientCreateResponse(requestId, patientId);
-    }
-
-    /**
-     * Calls the id generator service and constructs the localId with
-     * the format "prefix + id + suffix"
-     */
-    private String generateLocalId() {
-        var generatedId = idGeneratorService.getNextValidId(EntityType.PERSON);
-        return generatedId.getPrefix() + generatedId.getId() + generatedId.getSuffix();
-    }
-
-    /**
-     * Calls the id generator service to retrieve the next available Id for an
-     * entity
-     */
-    private Long generateNbsId() {
-        var generatedId = idGeneratorService.getNextValidId(EntityType.NBS);
-        return generatedId.getId();
+        return new PatientCreateResponse(
+                createRequest.request(),
+                createRequest.patient()
+        );
     }
 
     /**
      * Send updated Person Event to kakfa topic to be picked up and updated.
-     * 
+     *
      * @param id
      * @param input
      * @return

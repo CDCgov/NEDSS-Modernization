@@ -101,6 +101,8 @@ dependencies {
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
 	testImplementation 'com.github.javafaker:javafaker:1.0.2'
 	testImplementation 'org.yaml:snakeyaml:1.33'
+
+	testImplementation libs.bundles.testing
 	
 	// Kafka dependencies
 	implementation("org.springframework.kafka:spring-kafka")

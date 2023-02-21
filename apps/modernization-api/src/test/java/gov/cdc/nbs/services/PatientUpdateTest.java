@@ -1,12 +1,15 @@
 package gov.cdc.nbs.services;
 
-import static org.mockito.Mockito.when;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import gov.cdc.nbs.Application;
+import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.entity.odse.NBSEntity;
+import gov.cdc.nbs.entity.odse.Participation;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.service.PatientService;
+import gov.cdc.nbs.support.EthnicityMother;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,17 +21,12 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import gov.cdc.nbs.Application;
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
-import gov.cdc.nbs.entity.odse.NBSEntity;
-import gov.cdc.nbs.entity.odse.Participation;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.service.PatientService;
-import gov.cdc.nbs.support.EthnicityMother;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
 @RunWith(SpringRunner.class)
@@ -70,7 +68,7 @@ class PatientUpdateTest {
 	}
 
 	private Person buildPersonFromInput() {
-		Person person = new Person();
+		Person person = new Person(6037L, "PSN2467");
 
 		person.setFirstNm("GenericFirstName");
 		person.setLastNm("GenericFirstLastName");
@@ -84,12 +82,9 @@ class PatientUpdateTest {
 		person.setDeceasedIndCd(Deceased.FALSE);
 		person.setEthnicGroupInd(EthnicityMother.NOT_HISPANIC_OR_LATINO_CODE);
 
-		NBSEntity nbsEntity = new NBSEntity();
+		NBSEntity nbsEntity = new NBSEntity(UUID.randomUUID().getMostSignificantBits(), "classIDTest");
 		person.setNbsEntity(nbsEntity);
-		nbsEntity.setId(UUID.randomUUID().getMostSignificantBits());
-		nbsEntity.setClassCd("classIDTest");
-		EntityLocatorParticipation entityLocPart = new EntityLocatorParticipation();
-		nbsEntity.setEntityLocatorParticipations(List.of(entityLocPart));
+
 		Participation part = new Participation();
 		nbsEntity.setParticipations(List.of(part));
 		return person;

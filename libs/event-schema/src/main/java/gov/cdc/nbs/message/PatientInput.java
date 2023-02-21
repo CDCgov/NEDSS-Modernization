@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PatientInput {
-    private List<Name> names;
+    private List<Name> names = new ArrayList<>();
     private String ssn;
     private Instant dateOfBirth;
     private Gender birthGender;
@@ -27,7 +27,7 @@ public class PatientInput {
     private List<String> emailAddresses = new ArrayList<>();
     private List<Identification> identifications = new ArrayList<>();
     private String ethnicityCode;
-    private List<String> raceCodes;
+    private List<String> raceCodes = new ArrayList<>();
 
     @Data
     @AllArgsConstructor

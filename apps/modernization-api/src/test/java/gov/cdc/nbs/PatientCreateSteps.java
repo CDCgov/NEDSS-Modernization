@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.TimeUnit;
 
@@ -77,14 +78,24 @@ public class PatientCreateSteps {
         var payload = mapper.readValue((String) consumer.getPayload(), PatientCreateRequest.class);
         assertNotNull(payload);
 
-        assertEquals(createPersonRequestId.getRequestId(), payload.getRequestId());
+        assertEquals(createPersonRequestId.getRequestId(), payload.request());
         var currentUserId = getCurrentUserId();
-        assertEquals(currentUserId, payload.getUsername());
-        assertEquals(input, payload.getPatientInput());
+
+        assertThat(payload.createdBy()).isEqualTo(currentUserId);
+
+        assertThat(payload.ssn()).isEqualTo(input.getSsn());
+        assertThat(payload.dateOfBirth()).isEqualTo(input.getDateOfBirth());
+        assertThat(payload.birthGender()).isEqualTo(input.getBirthGender());
+        assertThat(payload.currentGender()).isEqualTo(input.getCurrentGender());
+
+        assertThat(payload.deceased()).isEqualTo(input.getDeceased());
+        assertThat(payload.deceasedTime()).isEqualTo(input.getDeceasedTime());
+
+        assertThat(payload.ethnicity()).isEqualTo(input.getEthnicityCode());
     }
 
-    private String getCurrentUserId() {
+    private Long getCurrentUserId() {
         return ((NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getUsername();
+                .getId();
     }
 }

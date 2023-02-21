@@ -7,7 +7,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.patientlistener.service.PatientService;
+import gov.cdc.nbs.patientlistener.service.PatientCreateRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaConsumer {
 
     @Autowired
-    private PatientService patientService;
+    private PatientCreateRequestHandler patientService;
 
     @KafkaListener(topics = "patientSearchTopic", groupId = "group_id")
     public void consume(String message) {

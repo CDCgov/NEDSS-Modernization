@@ -2,8 +2,11 @@ package gov.cdc.nbs.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -55,6 +58,27 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }
 
+    public boolean isAuthorized(final long user, final String... permissions) {
+        return authUserRepository.findById(user)
+                //  introduce query to bypass unnecessary mapping of entire object
+                //      should only need the authorities or even do the entire check in JPQL
+                .map(
+                        authUser -> getUserPermissions(authUser)
+                                .stream()
+                                .anyMatch(allowsAny(permissions))
+                ).orElse(false);
+    }
+
+    private Predicate<NbsAuthority> allows(final String permission) {
+        return authority -> Objects.equals(authority.getAuthority(), permission);
+    }
+
+    private Predicate<NbsAuthority> allowsAny(final String... permissions) {
+        return Arrays.stream(permissions)
+                .map(this::allows)
+                .reduce(ignored -> false, Predicate::or);
+    }
+
     /**
      * Lookup AuthUser in database using the JWT subject. Convert database entity to
      * a new JWTUserDetails and return
@@ -103,7 +127,7 @@ public class UserService implements UserDetailsService {
      * Queries the database for a list of user permissions
      * For each distinct permission, create a {@link NbsAuthority} if the permission
      * applies.
-     * 
+     *
      * <p>
      * Permissions apply to user if:
      *
@@ -156,7 +180,6 @@ public class UserService implements UserDetailsService {
 
     /**
      * Helper method for {@link UserService#getUserPermissions}
-     * 
      */
     private NbsAuthority buildNbsAuthority(Tuple t) {
         var userIsGuest = t.get(QAuthUserRole.authUserRole.roleGuestInd);

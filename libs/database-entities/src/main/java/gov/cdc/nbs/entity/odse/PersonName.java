@@ -2,18 +2,11 @@ package gov.cdc.nbs.entity.odse;
 
 import java.time.Instant;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
+import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -122,4 +115,35 @@ public class PersonName {
     @Column(name = "as_of_date")
     private Instant asOfDate;
 
+    public PersonName(
+            final PersonNameId identifier,
+            final Person person,
+            final PatientCommand.AddName added
+    ) {
+        this.addReasonCd = "Add";
+        this.addTime = added.requestedOn();
+        this.addUserId = added.requester();
+
+        this.lastChgUserId = added.requester();
+        this.lastChgTime = added.requestedOn();
+
+        //  this could be an indicator of a future change
+        this.asOfDate = added.requestedOn();
+
+        this.statusCd = 'A';
+        this.statusTime = added.requestedOn();
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = added.requestedOn();
+
+        this.id = identifier;
+        this.personUid = person;
+
+        this.firstNm = added.first();
+        this.middleNm = added.middle();
+        this.lastNm = added.last();
+        this.nmSuffix = added.suffix();
+        this.nmUseCd = added.type().toString();
+
+    }
 }

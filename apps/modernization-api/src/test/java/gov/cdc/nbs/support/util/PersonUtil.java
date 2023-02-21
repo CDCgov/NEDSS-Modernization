@@ -1,14 +1,5 @@
 package gov.cdc.nbs.support.util;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.commons.codec.language.Soundex;
-
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
 import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
@@ -18,13 +9,23 @@ import gov.cdc.nbs.entity.elasticsearch.NestedRace;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientInput.Name;
 import gov.cdc.nbs.message.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
+import org.apache.commons.codec.language.Soundex;
+
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PersonUtil {
 
@@ -95,14 +96,14 @@ public class PersonUtil {
 
     public static List<TeleLocator> getTeleLocators(Person person) {
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
-                .filter(elp -> elp.getClassCd().equals("TELE"))
+                .filter(TeleEntityLocatorParticipation.class::isInstance)
                 .map(elp -> (TeleLocator) elp.getLocator())
                 .collect(Collectors.toList());
     }
 
     public static List<PostalLocator> getPostalLocators(Person person) {
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
-                .filter(elp -> elp.getClassCd().equals("PST"))
+                .filter(PostalEntityLocatorParticipation.class::isInstance)
                 .map(elp -> (PostalLocator) elp.getLocator())
                 .collect(Collectors.toList());
     }
@@ -123,45 +124,56 @@ public class PersonUtil {
         input.setEthnicityCode(person.getEthnicGroupInd());
 
         var elpList = person.getNbsEntity().getEntityLocatorParticipations();
-        if (elpList != null && elpList.size() > 0) {
-            input.setAddresses(new ArrayList<>());
-            input.setPhoneNumbers(new ArrayList<>());
-            elpList.forEach(elp -> {
-                // Phone
-                if (elp.getClassCd().equals("TELE")) {
-                    var tl = (TeleLocator) elp.getLocator();
-                    var phoneType = derivePhoneTypeFromElp(elp);
-                    var phoneNumber = new PhoneNumber(tl.getPhoneNbrTxt(), tl.getExtensionTxt(), phoneType);
-                    input.getPhoneNumbers().add(phoneNumber);
-                } // Address
-                else if (elp.getClassCd().equals("PST")) {
-                    var pl = (PostalLocator) elp.getLocator();
-                    var pa = new PostalAddress(pl.getStreetAddr1(),
-                            pl.getStreetAddr2(),
-                            pl.getCityDescTxt(),
-                            pl.getStateCd(),
-                            pl.getCntyCd(),
-                            pl.getCntryCd(),
-                            pl.getZipCd(),
-                            pl.getCensusTract());
-                    input.getAddresses().add(pa);
-                }
-            });
-        }
+        asAddresses(elpList).forEach(input.getAddresses()::add);
+        asPhoneNumbers(elpList).forEach(input.getPhoneNumbers()::add);
         return input;
     }
 
+    private static Stream<PostalAddress> asAddresses(final Collection<EntityLocatorParticipation> participations) {
+        return participations.stream().mapMulti((participation, consumer) -> {
+            if(participation instanceof PostalEntityLocatorParticipation postal) {
+                consumer.accept(asAddress(postal));
+            }
+        });
+    }
+
+
+    private static PostalAddress asAddress(final PostalEntityLocatorParticipation participation) {
+        PostalLocator pl = participation.getLocator();
+
+       return new PostalAddress(
+               pl.getStreetAddr1(),
+                pl.getStreetAddr2(),
+                pl.getCityDescTxt(),
+                pl.getStateCd(),
+                pl.getCntyCd(),
+                pl.getCntryCd(),
+                pl.getZipCd(),
+                pl.getCensusTract()
+       );
+    }
+
+    private static Stream<PhoneNumber> asPhoneNumbers(final Collection<EntityLocatorParticipation> participations) {
+        return participations.stream().mapMulti((participation, consumer) -> {
+            if(participation instanceof TeleEntityLocatorParticipation telecom) {
+                consumer.accept(asPhoneNumber(telecom));
+            }
+        });
+    }
+
+    private static PhoneNumber asPhoneNumber(final TeleEntityLocatorParticipation participation) {
+        TeleLocator tl = participation.getLocator();
+        var phoneType = derivePhoneTypeFromElp(participation);
+        return new PhoneNumber(tl.getPhoneNbrTxt(), tl.getExtensionTxt(), phoneType);
+    }
+
     private static PhoneType derivePhoneTypeFromElp(EntityLocatorParticipation elp) {
-        switch (elp.getUseCd()) {
-            case "MC":
-                return PhoneType.CELL;
-            case "H":
-                return PhoneType.HOME;
-            case "WP":
-                return PhoneType.WORK;
-            default:
-                throw new IllegalArgumentException(
-                        "Unable to derive phone type from EntityLocatorParticipation.useCd: " + elp.getUseCd());
-        }
+        return switch (elp.getUseCd()) {
+            case "MC" -> PhoneType.CELL;
+            case "H" -> PhoneType.HOME;
+            case "WP" -> PhoneType.WORK;
+            default -> throw new IllegalArgumentException(
+                    "Unable to derive phone type from EntityLocatorParticipation.use: " + elp.getUseCd());
+        };
     }
 }

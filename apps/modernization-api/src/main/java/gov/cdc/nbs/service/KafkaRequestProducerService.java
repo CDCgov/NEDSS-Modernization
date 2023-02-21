@@ -55,7 +55,7 @@ public class KafkaRequestProducerService {
 	}
 
 	public void requestPatientCreateEnvelope(PatientCreateRequest kafkaMessage) {
-		send(kafkaPatientCreateTemplate, patientCreateTopic, kafkaMessage.getRequestId(), kafkaMessage);
+		send(kafkaPatientCreateTemplate, patientCreateTopic, kafkaMessage.request(), kafkaMessage);
 	}
 
 	private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {

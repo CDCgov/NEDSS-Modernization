@@ -1,14 +1,6 @@
 package gov.cdc.nbs.support;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.github.javafaker.Faker;
-
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
@@ -19,14 +11,22 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PersonRace;
-import gov.cdc.nbs.entity.odse.PersonRaceId;
+import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.support.util.CountryCodeUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PersonMother {
 
@@ -47,11 +47,8 @@ public class PersonMother {
         final String firstName = faker.name().firstName();
         final String middleName = RandomUtil.getRandomString();
         final String lastName = faker.name().lastName();
-        var entity = new NBSEntity(id, "PSN");
-        var person = new Person();
-        person.setId(id);
-        person.setCd("PAT");
-        person.setLocalId("PSN" + Long.toString(id + 10000000L));
+
+        Person person = new Person(id, "PSN" + id + 10000000L);
         person.setFirstNm(firstName);
         person.setMiddleNm(middleName);
         person.setLastNm(lastName);
@@ -63,9 +60,8 @@ public class PersonMother {
         person.setBirthCityCd(RandomUtil.getRandomString());
         person.setBirthStateCd(RandomUtil.getRandomStateCode());
         person.setBirthCntryCd("United States");
-        person.setRecordStatusCd(RecordStatus.ACTIVE);
-        person.setNbsEntity(entity);
-        person.setVersionCtrlNbr((short) 1);
+
+        NBSEntity entity = person.getNbsEntity();
 
         // Identification
         var entityId = new EntityId();
@@ -99,10 +95,10 @@ public class PersonMother {
 
         // race
         var race = new PersonRace();
-        race.setId(new PersonRaceId(id, RandomUtil.getRandomFromArray(RaceMother.RACE_LIST)));
+        race.setRaceCd(RandomUtil.getRandomFromArray(RaceMother.RACE_LIST));
         race.setPersonUid(person);
         race.setRecordStatusCd("ACTIVE");
-        person.setRaceDescTxt(race.getId().getRaceCd().toString());
+        person.setRaceDescTxt(race.getRaceCd());
         person.setRaces(Arrays.asList(race));
 
         // Tele locator entry
@@ -114,12 +110,11 @@ public class PersonMother {
         teleLocator.setPhoneNbrTxt(RandomUtil.getRandomPhoneNumber());
         teleLocator.setRecordStatusCd("ACTIVE");
 
-        EntityLocatorParticipation teleElp = new EntityLocatorParticipation();
+        TeleEntityLocatorParticipation teleElp = new TeleEntityLocatorParticipation();
         teleElp.setNbsEntity(entity);
         teleElp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         teleElp.setCd("PH");
         teleElp.setUseCd("H");
-        teleElp.setClassCd("TELE");
         teleElp.setRecordStatusCd("ACTIVE");
         teleElp.setStatusCd('A');
         teleElp.setVersionCtrlNbr((short) 1);
@@ -137,12 +132,11 @@ public class PersonMother {
         postalLocator.setZipCd(RandomUtil.getRandomNumericString(5));
         postalLocator.setRecordStatusCd("ACTIVE");
 
-        var postalElp = new EntityLocatorParticipation();
+        PostalEntityLocatorParticipation postalElp = new PostalEntityLocatorParticipation();
         postalElp.setNbsEntity(entity);
         postalElp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         postalElp.setCd("H"); // Home
         postalElp.setUseCd("H");
-        postalElp.setClassCd("PST"); // Postal
         postalElp.setRecordStatusCd("ACTIVE");
         postalElp.setStatusCd('A');
         postalElp.setVersionCtrlNbr((short) 1);
@@ -155,10 +149,7 @@ public class PersonMother {
 
     public static Person johnDoe() {
         final long id = 19000000L;
-        var person = new Person();
-        person.setId(id);
-        person.setNbsEntity(new NBSEntity(id, "PSN"));
-        person.setCd("PAT");
+        Person person = new Person(id, "PSN" + 19000000L + 10000000L);
         person.setFirstNm("John");
         person.setMiddleNm("Bob");
         person.setLastNm("Doe");
@@ -206,7 +197,7 @@ public class PersonMother {
 
         // race
         var race = new PersonRace();
-        race.setId(new PersonRaceId(id, RaceMother.WHITE_CODE));
+        race.setRaceCd(RaceMother.WHITE_CODE);
         race.setPersonUid(person);
         race.setRecordStatusCd("ACTIVE");
         person.setRaces(Arrays.asList(race));
@@ -225,12 +216,11 @@ public class PersonMother {
         postalLocator.setZipCd(address.getZip());
         postalLocator.setRecordStatusCd("ACTIVE");
 
-        var elp = new EntityLocatorParticipation();
+        PostalEntityLocatorParticipation elp = new PostalEntityLocatorParticipation();
         elp.setNbsEntity(entity);
         elp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         elp.setCd(cd); // Home
         elp.setUseCd(cd);
-        elp.setClassCd("PST"); // Postal
         elp.setRecordStatusCd("ACTIVE");
         elp.setStatusCd('A');
         elp.setVersionCtrlNbr((short) 1);
@@ -254,11 +244,10 @@ public class PersonMother {
         teleLocator.setPhoneNbrTxt(phoneNumber);
         teleLocator.setRecordStatusCd("ACTIVE");
 
-        EntityLocatorParticipation elp = new EntityLocatorParticipation();
+        TeleEntityLocatorParticipation elp = new TeleEntityLocatorParticipation();
         elp.setNbsEntity(entity);
         elp.setId(new EntityLocatorParticipationId(entity.getId(), locatorId));
         setElpTypeFields(elp, phoneType);
-        elp.setClassCd("TELE");
         elp.setRecordStatusCd("ACTIVE");
         elp.setStatusCd('A');
         elp.setVersionCtrlNbr((short) 1);

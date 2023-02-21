@@ -1,37 +1,25 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
+import gov.cdc.nbs.patient.PatientCommand;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipation.Locator;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "Postal_locator")
-public class PostalLocator implements Locator {
+public class PostalLocator extends Locator {
+
     @Id
-    @Column(name = "postal_locator_uid", nullable = false)
+    @Column(name = "postal_locator_uid", nullable = false, updatable = false)
     private Long id;
-
-    @Column(name = "add_reason_cd", length = 80)
-    private String addReasonCd;
-
-    @Column(name = "add_time")
-    private Instant addTime;
-
-    @Column(name = "add_user_id")
-    private Long addUserId;
 
     @Column(name = "census_block_cd", length = 20)
     private String censusBlockCd;
@@ -60,23 +48,9 @@ public class PostalLocator implements Locator {
     @Column(name = "cnty_desc_txt", length = 100)
     private String cntyDescTxt;
 
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
-
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
 
     @Column(name = "MSA_congress_district_cd", length = 20)
     private String msaCongressDistrictCd;
-
-    @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
-
-    @Column(name = "record_status_time")
-    private Instant recordStatusTime;
 
     @Column(name = "region_district_cd", length = 20)
     private String regionDistrictCd;
@@ -105,4 +79,28 @@ public class PostalLocator implements Locator {
     @Column(name = "census_tract", length = 10)
     private String censusTract;
 
+    public PostalLocator() {
+
+    }
+
+    public PostalLocator(final PatientCommand.AddAddress address) {
+        super(address);
+        this.id = address.id();
+        this.streetAddr1 = address.address1();
+        this.streetAddr2 = address.address2();
+        this.cityCd = address.city();
+        this.cityDescTxt = address.city();
+        this.stateCd = address.state();
+        this.zipCd = address.zip();
+        this.cntyCd = address.county();
+        this.cntryCd = address.country();
+        this.censusTract = address.censusTract();
+    }
+
+    @Override
+    public String toString() {
+        return "PostalLocator{" +
+                "id=" + id +
+                '}';
+    }
 }
