@@ -17,9 +17,8 @@ public class KafkaMessageDeSerializer implements Deserializer<Object> {
 		try {
 			ObjectMapper mapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
 
-			PatientUpdateEvent event = mapper.readValue(data, PatientUpdateEvent.class);
+			return  mapper.readValue(data, PatientUpdateEvent.class);
 
-			return event;
 		} catch (Exception e) {
 			log.error("Unable to deserialize Kafka object", e);
 		}

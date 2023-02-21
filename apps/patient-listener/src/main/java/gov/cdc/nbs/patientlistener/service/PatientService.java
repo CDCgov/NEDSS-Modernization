@@ -52,22 +52,19 @@ public class PatientService {
 			ElasticsearchPerson elasticUpdate = PersonUtil.getElasticSearchPerson(updated);
 			elasticPersonRepository.save(elasticUpdate);
 
-			PatientUpdateEventResponse event = PatientUpdateEventResponse.builder().personId(personId)
+			return PatientUpdateEventResponse.builder().personId(personId)
 					.requestId(requestId).status(Constants.COMPLETE).build();
 
-			return event;
 		} catch (Exception e) {
 			log.warn("Error while updating patientProfile: ", e);
-			PatientUpdateEventResponse event = PatientUpdateEventResponse.builder().personId(personId)
+			return PatientUpdateEventResponse.builder().personId(personId)
 					.requestId(requestId).status(Constants.FAILED).message(e.getMessage()).build();
-
-			return event;
 		}
 
 	}
 
-	public Person updatePatientProfile(Person oldPerson, Long Id, PatientInput input) {
-		if (oldPerson != null && oldPerson.getId().equals(Id) ){
+	public Person updatePatientProfile(Person oldPerson, Long iD, PatientInput input) {
+		if (oldPerson != null && oldPerson.getId().equals(iD) ){
 
 			if (input.getName() != null) {
 				oldPerson.setFirstNm(input.getName().getFirstName() != null ? input.getName().getFirstName()
@@ -96,7 +93,7 @@ public class PatientService {
 
 			oldPerson.setBirthTime(input.getDateOfBirth() != null ? input.getDateOfBirth() : oldPerson.getBirthTime());
 
-			if (input.getAddresses() != null && input.getAddresses().size() >= 1) {
+			if (input.getAddresses() != null && input.getAddresses().isEmpty() == false) {
 				oldPerson.setHmCntyCd(input.getAddresses().get(0).getCountyCode());
 				oldPerson.setHmCntryCd(input.getAddresses().get(0).getCountryCode());
 				oldPerson.setHmStateCd(input.getAddresses().get(0).getStateCode());
@@ -104,7 +101,7 @@ public class PatientService {
 				oldPerson.setHmZipCd(input.getAddresses().get(0).getZip());
 			}
 
-			if (input.getEmailAddresses() != null && input.getEmailAddresses().size() >= 1) {
+			if (input.getEmailAddresses() != null && input.getEmailAddresses().isEmpty() == false ){
 				oldPerson.setHmEmailAddr(input.getEmailAddresses().get(0));
 				oldPerson.setWkEmailAddr(
 						input.getEmailAddresses().size() >= 2 && input.getEmailAddresses().get(1) != null
