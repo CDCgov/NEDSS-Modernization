@@ -402,8 +402,10 @@ public class PatientService {
 
     public PatientDeleteResponse sendDeletePatientEvent(Long id) {
         String requestId = getRequestID();
-        Person result = findPatientById(id);
-        personRepository.delete(result);
+        Person current = null;
+        Optional<Person> result = findPatientById(id);
+        current = (result.isPresent()) ? result.get(): null;
+        personRepository.delete(current);
         var patientDeleteRequest = new PatientDeleteRequest(requestId);
         producer.requestPatientDeleteEnvelope(patientDeleteRequest);
 
