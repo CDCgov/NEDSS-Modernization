@@ -37,7 +37,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.data.domain.Sort.Direction;
 import java.util.Comparator;
-import org.apache.commons.codec.language.Soundex;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
