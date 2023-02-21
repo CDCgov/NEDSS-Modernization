@@ -402,7 +402,7 @@ public class PatientService {
 
     public PatientDeleteResponse sendDeletePatientEvent(Long id) {
         String requestId = getRequestID();
-        Optional<Person> result = findPatientById(id);
+        Person result = findPatientById(id);
         personRepository.delete(result);
         var patientDeleteRequest = new PatientDeleteRequest(requestId);
         producer.requestPatientDeleteEnvelope(patientDeleteRequest);
