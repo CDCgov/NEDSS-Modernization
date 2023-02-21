@@ -68,8 +68,8 @@ public class PatientController {
 
     @MutationMapping()
     @PreAuthorize(DELETE_PATIENT)
-    public PatientDeleteResponse deletePatient(@Argument Long id, @Argument PatientInput patient) {
-        return patientService.sendDeletePatientEvent(id, patient);
+    public PatientDeleteResponse deletePatient(@Argument Long id) {
+        return patientService.sendDeletePatientEvent(id);
     }
 
     @MutationMapping()
