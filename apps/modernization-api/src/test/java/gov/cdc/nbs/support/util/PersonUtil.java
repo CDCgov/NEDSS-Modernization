@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.codec.language.Soundex;
+
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
 import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
@@ -33,10 +35,13 @@ public class PersonUtil {
     public static ElasticsearchPerson getElasticSearchPerson(Person person) {
         Long id = person.getId();
 
+        Soundex soundex = new Soundex();
         var name = new NestedName();
         name.setFirstNm(person.getFirstNm());
+        name.setFirstNmSndx(soundex.encode(person.getFirstNm()));
         name.setLastNm(person.getLastNm());
-
+        name.setLastNmSndx(soundex.encode(person.getLastNm()));
+ 
         var race = new NestedRace();
         race.setRaceCd(person.getRaceCd());
         race.setRaceDescTxt(person.getRaceDescTxt());

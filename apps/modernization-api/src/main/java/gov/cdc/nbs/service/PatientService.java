@@ -504,9 +504,7 @@ public class PatientService {
         personName.setAddReasonCd("Add");
         personName.setAddTime(now);
         personName.setFirstNm(name.getFirstName());
-        // personName.setFirstNmSndx(); TODO how to generate sndx
         personName.setLastNm(name.getLastName());
-        // personName.setLastNmSndx(); TODO
         personName.setMiddleNm(name.getMiddleName());
         personName.setNmSuffix(name.getSuffix());
         personName.setNmUseCd("L"); // L = legal, AL = alias. per NEDSSConstants
