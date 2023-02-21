@@ -58,7 +58,7 @@ export const TableComponent = ({
                     <tr>
                         {tableHead.map((head: any, index) => (
                             <th key={index} scope="col">
-                                <div className="tableHead">
+                                <div className="table-head">
                                     {head.name}
                                     {head.sortable && (
                                         <Button

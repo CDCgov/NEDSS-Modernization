@@ -10,8 +10,7 @@ export const RaceForm = ({ setRaceForm }: any) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
-    const onSubmit = (data: any) => {
-        console.log(data);
+    const onSubmit = () => {
         setRaceForm();
     };
 

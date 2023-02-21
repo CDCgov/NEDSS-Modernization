@@ -209,9 +209,9 @@ export const PatientResults = ({
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <div className="grid-row flex-align-center">
-                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                <p className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                     DATE OF BIRTH
-                                                </h5>
+                                                </p>
                                                 <p className="margin-0 font-sans-1xs text-normal">
                                                     {item.birthTime && (
                                                         <>
@@ -228,9 +228,9 @@ export const PatientResults = ({
                                                 </p>
                                             </div>
                                             <div className="grid-row flex-align-center">
-                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                <p className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                     SEX
-                                                </h5>
+                                                </p>
                                                 <p className="margin-0 font-sans-1xs text-normal">
                                                     {item.currSexCd === 'M'
                                                         ? 'Male'
@@ -240,9 +240,9 @@ export const PatientResults = ({
                                                 </p>
                                             </div>
                                             <div className="grid-row flex-align-center">
-                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                <p className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                     PATIENT ID
-                                                </h5>
+                                                </p>
                                                 <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
                                             </div>
                                         </Grid>
@@ -254,7 +254,7 @@ export const PatientResults = ({
                                         {newOrderPhone(item?.nbsEntity?.entityLocatorParticipations)}
                                         {newOrderEmail(item?.nbsEntity?.entityLocatorParticipations)}
                                         <Grid col={6} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
+                                            <p className="margin-0 text-normal text-gray-50">OTHER NAMES</p>
                                             {getOtherNames(item, item.names) ? (
                                                 <p
                                                     className="margin-0 font-sans-1xs text-normal margin-top-05"
@@ -281,9 +281,9 @@ export const PatientResults = ({
                                                     key={idIndex}
                                                     col={12}
                                                     className="margin-bottom-2">
-                                                    <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                    <p className="margin-0 text-normal text-gray-50 text-uppercase">
                                                         {id.typeDescTxt}
-                                                    </h5>
+                                                    </p>
                                                     <p
                                                         className="margin-0 font-sans-1xs text-normal margin-top-05"
                                                         style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
@@ -295,9 +295,9 @@ export const PatientResults = ({
                                     {!item.entityIds ||
                                         (item.entityIds?.filter((ent: any) => ent.typeDescTxt).length === 0 && (
                                             <Grid col={12} className="margin-bottom-2">
-                                                <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                <p className="margin-0 text-normal text-gray-50 text-uppercase">
                                                     Id Types
-                                                </h5>
+                                                </p>
                                                 <p
                                                     className="margin-0 font-sans-1xs margin-top-05 text-italic margin-0 text-gray-30"
                                                     style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
