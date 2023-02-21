@@ -64,28 +64,33 @@ public class PatientService {
 	}
 
 	public Person updatePatientProfile(Person oldPerson, Long iD, PatientInput input) {
-		if (oldPerson != null && oldPerson.getId().equals(iD) ){
+		if (oldPerson != null && oldPerson.getId().equals(iD)) {
 
 			oldPerson = updatedPersonName(oldPerson, input);
-			
-			oldPerson.setBirthGenderCd(
-					input.getBirthGender() != null ? input.getBirthGender() : oldPerson.getBirthGenderCd());
-			oldPerson.setCurrSexCd(
-					input.getCurrentGender() != null ? input.getCurrentGender() : oldPerson.getCurrSexCd());
-			oldPerson.setSsn(input.getSsn() != null ? input.getSsn() : oldPerson.getSsn());
-			oldPerson.setRaceCd(input.getRace() != null ? input.getRace() : oldPerson.getRaceCd());
-			oldPerson
-					.setDeceasedIndCd(input.getDeceased() != null ? input.getDeceased() : oldPerson.getDeceasedIndCd());
-			oldPerson.setEthnicityGroupCd(input.getEthnicity() != null ? input.getEthnicity().substring(0, 20)
-					: oldPerson.getEthnicityGroupCd());
 
-			oldPerson.setBirthTime(input.getDateOfBirth() != null ? input.getDateOfBirth() : oldPerson.getBirthTime());
+			oldPerson = updatedPersonBio(oldPerson, input);
 
 			oldPerson = updatedPersonAddress(oldPerson, input);
 			oldPerson = updatedPersonEmail(oldPerson, input);
 			oldPerson = updatedPersonPhone(oldPerson, input);
 
 		}
+		return oldPerson;
+	}
+	
+	public Person updatedPersonBio(Person oldPerson, PatientInput input) {
+
+		oldPerson.setBirthGenderCd(
+				input.getBirthGender() != null ? input.getBirthGender() : oldPerson.getBirthGenderCd());
+		oldPerson.setCurrSexCd(input.getCurrentGender() != null ? input.getCurrentGender() : oldPerson.getCurrSexCd());
+		oldPerson.setSsn(input.getSsn() != null ? input.getSsn() : oldPerson.getSsn());
+		oldPerson.setRaceCd(input.getRace() != null ? input.getRace() : oldPerson.getRaceCd());
+		oldPerson.setDeceasedIndCd(input.getDeceased() != null ? input.getDeceased() : oldPerson.getDeceasedIndCd());
+		oldPerson.setEthnicityGroupCd(
+				input.getEthnicity() != null ? input.getEthnicity().substring(0, 20) : oldPerson.getEthnicityGroupCd());
+
+		oldPerson.setBirthTime(input.getDateOfBirth() != null ? input.getDateOfBirth() : oldPerson.getBirthTime());
+
 		return oldPerson;
 	}
 	
