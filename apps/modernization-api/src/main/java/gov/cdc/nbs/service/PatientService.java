@@ -409,7 +409,7 @@ public class PatientService {
 		String requestId = null;
 
 		if (updatePerson != null) {
-			List<TemplateInput> templateInputs = new ArrayList<TemplateInput>();
+			List<TemplateInput> templateInputs = new ArrayList<>();
 
 			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
 					.templateInputs(templateInputs).build();

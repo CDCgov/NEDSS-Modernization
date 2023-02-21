@@ -33,7 +33,7 @@ public class KafkaRequestProducerService {
 	}
 	
 	private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {
-		ListenableFuture<SendResult<K, V>> future = (ListenableFuture<SendResult<K, V>>) template.send(topic, key, event);
+		ListenableFuture<SendResult<K, V>> future = template.send(topic, key, event);
 		future.addCallback(new ListenableFutureCallback<>() {
 			@Override
 			public void onFailure(Throwable ex) {
