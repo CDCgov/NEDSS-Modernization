@@ -158,8 +158,9 @@ public class PatientSearchSteps {
                 filter.setEmail(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
                 break;
             case "last name soundex":
-              filter.setLastName("Smith");  // finds Smyth
-              break;
+                searchPatient = generatedPersons.get(0);
+                filter.setLastName("Smith");  // finds Smyth
+                break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
                 break;
@@ -167,6 +168,7 @@ public class PatientSearchSteps {
                 filter.setFirstName(searchPatient.getFirstNm());
                 break;
             case "first name soundex":
+                searchPatient = generatedPersons.get(0);
                 filter.setFirstName("John"); // finds Jon
                 break;
             case "race":
