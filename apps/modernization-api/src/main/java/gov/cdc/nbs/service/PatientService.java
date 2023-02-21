@@ -400,14 +400,16 @@ public class PatientService {
 
     }
 
-    public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
-        String requestId = getRequestID();
-        var patientDeleteRequest = new PatientDeleteRequest(requestId);
+    public PatientDeleteResponse sendDeletePatientEvent(Long id) {
+        Optional<Person> result = findPatientById(id);
+        personRepository.delete(result);
+        var patientDeleteRequest = new PatientDeleteRequest(id);
         producer.requestPatientDeleteEnvelope(patientDeleteRequest);
 
-        return PatientDeleteResponse.builder().requestId(requestId).build();
+        return PatientDeleteResponse.builder().requestId(id).build();
 
     }
+
 
     /**
      * Find a patient and update information / demographic information that needs to

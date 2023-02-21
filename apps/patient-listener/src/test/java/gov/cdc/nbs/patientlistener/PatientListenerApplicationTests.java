@@ -22,16 +22,5 @@ class PatientListenerApplicationTests {
 		assertNotNull(containerFactory);
 	}
 
-	@Test 
-	void findId() throws Exception {
-		Person person = containerFactory.findById(1000);
-		assertEquals(person.getNames());
-	}
-
-	@Test
-	void deletePatient() throws Exception {
-		Person person = containerFactory.delete(1001);
-		assertNull(containerFactory.findById(1001));
-	}
 
 }
