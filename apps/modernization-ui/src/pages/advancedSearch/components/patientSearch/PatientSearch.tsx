@@ -10,6 +10,7 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
+import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -178,7 +179,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         body.state !== '- Select -' && (rowData.state = body.state);
         body.zip && (rowData.zip = body.zip);
 
-        body.phoneNumber && (rowData.phoneNumber = body.phoneNumber);
+        body.phoneNumber && validatePhoneNumber(body.phoneNumber) && (rowData.phoneNumber = body.phoneNumber);
         body.email && (rowData.email = body.email);
 
         body.race !== '- Select -' && (rowData.race = body.race);
