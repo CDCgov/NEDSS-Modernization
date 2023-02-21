@@ -48,6 +48,10 @@ public class KafkaRequestProducerService {
 
 	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
 		send(kafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
+		}
+		catch(Exception e) {
+			log.error("Error sending patientUpdate Kafka message", e);
+		}
 	}
 
 	public void requestPatientDeleteEnvelope(PatientDeleteRequest kafkaMessage) {
