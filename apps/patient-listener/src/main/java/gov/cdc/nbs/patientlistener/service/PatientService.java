@@ -1,13 +1,11 @@
 package gov.cdc.nbs.patientlistener.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.patientlistener.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
-import gov.cdc.nbs.patientlistener.message.TemplateInput;
 import gov.cdc.nbs.patientlistener.odse.PatientInput;
 import gov.cdc.nbs.patientlistener.odse.PatientInput.PhoneNumber;
 import gov.cdc.nbs.patientlistener.odse.PatientInput.PhoneType;
@@ -32,8 +30,7 @@ public class PatientService {
 	 * @param patientParams
 	 * @return
 	 */
-	public PatientUpdateEventResponse updatePatient(String requestId, Long personId, PatientInput input,
-			List<TemplateInput> templateInputs) {
+	public PatientUpdateEventResponse updatePatient(String requestId, Long personId, PatientInput input) {
 
 		Person updated = null;
 		if (requestId == null || requestId.length() < 1) {
@@ -70,7 +67,7 @@ public class PatientService {
 	}
 
 	public Person updatePatientProfile(Person oldPerson, Long Id, PatientInput input) {
-		if (oldPerson != null && oldPerson.getId() == Id) {
+		if (oldPerson != null && oldPerson.getId().equals(Id) ){
 
 			if (input.getName() != null) {
 				oldPerson.setFirstNm(input.getName().getFirstName() != null ? input.getName().getFirstName()

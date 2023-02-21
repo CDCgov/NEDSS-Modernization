@@ -20,8 +20,6 @@ import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
-import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
 
 @Configuration
 public class KafkaConfig {
