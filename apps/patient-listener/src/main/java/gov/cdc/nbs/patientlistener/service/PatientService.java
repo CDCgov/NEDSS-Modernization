@@ -66,20 +66,8 @@ public class PatientService {
 	public Person updatePatientProfile(Person oldPerson, Long iD, PatientInput input) {
 		if (oldPerson != null && oldPerson.getId().equals(iD) ){
 
-			if (input.getName() != null) {
-				oldPerson.setFirstNm(input.getName().getFirstName() != null ? input.getName().getFirstName()
-						: oldPerson.getFirstNm());
-
-				oldPerson.setMiddleNm(input.getName().getMiddleName() != null ? input.getName().getMiddleName()
-						: oldPerson.getMiddleNm());
-
-				oldPerson.setLastNm(
-						input.getName().getLastName() != null ? input.getName().getLastName() : oldPerson.getLastNm());
-
-				oldPerson.setNmSuffix(
-						input.getName().getSuffix() != null ? input.getName().getSuffix() : oldPerson.getNmSuffix());
-			}
-
+			oldPerson = updatedPersonName(oldPerson, input);
+			
 			oldPerson.setBirthGenderCd(
 					input.getBirthGender() != null ? input.getBirthGender() : oldPerson.getBirthGenderCd());
 			oldPerson.setCurrSexCd(
@@ -93,33 +81,68 @@ public class PatientService {
 
 			oldPerson.setBirthTime(input.getDateOfBirth() != null ? input.getDateOfBirth() : oldPerson.getBirthTime());
 
-			if (input.getAddresses() != null && input.getAddresses().isEmpty() == false) {
-				oldPerson.setHmCntyCd(input.getAddresses().get(0).getCountyCode());
-				oldPerson.setHmCntryCd(input.getAddresses().get(0).getCountryCode());
-				oldPerson.setHmStateCd(input.getAddresses().get(0).getStateCode());
-				oldPerson.setHmCityCd(input.getAddresses().get(0).getCity());
-				oldPerson.setHmZipCd(input.getAddresses().get(0).getZip());
+			oldPerson = updatedPersonAddress(oldPerson, input);
+			oldPerson = updatedPersonEmail(oldPerson, input);
+			oldPerson = updatedPersonPhone(oldPerson, input);
+
+		}
+		return oldPerson;
+	}
+	
+	public Person updatedPersonName(Person oldPerson, PatientInput input) {
+
+		if (input.getName() != null) {
+			oldPerson.setFirstNm(
+					input.getName().getFirstName() != null ? input.getName().getFirstName() : oldPerson.getFirstNm());
+
+			oldPerson.setMiddleNm(input.getName().getMiddleName() != null ? input.getName().getMiddleName()
+					: oldPerson.getMiddleNm());
+
+			oldPerson.setLastNm(
+					input.getName().getLastName() != null ? input.getName().getLastName() : oldPerson.getLastNm());
+
+			oldPerson.setNmSuffix(
+					input.getName().getSuffix() != null ? input.getName().getSuffix() : oldPerson.getNmSuffix());
+		}
+
+		return oldPerson;
+	}
+
+	public Person updatedPersonAddress(Person oldPerson, PatientInput input) {
+
+		if (input.getAddresses() != null && !input.getAddresses().isEmpty()) {
+			oldPerson.setHmCntyCd(input.getAddresses().get(0).getCountyCode());
+			oldPerson.setHmCntryCd(input.getAddresses().get(0).getCountryCode());
+			oldPerson.setHmStateCd(input.getAddresses().get(0).getStateCode());
+			oldPerson.setHmCityCd(input.getAddresses().get(0).getCity());
+			oldPerson.setHmZipCd(input.getAddresses().get(0).getZip());
+		}
+		return oldPerson;
+	}
+
+	public Person updatedPersonEmail(Person oldPerson, PatientInput input) {
+
+		if (input.getEmailAddresses() != null && !input.getEmailAddresses().isEmpty()) {
+			oldPerson.setHmEmailAddr(input.getEmailAddresses().get(0));
+			oldPerson.setWkEmailAddr(input.getEmailAddresses().size() >= 2 && input.getEmailAddresses().get(1) != null
+					? input.getEmailAddresses().get(1)
+					: oldPerson.getWkEmailAddr());
+		}
+
+		return oldPerson;
+	}
+
+	public Person updatedPersonPhone(Person oldPerson, PatientInput input) {
+
+		for (PhoneNumber number : input.getPhoneNumbers()) {
+			if (number.getPhoneType().equals(PhoneType.HOME)) {
+				oldPerson.setHmPhoneNbr(number.getNumber());
 			}
-
-			if (input.getEmailAddresses() != null && input.getEmailAddresses().isEmpty() == false ){
-				oldPerson.setHmEmailAddr(input.getEmailAddresses().get(0));
-				oldPerson.setWkEmailAddr(
-						input.getEmailAddresses().size() >= 2 && input.getEmailAddresses().get(1) != null
-								? input.getEmailAddresses().get(1)
-								: oldPerson.getWkEmailAddr());
+			if (number.getPhoneType().equals(PhoneType.WORK)) {
+				oldPerson.setWkPhoneNbr(number.getNumber());
 			}
-
-			for (PhoneNumber number : input.getPhoneNumbers()) {
-				if (number.getPhoneType().equals(PhoneType.HOME)) {
-					oldPerson.setHmPhoneNbr(number.getNumber());
-				}
-				if (number.getPhoneType().equals(PhoneType.WORK)) {
-					oldPerson.setWkPhoneNbr(number.getNumber());
-				}
-				if (number.getPhoneType().equals(PhoneType.WORK)) {
-					oldPerson.setCellPhoneNbr(number.getNumber());
-				}
-
+			if (number.getPhoneType().equals(PhoneType.WORK)) {
+				oldPerson.setCellPhoneNbr(number.getNumber());
 			}
 
 		}
