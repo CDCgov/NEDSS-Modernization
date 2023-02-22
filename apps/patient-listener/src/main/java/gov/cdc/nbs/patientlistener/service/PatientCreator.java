@@ -26,16 +26,16 @@ class PatientCreator {
 
         Person person = new Person(asAdd(request));
 
-        request.names().stream().map(name -> as(request, name))
+        request.names().stream().map(name -> asName(request, name))
                 .forEach(person::add);
 
         request.races().stream().map(race -> asRace(request, race))
                 .forEach(person::add);
 
-        request.addresses().stream().map(address -> as(request, address))
+        request.addresses().stream().map(address -> asAddress(request, address))
                 .forEach(person::add);
 
-        request.phoneNumbers().stream().map(phoneNumber -> as(request, phoneNumber))
+        request.phoneNumbers().stream().map(phoneNumber -> asPhoneNumber(request, phoneNumber))
                 .forEach(person::add);
 
         request.emailAddresses().stream().map(emailAddress -> asEmailAddress(request, emailAddress))
@@ -62,7 +62,7 @@ class PatientCreator {
         );
     }
 
-    private PatientCommand.AddName as(final PatientCreateRequest request, final PatientCreateRequest.Name name) {
+    private PatientCommand.AddName asName(final PatientCreateRequest request, final PatientCreateRequest.Name name) {
         return new PatientCommand.AddName(
                 request.patient(),
                 name.first(),
@@ -84,7 +84,7 @@ class PatientCreator {
         );
     }
 
-    private PatientCommand.AddAddress as(final PatientCreateRequest request, final PatientCreateRequest.PostalAddress address) {
+    private PatientCommand.AddAddress asAddress(final PatientCreateRequest request, final PatientCreateRequest.PostalAddress address) {
         return new PatientCommand.AddAddress(
                 request.patient(),
                 address.id(),
@@ -101,7 +101,7 @@ class PatientCreator {
         );
     }
 
-    private PatientCommand.AddPhoneNumber as(final PatientCreateRequest request, final PatientCreateRequest.PhoneNumber phoneNumber) {
+    private PatientCommand.AddPhoneNumber asPhoneNumber(final PatientCreateRequest request, final PatientCreateRequest.PhoneNumber phoneNumber) {
         return new PatientCommand.AddPhoneNumber(
                 request.patient(),
                 phoneNumber.id(),

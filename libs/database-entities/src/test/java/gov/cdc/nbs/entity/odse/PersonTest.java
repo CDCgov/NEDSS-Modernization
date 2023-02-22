@@ -64,6 +64,7 @@ class PersonTest {
         assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
         assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
+        assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
         assertThat(actual.getEthnicGroupInd()).isEqualTo("EthCode");
 
         assertThat(actual.getPersonParentUid())

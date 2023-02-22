@@ -433,6 +433,7 @@ public class Person {
         this.currSexCd = patient.currentGender();
 
         this.deceasedIndCd = patient.deceased();
+        this.maritalStatusCd = patient.maritalStatus();
         this.ethnicGroupInd = patient.ethnicityCode();
 
         this.statusTime = patient.requestedOn();
