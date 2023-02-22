@@ -13,19 +13,20 @@ public class StatusAudit {
     @Column(name = "status_time", nullable = false)
     private Instant statusTime;
 
-    public Character getStatusCd() {
-        return statusCd;
+    protected StatusAudit() {
     }
 
-    public void setStatusCd(Character statusCd) {
+    public StatusAudit(Character statusCd, Instant statusTime) {
         this.statusCd = statusCd;
+        this.statusTime = statusTime;
+    }
+
+    public Character getStatusCd() {
+        return statusCd;
     }
 
     public Instant getStatusTime() {
         return statusTime;
     }
 
-    public void setStatusTime(Instant statusTime) {
-        this.statusTime = statusTime;
-    }
 }

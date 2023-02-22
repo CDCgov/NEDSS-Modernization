@@ -1,12 +1,14 @@
 package gov.cdc.nbs.patientlistener.service;
 
+import gov.cdc.nbs.address.City;
+import gov.cdc.nbs.address.Country;
+import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.PatientCreateRequest;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
 
 import javax.transaction.Transactional;
-import java.time.Instant;
 
 class PatientCreator {
 
@@ -86,11 +88,11 @@ class PatientCreator {
                 address.id(),
                 address.streetAddress1(),
                 address.streetAddress2(),
-                address.city(),
+                new City(address.city()),
                 address.stateCode(),
                 address.zip(),
-                address.countyCode(),
-                address.countryCode(),
+                new County(address.countyCode()),
+                new Country(address.countryCode()),
                 address.censusTract(),
                 request.createdBy(),
                 request.createdAt()

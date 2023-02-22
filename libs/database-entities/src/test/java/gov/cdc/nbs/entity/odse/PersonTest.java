@@ -1,5 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.address.City;
+import gov.cdc.nbs.address.Country;
+import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -209,11 +212,11 @@ class PersonTest {
                   4861L,
                   "SA1",
                   "SA2",
-                  "City",
+                  new City("city-code", "city-description"),
                   "State",
                   "Zip",
-                  "County",
-                  "Country",
+                  new County("county-code", "county-description"),
+                  new Country("country-code", "country-description"),
                   "Census Tract",
                   131L,
                   Instant.parse("2020-03-03T10:15:30.00Z")
@@ -231,11 +234,14 @@ class PersonTest {
                                 .returns("SA1", PostalLocator::getStreetAddr1)
                                 .returns("SA2", PostalLocator::getStreetAddr2)
                                 //  should this be getCityDescTxt or getCityCd?
-                                .returns("City", PostalLocator::getCityCd)
+                                .returns("city-code", PostalLocator::getCityCd)
+                                .returns("city-description", PostalLocator::getCityDescTxt)
                                 .returns("State", PostalLocator::getStateCd)
-                                .returns("County", PostalLocator::getCntyCd)
+                                .returns("county-code", PostalLocator::getCntyCd)
+                                .returns("county-description", PostalLocator::getCntyDescTxt)
                                 .returns("Zip", PostalLocator::getZipCd)
-                                .returns("Country", PostalLocator::getCntryCd)
+                                .returns("country-code", PostalLocator::getCntryCd)
+                                .returns("country-description", PostalLocator::getCntryDescTxt)
 
                 );
 

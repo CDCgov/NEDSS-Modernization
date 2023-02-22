@@ -14,7 +14,7 @@ public class Added {
     private Instant addTime;
 
     @Column(name = "add_user_id")
-    private long addUserId;
+    private Long addUserId;
 
     protected Added() {
     }

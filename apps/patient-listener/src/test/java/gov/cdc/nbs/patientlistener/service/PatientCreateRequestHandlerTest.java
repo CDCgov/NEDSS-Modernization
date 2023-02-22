@@ -231,7 +231,7 @@ class PatientCreateRequestHandlerTest {
 
         for (int i = 0; i < personAddresses.size(); i++) {
             var pa = personAddresses.get(i);
-            var matchingRecord = esPerson.getAddress().stream().filter(esAddress -> esAddress.getStreetAddr1().equals(pa.getStreetAddr1()) && esAddress.getStreetAddr2().equals(pa.getStreetAddr2()) && esAddress.getCity().equals(pa.getCityDescTxt()) && esAddress.getState().equals(pa.getStateCd()) && esAddress.getCntyCd().equals(pa.getCntyCd()) && esAddress.getZip().equals(pa.getZipCd()) && esAddress.getCntryCd().equals(pa.getCntryCd())).findFirst();
+            var matchingRecord = esPerson.getAddress().stream().filter(esAddress -> esAddress.getStreetAddr1().equals(pa.getStreetAddr1()) && esAddress.getStreetAddr2().equals(pa.getStreetAddr2()) && esAddress.getCity().equals(pa.getCityCd()) && esAddress.getState().equals(pa.getStateCd()) && esAddress.getCntyCd().equals(pa.getCntyCd()) && esAddress.getZip().equals(pa.getZipCd()) && esAddress.getCntryCd().equals(pa.getCntryCd())).findFirst();
             assertTrue(matchingRecord.isPresent());
         }
 

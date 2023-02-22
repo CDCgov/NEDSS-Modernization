@@ -1,5 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.address.City;
+import gov.cdc.nbs.address.Country;
+import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -88,13 +91,33 @@ public class PostalLocator extends Locator {
         this.id = address.id();
         this.streetAddr1 = address.address1();
         this.streetAddr2 = address.address2();
-        this.cityCd = address.city();
-        this.cityDescTxt = address.city();
+        applyCity(address.city());
         this.stateCd = address.state();
         this.zipCd = address.zip();
-        this.cntyCd = address.county();
-        this.cntryCd = address.country();
+        applyCounty(address.county());
+        applyCountry(address.country());
         this.censusTract = address.censusTract();
+    }
+
+    private void applyCity(final City city) {
+        if(city != null) {
+            this.cityCd = city.code();
+            this.cityDescTxt = city.description();
+        }
+    }
+
+    private void applyCounty(final County county) {
+        if(county != null) {
+            this.cntyCd = county.code();
+            this.cntyDescTxt = county.description();
+        }
+    }
+
+    private void applyCountry(final Country county) {
+        if(county != null) {
+            this.cntryCd = county.code();
+            this.cntryDescTxt = county.description();
+        }
     }
 
     @Override

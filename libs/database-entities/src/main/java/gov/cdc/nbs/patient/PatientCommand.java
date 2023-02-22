@@ -1,5 +1,8 @@
 package gov.cdc.nbs.patient;
 
+import gov.cdc.nbs.address.City;
+import gov.cdc.nbs.address.Country;
+import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -59,11 +62,11 @@ public sealed interface PatientCommand {
             long id,
             String address1,
             String address2,
-            String city,
+            City city,
             String state,
             String zip,
-            String county,
-            String country,
+            County county,
+            Country country,
 
             String censusTract,
             long requester,

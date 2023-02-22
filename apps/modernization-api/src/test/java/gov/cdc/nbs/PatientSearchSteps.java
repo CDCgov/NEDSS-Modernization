@@ -78,21 +78,11 @@ public class PatientSearchSteps {
         soundexPerson.setFirstNm("Jon");  // soundex equivalent to John
         soundexPerson.setLastNm("Smyth");  // soundex equivalent to Smith
 
-        var generatedIds = generatedPersons.stream()
-                .map(p -> p.getId()).collect(Collectors.toList());
-        // find existing persons
-        var existingPersons = personRepository.findAllById(generatedIds);
-        // delete existing locator entries
-        var existingPostal = PersonUtil.getPostalLocators(existingPersons);
-        postalLocatorRepository.deleteAll(existingPostal);
-        var existingTele = PersonUtil.getTeleLocators(existingPersons);
-        teleLocatorRepository.deleteAll(existingTele);
-        // delete existing persons
-        personRepository.deleteAll(existingPersons);
+        generatedPersons.forEach(personRepository::delete);
 
+        personRepository.flush();
         // create new persons
-        teleLocatorRepository.saveAll(PersonUtil.getTeleLocators(generatedPersons));
-        postalLocatorRepository.saveAll(PersonUtil.getPostalLocators(generatedPersons));
+
         personRepository.saveAll(generatedPersons);
         elasticsearchPersonRepository.saveAll(PersonUtil.getElasticSearchPersons(generatedPersons));
     }

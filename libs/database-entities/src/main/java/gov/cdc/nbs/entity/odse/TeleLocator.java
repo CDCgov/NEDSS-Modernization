@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -45,6 +43,8 @@ public class TeleLocator extends Locator {
 
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
+
+    protected TeleLocator(){}
 
     public TeleLocator(final PatientCommand.AddPhoneNumber phoneNumber) {
         super(phoneNumber);

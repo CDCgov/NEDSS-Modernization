@@ -39,14 +39,13 @@ public class Person {
 
     @MapsId
     @OneToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE,
                     CascadeType.REMOVE
             },
-            optional = false,
-            orphanRemoval = true
+            optional = false
     )
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity nbsEntity;
@@ -520,5 +519,12 @@ public class Person {
     @Override
     public int hashCode() {
         return this.id == null ? System.identityHashCode(this) : Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                '}';
     }
 }

@@ -15,7 +15,7 @@ public class RecordStatusAudit {
     private Instant recordStatusTime;
 
 
-    public RecordStatusAudit() {
+    protected RecordStatusAudit() {
     }
 
     public RecordStatusAudit(final Instant when) {
