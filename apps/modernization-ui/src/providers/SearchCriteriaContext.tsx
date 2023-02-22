@@ -23,7 +23,8 @@ import {
     FindAllRaceValuesQuery,
     IdentificationType,
     useFindAllPatientIdentificationTypesLazyQuery,
-    FindAllPatientIdentificationTypesQuery
+    FindAllPatientIdentificationTypesQuery,
+    StateCode
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
@@ -36,6 +37,7 @@ export interface SearchCriteria {
     ethnicities: Ethnicity[];
     races: Race[];
     identificationTypes: IdentificationType[];
+    states: StateCode[];
 }
 
 const initialState: SearchCriteria = {
@@ -46,7 +48,8 @@ const initialState: SearchCriteria = {
     outbreaks: [],
     ethnicities: [],
     races: [],
-    identificationTypes: []
+    identificationTypes: [],
+    states: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
