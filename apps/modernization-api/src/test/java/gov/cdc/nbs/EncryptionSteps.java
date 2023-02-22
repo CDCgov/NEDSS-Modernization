@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.model.EncryptionResponse;
 import gov.cdc.nbs.support.EthnicityMother;
