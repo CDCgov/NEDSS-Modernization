@@ -3,7 +3,7 @@ package gov.cdc.nbs.entity.enums.converter;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import gov.cdc.nbs.entity.enums.Suffix;
+import gov.cdc.nbs.message.enums.Suffix;
 
 @Converter
 public class SuffixConverter implements AttributeConverter<Suffix, String> {

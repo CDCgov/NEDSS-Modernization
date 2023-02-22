@@ -9,6 +9,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import gov.cdc.nbs.message.EnvelopeRequest;
+import gov.cdc.nbs.message.PatientCreateRequest;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public class KafkaRequestProducerService {
 	@Autowired
 	private KafkaTemplate<String, PatientDeleteRequest> kafkaPatientDeleteTemplate;
 
+	@Autowired
+	private KafkaTemplate<String, PatientCreateRequest> kafkaPatientCreateTemplate;
+
 	@Value("${kafkadef.patient-search.topics.request.patient}")
 	private String patientSearchTopic;
 
@@ -35,9 +39,11 @@ public class KafkaRequestProducerService {
 	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
 	private String patientDeleteTopic;
 
+	@Value("${kafkadef.patient-search.topics.request.patient-create}")
+	private String patientCreateTopic;
+
 	public void requestEnvelope(EnvelopeRequest kafkaMessage) {
 		send(kafkaEnvelopeTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
-
 	}
 
 	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
@@ -46,6 +52,10 @@ public class KafkaRequestProducerService {
 
 	public void requestPatientDeleteEnvelope(PatientDeleteRequest kafkaMessage) {
 		send(kafkaPatientDeleteTemplate, patientDeleteTopic, kafkaMessage.getRequestId(), kafkaMessage);
+	}
+
+	public void requestPatientCreateEnvelope(PatientCreateRequest kafkaMessage) {
+		send(kafkaPatientCreateTemplate, patientCreateTopic, kafkaMessage.request(), kafkaMessage);
 	}
 
 	private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {
@@ -60,7 +70,6 @@ public class KafkaRequestProducerService {
 			public void onSuccess(SendResult<K, V> result) {
 				log.info("Sent message key={} message={} result={}", key, event, result);
 			}
-
 		});
 
 	}

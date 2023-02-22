@@ -9,16 +9,10 @@ public class ProviderMother {
 
     public static Person johnXerogeanes() {
         final long id = 19100000L;
-        var person = new Person();
-        person.setId(id);
+        var person = new Person(id, "PSN10064000GA01");
         person.setCd("PRV");
         person.setFirstNm("John");
         person.setLastNm("Xerogeanes");
-        person.setLocalId("PSN10064000GA01");
-        person.setStatusCd('A');
-        person.setRecordStatusCd(RecordStatus.ACTIVE);
-        person.setNbsEntity(new NBSEntity(id, "PSN"));
-        person.setVersionCtrlNbr((short) 1);
         return person;
     }
 
