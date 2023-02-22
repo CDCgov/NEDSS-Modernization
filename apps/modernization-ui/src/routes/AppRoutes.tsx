@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
-import { PatientProfile } from '../pages/patientProfile';
+import { PatientProfile } from '../pages/patientProfile/PatientProfile';
 
 export const AppRoutes = () => {
     return (
