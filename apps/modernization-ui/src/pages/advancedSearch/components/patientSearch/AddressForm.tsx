@@ -54,7 +54,7 @@ export const AddressForm = ({ control }: any) => {
                                         label="State"
                                         options={searchCriteria.states.map((state) => {
                                             return {
-                                                value: state.codeDescTxt!,
+                                                value: state.id!,
                                                 name: state.codeDescTxt!
                                             };
                                         })}
