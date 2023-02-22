@@ -58,7 +58,7 @@ class PatientCreateRequestHandlerTest {
     void should_create_patient_in_database_and_elasticsearch() {
         // Mock methods
 
-        doReturn(true).when(userService).isAuthorized(eq(269L), eq("FIND-PATIENT"), eq("ADD-PATIENT"));
+        doReturn(true).when(userService).isAuthorized(269L, "FIND-PATIENT", "ADD-PATIENT");
 
         when(personRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
 

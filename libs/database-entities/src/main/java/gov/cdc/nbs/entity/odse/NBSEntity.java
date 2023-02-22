@@ -2,7 +2,6 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -65,9 +64,9 @@ public class NBSEntity {
             final PatientCommand.AddAddress address
     ) {
 
-        List<EntityLocatorParticipation> participations = ensureLocators();
+        List<EntityLocatorParticipation> locators = ensureLocators();
 
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) participations.size());
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
 
         EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
                 this,
@@ -75,16 +74,16 @@ public class NBSEntity {
                 address
         );
 
-        participations.add(participation);
+        locators.add(participation);
 
 
         return participation;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
-        List<EntityLocatorParticipation> participations = ensureLocators();
+        List<EntityLocatorParticipation> locators = ensureLocators();
 
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) participations.size());
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
 
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
                 this,
@@ -92,16 +91,16 @@ public class NBSEntity {
                 phoneNumber
         );
 
-        participations.add(participation);
+        locators.add(participation);
 
 
         return participation;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
-        List<EntityLocatorParticipation> participations = ensureLocators();
+        List<EntityLocatorParticipation> locators = ensureLocators();
 
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) participations.size());
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
 
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
                 this,
@@ -109,7 +108,7 @@ public class NBSEntity {
                 emailAddress
         );
 
-        participations.add(participation);
+        locators.add(participation);
 
 
         return participation;

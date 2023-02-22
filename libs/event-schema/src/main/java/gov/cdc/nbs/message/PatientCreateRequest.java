@@ -6,6 +6,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Collections;
 
 public record PatientCreateRequest(
 
@@ -28,6 +29,46 @@ public record PatientCreateRequest(
         long createdBy,
         Instant createdAt
 ) {
+    public PatientCreateRequest(
+            String request,
+            Long patient,
+            String patientLocalId,
+            String ssn,
+            Instant dateOfBirth,
+            Gender birthGender,
+            Gender currentGender,
+            Deceased deceased,
+            Instant deceasedTime,
+            String maritalStatus,
+            Collection<Name> names,
+            String ethnicity,
+            Collection<String> races,
+            Collection<PostalAddress> addresses,
+            Collection<PhoneNumber> phoneNumbers,
+            Collection<EmailAddress> emailAddresses,
+            long createdBy,
+            Instant createdAt
+    ) {
+        this.request = request;
+        this.patient = patient;
+        this.patientLocalId = patientLocalId;
+        this.ssn = ssn;
+        this.dateOfBirth = dateOfBirth;
+        this.birthGender = birthGender;
+        this.currentGender = currentGender;
+        this.deceased = deceased;
+        this.deceasedTime = deceasedTime;
+        this.maritalStatus = maritalStatus;
+        this.names = names == null ? Collections.emptyList() : names;
+        this.ethnicity = ethnicity;
+        this.races = races == null ? Collections.emptyList() : races;
+        this.addresses = addresses == null ? Collections.emptyList() : addresses;
+        this.phoneNumbers = phoneNumbers == null ? Collections.emptyList() : phoneNumbers;
+        this.emailAddresses = emailAddresses == null ? Collections.emptyList() : emailAddresses;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+    }
+
     public PatientCreateRequest(
             String requestId,
             Long patientId,

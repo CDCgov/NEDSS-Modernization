@@ -61,9 +61,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation{
                 this.cd = "PH";
                 this.useCd = "WP";
             }
-            default -> {
-                throw new IllegalArgumentException("Invalid PhoneType specified: " + type);
-            }
+            default -> throw new IllegalArgumentException("Invalid PhoneType specified: " + type);
         }
     }
 

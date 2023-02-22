@@ -449,16 +449,16 @@ public class Person {
 
     public PersonName add(final PatientCommand.AddName added) {
 
-        Collection<PersonName> names = ensureNames();
+        Collection<PersonName> existing = ensureNames();
 
-        if (names.isEmpty()) {
+        if (existing.isEmpty()) {
             this.firstNm = added.first();
             this.middleNm = added.middle();
             this.lastNm = added.last();
             this.nmSuffix = added.suffix();
         }
 
-        PersonNameId identifier = new PersonNameId(this.id, (short) names.size());
+        PersonNameId identifier = new PersonNameId(this.id, (short) existing.size());
 
         PersonName personName = new PersonName(
                 identifier,
@@ -466,7 +466,7 @@ public class Person {
                 added
         );
 
-        names.add(personName);
+        existing.add(personName);
 
         return personName;
     }
@@ -479,11 +479,11 @@ public class Person {
     }
 
     public PersonRace add(final PatientCommand.AddRace added) {
-        Collection<PersonRace> races = ensureRaces();
+        Collection<PersonRace> existing = ensureRaces();
 
         PersonRace personRace = new PersonRace(this, added);
 
-        races.add(personRace);
+        existing.add(personRace);
 
         return personRace;
 

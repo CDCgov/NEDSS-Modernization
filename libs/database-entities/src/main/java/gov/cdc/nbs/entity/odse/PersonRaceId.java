@@ -3,16 +3,6 @@ package gov.cdc.nbs.entity.odse;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
-import org.hibernate.Hibernate;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 public class PersonRaceId implements Serializable {
     private static final long serialVersionUID = -8655697160777324427L;
@@ -21,7 +11,7 @@ public class PersonRaceId implements Serializable {
 
     private String raceCd;
 
-    public PersonRaceId() {
+    protected PersonRaceId() {
     }
 
     public PersonRaceId(long personUid, String raceCd) {
