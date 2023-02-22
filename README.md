@@ -8,6 +8,8 @@
 - [Modernization UI](apps/modernization-ui/README.md)
 - [Patient Listener](apps/patient-listener/README.md)
 - [CDC Sandbox](cdc-sandbox/README.md)
+- [Database-Entities](libs/database-entities/README.md)
+- [Event-Schema](libs/event-schema/README.md)
 
 ## TLDR: Running everything inside docker
 
