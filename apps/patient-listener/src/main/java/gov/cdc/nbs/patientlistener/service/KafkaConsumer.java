@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Component
 @Slf4j
 public class KafkaConsumer {

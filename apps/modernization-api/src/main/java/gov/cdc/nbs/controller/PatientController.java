@@ -39,6 +39,7 @@ public class PatientController {
     private static final String FIND_AND_EDIT_AND_VIEW = FIND_PATIENT + AND + EDIT_PATIENT  + AND + VIEW_PATIENT;  
     private static final String DELETE_PATIENT = HAS_AUTHORITY + Operations.DELETE + "-" + BusinessObjects.PATIENT
     + "')";
+    private static final String DELETE_AND_VIEW = DELETE_PATIENT + AND + VIEW_PATIENT;
     private final PatientService patientService;
 
     @QueryMapping()
@@ -67,7 +68,7 @@ public class PatientController {
     }
 
     @MutationMapping()
-    @PreAuthorize(DELETE_PATIENT)
+    @PreAuthorize(DELETE_AND_VIEW)
     public PatientDeleteResponse deletePatient(@Argument Long id) {
         return patientService.sendDeletePatientEvent(id);
     }
