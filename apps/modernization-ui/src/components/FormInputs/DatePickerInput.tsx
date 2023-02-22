@@ -1,5 +1,6 @@
 import { DatePicker, Label } from '@trussworks/react-uswds';
 import { useEffect, useState } from 'react';
+import { validateDate } from '../../utils/DateValidation';
 
 type DatePickerProps = {
     id?: string;
@@ -22,9 +23,14 @@ export const DatePickerInput = ({
 }: DatePickerProps) => {
     const defaultVal: any = defaultValue?.split('/');
     const [defaultDate, setDefaultDate] = useState('');
+
     useEffect(() => {
         if (defaultVal) {
-            setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
+            if (defaultVal.length > 7) {
+                if (validateDate(defaultVal)) {
+                    setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
+                }
+            }
         } else {
             setDefaultDate('');
         }
