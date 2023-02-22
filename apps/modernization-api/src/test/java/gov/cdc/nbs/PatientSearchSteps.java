@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,7 @@ public class PatientSearchSteps {
         // create new persons
 
         personRepository.saveAll(generatedPersons);
-        elasticsearchPersonRepository.saveAll(PersonUtil.getElasticSearchPersons(generatedPersons));
+        elasticsearchPersonRepository.saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(generatedPersons));
     }
 
     @Given("I am looking for one of them")

@@ -1,14 +1,14 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
-
-import javax.persistence.*;
-
 import gov.cdc.nbs.patient.PatientCommand;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -44,7 +44,8 @@ public class TeleLocator extends Locator {
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
 
-    protected TeleLocator(){}
+    protected TeleLocator() {
+    }
 
     public TeleLocator(final PatientCommand.AddPhoneNumber phoneNumber) {
         super(phoneNumber);
