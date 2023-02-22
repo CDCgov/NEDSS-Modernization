@@ -13,6 +13,7 @@ import { IDForm } from './IdForm';
 import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
 import { formatInterfaceString } from '../../../../utils/util';
 import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
+import { validateDate } from '../../../../utils/DateValidation';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -188,7 +189,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
             firstName: body.firstName,
             lastName: body.lastName
         };
-        body.dob && (rowData.dateOfBirth = body.dob);
+        body.dob && validateDate(body.dob) && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
 
         body.address && (rowData.address = body.address);

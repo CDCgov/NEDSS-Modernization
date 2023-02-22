@@ -1,0 +1,12 @@
+.date-picker-input {
+    &.error {
+        border-left: 2px solid #B51D09;
+        padding-left: 1em;
+        input {
+            border: 2px solid #B51D09;
+            &:focus {
+                outline: 2px solid #B51D09;
+            }
+        }
+    }
+}

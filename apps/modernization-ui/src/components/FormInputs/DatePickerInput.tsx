@@ -1,4 +1,5 @@
 import { DatePicker, Label } from '@trussworks/react-uswds';
+import './DatePickerInput.scss';
 import { useEffect, useState } from 'react';
 import { validateDate } from '../../utils/DateValidation';
 
@@ -23,25 +24,33 @@ export const DatePickerInput = ({
 }: DatePickerProps) => {
     const defaultVal: any = defaultValue?.split('/');
     const [defaultDate, setDefaultDate] = useState('');
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        if (defaultVal) {
-            if (defaultVal.length > 7) {
-                if (validateDate(defaultVal)) {
-                    setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
+        if (defaultValue) {
+            if (defaultVal.length === 3 && defaultVal[2]) {
+                if (defaultVal[2].length === 4) {
+                    if (validateDate(defaultValue)) {
+                        console.log('YUP');
+                        setError(false);
+                        setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
+                    } else {
+                        setError(true);
+                    }
                 }
+            } else {
+                setError(true);
             }
-        } else {
-            setDefaultDate('');
         }
-    }, [defaultVal]);
+    }, [defaultValue]);
     return (
-        <>
-            {label && <Label htmlFor={htmlFor}>{label}</Label>}
-            {defaultDate && (
+        <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
+            <Label htmlFor={htmlFor}>{label}</Label>
+            {defaultDate ? (
                 <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
+            ) : (
+                <DatePicker id={id} onChange={onChange} className={className} name={name} />
             )}
-            {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
-        </>
+        </div>
     );
 };
