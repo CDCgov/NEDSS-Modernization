@@ -13,9 +13,11 @@ import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.Operator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -159,15 +161,33 @@ public class PatientService {
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+            BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
+            firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
                     ScoreMode.Avg));
+
+            Soundex soundex = new Soundex();
+            String firstNmSndx = soundex.encode(filter.getFirstName());
+            firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+                    QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
+                    ScoreMode.Avg));
+        
+            builder.must(firstNameBuilder);
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+            BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
+            lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
                     ScoreMode.Avg));
+
+            Soundex soundex = new Soundex();
+            String lastNmSndx = soundex.encode(filter.getLastName());
+            lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
+                    QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
+                    ScoreMode.Avg));
+
+            builder.must(lastNameBuilder);
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
@@ -176,13 +196,17 @@ public class PatientService {
 
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getPhoneNumber()).defaultField("phone.telephoneNbr"),
+                    QueryBuilders.queryStringQuery(filter.getPhoneNumber())
+                    .defaultField("phone.telephoneNbr")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getEmail()).defaultField("email.emailAddress"),
+                    QueryBuilders.queryStringQuery(filter.getEmail())
+                    .defaultField("email.emailAddress")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -485,9 +509,7 @@ public class PatientService {
         personName.setAddReasonCd("Add");
         personName.setAddTime(now);
         personName.setFirstNm(name.getFirstName());
-        // personName.setFirstNmSndx(); TODO how to generate sndx
         personName.setLastNm(name.getLastName());
-        // personName.setLastNmSndx(); TODO
         personName.setMiddleNm(name.getMiddleName());
         personName.setNmSuffix(name.getSuffix());
         personName.setNmUseCd("L"); // L = legal, AL = alias. per NEDSSConstants

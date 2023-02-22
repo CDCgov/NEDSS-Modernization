@@ -72,6 +72,11 @@ public class PatientSearchSteps {
     public void there_are_patients(int patientCount) {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(patientCount);
+        
+        // make first person soundex testable
+        Person soundexPerson = generatedPersons.get(0);
+        soundexPerson.setFirstNm("Jon");  // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth");  // soundex equivalent to Smith
 
         var generatedIds = generatedPersons.stream()
                 .map(p -> p.getId()).collect(Collectors.toList());
@@ -151,11 +156,19 @@ public class PatientSearchSteps {
             case "email":
                 filter.setEmail(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
                 break;
+            case "last name soundex":
+                searchPatient = generatedPersons.get(0);
+                filter.setLastName("Smith");  // finds Smyth
+                break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
                 break;
             case "first name":
                 filter.setFirstName(searchPatient.getFirstNm());
+                break;
+            case "first name soundex":
+                searchPatient = generatedPersons.get(0);
+                filter.setFirstName("John"); // finds Jon
                 break;
             case "race":
                 filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
