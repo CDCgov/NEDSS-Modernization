@@ -50,7 +50,6 @@ export const PatientProfile = () => {
             encryptedString: searchParams?.get('data') || '',
             authorization: `Bearer ${state.getToken()}`
         }).then(async (data: any) => {
-            console.log(data, 'data');
             setProfileData(data);
             getPatientInvestigationData({
                 variables: {
