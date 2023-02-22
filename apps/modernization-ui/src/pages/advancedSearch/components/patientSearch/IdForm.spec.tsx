@@ -27,7 +27,8 @@ describe('IDForm component tests', () => {
             conditions: [],
             jurisdictions: [],
             userResults: [],
-            outbreaks: []
+            outbreaks: [],
+            states: []
         };
 
         const { container } = render(
