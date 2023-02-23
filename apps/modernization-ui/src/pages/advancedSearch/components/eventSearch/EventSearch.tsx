@@ -46,7 +46,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
 
     const eventSearchItems: AccordionItemProps[] = [
         {
-            title: 'Event Type',
+            title: 'Event type',
             content: (
                 <EventTypes
                     defaultValue={eventSearchType}
@@ -66,7 +66,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
 
     const investigationSearchFilteredItem: AccordionItemProps[] = [
         {
-            title: 'General Search',
+            title: 'General search',
             content: <GeneralSearch control={control} filter={investigationFilter} />,
             expanded: true,
             id: '2',
@@ -74,7 +74,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
             className: 'accordian-item'
         },
         {
-            title: 'Investigation Criteria',
+            title: 'Investigation criteria',
             content: <SearchCriteria control={control} filter={investigationFilter} />,
             expanded: false,
             id: '3',
@@ -131,7 +131,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
 
     const labReportSearchItem: AccordionItemProps[] = [
         {
-            title: 'General Search',
+            title: 'General search',
             content: <LabGeneralSearch control={control} filter={labReportFilter} />,
             expanded: true,
             id: '2',
@@ -139,7 +139,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
             className: 'accordian-item'
         },
         {
-            title: 'Lab Report Criteria',
+            title: 'Lab report criteria',
             content: (
                 <LabSearchCriteria
                     resultsTestOptions={resultData}
@@ -185,7 +185,11 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
                 eventId: body.labeventId || undefined,
                 createdBy: body.labcreatedBy && body.labcreatedBy !== '- Select -' ? body.labcreatedBy : undefined,
                 lastUpdatedBy:
-                    body.lablastUpdatedBy && body.lablastUpdatedBy !== '- Select -' ? body.lablastUpdatedBy : undefined
+                    body.lablastUpdatedBy && body.lablastUpdatedBy !== '- Select -' ? body.lablastUpdatedBy : undefined,
+                entryMethods: body.entryMethod?.length > 0 ? body.entryMethod : undefined,
+                enteredBy: body.enteredBy?.length > 0 ? body.enteredBy : undefined,
+                eventStatus: body.eventStatus?.length > 0 ? body.eventStatus : undefined,
+                processingStatus: body.processingStatus?.length > 0 ? body.processingStatus : undefined
             };
         } else {
             return;

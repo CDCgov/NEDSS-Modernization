@@ -21,10 +21,10 @@ export const EventTypes = ({ control, name, defaultValue, onChangeMethod }: Even
                         onChangeMethod(e.target.value);
                         onChange();
                     }}
-                    label="Event Type:"
+                    label="Event type"
                     options={[
                         { name: 'Investigation', value: SEARCH_TYPE.INVESTIGATION },
-                        { name: 'Laboratory Report', value: SEARCH_TYPE.LAB_REPORT }
+                        { name: 'Laboratory report', value: SEARCH_TYPE.LAB_REPORT }
                     ]}
                 />
             )}

@@ -31,7 +31,7 @@ export const DatePickerInput = ({
     }, [defaultVal]);
     return (
         <>
-            <Label htmlFor={htmlFor}>{label}</Label>
+            {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {defaultDate && (
                 <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
             )}
