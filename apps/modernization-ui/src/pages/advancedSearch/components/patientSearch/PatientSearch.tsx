@@ -1,8 +1,8 @@
-import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
+import { Accordion, Button, Form, Grid, Label } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Gender, PersonFilter } from '../../../../generated/graphql/schema';
+import { Gender, PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
@@ -10,6 +10,8 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
+import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
+import { formatInterfaceString } from '../../../../utils/util';
 import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
 
 type PatientSearchProps = {
@@ -51,7 +53,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
-            title: 'Basic Info',
+            title: 'Basic info',
             content: (
                 <>
                     <Grid col={12}>
@@ -62,7 +64,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                 <Input
                                     onChange={onChange}
                                     type="text"
-                                    label="Last Name"
+                                    label="Last name"
                                     name="lastName"
                                     defaultValue={value}
                                     htmlFor="lastName"
@@ -81,7 +83,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
-                                    label="First Name"
+                                    label="First name"
                                     name="firstName"
                                     htmlFor="firstName"
                                     id="firstName"
@@ -100,7 +102,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     onChange={onChange}
                                     name="dob"
                                     htmlFor={'dob'}
-                                    label="Date Of Birth"
+                                    label="Date of birth"
                                 />
                             )}
                         />
@@ -115,7 +117,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                     onChange={onChange}
                                     name="gender"
                                     htmlFor={'gender'}
-                                    label="Gender"
+                                    label="Sex"
                                     options={[
                                         { name: 'Male', value: Gender.M },
                                         { name: 'Female', value: Gender.F },
@@ -124,6 +126,21 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                 />
                             )}
                         />
+                    </Grid>
+                    <Grid col={12}>
+                        <Label htmlFor={''}>Include records that are</Label>
+                        <Grid row>
+                            {Object.values(RecordStatus).map((status, index) => (
+                                <Grid col={6} key={index}>
+                                    <CheckBoxControl
+                                        name={status}
+                                        label={formatInterfaceString(status)}
+                                        id={status}
+                                        control={control}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Grid>
                 </>
             ),

@@ -5,7 +5,11 @@ import {
     LaboratoryEventIdType,
     LabReportFilter,
     PregnancyStatus,
-    ProviderType
+    ProviderType,
+    EntryMethod,
+    UserType,
+    LaboratoryReportStatus,
+    EventStatus
 } from '../../../../generated/graphql/schema';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 import { formatInterfaceString } from '../../../../utils/util';
@@ -13,12 +17,18 @@ import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInp
 import { Input } from '../../../../components/FormInputs/Input';
 import { MultiSelectControl } from '../../../../components/FormInputs/MultiSelectControl';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
+import { Checkbox, Label } from '@trussworks/react-uswds';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
     searchType?: string;
     filter?: LabReportFilter;
 };
+
+let entryMethodArr: string[] = [];
+let enteredByArr: string[] = [];
+let eventStatusArr: string[] = [];
+let processingStatusArr: string[] = [];
 
 export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
@@ -32,7 +42,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             defaultValue={filter?.programAreas}
                             control={control}
                             name="labprogramArea"
-                            label="Program Area:"
+                            label="Program area"
                             options={searchCriteria.programAreas.map((p) => {
                                 return {
                                     name: p.id,
@@ -45,7 +55,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             control={control}
                             defaultValue={filter?.jurisdictions}
                             name="labjurisdiction"
-                            label="Jurisdiction:"
+                            label="Jurisdiction"
                             options={searchCriteria.jurisdictions.map((j) => {
                                 return {
                                     name: j.codeDescTxt,
@@ -60,7 +70,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="labpregnancyTest"
-                label="Pregnancy Test:"
+                label="Pregnancy test"
                 options={[
                     { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
                     { name: PregnancyStatus.No, value: PregnancyStatus.No },
@@ -71,7 +81,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="labeventIdType"
-                label="Event ID Type:"
+                label="Event id type"
                 options={Object.values(LaboratoryEventIdType).map((event) => {
                     return {
                         name: formatInterfaceString(event),
@@ -88,7 +98,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
-                        label="Event ID:"
+                        label="Event id"
                         htmlFor="eventId"
                         id="eventId"
                     />
@@ -98,7 +108,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="labeventDateType"
-                label="Event Date Type:"
+                label="Event date type"
                 options={Object.values(LaboratoryReportEventDateType).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -106,6 +116,154 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                     };
                 })}
             />
+
+            <Label htmlFor={'entryMethod'}>
+                Entry method
+                <Controller
+                    control={control}
+                    name="entryMethod"
+                    render={({ field: { onChange, value } }) => {
+                        entryMethodArr = value;
+                        return (
+                            <div className="grid-row">
+                                {Object.values(EntryMethod).map((status, index) => (
+                                    <Checkbox
+                                        checked={value?.includes(status)}
+                                        key={index}
+                                        id={status}
+                                        name={status}
+                                        label={formatInterfaceString(status.toLowerCase())}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                entryMethodArr.push(status);
+                                                onChange(entryMethodArr);
+                                            } else {
+                                                const index = entryMethodArr.indexOf(status);
+                                                if (index > -1) {
+                                                    entryMethodArr.splice(index, 1);
+                                                }
+                                                onChange(entryMethodArr);
+                                            }
+                                        }}
+                                        className="checkbox-input"
+                                    />
+                                ))}
+                            </div>
+                        );
+                    }}
+                />
+            </Label>
+
+            <Label htmlFor={'enteredBy'}>
+                Entered by
+                <Controller
+                    control={control}
+                    name="enteredBy"
+                    render={({ field: { onChange, value } }) => {
+                        enteredByArr = value;
+                        return (
+                            <div className="grid-row">
+                                {Object.values(UserType).map((item, index) => (
+                                    <Checkbox
+                                        checked={value?.includes(item)}
+                                        key={index}
+                                        id={item}
+                                        name={item}
+                                        label={formatInterfaceString(item.toLowerCase())}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                enteredByArr.push(item);
+                                                onChange(enteredByArr);
+                                            } else {
+                                                const index = enteredByArr.indexOf(item);
+                                                if (index > -1) {
+                                                    enteredByArr.splice(index, 1);
+                                                }
+                                                onChange(enteredByArr);
+                                            }
+                                        }}
+                                        className="checkbox-input"
+                                    />
+                                ))}
+                            </div>
+                        );
+                    }}
+                />
+            </Label>
+
+            <Label htmlFor={'eventStatus'}>
+                Event status
+                <Controller
+                    control={control}
+                    name="eventStatus"
+                    render={({ field: { onChange, value } }) => (
+                        <div className="grid-row">
+                            {Object.values(EventStatus).map((item, index) => {
+                                eventStatusArr = value;
+                                return (
+                                    <Checkbox
+                                        checked={value?.includes(item)}
+                                        key={index}
+                                        id={item}
+                                        name={item}
+                                        label={formatInterfaceString(item.toLowerCase())}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                eventStatusArr.push(item);
+                                                onChange(eventStatusArr);
+                                            } else {
+                                                const index = eventStatusArr.indexOf(item);
+                                                if (index > -1) {
+                                                    eventStatusArr.splice(index, 1);
+                                                }
+                                                onChange(eventStatusArr);
+                                            }
+                                        }}
+                                        className="checkbox-input"
+                                    />
+                                );
+                            })}
+                        </div>
+                    )}
+                />
+            </Label>
+
+            <Label htmlFor={'processingStatus'}>
+                Processing status
+                <Controller
+                    control={control}
+                    name="processingStatus"
+                    render={({ field: { onChange, value } }) => {
+                        processingStatusArr = value;
+                        return (
+                            <div className="grid-row">
+                                {Object.values(LaboratoryReportStatus).map((item, index) => (
+                                    <Checkbox
+                                        checked={value?.includes(item)}
+                                        key={index}
+                                        id={item}
+                                        name={item}
+                                        label={formatInterfaceString(item.toLowerCase())}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                processingStatusArr.push(item);
+                                                onChange(processingStatusArr);
+                                            } else {
+                                                const index = processingStatusArr.indexOf(item);
+                                                if (index > -1) {
+                                                    processingStatusArr.splice(index, 1);
+                                                }
+                                                onChange(processingStatusArr);
+                                            }
+                                        }}
+                                        className="checkbox-input"
+                                    />
+                                ))}
+                            </div>
+                        );
+                    }}
+                />
+            </Label>
 
             <Controller
                 control={control}
@@ -129,7 +287,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <SelectControl
                             control={control}
                             name="labcreatedBy"
-                            label="Event Created By User:"
+                            label="Event created by user"
                             options={searchCriteria.userResults.map((user) => {
                                 return {
                                     name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -141,7 +299,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <SelectControl
                             control={control}
                             name="lablastUpdatedBy"
-                            label="Event Updated By User:"
+                            label="Event updated by user"
                             options={searchCriteria.userResults.map((user) => {
                                 return {
                                     name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -156,7 +314,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="labentityType"
-                label="Event Provider/Facility Type:"
+                label="Event provider/facility type"
                 onChangeMethod={(e) => setFacilityType(e.target.value && e.target.value !== '- Select -')}
                 options={Object.values(ProviderType).map((type) => {
                     return {

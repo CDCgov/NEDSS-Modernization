@@ -24,7 +24,7 @@ export const SelectInput = ({
 }: SelectProps) => {
     return (
         <>
-            <Label htmlFor={htmlFor || ''}>{label}</Label>
+            {label && <Label htmlFor={htmlFor || ''}>{label}</Label>}
             {defaultValue && (
                 <Dropdown
                     multiple={isMulti}
