@@ -1,11 +1,11 @@
 # Event-Schema
 
-Library that contains message based event classes usseful for Kafka event based comminucation between the
-modernization-api and patient-listener projects. Also contains useful classes for comminucation between modernization-api and mondernization-ui 
+Library that contains message based event classes usseful for Kafka event based communication between the
+modernization-api and patient-listener projects. Also contains useful classes for communication between modernization-api and modernization-ui 
 
 ## About
 
-The database-entities library is currently being used by both  the mondernization-api and patient-listener projects Some packages to note include:
+The database-entities library is currently being used by both  the modernization-api and patient-listener projects Some packages to note include:
 
 - gov.cdc.nbs.message - Contains classes useful for event based kafka communicaiton. 
 - gov.cdc.nbs.message.enums - Contains enums related to patient biography information.

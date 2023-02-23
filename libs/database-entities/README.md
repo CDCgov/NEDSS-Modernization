@@ -13,7 +13,7 @@ The database-entities library is currently being used by both  the mondernizatio
 contains entity related enums and converters. 
 - gov.cdc.nbs.patient - Contains interface with commands related to patient record actions.
 - gov.cdc.nbs.repository - Contains repository interfaces for MS SQL Dialect and ElasticSearch.
-- gov.cdc.nbs.util - Contains helpful util classes and cosntants.
+- gov.cdc.nbs.util - Contains helpful util classes and constants.
 
 ## Usage
 
