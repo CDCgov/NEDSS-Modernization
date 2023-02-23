@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.entity.enums.PregnancyStatus;
+import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
