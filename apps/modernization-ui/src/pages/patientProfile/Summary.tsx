@@ -6,8 +6,8 @@ import {
     useFindDocumentsRequiringReviewForPatientLazyQuery,
     useFindOpenInvestigationsForPatientLazyQuery
 } from '../../generated/graphql/schema';
-import moment from 'moment';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
+import format from 'date-fns/format';
 
 type SummaryProp = {
     profileData: any;
@@ -87,7 +87,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
                 id: investigation?.id,
                 checkbox: true,
                 tableDetails: [
-                    { id: 1, title: moment(investigation?.addTime).format('MM/DD/YYYY') },
+                    { id: 1, title: format(new Date(investigation?.addTime), 'MM/dd/yyyy') },
                     { id: 2, title: investigation?.cdDescTxt },
                     { id: 3, title: investigation?.recordStatus },
                     { id: 4, title: investigation?.notificationRecordStatusCd },
@@ -120,8 +120,8 @@ export const Summary = ({ profileData }: SummaryProp) => {
                         id: 2,
                         title: (
                             <>
-                                {moment(document?.addTime).format('MM/DD/YYYY')} <br />{' '}
-                                {moment(document?.addTime).format('hh:mm A')}
+                                {format(new Date(document?.addTime), 'MM/dd/yyyy')} <br />{' '}
+                                {format(new Date(document?.addTime), 'hh:mm b')}
                             </>
                         )
                     },
@@ -199,7 +199,9 @@ export const Summary = ({ profileData }: SummaryProp) => {
             case 'start date':
                 investigationData(
                     investigations.slice().sort((a: any, b: any) => {
-                        return type === 'asc' ? moment(a.addTime).diff(b.addTime) : moment(b.addTime).diff(a.addTime);
+                        const dateA: any = new Date(a.addTime);
+                        const dateB: any = new Date(b.addTime);
+                        return type === 'asc' ? dateB - dateA : dateA - dateB;
                     })
                 );
                 break;

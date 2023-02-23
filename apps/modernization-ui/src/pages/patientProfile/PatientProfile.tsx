@@ -16,6 +16,9 @@ import { useSearchParams } from 'react-router-dom';
 import { UserContext } from '../../providers/UserContext';
 import {
     FindPatientsByFilterQuery,
+    Investigation,
+    LabReport,
+    PersonParticipation,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
@@ -45,35 +48,61 @@ export const PatientProfile = () => {
     );
     const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
 
+    const getInvestigationPatient = (investigation: Investigation): PersonParticipation | undefined | null => {
+        return investigation.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
+    };
+
+    const getLabPatient = (labReport: LabReport): PersonParticipation | undefined | null => {
+        return labReport.personParticipations?.find(
+            (p) => p?.typeDescTxt === 'Patient subject' || p?.typeCd === 'PATSBJ'
+        );
+    };
+
     useEffect(() => {
         EncryptionControllerService.decryptUsingPost({
             encryptedString: searchParams?.get('data') || '',
             authorization: `Bearer ${state.getToken()}`
         }).then(async (data: any) => {
-            setProfileData(data);
-            getPatientInvestigationData({
-                variables: {
-                    filter: {
-                        patientId: data.id
-                    }
-                }
-            });
-            getPatientLabReportData({
-                variables: {
-                    filter: {
-                        patientId: data.id
-                    }
-                }
-            });
+            const localId =
+                data.__typename === 'Investigation'
+                    ? getInvestigationPatient(data)?.localId
+                    : data.__typename === 'LabReport'
+                    ? getLabPatient(data)?.localId
+                    : data?.localId;
             getPatientProfileData({
                 variables: {
                     filter: {
-                        id: data.localId
+                        id: localId
                     }
                 }
             });
         });
     }, []);
+
+    useEffect(() => {
+        if (patientProfileData?.findPatientsByFilter.content) {
+            setProfileData(patientProfileData?.findPatientsByFilter.content[0]);
+            if (
+                patientProfileData?.findPatientsByFilter.content?.length > 0 &&
+                patientProfileData.findPatientsByFilter.content[0].id
+            ) {
+                getPatientInvestigationData({
+                    variables: {
+                        filter: {
+                            patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                        }
+                    }
+                });
+                getPatientLabReportData({
+                    variables: {
+                        filter: {
+                            patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                        }
+                    }
+                });
+            }
+        }
+    }, [patientProfileData]);
 
     return (
         <div className="height-full main-banner">

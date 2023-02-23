@@ -8,7 +8,7 @@ import {
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
-import moment from 'moment';
+import format from 'date-fns/format';
 
 type EventTabProp = {
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
@@ -119,7 +119,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                 id: investigation?.id,
                 checkbox: true,
                 tableDetails: [
-                    { id: 1, title: moment(investigation?.addTime).format('MM/DD/YYYY') },
+                    { id: 1, title: format(new Date(investigation?.addTime), 'MM/dd/yyyy') },
                     { id: 2, title: investigation?.cdDescTxt },
                     { id: 3, title: investigation?.recordStatus },
                     { id: 4, title: investigation?.notificationRecordStatusCd },
@@ -157,8 +157,8 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                         id: 1,
                         title: (
                             <>
-                                {moment(document?.addTime).format('MM/DD/YYYY')} <br />{' '}
-                                {moment(document?.addTime).format('hh:mm A')}
+                                {format(new Date(document?.addTime), 'MM/dd/yyyy')} <br />{' '}
+                                {format(new Date(document?.addTime), 'hh:mm b')}
                             </>
                         )
                     },
@@ -257,7 +257,9 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
             case 'start date':
                 getData(
                     investigations.slice().sort((a: any, b: any) => {
-                        return type === 'asc' ? moment(a.addTime).diff(b.addTime) : moment(b.addTime).diff(a.addTime);
+                        const dateA: any = new Date(a.addTime);
+                        const dateB: any = new Date(b.addTime);
+                        return type === 'asc' ? dateB - dateA : dateA - dateB;
                     })
                 );
                 break;
@@ -314,7 +316,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                         </div>
                     }
                     totalResults={totalInvestigations}
-                    tableHeader={'Open investigations'}
+                    tableHeader={'Investigations'}
                     tableHead={[
                         { name: 'Start Date', sortable: true },
                         { name: 'Condition', sortable: true },
