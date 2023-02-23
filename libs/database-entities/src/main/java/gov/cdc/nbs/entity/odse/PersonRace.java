@@ -1,53 +1,30 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
-
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+import java.time.Instant;
+
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "Person_race")
+@IdClass(PersonRaceId.class)
 public class PersonRace {
-    @EmbeddedId
-    private PersonRaceId id;
 
-    @MapsId("personUid")
+    @Id
+    @Column(name = "race_cd", nullable = false, length = 20)
+    private String raceCd;
+
+    @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "person_uid", nullable = false)
     private Person personUid;
-
-    @Column(name = "add_reason_cd", length = 20)
-    private String addReasonCd;
-
-    @Column(name = "add_time")
-    private Instant addTime;
-
-    @Column(name = "add_user_id")
-    private Long addUserId;
-
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
-
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
 
     @Column(name = "race_category_cd", length = 20)
     private String raceCategoryCd;
@@ -67,4 +44,26 @@ public class PersonRace {
     @Column(name = "as_of_date")
     private Instant asOfDate;
 
+    @Embedded
+    private Audit audit;
+
+    protected PersonRace() {
+
+    }
+
+    public PersonRace(
+            final Person person,
+            final PatientCommand.AddRace added
+    ) {
+        this.raceCd = added.category();
+        this.personUid = person;
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = added.requestedOn();
+
+        this.audit = new Audit(added.requester(), added.requestedOn());
+
+        this.raceCategoryCd = added.category();
+
+    }
 }

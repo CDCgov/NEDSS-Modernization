@@ -35,7 +35,7 @@ export const PatientResults = ({
         data.map((item: any) => {
             const tempNumbers: any = [];
             const tempEmails: any = [];
-            item.nbsEntity?.entityLocatorParticipations?.forEach((element: any) => {
+            item?.nbsEntity?.entityLocatorParticipations?.forEach((element: any) => {
                 if (element.locator.phoneNbrTxt) {
                     tempNumbers.push(element.locator.phoneNbrTxt);
                 }
@@ -109,19 +109,19 @@ export const PatientResults = ({
 
     const newOrderPhone = (data: any) => {
         const numbers: any = [];
-        data.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
+        data?.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
         return <OrderedData data={numbers} type="PHONE NUMBER" />;
     };
 
     const newOrderEmail = (data: any) => {
         const emails: any = [];
-        data.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
+        data?.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
         return <OrderedData data={emails} type="EMAIL" />;
     };
 
     const newOrderAddress = (data: any) => {
         const address: any = [];
-        data.map(
+        data?.map(
             (item: any) =>
                 item.classCd === 'PST' &&
                 address.push(
@@ -162,6 +162,14 @@ export const PatientResults = ({
         return newen;
     };
 
+    const redirectPatientProfile = async (item: any) => {
+        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            object: item
+        });
+        navigate(`/patient-profile/${item.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+    };
+
     return (
         <div className="margin-x-4">
             {Boolean(validSearch && totalResults && data?.length > 0) && (
@@ -193,18 +201,7 @@ export const PatientResults = ({
                                         <Grid col={12} style={styleObjHeight(index)} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                                             <p
-                                                onClick={async () => {
-                                                    const encryptedFilter =
-                                                        await EncryptionControllerService.encryptUsingPost({
-                                                            authorization: `Bearer ${state.getToken()}`,
-                                                            object: item
-                                                        });
-                                                    navigate(
-                                                        `/patient-profile/${item.localId}?data=${encodeURIComponent(
-                                                            encryptedFilter.value
-                                                        )}`
-                                                    );
-                                                }}
+                                                onClick={() => redirectPatientProfile(item)}
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                                                 {item.lastNm}, {item.firstNm}
@@ -254,8 +251,8 @@ export const PatientResults = ({
                                 <Grid col={5}>
                                     <Grid row gap={3}>
                                         {/* Locator entries */}
-                                        {newOrderPhone(item.nbsEntity.entityLocatorParticipations)}
-                                        {newOrderEmail(item.nbsEntity.entityLocatorParticipations)}
+                                        {newOrderPhone(item?.nbsEntity?.entityLocatorParticipations)}
+                                        {newOrderEmail(item?.nbsEntity?.entityLocatorParticipations)}
                                         <Grid col={6} className="margin-bottom-2">
                                             <p className="margin-0 text-normal text-gray-50">OTHER NAMES</p>
                                             {getOtherNames(item, item.names) ? (
@@ -268,7 +265,7 @@ export const PatientResults = ({
                                                 <p className="text-italic margin-0 text-gray-30">No Data</p>
                                             )}
                                         </Grid>
-                                        {newOrderAddress(item.nbsEntity.entityLocatorParticipations)}
+                                        {newOrderAddress(item?.nbsEntity?.entityLocatorParticipations)}
                                     </Grid>
                                 </Grid>
                                 <Grid col={3}>

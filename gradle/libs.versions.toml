@@ -1,0 +1,16 @@
+[versions]
+springBoot = "2.7.8"
+assertj = "3.24.2"
+
+[libraries]
+assertj-core = { module = "org.assertj:assertj-core", version.ref ="assertj"}
+springBoot = {module = "org.springframework.boot:spring-boot-starter", version.ref="springBoot"}
+springBoot-jpa = {module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref="springBoot"}
+
+[bundles]
+testing = ["assertj-core"]
+jpa = ["springBoot", "springBoot-jpa"]
+
+[plugins]
+springDependencies = {id ="io.spring.dependency-management", version ="1.0.12.RELEASE"}
+springBoot = {id = 'org.springframework.boot', version.ref = "springBoot"}

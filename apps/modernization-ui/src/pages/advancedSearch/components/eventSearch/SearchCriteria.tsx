@@ -23,7 +23,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="investigationStatus"
-                label="Investigation Status:"
+                label="Investigation status"
                 options={Object.values(InvestigationStatus).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -38,7 +38,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                         <SelectControl
                             control={control}
                             name="outbreakNames"
-                            label="Outbreak Name:"
+                            label="Outbreak name"
                             options={Object.values(searchCriteria.outbreaks).map((outbreak) => {
                                 return {
                                     name: formatInterfaceString(outbreak.codeShortDescTxt ?? ''),
@@ -54,7 +54,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="statusList"
-                label="Case Status:"
+                label="Case status"
                 options={Object.values(CaseStatus).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -67,7 +67,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="processingStatus"
-                label="Current Processing Status:"
+                label="Current processing status"
                 options={Object.values(ProcessingStatus).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -85,7 +85,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="notificationStatus"
-                label="Notification Status:"
+                label="Notification status"
                 options={Object.values(NotificationStatus).map((type) => {
                     return {
                         name: formatInterfaceString(type),

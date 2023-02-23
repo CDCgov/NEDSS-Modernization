@@ -1,37 +1,24 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
+import gov.cdc.nbs.patient.PatientCommand;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.Instant;
 
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipation.Locator;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "Tele_locator")
-public class TeleLocator implements Locator {
+public class TeleLocator extends Locator {
+
     @Id
-    @Column(name = "tele_locator_uid", nullable = false)
+    @Column(name = "tele_locator_uid", nullable = false, updatable = false)
     private Long id;
-
-    @Column(name = "add_reason_cd", length = 20)
-    private String addReasonCd;
-
-    @Column(name = "add_time")
-    private Instant addTime;
-
-    @Column(name = "add_user_id")
-    private Long addUserId;
 
     @Column(name = "cntry_cd", length = 20)
     private String cntryCd;
@@ -41,15 +28,6 @@ public class TeleLocator implements Locator {
 
     @Column(name = "extension_txt", length = 20)
     private String extensionTxt;
-
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
-
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
 
     @Column(name = "phone_nbr_txt", length = 20)
     private String phoneNbrTxt;
@@ -66,4 +44,29 @@ public class TeleLocator implements Locator {
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
 
+    protected TeleLocator() {
+    }
+
+    public TeleLocator(final PatientCommand.AddPhoneNumber phoneNumber) {
+        super(phoneNumber);
+        this.id = phoneNumber.id();
+        this.phoneNbrTxt = phoneNumber.number();
+        this.extensionTxt = phoneNumber.extension();
+    }
+
+    public TeleLocator(final PatientCommand.AddEmailAddress emailAddress) {
+        super(emailAddress);
+        this.id = emailAddress.id();
+        this.emailAddress = emailAddress.email();
+    }
+
+    @Override
+    public String toString() {
+        return "TeleLocator{" +
+                "id=" + id +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", extensionTxt='" + extensionTxt + '\'' +
+                ", phoneNbrTxt='" + phoneNbrTxt + '\'' +
+                '}';
+    }
 }

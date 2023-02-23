@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,23 +79,13 @@ public class PatientSearchSteps {
         soundexPerson.setFirstNm("Jon");  // soundex equivalent to John
         soundexPerson.setLastNm("Smyth");  // soundex equivalent to Smith
 
-        var generatedIds = generatedPersons.stream()
-                .map(p -> p.getId()).collect(Collectors.toList());
-        // find existing persons
-        var existingPersons = personRepository.findAllById(generatedIds);
-        // delete existing locator entries
-        var existingPostal = PersonUtil.getPostalLocators(existingPersons);
-        postalLocatorRepository.deleteAll(existingPostal);
-        var existingTele = PersonUtil.getTeleLocators(existingPersons);
-        teleLocatorRepository.deleteAll(existingTele);
-        // delete existing persons
-        personRepository.deleteAll(existingPersons);
+        generatedPersons.forEach(personRepository::delete);
 
+        personRepository.flush();
         // create new persons
-        teleLocatorRepository.saveAll(PersonUtil.getTeleLocators(generatedPersons));
-        postalLocatorRepository.saveAll(PersonUtil.getPostalLocators(generatedPersons));
+
         personRepository.saveAll(generatedPersons);
-        elasticsearchPersonRepository.saveAll(PersonUtil.getElasticSearchPersons(generatedPersons));
+        elasticsearchPersonRepository.saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(generatedPersons));
     }
 
     @Given("I am looking for one of them")
@@ -127,11 +118,13 @@ public class PatientSearchSteps {
     }
 
     @When("I search for patients sorted by {string} {string} {string} {string}")
-    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField, String aSortDirection) {
+    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField,
+            String aSortDirection) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         sortDirection = aSortDirection.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
         sortField = aSortField;
-        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
+        searchResults = patientController
+                .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
     }
 
     @Then("I find the patient")
@@ -171,11 +164,12 @@ public class PatientSearchSteps {
                 filter.setFirstName("John"); // finds Jon
                 break;
             case "race":
-                filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
+                filter.setRace(searchPatient.getRaces().get(0).getRaceCd());
                 break;
             case "identification":
                 var patientId = searchPatient.getEntityIds().get(0);
-                filter.setIdentification(new Identification(patientId.getRootExtensionTxt(), patientId.getTypeCd()));
+                filter.setIdentification(
+                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "patient id":
                 filter.setId(searchPatient.getLocalId());

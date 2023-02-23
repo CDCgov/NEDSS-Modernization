@@ -12,18 +12,14 @@ import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -38,15 +34,15 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "gov.cdc.nbs")
 @ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
-@ContextConfiguration(classes = Application.class, loader = SpringBootContextLoader.class)
 @CucumberContextConfiguration
-@SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @Transactional
 @Rollback(false)
 @Testcontainers
-@RunWith(SpringRunner.class)
+@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092",
+        "port=9092" })
 public class RunCucumberTest {
     @Autowired
     private PatientController patientController;

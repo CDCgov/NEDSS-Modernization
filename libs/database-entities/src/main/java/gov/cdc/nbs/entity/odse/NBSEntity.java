@@ -1,6 +1,8 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.util.List;
+import gov.cdc.nbs.patient.PatientCommand;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,12 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -27,15 +26,91 @@ public class NBSEntity {
     @Column(name = "class_cd", nullable = false, length = 10)
     private String classCd;
 
+    @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Participation> participations;
+
+    @OneToMany(
+            mappedBy = "id.entityUid",
+            fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
+            },
+            orphanRemoval = true
+    )
+    private List<EntityLocatorParticipation> entityLocatorParticipations;
+
+    protected NBSEntity() {}
+
     public NBSEntity(Long id, String classCd) {
         this.id = id;
         this.classCd = classCd;
     }
 
-    @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Participation> participations;
+    public NBSEntity(final PatientCommand.AddPatient patient) {
+        this(patient.person(), "PSN");
+    }
 
-    @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<EntityLocatorParticipation> entityLocatorParticipations;
+    private List<EntityLocatorParticipation> ensureLocators() {
+        if (this.entityLocatorParticipations == null) {
+            this.entityLocatorParticipations = new ArrayList<>();
+        }
 
+        return this.entityLocatorParticipations;
+    }
+
+    public EntityLocatorParticipation add(
+            final PatientCommand.AddAddress address
+    ) {
+
+        List<EntityLocatorParticipation> locators = ensureLocators();
+
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
+
+        EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
+                this,
+                identifier,
+                address
+        );
+
+        locators.add(participation);
+
+
+        return participation;
+    }
+
+    public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
+        List<EntityLocatorParticipation> locators = ensureLocators();
+
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
+
+        EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
+                this,
+                identifier,
+                phoneNumber
+        );
+
+        locators.add(participation);
+
+
+        return participation;
+    }
+
+    public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
+        List<EntityLocatorParticipation> locators = ensureLocators();
+
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
+
+        EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
+                this,
+                identifier,
+                emailAddress
+        );
+
+        locators.add(participation);
+
+
+        return participation;
+    }
 }

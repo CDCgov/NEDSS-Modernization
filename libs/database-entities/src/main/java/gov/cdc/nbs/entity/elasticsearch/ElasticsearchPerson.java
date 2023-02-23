@@ -14,10 +14,10 @@ import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.Suffix;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.entity.enums.converter.DeceasedConverter;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import lombok.AllArgsConstructor;

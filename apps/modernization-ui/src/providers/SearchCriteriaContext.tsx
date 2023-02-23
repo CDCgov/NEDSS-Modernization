@@ -23,7 +23,10 @@ import {
     FindAllRaceValuesQuery,
     IdentificationType,
     useFindAllPatientIdentificationTypesLazyQuery,
-    FindAllPatientIdentificationTypesQuery
+    FindAllPatientIdentificationTypesQuery,
+    StateCode,
+    useFindAllStateCodesLazyQuery,
+    FindAllStateCodesQuery
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
@@ -36,6 +39,7 @@ export interface SearchCriteria {
     ethnicities: Ethnicity[];
     races: Race[];
     identificationTypes: IdentificationType[];
+    states: StateCode[];
 }
 
 const initialState: SearchCriteria = {
@@ -46,7 +50,8 @@ const initialState: SearchCriteria = {
     outbreaks: [],
     ethnicities: [],
     races: [],
-    identificationTypes: []
+    identificationTypes: [],
+    states: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -68,7 +73,7 @@ export const SearchCriteriaProvider = (props: any) => {
     });
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
-
+    const [getStates] = useFindAllStateCodesLazyQuery({ onCompleted: setStates });
     // on init, load search data from API
     useEffect(() => {
         if (state.isLoggedIn) {
@@ -80,6 +85,7 @@ export const SearchCriteriaProvider = (props: any) => {
             getEthnicities();
             getRaces();
             getIdentificationTypes();
+            getStates();
         }
     }, [state.isLoggedIn]);
 
@@ -185,6 +191,20 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, jurisdictions });
+        }
+    }
+
+    function setStates(results: FindAllStateCodesQuery): void {
+        if (results.findAllStateCodes) {
+            const states: StateCode[] = [];
+            results.findAllStateCodes.forEach((i) => i && states.push(i));
+            states.sort((a, b) => {
+                if (a.codeDescTxt && b.codeDescTxt) {
+                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, states });
         }
     }
 
