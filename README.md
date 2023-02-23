@@ -21,6 +21,10 @@
 1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into
    ```sh
    export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
+
+   # can verify that the variable is set
+   echo $NEDSS_HOME
+
    ```
 1. CD into the `cdc-sandbox` directory
    ```sh
@@ -66,3 +70,10 @@
    username: msa
    password:
    ```
+
+1. To create your own user account visit site (line 15):
++ Navigate to System Management
++ Expand Security Management
++ Click Manage Users & click add
++ Enter userId, First Name and Last Name
++ Add a Role & click submit
