@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import gov.cdc.nbs.config.security.SecurityProperties;
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.AuthUser;
