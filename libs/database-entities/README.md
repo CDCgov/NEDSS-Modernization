@@ -28,3 +28,5 @@ Also in the bottom of your gradle build file include:
 ```
 compileJava.mustRunAfter(":database-entities:build")
 ```
+
+In addition ensure that the project is on the classpath of the importing project.
