@@ -17,7 +17,7 @@ export const ModalComponent = ({ modalRef, modalBody, modalHeading }: ModalProps
             aria-describedby="modal-1-description">
             <ModalHeading
                 id="modal-1-heading"
-                className="border-bottom border-base-lighter font-sans-lg padding-2 margin-0">
+                className="border-bottom border-base-lighter font-sans-lg padding-2 margin-0 modal-1-heading">
                 {modalHeading}
             </ModalHeading>
             {modalBody}
