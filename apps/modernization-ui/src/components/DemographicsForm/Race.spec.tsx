@@ -13,12 +13,13 @@ describe('EthnicityForm', () => {
     it('should submit the form with the selected values', async () => {
         const setRaceForm = jest.fn();
         const searchCriteria = {
-            ethnicities: [],
             programAreas: [],
             conditions: [],
             jurisdictions: [],
             userResults: [],
             outbreaks: [],
+            ethnicities: [],
+            states: [],
             races: [
                 { id: { code: 'RACE1' }, codeDescTxt: 'Race 1' },
                 { id: { code: 'RACE2' }, codeDescTxt: 'Race 2' }

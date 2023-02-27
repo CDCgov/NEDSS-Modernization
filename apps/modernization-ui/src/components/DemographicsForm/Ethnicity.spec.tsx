@@ -22,6 +22,7 @@ describe('EthnicityForm', () => {
             jurisdictions: [],
             userResults: [],
             outbreaks: [],
+            states: [],
             races: [],
             identificationTypes: []
         };
