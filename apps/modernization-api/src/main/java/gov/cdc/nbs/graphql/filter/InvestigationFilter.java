@@ -95,6 +95,7 @@ public class InvestigationFilter {
     }
 
     public enum CaseStatus {
+        UNASSIGNED,
         CONFIRMED,
         NOT_A_CASE,
         PROBABLE,

@@ -36,6 +36,7 @@ export type AssociatedInvestigation = {
 };
 
 export enum CaseStatus {
+  Unassigned = 'UNASSIGNED',
   Confirmed = 'CONFIRMED',
   NotACase = 'NOT_A_CASE',
   Probable = 'PROBABLE',

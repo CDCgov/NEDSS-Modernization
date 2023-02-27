@@ -164,6 +164,7 @@ enum NotificationStatus {
 }
 
 enum CaseStatus {
+    UNASSIGNED
     CONFIRMED
     NOT_A_CASE
     PROBABLE
