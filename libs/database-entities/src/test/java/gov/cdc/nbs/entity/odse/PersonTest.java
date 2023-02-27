@@ -34,7 +34,9 @@ class PersonTest {
                 "Marital Status",
                 "EthCode",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
+                Instant.parse("2020-03-03T10:15:30.00Z"),
+                Instant.parse("2019-03-03T10:15:30.00Z"),
+                "comments"
         );
 
         Person actual = new Person(request);
@@ -66,6 +68,10 @@ class PersonTest {
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
         assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
         assertThat(actual.getEthnicGroupInd()).isEqualTo("EthCode");
+        assertThat(actual.getAsOfDateGeneral()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertThat(actual.getDescription()).isEqualTo("comments");
 
         assertThat(actual.getPersonParentUid())
                 .as("Master Patient Record set itself as parent")

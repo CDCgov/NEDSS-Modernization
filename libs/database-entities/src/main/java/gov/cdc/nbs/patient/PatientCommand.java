@@ -28,11 +28,11 @@ public sealed interface PatientCommand {
             Deceased deceased,
             Instant deceasedTime,
             String maritalStatus,
-
             String ethnicityCode,
             long requester,
-            Instant requestedOn
-    ) implements PatientCommand {
+            Instant requestedOn,
+            Instant asOf,
+            String comments) implements PatientCommand {
     }
 
     record AddName(
@@ -43,8 +43,7 @@ public sealed interface PatientCommand {
             Suffix suffix,
             PatientInput.NameUseCd type,
             long requester,
-            Instant requestedOn
-    ) implements PatientCommand {
+            Instant requestedOn) implements PatientCommand {
 
     }
 
@@ -52,9 +51,7 @@ public sealed interface PatientCommand {
             long person,
             String category,
             long requester,
-            Instant requestedOn
-    ) implements PatientCommand {
-
+            Instant requestedOn) implements PatientCommand {
     }
 
     record AddAddress(
@@ -67,11 +64,9 @@ public sealed interface PatientCommand {
             String zip,
             County county,
             Country country,
-
             String censusTract,
             long requester,
-            Instant requestedOn
-    ) implements PatientCommand {
+            Instant requestedOn) implements PatientCommand {
     }
 
     record AddPhoneNumber(
@@ -81,8 +76,7 @@ public sealed interface PatientCommand {
             String extension,
             PatientInput.PhoneType type,
             long requester,
-            Instant requestedOn
-    ) implements PatientCommand {
+            Instant requestedOn) implements PatientCommand {
     }
 
     record AddEmailAddress(
@@ -90,7 +84,6 @@ public sealed interface PatientCommand {
             long id,
             String email,
             long requester,
-            Instant requestedOn
-    ) implements PatientCommand {
+            Instant requestedOn) implements PatientCommand {
     }
 }
