@@ -278,9 +278,9 @@ public class PatientService {
         if (recordStatus == null || recordStatus.isEmpty()) {
             throw new QueryException("No record status specified! At least one value is required");
         }
-        // If INACTIVE or SUPERCEDED are specified, user must have
+        // If LOG_DEL or SUPERCEDED are specified, user must have
         // FINDINACTIVE-PATIENT authority
-        if (recordStatus.contains(RecordStatus.INACTIVE) || recordStatus.contains(RecordStatus.SUPERCEDED)) {
+        if (recordStatus.contains(RecordStatus.SUPERCEDED) || recordStatus.contains(RecordStatus.LOG_DEL)) {
             var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             var findInactivePatientAuthority = SecurityUtil.Operations.FINDINACTIVE + "-"
                     + SecurityUtil.BusinessObjects.PATIENT;
@@ -291,7 +291,7 @@ public class PatientService {
             // If user lacks permission, remove these from the search criteria
             if (!hasPermission) {
                 recordStatus = recordStatus.stream()
-                        .filter(s -> !s.equals(RecordStatus.INACTIVE) && !s.equals(RecordStatus.SUPERCEDED))
+                        .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
                         .toList();
             }
         }
@@ -299,8 +299,8 @@ public class PatientService {
         if (recordStatus.isEmpty()) {
             throw new QueryException("User does not have permission to search by the specified RecordStatus");
         }
-
-        builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatus));
+        var recordStatusStrings = recordStatus.stream().map(RecordStatus::toString).toList();
+        builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
