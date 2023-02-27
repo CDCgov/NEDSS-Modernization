@@ -1,10 +1,45 @@
 package gov.cdc.nbs.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.commons.codec.language.Soundex;
+import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
+
 import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
@@ -27,36 +62,6 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.service.util.Constants;
 import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.language.Soundex;
-import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.Operator;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -145,7 +150,7 @@ public class PatientService {
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
                     ScoreMode.Avg));
-        
+
             builder.must(firstNameBuilder);
         }
 
@@ -171,22 +176,22 @@ public class PatientService {
         if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
                     QueryBuilders.queryStringQuery(filter.getPhoneNumber())
-                    .defaultField("phone.telephoneNbr")
-                    .defaultOperator(Operator.AND),
+                            .defaultField("phone.telephoneNbr")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
                     QueryBuilders.queryStringQuery(filter.getEmail())
-                    .defaultField("email.emailAddress")
-                    .defaultOperator(Operator.AND),
+                            .defaultField("email.emailAddress")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                            .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
                     ScoreMode.Avg));
         }
 
@@ -235,11 +240,7 @@ public class PatientService {
                     QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
         }
 
-        // TODO check permission for allowing deleted / superceeded - await
-        // clarification from Henry Tavarez on if it will be included in UI
-        if (filter.getRecordStatus() != null) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.RECORD_STATUS_CD, filter.getRecordStatus()));
-        }
+        addRecordStatusQuery(filter.getRecordStatus(), builder);
 
         if (filter.getDateOfBirth() != null) {
             String dobOperator = filter.getDateOfBirthOperator();
@@ -273,6 +274,35 @@ public class PatientService {
         return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
     }
 
+    private void addRecordStatusQuery(Collection<RecordStatus> recordStatus, BoolQueryBuilder builder) {
+        if (recordStatus == null || recordStatus.isEmpty()) {
+            throw new QueryException("No record status specified! At least one value is required");
+        }
+        // If INACTIVE or SUPERCEDED are specified, user must have
+        // FINDINACTIVE-PATIENT authority
+        if (recordStatus.contains(RecordStatus.INACTIVE) || recordStatus.contains(RecordStatus.SUPERCEDED)) {
+            var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            var findInactivePatientAuthority = SecurityUtil.Operations.FINDINACTIVE + "-"
+                    + SecurityUtil.BusinessObjects.PATIENT;
+            var hasPermission = user.getAuthorities().stream()
+                    .filter(a -> a.getAuthority().equals(findInactivePatientAuthority))
+                    .findAny()
+                    .isPresent();
+            // If user lacks permission, remove these from the search criteria
+            if (!hasPermission) {
+                recordStatus = recordStatus.stream()
+                        .filter(s -> !s.equals(RecordStatus.INACTIVE) && !s.equals(RecordStatus.SUPERCEDED))
+                        .toList();
+            }
+        }
+
+        if (recordStatus.isEmpty()) {
+            throw new QueryException("User does not have permission to search by the specified RecordStatus");
+        }
+
+        builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatus));
+    }
+
     public Page<Person> findPatientsByOrganizationFilter(OrganizationFilter filter, GraphQLPage page) {
         // limit page size
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
@@ -302,7 +332,7 @@ public class PatientService {
     // checks to see if the filter provided is null, if not add the filter to the
     // 'query.where' based on the expression supplied
     private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
-                                                 Function<I, BooleanExpression> expression, I filter) {
+            Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
             if (filter instanceof String s && s.trim().length() == 0) {
                 return query;
@@ -326,8 +356,7 @@ public class PatientService {
         producer.requestPatientCreateEnvelope(createRequest);
         return new PatientCreateResponse(
                 createRequest.request(),
-                createRequest.patient()
-        );
+                createRequest.patient());
     }
 
     /**
