@@ -3,7 +3,6 @@ package gov.cdc.nbs.message;
 import java.util.List;
 
 
-import gov.cdc.nbs.graphql.input.PatientInput;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

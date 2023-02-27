@@ -22,10 +22,12 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import gov.cdc.nbs.patientlistener.message.KafkaMessageDeSerializer;
-import gov.cdc.nbs.patientlistener.message.PatientUpdateEvent;
-import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
+import gov.cdc.nbs.message.KafkaMessageDeSerializer;
+import gov.cdc.nbs.message.KafkaMessageSerializer;
+import gov.cdc.nbs.message.PatientUpdateEvent;
+import gov.cdc.nbs.message.PatientUpdateEventResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +35,12 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class KafkaConfig {
+	
+	@Value("${kafka.properties.topic.partition.count}")
+	private int topicPartitionCount;
+
+	@Value("${kafka.properties.topic.replication.factor}")
+	private int topicReplicationFactor;
 
 	@Value("${kafka.bootstrap-servers}")
 	private String bootstrapServers;
@@ -43,7 +51,12 @@ public class KafkaConfig {
 	@Value("${kafka.consumer.group-id}")
 	private String groupId;
 
-	// patient update topic
+	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
+	private String patientDeleteTopic;
+	
+	// general topic
+		@Value("${kafkadef.patient-search.topics.request.patient}")
+		private String patientSearchTopic;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
@@ -55,7 +68,7 @@ public class KafkaConfig {
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageDeSerializer.class);
 
 		return new DefaultKafkaProducerFactory(config, new StringSerializer(),
-				new gov.cdc.nbs.patientlistener.message.KafkaMessageSerializer());
+				new KafkaMessageSerializer());
 	}
 
 	@Bean
@@ -68,15 +81,6 @@ public class KafkaConfig {
 		config.putAll(commonConsumerConfigs());
 		return new DefaultKafkaConsumerFactory<>(config);
 	}
-    public ConsumerFactory<String, String> consumerFactory() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_id");
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-
-	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
-	private String patientDeleteTopic;
 
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -122,15 +126,6 @@ public class KafkaConfig {
 
 		return config;
 	}
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
-
-    // Producer config
 
     @Bean
     public NewTopic createPatientSearchTopic() {

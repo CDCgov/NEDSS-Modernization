@@ -110,11 +110,6 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.graphql.input.PatientInput;
-import gov.cdc.nbs.graphql.input.PatientInput.Name;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneNumber;
-import gov.cdc.nbs.graphql.input.PatientInput.PhoneType;
-import gov.cdc.nbs.graphql.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
@@ -409,10 +404,9 @@ public class PatientService {
 	 * @return
 	 */
 	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-		Person updatePerson = updatePatient(id, input);
 		String requestId = null;
 
-		if (updatePerson != null) {
+		if (input != null) {
 			List<TemplateInput> templateInputs = new ArrayList<>();
 
 			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
@@ -424,7 +418,7 @@ public class PatientService {
 			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
 		}
 
-		return PatientUpdateResponse.builder().requestId(requestId).updatedPerson(updatePerson).build();
+		return PatientUpdateResponse.builder().requestId(requestId).build();
 
 	}
     public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {

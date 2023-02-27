@@ -9,6 +9,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
 import org.springframework.stereotype.Component;
 
+
 import javax.transaction.Transactional;
 
 @Component

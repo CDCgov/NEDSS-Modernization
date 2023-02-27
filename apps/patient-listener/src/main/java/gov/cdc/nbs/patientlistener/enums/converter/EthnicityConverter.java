@@ -6,7 +6,8 @@ import javax.persistence.Converter;
 
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
-import gov.cdc.nbs.patientlistener.enums.Ethnicity;
+import gov.cdc.nbs.entity.enums.Ethnicity;
+
 
 @Converter
 public class EthnicityConverter implements AttributeConverter<Ethnicity, String>, PropertyValueConverter {

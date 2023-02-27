@@ -1,14 +1,14 @@
 package gov.cdc.nbs.patientlistener.service;
 
-
+import gov.cdc.nbs.patientlistener.service.PatientService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import gov.cdc.nbs.patientlistener.message.PatientUpdateEvent;
-import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
-import gov.cdc.nbs.patientlistener.odse.PatientInput;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientUpdateEvent;
+import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.patientlistener.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 

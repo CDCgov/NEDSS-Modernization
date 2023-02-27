@@ -1,10 +1,11 @@
 package gov.cdc.nbs.patientlistener.enums.converter;
 
-import gov.cdc.nbs.patientlistener.enums.IdentificationType;
 
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+
+import gov.cdc.nbs.entity.enums.IdentificationType;
 
 
 @Converter

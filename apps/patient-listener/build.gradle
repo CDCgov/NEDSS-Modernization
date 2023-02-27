@@ -34,7 +34,7 @@ dependencies {
 
 	// common
 	implementation project(':database-entities')
-	implementation project(':event-schema')
+    implementation project(':event-schema')
 	implementation project(':authentication')
 
 	// lombok
@@ -66,16 +66,6 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 	
-	
-	// blazebit for querydsl paging
-	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
-	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
-	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
-	
-	
-	// elasticsearch
-	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
-	
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
 	
@@ -90,10 +80,6 @@ dependencies {
 	testImplementation 'org.yaml:snakeyaml:1.33'
 	
 	
-	// lombok
-	implementation "org.projectlombok:lombok"
-	compileOnly "org.projectlombok:lombok"
-	annotationProcessor "org.projectlombok:lombok"
 	testImplementation "org.projectlombok:lombok"
 	testAnnotationProcessor "org.projectlombok:lombok"
 	testImplementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"

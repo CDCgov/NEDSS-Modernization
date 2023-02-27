@@ -12,8 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+
+import gov.cdc.nbs.message.KafkaMessageSerializer;
+import gov.cdc.nbs.message.PatientDeleteRequest;
+import gov.cdc.nbs.message.PatientUpdateRequest;
 
 @Configuration
 public class KafkaConfig {
@@ -73,6 +78,8 @@ public class KafkaConfig {
 			var config = getKafkaConfig();
 			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
 		}
+	}
+	
 	private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
 		var config = getKafkaConfig();
 		return new KafkaTemplate<>(

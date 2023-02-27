@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.message;
+package gov.cdc.nbs.message;
 
 
 import lombok.Data;
