@@ -17,7 +17,7 @@ export const RaceForm = ({ setRaceForm }: any) => {
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid col={6} className="margin-top-1 label-text">
                     As of:
                 </Grid>
                 <Grid col={6}>
@@ -47,6 +47,7 @@ export const RaceForm = ({ setRaceForm }: any) => {
                                 name="race"
                                 render={({ field: { onChange, value } }) => (
                                     <SelectInput
+                                        dataTestid="race"
                                         defaultValue={value}
                                         onChange={onChange}
                                         htmlFor={'race'}
@@ -85,7 +86,12 @@ export const RaceForm = ({ setRaceForm }: any) => {
             </Grid>
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
-                    <Button type="button" className="margin-top-0" outline onClick={setRaceForm}>
+                    <Button
+                        type="button"
+                        data-testid="cancel-btn"
+                        className="margin-top-0"
+                        outline
+                        onClick={setRaceForm}>
                         Cancel
                     </Button>
                     <Button

@@ -1,4 +1,5 @@
-import { Accordion, Button, ButtonGroup, DatePicker, Fieldset, Form, Label } from '@trussworks/react-uswds';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Accordion, Button, DatePicker, Form, Grid, Label } from '@trussworks/react-uswds';
 import './AddPatient.scss';
 import NameFields, { InputNameFields } from './components/nameFields/NameFields';
 import AddressFields, { InputAddressFields } from './components/addressFields/AddressFields';
@@ -92,10 +93,6 @@ export default function AddPatient() {
         // const newId = await PersonControllerService.createPersonUsingPost({ person });
     }
 
-    function cancel(): void {
-        console.log('Cancel clicked');
-    }
-
     function getSections(): AccordionItemProps[] {
         const items: AccordionItemProps[] = [];
         items.push({
@@ -142,31 +139,41 @@ export default function AddPatient() {
     }
 
     return (
-        <>
-            <div className="content">
-                <div className="form-container">
-                    <Form onSubmit={submit} large>
-                        <Fieldset legend="Add Patient" legendStyle="large">
-                            <Accordion multiselectable={true} items={getSections()} />
-                            <Label htmlFor="as-of-date">As of Date</Label>
-                            <DatePicker
-                                id="asOf"
-                                name="asOf"
-                                defaultValue={asOfDate}
-                                onChange={(e) => setAsOfDate(e || '')}
-                            />
-                        </Fieldset>
-                        <ButtonGroup>
-                            <Button type="button" onClick={cancel}>
-                                Cancel
-                            </Button>
-                            <Button type="button" onClick={submit}>
-                                Submit
-                            </Button>
-                        </ButtonGroup>
-                    </Form>
-                </div>
-            </div>
-        </>
+        <Grid row>
+            <Grid col={3} className="bg-white border-right border-base-light"></Grid>
+            <Grid col={9} className="margin-left-auto">
+                <Form onSubmit={submit} className="width-full max-width-full">
+                    <Grid row className="page-title-bar bg-white">
+                        <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
+                            New patient
+                            <div className="button-group">
+                                <Button disabled className="padding-x-3 add-patient-button" type={'button'}>
+                                    Save and add new lab report
+                                </Button>
+                                <Button disabled className="padding-x-3 add-patient-button" type={'button'}>
+                                    Save changes
+                                </Button>
+                            </div>
+                        </div>
+                    </Grid>
+                    <div className="content">
+                        <Grid row className="padding-3">
+                            <Grid col={9}>
+                                <NameFields nameFields={nameFields} updateCallback={setNameFields} />
+
+                                {/* <Accordion multiselectable={true} items={getSections()} />
+                                <Label htmlFor="as-of-date">As of Date</Label>
+                                <DatePicker
+                                    id="asOf"
+                                    name="asOf"
+                                    defaultValue={asOfDate}
+                                    onChange={(e) => setAsOfDate(e || '')}
+                                /> */}
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Form>
+            </Grid>
+        </Grid>
     );
 }

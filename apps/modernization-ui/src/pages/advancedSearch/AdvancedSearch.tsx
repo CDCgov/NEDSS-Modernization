@@ -19,7 +19,6 @@ import {
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
-import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
 import { UserContext } from '../../providers/UserContext';
 import {
     downloadInvestigationSearchResultCsv,
@@ -661,11 +660,12 @@ export const AdvancedSearch = () => {
 
     function handleAddNewPatientClick(): void {
         setShowAddNewDropDown(false);
-        RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
-            () => {
-                window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
-            }
-        );
+        navigate('/add-patient');
+        // RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
+        //     () => {
+        //         window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
+        //     }
+        // );
     }
 
     function handleAddNewLabReportClick(): void {
