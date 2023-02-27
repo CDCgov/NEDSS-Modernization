@@ -146,6 +146,10 @@ public class PatientCreateRequestHandler {
                 .email(getEmails(person))
                 .name(getNames(person))
                 .race(getRaces(person))
+                .asOfDateGeneral(person.getAsOfDateGeneral())
+                .asOfDateAdmin(person.getAsOfDateAdmin())
+                .asOfDateSex(person.getAsOfDateSex())
+                .description(person.getDescription())
                 .build();
         elasticsearchPersonRepository.save(esPerson);
     }

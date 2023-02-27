@@ -124,7 +124,9 @@ class PatientCreateRequestHandlerTest {
                         }
                     ],
                     "createdBy": 269,
-                    "createdAt": 1676654454.121805000
+                    "createdAt": 1676654454.121805000,
+                    "asOf": 1564494454.110914000,
+                    "comments": "comments"
                 }
                 """;
 
@@ -145,6 +147,10 @@ class PatientCreateRequestHandlerTest {
         assertThat(actual_person.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual_person.getDeceasedIndCd()).isEqualTo(Deceased.N);
         assertThat(actual_person.getEthnicGroupInd()).isEqualTo("EthCode");
+        assertThat(actual_person.getAsOfDateGeneral()).isEqualTo("2019-07-30T13:47:34.110914Z");
+        assertThat(actual_person.getAsOfDateAdmin()).isEqualTo("2019-07-30T13:47:34.110914Z");
+        assertThat(actual_person.getAsOfDateSex()).isEqualTo("2019-07-30T13:47:34.110914Z");
+        assertThat(actual_person.getDescription()).isEqualTo("comments");
 
         assertThat(actual_person.getNames()).satisfiesExactly(actual_primary -> assertThat(actual_primary).returns("First", PersonName::getFirstNm).returns("Middle", PersonName::getMiddleNm).returns("Last", PersonName::getLastNm).returns(Suffix.JR, PersonName::getNmSuffix).returns("L", PersonName::getNmUseCd), actual_alias -> assertThat(actual_alias).returns("Second", PersonName::getFirstNm).returns("SecondMiddle", PersonName::getMiddleNm).returns("SecondLast", PersonName::getLastNm).returns(Suffix.SR, PersonName::getNmSuffix).returns("AL", PersonName::getNmUseCd));
 
@@ -225,6 +231,10 @@ class PatientCreateRequestHandlerTest {
         assertEquals(person.getLocalId(), esPerson.getLocalId());
         assertEquals(person.getVersionCtrlNbr(), esPerson.getVersionCtrlNbr());
         assertEquals(person.getDedupMatchInd(), esPerson.getDedupMatchInd());
+        assertEquals(person.getAsOfDateAdmin(), esPerson.getAsOfDateAdmin());
+        assertEquals(person.getAsOfDateGeneral(), esPerson.getAsOfDateGeneral());
+        assertEquals(person.getAsOfDateSex(), esPerson.getAsOfDateSex());
+        assertEquals(person.getDescription(), esPerson.getDescription());
 
         // Addresses
         var personAddresses = person.getNbsEntity().getEntityLocatorParticipations().stream().filter(PostalEntityLocatorParticipation.class::isInstance).map(elp -> ((PostalLocator) elp.getLocator())).toList();
