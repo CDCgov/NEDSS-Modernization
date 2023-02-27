@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PersonTest {
 
     @Test
+    @SuppressWarnings("squid:S5961") // Allow more than 25 assertions
     void should_create_new_person_when_patient_added() {
 
         PatientCommand.AddPatient request = new PatientCommand.AddPatient(

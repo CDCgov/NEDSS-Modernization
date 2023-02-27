@@ -55,6 +55,7 @@ class PatientCreateRequestHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("squid:S5961") // Allow more than 25 assertions
     void should_create_patient_in_database_and_elasticsearch() {
         // Mock methods
 
