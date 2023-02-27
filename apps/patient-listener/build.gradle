@@ -34,7 +34,7 @@ dependencies {
 
 	// common
 	implementation project(':database-entities')
-	implementation project(':event-schema')
+    implementation project(':event-schema')
 	implementation project(':authentication')
 
 	// lombok
@@ -50,20 +50,23 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 	
-	
-	// blazebit for querydsl paging
-	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
-	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
-	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
-	
-	
-	// elasticsearch
-	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
-	
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
 	
 	// test
+	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+	testImplementation "org.junit.platform:junit-platform-suite"
+	testImplementation "org.junit.jupiter:junit-jupiter"
+	testImplementation "org.testcontainers:testcontainers:1.17.6"
+	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+	testImplementation "org.testcontainers:elasticsearch:1.17.6"
+	testImplementation 'com.github.javafaker:javafaker:1.0.2'
+	testImplementation 'org.yaml:snakeyaml:1.33'
+	
+	
+	testImplementation "org.projectlombok:lombok"
+	testAnnotationProcessor "org.projectlombok:lombok"
+	testImplementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"

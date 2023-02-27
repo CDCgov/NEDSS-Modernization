@@ -389,10 +389,9 @@ public class PatientService {
 	 * @return
 	 */
 	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-		Person updatePerson = updatePatient(id, input);
 		String requestId = null;
 
-		if (updatePerson != null) {
+		if (input != null) {
 			List<TemplateInput> templateInputs = new ArrayList<>();
 
 			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
@@ -404,7 +403,7 @@ public class PatientService {
 			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
 		}
 
-		return PatientUpdateResponse.builder().requestId(requestId).updatedPerson(updatePerson).build();
+		return PatientUpdateResponse.builder().requestId(requestId).build();
 
 	}
 

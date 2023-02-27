@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
+import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings("deprecation")

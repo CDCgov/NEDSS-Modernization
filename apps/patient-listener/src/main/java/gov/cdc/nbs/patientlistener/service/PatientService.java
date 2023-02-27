@@ -4,16 +4,16 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import gov.cdc.nbs.patientlistener.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.patientlistener.message.PatientUpdateEventResponse;
-import gov.cdc.nbs.patientlistener.odse.PatientInput;
-import gov.cdc.nbs.patientlistener.odse.PatientInput.PhoneNumber;
-import gov.cdc.nbs.patientlistener.odse.PatientInput.PhoneType;
-import gov.cdc.nbs.patientlistener.odse.Person;
-import gov.cdc.nbs.patientlistener.repository.PersonRepository;
-import gov.cdc.nbs.patientlistener.repository.elasticsearch.ElasticsearchPersonRepository;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.patientlistener.util.Constants;
 import gov.cdc.nbs.patientlistener.util.PersonUtil;
+import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -87,7 +87,7 @@ public class PatientService {
 		oldPerson.setRaceCd(input.getRace() != null ? input.getRace() : oldPerson.getRaceCd());
 		oldPerson.setDeceasedIndCd(input.getDeceased() != null ? input.getDeceased() : oldPerson.getDeceasedIndCd());
 		oldPerson.setEthnicityGroupCd(
-				input.getEthnicity() != null ? input.getEthnicity().substring(0, 20) : oldPerson.getEthnicityGroupCd());
+				input.getEthnicityCode() != null ? input.getEthnicityCode().substring(0, 20) : oldPerson.getEthnicityGroupCd());
 
 		oldPerson.setBirthTime(input.getDateOfBirth() != null ? input.getDateOfBirth() : oldPerson.getBirthTime());
 
@@ -96,18 +96,18 @@ public class PatientService {
 	
 	public Person updatedPersonName(Person oldPerson, PatientInput input) {
 
-		if (input.getName() != null) {
+		if (!input.getNames().isEmpty()) {
 			oldPerson.setFirstNm(
-					input.getName().getFirstName() != null ? input.getName().getFirstName() : oldPerson.getFirstNm());
+					input.getNames().get(0).getFirstName() != null ? input.getNames().get(0).getFirstName() : oldPerson.getFirstNm());
 
-			oldPerson.setMiddleNm(input.getName().getMiddleName() != null ? input.getName().getMiddleName()
+			oldPerson.setMiddleNm(input.getNames().get(0).getMiddleName() != null ? input.getNames().get(0).getMiddleName()
 					: oldPerson.getMiddleNm());
 
 			oldPerson.setLastNm(
-					input.getName().getLastName() != null ? input.getName().getLastName() : oldPerson.getLastNm());
+					input.getNames().get(0).getLastName() != null ? input.getNames().get(0).getLastName() : oldPerson.getLastNm());
 
 			oldPerson.setNmSuffix(
-					input.getName().getSuffix() != null ? input.getName().getSuffix() : oldPerson.getNmSuffix());
+					input.getNames().get(0).getSuffix() != null ? input.getNames().get(0).getSuffix() : oldPerson.getNmSuffix());
 		}
 
 		return oldPerson;

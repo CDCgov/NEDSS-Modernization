@@ -1,10 +1,12 @@
 package gov.cdc.nbs.patientlistener.enums.converter;
 
-import gov.cdc.nbs.patientlistener.enums.Suffix;
+
 
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+
+import gov.cdc.nbs.entity.enums.Suffix;
 
 @Converter
 public class SuffixConverter implements AttributeConverter<Suffix, String> {

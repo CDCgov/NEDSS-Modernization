@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.enums;
+package gov.cdc.nbs.entity.enums;
 
 public enum Ethnicity {
     HISPANIC_OR_LATINO,

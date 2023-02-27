@@ -2,7 +2,7 @@ package gov.cdc.nbs.patientlistener.enums.converter;
 
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
-import gov.cdc.nbs.patientlistener.enums.Deceased;
+import gov.cdc.nbs.entity.enums.Deceased;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

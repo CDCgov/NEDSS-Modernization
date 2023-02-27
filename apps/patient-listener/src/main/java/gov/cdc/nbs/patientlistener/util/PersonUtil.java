@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gov.cdc.nbs.patientlistener.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.patientlistener.elasticsearch.NestedAddress;
-import gov.cdc.nbs.patientlistener.elasticsearch.NestedEmail;
-import gov.cdc.nbs.patientlistener.elasticsearch.NestedName;
-import gov.cdc.nbs.patientlistener.elasticsearch.NestedPhone;
-import gov.cdc.nbs.patientlistener.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
+import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
+import gov.cdc.nbs.entity.elasticsearch.NestedName;
+import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
+import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patientlistener.enums.converter.InstantConverter;
-import gov.cdc.nbs.patientlistener.odse.Person;
-import gov.cdc.nbs.patientlistener.odse.PostalLocator;
-import gov.cdc.nbs.patientlistener.odse.TeleLocator;
 
 import java.time.Instant;
 
@@ -87,14 +87,14 @@ public class PersonUtil {
     
     public static List<TeleLocator> getTeleLocators(Person person) {
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
-                .filter(elp -> elp.getClassCd().equals("TELE"))
+                .filter(elp -> elp.getCd().equals("TELE"))
                 .map(elp -> (TeleLocator) elp.getLocator())
                 .collect(Collectors.toList());
     }
     
     public static List<PostalLocator> getPostalLocators(Person person) {
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
-                .filter(elp -> elp.getClassCd().equals("PST"))
+                .filter(elp -> elp.getCd().equals("PST"))
                 .map(elp -> (PostalLocator) elp.getLocator())
                 .collect(Collectors.toList());
     }
