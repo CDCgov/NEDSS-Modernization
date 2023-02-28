@@ -1,0 +1,18 @@
+@import '../../settings.scss';
+
+.date-picker-input {
+    &.error {
+        border-left: 2px solid $warning;
+        padding-left: 1em;
+        small {
+            font-size: 1em;
+            font-weight: 700;
+        }
+        input {
+            border: 2px solid $warning;
+            &:focus {
+                outline: 2px solid $warning;
+            }
+        }
+    }
+}
