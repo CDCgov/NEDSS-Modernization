@@ -154,6 +154,8 @@ input PersonInput {
     identifications: [Identification]
     ethnicityCode: String
     raceCodes: [String]
+    asOf: Date
+    comments: String
 }
 input Name {
     firstName: String
