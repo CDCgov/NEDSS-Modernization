@@ -1,7 +1,17 @@
 package gov.cdc.nbs.patientlistener.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
 import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
@@ -16,18 +26,9 @@ import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.message.PatientCreateRequest;
 import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
-import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -46,15 +47,13 @@ public class PatientCreateRequestHandler {
     private UserService userService;
 
     @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
 
     @Autowired
     private KafkaProducer producer;
 
-    @Autowired PatientCreator creator;
+    @Autowired
+    PatientCreator creator;
 
     @Transactional
     public void handlePatientCreate(String message, String key) {
@@ -70,7 +69,7 @@ public class PatientCreateRequestHandler {
         long user = createRequest.createdBy();
 
         log.debug("Attempting to validate permissions for user: {}", user);
-        if(userService.isAuthorized(user, "FIND-PATIENT", "ADD-PATIENT")) {
+        if (userService.isAuthorized(user, "FIND-PATIENT", "ADD-PATIENT")) {
             creationAllowed(key, createRequest);
         } else {
             notAuthorized(key);
@@ -147,6 +146,10 @@ public class PatientCreateRequestHandler {
                 .email(getEmails(person))
                 .name(getNames(person))
                 .race(getRaces(person))
+                .asOfDateGeneral(person.getAsOfDateGeneral())
+                .asOfDateAdmin(person.getAsOfDateAdmin())
+                .asOfDateSex(person.getAsOfDateSex())
+                .description(person.getDescription())
                 .build();
         elasticsearchPersonRepository.save(esPerson);
     }
