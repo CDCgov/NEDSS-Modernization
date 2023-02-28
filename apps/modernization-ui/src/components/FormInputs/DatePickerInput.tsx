@@ -28,7 +28,7 @@ export const DatePickerInput = ({
 
     useEffect(() => {
         if (defaultValue) {
-            setDefaultDate(defaultValue)
+            setDefaultDate(defaultValue);
         }
         if (defaultVal) {
             if (defaultVal[0] === '') {
