@@ -27,30 +27,27 @@ export const DatePickerInput = ({
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        if (defaultValue) {
-            if (defaultVal.length === 3 && defaultVal[2]) {
-                if (defaultVal[2].length === 4) {
-                    if (validateDate(defaultValue)) {
-                        console.log('YUP');
-                        setError(false);
-                        setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
-                    } else {
-                        setError(true);
-                    }
-                }
+        if (defaultVal) {
+            if (defaultVal[0] === '') {
+                setError(false);
+            } else if (defaultVal.length === 3 && defaultVal[2].length === 4 && validateDate(defaultValue!)) {
+                setError(false);
+                setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
             } else {
                 setError(true);
             }
+        } else {
+            setDefaultDate('');
         }
-    }, [defaultValue]);
+    }, [defaultVal]);
     return (
+        // <>
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             <Label htmlFor={htmlFor}>{label}</Label>
-            {defaultDate ? (
+            {defaultDate && (
                 <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
-            ) : (
-                <DatePicker id={id} onChange={onChange} className={className} name={name} />
             )}
+            {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
         </div>
     );
 };
