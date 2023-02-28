@@ -10,9 +10,9 @@ import java.util.List;
 class PatientTreatmentFinder {
 
     public static final int PARAMETER_PARAMETER = 1;
-    private static String QUERY = """
+    private static final String QUERY = """
             select distinct
-                [treatment].treatment_uid  "treatment",   
+                [treatment].treatment_uid  "treatment",
                 [relationship].add_time as "created_on",
                 [treatment].cd_desc_txt "description",
                 [treatment].local_id "event",
@@ -22,8 +22,8 @@ class PatientTreatmentFinder {
                 [provider_name].[last_nm] "provider_last_name",
                 [provider_name].[nm_suffix] "provider_suffix",
                 [investigation].public_health_case_uid "investigation_id",
-                [investigation].local_id "investigation_local",    
-                [condition].condition_short_nm "investigation_condition" 
+                [investigation].local_id "investigation_local",
+                [condition].condition_short_nm "investigation_condition"
             from  person [patient]
                         
                 join participation [subject_of_treatment] on
@@ -48,23 +48,23 @@ class PatientTreatmentFinder {
                     and [relationship].source_class_cd = 'TRMT'
                     and [relationship].target_class_cd = 'CASE'
                         
-                join Participation [treatment_provider] on
+                left join Participation [treatment_provider] on
                         [treatment_provider].act_uid = [treatment].[treatment_uid]
                     and [treatment_provider].type_cd = 'ProviderOfTrmt'
                     and [treatment_provider].subject_class_cd = 'PSN'
                         
-                join person_name [provider_name] on
+                left join person_name [provider_name] on
                         [provider_name].person_uid = [treatment_provider].[subject_entity_uid]
                         
                 join Public_health_case [investigation] ON
                         [investigation].Public_health_case_uid = [relationship].target_act_uid
                     and [investigation].investigation_status_cd IN ( 'O','C')
-                    and [investigation].record_status_cd <> 'LOG_DEL'        
+                    and [investigation].record_status_cd <> 'LOG_DEL'
                         
                 join nbs_srte..Condition_code [condition] ON
                     [condition].condition_cd = [investigation].cd
                         
-            where [patient].person_parent_uid = ? 
+            where [patient].person_parent_uid = ?
             """;
 
     private final JdbcTemplate template;
@@ -80,10 +80,12 @@ class PatientTreatmentFinder {
                 "description",
                 "event",
                 "treated_on",
-                "provider_prefix",
-                "provider_first_name",
-                "provider_last_name",
-                "provider_suffix",
+                new PatientTreatmentProviderRowMapper.Label(
+                        "provider_prefix",
+                        "provider_first_name",
+                        "provider_last_name",
+                        "provider_suffix"
+                ),
                 "investigation_id",
                 "investigation_local",
                 "investigation_condition"

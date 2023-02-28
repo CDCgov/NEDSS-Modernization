@@ -43,6 +43,6 @@ class PatientTreatmentByPatientResolverTest {
                 .as("The resolved list of patients comes from the finder")
                 .hasSize(1);
 
-        verify(finder).find(eq(1861L));
+        verify(finder).find(1861L);
     }
 }

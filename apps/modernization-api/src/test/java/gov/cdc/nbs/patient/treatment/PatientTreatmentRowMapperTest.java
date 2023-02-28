@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 class PatientTreatmentRowMapperTest {
 
     @Test
-    void should_resolve_column_index_from_result_set_with_default_label() throws SQLException {
+    void should_resolve_column_index_from_result_set_using_label() throws SQLException {
 
         ResultSet resultSet = mock(ResultSet.class);
 
@@ -37,10 +37,12 @@ class PatientTreatmentRowMapperTest {
                 "description",
                 "event",
                 "treated_on",
-                "provider_prefix",
-                "provider_first_name",
-                "provider_last_name",
-                "provider_suffix",
+                new PatientTreatmentProviderRowMapper.Label(
+                        "provider_prefix",
+                        "provider_first_name",
+                        "provider_last_name",
+                        "provider_suffix"
+                ),
                 "investigation_id",
                 "investigation_local",
                 "investigation_condition"
@@ -56,13 +58,14 @@ class PatientTreatmentRowMapperTest {
         assertThat(actual.description()).isEqualTo(5);
         assertThat(actual.event()).isEqualTo(7);
         assertThat(actual.treatedOn()).isEqualTo(11);
-        assertThat(actual.providerPrefix()).isEqualTo(13);
-        assertThat(actual.providerFirstName()).isEqualTo(17);
-        assertThat(actual.providerLastName()).isEqualTo(19);
-        assertThat(actual.providerSuffix()).isEqualTo(23);
         assertThat(actual.investigationId()).isEqualTo(29);
         assertThat(actual.investigationLocal()).isEqualTo(31);
         assertThat(actual.investigationCondition()).isEqualTo(37);
+
+        assertThat(actual.provider().prefix()).isEqualTo(13);
+        assertThat(actual.provider().first()).isEqualTo(17);
+        assertThat(actual.provider().last()).isEqualTo(19);
+        assertThat(actual.provider().suffix()).isEqualTo(23);
     }
 
     @Test
@@ -85,7 +88,7 @@ class PatientTreatmentRowMapperTest {
         doReturn("investigation-local-value").when(resultSet).getString(11);
         doReturn("investigation-condition-value").when(resultSet).getString(12);
 
-        PatientTreatmentRowMapper.Index index = new PatientTreatmentRowMapper.Index(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        PatientTreatmentRowMapper.Index index = new PatientTreatmentRowMapper.Index(1, 2, 3, 4, 5, new PatientTreatmentProviderRowMapper.Index(6, 7, 8, 9), 10, 11, 12);
 
         PatientTreatmentRowMapper.Label label = new PatientTreatmentRowMapper.Label(
                 "treatment",
@@ -93,16 +96,21 @@ class PatientTreatmentRowMapperTest {
                 "description",
                 "event",
                 "treated_on",
-                "provider_prefix",
-                "provider_first_name",
-                "provider_last_name",
-                "provider_suffix",
+                new PatientTreatmentProviderRowMapper.Label(
+                        "provider_prefix",
+                        "provider_first_name",
+                        "provider_last_name",
+                        "provider_suffix"
+                ),
                 "investigation_id",
                 "investigation_local",
                 "investigation_condition"
         );
 
-        PatientTreatmentRowMapper mapper = new PatientTreatmentRowMapper(label, index);
+        PatientTreatmentRowMapper mapper = new PatientTreatmentRowMapper(
+                label,
+                index
+        );
 
 
         PatientTreatment actual = mapper.map(resultSet);
@@ -124,15 +132,11 @@ class PatientTreatmentRowMapperTest {
     }
 
     @Test
-    void should_map_patient_treatment_from_result_set_without_provider_prefix() throws SQLException {
+    void should_map_patient_treatment_from_result_set_without_provider() throws SQLException {
 
         ResultSet resultSet = mock(ResultSet.class);
 
-        doReturn("provider-first-name-value").when(resultSet).getString(7);
-        doReturn("provider-last-name-value").when(resultSet).getString(8);
-        doReturn("provider-suffix-value").when(resultSet).getString(9);
-
-        PatientTreatmentRowMapper.Index index = new PatientTreatmentRowMapper.Index(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        PatientTreatmentRowMapper.Index index = new PatientTreatmentRowMapper.Index(1, 2, 3, 4, 5, new PatientTreatmentProviderRowMapper.Index(6, 7, 8, 9), 10, 11, 12);
 
         PatientTreatmentRowMapper.Label label = new PatientTreatmentRowMapper.Label(
                 "treatment",
@@ -140,88 +144,28 @@ class PatientTreatmentRowMapperTest {
                 "description",
                 "event",
                 "treated_on",
-                "provider_prefix",
-                "provider_first_name",
-                "provider_last_name",
-                "provider_suffix",
+                new PatientTreatmentProviderRowMapper.Label(
+                        "provider_prefix",
+                        "provider_first_name",
+                        "provider_last_name",
+                        "provider_suffix"
+                ),
                 "investigation_id",
                 "investigation_local",
                 "investigation_condition"
         );
 
-        PatientTreatmentRowMapper mapper = new PatientTreatmentRowMapper(label, index);
-
-
-        PatientTreatment actual = mapper.map(resultSet);
-
-        assertThat(actual.provider()).isEqualTo("provider-first-name-value provider-last-name-value provider-suffix-value");
-
-    }
-
-    @Test
-    void should_map_patient_treatment_from_result_set_without_provider_suffix() throws SQLException {
-
-        ResultSet resultSet = mock(ResultSet.class);
-
-        doReturn("provider-prefix-value").when(resultSet).getString(6);
-        doReturn("provider-first-name-value").when(resultSet).getString(7);
-        doReturn("provider-last-name-value").when(resultSet).getString(8);
-
-        PatientTreatmentRowMapper.Index index = new PatientTreatmentRowMapper.Index(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-
-        PatientTreatmentRowMapper.Label label = new PatientTreatmentRowMapper.Label(
-                "treatment",
-                "created_on",
-                "description",
-                "event",
-                "treated_on",
-                "provider_prefix",
-                "provider_first_name",
-                "provider_last_name",
-                "provider_suffix",
-                "investigation_id",
-                "investigation_local",
-                "investigation_condition"
+        PatientTreatmentRowMapper mapper = new PatientTreatmentRowMapper(
+                label,
+                index
         );
 
-        PatientTreatmentRowMapper mapper = new PatientTreatmentRowMapper(label, index);
-
 
         PatientTreatment actual = mapper.map(resultSet);
 
-        assertThat(actual.provider()).isEqualTo("provider-prefix-value provider-first-name-value provider-last-name-value");
-    }
-
-    @Test
-    void should_map_patient_treatment_from_result_set_without_provider_prefix_or_suffix() throws SQLException {
-
-        ResultSet resultSet = mock(ResultSet.class);
-
-        doReturn("provider-first-name-value").when(resultSet).getString(7);
-        doReturn("provider-last-name-value").when(resultSet).getString(8);
-
-        PatientTreatmentRowMapper.Index index = new PatientTreatmentRowMapper.Index(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-
-        PatientTreatmentRowMapper.Label label = new PatientTreatmentRowMapper.Label(
-                "treatment",
-                "created_on",
-                "description",
-                "event",
-                "treated_on",
-                "provider_prefix",
-                "provider_first_name",
-                "provider_last_name",
-                "provider_suffix",
-                "investigation_id",
-                "investigation_local",
-                "investigation_condition"
-        );
-
-        PatientTreatmentRowMapper mapper = new PatientTreatmentRowMapper(label, index);
-
-        PatientTreatment actual = mapper.map(resultSet);
-
-        assertThat(actual.provider()).isEqualTo("provider-first-name-value provider-last-name-value");
+        assertThat(actual.provider()).isNull();
 
     }
+
+
 }

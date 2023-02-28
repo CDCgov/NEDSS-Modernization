@@ -5,12 +5,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 class PatientTreatmentRowMapper {
-
-    private static final String NAME_SEPARATOR = " ";
 
     record Index(
             int treatment,
@@ -18,26 +14,24 @@ class PatientTreatmentRowMapper {
             int description,
             int event,
             int treatedOn,
-            int providerPrefix,
-            int providerFirstName,
-            int providerLastName,
-            int providerSuffix,
+            PatientTreatmentProviderRowMapper.Index provider,
             int investigationId,
             int investigationLocal,
             int investigationCondition
     ) {
 
         static Index resolve(final ResultSet resultSet, final Label label) throws SQLException {
+            PatientTreatmentProviderRowMapper.Index provider = PatientTreatmentProviderRowMapper.Index.resolve(
+                    resultSet,
+                    label.provider()
+            );
             return new Index(
                     resultSet.findColumn(label.treatment()),
                     resultSet.findColumn(label.createdOn()),
                     resultSet.findColumn(label.description()),
                     resultSet.findColumn(label.event()),
                     resultSet.findColumn(label.treatedOn()),
-                    resultSet.findColumn(label.providerPrefix()),
-                    resultSet.findColumn(label.providerFirstName()),
-                    resultSet.findColumn(label.providerLastName()),
-                    resultSet.findColumn(label.providerSuffix()),
+                    provider,
                     resultSet.findColumn(label.investigationId()),
                     resultSet.findColumn(label.investigationLocal()),
                     resultSet.findColumn(label.investigationCondition())
@@ -52,10 +46,7 @@ class PatientTreatmentRowMapper {
             String description,
             String event,
             String treatedOn,
-            String providerPrefix,
-            String providerFirstName,
-            String providerLastName,
-            String providerSuffix,
+            PatientTreatmentProviderRowMapper.Label provider,
             String investigationId,
             String investigationLocal,
             String investigationCondition
@@ -63,16 +54,20 @@ class PatientTreatmentRowMapper {
 
     }
 
+    private final PatientTreatmentProviderRowMapper providerMapper;
+
     private final Label label;
     private Index index;
 
     PatientTreatmentRowMapper(final Label label) {
         this.label = label;
+        this.providerMapper = new PatientTreatmentProviderRowMapper(label.provider());
     }
 
     PatientTreatmentRowMapper(final Label label, final Index index) {
-        this.label = label;
-        this.index = index;
+        this.label = Objects.requireNonNull(label, "A label is required");
+        this.index = Objects.requireNonNull(index, "An index is required");
+        this.providerMapper = new PatientTreatmentProviderRowMapper(label.provider(), index.provider());
     }
 
     /**
@@ -82,8 +77,11 @@ class PatientTreatmentRowMapper {
      * @return A {@link PatientTreatmentRowMapper} specialized to a ResultSet.
      */
     PatientTreatmentRowMapper specialized(final ResultSet resultSet) throws SQLException {
-        Index index = Index.resolve(resultSet, label);
-        return new PatientTreatmentRowMapper(label, index);
+        Index specialized = Index.resolve(resultSet, label);
+        return new PatientTreatmentRowMapper(
+                label,
+                specialized
+        );
     }
 
     /**
@@ -103,7 +101,7 @@ class PatientTreatmentRowMapper {
         String description = resultSet.getString(columns.description());
         String event = resultSet.getString(columns.event());
 
-        String provider = mapProvider(resultSet, columns);
+        String provider = mapProvider(resultSet);
 
         PatientTreatment.Investigation investigation = mapInvestigation(resultSet, columns);
 
@@ -117,25 +115,15 @@ class PatientTreatmentRowMapper {
                 investigation
         );
     }
+
     private Instant mapInstant(final ResultSet resultSet, final int column) throws SQLException {
         Timestamp value = resultSet.getTimestamp(column);
 
         return value == null ? null : value.toInstant();
     }
 
-    private String mapProvider(final ResultSet resultSet, final Index columns) throws SQLException {
-        String prefix = resultSet.getString(columns.providerPrefix());
-        String first = resultSet.getString(columns.providerFirstName());
-        String last = resultSet.getString(columns.providerLastName());
-        String suffix = resultSet.getString(columns.providerSuffix());
-
-        return Stream.of(
-                        prefix,
-                        first,
-                        last,
-                        suffix
-                ).filter(Objects::nonNull)
-                .collect(Collectors.joining(NAME_SEPARATOR));
+    private String mapProvider(final ResultSet resultSet) throws SQLException {
+        return this.providerMapper.map(resultSet);
     }
 
     private PatientTreatment.Investigation mapInvestigation(
