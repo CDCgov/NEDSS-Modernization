@@ -19,6 +19,7 @@
 1. Install Node / NPM
 1. Clone [NBS](https://github.com/cdcent/NEDSSDev)
 1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into
+
    ```sh
    export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
 
@@ -26,6 +27,7 @@
    echo $NEDSS_HOME
 
    ```
+
 1. CD into the `cdc-sandbox` directory
    ```sh
    cd cdc-sandbox
@@ -72,8 +74,24 @@
    ```
 
 1. To create your own user account visit site (line 15):
-+ Navigate to System Management
-+ Expand Security Management
-+ Click Manage Users & click add
-+ Enter userId, First Name and Last Name
-+ Add a Role & click submit
+
+- Navigate to System Management
+- Expand Security Management
+- Click Manage Users & click add
+- Enter userId, First Name and Last Name
+- Add a Role & click submit
+
+## Code Formatting
+
+### Java
+
+Java Code is formatted using the default IntelliJ code formatter. If using VS-Code, add the following to your `settings.json`.
+
+```json
+"java.format.settings.url": "eclipse-formatter.xml",
+"java.format.settings.profile": "IntelliJ"
+```
+
+### Typescript
+
+Typescript formatting is handled by the [Prettier](https://prettier.io/) plugin/package.
