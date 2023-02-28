@@ -50,7 +50,9 @@ services:
       - nbs
     ports:
       - 9200:9200 
-      - 9300:9300     
+      - 9300:9300
+    # environment:
+    #   - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m" # Uncomment to limit memory usage
   kibana:
     container_name: kibana
     build: ./kibana
@@ -64,7 +66,6 @@ services:
       - 5601:5601
     # volumes:
     #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml]   
-  # If running Apple M1 chip, run ./nifi/buildImage.sh prior to launching container
   nifi:
     container_name: nifi
     build: ./nifi 

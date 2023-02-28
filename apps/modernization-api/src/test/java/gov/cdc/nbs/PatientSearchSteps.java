@@ -5,15 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,18 +27,15 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.PostalLocatorRepository;
-import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.support.PersonMother;
+import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.data.domain.Sort.Direction;
-import java.util.Comparator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -49,10 +47,6 @@ public class PatientSearchSteps {
 
     @Autowired
     private PersonRepository personRepository;
-    @Autowired
-    private PostalLocatorRepository postalLocatorRepository;
-    @Autowired
-    private TeleLocatorRepository teleLocatorRepository;
     @Autowired
     private PatientController patientController;
     @Autowired
@@ -73,11 +67,11 @@ public class PatientSearchSteps {
     public void there_are_patients(int patientCount) {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(patientCount);
-        
+
         // make first person soundex testable
         Person soundexPerson = generatedPersons.get(0);
-        soundexPerson.setFirstNm("Jon");  // soundex equivalent to John
-        soundexPerson.setLastNm("Smyth");  // soundex equivalent to Smith
+        soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
 
         generatedPersons.forEach(personRepository::delete);
 
@@ -151,7 +145,7 @@ public class PatientSearchSteps {
                 break;
             case "last name soundex":
                 searchPatient = generatedPersons.get(0);
-                filter.setLastName("Smith");  // finds Smyth
+                filter.setLastName("Smith"); // finds Smyth
                 break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());

@@ -46,9 +46,8 @@ class PatientCreatorTest {
                 null,
                 null,
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
-        );
-
+                Instant.parse("2020-03-03T10:15:30.00Z"),
+                "comments");
 
         doAnswer(i -> i.getArguments()[0])
                 .when(repository)
@@ -65,6 +64,9 @@ class PatientCreatorTest {
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
         assertThat(actual.getMaritalStatusCd()).isEqualTo("marital-status-value");
         assertThat(actual.getEthnicGroupInd()).isEqualTo("ethnicity-value");
-
+        assertThat(actual.getAsOfDateGeneral()).isEqualTo("2020-03-03T10:15:30.00Z");
+        assertThat(actual.getAsOfDateAdmin()).isEqualTo("2020-03-03T10:15:30.00Z");
+        assertThat(actual.getAsOfDateSex()).isEqualTo("2020-03-03T10:15:30.00Z");
+        assertThat(actual.getDescription()).isEqualTo("comments");
     }
 }
