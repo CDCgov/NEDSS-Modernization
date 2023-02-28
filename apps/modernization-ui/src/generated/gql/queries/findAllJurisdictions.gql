@@ -1,4 +1,4 @@
-query findAllJurisdictions($page: Page) {
+query findAllJurisdictions($page: Page){
     findAllJurisdictions(page: $page){
         id
         typeCd

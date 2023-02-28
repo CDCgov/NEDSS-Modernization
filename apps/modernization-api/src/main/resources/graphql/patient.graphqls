@@ -1,3 +1,27 @@
+type Query {
+    findPatientById(id: ID!): Person
+    findAllPatients(page: SortablePage): PersonResults!
+    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
+    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
+    findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
+}
+
+type Mutation {
+    createPatient(patient: PersonInput!): String!
+    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
+}
+
+type UpdateResult {
+    updatedPerson: Person
+    requestId: String
+}
+
+type PersonResults {
+    content: [Person!]!
+    total: Int!
+}
+
 input PersonFilter {
     id: ID
     lastName: String

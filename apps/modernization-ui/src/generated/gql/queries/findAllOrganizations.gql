@@ -1,4 +1,4 @@
-query findAllOrganizations($page: Page) {
+query findAllOrganizations($page: Page){
     findAllOrganizations(page: $page){
         content{
             id

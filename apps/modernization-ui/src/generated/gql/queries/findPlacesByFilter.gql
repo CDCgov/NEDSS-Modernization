@@ -1,4 +1,4 @@
-query findPlacesByFilter($filter: PlaceFilter!, $page: Page) {
+query findPlacesByFilter($filter: PlaceFilter!, $page: Page){
     findPlacesByFilter(filter: $filter, page: $page){
         id
         addReasonCd

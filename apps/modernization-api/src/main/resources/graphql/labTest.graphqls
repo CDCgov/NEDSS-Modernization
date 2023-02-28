@@ -1,3 +1,12 @@
+extend type Query {
+    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
+}
+
+type LocalLabTestResults {
+    content: [LabTest]!
+    total: Int!
+}
+
 type LabTest {
     id: LabTestId
     labTestDescTxt: String

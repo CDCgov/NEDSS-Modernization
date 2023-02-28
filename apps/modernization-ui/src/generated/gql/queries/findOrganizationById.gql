@@ -1,4 +1,4 @@
-query findOrganizationById($id: ID!) {
+query findOrganizationById($id: ID!){
     findOrganizationById(id: $id){
         id
         addReasonCd
