@@ -55,10 +55,10 @@ class PatientCreator {
                 request.deceasedTime(),
                 request.maritalStatus(),
                 request.ethnicity(),
-                request.createdBy(),
-                request.createdAt(),
                 request.asOf(),
-                request.comments());
+                request.comments(),
+                request.createdBy(),
+                request.createdAt());
     }
 
     private PatientCommand.AddName asName(final PatientCreateRequest request, final PatientCreateRequest.Name name) {

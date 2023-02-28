@@ -34,10 +34,10 @@ class PersonTest {
                 null,
                 "Marital Status",
                 "EthCode",
-                131L,
-                Instant.parse("2020-03-03T10:15:30.00Z"),
                 Instant.parse("2019-03-03T10:15:30.00Z"),
-                "comments"
+                "comments",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
         );
 
         Person actual = new Person(request);

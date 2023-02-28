@@ -29,10 +29,10 @@ public sealed interface PatientCommand {
             Instant deceasedTime,
             String maritalStatus,
             String ethnicityCode,
-            long requester,
-            Instant requestedOn,
             Instant asOf,
-            String comments) implements PatientCommand {
+            String comments,
+            long requester,
+            Instant requestedOn) implements PatientCommand {
     }
 
     record AddName(
