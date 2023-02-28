@@ -524,7 +524,25 @@ type OutbreakId {
     codeSetNm: String!
     code: String!
 }
-type Query {
+type PatientTreatment {
+    treatment: ID!,
+    createdOn: Date!
+    provider : String
+    treatedOn: Date!
+    description: String!
+    event: String!
+    associatedWith: PatientTreatmentInvestigation!
+}
+
+type PatientTreatmentInvestigation {
+    id: ID!,
+    local: String!
+    condition: String!
+}
+
+extend type Query {
+    findTreatmentsForPatient(patient: ID!): [PatientTreatment]
+}type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: SortablePage): PersonResults!
     findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!

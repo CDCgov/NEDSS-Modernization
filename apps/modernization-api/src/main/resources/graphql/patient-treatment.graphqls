@@ -1,11 +1,11 @@
 type PatientTreatment {
     treatment: ID!,
-    createdOn: Date
+    createdOn: Date!
     provider : String
-    treatedOn: Date
-    description: String
-    event: String
-    associatedWith: PatientTreatmentInvestigation
+    treatedOn: Date!
+    description: String!
+    event: String!
+    associatedWith: PatientTreatmentInvestigation!
 }
 
 type PatientTreatmentInvestigation {

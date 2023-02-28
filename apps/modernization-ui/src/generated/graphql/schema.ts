@@ -630,6 +630,24 @@ export type PatientIdentificationTypeResults = {
   total: Scalars['Int'];
 };
 
+export type PatientTreatment = {
+  __typename?: 'PatientTreatment';
+  associatedWith: PatientTreatmentInvestigation;
+  createdOn: Scalars['Date'];
+  description: Scalars['String'];
+  event: Scalars['String'];
+  provider?: Maybe<Scalars['String']>;
+  treatedOn: Scalars['Date'];
+  treatment: Scalars['ID'];
+};
+
+export type PatientTreatmentInvestigation = {
+  __typename?: 'PatientTreatmentInvestigation';
+  condition: Scalars['String'];
+  id: Scalars['ID'];
+  local: Scalars['String'];
+};
+
 export type Person = {
   __typename?: 'Person';
   addReasonCd?: Maybe<Scalars['String']>;
@@ -975,6 +993,7 @@ export type Query = {
   findPlaceById?: Maybe<Place>;
   findPlacesByFilter: Array<Maybe<Place>>;
   findSnomedCodedResults: SnomedCodedResults;
+  findTreatmentsForPatient?: Maybe<Array<Maybe<PatientTreatment>>>;
 };
 
 
@@ -1133,6 +1152,11 @@ export type QueryFindPlacesByFilterArgs = {
 export type QueryFindSnomedCodedResultsArgs = {
   page?: InputMaybe<Page>;
   searchText: Scalars['String'];
+};
+
+
+export type QueryFindTreatmentsForPatientArgs = {
+  patient: Scalars['ID'];
 };
 
 export type Race = {
@@ -1488,6 +1512,13 @@ export type FindSnomedCodedResultsQueryVariables = Exact<{
 
 
 export type FindSnomedCodedResultsQuery = { __typename?: 'Query', findSnomedCodedResults: { __typename?: 'SnomedCodedResults', total: number, content: Array<{ __typename?: 'SnomedCode', id?: string | null, snomedDescTxt?: string | null } | null> } };
+
+export type FindTreatmentsForPatientQueryVariables = Exact<{
+  patient: Scalars['ID'];
+}>;
+
+
+export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> | null };
 
 
 export const CreatePatientDocument = gql`
@@ -3992,3 +4023,48 @@ export function useFindSnomedCodedResultsLazyQuery(baseOptions?: Apollo.LazyQuer
 export type FindSnomedCodedResultsQueryHookResult = ReturnType<typeof useFindSnomedCodedResultsQuery>;
 export type FindSnomedCodedResultsLazyQueryHookResult = ReturnType<typeof useFindSnomedCodedResultsLazyQuery>;
 export type FindSnomedCodedResultsQueryResult = Apollo.QueryResult<FindSnomedCodedResultsQuery, FindSnomedCodedResultsQueryVariables>;
+export const FindTreatmentsForPatientDocument = gql`
+    query findTreatmentsForPatient($patient: ID!) {
+  findTreatmentsForPatient(patient: $patient) {
+    treatment
+    createdOn
+    provider
+    treatedOn
+    description
+    event
+    associatedWith {
+      id
+      local
+      condition
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindTreatmentsForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindTreatmentsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindTreatmentsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindTreatmentsForPatientQuery({
+ *   variables: {
+ *      patient: // value for 'patient'
+ *   },
+ * });
+ */
+export function useFindTreatmentsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
+      }
+export function useFindTreatmentsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
+        }
+export type FindTreatmentsForPatientQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientQuery>;
+export type FindTreatmentsForPatientLazyQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientLazyQuery>;
+export type FindTreatmentsForPatientQueryResult = Apollo.QueryResult<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>;
