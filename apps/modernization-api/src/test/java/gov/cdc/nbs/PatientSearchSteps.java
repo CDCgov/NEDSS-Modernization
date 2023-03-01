@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,18 +27,15 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.PostalLocatorRepository;
-import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.support.PersonMother;
+import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.data.domain.Sort.Direction;
-import java.util.Comparator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -48,10 +47,6 @@ public class PatientSearchSteps {
 
     @Autowired
     private PersonRepository personRepository;
-    @Autowired
-    private PostalLocatorRepository postalLocatorRepository;
-    @Autowired
-    private TeleLocatorRepository teleLocatorRepository;
     @Autowired
     private PatientController patientController;
     @Autowired
@@ -73,23 +68,18 @@ public class PatientSearchSteps {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(patientCount);
 
-        var generatedIds = generatedPersons.stream()
-                .map(p -> p.getId()).collect(Collectors.toList());
-        // find existing persons
-        var existingPersons = personRepository.findAllById(generatedIds);
-        // delete existing locator entries
-        var existingPostal = PersonUtil.getPostalLocators(existingPersons);
-        postalLocatorRepository.deleteAll(existingPostal);
-        var existingTele = PersonUtil.getTeleLocators(existingPersons);
-        teleLocatorRepository.deleteAll(existingTele);
-        // delete existing persons
-        personRepository.deleteAll(existingPersons);
+        // make first person soundex testable
+        Person soundexPerson = generatedPersons.get(0);
+        soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
 
+        generatedPersons.forEach(personRepository::delete);
+
+        personRepository.flush();
         // create new persons
-        teleLocatorRepository.saveAll(PersonUtil.getTeleLocators(generatedPersons));
-        postalLocatorRepository.saveAll(PersonUtil.getPostalLocators(generatedPersons));
+
         personRepository.saveAll(generatedPersons);
-        elasticsearchPersonRepository.saveAll(PersonUtil.getElasticSearchPersons(generatedPersons));
+        elasticsearchPersonRepository.saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(generatedPersons));
     }
 
     @Given("I am looking for one of them")
@@ -122,11 +112,13 @@ public class PatientSearchSteps {
     }
 
     @When("I search for patients sorted by {string} {string} {string} {string}")
-    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField, String aSortDirection) {
+    public void i_search_for_ordered_patients(String field, String qualifier, String aSortField,
+            String aSortDirection) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         sortDirection = aSortDirection.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
         sortField = aSortField;
-        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
+        searchResults = patientController
+                .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
     }
 
     @Then("I find the patient")
@@ -151,18 +143,27 @@ public class PatientSearchSteps {
             case "email":
                 filter.setEmail(PersonUtil.getTeleLocators(searchPatient).get(0).getEmailAddress());
                 break;
+            case "last name soundex":
+                searchPatient = generatedPersons.get(0);
+                filter.setLastName("Smith"); // finds Smyth
+                break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
                 break;
             case "first name":
                 filter.setFirstName(searchPatient.getFirstNm());
                 break;
+            case "first name soundex":
+                searchPatient = generatedPersons.get(0);
+                filter.setFirstName("John"); // finds Jon
+                break;
             case "race":
-                filter.setRace(searchPatient.getRaces().get(0).getId().getRaceCd());
+                filter.setRace(searchPatient.getRaces().get(0).getRaceCd());
                 break;
             case "identification":
                 var patientId = searchPatient.getEntityIds().get(0);
-                filter.setIdentification(new Identification(patientId.getRootExtensionTxt(), patientId.getTypeCd()));
+                filter.setIdentification(
+                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "patient id":
                 filter.setId(searchPatient.getLocalId());

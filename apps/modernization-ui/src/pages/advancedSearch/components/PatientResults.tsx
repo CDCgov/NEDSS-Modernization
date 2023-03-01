@@ -35,7 +35,7 @@ export const PatientResults = ({
         data.map((item: any) => {
             const tempNumbers: any = [];
             const tempEmails: any = [];
-            item.nbsEntity?.entityLocatorParticipations?.forEach((element: any) => {
+            item?.nbsEntity?.entityLocatorParticipations?.forEach((element: any) => {
                 if (element.locator.phoneNbrTxt) {
                     tempNumbers.push(element.locator.phoneNbrTxt);
                 }
@@ -109,19 +109,19 @@ export const PatientResults = ({
 
     const newOrderPhone = (data: any) => {
         const numbers: any = [];
-        data.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
+        data?.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
         return <OrderedData data={numbers} type="PHONE NUMBER" />;
     };
 
     const newOrderEmail = (data: any) => {
         const emails: any = [];
-        data.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
+        data?.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
         return <OrderedData data={emails} type="EMAIL" />;
     };
 
     const newOrderAddress = (data: any) => {
         const address: any = [];
-        data.map(
+        data?.map(
             (item: any) =>
                 item.classCd === 'PST' &&
                 address.push(
@@ -162,6 +162,14 @@ export const PatientResults = ({
         return newen;
     };
 
+    const redirectPatientProfile = async (item: any) => {
+        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            object: item
+        });
+        navigate(`/patient-profile/${item.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+    };
+
     return (
         <div className="margin-x-4">
             {Boolean(validSearch && totalResults && data?.length > 0) && (
@@ -193,18 +201,7 @@ export const PatientResults = ({
                                         <Grid col={12} style={styleObjHeight(index)} className="margin-bottom-2">
                                             <h5 className="margin-0 text-normal text-gray-50">LEGAL NAME</h5>
                                             <p
-                                                onClick={async () => {
-                                                    const encryptedFilter =
-                                                        await EncryptionControllerService.encryptUsingPost({
-                                                            authorization: `Bearer ${state.getToken()}`,
-                                                            object: item
-                                                        });
-                                                    navigate(
-                                                        `/patient-profile/${item.localId}?data=${encodeURIComponent(
-                                                            encryptedFilter.value
-                                                        )}`
-                                                    );
-                                                }}
+                                                onClick={() => redirectPatientProfile(item)}
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
                                                 {item.lastNm}, {item.firstNm}
@@ -212,9 +209,9 @@ export const PatientResults = ({
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <div className="grid-row flex-align-center">
-                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                <p className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                     DATE OF BIRTH
-                                                </h5>
+                                                </p>
                                                 <p className="margin-0 font-sans-1xs text-normal">
                                                     {item.birthTime && (
                                                         <>
@@ -231,9 +228,9 @@ export const PatientResults = ({
                                                 </p>
                                             </div>
                                             <div className="grid-row flex-align-center">
-                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                <p className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                     SEX
-                                                </h5>
+                                                </p>
                                                 <p className="margin-0 font-sans-1xs text-normal">
                                                     {item.currSexCd === 'M'
                                                         ? 'Male'
@@ -243,9 +240,9 @@ export const PatientResults = ({
                                                 </p>
                                             </div>
                                             <div className="grid-row flex-align-center">
-                                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                                <p className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                                     PATIENT ID
-                                                </h5>
+                                                </p>
                                                 <p className="margin-0 font-sans-1xs text-normal">{item.localId}</p>
                                             </div>
                                         </Grid>
@@ -254,10 +251,10 @@ export const PatientResults = ({
                                 <Grid col={5}>
                                     <Grid row gap={3}>
                                         {/* Locator entries */}
-                                        {newOrderPhone(item.nbsEntity.entityLocatorParticipations)}
-                                        {newOrderEmail(item.nbsEntity.entityLocatorParticipations)}
+                                        {newOrderPhone(item?.nbsEntity?.entityLocatorParticipations)}
+                                        {newOrderEmail(item?.nbsEntity?.entityLocatorParticipations)}
                                         <Grid col={6} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal text-gray-50">OTHER NAMES</h5>
+                                            <p className="margin-0 text-normal text-gray-50">OTHER NAMES</p>
                                             {getOtherNames(item, item.names) ? (
                                                 <p
                                                     className="margin-0 font-sans-1xs text-normal margin-top-05"
@@ -268,7 +265,7 @@ export const PatientResults = ({
                                                 <p className="text-italic margin-0 text-gray-30">No Data</p>
                                             )}
                                         </Grid>
-                                        {newOrderAddress(item.nbsEntity.entityLocatorParticipations)}
+                                        {newOrderAddress(item?.nbsEntity?.entityLocatorParticipations)}
                                     </Grid>
                                 </Grid>
                                 <Grid col={3}>
@@ -284,9 +281,9 @@ export const PatientResults = ({
                                                     key={idIndex}
                                                     col={12}
                                                     className="margin-bottom-2">
-                                                    <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                    <p className="margin-0 text-normal text-gray-50 text-uppercase">
                                                         {id.typeDescTxt}
-                                                    </h5>
+                                                    </p>
                                                     <p
                                                         className="margin-0 font-sans-1xs text-normal margin-top-05"
                                                         style={{ wordBreak: 'break-word', paddingRight: '15px' }}>
@@ -298,9 +295,9 @@ export const PatientResults = ({
                                     {!item.entityIds ||
                                         (item.entityIds?.filter((ent: any) => ent.typeDescTxt).length === 0 && (
                                             <Grid col={12} className="margin-bottom-2">
-                                                <h5 className="margin-0 text-normal text-gray-50 text-uppercase">
+                                                <p className="margin-0 text-normal text-gray-50 text-uppercase">
                                                     Id Types
-                                                </h5>
+                                                </p>
                                                 <p
                                                     className="margin-0 font-sans-1xs margin-top-05 text-italic margin-0 text-gray-30"
                                                     style={{ wordBreak: 'break-word', paddingRight: '15px' }}>

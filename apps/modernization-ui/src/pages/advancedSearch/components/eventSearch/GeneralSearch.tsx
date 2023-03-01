@@ -31,7 +31,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             defaultValue={filter?.conditions}
                             control={control}
                             name="conditon"
-                            label="Condition:"
+                            label="Condition"
                             options={searchCriteria.conditions.map((c) => {
                                 return {
                                     name: c.conditionDescTxt,
@@ -44,7 +44,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             defaultValue={filter?.programAreas}
                             control={control}
                             name="programArea"
-                            label="Program Area:"
+                            label="Program area"
                             options={searchCriteria.programAreas.map((p) => {
                                 return {
                                     name: p.id,
@@ -57,7 +57,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             control={control}
                             defaultValue={filter?.jurisdictions}
                             name="jurisdiction"
-                            label="Jurisdiction:"
+                            label="Jurisdiction"
                             options={searchCriteria.jurisdictions.map((j) => {
                                 return {
                                     name: j.codeDescTxt,
@@ -72,7 +72,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="pregnancyTest"
-                label="Pregnancy Test:"
+                label="Pregnancy test"
                 options={[
                     { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
                     { name: PregnancyStatus.No, value: PregnancyStatus.No },
@@ -83,7 +83,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="eventIdType"
-                label="Event ID Type:"
+                label="Event id type"
                 options={Object.values(InvestigationEventIdType).map((event) => {
                     return {
                         name: formatInterfaceString(event),
@@ -100,7 +100,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
-                        label="Event ID:"
+                        label="Event id"
                         htmlFor="eventId"
                         id="eventId"
                     />
@@ -110,7 +110,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="eventDateType"
-                label="Event Date Type:"
+                label="Event date type"
                 options={Object.values(InvestigationEventDateType).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -141,7 +141,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <SelectControl
                             control={control}
                             name="createdBy"
-                            label="Event Created By User:"
+                            label="Event created by user"
                             options={searchCriteria.userResults.map((user) => {
                                 return {
                                     name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -153,7 +153,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <SelectControl
                             control={control}
                             name="lastUpdatedBy"
-                            label="Event Updated By User:"
+                            label="Event updated by user"
                             options={searchCriteria.userResults.map((user) => {
                                 return {
                                     name: `${user.userLastNm}, ${user.userFirstNm}`,
@@ -168,7 +168,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
             <SelectControl
                 control={control}
                 name="entityType"
-                label="Event Provider/Facility Type:"
+                label="Event provider/facility type"
                 onChangeMethod={(e) => setFacilityType(e.target.value && e.target.value !== '- Select -')}
                 options={Object.values(ReportingEntityType).map((type) => {
                     return {

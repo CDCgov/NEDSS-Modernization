@@ -29,10 +29,10 @@ bootJar {
         attributes 'API-Version': version
     }
 }
+
 jar {
-    manifest {
-        attributes 'API-Version': version
-    }
+	//  packages the application and spring into one jar
+	enabled = false
 }
 
 // Displays cucumber test results
@@ -46,7 +46,10 @@ dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
 	// common
+	implementation project(':modernization-ui')
 	implementation project(':database-entities')
+	implementation project(':event-schema')
+	implementation project(':authentication')
 
 	// jwt
 	implementation "com.auth0:java-jwt:4.2.0"
@@ -81,6 +84,8 @@ dependencies {
 	// itext pdf generation
 	implementation "com.itextpdf:itextpdf:5.5.13.3"
 
+	implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+
 	// test
 	testImplementation "org.projectlombok:lombok"
 	testAnnotationProcessor "org.projectlombok:lombok"
@@ -96,6 +101,8 @@ dependencies {
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
 	testImplementation 'com.github.javafaker:javafaker:1.0.2'
 	testImplementation 'org.yaml:snakeyaml:1.33'
+
+	testImplementation libs.bundles.testing
 	
 	// Kafka dependencies
 	implementation("org.springframework.kafka:spring-kafka")
@@ -111,7 +118,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-	maven{ url 'https://packages.confluent.io/maven/' }
 }
 
 tasks.named("test") {
@@ -130,3 +136,5 @@ processResources {
 
 compileJava.mustRunAfter(":modernization-ui:build")
 compileJava.mustRunAfter(":database-entities:build")
+compileJava.mustRunAfter(":event-schema:build")
+compileJava.mustRunAfter(":authentication:build")

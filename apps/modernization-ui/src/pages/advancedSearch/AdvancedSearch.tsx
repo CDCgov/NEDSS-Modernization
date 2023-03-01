@@ -19,7 +19,6 @@ import {
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
-import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
 import { UserContext } from '../../providers/UserContext';
 import {
     downloadInvestigationSearchResultCsv,
@@ -121,7 +120,6 @@ export const AdvancedSearch = () => {
             // no query parameters specified or user is not logged in
             setActiveTab('person');
             setResultsChip([]);
-            console.log('asd');
             setValidSearch(false);
             setLoading(false);
             return;
@@ -135,7 +133,6 @@ export const AdvancedSearch = () => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
                 setResultsChip([]);
-                console.log('asd');
                 setValidSearch(false);
                 setSubmitted(true);
             }
@@ -336,7 +333,6 @@ export const AdvancedSearch = () => {
             setSubmitted(false);
         } else {
             setLoading(false);
-            console.log('asd');
             setValidSearch(false);
             setSubmitted(true);
         }
@@ -384,7 +380,6 @@ export const AdvancedSearch = () => {
         setLabReportData(undefined);
         setLabReportFilter({});
         setSubmitted(false);
-        console.log('asd');
         setValidSearch(false);
         setLastSearchType(undefined);
         navigate('/advanced-search');
@@ -664,14 +659,17 @@ export const AdvancedSearch = () => {
     };
 
     function handleAddNewPatientClick(): void {
-        RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
-            () => {
-                window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
-            }
-        );
+        setShowAddNewDropDown(false);
+        navigate('/add-patient');
+        // RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
+        //     () => {
+        //         window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
+        //     }
+        // );
     }
 
     function handleAddNewLabReportClick(): void {
+        setShowAddNewDropDown(false);
         window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
     }
 
@@ -734,14 +732,14 @@ export const AdvancedSearch = () => {
                                     activeTab === ACTIVE_TAB.PERSON && 'active'
                                 } text-normal type margin-y-3 font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.PERSON)}>
-                                Patient Search
+                                Patient search
                             </h6>
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.EVENT && 'active'
                                 } padding-bottom-1 type text-normal margin-y-3 font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
-                                Event Search
+                                Event search
                             </h6>
                         </div>
                         {activeTab === ACTIVE_TAB.PERSON ? (
@@ -774,7 +772,7 @@ export const AdvancedSearch = () => {
                                     {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
                                     {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                 </strong>{' '}
-                                Results for:
+                                Results for
                                 {resultsChip.map(
                                     (re, index) =>
                                         re.value && (
@@ -818,25 +816,28 @@ export const AdvancedSearch = () => {
                                     <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Asc,
                                                         sortField: SortField.LastNm
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
+                                                outline={sort.sortDirection === SortDirection.Asc}
                                                 unstyled>
                                                 Patient name (A-Z)
                                             </Button>
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Desc,
                                                         sortField: SortField.LastNm
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
                                                 unstyled>
                                                 Patient name (Z-A)
@@ -844,12 +845,13 @@ export const AdvancedSearch = () => {
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Asc,
                                                         sortField: SortField.BirthTime
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
                                                 unstyled>
                                                 Date of birth (Ascending)
@@ -857,12 +859,13 @@ export const AdvancedSearch = () => {
                                         </li>
                                         <li className="usa-nav__submenu-item">
                                             <Button
-                                                onClick={() =>
+                                                onClick={() => {
                                                     setSort({
                                                         sortDirection: SortDirection.Desc,
                                                         sortField: SortField.BirthTime
-                                                    })
-                                                }
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
                                                 type={'button'}
                                                 unstyled>
                                                 Date of birth (Descending)

@@ -5,8 +5,8 @@ import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Gender;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -49,6 +49,7 @@ public class PatientFilter {
     @NoArgsConstructor
     public static class Identification {
         private String identificationNumber;
+        private String assigningAuthority;
         private String identificationType;
     }
 }

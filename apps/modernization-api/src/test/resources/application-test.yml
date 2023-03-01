@@ -5,6 +5,9 @@ nbs:
         tokenExpirationMillis: 60000
         parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
     max-page-size: 1000
+    datasource:
+        server: localhost
+
 logging:
     file.path: ./log/
     level:
@@ -29,27 +32,24 @@ spring:
                 hbm2ddl:
                     jdbc_metadata_extraction_strategy: individually
     datasource:
-        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
         username: sa
         password: fake.fake.fake.1234
     mvc:
         pathmatch:
             matching-strategy: ant_path_matcher
+    kafka:
+        consumer:
+            auto-offset-reset: earliest
+            group-id: group-id
+
 kafka:
-    bootstrap-servers: localhost:9092
-    listener:
-      ack-mode: record
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-    properties:
-      schema:
-        registry:
-          url: http://localhost:9091
-      topic:
-        suffix: "-event"
-        partition.count: 3
-        replication.factor: 3
-      message.max.attempt: 5
-      retry.naming.pattern: -neds-part-retry
-      dlt.naming.pattern: -neds-part-dlt
+    enabled: true
+kafkadef:
+    patient-search:
+        topics:
+            request:
+                patient: request-patient-search.patientsearch
+                patientupdate: request-patient-search.patientupdate
+                patientdelete: request-patient-search.patientdelete
+                patientcreate: patient-create-test

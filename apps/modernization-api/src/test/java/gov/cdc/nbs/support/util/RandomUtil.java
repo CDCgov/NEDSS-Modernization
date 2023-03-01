@@ -6,12 +6,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 
+import gov.cdc.nbs.address.Country;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RandomUtil {
     private static Random random = new Random();
     private static Logger logger = LoggerFactory.getLogger(RandomUtil.class);
+
     static {
         var randomSeed = random.nextLong();
         // on test failure, hard code seed to value in failed test run
@@ -81,9 +83,19 @@ public class RandomUtil {
 
     public static String randomPartialDataSearchString(String data) {
         int len = data.length();
-        if (len<=1) {
+        if (len <= 1) {
             return data;
         }
         return data.substring(0, new Random().nextInt(len - 1) + 1);
+    }
+
+    public static Country country() {
+        int limit = CountryCodeUtil.countryCodeMap.size();
+        int index = random.nextInt(limit);
+
+        return CountryCodeUtil.countryCodeMap.entrySet().stream().skip(index)
+                .map(e -> new Country(e.getValue(), e.getKey()))
+                .findFirst()
+                .orElse(null);
     }
 }

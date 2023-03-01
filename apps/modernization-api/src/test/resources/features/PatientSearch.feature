@@ -15,7 +15,9 @@ Feature: Patient search
     Examples: 
       | field         | qualifier |
       | last name     |           |
+      | last name soundex |           |
       | first name    |           |
+      | first name soundex |           |
       | race          |           |
       | patient id    |           |
       | ssn           |           |

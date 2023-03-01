@@ -6,12 +6,18 @@ nbs:
         parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
     max-page-size: 50
     elasticsearch:
-        url: http://localhost:9200
+        server: localhost
+        port: 9200
+        url: http://${nbs.elasticsearch.server}:${nbs.elasticsearch.port}
     wildfly:
-        url: http://localhost:7001
+        server: localhost
+        port: 7001
+        url: http://${nbs.wildfly.server}:${nbs.wildfly.port}
     uid:
         suffix: GA01
         seed: 10000000
+    datasource:
+        server: localhost
 
 logging:
     file.path: ./log/
@@ -36,7 +42,7 @@ spring:
                 dialect: org.hibernate.dialect.SQLServer2012Dialect
                 hbm2ddl.jdbc_metadata_extraction_strategy: individually
     datasource:
-        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
         username: sa
         password: fake.fake.fake.1234
     mvc:
@@ -54,7 +60,7 @@ kafka:
     properties:
         schema:
             registry:
-                url: http://localhost:9091
+                url: localhost:9091
         topic:
             suffix: '-event'
             partition.count: 3
@@ -69,7 +75,4 @@ kafkadef:
                 patient: request-patient-search.patientsearch
                 patientupdate: request-patient-search.patientupdate
                 patientdelete: request-patient-search.patientdelete
-            event:
-                patient: event-patient-search.patientsearch
-                patientupdate: request-patient-search.patientupdate
-                patientdelete: request-patient-search.patientdelete
+                patient-create: patient-create

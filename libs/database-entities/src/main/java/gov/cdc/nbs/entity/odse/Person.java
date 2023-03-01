@@ -1,7 +1,14 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
-import java.util.List;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.PatientCommand;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,41 +23,41 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
-import org.hibernate.annotations.ColumnTransformer;
-
-import gov.cdc.nbs.entity.enums.Deceased;
-import gov.cdc.nbs.entity.enums.Gender;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.Suffix;
-import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
 @Entity
 public class Person {
     @Id
     @Column(name = "person_uid", nullable = false)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, optional = false)
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity nbsEntity;
 
-    @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonName> names;
 
-    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonRace> races;
 
     @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -381,4 +388,136 @@ public class Person {
     @Column(name = "sex_unk_reason_cd", length = 20)
     private String sexUnkReasonCd;
 
+    protected Person() {
+
+    }
+
+    public Person(final long identifier, final String localId) {
+        this.id = identifier;
+        this.localId = localId;
+        this.nbsEntity = new NBSEntity(identifier, "PSN");
+
+        this.versionCtrlNbr = 1;
+        this.cd = "PAT";
+        this.electronicInd = 'N';
+        this.edxInd = "Y";
+        this.dedupMatchInd = 'F';
+        this.personParentUid = this;
+        this.statusCd = 'A';
+    }
+
+    public Person(final PatientCommand.AddPatient patient) {
+
+        this(patient.person(), patient.localId());
+
+        this.nbsEntity = new NBSEntity(patient);
+
+        this.ssn = patient.ssn();
+
+        this.birthTime = patient.dateOfBirth();
+        this.birthGenderCd = patient.birthGender();
+        this.currSexCd = patient.currentGender();
+
+        this.deceasedIndCd = patient.deceased();
+        this.maritalStatusCd = patient.maritalStatus();
+        this.ethnicGroupInd = patient.ethnicityCode();
+
+        this.statusTime = patient.requestedOn();
+        this.recordStatusCd = RecordStatus.ACTIVE;
+        this.recordStatusTime = patient.requestedOn();
+
+        this.addTime = patient.requestedOn();
+        this.addUserId = patient.requester();
+
+        this.lastChgTime = patient.requestedOn();
+        this.lastChgUserId = patient.requester();
+
+        this.asOfDateGeneral = patient.asOf();
+        this.asOfDateAdmin = patient.asOf();
+        this.asOfDateSex = patient.asOf();
+        this.description = patient.comments();
+
+    }
+
+    public PersonName add(final PatientCommand.AddName added) {
+
+        Collection<PersonName> existing = ensureNames();
+
+        if (existing.isEmpty()) {
+            this.firstNm = added.first();
+            this.middleNm = added.middle();
+            this.lastNm = added.last();
+            this.nmSuffix = added.suffix();
+        }
+
+        PersonNameId identifier = new PersonNameId(this.id, (short) existing.size());
+
+        PersonName personName = new PersonName(
+                identifier,
+                this,
+                added);
+
+        existing.add(personName);
+
+        return personName;
+    }
+
+    private Collection<PersonName> ensureNames() {
+        if (this.names == null) {
+            this.names = new ArrayList<>();
+        }
+        return this.names;
+    }
+
+    public PersonRace add(final PatientCommand.AddRace added) {
+        Collection<PersonRace> existing = ensureRaces();
+
+        PersonRace personRace = new PersonRace(this, added);
+
+        existing.add(personRace);
+
+        return personRace;
+
+    }
+
+    private Collection<PersonRace> ensureRaces() {
+        if (this.races == null) {
+            this.races = new ArrayList<>();
+        }
+        return this.races;
+    }
+
+    public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
+        return this.nbsEntity.add(address);
+    }
+
+    public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
+        return this.nbsEntity.add(phoneNumber);
+    }
+
+    public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
+        return this.nbsEntity.add(emailAddress);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id == null ? System.identityHashCode(this) : Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                '}';
+    }
 }

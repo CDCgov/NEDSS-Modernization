@@ -9,6 +9,7 @@ type SelectProps = {
     onChange?: any;
     defaultValue?: string;
     isMulti?: boolean;
+    dataTestid?: string;
 };
 
 export const SelectInput = ({
@@ -20,13 +21,15 @@ export const SelectInput = ({
     onChange,
     defaultValue,
     isMulti,
+    dataTestid,
     ...props
 }: SelectProps) => {
     return (
         <>
-            <Label htmlFor={htmlFor || ''}>{label}</Label>
+            {label && <Label htmlFor={htmlFor || ''}>{label}</Label>}
             {defaultValue && (
                 <Dropdown
+                    data-testid={dataTestid || 'dropdown'}
                     multiple={isMulti}
                     defaultValue={defaultValue}
                     placeholder="-Select-"
@@ -46,6 +49,7 @@ export const SelectInput = ({
             )}
             {!defaultValue && (
                 <Dropdown
+                    data-testid={dataTestid || 'dropdown'}
                     multiple={isMulti}
                     placeholder="-Select-"
                     onChange={onChange}

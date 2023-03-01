@@ -1,11 +1,3 @@
-type Ethnicity {
-    id: EthnicityId!
-    codeDescTxt: String!
-}
-
-type EthnicityId {
-    code: String!
-}
 type ConditionCode {
     id: String!
     conditionDescTxt: String
@@ -36,6 +28,14 @@ type CountyCode {
     id: String!
     codeDescTxt: String
     codeShortDescTxt: String
+}
+type Ethnicity {
+    id: EthnicityId!
+    codeDescTxt: String!
+}
+
+type EthnicityId {
+    code: String!
 }
 type IdentificationType {
     id: IdentificationTypeId!
@@ -568,23 +568,29 @@ type personParentUid {
 }
 
 input PersonInput {
-    name: Name
+    names: [Name]
     ssn: String
     DateOfBirth: Date
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
+    deceasedTime: Date
+    maritalStatus: String
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
     emailAddresses: [String]
-    ethnicity: String
-    race: String
+    identifications: [Identification]
+    ethnicityCode: String
+    raceCodes: [String]
+    asOf: Date
+    comments: String
 }
 input Name {
     firstName: String
     middleName: String
     lastName: String
     suffix: Suffix
+    nameUseCd: NameUseCd!
 }
 
 input PostalAddress {
@@ -607,6 +613,23 @@ input PhoneNumber {
 input Identification {
     identificationNumber: String!
     identificationType: String!
+    assigningAuthority: String
+}
+
+enum NameUseCd {
+    AD # Adopted Name
+    AL # Alias Name
+    A # Artist/Stage Name
+    S # Coded Pseudo
+    I # Indigenous/Tribal
+    L # Legal
+    C # License
+    M # Maiden Name
+    MO # Mother's Name
+    BR # Name at Birth
+    P # Name of Partner/Spouse
+    R # Religious
+    U
 }
 
 enum Suffix {
@@ -790,7 +813,7 @@ type Query {
 }
 
 type Mutation {
-    createPatient(patient: PersonInput!): Person!
+    createPatient(patient: PersonInput!): String!
     updatePatient(id: ID!, patient: PersonInput!): UpdateResult
 }
 

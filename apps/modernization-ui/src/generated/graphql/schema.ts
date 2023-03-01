@@ -125,6 +125,7 @@ export enum Gender {
 }
 
 export type Identification = {
+  assigningAuthority?: InputMaybe<Scalars['String']>;
   identificationNumber: Scalars['String'];
   identificationType: Scalars['String'];
 };
@@ -439,7 +440,7 @@ export type MaterialParticipation = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPatient: Person;
+  createPatient: Scalars['String'];
   updatePatient?: Maybe<UpdateResult>;
 };
 
@@ -463,8 +464,37 @@ export type Name = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   middleName?: InputMaybe<Scalars['String']>;
+  nameUseCd: NameUseCd;
   suffix?: InputMaybe<Suffix>;
 };
+
+export enum NameUseCd {
+  /**  Alias Name */
+  A = 'A',
+  Ad = 'AD',
+  /**  Adopted Name */
+  Al = 'AL',
+  /**  Mother's Name */
+  Br = 'BR',
+  /**  Legal */
+  C = 'C',
+  /**  Coded Pseudo */
+  I = 'I',
+  /**  Indigenous/Tribal */
+  L = 'L',
+  /**  License */
+  M = 'M',
+  /**  Maiden Name */
+  Mo = 'MO',
+  /**  Name at Birth */
+  P = 'P',
+  /**  Name of Partner/Spouse */
+  R = 'R',
+  /**  Artist/Stage Name */
+  S = 'S',
+  /**  Religious */
+  U = 'U'
+}
 
 export enum NotificationStatus {
   Approved = 'APPROVED',
@@ -750,14 +780,19 @@ export type PersonIdentification = {
 export type PersonInput = {
   DateOfBirth?: InputMaybe<Scalars['Date']>;
   addresses?: InputMaybe<Array<InputMaybe<PostalAddress>>>;
+  asOf?: InputMaybe<Scalars['Date']>;
   birthGender?: InputMaybe<Gender>;
+  comments?: InputMaybe<Scalars['String']>;
   currentGender?: InputMaybe<Gender>;
   deceased?: InputMaybe<Deceased>;
+  deceasedTime?: InputMaybe<Scalars['Date']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicity?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Name>;
+  ethnicityCode?: InputMaybe<Scalars['String']>;
+  identifications?: InputMaybe<Array<InputMaybe<Identification>>>;
+  maritalStatus?: InputMaybe<Scalars['String']>;
+  names?: InputMaybe<Array<InputMaybe<Name>>>;
   phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
-  race?: InputMaybe<Scalars['String']>;
+  raceCodes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   ssn?: InputMaybe<Scalars['String']>;
 };
 
@@ -1227,7 +1262,7 @@ export type CreatePatientMutationVariables = Exact<{
 }>;
 
 
-export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: Gender | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: Gender | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: Gender | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, nbsEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null, personParentUid?: { __typename?: 'personParentUid', id?: string | null } | null } };
+export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: string };
 
 export type UpdatePatientMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1456,159 +1491,7 @@ export type FindSnomedCodedResultsQuery = { __typename?: 'Query', findSnomedCode
 
 export const CreatePatientDocument = gql`
     mutation createPatient($patient: PersonInput!) {
-  createPatient(patient: $patient) {
-    id
-    nbsEntity {
-      entityLocatorParticipations {
-        classCd
-        locator {
-          emailAddress
-          extenstionTxt
-          phoneNbrTxt
-          urlAddress
-          censusBlockCd
-          censusMinorCivilDivisionCd
-          censusTrackCd
-          cityCd
-          cityDescTxt
-          cntryCd
-          cntryDescTxt
-          cntyCd
-          cntyDescTxt
-          msaCongressDistrictCd
-          regionDistrictCd
-          stateCd
-          streetAddr1
-          streetAddr2
-          zipCd
-          geocodeMatchInd
-          withinCityLimitsInd
-          censusTract
-        }
-      }
-    }
-    entityIds {
-      typeDescTxt
-      typeCd
-      rootExtensionTxt
-      assigningAuthorityCd
-      assigningAuthorityDescTxt
-    }
-    names {
-      firstNm
-      middleNm
-      lastNm
-      nmSuffix
-      nmPrefix
-    }
-    addReasonCd
-    addTime
-    addUserId
-    administrativeGenderCd
-    ageCalc
-    ageCalcTime
-    ageCalcUnitCd
-    ageCategoryCd
-    ageReported
-    ageReportedTime
-    ageReportedUnitCd
-    birthGenderCd
-    birthOrderNbr
-    birthTime
-    birthTimeCalc
-    cd
-    cdDescTxt
-    currSexCd
-    deceasedIndCd
-    deceasedTime
-    description
-    educationLevelCd
-    educationLevelDescTxt
-    ethnicGroupInd
-    lastChgReasonCd
-    lastChgTime
-    lastChgUserId
-    localId
-    maritalStatusCd
-    maritalStatusDescTxt
-    mothersMaidenNm
-    multipleBirthInd
-    occupationCd
-    preferredGenderCd
-    primLangCd
-    primLangDescTxt
-    recordStatusCd
-    recordStatusTime
-    statusCd
-    statusTime
-    survivedIndCd
-    userAffiliationTxt
-    firstNm
-    lastNm
-    middleNm
-    nmPrefix
-    nmSuffix
-    preferredNm
-    hmStreetAddr1
-    hmStreetAddr2
-    hmCityCd
-    hmCityDescTxt
-    hmStateCd
-    hmZipCd
-    hmCntyCd
-    hmCntryCd
-    hmPhoneNbr
-    hmPhoneCntryCd
-    hmEmailAddr
-    cellPhoneNbr
-    wkStreetAddr1
-    wkStreetAddr2
-    wkCityCd
-    wkCityDescTxt
-    wkStateCd
-    wkZipCd
-    wkCntyCd
-    wkCntryCd
-    wkPhoneNbr
-    wkPhoneCntryCd
-    wkEmailAddr
-    ssn
-    medicaidNum
-    dlNum
-    dlStateCd
-    raceCd
-    raceSeqNbr
-    raceCategoryCd
-    ethnicityGroupCd
-    ethnicGroupSeqNbr
-    adultsInHouseNbr
-    childrenInHouseNbr
-    birthCityCd
-    birthCityDescTxt
-    birthCntryCd
-    birthStateCd
-    raceDescTxt
-    ethnicGroupDescTxt
-    versionCtrlNbr
-    asOfDateAdmin
-    asOfDateEthnicity
-    asOfDateGeneral
-    asOfDateMorbidity
-    asOfDateSex
-    electronicInd
-    personParentUid {
-      id
-    }
-    dedupMatchInd
-    groupNbr
-    groupTime
-    edxInd
-    speaksEnglishCd
-    additionalGenderCd
-    eharsId
-    ethnicUnkReasonCd
-    sexUnkReasonCd
-  }
+  createPatient(patient: $patient)
 }
     `;
 export type CreatePatientMutationFn = Apollo.MutationFunction<CreatePatientMutation, CreatePatientMutationVariables>;
