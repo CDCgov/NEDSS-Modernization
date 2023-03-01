@@ -1,3 +1,9 @@
+extend type Query {
+    findPlaceById(id: ID!): Place
+    findAllPlaces(page: Page): [Place]!
+    findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
+}
+
 input PlaceFilter {
     id: ID
     description: String

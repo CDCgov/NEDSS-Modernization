@@ -1,4 +1,4 @@
-query findAllProgramAreas($page: Page) {
+query findAllProgramAreas($page: Page){
     findAllProgramAreas(page: $page){
         id
         progAreaDescTxt

@@ -1,4 +1,4 @@
-query findAllCountryCodes($page: Page) {
+query findAllCountryCodes($page: Page){
     findAllCountryCodes(page: $page){
         id
         assigningAuthorityCd
