@@ -25,32 +25,34 @@ import java.util.stream.Stream;
 class PatientTreatmentFinder {
 
     private static final String NAME_SEPARATOR = " ";
+    private static final String SUBJECT_OF_TREATMENT = "SubjOfTrmt";
+    private static final String TREATMENT = "TRMT";
+    private static final String PERSON = "PSN";
+    private static final String TREATMENT_TO_PUBLIC_HEALTH_CASE = "TreatmentToPHC";
+    private static final String CASE = "CASE";
+    private static final String PROVIDER_OF_TREATMENT = "ProviderOfTrmt";
+    private static final String ACTIVE = "ACTIVE";
+    private static final String OPEN = "O";
+    private static final String CLOSED = "C";
+    private static final String DELETED = "LOG_DEL";
 
     private final JPAQueryFactory factory;
-    private final QPerson patients;
-    private final QParticipation subjectOfTreatment;
-    private final QTreatment treatment;
-    private final QTreatmentAdministered administered;
-    private final QActRelationship relationship;
-    private final QParticipation treatmentProvider;
-    private final QPersonName provider;
-    private final QPublicHealthCase investigation;
-    private final QConditionCode condition;
 
     PatientTreatmentFinder(final JPAQueryFactory factory) {
         this.factory = factory;
-        patients = QPerson.person;
-        subjectOfTreatment = QParticipation.participation;
-        treatment = QTreatment.treatment;
-        administered = QTreatmentAdministered.treatmentAdministered;
-        relationship = QActRelationship.actRelationship;
-        treatmentProvider = QParticipation.participation;
-        provider = QPersonName.personName;
-        investigation = QPublicHealthCase.publicHealthCase;
-        condition = QConditionCode.conditionCode;
     }
 
     List<PatientTreatment> find(long patient) {
+
+        QPerson patients = QPerson.person;
+        QParticipation subjectOfTreatment = QParticipation.participation;
+        QTreatment treatment = QTreatment.treatment;
+        QTreatmentAdministered administered = QTreatmentAdministered.treatmentAdministered;
+        QActRelationship relationship = QActRelationship.actRelationship;
+        QParticipation treatmentProvider = QParticipation.participation;
+        QPersonName provider = QPersonName.personName;
+        QPublicHealthCase investigation = QPublicHealthCase.publicHealthCase;
+        QConditionCode condition = QConditionCode.conditionCode;
 
         JPAQuery<Tuple> query = factory.selectDistinct(
                         treatment.id,
@@ -68,36 +70,36 @@ class PatientTreatmentFinder {
                 ).from(patients)
                 .join(subjectOfTreatment).on(
                         subjectOfTreatment.id.subjectEntityUid.eq(patients.id),
-                        subjectOfTreatment.id.typeCd.eq("SubjOfTrmt"),
-                        subjectOfTreatment.actClassCd.eq("TRMT"),
-                        subjectOfTreatment.subjectClassCd.eq("PSN"),
+                        subjectOfTreatment.id.typeCd.eq(SUBJECT_OF_TREATMENT),
+                        subjectOfTreatment.actClassCd.eq(TREATMENT),
+                        subjectOfTreatment.subjectClassCd.eq(PERSON),
                         subjectOfTreatment.recordStatusCd.eq(RecordStatus.ACTIVE)
                 )
                 .join(treatment).on(
                         treatment.id.eq(subjectOfTreatment.actUid.id),
-                        treatment.recordStatusCd.eq("ACTIVE")
+                        treatment.recordStatusCd.eq(ACTIVE)
                 )
                 .join(administered).on(
                         administered.treatmentUid.id.eq(treatment.id)
                 )
                 .join(relationship).on(
-                        relationship.id.typeCd.eq("TreatmentToPHC"),
+                        relationship.id.typeCd.eq(TREATMENT_TO_PUBLIC_HEALTH_CASE),
                         relationship.sourceActUid.id.eq(treatment.id),
-                        relationship.sourceClassCd.eq("TRMT"),
-                        relationship.targetClassCd.eq("CASE")
+                        relationship.sourceClassCd.eq(TREATMENT),
+                        relationship.targetClassCd.eq(CASE)
                 )
                 .leftJoin(treatmentProvider).on(
                         treatmentProvider.actUid.id.eq(treatment.id),
-                        treatmentProvider.id.typeCd.eq("ProviderOfTrmt"),
-                        treatmentProvider.subjectClassCd.eq("PSN")
+                        treatmentProvider.id.typeCd.eq(PROVIDER_OF_TREATMENT),
+                        treatmentProvider.subjectClassCd.eq(PERSON)
                 )
                 .leftJoin(provider).on(
                         provider.id.personUid.eq(treatmentProvider.id.subjectEntityUid)
                 )
                 .join(investigation).on(
                         investigation.id.eq(relationship.targetActUid.id),
-                        investigation.investigationStatusCd.in("O", "C"),
-                        investigation.recordStatusCd.ne("LOG_DEL")
+                        investigation.investigationStatusCd.in(OPEN, CLOSED),
+                        investigation.recordStatusCd.ne(DELETED)
                 )
                 .join(condition).on(
                         condition.id.eq(investigation.cd)
