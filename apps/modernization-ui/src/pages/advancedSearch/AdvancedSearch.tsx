@@ -915,7 +915,7 @@ export const AdvancedSearch = () => {
                                 </div>
                             )}
                             <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
                                 style={{
                                     background: 'white',
                                     border: '1px solid #DFE1E2',
@@ -931,7 +931,7 @@ export const AdvancedSearch = () => {
                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                         (!patientData?.content || patientData?.content?.length === 0) && (
                             <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
                                 style={{
                                     background: 'white',
                                     border: '1px solid #DFE1E2',
