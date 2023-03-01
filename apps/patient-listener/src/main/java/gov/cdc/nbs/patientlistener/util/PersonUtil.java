@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patientlistener.util;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,17 +41,23 @@ public class PersonUtil {
         race.setRaceDescTxt(person.getRaceDescTxt());
 
         var address = new NestedAddress();
+        if(PersonUtil.getPostalLocators(person) != null && !PersonUtil.getPostalLocators(person).isEmpty()){
         PostalLocator pl = PersonUtil.getPostalLocators(person).get(0);
         address.setStreetAddr1(pl.getStreetAddr1());
         address.setStreetAddr2(pl.getStreetAddr2());
+        
         address.setCity(pl.getCityDescTxt());
         address.setState(pl.getStateCd());
         address.setCntyCd(pl.getCntyCd());
         address.setCntryCd(pl.getCntryCd());
         address.setZip(pl.getZipCd());
+        }
 
         var phone = new NestedPhone();
-        phone.setTelephoneNbr(PersonUtil.getTeleLocators(List.of(person)).get(0).getPhoneNbrTxt());
+        if(PersonUtil.getTeleLocators(List.of(person)) != null && !PersonUtil.getTeleLocators(List.of(person)).isEmpty() ) {
+         phone.setTelephoneNbr(PersonUtil.getTeleLocators(List.of(person)).get(0).getPhoneNbrTxt());
+         
+        }
 
         var email = new NestedEmail();
         email.setEmailAddress(person.getHmEmailAddr());
@@ -86,6 +93,10 @@ public class PersonUtil {
 
     
     public static List<TeleLocator> getTeleLocators(Person person) {
+    	if(person.getNbsEntity() == null ||person.getNbsEntity().getEntityLocatorParticipations() == null ||
+    			person.getNbsEntity().getEntityLocatorParticipations().isEmpty()) {
+    	return new ArrayList<TeleLocator>();
+    	}
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(elp -> elp.getCd().equals("TELE"))
                 .map(elp -> (TeleLocator) elp.getLocator())
@@ -93,6 +104,10 @@ public class PersonUtil {
     }
     
     public static List<PostalLocator> getPostalLocators(Person person) {
+    	if(person.getNbsEntity()== null || person.getNbsEntity().getEntityLocatorParticipations() == null ||
+    			person.getNbsEntity().getEntityLocatorParticipations().isEmpty()){
+    		return new ArrayList<PostalLocator>();
+    	}
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(elp -> elp.getCd().equals("PST"))
                 .map(elp -> (PostalLocator) elp.getLocator())
