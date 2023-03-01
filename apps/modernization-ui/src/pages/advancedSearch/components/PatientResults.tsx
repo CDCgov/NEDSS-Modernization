@@ -1,11 +1,9 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
-import { EncryptionControllerService } from '../../../generated';
-import { UserContext } from '../../../providers/UserContext';
 
 type SearchItemsProps = {
     data: any;
@@ -27,7 +25,6 @@ export const PatientResults = ({
     const [num, setNum] = useState<any>([]);
     const [email, setEmail] = useState<any>('');
     const navigate = useNavigate();
-    const { state } = useContext(UserContext);
 
     useEffect(() => {
         const newArrOfNumbers: any = [];
@@ -163,11 +160,7 @@ export const PatientResults = ({
     };
 
     const redirectPatientProfile = async (item: any) => {
-        const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
-            authorization: `Bearer ${state.getToken()}`,
-            object: item
-        });
-        navigate(`/patient-profile/${item.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+        navigate(`/patient-profile/${item.localId}`);
     };
 
     return (
