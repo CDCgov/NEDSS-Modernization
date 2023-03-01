@@ -1235,6 +1235,7 @@ export type UpdateResult = {
 
 export type User = {
   __typename?: 'User';
+  nedssEntryId: Scalars['ID'];
   recordStatusCd?: Maybe<RecordStatus>;
   userFirstNm: Scalars['String'];
   userId: Scalars['String'];
@@ -1369,7 +1370,7 @@ export type FindAllUsersQueryVariables = Exact<{
 }>;
 
 
-export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
+export type FindAllUsersQuery = { __typename?: 'Query', findAllUsers: { __typename?: 'UserResults', total: number, content: Array<{ __typename?: 'User', nedssEntryId: string, userId: string, userFirstNm: string, userLastNm: string, recordStatusCd?: RecordStatus | null } | null> } };
 
 export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
   patientId: Scalars['Int'];
@@ -2481,6 +2482,7 @@ export const FindAllUsersDocument = gql`
     query findAllUsers($page: Page) {
   findAllUsers(page: $page) {
     content {
+      nedssEntryId
       userId
       userFirstNm
       userLastNm
