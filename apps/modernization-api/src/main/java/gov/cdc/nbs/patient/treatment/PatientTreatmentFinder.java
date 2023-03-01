@@ -1,104 +1,172 @@
 package gov.cdc.nbs.patient.treatment;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.QActRelationship;
+import gov.cdc.nbs.entity.odse.QParticipation;
+import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.entity.odse.QPersonName;
+import gov.cdc.nbs.entity.odse.QPublicHealthCase;
+import gov.cdc.nbs.entity.odse.QTreatment;
+import gov.cdc.nbs.entity.odse.QTreatmentAdministered;
+import gov.cdc.nbs.entity.srte.QConditionCode;
+import gov.cdc.nbs.message.enums.Suffix;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
+import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 class PatientTreatmentFinder {
 
-    public static final int PARAMETER_PARAMETER = 1;
-    private static final String QUERY = """
-            select distinct
-                [treatment].treatment_uid  "treatment",
-                [relationship].add_time as "created_on",
-                [treatment].cd_desc_txt "description",
-                [treatment].local_id "event",
-                [administered].EFFECTIVE_FROM_TIME "treated_on",
-                [provider_name].[nm_prefix] "provider_prefix",
-                [provider_name].[first_nm] "provider_first_name",
-                [provider_name].[last_nm] "provider_last_name",
-                [provider_name].[nm_suffix] "provider_suffix",
-                [investigation].public_health_case_uid "investigation_id",
-                [investigation].local_id "investigation_local",
-                [condition].condition_short_nm "investigation_condition"
-            from  person [patient]
-                        
-                join participation [subject_of_treatment] on
-                        [subject_of_treatment].subject_entity_uid = [patient].person_uid
-                    and [subject_of_treatment].type_cd = 'SubjOfTrmt'
-                    and [subject_of_treatment].ACT_CLASS_CD = 'TRMT'
-                    and [subject_of_treatment].SUBJECT_CLASS_CD = 'PSN'
-                    and [subject_of_treatment].record_status_cd = 'ACTIVE'
-                        
-                join treatment  on
-                        [treatment].treatment_uid = [subject_of_treatment].act_uid
-                    and [treatment].record_status_cd='ACTIVE'
-                   
-                        
-                join treatment_administered [administered] on
-                        
-                        [treatment].treatment_uid = [administered].treatment_uid
-                        
-                join act_relationship [relationship]  on
-                        [relationship].type_cd='TreatmentToPHC'
-                    and [relationship].source_act_uid = [treatment].treatment_uid
-                    and [relationship].source_class_cd = 'TRMT'
-                    and [relationship].target_class_cd = 'CASE'
-                        
-                left join Participation [treatment_provider] on
-                        [treatment_provider].act_uid = [treatment].[treatment_uid]
-                    and [treatment_provider].type_cd = 'ProviderOfTrmt'
-                    and [treatment_provider].subject_class_cd = 'PSN'
-                        
-                left join person_name [provider_name] on
-                        [provider_name].person_uid = [treatment_provider].[subject_entity_uid]
-                        
-                join Public_health_case [investigation] ON
-                        [investigation].Public_health_case_uid = [relationship].target_act_uid
-                    and [investigation].investigation_status_cd IN ( 'O','C')
-                    and [investigation].record_status_cd <> 'LOG_DEL'
-                        
-                join nbs_srte..Condition_code [condition] ON
-                    [condition].condition_cd = [investigation].cd
-                        
-            where [patient].person_parent_uid = ?
-            """;
+    private static final String NAME_SEPARATOR = " ";
 
-    private final JdbcTemplate template;
-    private final PatientTreatmentResultSetExtractor extractor;
+    private final JPAQueryFactory factory;
+    private final QPerson patients;
+    private final QParticipation subjectOfTreatment;
+    private final QTreatment treatment;
+    private final QTreatmentAdministered administered;
+    private final QActRelationship relationship;
+    private final QParticipation treatmentProvider;
+    private final QPersonName provider;
+    private final QPublicHealthCase investigation;
+    private final QConditionCode condition;
 
-    PatientTreatmentFinder(final DataSource dataSource) {
-        this.template = new JdbcTemplate(dataSource);
-
-        // the label mapped to fields returned by the query
-        PatientTreatmentRowMapper.Label label = new PatientTreatmentRowMapper.Label(
-                "treatment",
-                "created_on",
-                "description",
-                "event",
-                "treated_on",
-                new PatientTreatmentProviderRowMapper.Label(
-                        "provider_prefix",
-                        "provider_first_name",
-                        "provider_last_name",
-                        "provider_suffix"
-                ),
-                "investigation_id",
-                "investigation_local",
-                "investigation_condition"
-        );
-
-        this.extractor = new PatientTreatmentResultSetExtractor(new PatientTreatmentRowMapper(label));
+    PatientTreatmentFinder(final JPAQueryFactory factory) {
+        this.factory = factory;
+        patients = QPerson.person;
+        subjectOfTreatment = QParticipation.participation;
+        treatment = QTreatment.treatment;
+        administered = QTreatmentAdministered.treatmentAdministered;
+        relationship = QActRelationship.actRelationship;
+        treatmentProvider = QParticipation.participation;
+        provider = QPersonName.personName;
+        investigation = QPublicHealthCase.publicHealthCase;
+        condition = QConditionCode.conditionCode;
     }
 
-    List<PatientTreatment> find(final long patient) {
-        return this.template.query(
-                QUERY,
-                statement -> statement.setLong(PARAMETER_PARAMETER, patient),
-                this.extractor
+    List<PatientTreatment> find(long patient) {
+
+        JPAQuery<Tuple> query = factory.selectDistinct(
+                        treatment.id,
+                        relationship.addTime,
+                        treatment.cdDescTxt,
+                        treatment.localId,
+                        administered.effectiveFromTime,
+                        provider.nmPrefix,
+                        provider.firstNm,
+                        provider.lastNm,
+                        provider.nmSuffix,
+                        investigation.id,
+                        investigation.localId,
+                        condition.conditionShortNm
+                ).from(patients)
+                .join(subjectOfTreatment).on(
+                        subjectOfTreatment.id.subjectEntityUid.eq(patients.id),
+                        subjectOfTreatment.id.typeCd.eq("SubjOfTrmt"),
+                        subjectOfTreatment.actClassCd.eq("TRMT"),
+                        subjectOfTreatment.subjectClassCd.eq("PSN"),
+                        subjectOfTreatment.recordStatusCd.eq(RecordStatus.ACTIVE)
+                )
+                .join(treatment).on(
+                        treatment.id.eq(subjectOfTreatment.actUid.id),
+                        treatment.recordStatusCd.eq("ACTIVE")
+                )
+                .join(administered).on(
+                        administered.treatmentUid.id.eq(treatment.id)
+                )
+                .join(relationship).on(
+                        relationship.id.typeCd.eq("TreatmentToPHC"),
+                        relationship.sourceActUid.id.eq(treatment.id),
+                        relationship.sourceClassCd.eq("TRMT"),
+                        relationship.targetClassCd.eq("CASE")
+                )
+                .leftJoin(treatmentProvider).on(
+                        treatmentProvider.actUid.id.eq(treatment.id),
+                        treatmentProvider.id.typeCd.eq("ProviderOfTrmt"),
+                        treatmentProvider.subjectClassCd.eq("PSN")
+                )
+                .leftJoin(provider).on(
+                        provider.id.personUid.eq(treatmentProvider.id.subjectEntityUid)
+                )
+                .join(investigation).on(
+                        investigation.id.eq(relationship.targetActUid.id),
+                        investigation.investigationStatusCd.in("O", "C"),
+                        investigation.recordStatusCd.ne("LOG_DEL")
+                )
+                .join(condition).on(
+                        condition.id.eq(investigation.cd)
+                )
+                .where(patients.personParentUid.id.eq(patient));
+
+
+        return query.fetch()
+                .stream()
+                .map(this::mapTreatment)
+                .toList();
+    }
+
+    private PatientTreatment mapTreatment(final Tuple tuple) {
+        Long treatment = Objects.requireNonNull(tuple.get(QTreatment.treatment.id), "A treatment is required.");
+        Instant createdOn = tuple.get(QActRelationship.actRelationship.addTime);
+        String description = tuple.get(QTreatment.treatment.cdDescTxt);
+        String event = tuple.get(QTreatment.treatment.localId);
+        Instant treatedOn = tuple.get(QTreatmentAdministered.treatmentAdministered.effectiveFromTime);
+        String providerPrefix = tuple.get(QPersonName.personName.nmPrefix);
+        String providerFirstName = tuple.get(QPersonName.personName.firstNm);
+        String providerLastName = tuple.get(QPersonName.personName.lastNm);
+        Suffix providerSuffix = tuple.get(QPersonName.personName.nmSuffix);
+
+        PatientTreatment.Investigation investigation = mapInvestigation(tuple);
+
+        String provider = combineName(
+                providerPrefix,
+                providerFirstName,
+                providerLastName,
+                providerSuffix
         );
+
+        return new PatientTreatment(
+                treatment,
+                createdOn,
+                provider,
+                treatedOn,
+                description,
+                event,
+                investigation
+        );
+    }
+
+    private PatientTreatment.Investigation mapInvestigation(final Tuple tuple) {
+        Long identifier = Objects.requireNonNull(tuple.get(QPublicHealthCase.publicHealthCase.id), "An investigation is required.");
+        String local = tuple.get(QPublicHealthCase.publicHealthCase.localId);
+        String condition = tuple.get(QConditionCode.conditionCode.conditionShortNm);
+
+        return new PatientTreatment.Investigation(
+                identifier,
+                local,
+                condition
+        );
+    }
+
+    private String combineName(
+            String prefix,
+            String first,
+            String last,
+            Suffix suffix
+    ) {
+        String suffixDisplay = suffix == null ? null : suffix.name();
+        return Stream.of(
+                        prefix,
+                        first,
+                        last,
+                        suffixDisplay
+                ).filter(Objects::nonNull)
+                .collect(Collectors.joining(NAME_SEPARATOR));
     }
 }
