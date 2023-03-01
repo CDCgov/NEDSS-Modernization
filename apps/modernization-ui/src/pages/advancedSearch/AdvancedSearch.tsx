@@ -1,6 +1,6 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
 
 import {
@@ -942,9 +942,9 @@ export const AdvancedSearch = () => {
                                     <p>No results found.</p>
                                     <p>
                                         Try refining your search, or{' '}
-                                        <Link to="/" style={{ color: '#005EA2' }}>
+                                        <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
                                             add a new patient
-                                        </Link>
+                                        </a>
                                     </p>
                                 </div>
                             </div>
