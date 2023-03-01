@@ -10,9 +10,11 @@ import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
+import gov.cdc.nbs.entity.elasticsearch.MorbidityReport;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.MorbidityFilter;
 import gov.cdc.nbs.service.EventService;
 import lombok.AllArgsConstructor;
 
@@ -31,10 +33,16 @@ public class EventController {
     private static final String VIEW_LAB_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
+    private static final String VIEW_MORBIDITY_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
+            + BusinessObjects.OBSERVATIONMORBIDITYREPORT
+            + "')";
+    
     private static final String FIND_PATIENT_AND_VIEW_LAB_REPORT = FIND_PATIENT + AND + VIEW_LAB_REPORT;
     private static final String VIEW_PATIENT_FILE_AND_VIEW_LAB_REPORT = VIEWWORKUP_PATIENT + AND + VIEW_LAB_REPORT;
     private static final String VIEWWORKUP_PATIENT_AND_VIEW_INVESTIGATION = VIEWWORKUP_PATIENT + AND
             + VIEW_INVESTIGATION;
+    
+    private static final String FIND_PATIENT_AND_VIEW_MORBIDITY_REPORT = FIND_PATIENT + AND + VIEW_MORBIDITY_REPORT;
 
     private final EventService eventService;
 
@@ -64,4 +72,12 @@ public class EventController {
     public Page<Investigation> findOpenInvestigationsForPatient(@Argument Long patientId, @Argument GraphQLPage page) {
         return eventService.findOpenInvestigationsForPatient(patientId, page);
     }
+    
+    @QueryMapping
+    @PreAuthorize(FIND_PATIENT_AND_VIEW_MORBIDITY_REPORT)
+    public Page<MorbidityReport> findMorbidtyReportByFilter(@Argument MorbidityFilter filter,
+            @Argument GraphQLPage page) {
+    	return eventService.findMorbidtyReportByFilter(filter, page);
+    }
+    
 }

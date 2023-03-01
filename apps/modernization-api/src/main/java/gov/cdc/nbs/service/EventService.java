@@ -36,11 +36,13 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
+import gov.cdc.nbs.entity.elasticsearch.MorbidityReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.MorbidityFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
@@ -54,6 +56,9 @@ public class EventService {
             + BusinessObjects.INVESTIGATION + "')";
     private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
+            + "')";
+    private static final String VIEW_MORBIDITY_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+            + BusinessObjects.OBSERVATIONMORBIDITYREPORT
             + "')";
     private static final String SUBJ_OF_PHC = "SubjOfPHC";
     private static final String PATSBJ = "PATSBJ";
@@ -93,6 +98,14 @@ public class EventService {
         var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
         return performSearch(query, LabReport.class);
     }
+    
+    @PreAuthorize(VIEW_MORBIDITY_REPORT)
+    public Page<MorbidityReport> findMorbidtyReportByFilter(MorbidityFilter filter, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
+        var query = buildMorbidityQuery(filter, pageable);
+        return performSearch(query, MorbidityReport.class);
+    }
+    
 
     private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
         var hits = operations.search(query, clazz);
@@ -636,6 +649,10 @@ public class EventService {
                 .withSorts(buildInvestigationSort(pageable))
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
+    }
+    
+    private NativeSearchQuery buildMorbidityQuery(MorbidityFilter filter, Pageable pageable) {
+    	
     }
 
     private Collection<SortBuilder<?>> buildInvestigationSort(Pageable pageable) {
