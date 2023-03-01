@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patientlistener.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -84,7 +85,7 @@ public class PatientService {
 				input.getBirthGender() != null ? input.getBirthGender() : oldPerson.getBirthGenderCd());
 		oldPerson.setCurrSexCd(input.getCurrentGender() != null ? input.getCurrentGender() : oldPerson.getCurrSexCd());
 		oldPerson.setSsn(input.getSsn() != null ? input.getSsn() : oldPerson.getSsn());
-		oldPerson.setRaceCd(input.getRace() != null ? input.getRace() : oldPerson.getRaceCd());
+		oldPerson.setRaceCd(getRaceCodes(input.getRaceCodes(),oldPerson));
 		oldPerson.setDeceasedIndCd(input.getDeceased() != null ? input.getDeceased() : oldPerson.getDeceasedIndCd());
 		oldPerson.setEthnicityGroupCd(
 				input.getEthnicityCode() != null ? input.getEthnicityCode().substring(0, 20) : oldPerson.getEthnicityGroupCd());
@@ -146,12 +147,26 @@ public class PatientService {
 			if (number.getPhoneType().equals(PhoneType.WORK)) {
 				oldPerson.setWkPhoneNbr(number.getNumber());
 			}
-			if (number.getPhoneType().equals(PhoneType.WORK)) {
+			if (number.getPhoneType().equals(PhoneType.CELL)) {
 				oldPerson.setCellPhoneNbr(number.getNumber());
 			}
 
 		}
 		return oldPerson;
+	}
+	
+	private String getRaceCodes(List<String> raceCodes, Person oldPerson) {
+		StringBuilder race = new StringBuilder();
+		if (raceCodes == null || raceCodes.isEmpty()) {
+			return oldPerson.getRaceCd();
+		}
+
+		for (String raceC : raceCodes) {
+			race.append(raceC);
+		}
+
+		return race.toString().length() > 20 ? race.toString().substring(0, 20) :  race.toString();
+
 	}
 
 }

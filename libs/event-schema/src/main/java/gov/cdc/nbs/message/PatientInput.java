@@ -28,7 +28,6 @@ public class PatientInput {
     private List<Identification> identifications = new ArrayList<>();
     private String ethnicityCode;
     private List<String> raceCodes = new ArrayList<>();
-    private String race;
 
     @Data
     @AllArgsConstructor

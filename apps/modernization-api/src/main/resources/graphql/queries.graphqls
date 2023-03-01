@@ -41,7 +41,6 @@ type Mutation {
 }
 
 type UpdateResult {
-    updatedPerson: Person
     requestId: String
 }
 
