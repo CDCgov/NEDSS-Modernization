@@ -11,6 +11,10 @@
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
 
+## Guidelines
+
+   - [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
+
 ## TLDR: Running everything inside docker
 
 ### Mac ARM system (M1/M2)
