@@ -104,11 +104,9 @@
 
 .button-group {
     position: relative;
-    min-width: 120px;
-    margin-right: 8px;
     .usa-nav__submenu {
         position: absolute;
-        right: 0;
+        right: 0.5rem;
         top: 100%;
         background-color: white;
         width: max-content;

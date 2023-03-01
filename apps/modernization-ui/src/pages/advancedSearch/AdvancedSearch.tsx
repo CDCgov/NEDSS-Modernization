@@ -692,6 +692,7 @@ export const AdvancedSearch = () => {
                     <div className="button-group">
                         <Button
                             disabled={
+                                !validSearch &&
                                 (!patientData?.content || patientData.content.length === 0) &&
                                 (!labReportData?.content || labReportData.total === 0) &&
                                 (!investigationData?.content || investigationData.total === 0)
@@ -699,8 +700,8 @@ export const AdvancedSearch = () => {
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
-                            Add new patient
-                            <img style={{ marginLeft: '5px' }} src={'down-arrow-white.svg'} />
+                            Add new
+                            <img src={'down-arrow-white.svg'} />
                         </Button>
                         {showAddNewDropDown && (
                             <ul
@@ -796,7 +797,7 @@ export const AdvancedSearch = () => {
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="width-full margin-top-0"
+                                    className="padding-x-3 margin-top-0"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
                                     outline>
