@@ -1035,6 +1035,7 @@ type UserResults {
 }
 
 type User {
+    nedssEntryId: ID!
     userId: String!
     userFirstNm: String!
     userLastNm: String!
