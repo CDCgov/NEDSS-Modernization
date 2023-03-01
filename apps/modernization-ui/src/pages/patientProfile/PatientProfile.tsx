@@ -109,7 +109,7 @@ export const PatientProfile = () => {
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
                 <h1 className="font-sans-xl text-medium">Patient Profile</h1>
                 <div>
-                    <Button className="display-inline-flex" type={'submit'}>
+                    <Button className="display-inline-flex print-btn" type={'submit'}>
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>

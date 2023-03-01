@@ -47,7 +47,7 @@ export const TableComponent = ({
     return (
         <div>
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
-                <p className="font-sans-lg text-bold margin-0">
+                <p className="font-sans-lg text-bold margin-0 table-header">
                     {tableHeader}
                     {tableSubHeader}
                 </p>
@@ -59,7 +59,7 @@ export const TableComponent = ({
                         {tableHead.map((head: any, index) => (
                             <th key={index} scope="col">
                                 <div className="table-head">
-                                    {head.name}
+                                    <span className="head-name">{head.name}</span>
                                     {head.sortable && (
                                         <Button
                                             className="usa-button--unstyled"
@@ -80,14 +80,16 @@ export const TableComponent = ({
                                 {item.tableDetails.map((td: any, ind: number) =>
                                     td.title ? (
                                         td.title === 'Not available yet' ? (
-                                            <td key={ind} className="font-sans-md no-data">
+                                            <td key={ind} className="font-sans-md no-data table-data">
                                                 {td.title}
                                             </td>
                                         ) : (
-                                            <td key={ind}>{td.title}</td>
+                                            <td className="table-data" key={ind}>
+                                                {td.title}
+                                            </td>
                                         )
                                     ) : (
-                                        <td key={ind} className="font-sans-md no-data">
+                                        <td key={ind} className="font-sans-md no-data table-data">
                                             No data
                                         </td>
                                     )
@@ -95,7 +97,7 @@ export const TableComponent = ({
                             </tr>
                         ))
                     ) : (
-                        <tr className="text-center no-data">Not Available</tr>
+                        <tr className="text-center no-data not-available">Not Available</tr>
                     )}
                 </tbody>
             </Table>

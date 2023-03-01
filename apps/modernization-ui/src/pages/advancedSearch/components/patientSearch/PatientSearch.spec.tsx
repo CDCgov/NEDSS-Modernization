@@ -19,7 +19,7 @@ describe('PatientSearch component tests', () => {
         );
         const accordionH4Elements = container.querySelectorAll('h4.accordian-item');
         expect(accordionH4Elements.length).toBe(5);
-        expect(accordionH4Elements[0].textContent).toBe('Basic Info');
+        expect(accordionH4Elements[0].textContent).toBe('Basic info');
         expect(accordionH4Elements[1].textContent).toBe('Address');
         expect(accordionH4Elements[2].textContent).toBe('Contact');
         expect(accordionH4Elements[3].textContent).toBe('ID');

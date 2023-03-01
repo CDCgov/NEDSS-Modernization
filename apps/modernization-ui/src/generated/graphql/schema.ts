@@ -780,7 +780,9 @@ export type PersonIdentification = {
 export type PersonInput = {
   DateOfBirth?: InputMaybe<Scalars['Date']>;
   addresses?: InputMaybe<Array<InputMaybe<PostalAddress>>>;
+  asOf?: InputMaybe<Scalars['Date']>;
   birthGender?: InputMaybe<Gender>;
+  comments?: InputMaybe<Scalars['String']>;
   currentGender?: InputMaybe<Gender>;
   deceased?: InputMaybe<Deceased>;
   deceasedTime?: InputMaybe<Scalars['Date']>;
