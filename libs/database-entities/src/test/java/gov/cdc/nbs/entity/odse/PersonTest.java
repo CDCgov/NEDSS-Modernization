@@ -3,7 +3,7 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.message.enums.RecordStatus;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -58,7 +58,7 @@ class PersonTest {
 
         assertThat(actual.getStatusCd()).isEqualTo('A');
         assertThat(actual.getStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
-
+     
         assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.ACTIVE);
         assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
 
