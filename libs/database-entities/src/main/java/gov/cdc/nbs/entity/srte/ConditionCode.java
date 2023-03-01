@@ -120,12 +120,6 @@ public class ConditionCode implements Serializable {
     @Column(name = "coinfection_grp_cd", length = 20)
     private String coinfectionGrpCd;
 
-    @Column(name = "rhap_parse_nbs_ind", length = 1)
-    private String rhapParseNbsInd;
-
-    @Column(name = "rhap_action_value", length = 200)
-    private String rhapActionValue;
-
     @OneToMany(mappedBy = "conditionCd")
     private Set<LdfPageSet> ldfPageSets = new LinkedHashSet<>();
 
