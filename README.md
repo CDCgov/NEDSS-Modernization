@@ -14,7 +14,7 @@
 ## Guidelines
 
 - [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
-- [Code Formatting Style](docs/Code-Formatting.md)
+- [Code Formatting](docs/Code-Formatting.md)
 
 ## TLDR: Running everything inside docker
 
