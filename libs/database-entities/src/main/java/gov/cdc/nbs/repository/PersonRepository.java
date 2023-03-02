@@ -17,4 +17,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
         Long getMaxId();
 
         Page<Person> findByIdIn(List<Long> ids, Pageable pageable);
+       
+        @Query("SELECT id from Person where personParentUid=?1")
+        List<Long> getPersonIdsByPersonParentId(Long id);
 }

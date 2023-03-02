@@ -2,6 +2,7 @@ package gov.cdc.nbs.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +15,7 @@ import org.elasticsearch.search.sort.NestedSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,16 +40,23 @@ import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.elasticsearch.MorbidityReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
 import gov.cdc.nbs.graphql.filter.MorbidityFilter;
+import gov.cdc.nbs.repository.ObservationRepository;
+import gov.cdc.nbs.repository.ParticipationRepository;
+import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
 import lombok.RequiredArgsConstructor;
+import gov.cdc.nbs.util.Constants;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +81,16 @@ public class EventService {
 
     @PersistenceContext
     private final EntityManager entityManager;
+    
+    
+    @Autowired
+    PersonRepository personReposity;
+    
+    @Autowired
+    ParticipationRepository participationRepository;
+    
+    @Autowired
+    ObservationRepository oboservationRepository;
 
     @PreAuthorize(VIEW_INVESTIGATION)
     public Page<Investigation> findInvestigationsByFilter(InvestigationFilter filter, GraphQLPage page) {
@@ -100,10 +119,10 @@ public class EventService {
     }
     
     @PreAuthorize(VIEW_MORBIDITY_REPORT)
-    public Page<MorbidityReport> findMorbidtyReportByFilter(MorbidityFilter filter, GraphQLPage page) {
+    public Page<Observation> findMorbidtyReportForPatient(Long patientId, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
-        var query = buildMorbidityQuery(filter, pageable);
-        return performSearch(query, MorbidityReport.class);
+        List<Observation> reports = findMorbidityReportsForPatient(patientId);
+        return new PageImpl<>(reports, pageable, reports.size());
     }
     
 
@@ -651,9 +670,6 @@ public class EventService {
                 .build();
     }
     
-    private NativeSearchQuery buildMorbidityQuery(MorbidityFilter filter, Pageable pageable) {
-    	
-    }
 
     private Collection<SortBuilder<?>> buildInvestigationSort(Pageable pageable) {
 
@@ -809,6 +825,13 @@ public class EventService {
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
         return performSearch(query, Investigation.class);
+    }
+    
+    public List<Observation> findMorbidityReportsForPatient( Long patientId) {
+    	List<Long> personIds = personReposity.getPersonIdsByPersonParentId(patientId);
+    	List<Long> actIds = participationRepository.getActIdsBySubjectEntityUids(personIds, Constants.REPORT_TYPE);
+    	List<Observation> reports = oboservationRepository.findByIdIn(actIds);
+    	return reports;
     }
 
     /**

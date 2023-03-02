@@ -11,6 +11,7 @@ import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.elasticsearch.MorbidityReport;
+import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
@@ -73,11 +74,10 @@ public class EventController {
         return eventService.findOpenInvestigationsForPatient(patientId, page);
     }
     
-    @QueryMapping
+    @QueryMapping()
     @PreAuthorize(FIND_PATIENT_AND_VIEW_MORBIDITY_REPORT)
-    public Page<MorbidityReport> findMorbidtyReportByFilter(@Argument MorbidityFilter filter,
-            @Argument GraphQLPage page) {
-    	return eventService.findMorbidtyReportByFilter(filter, page);
+    public Page<Observation> findMorbidtyReportForPatient(@Argument Long patientId, @Argument GraphQLPage page) {
+    	return eventService.findMorbidtyReportForPatient(patientId, page);
     }
     
 }
