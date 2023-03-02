@@ -1,11 +1,9 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { LabReport, OrganizationParticipation, PersonParticipation } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../..//utils/util';
 import '../AdvancedSearch.scss';
 import { useNavigate } from 'react-router';
-import { UserContext } from '../../../providers/UserContext';
-import { EncryptionControllerService } from '../../../generated';
 
 type LabReportResultsProps = {
     data: [LabReport];
@@ -24,7 +22,6 @@ export const LabReportResults = ({
 }: LabReportResultsProps) => {
     const searchItemsRef: any = useRef();
     const navigate = useNavigate();
-    const { state } = useContext(UserContext);
 
     // Update 'width' and 'height' when the window resizes
     useEffect(() => {
@@ -94,11 +91,7 @@ export const LabReportResults = ({
         }
 
         const redirectPatientProfile = async () => {
-            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
-                authorization: `Bearer ${state.getToken()}`,
-                object: labReport
-            });
-            navigate(`/patient-profile/${labReport.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+            navigate(`/patient-profile/${patient?.localId}`);
         };
 
         return (

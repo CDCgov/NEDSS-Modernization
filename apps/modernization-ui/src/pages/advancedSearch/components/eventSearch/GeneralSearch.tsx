@@ -145,7 +145,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             options={searchCriteria.userResults.map((user) => {
                                 return {
                                     name: `${user.userLastNm}, ${user.userFirstNm}`,
-                                    value: user.userId
+                                    value: user.nedssEntryId
                                 };
                             })}
                         />
@@ -157,7 +157,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             options={searchCriteria.userResults.map((user) => {
                                 return {
                                     name: `${user.userLastNm}, ${user.userFirstNm}`,
-                                    value: user.userId
+                                    value: user.nedssEntryId
                                 };
                             })}
                         />

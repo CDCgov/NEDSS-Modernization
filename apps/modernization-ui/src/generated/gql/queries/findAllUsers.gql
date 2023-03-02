@@ -1,6 +1,7 @@
-query findAllUsers($page: Page) {
+query findAllUsers($page: Page){
     findAllUsers(page: $page){
         content{
+            nedssEntryId
             userId
             userFirstNm
             userLastNm

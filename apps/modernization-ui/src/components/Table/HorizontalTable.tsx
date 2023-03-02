@@ -26,7 +26,7 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
     return (
         <div className="common-card">
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
-                <p className="font-sans-lg text-bold margin-0">{tableHeader}</p>
+                <p className="font-sans-lg text-bold margin-0 table-header">{tableHeader}</p>
                 {raceForm !== type && buttons}
             </div>
 

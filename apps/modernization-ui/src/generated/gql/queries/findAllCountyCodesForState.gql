@@ -1,4 +1,4 @@
-query findAllCountyCodesForState($stateCode: String!, $page: Page) {
+query findAllCountyCodesForState($stateCode: String!, $page: Page){
     findAllCountyCodesForState(stateCode: $stateCode, page: $page){
         id
         codeDescTxt

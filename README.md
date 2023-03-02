@@ -11,14 +11,18 @@
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
 
+## Guidelines
+
+- [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
+
 ## TLDR: Running everything inside docker
 
 ### Mac ARM system (M1/M2)
 
-1. Install Java 17
+1. Install [Java 17](docs/InstallJava.md)
 1. Install Node / NPM
 1. Clone [NBS](https://github.com/cdcent/NEDSSDev)
-1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into
+1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into. Example:
 
    ```sh
    export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"

@@ -1,5 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
-import { warning } from "react-router/lib/router";
+import { render } from "@testing-library/react";
 import { PhoneNumberInput } from "./PhoneNumberInput";
 
 describe('PhoneNumberInput component tests', () => {
