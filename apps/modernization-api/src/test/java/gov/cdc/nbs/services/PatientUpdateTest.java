@@ -46,7 +46,7 @@ class PatientUpdateTest {
 	public PatientUpdateTest() {
 		MockitoAnnotations.openMocks(this);
 		patientService = new PatientService(null, personRepository, null, null,
-				null, null);
+				null, null, null);
 		Long id = UUID.randomUUID().getMostSignificantBits();
 		Person old = buildPersonFromInput();
 		person = old;
