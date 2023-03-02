@@ -78,6 +78,7 @@ public class InvestigationFilter {
     }
 
     public enum ProcessingStatus {
+        UNASSIGNED,
         AWAITING_INTERVIEW,
         CLOSED_CASE,
         FIELD_FOLLOW_UP,
@@ -87,6 +88,7 @@ public class InvestigationFilter {
     }
 
     public enum NotificationStatus {
+        UNASSIGNED,
         APPROVED,
         COMPLETED,
         MESSAGE_FAILED,
@@ -113,6 +115,7 @@ public class InvestigationFilter {
     }
 
     public enum InvestigationStatus {
+        UNASSIGNED,
         OPEN,
         CLOSED
     }

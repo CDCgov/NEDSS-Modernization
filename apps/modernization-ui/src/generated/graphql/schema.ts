@@ -226,6 +226,7 @@ export type InvestigationResults = {
 };
 
 export enum InvestigationStatus {
+  Unassigned = 'UNASSIGNED',
   Closed = 'CLOSED',
   Open = 'OPEN'
 }
@@ -498,6 +499,7 @@ export enum NameUseCd {
 }
 
 export enum NotificationStatus {
+  Unassigned = 'UNASSIGNED',
   Approved = 'APPROVED',
   Completed = 'COMPLETED',
   MessageFailed = 'MESSAGE_FAILED',
@@ -908,6 +910,7 @@ export enum PregnancyStatus {
 }
 
 export enum ProcessingStatus {
+  Unassigned = 'UNASSIGNED',
   AwaitingInterview = 'AWAITING_INTERVIEW',
   ClosedCase = 'CLOSED_CASE',
   FieldFollowUp = 'FIELD_FOLLOW_UP',

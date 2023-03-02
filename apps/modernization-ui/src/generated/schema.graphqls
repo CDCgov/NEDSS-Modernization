@@ -147,6 +147,7 @@ enum ReportingEntityType {
 }
 
 enum ProcessingStatus {
+    UNASSIGNED
     AWAITING_INTERVIEW
     CLOSED_CASE
     FIELD_FOLLOW_UP
@@ -156,6 +157,7 @@ enum ProcessingStatus {
 }
 
 enum NotificationStatus {
+    UNASSIGNED
     APPROVED
     COMPLETED
     MESSAGE_FAILED
@@ -182,6 +184,7 @@ enum InvestigationEventDateType {
 }
 
 enum InvestigationStatus {
+    UNASSIGNED
     OPEN
     CLOSED
 }

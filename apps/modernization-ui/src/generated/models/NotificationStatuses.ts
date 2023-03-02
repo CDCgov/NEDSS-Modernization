@@ -4,6 +4,6 @@
 
 export type NotificationStatuses = {
     includeUnassigned?: boolean;
-    statusList?: Array<'APPROVED' | 'COMPLETED' | 'MESSAGE_FAILED' | 'PENDING_APPROVAL' | 'REJECTED'>;
+    statusList?: Array<'UNASSIGNED' | 'APPROVED' | 'COMPLETED' | 'MESSAGE_FAILED' | 'PENDING_APPROVAL' | 'REJECTED'>;
 };
 

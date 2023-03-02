@@ -9,7 +9,6 @@ import {
 } from '../../../../generated/graphql/schema';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { formatInterfaceString } from '../../../../utils/util';
-import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 type GeneralSearchProps = {
@@ -50,7 +49,6 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 )}
             </SearchCriteriaContext.Consumer>
 
-            <CheckBoxControl control={control} id="case" name="case" label="Including unassigned status" />
             <SelectControl
                 control={control}
                 name="statusList"
@@ -63,7 +61,6 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <CheckBoxControl control={control} id="processing" name="processing" label="Including unassigned status" />
             <SelectControl
                 control={control}
                 name="processingStatus"
@@ -76,12 +73,6 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <CheckBoxControl
-                control={control}
-                id="notification"
-                name="notification"
-                label="Including unassigned status"
-            />
             <SelectControl
                 control={control}
                 name="notificationStatus"
