@@ -30,7 +30,12 @@ class PatientContactsByPatientResolverTest {
                                 Instant.parse("2023-02-15T11:13:17Z"),
                                 "priority-value",
                                 "disposition-value",
-                                "event-value"
+                                "event-value",
+                                new PatientContacts.Investigation(
+                                    907L,
+                                    "local-value",
+                                    "condition-value"
+                                )
 
                         )
                 )
@@ -51,11 +56,16 @@ class PatientContactsByPatientResolverTest {
                                         .returns("priority-value", PatientContacts.NamedByPatient::priority)
                                         .returns("disposition-value", PatientContacts.NamedByPatient::disposition)
                                         .returns("event-value", PatientContacts.NamedByPatient::event),
+                                () -> assertThat(actual_contact.createdOn()).isEqualTo("2023-05-17T22:13:43Z"),
+                                () -> assertThat(actual_contact.namedOn()).isEqualTo("2023-02-15T11:13:17Z"),
                                 () -> assertThat(actual_contact.contact())
                                         .returns(3733L, PatientContacts.NamedContact::id)
                                         .returns("contact-name-value", PatientContacts.NamedContact::name),
-                                () -> assertThat(actual_contact.createdOn()).isEqualTo("2023-05-17T22:13:43Z"),
-                                () -> assertThat(actual_contact.namedOn()).isEqualTo("2023-02-15T11:13:17Z")
+                                () -> assertThat(actual_contact.investigation())
+                                        .returns(907L, PatientContacts.Investigation::id)
+                                        .returns("local-value", PatientContacts.Investigation::local)
+                                        .returns("condition-value", PatientContacts.Investigation::condition)
+
                         )
         );
     }
