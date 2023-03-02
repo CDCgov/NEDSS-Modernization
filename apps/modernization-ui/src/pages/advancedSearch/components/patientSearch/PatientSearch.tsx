@@ -48,11 +48,11 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                 ethnicity: data.ethnicity,
                 race: data.race
             });
-            // Default to Active checked
-            data.recordStatus
-                ? setSelectedRecordStatus(data.recordStatus)
-                : setSelectedRecordStatus([RecordStatus.Active]);
         }
+        // Default to Active checked
+        data?.recordStatus
+            ? setSelectedRecordStatus(data.recordStatus)
+            : setSelectedRecordStatus([RecordStatus.Active]);
     }, [data]);
 
     const simpleSearchItems: AccordionItemProps[] = [
