@@ -64,7 +64,7 @@ import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.service.util.Constants;
 import graphql.com.google.common.collect.Ordering;
-import lombok.RequiredArgsConstructor;;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
