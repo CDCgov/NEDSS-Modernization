@@ -1,4 +1,4 @@
-query findAllOutbreaks($page: Page) {
+query findAllOutbreaks($page: Page){
     findAllOutbreaks(page: $page){
         content{
             id{

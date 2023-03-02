@@ -1,4 +1,4 @@
-mutation updatePatient($id: ID!, $patient: PersonInput!) {
+mutation updatePatient($id: ID!, $patient: PersonInput!){
     updatePatient(id: $id, patient: $patient){
         updatedPerson{
             id

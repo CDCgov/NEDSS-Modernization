@@ -16,7 +16,7 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
     return (
         <>
             <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
+                <Grid col={6} className="margin-top-1 label-text">
                     As of:
                 </Grid>
                 <Grid col={6}>
@@ -36,7 +36,7 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Race:
+                    Ethnicity:
                 </Grid>
                 <Grid col={6}>
                     <SearchCriteriaContext.Consumer>
@@ -46,6 +46,8 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                                 name="ethnicity"
                                 render={({ field: { onChange, value } }) => (
                                     <SelectInput
+                                        dataTestid="ethnicity"
+                                        name="ethnicity"
                                         defaultValue={value}
                                         onChange={onChange}
                                         htmlFor={'ethnicity'}
@@ -92,7 +94,12 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
             </Grid>
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
-                    <Button type="button" className="margin-top-0" outline onClick={setEthnicityForm}>
+                    <Button
+                        type="button"
+                        className="margin-top-0"
+                        data-testid="cancel-btn"
+                        outline
+                        onClick={setEthnicityForm}>
                         Cancel
                     </Button>
                     <Button

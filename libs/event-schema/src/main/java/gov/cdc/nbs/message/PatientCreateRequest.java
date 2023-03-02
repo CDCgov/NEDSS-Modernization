@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 public record PatientCreateRequest(
-
         String request,
         Long patient,
         String patientLocalId,
@@ -27,8 +26,9 @@ public record PatientCreateRequest(
         Collection<PhoneNumber> phoneNumbers,
         Collection<EmailAddress> emailAddresses,
         long createdBy,
-        Instant createdAt
-) {
+        Instant createdAt,
+        Instant asOf,
+        String comments) {
     public PatientCreateRequest(
             String request,
             Long patient,
@@ -47,8 +47,9 @@ public record PatientCreateRequest(
             Collection<PhoneNumber> phoneNumbers,
             Collection<EmailAddress> emailAddresses,
             long createdBy,
-            Instant createdAt
-    ) {
+            Instant createdAt,
+            Instant asOf,
+            String comments) {
         this.request = request;
         this.patient = patient;
         this.patientLocalId = patientLocalId;
@@ -67,6 +68,8 @@ public record PatientCreateRequest(
         this.emailAddresses = emailAddresses == null ? Collections.emptyList() : emailAddresses;
         this.createdBy = createdBy;
         this.createdAt = createdAt;
+        this.asOf = asOf;
+        this.comments = comments;
     }
 
     public PatientCreateRequest(
@@ -86,8 +89,9 @@ public record PatientCreateRequest(
             Collection<PostalAddress> addresses,
             Collection<PhoneNumber> phoneNumbers,
             Collection<EmailAddress> emailAddresses,
-            long createdBy
-    ) {
+            long createdBy,
+            Instant asOf,
+            String comments) {
         this(
                 requestId,
                 patientId,
@@ -106,8 +110,9 @@ public record PatientCreateRequest(
                 phoneNumbers,
                 emailAddresses,
                 createdBy,
-                Instant.now()
-        );
+                Instant.now(),
+                asOf,
+                comments);
     }
 
     public record Name(
@@ -115,8 +120,7 @@ public record PatientCreateRequest(
             String middle,
             String last,
             Suffix suffix,
-            PatientInput.NameUseCd use
-    ) {
+            PatientInput.NameUseCd use) {
     }
 
     public record PostalAddress(
@@ -128,23 +132,18 @@ public record PatientCreateRequest(
             String countyCode,
             String countryCode,
             String zip,
-            String censusTract
-    ) {
+            String censusTract) {
     }
 
     public record EmailAddress(
             long id,
-            String emailAddress
-    ) {
+            String emailAddress) {
     }
 
     public record PhoneNumber(
             long id,
             String number,
             String extension,
-            PatientInput.PhoneType phoneType
-    ) {
+            PatientInput.PhoneType phoneType) {
     }
 }
-
-

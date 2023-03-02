@@ -1,3 +1,7 @@
+extend type Query {
+    findAllCountyCodesForState(stateCode: String!, page: Page): [CountyCode]!
+}
+
 type CountyCode {
     id: String!
     codeDescTxt: String

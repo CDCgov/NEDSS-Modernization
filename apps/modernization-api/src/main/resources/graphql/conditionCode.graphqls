@@ -1,3 +1,7 @@
+extend type Query {
+    findAllConditionCodes(page: Page): [ConditionCode]!
+}
+
 type ConditionCode {
     id: String!
     conditionDescTxt: String

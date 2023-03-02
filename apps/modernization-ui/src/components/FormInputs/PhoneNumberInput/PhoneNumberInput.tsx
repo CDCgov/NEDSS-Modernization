@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TextInput, Label } from '@trussworks/react-uswds';
 import { validatePhoneNumber } from '../../../utils/PhoneValidation';
+import './PhoneNumberInput.scss';
 
 type PhoneNumberInputProps = {
     label?: string;
@@ -23,7 +24,7 @@ export const PhoneNumberInput = ({ label, defaultValue, onChange, ...props }: Ph
         setValid(validatePhoneNumber(number));
     };
     return (
-        <>
+        <div className={`phone-number-input ${valid ? '' : 'error'}`}>
             <Label htmlFor="phoneNumber">{label}</Label>
             <TextInput
                 {...props}
@@ -35,6 +36,6 @@ export const PhoneNumberInput = ({ label, defaultValue, onChange, ...props }: Ph
                 type="tel"
             />
             <small className="text-red">{!valid && 'Not a valid number'}</small>
-        </>
+        </div>
     );
 };

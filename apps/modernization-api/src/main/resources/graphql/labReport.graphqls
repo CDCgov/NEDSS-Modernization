@@ -1,3 +1,12 @@
+extend type Query {
+    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
+}
+
+type LabReportResults {
+    content: [LabReport]!
+    total: Int!
+}
+
 input LabReportFilter {
     patientId: Int
     programAreas: [String]

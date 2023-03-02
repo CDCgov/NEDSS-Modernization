@@ -1,4 +1,4 @@
-query findAllEthnicityValues($page: Page) {
+query findAllEthnicityValues($page: Page){
     findAllEthnicityValues(page: $page){
         content{
             id{

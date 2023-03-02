@@ -1,4 +1,4 @@
-query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: SortablePage) {
+query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: SortablePage){
     findPatientsByOrganizationFilter(filter: $filter, page: $page){
         content{
             id
