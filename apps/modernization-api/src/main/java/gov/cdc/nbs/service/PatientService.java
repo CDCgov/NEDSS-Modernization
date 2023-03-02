@@ -4,7 +4,9 @@ import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
@@ -235,11 +237,7 @@ public class PatientService {
                     QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
         }
 
-        // TODO check permission for allowing deleted / superceeded - await
-        // clarification from Henry Tavarez on if it will be included in UI
-        if (filter.getRecordStatus() != null) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.RECORD_STATUS_CD, filter.getRecordStatus()));
-        }
+        addRecordStatusQuery(filter.getRecordStatus(), builder);
 
         if (filter.getDateOfBirth() != null) {
             String dobOperator = filter.getDateOfBirthOperator();
@@ -311,6 +309,36 @@ public class PatientService {
         } else {
             return query;
         }
+    }
+
+    private void addRecordStatusQuery(Collection<RecordStatus> recordStatus, BoolQueryBuilder builder) {
+        if (recordStatus == null || recordStatus.isEmpty()) {
+            return;
+        }
+        // If LOG_DEL or SUPERCEDED are specified, user must have
+        // FINDINACTIVE-PATIENT authority
+        if (recordStatus.contains(RecordStatus.SUPERCEDED) || recordStatus.contains(RecordStatus.LOG_DEL)) {
+            var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            var findInactivePatientAuthority = SecurityUtil.Operations.FINDINACTIVE + "-"
+                    + SecurityUtil.BusinessObjects.PATIENT;
+            var hasPermission = user.getAuthorities().stream()
+                    .filter(a -> a.getAuthority().equals(findInactivePatientAuthority))
+                    .findAny()
+                    .isPresent();
+            // If user lacks permission, remove these from the search criteria
+            if (!hasPermission) {
+                recordStatus = recordStatus.stream()
+                        .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
+                        .toList();
+            }
+        }
+
+        if (recordStatus.isEmpty()) {
+            // User selected either SUPERCEDED or LOG_DEL and lacks the permission.
+            throw new QueryException("User does not have permission to search by the specified RecordStatus");
+        }
+        var recordStatusStrings = recordStatus.stream().map(RecordStatus::toString).toList();
+        builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
     /**

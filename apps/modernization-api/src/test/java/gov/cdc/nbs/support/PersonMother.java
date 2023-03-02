@@ -44,6 +44,8 @@ public class PersonMother {
         final String lastName = faker.name().lastName();
 
         Person person = new Person(id, "PSN" + id + 10000000L);
+        person.setCd("PAT");
+        person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setFirstNm(firstName);
         person.setMiddleNm(middleName);
         person.setLastNm(lastName);
@@ -145,6 +147,7 @@ public class PersonMother {
         person.setCurrSexCd(Gender.M);
         person.setDeceasedIndCd(Deceased.N);
         person.setSsn("999-888-7777");
+        person.setCd("PAT");
 
         // name
         person.add(
@@ -228,6 +231,72 @@ public class PersonMother {
                         now
                 )
         );
+
+        return person;
+    }
+
+    public static Person janeDoe_deleted() {
+        final long id = 19000001L;
+        Instant now = Instant.now();
+        Person person = new Person(id, "PSN" + 19000001L + "GA01");
+
+        person.setBirthTime(Instant.parse("1980-11-30T18:35:24.00Z"));
+        person.setBirthGenderCd(Gender.F);
+        person.setCurrSexCd(Gender.F);
+        person.setDeceasedIndCd(Deceased.N);
+        person.setSsn("666-777-8888");
+        person.setCd("PAT");
+
+        // name
+        person.add(
+                new PatientCommand.AddName(
+                        id,
+                        "Jane",
+                        "S",
+                        "Doe",
+                        null,
+                        PatientInput.NameUseCd.L,
+                        CREATED_BY_ID,
+                        now));
+
+        // phone numbers
+        person.add(
+                new PatientCommand.AddPhoneNumber(
+                        id,
+                        id + 40000L,
+                        "111-222-3333",
+                        null,
+                        PhoneType.HOME,
+                        CREATED_BY_ID,
+                        now));
+
+        // addresses
+        person.add(
+                new PatientCommand.AddAddress(
+                        id,
+                        id + 80000L,
+                        "123 Main St",
+                        null,
+                        new City("1304000", "Atlanta"),
+                        StateCodeUtil.stateCodeMap.get("Georgia"),
+                        "30301",
+                        new County("13089"),
+                        new Country("840", "United States"),
+                        null,
+                        CREATED_BY_ID,
+                        now));
+
+        person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO_CODE);
+        person.setRecordStatusCd(RecordStatus.LOG_DEL);
+        person.setVersionCtrlNbr((short) 1);
+
+        // race
+        person.add(
+                new PatientCommand.AddRace(
+                        id,
+                        RaceMother.WHITE_CODE,
+                        id,
+                        now));
 
         return person;
     }

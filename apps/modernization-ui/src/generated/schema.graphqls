@@ -588,7 +588,7 @@ input PersonFilter {
     ethnicity: String
     vaccinationId: String
     treatmentId: String
-    recordStatus: RecordStatus
+    recordStatus: [RecordStatus!]
 }
 
 type Person {
