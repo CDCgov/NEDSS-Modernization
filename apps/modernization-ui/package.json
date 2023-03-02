@@ -109,7 +109,7 @@
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.30.1",
-        "gqlg": "1.0.2",
+        "gql-generator": "^1.0.19",
         "openapi-typescript-codegen": "^0.23.0",
         "prettier": "^2.7.1",
         "prop-types": "^15.8.1",

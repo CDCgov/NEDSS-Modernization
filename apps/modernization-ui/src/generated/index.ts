@@ -15,13 +15,10 @@ export { LabReportFilter } from './models/LabReportFilter';
 export { LabReportProviderSearch } from './models/LabReportProviderSearch';
 export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
-export { ModelAndView } from './models/ModelAndView';
 export type { NotificationStatuses } from './models/NotificationStatuses';
 export type { ProcessingStatuses } from './models/ProcessingStatuses';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
-export type { View } from './models/View';
 
-export { BasicErrorControllerService } from './services/BasicErrorControllerService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';
 export { ExportControllerService } from './services/ExportControllerService';
 export { RedirectControllerService } from './services/RedirectControllerService';

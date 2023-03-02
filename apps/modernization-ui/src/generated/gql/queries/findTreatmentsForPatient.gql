@@ -1,0 +1,15 @@
+query findTreatmentsForPatient($patient: ID!){
+    findTreatmentsForPatient(patient: $patient){
+        treatment
+        createdOn
+        provider
+        treatedOn
+        description
+        event
+        associatedWith{
+            id
+            local
+            condition
+        }
+    }
+}

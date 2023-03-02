@@ -2,6 +2,8 @@
 @import '@trussworks/react-uswds/lib/index.css';
 @import './assets/shared.scss';
 @import './styles/colors';
+@import './styles/typography';
+@import './styles/uswds';
 
 $theme-image-path: '~uswds/src/img';
 $theme-font-path: '~uswds/src/fonts';

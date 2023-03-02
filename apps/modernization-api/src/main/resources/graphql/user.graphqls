@@ -1,3 +1,12 @@
+extend type Query {
+    findAllUsers(page: Page): UserResults!
+}
+
+type UserResults {
+    content: [User]!
+    total: Int!
+}
+
 type User {
     nedssEntryId: ID!
     userId: String!

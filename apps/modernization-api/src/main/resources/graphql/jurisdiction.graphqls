@@ -1,3 +1,7 @@
+extend type Query {
+    findAllJurisdictions(page: Page): [Jurisdiction]!
+}
+
 type Jurisdiction {
     id: String!
     typeCd: String!

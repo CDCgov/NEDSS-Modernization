@@ -1,4 +1,4 @@
-query findAllPlaces($page: Page) {
+query findAllPlaces($page: Page){
     findAllPlaces(page: $page){
         id
         addReasonCd
