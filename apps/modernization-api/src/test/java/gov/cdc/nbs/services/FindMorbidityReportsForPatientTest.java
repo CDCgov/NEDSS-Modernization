@@ -1,5 +1,6 @@
 package gov.cdc.nbs.services;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -25,7 +26,7 @@ import gov.cdc.nbs.util.Constants;
 
 @SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
 @RunWith(SpringRunner.class)
-public class FindMorbidityReportsForPatientTest {
+ class FindMorbidityReportsForPatientTest {
 
 	@Mock
 	PersonRepository personRepository;
@@ -49,6 +50,7 @@ public class FindMorbidityReportsForPatientTest {
 		Long patientID = 100543L;
 		Long personsIDs = patientID + 1;
 		Long actIDs = personsIDs + 1;
+		Long resultID =  actIDs+1;
 		when(personRepository.getPersonIdsByPersonParentId(Mockito.anyLong())).thenReturn(List.of(patientID + 1));
 		when(participationRepository.getActIdsBySubjectEntityUids(List.of(personsIDs), Constants.REPORT_TYPE))
 				.thenReturn(List.of(personsIDs + 1));
@@ -59,7 +61,7 @@ public class FindMorbidityReportsForPatientTest {
 		List<Observation> observations = eventService.findMorbidityReportsForPatient(patientID);
 		assertNotNull(observations);
 		assertTrue(observations.size() > 0);
-		assertTrue(observations.get(0).getId() == actIDs + 1);
+		assertEquals(observations.get(0).getId() ,resultID);
 	}
 
 }

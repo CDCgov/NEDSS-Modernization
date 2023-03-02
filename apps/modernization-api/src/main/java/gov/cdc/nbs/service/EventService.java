@@ -38,14 +38,12 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.entity.elasticsearch.MorbidityReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.MorbidityFilter;
 import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -61,12 +59,13 @@ import gov.cdc.nbs.util.Constants;
 @Service
 @RequiredArgsConstructor
 public class EventService {
-    private static final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-"
+	private static final String HAS_AUTHORITY = "hasAuthority('";
+    private static final String VIEW_INVESTIGATION = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.INVESTIGATION + "')";
-    private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+    private static final String VIEW_LAB_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
-    private static final String VIEW_MORBIDITY_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+    private static final String VIEW_MORBIDITY_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONMORBIDITYREPORT
             + "')";
     private static final String SUBJ_OF_PHC = "SubjOfPHC";

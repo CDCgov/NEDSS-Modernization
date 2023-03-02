@@ -10,12 +10,10 @@ import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.entity.elasticsearch.MorbidityReport;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.MorbidityFilter;
 import gov.cdc.nbs.service.EventService;
 import lombok.AllArgsConstructor;
 
