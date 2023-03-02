@@ -1,0 +1,30 @@
+type PatientContacts {
+    patient: ID!
+    namedByPatient: [NamedByPatient]
+}
+
+type NamedByPatient {
+    contactRecord: ID!
+    createdOn: Date!
+    contact: NamedContact!
+    namedOn: Date!
+    priority: String
+    disposition: String
+    event: String!
+    investigation: PatientContactInvestigation
+}
+
+type NamedContact {
+    id: ID!
+    name: String!
+}
+
+type PatientContactInvestigation {
+    id: ID!,
+    local: String!
+    condition: String!
+}
+
+extend type Query {
+    findContactsForPatient(patient: ID!): PatientContacts
+}
