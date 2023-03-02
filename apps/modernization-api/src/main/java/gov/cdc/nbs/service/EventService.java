@@ -829,7 +829,7 @@ public class EventService {
     public List<Observation> findMorbidityReportsForPatient( Long patientId) {
     	List<Long> personIds = personReposity.getPersonIdsByPersonParentId(patientId);
     	List<Long> actIds = participationRepository.getActIdsBySubjectEntityUids(personIds, Constants.REPORT_TYPE);
-    	return oboservationRepository.findByIdIn(actIds)
+    	return oboservationRepository.findByIdIn(actIds);
     }
 
     /**
