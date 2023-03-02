@@ -14,6 +14,7 @@
 ## Guidelines
 
 - [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
+- [Code Formatting Style](docs/Code-Formatting.md)
 
 ## TLDR: Running everything inside docker
 
@@ -86,16 +87,3 @@
 - Add a Role & click submit
 
 ## Code Formatting
-
-### Java
-
-Java Code is formatted using the default IntelliJ code formatter. If using VS-Code, add the following to your `settings.json`.
-
-```json
-"java.format.settings.url": "eclipse-formatter.xml",
-"java.format.settings.profile": "IntelliJ"
-```
-
-### Typescript
-
-Typescript formatting is handled by the [Prettier](https://prettier.io/) plugin/package.
