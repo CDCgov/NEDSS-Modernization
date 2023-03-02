@@ -9,7 +9,7 @@ Java Code is formatted using the Google Java Style Guide with minimal customizat
 1. Open settings -> Editor -> Code Style
 1. Click the Gear icon next to the Scheme name
 1. Select Import Scheme -> Eclipse XML Profile
-1. Select the [eclipse-formatter.xml](../eclipse-formatter.xml) file in the root of the repository
+1. Select the [eclipse-java-google-style.xml](../eclipse-java-google-style.xml) file in the root of the repository
 
 ### VS-Code
 
@@ -17,7 +17,7 @@ Java Code is formatted using the Google Java Style Guide with minimal customizat
 
    ```json
    "java.format.settings.profile": "GoogleStyle",
-   "java.format.settings.url": "eclipse-formatter.xml"
+   "java.format.settings.url": "eclipse-java-google-style.xml"
    ```
 
 ### Customizations
