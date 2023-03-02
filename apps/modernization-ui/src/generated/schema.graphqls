@@ -588,7 +588,7 @@ input PersonFilter {
     ethnicity: String
     vaccinationId: String
     treatmentId: String
-    recordStatus: RecordStatus
+    recordStatus: [RecordStatus!]
 }
 
 type Person {
@@ -994,7 +994,6 @@ enum SortField {
 
 enum RecordStatus {
     ACTIVE
-    INACTIVE
     LOG_DEL
     SUPERCEDED
 }

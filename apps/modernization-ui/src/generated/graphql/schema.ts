@@ -778,7 +778,7 @@ export type PersonFilter = {
   mortalityStatus?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   race?: InputMaybe<Scalars['String']>;
-  recordStatus?: InputMaybe<RecordStatus>;
+  recordStatus?: InputMaybe<Array<RecordStatus>>;
   ssn?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
   treatmentId?: InputMaybe<Scalars['String']>;
@@ -1178,7 +1178,6 @@ export type RaceResults = {
 
 export enum RecordStatus {
   Active = 'ACTIVE',
-  Inactive = 'INACTIVE',
   LogDel = 'LOG_DEL',
   Superceded = 'SUPERCEDED'
 }

@@ -276,7 +276,7 @@ public class PatientService {
 
     private void addRecordStatusQuery(Collection<RecordStatus> recordStatus, BoolQueryBuilder builder) {
         if (recordStatus == null || recordStatus.isEmpty()) {
-            throw new QueryException("No record status specified! At least one value is required");
+            return;
         }
         // If LOG_DEL or SUPERCEDED are specified, user must have
         // FINDINACTIVE-PATIENT authority
@@ -297,6 +297,7 @@ public class PatientService {
         }
 
         if (recordStatus.isEmpty()) {
+            // User selected either SUPERCEDED or LOG_DEL and lacks the permission.
             throw new QueryException("User does not have permission to search by the specified RecordStatus");
         }
         var recordStatusStrings = recordStatus.stream().map(RecordStatus::toString).toList();
