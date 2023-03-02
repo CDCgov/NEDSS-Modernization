@@ -8,7 +8,7 @@ import { DatePickerInput } from '../../components/FormInputs/DatePickerInput';
 import { Input } from '../../components/FormInputs/Input';
 import { SelectInput } from '../../components/FormInputs/SelectInput';
 import { TableContent } from '../../components/TableContent/TableContent';
-import { Gender, PersonFilter, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
+import { Gender, PersonFilter, RecordStatus, useFindPatientsByFilterLazyQuery } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { UserContext } from '../../providers/UserContext';
 import './SimpleSearch.scss';
@@ -88,7 +88,8 @@ export const SimpleSearch = () => {
         // build filter from user input
         const filter: PersonFilter = {
             firstName: body.firstName,
-            lastName: body.lastName
+            lastName: body.lastName,
+            recordStatus: [RecordStatus.Active]
         };
         body.city && (filter.city = body.city);
         body.zip && (filter.zip = body.zip);
@@ -127,7 +128,7 @@ export const SimpleSearch = () => {
                                     e.preventDefault();
                                     // build search filter from text
                                     const formatName = e.target[0].value.split(' ');
-                                    const filter: PersonFilter = {};
+                                    const filter: PersonFilter = { recordStatus: [RecordStatus.Active] };
                                     filter.firstName = formatName[0];
                                     filter.lastName = formatName.length > 1 ? formatName[1] : '';
                                     // send filter for encryption

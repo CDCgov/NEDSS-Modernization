@@ -1,4 +1,4 @@
-import { Accordion, Button, Checkbox, Form, Grid, Label } from '@trussworks/react-uswds';
+import { Accordion, Button, Checkbox, ErrorMessage, Form, FormGroup, Grid, Label } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -132,38 +132,49 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         />
                     </Grid>
                     <Grid col={12}>
-                        <Label htmlFor={''}>Include records that are</Label>
-                        <Grid row>
-                            <Grid col={6}>
-                                <Checkbox
-                                    id={'record-status-active'}
-                                    onChange={(v) => handleRecordStatusChange(RecordStatus.Active, v.target.checked)}
-                                    name={'name'}
-                                    label={'Active'}
-                                    checked={selectedRecordStatus.includes(RecordStatus.Active)}
-                                />
+                        <FormGroup error={selectedRecordStatus.length === 0}>
+                            <Label htmlFor={''}>Include records that are</Label>
+                            {selectedRecordStatus.length === 0 && (
+                                <ErrorMessage id="record-status-error-message">
+                                    At least one status is required
+                                </ErrorMessage>
+                            )}
+                            <Grid row>
+                                <Grid col={6}>
+                                    <Checkbox
+                                        id={'record-status-active'}
+                                        onChange={(v) =>
+                                            handleRecordStatusChange(RecordStatus.Active, v.target.checked)
+                                        }
+                                        name={'name'}
+                                        label={'Active'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.Active)}
+                                    />
+                                </Grid>
+                                <Grid col={6}>
+                                    <Checkbox
+                                        id={'record-status-deleted'}
+                                        onChange={(v) =>
+                                            handleRecordStatusChange(RecordStatus.LogDel, v.target.checked)
+                                        }
+                                        name={'name'}
+                                        label={'Deleted'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.LogDel)}
+                                    />
+                                </Grid>
+                                <Grid col={6}>
+                                    <Checkbox
+                                        id={'record-status-superceded'}
+                                        onChange={(v) =>
+                                            handleRecordStatusChange(RecordStatus.Superceded, v.target.checked)
+                                        }
+                                        name={'name'}
+                                        label={'Superceded'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.Superceded)}
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid col={6}>
-                                <Checkbox
-                                    id={'record-status-deleted'}
-                                    onChange={(v) => handleRecordStatusChange(RecordStatus.LogDel, v.target.checked)}
-                                    name={'name'}
-                                    label={'Deleted'}
-                                    checked={selectedRecordStatus.includes(RecordStatus.LogDel)}
-                                />
-                            </Grid>
-                            <Grid col={6}>
-                                <Checkbox
-                                    id={'record-status-superceded'}
-                                    onChange={(v) =>
-                                        handleRecordStatusChange(RecordStatus.Superceded, v.target.checked)
-                                    }
-                                    name={'name'}
-                                    label={'Superceded'}
-                                    checked={selectedRecordStatus.includes(RecordStatus.Superceded)}
-                                />
-                            </Grid>
-                        </Grid>
+                        </FormGroup>
                     </Grid>
                 </>
             ),
@@ -216,9 +227,14 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
     };
 
     const onSubmit: any = (body: any) => {
+        // at least 1 record status must be selected
+        if (selectedRecordStatus.length === 0) {
+            return;
+        }
         const rowData: PersonFilter = {
             firstName: body.firstName,
-            lastName: body.lastName
+            lastName: body.lastName,
+            recordStatus: selectedRecordStatus
         };
         body.dob && validateDate(body.dob) && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
@@ -233,7 +249,6 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
 
         body.race !== '- Select -' && (rowData.race = body.race);
         body.ethnicity !== '- Select -' && (rowData.ethnicity = body.ethnicity);
-        rowData.recordStatus = selectedRecordStatus;
 
         if (body.identificationNumber && body.identificationType !== '- Select -') {
             rowData.identification = {

@@ -184,6 +184,10 @@ export const AdvancedSearch = () => {
         const chips: any = [];
         if (filter) {
             Object.entries(filter as any).map((re: any) => {
+                // Do not display record status chip, as indicated in Figma design
+                if (re[0] === 'recordStatus') {
+                    return;
+                }
                 if (re[0] !== 'identification') {
                     let name = re[0];
                     switch (re[0]) {

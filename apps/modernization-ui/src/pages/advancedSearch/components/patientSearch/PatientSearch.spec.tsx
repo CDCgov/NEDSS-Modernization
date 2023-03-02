@@ -90,4 +90,31 @@ describe('PatientSearch component tests', () => {
         const submitButton = container.querySelector('button[type="submit"]') as HTMLButtonElement;
         submitButton.click();
     });
+
+    it('should display an error when no record status is selected', () => {
+        const sampleSearchFunction = (data: PersonFilter) => {};
+        const sampleClearFunction = () => {};
+        let sampleData: PersonFilter = { recordStatus: [RecordStatus.Active] };
+        const { container, getByLabelText } = render(
+            <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
+        );
+        // Error message should be hidden
+        let errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
+        expect(errorMessage).toBeFalsy();
+
+        // Click on Active to de-select it (no RecordStatus selected)
+        const activeCheckbox = container.querySelector('#record-status-active') as HTMLInputElement;
+        activeCheckbox.click();
+
+        // Error message should be visible
+        errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
+        expect(errorMessage).toBeVisible();
+
+        // Click Active to select it
+        activeCheckbox.click();
+
+        // Error message should be hidden
+        errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
+        expect(errorMessage).toBeFalsy();
+    });
 });
