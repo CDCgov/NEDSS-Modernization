@@ -1,5 +1,6 @@
 package gov.cdc.nbs.service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -826,11 +827,20 @@ public class EventService {
         return performSearch(query, Investigation.class);
     }
     
-    public List<Observation> findMorbidityReportsForPatient( Long patientId) {
-    	List<Long> personIds = personReposity.getPersonIdsByPersonParentId(patientId);
-    	List<Long> actIds = participationRepository.getActIdsBySubjectEntityUids(personIds, Constants.REPORT_TYPE);
-    	return oboservationRepository.findByIdIn(actIds);
-    }
+	public List<Observation> findMorbidityReportsForPatient(Long patientId) {
+		List<BigInteger> subjectEntityIds = new ArrayList<BigInteger>();
+		List<Long> actIds = new ArrayList<Long>();
+		List<Object[]> results = personReposity.getPersonIdsByPersonParentId(patientId);
+		for (Object[] obj : results) {
+			subjectEntityIds.add((BigInteger) obj[0]);
+		}
+		List<Object[]> actIdResults = participationRepository
+				.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, subjectEntityIds);
+		for (Object[] objAct : actIdResults) {
+			actIds.add(((BigInteger) objAct[0]).longValue());
+		}
+		return oboservationRepository.findByIdIn(actIds);
+	}
 
     /**
      * Adds a query to only return documents that the user has access to based on
