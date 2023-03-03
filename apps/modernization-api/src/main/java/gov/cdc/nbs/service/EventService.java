@@ -1,7 +1,9 @@
 package gov.cdc.nbs.service;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +16,7 @@ import org.elasticsearch.search.sort.NestedSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,23 +40,34 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.repository.ObservationRepository;
+import gov.cdc.nbs.repository.ParticipationRepository;
+import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
 import lombok.RequiredArgsConstructor;
+import gov.cdc.nbs.util.Constants;
+
+
 
 @Service
 @RequiredArgsConstructor
 public class EventService {
-    private static final String VIEW_INVESTIGATION = "hasAuthority('" + Operations.VIEW + "-"
+	private static final String HAS_AUTHORITY = "hasAuthority('";
+    private static final String VIEW_INVESTIGATION = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.INVESTIGATION + "')";
-    private static final String VIEW_LAB_REPORT = "hasAuthority('" + Operations.VIEW + "-"
+    private static final String VIEW_LAB_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
+            + "')";
+    private static final String VIEW_MORBIDITY_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
+            + BusinessObjects.OBSERVATIONMORBIDITYREPORT
             + "')";
     private static final String SUBJ_OF_PHC = "SubjOfPHC";
     private static final String PATSBJ = "PATSBJ";
@@ -67,6 +81,16 @@ public class EventService {
 
     @PersistenceContext
     private final EntityManager entityManager;
+    
+    
+    @Autowired
+    PersonRepository personReposity;
+    
+    @Autowired
+    ParticipationRepository participationRepository;
+    
+    @Autowired
+    ObservationRepository oboservationRepository;
 
     @PreAuthorize(VIEW_INVESTIGATION)
     public Page<Investigation> findInvestigationsByFilter(InvestigationFilter filter, GraphQLPage page) {
@@ -93,6 +117,14 @@ public class EventService {
         var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
         return performSearch(query, LabReport.class);
     }
+    
+    @PreAuthorize(VIEW_MORBIDITY_REPORT)
+    public Page<Observation> findMorbidtyReportForPatient(Long patientId, GraphQLPage page) {
+        var pageable = GraphQLPage.toPageable(page, maxPageSize);
+        List<Observation> reports = findMorbidityReportsForPatient(patientId);
+        return new PageImpl<>(reports, pageable, reports.size());
+    }
+    
 
     private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
         var hits = operations.search(query, clazz);
@@ -612,6 +644,7 @@ public class EventService {
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
     }
+    
 
     private Collection<SortBuilder<?>> buildInvestigationSort(Pageable pageable) {
 
@@ -768,6 +801,14 @@ public class EventService {
                 .build();
         return performSearch(query, Investigation.class);
     }
+    
+	public List<Observation> findMorbidityReportsForPatient(Long patientId) {
+		List<Long> results = personReposity.getPersonIdsByPersonParentId(patientId);
+		List<Long> actIdResults = participationRepository
+				.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, results);
+		return oboservationRepository.findByIdIn(actIdResults);
+
+	}
 
     /**
      * Adds a query to only return documents that the user has access to based on
