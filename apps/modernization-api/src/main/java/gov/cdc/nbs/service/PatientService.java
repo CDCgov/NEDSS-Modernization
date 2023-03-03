@@ -2,7 +2,6 @@ package gov.cdc.nbs.service;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,10 +9,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -34,11 +31,9 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
-
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
@@ -398,7 +393,7 @@ public class PatientService {
 
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
-        return searchString.toLowerCase() + "*";
+        return searchString.toLowerCase().trim() + "*";
     }
 
     private Collection<SortBuilder<?>> buildPatientSort(Pageable pageable) {
