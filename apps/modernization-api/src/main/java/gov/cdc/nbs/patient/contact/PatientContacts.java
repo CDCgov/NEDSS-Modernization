@@ -5,7 +5,8 @@ import java.util.Collection;
 
 public record PatientContacts(
         long patient,
-        Collection<NamedByPatient> namedByPatient
+        Collection<NamedByPatient> namedByPatient,
+        Collection<NamedByContact> namedByContact
 ) {
 
     record NamedContact(

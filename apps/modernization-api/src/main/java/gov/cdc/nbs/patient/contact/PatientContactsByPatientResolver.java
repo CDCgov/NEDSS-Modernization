@@ -9,19 +9,26 @@ import java.util.List;
 
 @Controller
 class PatientContactsByPatientResolver {
-    private final ContactNamedByPatientFinder namedByPatientFinder;
+  private final ContactNamedByPatientFinder namedByPatientFinder;
+  private final PatientNamedByContactFinder namedByContactFinder;
 
-    PatientContactsByPatientResolver(final ContactNamedByPatientFinder namedByPatientFinder) {
-        this.namedByPatientFinder = namedByPatientFinder;
-    }
+  PatientContactsByPatientResolver(
+      final ContactNamedByPatientFinder namedByPatientFinder,
+      final PatientNamedByContactFinder namedByContactFinder
+  ) {
+    this.namedByPatientFinder = namedByPatientFinder;
+    this.namedByContactFinder = namedByContactFinder;
+  }
 
-    @QueryMapping(name = "findContactsForPatient")
-    @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-CONTAC')")
-    PatientContacts find(@Argument("patient") final long patient) {
-        List<PatientContacts.NamedByPatient> contactsNamedByPatients = this.namedByPatientFinder.find(patient);
-        return new PatientContacts(
-                patient,
-                contactsNamedByPatients
-        );
-    }
+  @QueryMapping(name = "findContactsForPatient")
+  @PreAuthorize("hasAuthority('FIND-PATIENT')")
+  PatientContacts find(@Argument("patient") final long patient) {
+    List<PatientContacts.NamedByPatient> namedByPatients = this.namedByPatientFinder.find(patient);
+    List<PatientContacts.NamedByContact> namedByContacts = this.namedByContactFinder.find(patient);
+    return new PatientContacts(
+        patient,
+        namedByPatients,
+        namedByContacts
+    );
+  }
 }

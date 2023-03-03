@@ -1,6 +1,7 @@
 type PatientContacts {
     patient: ID!
     namedByPatient: [NamedByPatient]
+    namedByContact: [NamedByContact]
 }
 
 type NamedByPatient {
