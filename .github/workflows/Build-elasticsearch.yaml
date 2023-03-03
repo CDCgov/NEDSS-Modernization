@@ -47,6 +47,8 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+        registry-type: public
 
     - name: Prep tags if release branch
       if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
@@ -65,14 +67,14 @@ jobs:
         IMAGE_BRANCH_ORIGIN: "${{ env.github_branch }}-${{ github.run_number }}"
       run: |
         # Build a docker container and push it to ECR 
-        docker build -t public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_TAG_SHA_SHORT ${{ env.dockerfile_relative_path}}
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT ${{ env.dockerfile_relative_path}}
         echo "Pushing image to ECR..."
-        docker push public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_TAG_SHA_SHORT
-        echo "image=public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_TAG_SHA_SHORT" >> $GITHUB_OUTPUT
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT" >> $GITHUB_OUTPUT
         echo "Pushing Retagging and pushing image to ECR..."
-        docker tag public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_TAG_SHA_SHORT public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_BRANCH_ORIGIN
-        docker push public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_BRANCH_ORIGIN
-        echo "image=public.ecr.aws/o1z7u2g7/cdc-nbs-modernization/elasticsearch:$IMAGE_BRANCH_ORIGIN" >> $GITHUB_OUTPUT
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN" >> $GITHUB_OUTPUT
     - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for release
       if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
       id: build-image-release
