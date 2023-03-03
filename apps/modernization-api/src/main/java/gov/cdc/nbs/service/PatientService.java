@@ -146,7 +146,10 @@ public class PatientService {
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(filter.getFirstName()))
+                            .defaultField("name.firstNm")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
 
             Soundex soundex = new Soundex();
@@ -161,7 +164,10 @@ public class PatientService {
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(filter.getLastName()))
+                            .defaultField("name.lastNm")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
 
             Soundex soundex = new Soundex();
@@ -195,7 +201,10 @@ public class PatientService {
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                    .queryStringQuery(
+                            addWildcards(filter.getAddress()))
+                    .defaultField("address.streetAddr1")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -209,7 +218,10 @@ public class PatientService {
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"),
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(filter.getCity()))
+                            .defaultField("address.city")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -319,8 +331,7 @@ public class PatientService {
     }
 
     /**
-     * Adds the record status to the query builder. If no record status is
-     * specified, throw a QueryException.
+     * Adds the record status to the query builder. If no record status is specified, throw a QueryException.
      */
     private void addRecordStatusQuery(Collection<RecordStatus> recordStatus, BoolQueryBuilder builder) {
         if (recordStatus == null || recordStatus.isEmpty()) {
@@ -348,8 +359,7 @@ public class PatientService {
     }
 
     /**
-     * Generates a patient id and localId. Posts the request along with Id's to
-     * Kafka
+     * Generates a patient id and localId. Posts the request along with Id's to Kafka
      */
     public PatientCreateResponse sendCreatePatientRequest(PatientInput input) {
         // create 'create patient' message and post to kafka
