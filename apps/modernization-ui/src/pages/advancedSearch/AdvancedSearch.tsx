@@ -13,6 +13,7 @@ import {
     LabReportFilter,
     PersonFilter,
     SortDirection,
+    RecordStatus,
     SortField,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
@@ -65,7 +66,7 @@ export const AdvancedSearch = () => {
     const PAGE_SIZE = 25;
 
     // patient search variables
-    const [personFilter, setPersonFilter] = useState<PersonFilter>();
+    const [personFilter, setPersonFilter] = useState<PersonFilter>({ recordStatus: [RecordStatus.Active] });
     const addPatiendRef = useRef<any>(null);
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
@@ -183,6 +184,10 @@ export const AdvancedSearch = () => {
         const chips: any = [];
         if (filter) {
             Object.entries(filter as any).map((re: any) => {
+                // Do not display record status chip, as indicated in Figma design
+                if (re[0] === 'recordStatus') {
+                    return;
+                }
                 if (re[0] !== 'identification') {
                     let name = re[0];
                     switch (re[0]) {
@@ -306,7 +311,7 @@ export const AdvancedSearch = () => {
 
     function isEmpty(obj: any) {
         for (const key in obj) {
-            if (obj[key] !== undefined && obj[key] != '') return false;
+            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
         }
         return true;
     }
@@ -374,7 +379,7 @@ export const AdvancedSearch = () => {
 
     const handleClearAll = () => {
         setPatientData(undefined);
-        setPersonFilter({});
+        setPersonFilter({ recordStatus: [RecordStatus.Active] });
         setInvestigationData(undefined);
         setInvestigationFilter({});
         setLabReportData(undefined);

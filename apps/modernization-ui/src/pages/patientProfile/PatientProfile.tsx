@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
+    RecordStatus,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
@@ -48,7 +49,8 @@ export const PatientProfile = () => {
             getPatientProfileData({
                 variables: {
                     filter: {
-                        id: id
+                        id: id,
+                        recordStatus: [RecordStatus.Active, RecordStatus.LogDel, RecordStatus.Superceded]
                     }
                 }
             });
