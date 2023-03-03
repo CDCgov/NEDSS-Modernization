@@ -1,4 +1,4 @@
-query findAllRaceValues($page: Page) {
+query findAllRaceValues($page: Page){
     findAllRaceValues(page: $page){
         content{
             id{

@@ -1,4 +1,4 @@
-query findOrganizationsByFilter($filter: OrganizationFilter!, $page: Page) {
+query findOrganizationsByFilter($filter: OrganizationFilter!, $page: Page){
     findOrganizationsByFilter(filter: $filter, page: $page){
         content{
             id

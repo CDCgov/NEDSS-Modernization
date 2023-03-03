@@ -20,7 +20,6 @@ class PatientCreator {
         this.repository = repository;
     }
 
-
     @Transactional
     Person create(final PatientCreateRequest request) {
 
@@ -41,7 +40,6 @@ class PatientCreator {
         request.emailAddresses().stream().map(emailAddress -> asEmailAddress(request, emailAddress))
                 .forEach(person::add);
 
-
         return repository.save(person);
     }
 
@@ -57,9 +55,10 @@ class PatientCreator {
                 request.deceasedTime(),
                 request.maritalStatus(),
                 request.ethnicity(),
+                request.asOf(),
+                request.comments(),
                 request.createdBy(),
-                request.createdAt()
-        );
+                request.createdAt());
     }
 
     private PatientCommand.AddName asName(final PatientCreateRequest request, final PatientCreateRequest.Name name) {
@@ -71,8 +70,7 @@ class PatientCreator {
                 name.suffix(),
                 name.use(),
                 request.createdBy(),
-                request.createdAt()
-        );
+                request.createdAt());
     }
 
     private PatientCommand.AddRace asRace(final PatientCreateRequest request, final String race) {
@@ -80,11 +78,11 @@ class PatientCreator {
                 request.patient(),
                 race,
                 request.createdBy(),
-                request.createdAt()
-        );
+                request.createdAt());
     }
 
-    private PatientCommand.AddAddress asAddress(final PatientCreateRequest request, final PatientCreateRequest.PostalAddress address) {
+    private PatientCommand.AddAddress asAddress(final PatientCreateRequest request,
+            final PatientCreateRequest.PostalAddress address) {
         return new PatientCommand.AddAddress(
                 request.patient(),
                 address.id(),
@@ -97,11 +95,11 @@ class PatientCreator {
                 new Country(address.countryCode()),
                 address.censusTract(),
                 request.createdBy(),
-                request.createdAt()
-        );
+                request.createdAt());
     }
 
-    private PatientCommand.AddPhoneNumber asPhoneNumber(final PatientCreateRequest request, final PatientCreateRequest.PhoneNumber phoneNumber) {
+    private PatientCommand.AddPhoneNumber asPhoneNumber(final PatientCreateRequest request,
+            final PatientCreateRequest.PhoneNumber phoneNumber) {
         return new PatientCommand.AddPhoneNumber(
                 request.patient(),
                 phoneNumber.id(),
@@ -109,17 +107,16 @@ class PatientCreator {
                 phoneNumber.extension(),
                 phoneNumber.phoneType(),
                 request.createdBy(),
-                request.createdAt()
-        );
+                request.createdAt());
     }
 
-    private PatientCommand.AddEmailAddress asEmailAddress(final PatientCreateRequest request, final PatientCreateRequest.EmailAddress emailAddress) {
+    private PatientCommand.AddEmailAddress asEmailAddress(final PatientCreateRequest request,
+            final PatientCreateRequest.EmailAddress emailAddress) {
         return new PatientCommand.AddEmailAddress(
                 request.patient(),
                 emailAddress.id(),
                 emailAddress.emailAddress(),
                 request.createdBy(),
-                request.createdAt()
-        );
+                request.createdAt());
     }
 }

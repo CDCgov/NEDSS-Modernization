@@ -1,4 +1,4 @@
-query findLocalLabTest($searchText: String!, $page: Page) {
+query findLocalLabTest($searchText: String!, $page: Page){
     findLocalLabTest(searchText: $searchText, page: $page){
         content{
             id{

@@ -45,7 +45,7 @@ export default function NavBar() {
 
                                         <td className="navLink">
                                             <a
-                                                href={`${NBS_URL}/LoadNavbar.do?ContextAction=GlobalInvestigations&amp;initLoad=true`}>
+                                                href={`${NBS_URL}/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
                                                 Open Investigations
                                             </a>
                                         </td>

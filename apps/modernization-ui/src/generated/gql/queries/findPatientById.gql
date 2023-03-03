@@ -1,4 +1,4 @@
-query findPatientById($id: ID!) {
+query findPatientById($id: ID!){
     findPatientById(id: $id){
         id
         nbsEntity{

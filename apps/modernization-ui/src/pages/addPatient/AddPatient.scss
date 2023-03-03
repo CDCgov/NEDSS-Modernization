@@ -1,14 +1,8 @@
-.form-container {
-    display: flex;
-    justify-content: center;
-
-    .usa-form {
-        flex-grow: 1;
-    }
-
-    @media (min-width: 30em) {
-        .usa-form--large {
-            max-width: 40rem;
-        }
-    }
+.content {
+    min-height: calc(100vh - 150px);
+    background-color: #f1f6f9;
+    width: 100%;
+}
+.max-width-full {
+    max-width: 100% !important;
 }

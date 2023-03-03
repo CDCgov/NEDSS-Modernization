@@ -16,12 +16,10 @@ public class PatientCreateRequestResolver {
         this.idGeneratorService = idGeneratorService;
     }
 
-
     public PatientCreateRequest create(
             final long requester,
             final String request,
-            final PatientInput input
-    ) {
+            final PatientInput input) {
 
         var patientId = generateNbsId();
 
@@ -42,8 +40,9 @@ public class PatientCreateRequestResolver {
                 asPostalAddresses(input.getAddresses()),
                 asPhoneNumbers(input.getPhoneNumbers()),
                 asEmailAddresses(input.getEmailAddresses()),
-                requester
-        );
+                requester,
+                input.getAsOf(),
+                input.getComments());
     }
 
     private Collection<PatientCreateRequest.Name> asNames(final Collection<PatientInput.Name> names) {
@@ -58,11 +57,11 @@ public class PatientCreateRequestResolver {
                 name.getMiddleName(),
                 name.getLastName(),
                 name.getSuffix(),
-                name.getNameUseCd()
-        );
+                name.getNameUseCd());
     }
 
-    private Collection<PatientCreateRequest.PostalAddress> asPostalAddresses(final Collection<PatientInput.PostalAddress> addresses) {
+    private Collection<PatientCreateRequest.PostalAddress> asPostalAddresses(
+            final Collection<PatientInput.PostalAddress> addresses) {
         return addresses.stream()
                 .map(this::asPostalAddress)
                 .toList();
@@ -80,11 +79,11 @@ public class PatientCreateRequestResolver {
                 address.getCountyCode(),
                 address.getCountryCode(),
                 address.getZip(),
-                address.getCensusTract()
-        );
+                address.getCensusTract());
     }
 
-    private Collection<PatientCreateRequest.PhoneNumber> asPhoneNumbers(final Collection<PatientInput.PhoneNumber> phoneNumbers) {
+    private Collection<PatientCreateRequest.PhoneNumber> asPhoneNumbers(
+            final Collection<PatientInput.PhoneNumber> phoneNumbers) {
         return phoneNumbers.stream()
                 .map(this::asPhoneNumber)
                 .toList();
@@ -97,8 +96,7 @@ public class PatientCreateRequestResolver {
                 id,
                 phoneNumber.getNumber(),
                 phoneNumber.getExtension(),
-                phoneNumber.getPhoneType()
-        );
+                phoneNumber.getPhoneType());
     }
 
     private Collection<PatientCreateRequest.EmailAddress> asEmailAddresses(final Collection<String> emails) {
@@ -112,8 +110,7 @@ public class PatientCreateRequestResolver {
 
         return new PatientCreateRequest.EmailAddress(
                 id,
-                emailAddress
-        );
+                emailAddress);
     }
 
     /**

@@ -1,3 +1,11 @@
+extend type Query {
+    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
+}
+
+type LocalCodedResults {
+    content: [LabResult]!
+    total: Int!
+}
 type LabResult {
     id: LabResultId
     nbsUid: ID

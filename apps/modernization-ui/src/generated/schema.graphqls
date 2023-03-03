@@ -1,7 +1,15 @@
+extend type Query {
+    findAllConditionCodes(page: Page): [ConditionCode]!
+}
+
 type ConditionCode {
     id: String!
     conditionDescTxt: String
 }
+extend type Query {
+    findAllCountryCodes(page: Page): [CountryCode]!
+}
+
 type CountryCode {
     id: ID
     assigningAuthorityCd: String
@@ -24,11 +32,24 @@ type CountryCode {
     codeSystemCd: String
     codeSystemDescTxt: String
 }
+extend type Query {
+    findAllCountyCodesForState(stateCode: String!, page: Page): [CountyCode]!
+}
+
 type CountyCode {
     id: String!
     codeDescTxt: String
     codeShortDescTxt: String
 }
+extend type Query {
+    findAllEthnicityValues(page: Page): EthnicityResults!
+}
+
+type EthnicityResults {
+    content: [Ethnicity]!
+    total: Int!
+}
+
 type Ethnicity {
     id: EthnicityId!
     codeDescTxt: String!
@@ -37,6 +58,15 @@ type Ethnicity {
 type EthnicityId {
     code: String!
 }
+extend type Query {
+    findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
+}
+
+type PatientIdentificationTypeResults {
+    content: [IdentificationType]!
+    total: Int!
+}
+
 type IdentificationType {
     id: IdentificationTypeId!
     codeDescTxt: String!
@@ -45,6 +75,15 @@ type IdentificationType {
 type IdentificationTypeId {
     code: String!
 }
+extend type Query {
+    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
+}
+
+type InvestigationResults {
+    content: [Investigation]!
+    total: Int!
+}
+
 type Investigation {
     id: ID
     recordStatus: String
@@ -188,6 +227,10 @@ enum InvestigationStatus {
     OPEN
     CLOSED
 }
+extend type Query {
+    findAllJurisdictions(page: Page): [Jurisdiction]!
+}
+
 type Jurisdiction {
     id: String!
     typeCd: String!
@@ -211,6 +254,15 @@ type Jurisdiction {
     codeSystemDescTxt: String
     exportInd: String
 }
+extend type Query {
+    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
+}
+
+type LabReportResults {
+    content: [LabReport]!
+    total: Int!
+}
+
 input LabReportFilter {
     patientId: Int
     programAreas: [String]
@@ -344,6 +396,14 @@ enum LaboratoryReportStatus {
     PROCESSED
     UNPROCESSED
 }
+extend type Query {
+    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
+}
+
+type LocalCodedResults {
+    content: [LabResult]!
+    total: Int!
+}
 type LabResult {
     id: LabResultId
     nbsUid: ID
@@ -354,6 +414,15 @@ type LabResultId {
     labResultCd: String
     laboratoryId: String
 }
+extend type Query {
+    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
+}
+
+type LocalLabTestResults {
+    content: [LabTest]!
+    total: Int!
+}
+
 type LabTest {
     id: LabTestId
     labTestDescTxt: String
@@ -364,6 +433,15 @@ type LabTestId {
     labTestCd: String
     laboratoryId: String
 }
+extend type Query {
+    findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
+}
+
+type LoincLabTestResults {
+    content: [LoincCode]!
+    total: Int!
+}
+
 type LoincCode {
     id: String
     componentName: String
@@ -372,6 +450,17 @@ type LoincCode {
     property: String
     relatedClassCd: String
 }
+extend type Query {
+    findOrganizationById(id: ID!): Organization
+    findAllOrganizations(page: Page): OrganizationResults!
+    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): OrganizationResults!
+}
+
+type OrganizationResults {
+    content: [Organization]!
+    total: Int!
+}
+
 input OrganizationFilter {
     id: ID
     displayNm: String
@@ -421,6 +510,15 @@ type Organization {
     electronicInd: String
     edxInd: String
 }
+extend type Query {
+    findAllOutbreaks(page: Page): OutbreakResults!
+}
+
+type OutbreakResults {
+    content: [Outbreak]!
+    total: Int!
+}
+
 type Outbreak {
     id: OutbreakId!
     codeShortDescTxt: String
@@ -430,6 +528,48 @@ type OutbreakId {
     codeSetNm: String!
     code: String!
 }
+type PatientTreatment {
+    treatment: ID!,
+    createdOn: Date!
+    provider : String
+    treatedOn: Date!
+    description: String!
+    event: String!
+    associatedWith: PatientTreatmentInvestigation!
+}
+
+type PatientTreatmentInvestigation {
+    id: ID!,
+    local: String!
+    condition: String!
+}
+
+extend type Query {
+    findTreatmentsForPatient(patient: ID!): [PatientTreatment]
+}type Query {
+    findPatientById(id: ID!): Person
+    findAllPatients(page: SortablePage): PersonResults!
+    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
+    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
+    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
+    findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
+}
+
+type Mutation {
+    createPatient(patient: PersonInput!): String!
+    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
+}
+
+type UpdateResult {
+    updatedPerson: Person
+    requestId: String
+}
+
+type PersonResults {
+    content: [Person!]!
+    total: Int!
+}
+
 input PersonFilter {
     id: ID
     lastName: String
@@ -586,6 +726,8 @@ input PersonInput {
     identifications: [Identification]
     ethnicityCode: String
     raceCodes: [String]
+    asOf: Date
+    comments: String
 }
 input Name {
     firstName: String
@@ -722,6 +864,12 @@ type LocatorParticipations {
 type NBSEntity {
     entityLocatorParticipations: [LocatorParticipations]
 }
+extend type Query {
+    findPlaceById(id: ID!): Place
+    findAllPlaces(page: Page): [Place]!
+    findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
+}
+
 input PlaceFilter {
     id: ID
     description: String
@@ -768,6 +916,10 @@ type Place {
     phoneCntryCd: String
     versionCtrlNbr: Int
 }
+extend type Query {
+    findAllProgramAreas(page: Page): [ProgramAreaCode]!
+}
+
 type ProgramAreaCode {
     id: String!
     progAreaDescTxt: String
@@ -777,86 +929,8 @@ type ProgramAreaCode {
     codeSetNm: String
     codeSeq: Int
 }
-type Query {
-    findPatientById(id: ID!): Person
-    findAllPatients(page: SortablePage): PersonResults!
-    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
-    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
-
-    findOrganizationById(id: ID!): Organization
-    findAllOrganizations(page: Page): OrganizationResults!
-    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): OrganizationResults!
-
-    findPlaceById(id: ID!): Place
-    findAllPlaces(page: Page): [Place]!
-    findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
-
-    findAllCountryCodes(page: Page): [CountryCode]!
-    findAllStateCodes(page: Page): [StateCode]!
-    findAllCountyCodesForState(stateCode: String!, page: Page): [CountyCode]!
-    findAllUsers(page: Page): UserResults!
-    findAllJurisdictions(page: Page): [Jurisdiction]!
-    findAllProgramAreas(page: Page): [ProgramAreaCode]!
-    findAllConditionCodes(page: Page): [ConditionCode]!
-    findAllOutbreaks(page: Page): OutbreakResults!
-    findAllEthnicityValues(page: Page): EthnicityResults!
-    findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
+extend type Query {
     findAllRaceValues(page: Page): RaceResults!
-    findLocalLabTest(searchText: String!, page: Page): LocalLabTestResults!
-    findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
-    findLocalCodedResults(searchText: String!, page: Page): LocalCodedResults!
-    findSnomedCodedResults(searchText: String!, page: Page): SnomedCodedResults!
-
-    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
-    findLabReportsByFilter(filter: LabReportFilter!, page: SortablePage): LabReportResults!
-
-    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
-    findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
-}
-
-type Mutation {
-    createPatient(patient: PersonInput!): String!
-    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
-}
-
-type UpdateResult {
-    updatedPerson: Person
-    requestId: String
-}
-
-type SnomedCodedResults {
-    content: [SnomedCode]!
-    total: Int!
-}
-
-type LocalCodedResults {
-    content: [LabResult]!
-    total: Int!
-}
-
-type LoincLabTestResults {
-    content: [LoincCode]!
-    total: Int!
-}
-
-type LocalLabTestResults {
-    content: [LabTest]!
-    total: Int!
-}
-
-type OutbreakResults {
-    content: [Outbreak]!
-    total: Int!
-}
-
-type EthnicityResults {
-    content: [Ethnicity]!
-    total: Int!
-}
-
-type PatientIdentificationTypeResults {
-    content: [IdentificationType]!
-    total: Int!
 }
 
 type RaceResults {
@@ -864,30 +938,6 @@ type RaceResults {
     total: Int!
 }
 
-type PersonResults {
-    content: [Person!]!
-    total: Int!
-}
-
-type UserResults {
-    content: [User]!
-    total: Int!
-}
-
-type OrganizationResults {
-    content: [Organization]!
-    total: Int!
-}
-
-type InvestigationResults {
-    content: [Investigation]!
-    total: Int!
-}
-
-type LabReportResults {
-    content: [LabReport]!
-    total: Int!
-}
 type Race {
     id: RaceId!
     codeDescTxt: String!
@@ -958,10 +1008,23 @@ enum PregnancyStatus {
     NO
     UNKNOWN
 }
+extend type Query {
+    findSnomedCodedResults(searchText: String!, page: Page): SnomedCodedResults!
+}
+
+type SnomedCodedResults {
+    content: [SnomedCode]!
+    total: Int!
+}
+
 type SnomedCode {
     id: String
     snomedDescTxt: String
 }
+extend type Query {
+    findAllStateCodes(page: Page): [StateCode]!
+}
+
 type StateCode {
     id: String
     assigningAuthorityCd: String
@@ -984,7 +1047,17 @@ type StateCode {
     codeSystemCd: String
     codeSystemDescTxt: String
 }
+extend type Query {
+    findAllUsers(page: Page): UserResults!
+}
+
+type UserResults {
+    content: [User]!
+    total: Int!
+}
+
 type User {
+    nedssEntryId: ID!
     userId: String!
     userFirstNm: String!
     userLastNm: String!

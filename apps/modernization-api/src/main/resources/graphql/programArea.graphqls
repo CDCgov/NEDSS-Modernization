@@ -1,3 +1,7 @@
+extend type Query {
+    findAllProgramAreas(page: Page): [ProgramAreaCode]!
+}
+
 type ProgramAreaCode {
     id: String!
     progAreaDescTxt: String

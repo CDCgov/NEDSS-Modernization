@@ -1,4 +1,4 @@
-query findSnomedCodedResults($searchText: String!, $page: Page) {
+query findSnomedCodedResults($searchText: String!, $page: Page){
     findSnomedCodedResults(searchText: $searchText, page: $page){
         content{
             id
