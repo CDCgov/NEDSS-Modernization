@@ -1,6 +1,5 @@
 package gov.cdc.nbs.repository;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,5 +17,5 @@ public interface ParticipationRepository
 			String typeCd);
 
 	@Query(value="select p.act_uid from  Participation p where p.type_cd =:typeCd AND p.subject_entity_uid in (:subjectEntityUid)", nativeQuery=true)
-	List<Object[]> findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(@Param("typeCd")String typeCd,  @Param("subjectEntityUid")List<BigInteger> subjectEntityUid);
+	List<Long> findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(@Param("typeCd")String typeCd,  @Param("subjectEntityUid")List<Long> subjectEntityUid);
 }

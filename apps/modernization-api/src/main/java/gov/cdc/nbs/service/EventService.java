@@ -828,18 +828,11 @@ public class EventService {
     }
     
 	public List<Observation> findMorbidityReportsForPatient(Long patientId) {
-		List<BigInteger> subjectEntityIds = new ArrayList<BigInteger>();
-		List<Long> actIds = new ArrayList<Long>();
-		List<Object[]> results = personReposity.getPersonIdsByPersonParentId(patientId);
-		for (Object[] obj : results) {
-			subjectEntityIds.add((BigInteger) obj[0]);
-		}
-		List<Object[]> actIdResults = participationRepository
-				.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, subjectEntityIds);
-		for (Object[] objAct : actIdResults) {
-			actIds.add(((BigInteger) objAct[0]).longValue());
-		}
-		return oboservationRepository.findByIdIn(actIds);
+		List<Long> results = personReposity.getPersonIdsByPersonParentId(patientId);
+		List<Long> actIdResults = participationRepository
+				.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, results);
+		return oboservationRepository.findByIdIn(actIdResults);
+
 	}
 
     /**

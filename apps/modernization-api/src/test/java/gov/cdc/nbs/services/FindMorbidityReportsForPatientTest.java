@@ -47,27 +47,19 @@ import gov.cdc.nbs.util.Constants;
 		eventService = new EventService(null, null, null);
 	}
 
-	@Test
+    @Test
 	void FindMorbidityReportsTest() {
 		Long patientID = 100543L;
-		BigInteger personsIDs = BigInteger.valueOf(patientID).add(BigInteger.ONE);
-		BigInteger actIDs = personsIDs.add(BigInteger.ONE);
-		Long actIdParam = patientID + 2;
-		Long resultID = patientID + 3;
-		Object[] subjectIds = new Object[] { personsIDs };
-		List<Object[]> subjectIdsSet = new ArrayList<Object[]>();
-		subjectIdsSet.add(subjectIds);
+		Long personsIDs = patientID+1;
+		Long actIDs = personsIDs + 1;
+		Long resultID = patientID + 2;
 
-		Object[] actIds = new Object[] { actIDs };
-		List<Object[]> actIdsSet = new ArrayList<Object[]>();
-		actIdsSet.add(actIds);
-
-		when(personRepository.getPersonIdsByPersonParentId(Mockito.anyLong())).thenReturn(subjectIdsSet);
+		when(personRepository.getPersonIdsByPersonParentId(Mockito.anyLong())).thenReturn(List.of(patientID+1));
 		when(participationRepository.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE,
-				List.of(personsIDs))).thenReturn(actIdsSet);
+				List.of(personsIDs))).thenReturn(List.of(personsIDs +1));
 		Observation obs = new Observation();
-		obs.setId(patientID + 3);
-		when(oboservationRepository.findByIdIn(List.of(actIdParam))).thenReturn(List.of(obs));
+		obs.setId(actIDs);
+		when(oboservationRepository.findByIdIn(List.of(actIDs))).thenReturn(List.of(obs));
 
 		List<Observation> observations = eventService.findMorbidityReportsForPatient(patientID);
 		assertNotNull(observations);
