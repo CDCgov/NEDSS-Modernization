@@ -6,12 +6,22 @@ type PatientContacts {
 type NamedByPatient {
     contactRecord: ID!
     createdOn: Date!
+    condition: String
     contact: NamedContact!
     namedOn: Date!
     priority: String
     disposition: String
     event: String!
-    investigation: PatientContactInvestigation
+}
+
+type NamedByContact {
+    contactRecord: ID!
+    createdOn: Date!
+    contact: NamedContact!
+    namedOn: Date!
+    condition: String
+    event: String!
+    associatedWith: PatientContactInvestigation
 }
 
 type NamedContact {

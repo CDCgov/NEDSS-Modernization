@@ -84,37 +84,23 @@ class ContactNamedByPatientFinder {
     private PatientContacts.NamedByPatient map(final Tuple tuple) {
         Long identifier = tuple.get(TRACING.id);
         Instant createdOn = tuple.get(TRACING.addTime);
+        String condition = tuple.get(INVESTIGATION.cdDescTxt);
+        PatientContacts.NamedContact contact = mapContact(tuple);
         Instant namedOn = tuple.get(NAMED_ON);
 
-        String event = tuple.get(TRACING.localId);
         String priority = tuple.get(PRIORITY.codeDescTxt);
         String disposition = tuple.get(DISPOSITION.codeDescTxt);
-
-        PatientContacts.Investigation investigation = mapInvestigation(tuple);
-
-        PatientContacts.NamedContact contact = mapContact(tuple);
+        String event = tuple.get(TRACING.localId);
 
         return new PatientContacts.NamedByPatient(
                 Objects.requireNonNull(identifier),
                 createdOn,
+                condition,
                 contact,
                 namedOn,
                 priority,
                 disposition,
-                event,
-                investigation
-        );
-    }
-
-    private PatientContacts.Investigation mapInvestigation(final Tuple tuple) {
-        Long identifier = Objects.requireNonNull(tuple.get(INVESTIGATION.id), "An investigation identifier is required.");
-        String local = tuple.get(INVESTIGATION.localId);
-        String condition = tuple.get(INVESTIGATION.cdDescTxt);
-
-        return new PatientContacts.Investigation(
-                identifier,
-                local,
-                condition
+                event
         );
     }
 

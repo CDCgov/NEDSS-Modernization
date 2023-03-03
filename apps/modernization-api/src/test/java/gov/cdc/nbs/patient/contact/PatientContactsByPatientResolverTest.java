@@ -23,6 +23,7 @@ class PatientContactsByPatientResolverTest {
                         new PatientContacts.NamedByPatient(
                                 2131L,
                                 Instant.parse("2023-05-17T22:13:43Z"),
+                                "condition-value",
                                 new PatientContacts.NamedContact(
                                         3733L,
                                         "contact-name-value"
@@ -30,12 +31,7 @@ class PatientContactsByPatientResolverTest {
                                 Instant.parse("2023-02-15T11:13:17Z"),
                                 "priority-value",
                                 "disposition-value",
-                                "event-value",
-                                new PatientContacts.Investigation(
-                                    907L,
-                                    "local-value",
-                                    "condition-value"
-                                )
+                                "event-value"
 
                         )
                 )
@@ -53,6 +49,7 @@ class PatientContactsByPatientResolverTest {
                         assertAll(
                                 () -> assertThat(actual_contact)
                                         .returns(2131L, PatientContacts.NamedByPatient::contactRecord)
+                                        .returns("condition-value", PatientContacts.NamedByPatient::condition)
                                         .returns("priority-value", PatientContacts.NamedByPatient::priority)
                                         .returns("disposition-value", PatientContacts.NamedByPatient::disposition)
                                         .returns("event-value", PatientContacts.NamedByPatient::event),
@@ -60,11 +57,8 @@ class PatientContactsByPatientResolverTest {
                                 () -> assertThat(actual_contact.namedOn()).isEqualTo("2023-02-15T11:13:17Z"),
                                 () -> assertThat(actual_contact.contact())
                                         .returns(3733L, PatientContacts.NamedContact::id)
-                                        .returns("contact-name-value", PatientContacts.NamedContact::name),
-                                () -> assertThat(actual_contact.investigation())
-                                        .returns(907L, PatientContacts.Investigation::id)
-                                        .returns("local-value", PatientContacts.Investigation::local)
-                                        .returns("condition-value", PatientContacts.Investigation::condition)
+                                        .returns("contact-name-value", PatientContacts.NamedContact::name)
+
 
                         )
         );

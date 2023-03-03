@@ -18,12 +18,24 @@ public record PatientContacts(
     record NamedByPatient(
             long contactRecord,
             Instant createdOn,
+            String condition,
             NamedContact contact,
             Instant namedOn,
             String priority,
             String disposition,
+            String event
+    ) {
+
+    }
+
+    record NamedByContact(
+            long contactRecord,
+            Instant createdOn,
+            String condition,
+            NamedContact contact,
+            Instant namedOn,
             String event,
-            Investigation investigation
+            Investigation associatedWith
     ) {
 
     }
