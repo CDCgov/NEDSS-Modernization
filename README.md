@@ -11,14 +11,20 @@
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
 
+## Guidelines
+
+- [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
+- [Code Formatting](docs/Code-Formatting.md)
+
 ## TLDR: Running everything inside docker
 
 ### Mac ARM system (M1/M2)
 
-1. Install Java 17
+1. Install [Java 17](docs/InstallJava.md)
 1. Install Node / NPM
 1. Clone [NBS](https://github.com/cdcent/NEDSSDev)
-1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into
+1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into. Example:
+
    ```sh
    export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
 
@@ -26,6 +32,7 @@
    echo $NEDSS_HOME
 
    ```
+
 1. CD into the `cdc-sandbox` directory
    ```sh
    cd cdc-sandbox
@@ -72,8 +79,11 @@
    ```
 
 1. To create your own user account visit site (line 15):
-+ Navigate to System Management
-+ Expand Security Management
-+ Click Manage Users & click add
-+ Enter userId, First Name and Last Name
-+ Add a Role & click submit
+
+- Navigate to System Management
+- Expand Security Management
+- Click Manage Users & click add
+- Enter userId, First Name and Last Name
+- Add a Role & click submit
+
+## Code Formatting

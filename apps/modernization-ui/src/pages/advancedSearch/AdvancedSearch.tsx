@@ -1,6 +1,6 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Config } from '../../config';
 
 import {
@@ -13,13 +13,13 @@ import {
     LabReportFilter,
     PersonFilter,
     SortDirection,
+    RecordStatus,
     SortField,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
-import { RedirectControllerService } from '../../generated/services/RedirectControllerService';
 import { UserContext } from '../../providers/UserContext';
 import {
     downloadInvestigationSearchResultCsv,
@@ -66,7 +66,7 @@ export const AdvancedSearch = () => {
     const PAGE_SIZE = 25;
 
     // patient search variables
-    const [personFilter, setPersonFilter] = useState<PersonFilter>();
+    const [personFilter, setPersonFilter] = useState<PersonFilter>({ recordStatus: [RecordStatus.Active] });
     const addPatiendRef = useRef<any>(null);
     const [resultsChip, setResultsChip] = useState<{ name: string; value: string }[]>([]);
     const [showSorting, setShowSorting] = useState<boolean>(false);
@@ -184,6 +184,10 @@ export const AdvancedSearch = () => {
         const chips: any = [];
         if (filter) {
             Object.entries(filter as any).map((re: any) => {
+                // Do not display record status chip, as indicated in Figma design
+                if (re[0] === 'recordStatus') {
+                    return;
+                }
                 if (re[0] !== 'identification') {
                     let name = re[0];
                     switch (re[0]) {
@@ -307,7 +311,7 @@ export const AdvancedSearch = () => {
 
     function isEmpty(obj: any) {
         for (const key in obj) {
-            if (obj[key] !== undefined && obj[key] != '') return false;
+            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
         }
         return true;
     }
@@ -375,7 +379,7 @@ export const AdvancedSearch = () => {
 
     const handleClearAll = () => {
         setPatientData(undefined);
-        setPersonFilter({});
+        setPersonFilter({ recordStatus: [RecordStatus.Active] });
         setInvestigationData(undefined);
         setInvestigationFilter({});
         setLabReportData(undefined);
@@ -661,11 +665,12 @@ export const AdvancedSearch = () => {
 
     function handleAddNewPatientClick(): void {
         setShowAddNewDropDown(false);
-        RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
-            () => {
-                window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
-            }
-        );
+        navigate('/add-patient');
+        // RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
+        //     () => {
+        //         window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
+        //     }
+        // );
     }
 
     function handleAddNewLabReportClick(): void {
@@ -692,6 +697,7 @@ export const AdvancedSearch = () => {
                     <div className="button-group">
                         <Button
                             disabled={
+                                !validSearch &&
                                 (!patientData?.content || patientData.content.length === 0) &&
                                 (!labReportData?.content || labReportData.total === 0) &&
                                 (!investigationData?.content || investigationData.total === 0)
@@ -699,8 +705,8 @@ export const AdvancedSearch = () => {
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
-                            Add new patient
-                            <img style={{ marginLeft: '5px' }} src={'down-arrow-white.svg'} />
+                            Add new
+                            <img src={'down-arrow-white.svg'} />
                         </Button>
                         {showAddNewDropDown && (
                             <ul
@@ -796,7 +802,7 @@ export const AdvancedSearch = () => {
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="width-full margin-top-0"
+                                    className="padding-x-3 margin-top-0"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
                                     outline>
@@ -914,7 +920,7 @@ export const AdvancedSearch = () => {
                                 </div>
                             )}
                             <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
                                 style={{
                                     background: 'white',
                                     border: '1px solid #DFE1E2',
@@ -930,7 +936,7 @@ export const AdvancedSearch = () => {
                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                         (!patientData?.content || patientData?.content?.length === 0) && (
                             <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center"
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
                                 style={{
                                     background: 'white',
                                     border: '1px solid #DFE1E2',
@@ -941,9 +947,9 @@ export const AdvancedSearch = () => {
                                     <p>No results found.</p>
                                     <p>
                                         Try refining your search, or{' '}
-                                        <Link to="/" style={{ color: '#005EA2' }}>
+                                        <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
                                             add a new patient
-                                        </Link>
+                                        </a>
                                     </p>
                                 </div>
                             </div>

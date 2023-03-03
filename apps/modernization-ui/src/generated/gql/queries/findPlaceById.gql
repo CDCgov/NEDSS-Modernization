@@ -1,4 +1,4 @@
-query findPlaceById($id: ID!) {
+query findPlaceById($id: ID!){
     findPlaceById(id: $id){
         id
         addReasonCd

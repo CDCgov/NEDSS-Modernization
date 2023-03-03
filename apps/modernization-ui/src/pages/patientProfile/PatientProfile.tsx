@@ -10,15 +10,11 @@ import {
     ModalToggleButton
 } from '@trussworks/react-uswds';
 import './style.scss';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { EncryptionControllerService } from '../../generated';
-import { useSearchParams } from 'react-router-dom';
-import { UserContext } from '../../providers/UserContext';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
-    Investigation,
-    LabReport,
-    PersonParticipation,
+    RecordStatus,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientsByFilterLazyQuery
@@ -35,8 +31,8 @@ enum ACTIVE_TAB {
 }
 
 export const PatientProfile = () => {
-    const { state } = useContext(UserContext);
-    const [searchParams] = useSearchParams();
+    const { id } = useParams();
+
     const modalRef = useRef<ModalRef>(null);
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
@@ -48,35 +44,17 @@ export const PatientProfile = () => {
     );
     const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
 
-    const getInvestigationPatient = (investigation: Investigation): PersonParticipation | undefined | null => {
-        return investigation.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
-    };
-
-    const getLabPatient = (labReport: LabReport): PersonParticipation | undefined | null => {
-        return labReport.personParticipations?.find(
-            (p) => p?.typeDescTxt === 'Patient subject' || p?.typeCd === 'PATSBJ'
-        );
-    };
-
     useEffect(() => {
-        EncryptionControllerService.decryptUsingPost({
-            encryptedString: searchParams?.get('data') || '',
-            authorization: `Bearer ${state.getToken()}`
-        }).then(async (data: any) => {
-            const localId =
-                data.__typename === 'Investigation'
-                    ? getInvestigationPatient(data)?.localId
-                    : data.__typename === 'LabReport'
-                    ? getLabPatient(data)?.localId
-                    : data?.localId;
+        if (id) {
             getPatientProfileData({
                 variables: {
                     filter: {
-                        id: localId
+                        id: id,
+                        recordStatus: [RecordStatus.Active, RecordStatus.LogDel, RecordStatus.Superceded]
                     }
                 }
             });
-        });
+        }
     }, []);
 
     useEffect(() => {
@@ -109,7 +87,7 @@ export const PatientProfile = () => {
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
                 <h1 className="font-sans-xl text-medium">Patient Profile</h1>
                 <div>
-                    <Button className="display-inline-flex" type={'submit'}>
+                    <Button className="display-inline-flex print-btn" type={'submit'}>
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>

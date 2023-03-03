@@ -1,11 +1,9 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
-import { useContext, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Investigation, PersonParticipation } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
-import { EncryptionControllerService } from '../../../generated';
 import { useNavigate } from 'react-router';
-import { UserContext } from '../../../providers/UserContext';
 
 type InvestigationResultsProps = {
     data: [Investigation];
@@ -24,7 +22,6 @@ export const InvestigationResults = ({
 }: InvestigationResultsProps) => {
     const searchItemsRef: any = useRef();
     const navigate = useNavigate();
-    const { state } = useContext(UserContext);
 
     // Update 'width' and 'height' when the window resizes
     useEffect(() => {
@@ -89,11 +86,7 @@ export const InvestigationResults = ({
         }
 
         const redirectPatientProfile = async () => {
-            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
-                authorization: `Bearer ${state.getToken()}`,
-                object: investigation
-            });
-            navigate(`/patient-profile/${investigation.localId}?data=${encodeURIComponent(encryptedFilter.value)}`);
+            navigate(`/patient-profile/${patient?.localId}`);
         };
 
         return (
@@ -109,10 +102,10 @@ export const InvestigationResults = ({
                 </Grid>
                 <Grid col={12} className="margin-bottom-2">
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
                             DATE OF BIRTH
                         </h5>
-                        <p className="margin-0 font-sans-1xs text-normal">
+                        <p className="margin-0 font-sans-2xs text-normal">
                             <>
                                 {birthDate ? birthDate : <span className="font-sans-2xs">--</span>}
                                 <span className="font-sans-2xs"> {age ? `(${age})` : ''}</span>
@@ -120,14 +113,14 @@ export const InvestigationResults = ({
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">SEX</h5>
-                        <p className="margin-0 font-sans-1xs text-normal">
+                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">SEX</h5>
+                        <p className="margin-0 font-sans-2xs text-normal">
                             {sex ? sex : <span className="font-sans-2xs">--</span>}
                         </p>
                     </div>
                     <div className="grid-row flex-align-center">
-                        <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">PATIENT ID</h5>
-                        <p className="margin-0 font-sans-1xs text-normal">{patient?.localId}</p>
+                        <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">PATIENT ID</h5>
+                        <p className="margin-0 font-sans-2xs text-normal">{patient?.localId}</p>
                     </div>
                 </Grid>
             </Grid>
@@ -211,7 +204,7 @@ export const InvestigationResults = ({
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
-                                            <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
+                                            <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">
                                                 NOTIFICATION
                                             </h5>
                                             <p className="margin-0 font-sans-1xs text-normal">

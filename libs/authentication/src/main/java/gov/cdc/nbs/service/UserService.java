@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -60,13 +59,19 @@ public class UserService implements UserDetailsService {
 
     public boolean isAuthorized(final long user, final String... permissions) {
         return authUserRepository.findById(user)
-                //  introduce query to bypass unnecessary mapping of entire object
-                //      should only need the authorities or even do the entire check in JPQL
+                // introduce query to bypass unnecessary mapping of entire object
+                // should only need the authorities or even do the entire check in JPQL
                 .map(
                         authUser -> getUserPermissions(authUser)
                                 .stream()
-                                .anyMatch(allowsAny(permissions))
-                ).orElse(false);
+                                .anyMatch(allowsAny(permissions)))
+                .orElse(false);
+    }
+
+    public boolean isAuthorized(final NbsUserDetails userDetails, final String... permissions) {
+        return userDetails.getAuthorities()
+                .stream()
+                .anyMatch(allowsAny(permissions));
     }
 
     private Predicate<NbsAuthority> allows(final String permission) {

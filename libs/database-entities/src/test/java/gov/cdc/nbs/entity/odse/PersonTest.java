@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PersonTest {
 
     @Test
+    @SuppressWarnings("squid:S5961") // Allow more than 25 assertions
     void should_create_new_person_when_patient_added() {
 
         PatientCommand.AddPatient request = new PatientCommand.AddPatient(
@@ -33,6 +34,8 @@ class PersonTest {
                 null,
                 "Marital Status",
                 "EthCode",
+                Instant.parse("2019-03-03T10:15:30.00Z"),
+                "comments",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
         );
@@ -66,6 +69,10 @@ class PersonTest {
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
         assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
         assertThat(actual.getEthnicGroupInd()).isEqualTo("EthCode");
+        assertThat(actual.getAsOfDateGeneral()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertThat(actual.getDescription()).isEqualTo("comments");
 
         assertThat(actual.getPersonParentUid())
                 .as("Master Patient Record set itself as parent")

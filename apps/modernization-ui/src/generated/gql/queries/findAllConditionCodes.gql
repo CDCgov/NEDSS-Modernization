@@ -1,4 +1,4 @@
-query findAllConditionCodes($page: Page) {
+query findAllConditionCodes($page: Page){
     findAllConditionCodes(page: $page){
         id
         conditionDescTxt

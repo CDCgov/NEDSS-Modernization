@@ -38,40 +38,26 @@ public class Person {
     private Long id;
 
     @MapsId
-    @OneToOne(
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            },
-            optional = false
-    )
+    @OneToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, optional = false)
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity nbsEntity;
 
-    @OneToMany(
-            mappedBy = "personUid",
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            },
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonName> names;
 
-    @OneToMany(
-            mappedBy = "personUid",
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            },
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonRace> races;
 
     @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -446,6 +432,11 @@ public class Person {
         this.lastChgTime = patient.requestedOn();
         this.lastChgUserId = patient.requester();
 
+        this.asOfDateGeneral = patient.asOf();
+        this.asOfDateAdmin = patient.asOf();
+        this.asOfDateSex = patient.asOf();
+        this.description = patient.comments();
+
     }
 
     public PersonName add(final PatientCommand.AddName added) {
@@ -464,8 +455,7 @@ public class Person {
         PersonName personName = new PersonName(
                 identifier,
                 this,
-                added
-        );
+                added);
 
         existing.add(personName);
 
@@ -511,8 +501,10 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Person person = (Person) o;
         return Objects.equals(id, person.id);
     }

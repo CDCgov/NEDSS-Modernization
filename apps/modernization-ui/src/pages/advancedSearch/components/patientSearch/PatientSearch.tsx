@@ -1,6 +1,6 @@
-import { Accordion, Button, Form, Grid, Label } from '@trussworks/react-uswds';
+import { Accordion, Button, Checkbox, ErrorMessage, Form, FormGroup, Grid, Label } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Gender, PersonFilter, RecordStatus } from '../../../../generated/graphql/schema';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
@@ -10,9 +10,8 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
-import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
-import { formatInterfaceString } from '../../../../utils/util';
 import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
+import { validateDate } from '../../../../utils/DateValidation';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -21,6 +20,7 @@ type PatientSearchProps = {
 };
 
 export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearchProps) => {
+    const [selectedRecordStatus, setSelectedRecordStatus] = useState([] as RecordStatus[]);
     const methods = useForm();
     const {
         handleSubmit,
@@ -49,6 +49,10 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                 race: data.race
             });
         }
+        // Default to Active checked
+        data?.recordStatus
+            ? setSelectedRecordStatus(data.recordStatus)
+            : setSelectedRecordStatus([RecordStatus.Active]);
     }, [data]);
 
     const simpleSearchItems: AccordionItemProps[] = [
@@ -128,19 +132,49 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                         />
                     </Grid>
                     <Grid col={12}>
-                        <Label htmlFor={''}>Include records that are</Label>
-                        <Grid row>
-                            {Object.values(RecordStatus).map((status, index) => (
-                                <Grid col={6} key={index}>
-                                    <CheckBoxControl
-                                        name={status}
-                                        label={formatInterfaceString(status)}
-                                        id={status}
-                                        control={control}
+                        <FormGroup error={selectedRecordStatus.length === 0}>
+                            <Label htmlFor={''}>Include records that are</Label>
+                            {selectedRecordStatus.length === 0 && (
+                                <ErrorMessage id="record-status-error-message">
+                                    At least one status is required
+                                </ErrorMessage>
+                            )}
+                            <Grid row>
+                                <Grid col={6}>
+                                    <Checkbox
+                                        id={'record-status-active'}
+                                        onChange={(v) =>
+                                            handleRecordStatusChange(RecordStatus.Active, v.target.checked)
+                                        }
+                                        name={'name'}
+                                        label={'Active'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.Active)}
                                     />
                                 </Grid>
-                            ))}
-                        </Grid>
+                                <Grid col={6}>
+                                    <Checkbox
+                                        id={'record-status-deleted'}
+                                        onChange={(v) =>
+                                            handleRecordStatusChange(RecordStatus.LogDel, v.target.checked)
+                                        }
+                                        name={'name'}
+                                        label={'Deleted'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.LogDel)}
+                                    />
+                                </Grid>
+                                <Grid col={6}>
+                                    <Checkbox
+                                        id={'record-status-superceded'}
+                                        onChange={(v) =>
+                                            handleRecordStatusChange(RecordStatus.Superceded, v.target.checked)
+                                        }
+                                        name={'name'}
+                                        label={'Superceded'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.Superceded)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </FormGroup>
                     </Grid>
                 </>
             ),
@@ -183,12 +217,26 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         }
     ];
 
+    const handleRecordStatusChange = (status: RecordStatus, isChecked: boolean) => {
+        // Add or remove record status from state
+        if (isChecked) {
+            setSelectedRecordStatus([...selectedRecordStatus, status]);
+        } else {
+            setSelectedRecordStatus(selectedRecordStatus.filter((r) => r !== status));
+        }
+    };
+
     const onSubmit: any = (body: any) => {
+        // at least 1 record status must be selected
+        if (selectedRecordStatus.length === 0) {
+            return;
+        }
         const rowData: PersonFilter = {
             firstName: body.firstName,
-            lastName: body.lastName
+            lastName: body.lastName,
+            recordStatus: selectedRecordStatus
         };
-        body.dob && (rowData.dateOfBirth = body.dob);
+        body.dob && validateDate(body.dob) && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
 
         body.address && (rowData.address = body.address);

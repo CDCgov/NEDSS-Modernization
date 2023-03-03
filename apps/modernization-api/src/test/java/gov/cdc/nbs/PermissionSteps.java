@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNull;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import org.junit.runner.RunWith;
@@ -26,6 +27,7 @@ import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
@@ -126,6 +128,7 @@ public class PermissionSteps {
             switch (searchType) {
                 case "findPatientsByFilter":
                     var patientFilter = new PatientFilter();
+                    patientFilter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
                     patientFilter.setFirstName("John");
                     response = patientController.findPatientsByFilter(patientFilter, page);
                     break;

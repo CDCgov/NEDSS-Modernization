@@ -1,4 +1,4 @@
-query findAllPatientIdentificationTypes($page: Page) {
+query findAllPatientIdentificationTypes($page: Page){
     findAllPatientIdentificationTypes(page: $page){
         content{
             id{

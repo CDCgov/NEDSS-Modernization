@@ -1,19 +1,24 @@
 package gov.cdc.nbs;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,23 +26,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.PostalLocatorRepository;
-import gov.cdc.nbs.repository.TeleLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.support.PersonMother;
+import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.data.domain.Sort.Direction;
-import java.util.Comparator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -50,10 +54,6 @@ public class PatientSearchSteps {
     @Autowired
     private PersonRepository personRepository;
     @Autowired
-    private PostalLocatorRepository postalLocatorRepository;
-    @Autowired
-    private TeleLocatorRepository teleLocatorRepository;
-    @Autowired
     private PatientController patientController;
     @Autowired
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
@@ -63,6 +63,7 @@ public class PatientSearchSteps {
     private List<Person> generatedPersons;
     private Direction sortDirection;
     private String sortField;
+    private QueryException exception;
 
     @Before
     public void clearAuth() {
@@ -73,11 +74,11 @@ public class PatientSearchSteps {
     public void there_are_patients(int patientCount) {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(patientCount);
-        
+
         // make first person soundex testable
         Person soundexPerson = generatedPersons.get(0);
-        soundexPerson.setFirstNm("Jon");  // soundex equivalent to John
-        soundexPerson.setLastNm("Smyth");  // soundex equivalent to Smith
+        soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
 
         generatedPersons.forEach(personRepository::delete);
 
@@ -95,10 +96,33 @@ public class PatientSearchSteps {
         searchPatient = generatedPersons.get(index);
     }
 
+    @Given("A deleted patient exists")
+    public void a_deleted_patient_exists() {
+        var deletedRecord = PersonMother.janeDoe_deleted();
+        personRepository.save(deletedRecord);
+        elasticsearchPersonRepository
+                .saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(Arrays.asList(deletedRecord)));
+    }
+
     @When("I search patients by {string} {string}")
     public void i_search_patients_by_field(String field, String qualifier) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
+    }
+
+    @When("I search for a record status of {string}")
+    public void i_search_for_a_record_status_of(String statusString) {
+        var recordStatus = RecordStatus.valueOf(statusString);
+        if (recordStatus.equals(RecordStatus.LOG_DEL)) {
+            searchPatient = PersonMother.janeDoe_deleted();
+        }
+        PatientFilter filter = new PatientFilter();
+        filter.setRecordStatus(Arrays.asList(recordStatus));
+        try {
+            searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
+        } catch (QueryException e) {
+            exception = e;
+        }
     }
 
     @When("I search patients by {string} {string} {string} {string} {string} {string}")
@@ -141,6 +165,21 @@ public class PatientSearchSteps {
         Assert.assertEquals(searchResults, sortedPersons);
     }
 
+    @Then("I find patients with {string} record status")
+    public void I_find_patients_with_a_specific_record_status(String statusString) {
+        var recordStatus = RecordStatus.valueOf(statusString);
+        assertNotNull(searchResults);
+        assertFalse(searchResults.isEmpty());
+        searchResults.forEach(p -> assertEquals(recordStatus, p.getRecordStatusCd()));
+    }
+
+    @Then("I dont have permissions to execute the search")
+    public void I_dont_have_permissions_to_execute_the_search() {
+        assertNotNull(searchPatient);
+        assertNotNull(exception);
+        assertNull(searchResults);
+    }
+
     private PatientFilter updatePatientDataFilter(PatientFilter filter, String field, String qualifier) {
         if (field == null || field.isEmpty()) {
             return filter;
@@ -151,7 +190,7 @@ public class PatientSearchSteps {
                 break;
             case "last name soundex":
                 searchPatient = generatedPersons.get(0);
-                filter.setLastName("Smith");  // finds Smyth
+                filter.setLastName("Smith"); // finds Smyth
                 break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
@@ -214,7 +253,7 @@ public class PatientSearchSteps {
                 filter.setEthnicity(searchPatient.getEthnicGroupInd());
                 break;
             case "record status":
-                filter.setRecordStatus(searchPatient.getRecordStatusCd());
+                filter.setRecordStatus(Arrays.asList(searchPatient.getRecordStatusCd()));
                 break;
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
@@ -249,11 +288,15 @@ public class PatientSearchSteps {
 
     private PatientFilter getPatientDataFilter(String field, String qualifier) {
         var filter = new PatientFilter();
+        // default to "ACTIVE" records
+        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
         return updatePatientDataFilter(filter, field, qualifier);
     }
 
     private PatientFilter getPatientPartialDataFilter(String field, String qualifier) {
         var filter = new PatientFilter();
+        // default to "ACTIVE" records
+        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
         return updatePatientPartialDataFilter(filter, field, qualifier);
     }
 

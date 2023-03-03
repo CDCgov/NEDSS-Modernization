@@ -1,3 +1,7 @@
+extend type Query {
+    findAllCountryCodes(page: Page): [CountryCode]!
+}
+
 type CountryCode {
     id: ID
     assigningAuthorityCd: String

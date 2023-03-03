@@ -1,4 +1,4 @@
-query findOpenInvestigationsForPatient($patientId: Int!, $page: Page) {
+query findOpenInvestigationsForPatient($patientId: Int!, $page: Page){
     findOpenInvestigationsForPatient(patientId: $patientId, page: $page){
         content{
             id

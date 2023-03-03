@@ -1,3 +1,14 @@
+extend type Query {
+    findOrganizationById(id: ID!): Organization
+    findAllOrganizations(page: Page): OrganizationResults!
+    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): OrganizationResults!
+}
+
+type OrganizationResults {
+    content: [Organization]!
+    total: Int!
+}
+
 input OrganizationFilter {
     id: ID
     displayNm: String
