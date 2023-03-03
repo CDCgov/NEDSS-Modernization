@@ -75,6 +75,10 @@ jobs:
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN" >> $GITHUB_OUTPUT
+
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >> $GITHUB_OUTPUT
     - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for release
       if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
       id: build-image-release
