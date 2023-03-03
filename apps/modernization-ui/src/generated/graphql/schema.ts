@@ -778,7 +778,7 @@ export type PersonFilter = {
   mortalityStatus?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
   race?: InputMaybe<Scalars['String']>;
-  recordStatus?: InputMaybe<RecordStatus>;
+  recordStatus: Array<RecordStatus>;
   ssn?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
   treatmentId?: InputMaybe<Scalars['String']>;

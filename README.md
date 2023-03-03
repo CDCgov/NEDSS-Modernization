@@ -13,7 +13,8 @@
 
 ## Guidelines
 
-   - [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
+- [Package by Feature](docs/Package-By-Feature.md) to make code easier to find.
+- [Code Formatting](docs/Code-Formatting.md)
 
 ## TLDR: Running everything inside docker
 
@@ -23,6 +24,7 @@
 1. Install Node / NPM
 1. Clone [NBS](https://github.com/cdcent/NEDSSDev)
 1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into. Example:
+
    ```sh
    export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
 
@@ -30,6 +32,7 @@
    echo $NEDSS_HOME
 
    ```
+
 1. CD into the `cdc-sandbox` directory
    ```sh
    cd cdc-sandbox
@@ -76,8 +79,11 @@
    ```
 
 1. To create your own user account visit site (line 15):
-+ Navigate to System Management
-+ Expand Security Management
-+ Click Manage Users & click add
-+ Enter userId, First Name and Last Name
-+ Add a Role & click submit
+
+- Navigate to System Management
+- Expand Security Management
+- Click Manage Users & click add
+- Enter userId, First Name and Last Name
+- Add a Role & click submit
+
+## Code Formatting
