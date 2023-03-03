@@ -1,0 +1,34 @@
+query findContactsForPatient($patient: ID!){
+    findContactsForPatient(patient: $patient){
+        patient
+        namedByPatient{
+            contactRecord
+            createdOn
+            condition
+            contact{
+                id
+                name
+            }
+            namedOn
+            priority
+            disposition
+            event
+        }
+        namedByContact{
+            contactRecord
+            createdOn
+            contact{
+                id
+                name
+            }
+            namedOn
+            condition
+            event
+            associatedWith{
+                id
+                local
+                condition
+            }
+        }
+    }
+}

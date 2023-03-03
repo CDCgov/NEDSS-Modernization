@@ -1,6 +1,7 @@
 package gov.cdc.nbs.graphql.filter;
 
 import java.time.Instant;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -39,7 +40,7 @@ public class PatientFilter {
     private String zip;
     private String mortalityStatus;
     private String ethnicity;
-    private RecordStatus recordStatus;
+    private List<RecordStatus> recordStatus;
     private String treatmentId;
     private String vaccinationId;
 

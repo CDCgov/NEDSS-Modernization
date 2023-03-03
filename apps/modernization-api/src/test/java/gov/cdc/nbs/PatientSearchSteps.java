@@ -1,10 +1,14 @@
 package gov.cdc.nbs;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +26,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
@@ -57,6 +63,7 @@ public class PatientSearchSteps {
     private List<Person> generatedPersons;
     private Direction sortDirection;
     private String sortField;
+    private QueryException exception;
 
     @Before
     public void clearAuth() {
@@ -89,10 +96,33 @@ public class PatientSearchSteps {
         searchPatient = generatedPersons.get(index);
     }
 
+    @Given("A deleted patient exists")
+    public void a_deleted_patient_exists() {
+        var deletedRecord = PersonMother.janeDoe_deleted();
+        personRepository.save(deletedRecord);
+        elasticsearchPersonRepository
+                .saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(Arrays.asList(deletedRecord)));
+    }
+
     @When("I search patients by {string} {string}")
     public void i_search_patients_by_field(String field, String qualifier) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
+    }
+
+    @When("I search for a record status of {string}")
+    public void i_search_for_a_record_status_of(String statusString) {
+        var recordStatus = RecordStatus.valueOf(statusString);
+        if (recordStatus.equals(RecordStatus.LOG_DEL)) {
+            searchPatient = PersonMother.janeDoe_deleted();
+        }
+        PatientFilter filter = new PatientFilter();
+        filter.setRecordStatus(Arrays.asList(recordStatus));
+        try {
+            searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
+        } catch (QueryException e) {
+            exception = e;
+        }
     }
 
     @When("I search patients by {string} {string} {string} {string} {string} {string}")
@@ -133,6 +163,21 @@ public class PatientSearchSteps {
         Comparator<Person> comparator = getPersonSortComparator(sortField, sortDirection);
         List<Person> sortedPersons = generatedPersons.stream().sorted(comparator).collect(Collectors.toList());
         Assert.assertEquals(searchResults, sortedPersons);
+    }
+
+    @Then("I find patients with {string} record status")
+    public void I_find_patients_with_a_specific_record_status(String statusString) {
+        var recordStatus = RecordStatus.valueOf(statusString);
+        assertNotNull(searchResults);
+        assertFalse(searchResults.isEmpty());
+        searchResults.forEach(p -> assertEquals(recordStatus, p.getRecordStatusCd()));
+    }
+
+    @Then("I dont have permissions to execute the search")
+    public void I_dont_have_permissions_to_execute_the_search() {
+        assertNotNull(searchPatient);
+        assertNotNull(exception);
+        assertNull(searchResults);
     }
 
     private PatientFilter updatePatientDataFilter(PatientFilter filter, String field, String qualifier) {
@@ -208,7 +253,7 @@ public class PatientSearchSteps {
                 filter.setEthnicity(searchPatient.getEthnicGroupInd());
                 break;
             case "record status":
-                filter.setRecordStatus(searchPatient.getRecordStatusCd());
+                filter.setRecordStatus(Arrays.asList(searchPatient.getRecordStatusCd()));
                 break;
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
@@ -243,11 +288,15 @@ public class PatientSearchSteps {
 
     private PatientFilter getPatientDataFilter(String field, String qualifier) {
         var filter = new PatientFilter();
+        // default to "ACTIVE" records
+        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
         return updatePatientDataFilter(filter, field, qualifier);
     }
 
     private PatientFilter getPatientPartialDataFilter(String field, String qualifier) {
         var filter = new PatientFilter();
+        // default to "ACTIVE" records
+        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
         return updatePatientPartialDataFilter(filter, field, qualifier);
     }
 

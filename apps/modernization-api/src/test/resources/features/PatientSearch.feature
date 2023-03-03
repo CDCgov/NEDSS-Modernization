@@ -13,28 +13,28 @@ Feature: Patient search
     Then I find the patient
 
     Examples: 
-      | field         | qualifier |
-      | last name     |           |
-      | last name soundex |           |
-      | first name    |           |
+      | field              | qualifier |
+      | last name          |           |
+      | last name soundex  |           |
+      | first name         |           |
       | first name soundex |           |
-      | race          |           |
-      | patient id    |           |
-      | ssn           |           |
-      | phone number  |           |
-      | date of birth | before    |
-      | date of birth | after     |
-      | date of birth | equal     |
-      | gender        |           |
-      | deceased      |           |
-      | address       |           |
-      | city          |           |
-      | state         |           |
-      | country       |           |
-      | zip code      |           |
-      | ethnicity     |           |
-      | record status |           |
-      | email         |           |
+      | race               |           |
+      | patient id         |           |
+      | ssn                |           |
+      | phone number       |           |
+      | date of birth      | before    |
+      | date of birth      | after     |
+      | date of birth      | equal     |
+      | gender             |           |
+      | deceased           |           |
+      | address            |           |
+      | city               |           |
+      | state              |           |
+      | country            |           |
+      | zip code           |           |
+      | ethnicity          |           |
+      | record status      |           |
+      | email              |           |
 
   @patient_multi_data_search
   Scenario: I can find a Patient by patient data using multiple fields
@@ -84,9 +84,27 @@ Feature: Patient search
     When I search for patients sorted by "<search field>" "<qualifier>" "<sort field>" "<direction>"
     Then I find the patients sorted
 
-    Examples:
-      | search field  | qualifier | sort field  | direction|
-      | record status |           | lastNm      | asc      |
-      | record status |           | lastNm      | desc     |
-      | record status |           | birthTime   | asc      |
-      | record status |           | birthTime   | desc     |
+    Examples: 
+      | search field  | qualifier | sort field | direction |
+      | record status |           | lastNm     | asc       |
+      | record status |           | lastNm     | desc      |
+      | record status |           | birthTime  | asc       |
+      | record status |           | birthTime  | desc      |
+
+  @patient_search_record_status_deleted
+  Scenario: I can find patients with deleted record status
+    Given I have the authorities: "FINDINACTIVE-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And A deleted patient exists
+    When I search for a record status of "LOG_DEL"
+    Then I find patients with "LOG_DEL" record status
+
+  @patient_search_record_status_active
+  Scenario: I can find patients with active record status
+    When I search for a record status of "ACTIVE"
+    Then I find patients with "ACTIVE" record status
+
+  @patient_search_record_status_deleted_invalid_permission
+  Scenario: I cant search for deleted records without the correct permission
+    Given A deleted patient exists
+    When I search for a record status of "LOG_DEL"
+    Then I dont have permissions to execute the search
