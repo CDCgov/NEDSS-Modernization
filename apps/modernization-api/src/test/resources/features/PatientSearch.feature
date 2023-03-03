@@ -91,6 +91,18 @@ Feature: Patient search
       | record status |           | birthTime  | asc       |
       | record status |           | birthTime  | desc      |
 
+  @patient_search_with_trailing_space
+  Scenario: When search criteria ends with a space, only the expected patients are returned
+    When I search for a patient by "<field>" and there is a space at the end
+    Then I find only the expected patient
+
+    Examples: 
+      | field      |
+      | first name |
+      | last name  |
+      | address    |
+      | city       |
+
   @patient_search_record_status_deleted
   Scenario: I can find patients with deleted record status
     Given I have the authorities: "FINDINACTIVE-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
