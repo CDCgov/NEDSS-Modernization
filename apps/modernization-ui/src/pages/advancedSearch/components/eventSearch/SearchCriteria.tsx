@@ -10,6 +10,7 @@ import {
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { formatInterfaceString } from '../../../../utils/util';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { MultiSelectControl } from '../../../../components/FormInputs/MultiSelectControl';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
@@ -19,7 +20,7 @@ type GeneralSearchProps = {
 export const SearchCriteria = ({ control }: GeneralSearchProps) => {
     return (
         <>
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="investigationStatus"
                 label="Investigation status"
@@ -49,7 +50,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 )}
             </SearchCriteriaContext.Consumer>
 
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="statusList"
                 label="Case status"
@@ -61,7 +62,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="processingStatus"
                 label="Current processing status"
@@ -73,7 +74,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="notificationStatus"
                 label="Notification status"
