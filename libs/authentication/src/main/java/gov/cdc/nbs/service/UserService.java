@@ -68,6 +68,12 @@ public class UserService implements UserDetailsService {
                 .orElse(false);
     }
 
+    public boolean isAuthorized(final NbsUserDetails userDetails, final String... permissions) {
+        return userDetails.getAuthorities()
+                .stream()
+                .anyMatch(allowsAny(permissions));
+    }
+
     private Predicate<NbsAuthority> allows(final String permission) {
         return authority -> Objects.equals(authority.getAuthority(), permission);
     }
