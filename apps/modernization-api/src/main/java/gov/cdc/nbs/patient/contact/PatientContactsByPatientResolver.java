@@ -21,7 +21,7 @@ class PatientContactsByPatientResolver {
   }
 
   @QueryMapping(name = "findContactsForPatient")
-  @PreAuthorize("hasAuthority('FIND-PATIENT')")
+  @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-INVESTIGATION')")
   PatientContacts find(@Argument("patient") final long patient) {
     List<PatientContacts.NamedByPatient> namedByPatients = this.namedByPatientFinder.find(patient);
     List<PatientContacts.NamedByContact> namedByContacts = this.namedByContactFinder.find(patient);
