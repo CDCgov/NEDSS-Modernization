@@ -31,21 +31,18 @@ public class InvestigationFilter {
     @Getter
     @Setter
     public static class CaseStatuses {
-        private boolean includeUnassigned;
         private List<CaseStatus> statusList;
     }
 
     @Getter
     @Setter
     public static class NotificationStatuses {
-        private boolean includeUnassigned;
         private List<NotificationStatus> statusList;
     }
 
     @Getter
     @Setter
     public static class ProcessingStatuses {
-        private boolean includeUnassigned;
         private List<ProcessingStatus> statusList;
     }
 

@@ -563,72 +563,47 @@ public class EventService {
             builder.must(QueryBuilders.termsQuery(Investigation.OUTBREAK_NAME, filter.getOutbreakNames()));
         }
 
-        // case status / include unassigned
+        // case status
         if (filter.getCaseStatuses() != null) {
             var cs = filter.getCaseStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()
-                    || !cs.isIncludeUnassigned()) {
+            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()) {
                 throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying caseStatuses");
+                        "statusList is required when specifying caseStatuses");
             }
             var statusStrings = filter.getCaseStatuses().getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (cs.isIncludeUnassigned()) {
-                // value is in list, or null
-                var caseStatusQuery = QueryBuilders.boolQuery();
-                statusStrings
-                        .forEach(s -> caseStatusQuery.should(QueryBuilders.matchQuery(Investigation.CASE_CLASS_CD, s)));
-                caseStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.CASE_CLASS_CD));
-                builder.should(caseStatusQuery);
-            } else {
-                builder.must(QueryBuilders.termsQuery(Investigation.CASE_CLASS_CD, statusStrings));
-            }
+            
+            builder.must(QueryBuilders.termsQuery(Investigation.CASE_CLASS_CD, statusStrings));
+            
         }
-        // notification status / include unassigned
+        // notification status
         if (filter.getNotificationStatuses() != null) {
             var ns = filter.getNotificationStatuses();
-            if (ns.getStatusList() == null || ns.getStatusList().isEmpty()
-                    || !ns.isIncludeUnassigned()) {
+            if (ns.getStatusList() == null || ns.getStatusList().isEmpty()) {
                 throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying notificationStatuses");
+                        "statusList is required when specifying notificationStatuses");
             }
             var statusStrings = ns.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (ns.isIncludeUnassigned()) {
-                // value is in list, or null
-                var notificationStatusQuery = QueryBuilders.boolQuery();
-                statusStrings.forEach(s -> notificationStatusQuery
-                        .should(QueryBuilders.matchQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD, s)));
-                notificationStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD));
-                builder.should(notificationStatusQuery);
-            } else {
-                builder.must(QueryBuilders.termsQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD, statusStrings));
-            }
+            
+            builder.must(QueryBuilders.termsQuery(Investigation.NOTIFICATION_RECORD_STATUS_CD, statusStrings));
+            
         }
-        // processing status / include unassigned
+        // processing status 
         if (filter.getProcessingStatuses() != null) {
             var ps = filter.getProcessingStatuses();
-            if (ps.getStatusList() == null || ps.getStatusList().isEmpty()
-                    || !ps.isIncludeUnassigned()) {
+            if (ps.getStatusList() == null || ps.getStatusList().isEmpty()) {
                 throw new QueryException(
-                        "statusList and includeUnassigned are required when specifying processingStatuses");
+                        "statusList is required when specifying processingStatuses");
             }
             var statusStrings = ps.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (ps.isIncludeUnassigned()) {
-                // value is in list, or null
-                var notificationStatusQuery = QueryBuilders.boolQuery();
-                statusStrings.forEach(s -> notificationStatusQuery
-                        .should(QueryBuilders.matchQuery(Investigation.CURR_PROCESS_STATUS_CD, s)));
-                notificationStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.CURR_PROCESS_STATUS_CD));
-                builder.should(notificationStatusQuery);
-
-            } else {
-                builder.must(QueryBuilders.termsQuery(Investigation.CURR_PROCESS_STATUS_CD, statusStrings));
-            }
+            
+            builder.must(QueryBuilders.termsQuery(Investigation.CURR_PROCESS_STATUS_CD, statusStrings));
+            
         }
 
         return new NativeSearchQueryBuilder()
