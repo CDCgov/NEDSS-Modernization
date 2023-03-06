@@ -27,7 +27,7 @@ import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.controller.PatientController;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.message.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;

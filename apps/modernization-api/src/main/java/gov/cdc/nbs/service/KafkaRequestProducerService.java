@@ -47,6 +47,7 @@ public class KafkaRequestProducerService {
 	}
 
 	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
+		try {
 		send(kafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
 		}
 		catch(Exception e) {

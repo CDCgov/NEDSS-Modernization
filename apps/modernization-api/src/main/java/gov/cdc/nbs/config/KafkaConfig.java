@@ -51,19 +51,7 @@ public class KafkaConfig {
 		return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
 				.compact().build();
 	}
-
-	@Bean
-	public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
-		return buildKafkaTemplate();
-	}
-
-	private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
-		var config = getKafkaConfig();
-		return new KafkaTemplate<>(
-				new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
-						new JsonSerializer<>()));
-
-	}
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
@@ -112,11 +100,6 @@ public class KafkaConfig {
 	@Bean
 	public KafkaTemplate<String, PatientUpdateRequest> kafkaTemplatePatientUpdate() {
 		return new KafkaTemplate<>(producerFactoryPatientUpdate());
-	}
-
-	@Bean
-	public KafkaTemplate<String, EnvelopeRequest> kafkaTemplatePatientSearch() {
-		return new KafkaTemplate<>(producerFactoryPatientSearch());
 	}
 
 	@Bean

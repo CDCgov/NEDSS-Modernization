@@ -37,7 +37,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.message.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
@@ -52,6 +52,7 @@ import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.model.PatientCreateResponse;
 import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
@@ -367,20 +368,7 @@ public class PatientService {
                 createRequest.request(),
                 createRequest.patient());
     }
-
-    /**
-     * Send updated Person Event to kakfa topic to be picked up and updated.
-     *
-     * @param id
-     * @param input
-     * @return
-     */
-    public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-        String requestId = getRequestID();
-        var updateRequest = new PatientUpdateRequest(requestId, new PatientUpdateParams(input, new ArrayList<>()));
-        producer.requestPatientUpdateEnvelope(updateRequest);
-        return new PatientUpdateResponse(requestId);
-    }
+    
 	/**
 	 * Send updated Person Event to kakfa topic to be picked up and updated.
 	 * 
