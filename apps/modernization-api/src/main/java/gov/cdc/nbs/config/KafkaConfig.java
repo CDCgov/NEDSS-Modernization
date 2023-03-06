@@ -16,7 +16,6 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
@@ -77,12 +76,6 @@ public class KafkaConfig {
 		}
 	}
 	
-	private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
-		var config = getKafkaConfig();
-		return new KafkaTemplate<>(
-				new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
-						new JsonSerializer<>()));
-	}
 
 	private Map<String, Object> getKafkaConfig() {
 		Map<String, Object> config = new HashMap<>();

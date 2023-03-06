@@ -13,10 +13,10 @@ import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
 import gov.cdc.nbs.entity.elasticsearch.NestedName;
 import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
 import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.patientlistener.enums.converter.InstantConverter;
 
 import java.time.Instant;
 

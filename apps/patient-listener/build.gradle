@@ -52,6 +52,9 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
+    
+    // elasticsearch
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
 	
 	// test
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"

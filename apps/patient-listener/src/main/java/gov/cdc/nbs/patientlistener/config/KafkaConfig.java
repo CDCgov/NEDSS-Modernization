@@ -42,11 +42,6 @@ public class KafkaConfig {
 	@Value("${kafka.properties.topic.replication.factor}")
 	private int topicReplicationFactor;
 
-    @Value("${kafka.properties.topic.partition.count}")
-    private int topicPartitionCount;
-
-    @Value("${kafka.properties.topic.replication.factor}")
-    private int topicReplicationFactor;
 
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
@@ -55,8 +50,14 @@ public class KafkaConfig {
 	private String patientDeleteTopic;
 	
 	// general topic
-		@Value("${kafkadef.patient-search.topics.request.patient}")
-		private String patientSearchTopic;
+	@Value("${kafkadef.patient-search.topics.request.patient}")
+	private String patientSearchTopic;
+	
+	@Value("${kafka.properties.schema.registry.url}")
+    private String schemaRegistryUrl;
+	
+	@Value("${kafka.consumer.group-id}")
+	private String groupId;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
@@ -81,10 +82,7 @@ public class KafkaConfig {
 		config.putAll(commonConsumerConfigs());
 		return new DefaultKafkaConsumerFactory<>(config);
 	}
-
-	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
-	private String patientDeleteTopic;
-
+	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Bean
