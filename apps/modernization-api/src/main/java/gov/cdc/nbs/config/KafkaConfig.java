@@ -16,7 +16,9 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
+import gov.cdc.nbs.message.PatientCreateRequest;
 import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
 
@@ -49,6 +51,28 @@ public class KafkaConfig {
 		}
 		return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
 				.compact().build();
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Bean
+	public ProducerFactory<String, PatientCreateRequest> producerFactoryPatientCreate() {
+		if (!kafkaEnabled) {
+			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
+		} else {
+			var config = getKafkaConfig();			
+			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new JsonSerializer());
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Bean
+	public ProducerFactory<String, EnvelopeRequest> producerFactoryPatientSearch() {
+		if (!kafkaEnabled) {
+			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
+		} else {
+			var config = getKafkaConfig();			
+			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new JsonSerializer());
+		}
 	}
 	
 	
@@ -89,6 +113,11 @@ public class KafkaConfig {
 		
 		return config;
 	}
+	
+	@Bean
+	public KafkaTemplate<String, PatientCreateRequest> kafkaTemplatePatientCreate() {
+		return new KafkaTemplate<>(producerFactoryPatientCreate());
+	}
 
 	@Bean
 	public KafkaTemplate<String, PatientUpdateRequest> kafkaTemplatePatientUpdate() {
@@ -98,6 +127,11 @@ public class KafkaConfig {
 	@Bean
 	public KafkaTemplate<String, PatientDeleteRequest> kafkaTemplatePatientDelete() {
 		return new KafkaTemplate<>(producerFactoryPatientDelete());
+	}
+	
+	@Bean
+	public KafkaTemplate<String, EnvelopeRequest> kafkaTemplateSearch() {
+		return new KafkaTemplate<>(producerFactoryPatientSearch());
 	}
 
 	@Bean
