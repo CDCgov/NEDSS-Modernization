@@ -2,7 +2,6 @@ package gov.cdc.nbs.service;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,10 +9,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -34,11 +31,9 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
-
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
@@ -146,7 +141,10 @@ public class PatientService {
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getFirstName())).defaultField("name.firstNm"),
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(filter.getFirstName()))
+                            .defaultField("name.firstNm")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
 
             Soundex soundex = new Soundex();
@@ -161,7 +159,10 @@ public class PatientService {
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getLastName())).defaultField("name.lastNm"),
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(filter.getLastName()))
+                            .defaultField("name.lastNm")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
 
             Soundex soundex = new Soundex();
@@ -195,7 +196,10 @@ public class PatientService {
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                    .queryStringQuery(addWildcards(filter.getAddress())).defaultField("address.streetAddr1"),
+                    .queryStringQuery(
+                            addWildcards(filter.getAddress()))
+                    .defaultField("address.streetAddr1")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -209,7 +213,10 @@ public class PatientService {
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                    QueryBuilders.queryStringQuery(addWildcards(filter.getCity())).defaultField("address.city"),
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(filter.getCity()))
+                            .defaultField("address.city")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -319,8 +326,7 @@ public class PatientService {
     }
 
     /**
-     * Adds the record status to the query builder. If no record status is
-     * specified, throw a QueryException.
+     * Adds the record status to the query builder. If no record status is specified, throw a QueryException.
      */
     private void addRecordStatusQuery(Collection<RecordStatus> recordStatus, BoolQueryBuilder builder) {
         if (recordStatus == null || recordStatus.isEmpty()) {
@@ -348,8 +354,7 @@ public class PatientService {
     }
 
     /**
-     * Generates a patient id and localId. Posts the request along with Id's to
-     * Kafka
+     * Generates a patient id and localId. Posts the request along with Id's to Kafka
      */
     public PatientCreateResponse sendCreatePatientRequest(PatientInput input) {
         // create 'create patient' message and post to kafka
@@ -388,7 +393,7 @@ public class PatientService {
 
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
-        return searchString.toLowerCase() + "*";
+        return searchString.toLowerCase().trim() + "*";
     }
 
     private Collection<SortBuilder<?>> buildPatientSort(Pageable pageable) {
