@@ -4,6 +4,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.SuffixStringConverter;
 
 @Converter
 public class SuffixConverter implements AttributeConverter<Suffix, String> {

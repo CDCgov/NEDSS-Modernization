@@ -1,14 +1,14 @@
-package gov.cdc.nbs.entity.enums.converter;
+package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.message.enums.Suffix;
 
 public class SuffixStringConverter {
 
-  public static Suffix fromString(final String dbData) {
-    if (dbData == null) {
+  public static Suffix fromString(final String value) {
+    if (value == null) {
       return null;
     }
-    return switch (dbData) {
+    return switch (value) {
       case "ESQ" -> Suffix.ESQ;
       case "II" -> Suffix.II;
       case "III" -> Suffix.III;
@@ -20,11 +20,11 @@ public class SuffixStringConverter {
     };
   }
 
-  public static String toString(final Suffix attribute) {
-    if (attribute == null) {
+  public static String toString(final Suffix value) {
+    if (value == null) {
       return null;
     }
-    return switch (attribute) {
+    return switch (value) {
       case ESQ -> "ESQ";
       case II -> "II";
       case III -> "III";
