@@ -15,14 +15,14 @@ import lombok.experimental.FieldDefaults;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EnvelopeRequest {
-	String requestId;
-	List<TemplateInput> vars;
+    String requestId;
+    List<TemplateInput> vars;
 
-	public static EnvelopeRequest createEnvelope(String requestId, List<TemplateInput> vars) {
-		return new EnvelopeRequest(requestId, vars);
-	}
+    public static EnvelopeRequest createEnvelope(String requestId, List<TemplateInput> vars) {
+        return new EnvelopeRequest(requestId, vars);
+    }
 
-	public String getRequestId() {
-		return this.requestId;
-	}
+    public String getRequestId() {
+        return this.requestId;
+    }
 }

@@ -53,11 +53,11 @@ public class EncryptionSteps {
     public void i_send_a_request_to_the_encryption_endpoint() throws JsonProcessingException, Exception {
         filter = generateRandomFilter();
         TestContext.response = mvc.perform(
-                MockMvcRequestBuilders.post("/encryption/encrypt")
-                        .header("Authorization", "Bearer " + TestContext.token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(filter))
-                        .accept(MediaType.ALL))
+                        MockMvcRequestBuilders.post("/encryption/encrypt")
+                                .header("Authorization", "Bearer " + TestContext.token)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(filter))
+                                .accept(MediaType.ALL))
                 .andReturn();
     }
 
@@ -76,10 +76,10 @@ public class EncryptionSteps {
     @When("I send a request to the decryption endpoint")
     public void I_send_a_request_to_the_decryption_endpoint() throws JsonProcessingException, Exception {
         TestContext.response = mvc.perform(
-                MockMvcRequestBuilders.post("/encryption/decrypt")
-                        .header("Authorization", "Bearer " + TestContext.token)
-                        .content(encryptedString)
-                        .accept(MediaType.ALL))
+                        MockMvcRequestBuilders.post("/encryption/decrypt")
+                                .header("Authorization", "Bearer " + TestContext.token)
+                                .content(encryptedString)
+                                .accept(MediaType.ALL))
                 .andReturn();
     }
 

@@ -114,8 +114,7 @@ public class PatientCreateRequestResolver {
     }
 
     /**
-     * Calls the id generator service and constructs the localId with
-     * the format "prefix + id + suffix"
+     * Calls the id generator service and constructs the localId with the format "prefix + id + suffix"
      */
     private String generateLocalId() {
         var generatedId = idGeneratorService.getNextValidId(IdGeneratorService.EntityType.PERSON);
@@ -123,8 +122,7 @@ public class PatientCreateRequestResolver {
     }
 
     /**
-     * Calls the id generator service to retrieve the next available Id for an
-     * entity
+     * Calls the id generator service to retrieve the next available Id for an entity
      */
     private Long generateNbsId() {
         var generatedId = idGeneratorService.getNextValidId(IdGeneratorService.EntityType.NBS);

@@ -55,6 +55,7 @@ public class PatientFilter {
     private String treatmentId;
     private String vaccinationId;
 
+
     @Getter
     @Setter
     @AllArgsConstructor

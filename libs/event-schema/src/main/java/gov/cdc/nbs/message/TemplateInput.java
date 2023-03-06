@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TemplateInput {
-	String key;
-	String value;
+    String key;
+    String value;
 
 }

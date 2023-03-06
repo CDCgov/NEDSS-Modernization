@@ -34,10 +34,10 @@ class ExportServiceTest {
             .addTime(now)
             .personParticipations(
                     Arrays.asList(ElasticsearchPersonParticipation.builder()
-                            .firstName("Imthe")
-                            .lastName("Investigator")
-                            .typeCd("InvestgrOfPHC")
-                            .build(),
+                                    .firstName("Imthe")
+                                    .lastName("Investigator")
+                                    .typeCd("InvestgrOfPHC")
+                                    .build(),
                             ElasticsearchPersonParticipation.builder()
                                     .firstName("AndIm")
                                     .lastName("ThePatient")

@@ -123,6 +123,7 @@ public record PatientCreateRequest(
             PatientInput.NameUseCd use) {
     }
 
+
     public record PostalAddress(
             long id,
             String streetAddress1,
@@ -135,10 +136,12 @@ public record PatientCreateRequest(
             String censusTract) {
     }
 
+
     public record EmailAddress(
             long id,
             String emailAddress) {
     }
+
 
     public record PhoneNumber(
             long id,

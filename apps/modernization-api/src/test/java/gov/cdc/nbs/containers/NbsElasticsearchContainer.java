@@ -21,9 +21,9 @@ public class NbsElasticsearchContainer extends ElasticsearchContainer {
     public void startWithPlugins() throws UnsupportedOperationException, IOException, InterruptedException {
         start();
         execInContainer(
-            "/usr/share/elasticsearch/bin/elasticsearch-plugin",
-            "install",
-            "analysis-phonetic"
+                "/usr/share/elasticsearch/bin/elasticsearch-plugin",
+                "install",
+                "analysis-phonetic"
         );
     }
 }

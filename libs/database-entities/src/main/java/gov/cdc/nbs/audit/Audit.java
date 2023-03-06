@@ -27,7 +27,7 @@ public class Audit {
         this.changed = new Changed(who, when);
     }
 
-    void changed(final long who, final Instant when, final String why ) {
+    void changed(final long who, final Instant when, final String why) {
         this.changed = new Changed(who, when, why);
     }
 

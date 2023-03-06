@@ -53,8 +53,7 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Writes an authentication error message in the format expected by GraphQL
-     * clients
+     * Writes an authentication error message in the format expected by GraphQL clients
      */
     private void writeErrorMessage(
             HttpServletRequest req,
