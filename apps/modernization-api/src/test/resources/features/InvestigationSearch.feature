@@ -1,7 +1,7 @@
 @investigation_search
 Feature: Investigation search
 
-  Background: 
+  Background:
     Given I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "ARBO"
 
@@ -11,7 +11,7 @@ Feature: Investigation search
     When I search investigation events by "<field>" "<qualifier>"
     Then I find the investigation
 
-    Examples: 
+    Examples:
       | field            | qualifier           |
       | condition        | Bacterial Vaginosis |
       | condition        | Trichomoniasis      |
@@ -35,7 +35,7 @@ Feature: Investigation search
     When I search investigation events by "<field>" "<qualifier>" "<field2>" "<qualifier2>" "<field3>" "<qualifier3>"
     Then I find the investigation
 
-    Examples: 
+    Examples:
       | field            | qualifier           | field2       | qualifier2      | field3       | qualifier3   |
       | condition        | Bacterial Vaginosis | jurisdiction | jd2             | program area | STD          |
       | condition        | Trichomoniasis      | jurisdiction | jd1             | program area | ARBO         |

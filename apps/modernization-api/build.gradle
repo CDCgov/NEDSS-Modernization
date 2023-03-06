@@ -2,19 +2,19 @@ buildscript {
     ext {
         springBootVersion = "2.7.2"
         queryDslVersion = "5.0.0"
-		cucumberVersion = "7.8.0"
-		blazePersistenceVersion = "1.6.8"
+        cucumberVersion = "7.8.0"
+        blazePersistenceVersion = "1.6.8"
     }
 }
 plugins {
-	id "org.springframework.boot" version "${springBootVersion}"
-	id "io.spring.dependency-management" version "1.0.12.RELEASE"
-	id "java"
-	id "jacoco"
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "1.0.12.RELEASE"
+    id "java"
+    id "jacoco"
 }
 
 jacocoTestReport {
-	dependsOn test
+    dependsOn test
     reports {
         xml.enabled true
     }
@@ -31,107 +31,107 @@ bootJar {
 }
 
 jar {
-	//  packages the application and spring into one jar
-	enabled = false
+    //  packages the application and spring into one jar
+    enabled = false
 }
 
 // Displays cucumber test results
-apply from:file('logging.gradle')
+apply from: file('logging.gradle')
 
 dependencies {
-	// core
-	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    // core
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
-	// common
-	implementation project(':modernization-ui')
-	implementation project(':database-entities')
-	implementation project(':event-schema')
-	implementation project(':authentication')
+    // common
+    implementation project(':modernization-ui')
+    implementation project(':database-entities')
+    implementation project(':event-schema')
+    implementation project(':authentication')
 
-	// jwt
-	implementation "com.auth0:java-jwt:4.2.0"
+    // jwt
+    implementation "com.auth0:java-jwt:4.2.0"
 
-	// graphql
-	implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
+    // graphql
+    implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
 
-	// database
-	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+    // database
+    implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
 
-	// querydsl
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    // querydsl
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
-	// blazebit for querydsl paging
-	implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
-	implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
-	implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
+    // blazebit for querydsl paging
+    implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
+    implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
+    implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
 
-	// elasticsearch
-	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+    // elasticsearch
+    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
 
-	// swagger
-	implementation "io.springfox:springfox-boot-starter:3.0.0"
+    // swagger
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
 
-	// lombok
-	implementation "org.projectlombok:lombok"
-	compileOnly "org.projectlombok:lombok"
-	annotationProcessor "org.projectlombok:lombok"
+    // lombok
+    implementation "org.projectlombok:lombok"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
 
-	// itext pdf generation
-	implementation "com.itextpdf:itextpdf:5.5.13.3"
+    // itext pdf generation
+    implementation "com.itextpdf:itextpdf:5.5.13.3"
 
-	implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
 
-	// test
-	testImplementation "org.projectlombok:lombok"
-	testAnnotationProcessor "org.projectlombok:lombok"
-	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-	testImplementation "org.junit.platform:junit-platform-suite"
-	testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
-	testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
-	testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
-	testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
-	testImplementation "org.junit.jupiter:junit-jupiter"
-	testImplementation "org.testcontainers:testcontainers:1.17.6"
-	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-	testImplementation "org.testcontainers:elasticsearch:1.17.6"
-	testImplementation 'com.github.javafaker:javafaker:1.0.2'
-	testImplementation 'org.yaml:snakeyaml:1.33'
+    // test
+    testImplementation "org.projectlombok:lombok"
+    testAnnotationProcessor "org.projectlombok:lombok"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    testImplementation "org.junit.platform:junit-platform-suite"
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation "org.testcontainers:testcontainers:1.17.6"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.6"
+    testImplementation "org.testcontainers:elasticsearch:1.17.6"
+    testImplementation 'com.github.javafaker:javafaker:1.0.2'
+    testImplementation 'org.yaml:snakeyaml:1.33'
 
-	testImplementation libs.bundles.testing
-	
-	// Kafka dependencies
-	implementation("org.springframework.kafka:spring-kafka")
-	implementation("io.confluent:kafka-avro-serializer:7.1.1")
-	testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation libs.bundles.testing
+
+    // Kafka dependencies
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("io.confluent:kafka-avro-serializer:7.1.1")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 tasks.named("test") {
-	useJUnitPlatform()
-	// always re-run tests
-	test.outputs.upToDateWhen {false}
-	systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
-	finalizedBy jacocoTestReport
+    useJUnitPlatform()
+    // always re-run tests
+    test.outputs.upToDateWhen { false }
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+    finalizedBy jacocoTestReport
 }
 
 processResources {
-	from ("../modernization-ui/build") {
-		into "static"
-	}
+    from("../modernization-ui/build") {
+        into "static"
+    }
 }
 
 compileJava.mustRunAfter(":modernization-ui:build")

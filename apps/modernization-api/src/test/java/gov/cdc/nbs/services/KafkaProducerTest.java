@@ -30,47 +30,48 @@ import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.service.KafkaRequestProducerService;
 
-@SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
+@SpringBootTest(classes = Application.class, properties = {"spring.profiles.active:test"})
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration
 class KafkaProducerTest {
 
-	@Mock
-	private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
+    @Mock
+    private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
 
-	@Mock
-	private KafkaTemplate<String, PatientUpdateRequest> KafkaPatientUpdateTemplate;
+    @Mock
+    private KafkaTemplate<String, PatientUpdateRequest> KafkaPatientUpdateTemplate;
 
-	@InjectMocks
-	private KafkaRequestProducerService producer;
+    @InjectMocks
+    private KafkaRequestProducerService producer;
 
-	public KafkaProducerTest() {
-		MockitoAnnotations.openMocks(this);
-		producer = new KafkaRequestProducerService();
-	}
+    public KafkaProducerTest() {
+        MockitoAnnotations.openMocks(this);
+        producer = new KafkaRequestProducerService();
+    }
 
-	@Test
-	void testPatientSearchEvent() {
-		List<TemplateInput> msgVariables = new ArrayList<TemplateInput>();
-		TemplateInput vars = new TemplateInput();
-		vars.setKey("key1");
-		vars.setValue("Hello World.");
-		msgVariables.add(vars);
+    @Test
+    void testPatientSearchEvent() {
+        List<TemplateInput> msgVariables = new ArrayList<TemplateInput>();
+        TemplateInput vars = new TemplateInput();
+        vars.setKey("key1");
+        vars.setValue("Hello World.");
+        msgVariables.add(vars);
 
-		EnvelopeRequest message = new EnvelopeRequest("Request-ID", msgVariables);
-		ListenableFuture<SendResult<String, EnvelopeRequest>> future = new SettableListenableFuture<SendResult<String, EnvelopeRequest>>();
-		Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
+        EnvelopeRequest message = new EnvelopeRequest("Request-ID", msgVariables);
+        ListenableFuture<SendResult<String, EnvelopeRequest>> future =
+                new SettableListenableFuture<SendResult<String, EnvelopeRequest>>();
+        Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
-		producer.requestEnvelope(message);
+        producer.requestEnvelope(message);
 
-		ArgumentCaptor<EnvelopeRequest> envelopeEventArgumentCaptor = ArgumentCaptor.forClass(EnvelopeRequest.class);
-		verify(kafkaEnvelopeTemplate).send(eq(null), eq("Request-ID"), envelopeEventArgumentCaptor.capture());
+        ArgumentCaptor<EnvelopeRequest> envelopeEventArgumentCaptor = ArgumentCaptor.forClass(EnvelopeRequest.class);
+        verify(kafkaEnvelopeTemplate).send(eq(null), eq("Request-ID"), envelopeEventArgumentCaptor.capture());
 
-		EnvelopeRequest actualRecord = envelopeEventArgumentCaptor.getValue();
-		assertThat(actualRecord.getRequestId()).isEqualTo("Request-ID");
-		assertThat(actualRecord.getVars().get(0).getValue()).isEqualTo("Hello World.");
+        EnvelopeRequest actualRecord = envelopeEventArgumentCaptor.getValue();
+        assertThat(actualRecord.getRequestId()).isEqualTo("Request-ID");
+        assertThat(actualRecord.getVars().get(0).getValue()).isEqualTo("Hello World.");
 
-		verifyNoMoreInteractions(kafkaEnvelopeTemplate);
-	}
+        verifyNoMoreInteractions(kafkaEnvelopeTemplate);
+    }
 }

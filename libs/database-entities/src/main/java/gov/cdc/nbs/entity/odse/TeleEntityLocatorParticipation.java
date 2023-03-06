@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("TELE")
-public class TeleEntityLocatorParticipation extends EntityLocatorParticipation{
+public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
     @MapsId("locatorUid")
     @OneToOne(

@@ -23,15 +23,13 @@ public class ElasticSearchConfig {
     private String elasticSearchUrl;
 
     /**
-     * RestHighLevelClient is deprecated but no viable alternatives exist for
-     * spring-data-elasticsearch until Spring Boot 3.0.0 due to Jakarta EE 9 APIs.
-     * 
-     * Links:
-     * https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#preface.versions
+     * RestHighLevelClient is deprecated but no viable alternatives exist for spring-data-elasticsearch until Spring
+     * Boot 3.0.0 due to Jakarta EE 9 APIs.
+     *
+     * Links: https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#preface.versions
      * https://github.com/spring-projects/spring-boot/issues/28598
-     * 
+     *
      * @throws MalformedURLException
-     * 
      */
     @Bean
     @SuppressWarnings("squid:S2095") // Sonar false positive - resource should be closed

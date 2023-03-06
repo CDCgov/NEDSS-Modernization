@@ -11,9 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import gov.cdc.nbs.patientlistener.config.KafkaConfig;
 
-@SpringBootTest(classes = { KafkaConfig.class })
+@SpringBootTest(classes = {KafkaConfig.class})
 @ActiveProfiles("test")
-@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class PatientListenerApplicationTests {
 
     @Autowired

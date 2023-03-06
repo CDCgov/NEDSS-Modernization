@@ -1,7 +1,7 @@
 @open_investigations
 Feature: Open Investigations
 
-  Background: 
+  Background:
     Given I have the authorities: "VIEWWORKUP-PATIENT,VIEW-INVESTIGATION" for the jurisdiction: "ALL" and program area: "STD"
     And there are 2 patients
 

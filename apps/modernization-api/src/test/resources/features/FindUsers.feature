@@ -1,7 +1,7 @@
 @find_users
 Feature: Find users
 
-  Background: 
+  Background:
     Given A user exists
     And A clerical permission set exists
     And The "clerical" user has the "clerical" permission set for the "STD" program area

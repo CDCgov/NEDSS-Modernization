@@ -7,8 +7,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 
 public interface PostalLocatorRepository
-                extends JpaRepository<PostalLocator, Long>, QuerydslPredicateExecutor<PostalLocator> {
+        extends JpaRepository<PostalLocator, Long>, QuerydslPredicateExecutor<PostalLocator> {
 
-        @Query("SELECT coalesce(max(p.id), 0) FROM PostalLocator p")
-        Long getMaxId();
+    @Query("SELECT coalesce(max(p.id), 0) FROM PostalLocator p")
+    Long getMaxId();
 }

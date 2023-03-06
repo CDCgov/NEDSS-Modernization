@@ -7,7 +7,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import gov.cdc.nbs.entity.odse.Observation;
 
-public interface ObservationRepository extends JpaRepository<Observation, Long>, QuerydslPredicateExecutor<Observation> {
+public interface ObservationRepository
+        extends JpaRepository<Observation, Long>, QuerydslPredicateExecutor<Observation> {
 
-	List<Observation> findByIdIn(List<Long> actuid);
+    List<Observation> findByIdIn(List<Long> actuid);
 }
