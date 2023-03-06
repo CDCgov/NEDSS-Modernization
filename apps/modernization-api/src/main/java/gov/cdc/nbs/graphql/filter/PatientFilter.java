@@ -1,14 +1,14 @@
 package gov.cdc.nbs.graphql.filter;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,6 +21,11 @@ import lombok.Setter;
 @EqualsAndHashCode
 @JsonInclude(Include.NON_NULL)
 public class PatientFilter {
+    public PatientFilter(RecordStatus... recordStatus) {
+        this.recordStatus = new ArrayList<RecordStatus>();
+        Collections.addAll(this.recordStatus, recordStatus);
+    }
+
     private String id;
     private String lastName;
     private String firstName;

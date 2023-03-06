@@ -2,12 +2,9 @@ package gov.cdc.nbs;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashSet;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,10 +15,8 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
@@ -127,8 +122,7 @@ public class PermissionSteps {
         try {
             switch (searchType) {
                 case "findPatientsByFilter":
-                    var patientFilter = new PatientFilter();
-                    patientFilter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
+                    var patientFilter = new PatientFilter(RecordStatus.ACTIVE);
                     patientFilter.setFirstName("John");
                     response = patientController.findPatientsByFilter(patientFilter, page);
                     break;

@@ -3,9 +3,7 @@ package gov.cdc.nbs;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.IOException;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,13 +14,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.model.EncryptionResponse;
 import gov.cdc.nbs.support.EthnicityMother;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -97,7 +94,7 @@ public class EncryptionSteps {
     }
 
     private PatientFilter generateRandomFilter() {
-        var filter = new PatientFilter();
+        var filter = new PatientFilter(RecordStatus.ACTIVE);
         filter.setFirstName(RandomUtil.getRandomString());
         filter.setLastName(RandomUtil.getRandomString());
         filter.setAddress(RandomUtil.getRandomString());
