@@ -17,13 +17,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @EqualsAndHashCode
 @JsonInclude(Include.NON_NULL)
 public class PatientFilter {
-    public PatientFilter(RecordStatus... recordStatus) {
+    public PatientFilter() {
+        this(RecordStatus.ACTIVE);
+    }
+
+    public PatientFilter(RecordStatus required, RecordStatus... recordStatus) {
         this.recordStatus = new ArrayList<>();
-        Collections.addAll(this.recordStatus, recordStatus);
+        this.recordStatus.add(required);
+        if (recordStatus != null && recordStatus.length > 0) {
+            Collections.addAll(this.recordStatus, recordStatus);
+        }
     }
 
     private String id;
