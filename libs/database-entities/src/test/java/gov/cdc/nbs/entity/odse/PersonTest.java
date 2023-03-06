@@ -3,7 +3,7 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
-import gov.cdc.nbs.message.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;

@@ -39,7 +39,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.message.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;

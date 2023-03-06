@@ -12,7 +12,7 @@ import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
