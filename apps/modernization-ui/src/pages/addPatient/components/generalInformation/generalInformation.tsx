@@ -13,18 +13,22 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
             <Grid col={12} className="padding-x-3 padding-bottom-3">
                 <Grid row>
                     <Grid col={12} className="margin-top-2">
-                        All fields marked with <span className="text-red">*</span> are required
+                        <span data-testid="required-text">All fields marked with</span>{' '}
+                        <span className="text-red">*</span> are required
                     </Grid>
                     <Grid col={6}>
                         <Label htmlFor="as-of-date">
-                            Information as of Date <span className="text-red">*</span>
+                            <span data-testid="date-lable">Information as of Date</span>{' '}
+                            <span className="text-red">*</span>
                         </Label>
                         <DatePicker id="asOf" name="asOf" />
                     </Grid>
                 </Grid>
                 <Grid row>
                     <Grid col={6}>
-                        <Label htmlFor={'additionalComments'}>Comments</Label>
+                        <Label htmlFor={'additionalComments'}>
+                            <span data-testid="comment-lable">Comments</span>
+                        </Label>
                         <Textarea name="additionalComments" id={'additionalComments'} />
                     </Grid>
                 </Grid>
