@@ -22,7 +22,7 @@ import lombok.Setter;
 @JsonInclude(Include.NON_NULL)
 public class PatientFilter {
     public PatientFilter(RecordStatus... recordStatus) {
-        this.recordStatus = new ArrayList<RecordStatus>();
+        this.recordStatus = new ArrayList<>();
         Collections.addAll(this.recordStatus, recordStatus);
     }
 
