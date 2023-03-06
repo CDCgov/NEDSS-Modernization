@@ -18,9 +18,8 @@ public class SecurityService {
     private final JurisdictionCodeRepository jurisdictionCodeRepository;
 
     /**
-     * Returns a Set of Ids that are a combination of ProgramAreas and Jurisdictions
-     * the user has access to. These are created in the
-     * {@link SecurityService#generateOid(Integer, Integer)} method
+     * Returns a Set of Ids that are a combination of ProgramAreas and Jurisdictions the user has access to. These are
+     * created in the {@link SecurityService#generateOid(Integer, Integer)} method
      */
     public Set<Long> getProgramAreaJurisdictionOids(NbsUserDetails userDetails) {
         var jurisdictionCodes = jurisdictionCodeRepository.findAll();

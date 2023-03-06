@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PersonTest {
 
     @Test
-    @SuppressWarnings("squid:S5961") // Allow more than 25 assertions
+    @SuppressWarnings("squid:S5961")
+        // Allow more than 25 assertions
     void should_create_new_person_when_patient_added() {
 
         PatientCommand.AddPatient request = new PatientCommand.AddPatient(
@@ -127,16 +128,16 @@ class PersonTest {
         Person actual = new Person(117L, "local-id-value");
 
         actual.add(
-          new PatientCommand.AddName(
-                  117L,
-                  "First",
-                  "Middle",
-                  "Last",
-                  Suffix.JR,
-                  PatientInput.NameUseCd.L,
-                  131L,
-                  Instant.parse("2020-03-03T10:15:30.00Z")
-          )
+                new PatientCommand.AddName(
+                        117L,
+                        "First",
+                        "Middle",
+                        "Last",
+                        Suffix.JR,
+                        PatientInput.NameUseCd.L,
+                        131L,
+                        Instant.parse("2020-03-03T10:15:30.00Z")
+                )
         );
 
         assertThat(actual.getFirstNm()).isEqualTo("First");
@@ -215,20 +216,20 @@ class PersonTest {
         Person actual = new Person(117L, "local-id-value");
 
         actual.add(
-          new PatientCommand.AddAddress(
-                  117L,
-                  4861L,
-                  "SA1",
-                  "SA2",
-                  new City("city-code", "city-description"),
-                  "State",
-                  "Zip",
-                  new County("county-code", "county-description"),
-                  new Country("country-code", "country-description"),
-                  "Census Tract",
-                  131L,
-                  Instant.parse("2020-03-03T10:15:30.00Z")
-          )
+                new PatientCommand.AddAddress(
+                        117L,
+                        4861L,
+                        "SA1",
+                        "SA2",
+                        new City("city-code", "city-description"),
+                        "State",
+                        "Zip",
+                        new County("county-code", "county-description"),
+                        new Country("country-code", "country-description"),
+                        "Census Tract",
+                        131L,
+                        Instant.parse("2020-03-03T10:15:30.00Z")
+                )
         );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
@@ -262,13 +263,13 @@ class PersonTest {
         Person actual = new Person(117L, "local-id-value");
 
         actual.add(
-          new PatientCommand.AddEmailAddress(
-                  117L,
-                  5333L,
-                  "AnEmail@email.com",
-                  131L,
-                  Instant.parse("2020-03-03T10:15:30.00Z")
-          )
+                new PatientCommand.AddEmailAddress(
+                        117L,
+                        5333L,
+                        "AnEmail@email.com",
+                        131L,
+                        Instant.parse("2020-03-03T10:15:30.00Z")
+                )
         );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
@@ -276,7 +277,8 @@ class PersonTest {
                         actual_email_locator ->
                                 assertThat(actual_email_locator)
                                         .isInstanceOf(TeleEntityLocatorParticipation.class)
-                                        .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                                        .asInstanceOf(
+                                                InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                                         .returns("NET", EntityLocatorParticipation::getCd)
                                         .extracting(TeleEntityLocatorParticipation::getLocator)
                                         .returns(5333L, TeleLocator::getId)
@@ -309,7 +311,8 @@ class PersonTest {
                         actual_phone_locator ->
                                 assertThat(actual_phone_locator)
                                         .isInstanceOf(TeleEntityLocatorParticipation.class)
-                                        .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                                        .asInstanceOf(
+                                                InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                                         .returns("CP", EntityLocatorParticipation::getCd)
                                         .extracting(TeleEntityLocatorParticipation::getLocator)
                                         .returns(5347L, TeleLocator::getId)

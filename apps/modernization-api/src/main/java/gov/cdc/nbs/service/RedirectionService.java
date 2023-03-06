@@ -47,8 +47,8 @@ public class RedirectionService {
     private final SecurityProperties securityProperties;
 
     /**
-     * Get the user from the session, create userId and token cookies. Create
-     * RedirectView from url, or to '/nbs/timeout' if session is invalid
+     * Get the user from the session, create userId and token cookies. Create RedirectView from url, or to
+     * '/nbs/timeout' if session is invalid
      */
     public RedirectView handleRedirect(String url, HttpServletRequest request, HttpServletResponse response) {
         var jsessionId = getJsessionId(request.getCookies());

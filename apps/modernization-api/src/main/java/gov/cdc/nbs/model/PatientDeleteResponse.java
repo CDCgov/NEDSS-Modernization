@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PatientDeleteResponse {
-	private String requestId;
+    private String requestId;
 
 }

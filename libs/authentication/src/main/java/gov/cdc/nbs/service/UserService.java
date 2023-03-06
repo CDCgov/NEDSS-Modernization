@@ -85,8 +85,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Lookup AuthUser in database using the JWT subject. Convert database entity to
-     * a new JWTUserDetails and return
+     * Lookup AuthUser in database using the JWT subject. Convert database entity to a new JWTUserDetails and return
      */
     @Transactional
     public NbsUserDetails findUserByToken(DecodedJWT jwt) {
@@ -129,9 +128,8 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Queries the database for a list of user permissions
-     * For each distinct permission, create a {@link NbsAuthority} if the permission
-     * applies.
+     * Queries the database for a list of user permissions For each distinct permission, create a {@link NbsAuthority}
+     * if the permission applies.
      *
      * <p>
      * Permissions apply to user if:

@@ -26,45 +26,45 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.service.EventService;
 import gov.cdc.nbs.util.Constants;
 
-@SpringBootTest(classes = Application.class, properties = { "spring.profiles.active:test" })
+@SpringBootTest(classes = Application.class, properties = {"spring.profiles.active:test"})
 @RunWith(SpringRunner.class)
- class FindMorbidityReportsForPatientTest {
+class FindMorbidityReportsForPatientTest {
 
-	@Mock
-	PersonRepository personRepository;
+    @Mock
+    PersonRepository personRepository;
 
-	@Mock
-	ParticipationRepository participationRepository;
+    @Mock
+    ParticipationRepository participationRepository;
 
-	@Mock
-	ObservationRepository oboservationRepository;
+    @Mock
+    ObservationRepository oboservationRepository;
 
-	@InjectMocks
-	EventService eventService;
+    @InjectMocks
+    EventService eventService;
 
-	public FindMorbidityReportsForPatientTest() {
-		MockitoAnnotations.openMocks(this);
-		eventService = new EventService(null, null, null);
-	}
+    public FindMorbidityReportsForPatientTest() {
+        MockitoAnnotations.openMocks(this);
+        eventService = new EventService(null, null, null);
+    }
 
     @Test
-	void FindMorbidityReportsTest() {
-		Long patientID = 100543L;
-		Long personsIDs = patientID+1;
-		Long actIDs = personsIDs + 1;
-		Long resultID = patientID + 2;
+    void FindMorbidityReportsTest() {
+        Long patientID = 100543L;
+        Long personsIDs = patientID + 1;
+        Long actIDs = personsIDs + 1;
+        Long resultID = patientID + 2;
 
-		when(personRepository.getPersonIdsByPersonParentId(Mockito.anyLong())).thenReturn(List.of(patientID+1));
-		when(participationRepository.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE,
-				List.of(personsIDs))).thenReturn(List.of(personsIDs +1));
-		Observation obs = new Observation();
-		obs.setId(actIDs);
-		when(oboservationRepository.findByIdIn(List.of(actIDs))).thenReturn(List.of(obs));
+        when(personRepository.getPersonIdsByPersonParentId(Mockito.anyLong())).thenReturn(List.of(patientID + 1));
+        when(participationRepository.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE,
+                List.of(personsIDs))).thenReturn(List.of(personsIDs + 1));
+        Observation obs = new Observation();
+        obs.setId(actIDs);
+        when(oboservationRepository.findByIdIn(List.of(actIDs))).thenReturn(List.of(obs));
 
-		List<Observation> observations = eventService.findMorbidityReportsForPatient(patientID);
-		assertNotNull(observations);
-		assertTrue(observations.size() > 0);
-		assertEquals(observations.get(0).getId(), resultID);
-	}
+        List<Observation> observations = eventService.findMorbidityReportsForPatient(patientID);
+        assertNotNull(observations);
+        assertTrue(observations.size() > 0);
+        assertEquals(observations.get(0).getId(), resultID);
+    }
 
 }

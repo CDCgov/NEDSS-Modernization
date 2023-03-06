@@ -35,6 +35,7 @@ public sealed interface PatientCommand {
             Instant requestedOn) implements PatientCommand {
     }
 
+
     record AddName(
             long person,
             String first,
@@ -47,12 +48,14 @@ public sealed interface PatientCommand {
 
     }
 
+
     record AddRace(
             long person,
             String category,
             long requester,
             Instant requestedOn) implements PatientCommand {
     }
+
 
     record AddAddress(
             long person,
@@ -69,6 +72,7 @@ public sealed interface PatientCommand {
             Instant requestedOn) implements PatientCommand {
     }
 
+
     record AddPhoneNumber(
             long person,
             long id,
@@ -78,6 +82,7 @@ public sealed interface PatientCommand {
             long requester,
             Instant requestedOn) implements PatientCommand {
     }
+
 
     record AddEmailAddress(
             long person,

@@ -26,8 +26,10 @@ public class CntycityCodeValueId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
         CntycityCodeValueId entity = (CntycityCodeValueId) o;
         return Objects.equals(this.cntyCode, entity.cntyCode) &&
                 Objects.equals(this.cityCode, entity.cityCode);

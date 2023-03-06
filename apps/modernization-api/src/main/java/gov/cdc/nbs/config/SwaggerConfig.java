@@ -36,7 +36,7 @@ public class SwaggerConfig {
 
     /**
      * Custom rule to support Pageable object in swagger ui
-     * 
+     *
      * @param resolver
      * @return
      */

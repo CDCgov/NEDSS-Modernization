@@ -130,8 +130,8 @@ public class RedirectSteps {
     @Given("I navigate to the NBS advanced search page")
     public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
         response = mvc.perform(
-                MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
-                        .cookie(new Cookie("JSESSIONID", sessionId)))
+                        MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
+                                .cookie(new Cookie("JSESSIONID", sessionId)))
                 .andReturn().getResponse();
     }
 
