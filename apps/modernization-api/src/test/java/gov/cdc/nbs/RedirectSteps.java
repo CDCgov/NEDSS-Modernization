@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -26,16 +27,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
+import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.SecurityLog;
+import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import gov.cdc.nbs.service.EncryptionService;
+import gov.cdc.nbs.service.PatientService;
 import gov.cdc.nbs.support.UserMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -52,9 +57,12 @@ public class RedirectSteps {
     private EncryptionService encryptionService;
     @Autowired
     private ObjectMapper mapper;
+    @Autowired
+    private PatientService patientService;
 
     private MockHttpServletResponse response;
     private String sessionId;
+    private Page<Person> searchResponse;
 
     @Given("I am logged into NBS and a security log entry exists")
     public void i_am_logged_into_nbs_and_a_security_log_entry_exists() {
@@ -79,7 +87,7 @@ public class RedirectSteps {
         sessionId = null;
     }
 
-    @Given("I send a request to the NBS simple search")
+    @When("I send a request to the NBS simple search")
     public void i_send_a_request_to_the_nbs_simple_search() throws Exception {
         response = mvc
                 .perform(
@@ -96,7 +104,7 @@ public class RedirectSteps {
         assertEquals("/advanced-search", redirectUrl);
     }
 
-    @Given("I send a search request to the NBS simple search")
+    @When("I send a search request to the NBS simple search")
     public void I_send_a_search_request_to_the_nbs_simple_search() throws Exception {
         response = mvc.perform(MockMvcRequestBuilders
                 .post("/nbs/redirect/simpleSearch")
@@ -110,6 +118,22 @@ public class RedirectSteps {
                 .cookie(new Cookie("JSESSIONID", sessionId))
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .accept(MediaType.ALL)).andReturn().getResponse();
+    }
+
+    @When("I submit the search filter to the patient search API")
+    public void i_submit_the_search_filter_to_the_patient_search_API() throws UnsupportedEncodingException {
+        var redirectUrl = response.getRedirectedUrl();
+        assertNotNull(redirectUrl);
+        assertTrue(redirectUrl.contains("/advanced-search?"));
+        var q = redirectUrl.substring(redirectUrl.indexOf("?q=") + "?q=".length());
+        q = URLDecoder.decode(q, "UTF-8");
+        var filter = mapper.convertValue(encryptionService.handleDecryption(q), PatientFilter.class);
+        searchResponse = patientService.findPatientsByFilter(filter, new GraphQLPage(25));
+    }
+
+    @Then("The search is executed successfully")
+    public void the_search_is_executed_successfully() {
+        assertNotNull(searchResponse);
     }
 
     @Then("My search params are passed to the simple search react page")
@@ -127,7 +151,7 @@ public class RedirectSteps {
         assertEquals("1234", filter.getId());
     }
 
-    @Given("I navigate to the NBS advanced search page")
+    @When("I navigate to the NBS advanced search page")
     public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
         response = mvc.perform(
                         MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
