@@ -5,14 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Data
-@Accessors(chain=true)
+@Accessors(chain = true)
 @NoArgsConstructor
 public class PatientDeleteRequest {
-	private String requestId;
-	
-	
-	public PatientDeleteRequest(String requestId) {
-		this.requestId = requestId;
-	}
+    private String requestId;
+
+
+    public PatientDeleteRequest(String requestId) {
+        this.requestId = requestId;
+    }
 
 }

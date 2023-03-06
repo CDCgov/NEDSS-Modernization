@@ -1,49 +1,49 @@
 buildscript {
     ext {
         springBootVersion = "2.7.8"
-		queryDslVersion = "5.0.0"
+        queryDslVersion = "5.0.0"
     }
 }
 plugins {
-	id "org.springframework.boot" version "${springBootVersion}"
-	id "io.spring.dependency-management" version "1.0.12.RELEASE"
-	id "java"
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "1.0.12.RELEASE"
+    id "java"
 }
 
 group = 'gov.cdc.nbs'
 version = '0.0.1-SNAPSHOT'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// Spring
-	implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-	implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-	implementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
-	annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    // Spring
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
+    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
 
-	// Kafka
-	implementation 'org.springframework.kafka:spring-kafka'
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
 
-	// jwt
-	implementation "com.auth0:java-jwt:4.2.0"
+    // jwt
+    implementation "com.auth0:java-jwt:4.2.0"
 
-	// common
-	implementation project(':database-entities')
+    // common
+    implementation project(':database-entities')
     implementation project(':event-schema')
-	implementation project(':authentication')
+    implementation project(':authentication')
 
-	// lombok
-	implementation "org.projectlombok:lombok"
-	compileOnly "org.projectlombok:lombok"
-	annotationProcessor "org.projectlombok:lombok"
+    // lombok
+    implementation "org.projectlombok:lombok"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
 
-	// database
-	implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+    // database
+    implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
 
 	// querydsl
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
@@ -79,11 +79,11 @@ dependencies {
 	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
 
-	testImplementation "org.assertj:assertj-core:3.24.2"
+    testImplementation "org.assertj:assertj-core:3.24.2"
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 compileJava.mustRunAfter(":database-entities:build")

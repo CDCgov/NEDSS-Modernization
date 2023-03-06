@@ -151,16 +151,16 @@ public class PersonMother {
 
         // name
         person.add(
-          new PatientCommand.AddName(
-                  id,
-                  "John",
-                  "Bob",
-                  "Doe",
-                  null,
-                  PatientInput.NameUseCd.L,
-                  CREATED_BY_ID,
-                  now
-          )
+                new PatientCommand.AddName(
+                        id,
+                        "John",
+                        "Bob",
+                        "Doe",
+                        null,
+                        PatientInput.NameUseCd.L,
+                        CREATED_BY_ID,
+                        now
+                )
         );
 
         // phone numbers

@@ -25,24 +25,24 @@ import gov.cdc.nbs.message.PatientUpdateRequest;
 @Configuration
 public class KafkaConfig {
 
-	@Value("${kafka.properties.topic.partition.count}")
-	private int topicPartitionCount;
+    @Value("${kafka.properties.topic.partition.count}")
+    private int topicPartitionCount;
 
-	@Value("${kafka.properties.topic.replication.factor}")
-	private int topicReplicationFactor;
+    @Value("${kafka.properties.topic.replication.factor}")
+    private int topicReplicationFactor;
 
-	@Value("${kafka.bootstrap-servers}")
-	private String bootstrapServers;
+    @Value("${kafka.bootstrap-servers}")
+    private String bootstrapServers;
 
-	@Value("${kafka.properties.schema.registry.url}")
-	private String schemaRegistryUrl;
+    @Value("${kafka.properties.schema.registry.url}")
+    private String schemaRegistryUrl;
 
-	// general topic
-	@Value("${kafkadef.patient-search.topics.request.patient}")
-	private String patientSearchTopic;
+    // general topic
+    @Value("${kafkadef.patient-search.topics.request.patient}")
+    private String patientSearchTopic;
 
-	@Value("${kafka.enabled:true}")
-	private boolean kafkaEnabled;
+    @Value("${kafka.enabled:true}")
+    private boolean kafkaEnabled;
 
 	@Bean
 	public NewTopic createPatientSearchTopic() {
@@ -134,9 +134,9 @@ public class KafkaConfig {
 		return new KafkaTemplate<>(producerFactoryPatientSearch());
 	}
 
-	@Bean
-	public CommonLoggingErrorHandler errorHandler() {
-		return new CommonLoggingErrorHandler();
-	}
+    @Bean
+    public CommonLoggingErrorHandler errorHandler() {
+        return new CommonLoggingErrorHandler();
+    }
 
 }

@@ -50,9 +50,8 @@ public class UserController {
     }
 
     /**
-     * Returns a page of users that share a program area with the current user,
-     * logic copied from legacy NBS - DbAuthDAOImpl.java
-     * "getSecureUserDTListBasedOnProgramArea"
+     * Returns a page of users that share a program area with the current user, logic copied from legacy NBS -
+     * DbAuthDAOImpl.java "getSecureUserDTListBasedOnProgramArea"
      */
     @QueryMapping
     public Page<AuthUser> findAllUsers(@Argument GraphQLPage page) {

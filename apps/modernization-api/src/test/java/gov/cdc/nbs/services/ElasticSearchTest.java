@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import gov.cdc.nbs.RunCucumberTest;
 
-@SpringBootTest(classes = ElasticSearchTest.class, properties = { "spring.profiles.active:test" })
+@SpringBootTest(classes = ElasticSearchTest.class, properties = {"spring.profiles.active:test"})
 class ElasticSearchTest {
     @Test
     void testElasticSearchIsRunning() {

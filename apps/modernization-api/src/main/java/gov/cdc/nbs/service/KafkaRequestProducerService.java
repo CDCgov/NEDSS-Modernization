@@ -18,33 +18,33 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class KafkaRequestProducerService {
 
-	@Autowired
-	private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
+    @Autowired
+    private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
 
-	@Autowired
-	private KafkaTemplate<String, PatientUpdateRequest> kafkaPatientUpdateTemplate;
+    @Autowired
+    private KafkaTemplate<String, PatientUpdateRequest> kafkaPatientUpdateTemplate;
 
-	@Autowired
-	private KafkaTemplate<String, PatientDeleteRequest> kafkaPatientDeleteTemplate;
+    @Autowired
+    private KafkaTemplate<String, PatientDeleteRequest> kafkaPatientDeleteTemplate;
 
-	@Autowired
-	private KafkaTemplate<String, PatientCreateRequest> kafkaPatientCreateTemplate;
+    @Autowired
+    private KafkaTemplate<String, PatientCreateRequest> kafkaPatientCreateTemplate;
 
-	@Value("${kafkadef.patient-search.topics.request.patient}")
-	private String patientSearchTopic;
+    @Value("${kafkadef.patient-search.topics.request.patient}")
+    private String patientSearchTopic;
 
-	@Value("${kafkadef.patient-search.topics.request.patientupdate}")
-	private String patientUpdateTopic;
+    @Value("${kafkadef.patient-search.topics.request.patientupdate}")
+    private String patientUpdateTopic;
 
-	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
-	private String patientDeleteTopic;
+    @Value("${kafkadef.patient-search.topics.request.patientdelete}")
+    private String patientDeleteTopic;
 
-	@Value("${kafkadef.patient-search.topics.request.patient-create}")
-	private String patientCreateTopic;
+    @Value("${kafkadef.patient-search.topics.request.patient-create}")
+    private String patientCreateTopic;
 
-	public void requestEnvelope(EnvelopeRequest kafkaMessage) {
-		send(kafkaEnvelopeTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
-	}
+    public void requestEnvelope(EnvelopeRequest kafkaMessage) {
+        send(kafkaEnvelopeTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
+    }
 
 	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
 		try {
@@ -55,28 +55,28 @@ public class KafkaRequestProducerService {
 		}
 	}
 
-	public void requestPatientDeleteEnvelope(PatientDeleteRequest kafkaMessage) {
-		send(kafkaPatientDeleteTemplate, patientDeleteTopic, kafkaMessage.getRequestId(), kafkaMessage);
-	}
+    public void requestPatientDeleteEnvelope(PatientDeleteRequest kafkaMessage) {
+        send(kafkaPatientDeleteTemplate, patientDeleteTopic, kafkaMessage.getRequestId(), kafkaMessage);
+    }
 
-	public void requestPatientCreateEnvelope(PatientCreateRequest kafkaMessage) {
-		send(kafkaPatientCreateTemplate, patientCreateTopic, kafkaMessage.request(), kafkaMessage);
-	}
+    public void requestPatientCreateEnvelope(PatientCreateRequest kafkaMessage) {
+        send(kafkaPatientCreateTemplate, patientCreateTopic, kafkaMessage.request(), kafkaMessage);
+    }
 
-	private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {
-		ListenableFuture<SendResult<K, V>> future = template.send(topic, key, event);
-		future.addCallback(new ListenableFutureCallback<>() {
-			@Override
-			public void onFailure(Throwable ex) {
-				log.error("Failed to send message key={} message={} error={}", key, event, ex);
-			}
+    private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {
+        ListenableFuture<SendResult<K, V>> future = template.send(topic, key, event);
+        future.addCallback(new ListenableFutureCallback<>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                log.error("Failed to send message key={} message={} error={}", key, event, ex);
+            }
 
-			@Override
-			public void onSuccess(SendResult<K, V> result) {
-				log.info("Sent message key={} message={} result={}", key, event, result);
-			}
-		});
+            @Override
+            public void onSuccess(SendResult<K, V> result) {
+                log.info("Sent message key={} message={} result={}", key, event, result);
+            }
+        });
 
-	}
+    }
 
 }

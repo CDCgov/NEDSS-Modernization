@@ -2,6 +2,7 @@ package gov.cdc.nbs.service;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -143,7 +145,7 @@ public class PatientService {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
-                            addWildcards(filter.getFirstName()))
+                                    addWildcards(filter.getFirstName()))
                             .defaultField("name.firstNm")
                             .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
@@ -161,7 +163,7 @@ public class PatientService {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
-                            addWildcards(filter.getLastName()))
+                                    addWildcards(filter.getLastName()))
                             .defaultField("name.lastNm")
                             .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
@@ -197,10 +199,10 @@ public class PatientService {
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                    .queryStringQuery(
-                            addWildcards(filter.getAddress()))
-                    .defaultField("address.streetAddr1")
-                    .defaultOperator(Operator.AND),
+                            .queryStringQuery(
+                                    addWildcards(filter.getAddress()))
+                            .defaultField("address.streetAddr1")
+                            .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -215,7 +217,7 @@ public class PatientService {
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
                     QueryBuilders.queryStringQuery(
-                            addWildcards(filter.getCity()))
+                                    addWildcards(filter.getCity()))
                             .defaultField("address.city")
                             .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
