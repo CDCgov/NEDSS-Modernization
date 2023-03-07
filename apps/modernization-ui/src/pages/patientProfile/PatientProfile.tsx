@@ -113,7 +113,7 @@ export const PatientProfile = () => {
                         <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                             <Icon.Warning className="font-sans-2xl margin-x-2" />
                             <p id="modal-1-description">
-                                Would you like to permenantly delete patient record #12345,{' '}
+                                Would you like to permenantly delete patient record {profileData?.localId},{' '}
                                 {`${profileData?.lastNm}, ${profileData?.firstNm}`}?
                             </p>
                         </div>
