@@ -75,13 +75,13 @@ export default function OtherInfoFields({ id, title, control }: { id?: string; t
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="birthSex"
+                            name="deceased"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="birthSex"
-                                    htmlFor={'birthSex'}
+                                    name="deceased"
+                                    htmlFor={'deceased'}
                                     label="Is this patient deceased?"
                                     options={[
                                         { name: 'Yes', value: 'Y' },

@@ -79,13 +79,13 @@ export const IdentificationFields = ({
                             <Controller
                                 control={control}
                                 name={`identification[${index}].identificationNumber`}
-                                render={({ field: { onChange } }) => (
+                                render={({ field: { onChange, value } }) => (
                                     <Input
+                                        defaultValue={value}
                                         onChange={onChange}
                                         type="text"
                                         label="ID value"
                                         htmlFor={`identification[${index}].identificationNumber`}
-                                        id={`identification[${index}].identificationNumber`}
                                     />
                                 )}
                             />

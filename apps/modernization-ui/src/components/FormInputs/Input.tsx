@@ -13,6 +13,7 @@ type InputProps = {
     onChange?: any;
     defaultValue?: string;
     placeholder?: string;
+    inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined;
 };
 
 export const Input = ({
@@ -27,6 +28,7 @@ export const Input = ({
     onChange,
     defaultValue,
     placeholder,
+    inputMode,
     ...props
 }: InputProps) => {
     return (
@@ -38,6 +40,7 @@ export const Input = ({
                 </Label>
             )}
             <TextInput
+                inputMode={inputMode}
                 placeholder={placeholder}
                 {...props}
                 id={id}

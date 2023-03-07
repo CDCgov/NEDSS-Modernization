@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Accordion, Button, DatePicker, Form, Grid, Label } from '@trussworks/react-uswds';
 import './AddPatient.scss';
-import NameFields, { InputNameFields } from './components/nameFields/NameFields';
+import NameFields from './components/nameFields/NameFields';
 import AddressFields, { InputAddressFields } from './components/addressFields/AddressFields';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import PersonalDetails, { InputPersonalDetailsFields } from './components/personalDetails/PersonalDetails';
-import ContactFields, { InputContactFields } from './components/contactFields/ContactFields';
+import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields, { InputEthnicityFields } from './components/ethnicityFields/EthnicityFields';
 import { useEffect, useState } from 'react';
 import { ACTIVE_TAB, LeftBar } from './components/LeftBar/LeftBar';
@@ -16,28 +16,42 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
 
 export default function AddPatient() {
+    const [disabled, setDisabled] = useState<boolean>(true);
+    function isEmpty(obj: any) {
+        for (const key in obj) {
+            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
+        }
+        return true;
+    }
+
     const methods = useForm({
         defaultValues: {
-            identification: [{ identificationType: null, assigningAuthority: null, identificationNumber: null }]
+            identification: [{ identificationType: null, assigningAuthority: null, identificationNumber: '' }],
+            phoneNumbers: [{ cellPhone: null }],
+            emailAddresses: [{ email: null }]
         }
     });
     const {
         handleSubmit,
         control,
         formState: { errors },
-        reset
+        watch
     } = methods;
     const { fields, append } = useFieldArray({
         control,
         name: 'identification'
     });
 
-    const [nameFields, setNameFields]: [InputNameFields, (inputNameFields: InputNameFields) => void] = useState({
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        suffix: ''
+    const { fields: phoneNumberFields, append: phoneNumberAppend } = useFieldArray({
+        control,
+        name: 'phoneNumbers'
     });
+
+    const { fields: emailFields, append: emailFieldAppend } = useFieldArray({
+        control,
+        name: 'emailAddresses'
+    });
+
     const [addressFields, setAddressFields]: [InputAddressFields, (inputNameFields: InputAddressFields) => void] =
         useState({
             streetAddress1: '',
@@ -50,121 +64,22 @@ export default function AddPatient() {
             country: ''
         });
 
-    const [personalDetailsFields, setPersonalDetailsFields]: [
-        InputPersonalDetailsFields,
-        (inputNameFields: InputPersonalDetailsFields) => void
-    ] = useState({
-        dateOfBirth: '',
-        sex: '',
-        birthSex: '',
-        isPatientDeceased: '',
-        stateHivCaseId: '',
-        maritalStatus: ''
-    });
-
-    const [contactFields, setContactFields]: [InputContactFields, (inputContactFields: InputContactFields) => void] =
-        useState({
-            homePhone: '',
-            workPhone: '',
-            workPhoneExt: '',
-            cellPhone: '',
-            email: ''
-        });
-
-    const [ethnicityFields, setEthnicityFields]: [
-        InputEthnicityFields,
-        (ethnicityFields: InputEthnicityFields) => void
-    ] = useState({
-        ethnicity: ''
-    });
-
     const [asOfDate, setAsOfDate]: [string, (asOfDate: string) => void] = useState(new Date().toISOString());
 
-    async function submit(): Promise<void> {
-        // TODO migrate to use a GraphQL mutation- NYI
-        // const person = {
-        //     // Name
-        //     firstNm: nameFields.firstName,
-        //     middleNm: nameFields.middleName,
-        //     lastNm: nameFields.lastName,
-        //     nmSuffix: nameFields.suffix,
-        //     // Address
-        //     hmStreetAddr1: addressFields.streetAddress1,
-        //     hmStreetAddr2: addressFields.streetAddress2,
-        //     hmCityCd: addressFields.city,
-        //     hmStateCd: addressFields.state,
-        //     hmZipCd: addressFields.zip,
-        //     hmCntyCd: addressFields.county,
-        //     // TODO census tract?
-        //     hmCntryCd: addressFields.country,
-        //     // Personal Details
-        //     birthTime: personalDetailsFields.dateOfBirth.trim() == '' ? undefined : personalDetailsFields.dateOfBirth,
-        //     currSexCd: personalDetailsFields.sex,
-        //     birthGenderCd: personalDetailsFields.birthSex,
-        //     deceasedIndCd: personalDetailsFields.isPatientDeceased,
-        //     // TODO HIV case id?
-        //     maritalStatusCd: personalDetailsFields.maritalStatus,
-        //     // Contact
-        //     hmPhoneNbr: contactFields.homePhone,
-        //     wkPhoneNbr: contactFields.workPhone + 'x' + contactFields.workPhoneExt, // TODO how to store workPhoneExt
-        //     cellPhoneNbr: contactFields.cellPhone,
-        //     hmEmailAddr: contactFields.email,
-        //     // Ethnicity
-        //     ethnicityGroupCd: ethnicityFields.ethnicity, // TODO how is ethnicity stored
-        //     // As of
-        //     asOfDateAdmin: asOfDate,
-        //     asOfDateEthnicity: asOfDate,
-        //     asOfDateGeneral: asOfDate,
-        //     asOfDateMorbidity: asOfDate,
-        //     asOfDateSex: asOfDate
-        // };
-        // const newId = await PersonControllerService.createPersonUsingPost({ person });
-    }
+    useEffect(() => {
+        watch((value) => {
+            delete value.identification;
+            delete value.emailAddresses;
+            delete value.phoneNumbers;
+            setDisabled(isEmpty(value));
+        });
+    }, [watch]);
 
-    function getSections(): AccordionItemProps[] {
-        const items: AccordionItemProps[] = [];
-        items.push({
-            title: 'Name',
-            content: <NameFields nameFields={nameFields} updateCallback={setNameFields} />,
-            expanded: true,
-            id: 'name-section',
-            headingLevel: 'h1'
-        });
-        items.push({
-            title: 'Address',
-            content: <AddressFields addressFields={addressFields} updateCallback={setAddressFields} />,
-            expanded: false,
-            id: 'address-section',
-            headingLevel: 'h1'
-        });
-        items.push({
-            title: 'Other Personal Details',
-            content: (
-                <PersonalDetails
-                    personalDetailsFields={personalDetailsFields}
-                    updateCallback={setPersonalDetailsFields}
-                />
-            ),
-            expanded: false,
-            id: 'personal-details',
-            headingLevel: 'h1'
-        });
-        items.push({
-            title: 'Contact Information',
-            content: <ContactFields contactFields={contactFields} updateCallback={setContactFields} />,
-            expanded: false,
-            id: 'contact',
-            headingLevel: 'h1'
-        });
-        items.push({
-            title: 'Ethnicity and Race Information',
-            content: <EthnicityFields />,
-            expanded: false,
-            id: 'ethnicity',
-            headingLevel: 'h1'
-        });
-        return items;
-    }
+    console.log('disabled:', disabled);
+
+    const submit = (data: any) => {
+        console.log('data:', data);
+    };
 
     window.addEventListener('load', () => {
         const sections = Array.from(document.querySelectorAll('section[id]'));
@@ -197,15 +112,15 @@ export default function AddPatient() {
                 <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
             </Grid>
             <Grid col={9} className="margin-left-auto">
-                <Form onSubmit={submit} className="width-full max-width-full">
+                <Form onSubmit={handleSubmit(submit)} className="width-full max-width-full">
                     <Grid row className="page-title-bar bg-white">
                         <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                             New patient
                             <div className="button-group">
-                                <Button disabled className="padding-x-3 add-patient-button" type={'button'}>
+                                <Button disabled={disabled} className="padding-x-3 add-patient-button" type={'button'}>
                                     Save and add new lab report
                                 </Button>
-                                <Button disabled className="padding-x-3 add-patient-button" type={'button'}>
+                                <Button disabled={disabled} className="padding-x-3 add-patient-button" type={'submit'}>
                                     Save changes
                                 </Button>
                             </div>
@@ -214,14 +129,13 @@ export default function AddPatient() {
                     <div className="content">
                         <Grid row className="padding-3">
                             <Grid col={9}>
-                                <GeneralInformation title="General information" id={'section-General_information'} />
-
-                                <NameFields
-                                    id={'section-Name'}
-                                    title="Name information"
-                                    nameFields={nameFields}
-                                    updateCallback={setNameFields}
+                                <GeneralInformation
+                                    control={control}
+                                    title="General information"
+                                    id={'section-General_information'}
                                 />
+
+                                <NameFields id={'section-Name'} title="Name information" control={control} />
                                 <OtherInfoFields control={control} id={'section-Other'} title="Other information" />
                                 <AddressFields
                                     id={'section-Address'}
@@ -230,13 +144,16 @@ export default function AddPatient() {
                                     updateCallback={setAddressFields}
                                 />
                                 <ContactFields
+                                    phoneNumberFields={phoneNumberFields}
+                                    emailFields={emailFields}
+                                    phoneNumberAppend={phoneNumberAppend}
+                                    emailFieldAppend={emailFieldAppend}
+                                    control={control}
                                     id={'section-Telephone'}
                                     title="Telephone"
-                                    contactFields={contactFields}
-                                    updateCallback={setContactFields}
                                 />
-                                <RaceFields id={'section-Race'} title={'Race'} />
                                 <EthnicityFields id={'section-Ethnicity'} title="Ethnicity" />
+                                <RaceFields id={'section-Race'} title={'Race'} />
                                 <IdentificationFields
                                     fields={fields}
                                     append={append}
@@ -259,8 +176,8 @@ export default function AddPatient() {
                                                 <a href="#section-Other">Other information</a>
                                                 <a href="#section-Address">Address</a>
                                                 <a href="#section-Telephone">Telephone</a>
-                                                <a href="#section-Race">Race</a>
                                                 <a href="#section-Ethnicity">Ethnicity</a>
+                                                <a href="#section-Race">Race</a>
                                                 <a href="#section-Identification">Identification</a>
                                             </div>
                                         </nav>
