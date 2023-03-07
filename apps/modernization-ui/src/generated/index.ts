@@ -6,7 +6,6 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export type { CaseStatuses } from './models/CaseStatuses';
 export type { EncryptionResponse } from './models/EncryptionResponse';
 export { InvestigationEventDateSearch } from './models/InvestigationEventDateSearch';
 export { InvestigationFilter } from './models/InvestigationFilter';
@@ -15,8 +14,6 @@ export { LabReportFilter } from './models/LabReportFilter';
 export { LabReportProviderSearch } from './models/LabReportProviderSearch';
 export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
-export type { NotificationStatuses } from './models/NotificationStatuses';
-export type { ProcessingStatuses } from './models/ProcessingStatuses';
 export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
 
 export { EncryptionControllerService } from './services/EncryptionControllerService';

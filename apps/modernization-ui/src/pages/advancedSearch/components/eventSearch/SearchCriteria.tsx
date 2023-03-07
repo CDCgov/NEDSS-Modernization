@@ -20,7 +20,7 @@ type GeneralSearchProps = {
 export const SearchCriteria = ({ control }: GeneralSearchProps) => {
     return (
         <>
-            <MultiSelectControl
+            <SelectControl
                 control={control}
                 name="investigationStatus"
                 label="Investigation status"
