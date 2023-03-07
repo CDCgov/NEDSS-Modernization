@@ -1,0 +1,9 @@
+@import '../../settings.scss';
+
+.input--error {
+    border-left: 2px solid $color-milano-red;
+    padding-left: 1rem;
+}
+input.usa-input--error:focus{
+    outline: none;
+}

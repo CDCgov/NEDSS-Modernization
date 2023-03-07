@@ -4,7 +4,7 @@ import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Controller } from 'react-hook-form';
 import { stateList } from '../../../../constant/states';
 
-export const AddressForm = ({ control }: any) => {
+export const AddressForm = ({ control, errors }: any) => {
     return (
         <>
             <Grid col={12}>
@@ -58,6 +58,9 @@ export const AddressForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="zip"
+                    rules={{
+                        pattern: { value: /^\d{5}(?:[-\s]\d{4})?$/, message: 'Invalid zip code' }
+                    }}
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
@@ -66,6 +69,7 @@ export const AddressForm = ({ control }: any) => {
                             label="Zip code"
                             htmlFor="zip"
                             id="zip"
+                            error={errors && errors.zip && errors.zip.message}
                         />
                     )}
                 />
