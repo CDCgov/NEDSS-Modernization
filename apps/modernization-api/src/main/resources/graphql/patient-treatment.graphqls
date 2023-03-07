@@ -14,6 +14,10 @@ type PatientTreatmentInvestigation {
     condition: String!
 }
 
+extend type Person {
+    treatments: [PatientTreatment]
+}
+
 extend type Query {
     findTreatmentsForPatient(patient: ID!): [PatientTreatment]
 }

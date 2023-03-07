@@ -1,0 +1,23 @@
+type PatientDocument {
+    document: ID!,
+    receivedOn: Date!
+    type : String!
+    sendingFacility: String!
+    reportedOn: Date!
+    condition: String
+    event: String!
+    associatedWith: PatientDocumentInvestigation
+}
+
+type PatientDocumentInvestigation {
+    id: ID!,
+    local: String!
+}
+
+extend type Query {
+    findDocumentsForPatient(patient: ID!): [PatientDocument]
+}
+
+extend type Person {
+    documents: [PatientDocument]
+}
