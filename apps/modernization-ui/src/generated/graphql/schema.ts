@@ -226,7 +226,6 @@ export type InvestigationResults = {
 };
 
 export enum InvestigationStatus {
-  Unassigned = 'UNASSIGNED',
   Closed = 'CLOSED',
   Open = 'OPEN'
 }

@@ -27,27 +27,9 @@ public class InvestigationFilter {
     private CaseStatuses caseStatuses;
     private NotificationStatuses notificationStatuses;
     private ProcessingStatuses processingStatuses;
-
-
-    @Getter
-    @Setter
-    public static class CaseStatuses {
-        private List<CaseStatus> statusList;
-    }
-
-
-    @Getter
-    @Setter
-    public static class NotificationStatuses {
-        private List<NotificationStatus> statusList;
-    }
-
-
-    @Getter
-    @Setter
-    public static class ProcessingStatuses {
-        private List<ProcessingStatus> statusList;
-    }
+    private List<CaseStatus> caseStatuses;
+    private List<NotificationStatus> notificationStatuses;
+    private List<ProcessingStatus> processingStatuses;
 
 
     @Getter
@@ -124,7 +106,6 @@ public class InvestigationFilter {
 
 
     public enum InvestigationStatus {
-        UNASSIGNED,
         OPEN,
         CLOSED
     }
