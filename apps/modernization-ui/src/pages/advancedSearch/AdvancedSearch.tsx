@@ -736,14 +736,14 @@ export const AdvancedSearch = () => {
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.PERSON && 'active'
-                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
+                                } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.PERSON)}>
                                 Patient search
                             </h6>
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.EVENT && 'active'
-                                } padding-bottom-1 type text-normal margin-y-3 font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
+                                } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
                                 Event search
                             </h6>
