@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Id;
 
+import gov.cdc.nbs.patient.search.ElasticsearchSuffixConverter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -301,6 +302,7 @@ public class ElasticsearchPerson {
     private String nmPrefix;
 
     @Field(name = NM_SUFFIX, type = FieldType.Text)
+    @ValueConverter(ElasticsearchSuffixConverter.class)
     private Suffix nmSuffix;
 
     @Field(name = PREFERRED_NM, type = FieldType.Text)
