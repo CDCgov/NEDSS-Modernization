@@ -9,8 +9,8 @@ import {
 } from '../../../../generated/graphql/schema';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { formatInterfaceString } from '../../../../utils/util';
-import { CheckBoxControl } from '../../../../components/FormInputs/CheckBoxControl';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { MultiSelectControl } from '../../../../components/FormInputs/MultiSelectControl';
 
 type GeneralSearchProps = {
     control: Control<FieldValues, any>;
@@ -50,8 +50,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 )}
             </SearchCriteriaContext.Consumer>
 
-            <CheckBoxControl control={control} id="case" name="case" label="Including unassigned status" />
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="statusList"
                 label="Case status"
@@ -63,8 +62,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <CheckBoxControl control={control} id="processing" name="processing" label="Including unassigned status" />
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="processingStatus"
                 label="Current processing status"
@@ -76,13 +74,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 })}
             />
 
-            <CheckBoxControl
-                control={control}
-                id="notification"
-                name="notification"
-                label="Including unassigned status"
-            />
-            <SelectControl
+            <MultiSelectControl
                 control={control}
                 name="notificationStatus"
                 label="Notification status"
