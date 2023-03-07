@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,6 +29,7 @@ import gov.cdc.nbs.Application;
 import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.message.TemplateInput;
+import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.KafkaRequestProducerService;
 
 @SpringBootTest(classes = Application.class, properties = {"spring.profiles.active:test"})
@@ -41,6 +43,9 @@ class KafkaProducerTest {
 
     @Mock
     private KafkaTemplate<String, PatientUpdateRequest> KafkaPatientUpdateTemplate;
+    
+    @Mock
+	ElasticsearchPersonRepository elasticPersonRepository;
 
     @InjectMocks
     private KafkaRequestProducerService producer;
