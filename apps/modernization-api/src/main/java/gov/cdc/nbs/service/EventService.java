@@ -605,7 +605,7 @@ public class EventService {
             var statusStrings = filter.getCaseStatuses().getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (cs.getStatusList().stream().anyMatch(s -> s.contains('UNASSIGNED'))) {
+            if (cs.getStatusList().stream().anyMatch(s -> s.contains("UNASSIGNED"))) {
                 // value is in list, or null
                 var caseStatusQuery = QueryBuilders.boolQuery();
                 statusStrings
@@ -626,7 +626,7 @@ public class EventService {
             var statusStrings = ns.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (ns.getStatusList().stream().anyMatch(s -> s.contains('UNASSIGNED'))) {
+            if (ns.getStatusList().stream().anyMatch(s -> s.contains("UNASSIGNED"))) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
                 statusStrings.forEach(s -> notificationStatusQuery
@@ -647,7 +647,7 @@ public class EventService {
             var statusStrings = ps.getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            if (ps.getStatusList().stream().anyMatch(s -> s.contains('UNASSIGNED'))) {
+            if (ps.getStatusList().stream().anyMatch(s -> s.contains("UNASSIGNED"))) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
                 statusStrings.forEach(s -> notificationStatusQuery
