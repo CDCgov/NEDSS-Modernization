@@ -28,7 +28,8 @@ public class ExportController {
     @Autowired
     private EventService eventService;
 
-    @PostMapping(value = "/investigation/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/investigation/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public ResponseEntity<byte[]> generateInvestigationPdf(@RequestBody InvestigationFilter filter)
             throws DocumentException, IOException {
@@ -59,7 +60,8 @@ public class ExportController {
                 .body(csv);
     }
 
-    @PostMapping(value = "/labreport/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/labreport/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public ResponseEntity<byte[]> generateLabReportPdf(@RequestBody LabReportFilter filter)
             throws DocumentException, IOException {

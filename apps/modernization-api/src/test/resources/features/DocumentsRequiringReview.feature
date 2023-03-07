@@ -1,7 +1,7 @@
 @documents_requiring_review
 Feature: Documents Requiring Review
 
-  Background: 
+  Background:
     Given I have the authorities: "VIEWWORKUP-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
     And there are 2 patients
 

@@ -113,8 +113,7 @@ public class PatientCreateRequestHandler {
     }
 
     /**
-     * Converts a Person entity into an ElasticsearchPerson Document and persists it
-     * to ES
+     * Converts a Person entity into an ElasticsearchPerson Document and persists it to ES
      */
     private void createElasticsearchPatient(Person person) {
         var esPerson = ElasticsearchPerson.builder()

@@ -16,6 +16,7 @@ public record PatientContacts(
 
     }
 
+
     record NamedByPatient(
             long contactRecord,
             Instant createdOn,
@@ -29,6 +30,7 @@ public record PatientContacts(
 
     }
 
+
     record NamedByContact(
             long contactRecord,
             Instant createdOn,
@@ -40,6 +42,7 @@ public record PatientContacts(
     ) {
 
     }
+
 
     public record Investigation(
             long id,

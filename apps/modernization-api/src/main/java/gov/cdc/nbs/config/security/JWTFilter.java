@@ -33,8 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private final SecurityProperties securityProperties;
 
     /**
-     * On every request, validate the JWT, and load user details from the
-     * UserService.
+     * On every request, validate the JWT, and load user details from the UserService.
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -71,8 +70,7 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Creates a
-     * {@link org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken}
+     * Creates a {@link org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken}
      * that notifies Spring Security that the request has been authorized
      */
     public PreAuthenticatedAuthenticationToken buildPreAuthenticatedToken(NbsUserDetails principal,

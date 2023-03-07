@@ -8,14 +8,14 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({ "gov.cdc.nbs" })
+@ComponentScan({"gov.cdc.nbs"})
 @EnableJpaRepositories("gov.cdc.nbs")
 @EnableElasticsearchRepositories("gov.cdc.nbs.repository.elasticsearch")
 @EntityScan("gov.cdc.nbs.entity")
 public class PatientListenerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PatientListenerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PatientListenerApplication.class, args);
+    }
 
 }

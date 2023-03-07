@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PatientUpdateResponse {
-	private String requestId;
+    private String requestId;
 }

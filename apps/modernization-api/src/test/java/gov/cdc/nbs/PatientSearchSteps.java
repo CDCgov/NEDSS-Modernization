@@ -116,8 +116,7 @@ public class PatientSearchSteps {
         if (recordStatus.equals(RecordStatus.LOG_DEL)) {
             searchPatient = PersonMother.janeDoe_deleted();
         }
-        PatientFilter filter = new PatientFilter();
-        filter.setRecordStatus(Arrays.asList(recordStatus));
+        PatientFilter filter = new PatientFilter(recordStatus);
         try {
             searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
         } catch (QueryException e) {
@@ -153,8 +152,7 @@ public class PatientSearchSteps {
 
     @When("I search for a patient by {string} and there is a space at the end")
     public void i_search_for_a_patient_by_name_and_there_is_a_space_at_the_end(String field) {
-        PatientFilter filter = new PatientFilter();
-        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
+        PatientFilter filter = new PatientFilter(RecordStatus.ACTIVE);
         switch (field) {
             case "first name":
                 filter.setFirstName(searchPatient.getFirstNm() + " ");
@@ -319,16 +317,12 @@ public class PatientSearchSteps {
     }
 
     private PatientFilter getPatientDataFilter(String field, String qualifier) {
-        var filter = new PatientFilter();
-        // default to "ACTIVE" records
-        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
+        var filter = new PatientFilter(RecordStatus.ACTIVE);
         return updatePatientDataFilter(filter, field, qualifier);
     }
 
     private PatientFilter getPatientPartialDataFilter(String field, String qualifier) {
-        var filter = new PatientFilter();
-        // default to "ACTIVE" records
-        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
+        var filter = new PatientFilter(RecordStatus.ACTIVE);
         return updatePatientPartialDataFilter(filter, field, qualifier);
     }
 

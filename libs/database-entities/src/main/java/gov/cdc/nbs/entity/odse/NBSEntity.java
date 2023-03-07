@@ -41,7 +41,8 @@ public class NBSEntity {
     )
     private List<EntityLocatorParticipation> entityLocatorParticipations;
 
-    protected NBSEntity() {}
+    protected NBSEntity() {
+    }
 
     public NBSEntity(Long id, String classCd) {
         this.id = id;

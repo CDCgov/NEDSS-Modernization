@@ -5,23 +5,21 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.RedirectView;
-
 import gov.cdc.nbs.config.security.SecurityProperties;
-import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.entity.odse.SecurityLog;
 import gov.cdc.nbs.exception.RedirectionException;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import lombok.AllArgsConstructor;
@@ -47,8 +45,8 @@ public class RedirectionService {
     private final SecurityProperties securityProperties;
 
     /**
-     * Get the user from the session, create userId and token cookies. Create
-     * RedirectView from url, or to '/nbs/timeout' if session is invalid
+     * Get the user from the session, create userId and token cookies. Create RedirectView from url, or to
+     * '/nbs/timeout' if session is invalid
      */
     public RedirectView handleRedirect(String url, HttpServletRequest request, HttpServletResponse response) {
         var jsessionId = getJsessionId(request.getCookies());
@@ -74,7 +72,7 @@ public class RedirectionService {
      * Maps the www-form-urlencoded search parameters to a PatientFilter
      */
     public PatientFilter getPatientFilterFromParams(Map<String, String> map) {
-        var filter = new PatientFilter();
+        var filter = new PatientFilter(RecordStatus.ACTIVE);
         filter.setLastName(map.get(NBS_LAST_NAME));
         filter.setFirstName(map.get(NBS_FIRST_NAME));
         try {

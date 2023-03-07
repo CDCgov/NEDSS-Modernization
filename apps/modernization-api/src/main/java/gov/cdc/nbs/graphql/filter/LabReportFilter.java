@@ -27,6 +27,7 @@ public class LabReportFilter {
     private String resultedTest;
     private String codedResult;
 
+
     @Getter
     @Setter
     public static class LaboratoryEventDateSearch {
@@ -35,6 +36,7 @@ public class LabReportFilter {
         private Instant to;
     }
 
+
     @Getter
     @Setter
     public static class LabReportProviderSearch {
@@ -42,10 +44,12 @@ public class LabReportFilter {
         private Long providerId;
     }
 
+
     public enum LaboratoryEventIdType {
         ACCESSION_NUMBER,
         LAB_ID
     }
+
 
     public enum LabReportDateType {
         DATE_OF_REPORT,
@@ -55,25 +59,30 @@ public class LabReportFilter {
         LAST_UPDATE_DATE
     }
 
+
     public enum EntryMethod {
         ELECTRONIC,
         MANUAL
     }
+
 
     public enum UserType {
         INTERNAL,
         EXTERNAL
     }
 
+
     public enum EventStatus {
         NEW,
         UPDATE
     }
 
+
     public enum ProcessingStatus {
         PROCESSED,
         UNPROCESSED
     }
+
 
     public enum ProviderType {
         ORDERING_FACILITY,

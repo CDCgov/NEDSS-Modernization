@@ -102,7 +102,8 @@ public abstract class EntityLocatorParticipation {
     @Column(name = "as_of_date")
     private Instant asOfDate;
 
-    protected EntityLocatorParticipation() {}
+    protected EntityLocatorParticipation() {
+    }
 
     protected EntityLocatorParticipation(
             final PatientCommand command,
