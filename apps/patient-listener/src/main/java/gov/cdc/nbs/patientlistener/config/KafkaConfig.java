@@ -58,14 +58,14 @@ public class KafkaConfig {
 	@Value("${kafka.consumer.group-id}")
 	private String groupId;
 	
-	private static String SCHEMA_URL = "schema.registry.url";
+	private static String sCHEMAURL = "schema.registry.url";
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
 	public ProducerFactory<String, PatientUpdateEventResponse> producerFactoryPatientUpdateResponse() {
 		Map<String, Object> config = new HashMap<>();
 		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		config.put(SCHEMA_URL, schemaRegistryUrl);
+		config.put(sCHEMAURL, schemaRegistryUrl);
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageDeSerializer.class);
 
@@ -117,7 +117,7 @@ public class KafkaConfig {
 		Map<String, Object> config = new HashMap<>();
 
 		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		config.put(SCHEMA_URL, schemaRegistryUrl);
+		config.put(sCHEMAURL, schemaRegistryUrl);
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
 		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);

@@ -4,7 +4,6 @@ package gov.cdc.nbs.patientlistener.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
