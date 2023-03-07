@@ -116,8 +116,7 @@ public class PatientSearchSteps {
         if (recordStatus.equals(RecordStatus.LOG_DEL)) {
             searchPatient = PersonMother.janeDoe_deleted();
         }
-        PatientFilter filter = new PatientFilter();
-        filter.setRecordStatus(Arrays.asList(recordStatus));
+        PatientFilter filter = new PatientFilter(recordStatus);
         try {
             searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(1000, 0)).getContent();
         } catch (QueryException e) {
@@ -151,10 +150,41 @@ public class PatientSearchSteps {
                 .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
     }
 
+    @When("I search for a patient by {string} and there is a space at the end")
+    public void i_search_for_a_patient_by_name_and_there_is_a_space_at_the_end(String field) {
+        PatientFilter filter = new PatientFilter(RecordStatus.ACTIVE);
+        switch (field) {
+            case "first name":
+                filter.setFirstName(searchPatient.getFirstNm() + " ");
+                break;
+            case "last name":
+                filter.setLastName(searchPatient.getLastNm() + " ");
+                break;
+            case "address":
+                var addressLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setAddress(addressLocator.getStreetAddr1() + " ");
+                break;
+            case "city":
+                var cityLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
+                filter.setCity(cityLocator.getCityDescTxt() + " ");
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid value for 'field' input: " + field);
+        }
+        searchResults = patientController.findPatientsByFilter(filter, new GraphQLPage(10, 0)).getContent();
+    }
+
     @Then("I find the patient")
     public void i_find_the_patient() {
         assertNotNull(searchPatient);
         assertTrue(searchResults.size() > 0);
+        assertTrue(searchResults.contains(searchPatient));
+    }
+
+    @Then("I find only the expected patient")
+    public void I_find_only_the_expected_patient() {
+        assertNotNull(searchPatient);
+        assertEquals(1, searchResults.size());
         assertTrue(searchResults.contains(searchPatient));
     }
 
@@ -235,7 +265,7 @@ public class PatientSearchSteps {
                 break;
             case "city":
                 var cityLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
-                filter.setCity(cityLocator.getCityCd());
+                filter.setCity(cityLocator.getCityDescTxt());
                 break;
             case "state":
                 var stateLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
@@ -287,16 +317,12 @@ public class PatientSearchSteps {
     }
 
     private PatientFilter getPatientDataFilter(String field, String qualifier) {
-        var filter = new PatientFilter();
-        // default to "ACTIVE" records
-        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
+        var filter = new PatientFilter(RecordStatus.ACTIVE);
         return updatePatientDataFilter(filter, field, qualifier);
     }
 
     private PatientFilter getPatientPartialDataFilter(String field, String qualifier) {
-        var filter = new PatientFilter();
-        // default to "ACTIVE" records
-        filter.setRecordStatus(Arrays.asList(RecordStatus.ACTIVE));
+        var filter = new PatientFilter(RecordStatus.ACTIVE);
         return updatePatientPartialDataFilter(filter, field, qualifier);
     }
 

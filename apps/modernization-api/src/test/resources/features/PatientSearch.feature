@@ -1,7 +1,7 @@
 @patient_search
 Feature: Patient search
 
-  Background: 
+  Background:
     Given there are 10 patients
     And I am looking for one of them
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
@@ -12,7 +12,7 @@ Feature: Patient search
     When I search patients by "<field>" "<qualifier>"
     Then I find the patient
 
-    Examples: 
+    Examples:
       | field              | qualifier |
       | last name          |           |
       | last name soundex  |           |
@@ -41,7 +41,7 @@ Feature: Patient search
     When I search patients by "<field>" "<qualifier>" "<field2>" "<qualifier2>" "<field3>" "<qualifier3>"
     Then I find the patient
 
-    Examples: 
+    Examples:
       | field         | qualifier | field2     | qualifier2 | field3  | qualifier3 |
       | last name     |           | first name |            | city    |            |
       | first name    |           | ssn        |            | gender  |            |
@@ -67,7 +67,7 @@ Feature: Patient search
     When I search patients using partial data "<field>" "<qualifier>" "<field2>" "<qualifier2>"
     Then I find the patient
 
-    Examples: 
+    Examples:
       | field      | qualifier | field2     | qualifier2 |
       | last name  |           |            |            |
       | first name |           |            |            |
@@ -84,12 +84,24 @@ Feature: Patient search
     When I search for patients sorted by "<search field>" "<qualifier>" "<sort field>" "<direction>"
     Then I find the patients sorted
 
-    Examples: 
+    Examples:
       | search field  | qualifier | sort field | direction |
       | record status |           | lastNm     | asc       |
       | record status |           | lastNm     | desc      |
       | record status |           | birthTime  | asc       |
       | record status |           | birthTime  | desc      |
+
+  @patient_search_with_trailing_space
+  Scenario: When search criteria ends with a space, only the expected patients are returned
+    When I search for a patient by "<field>" and there is a space at the end
+    Then I find only the expected patient
+
+    Examples:
+      | field      |
+      | first name |
+      | last name  |
+      | address    |
+      | city       |
 
   @patient_search_record_status_deleted
   Scenario: I can find patients with deleted record status

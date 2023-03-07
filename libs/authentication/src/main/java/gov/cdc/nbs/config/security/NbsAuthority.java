@@ -10,9 +10,8 @@ import lombok.RequiredArgsConstructor;
 /**
  * Used in place of default
  * {@link org.springframework.security.core.authority.SimpleGrantedAuthority#SimpleGrantedAuthority
- * SimpleGrantedAuthority}.
- * The expanded functionality allows us to capture
- * relevant security information such as program area and jurisdiction
+ * SimpleGrantedAuthority}. The expanded functionality allows us to capture relevant security information such as
+ * program area and jurisdiction
  */
 @Getter
 @Builder

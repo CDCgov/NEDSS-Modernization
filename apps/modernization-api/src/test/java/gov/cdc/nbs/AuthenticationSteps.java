@@ -58,10 +58,10 @@ public class AuthenticationSteps {
     public void i_have_authenticated_as_a_user() throws Exception {
         var user = TestContext.user;
         var response = mvc.perform(MockMvcRequestBuilders
-                .post("/login")
-                .content(mapper.writeValueAsBytes(new LoginRequest(user.getUserId(), "")))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .post("/login")
+                        .content(mapper.writeValueAsBytes(new LoginRequest(user.getUserId(), "")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
         var tokenCookie = response.getResponse().getCookie("nbs_token");
         assertNotNull(tokenCookie);

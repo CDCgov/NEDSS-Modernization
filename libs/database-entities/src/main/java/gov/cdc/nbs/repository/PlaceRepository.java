@@ -9,7 +9,7 @@ import gov.cdc.nbs.entity.odse.Place;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long>, QuerydslPredicateExecutor<Place> {
-        @Query("SELECT coalesce(max(p.id), 0) FROM Place p")
-        Long getMaxId();
+    @Query("SELECT coalesce(max(p.id), 0) FROM Place p")
+    Long getMaxId();
 
 }

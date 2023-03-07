@@ -16,7 +16,8 @@ public class Changed {
     @Column(name = "last_chg_user_id")
     private Long lastChgUserId;
 
-    protected Changed(){}
+    protected Changed() {
+    }
 
     public Changed(final long who, final Instant when, final String why) {
         this.lastChgUserId = who;
@@ -31,9 +32,11 @@ public class Changed {
     public String getLastChgReasonCd() {
         return lastChgReasonCd;
     }
+
     public Instant getLastChgTime() {
         return lastChgTime;
     }
+
     public Long getLastChgUserId() {
         return lastChgUserId;
     }

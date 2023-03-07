@@ -41,7 +41,8 @@ public class NBSEntity {
     )
     private List<EntityLocatorParticipation> entityLocatorParticipations;
 
-    protected NBSEntity() {}
+    protected NBSEntity() {
+    }
 
     public NBSEntity(Long id, String classCd) {
         this.id = id;
@@ -66,7 +67,7 @@ public class NBSEntity {
 
         List<EntityLocatorParticipation> locators = ensureLocators();
 
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
 
         EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
                 this,
@@ -83,7 +84,7 @@ public class NBSEntity {
     public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
         List<EntityLocatorParticipation> locators = ensureLocators();
 
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
 
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
                 this,
@@ -100,7 +101,7 @@ public class NBSEntity {
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
         List<EntityLocatorParticipation> locators = ensureLocators();
 
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, (long) locators.size());
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, emailAddress.id());
 
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
                 this,

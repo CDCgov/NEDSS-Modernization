@@ -11,11 +11,13 @@ import org.springframework.data.repository.query.Param;
 import gov.cdc.nbs.entity.odse.Participation;
 
 public interface ParticipationRepository
-                extends JpaRepository<Participation, Long>, QuerydslPredicateExecutor<Participation> {
+        extends JpaRepository<Participation, Long>, QuerydslPredicateExecutor<Participation> {
 
-	Optional<Participation> findByIdSubjectEntityUidAndIdActUidAndIdTypeCd(Long subjectEntityuid, Long actUid,
-			String typeCd);
+    Optional<Participation> findByIdSubjectEntityUidAndIdActUidAndIdTypeCd(Long subjectEntityuid, Long actUid,
+            String typeCd);
 
-	@Query(value="select p.act_uid from  Participation p where p.type_cd =:typeCd AND p.subject_entity_uid in (:subjectEntityUid)", nativeQuery=true)
-	List<Long> findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(@Param("typeCd")String typeCd,  @Param("subjectEntityUid")List<Long> subjectEntityUid);
+    @Query(value = "select p.act_uid from  Participation p where p.type_cd =:typeCd AND p.subject_entity_uid in (:subjectEntityUid)",
+            nativeQuery = true)
+    List<Long> findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(@Param("typeCd") String typeCd,
+            @Param("subjectEntityUid") List<Long> subjectEntityUid);
 }

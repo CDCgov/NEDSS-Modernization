@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("PST")
-public class PostalEntityLocatorParticipation extends EntityLocatorParticipation{
+public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
 
     @MapsId("locatorUid")
     @OneToOne(

@@ -95,7 +95,7 @@ public class ElasticsearchPersonMapper {
     private static List<NestedEmail> asNestedEmails(Person person) {
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(TeleEntityLocatorParticipation.class::isInstance)
-                .filter(participation -> Objects.equals("NET",participation.getCd()))
+                .filter(participation -> Objects.equals("NET", participation.getCd()))
                 .map(elp -> (TeleLocator) elp.getLocator())
                 .map(ElasticsearchPersonMapper::asNestedEmail)
                 .collect(Collectors.toList());
@@ -111,7 +111,7 @@ public class ElasticsearchPersonMapper {
     private static List<NestedPhone> asNestedPhones(Person person) {
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(TeleEntityLocatorParticipation.class::isInstance)
-                .filter(participation -> !Objects.equals("NET",participation.getCd()))
+                .filter(participation -> !Objects.equals("NET", participation.getCd()))
                 .map(elp -> (TeleLocator) elp.getLocator())
                 .map(ElasticsearchPersonMapper::asNestedPhone)
                 .collect(Collectors.toList());

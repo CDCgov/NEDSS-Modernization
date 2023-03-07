@@ -28,11 +28,13 @@ public class InvestigationFilter {
     private NotificationStatuses notificationStatuses;
     private ProcessingStatuses processingStatuses;
 
+
     @Getter
     @Setter
     public static class CaseStatuses {
         private List<CaseStatus> statusList;
     }
+
 
     @Getter
     @Setter
@@ -40,11 +42,13 @@ public class InvestigationFilter {
         private List<NotificationStatus> statusList;
     }
 
+
     @Getter
     @Setter
     public static class ProcessingStatuses {
         private List<ProcessingStatus> statusList;
     }
+
 
     @Getter
     @Setter
@@ -54,12 +58,14 @@ public class InvestigationFilter {
         private Instant to;
     }
 
+
     @Getter
     @Setter
     public static class ProviderFacilitySearch {
         private ReportingEntityType entityType;
         private Long id;
     }
+
 
     public enum IdType {
         ABCS_CASE_ID,
@@ -69,10 +75,12 @@ public class InvestigationFilter {
         STATE_CASE_ID
     }
 
+
     public enum ReportingEntityType {
         FACILITY,
         PROVIDER
     }
+
 
     public enum ProcessingStatus {
         UNASSIGNED,
@@ -84,6 +92,7 @@ public class InvestigationFilter {
         SURVEILLANCE_FOLLOW_UP
     }
 
+
     public enum NotificationStatus {
         UNASSIGNED,
         APPROVED,
@@ -92,6 +101,7 @@ public class InvestigationFilter {
         PENDING_APPROVAL,
         REJECTED
     }
+
 
     public enum CaseStatus {
         UNASSIGNED,
@@ -102,6 +112,7 @@ public class InvestigationFilter {
         UNKNOWN
     }
 
+
     public enum InvestigationEventDateType {
         DATE_OF_REPORT,
         INVESTIGATION_CLOSED_DATE,
@@ -110,6 +121,7 @@ public class InvestigationFilter {
         LAST_UPDATE_DATE,
         NOTIFICATION_CREATE_DATE
     }
+
 
     public enum InvestigationStatus {
         UNASSIGNED,

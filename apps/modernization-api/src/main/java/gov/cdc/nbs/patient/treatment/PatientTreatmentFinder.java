@@ -145,7 +145,8 @@ class PatientTreatmentFinder {
     }
 
     private PatientTreatment.Investigation mapInvestigation(final Tuple tuple) {
-        Long identifier = Objects.requireNonNull(tuple.get(QPublicHealthCase.publicHealthCase.id), "An investigation is required.");
+        Long identifier = Objects.requireNonNull(tuple.get(QPublicHealthCase.publicHealthCase.id),
+                "An investigation is required.");
         String local = tuple.get(QPublicHealthCase.publicHealthCase.localId);
         String condition = tuple.get(QConditionCode.conditionCode.conditionShortNm);
 

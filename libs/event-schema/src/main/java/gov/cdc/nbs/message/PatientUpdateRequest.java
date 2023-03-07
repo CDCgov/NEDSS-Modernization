@@ -8,12 +8,12 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class PatientUpdateRequest {
-	private String requestId;
-	private PatientUpdateParams params;
+    private String requestId;
+    private PatientUpdateParams params;
 
-	public PatientUpdateRequest(String requestId, PatientUpdateParams params) {
-		this.requestId = requestId;
-		this.params = params;
-	}
+    public PatientUpdateRequest(String requestId, PatientUpdateParams params) {
+        this.requestId = requestId;
+        this.params = params;
+    }
 
 }

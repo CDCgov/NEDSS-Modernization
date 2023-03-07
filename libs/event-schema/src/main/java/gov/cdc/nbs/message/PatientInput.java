@@ -31,6 +31,7 @@ public class PatientInput {
     private Instant asOf;
     private String comments;
 
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -41,6 +42,7 @@ public class PatientInput {
         private Suffix suffix;
         private NameUseCd nameUseCd;
     }
+
 
     @Data
     @AllArgsConstructor
@@ -56,6 +58,7 @@ public class PatientInput {
         private String censusTract;
     }
 
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -64,6 +67,7 @@ public class PatientInput {
         private String extension;
         private PhoneType phoneType;
     }
+
 
     @Data
     @AllArgsConstructor
@@ -74,11 +78,13 @@ public class PatientInput {
         private String identificationType;
     }
 
+
     public enum PhoneType {
         HOME,
         CELL,
         WORK
     }
+
 
     public enum NameUseCd {
         AD, // Adopted Name

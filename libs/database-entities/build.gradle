@@ -1,57 +1,57 @@
 buildscript {
     ext {
         springBootVersion = "2.7.8"
-		queryDslVersion = "5.0.0"
+        queryDslVersion = "5.0.0"
     }
 }
 plugins {
-	id 'java'
-	id 'jvm-test-suite'
+    id 'java'
+    id 'jvm-test-suite'
 
-	alias libs.plugins.springBoot apply false
-	alias libs.plugins.springDependencies
+    alias libs.plugins.springBoot apply false
+    alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
 
 testing {
-	suites {
-		test {
-			useJUnitJupiter()
+    suites {
+        test {
+            useJUnitJupiter()
 
-			dependencies {
-				implementation libs.bundles.testing
-			}
-		}
-	}
+            dependencies {
+                implementation libs.bundles.testing
+            }
+        }
+    }
 }
 
 dependencyManagement {
-	imports {
-		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-	}
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
 }
 
 dependencies {
 
     // Spring
-	implementation libs.bundles.jpa
-	annotationProcessor libs.springBoot.jpa
+    implementation libs.bundles.jpa
+    annotationProcessor libs.springBoot.jpa
 
-	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
 
-	// event-schema
-	implementation project(':event-schema')
+    // event-schema
+    implementation project(':event-schema')
 
     // lombok
-	implementation "org.projectlombok:lombok"
-	compileOnly "org.projectlombok:lombok"
-	annotationProcessor "org.projectlombok:lombok"
+    implementation "org.projectlombok:lombok"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
 
-	// querydsl
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    // querydsl
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
 }

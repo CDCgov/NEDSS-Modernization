@@ -22,10 +22,10 @@ public class KafkaTestConsumer {
 
     /**
      * Listener to facilitate testing of sent messages
-     * 
+     *
      * @param consumerRecord
      */
-    @KafkaListener(topics = { "request-patient-search.patientsearch",
+    @KafkaListener(topics = {"request-patient-search.patientsearch",
             "request-patient-search.patientupdate",
             "request-patient-search.patientdelete",
             "patient-create-test"

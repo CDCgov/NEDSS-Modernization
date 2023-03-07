@@ -37,9 +37,8 @@ public class RedirectController {
     private String wildFlyUrl;
 
     /**
-     * Intercepts legacy home page search requests, pulls out the current user from
-     * the JSESSIONID, the search criteria from the incomingParams map, and forwards
-     * the request to the modernization search page
+     * Intercepts legacy home page search requests, pulls out the current user from the JSESSIONID, the search criteria
+     * from the incomingParams map, and forwards the request to the modernization search page
      */
     @ApiIgnore
     @PostMapping("/nbs/redirect/simpleSearch")
@@ -59,9 +58,8 @@ public class RedirectController {
     }
 
     /**
-     * Intercepts legacy advanced search page requests, pulls out the current user
-     * from the JSESSIONID, and forwards the request to the modernization search
-     * page
+     * Intercepts legacy advanced search page requests, pulls out the current user from the JSESSIONID, and forwards the
+     * request to the modernization search page
      */
     @ApiIgnore
     @GetMapping("/nbs/redirect/advancedSearch")
@@ -74,8 +72,7 @@ public class RedirectController {
     /**
      * Sends a GET request to
      * <WildFly_URL>/nbs/HomePage.do?method=patientSearchSubmit
-     * to set up the session variables so that we can navigate directly to Add
-     * Patient or Patient Details pages
+     * to set up the session variables so that we can navigate directly to Add Patient or Patient Details pages
      */
     @GetMapping("/preparePatientDetails")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
