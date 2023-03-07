@@ -4,10 +4,8 @@ package gov.cdc.nbs.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -29,7 +27,6 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
@@ -44,16 +41,17 @@ import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
 import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
-import lombok.RequiredArgsConstructor;
 import gov.cdc.nbs.util.Constants;
+import lombok.RequiredArgsConstructor;
 
 
 
@@ -224,7 +222,7 @@ public class EventService {
             builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // entry methods / entered by
-        /**
+        /*-
          * Entry Method Electronic = electronicInd: 'Y'
          * Entry Method Manual = electronicInd: 'N'
          * Entered by External = electronicInd: 'E
@@ -262,10 +260,10 @@ public class EventService {
         // processing status
         if (filter.getProcessingStatus() != null && !filter.getProcessingStatus().isEmpty()) {
             var validStatuses = new ArrayList<String>();
-            if (filter.getProcessingStatus().contains(ProcessingStatus.PROCESSED)) {
+            if (filter.getProcessingStatus().contains(LabReportFilter.ProcessingStatus.PROCESSED)) {
                 validStatuses.add("PROCESSED");
             }
-            if (filter.getProcessingStatus().contains(ProcessingStatus.UNPROCESSED)) {
+            if (filter.getProcessingStatus().contains(LabReportFilter.ProcessingStatus.UNPROCESSED)) {
                 validStatuses.add("UNPROCESSED");
             }
             builder.must(QueryBuilders.termsQuery(LabReport.RECORD_STATUS_CD, validStatuses));
@@ -594,19 +592,17 @@ public class EventService {
         if (filter.getOutbreakNames() != null && !filter.getOutbreakNames().isEmpty()) {
             builder.must(QueryBuilders.termsQuery(Investigation.OUTBREAK_NAME, filter.getOutbreakNames()));
         }
-        
-        // case status 
-        if (filter.getCaseStatuses() != null) {
-            var cs = filter.getCaseStatuses();
-            if (cs.getStatusList() == null || cs.getStatusList().isEmpty()) {
-                throw new QueryException(
-                        "statusList is required when specifying caseStatuses");
-            }
-            var statusStrings = filter.getCaseStatuses().getStatusList().stream()
+
+        // case status
+        if (filter.getCaseStatuses() != null && !filter.getCaseStatuses().isEmpty()) {
+            // UNASSIGNED is included in status list but is not an actual status, it represents a null value
+            var statusStrings = filter.getCaseStatuses()
+                    .stream()
+                    .filter(s -> !s.equals(CaseStatus.UNASSIGNED))
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            var match = statusStrings.contains("UNASSIGNED");
-            if (match) {
+            var includeUnassigned = filter.getCaseStatuses().contains(CaseStatus.UNASSIGNED);
+            if (includeUnassigned) {
                 // value is in list, or null
                 var caseStatusQuery = QueryBuilders.boolQuery();
                 statusStrings
@@ -618,17 +614,15 @@ public class EventService {
             }
         }
         // notification status
-        if (filter.getNotificationStatuses() != null) {
-            var ns = filter.getNotificationStatuses();
-            if (ns.getStatusList() == null || ns.getStatusList().isEmpty()) {
-                throw new QueryException(
-                        "statusList is required when specifying notificationStatuses");
-            }
-            var statusStrings = ns.getStatusList().stream()
+        if (filter.getNotificationStatuses() != null && !filter.getNotificationStatuses().isEmpty()) {
+            // UNASSIGNED is included in status list but is not an actual status, it represents a null value
+            var statusStrings = filter.getNotificationStatuses()
+                    .stream()
+                    .filter(s -> !s.equals(NotificationStatus.UNASSIGNED))
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            var match = statusStrings.contains("UNASSIGNED");
-            if (match) {
+            var includeUnassigned = filter.getNotificationStatuses().contains(NotificationStatus.UNASSIGNED);
+            if (includeUnassigned) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
                 statusStrings.forEach(s -> notificationStatusQuery
@@ -641,23 +635,21 @@ public class EventService {
         }
         // processing status
         if (filter.getProcessingStatuses() != null) {
-            var ps = filter.getProcessingStatuses();
-            if (ps.getStatusList() == null || ps.getStatusList().isEmpty()) {
-                throw new QueryException(
-                        "statusList is required when specifying processingStatuses");
-            }
-            var statusStrings = ps.getStatusList().stream()
+            // UNASSIGNED is included in status list but is not an actual status, it represents a null value
+            var statusStrings = filter.getProcessingStatuses()
+                    .stream()
+                    .filter(s -> !s.equals(InvestigationFilter.ProcessingStatus.UNASSIGNED))
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            var match = statusStrings.contains("UNASSIGNED");
-            if (match) {
+            var includeUnassigned = filter.getProcessingStatuses()
+                    .contains(InvestigationFilter.ProcessingStatus.UNASSIGNED);
+            if (includeUnassigned) {
                 // value is in list, or null
                 var notificationStatusQuery = QueryBuilders.boolQuery();
                 statusStrings.forEach(s -> notificationStatusQuery
                         .should(QueryBuilders.matchQuery(Investigation.CURR_PROCESS_STATUS_CD, s)));
                 notificationStatusQuery.mustNot(QueryBuilders.existsQuery(Investigation.CURR_PROCESS_STATUS_CD));
                 builder.should(notificationStatusQuery);
-
             } else {
                 builder.must(QueryBuilders.termsQuery(Investigation.CURR_PROCESS_STATUS_CD, statusStrings));
             }

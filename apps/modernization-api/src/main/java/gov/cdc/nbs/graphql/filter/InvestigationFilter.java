@@ -30,27 +30,6 @@ public class InvestigationFilter {
 
     @Getter
     @Setter
-    public static class CaseStatuses {
-        private boolean includeUnassigned;
-        private List<CaseStatus> statusList;
-    }
-
-    @Getter
-    @Setter
-    public static class NotificationStatuses {
-        private boolean includeUnassigned;
-        private List<NotificationStatus> statusList;
-    }
-
-    @Getter
-    @Setter
-    public static class ProcessingStatuses {
-        private boolean includeUnassigned;
-        private List<ProcessingStatus> statusList;
-    }
-
-    @Getter
-    @Setter
     public static class InvestigationEventDateSearch {
         private InvestigationEventDateType eventDateType;
         private Instant from;
@@ -115,7 +94,6 @@ public class InvestigationFilter {
     }
 
     public enum InvestigationStatus {
-        UNASSIGNED,
         OPEN,
         CLOSED
     }
