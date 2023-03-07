@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { PersonName } from '../../../generated/graphql/schema';
 import { calculateAge } from '../../../utils/util';
 import '../AdvancedSearch.scss';
-import '../../../settings.scss';
 import { useNavigate } from 'react-router';
 
 type SearchItemsProps = {
