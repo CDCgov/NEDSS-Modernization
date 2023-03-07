@@ -937,7 +937,7 @@ export const AdvancedSearch = () => {
                             )}
                         </>
                     )}
-                    {!isError() && isNoResultsFound() && (
+                    {!isError() && !isLoading() && isNoResultsFound() && (
                         <div
                             className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
                             style={{
