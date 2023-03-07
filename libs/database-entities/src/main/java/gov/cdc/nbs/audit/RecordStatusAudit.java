@@ -22,6 +22,7 @@ public class RecordStatusAudit {
         this.recordStatusCd = "ACTIVE";
         this.recordStatusTime = when;
     }
+
     public String getRecordStatusCd() {
         return recordStatusCd;
     }

@@ -100,21 +100,21 @@ public class PostalLocator extends Locator {
     }
 
     private void applyCity(final City city) {
-        if(city != null) {
+        if (city != null) {
             this.cityCd = city.code();
             this.cityDescTxt = city.description();
         }
     }
 
     private void applyCounty(final County county) {
-        if(county != null) {
+        if (county != null) {
             this.cntyCd = county.code();
             this.cntyDescTxt = county.description();
         }
     }
 
     private void applyCountry(final Country county) {
-        if(county != null) {
+        if (county != null) {
             this.cntryCd = county.code();
             this.cntryDescTxt = county.description();
         }

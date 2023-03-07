@@ -13,24 +13,23 @@ tasks.named("test") { testTask ->
         showCauses true
         showStackTraces true
     }
-        
+
     ignoreFailures = true // Always try to run all tests for all modules
     afterSuite { desc, result ->
 
-    if (desc.parent) return // Only summarize results for whole modules
+        if (desc.parent) return // Only summarize results for whole modules
 
-    String summary = "${testTask.project.name}:${testTask.name} results: ${result.resultType} " +
-            "(" +
-            "${result.testCount} tests, " +
-            "${result.successfulTestCount} successes, " +
-            "${result.failedTestCount} failures, " +
-            "${result.skippedTestCount} skipped" +
-            ") " +
-            "in ${TimeCategory.minus(new Date(result.endTime), new Date(result.startTime))}" +
-            "\n" +
-            "Report file: ${testTask.reports.html.entryPoint}" + "\n" +
-            "Cucumber report: modernization-api/build/reports/tests/test/cucumber-report.html"
-
+        String summary = "${testTask.project.name}:${testTask.name} results: ${result.resultType} " +
+                "(" +
+                "${result.testCount} tests, " +
+                "${result.successfulTestCount} successes, " +
+                "${result.failedTestCount} failures, " +
+                "${result.skippedTestCount} skipped" +
+                ") " +
+                "in ${TimeCategory.minus(new Date(result.endTime), new Date(result.startTime))}" +
+                "\n" +
+                "Report file: ${testTask.reports.html.entryPoint}" + "\n" +
+                "Cucumber report: modernization-api/build/reports/tests/test/cucumber-report.html"
 
 
         // Add reports in `testsResults`, keep failed suites at the end
@@ -41,7 +40,7 @@ tasks.named("test") { testTask ->
         }
     }
 }
-    
+
 
 gradle.buildFinished {
     def allResults = ext.testsResults

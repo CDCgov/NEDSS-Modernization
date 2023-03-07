@@ -9,8 +9,8 @@ import gov.cdc.nbs.entity.odse.Organization;
 
 @Repository
 public interface OrganizationRepository
-                extends JpaRepository<Organization, Long>, QuerydslPredicateExecutor<Organization> {
-        @Query("SELECT coalesce(max(o.id), 0) FROM Organization o")
-        Long getMaxId();
+        extends JpaRepository<Organization, Long>, QuerydslPredicateExecutor<Organization> {
+    @Query("SELECT coalesce(max(o.id), 0) FROM Organization o")
+    Long getMaxId();
 
 }

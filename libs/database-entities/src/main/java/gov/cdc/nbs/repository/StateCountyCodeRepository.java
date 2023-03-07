@@ -8,15 +8,15 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import gov.cdc.nbs.entity.srte.StateCountyCodeValue;
 
 public interface StateCountyCodeRepository
-                extends JpaRepository<StateCountyCodeValue, String>, QuerydslPredicateExecutor<StateCountyCodeValue> {
+        extends JpaRepository<StateCountyCodeValue, String>, QuerydslPredicateExecutor<StateCountyCodeValue> {
 
-        /**
-         * Finds all counties within the specified state
-         * 
-         * @param stateCode refers to {@link gov.cdc.nbs.entity.srte.StateCode#id}
-         * @param pageable
-         * @return
-         */
-        Page<StateCountyCodeValue> findAllByParentIsCd(String stateCode, Pageable pageable);
+    /**
+     * Finds all counties within the specified state
+     *
+     * @param stateCode refers to {@link gov.cdc.nbs.entity.srte.StateCode#id}
+     * @param pageable
+     * @return
+     */
+    Page<StateCountyCodeValue> findAllByParentIsCd(String stateCode, Pageable pageable);
 
 }

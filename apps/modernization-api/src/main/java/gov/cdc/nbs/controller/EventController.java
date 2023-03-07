@@ -35,12 +35,12 @@ public class EventController {
     private static final String VIEW_MORBIDITY_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONMORBIDITYREPORT
             + "')";
-    
+
     private static final String FIND_PATIENT_AND_VIEW_LAB_REPORT = FIND_PATIENT + AND + VIEW_LAB_REPORT;
     private static final String VIEW_PATIENT_FILE_AND_VIEW_LAB_REPORT = VIEWWORKUP_PATIENT + AND + VIEW_LAB_REPORT;
     private static final String VIEWWORKUP_PATIENT_AND_VIEW_INVESTIGATION = VIEWWORKUP_PATIENT + AND
             + VIEW_INVESTIGATION;
-    
+
     private static final String FIND_PATIENT_AND_VIEW_MORBIDITY_REPORT = FIND_PATIENT + AND + VIEW_MORBIDITY_REPORT;
 
     private final EventService eventService;
@@ -71,11 +71,11 @@ public class EventController {
     public Page<Investigation> findOpenInvestigationsForPatient(@Argument Long patientId, @Argument GraphQLPage page) {
         return eventService.findOpenInvestigationsForPatient(patientId, page);
     }
-    
+
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT_AND_VIEW_MORBIDITY_REPORT)
     public Page<Observation> findMorbidtyReportForPatient(@Argument Long patientId, @Argument GraphQLPage page) {
-    	return eventService.findMorbidtyReportForPatient(patientId, page);
+        return eventService.findMorbidtyReportForPatient(patientId, page);
     }
-    
+
 }

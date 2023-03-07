@@ -6,7 +6,7 @@ Feature: I can search for coded results
     When I search for local coded results by "<searchText>"
     Then A local coded result is "<result>"
 
-    Examples: 
+    Examples:
       | searchText    | result    |
       | ANOMRES       | found     |
       | ANOM          | found     |
@@ -20,7 +20,7 @@ Feature: I can search for coded results
     When I search for snomed coded results by "<searchText>"
     Then A snomed coded results is "<result>"
 
-    Examples: 
+    Examples:
       | searchText    | result    |
       | No growth     | found     |
       | growth        | found     |

@@ -6,6 +6,6 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
 
 public interface PublicHealthCaseRepository
-                extends JpaRepository<PublicHealthCase, Long>, QuerydslPredicateExecutor<PublicHealthCase> {
+        extends JpaRepository<PublicHealthCase, Long>, QuerydslPredicateExecutor<PublicHealthCase> {
 
 }
