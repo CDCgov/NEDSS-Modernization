@@ -10,32 +10,24 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.SettableListenableFuture;
 
-import gov.cdc.nbs.Application;
 import gov.cdc.nbs.message.EnvelopeRequest;
 import gov.cdc.nbs.message.PatientUpdateRequest;
 import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.KafkaRequestProducerService;
 
-@SpringBootTest(classes = Application.class, properties = {"spring.profiles.active:test"})
-@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration
 class KafkaProducerTest {
 
     @Mock

@@ -35,14 +35,14 @@ public class PatientService {
 
 		Person updated = null;
 		if (requestId == null || requestId.length() < 1) {
-			return PatientUpdateEventResponse.builder().personId(null).requestId(requestId).status(Constants.FAILED)
+			return PatientUpdateEventResponse.builder().personId(personId).requestId(requestId).status(Constants.FAILED)
 					.message(Constants.FAILED_NO_REQUESTID_MSG).build();
 
 		}
 
 		Optional<Person> dbPerson = personRepository.findById(personId);
 		if (dbPerson.isEmpty()) {
-			return PatientUpdateEventResponse.builder().personId(null).requestId(requestId).status(Constants.FAILED)
+			return PatientUpdateEventResponse.builder().personId(personId).requestId(requestId).status(Constants.FAILED)
 					.message(Constants.FAILED_PERSON_NOT_FIND_MSG + personId).build();
 		}
 

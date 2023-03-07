@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockitoAnnotations;
+
 
 import gov.cdc.nbs.entity.enums.Ethnicity;
-import gov.cdc.nbs.entity.enums.Race;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.Person;
@@ -28,12 +28,10 @@ import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.patientlistener.PatientListenerApplication;
 import gov.cdc.nbs.patientlistener.util.Constants;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 
-@SpringBootTest(classes = PatientListenerApplication.class, properties = { "spring.profiles.active:test" })
 public class PatientUpdateTest {
 
 	@Mock
@@ -44,6 +42,10 @@ public class PatientUpdateTest {
 	@InjectMocks
 	PatientService patientService;
 
+	PatientUpdateTest() {
+		MockitoAnnotations.openMocks(this);
+		patientService = new PatientService(personRepository,elasticPersonRepository);
+	}
 	@Test
 	void updatePatient() {
 
@@ -52,6 +54,7 @@ public class PatientUpdateTest {
 
 		Person person = buildPersonFromInput();
 
+		person.setId(id);		
 		when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(person));
 		PatientUpdateEventResponse result = patientService.updatePatient(requestId, id, getPatientInput());
 		

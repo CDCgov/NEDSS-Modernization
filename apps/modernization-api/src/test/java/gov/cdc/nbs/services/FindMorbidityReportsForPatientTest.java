@@ -8,24 +8,22 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import gov.cdc.nbs.Application;
+import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.EventService;
 import gov.cdc.nbs.util.Constants;
 
-@SpringBootTest(classes = Application.class, properties = {"spring.profiles.active:test"})
-@RunWith(SpringRunner.class)
+
+@ExtendWith(MockitoExtension.class)
 class FindMorbidityReportsForPatientTest {
 
     @Mock
@@ -36,6 +34,9 @@ class FindMorbidityReportsForPatientTest {
 
     @Mock
     ObservationRepository oboservationRepository;
+    
+    @Mock
+   	ElasticsearchPersonRepository elasticPersonRepository;
 
     @InjectMocks
     EventService eventService;
