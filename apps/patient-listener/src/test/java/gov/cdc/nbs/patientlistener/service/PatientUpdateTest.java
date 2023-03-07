@@ -32,7 +32,7 @@ import gov.cdc.nbs.patientlistener.util.Constants;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 
-public class PatientUpdateTest {
+class PatientUpdateTest {
 
 	@Mock
 	PersonRepository personRepository;

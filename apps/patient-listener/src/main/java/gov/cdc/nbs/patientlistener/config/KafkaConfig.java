@@ -29,8 +29,7 @@ import gov.cdc.nbs.message.KafkaMessageSerializer;
 import gov.cdc.nbs.message.PatientUpdateEvent;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 @EnableKafka
 @Configuration
@@ -58,13 +57,15 @@ public class KafkaConfig {
 	
 	@Value("${kafka.consumer.group-id}")
 	private String groupId;
+	
+	private static String SCHEMA_URL = "schema.registry.url";
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Bean
 	public ProducerFactory<String, PatientUpdateEventResponse> producerFactoryPatientUpdateResponse() {
 		Map<String, Object> config = new HashMap<>();
 		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		config.put("schema.registry.url", schemaRegistryUrl);
+		config.put(SCHEMA_URL, schemaRegistryUrl);
 		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageDeSerializer.class);
 
@@ -116,7 +117,7 @@ public class KafkaConfig {
 		Map<String, Object> config = new HashMap<>();
 
 		config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		config.put("schema.registry.url", schemaRegistryUrl);
+		config.put(SCHEMA_URL, schemaRegistryUrl);
 		config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
 		config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);

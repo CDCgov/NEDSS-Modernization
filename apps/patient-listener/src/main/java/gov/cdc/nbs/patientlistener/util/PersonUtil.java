@@ -75,7 +75,7 @@ public class PersonUtil {
                 .phone(Arrays.asList(phone))
                 .address(Arrays.asList(address))
                 .recordStatusCd(person.getRecordStatusCd())
-                .ethnicGroupInd(person.getEthnicGroupInd().toString())
+                .ethnicGroupInd(person.getEthnicGroupInd())
                 .birthTime((Instant) instantConverter.read(person.getBirthTime()))
                 .race(Arrays.asList(race))
                 .deceasedIndCd(person.getDeceasedIndCd())
@@ -95,23 +95,23 @@ public class PersonUtil {
     public static List<TeleLocator> getTeleLocators(Person person) {
     	if(person.getNbsEntity() == null ||person.getNbsEntity().getEntityLocatorParticipations() == null ||
     			person.getNbsEntity().getEntityLocatorParticipations().isEmpty()) {
-    	return new ArrayList<TeleLocator>();
+    	return new ArrayList<>();
     	}
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(elp -> elp.getCd().equals("TELE"))
                 .map(elp -> (TeleLocator) elp.getLocator())
-                .collect(Collectors.toList());
+                .toList();
     }
     
     public static List<PostalLocator> getPostalLocators(Person person) {
     	if(person.getNbsEntity()== null || person.getNbsEntity().getEntityLocatorParticipations() == null ||
     			person.getNbsEntity().getEntityLocatorParticipations().isEmpty()){
-    		return new ArrayList<PostalLocator>();
+    		return new ArrayList<>();
     	}
         return person.getNbsEntity().getEntityLocatorParticipations().stream()
                 .filter(elp -> elp.getCd().equals("PST"))
                 .map(elp -> (PostalLocator) elp.getLocator())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }
