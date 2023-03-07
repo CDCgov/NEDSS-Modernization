@@ -1,0 +1,90 @@
+extend type Query {
+    findMorbidtyReportForPatient(patientId: Int!, page: Page): [MorbidtyObservation]
+}
+
+ 
+ type MorbidtyObservation {
+     id: ID
+     act: Act
+     obsValueCodedList: [ObsValueCoded]
+     activityDurationAmt: String
+     activityDurationUnitCd: String
+     activityFromTime: Date
+     activityToTime: Date
+     addReasonCd: String
+     addTime: Date
+     addUserId: Int
+     cd: String
+     cdDescTxt: String
+     cdSystemCd: String
+     cdSystemDescTxt: String
+     confidentialityCd: String
+     confidentialityDescTxt: String
+     ctrlCdDisplayForm: String
+     ctrlCdUserDefined1: String
+     ctrlCdUserDefined2: String
+     ctrlCdUserDefined3: String
+     ctrlCdUserDefined4: String
+     derivationExp: Int
+     effectiveDurationAmt: String
+     effectiveDurationUnitCd: String
+     effectiveFromTime: Date
+     effectiveToTime: Date
+     electronicInd: String
+     groupLevelCd: String
+     jurisdictionCd: String
+     labConditionCd: String
+     lastChgReasonCd: String
+     lastChgTime: Date
+     lastChgUserId: Int
+     localId: String
+     methodCd: String
+     methodDescTxt: String
+     obsDomainCd: String
+     obsDomainCdSt1: String
+     pnuCd: String
+     priorityCd: String
+     priorityDescTxt: String
+     progAreaCd: String
+     recordStatusCd: String
+     recordStatusTime: Date
+     repeatNbr: Int
+     statusCd: String
+     statusTime: Date
+     subjectPersonUid: Person
+     targetSiteCd: String
+     targetSiteDescTxt: String
+     txt: String
+     userAffiliationTxt: String
+     valueCd: String
+     ynuCd: String
+     programJurisdictionOid: Int
+     sharedInd:  String
+     versionCtrlNbr: Int
+     altCd: String
+     altCdDescTxt: String
+     altCdSystemCd: String
+     altCdSystemDescTxt: String
+     cdDerivedInd: String
+     rptToStateTime: Date
+     cdVersion: String
+     processingDecisionCd: String
+     pregnantIndCd: String
+     pregnantWeek: Int
+     processingDecisionTxt: String
+
+
+ }
+
+ type Act {
+  id: Int
+ }
+ 
+ type  ObsValueCoded {
+  id: ObsValueCodedId
+ 
+ }
+ 
+ type ObsValueCodedId {
+ observationUid: ID
+ }
