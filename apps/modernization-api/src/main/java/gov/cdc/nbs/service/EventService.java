@@ -605,8 +605,7 @@ public class EventService {
             var statusStrings = filter.getCaseStatuses().getStatusList().stream()
                     .map(status -> status.toString().toUpperCase())
                     .toList();
-            var match = filter.getCaseStatuses().getStatusList().stream()
-                    .filter("UNASSIGNED"::contains);
+            var match = statusStrings.filter("UNASSIGNED")
             if (!match.isEmpty()) {
                 // value is in list, or null
                 var caseStatusQuery = QueryBuilders.boolQuery();
