@@ -1,3 +1,9 @@
+button {
+    white-space: nowrap;
+    img {
+        margin-left: 6px;
+    }
+}
 .break-workd {
     word-break: normal !important;
 }
@@ -48,8 +54,7 @@
 
 .refine-text {
     font-size: 22px;
-    background: whitesmoke;
-    padding: 22px 1rem;
+    padding: 25px 1rem 0;
 }
 
 .bottom-search {
