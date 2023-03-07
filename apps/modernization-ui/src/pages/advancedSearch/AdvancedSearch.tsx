@@ -286,8 +286,8 @@ export const AdvancedSearch = () => {
         // Using a timeout fixes an issue where the apollo cache fails to update the data
         setTimeout(() => {
             setPatientData(data.findPatientsByFilter);
+            setLoading(false);
         }, 10);
-        setLoading(false);
         setValidSearch(true);
     }
 
@@ -295,8 +295,8 @@ export const AdvancedSearch = () => {
         // Using a timeout fixes an issue where the apollo cache fails to update the data
         setTimeout(() => {
             setInvestigationData(data.findInvestigationsByFilter);
+            setLoading(false);
         }, 10);
-        setLoading(false);
         setValidSearch(true);
     }
 
@@ -304,8 +304,8 @@ export const AdvancedSearch = () => {
         // Using a timeout fixes an issue where the apollo cache fails to update the data
         setTimeout(() => {
             setLabReportData(data.findLabReportsByFilter);
+            setLoading(false);
         }, 10);
-        setLoading(false);
         setValidSearch(true);
     }
 
@@ -931,7 +931,15 @@ export const AdvancedSearch = () => {
                             </div>
                         </>
                     )}
+                    {loading && (
+                        <Grid row className="padding-5 flex-justify-center">
+                            <span className="ds-c-spinner" role="status">
+                                <span className="ds-u-visibility--screen-reader">Loading</span>
+                            </span>
+                        </Grid>
+                    )}
                     {validSearch &&
+                        !loading &&
                         (!investigationData?.content || investigationData?.content?.length === 0) &&
                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                         (!patientData?.content || patientData?.content?.length === 0) && (
@@ -956,6 +964,7 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.PERSON &&
                         !submitted &&
+                        !loading &&
                         patientData?.content &&
                         patientData.content.length > 0 && (
                             <PatientResults
@@ -968,6 +977,7 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
                         !submitted &&
+                        !loading &&
                         investigationData?.content &&
                         investigationData?.content?.length > 0 && (
                             <InvestigationResults
@@ -980,6 +990,7 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
                         !submitted &&
+                        !loading &&
                         labReportData?.content &&
                         labReportData?.content?.length > 0 && (
                             <LabReportResults

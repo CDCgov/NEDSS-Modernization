@@ -113,7 +113,8 @@ export const PatientProfile = () => {
                         <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                             <Icon.Warning className="font-sans-2xl margin-x-2" />
                             <p id="modal-1-description">
-                                Would you like to permenantly delete patient record #12345, Smith, John?
+                                Would you like to permenantly delete patient record {profileData?.localId},{' '}
+                                {`${profileData?.lastNm}, ${profileData?.firstNm}`}?
                             </p>
                         </div>
                         <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
@@ -133,7 +134,7 @@ export const PatientProfile = () => {
                 <div className="margin-y-2 flex-row common-card">
                     <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
                         <p className="font-sans-xl text-bold margin-0">
-                            {profileData?.lastNm ? `${profileData?.lastNm}, ${profileData?.firstNm}` : 'Smith, John'}
+                            {`${profileData?.lastNm}, ${profileData?.firstNm}`}
                         </p>
                         <h5 className="font-sans-md text-medium margin-0">Patient ID: {profileData?.localId}</h5>
                     </div>
