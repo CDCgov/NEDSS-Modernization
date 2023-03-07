@@ -1,5 +1,6 @@
 import { ErrorMessage, Label, TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+import './Input.scss';
 
 type InputProps = {
     name?: string;
@@ -30,13 +31,14 @@ export const Input = ({
     ...props
 }: InputProps) => {
     return (
-        <>
+        <div className={`input ${error ? 'input--error' : ''}`}>
             {label && (
                 <Label htmlFor={htmlFor}>
                     {label}
                     <small className="text-red">{required && ' *'}</small>
                 </Label>
             )}
+            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
             <TextInput
                 placeholder={placeholder}
                 {...props}
@@ -49,7 +51,6 @@ export const Input = ({
                 className={classNames(className)}
                 type={type}
             />
-            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
-        </>
+        </div>
     );
 };

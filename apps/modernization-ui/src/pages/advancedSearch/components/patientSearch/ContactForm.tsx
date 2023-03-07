@@ -2,16 +2,27 @@ import { Grid } from '@trussworks/react-uswds';
 import { Input } from '../../../../components/FormInputs/Input';
 import { Controller } from 'react-hook-form';
 import { PhoneNumberInput } from '../../../../components/FormInputs/PhoneNumberInput/PhoneNumberInput';
+import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
 
-export const ContactForm = ({ control }: any) => {
+export const ContactForm = ({ control, errors }: any) => {
     return (
         <>
             <Grid col={12}>
                 <Controller
                     control={control}
                     name="phoneNumber"
+                    rules={{
+                        validate: {
+                            properNumber: (value) => validatePhoneNumber(value)
+                        }
+                    }}
                     render={({ field: { onChange, value } }) => (
-                        <PhoneNumberInput onChange={onChange} label="Phone number" defaultValue={value} />
+                        <PhoneNumberInput
+                            onChange={onChange}
+                            label="Phone number"
+                            defaultValue={value}
+                            error={errors && errors.phoneNumber && 'Invalid phone number'}
+                        />
                     )}
                 />
             </Grid>
@@ -19,6 +30,12 @@ export const ContactForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="email"
+                    rules={{
+                        pattern: {
+                            value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                            message: 'Invalid email'
+                        }
+                    }}
                     render={({ field: { onChange, value } }) => (
                         <Input
                             onChange={onChange}
@@ -27,6 +44,7 @@ export const ContactForm = ({ control }: any) => {
                             label="Email"
                             htmlFor="email"
                             id="email"
+                            error={errors && errors.email && errors.email.message}
                         />
                     )}
                 />
