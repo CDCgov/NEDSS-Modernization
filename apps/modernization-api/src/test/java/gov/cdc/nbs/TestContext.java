@@ -5,8 +5,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import gov.cdc.nbs.entity.odse.AuthUser;
 
 /**
- * Used to store data that will be shared between steps.
- * Always call TestContext.clear() in a @Before block
+ * Used to store data that will be shared between steps. Always call TestContext.clear() in a @Before block
  */
 public class TestContext {
     public static String token;

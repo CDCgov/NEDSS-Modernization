@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PatientUpdateParams {
-	private PatientInput updatePerson;
-	private List<TemplateInput> templateInputs;
+    private PatientInput updatePerson;
+    private List<TemplateInput> templateInputs;
 
 }

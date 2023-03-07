@@ -1,7 +1,7 @@
 @lab_report_search
 Feature: Lab report search
 
-  Background: 
+  Background:
     Given I have the authorities: "FIND-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
     And I have the authorities: "FIND-PATIENT,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "ARBO"
 
@@ -11,7 +11,7 @@ Feature: Lab report search
     When I search laboratory events by "<field>" "<qualifier>"
     Then I find the lab report
 
-    Examples: 
+    Examples:
       | field             | qualifier                      |
       | program area      |                                |
       | jurisdiction      |                                |
@@ -42,7 +42,7 @@ Feature: Lab report search
     When I search laboratory events by "<field>" "<qualifier>" "<field2>" "<qualifier2>" "<field3>" "<qualifier3>"
     Then I find the lab report
 
-    Examples: 
+    Examples:
       | field             | qualifier                      | field2        | qualifier2 | field3       | qualifier3 |
       | program area      |                                | jurisdiction  |            | event id     | lab id     |
       | jurisdiction      |                                | event status  |            | event id     | lab id     |

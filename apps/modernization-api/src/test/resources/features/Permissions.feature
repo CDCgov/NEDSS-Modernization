@@ -6,7 +6,7 @@ Feature: User's search results are restricted by permissions
     When I search for a patient by "<searchType>"
     Then a "<resultType>" result is returned
 
-    Examples: 
+    Examples:
       | searchType                 | authorities                            | programArea | jurisdiction | resultType            |
       | findPatientsByFilter       | FIND-PATIENT                           | STD         | ALL          | success               |
       | findPatientsByFilter       |                                        | STD         | ALL          | AccessDeniedException |

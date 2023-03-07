@@ -18,9 +18,9 @@ public class IdGeneratorService {
     private LocalUidGeneratorRepository localUidGeneratorRepository;
 
     /**
-     * Returns the next valid Id for the given EntityType.
-     * Increments the Id seed for the EntityType in the Local_UID_generator table
-     * 
+     * Returns the next valid Id for the given EntityType. Increments the Id seed for the EntityType in the
+     * Local_UID_generator table
+     *
      * @param type
      * @return
      */
@@ -62,10 +62,10 @@ public class IdGeneratorService {
         private String suffix;
     }
 
+
     /**
-     * Matches the class_name_cd column of the Local_UID_generator table,
-     * other than the NBS entry. Which references the type_cd column
-     * as the class_name_cd for type NBS is dynamic based on the jurisdiction
+     * Matches the class_name_cd column of the Local_UID_generator table, other than the NBS entry. Which references the
+     * type_cd column as the class_name_cd for type NBS is dynamic based on the jurisdiction
      */
     public enum EntityType {
         NBS,

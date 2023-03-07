@@ -82,6 +82,7 @@ public class SecurityUtil {
         public static final String SELECTFILTERCRITERIAREPORTINGFACILITY = "SELECTFILTERCRITERIAREPORTINGFACILITY";
     }
 
+
     public static class BusinessObjects {
         private BusinessObjects() {
         }

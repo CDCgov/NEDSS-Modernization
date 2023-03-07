@@ -528,6 +528,47 @@ type OutbreakId {
     codeSetNm: String!
     code: String!
 }
+type PatientContacts {
+    patient: ID!
+    namedByPatient: [NamedByPatient]
+    namedByContact: [NamedByContact]
+}
+
+type NamedByPatient {
+    contactRecord: ID!
+    createdOn: Date!
+    condition: String
+    contact: NamedContact!
+    namedOn: Date!
+    priority: String
+    disposition: String
+    event: String!
+}
+
+type NamedByContact {
+    contactRecord: ID!
+    createdOn: Date!
+    contact: NamedContact!
+    namedOn: Date!
+    condition: String
+    event: String!
+    associatedWith: PatientContactInvestigation
+}
+
+type NamedContact {
+    id: ID!
+    name: String!
+}
+
+type PatientContactInvestigation {
+    id: ID!,
+    local: String!
+    condition: String!
+}
+
+extend type Query {
+    findContactsForPatient(patient: ID!): PatientContacts
+}
 type PatientTreatment {
     treatment: ID!,
     createdOn: Date!

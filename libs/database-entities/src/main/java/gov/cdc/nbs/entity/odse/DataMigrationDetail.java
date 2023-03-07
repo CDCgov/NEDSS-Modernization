@@ -24,7 +24,8 @@ public class DataMigrationDetail {
 
     @MapsId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "data_migration_record_uid", referencedColumnName = "data_migration_record_uid", nullable = false)
+    @JoinColumn(name = "data_migration_record_uid", referencedColumnName = "data_migration_record_uid",
+            nullable = false)
     @JoinColumn(name = "data_migration_batch_uid", referencedColumnName = "data_migration_batch_uid", nullable = false)
     private DataMigrationRecord dataMigrationRecord;
 

@@ -47,7 +47,8 @@ class PatientCreateRequestHandlerTest {
     ArgumentCaptor<ElasticsearchPerson> elasticsearchPersonCaptor;
 
     @Spy
-    private final ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(Include.NON_NULL).registerModule(new JavaTimeModule());
+    private final ObjectMapper mapper =
+            new ObjectMapper().setSerializationInclusion(Include.NON_NULL).registerModule(new JavaTimeModule());
 
     @BeforeEach
     void setup() {
@@ -55,7 +56,8 @@ class PatientCreateRequestHandlerTest {
     }
 
     @Test
-    @SuppressWarnings("squid:S5961") // Allow more than 25 assertions
+    @SuppressWarnings("squid:S5961")
+        // Allow more than 25 assertions
     void should_create_patient_in_database_and_elasticsearch() {
         // Mock methods
 
@@ -153,13 +155,42 @@ class PatientCreateRequestHandlerTest {
         assertThat(actual_person.getAsOfDateSex()).isEqualTo("2019-07-30T13:47:34.110914Z");
         assertThat(actual_person.getDescription()).isEqualTo("comments");
 
-        assertThat(actual_person.getNames()).satisfiesExactly(actual_primary -> assertThat(actual_primary).returns("First", PersonName::getFirstNm).returns("Middle", PersonName::getMiddleNm).returns("Last", PersonName::getLastNm).returns(Suffix.JR, PersonName::getNmSuffix).returns("L", PersonName::getNmUseCd), actual_alias -> assertThat(actual_alias).returns("Second", PersonName::getFirstNm).returns("SecondMiddle", PersonName::getMiddleNm).returns("SecondLast", PersonName::getLastNm).returns(Suffix.SR, PersonName::getNmSuffix).returns("AL", PersonName::getNmUseCd));
+        assertThat(actual_person.getNames()).satisfiesExactly(
+                actual_primary -> assertThat(actual_primary).returns("First", PersonName::getFirstNm)
+                        .returns("Middle", PersonName::getMiddleNm).returns("Last", PersonName::getLastNm)
+                        .returns(Suffix.JR, PersonName::getNmSuffix).returns("L", PersonName::getNmUseCd),
+                actual_alias -> assertThat(actual_alias).returns("Second", PersonName::getFirstNm)
+                        .returns("SecondMiddle", PersonName::getMiddleNm).returns("SecondLast", PersonName::getLastNm)
+                        .returns(Suffix.SR, PersonName::getNmSuffix).returns("AL", PersonName::getNmUseCd));
 
-        assertThat(actual_person.getRaces()).satisfiesExactly(actual_race -> assertThat(actual_race).returns("Race Code1", PersonRace::getRaceCd), actual_race -> assertThat(actual_race).returns("Race Code2", PersonRace::getRaceCd));
+        assertThat(actual_person.getRaces()).satisfiesExactly(
+                actual_race -> assertThat(actual_race).returns("Race Code1", PersonRace::getRaceCd),
+                actual_race -> assertThat(actual_race).returns("Race Code2", PersonRace::getRaceCd));
 
-        assertThat(actual_person.getNbsEntity().getEntityLocatorParticipations()).satisfiesExactlyInAnyOrder(actual_phone_locator -> assertThat(actual_phone_locator).isInstanceOf(TeleEntityLocatorParticipation.class).asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class)).returns("CP", EntityLocatorParticipation::getCd).extracting(TeleEntityLocatorParticipation::getLocator).returns(5801L, TeleLocator::getId).returns("Phone Number", TeleLocator::getPhoneNbrTxt).returns("Extension", TeleLocator::getExtensionTxt), actual_email_locator -> assertThat(actual_email_locator).isInstanceOf(TeleEntityLocatorParticipation.class).asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class)).returns("NET", EntityLocatorParticipation::getCd).extracting(TeleEntityLocatorParticipation::getLocator).returns(5099L, TeleLocator::getId).returns("AnEmail@email.com", TeleLocator::getEmailAddress), actual_postal_locator -> assertThat(actual_postal_locator).isInstanceOf(PostalEntityLocatorParticipation.class).asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class)).returns("H", EntityLocatorParticipation::getCd).extracting(PostalEntityLocatorParticipation::getLocator).returns(5953L, PostalLocator::getId).returns("SA1", PostalLocator::getStreetAddr1).returns("SA2", PostalLocator::getStreetAddr2)
-                //  should this be getCityDescTxt or getCityCd?
-                .returns("City", PostalLocator::getCityCd).returns("State", PostalLocator::getStateCd).returns("County", PostalLocator::getCntyCd).returns("Zip", PostalLocator::getZipCd).returns("Country", PostalLocator::getCntryCd)
+        assertThat(actual_person.getNbsEntity().getEntityLocatorParticipations()).satisfiesExactlyInAnyOrder(
+                actual_phone_locator -> assertThat(actual_phone_locator).isInstanceOf(
+                                TeleEntityLocatorParticipation.class)
+                        .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                        .returns("CP", EntityLocatorParticipation::getCd)
+                        .extracting(TeleEntityLocatorParticipation::getLocator).returns(5801L, TeleLocator::getId)
+                        .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
+                        .returns("Extension", TeleLocator::getExtensionTxt),
+                actual_email_locator -> assertThat(actual_email_locator).isInstanceOf(
+                                TeleEntityLocatorParticipation.class)
+                        .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                        .returns("NET", EntityLocatorParticipation::getCd)
+                        .extracting(TeleEntityLocatorParticipation::getLocator).returns(5099L, TeleLocator::getId)
+                        .returns("AnEmail@email.com", TeleLocator::getEmailAddress),
+                actual_postal_locator -> assertThat(actual_postal_locator).isInstanceOf(
+                                PostalEntityLocatorParticipation.class)
+                        .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
+                        .returns("H", EntityLocatorParticipation::getCd)
+                        .extracting(PostalEntityLocatorParticipation::getLocator).returns(5953L, PostalLocator::getId)
+                        .returns("SA1", PostalLocator::getStreetAddr1).returns("SA2", PostalLocator::getStreetAddr2)
+                        //  should this be getCityDescTxt or getCityCd?
+                        .returns("City", PostalLocator::getCityCd).returns("State", PostalLocator::getStateCd)
+                        .returns("County", PostalLocator::getCntyCd).returns("Zip", PostalLocator::getZipCd)
+                        .returns("Country", PostalLocator::getCntryCd)
 
         );
 
@@ -238,29 +269,43 @@ class PatientCreateRequestHandlerTest {
         assertEquals(person.getDescription(), esPerson.getDescription());
 
         // Addresses
-        var personAddresses = person.getNbsEntity().getEntityLocatorParticipations().stream().filter(PostalEntityLocatorParticipation.class::isInstance).map(elp -> ((PostalLocator) elp.getLocator())).toList();
+        var personAddresses = person.getNbsEntity().getEntityLocatorParticipations().stream()
+                .filter(PostalEntityLocatorParticipation.class::isInstance)
+                .map(elp -> ((PostalLocator) elp.getLocator())).toList();
 
         for (int i = 0; i < personAddresses.size(); i++) {
             var pa = personAddresses.get(i);
-            var matchingRecord = esPerson.getAddress().stream().filter(esAddress -> esAddress.getStreetAddr1().equals(pa.getStreetAddr1()) && esAddress.getStreetAddr2().equals(pa.getStreetAddr2()) && esAddress.getCity().equals(pa.getCityCd()) && esAddress.getState().equals(pa.getStateCd()) && esAddress.getCntyCd().equals(pa.getCntyCd()) && esAddress.getZip().equals(pa.getZipCd()) && esAddress.getCntryCd().equals(pa.getCntryCd())).findFirst();
+            var matchingRecord = esPerson.getAddress().stream().filter(esAddress -> esAddress.getStreetAddr1()
+                    .equals(pa.getStreetAddr1()) && esAddress.getStreetAddr2()
+                    .equals(pa.getStreetAddr2()) && esAddress.getCity().equals(pa.getCityCd()) && esAddress.getState()
+                    .equals(pa.getStateCd()) && esAddress.getCntyCd().equals(pa.getCntyCd()) && esAddress.getZip()
+                    .equals(pa.getZipCd()) && esAddress.getCntryCd().equals(pa.getCntryCd())).findFirst();
             assertTrue(matchingRecord.isPresent());
         }
 
         // Phone numbers
-        var personPhones = person.getNbsEntity().getEntityLocatorParticipations().stream().filter(TeleEntityLocatorParticipation.class::isInstance).filter(elp -> !Objects.equals(elp.getCd(), "NET")).map(elp -> ((TeleLocator) elp.getLocator())).toList();
+        var personPhones = person.getNbsEntity().getEntityLocatorParticipations().stream()
+                .filter(TeleEntityLocatorParticipation.class::isInstance)
+                .filter(elp -> !Objects.equals(elp.getCd(), "NET")).map(elp -> ((TeleLocator) elp.getLocator()))
+                .toList();
 
         for (int i = 0; i < personPhones.size(); i++) {
             var pp = personPhones.get(i);
-            var matchingRecord = esPerson.getPhone().stream().filter(esPhone -> esPhone.getTelephoneNbr().equals(pp.getPhoneNbrTxt()) && esPhone.getExtensionTxt().equals(pp.getExtensionTxt())).findFirst();
+            var matchingRecord = esPerson.getPhone().stream().filter(esPhone -> esPhone.getTelephoneNbr()
+                    .equals(pp.getPhoneNbrTxt()) && esPhone.getExtensionTxt().equals(pp.getExtensionTxt())).findFirst();
             assertTrue(matchingRecord.isPresent());
         }
 
         // Email addresses
-        var personEmails = person.getNbsEntity().getEntityLocatorParticipations().stream().filter(TeleEntityLocatorParticipation.class::isInstance).filter(elp -> Objects.equals(elp.getCd(), "NET")).map(elp -> ((TeleLocator) elp.getLocator())).toList();
+        var personEmails = person.getNbsEntity().getEntityLocatorParticipations().stream()
+                .filter(TeleEntityLocatorParticipation.class::isInstance)
+                .filter(elp -> Objects.equals(elp.getCd(), "NET")).map(elp -> ((TeleLocator) elp.getLocator()))
+                .toList();
 
         for (int i = 0; i < personEmails.size(); i++) {
             var pe = personEmails.get(i);
-            var matchingRecord = esPerson.getEmail().stream().filter(esEmail -> esEmail.getEmailAddress().equals(pe.getEmailAddress())).findFirst();
+            var matchingRecord = esPerson.getEmail().stream()
+                    .filter(esEmail -> esEmail.getEmailAddress().equals(pe.getEmailAddress())).findFirst();
             assertTrue(matchingRecord.isPresent());
         }
 
@@ -268,7 +313,11 @@ class PatientCreateRequestHandlerTest {
         var personNames = person.getNames();
         for (int i = 0; i < personNames.size(); i++) {
             var pn = personNames.get(i);
-            var matchingRecord = esPerson.getName().stream().filter(esName -> esName.getFirstNm().equals(pn.getFirstNm()) && esName.getMiddleNm().equals(pn.getMiddleNm()) && esName.getLastNm().equals(pn.getLastNm()) && esName.getNmSuffix().equals(pn.getNmSuffix().toString())).findFirst();
+            var matchingRecord = esPerson.getName().stream()
+                    .filter(esName -> esName.getFirstNm().equals(pn.getFirstNm()) && esName.getMiddleNm()
+                            .equals(pn.getMiddleNm()) && esName.getLastNm()
+                            .equals(pn.getLastNm()) && esName.getNmSuffix().equals(pn.getNmSuffix().toString()))
+                    .findFirst();
             assertTrue(matchingRecord.isPresent());
         }
 
@@ -276,7 +325,9 @@ class PatientCreateRequestHandlerTest {
         var personRaces = person.getRaces();
         for (int i = 0; i < personRaces.size(); i++) {
             var pr = personRaces.get(i);
-            var matchingRecord = esPerson.getRace().stream().filter(esRace -> esRace.getRaceCd().equals(pr.getRaceCategoryCd())).findFirst();
+            var matchingRecord =
+                    esPerson.getRace().stream().filter(esRace -> esRace.getRaceCd().equals(pr.getRaceCategoryCd()))
+                            .findFirst();
             assertTrue(matchingRecord.isPresent());
         }
     }

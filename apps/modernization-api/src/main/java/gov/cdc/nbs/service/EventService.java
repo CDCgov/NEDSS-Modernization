@@ -60,7 +60,7 @@ import gov.cdc.nbs.util.Constants;
 @Service
 @RequiredArgsConstructor
 public class EventService {
-	private static final String HAS_AUTHORITY = "hasAuthority('";
+    private static final String HAS_AUTHORITY = "hasAuthority('";
     private static final String VIEW_INVESTIGATION = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.INVESTIGATION + "')";
     private static final String VIEW_LAB_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
@@ -81,14 +81,14 @@ public class EventService {
 
     @PersistenceContext
     private final EntityManager entityManager;
-    
-    
+
+
     @Autowired
     PersonRepository personReposity;
-    
+
     @Autowired
     ParticipationRepository participationRepository;
-    
+
     @Autowired
     ObservationRepository oboservationRepository;
 
@@ -117,14 +117,14 @@ public class EventService {
         var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
         return performSearch(query, LabReport.class);
     }
-    
+
     @PreAuthorize(VIEW_MORBIDITY_REPORT)
     public Page<Observation> findMorbidtyReportForPatient(Long patientId, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
         List<Observation> reports = findMorbidityReportsForPatient(patientId);
         return new PageImpl<>(reports, pageable, reports.size());
     }
-    
+
 
     private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
         var hits = operations.search(query, clazz);
@@ -666,7 +666,7 @@ public class EventService {
                 .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
                 .build();
     }
-    
+
 
     private Collection<SortBuilder<?>> buildInvestigationSort(Pageable pageable) {
 
@@ -730,9 +730,8 @@ public class EventService {
     }
 
     /**
-     * 
      * Creates a sort that adhere to the following format
-     * 
+     *
      * <pre>
      * "sort" : [
      *  {
@@ -746,7 +745,7 @@ public class EventService {
      *      }
      *   }
      *  }
-     *]
+     * ]
      *
      * </pre>
      */
@@ -761,12 +760,11 @@ public class EventService {
     }
 
     /**
-     * Return a list of lab reports that the user has access to, are associated
-     * with a particular patient, and have the status of "UNPROCESSED"
+     * Return a list of lab reports that the user has access to, are associated with a particular patient, and have the
+     * status of "UNPROCESSED"
      *
-     * This currently only returns lab reports as those are the only documents
-     * ingested in elasticsearch, but in the future will also include morbidity
-     * reports and case reports
+     * This currently only returns lab reports as those are the only documents ingested in elasticsearch, but in the
+     * future will also include morbidity reports and case reports
      */
     public Page<LabReport> findDocumentsRequiringReviewForPatient(Long patientId, GraphQLPage page) {
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
@@ -823,18 +821,18 @@ public class EventService {
                 .build();
         return performSearch(query, Investigation.class);
     }
-    
-	public List<Observation> findMorbidityReportsForPatient(Long patientId) {
-		List<Long> results = personReposity.getPersonIdsByPersonParentId(patientId);
-		List<Long> actIdResults = participationRepository
-				.findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, results);
-		return oboservationRepository.findByIdIn(actIdResults);
 
-	}
+    public List<Observation> findMorbidityReportsForPatient(Long patientId) {
+        List<Long> results = personReposity.getPersonIdsByPersonParentId(patientId);
+        List<Long> actIdResults = participationRepository
+                .findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, results);
+        return oboservationRepository.findByIdIn(actIdResults);
+
+    }
 
     /**
-     * Adds a query to only return documents that the user has access to based on
-     * the users program area and jurisdiction access
+     * Adds a query to only return documents that the user has access to based on the users program area and
+     * jurisdiction access
      */
     private void addProgramAreaJurisdictionQuery(BoolQueryBuilder builder, String programJurisdictionField) {
         var userDetails = SecurityUtil.getUserDetails();
