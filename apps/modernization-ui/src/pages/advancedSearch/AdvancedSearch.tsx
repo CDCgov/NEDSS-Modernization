@@ -6,18 +6,18 @@ import { Config } from '../../config';
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
-    FindPatientsByFilterQuery,
     Investigation,
     InvestigationFilter,
     LabReport,
     LabReportFilter,
     PersonFilter,
-    SortDirection,
     RecordStatus,
+    SortDirection,
     SortField,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindPatientsByFilterLazyQuery
+    useFindPatientsByFilterLazyQuery,
+    FindPatientsByFilterQuery
 } from '../../generated/graphql/schema';
 import { EncryptionControllerService } from '../../generated/services/EncryptionControllerService';
 import { UserContext } from '../../providers/UserContext';
@@ -54,11 +54,9 @@ export const AdvancedSearch = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'person' | 'event'>('person');
     const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
-    const [validSearch, setValidSearch] = useState<boolean>(true);
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
-    const [loading, setLoading] = useState<boolean>(false);
     const [sort, setSort] = useState<{ sortDirection: SortDirection; sortField: SortField }>({
         sortDirection: SortDirection.Asc,
         sortField: SortField.LastNm
@@ -72,25 +70,41 @@ export const AdvancedSearch = () => {
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
-    const [patientData, setPatientData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']>();
-    const [findPatients] = useFindPatientsByFilterLazyQuery({
-        onCompleted: handlePatientSearchResults
-    });
-
+    const [
+        findPatients,
+        {
+            error: patientDataError,
+            loading: patientDataLoading,
+            data: { findPatientsByFilter: patientData } = {
+                findPatientsByFilter: {} as FindPatientsByFilterQuery['findPatientsByFilter']
+            }
+        }
+    ] = useFindPatientsByFilterLazyQuery();
     // investigation search variables
-    const [investigationData, setInvestigationData] =
-        useState<FindInvestigationsByFilterQuery['findInvestigationsByFilter']>();
     const [investigationFilter, setInvestigationFilter] = useState<InvestigationFilter>();
-    const [findInvestigations] = useFindInvestigationsByFilterLazyQuery({
-        onCompleted: handleInvestigationSearchResults
-    });
+    const [
+        findInvestigations,
+        {
+            error: investigationError,
+            loading: investigationLoading,
+            data: { findInvestigationsByFilter: investigationData } = {
+                findInvestigationsByFilter: {} as FindInvestigationsByFilterQuery['findInvestigationsByFilter']
+            }
+        }
+    ] = useFindInvestigationsByFilterLazyQuery();
 
     // lab report search variables
-    const [labReportData, setLabReportData] = useState<FindLabReportsByFilterQuery['findLabReportsByFilter']>();
     const [labReportFilter, setLabReportFilter] = useState<LabReportFilter>();
-    const [findLabReports] = useFindLabReportsByFilterLazyQuery({
-        onCompleted: handleLabReportSearchResults
-    });
+    const [
+        findLabReports,
+        {
+            error: labReportError,
+            loading: labReportLoading,
+            data: { findLabReportsByFilter: labReportData } = {
+                findLabReportsByFilter: {} as FindLabReportsByFilterQuery['findLabReportsByFilter']
+            }
+        }
+    ] = useFindLabReportsByFilterLazyQuery();
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -121,8 +135,6 @@ export const AdvancedSearch = () => {
             // no query parameters specified or user is not logged in
             setActiveTab('person');
             setResultsChip([]);
-            setValidSearch(false);
-            setLoading(false);
             return;
         }
 
@@ -134,7 +146,6 @@ export const AdvancedSearch = () => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
                 setResultsChip([]);
-                setValidSearch(false);
                 setSubmitted(true);
             }
             // perform the search based on the 'type' parameter
@@ -151,6 +162,7 @@ export const AdvancedSearch = () => {
                 default:
                     performPatientSearch(filter);
             }
+            setSubmitted(true);
         });
     }, [searchParams, state.isLoggedIn, sort, currentPage]);
 
@@ -227,7 +239,6 @@ export const AdvancedSearch = () => {
     };
 
     const performPatientSearch = (filter: PersonFilter) => {
-        setLoading(true);
         findPatients({
             variables: {
                 filter: filter,
@@ -245,7 +256,6 @@ export const AdvancedSearch = () => {
     };
 
     const performInvestigationSearch = (filter: InvestigationFilter) => {
-        setLoading(true);
         findInvestigations({
             variables: {
                 filter: filter,
@@ -264,7 +274,6 @@ export const AdvancedSearch = () => {
     };
 
     const performLabReportSearch = (filter: LabReportFilter) => {
-        setLoading(true);
         findLabReports({
             variables: {
                 filter: filter,
@@ -281,33 +290,6 @@ export const AdvancedSearch = () => {
         setInvestigationFilter(undefined);
         setLabReportFilter(filter);
     };
-
-    function handlePatientSearchResults(data: FindPatientsByFilterQuery) {
-        // Using a timeout fixes an issue where the apollo cache fails to update the data
-        setTimeout(() => {
-            setPatientData(data.findPatientsByFilter);
-        }, 10);
-        setLoading(false);
-        setValidSearch(true);
-    }
-
-    function handleInvestigationSearchResults(data: FindInvestigationsByFilterQuery) {
-        // Using a timeout fixes an issue where the apollo cache fails to update the data
-        setTimeout(() => {
-            setInvestigationData(data.findInvestigationsByFilter);
-        }, 10);
-        setLoading(false);
-        setValidSearch(true);
-    }
-
-    function handleLabReportSearchResults(data: FindLabReportsByFilterQuery) {
-        // Using a timeout fixes an issue where the apollo cache fails to update the data
-        setTimeout(() => {
-            setLabReportData(data.findLabReportsByFilter);
-        }, 10);
-        setLoading(false);
-        setValidSearch(true);
-    }
 
     function isEmpty(obj: any) {
         for (const key in obj) {
@@ -326,7 +308,6 @@ export const AdvancedSearch = () => {
                 authorization: `Bearer ${state.getToken()}`,
                 object: filter
             });
-            setValidSearch(true);
 
             // URI encode encrypted filter
             search = `?q=${encodeURIComponent(encryptedFilter.value)}&type=${type}`;
@@ -337,8 +318,6 @@ export const AdvancedSearch = () => {
             setCurrentPage(1);
             setSubmitted(false);
         } else {
-            setLoading(false);
-            setValidSearch(false);
             setSubmitted(true);
         }
     };
@@ -378,14 +357,10 @@ export const AdvancedSearch = () => {
     };
 
     const handleClearAll = () => {
-        setPatientData(undefined);
         setPersonFilter({ recordStatus: [RecordStatus.Active] });
-        setInvestigationData(undefined);
         setInvestigationFilter({});
-        setLabReportData(undefined);
         setLabReportFilter({});
         setSubmitted(false);
-        setValidSearch(false);
         setLastSearchType(undefined);
         navigate('/advanced-search');
     };
@@ -682,12 +657,35 @@ export const AdvancedSearch = () => {
         setCurrentPage(page);
     };
 
+    function isLoading() {
+        return patientDataLoading || investigationLoading || labReportLoading;
+    }
+
+    function isNoResultsFound() {
+        switch (lastSearchType) {
+            case SEARCH_TYPE.PERSON:
+                return !patientData?.content || patientData?.content?.length === 0;
+            case SEARCH_TYPE.INVESTIGATION:
+                return !investigationData?.content || investigationData?.content?.length === 0;
+            case SEARCH_TYPE.LAB_REPORT:
+                !labReportData?.content || labReportData?.content?.length === 0;
+        }
+    }
+
+    function isError(): boolean {
+        return !!(patientDataError || investigationError || labReportError);
+    }
+
+    function isEmptyFilter(): boolean {
+        return isEmpty(personFilter) && isEmpty(investigationFilter) && isEmpty(labReportFilter);
+    }
+
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
                 (investigationData?.content && investigationData.content.length > 7) ||
                 (labReportData?.content && labReportData.content.length > 7) ||
-                (patientData?.content && patientData.content.length > 7)
+                (patientData?.content && patientData?.content.length > 7)
                     ? 'full-height'
                     : 'partial-height'
             }`}>
@@ -697,7 +695,6 @@ export const AdvancedSearch = () => {
                     <div className="button-group">
                         <Button
                             disabled={
-                                !validSearch &&
                                 (!patientData?.content || patientData.content.length === 0) &&
                                 (!labReportData?.content || labReportData.total === 0) &&
                                 (!investigationData?.content || investigationData.total === 0)
@@ -769,7 +766,7 @@ export const AdvancedSearch = () => {
                     <Grid
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
-                        {validSearch ? (
+                        {submitted && !isError() ? (
                             <div
                                 className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
                                 style={{ maxWidth: '55%' }}>
@@ -906,9 +903,9 @@ export const AdvancedSearch = () => {
                             </Button>
                         </div>
                     </Grid>
-                    {!validSearch && !loading && (
+                    {!isLoading() && (
                         <>
-                            {submitted && (
+                            {submitted && isEmptyFilter() && (
                                 <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
                                     <Alert
                                         type="error"
@@ -919,47 +916,44 @@ export const AdvancedSearch = () => {
                                     </Alert>
                                 </div>
                             )}
-                            <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
-                                style={{
-                                    background: 'white',
-                                    border: '1px solid #DFE1E2',
-                                    borderRadius: '5px',
-                                    height: '147px'
-                                }}>
-                                Perform a search to see results
-                            </div>
+                            {!submitted && (
+                                <div
+                                    className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
+                                    style={{
+                                        background: 'white',
+                                        border: '1px solid #DFE1E2',
+                                        borderRadius: '5px',
+                                        height: '147px'
+                                    }}>
+                                    Perform a search to see results
+                                </div>
+                            )}
                         </>
                     )}
-                    {validSearch &&
-                        (!investigationData?.content || investigationData?.content?.length === 0) &&
-                        (!labReportData?.content || labReportData?.content?.length === 0) &&
-                        (!patientData?.content || patientData?.content?.length === 0) && (
-                            <div
-                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
-                                style={{
-                                    background: 'white',
-                                    border: '1px solid #DFE1E2',
-                                    borderRadius: '5px',
-                                    height: '147px'
-                                }}>
-                                <div className="text-center">
-                                    <p>No results found.</p>
-                                    <p>
-                                        Try refining your search, or{' '}
-                                        <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
-                                            add a new patient
-                                        </a>
-                                    </p>
-                                </div>
+                    {!isError() && isNoResultsFound() && (
+                        <div
+                            className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
+                            style={{
+                                background: 'white',
+                                border: '1px solid #DFE1E2',
+                                borderRadius: '5px',
+                                height: '147px'
+                            }}>
+                            <div className="text-center">
+                                <p>No results found.</p>
+                                <p>
+                                    Try refining your search, or{' '}
+                                    <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
+                                        add a new patient
+                                    </a>
+                                </p>
                             </div>
-                        )}
+                        </div>
+                    )}
                     {lastSearchType === SEARCH_TYPE.PERSON &&
-                        !submitted &&
                         patientData?.content &&
                         patientData.content.length > 0 && (
                             <PatientResults
-                                validSearch={validSearch}
                                 data={patientData.content}
                                 totalResults={patientData.total}
                                 handlePagination={handlePagination}
@@ -967,11 +961,9 @@ export const AdvancedSearch = () => {
                             />
                         )}
                     {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
-                        !submitted &&
                         investigationData?.content &&
                         investigationData?.content?.length > 0 && (
                             <InvestigationResults
-                                validSearch={validSearch}
                                 data={investigationData?.content as [Investigation]}
                                 totalResults={investigationData?.total}
                                 handlePagination={handlePagination}
@@ -979,11 +971,9 @@ export const AdvancedSearch = () => {
                             />
                         )}
                     {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
-                        !submitted &&
                         labReportData?.content &&
                         labReportData?.content?.length > 0 && (
                             <LabReportResults
-                                validSearch={validSearch}
                                 data={labReportData?.content as [LabReport]}
                                 totalResults={labReportData?.total}
                                 handlePagination={handlePagination}
