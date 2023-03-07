@@ -246,7 +246,6 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         body.city && (rowData.city = body.city);
         body.state !== '- Select -' && (rowData.state = body.state);
         body.zip && validateZipCode(body.zip) && (rowData.zip = body.zip);
-        
         body.phoneNumber && validatePhoneNumber(body.phoneNumber) && (rowData.phoneNumber = body.phoneNumber);
         body.email && (rowData.email = body.email);
 
