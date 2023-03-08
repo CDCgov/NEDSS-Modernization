@@ -109,6 +109,7 @@ enum ReportingEntityType {
 }
 
 enum ProcessingStatus {
+    UNASSIGNED
     AWAITING_INTERVIEW
     CLOSED_CASE
     FIELD_FOLLOW_UP
@@ -118,6 +119,7 @@ enum ProcessingStatus {
 }
 
 enum NotificationStatus {
+    UNASSIGNED
     APPROVED
     COMPLETED
     MESSAGE_FAILED
@@ -126,6 +128,7 @@ enum NotificationStatus {
 }
 
 enum CaseStatus {
+    UNASSIGNED
     CONFIRMED
     NOT_A_CASE
     PROBABLE

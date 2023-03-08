@@ -432,14 +432,6 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                         </div>
                     }
                     tableHeader={'Contact records'}
-                    tableSubHeader={
-                        <p className="text-semibold font-sans-md margin-top-1">
-                            Contacts named by patient
-                            <span className="display-block text-normal margin-top-1">
-                                The following contacts were named in John Smith’s investigation of HIV:
-                            </span>
-                        </p>
-                    }
                     tableHead={[
                         { name: 'Date created', sortable: true },
                         { name: 'Named by', sortable: true },

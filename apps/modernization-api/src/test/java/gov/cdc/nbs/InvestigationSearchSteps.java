@@ -1,7 +1,7 @@
 package gov.cdc.nbs;
 
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +18,10 @@ import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter.IdType;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter.ProcessingStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;
@@ -52,6 +55,60 @@ public class InvestigationSearchSteps {
         investigationRepository.save(investigation2);
     }
 
+    @Given("An Investigation with {string} set to {string} exists")
+    public void an_investigation_with_field_set_to_status_exists(String field, String status) {
+        addJurisdictionEntries();
+        var investigation = EventMother.investigation_bacterialVaginosis(personId);
+        switch (field) {
+            case "processingStatus":
+                setProcessingStatus(investigation, status);
+                break;
+            case "notificationStatus":
+                setNotificationStatus(investigation, status);
+                break;
+            case "caseStatus":
+                setCaseStatus(investigation, status);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid field specified: " + field);
+        }
+        investigationRepository.save(investigation);
+    }
+
+    private void setCaseStatus(Investigation investigation, String statusString) {
+        var status = CaseStatus.valueOf(statusString);
+        investigation.setCaseClassCd(status.toString());
+    }
+
+    private void setNotificationStatus(Investigation investigation, String statusString) {
+        var status = NotificationStatus.valueOf(statusString);
+        investigation.setNotificationRecordStatusCd(status.toString());
+    }
+
+    private void setProcessingStatus(Investigation investigation, String statusString) {
+        var status = ProcessingStatus.valueOf(statusString);
+        investigation.setCurrProcessStateCd(status.toString());
+    }
+
+    @When("I search for an investigation with {string} of {string}")
+    public void i_search_for_an_investigation_with_field_of_status(String field, String status) {
+        var filter = new InvestigationFilter();
+        switch (field) {
+            case "processingStatus":
+                filter.setProcessingStatuses(Arrays.asList(ProcessingStatus.valueOf(status)));
+                break;
+            case "notificationStatus":
+                filter.setNotificationStatuses(Arrays.asList(NotificationStatus.valueOf(status)));
+                break;
+            case "caseStatus":
+                filter.setCaseStatuses(Arrays.asList(CaseStatus.valueOf(status)));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid field specified: " + field);
+        }
+        investigationSearchResults = eventController.findInvestigationsByFilter(filter, null).getContent();
+    }
+
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
         var filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
@@ -71,6 +128,30 @@ public class InvestigationSearchSteps {
     @Then("I find the investigation")
     public void i_find_the_investigation() {
         assertTrue(investigationSearchResults.size() > 0);
+    }
+
+    @Then("I find investigations with {string} of {string}")
+    public void i_find_the_investigations_with_field_and_status(String field, String statusString) {
+        assertTrue(investigationSearchResults.size() > 0);
+        switch (field) {
+            case "processingStatus":
+                investigationSearchResults.forEach(sr -> {
+                    assertEquals(statusString, sr.getCurrProcessStateCd());
+                });
+                break;
+            case "notificationStatus":
+                investigationSearchResults.forEach(sr -> {
+                    assertEquals(statusString, sr.getNotificationRecordStatusCd());
+                });
+                break;
+            case "caseStatus":
+                investigationSearchResults.forEach(sr -> {
+                    assertEquals(statusString, sr.getCaseClassCd());
+                });
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid field specified: " + field);
+        }
     }
 
     private void addJurisdictionEntries() {
