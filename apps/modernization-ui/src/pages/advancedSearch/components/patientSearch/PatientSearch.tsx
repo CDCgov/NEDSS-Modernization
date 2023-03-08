@@ -12,6 +12,7 @@ import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
 import { validateDate } from '../../../../utils/DateValidation';
+import { validateZipCode } from '../../../../utils/ZipValidation';
 
 type PatientSearchProps = {
     handleSubmission: (data: PersonFilter) => void;
@@ -54,6 +55,8 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
             ? setSelectedRecordStatus(data.recordStatus)
             : setSelectedRecordStatus([RecordStatus.Active]);
     }, [data]);
+
+    useEffect(() => {}, [errors]);
 
     const simpleSearchItems: AccordionItemProps[] = [
         {
@@ -185,7 +188,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'Address',
-            content: <AddressForm control={control} />,
+            content: <AddressForm control={control} errors={errors} />,
             expanded: false,
             id: '2',
             headingLevel: 'h4',
@@ -193,7 +196,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         },
         {
             title: 'Contact',
-            content: <ContactForm control={control} />,
+            content: <ContactForm control={control} errors={errors} />,
             expanded: false,
             id: '3',
             headingLevel: 'h4',
@@ -242,8 +245,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
         body.address && (rowData.address = body.address);
         body.city && (rowData.city = body.city);
         body.state !== '- Select -' && (rowData.state = body.state);
-        body.zip && (rowData.zip = body.zip);
-
+        body.zip && validateZipCode(body.zip) && (rowData.zip = body.zip);
         body.phoneNumber && validatePhoneNumber(body.phoneNumber) && (rowData.phoneNumber = body.phoneNumber);
         body.email && (rowData.email = body.email);
 

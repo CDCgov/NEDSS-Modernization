@@ -1,41 +1,26 @@
-import { useEffect, useState } from 'react';
-import { TextInput, Label } from '@trussworks/react-uswds';
-import { validatePhoneNumber } from '../../../utils/PhoneValidation';
+import { TextInput, Label, ErrorMessage } from '@trussworks/react-uswds';
 import './PhoneNumberInput.scss';
 
 type PhoneNumberInputProps = {
     label?: string;
     defaultValue?: string;
     onChange?: any;
+    error?: any;
 };
-
-export const PhoneNumberInput = ({ label, defaultValue, onChange, ...props }: PhoneNumberInputProps) => {
-    const [valid, setValid] = useState(true);
-
-    useEffect(() => {
-        if (defaultValue) {
-            validatePhone(defaultValue);
-        }
-    }, []);
-    const validatePhone = (number: string) => {
-        if (onChange) {
-            onChange(number);
-        }
-        setValid(validatePhoneNumber(number));
-    };
+export const PhoneNumberInput = ({ label, defaultValue, onChange, error, ...props }: PhoneNumberInputProps) => {
     return (
-        <div className={`phone-number-input ${valid ? '' : 'error'}`}>
+        <div className={`phone-number-input ${error ? 'input--error' : ''}`}>
             <Label htmlFor="phoneNumber">{label}</Label>
+            <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
             <TextInput
                 {...props}
                 id="phoneNumber"
-                onChange={(e) => validatePhone(e.target.value)}
+                onChange={onChange}
                 value={defaultValue ? defaultValue : ''}
                 name="phoneNumber"
-                validationStatus={!valid ? 'error' : undefined}
+                validationStatus={error ? 'error' : undefined}
                 type="tel"
             />
-            <small className="text-red">{!valid && 'Not a valid number'}</small>
         </div>
     );
 };
