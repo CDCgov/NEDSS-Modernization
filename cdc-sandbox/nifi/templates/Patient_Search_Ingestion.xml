@@ -2635,10 +2635,10 @@ ProcessFiles.new.main(session)
   p.last_nm,
   p.nm_suffix,
   pn.last_nm lastNm,
-  pn.last_nm_sndx lastNmSndx,
+  soundex(pn.last_nm) lastNmSndx,
   pn.middle_nm middleNm,
   pn.first_nm firstNm,
-  pn.first_nm_sndx firstNmSndx,
+  soundex(pn.first_nm) firstNmSndx,
   pn.nm_use_cd,
   pn.nm_suffix nmSuffix,
   pn.nm_prefix nmPrefix,
@@ -2768,5 +2768,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/06/2023 07:46:21 UTC</timestamp>
+    <timestamp>03/08/2023 07:26:28 UTC</timestamp>
 </template>
