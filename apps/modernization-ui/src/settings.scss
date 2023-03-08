@@ -4,6 +4,8 @@
 @import './styles/colors';
 @import './styles/typography';
 @import './styles/uswds';
+@import '@cmsgov/design-system/dist/css/index.css';
+@import '@cmsgov/design-system/dist/css/core-theme.css';
 
 $theme-image-path: '~uswds/src/img';
 $theme-font-path: '~uswds/src/fonts';

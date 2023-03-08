@@ -286,8 +286,8 @@ export const AdvancedSearch = () => {
         // Using a timeout fixes an issue where the apollo cache fails to update the data
         setTimeout(() => {
             setPatientData(data.findPatientsByFilter);
+            setLoading(false);
         }, 10);
-        setLoading(false);
         setValidSearch(true);
     }
 
@@ -295,8 +295,8 @@ export const AdvancedSearch = () => {
         // Using a timeout fixes an issue where the apollo cache fails to update the data
         setTimeout(() => {
             setInvestigationData(data.findInvestigationsByFilter);
+            setLoading(false);
         }, 10);
-        setLoading(false);
         setValidSearch(true);
     }
 
@@ -304,8 +304,8 @@ export const AdvancedSearch = () => {
         // Using a timeout fixes an issue where the apollo cache fails to update the data
         setTimeout(() => {
             setLabReportData(data.findLabReportsByFilter);
+            setLoading(false);
         }, 10);
-        setLoading(false);
         setValidSearch(true);
     }
 
@@ -736,14 +736,14 @@ export const AdvancedSearch = () => {
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.PERSON && 'active'
-                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
+                                } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.PERSON)}>
                                 Patient search
                             </h6>
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.EVENT && 'active'
-                                } padding-bottom-1 type text-normal margin-y-3 font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
+                                } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
                                 onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
                                 Event search
                             </h6>
@@ -931,7 +931,15 @@ export const AdvancedSearch = () => {
                             </div>
                         </>
                     )}
+                    {loading && (
+                        <Grid row className="padding-5 flex-justify-center">
+                            <span className="ds-c-spinner" role="status">
+                                <span className="ds-u-visibility--screen-reader">Loading</span>
+                            </span>
+                        </Grid>
+                    )}
                     {validSearch &&
+                        !loading &&
                         (!investigationData?.content || investigationData?.content?.length === 0) &&
                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                         (!patientData?.content || patientData?.content?.length === 0) && (
@@ -956,6 +964,7 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.PERSON &&
                         !submitted &&
+                        !loading &&
                         patientData?.content &&
                         patientData.content.length > 0 && (
                             <PatientResults
@@ -968,6 +977,7 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
                         !submitted &&
+                        !loading &&
                         investigationData?.content &&
                         investigationData?.content?.length > 0 && (
                             <InvestigationResults
@@ -980,6 +990,7 @@ export const AdvancedSearch = () => {
                         )}
                     {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
                         !submitted &&
+                        !loading &&
                         labReportData?.content &&
                         labReportData?.content?.length > 0 && (
                             <LabReportResults

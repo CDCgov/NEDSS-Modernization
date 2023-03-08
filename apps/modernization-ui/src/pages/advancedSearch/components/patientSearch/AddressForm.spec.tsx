@@ -15,7 +15,7 @@ describe('AddressForm component tests', () => {
 
     it('should render a dropdown to select State from the provided options', () => {
         const { result } = renderHook(() => useForm());
-        const { container } = render(<AddressForm control={result.current.control} />);
+        const { container } = render(<AddressForm control={result.current.control} errors={null} />);
         const options = container.getElementsByTagName('option');
         for (let i = 0; i < options.length; i++) {
             expect(options[i].value).toBe(options[i].textContent);

@@ -2,14 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CaseStatuses } from './CaseStatuses';
 import type { InvestigationEventDateSearch } from './InvestigationEventDateSearch';
-import type { NotificationStatuses } from './NotificationStatuses';
-import type { ProcessingStatuses } from './ProcessingStatuses';
 import type { ProviderFacilitySearch } from './ProviderFacilitySearch';
 
 export type InvestigationFilter = {
-    caseStatuses?: CaseStatuses;
+    caseStatuses?: Array<'CONFIRMED' | 'NOT_A_CASE' | 'PROBABLE' | 'SUSPECT' | 'UNASSIGNED' | 'UNKNOWN'>;
     conditions?: Array<string>;
     createdBy?: number;
     eventDateSearch?: InvestigationEventDateSearch;
@@ -19,11 +16,11 @@ export type InvestigationFilter = {
     investigatorId?: number;
     jurisdictions?: Array<number>;
     lastUpdatedBy?: number;
-    notificationStatuses?: NotificationStatuses;
+    notificationStatuses?: Array<'APPROVED' | 'COMPLETED' | 'MESSAGE_FAILED' | 'PENDING_APPROVAL' | 'REJECTED' | 'UNASSIGNED'>;
     outbreakNames?: Array<string>;
     patientId?: number;
     pregnancyStatus?: InvestigationFilter.pregnancyStatus;
-    processingStatuses?: ProcessingStatuses;
+    processingStatuses?: Array<'AWAITING_INTERVIEW' | 'CLOSED_CASE' | 'FIELD_FOLLOW_UP' | 'NO_FOLLOW_UP' | 'OPEN_CASE' | 'SURVEILLANCE_FOLLOW_UP' | 'UNASSIGNED'>;
     programAreas?: Array<string>;
     providerFacilitySearch?: ProviderFacilitySearch;
 };
