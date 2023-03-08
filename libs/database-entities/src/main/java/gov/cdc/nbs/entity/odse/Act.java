@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -50,4 +51,17 @@ public class Act {
 
     @OneToMany(mappedBy = "sourceActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ActRelationship> actRelationships;
+
+    public void addParticipation(final Participation participation) {
+        participation.setActUid(this);
+        ensureParticipation().add(participation);
+    }
+
+    private List<Participation> ensureParticipation() {
+        if(this.participations == null) {
+            this.participations = new ArrayList<>();
+        }
+
+        return this.participations;
+    }
 }
