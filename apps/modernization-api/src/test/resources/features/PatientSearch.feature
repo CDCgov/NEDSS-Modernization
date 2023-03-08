@@ -18,23 +18,24 @@ Feature: Patient search
       | last name soundex  |           |
       | first name         |           |
       | first name soundex |           |
-      | race               |           |
-      | patient id         |           |
-      | ssn                |           |
-      | phone number       |           |
-      | date of birth      | before    |
-      | date of birth      | after     |
-      | date of birth      | equal     |
-      | gender             |           |
-      | deceased           |           |
-      | address            |           |
-      | city               |           |
-      | state              |           |
-      | country            |           |
-      | zip code           |           |
-      | ethnicity          |           |
-      | record status      |           |
-      | email              |           |
+      | race          |           |
+      | patient id    |           |
+      | ssn           |           |
+      | phone number  |           |
+      | date of birth | before    |
+      | date of birth | after     |
+      | date of birth | equal     |
+      | gender        |           |
+      | deceased      |           |
+      | address       |           |
+      | city          |           |
+      | state         |           |
+      | country       |           |
+      | zip code      |           |
+      | ethnicity     |           |
+      | record status |           |
+      | email         |           |
+      | identification|           |
 
   @patient_multi_data_search
   Scenario: I can find a Patient by patient data using multiple fields

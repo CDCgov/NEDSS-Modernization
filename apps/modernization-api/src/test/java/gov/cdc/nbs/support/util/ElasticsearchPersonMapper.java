@@ -3,10 +3,12 @@ package gov.cdc.nbs.support.util;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
 import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
+import gov.cdc.nbs.entity.elasticsearch.NestedEntityId;
 import gov.cdc.nbs.entity.elasticsearch.NestedName;
 import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
 import gov.cdc.nbs.entity.elasticsearch.NestedRace;
 import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
@@ -44,6 +46,12 @@ public class ElasticsearchPersonMapper {
         race.setRaceCd(person.getRaceCd());
         race.setRaceDescTxt(person.getRaceCd());
 
+        var nestedEntityId = new NestedEntityId();
+        EntityId entityId = person.getEntityIds().get(0);
+        nestedEntityId.setRecordStatusCd(entityId.getRecordStatusCd());
+        nestedEntityId.setRootExtensionTxt(entityId.getRootExtensionTxt());
+        nestedEntityId.setTypeCd(entityId.getTypeCd());
+
         var address = new NestedAddress();
         PostalLocator pl = PersonUtil.getPostalLocators(person).get(0);
         address.setStreetAddr1(pl.getStreetAddr1());
@@ -68,6 +76,7 @@ public class ElasticsearchPersonMapper {
                 .phone(asNestedPhones(person))
                 .localId(person.getLocalId())
                 .address(asNestedAddresses(person))
+                .entityId(Arrays.asList(nestedEntityId))
                 .recordStatusCd(person.getRecordStatusCd())
                 .ethnicGroupInd(person.getEthnicGroupInd())
                 .birthTime((Instant) instantConverter.read(person.getBirthTime()))
