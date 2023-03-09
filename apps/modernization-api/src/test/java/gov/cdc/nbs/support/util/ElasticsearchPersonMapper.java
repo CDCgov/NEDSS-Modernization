@@ -18,6 +18,7 @@ import gov.cdc.nbs.entity.odse.TeleLocator;
 import org.apache.commons.codec.language.Soundex;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
