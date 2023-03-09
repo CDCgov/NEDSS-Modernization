@@ -143,6 +143,7 @@ public class ElasticsearchPerson {
     public static final String PHONE_FIELD = "phone";
     public static final String EMAIL_FIELD = "email";
     public static final String RACE_FIELD = "race";
+    public static final String ENTITY_ID_FIELD = "entity_id";
 
     @Id
     private String id;
@@ -496,4 +497,7 @@ public class ElasticsearchPerson {
 
     @Field(name = RACE_FIELD, type = FieldType.Nested)
     private List<NestedRace> race;
+
+    @Field(name = ENTITY_ID_FIELD, type = FieldType.Nested)
+    private List<NestedEntityId> entityId;
 }
