@@ -24,6 +24,7 @@ module.exports.findAllOrganizations = fs.readFileSync(path.join(__dirname, 'find
 module.exports.findOrganizationsByFilter = fs.readFileSync(path.join(__dirname, 'findOrganizationsByFilter.gql'), 'utf8');
 module.exports.findAllOutbreaks = fs.readFileSync(path.join(__dirname, 'findAllOutbreaks.gql'), 'utf8');
 module.exports.findContactsForPatient = fs.readFileSync(path.join(__dirname, 'findContactsForPatient.gql'), 'utf8');
+module.exports.findDocumentsForPatient = fs.readFileSync(path.join(__dirname, 'findDocumentsForPatient.gql'), 'utf8');
 module.exports.findTreatmentsForPatient = fs.readFileSync(path.join(__dirname, 'findTreatmentsForPatient.gql'), 'utf8');
 module.exports.findPlaceById = fs.readFileSync(path.join(__dirname, 'findPlaceById.gql'), 'utf8');
 module.exports.findAllPlaces = fs.readFileSync(path.join(__dirname, 'findAllPlaces.gql'), 'utf8');

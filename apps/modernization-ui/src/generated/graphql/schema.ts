@@ -756,6 +756,24 @@ export type PatientContacts = {
   patient: Scalars['ID'];
 };
 
+export type PatientDocument = {
+  __typename?: 'PatientDocument';
+  associatedWith?: Maybe<PatientDocumentInvestigation>;
+  condition?: Maybe<Scalars['String']>;
+  document: Scalars['ID'];
+  event: Scalars['String'];
+  receivedOn: Scalars['Date'];
+  reportedOn: Scalars['Date'];
+  sendingFacility: Scalars['String'];
+  type: Scalars['String'];
+};
+
+export type PatientDocumentInvestigation = {
+  __typename?: 'PatientDocumentInvestigation';
+  id: Scalars['ID'];
+  local: Scalars['String'];
+};
+
 export type PatientIdentificationTypeResults = {
   __typename?: 'PatientIdentificationTypeResults';
   content: Array<Maybe<IdentificationType>>;
@@ -1112,6 +1130,7 @@ export type Query = {
   findAllStateCodes: Array<Maybe<StateCode>>;
   findAllUsers: UserResults;
   findContactsForPatient?: Maybe<PatientContacts>;
+  findDocumentsForPatient?: Maybe<Array<Maybe<PatientDocument>>>;
   findDocumentsRequiringReviewForPatient: LabReportResults;
   findInvestigationsByFilter: InvestigationResults;
   findLabReportsByFilter: LabReportResults;
@@ -1204,6 +1223,11 @@ export type QueryFindAllUsersArgs = {
 
 
 export type QueryFindContactsForPatientArgs = {
+  patient: Scalars['ID'];
+};
+
+
+export type QueryFindDocumentsForPatientArgs = {
   patient: Scalars['ID'];
 };
 
@@ -1548,6 +1572,13 @@ export type FindContactsForPatientQueryVariables = Exact<{
 
 
 export type FindContactsForPatientQuery = { __typename?: 'Query', findContactsForPatient?: { __typename?: 'PatientContacts', patient: string, namedByPatient?: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, condition?: string | null, namedOn: any, priority?: string | null, disposition?: string | null, event: string, contact: { __typename?: 'NamedContact', id: string, name: string } } | null> | null, namedByContact?: Array<{ __typename?: 'NamedByContact', contactRecord: string, createdOn: any, namedOn: any, condition?: string | null, event: string, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> | null } | null };
+
+export type FindDocumentsForPatientQueryVariables = Exact<{
+  patient: Scalars['ID'];
+}>;
+
+
+export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocumentsForPatient?: Array<{ __typename?: 'PatientDocument', document: string, receivedOn: any, type: string, sendingFacility: string, reportedOn: any, condition?: string | null, event: string, associatedWith?: { __typename?: 'PatientDocumentInvestigation', id: string, local: string } | null } | null> | null };
 
 export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
   patientId: Scalars['Int'];
@@ -2776,6 +2807,51 @@ export function useFindContactsForPatientLazyQuery(baseOptions?: Apollo.LazyQuer
 export type FindContactsForPatientQueryHookResult = ReturnType<typeof useFindContactsForPatientQuery>;
 export type FindContactsForPatientLazyQueryHookResult = ReturnType<typeof useFindContactsForPatientLazyQuery>;
 export type FindContactsForPatientQueryResult = Apollo.QueryResult<FindContactsForPatientQuery, FindContactsForPatientQueryVariables>;
+export const FindDocumentsForPatientDocument = gql`
+    query findDocumentsForPatient($patient: ID!) {
+  findDocumentsForPatient(patient: $patient) {
+    document
+    receivedOn
+    type
+    sendingFacility
+    reportedOn
+    condition
+    event
+    associatedWith {
+      id
+      local
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindDocumentsForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindDocumentsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDocumentsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindDocumentsForPatientQuery({
+ *   variables: {
+ *      patient: // value for 'patient'
+ *   },
+ * });
+ */
+export function useFindDocumentsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
+      }
+export function useFindDocumentsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
+        }
+export type FindDocumentsForPatientQueryHookResult = ReturnType<typeof useFindDocumentsForPatientQuery>;
+export type FindDocumentsForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsForPatientLazyQuery>;
+export type FindDocumentsForPatientQueryResult = Apollo.QueryResult<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>;
 export const FindDocumentsRequiringReviewForPatientDocument = gql`
     query findDocumentsRequiringReviewForPatient($patientId: Int!, $page: Page) {
   findDocumentsRequiringReviewForPatient(patientId: $patientId, page: $page) {

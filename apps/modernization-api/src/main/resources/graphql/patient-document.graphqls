@@ -18,6 +18,3 @@ extend type Query {
     findDocumentsForPatient(patient: ID!): [PatientDocument]
 }
 
-extend type Person {
-    documents: [PatientDocument]
-}

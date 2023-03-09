@@ -36,11 +36,6 @@ type PatientContactInvestigation {
     condition: String!
 }
 
-extend type Person {
-    namedByPatient: [NamedByPatient]
-    namedByContact: [NamedByContact]
-}
-
 extend type Query {
     findContactsForPatient(patient: ID!): PatientContacts
 }
