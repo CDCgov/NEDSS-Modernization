@@ -55,7 +55,7 @@ type Person {
     addReasonCd: String
     addTime: Date
     addUserId: ID
-    administrativeGenderCd: Gender
+    administrativeGenderCd: String
     ageCalc: Int
     ageCalcTime: Date
     ageCalcUnitCd: String
@@ -85,7 +85,7 @@ type Person {
     mothersMaidenNm: String
     multipleBirthInd: String
     occupationCd: String
-    preferredGenderCd: Gender
+    preferredGenderCd: String
     primLangCd: String
     primLangDescTxt: String
     recordStatusCd: RecordStatus
@@ -153,7 +153,7 @@ type Person {
     groupTime: Date
     edxInd: String
     speaksEnglishCd: String
-    additionalGenderCd: Gender
+    additionalGenderCd: String
     eharsId: String
     ethnicUnkReasonCd: String
     sexUnkReasonCd: String
