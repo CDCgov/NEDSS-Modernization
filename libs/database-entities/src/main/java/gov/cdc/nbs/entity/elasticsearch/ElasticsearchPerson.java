@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.Id;
-
+import gov.cdc.nbs.patient.search.ElasticsearchGenderConverter;
 import gov.cdc.nbs.patient.search.ElasticsearchSuffixConverter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -187,6 +187,7 @@ public class ElasticsearchPerson {
     @Field(name = AGE_REPORTED_UNIT_CD, type = FieldType.Keyword)
     private String ageReportedUnitCd;
 
+    @ValueConverter(ElasticsearchGenderConverter.class)
     @Field(name = BIRTH_GENDER_CD, type = FieldType.Keyword)
     private Gender birthGenderCd;
 
@@ -207,6 +208,7 @@ public class ElasticsearchPerson {
     @Field(name = CD_DESC_TXT, type = FieldType.Text)
     private String cdDescTxt;
 
+    @ValueConverter(ElasticsearchGenderConverter.class)
     @Field(name = CURR_SEX_CD, type = FieldType.Keyword)
     private Gender currSexCd;
 
@@ -259,7 +261,7 @@ public class ElasticsearchPerson {
     private String occupationCd;
 
     @Field(name = PREFERRED_GENDER_CD, type = FieldType.Keyword)
-    private Gender preferredGenderCd;
+    private String preferredGenderCd;
 
     @Field(name = PRIM_LANG_CD, type = FieldType.Keyword)
     private String primLangCd;
@@ -472,7 +474,7 @@ public class ElasticsearchPerson {
     private String speaksEnglishCd;
 
     @Field(name = ADDITIONAL_GENDER_CD, type = FieldType.Keyword)
-    private Gender additionalGenderCd;
+    private String additionalGenderCd;
 
     @Field(name = EHARS_ID, type = FieldType.Keyword)
     private String eharsId;
