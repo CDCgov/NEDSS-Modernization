@@ -249,8 +249,21 @@ public class PatientService {
         }
 
         if (filter.getIdentification() != null) {
-            builder.must(
-                    QueryBuilders.matchQuery("identification", filter.getIdentification().getIdentificationType()));
+            BoolQueryBuilder identificationBuilder = QueryBuilders.boolQuery();
+
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
+                QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationNumber())
+                .defaultField("entity_id.rootExtensionTxt")
+                .defaultOperator(Operator.AND),
+                ScoreMode.Avg));
+
+            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
+                QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
+                .defaultField("entity_id.typeCd")
+                .defaultOperator(Operator.AND),
+                ScoreMode.Avg));
+
+            builder.must(identificationBuilder);
         }
 
         addRecordStatusQuery(filter.getRecordStatus(), builder);

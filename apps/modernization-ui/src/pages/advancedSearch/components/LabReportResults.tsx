@@ -8,18 +8,11 @@ import { useNavigate } from 'react-router';
 type LabReportResultsProps = {
     data: [LabReport];
     totalResults: number;
-    validSearch: boolean;
     handlePagination: (page: number) => void;
     currentPage: number;
 };
 
-export const LabReportResults = ({
-    data,
-    validSearch,
-    totalResults,
-    handlePagination,
-    currentPage
-}: LabReportResultsProps) => {
+export const LabReportResults = ({ data, totalResults, handlePagination, currentPage }: LabReportResultsProps) => {
     const searchItemsRef: any = useRef();
     const navigate = useNavigate();
 
@@ -134,7 +127,7 @@ export const LabReportResults = ({
 
     return (
         <div className="margin-x-4">
-            {Boolean(validSearch && totalResults && data?.length > 0) && (
+            {Boolean(totalResults && data?.length > 0) && (
                 <Grid row className="flex-align-center flex-justify">
                     <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                         Showing {data.length} of {totalResults}
@@ -247,7 +240,7 @@ export const LabReportResults = ({
                         </div>
                     ))}
             </div>
-            {Boolean(validSearch && totalResults && data?.length > 0) && (
+            {Boolean(totalResults && data?.length > 0) && (
                 <Pagination
                     style={{ justifyContent: 'flex-end' }}
                     totalPages={Math.ceil(totalResults / 25)}
