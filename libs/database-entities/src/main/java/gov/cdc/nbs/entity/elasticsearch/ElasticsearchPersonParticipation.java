@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,7 +58,7 @@ public class ElasticsearchPersonParticipation {
     private String typeDescTxt;
 
     @Field(name = PARTICIPATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant participationLastChangeTime;
 
     @Field(name = FIRST_NAME, type = FieldType.Text)
@@ -71,7 +71,7 @@ public class ElasticsearchPersonParticipation {
     private String lastName;
 
     @Field(name = BIRTH_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant birthTime;
 
     @Field(name = CURR_SEX_CD, type = FieldType.Keyword)
@@ -87,7 +87,7 @@ public class ElasticsearchPersonParticipation {
     private String personRecordStatus;
 
     @Field(name = PERSON_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant personLastChangeTime;
 
 }

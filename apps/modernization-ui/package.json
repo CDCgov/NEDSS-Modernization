@@ -70,6 +70,9 @@
             }
         ]
     },
+    "jest" :{
+        "globalSetup": "./global-setup.test.js"
+    },
     "browserslist": {
         "production": [
             ">0.2%",

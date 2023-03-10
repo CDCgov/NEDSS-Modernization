@@ -1,8 +1,7 @@
 package gov.cdc.nbs.patientlistener.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.time.json.EventSchemaJacksonModuleFactory;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -29,35 +28,35 @@ import gov.cdc.nbs.message.KafkaMessageSerializer;
 import gov.cdc.nbs.message.PatientUpdateEvent;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 
-
+import java.util.HashMap;
+import java.util.Map;
 
 @EnableKafka
 @Configuration
 public class KafkaConfig {
-	
+
 	@Value("${kafka.properties.topic.partition.count}")
 	private int topicPartitionCount;
 
 	@Value("${kafka.properties.topic.replication.factor}")
 	private int topicReplicationFactor;
 
-
-    @Value("${kafka.bootstrap-servers}")
-    private String bootstrapServers;
+	@Value("${kafka.bootstrap-servers}")
+	private String bootstrapServers;
 
 	@Value("${kafkadef.patient-search.topics.request.patientdelete}")
 	private String patientDeleteTopic;
-	
+
 	// general topic
 	@Value("${kafkadef.patient-search.topics.request.patient}")
 	private String patientSearchTopic;
-	
+
 	@Value("${kafka.properties.schema.registry.url}")
-    private String schemaRegistryUrl;
-	
+	private String schemaRegistryUrl;
+
 	@Value("${kafka.consumer.group-id}")
 	private String groupId;
-	
+
 	private static String sCHEMAURL = "schema.registry.url";
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -83,7 +82,6 @@ public class KafkaConfig {
 		config.putAll(commonConsumerConfigs());
 		return new DefaultKafkaConsumerFactory<>(config);
 	}
-	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Bean
@@ -129,30 +127,10 @@ public class KafkaConfig {
 		return config;
 	}
 
-    @Bean
-    public NewTopic createPatientSearchTopic() {
-        return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
-                .compact().build();
-    }
+	@Bean
+	public NewTopic createPatientSearchTopic() {
+		return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
+				.compact().build();
+	}
 
-    @Bean
-    public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
-        return buildKafkaTemplate();
-    }
-
-    private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
-        var config = getKafkaConfig();
-        return new KafkaTemplate<>(
-                new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
-                        new JsonSerializer<>()));
-    }
-
-    private Map<String, Object> getKafkaConfig() {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put("schema.registry.url", schemaRegistryUrl);
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        return config;
-    }
 }

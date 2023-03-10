@@ -9,6 +9,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,8 @@ public class EncryptionService {
     @Value("${nbs.security.parameterSecret}")
     private String secret;
 
-    private final ObjectMapper mapper = new ObjectMapper()
-            .setSerializationInclusion(Include.NON_NULL)
-            .registerModule(new JavaTimeModule());
+    @Autowired
+    private ObjectMapper mapper;
 
     private final SecureRandom random = new SecureRandom();
     public static final int SALT_LENGTH = 16;

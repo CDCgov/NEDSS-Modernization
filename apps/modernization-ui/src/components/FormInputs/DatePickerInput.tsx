@@ -3,12 +3,14 @@ import './DatePickerInput.scss';
 import { useEffect, useState } from 'react';
 import { validateDate } from '../../utils/DateValidation';
 
+type OnChange = (val?: string) => void;
+
 type DatePickerProps = {
     id?: string;
     label?: string;
     name?: string;
     htmlFor?: string;
-    onChange?: any;
+    onChange?: OnChange;
     className?: string;
     defaultValue?: string;
 };

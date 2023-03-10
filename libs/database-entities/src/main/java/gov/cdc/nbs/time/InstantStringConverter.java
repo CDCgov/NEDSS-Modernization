@@ -1,0 +1,83 @@
+package gov.cdc.nbs.time;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
+import java.util.List;
+
+/**
+ * Performs conversions between {@code Instant} and {@code String}.  The conversion from {@link String} to
+ * {@link Instant} flexible, accepting the following formats;
+ *
+ * <ul>
+ *   <li>M/d/uuuu</li>
+ *   <li>M/d/uu</li>
+ *   <li>uuuu-MM-dd HH:mm:ss</li>
+ *   <li>uuuu-MM-dd HH:mm:ss.S</li>
+ *   <li>uuuu-MM-dd HH:mm:ss.SS</li>
+ *   <li>uuuu-MM-dd HH:mm:ss.SSS</li>
+ *   <li>uuuu-MM-ddTHH:mm:ss</li>
+ *   <li>uuuu-MM-ddTHH:mm:ss.SSS</li>
+ * </ul>
+ *
+ * The conversion from {@link Instant} to {@link String} will result in the {@code YYYY-MM-DD hh:mm:ss[.nnn]} format acceptable for MS SQL Server.
+ */
+public class InstantStringConverter {
+
+  private static final List<DateTimeFormatter> READERS = List.of(
+      new DateTimeFormatterBuilder()
+          .append(DateTimeFormatter.ofPattern("M/d/[uuuu][uu]"))
+          .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+          .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+          .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+          .toFormatter(),
+      new DateTimeFormatterBuilder()
+          .append(DateTimeFormatter.ISO_LOCAL_DATE)
+          .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+          .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+          .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+          .toFormatter(),
+      DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss[.[SSS][SS][S]]"),
+      DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss[.SSS]")
+  );
+  private static final DateTimeFormatter WRITER = DateTimeFormatter
+      .ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+      .withZone(ZoneOffset.UTC);
+
+
+  public static String toString(final Instant instant) {
+    return instant == null ? null : WRITER.format(instant);
+  }
+
+  public static Instant fromString(final String value) {
+
+    return value == null ? null : tryParse(value);
+  }
+
+  private static Instant tryParse(final String value) {
+
+    DateTimeParseException occurred = null;
+    for (var format : READERS) {
+      try {
+        return LocalDateTime.parse(value, format).toInstant(ZoneOffset.UTC);
+      } catch (DateTimeParseException e) {
+        // ignore exception until all formats have been tried
+        occurred = e;
+      }
+
+    }
+
+    if (occurred != null) {
+      throw occurred;
+    }
+
+    return null;
+  }
+
+  private InstantStringConverter() {
+  }
+}
