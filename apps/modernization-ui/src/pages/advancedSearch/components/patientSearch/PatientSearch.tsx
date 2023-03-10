@@ -10,7 +10,7 @@ import { AddressForm } from './AddressForm';
 import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
-import { validatePhoneNumber } from '../../../../utils/PhoneValidation';
+import { validate as validatePhoneNumber } from 'validation/phone/search';
 import { validateDate } from '../../../../utils/DateValidation';
 import { validateZipCode } from '../../../../utils/ZipValidation';
 
