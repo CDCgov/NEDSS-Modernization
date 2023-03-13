@@ -75,7 +75,7 @@ export const InvestigationResults = ({
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = `${patient.firstName}, ${patient.lastName}`;
+            name = !patient.lastName && !patient.firstName ? `No data` : `${patient.lastName}, ${patient.firstName}`;
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));

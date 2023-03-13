@@ -240,7 +240,7 @@ export const AddAddressModal = ({ modalRef }: AddCommentModalProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="Add - Comment"
+            modalHeading="Add - Address"
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );
