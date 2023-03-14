@@ -1,4 +1,4 @@
-import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
+import { Button, Icon, Table, Pagination, Checkbox } from '@trussworks/react-uswds';
 import React, { useState } from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
@@ -6,6 +6,8 @@ import { TOTAL_TABLE_DATA } from '../../utils/util';
 export type TableDetail = {
     id: string | number;
     title: React.ReactNode | React.ReactNode[] | string;
+    class?: string;
+    link?: string;
 };
 
 export type TableBody = {
@@ -44,6 +46,7 @@ export const TableComponent = ({
         setSort(!sort);
         sortData?.(headerName, !sort ? 'asc' : 'desc');
     };
+
     return (
         <div>
             <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
@@ -85,7 +88,19 @@ export const TableComponent = ({
                                             </td>
                                         ) : (
                                             <td className="table-data" key={ind}>
-                                                {td.title}
+                                                {index === 0 && ind === 0 && item.checkbox && (
+                                                    <Checkbox key={index} id={td.title} name={'tableCheck'} label="" />
+                                                )}
+                                                <span
+                                                    className={
+                                                        index === 0 && ind === 0 && item.checkbox
+                                                            ? 'check-title'
+                                                            : td.class
+                                                            ? td.class
+                                                            : ''
+                                                    }>
+                                                    {td.title}
+                                                </span>
                                             </td>
                                         )
                                     ) : (

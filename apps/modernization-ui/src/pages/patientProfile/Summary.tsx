@@ -85,7 +85,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
             );
             tempArr.push({
                 id: investigation?.id,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     { id: 1, title: format(new Date(investigation?.addTime), 'MM/dd/yyyy') },
                     { id: 2, title: investigation?.cdDescTxt },
@@ -106,7 +106,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
         documentData?.map((document: any, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
