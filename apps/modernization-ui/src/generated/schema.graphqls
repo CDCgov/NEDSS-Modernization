@@ -658,6 +658,26 @@ type PatientContactInvestigation {
 extend type Query {
     findContactsForPatient(patient: ID!): PatientContacts
 }
+type PatientDocument {
+    document: ID!,
+    receivedOn: Date!
+    type : String!
+    sendingFacility: String!
+    reportedOn: Date!
+    condition: String
+    event: String!
+    associatedWith: PatientDocumentInvestigation
+}
+
+type PatientDocumentInvestigation {
+    id: ID!,
+    local: String!
+}
+
+extend type Query {
+    findDocumentsForPatient(patient: ID!): [PatientDocument]
+}
+
 type PatientTreatment {
     treatment: ID!,
     createdOn: Date!
@@ -676,7 +696,8 @@ type PatientTreatmentInvestigation {
 
 extend type Query {
     findTreatmentsForPatient(patient: ID!): [PatientTreatment]
-}type Query {
+}
+type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: SortablePage): PersonResults!
     findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
@@ -733,7 +754,7 @@ type Person {
     addReasonCd: String
     addTime: Date
     addUserId: ID
-    administrativeGenderCd: Gender
+    administrativeGenderCd: String
     ageCalc: Int
     ageCalcTime: Date
     ageCalcUnitCd: String
@@ -763,7 +784,7 @@ type Person {
     mothersMaidenNm: String
     multipleBirthInd: String
     occupationCd: String
-    preferredGenderCd: Gender
+    preferredGenderCd: String
     primLangCd: String
     primLangDescTxt: String
     recordStatusCd: RecordStatus
@@ -831,7 +852,7 @@ type Person {
     groupTime: Date
     edxInd: String
     speaksEnglishCd: String
-    additionalGenderCd: Gender
+    additionalGenderCd: String
     eharsId: String
     ethnicUnkReasonCd: String
     sexUnkReasonCd: String

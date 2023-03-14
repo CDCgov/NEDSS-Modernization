@@ -53,3 +53,7 @@ kafkadef:
         patientupdate: request-patient-search.patientupdate
         patientdelete: request-patient-search.patientdelete
         patientcreate: patient-create-test
+
+testing:
+  id-generation:
+    starting: -20000000 # a negative id should reduce conflicts of ids in a live system
