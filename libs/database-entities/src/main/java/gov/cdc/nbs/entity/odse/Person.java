@@ -6,6 +6,7 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.Getter;
 import lombok.Setter;
@@ -73,9 +74,8 @@ public class Person {
     @Column(name = "add_user_id")
     private Long addUserId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "administrative_gender_cd", length = 20)
-    private Gender administrativeGenderCd;
+    private String administrativeGenderCd;
 
     @Column(name = "age_calc")
     private Short ageCalc;
@@ -98,7 +98,7 @@ public class Person {
     @Column(name = "age_reported_unit_cd", length = 20)
     private String ageReportedUnitCd;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = GenderConverter.class)
     @Column(name = "birth_gender_cd", columnDefinition = "CHAR")
     private Gender birthGenderCd;
 
@@ -117,7 +117,7 @@ public class Person {
     @Column(name = "cd_desc_txt", length = 100)
     private String cdDescTxt;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = GenderConverter.class)
     @Column(name = "curr_sex_cd")
     private Gender currSexCd;
 
@@ -168,9 +168,8 @@ public class Person {
     @Column(name = "occupation_cd", length = 20)
     private String occupationCd;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "preferred_gender_cd", length = 20)
-    private Gender preferredGenderCd;
+    private String preferredGenderCd;
 
     @Column(name = "prim_lang_cd", length = 20)
     private String primLangCd;
@@ -376,9 +375,8 @@ public class Person {
     @Column(name = "speaks_english_cd", length = 20)
     private String speaksEnglishCd;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "additional_gender_cd", length = 50)
-    private Gender additionalGenderCd;
+    private String additionalGenderCd;
 
     @Column(name = "ehars_id", length = 20)
     private String eharsId;

@@ -4,6 +4,8 @@
     "private": true,
     "dependencies": {
         "@apollo/client": "^3.6.9",
+        "@apollo/react-testing": "^4.0.0",
+        "@cmsgov/design-system": "^6.0.0",
         "@hookform/resolvers": "^2.9.8",
         "@testing-library/jest-dom": "^5.16.4",
         "@testing-library/react": "^12",

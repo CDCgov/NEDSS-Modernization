@@ -1,0 +1,15 @@
+query findDocumentsForPatient($patient: ID!){
+    findDocumentsForPatient(patient: $patient){
+        document
+        receivedOn
+        type
+        sendingFacility
+        reportedOn
+        condition
+        event
+        associatedWith{
+            id
+            local
+        }
+    }
+}

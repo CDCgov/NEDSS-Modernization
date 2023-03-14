@@ -480,7 +480,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                                     { title: 'Current age:', text: '50 Years' },
                                     { title: 'Current sex:', text: 'Male' },
                                     { title: 'Unknown reason:', text: '' },
-                                    { title: 'Trasngender information:', text: '' },
+                                    { title: 'Transgender information:', text: '' },
                                     { title: 'Additional gender:', text: '' },
                                     { title: 'Birth sex:', text: '' },
                                     { title: 'Multiple birth:', text: '' },

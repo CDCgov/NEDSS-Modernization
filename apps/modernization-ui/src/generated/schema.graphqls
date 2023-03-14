@@ -59,6 +59,96 @@ type EthnicityId {
     code: String!
 }
 extend type Query {
+    findMorbidtyReportForPatient(patientId: Int!, page: Page): [MorbidtyObservation]
+}
+
+
+type MorbidtyObservation {
+    id: ID
+    act: Act
+    obsValueCodedList: [ObsValueCoded]
+    activityDurationAmt: String
+    activityDurationUnitCd: String
+    activityFromTime: Date
+    activityToTime: Date
+    addReasonCd: String
+    addTime: Date
+    addUserId: Int
+    cd: String
+    cdDescTxt: String
+    cdSystemCd: String
+    cdSystemDescTxt: String
+    confidentialityCd: String
+    confidentialityDescTxt: String
+    ctrlCdDisplayForm: String
+    ctrlCdUserDefined1: String
+    ctrlCdUserDefined2: String
+    ctrlCdUserDefined3: String
+    ctrlCdUserDefined4: String
+    derivationExp: Int
+    effectiveDurationAmt: String
+    effectiveDurationUnitCd: String
+    effectiveFromTime: Date
+    effectiveToTime: Date
+    electronicInd: String
+    groupLevelCd: String
+    jurisdictionCd: String
+    labConditionCd: String
+    lastChgReasonCd: String
+    lastChgTime: Date
+    lastChgUserId: Int
+    localId: String
+    methodCd: String
+    methodDescTxt: String
+    obsDomainCd: String
+    obsDomainCdSt1: String
+    pnuCd: String
+    priorityCd: String
+    priorityDescTxt: String
+    progAreaCd: String
+    recordStatusCd: String
+    recordStatusTime: Date
+    repeatNbr: Int
+    statusCd: String
+    statusTime: Date
+    subjectPersonUid: Person
+    targetSiteCd: String
+    targetSiteDescTxt: String
+    txt: String
+    userAffiliationTxt: String
+    valueCd: String
+    ynuCd: String
+    programJurisdictionOid: Int
+    sharedInd:  String
+    versionCtrlNbr: Int
+    altCd: String
+    altCdDescTxt: String
+    altCdSystemCd: String
+    altCdSystemDescTxt: String
+    cdDerivedInd: String
+    rptToStateTime: Date
+    cdVersion: String
+    processingDecisionCd: String
+    pregnantIndCd: String
+    pregnantWeek: Int
+    processingDecisionTxt: String
+
+
+}
+
+type Act {
+    id: Int
+}
+
+type  ObsValueCoded {
+    id: ObsValueCodedId
+
+}
+
+type ObsValueCodedId {
+    observationUid: ID
+}
+extend type Query {
     findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
 }
 
@@ -186,6 +276,7 @@ enum ReportingEntityType {
 }
 
 enum ProcessingStatus {
+    UNASSIGNED
     AWAITING_INTERVIEW
     CLOSED_CASE
     FIELD_FOLLOW_UP
@@ -195,6 +286,7 @@ enum ProcessingStatus {
 }
 
 enum NotificationStatus {
+    UNASSIGNED
     APPROVED
     COMPLETED
     MESSAGE_FAILED
@@ -203,6 +295,7 @@ enum NotificationStatus {
 }
 
 enum CaseStatus {
+    UNASSIGNED
     CONFIRMED
     NOT_A_CASE
     PROBABLE
@@ -565,6 +658,26 @@ type PatientContactInvestigation {
 extend type Query {
     findContactsForPatient(patient: ID!): PatientContacts
 }
+type PatientDocument {
+    document: ID!,
+    receivedOn: Date!
+    type : String!
+    sendingFacility: String!
+    reportedOn: Date!
+    condition: String
+    event: String!
+    associatedWith: PatientDocumentInvestigation
+}
+
+type PatientDocumentInvestigation {
+    id: ID!,
+    local: String!
+}
+
+extend type Query {
+    findDocumentsForPatient(patient: ID!): [PatientDocument]
+}
+
 type PatientTreatment {
     treatment: ID!,
     createdOn: Date!
@@ -583,7 +696,8 @@ type PatientTreatmentInvestigation {
 
 extend type Query {
     findTreatmentsForPatient(patient: ID!): [PatientTreatment]
-}type Query {
+}
+type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: SortablePage): PersonResults!
     findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
@@ -640,7 +754,7 @@ type Person {
     addReasonCd: String
     addTime: Date
     addUserId: ID
-    administrativeGenderCd: Gender
+    administrativeGenderCd: String
     ageCalc: Int
     ageCalcTime: Date
     ageCalcUnitCd: String
@@ -670,7 +784,7 @@ type Person {
     mothersMaidenNm: String
     multipleBirthInd: String
     occupationCd: String
-    preferredGenderCd: Gender
+    preferredGenderCd: String
     primLangCd: String
     primLangDescTxt: String
     recordStatusCd: RecordStatus
@@ -738,7 +852,7 @@ type Person {
     groupTime: Date
     edxInd: String
     speaksEnglishCd: String
-    additionalGenderCd: Gender
+    additionalGenderCd: String
     eharsId: String
     ethnicUnkReasonCd: String
     sexUnkReasonCd: String
