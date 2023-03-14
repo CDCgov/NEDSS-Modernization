@@ -192,7 +192,9 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                                 onClick={() => redirectPatientProfile(item)}
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
                                                 style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
-                                                {item.lastNm}, {item.firstNm}
+                                                {!item.lastNm && !item.firstNm
+                                                    ? `No data`
+                                                    : `${item.lastNm}, ${item.firstNm}`}
                                             </p>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">

@@ -196,7 +196,7 @@ export const AddPhoneEmailModal = ({ modalRef }: AddCommentModalProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="Add - Comment"
+            modalHeading="Add - Phone & Email"
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );

@@ -17,3 +17,19 @@
 .pagination {
     justify-content: flex-end;
 }
+
+.table-data {
+    .usa-checkbox__label {
+        margin: 0 !important;
+    }
+
+    .check-title {
+        margin-left: 30px;
+    }
+
+    .link {
+        color: #005ea2;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}

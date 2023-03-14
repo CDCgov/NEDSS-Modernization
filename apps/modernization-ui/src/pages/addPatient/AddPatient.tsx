@@ -14,9 +14,12 @@ import GeneralInformation from './components/generalInformation/generalInformati
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
 import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
+import { NameUseCd, useCreatePatientMutation } from '../../generated/graphql/schema';
 
 export default function AddPatient() {
     const [disabled, setDisabled] = useState<boolean>(true);
+    const [submitForm] = useCreatePatientMutation();
+
     function isEmpty(obj: any) {
         for (const key in obj) {
             if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
@@ -79,6 +82,23 @@ export default function AddPatient() {
 
     const submit = (data: any) => {
         console.log('data:', data);
+        submitForm({
+            variables: {
+                patient: {
+                    asOf: data?.asOf,
+                    names: [
+                        {
+                            firstName: data?.['first-name'],
+                            lastName: data?.['last-name'],
+                            middleName: data?.['middle-name'],
+                            nameUseCd: NameUseCd.A
+                        }
+                    ]
+                }
+            }
+        }).then((re) => {
+            console.log('re:', re);
+        });
     };
 
     window.addEventListener('load', () => {

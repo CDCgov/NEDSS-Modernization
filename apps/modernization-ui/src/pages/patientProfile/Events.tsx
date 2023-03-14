@@ -87,7 +87,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
             if (i < 2) {
                 contactTempArr.push({
                     id: i + 1,
-                    checkbox: true,
+                    checkbox: false,
                     tableDetails: [
                         {
                             id: 1,
@@ -125,7 +125,12 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                     { id: 4, title: investigation?.notificationRecordStatusCd },
                     { id: 5, title: investigation?.jurisdictionCodeDescTxt },
                     { id: 6, title: investigator ? investigator?.lastName + ' ' + investigator?.firstName : null },
-                    { id: 7, title: investigation?.localId },
+                    {
+                        id: 7,
+                        title: <span onClick={() => console.log('asd')}>{investigation?.localId}</span>,
+                        class: 'link',
+                        link: ''
+                    },
                     { id: 8, title: 'COIN1000XX01' }
                 ]
             });
@@ -151,7 +156,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
         labReportData?.map((document: any, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -160,7 +165,9 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                                 {format(new Date(document?.addTime), 'MM/dd/yyyy')} <br />{' '}
                                 {format(new Date(document?.addTime), 'hh:mm b')}
                             </>
-                        )
+                        ),
+                        class: 'link',
+                        link: ''
                     },
                     {
                         id: 2,
@@ -201,7 +208,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                                             (i: AssociatedInvestigation, index: number) => (
                                                 <div key={index}>
                                                     <p
-                                                        className="margin-0 text-primary text-bold"
+                                                        className="margin-0 text-primary text-bold link"
                                                         style={{ wordBreak: 'break-word' }}>
                                                         {i?.localId}
                                                     </p>
@@ -309,7 +316,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                                 <Icon.Topic className="margin-right-05" />
                                 Compare investigations
                             </Button>
-                            <Button type="button" className="grid-row">
+                            <Button type="button" className="grid-row" onClick={() => {}}>
                                 <Icon.Add className="margin-right-05" />
                                 Add investigation
                             </Button>
@@ -376,6 +383,32 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                     }
                     tableHeader={'Morbidity reports'}
                     tableHead={[]}
+                    tableBody={[]}
+                    currentPage={currentPage}
+                    handleNext={(e) => setCurrentPage(e)}
+                />
+            </div>
+
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <TableComponent
+                    isPagination={true}
+                    buttons={
+                        <div className="grid-row">
+                            <Button type="button" className="grid-row">
+                                <Icon.Add className="margin-right-05" />
+                                Add vaccination
+                            </Button>
+                        </div>
+                    }
+                    tableHeader={'Vaccinations'}
+                    tableHead={[
+                        { name: 'Date created', sortable: true },
+                        { name: 'Provider', sortable: true },
+                        { name: 'Date adinistered', sortable: true },
+                        { name: 'Vaccine administered', sortable: true },
+                        { name: 'Associated with', sortable: true },
+                        { name: 'Events', sortable: true }
+                    ]}
                     tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
