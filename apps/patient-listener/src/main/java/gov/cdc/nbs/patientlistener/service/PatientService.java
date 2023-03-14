@@ -63,46 +63,8 @@ public class PatientService {
 		
 		TemplateInput updateInput = vars.get(0);
 		String updateType = updateInput.getValue();
-
-		if(updateType.equals(Constants.UPDATE_GENERAL_INFO)) {
-			
-		updated = updatedGeneralInfo(dbPerson.get(), input);
-		}
-        if(updateType.equals(Constants.UPDATE_SEX_BIRTH)) {
-        	
-        updated =updatedSexAndBirth(dbPerson.get(), input);
-			
-		}
-        if(updateType.equals(Constants.UPDATE_MORTALItY)) {
-        PostalLocator deathRecord = null;	
-        Long locatorId = entityLocatorPartRepository.getLocatorIdByPersonParentId(dbPerson.get().getPersonParentUid().getId());
-        if(locatorId!= null && locatorId > 0) {
-        Optional<PostalLocator> findPostalRecord = postalLocatorRepository.findById(locatorId);
-        if(findPostalRecord.isPresent()) {
-        	
-        deathRecord = findPostalRecord.get();
-        deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
-        deathRecord.setStateCd(input.getStateOfDeath() !=null ? input.getStateOfDeath() : null);
-        deathRecord.setCntyCd(input.getCountyOfDeath() !=null ? input.getCountyOfDeath() : null); 
-        deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null );
-        }
-        }
-        else {
-        Long maxId = postalLocatorRepository.getMaxId();
-        deathRecord = new PostalLocator();
-        deathRecord.setId(maxId+1);
-        deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
-        deathRecord.setStateCd(input.getStateOfDeath() !=null ? input.getStateOfDeath() : null);
-        deathRecord.setCntyCd(input.getCountyOfDeath() !=null ? input.getCountyOfDeath() : null); 
-        deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
-        
-        }
-        PostalLocator savedRecord = postalLocatorRepository.save(deathRecord);
-        PostalEntityLocatorParticipation postalEntityRecord = setEntityLocatorParticipation(savedRecord, dbPerson.get(), input);
-        entityLocatorPartRepository.save(postalEntityRecord); 
-        updated = updatedMortality(dbPerson.get(), input);	
-        
-		}
+         updated = updatePatient(updateType,dbPerson.get(), input );
+		
         
 		try {
 
@@ -119,6 +81,54 @@ public class PatientService {
 					.requestId(requestId).status(Constants.FAILED).message(e.getMessage()).build();
 		}
 
+	}
+	
+	private Person updatePatient(String updateType, Person person, PatientInput input) {
+		Person updated = null;
+		if (updateType.equals(Constants.UPDATE_GENERAL_INFO)) {
+
+			updated = updatedGeneralInfo(person, input);
+		}
+		if (updateType.equals(Constants.UPDATE_SEX_BIRTH)) {
+
+			updated = updatedSexAndBirth(person, input);
+
+		}
+		if (updateType.equals(Constants.UPDATE_MORTALITY)) {
+			PostalLocator deathRecord = null;
+			Long locatorId = entityLocatorPartRepository
+					.getLocatorIdByPersonParentId(person.getPersonParentUid().getId());
+			if (locatorId != null && locatorId > 0) {
+				Optional<PostalLocator> findPostalRecord = postalLocatorRepository.findById(locatorId);
+				if (findPostalRecord.isPresent()) {
+
+					deathRecord = findPostalRecord.get();
+					deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
+					deathRecord.setStateCd(input.getStateOfDeath() != null ? input.getStateOfDeath() : null);
+					deathRecord.setCntyCd(input.getCountyOfDeath() != null ? input.getCountyOfDeath() : null);
+					deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
+				}
+			} else {
+				Long maxId = postalLocatorRepository.getMaxId();
+				deathRecord = new PostalLocator();
+				deathRecord.setId(maxId + 1);
+				deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
+				deathRecord.setStateCd(input.getStateOfDeath() != null ? input.getStateOfDeath() : null);
+				deathRecord.setCntyCd(input.getCountyOfDeath() != null ? input.getCountyOfDeath() : null);
+				deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
+
+			}
+			if (deathRecord != null) {
+				PostalLocator savedRecord = postalLocatorRepository.save(deathRecord);
+				PostalEntityLocatorParticipation postalEntityRecord = setEntityLocatorParticipation(savedRecord, person,
+						input);
+				entityLocatorPartRepository.save(postalEntityRecord);
+			}
+			updated = updatedMortality(person, input);
+
+		}
+
+		return updated;
 	}
 	
 	
