@@ -81,8 +81,20 @@ public class PatientController {
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientUpdateResponse updatePatient(@Argument Long id, @Argument PatientInput patient) {
-        return patientService.sendUpdatePatientEvent(id, patient);
+    public PatientUpdateResponse updatePatientGeneralInfo(@Argument Long id, @Argument PatientInput patient) {
+        return patientService.updatePatientGeneralInfo(id, patient);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientUpdateResponse updatePatientSexBirth(@Argument Long id, @Argument PatientInput patient) {
+        return patientService.updatePatientSexBirth(id, patient);
+    }
+    
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientUpdateResponse updateMortality(@Argument Long id, @Argument PatientInput patient) {
+        return patientService.updateMortality(id, patient);
     }
 
 }

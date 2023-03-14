@@ -26,10 +26,13 @@ import gov.cdc.nbs.message.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
+import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patientlistener.util.Constants;
+import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.repository.PostalLocatorRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 
 class PatientUpdateTest {
@@ -38,25 +41,37 @@ class PatientUpdateTest {
 	PersonRepository personRepository;
 	@Mock
 	ElasticsearchPersonRepository elasticPersonRepository;
+	
+	@Mock
+	PostalLocatorRepository postalLocatorRepository;
+	
+	@Mock
+	EntityLocatorParticipationRepository entityLocatorPartRepository;
 
 	@InjectMocks
 	PatientService patientService;
 
 	PatientUpdateTest() {
 		MockitoAnnotations.openMocks(this);
-		patientService = new PatientService(personRepository,elasticPersonRepository);
+		patientService = new PatientService(personRepository,elasticPersonRepository,postalLocatorRepository,entityLocatorPartRepository);
 	}
 	@Test
 	void updatePatient() {
 
+		List<TemplateInput> vars = new ArrayList<TemplateInput>();
 		String requestId = UUID.randomUUID().toString();
 		Long id = UUID.randomUUID().getMostSignificantBits();
 
 		Person person = buildPersonFromInput();
+		
+		TemplateInput update = new TemplateInput();
+		update.setKey("updateType");
+		update.setValue(Constants.UPDATE_GENERAL_INFO);	
+		vars.add(update);
 
 		person.setId(id);		
 		when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(person));
-		PatientUpdateEventResponse result = patientService.updatePatient(requestId, id, getPatientInput());
+		PatientUpdateEventResponse result = patientService.updatePatient(requestId, id, getPatientInput(),vars);
 		
 		assertThat(result).isNotNull();
 		assertThat(result.getRequestId()).isEqualTo(requestId);
@@ -64,16 +79,7 @@ class PatientUpdateTest {
 		assertThat(result.getStatus()).isEqualTo(Constants.COMPLETE);
 
 	}
-
-	@Test
-	void updatedPersonBio() {
-		Person result = patientService.updatedPersonBio(buildPersonFromInput(), getPatientInput());
-		assertThat(result.getSsn()).isEqualTo(getPatientInput().getSsn());
-		assertThat(result.getRaceCd()).isEqualTo(getPatientInput().getRaceCodes().get(0));
-		assertThat(result.getBirthGenderCd()).isEqualTo(getPatientInput().getBirthGender());
-		assertThat(result.getEthnicityGroupCd()).isEqualTo(getPatientInput().getEthnicityCode().substring(0, 20));
-
-	}
+	
 
 	@Test
 	void updatedPersonName() {
@@ -107,6 +113,29 @@ class PatientUpdateTest {
 		assertThat(result.getCellPhoneNbr()).isEqualTo(phoneNumber().getNumber());
 
 	}
+	
+	@Test
+	void  updatedGeneralInfo() {
+	 Person result = patientService.updatedGeneralInfo(buildPersonFromInput(), getPatientInput());
+	 assertThat(result.getSpeaksEnglishCd()).isEqualTo("Y");
+	 assertThat(result.getPrimLangCd()).isEqualTo("Spanish");
+	 
+	}
+	
+	@Test
+	void updatedSexAndBirth() {
+	 Person result = patientService.updatedSexAndBirth(buildPersonFromInput(), getPatientInput());
+	 assertThat(result.getBirthGenderCd()).isEqualTo(Gender.M) ;
+	 assertThat(result.getCurrSexCd()).isEqualTo(Gender.M) ;
+	}
+	
+	@Test
+	void updatedMortality() {
+	Person result = patientService.updatedMortality(buildPersonFromInput(), getPatientInput());
+	assertThat(result.getDeceasedIndCd()).isEqualTo(Deceased.FALSE);
+	
+	}
+	
 
 	private PatientInput getPatientInput() {
 		PatientInput input = new PatientInput();
@@ -134,6 +163,9 @@ class PatientUpdateTest {
 		input.setEmailAddresses(List.of("test@test.com"));
 		input.setEthnicityCode(Ethnicity.NOT_HISPANIC_OR_LATINO.toString());
 		input.setRaceCodes(List.of("BK"));
+		input.setSpeaksEnglish("Y");
+		input.setPrimaryLang("Spanish");
+		
 		return input;
 
 	}

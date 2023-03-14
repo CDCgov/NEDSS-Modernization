@@ -1,6 +1,9 @@
 package gov.cdc.nbs.patientlistener.service;
 
 import gov.cdc.nbs.patientlistener.service.PatientService;
+
+import java.util.List;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientUpdateEvent;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
+import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.patientlistener.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,11 +44,12 @@ public class KafkaEventConsumer {
 			if (requestId.startsWith(Constants.APP_ID)) {
 
 				PatientInput input = message.value().getParams().getInput();
+				List<TemplateInput> vars = message.value().getParams().getTemplateInputs();
 				Long personId = message.value().getParams().getPersonId();
 				
 
 				PatientUpdateEventResponse updateEventResponse = patientService.updatePatient(requestId, personId,
-						input);
+						input,vars);
 
 				responseProducerService.requestPatientUpdateEnvelope(updateEventResponse);
 

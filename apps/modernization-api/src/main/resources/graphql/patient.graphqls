@@ -9,7 +9,9 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): String!
-    updatePatient(id: ID!, patient: PersonInput!): UpdateResult
+    updatePatientGeneralInfo(id: ID!, patient: PersonInput!): UpdateResult
+    updatePatientSexBirth(id: ID!, patient: PersonInput!): UpdateResult
+    updateMortality(id: ID!, patient: PersonInput!): UpdateResult
 }
 
 type UpdateResult {
@@ -179,6 +181,28 @@ input PersonInput {
     raceCodes: [String]
     asOf: Date
     comments: String
+    mothersMaidenName: String
+    adultNbrInHouse: Int
+    childrenNbrinHouse: Int
+    primaryOccupation: String
+    highestEducationLvl: String
+    primaryLang: String
+    speaksEnglish: String
+    additionalGender: Gender
+    transGenderInfo: Gender
+    birthCity: String
+    birthCntry: String
+    birthState: String
+    birthOrderNbr: Int
+    multipleBirth: String
+    sexunknown: String
+    cityOfDeath: String
+    stateOfDeath: String
+    countyOfDeath: String
+    countryOfDeath: String
+    hIVCaseId: String
+    currentAge: String
+    ageReportedTime: Date
 }
 input Name {
     firstName: String

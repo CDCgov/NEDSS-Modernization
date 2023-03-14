@@ -371,6 +371,19 @@ public class PatientService {
                 createRequest.patient());
     }
     
+    public PatientUpdateResponse updatePatientGeneralInfo(Long id, PatientInput input) {
+    	return sendUpdatePatientEvent(id,input,Constants.UPDATE_GENERAL_INFO);
+    }
+    
+    public PatientUpdateResponse updatePatientSexBirth(Long id, PatientInput input) {
+    	return sendUpdatePatientEvent(id,input,Constants.UPDATE_SEX_BIRTH);
+    }
+    
+    
+    public PatientUpdateResponse updateMortality(Long id, PatientInput input) {
+    	return sendUpdatePatientEvent(id,input,Constants.UPDATE_MORTALItY);
+    }
+    
 	/**
 	 * Send updated Person Event to kakfa topic to be picked up and updated.
 	 * 
@@ -378,11 +391,16 @@ public class PatientService {
 	 * @param input
 	 * @return
 	 */
-	public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
+	private PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input, String updateType) {
 		String requestId = null;
 
 		if (input != null) {
 			List<TemplateInput> templateInputs = new ArrayList<>();
+			TemplateInput type = new TemplateInput();
+			type.setKey("updateType");
+			type.setValue(updateType);
+			
+			templateInputs.add(type);
 
 			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
 					.templateInputs(templateInputs).build();
