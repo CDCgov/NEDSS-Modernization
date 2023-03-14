@@ -394,7 +394,7 @@ public class PatientService {
     
     
     public PatientUpdateResponse updateMortality(Long id, PatientInput input) {
-    	return sendUpdatePatientEvent(id,input,Constants.UPDATE_MORTALItY);
+    	return sendUpdatePatientEvent(id,input,Constants.UPDATE_MORTALITY);
     }
     
 	/**

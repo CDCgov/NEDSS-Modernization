@@ -68,9 +68,11 @@ public class PatientService {
         
 		try {
 
+			if(updated != null) {
 			personRepository.save(updated);
 			ElasticsearchPerson elasticUpdate = PersonUtil.getElasticSearchPerson(updated);
 			elasticPersonRepository.save(elasticUpdate);
+			}
 
 			return PatientUpdateEventResponse.builder().personId(personId)
 					.requestId(requestId).status(Constants.COMPLETE).build();
@@ -98,26 +100,21 @@ public class PatientService {
 			PostalLocator deathRecord = null;
 			Long locatorId = entityLocatorPartRepository
 					.getLocatorIdByPersonParentId(person.getPersonParentUid().getId());
+			
 			if (locatorId != null && locatorId > 0) {
 				Optional<PostalLocator> findPostalRecord = postalLocatorRepository.findById(locatorId);
 				if (findPostalRecord.isPresent()) {
 
 					deathRecord = findPostalRecord.get();
-					deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
-					deathRecord.setStateCd(input.getStateOfDeath() != null ? input.getStateOfDeath() : null);
-					deathRecord.setCntyCd(input.getCountyOfDeath() != null ? input.getCountyOfDeath() : null);
-					deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
 				}
 			} else {
 				Long maxId = postalLocatorRepository.getMaxId();
 				deathRecord = new PostalLocator();
 				deathRecord.setId(maxId + 1);
-				deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
-				deathRecord.setStateCd(input.getStateOfDeath() != null ? input.getStateOfDeath() : null);
-				deathRecord.setCntyCd(input.getCountyOfDeath() != null ? input.getCountyOfDeath() : null);
-				deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
 
 			}
+			  deathRecord = setDeathRecordInfo(deathRecord,input);
+			
 			if (deathRecord != null) {
 				PostalLocator savedRecord = postalLocatorRepository.save(deathRecord);
 				PostalEntityLocatorParticipation postalEntityRecord = setEntityLocatorParticipation(savedRecord, person,
@@ -129,6 +126,16 @@ public class PatientService {
 		}
 
 		return updated;
+	}
+	
+	private PostalLocator setDeathRecordInfo(PostalLocator deathRecord, PatientInput input) {
+
+		deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
+		deathRecord.setStateCd(input.getStateOfDeath() != null ? input.getStateOfDeath() : null);
+		deathRecord.setCntyCd(input.getCountyOfDeath() != null ? input.getCountyOfDeath() : null);
+		deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
+
+		return deathRecord;
 	}
 	
 	

@@ -14,7 +14,7 @@ public class Constants {
     
     public static final String UPDATE_SEX_BIRTH="Sex&Birth";
     
-    public static final String UPDATE_MORTALItY="Mortality";
+    public static final String UPDATE_MORTALITY="Mortality";
 
 
 }
