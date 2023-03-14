@@ -223,8 +223,8 @@ public class PatientService {
 		oldPerson.setBirthOrderNbr(input.getBirthOrderNbr() != null ? input.getBirthOrderNbr() : oldPerson.getBirthOrderNbr());
 		oldPerson.setMultipleBirthInd(input.getMultipleBirth() != null ? input.getMultipleBirth() : oldPerson.getMultipleBirthInd());
 		oldPerson.setSexUnkReasonCd(input.getSexunknown() != null ? input.getSexunknown() : oldPerson.getSexUnkReasonCd());		
-		oldPerson.setAdditionalGenderCd(input.getAdditionalGender() != null ? input.getAdditionalGender() : oldPerson.getAdditionalGenderCd());
-		oldPerson.setPreferredGenderCd(input.getTransGenderInfo() != null ? input.getTransGenderInfo() : oldPerson.getPreferredGenderCd());
+		oldPerson.setAdditionalGenderCd(input.getAdditionalGender() != null ? input.getAdditionalGender().toString(): oldPerson.getAdditionalGenderCd());
+		oldPerson.setPreferredGenderCd(input.getTransGenderInfo() != null ? input.getTransGenderInfo().toString() : oldPerson.getPreferredGenderCd());
 		return oldPerson;
 	}
 	
