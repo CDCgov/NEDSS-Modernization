@@ -113,14 +113,13 @@ public class PatientService {
 				deathRecord.setId(maxId + 1);
 
 			}
-			  deathRecord = setDeathRecordInfo(deathRecord,input);
+			  setDeathRecordInfo(deathRecord,input);
 			
-			if (deathRecord != null) {
+			
 				PostalLocator savedRecord = postalLocatorRepository.save(deathRecord);
 				PostalEntityLocatorParticipation postalEntityRecord = setEntityLocatorParticipation(savedRecord, person,
 						input);
 				entityLocatorPartRepository.save(postalEntityRecord);
-			}
 			updated = updatedMortality(person, input);
 
 		}
