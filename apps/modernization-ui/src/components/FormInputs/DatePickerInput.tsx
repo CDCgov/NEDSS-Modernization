@@ -1,7 +1,7 @@
 import { DatePicker, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
-import { useEffect, useState } from 'react';
-import { validateDate } from '../../utils/DateValidation';
+import { useState } from 'react';
+import { isMatch } from 'date-fns/fp';
 
 type OnChange = (val?: string) => void;
 
@@ -15,6 +15,15 @@ type DatePickerProps = {
     defaultValue?: string;
 };
 
+const matches = isMatch('M/d/yyyy');
+
+const isValid = (value?: string) => !value || matches(value);
+
+const interalize = (value: string) => {
+    const [month, day, year] = value.split('/');
+    return `${year}-${month}-${day}`;
+};
+
 export const DatePickerInput = ({
     id = '',
     name = '',
@@ -24,34 +33,30 @@ export const DatePickerInput = ({
     className,
     defaultValue
 }: DatePickerProps) => {
-    const defaultVal: any = defaultValue?.split('/');
-    const [defaultDate, setDefaultDate] = useState('');
-    const [error, setError] = useState(false);
+    const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
+    const validDefaultValue = !emptyDefaultValue && matches(defaultValue);
+    const intialDefault = validDefaultValue ? interalize(defaultValue) : '';
 
-    useEffect(() => {
-        if (defaultVal) {
-            if (defaultVal[0] === '') {
-                setError(false);
-                setDefaultDate('');
-            } else if (defaultVal.length === 3 && defaultVal[2].length === 4 && validateDate(defaultValue!)) {
-                setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
-                setError(false);
-            } else {
-                setError(true);
-                setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
-            }
-        } else {
-            setDefaultDate('0-0-0');
-        }
-    }, [defaultVal]);
+    const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
+
+    const checkValidity = (fn?: OnChange) => (changed?: string) => {
+        const valid = isValid(changed);
+        setError(!valid);
+
+        fn && fn(changed);
+    };
+
     return (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
-            {defaultDate && (
-                <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
-            )}
-            {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
+            <DatePicker
+                id={id}
+                onChange={checkValidity(onChange)}
+                className={className}
+                name={name}
+                defaultValue={intialDefault}
+            />
         </div>
     );
 };
