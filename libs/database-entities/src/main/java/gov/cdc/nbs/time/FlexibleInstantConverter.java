@@ -1,6 +1,7 @@
 package gov.cdc.nbs.time;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -10,8 +11,9 @@ import java.time.temporal.ChronoField;
 import java.util.List;
 
 /**
- * Performs conversions between {@code Instant} and {@code String}.  The conversion from {@link String} to
- * {@link Instant} flexible, accepting the following formats;
+ * Performs conversions between {@code Instant} and {@code String} to ensure consistency in how {@code Instant}
+ * instances are persisted.  The conversion from {@link String} to {@link Instant} is flexible, accepting the following
+ * formats;
  *
  * <ul>
  *   <li>M/d/uuuu</li>
@@ -26,7 +28,7 @@ import java.util.List;
  *
  * The conversion from {@link Instant} to {@link String} will result in the {@code YYYY-MM-DD hh:mm:ss[.nnn]} format acceptable for MS SQL Server.
  */
-public class InstantStringConverter {
+public class FlexibleInstantConverter {
 
   private static final List<DateTimeFormatter> READERS = List.of(
       new DateTimeFormatterBuilder()
@@ -51,6 +53,14 @@ public class InstantStringConverter {
 
   public static String toString(final Instant instant) {
     return instant == null ? null : WRITER.format(instant);
+  }
+
+  /**
+   * Converts a {@link LocalDate} into an {@link Instant} at the start of the day in the UTC Timezone.
+   *
+   */
+  public static String toString(final LocalDate date) {
+    return date == null ? null : WRITER.format(date.atStartOfDay().toInstant(ZoneOffset.UTC));
   }
 
   public static Instant fromString(final String value) {
@@ -78,6 +88,6 @@ public class InstantStringConverter {
     return null;
   }
 
-  private InstantStringConverter() {
+  private FlexibleInstantConverter() {
   }
 }

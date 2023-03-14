@@ -1,6 +1,7 @@
 package gov.cdc.nbs.support.util;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -11,44 +12,44 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RandomUtil {
-    private static Random random = new Random();
-    private static Logger logger = LoggerFactory.getLogger(RandomUtil.class);
+    private static final Random RANDOM = new Random();
+    private static final Logger LOGGER = LoggerFactory.getLogger(RandomUtil.class);
 
     static {
-        var randomSeed = random.nextLong();
+        var randomSeed = RANDOM.nextLong();
         // on test failure, hard code seed to value in failed test run
         // log. Log located at: api/log/spring.log
-        random.setSeed(randomSeed);
-        logger.info("Random data generated with seed: " + randomSeed);
+        RANDOM.setSeed(randomSeed);
+        LOGGER.info("Random data generated with seed: " + randomSeed);
     }
 
     public static void setSeed(long seed) {
-        random.setSeed(seed);
-        logger.info("Random seed updated to: " + seed);
+        RANDOM.setSeed(seed);
+        LOGGER.info("Random seed updated to: " + seed);
     }
 
     public static int getRandomInt(int bound) {
-        return random.nextInt(bound);
+        return RANDOM.nextInt(bound);
     }
 
     public static String getRandomString() {
-        return getRandomString(random.nextInt(5, 20));
+        return getRandomString(RANDOM.nextInt(5, 20));
     }
 
     public static <T> T getRandomFromArray(T[] list) {
-        var index = random.nextInt(list.length);
+        var index = RANDOM.nextInt(list.length);
         return list[index];
     }
 
     public static <T> T getRandomFromArray(List<T> list) {
-        var index = random.nextInt(list.size());
+        var index = RANDOM.nextInt(list.size());
         return list.get(index);
     }
 
     public static String getRandomString(int length) {
         int leftLimit = 48; // 0
         int rightLimit = 126; // ~
-        return random.ints(leftLimit, rightLimit + 1).limit(length)
+        return RANDOM.ints(leftLimit, rightLimit + 1).limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }
 
@@ -65,19 +66,19 @@ public class RandomUtil {
     public static String getRandomNumericString(int length) {
         int leftLimit = 48; // 0
         int rightLimit = 57; // 9
-        return random.ints(leftLimit, rightLimit + 1).limit(length)
+        return RANDOM.ints(leftLimit, rightLimit + 1).limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }
 
     public static Instant getRandomDateInPast() {
         var oneDayMillis = 86_400_000;
         var nowMillis = Instant.now().toEpochMilli() - oneDayMillis;
-        return Instant.ofEpochMilli(random.nextLong(nowMillis)).atZone(ZoneId.systemDefault()).toInstant()
+        return Instant.ofEpochMilli(RANDOM.nextLong(nowMillis)).atZone(ZoneId.systemDefault()).toInstant()
                 .truncatedTo(ChronoUnit.DAYS);
     }
 
     public static String getRandomStateCode() {
-        var index = random.nextInt(StateCodeUtil.stateCodeMap.size());
+        var index = RANDOM.nextInt(StateCodeUtil.stateCodeMap.size());
         return StateCodeUtil.stateCodeMap.values().toArray(new String[0])[index];
     }
 
@@ -91,11 +92,16 @@ public class RandomUtil {
 
     public static Country country() {
         int limit = CountryCodeUtil.countryCodeMap.size();
-        int index = random.nextInt(limit);
+        int index = RANDOM.nextInt(limit);
 
         return CountryCodeUtil.countryCodeMap.entrySet().stream().skip(index)
                 .map(e -> new Country(e.getValue(), e.getKey()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public static LocalDate dateInPast() {
+        Instant past = getRandomDateInPast();
+        return LocalDate.ofInstant(past, ZoneId.systemDefault());
     }
 }

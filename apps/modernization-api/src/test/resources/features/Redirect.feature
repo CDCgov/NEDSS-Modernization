@@ -9,8 +9,10 @@ Feature: NBS routes are redirected successfully
     Then I am redirected to the simple search react page
 
   Scenario: Simple search parameters are forwarded
-    When I send a search request to the NBS simple search
+    When I perform a simple search with Date Of Birth as "2000-01-01"
+    And I send a search request to the NBS simple search
     Then My search params are passed to the simple search react page
+    And the search parameters include Date of Birth as "2000-01-01"
 
   Scenario: Advanced search is redirected
     When I navigate to the NBS advanced search page

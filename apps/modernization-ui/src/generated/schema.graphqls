@@ -16,15 +16,15 @@ type CountryCode {
     assigningAuthorityDescTxt: String
     codeDescTxt: String
     codeShortDescTxt: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
     excludedTxt: String
     keyInfoTxt: String
     indentLevelNbr: Int
     isModifiableInd: String
     parentIsCd: String
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     codeSetNm: String
     seqNum: Int
     nbsUid: Int
@@ -62,17 +62,16 @@ extend type Query {
     findMorbidtyReportForPatient(patientId: Int!, page: Page): [MorbidtyObservation]
 }
 
-
 type MorbidtyObservation {
     id: ID
     act: Act
     obsValueCodedList: [ObsValueCoded]
     activityDurationAmt: String
     activityDurationUnitCd: String
-    activityFromTime: Date
-    activityToTime: Date
+    activityFromTime: DateTime
+    activityToTime: DateTime
     addReasonCd: String
-    addTime: Date
+    addTime: DateTime
     addUserId: Int
     cd: String
     cdDescTxt: String
@@ -88,14 +87,14 @@ type MorbidtyObservation {
     derivationExp: Int
     effectiveDurationAmt: String
     effectiveDurationUnitCd: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
     electronicInd: String
     groupLevelCd: String
     jurisdictionCd: String
     labConditionCd: String
     lastChgReasonCd: String
-    lastChgTime: Date
+    lastChgTime: DateTime
     lastChgUserId: Int
     localId: String
     methodCd: String
@@ -107,10 +106,10 @@ type MorbidtyObservation {
     priorityDescTxt: String
     progAreaCd: String
     recordStatusCd: String
-    recordStatusTime: Date
+    recordStatusTime: DateTime
     repeatNbr: Int
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     subjectPersonUid: Person
     targetSiteCd: String
     targetSiteDescTxt: String
@@ -119,30 +118,27 @@ type MorbidtyObservation {
     valueCd: String
     ynuCd: String
     programJurisdictionOid: Int
-    sharedInd:  String
+    sharedInd: String
     versionCtrlNbr: Int
     altCd: String
     altCdDescTxt: String
     altCdSystemCd: String
     altCdSystemDescTxt: String
     cdDerivedInd: String
-    rptToStateTime: Date
+    rptToStateTime: DateTime
     cdVersion: String
     processingDecisionCd: String
     pregnantIndCd: String
     pregnantWeek: Int
     processingDecisionTxt: String
-
-
 }
 
 type Act {
     id: Int
 }
 
-type  ObsValueCoded {
+type ObsValueCoded {
     id: ObsValueCodedId
-
 }
 
 type ObsValueCodedId {
@@ -177,7 +173,7 @@ type InvestigationResults {
 type Investigation {
     id: ID
     recordStatus: String
-    lastChangeTime: Date
+    lastChangeTime: DateTime
     publicHealthCaseUid: Int
     caseClassCd: String
     outbreakName: String
@@ -188,20 +184,20 @@ type Investigation {
     jurisdictionCodeDescTxt: String
     pregnantIndCd: String
     localId: String
-    rptFormCmpltTime: Date
-    activityToTime: Date
-    activityFromTime: Date
-    addTime: Date
-    publicHealthCaseLastChgTime: Date
+    rptFormCmpltTime: DateTime
+    activityToTime: DateTime
+    activityFromTime: DateTime
+    addTime: DateTime
+    publicHealthCaseLastChgTime: DateTime
     addUserId: Int
     lastChangeUserId: Int
     currProcessStateCd: String
     investigationStatusCd: String
     moodCd: String
     notificationLocalId: String
-    notificationAddTime: Date
+    notificationAddTime: DateTime
     notificationRecordStatusCd: String
-    notificationLastChgTime: Date
+    notificationLastChgTime: DateTime
     personParticipations: [PersonParticipation]
     organizationParticipations: [OrganizationParticipation]
     actIds: [ActId]
@@ -213,7 +209,7 @@ type ActId {
     actIdSeq: Int
     rootExtensionTxt: String
     typeCd: String
-    lastChangeTime: Date
+    lastChangeTime: DateTime
 }
 
 input InvestigationFilter {
@@ -253,8 +249,8 @@ input ProcessingStatuses {
 
 input InvestigationEventDateSearch {
     eventDateType: InvestigationEventDateType!
-    from: Date!
-    to: Date!
+    from: DateTime!
+    to: DateTime!
 }
 
 input ProviderFacilitySearch {
@@ -327,14 +323,14 @@ type Jurisdiction {
     assigningAuthorityDescTxt: String
     codeDescTxt: String
     codeShortDescTxt: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
     indentLevelNbr: Int
     isModifiableInd: String
     parentIsCd: String
     stateDomainCd: String
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     codeSetNm: String
     codeSeqNum: Int
     nbsUid: ID
@@ -374,10 +370,10 @@ input LabReportFilter {
 type LabReport {
     id: String
     observationUid: Int
-    lastChange: Date
+    lastChange: DateTime
     classCd: String
     moodCd: String
-    observationLastChgTime: Date
+    observationLastChgTime: DateTime
     cdDescTxt: String
     recordStatusCd: String
     programAreaCd: String
@@ -385,10 +381,10 @@ type LabReport {
     jurisdictionCodeDescTxt: String
     pregnantIndCd: String
     localId: String
-    activityToTime: Date
-    effectiveFromTime: Date
-    rptToStateTime: Date
-    addTime: Date
+    activityToTime: DateTime
+    effectiveFromTime: DateTime
+    rptToStateTime: DateTime
+    addTime: DateTime
     electronicInd: String
     versionCtrlNbr: Int
     addUserId: Int
@@ -408,7 +404,7 @@ type MaterialParticipation {
     subjectClassCd: String
     typeDescTxt: String
     participationRecordStatus: String
-    participationLastChangeTime: Date
+    participationLastChangeTime: DateTime
     cd: String
     cdDescTxt: String
 }
@@ -432,14 +428,14 @@ type AssociatedInvestigation {
     publicHealthCaseUid: Int
     cdDescTxt: String
     localId: String
-    lastChgTime: Date
-    actRelationshipLastChgTime: Date
+    lastChgTime: DateTime
+    actRelationshipLastChgTime: DateTime
 }
 
 input LaboratoryEventDateSearch {
     eventDateType: LaboratoryReportEventDateType!
-    from: Date!
-    to: Date!
+    from: DateTime!
+    to: DateTime!
 }
 
 input LabReportProviderSearch {
@@ -564,25 +560,25 @@ input OrganizationFilter {
 type Organization {
     id: ID
     addReasonCd: String
-    addTime: Date
+    addTime: DateTime
     addUserId: ID
     cd: String
     cdDescTxt: String
     description: String
     durationAmt: String
     durationUnitCd: String
-    fromTime: Date
+    fromTime: DateTime
     lastChgReasonCd: String
-    lastChgTime: Date
+    lastChgTime: DateTime
     lastChgUserId: Int
     localId: String
     recordStatusCd: RecordStatus
-    recordStatusTime: Date
+    recordStatusTime: DateTime
     standardIndustryClassCd: String
     standardIndustryDescTxt: String
     statusCd: String
-    statusTime: Date
-    toTime: Date
+    statusTime: DateTime
+    toTime: DateTime
     userAffiliationTxt: String
     displayNm: String
     streetAddr1: String
@@ -625,10 +621,10 @@ type PatientContacts {
 
 type NamedByPatient {
     contactRecord: ID!
-    createdOn: Date!
+    createdOn: DateTime!
     condition: String
     contact: NamedContact!
-    namedOn: Date!
+    namedOn: DateTime!
     priority: String
     disposition: String
     event: String!
@@ -636,9 +632,9 @@ type NamedByPatient {
 
 type NamedByContact {
     contactRecord: ID!
-    createdOn: Date!
+    createdOn: DateTime!
     contact: NamedContact!
-    namedOn: Date!
+    namedOn: DateTime!
     condition: String
     event: String!
     associatedWith: PatientContactInvestigation
@@ -650,7 +646,7 @@ type NamedContact {
 }
 
 type PatientContactInvestigation {
-    id: ID!,
+    id: ID!
     local: String!
     condition: String!
 }
@@ -659,18 +655,18 @@ extend type Query {
     findContactsForPatient(patient: ID!): PatientContacts
 }
 type PatientDocument {
-    document: ID!,
-    receivedOn: Date!
-    type : String!
+    document: ID!
+    receivedOn: DateTime!
+    type: String!
     sendingFacility: String!
-    reportedOn: Date!
+    reportedOn: DateTime!
     condition: String
     event: String!
     associatedWith: PatientDocumentInvestigation
 }
 
 type PatientDocumentInvestigation {
-    id: ID!,
+    id: ID!
     local: String!
 }
 
@@ -679,17 +675,17 @@ extend type Query {
 }
 
 type PatientTreatment {
-    treatment: ID!,
-    createdOn: Date!
-    provider : String
-    treatedOn: Date!
+    treatment: ID!
+    createdOn: DateTime!
+    provider: String
+    treatedOn: DateTime!
     description: String!
     event: String!
     associatedWith: PatientTreatmentInvestigation!
 }
 
 type PatientTreatmentInvestigation {
-    id: ID!,
+    id: ID!
     local: String!
     condition: String!
 }
@@ -730,7 +726,7 @@ input PersonFilter {
     ssn: String
     phoneNumber: String
     email: String
-    dateOfBirth: Date
+    dateOfBirth: DateTime
     dateOfBirthOperator: Operator
     gender: Gender
     deceased: Deceased
@@ -752,31 +748,31 @@ type Person {
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
-    addTime: Date
+    addTime: DateTime
     addUserId: ID
     administrativeGenderCd: String
     ageCalc: Int
-    ageCalcTime: Date
+    ageCalcTime: DateTime
     ageCalcUnitCd: String
     ageCategoryCd: String
     ageReported: String
-    ageReportedTime: Date
+    ageReportedTime: DateTime
     ageReportedUnitCd: String
     birthGenderCd: Gender
     birthOrderNbr: Int
-    birthTime: Date
-    birthTimeCalc: Date
+    birthTime: DateTime
+    birthTimeCalc: DateTime
     cd: String
     cdDescTxt: String
     currSexCd: String
     deceasedIndCd: String
-    deceasedTime: Date
+    deceasedTime: DateTime
     description: String
     educationLevelCd: String
     educationLevelDescTxt: String
     ethnicGroupInd: String
     lastChgReasonCd: String
-    lastChgTime: Date
+    lastChgTime: DateTime
     lastChgUserId: ID
     localId: String
     maritalStatusCd: String
@@ -788,9 +784,9 @@ type Person {
     primLangCd: String
     primLangDescTxt: String
     recordStatusCd: RecordStatus
-    recordStatusTime: Date
+    recordStatusTime: DateTime
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     survivedIndCd: String
     userAffiliationTxt: String
     firstNm: String
@@ -840,16 +836,16 @@ type Person {
     raceDescTxt: String
     ethnicGroupDescTxt: String
     versionCtrlNbr: Int
-    asOfDateAdmin: Date
-    asOfDateEthnicity: Date
-    asOfDateGeneral: Date
-    asOfDateMorbidity: Date
-    asOfDateSex: Date
+    asOfDateAdmin: DateTime
+    asOfDateEthnicity: DateTime
+    asOfDateGeneral: DateTime
+    asOfDateMorbidity: DateTime
+    asOfDateSex: DateTime
     electronicInd: String
     personParentUid: personParentUid
     dedupMatchInd: String
     groupNbr: Int
-    groupTime: Date
+    groupTime: DateTime
     edxInd: String
     speaksEnglishCd: String
     additionalGenderCd: String
@@ -865,11 +861,11 @@ type personParentUid {
 input PersonInput {
     names: [Name]
     ssn: String
-    DateOfBirth: Date
+    DateOfBirth: DateTime
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
-    deceasedTime: Date
+    deceasedTime: DateTime
     maritalStatus: String
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
@@ -877,7 +873,7 @@ input PersonInput {
     identifications: [Identification]
     ethnicityCode: String
     raceCodes: [String]
-    asOf: Date
+    asOf: DateTime
     comments: String
 }
 input Name {
@@ -1036,24 +1032,24 @@ input PlaceFilter {
 type Place {
     id: ID
     addReasonCd: String
-    addTime: Date
+    addTime: DateTime
     addUserId: Int
     cd: String
     cdDescTxt: String
     description: String
     durationAmt: String
     durationUnitCd: String
-    fromTime: Date
+    fromTime: DateTime
     lastChgReasonCd: String
-    lastChgTime: Date
+    lastChgTime: DateTime
     lastChgUserId: Int
     localId: String
     nm: String
     recordStatusCd: String
-    recordStatusTime: Date
+    recordStatusTime: DateTime
     statusCd: String
-    statusTime: Date
-    toTime: Date
+    statusTime: DateTime
+    toTime: DateTime
     userAffiliationTxt: String
     streetAddr1: String
     streetAddr2: String
@@ -1076,7 +1072,7 @@ type ProgramAreaCode {
     progAreaDescTxt: String
     nbsUid: ID
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     codeSetNm: String
     codeSeq: Int
 }
@@ -1119,15 +1115,15 @@ type PersonParticipation {
     subjectClassCd: String
     participationRecordStatus: String
     typeDescTxt: String
-    participationLastChangeTime: Date
+    participationLastChangeTime: DateTime
     firstName: String
     lastName: String
-    birthTime: Date
+    birthTime: DateTime
     currSexCd: String
     personCd: String!
     personParentUid: Int
     personRecordStatus: String!
-    personLastChangeTime: Date
+    personLastChangeTime: DateTime
 }
 
 type OrganizationParticipation {
@@ -1137,9 +1133,9 @@ type OrganizationParticipation {
     subjectClassCd: String
     typeDescTxt: String
     participationRecordStatus: String
-    participationLastChangeTime: Date
+    participationLastChangeTime: DateTime
     name: String
-    organizationLastChangeTime: Date
+    organizationLastChangeTime: DateTime
 }
 
 enum SortField {
@@ -1182,15 +1178,15 @@ type StateCode {
     assigningAuthorityDescTxt: String
     stateNm: String
     codeDescTxt: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
     excludedTxt: String
     indentLevelNbr: Int
     isModifiableInd: String
     keyInfoTxt: String
     parentIsCd: String
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     codeSetNm: String
     seqNum: Int
     nbsUid: Int

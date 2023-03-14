@@ -1,30 +1,5 @@
 package gov.cdc.nbs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.Assert;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
@@ -42,6 +17,28 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -326,17 +323,14 @@ public class PatientSearchSteps {
         return updatePatientPartialDataFilter(filter, field, qualifier);
     }
 
-    private Instant getDobByQualifier(Person search, String qualifier) {
-        switch (qualifier) {
-            case "before":
-                return search.getBirthTime().plus(15, ChronoUnit.DAYS);
-            case "after":
-                return search.getBirthTime().minus(15, ChronoUnit.DAYS);
-            case "equal":
-                return search.getBirthTime();
-            default:
-                throw new IllegalArgumentException("Invalid date of birth qualifier: " + qualifier);
-        }
+    private LocalDate getDobByQualifier(Person search, String qualifier) {
+        LocalDate dateOfBirth = LocalDate.ofInstant(search.getBirthTime(), ZoneOffset.UTC);
+        return switch (qualifier) {
+            case "before" -> dateOfBirth.plus(15, ChronoUnit.DAYS);
+            case "after" -> dateOfBirth.minus(15, ChronoUnit.DAYS);
+            case "equal" -> dateOfBirth;
+            default -> throw new IllegalArgumentException("Invalid date of birth qualifier: " + qualifier);
+        };
     }
 
     private Comparator<Person> getPersonSortComparator(String field, Direction direction) {

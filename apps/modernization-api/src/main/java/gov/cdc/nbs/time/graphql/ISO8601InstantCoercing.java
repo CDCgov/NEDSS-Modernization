@@ -36,7 +36,7 @@ public class ISO8601InstantCoercing implements Coercing<Instant, String> {
         throw new CoercingParseValueException("Expected a String");
       }
     } catch (DateTimeParseException e) {
-      throw new CoercingParseValueException(String.format("Not a valid date: '%s'.", input), e);
+      throw new CoercingParseValueException(String.format("Not a valid datetime: '%s'.", input), e);
     }
   }
 

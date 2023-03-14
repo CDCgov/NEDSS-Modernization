@@ -39,7 +39,7 @@ class PatientFilterFromRequestParamResolverTest {
 
     PatientFilter actual = new PatientFilterFromRequestParamResolver().resolve(parameters);
 
-    assertThat(actual.getDateOfBirth()).isEqualTo("1990-01-01T00:00:00Z");
+    assertThat(actual.getDateOfBirth()).isEqualTo("1990-01-01");
 
   }
 

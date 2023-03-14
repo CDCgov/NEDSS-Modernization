@@ -1,27 +1,27 @@
 extend type Query {
-    findAllJurisdictions(page: Page): [Jurisdiction]!
+  findAllJurisdictions(page: Page): [Jurisdiction]!
 }
 
 type Jurisdiction {
-    id: String!
-    typeCd: String!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
-    indentLevelNbr: Int
-    isModifiableInd: String
-    parentIsCd: String
-    stateDomainCd: String
-    statusCd: String
-    statusTime: Date
-    codeSetNm: String
-    codeSeqNum: Int
-    nbsUid: ID
-    sourceConceptId: String
-    codeSystemCd: String
-    codeSystemDescTxt: String
-    exportInd: String
+  id: String!
+  typeCd: String!
+  assigningAuthorityCd: String
+  assigningAuthorityDescTxt: String
+  codeDescTxt: String
+  codeShortDescTxt: String
+  effectiveFromTime: DateTime
+  effectiveToTime: DateTime
+  indentLevelNbr: Int
+  isModifiableInd: String
+  parentIsCd: String
+  stateDomainCd: String
+  statusCd: String
+  statusTime: DateTime
+  codeSetNm: String
+  codeSeqNum: Int
+  nbsUid: ID
+  sourceConceptId: String
+  codeSystemCd: String
+  codeSystemDescTxt: String
+  exportInd: String
 }

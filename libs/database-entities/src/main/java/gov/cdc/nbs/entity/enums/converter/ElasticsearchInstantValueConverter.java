@@ -1,7 +1,7 @@
 package gov.cdc.nbs.entity.enums.converter;
 
 import gov.cdc.nbs.exception.ConversionException;
-import gov.cdc.nbs.time.InstantStringConverter;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.springframework.data.elasticsearch.core.mapping.PropertyValueConverter;
 
 import java.time.Instant;
@@ -15,7 +15,7 @@ public class ElasticsearchInstantValueConverter implements PropertyValueConverte
   @Override
   public Object write(Object value) {
     if (value instanceof Instant instant) {
-      return InstantStringConverter.toString(instant);
+      return FlexibleInstantConverter.toString(instant);
     } else {
       return value;
     }
@@ -31,7 +31,7 @@ public class ElasticsearchInstantValueConverter implements PropertyValueConverte
         s = s.substring("StringValue{value='".length(), s.length() - 2);
       }
       try {
-        return InstantStringConverter.fromString(s);
+        return FlexibleInstantConverter.fromString(s);
       } catch (DateTimeParseException e) {
         throw new ConversionException("Failed to convert String to Instant: " + s);
       }

@@ -50,7 +50,7 @@ class ISO8601InstantCoercingTest {
 
     assertThatThrownBy(() -> coercing.parseValue("05/11/2011"))
         .isInstanceOf(CoercingParseValueException.class)
-        .hasMessage("Not a valid date: '05/11/2011'.");
+        .hasMessage("Not a valid datetime: '05/11/2011'.");
 
   }
 
@@ -70,7 +70,9 @@ class ISO8601InstantCoercingTest {
 
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
-    assertThatThrownBy(() -> coercing.parseLiteral(NullValue.of()))
+    NullValue value = NullValue.of();
+
+    assertThatThrownBy(() -> coercing.parseLiteral(value))
         .isInstanceOf(CoercingParseLiteralException.class)
         .hasMessage("Expected a StringValue.");
 

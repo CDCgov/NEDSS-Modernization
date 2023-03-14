@@ -22,7 +22,7 @@ import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.time.InstantStringConverter;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.Soundex;
@@ -256,7 +256,7 @@ public class PatientService {
 
     if (filter.getDateOfBirth() != null) {
       String dobOperator = filter.getDateOfBirthOperator();
-      String dobString = InstantStringConverter.toString(filter.getDateOfBirth());
+      String dobString = FlexibleInstantConverter.toString(filter.getDateOfBirth());
       if (dobOperator == null || dobOperator.equalsIgnoreCase("equal")) {
         builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.BIRTH_TIME, dobString));
       } else if (dobOperator.equalsIgnoreCase("before")) {

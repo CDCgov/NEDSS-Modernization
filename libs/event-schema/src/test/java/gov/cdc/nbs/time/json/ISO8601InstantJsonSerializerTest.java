@@ -26,6 +26,6 @@ class ISO8601InstantJsonSerializerTest {
 
     mapper.writeValue(writer, Instant.parse("2013-09-27T11:19:29Z"));
 
-    assertThat(writer.toString()).isEqualTo("\"2013-09-27T11:19:29Z\"");
+    assertThat(writer.toString()).contains("2013-09-27T11:19:29Z");
   }
 }

@@ -6,16 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 
 @Configuration
-public class DateScalarConfig {
+public class DateTimeScalarConfig {
 
   @Bean
-  public RuntimeWiringConfigurer dateScalarConfigurer() {
-
+  public RuntimeWiringConfigurer dateTimeScalarConfigurer() {
     return wiringBuilder -> wiringBuilder.scalar(
         GraphQLScalarType.newScalar()
-            .name("Date")
+            .name("DateTime")
             .description("Java Instant as scalar.")
-            .coercing(new DateCoercing())
+            .coercing(new ISO8601InstantCoercing())
             .build()
     );
 

@@ -6,6 +6,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeParseException;
 import java.util.stream.Stream;
 
@@ -13,11 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-class InstantStringConverterTest {
+class FlexibleInstantConverterTest {
 
   @Test
-  void should_convert_null_instant_to_null_string() {
-    String actual = InstantStringConverter.toString(null);
+  void should_convert_null_Instant_to_null_string() {
+    Instant value = null;
+    String actual = FlexibleInstantConverter.toString(value);
 
     assertThat(actual).isNull();
   }
@@ -25,15 +28,32 @@ class InstantStringConverterTest {
   @Test
   void should_convert_Instant_to_String() {
 
-    String actual = InstantStringConverter.toString(Instant.parse("1955-11-12T22:04:00Z"));
+    String actual = FlexibleInstantConverter.toString(Instant.parse("1955-11-12T22:04:00Z"));
 
     assertThat(actual).isEqualTo("1955-11-12 22:04:00.000");
 
   }
 
   @Test
+  void should_convert_null_LocalDate_to_null_string() {
+    LocalDate value = null;
+    String actual = FlexibleInstantConverter.toString(value);
+
+    assertThat(actual).isNull();
+  }
+
+  @Test
+  void should_convert_LocalDate_to_String() {
+
+    String actual = FlexibleInstantConverter.toString(LocalDate.of(1955, Month.NOVEMBER, 8));
+
+    assertThat(actual).isEqualTo("1955-11-08 00:00:00.000");
+
+  }
+
+  @Test
   void should_convert_null_string_to_null_instant() {
-    Instant actual = InstantStringConverter.fromString(null);
+    Instant actual = FlexibleInstantConverter.fromString(null);
 
     assertThat(actual).isNull();
   }
@@ -42,7 +62,7 @@ class InstantStringConverterTest {
   @ParameterizedTest
   @MethodSource("stringToInstant")
   void should_convert_string_to_instant(final String in, final Instant expected) {
-    Instant actual = InstantStringConverter.fromString(in);
+    Instant actual = FlexibleInstantConverter.fromString(in);
 
     assertThat(actual).isEqualTo(expected);
   }
@@ -66,7 +86,7 @@ class InstantStringConverterTest {
 
   @Test
   void should_throw_error_when_converting_from_unknown_format() {
-    assertThatThrownBy(() -> InstantStringConverter.fromString("unknown"))
+    assertThatThrownBy(() -> FlexibleInstantConverter.fromString("unknown"))
         .isInstanceOf(DateTimeParseException.class);
   }
 }

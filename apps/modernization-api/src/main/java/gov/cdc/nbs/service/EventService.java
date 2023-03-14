@@ -18,7 +18,7 @@ import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
 import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.time.InstantStringConverter;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import gov.cdc.nbs.util.Constants;
 import lombok.RequiredArgsConstructor;
 import org.apache.lucene.search.join.ScoreMode;
@@ -208,8 +208,8 @@ public class EventService {
                     throw new QueryException(
                             "Invalid event date type specified: " + eds.getEventDateType());
             }
-            var from = InstantStringConverter.toString(eds.getFrom());
-            var to = InstantStringConverter.toString(eds.getTo());
+            var from = FlexibleInstantConverter.toString(eds.getFrom());
+            var to = FlexibleInstantConverter.toString(eds.getTo());
             builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // entry methods / entered by
@@ -493,8 +493,8 @@ public class EventService {
                     throw new QueryException("Invalid event date type " +
                             eds.getEventDateType());
             }
-            var from = InstantStringConverter.toString(eds.getFrom());
-            var to = InstantStringConverter.toString(eds.getTo());
+            var from = FlexibleInstantConverter.toString(eds.getFrom());
+            var to = FlexibleInstantConverter.toString(eds.getTo());
             builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // Created By

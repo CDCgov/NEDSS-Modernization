@@ -1,60 +1,63 @@
 extend type Query {
-    findOrganizationById(id: ID!): Organization
-    findAllOrganizations(page: Page): OrganizationResults!
-    findOrganizationsByFilter(filter: OrganizationFilter!, page: Page): OrganizationResults!
+  findOrganizationById(id: ID!): Organization
+  findAllOrganizations(page: Page): OrganizationResults!
+  findOrganizationsByFilter(
+    filter: OrganizationFilter!
+    page: Page
+  ): OrganizationResults!
 }
 
 type OrganizationResults {
-    content: [Organization]!
-    total: Int!
+  content: [Organization]!
+  total: Int!
 }
 
 input OrganizationFilter {
-    id: ID
-    displayNm: String
-    streetAddr1: String
-    streetAddr2: String
-    cityCd: String
-    cityDescTxt: String
-    stateCd: String
-    zipCd: String
+  id: ID
+  displayNm: String
+  streetAddr1: String
+  streetAddr2: String
+  cityCd: String
+  cityDescTxt: String
+  stateCd: String
+  zipCd: String
 }
 
 type Organization {
-    id: ID
-    addReasonCd: String
-    addTime: Date
-    addUserId: ID
-    cd: String
-    cdDescTxt: String
-    description: String
-    durationAmt: String
-    durationUnitCd: String
-    fromTime: Date
-    lastChgReasonCd: String
-    lastChgTime: Date
-    lastChgUserId: Int
-    localId: String
-    recordStatusCd: RecordStatus
-    recordStatusTime: Date
-    standardIndustryClassCd: String
-    standardIndustryDescTxt: String
-    statusCd: String
-    statusTime: Date
-    toTime: Date
-    userAffiliationTxt: String
-    displayNm: String
-    streetAddr1: String
-    streetAddr2: String
-    cityCd: String
-    cityDescTxt: String
-    stateCd: String
-    cntyCd: String
-    cntryCd: String
-    zipCd: String
-    phoneNbr: String
-    phoneCntryCd: String
-    versionCtrlNbr: Int
-    electronicInd: String
-    edxInd: String
+  id: ID
+  addReasonCd: String
+  addTime: DateTime
+  addUserId: ID
+  cd: String
+  cdDescTxt: String
+  description: String
+  durationAmt: String
+  durationUnitCd: String
+  fromTime: DateTime
+  lastChgReasonCd: String
+  lastChgTime: DateTime
+  lastChgUserId: Int
+  localId: String
+  recordStatusCd: RecordStatus
+  recordStatusTime: DateTime
+  standardIndustryClassCd: String
+  standardIndustryDescTxt: String
+  statusCd: String
+  statusTime: DateTime
+  toTime: DateTime
+  userAffiliationTxt: String
+  displayNm: String
+  streetAddr1: String
+  streetAddr2: String
+  cityCd: String
+  cityDescTxt: String
+  stateCd: String
+  cntyCd: String
+  cntryCd: String
+  zipCd: String
+  phoneNbr: String
+  phoneCntryCd: String
+  versionCtrlNbr: Int
+  electronicInd: String
+  edxInd: String
 }

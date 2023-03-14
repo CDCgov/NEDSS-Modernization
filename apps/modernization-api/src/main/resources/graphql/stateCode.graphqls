@@ -1,26 +1,26 @@
 extend type Query {
-    findAllStateCodes(page: Page): [StateCode]!
+  findAllStateCodes(page: Page): [StateCode]!
 }
 
 type StateCode {
-    id: String
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    stateNm: String
-    codeDescTxt: String
-    effectiveFromTime: Date
-    effectiveToTime: Date
-    excludedTxt: String
-    indentLevelNbr: Int
-    isModifiableInd: String
-    keyInfoTxt: String
-    parentIsCd: String
-    statusCd: String
-    statusTime: Date
-    codeSetNm: String
-    seqNum: Int
-    nbsUid: Int
-    sourceConceptId: String
-    codeSystemCd: String
-    codeSystemDescTxt: String
+  id: String
+  assigningAuthorityCd: String
+  assigningAuthorityDescTxt: String
+  stateNm: String
+  codeDescTxt: String
+  effectiveFromTime: DateTime
+  effectiveToTime: DateTime
+  excludedTxt: String
+  indentLevelNbr: Int
+  isModifiableInd: String
+  keyInfoTxt: String
+  parentIsCd: String
+  statusCd: String
+  statusTime: DateTime
+  codeSetNm: String
+  seqNum: Int
+  nbsUid: Int
+  sourceConceptId: String
+  codeSystemCd: String
+  codeSystemDescTxt: String
 }

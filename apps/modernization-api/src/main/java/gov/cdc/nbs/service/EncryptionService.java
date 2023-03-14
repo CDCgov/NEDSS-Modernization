@@ -1,23 +1,18 @@
 package gov.cdc.nbs.service;
 
-import java.nio.ByteBuffer;
-import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Base64;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.exception.EncryptionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import gov.cdc.nbs.exception.EncryptionException;
+import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.ByteBuffer;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Base64;
 
 @Service
 public class EncryptionService {
