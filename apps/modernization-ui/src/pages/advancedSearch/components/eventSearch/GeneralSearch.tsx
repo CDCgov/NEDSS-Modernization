@@ -21,7 +21,6 @@ type GeneralSearchProps = {
 
 export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
-
     return (
         <>
             <SearchCriteriaContext.Consumer>
