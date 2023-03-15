@@ -14,12 +14,12 @@ import GeneralInformation from './components/generalInformation/generalInformati
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
 import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
-import { NameUseCd, useCreatePatientMutation } from '../../generated/graphql/schema';
+import { SuccessForm } from './components/SuccessForm/SuccessForm';
 
 export default function AddPatient() {
     const [disabled, setDisabled] = useState<boolean>(true);
-    const [submitForm] = useCreatePatientMutation();
-
+    const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
+    const [submitData, setSubmitData] = useState<any>();
     function isEmpty(obj: any) {
         for (const key in obj) {
             if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
@@ -37,8 +37,7 @@ export default function AddPatient() {
     const {
         handleSubmit,
         control,
-        formState: { errors },
-        watch
+        formState: { errors, isValid }
     } = methods;
     const { fields, append } = useFieldArray({
         control,
@@ -70,35 +69,12 @@ export default function AddPatient() {
     const [asOfDate, setAsOfDate]: [string, (asOfDate: string) => void] = useState(new Date().toISOString());
 
     useEffect(() => {
-        watch((value) => {
-            delete value.identification;
-            delete value.emailAddresses;
-            delete value.phoneNumbers;
-            setDisabled(isEmpty(value));
-        });
-    }, [watch]);
-
-    console.log('disabled:', disabled);
+        setDisabled(!isValid);
+    }, [isValid]);
 
     const submit = (data: any) => {
-        console.log('data:', data);
-        submitForm({
-            variables: {
-                patient: {
-                    asOf: data?.asOf,
-                    names: [
-                        {
-                            firstName: data?.['first-name'],
-                            lastName: data?.['last-name'],
-                            middleName: data?.['middle-name'],
-                            nameUseCd: NameUseCd.A
-                        }
-                    ]
-                }
-            }
-        }).then((re) => {
-            console.log('re:', re);
-        });
+        setSubmitData(data);
+        setSuccessSubmit(true);
     };
 
     window.addEventListener('load', () => {
@@ -127,87 +103,103 @@ export default function AddPatient() {
     });
 
     return (
-        <Grid row>
-            <Grid col={3} className="bg-white border-right border-base-light">
-                <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
-            </Grid>
-            <Grid col={9} className="margin-left-auto">
-                <Form onSubmit={handleSubmit(submit)} className="width-full max-width-full">
-                    <Grid row className="page-title-bar bg-white">
-                        <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
-                            New patient
-                            <div className="button-group">
-                                <Button disabled={disabled} className="padding-x-3 add-patient-button" type={'button'}>
-                                    Save and add new lab report
-                                </Button>
-                                <Button disabled={disabled} className="padding-x-3 add-patient-button" type={'submit'}>
-                                    Save changes
-                                </Button>
-                            </div>
-                        </div>
+        <>
+            {!successSubmit && (
+                <Grid row>
+                    <Grid col={3} className="bg-white border-right border-base-light">
+                        <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
                     </Grid>
-                    <div className="content">
-                        <Grid row className="padding-3">
-                            <Grid col={9}>
-                                <GeneralInformation
-                                    control={control}
-                                    title="General information"
-                                    id={'section-General_information'}
-                                />
-
-                                <NameFields id={'section-Name'} title="Name information" control={control} />
-                                <OtherInfoFields control={control} id={'section-Other'} title="Other information" />
-                                <AddressFields
-                                    id={'section-Address'}
-                                    title="Address"
-                                    addressFields={addressFields}
-                                    updateCallback={setAddressFields}
-                                />
-                                <ContactFields
-                                    phoneNumberFields={phoneNumberFields}
-                                    emailFields={emailFields}
-                                    phoneNumberAppend={phoneNumberAppend}
-                                    emailFieldAppend={emailFieldAppend}
-                                    control={control}
-                                    id={'section-Telephone'}
-                                    title="Telephone"
-                                />
-                                <EthnicityFields id={'section-Ethnicity'} title="Ethnicity" />
-                                <RaceFields id={'section-Race'} title={'Race'} />
-                                <IdentificationFields
-                                    fields={fields}
-                                    append={append}
-                                    control={control}
-                                    id={'section-Identification'}
-                                    title="Identification"
-                                />
+                    <Grid col={9} className="margin-left-auto">
+                        <Form onSubmit={handleSubmit(submit)} className="width-full max-width-full">
+                            <Grid row className="page-title-bar bg-white">
+                                <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
+                                    New patient
+                                    <div className="button-group">
+                                        <Button
+                                            disabled={disabled}
+                                            className="padding-x-3 add-patient-button"
+                                            type={'button'}>
+                                            Save and add new lab report
+                                        </Button>
+                                        <Button
+                                            disabled={disabled}
+                                            className="padding-x-3 add-patient-button"
+                                            type={'submit'}>
+                                            Save changes
+                                        </Button>
+                                    </div>
+                                </div>
                             </Grid>
+                            <div className="content">
+                                <Grid row className="padding-3">
+                                    <Grid col={9}>
+                                        <GeneralInformation
+                                            errors={errors}
+                                            control={control}
+                                            title="General information"
+                                            id={'section-General_information'}
+                                        />
 
-                            <Grid col={3}>
-                                <main className="content-container">
-                                    <aside className="content-sidebar">
-                                        <nav className="content-navigation">
-                                            <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
-                                                On this page
-                                            </h3>
-                                            <div className="border-left border-base-lighter">
-                                                <a href="#section-General_information">General Information</a>
-                                                <a href="#section-Name">Name information</a>
-                                                <a href="#section-Other">Other information</a>
-                                                <a href="#section-Address">Address</a>
-                                                <a href="#section-Telephone">Telephone</a>
-                                                <a href="#section-Ethnicity">Ethnicity</a>
-                                                <a href="#section-Race">Race</a>
-                                                <a href="#section-Identification">Identification</a>
-                                            </div>
-                                        </nav>
-                                    </aside>
-                                </main>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Form>
-            </Grid>
-        </Grid>
+                                        <NameFields id={'section-Name'} title="Name information" control={control} />
+                                        <OtherInfoFields
+                                            control={control}
+                                            id={'section-Other'}
+                                            title="Other information"
+                                        />
+                                        <AddressFields
+                                            id={'section-Address'}
+                                            title="Address"
+                                            addressFields={addressFields}
+                                            updateCallback={setAddressFields}
+                                        />
+                                        <ContactFields
+                                            phoneNumberFields={phoneNumberFields}
+                                            emailFields={emailFields}
+                                            phoneNumberAppend={phoneNumberAppend}
+                                            emailFieldAppend={emailFieldAppend}
+                                            control={control}
+                                            id={'section-Telephone'}
+                                            title="Telephone"
+                                        />
+                                        <EthnicityFields id={'section-Ethnicity'} title="Ethnicity" />
+                                        <RaceFields id={'section-Race'} title={'Race'} />
+                                        <IdentificationFields
+                                            fields={fields}
+                                            append={append}
+                                            control={control}
+                                            id={'section-Identification'}
+                                            title="Identification"
+                                        />
+                                    </Grid>
+
+                                    <Grid col={3}>
+                                        <main className="content-container">
+                                            <aside className="content-sidebar">
+                                                <nav className="content-navigation">
+                                                    <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
+                                                        On this page
+                                                    </h3>
+                                                    <div className="border-left border-base-lighter">
+                                                        <a href="#section-General_information">General Information</a>
+                                                        <a href="#section-Name">Name information</a>
+                                                        <a href="#section-Other">Other information</a>
+                                                        <a href="#section-Address">Address</a>
+                                                        <a href="#section-Telephone">Telephone</a>
+                                                        <a href="#section-Ethnicity">Ethnicity</a>
+                                                        <a href="#section-Race">Race</a>
+                                                        <a href="#section-Identification">Identification</a>
+                                                    </div>
+                                                </nav>
+                                            </aside>
+                                        </main>
+                                    </Grid>
+                                </Grid>
+                            </div>
+                        </Form>
+                    </Grid>
+                </Grid>
+            )}
+            {successSubmit && <SuccessForm data={submitData} />}
+        </>
     );
 }

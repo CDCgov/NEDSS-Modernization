@@ -1,4 +1,5 @@
 import {
+    Alert,
     Button,
     ButtonGroup,
     Grid,
@@ -15,9 +16,13 @@ import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
     RecordStatus,
+    useFindContactsForPatientLazyQuery,
+    useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindPatientsByFilterLazyQuery
+    useFindMorbidtyReportForPatientLazyQuery,
+    useFindPatientsByFilterLazyQuery,
+    useFindTreatmentsForPatientLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
@@ -38,6 +43,10 @@ export const PatientProfile = () => {
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
     const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
+    const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
+    const [getTreatmentsData, { data: treatmentsData }] = useFindTreatmentsForPatientLazyQuery();
+    const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
+    const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -78,9 +87,41 @@ export const PatientProfile = () => {
                         }
                     }
                 });
+                getMorbidityData({
+                    variables: {
+                        patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                    }
+                });
+                getTreatmentsData({
+                    variables: {
+                        patient: patientProfileData.findPatientsByFilter.content[0].id
+                    }
+                });
+                getDocumentsData({
+                    variables: {
+                        patient: patientProfileData.findPatientsByFilter.content[0].id
+                    }
+                });
+                getContactsData({
+                    variables: {
+                        patient: patientProfileData.findPatientsByFilter.content[0].id
+                    }
+                });
             }
         }
     }, [patientProfileData]);
+
+    const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
+    const [addedItem, setAddedItem] = useState<string>('');
+    const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+
+    useEffect(() => {
+        if (submittedSuccess) {
+            setTimeout(() => {
+                setSubmittedSuccess(false);
+            }, 5000);
+        }
+    }, [submittedSuccess]);
 
     return (
         <div className="height-full main-banner">
@@ -233,10 +274,21 @@ export const PatientProfile = () => {
                     <Events
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
+                        morbidityData={morbidityData?.findMorbidtyReportForPatient}
+                        treatmentsData={treatmentsData?.findTreatmentsForPatient}
+                        documentsData={documentsData?.findDocumentsForPatient}
+                        contactsData={contactsData?.findContactsForPatient}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
-                    <Demographics patientProfileData={patientProfileData?.findPatientsByFilter} />
+                    <Demographics
+                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                            setSubmittedSuccess(true);
+                            setAddedItem(message);
+                            setAlertType(type);
+                        }}
+                        patientProfileData={patientProfileData?.findPatientsByFilter}
+                    />
                 )}
 
                 <div className="text-center margin-y-5">
@@ -246,6 +298,20 @@ export const PatientProfile = () => {
                     </Button>
                 </div>
             </div>
+
+            {submittedSuccess && (
+                <Alert
+                    type={alertType}
+                    heading="Success"
+                    headingLevel="h4"
+                    cta={
+                        <Button type="button" unstyled>
+                            <Icon.Close />
+                        </Button>
+                    }>
+                    Added new name, {addedItem}
+                </Alert>
+            )}
         </div>
     );
 };

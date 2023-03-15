@@ -11,6 +11,7 @@ type DatePickerProps = {
     onChange?: any;
     className?: string;
     defaultValue?: string;
+    errorMessage?: string;
 };
 
 export const DatePickerInput = ({
@@ -20,7 +21,8 @@ export const DatePickerInput = ({
     htmlFor = '',
     onChange,
     className,
-    defaultValue
+    defaultValue,
+    errorMessage
 }: DatePickerProps) => {
     const defaultVal: any = defaultValue?.split('/');
     const [defaultDate, setDefaultDate] = useState('');
@@ -50,6 +52,7 @@ export const DatePickerInput = ({
                 <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
             )}
             {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
+            <p className="text-red margin-y-1">{errorMessage}</p>
         </div>
     );
 };

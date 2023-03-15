@@ -10,9 +10,10 @@ import { FindPatientsByFilterQuery } from '../../generated/graphql/schema';
 
 type DemographicProps = {
     patientProfileData: FindPatientsByFilterQuery['findPatientsByFilter'] | undefined;
+    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
 };
 
-export const Demographics = ({ patientProfileData }: DemographicProps) => {
+export const Demographics = ({ patientProfileData, handleFormSubmission }: DemographicProps) => {
     const [tableBody, setTableBody] = useState<any>([]);
     const [nameTableBody, setNameTableBody] = useState<any>([]);
     const [addressTableBody, setAddressTableBody] = useState<any>([]);
@@ -30,7 +31,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         for (let i = 0; i < 3; i++) {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -70,7 +71,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         setTableBody([
             {
                 id: 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     { id: 1, title: `11/19/2022` },
                     {
@@ -95,7 +96,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         names?.map((item, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -140,7 +141,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         entityIds?.map((item, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -180,7 +181,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
             if (element?.classCd !== 'PST') {
                 tempArr.push({
                     id: i + 1,
-                    checkbox: true,
+                    checkbox: false,
                     tableDetails: [
                         {
                             id: 1,
@@ -221,7 +222,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
             if (element?.classCd === 'PST') {
                 tempArr.push({
                     id: i + 1,
-                    checkbox: true,
+                    checkbox: false,
                     tableDetails: [
                         {
                             id: 1,
@@ -306,7 +307,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                                 <Icon.Add className="margin-right-05" />
                                 Add name
                             </ModalToggleButton>
-                            <AddNameModal modalRef={addNameModalRef} />
+                            <AddNameModal handleSubmission={handleFormSubmission} modalRef={addNameModalRef} />
                         </div>
                     }
                     tableHeader={'Name'}

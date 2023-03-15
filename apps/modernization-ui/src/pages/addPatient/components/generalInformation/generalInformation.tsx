@@ -3,7 +3,18 @@ import FormCard from '../../../../components/FormCard/FormCard';
 import { Controller } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 
-export default function GeneralInformation({ id, title, control }: { id?: string; title?: string; control?: any }) {
+export default function GeneralInformation({
+    id,
+    title,
+    control,
+    errors
+}: {
+    id?: string;
+    title?: string;
+    control?: any;
+    errors?: any;
+}) {
+    console.log('errors:', errors);
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -18,6 +29,9 @@ export default function GeneralInformation({ id, title, control }: { id?: string
                             <span className="text-red">*</span>
                         </Label>
                         <Controller
+                            rules={{
+                                required: { value: true, message: 'This field is required' }
+                            }}
                             control={control}
                             name="asOf"
                             render={({ field: { onChange, value } }) => (
@@ -26,6 +40,7 @@ export default function GeneralInformation({ id, title, control }: { id?: string
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
+                                    errorMessage={errors?.asOf?.message || ''}
                                 />
                             )}
                         />

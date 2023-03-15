@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { Ref, useState } from 'react';
 import { ModalComponent } from '../../../components/ModalComponent/ModalComponent';
 import {
     Button,
@@ -18,8 +18,10 @@ import { Input } from '../../../components/FormInputs/Input';
 
 type AddCommentModalProps = {
     modalRef: Ref<ModalRef> | undefined;
+    handleSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     return (
         <Form onSubmit={onSubmit} className="width-full maxw-full modal-form">
@@ -189,7 +191,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
 
             <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup>
-                    <ModalToggleButton className="margin-top-0" outline modalRef={modalRef} closer>
+                    <ModalToggleButton type="button" className="margin-top-0" outline modalRef={modalRef} closer>
                         Go back
                     </ModalToggleButton>
                     <Button type="submit" className="padding-105 text-center margin-top-0">
@@ -201,19 +203,30 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     );
 };
 
-export const AddNameModal = ({ modalRef }: AddCommentModalProps) => {
+export const AddNameModal = ({ modalRef, handleSubmission }: AddCommentModalProps) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
+    const [submitted, setSubmitted] = useState<boolean>(false);
+
     const onSubmit = (data: any) => {
         console.log(data);
+        handleSubmission?.('success', `${data?.last}, ${data?.first}`);
+        setSubmitted(true);
     };
 
     return (
         <ModalComponent
             modalRef={modalRef}
             modalHeading="Add - Name"
-            modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
+            modalBody={
+                <ModalBody
+                    submitted={submitted}
+                    control={control}
+                    onSubmit={handleSubmit(onSubmit)}
+                    modalRef={modalRef}
+                />
+            }
         />
     );
 };
