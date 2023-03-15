@@ -9,7 +9,7 @@ export const AppRoutes = () => {
         <Routes>
             <Route path="/">
                 <Route path="/login" element={<Login />} />
-                <Route path="/advanced-search" element={<AdvancedSearch />} />
+                <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                 <Route path="/patient-profile/:id" element={<PatientProfile />} />
                 <Route path="/add-patient" element={<AddPatient />} />
                 <Route path="*" element={<Navigate to="/advanced-search" />} />

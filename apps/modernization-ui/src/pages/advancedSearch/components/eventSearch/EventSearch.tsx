@@ -2,7 +2,7 @@ import { Accordion, Button, Form, Grid } from '@trussworks/react-uswds';
 import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accordion/Accordion';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import {
     InvestigationFilter,
     LabReportFilter,
@@ -22,10 +22,11 @@ type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
     investigationFilter?: InvestigationFilter;
     labReportFilter?: LabReportFilter;
+    clearAll: () => void;
 };
 
-export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: EventSearchProps) => {
-    const navigate = useNavigate();
+export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, clearAll }: EventSearchProps) => {
+    // const navigate = useNavigate();
     const methods = useForm();
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
     const { handleSubmit, control, reset } = methods;
@@ -297,24 +298,8 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter }: 
                         className="width-full clear-btn"
                         type={'button'}
                         onClick={() => {
-                            reset({
-                                firstName: '',
-                                lastName: '',
-                                address: '',
-                                city: '',
-                                state: '-Select-',
-                                zip: '',
-                                patientId: '',
-                                dob: '',
-                                gender: '-Select-',
-                                phoneNumber: '',
-                                email: '',
-                                identificationNumber: '',
-                                identificationType: '-Select-',
-                                ethnicity: '-Select-',
-                                race: '-Select-'
-                            });
-                            navigate({ pathname: '/INVESTIGATION' });
+                            reset();
+                            clearAll();
                         }}
                         outline>
                         Clear all
