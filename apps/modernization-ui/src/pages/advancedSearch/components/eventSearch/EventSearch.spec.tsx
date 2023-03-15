@@ -8,10 +8,11 @@ import { EventSearch } from './EventSearch';
 describe('EventSearch component tests', () => {
     it('should render event search form', () => {
         const mockOnSearch = (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {};
+        const mockClearAll = () => {};
         const { container, getByLabelText, getByTestId, getAllByTestId } = render(
             <MockedProvider>
                 <BrowserRouter>
-                    <EventSearch onSearch={mockOnSearch} />
+                    <EventSearch onSearch={mockOnSearch} clearAll={mockClearAll} />
                 </BrowserRouter>
             </MockedProvider>
         );
