@@ -2,7 +2,7 @@ package gov.cdc.nbs.message.util;
 
 public class Constants {
 	
-	
+	private Constants() {}
 	// Prefix Application ID associated with Kafka requestID
     public static final String APP_ID = "PATIENT-SEARCH";
 		
