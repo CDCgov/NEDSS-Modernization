@@ -13,7 +13,9 @@ import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientUpdateEvent;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
-import gov.cdc.nbs.patientlistener.util.Constants;
+import gov.cdc.nbs.message.UpdateMortality;
+import gov.cdc.nbs.message.UpdateSexAndBirth;
+import gov.cdc.nbs.message.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -44,12 +46,16 @@ public class KafkaEventConsumer {
 			if (requestId.startsWith(Constants.APP_ID)) {
 
 				PatientInput input = message.value().getParams().getInput();
+
+				UpdateMortality mortalityInput = message.value().getParams().getMortalityInput();
+
+				UpdateSexAndBirth inputSexAndBirth = message.value().getParams().getSexAndBirthInput();
+
 				List<TemplateInput> vars = message.value().getParams().getTemplateInputs();
 				Long personId = message.value().getParams().getPersonId();
-				
 
 				PatientUpdateEventResponse updateEventResponse = patientService.updatePatient(requestId, personId,
-						input,vars);
+						input, mortalityInput, inputSexAndBirth, vars);
 
 				responseProducerService.requestPatientUpdateEnvelope(updateEventResponse);
 

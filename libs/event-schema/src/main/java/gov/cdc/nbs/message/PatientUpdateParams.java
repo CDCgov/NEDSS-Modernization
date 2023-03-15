@@ -19,6 +19,8 @@ import lombok.ToString;
 public class PatientUpdateParams {
 	private Long personId;
 	private PatientInput input;
+	private UpdateSexAndBirth sexAndBirthInput;
+	private UpdateMortality mortalityInput;
 	private List<TemplateInput> templateInputs;
 
 }

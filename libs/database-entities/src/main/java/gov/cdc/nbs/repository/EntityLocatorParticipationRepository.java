@@ -11,8 +11,8 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
 
 public interface EntityLocatorParticipationRepository extends JpaRepository<EntityLocatorParticipation, Long>, QuerydslPredicateExecutor<EntityLocatorParticipation> {
 	
-	@Query(value = "SELECT e.locator_uid from Entity_locator_participation e where e.entity_uid=:personParentUid and e.use_cd='DTH'", nativeQuery = true)
-    Long getLocatorIdByPersonParentId(@Param("personParentUid") Long personParentUid);
+	@Query(value = "SELECT e.locator_uid from Entity_locator_participation e where e.entity_uid=:personUid and e.use_cd='DTH'", nativeQuery = true)
+    Long getLocatorIdByPersonParentId(@Param("personUid") Long personUid);
 	
 	@Query(value = "SELECT * from Entity_locator_participation e where e.entity_uid=:personParentUid and e.locator_uid=:locatorId and e.use_cd='DTH'", nativeQuery = true)
 	Optional<EntityLocatorParticipation> findByEntityIdAndLocatorUid(@Param("personParentUid") Long personParentUid, @Param("locatorId") Long locatorId);

@@ -27,9 +27,11 @@ import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
+import gov.cdc.nbs.message.UpdateMortality;
+import gov.cdc.nbs.message.UpdateSexAndBirth;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.patientlistener.util.Constants;
+import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.PostalLocatorRepository;
@@ -71,8 +73,9 @@ class PatientUpdateTest {
 
 		person.setId(id);		
 		when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(person));
-		PatientUpdateEventResponse result = patientService.updatePatient(requestId, id, getPatientInput(),vars);
-		
+		PatientUpdateEventResponse result = patientService.updatePatient(requestId, id, getPatientInput(),
+				getPatientMortality(), getPatientSexAndBirth(),vars);
+
 		assertThat(result).isNotNull();
 		assertThat(result.getRequestId()).isEqualTo(requestId);
 		assertThat(result.getPersonId()).isEqualTo(id);
@@ -124,15 +127,15 @@ class PatientUpdateTest {
 	
 	@Test
 	void updatedSexAndBirth() {
-	 Person result = patientService.updatedSexAndBirth(buildPersonFromInput(), getPatientInput());
+	 Person result = patientService.updatedSexAndBirth(buildPersonFromInput(), getPatientSexAndBirth());
 	 assertThat(result.getBirthGenderCd()).isEqualTo(Gender.M) ;
 	 assertThat(result.getCurrSexCd()).isEqualTo(Gender.M) ;
 	}
 	
 	@Test
 	void updatedMortality() {
-	Person result = patientService.updatedMortality(buildPersonFromInput(), getPatientInput());
-	assertThat(result.getDeceasedIndCd()).isEqualTo(Deceased.FALSE);
+	Person result = patientService.updatedMortality(buildPersonFromInput(), getPatientMortality());
+	assertThat(result.getDeceasedIndCd()).isEqualTo(Deceased.Y);
 	
 	}
 	
@@ -148,12 +151,6 @@ class PatientUpdateTest {
 		input.setNames(List.of(pName));
 
 		input.setSsn("111-11-11111");
-		Instant instant = Instant.parse("2023-01-03T10:15:30.00Z");
-		input.setDateOfBirth(instant);
-
-		input.setBirthGender(Gender.M);
-		input.setCurrentGender(Gender.M);
-		input.setDeceased(Deceased.FALSE);
 		List<PostalAddress> addresses = new ArrayList<PostalAddress>();
 		addresses.add(getAnAddress());
 		input.setAddresses(addresses);
@@ -168,6 +165,19 @@ class PatientUpdateTest {
 		
 		return input;
 
+	}
+
+	private UpdateMortality getPatientMortality() {
+		UpdateMortality input = new UpdateMortality(Instant.now(), Deceased.Y, Instant.now(), "City", "State", "County",
+				"Country");
+		return input;
+	}
+	
+	private UpdateSexAndBirth getPatientSexAndBirth() {
+		short order = 1;
+		UpdateSexAndBirth input = new UpdateSexAndBirth(Instant.now(), Instant.now(), Gender.M, Gender.M, Gender.F,
+				Gender.U, "birthCity", "birthCntry", "birthState", order, "Y", "U", "27", Instant.now());
+		return input;
 	}
 
 	private PostalAddress getAnAddress() {

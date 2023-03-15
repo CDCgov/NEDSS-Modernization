@@ -21,8 +21,10 @@ import gov.cdc.nbs.message.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
+import gov.cdc.nbs.message.UpdateMortality;
+import gov.cdc.nbs.message.UpdateSexAndBirth;
+import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patientlistener.util.Constants;
 import gov.cdc.nbs.patientlistener.util.PersonUtil;
 import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -46,7 +48,7 @@ public class PatientService {
 	 * @param patientParams
 	 * @return
 	 */
-	public PatientUpdateEventResponse updatePatient(String requestId, Long personId, PatientInput input, List<TemplateInput> vars ) {
+	public PatientUpdateEventResponse updatePatient(String requestId, Long personId, PatientInput input, UpdateMortality mortalityInput, UpdateSexAndBirth inputSexAndBirth, List<TemplateInput> vars ) {
 
 		Person updated = null;
 		if (requestId == null || requestId.length() < 1) {
@@ -63,7 +65,7 @@ public class PatientService {
 		
 		TemplateInput updateInput = vars.get(0);
 		String updateType = updateInput.getValue();
-         updated = updatePatient(updateType,dbPerson.get(), input );
+         updated = updatePatient(updateType,dbPerson.get(), input , mortalityInput,inputSexAndBirth);
 		
         
 		try {
@@ -85,7 +87,7 @@ public class PatientService {
 
 	}
 	
-	private Person updatePatient(String updateType, Person person, PatientInput input) {
+	private Person updatePatient(String updateType, Person person, PatientInput input, UpdateMortality mortalityInput,UpdateSexAndBirth inputSexAndBirth) {
 		Person updated = null;
 		if (updateType.equals(Constants.UPDATE_GENERAL_INFO)) {
 
@@ -93,13 +95,13 @@ public class PatientService {
 		}
 		if (updateType.equals(Constants.UPDATE_SEX_BIRTH)) {
 
-			updated = updatedSexAndBirth(person, input);
+			updated = updatedSexAndBirth(person, inputSexAndBirth);
 
 		}
 		if (updateType.equals(Constants.UPDATE_MORTALITY)) {
 			PostalLocator deathRecord = null;
 			Long locatorId = entityLocatorPartRepository
-					.getLocatorIdByPersonParentId(person.getPersonParentUid().getId());
+					.getLocatorIdByPersonParentId(person.getId());
 			
 			if (locatorId != null && locatorId > 0) {
 				Optional<PostalLocator> findPostalRecord = postalLocatorRepository.findById(locatorId);
@@ -113,26 +115,26 @@ public class PatientService {
 				deathRecord.setId(maxId + 1);
 
 			}
-			  setDeathRecordInfo(deathRecord,input);
+			  setDeathRecordInfo(deathRecord,mortalityInput);
 			
 			
 				PostalLocator savedRecord = postalLocatorRepository.save(deathRecord);
 				PostalEntityLocatorParticipation postalEntityRecord = setEntityLocatorParticipation(savedRecord, person,
-						input);
+						mortalityInput);
 				entityLocatorPartRepository.save(postalEntityRecord);
-			updated = updatedMortality(person, input);
+			updated = updatedMortality(person, mortalityInput);
 
 		}
 
 		return updated;
 	}
 	
-	private PostalLocator setDeathRecordInfo(PostalLocator deathRecord, PatientInput input) {
+	private PostalLocator setDeathRecordInfo(PostalLocator deathRecord, UpdateMortality input) {
 
-		deathRecord.setCityDescTxt(input.getCityOfDeath() != null ? input.getCityOfDeath() : null);
-		deathRecord.setStateCd(input.getStateOfDeath() != null ? input.getStateOfDeath() : null);
-		deathRecord.setCntyCd(input.getCountyOfDeath() != null ? input.getCountyOfDeath() : null);
-		deathRecord.setCntryCd(input.getCountryOfDeath() != null ? input.getCountryOfDeath() : null);
+		deathRecord.setCityDescTxt(input.cityOfDeath() != null ? input.cityOfDeath() : null);
+		deathRecord.setStateCd(input.stateOfDeath() != null ? input.stateOfDeath() : null);
+		deathRecord.setCntyCd(input.countyOfDeath() != null ? input.countyOfDeath() : null);
+		deathRecord.setCntryCd(input.countryOfDeath() != null ? input.countryOfDeath() : null);
 
 		return deathRecord;
 	}
@@ -225,31 +227,31 @@ public class PatientService {
 		
 	}
 	
-	public Person updatedSexAndBirth(Person oldPerson, PatientInput input) {
+	public Person updatedSexAndBirth(Person oldPerson, UpdateSexAndBirth input) {
 		oldPerson.setBirthGenderCd(
-				input.getBirthGender() != null ? input.getBirthGender() : oldPerson.getBirthGenderCd());
-		oldPerson.setCurrSexCd(input.getCurrentGender() != null ? input.getCurrentGender() : oldPerson.getCurrSexCd());
-		oldPerson.setBirthTime(input.getDateOfBirth() != null ? input.getDateOfBirth() : oldPerson.getBirthTime());
-		oldPerson.setAsOfDateSex(input.getAsOf() !=null ? input.getAsOf() : oldPerson.getAsOfDateSex());
-		oldPerson.setAgeReported(input.getCurrentAge() !=null ? input.getCurrentAge() : oldPerson.getAgeReported());	
-		oldPerson.setAgeReportedTime(input.getAgeReportedTime() != null ? input.getAgeReportedTime() : oldPerson.getAgeReportedTime());
-		oldPerson.setBirthCityCd(input.getBirthCity() !=null ? input.getBirthCity() : oldPerson.getBirthCityCd());	
-		oldPerson.setBirthCntryCd(input.getBirthCntry() != null ? input.getBirthCntry() : oldPerson.getBirthCntryCd());
-		oldPerson.setBirthStateCd(input.getBirthState() != null ? input.getBirthState() : oldPerson.getBirthStateCd());
-		oldPerson.setBirthOrderNbr(input.getBirthOrderNbr() != null ? input.getBirthOrderNbr() : oldPerson.getBirthOrderNbr());
-		oldPerson.setMultipleBirthInd(input.getMultipleBirth() != null ? input.getMultipleBirth() : oldPerson.getMultipleBirthInd());
-		oldPerson.setSexUnkReasonCd(input.getSexunknown() != null ? input.getSexunknown() : oldPerson.getSexUnkReasonCd());		
-		oldPerson.setAdditionalGenderCd(input.getAdditionalGender() != null ? input.getAdditionalGender().toString(): oldPerson.getAdditionalGenderCd());
-		oldPerson.setPreferredGenderCd(input.getTransGenderInfo() != null ? input.getTransGenderInfo().toString() : oldPerson.getPreferredGenderCd());
+				input.birthGender() != null ? input.birthGender() : oldPerson.getBirthGenderCd());
+		oldPerson.setCurrSexCd(input.currentGender() != null ? input.currentGender() : oldPerson.getCurrSexCd());
+		oldPerson.setBirthTime(input.dateOfBirth() != null ? input.dateOfBirth() : oldPerson.getBirthTime());
+		oldPerson.setAsOfDateSex(input.asOf() !=null ? input.asOf() : oldPerson.getAsOfDateSex());
+		oldPerson.setAgeReported(input.currentAge() !=null ? input.currentAge() : oldPerson.getAgeReported());	
+		oldPerson.setAgeReportedTime(input.ageReportedTime() != null ? input.ageReportedTime() : oldPerson.getAgeReportedTime());
+		oldPerson.setBirthCityCd(input.birthCity() !=null ? input.birthCity() : oldPerson.getBirthCityCd());	
+		oldPerson.setBirthCntryCd(input.birthCntry() != null ? input.birthCntry() : oldPerson.getBirthCntryCd());
+		oldPerson.setBirthStateCd(input.birthState() != null ? input.birthState() : oldPerson.getBirthStateCd());
+		oldPerson.setBirthOrderNbr(input.birthOrderNbr() != null ? input.birthOrderNbr() : oldPerson.getBirthOrderNbr());
+		oldPerson.setMultipleBirthInd(input.multipleBirth() != null ? input.multipleBirth() : oldPerson.getMultipleBirthInd());
+		oldPerson.setSexUnkReasonCd(input.sexunknown() != null ? input.sexunknown() : oldPerson.getSexUnkReasonCd());		
+		oldPerson.setAdditionalGenderCd(input.additionalGender() != null ? input.additionalGender().toString(): oldPerson.getAdditionalGenderCd());
+		oldPerson.setPreferredGenderCd(input.transGenderInfo() != null ? input.transGenderInfo().toString() : oldPerson.getPreferredGenderCd());
 		return oldPerson;
 	}
 	
-	public Person updatedMortality(Person oldPerson, PatientInput input ) {
+	public Person updatedMortality(Person oldPerson, UpdateMortality input ) {
 	
 		
-		oldPerson.setAsOfDateMorbidity(input.getAsOf() != null ? input.getAsOf() : oldPerson.getAsOfDateMorbidity() );
-		oldPerson.setDeceasedIndCd(input.getDeceased() != null ? input.getDeceased() : oldPerson.getDeceasedIndCd());
-		oldPerson.setDeceasedTime(input.getDeceasedTime() != null ? input.getDeceasedTime() : oldPerson.getDeceasedTime());
+		oldPerson.setAsOfDateMorbidity(input.asOf() != null ? input.asOf() : oldPerson.getAsOfDateMorbidity() );
+		oldPerson.setDeceasedIndCd(input.deceased() != null ? input.deceased() : oldPerson.getDeceasedIndCd());
+		oldPerson.setDeceasedTime(input.deceasedTime() != null ? input.deceasedTime() : oldPerson.getDeceasedTime());
 		return oldPerson;
 	}
 	
@@ -267,7 +269,7 @@ public class PatientService {
 
 	}
 	
-	private PostalEntityLocatorParticipation setEntityLocatorParticipation(PostalLocator savedRecord,Person oldPerson,PatientInput input) {
+	private PostalEntityLocatorParticipation setEntityLocatorParticipation(PostalLocator savedRecord,Person oldPerson,UpdateMortality input) {
 		PostalEntityLocatorParticipation entityLocatorPart =  null;
 		Optional<EntityLocatorParticipation> result = entityLocatorPartRepository.findByEntityIdAndLocatorUid(oldPerson.getId(),savedRecord.getId());
 		
@@ -282,14 +284,14 @@ public class PatientService {
 				savedRecord.getId().longValue(),
 				null,
 				null,
-				new City(input.getCityOfDeath(),null),
-				input.getStateOfDeath(),
+				new City(input.cityOfDeath(),null),
+				input.stateOfDeath(),
 				null,
-				new County(input.getCountyOfDeath(),null),
-				new Country(input.getCountryOfDeath(),null),
+				new County(input.countyOfDeath(), null),
+				new Country(input.countryOfDeath(), null),
 				null,
 				0L,
-				input.getAsOf())) : (PostalEntityLocatorParticipation) result.get() ;
+				input.asOf())) : (PostalEntityLocatorParticipation) result.get() ;
 		entityLocatorPart.setCd("U");
 		entityLocatorPart.setLastChgTime(Instant.now());
 		entityLocatorPart.setAddReasonCd("ACTIVE");	
@@ -297,7 +299,7 @@ public class PatientService {
 		entityLocatorPart.setStatusCd('A');	
 		entityLocatorPart.setStatusTime(Instant.now());
 		entityLocatorPart.setUseCd(Constants.USE_CD);
-		entityLocatorPart.setAsOfDate(input.getAsOf());
+		entityLocatorPart.setAsOfDate(input.asOf());
 		
 		return entityLocatorPart;
 	}
