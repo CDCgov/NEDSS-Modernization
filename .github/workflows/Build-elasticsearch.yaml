@@ -15,6 +15,7 @@ env:
   microservice_name: elasticsearch
   dockerfile_relative_path: ./cdc-sandbox/elasticsearch
   accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
+  current_date: $(date +'%Y-%m-%d')
 
 jobs:
   deploy:
@@ -77,9 +78,9 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_BRANCH_ORIGIN" >> $GITHUB_OUTPUT
 
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:1.0.5-TEST.9d21a8a.2
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:1.0.5-TEST.9d21a8a.2
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:1.0.5-TEST.9d21a8a.2" >> $GITHUB_OUTPUT
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG_SHA_SHORT $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.current_date }}
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.current_date }}
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:${{ env.current_date }}" >> $GITHUB_OUTPUT
     - name: Build, tag, and push ${{ env.microservice_name }} image to Amazon ECR for release
       if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
       id: build-image-release
