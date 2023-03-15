@@ -1,6 +1,6 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { Config } from '../../config';
 
 import {
@@ -48,11 +48,12 @@ enum ACTIVE_TAB {
 }
 
 export const AdvancedSearch = () => {
+    const { searchType } = useParams();
     // shared variables
     const NBS_URL = Config.nbsUrl;
     const { state } = useContext(UserContext);
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<'person' | 'event'>('person');
+    const [activeTab, setActiveTab] = useState(searchType === 'event' ? 'event' : 'person');
     const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
@@ -106,6 +107,11 @@ export const AdvancedSearch = () => {
         }
     ] = useFindLabReportsByFilterLazyQuery();
 
+    const handleActiveTab = (searchType: string) => {
+        setActiveTab(searchType);
+        navigate(`/advanced-search/${searchType}`, { replace: true });
+    };
+
     useEffect(() => {
         function handleClickOutside(event: any) {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -131,9 +137,9 @@ export const AdvancedSearch = () => {
     useEffect(() => {
         const queryParam = searchParams?.get('q');
         const type = searchParams?.get('type');
-        if (!queryParam || !state.isLoggedIn) {
+        if (!queryParam) {
             // no query parameters specified or user is not logged in
-            setActiveTab('person');
+            // setActiveTab('person');
             setResultsChip([]);
             return;
         }
@@ -362,7 +368,7 @@ export const AdvancedSearch = () => {
         setLabReportFilter({});
         setSubmitted(false);
         setLastSearchType(undefined);
-        navigate('/advanced-search');
+        navigate(`/advanced-search${activeTab ? '/' + activeTab : ''}`);
     };
 
     const handleChipClose = (name: string, value: string) => {
@@ -734,14 +740,14 @@ export const AdvancedSearch = () => {
                                 className={`${
                                     activeTab === ACTIVE_TAB.PERSON && 'active'
                                 } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
-                                onClick={() => setActiveTab(ACTIVE_TAB.PERSON)}>
+                                onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
                                 Patient search
                             </h6>
                             <h6
                                 className={`${
                                     activeTab === ACTIVE_TAB.EVENT && 'active'
                                 } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
-                                onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}>
+                                onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
                                 Event search
                             </h6>
                         </div>
@@ -758,6 +764,7 @@ export const AdvancedSearch = () => {
                                 onSearch={handleSubmit}
                                 investigationFilter={investigationFilter}
                                 labReportFilter={labReportFilter}
+                                clearAll={handleClearAll}
                             />
                         )}
                     </div>
