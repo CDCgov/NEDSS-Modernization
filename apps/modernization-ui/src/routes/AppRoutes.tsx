@@ -3,15 +3,24 @@ import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patientProfile/PatientProfile';
 import AddPatient from '../pages/addPatient/AddPatient';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
 
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (state) {
+            if (state.isLoggedIn) {
+                setLoading(false);
+            }
+        }
+    }, [state]);
 
     return (
         <Routes>
-            {state.isLoggedIn && state.isLoginPending && (
+            {state.isLoggedIn && (
                 <>
                     <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                     <Route path="/patient-profile/:id" element={<PatientProfile />} />
@@ -20,7 +29,7 @@ export const AppRoutes = () => {
                     <Route path="/" element={<Navigate to="/advanced-search" />} />
                 </>
             )}
-            <Route path="*" element={<Login />} />
+            {!state.isLoggedIn && !state.isLoginPending && !loading && <Route path="*" element={<Login />} />}
         </Routes>
     );
 };
