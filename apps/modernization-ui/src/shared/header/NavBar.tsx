@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Config } from '../../config';
 import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = Config.nbsUrl;
@@ -10,6 +10,11 @@ const NBS_URL = Config.nbsUrl;
 export default function NavBar() {
     const { state, logout } = useContext(UserContext);
     const location = useLocation();
+    const nav = useNavigate();
+    const logoutClick = () => {
+        nav('/login');
+        logout();
+    };
     return (
         <div className="nav-bar">
             <table role="presentation" className="nedssNavTable">
@@ -84,9 +89,7 @@ export default function NavBar() {
                                             <span> | </span>
                                         </td>
                                         <td className="navLink">
-                                            <a onClick={logout} href={`${NBS_URL}/logout`}>
-                                                Logout
-                                            </a>
+                                            <a onClick={logoutClick}>Logout</a>
                                         </td>
                                     </tr>
                                 </tbody>
