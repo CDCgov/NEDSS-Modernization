@@ -54,12 +54,15 @@ import gov.cdc.nbs.message.PatientDeleteRequest;
 import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientUpdateParams;
 import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.message.TemplateInput;
+import gov.cdc.nbs.message.UpdateMortality;
+import gov.cdc.nbs.message.UpdateSexAndBirth;
+import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientCreateResponse;
 import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.service.util.Constants;
 import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
 
@@ -382,20 +385,52 @@ public class PatientService {
                 createRequest.request(),
                 createRequest.patient());
     }
-
-    /**
-     * Send updated Person Event to kakfa topic to be picked up and updated.
-     *
-     * @param id
-     * @param input
-     * @return
-     */
-    public PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input) {
-        String requestId = getRequestID();
-        var updateRequest = new PatientUpdateRequest(requestId, new PatientUpdateParams(input, new ArrayList<>()));
-        producer.requestPatientUpdateEnvelope(updateRequest);
-        return new PatientUpdateResponse(requestId);
+    
+    public PatientUpdateResponse updatePatientGeneralInfo(Long id, PatientInput input) {
+    	return sendUpdatePatientEvent(id,input, null, null,Constants.UPDATE_GENERAL_INFO);
     }
+    
+    public PatientUpdateResponse updatePatientSexBirth(Long id, UpdateSexAndBirth input) {
+    	return sendUpdatePatientEvent(id,new PatientInput(),input, null,Constants.UPDATE_SEX_BIRTH);
+    }
+    
+    
+    public PatientUpdateResponse updateMortality(Long id, UpdateMortality input) {
+    	return sendUpdatePatientEvent(id,new PatientInput(),null,input,Constants.UPDATE_MORTALITY);
+    }
+    
+	/**
+	 * Send updated Person Event to kakfa topic to be picked up and updated.
+	 * 
+	 * @param id
+	 * @param input
+	 * @return
+	 */
+	private PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input, UpdateSexAndBirth inputSexAndBirth, UpdateMortality mortalityInput, String updateType) {
+		String requestId = null;
+
+		if (input != null) {
+			List<TemplateInput> templateInputs = new ArrayList<>();
+			TemplateInput type = new TemplateInput();
+			type.setKey("updateType");
+			type.setValue(updateType);
+			
+			templateInputs.add(type);
+
+			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
+					.sexAndBirthInput(inputSexAndBirth)
+					.mortalityInput(mortalityInput)
+					.templateInputs(templateInputs).build();
+
+			requestId = getRequestID();
+
+			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
+			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
+		}
+
+		return PatientUpdateResponse.builder().requestId(requestId).build();
+
+	}
 
     public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
         String requestId = getRequestID();

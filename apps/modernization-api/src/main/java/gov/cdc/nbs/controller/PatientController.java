@@ -16,6 +16,8 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.UpdateMortality;
+import gov.cdc.nbs.message.UpdateSexAndBirth;
 import gov.cdc.nbs.model.PatientCreateResponse;
 import gov.cdc.nbs.model.PatientDeleteResponse;
 import gov.cdc.nbs.model.PatientUpdateResponse;
@@ -81,8 +83,20 @@ public class PatientController {
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientUpdateResponse updatePatient(@Argument Long id, @Argument PatientInput patient) {
-        return patientService.sendUpdatePatientEvent(id, patient);
+    public PatientUpdateResponse updatePatientGeneralInfo(@Argument Long id, @Argument PatientInput patient) {
+        return patientService.updatePatientGeneralInfo(id, patient);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientUpdateResponse updatePatientSexBirth(@Argument Long id, @Argument UpdateSexAndBirth patient) {
+        return patientService.updatePatientSexBirth(id, patient);
+    }
+    
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientUpdateResponse updateMortality(@Argument Long id, @Argument UpdateMortality patient) {
+        return patientService.updateMortality(id, patient);
     }
 
 }

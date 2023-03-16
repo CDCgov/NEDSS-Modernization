@@ -1,9 +1,10 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
+
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientCommand;
