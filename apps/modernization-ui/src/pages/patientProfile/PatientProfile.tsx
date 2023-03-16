@@ -111,6 +111,56 @@ export const PatientProfile = () => {
         }
     }, [patientProfileData]);
 
+    const OrderedData = ({ data, type }: any) => {
+        return (
+            <div>
+                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">{type}</h5>
+                {data && data.length > 0 ? (
+                    data.map((add: string, ind: number) => (
+                        <p
+                            key={ind}
+                            className="margin-0 font-sans-2xs text-normal"
+                            style={{
+                                wordBreak: 'break-word',
+                                paddingRight: '15px',
+                                maxWidth: type === 'EMAIL' ? '165px' : 'auto'
+                            }}>
+                            {add}
+                        </p>
+                    ))
+                ) : (
+                    <p className="text-italic margin-0 text-gray-30">No Data</p>
+                )}
+            </div>
+        );
+    };
+
+    const newOrderPhone = (data: any) => {
+        const numbers: any = [];
+        data?.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
+        return <OrderedData data={numbers} type="PHONE NUMBER" />;
+    };
+
+    const newOrderEmail = (data: any) => {
+        const emails: any = [];
+        data?.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
+        return <OrderedData data={emails} type="EMAIL" />;
+    };
+
+    const newOrderAddress = (data: any) => {
+        const address: any = [];
+        data?.map(
+            (item: any) =>
+                item.classCd === 'PST' &&
+                address.push(
+                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${item.locator.stateCd ?? ''} ${
+                        item.locator.zipCd ?? ''
+                    } ${item.locator.cntryCd ?? ''}`
+                )
+        );
+        return <OrderedData data={address} type="ADDRESS" />;
+    };
+
     const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
     const [addedItem, setAddedItem] = useState<string>('');
     const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
@@ -205,29 +255,14 @@ export const PatientProfile = () => {
                         </Grid>
 
                         <Grid row col={3}>
-                            <Grid col={12}>
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    PHONE
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">(555) 555-5555</p>
-                            </Grid>
+                            <Grid col={12}>{newOrderPhone(profileData?.nbsEntity?.entityLocatorParticipations)}</Grid>
                             <Grid col={12} className="margin-top-3">
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    EMAIL
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">sjohn@helloworld.com</p>
+                                {newOrderEmail(profileData?.nbsEntity?.entityLocatorParticipations)}
                             </Grid>
                         </Grid>
 
                         <Grid row col={3}>
-                            <Grid col={12}>
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    ADDRESS
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">
-                                    12 Main St, Apt 12 Atlanta, GA, 30342
-                                </p>
-                            </Grid>
+                            <Grid col={12}>{newOrderAddress(profileData?.nbsEntity?.entityLocatorParticipations)}</Grid>
                         </Grid>
 
                         <Grid row col={3}>
@@ -278,6 +313,7 @@ export const PatientProfile = () => {
                         treatmentsData={treatmentsData?.findTreatmentsForPatient}
                         documentsData={documentsData?.findDocumentsForPatient}
                         contactsData={contactsData?.findContactsForPatient}
+                        profileData={profileData}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (

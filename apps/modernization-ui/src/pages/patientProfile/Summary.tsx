@@ -121,7 +121,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
                         title: (
                             <>
                                 {format(new Date(document?.addTime), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(document?.addTime), 'hh:mm b')}
+                                {format(new Date(document?.addTime), 'hh:mm a')}
                             </>
                         )
                     },

@@ -33,3 +33,21 @@
         cursor: pointer;
     }
 }
+
+.table-span {
+    position: relative;
+}
+
+.actions-card {
+    background: white;
+    border: 1px solid #dfe1e2;
+    border-radius: 5px;
+    position: absolute;
+    min-width: 130px;
+    z-index: 1;
+    right: -15px;
+
+    button:hover {
+        border-bottom: 1px solid #dfe1e2;
+    }
+}

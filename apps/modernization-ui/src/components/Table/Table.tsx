@@ -2,12 +2,15 @@ import { Button, Icon, Table, Pagination, Checkbox } from '@trussworks/react-usw
 import React, { useState } from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
+import { Actions } from './Actions';
 
 export type TableDetail = {
     id: string | number;
     title: React.ReactNode | React.ReactNode[] | string;
     class?: string;
     link?: string;
+    textAlign?: string;
+    type?: string;
 };
 
 export type TableBody = {
@@ -46,6 +49,7 @@ export const TableComponent = ({
         setSort(!sort);
         sortData?.(headerName, !sort ? 'asc' : 'desc');
     };
+    const [isActions, setIsActions] = useState<any>(null);
 
     return (
         <div>
@@ -56,7 +60,7 @@ export const TableComponent = ({
                 </p>
                 {buttons}
             </div>
-            <Table scrollable bordered={false} fullWidth>
+            <Table bordered={false} fullWidth>
                 <thead>
                     <tr>
                         {tableHead.map((head: any, index) => (
@@ -87,20 +91,42 @@ export const TableComponent = ({
                                                 {td.title}
                                             </td>
                                         ) : (
-                                            <td className="table-data" key={ind}>
+                                            <td
+                                                className={`${td?.textAlign ? `text-${td?.textAlign}` : ''} table-data`}
+                                                key={ind}>
                                                 {index === 0 && ind === 0 && item.checkbox && (
                                                     <Checkbox key={index} id={td.title} name={'tableCheck'} label="" />
                                                 )}
-                                                <span
-                                                    className={
-                                                        index === 0 && ind === 0 && item.checkbox
-                                                            ? 'check-title'
-                                                            : td.class
-                                                            ? td.class
-                                                            : ''
-                                                    }>
-                                                    {td.title}
-                                                </span>
+                                                {td?.type !== 'actions' && (
+                                                    <span
+                                                        className={
+                                                            index === 0 && ind === 0 && item.checkbox
+                                                                ? 'check-title'
+                                                                : td.class
+                                                                ? td.class
+                                                                : 'table-span'
+                                                        }>
+                                                        {td.title}
+                                                    </span>
+                                                )}
+                                                {td?.type === 'actions' && (
+                                                    <div className="table-span">
+                                                        <Button
+                                                            onClick={() => setIsActions(index)}
+                                                            type="button"
+                                                            unstyled>
+                                                            {td.title}
+                                                        </Button>
+                                                        {isActions === index && (
+                                                            <Actions
+                                                                handleDetails={() => {
+                                                                    console.log('asdad');
+                                                                    setIsActions(null);
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                )}
                                             </td>
                                         )
                                     ) : (

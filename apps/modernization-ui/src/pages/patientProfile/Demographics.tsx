@@ -126,9 +126,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                         id: 7,
                         title: (
                             <Button type="button" unstyled>
-                                <Icon.MoreHoriz />
+                                <Icon.MoreHoriz className="font-sans-lg" />
                             </Button>
-                        )
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
                     }
                 ]
             });
