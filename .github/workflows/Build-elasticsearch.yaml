@@ -51,7 +51,7 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       with:
-        registry-type: public
+        registry-type: private
 
     - name: Prep tags if release branch
       if: ${{ startsWith( env.github_branch, 'rel-' ) == true}}
@@ -65,7 +65,7 @@ jobs:
       id: build-image-develop
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: o1z7u2g7/${{ secrets.ECR_REPO_BASE_NAME }}/${{ env.microservice_name }}
+        ECR_REPOSITORY: ${{ secrets.ECR_REPO_BASE_NAME }}/${{ env.microservice_name }}
         IMAGE_TAG_SHA_SHORT: "${{ env.github_sha_short }}"
         IMAGE_BRANCH_ORIGIN: "${{ env.github_branch }}-${{ github.run_number }}"
       run: |
