@@ -16,7 +16,7 @@ env:
   dockerfile_relative_path: ./cdc-sandbox/elasticsearch
   accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
   current_date: $(date +'%Y-%m-%d')-BNo.${{ github.run_number }}
-  semver_tag: 1.0.0-SNAPSHOT.${{ github_sha_short }}.${{ github.run_number }}
+  semver_tag: 1.0.0-SNAPSHOT.$(git rev-parse --short "$GITHUB_SHA").${{ github.run_number }}
 
 jobs:
   deploy:
