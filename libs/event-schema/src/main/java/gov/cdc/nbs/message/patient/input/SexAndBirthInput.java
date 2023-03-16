@@ -23,7 +23,7 @@ public class SexAndBirthInput {
     private String birthState;
     private Short birthOrderNbr;
     private String multipleBirth;
-    private String sexunknown;
+    private String sexUnknown;
     private String currentAge;
     private Instant ageReportedTime;
 
@@ -48,7 +48,7 @@ public class SexAndBirthInput {
                         input.getBirthState(),
                         input.getBirthOrderNbr(),
                         input.getMultipleBirth(),
-                        input.getSexunknown(),
+                        input.getSexUnknown(),
                         input.getCurrentAge(),
                         input.getAgeReportedTime()));
     }

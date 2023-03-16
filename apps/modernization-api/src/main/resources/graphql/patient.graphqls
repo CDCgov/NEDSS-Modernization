@@ -9,10 +9,10 @@ type Query {
 
 type Mutation {
     createPatient(patient: PersonInput!): PatientEventResponse!
-    updatePatientGeneralInfo(input: PersonInput!): PatientEventResponse!
+    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientEventResponse!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
     updateMortality(input: MortalityInput!): PatientEventResponse!
-    deletePatient(id: ID!): PatientEventResponse!
+    deletePatient(patientId: ID!): PatientEventResponse!
 }
 
 type PatientEventResponse {
@@ -194,7 +194,7 @@ input PersonInput {
 }
 
 input GeneralInfoInput {
-    patientId: ID
+    patientId: ID!
     asOf: Date
     maritalStatus: String
     mothersMaidenName: String
@@ -208,7 +208,7 @@ input GeneralInfoInput {
 }
 
 input MortalityInput {
-    patientId: ID
+    patientId: ID!
     asOf: Date
     deceased: Deceased
     deceasedTime: Date
@@ -219,9 +219,9 @@ input MortalityInput {
 }
 
 input UpdateSexAndBirthInput {
-    patientId: ID
+    patientId: ID!
     asOf: Date
-    DateOfBirth: Date
+    dateOfBirth: Date
     birthGender: Gender
     currentGender: Gender
     additionalGender: String
@@ -231,7 +231,7 @@ input UpdateSexAndBirthInput {
     birthState: String
     birthOrderNbr: Int
     multipleBirth: String
-    sexunknown: String
+    sexUnknown: String
     currentAge: String
     ageReportedTime: Date
 }
