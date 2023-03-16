@@ -2,6 +2,7 @@ package gov.cdc.nbs.message;
 
 import java.util.List;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PatientUpdateParams {
-    private PatientInput updatePerson;
-    private List<TemplateInput> templateInputs;
+	private Long personId;
+	private PatientInput input;
+	private UpdateSexAndBirth sexAndBirthInput;
+	private UpdateMortality mortalityInput;
+	private List<TemplateInput> templateInputs;
 
 }

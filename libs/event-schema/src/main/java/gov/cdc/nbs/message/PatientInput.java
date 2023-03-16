@@ -15,13 +15,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientInput {
     private List<Name> names = new ArrayList<>();
+    private String mothersMaidenName;
     private String ssn;
+    private Short adultNbrInHouse;
+    private Short childrenNbrinHouse;
+    private String primaryOccupation;
+    private String highestEducationLvl;
+    private String primaryLang;
+    private String speaksEnglish;
     private Instant dateOfBirth;
     private Gender birthGender;
     private Gender currentGender;
     private Deceased deceased;
     private Instant deceasedTime;
     private String maritalStatus;
+    private String hIVCaseId;
     private List<PostalAddress> addresses = new ArrayList<>();
     private List<PhoneNumber> phoneNumbers = new ArrayList<>();
     private List<String> emailAddresses = new ArrayList<>();

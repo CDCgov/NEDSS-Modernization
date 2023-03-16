@@ -46,9 +46,14 @@ public class KafkaRequestProducerService {
         send(kafkaEnvelopeTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
     }
 
-    public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
-        send(kafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
-    }
+	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
+		try {
+		send(kafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
+		}
+		catch(Exception e) {
+			log.error("Error sending patientUpdate Kafka message", e);
+		}
+	}
 
     public void requestPatientDeleteEnvelope(PatientDeleteRequest kafkaMessage) {
         send(kafkaPatientDeleteTemplate, patientDeleteTopic, kafkaMessage.getRequestId(), kafkaMessage);

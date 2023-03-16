@@ -42,6 +42,12 @@ dependencies {
     implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
     implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
     implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
+    
+      // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.1'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
 
     // lombok
     implementation "org.projectlombok:lombok"
