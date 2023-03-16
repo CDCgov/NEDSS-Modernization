@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patientProfile/PatientProfile';
@@ -9,7 +9,9 @@ import { Spinner } from 'components/Spinner/Spinner';
 
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
-    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const [loading, setLoading] = useState(location.pathname !== '/login'); // allow login page to load immediately
+    const [initializing, setInitializing] = useState(true);
 
     useEffect(() => {
         if (state) {
@@ -18,6 +20,18 @@ export const AppRoutes = () => {
             }
         }
     }, [state]);
+
+    useEffect(() => {
+        // After initialization timeout, if the login isn't at least pending, send to the login page
+        if (!initializing && !state.isLoggedIn && !state.isLoginPending) {
+            setLoading(false);
+        }
+    }, [initializing]);
+
+    // allow 1 second to initialize and send a login request
+    setTimeout(() => {
+        setInitializing(false);
+    }, 1000);
 
     return (
         <>
@@ -32,7 +46,10 @@ export const AppRoutes = () => {
                         <Route path="/" element={<Navigate to="/advanced-search" />} />
                     </>
                 )}
-                {!state.isLoggedIn && !state.isLoginPending && !loading && <Route path="*" element={<Login />} />}
+                {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                    <Route path="*" element={<Navigate to="/login" />} />
+                )}
+                <Route path="/login" element={<Login />} />
             </Routes>
         </>
     );
