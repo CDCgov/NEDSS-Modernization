@@ -15,7 +15,7 @@ env:
   microservice_name: elasticsearch
   dockerfile_relative_path: ./cdc-sandbox/elasticsearch
   accountid: ${{secrets.cdc_nbs_sandbox_shared_services_accountid}}
-  current_date: $(date +'%Y-%m-%d')-BNo${{ github.run_number }}
+  current_date: $(date +'%Y-%m-%d')-${{ github.run_number }}
 
 jobs:
   deploy:
