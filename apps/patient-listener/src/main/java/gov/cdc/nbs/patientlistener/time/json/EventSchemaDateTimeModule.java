@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 class EventSchemaDateTimeModule {
 
   @Bean
-  Module eventSchemaDateTimeModule() {
+  Module patientListenrDateTimeModule() {
     return EventSchemaJacksonModuleFactory.create();
   }
 }
