@@ -9,8 +9,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class PatientUpdateEvent {
-	private String requestId;
-	private PatientUpdateParams params;
-	
-
+    private String requestId;
+    private PatientUpdateParams params;
 }

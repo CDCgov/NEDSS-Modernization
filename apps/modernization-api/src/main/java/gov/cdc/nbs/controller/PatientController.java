@@ -1,26 +1,23 @@
 package gov.cdc.nbs.controller;
 
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.message.UpdateMortality;
-import gov.cdc.nbs.message.UpdateSexAndBirth;
-import gov.cdc.nbs.model.PatientCreateResponse;
-import gov.cdc.nbs.model.PatientDeleteResponse;
-import gov.cdc.nbs.model.PatientUpdateResponse;
+import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
+import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.PatientService;
 import lombok.AllArgsConstructor;
 
@@ -71,32 +68,32 @@ public class PatientController {
 
     @MutationMapping()
     @PreAuthorize(DELETE_PATIENT)
-    public PatientDeleteResponse deletePatient(@Argument Long id, @Argument PatientInput patient) {
-        return patientService.sendDeletePatientEvent(id, patient);
+    public PatientEventResponse deletePatient(@Argument Long patientId) {
+        return patientService.sendDeletePatientEvent(patientId);
     }
 
     @MutationMapping()
     @PreAuthorize(ADD_AND_FIND_PATIENT)
-    public PatientCreateResponse createPatient(@Argument PatientInput patient) {
+    public PatientEventResponse createPatient(@Argument PatientInput patient) {
         return patientService.sendCreatePatientRequest(patient);
     }
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientUpdateResponse updatePatientGeneralInfo(@Argument Long id, @Argument PatientInput patient) {
-        return patientService.updatePatientGeneralInfo(id, patient);
+    public PatientEventResponse updatePatientGeneralInfo(@Argument GeneralInfoInput input) {
+        return patientService.updatePatientGeneralInfo(input);
     }
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientUpdateResponse updatePatientSexBirth(@Argument Long id, @Argument UpdateSexAndBirth patient) {
-        return patientService.updatePatientSexBirth(id, patient);
+    public PatientEventResponse updatePatientSexBirth(@Argument SexAndBirthInput input) {
+        return patientService.updatePatientSexBirth(input);
     }
-    
+
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientUpdateResponse updateMortality(@Argument Long id, @Argument UpdateMortality patient) {
-        return patientService.updateMortality(id, patient);
+    public PatientEventResponse updateMortality(@Argument MortalityInput input) {
+        return patientService.updateMortality(input);
     }
 
 }

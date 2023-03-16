@@ -13,13 +13,13 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.message.PatientInput.PhoneNumber;
-import gov.cdc.nbs.message.PatientInput.PhoneType;
+import gov.cdc.nbs.message.patient.event.UpdateMortalityEvent;
+import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthEvent;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
-import gov.cdc.nbs.message.UpdateMortality;
-import gov.cdc.nbs.message.UpdateSexAndBirth;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patientlistener.util.PersonUtil;
@@ -46,7 +46,8 @@ public class PatientService {
      * @return
      */
     public PatientUpdateEventResponse updatePatient(String requestId, Long personId, PatientInput input,
-            UpdateMortality mortalityInput, UpdateSexAndBirth inputSexAndBirth, List<TemplateInput> vars) {
+            UpdateMortalityEvent mortalityInput, UpdateSexAndBirthEvent inputSexAndBirth,
+            List<TemplateInput> vars) {
 
         Person updated = null;
         if (requestId == null || requestId.length() < 1) {
@@ -85,8 +86,9 @@ public class PatientService {
 
     }
 
-    private Person updatePatient(String updateType, Person person, PatientInput input, UpdateMortality mortalityInput,
-            UpdateSexAndBirth inputSexAndBirth) {
+    private Person updatePatient(String updateType, Person person, PatientInput input,
+            UpdateMortalityEvent mortalityInput,
+            UpdateSexAndBirthEvent inputSexAndBirth) {
         Person updated = null;
         if (updateType.equals(Constants.UPDATE_GENERAL_INFO)) {
 
@@ -128,7 +130,7 @@ public class PatientService {
         return updated;
     }
 
-    private PostalLocator setDeathRecordInfo(PostalLocator deathRecord, UpdateMortality input) {
+    private PostalLocator setDeathRecordInfo(PostalLocator deathRecord, UpdateMortalityEvent input) {
 
         deathRecord.setCityDescTxt(input.cityOfDeath() != null ? input.cityOfDeath() : null);
         deathRecord.setStateCd(input.stateOfDeath() != null ? input.stateOfDeath() : null);
@@ -238,7 +240,7 @@ public class PatientService {
 
     }
 
-    public Person updatedSexAndBirth(Person oldPerson, UpdateSexAndBirth input) {
+    public Person updatedSexAndBirth(Person oldPerson, UpdateSexAndBirthEvent input) {
         oldPerson.setBirthGenderCd(
                 input.birthGender() != null ? input.birthGender() : oldPerson.getBirthGenderCd());
         oldPerson.setCurrSexCd(input.currentGender() != null ? input.currentGender() : oldPerson.getCurrSexCd());
@@ -262,7 +264,7 @@ public class PatientService {
         return oldPerson;
     }
 
-    public Person updatedMortality(Person oldPerson, UpdateMortality input) {
+    public Person updatedMortality(Person oldPerson, UpdateMortalityEvent input) {
 
 
         oldPerson.setAsOfDateMorbidity(input.asOf() != null ? input.asOf() : oldPerson.getAsOfDateMorbidity());
@@ -286,7 +288,7 @@ public class PatientService {
     }
 
     private PostalEntityLocatorParticipation setEntityLocatorParticipation(PostalLocator savedRecord, Person oldPerson,
-            UpdateMortality input) {
+            UpdateMortalityEvent input) {
         PostalEntityLocatorParticipation entityLocatorPart = null;
         Optional<EntityLocatorParticipation> result =
                 entityLocatorPartRepository.findByEntityIdAndLocatorUid(oldPerson.getId(), savedRecord.getId());

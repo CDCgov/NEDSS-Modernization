@@ -19,17 +19,17 @@ import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.message.PatientInput.Name;
-import gov.cdc.nbs.message.PatientInput.PhoneNumber;
-import gov.cdc.nbs.message.PatientInput.PhoneType;
-import gov.cdc.nbs.message.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
-import gov.cdc.nbs.message.UpdateMortality;
-import gov.cdc.nbs.message.UpdateSexAndBirth;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.patient.event.UpdateMortalityEvent;
+import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthEvent;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PatientInput.Name;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
+import gov.cdc.nbs.message.patient.input.PatientInput.PostalAddress;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -168,16 +168,39 @@ class PatientUpdateTest {
 
     }
 
-    private UpdateMortality getPatientMortality() {
-        UpdateMortality input = new UpdateMortality(Instant.now(), Deceased.Y, Instant.now(), "City", "State", "County",
-                "Country");
+    private UpdateMortalityEvent getPatientMortality() {
+        UpdateMortalityEvent input =
+                new UpdateMortalityEvent(1L,
+                        "id",
+                        2L,
+                        Instant.now(),
+                        Deceased.Y, Instant.now(),
+                        "City",
+                        "State",
+                        "County",
+                        "Country");
         return input;
     }
 
-    private UpdateSexAndBirth getPatientSexAndBirth() {
+    private UpdateSexAndBirthEvent getPatientSexAndBirth() {
         short order = 1;
-        UpdateSexAndBirth input = new UpdateSexAndBirth(Instant.now(), Instant.now(), Gender.M, Gender.M, Gender.F,
-                Gender.U, "birthCity", "birthCntry", "birthState", order, "Y", "U", "27", Instant.now());
+        UpdateSexAndBirthEvent input =
+                new UpdateSexAndBirthEvent(Instant.now(),
+                        1L,
+                        2L,
+                        Instant.now(),
+                        Gender.M,
+                        Gender.M,
+                        "F",
+                        "U",
+                        "birthCity",
+                        "birthCntry",
+                        "birthState",
+                        order,
+                        "Y",
+                        "U",
+                        "27",
+                        Instant.now());
         return input;
     }
 

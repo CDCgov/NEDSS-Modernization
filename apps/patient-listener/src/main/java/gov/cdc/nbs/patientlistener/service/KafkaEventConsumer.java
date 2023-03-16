@@ -5,12 +5,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.PatientUpdateEvent;
 import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
-import gov.cdc.nbs.message.UpdateMortality;
-import gov.cdc.nbs.message.UpdateSexAndBirth;
+import gov.cdc.nbs.message.patient.event.UpdateMortalityEvent;
+import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthEvent;
+import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,9 +44,9 @@ public class KafkaEventConsumer {
 
                 PatientInput input = message.value().getParams().getInput();
 
-                UpdateMortality mortalityInput = message.value().getParams().getMortalityInput();
+                UpdateMortalityEvent mortalityInput = message.value().getParams().getMortalityInput();
 
-                UpdateSexAndBirth inputSexAndBirth = message.value().getParams().getSexAndBirthInput();
+                UpdateSexAndBirthEvent inputSexAndBirth = message.value().getParams().getSexAndBirthInput();
 
                 List<TemplateInput> vars = message.value().getParams().getTemplateInputs();
                 Long personId = message.value().getParams().getPersonId();

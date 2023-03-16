@@ -4,7 +4,7 @@ import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.PatientCreateRequest;
+import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ class PatientCreator {
     }
 
     @Transactional
-    Person create(final PatientCreateRequest request) {
+    Person create(final PatientCreateEvent request) {
 
         Person person = new Person(asAdd(request));
 
@@ -44,7 +44,7 @@ class PatientCreator {
         return repository.save(person);
     }
 
-    private PatientCommand.AddPatient asAdd(final PatientCreateRequest request) {
+    private PatientCommand.AddPatient asAdd(final PatientCreateEvent request) {
         return new PatientCommand.AddPatient(
                 request.patient(),
                 request.patientLocalId(),
@@ -62,7 +62,7 @@ class PatientCreator {
                 request.createdAt());
     }
 
-    private PatientCommand.AddName asName(final PatientCreateRequest request, final PatientCreateRequest.Name name) {
+    private PatientCommand.AddName asName(final PatientCreateEvent request, final PatientCreateEvent.Name name) {
         return new PatientCommand.AddName(
                 request.patient(),
                 name.first(),
@@ -74,7 +74,7 @@ class PatientCreator {
                 request.createdAt());
     }
 
-    private PatientCommand.AddRace asRace(final PatientCreateRequest request, final String race) {
+    private PatientCommand.AddRace asRace(final PatientCreateEvent request, final String race) {
         return new PatientCommand.AddRace(
                 request.patient(),
                 race,
@@ -82,8 +82,8 @@ class PatientCreator {
                 request.createdAt());
     }
 
-    private PatientCommand.AddAddress asAddress(final PatientCreateRequest request,
-            final PatientCreateRequest.PostalAddress address) {
+    private PatientCommand.AddAddress asAddress(final PatientCreateEvent request,
+            final PatientCreateEvent.PostalAddress address) {
         return new PatientCommand.AddAddress(
                 request.patient(),
                 address.id(),
@@ -99,8 +99,8 @@ class PatientCreator {
                 request.createdAt());
     }
 
-    private PatientCommand.AddPhoneNumber asPhoneNumber(final PatientCreateRequest request,
-            final PatientCreateRequest.PhoneNumber phoneNumber) {
+    private PatientCommand.AddPhoneNumber asPhoneNumber(final PatientCreateEvent request,
+            final PatientCreateEvent.PhoneNumber phoneNumber) {
         return new PatientCommand.AddPhoneNumber(
                 request.patient(),
                 phoneNumber.id(),
@@ -111,8 +111,8 @@ class PatientCreator {
                 request.createdAt());
     }
 
-    private PatientCommand.AddEmailAddress asEmailAddress(final PatientCreateRequest request,
-            final PatientCreateRequest.EmailAddress emailAddress) {
+    private PatientCommand.AddEmailAddress asEmailAddress(final PatientCreateEvent request,
+            final PatientCreateEvent.EmailAddress emailAddress) {
         return new PatientCommand.AddEmailAddress(
                 request.patient(),
                 emailAddress.id(),

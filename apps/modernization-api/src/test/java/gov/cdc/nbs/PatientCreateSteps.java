@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.controller.PatientController;
-import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.model.PatientCreateResponse;
+import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
@@ -43,7 +43,7 @@ public class PatientCreateSteps {
     @Autowired
     private ObjectMapper mapper;
 
-    private PatientCreateResponse createPersonRequestId;
+    private PatientEventResponse createPersonRequestId;
     private PatientInput input;
     private AccessDeniedException accessDeniedException;
 
@@ -75,7 +75,7 @@ public class PatientCreateSteps {
         var key = consumer.getKey();
         assertEquals(createPersonRequestId.getRequestId(), key);
 
-        var payload = mapper.readValue((String) consumer.getPayload(), PatientCreateRequest.class);
+        var payload = mapper.readValue((String) consumer.getPayload(), PatientCreateEvent.class);
         assertNotNull(payload);
 
         assertEquals(createPersonRequestId.getRequestId(), payload.request());

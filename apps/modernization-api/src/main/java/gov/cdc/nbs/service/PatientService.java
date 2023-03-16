@@ -2,7 +2,6 @@ package gov.cdc.nbs.service;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -31,12 +29,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.RecordStatus;
@@ -49,18 +45,14 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientDeleteRequest;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.message.PatientUpdateParams;
-import gov.cdc.nbs.message.PatientUpdateRequest;
-import gov.cdc.nbs.message.TemplateInput;
-import gov.cdc.nbs.message.UpdateMortality;
-import gov.cdc.nbs.message.UpdateSexAndBirth;
+import gov.cdc.nbs.message.patient.event.PatientEvent;
+import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
+import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
-import gov.cdc.nbs.model.PatientCreateResponse;
-import gov.cdc.nbs.model.PatientDeleteResponse;
-import gov.cdc.nbs.model.PatientUpdateResponse;
+import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import graphql.com.google.common.collect.Ordering;
@@ -147,7 +139,7 @@ public class PatientService {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
-                                    addWildcards(filter.getFirstName()))
+                            addWildcards(filter.getFirstName()))
                             .defaultField("name.firstNm")
                             .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
@@ -165,7 +157,7 @@ public class PatientService {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
-                                    addWildcards(filter.getLastName()))
+                            addWildcards(filter.getLastName()))
                             .defaultField("name.lastNm")
                             .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
@@ -201,10 +193,10 @@ public class PatientService {
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                            .queryStringQuery(
-                                    addWildcards(filter.getAddress()))
-                            .defaultField("address.streetAddr1")
-                            .defaultOperator(Operator.AND),
+                    .queryStringQuery(
+                            addWildcards(filter.getAddress()))
+                    .defaultField("address.streetAddr1")
+                    .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
         }
 
@@ -219,7 +211,7 @@ public class PatientService {
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
                     QueryBuilders.queryStringQuery(
-                                    addWildcards(filter.getCity()))
+                            addWildcards(filter.getCity()))
                             .defaultField("address.city")
                             .defaultOperator(Operator.AND),
                     ScoreMode.Avg));
@@ -255,16 +247,16 @@ public class PatientService {
             BoolQueryBuilder identificationBuilder = QueryBuilders.boolQuery();
 
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationNumber())
-                .defaultField("entity_id.rootExtensionTxt")
-                .defaultOperator(Operator.AND),
-                ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationNumber())
+                            .defaultField("entity_id.rootExtensionTxt")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
 
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
-                .defaultField("entity_id.typeCd")
-                .defaultOperator(Operator.AND),
-                ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
+                            .defaultField("entity_id.typeCd")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
 
             builder.must(identificationBuilder);
         }
@@ -374,71 +366,42 @@ public class PatientService {
     /**
      * Generates a patient id and localId. Posts the request along with Id's to Kafka
      */
-    public PatientCreateResponse sendCreatePatientRequest(PatientInput input) {
+    public PatientEventResponse sendCreatePatientRequest(PatientInput input) {
         // create 'create patient' message and post to kafka
-        var requestId = getRequestID();
-        var user = (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var requestId = getRequestId();
+        var user = SecurityUtil.getUserDetails();
 
-        PatientCreateRequest createRequest = this.createRequestResolver.create(user.getId(), requestId, input);
-        producer.requestPatientCreateEnvelope(createRequest);
-        return new PatientCreateResponse(
-                createRequest.request(),
-                createRequest.patient());
+        var createEvent = this.createRequestResolver.create(user.getId(), requestId, input);
+        return sendPatientEvent(createEvent);
     }
-    
-    public PatientUpdateResponse updatePatientGeneralInfo(Long id, PatientInput input) {
-    	return sendUpdatePatientEvent(id,input, null, null,Constants.UPDATE_GENERAL_INFO);
+
+    public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var updateGeneralInfoEvent = GeneralInfoInput.toEvent(user.getId(), getRequestId(), input);
+        return sendPatientEvent(updateGeneralInfoEvent);
     }
-    
-    public PatientUpdateResponse updatePatientSexBirth(Long id, UpdateSexAndBirth input) {
-    	return sendUpdatePatientEvent(id,new PatientInput(),input, null,Constants.UPDATE_SEX_BIRTH);
+
+    public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var updateSexAndBirthEvent = SexAndBirthInput.toEvent(user.getId(), getRequestId(), input);
+        return sendPatientEvent(updateSexAndBirthEvent);
     }
-    
-    
-    public PatientUpdateResponse updateMortality(Long id, UpdateMortality input) {
-    	return sendUpdatePatientEvent(id,new PatientInput(),null,input,Constants.UPDATE_MORTALITY);
+
+    public PatientEventResponse updateMortality(MortalityInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var updateMortalityEvent = MortalityInput.toEvent(user.getId(), getRequestId(), input);
+        return sendPatientEvent(updateMortalityEvent);
     }
-    
-	/**
-	 * Send updated Person Event to kakfa topic to be picked up and updated.
-	 * 
-	 * @param id
-	 * @param input
-	 * @return
-	 */
-	private PatientUpdateResponse sendUpdatePatientEvent(Long id, PatientInput input, UpdateSexAndBirth inputSexAndBirth, UpdateMortality mortalityInput, String updateType) {
-		String requestId = null;
 
-		if (input != null) {
-			List<TemplateInput> templateInputs = new ArrayList<>();
-			TemplateInput type = new TemplateInput();
-			type.setKey("updateType");
-			type.setValue(updateType);
-			
-			templateInputs.add(type);
+    public PatientEventResponse sendDeletePatientEvent(Long patientId) {
+        var user = SecurityUtil.getUserDetails();
+        var deleteEvent = new PatientEvent(getRequestId(), patientId, user.getId(), PatientEventType.DELETE, null);
+        return sendPatientEvent(deleteEvent);
+    }
 
-			PatientUpdateParams patientUpdatedPayLoad = PatientUpdateParams.builder().input(input).personId(id)
-					.sexAndBirthInput(inputSexAndBirth)
-					.mortalityInput(mortalityInput)
-					.templateInputs(templateInputs).build();
-
-			requestId = getRequestID();
-
-			var patientUpdateRequest = new PatientUpdateRequest(requestId, patientUpdatedPayLoad);
-			producer.requestPatientUpdateEnvelope(patientUpdateRequest);
-		}
-
-		return PatientUpdateResponse.builder().requestId(requestId).build();
-
-	}
-
-    public PatientDeleteResponse sendDeletePatientEvent(Long id, PatientInput input) {
-        String requestId = getRequestID();
-        var patientDeleteRequest = new PatientDeleteRequest(requestId);
-        producer.requestPatientDeleteEnvelope(patientDeleteRequest);
-
-        return PatientDeleteResponse.builder().requestId(requestId).build();
-
+    private PatientEventResponse sendPatientEvent(PatientEvent request) {
+        producer.requestPatientEventEnvelope(request);
+        return new PatientEventResponse(request.requestId(), request.patientId());
     }
 
     private String addWildcards(String searchString) {
@@ -468,7 +431,7 @@ public class PatientService {
         return sorts;
     }
 
-    private String getRequestID() {
+    private String getRequestId() {
         return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
     }
 }

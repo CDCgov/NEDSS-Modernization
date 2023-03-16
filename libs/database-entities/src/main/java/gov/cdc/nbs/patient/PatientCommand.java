@@ -3,11 +3,10 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
-import gov.cdc.nbs.message.PatientInput;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
-
+import gov.cdc.nbs.message.patient.input.PatientInput;
 import java.time.Instant;
 
 public sealed interface PatientCommand {

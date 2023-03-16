@@ -23,8 +23,8 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.message.PatientCreateRequest;
 import gov.cdc.nbs.message.RequestStatus;
+import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
 import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
@@ -57,10 +57,10 @@ public class PatientCreateRequestHandler {
 
     @Transactional
     public void handlePatientCreate(String message, String key) {
-        PatientCreateRequest createRequest;
+        PatientCreateEvent createRequest;
         try {
             // convert message to PatientCreateRequest object
-            createRequest = objectMapper.readValue(message, PatientCreateRequest.class);
+            createRequest = objectMapper.readValue(message, PatientCreateEvent.class);
         } catch (JsonProcessingException e) {
             log.warn("Failed to map message to PatientCreateRequest object. Message: '{}'", message);
             sendPatientCreateStatus(false, key, "Failed to parse message");
@@ -76,7 +76,7 @@ public class PatientCreateRequestHandler {
         }
     }
 
-    private void creationAllowed(final String key, final PatientCreateRequest createRequest) {
+    private void creationAllowed(final String key, final PatientCreateEvent createRequest) {
         // perform the creation
         log.debug("User permission validated. Creating patient");
         Person newPatient = createPatient(createRequest);
@@ -108,7 +108,7 @@ public class PatientCreateRequestHandler {
     /**
      * Creates a Person entity from the PatientInput and persists it to the database
      */
-    private Person createPatient(PatientCreateRequest request) {
+    private Person createPatient(PatientCreateEvent request) {
         return creator.create(request);
     }
 

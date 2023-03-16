@@ -1,7 +1,9 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
+import gov.cdc.nbs.message.patient.event.PatientEvent;
+import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
+import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.service.IdGeneratorService;
 import org.springframework.stereotype.Component;
 
@@ -16,43 +18,48 @@ public class PatientCreateRequestResolver {
         this.idGeneratorService = idGeneratorService;
     }
 
-    public PatientCreateRequest create(
+    public PatientEvent create(
             final long requester,
             final String request,
             final PatientInput input) {
 
         var patientId = generateNbsId();
 
-        return new PatientCreateRequest(
+        return new PatientEvent(
                 request,
                 patientId,
-                generateLocalId(),
-                input.getSsn(),
-                input.getDateOfBirth(),
-                input.getBirthGender(),
-                input.getCurrentGender(),
-                input.getDeceased(),
-                input.getDeceasedTime(),
-                input.getMaritalStatus(),
-                asNames(input.getNames()),
-                input.getEthnicityCode(),
-                input.getRaceCodes(),
-                asPostalAddresses(input.getAddresses()),
-                asPhoneNumbers(input.getPhoneNumbers()),
-                asEmailAddresses(input.getEmailAddresses()),
                 requester,
-                input.getAsOf(),
-                input.getComments());
+                PatientEventType.CREATE,
+                new PatientCreateEvent(
+                        request,
+                        patientId,
+                        generateLocalId(),
+                        input.getSsn(),
+                        input.getDateOfBirth(),
+                        input.getBirthGender(),
+                        input.getCurrentGender(),
+                        input.getDeceased(),
+                        input.getDeceasedTime(),
+                        input.getMaritalStatus(),
+                        asNames(input.getNames()),
+                        input.getEthnicityCode(),
+                        input.getRaceCodes(),
+                        asPostalAddresses(input.getAddresses()),
+                        asPhoneNumbers(input.getPhoneNumbers()),
+                        asEmailAddresses(input.getEmailAddresses()),
+                        requester,
+                        input.getAsOf(),
+                        input.getComments()));
     }
 
-    private Collection<PatientCreateRequest.Name> asNames(final Collection<PatientInput.Name> names) {
+    private Collection<PatientCreateEvent.Name> asNames(final Collection<PatientInput.Name> names) {
         return names.stream()
                 .map(this::asName)
                 .toList();
     }
 
-    private PatientCreateRequest.Name asName(final PatientInput.Name name) {
-        return new PatientCreateRequest.Name(
+    private PatientCreateEvent.Name asName(final PatientInput.Name name) {
+        return new PatientCreateEvent.Name(
                 name.getFirstName(),
                 name.getMiddleName(),
                 name.getLastName(),
@@ -60,17 +67,17 @@ public class PatientCreateRequestResolver {
                 name.getNameUseCd());
     }
 
-    private Collection<PatientCreateRequest.PostalAddress> asPostalAddresses(
+    private Collection<PatientCreateEvent.PostalAddress> asPostalAddresses(
             final Collection<PatientInput.PostalAddress> addresses) {
         return addresses.stream()
                 .map(this::asPostalAddress)
                 .toList();
     }
 
-    private PatientCreateRequest.PostalAddress asPostalAddress(final PatientInput.PostalAddress address) {
+    private PatientCreateEvent.PostalAddress asPostalAddress(final PatientInput.PostalAddress address) {
         long id = generateNbsId();
 
-        return new PatientCreateRequest.PostalAddress(
+        return new PatientCreateEvent.PostalAddress(
                 id,
                 address.getStreetAddress1(),
                 address.getStreetAddress2(),
@@ -82,33 +89,33 @@ public class PatientCreateRequestResolver {
                 address.getCensusTract());
     }
 
-    private Collection<PatientCreateRequest.PhoneNumber> asPhoneNumbers(
+    private Collection<PatientCreateEvent.PhoneNumber> asPhoneNumbers(
             final Collection<PatientInput.PhoneNumber> phoneNumbers) {
         return phoneNumbers.stream()
                 .map(this::asPhoneNumber)
                 .toList();
     }
 
-    private PatientCreateRequest.PhoneNumber asPhoneNumber(final PatientInput.PhoneNumber phoneNumber) {
+    private PatientCreateEvent.PhoneNumber asPhoneNumber(final PatientInput.PhoneNumber phoneNumber) {
         long id = generateNbsId();
 
-        return new PatientCreateRequest.PhoneNumber(
+        return new PatientCreateEvent.PhoneNumber(
                 id,
                 phoneNumber.getNumber(),
                 phoneNumber.getExtension(),
                 phoneNumber.getPhoneType());
     }
 
-    private Collection<PatientCreateRequest.EmailAddress> asEmailAddresses(final Collection<String> emails) {
+    private Collection<PatientCreateEvent.EmailAddress> asEmailAddresses(final Collection<String> emails) {
         return emails.stream()
                 .map(this::asEmailAddress)
                 .toList();
     }
 
-    private PatientCreateRequest.EmailAddress asEmailAddress(final String emailAddress) {
+    private PatientCreateEvent.EmailAddress asEmailAddress(final String emailAddress) {
         long id = generateNbsId();
 
-        return new PatientCreateRequest.EmailAddress(
+        return new PatientCreateEvent.EmailAddress(
                 id,
                 emailAddress);
     }

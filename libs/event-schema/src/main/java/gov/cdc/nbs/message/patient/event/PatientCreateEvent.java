@@ -1,14 +1,14 @@
-package gov.cdc.nbs.message;
-
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.Suffix;
+package gov.cdc.nbs.message.patient.event;
 
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.message.patient.input.PatientInput;
 
-public record PatientCreateRequest(
+public record PatientCreateEvent(
         String request,
         Long patient,
         String patientLocalId,
@@ -29,7 +29,7 @@ public record PatientCreateRequest(
         Instant createdAt,
         Instant asOf,
         String comments) {
-    public PatientCreateRequest(
+    public PatientCreateEvent(
             String request,
             Long patient,
             String patientLocalId,
@@ -72,7 +72,7 @@ public record PatientCreateRequest(
         this.comments = comments;
     }
 
-    public PatientCreateRequest(
+    public PatientCreateEvent(
             String requestId,
             Long patientId,
             String patientLocalId,

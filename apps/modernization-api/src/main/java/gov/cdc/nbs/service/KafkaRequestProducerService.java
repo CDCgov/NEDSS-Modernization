@@ -7,11 +7,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-
-import gov.cdc.nbs.message.EnvelopeRequest;
-import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientDeleteRequest;
-import gov.cdc.nbs.message.PatientUpdateRequest;
+import gov.cdc.nbs.message.patient.event.PatientEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,48 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaRequestProducerService {
 
     @Autowired
-    private KafkaTemplate<String, EnvelopeRequest> kafkaEnvelopeTemplate;
+    private KafkaTemplate<String, PatientEvent> kafkaPatientEventTemplate;
 
-    @Autowired
-    private KafkaTemplate<String, PatientUpdateRequest> kafkaPatientUpdateTemplate;
+    @Value("${kafkadef.topics.request.patient}")
+    private String patientTopic;
 
-    @Autowired
-    private KafkaTemplate<String, PatientDeleteRequest> kafkaPatientDeleteTemplate;
-
-    @Autowired
-    private KafkaTemplate<String, PatientCreateRequest> kafkaPatientCreateTemplate;
-
-    @Value("${kafkadef.patient-search.topics.request.patient}")
-    private String patientSearchTopic;
-
-    @Value("${kafkadef.patient-search.topics.request.patientupdate}")
-    private String patientUpdateTopic;
-
-    @Value("${kafkadef.patient-search.topics.request.patientdelete}")
-    private String patientDeleteTopic;
-
-    @Value("${kafkadef.patient-search.topics.request.patient-create}")
-    private String patientCreateTopic;
-
-    public void requestEnvelope(EnvelopeRequest kafkaMessage) {
-        send(kafkaEnvelopeTemplate, patientSearchTopic, kafkaMessage.getRequestId(), kafkaMessage);
-    }
-
-	public void requestPatientUpdateEnvelope(PatientUpdateRequest kafkaMessage) {
-		try {
-		send(kafkaPatientUpdateTemplate, patientUpdateTopic, kafkaMessage.getRequestId(), kafkaMessage);
-		}
-		catch(Exception e) {
-			log.error("Error sending patientUpdate Kafka message", e);
-		}
-	}
-
-    public void requestPatientDeleteEnvelope(PatientDeleteRequest kafkaMessage) {
-        send(kafkaPatientDeleteTemplate, patientDeleteTopic, kafkaMessage.getRequestId(), kafkaMessage);
-    }
-
-    public void requestPatientCreateEnvelope(PatientCreateRequest kafkaMessage) {
-        send(kafkaPatientCreateTemplate, patientCreateTopic, kafkaMessage.request(), kafkaMessage);
+    public void requestPatientEventEnvelope(PatientEvent request) {
+        send(kafkaPatientEventTemplate, patientTopic, request.requestId(), request);
     }
 
     private <K, V> void send(KafkaTemplate<K, V> template, String topic, K key, V event) {

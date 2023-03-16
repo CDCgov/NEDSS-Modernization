@@ -62,17 +62,13 @@ kafka:
       registry:
         url: localhost:9091
     topic:
-      suffix: '-event'
+      suffix: "-event"
       partition.count: 3
       replication.factor: 3
     message.max.attempt: 5
     retry.naming.pattern: -neds-part-retry
     dlt.naming.pattern: -neds-part-dlt
 kafkadef:
-  patient-search:
-    topics:
-      request:
-        patient: request-patient-search.patientsearch
-        patientupdate: request-patient-search.patientupdate
-        patientdelete: request-patient-search.patientdelete
-        patient-create: patient-create
+  topics:
+    request:
+      patient: patient

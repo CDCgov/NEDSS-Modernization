@@ -1,4 +1,4 @@
-package gov.cdc.nbs.message;
+package gov.cdc.nbs.message.patient.input;
 
 import java.time.Instant;
 import java.util.ArrayList;

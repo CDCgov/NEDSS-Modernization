@@ -6,12 +6,11 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.message.PatientInput.Name;
-import gov.cdc.nbs.message.PatientInput.PhoneNumber;
-import gov.cdc.nbs.message.PatientInput.PhoneType;
-import gov.cdc.nbs.message.PatientInput.PostalAddress;
-
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PatientInput.Name;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneNumber;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
+import gov.cdc.nbs.message.patient.input.PatientInput.PostalAddress;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -76,8 +75,7 @@ public class PersonUtil {
                 pl.getCntyCd(),
                 pl.getCntryCd(),
                 pl.getZipCd(),
-                pl.getCensusTract()
-        );
+                pl.getCensusTract());
     }
 
     private static Stream<PhoneNumber> asPhoneNumbers(final Collection<EntityLocatorParticipation> participations) {

@@ -8,14 +8,16 @@ type Query {
 }
 
 type Mutation {
-    createPatient(patient: PersonInput!): String!
-    updatePatientGeneralInfo(id: ID!, patient: PersonInput!): UpdateResult
-    updatePatientSexBirth(id: ID!, patient: UpdateSexAndBirthInput!): UpdateResult
-    updateMortality(id: ID!, patient: MortalityInput!): UpdateResult
+    createPatient(patient: PersonInput!): PatientEventResponse!
+    updatePatientGeneralInfo(input: PersonInput!): PatientEventResponse!
+    updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
+    updateMortality(input: MortalityInput!): PatientEventResponse!
+    deletePatient(id: ID!): PatientEventResponse!
 }
 
-type UpdateResult {
-    requestId: String
+type PatientEventResponse {
+    requestId: String!
+    patientId: ID!
 }
 
 type PersonResults {
@@ -191,7 +193,22 @@ input PersonInput {
     hIVCaseId: String
 }
 
+input GeneralInfoInput {
+    patientId: ID
+    asOf: Date
+    maritalStatus: String
+    mothersMaidenName: String
+    adultsInHouseNumber: Int
+    childrenInHouseNumber: Int
+    occupationCode: String
+    educationLevelCode: String
+    primaryLanguageCode: String
+    speaksEnglishCode: String
+    eharsId: String
+}
+
 input MortalityInput {
+    patientId: ID
     asOf: Date
     deceased: Deceased
     deceasedTime: Date
@@ -200,14 +217,15 @@ input MortalityInput {
     countyOfDeath: String
     countryOfDeath: String
 }
- 
+
 input UpdateSexAndBirthInput {
+    patientId: ID
     asOf: Date
     DateOfBirth: Date
     birthGender: Gender
     currentGender: Gender
-    additionalGender: Gender
-    transGenderInfo: Gender
+    additionalGender: String
+    transGenderInfo: String
     birthCity: String
     birthCntry: String
     birthState: String
