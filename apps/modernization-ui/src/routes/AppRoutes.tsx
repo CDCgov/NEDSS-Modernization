@@ -5,6 +5,7 @@ import { PatientProfile } from '../pages/patientProfile/PatientProfile';
 import AddPatient from '../pages/addPatient/AddPatient';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
+import { Spinner } from 'components/Spinner/Spinner';
 
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
@@ -19,17 +20,20 @@ export const AppRoutes = () => {
     }, [state]);
 
     return (
-        <Routes>
-            {state.isLoggedIn && (
-                <>
-                    <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
-                    <Route path="/patient-profile/:id" element={<PatientProfile />} />
-                    <Route path="/add-patient" element={<AddPatient />} />
-                    <Route path="*" element={<Navigate to="/advanced-search" />} />
-                    <Route path="/" element={<Navigate to="/advanced-search" />} />
-                </>
-            )}
-            {!state.isLoggedIn && !state.isLoginPending && !loading && <Route path="*" element={<Login />} />}
-        </Routes>
+        <>
+            {loading && <Spinner />}
+            <Routes>
+                {state.isLoggedIn && (
+                    <>
+                        <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
+                        <Route path="/patient-profile/:id" element={<PatientProfile />} />
+                        <Route path="/add-patient" element={<AddPatient />} />
+                        <Route path="*" element={<Navigate to="/advanced-search" />} />
+                        <Route path="/" element={<Navigate to="/advanced-search" />} />
+                    </>
+                )}
+                {!state.isLoggedIn && !state.isLoginPending && !loading && <Route path="*" element={<Login />} />}
+            </Routes>
+        </>
     );
 };
