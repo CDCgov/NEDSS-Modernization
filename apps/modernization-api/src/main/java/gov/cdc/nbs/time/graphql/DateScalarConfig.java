@@ -14,7 +14,7 @@ public class DateScalarConfig {
     return wiringBuilder -> wiringBuilder.scalar(
         GraphQLScalarType.newScalar()
             .name("Date")
-            .description("Java Instant as scalar.")
+            .description("Java LocalDate as scalar.")
             .coercing(new DateCoercing())
             .build()
     );
