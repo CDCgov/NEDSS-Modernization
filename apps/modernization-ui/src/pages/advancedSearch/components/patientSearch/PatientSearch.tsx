@@ -11,7 +11,6 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { validate as validatePhoneNumber } from 'validation/phone/search';
-import { validateDate } from '../../../../utils/DateValidation';
 import { validateZipCode } from '../../../../utils/ZipValidation';
 
 type PatientSearchProps = {
@@ -239,7 +238,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
             lastName: body.lastName,
             recordStatus: selectedRecordStatus
         };
-        body.dob && validateDate(body.dob) && (rowData.dateOfBirth = body.dob);
+        body.dob && (rowData.dateOfBirth = body.dob);
         body.gender !== '- Select -' && (rowData.gender = body.gender);
 
         body.address && (rowData.address = body.address);
