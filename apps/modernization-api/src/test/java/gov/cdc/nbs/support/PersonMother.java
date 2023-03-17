@@ -57,6 +57,7 @@ public class PersonMother {
         person.setBirthCityCd(RandomUtil.getRandomString());
         person.setBirthStateCd(RandomUtil.getRandomStateCode());
         person.setBirthCntryCd("United States");
+        person.setAgeReportedTime(RandomUtil.getRandomDateInPast());
 
         NBSEntity entity = person.getNbsEntity();
 

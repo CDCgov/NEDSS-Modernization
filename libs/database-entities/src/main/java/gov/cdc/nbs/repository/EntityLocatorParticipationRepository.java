@@ -13,7 +13,7 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 public interface EntityLocatorParticipationRepository
         extends JpaRepository<EntityLocatorParticipation, Long>, QuerydslPredicateExecutor<EntityLocatorParticipation> {
 
-    @Query(value = "SELECT e from Entity_locator_participation e where e.entity_uid=:personUid and e.use_cd='DTH'")
+    @Query(value = "SELECT e from EntityLocatorParticipation e where e.nbsEntity.id=:personUid and e.useCd='DTH'")
     Optional<PostalEntityLocatorParticipation> findMortalityLocatorParticipation(@Param("personUid") Long personUid);
 
     @Query(value = "SELECT * from Entity_locator_participation e where e.entity_uid=:personParentUid and e.locator_uid=:locatorId and e.use_cd='DTH'",

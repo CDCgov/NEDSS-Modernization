@@ -532,7 +532,7 @@ public class Person {
         this.setBirthStateCd(info.birthState());
         this.setBirthOrderNbr(info.birthOrderNbr());
         this.setMultipleBirthInd(info.multipleBirth());
-        this.setSexUnkReasonCd(info.sexunknown());
+        this.setSexUnkReasonCd(info.sexUnknown());
         this.setAdditionalGenderCd(info.additionalGender());
         this.setPreferredGenderCd(info.transGenderInfo());
 

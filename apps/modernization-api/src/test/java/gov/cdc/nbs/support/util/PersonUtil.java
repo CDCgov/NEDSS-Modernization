@@ -6,11 +6,14 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.Name;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PatientInput.PostalAddress;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +55,42 @@ public class PersonUtil {
         var elpList = person.getNbsEntity().getEntityLocatorParticipations();
         asAddresses(elpList).forEach(input.getAddresses()::add);
         asPhoneNumbers(elpList).forEach(input.getPhoneNumbers()::add);
+        return input;
+    }
+
+    public static GeneralInfoInput convertToGeneralInput(Person person) {
+        var input = new GeneralInfoInput();
+        input.setPatientId(person.getId());
+        input.setAsOf(Instant.now());
+        input.setMaritalStatus(person.getMaritalStatusCd());
+        input.setMothersMaidenName(person.getMothersMaidenNm());
+        input.setAdultsInHouseNumber(person.getAdultsInHouseNbr());
+        input.setChildrenInHouseNumber(person.getChildrenInHouseNbr());
+        input.setOccupationCode(person.getOccupationCd());
+        input.setEducationLevelCode(person.getEducationLevelCd());
+        input.setPrimaryLanguageCode(person.getPrimLangCd());
+        input.setSpeaksEnglishCode(person.getSpeaksEnglishCd());
+        input.setEharsId(person.getEharsId());
+        return input;
+    }
+
+    public static SexAndBirthInput convertToSexAndBirthInput(Person person) {
+        var input = new SexAndBirthInput();
+        input.setAsOf(Instant.now());
+        input.setPatientId(person.getId());
+        input.setDateOfBirth(person.getBirthTime());
+        input.setBirthGender(person.getBirthGenderCd());
+        input.setCurrentGender(person.getCurrSexCd());
+        input.setAdditionalGender(person.getAdditionalGenderCd());
+        input.setTransGenderInfo(person.getPreferredGenderCd());
+        input.setBirthCity(person.getBirthCityCd());
+        input.setBirthCntry(person.getBirthCntryCd());
+        input.setBirthState(person.getBirthStateCd());
+        input.setBirthOrderNbr(person.getBirthOrderNbr());
+        input.setMultipleBirth(person.getMultipleBirthInd());
+        input.setSexUnknown(person.getSexUnkReasonCd());
+        input.setCurrentAge(person.getAgeReported());
+        input.setAgeReportedTime(person.getAgeReportedTime());
         return input;
     }
 
