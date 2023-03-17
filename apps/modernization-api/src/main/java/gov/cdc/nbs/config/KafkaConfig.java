@@ -1,13 +1,10 @@
 package gov.cdc.nbs.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
-import gov.cdc.nbs.time.json.EventSchemaJacksonModuleFactory;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -81,15 +78,8 @@ public class KafkaConfig {
   }
 
   @Bean
-  <T> KafkaMessageSerializer<T> kafkaMessageSerializer(@Qualifier("kafkaObjectMapper") final ObjectMapper mapper ) {
+  <T> KafkaMessageSerializer<T> kafkaMessageSerializer(final ObjectMapper mapper) {
     return new KafkaMessageSerializer<>(mapper);
-  }
-
-  @Bean(name = "kafkaObjectMapper")
-  ObjectMapper kafkaObjectMapper() {
-    return JsonMapper.builder()
-        .addModule(EventSchemaJacksonModuleFactory.create())
-        .build();
   }
 
 }

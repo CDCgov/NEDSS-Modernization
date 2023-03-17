@@ -1,10 +1,8 @@
 package gov.cdc.nbs.patientlistener.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import gov.cdc.nbs.message.KafkaMessageDeSerializer;
 import gov.cdc.nbs.message.KafkaMessageSerializer;
-import gov.cdc.nbs.time.json.EventSchemaJacksonModuleFactory;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -59,7 +57,7 @@ public class KafkaConfig {
   }
 
   @Bean
-  <V> KafkaMessageSerializer<V> kafkaMessageSerializer(@Qualifier("kafkaObjectMapper") final ObjectMapper mapper) {
+  <V> KafkaMessageSerializer<V> kafkaMessageSerializer(final ObjectMapper mapper) {
     return new KafkaMessageSerializer<>(mapper);
   }
 
@@ -74,15 +72,8 @@ public class KafkaConfig {
     return new DefaultKafkaProducerFactory<>(config, new StringSerializer(), serializer);
   }
 
-  @Bean(name = "kafkaObjectMapper")
-  ObjectMapper kafkaObjectMapper() {
-    return JsonMapper.builder()
-        .addModule(EventSchemaJacksonModuleFactory.create())
-        .build();
-  }
-
   @Bean
-  <V> KafkaMessageDeSerializer<V> kafkaDeserializer(@Qualifier("kafkaObjectMapper") final ObjectMapper mapper) {
+  <V> KafkaMessageDeSerializer<V> kafkaDeserializer(final ObjectMapper mapper) {
     return new KafkaMessageDeSerializer<>(mapper);
   }
 
