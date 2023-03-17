@@ -1,0 +1,5 @@
+mutation updateMortality($id: ID!, $patient: MortalityInput!){
+    updateMortality(id: $id, patient: $patient){
+        requestId
+    }
+}

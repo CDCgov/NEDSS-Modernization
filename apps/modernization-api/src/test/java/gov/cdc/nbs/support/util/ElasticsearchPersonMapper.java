@@ -14,7 +14,7 @@ import gov.cdc.nbs.entity.elasticsearch.NestedEntityId;
 import gov.cdc.nbs.entity.elasticsearch.NestedName;
 import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
 import gov.cdc.nbs.entity.elasticsearch.NestedRace;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonRace;
@@ -67,7 +67,7 @@ public class ElasticsearchPersonMapper {
         address.setCntryCd(pl.getCntryCd());
         address.setZip(pl.getZipCd());
 
-        InstantConverter instantConverter = new InstantConverter();
+        ElasticsearchInstantValueConverter instantConverter = new ElasticsearchInstantValueConverter();
         return ElasticsearchPerson.builder()
                 .id(String.valueOf(id))
                 .personUid(id)

@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -66,7 +66,7 @@ public class Investigation {
     private String recordStatus;
 
     @Field(name = LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant lastChangeTime;
 
     @Field(name = PUBLIC_HEALTH_CASE_UID, type = FieldType.Long)
@@ -103,23 +103,23 @@ public class Investigation {
     private String localId;
 
     @Field(name = RPT_FORM_COMPLETE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant rptFormCmpltTime;
 
     @Field(name = ACTIVITY_TO_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant activityToTime;
 
     @Field(name = ACTIVITY_FROM_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant activityFromTime;
 
     @Field(name = ADD_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant addTime;
 
     @Field(name = PUBLIC_HEALTH_CASE_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant publicHealthCaseLastChgTime;
 
     @Field(name = ADD_USER_ID, type = FieldType.Long)
@@ -141,14 +141,14 @@ public class Investigation {
     private String notificationLocalId;
 
     @Field(name = NOTIFICATION_ADD_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant notificationAddTime;
 
     @Field(name = NOTIFICATION_RECORD_STATUS_CD, type = FieldType.Keyword)
     private String notificationRecordStatusCd;
 
     @Field(name = NOTIFICATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant notificationLastChgTime;
 
     // nested fields

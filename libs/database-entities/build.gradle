@@ -7,6 +7,7 @@ buildscript {
 plugins {
     id 'java'
     id 'jvm-test-suite'
+    id 'jacoco-report-aggregation'
 
     alias libs.plugins.springBoot apply false
     alias libs.plugins.springDependencies
@@ -26,6 +27,7 @@ testing {
         }
     }
 }
+
 
 dependencyManagement {
     imports {

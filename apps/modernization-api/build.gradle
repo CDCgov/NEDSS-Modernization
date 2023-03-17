@@ -25,6 +25,7 @@ group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
 
 bootJar {
+
     manifest {
         attributes 'API-Version': archiveVersion
     }
@@ -132,6 +133,19 @@ tasks.named("test") {
     test.outputs.upToDateWhen { false }
     systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
     finalizedBy jacocoTestReport
+}
+
+tasks.withType(JavaExec).configureEach {
+
+    debugOptions {
+        enabled = true
+        server = true
+        suspend = false
+        port = java.util.Optional.ofNullable(findProperty('debug.port'))
+                .map(Object::toString)
+                .map(Integer::parseInt)
+                .orElse(5005)
+    }
 }
 
 processResources {

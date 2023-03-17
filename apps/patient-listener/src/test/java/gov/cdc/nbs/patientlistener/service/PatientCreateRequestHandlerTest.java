@@ -73,7 +73,7 @@ class PatientCreateRequestHandlerTest {
                     "patient": 191,
                     "patientLocalId": "PSN123GA01",
                     "ssn": "SSN",
-                    "dateOfBirth": 1674494454.120914000,
+                    "dateOfBirth": "2023-01-23T17:20:54.120914Z",
                     "birthGender": "M",
                     "currentGender": "F",
                     "deceased": "N",

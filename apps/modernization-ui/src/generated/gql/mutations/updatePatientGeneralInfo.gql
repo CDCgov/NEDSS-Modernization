@@ -1,0 +1,5 @@
+mutation updatePatientGeneralInfo($id: ID!, $patient: PersonInput!){
+    updatePatientGeneralInfo(id: $id, patient: $patient){
+        requestId
+    }
+}

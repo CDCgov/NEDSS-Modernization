@@ -1,4 +1,5 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
+import { externalize, internalize } from 'patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { Config } from '../../config';
@@ -156,9 +157,6 @@ export const AdvancedSearch = () => {
             }
             // perform the search based on the 'type' parameter
             switch (type) {
-                case SEARCH_TYPE.PERSON:
-                    performPatientSearch(filter);
-                    break;
                 case SEARCH_TYPE.INVESTIGATION:
                     performInvestigationSearch(filter);
                     break;
@@ -198,10 +196,10 @@ export const AdvancedSearch = () => {
         }
     };
 
-    const handlePersonTags = (filter: any) => {
+    const handlePersonTags = (filter: PersonFilter) => {
         const chips: any = [];
         if (filter) {
-            Object.entries(filter as any).map((re: any) => {
+            Object.entries(filter).map((re: any) => {
                 // Do not display record status chip, as indicated in Figma design
                 if (re[0] === 'recordStatus') {
                     return;
@@ -257,8 +255,11 @@ export const AdvancedSearch = () => {
         });
         setLastSearchType(SEARCH_TYPE.PERSON);
         setActiveTab(ACTIVE_TAB.PERSON);
-        handlePersonTags(filter);
-        setPersonFilter(filter);
+
+        const internalized = internalize(filter);
+
+        handlePersonTags(internalized);
+        setPersonFilter(internalized);
     };
 
     const performInvestigationSearch = (filter: InvestigationFilter) => {
@@ -686,6 +687,10 @@ export const AdvancedSearch = () => {
         return isEmpty(personFilter) && isEmpty(investigationFilter) && isEmpty(labReportFilter);
     }
 
+    const doSubmit = (data: PersonFilter) => {
+        handleSubmit(externalize(data), SEARCH_TYPE.PERSON);
+    };
+
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
@@ -752,13 +757,7 @@ export const AdvancedSearch = () => {
                             </h6>
                         </div>
                         {activeTab === ACTIVE_TAB.PERSON ? (
-                            <PatientSearch
-                                handleSubmission={(data: PersonFilter) => {
-                                    handleSubmit(data, SEARCH_TYPE.PERSON);
-                                }}
-                                data={personFilter}
-                                clearAll={handleClearAll}
-                            />
+                            <PatientSearch handleSubmission={doSubmit} data={personFilter} clearAll={handleClearAll} />
                         ) : (
                             <EventSearch
                                 onSearch={handleSubmit}

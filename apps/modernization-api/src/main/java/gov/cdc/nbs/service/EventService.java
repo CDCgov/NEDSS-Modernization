@@ -1,42 +1,10 @@
 package gov.cdc.nbs.service;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.NestedSortBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.elasticsearch.*;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -50,8 +18,32 @@ import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
 import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import gov.cdc.nbs.util.Constants;
 import lombok.RequiredArgsConstructor;
+import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 
@@ -73,7 +65,6 @@ public class EventService {
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
 
-    private final InstantConverter instantConverter = new InstantConverter();
     private final ElasticsearchOperations operations;
     private final SecurityService securityService;
 
@@ -217,8 +208,8 @@ public class EventService {
                     throw new QueryException(
                             "Invalid event date type specified: " + eds.getEventDateType());
             }
-            var from = instantConverter.write(eds.getFrom());
-            var to = instantConverter.write(eds.getTo());
+            var from = FlexibleInstantConverter.toString(eds.getFrom());
+            var to = FlexibleInstantConverter.toString(eds.getTo());
             builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // entry methods / entered by
@@ -502,8 +493,8 @@ public class EventService {
                     throw new QueryException("Invalid event date type " +
                             eds.getEventDateType());
             }
-            var from = instantConverter.write(eds.getFrom());
-            var to = instantConverter.write(eds.getTo());
+            var from = FlexibleInstantConverter.toString(eds.getFrom());
+            var to = FlexibleInstantConverter.toString(eds.getTo());
             builder.must(QueryBuilders.rangeQuery(field).from(from).to(to));
         }
         // Created By

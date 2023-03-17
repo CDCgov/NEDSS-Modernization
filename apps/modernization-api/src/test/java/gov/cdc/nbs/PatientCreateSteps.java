@@ -65,7 +65,7 @@ public class PatientCreateSteps {
 
     @Then("the patient create request is posted to kafka")
     public void the_patient_create_request_is_posted_to_kafka()
-            throws InterruptedException, JsonMappingException, JsonProcessingException {
+            throws InterruptedException, JsonProcessingException {
         assertNull(accessDeniedException);
         assertNotNull(createPersonRequestId);
         boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);

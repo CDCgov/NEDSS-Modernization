@@ -1,151 +1,154 @@
 extend type Query {
-    findInvestigationsByFilter(filter: InvestigationFilter!, page: SortablePage): InvestigationResults!
+  findInvestigationsByFilter(
+    filter: InvestigationFilter!
+    page: SortablePage
+  ): InvestigationResults!
 }
 
 type InvestigationResults {
-    content: [Investigation]!
-    total: Int!
+  content: [Investigation]!
+  total: Int!
 }
 
 type Investigation {
-    id: ID
-    recordStatus: String
-    lastChangeTime: Date
-    publicHealthCaseUid: Int
-    caseClassCd: String
-    outbreakName: String
-    caseTypeCd: String
-    cdDescTxt: String
-    progAreaCd: String
-    jurisdictionCd: Int
-    jurisdictionCodeDescTxt: String
-    pregnantIndCd: String
-    localId: String
-    rptFormCmpltTime: Date
-    activityToTime: Date
-    activityFromTime: Date
-    addTime: Date
-    publicHealthCaseLastChgTime: Date
-    addUserId: Int
-    lastChangeUserId: Int
-    currProcessStateCd: String
-    investigationStatusCd: String
-    moodCd: String
-    notificationLocalId: String
-    notificationAddTime: Date
-    notificationRecordStatusCd: String
-    notificationLastChgTime: Date
-    personParticipations: [PersonParticipation]
-    organizationParticipations: [OrganizationParticipation]
-    actIds: [ActId]
+  id: ID
+  recordStatus: String
+  lastChangeTime: DateTime
+  publicHealthCaseUid: Int
+  caseClassCd: String
+  outbreakName: String
+  caseTypeCd: String
+  cdDescTxt: String
+  progAreaCd: String
+  jurisdictionCd: Int
+  jurisdictionCodeDescTxt: String
+  pregnantIndCd: String
+  localId: String
+  rptFormCmpltTime: DateTime
+  activityToTime: DateTime
+  activityFromTime: DateTime
+  addTime: DateTime
+  publicHealthCaseLastChgTime: DateTime
+  addUserId: Int
+  lastChangeUserId: Int
+  currProcessStateCd: String
+  investigationStatusCd: String
+  moodCd: String
+  notificationLocalId: String
+  notificationAddTime: DateTime
+  notificationRecordStatusCd: String
+  notificationLastChgTime: DateTime
+  personParticipations: [PersonParticipation]
+  organizationParticipations: [OrganizationParticipation]
+  actIds: [ActId]
 }
 
 type ActId {
-    id: Int
-    recordStatus: String
-    actIdSeq: Int
-    rootExtensionTxt: String
-    typeCd: String
-    lastChangeTime: Date
+  id: Int
+  recordStatus: String
+  actIdSeq: Int
+  rootExtensionTxt: String
+  typeCd: String
+  lastChangeTime: DateTime
 }
 
 input InvestigationFilter {
-    patientId: Int
-    conditions: [String]
-    programAreas: [String]
-    jurisdictions: [ID]
-    pregnancyStatus: PregnancyStatus
-    eventIdType: InvestigationEventIdType
-    eventId: String
-    eventDateSearch: InvestigationEventDateSearch
-    createdBy: String
-    lastUpdatedBy: String
-    providerFacilitySearch: ProviderFacilitySearch
-    investigatorId: ID
-    investigationStatus: InvestigationStatus
-    outbreakNames: [String]
-    caseStatuses: CaseStatuses
-    notificationStatuses: NotificationStatuses
-    processingStatuses: ProcessingStatuses
+  patientId: Int
+  conditions: [String]
+  programAreas: [String]
+  jurisdictions: [ID]
+  pregnancyStatus: PregnancyStatus
+  eventIdType: InvestigationEventIdType
+  eventId: String
+  eventDateSearch: InvestigationEventDateSearch
+  createdBy: String
+  lastUpdatedBy: String
+  providerFacilitySearch: ProviderFacilitySearch
+  investigatorId: ID
+  investigationStatus: InvestigationStatus
+  outbreakNames: [String]
+  caseStatuses: CaseStatuses
+  notificationStatuses: NotificationStatuses
+  processingStatuses: ProcessingStatuses
 }
 
 input CaseStatuses {
-    includeUnassigned: Boolean!
-    statusList: [CaseStatus!]!
+  includeUnassigned: Boolean!
+  statusList: [CaseStatus!]!
 }
 
 input NotificationStatuses {
-    includeUnassigned: Boolean!
-    statusList: [NotificationStatus!]!
+  includeUnassigned: Boolean!
+  statusList: [NotificationStatus!]!
 }
 
 input ProcessingStatuses {
-    includeUnassigned: Boolean!
-    statusList: [ProcessingStatus!]!
+  includeUnassigned: Boolean!
+  statusList: [ProcessingStatus!]!
 }
 
 input InvestigationEventDateSearch {
-    eventDateType: InvestigationEventDateType!
-    from: Date!
-    to: Date!
+  eventDateType: InvestigationEventDateType!
+  from: DateTime!
+  to: DateTime!
 }
 
 input ProviderFacilitySearch {
-    entityType: ReportingEntityType!
-    id: ID!
+  entityType: ReportingEntityType!
+  id: ID!
 }
 
 enum InvestigationEventIdType {
-    ABCS_CASE_ID
-    CITY_COUNTY_CASE_ID
-    INVESTIGATION_ID
-    NOTIFICATION_ID
-    STATE_CASE_ID
+  ABCS_CASE_ID
+  CITY_COUNTY_CASE_ID
+  INVESTIGATION_ID
+  NOTIFICATION_ID
+  STATE_CASE_ID
 }
 
 enum ReportingEntityType {
-    FACILITY
-    PROVIDER
+  FACILITY
+  PROVIDER
 }
 
 enum ProcessingStatus {
-    UNASSIGNED
-    AWAITING_INTERVIEW
-    CLOSED_CASE
-    FIELD_FOLLOW_UP
-    NO_FOLLOW_UP
-    OPEN_CASE
-    SURVEILLANCE_FOLLOW_UP
+  UNASSIGNED
+  AWAITING_INTERVIEW
+  CLOSED_CASE
+  FIELD_FOLLOW_UP
+  NO_FOLLOW_UP
+  OPEN_CASE
+  SURVEILLANCE_FOLLOW_UP
 }
 
 enum NotificationStatus {
-    UNASSIGNED
-    APPROVED
-    COMPLETED
-    MESSAGE_FAILED
-    PENDING_APPROVAL
-    REJECTED
+  UNASSIGNED
+  APPROVED
+  COMPLETED
+  MESSAGE_FAILED
+  PENDING_APPROVAL
+  REJECTED
 }
 
 enum CaseStatus {
-    UNASSIGNED
-    CONFIRMED
-    NOT_A_CASE
-    PROBABLE
-    SUSPECT
-    UNKNOWN
+  UNASSIGNED
+  CONFIRMED
+  NOT_A_CASE
+  PROBABLE
+  SUSPECT
+  UNKNOWN
 }
 
 enum InvestigationEventDateType {
-    DATE_OF_REPORT
-    INVESTIGATION_CLOSED_DATE
-    INVESTIGATION_CREATE_DATE
-    INVESTIGATION_START_DATE
-    LAST_UPDATE_DATE
-    NOTIFICATION_CREATE_DATE
+  DATE_OF_REPORT
+  INVESTIGATION_CLOSED_DATE
+  INVESTIGATION_CREATE_DATE
+  INVESTIGATION_START_DATE
+  LAST_UPDATE_DATE
+  NOTIFICATION_CREATE_DATE
 }
 
 enum InvestigationStatus {
-    OPEN
-    CLOSED
+  OPEN
+  CLOSED
 }
