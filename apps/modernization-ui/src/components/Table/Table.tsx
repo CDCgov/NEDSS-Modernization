@@ -30,6 +30,7 @@ export type TableContentProps = {
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
     sortData?: (name: string, type: string) => void;
+    handleAction?: (type: string, data: any) => void;
 };
 
 export const TableComponent = ({
@@ -42,6 +43,7 @@ export const TableComponent = ({
     handleNext,
     buttons,
     tableSubHeader,
+    handleAction,
     sortData
 }: TableContentProps) => {
     const [sort, setSort] = useState<boolean>(false);
@@ -112,15 +114,17 @@ export const TableComponent = ({
                                                 {td?.type === 'actions' && (
                                                     <div className="table-span">
                                                         <Button
-                                                            onClick={() => setIsActions(index)}
+                                                            onClick={() =>
+                                                                setIsActions(isActions === index ? null : index)
+                                                            }
                                                             type="button"
                                                             unstyled>
                                                             {td.title}
                                                         </Button>
                                                         {isActions === index && (
                                                             <Actions
-                                                                handleDetails={() => {
-                                                                    console.log('asdad');
+                                                                handleAction={(e: string) => {
+                                                                    handleAction?.(e, item);
                                                                     setIsActions(null);
                                                                 }}
                                                             />

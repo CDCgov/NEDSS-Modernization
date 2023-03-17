@@ -40,8 +40,6 @@ export const Events = ({
     const NBS_URL = Config.nbsUrl;
 
     const [tableBody, setTableBody] = useState<any>([]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [contactRecords, setContactRecords] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const [totalInvestigations, setTotalInvestigations] = useState<number | undefined>(0);
@@ -54,87 +52,7 @@ export const Events = ({
     const [morbidityResults, setMorbidityResults] = useState<any>();
     const [treatmentResults, setTreatmentResults] = useState<any>();
     const [contactNamedByPatient, setContactNamedByPatient] = useState<any>();
-
-    useEffect(() => {
-        const contactTempArr = [];
-        for (let i = 0; i < 10; i++) {
-            // if (i < 5) {
-            //     labTempArr.push({
-            //         id: i + 1,
-            //         checkbox: true,
-            //         tableDetails: [
-            //             {
-            //                 id: 1,
-            //                 title: (
-            //                     <>
-            //                         08 / 30 / 2021 <br /> 10:36 am
-            //                     </>
-            //                 )
-            //             },
-            //             {
-            //                 id: 2,
-            //                 title: (
-            //                     <>
-            //                         <strong>Reporting facility:</strong>
-            //                         <br />
-            //                         <span>Lab Corp</span>
-            //                     </>
-            //                 )
-            //             },
-            //             { id: 3, title: null },
-            //             {
-            //                 id: 4,
-            //                 title: (
-            //                     <>
-            //                         <span className="margin-0">Acid-Fast Stain:</span>
-            //                         <br />
-            //                         <span>abnormal</span>
-            //                     </>
-            //                 )
-            //             },
-            //             {
-            //                 id: 5,
-            //                 title: (
-            //                     <>
-            //                         <a href="#" className="margin-0">
-            //                             CAS10004022ga01
-            //                         </a>
-            //                         <br />
-            //                         <span>Acute flaccid myelitis</span>
-            //                     </>
-            //                 )
-            //             },
-            //             { id: 6, title: 'BMIRD' },
-            //             { id: 7, title: 'Clayton County' },
-            //             { id: 8, title: 'OBS10003093GA01' }
-            //         ]
-            //     });
-            // }
-
-            if (i < 2) {
-                contactTempArr.push({
-                    id: i + 1,
-                    checkbox: false,
-                    tableDetails: [
-                        {
-                            id: 1,
-                            title: (
-                                <>
-                                    08 / 30 / 2021 <br /> 10:36 am
-                                </>
-                            )
-                        },
-                        { id: 2, title: 'TEST111, FIRSTMAX1' },
-                        { id: 3, title: '10/02/2021' },
-                        { id: 4, title: 'HIV Disposition: 2 - Prev. Neg, New Pos' },
-                        { id: 5, title: 'CA10004006GA01 HIV' },
-                        { id: 6, title: 'COIN10001003GA01 Field Follow-Up (S1)' }
-                    ]
-                });
-            }
-        }
-        setContactRecords(contactTempArr);
-    }, []);
+    const [patientByContact, setPatientByContact] = useState<any>();
 
     const getData = (investigationData: any) => {
         const tempArr: TableBody[] = [];
@@ -307,7 +225,7 @@ export const Events = ({
                     { id: 7, title: morbidity?.jurisdictionCd || null },
                     {
                         id: 5,
-                        title: (
+                        title:
                             // !morbidity?. ||
                             // morbidity?.associatedInvestigations.length == 0 ? null : (
                             // <>
@@ -326,8 +244,7 @@ export const Events = ({
                             //             )
                             //         )}
                             // </>
-                            <>Associated</>
-                        )
+                            null
                         // )
                     },
                     { id: 8, title: morbidity?.localId || null }
@@ -388,6 +305,7 @@ export const Events = ({
 
     const getContactNameByPatient = (contacts: FindContactsForPatientQuery['findContactsForPatient'] | undefined) => {
         const tempArr: TableBody[] = [];
+        const tempArrByContact: TableBody[] = [];
         contacts?.namedByPatient?.map((contact) => {
             tempArr.push({
                 id: contact?.event,
@@ -433,6 +351,52 @@ export const Events = ({
                 ]
             });
             setContactNamedByPatient(tempArr);
+        });
+        contacts?.namedByContact?.map((contact) => {
+            tempArrByContact.push({
+                id: contact?.event,
+                checkbox: false,
+                tableDetails: [
+                    {
+                        id: 1,
+                        title: (
+                            <>
+                                {format(new Date(contact?.createdOn), 'MM/dd/yyyy')} <br />{' '}
+                                {format(new Date(contact?.createdOn), 'hh:mm a')}
+                            </>
+                        ),
+                        class: 'link',
+                        link: ''
+                    },
+                    {
+                        id: 2,
+                        title: contact?.contact?.name
+                    },
+                    { id: 4, title: format(new Date(contact?.namedOn), 'MM/dd/yyyy') },
+                    { id: 7, title: contact?.condition || null },
+                    {
+                        id: 5,
+                        title:
+                            // !treatment || treatment?.associatedWith.condition?.length == 0 ? null : (
+                            //     <>
+                            //         {treatment.associatedWith && treatment.associatedWith.condition.length > 0 && (
+                            //             <div>
+                            //                 <p
+                            //                     className="margin-0 text-primary text-bold link"
+                            //                     style={{ wordBreak: 'break-word' }}>
+                            //                     {treatment.associatedWith?.local}
+                            //                 </p>
+                            //                 <p className="margin-0">{treatment.associatedWith.condition}</p>
+                            //             </div>
+                            //         )}
+                            //     </>
+                            // )
+                            null
+                    },
+                    { id: 8, title: contact?.event || null }
+                ]
+            });
+            setPatientByContact(tempArrByContact);
         });
     };
 
@@ -755,7 +719,7 @@ export const Events = ({
                             { name: 'Associated with', sortable: true },
                             { name: 'Event #', sortable: true }
                         ]}
-                        tableBody={[]}
+                        tableBody={patientByContact}
                         currentPage={currentPage}
                         handleNext={(e) => setCurrentPage(e)}
                     />

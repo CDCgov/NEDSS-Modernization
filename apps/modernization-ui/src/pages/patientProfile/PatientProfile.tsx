@@ -11,7 +11,7 @@ import {
     ModalToggleButton
 } from '@trussworks/react-uswds';
 import './style.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
@@ -28,6 +28,7 @@ import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
 import { Events } from './Events';
 import { Demographics } from './Demographics';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 enum ACTIVE_TAB {
     SUMMARY = 'Summary',
@@ -53,6 +54,8 @@ export const PatientProfile = () => {
     );
     const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
 
+    const { searchCriteria } = useContext(SearchCriteriaContext);
+
     useEffect(() => {
         if (id) {
             getPatientProfileData({
@@ -66,6 +69,8 @@ export const PatientProfile = () => {
         }
     }, []);
 
+    const [ethnicity, setEthnicity] = useState<string>('');
+    const [race, setRace] = useState<string>('');
     useEffect(() => {
         if (patientProfileData?.findPatientsByFilter.content) {
             setProfileData(patientProfileData?.findPatientsByFilter.content[0]);
@@ -105,6 +110,18 @@ export const PatientProfile = () => {
                 getContactsData({
                     variables: {
                         patient: patientProfileData.findPatientsByFilter.content[0].id
+                    }
+                });
+
+                searchCriteria.ethnicities.map((ethinicity) => {
+                    if (ethinicity.id.code === patientProfileData.findPatientsByFilter.content[0].ethnicGroupInd) {
+                        setEthnicity(ethinicity.codeDescTxt);
+                    }
+                });
+
+                searchCriteria.races.map((race) => {
+                    if (race.id.code === patientProfileData.findPatientsByFilter.content[0].ethnicGroupInd) {
+                        setRace(race.codeDescTxt);
                     }
                 });
             }
@@ -268,13 +285,13 @@ export const PatientProfile = () => {
                         <Grid row col={3}>
                             <Grid col={12}>
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">RACE</h5>
-                                <p className="margin-0 font-sans-1xs text-normal">White</p>
+                                <p className="margin-0 font-sans-1xs text-normal">{race || 'No data'}</p>
                             </Grid>
                             <Grid col={12} className="margin-top-3">
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                     ETHNICITY
                                 </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">Not Hispanic or Latino</p>
+                                <p className="margin-0 font-sans-1xs text-normal">{ethnicity}</p>
                             </Grid>
                         </Grid>
                     </Grid>

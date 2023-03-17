@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
-import { Button, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import {
+    Button,
+    ButtonGroup,
+    Grid,
+    Icon,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton
+} from '@trussworks/react-uswds';
 import { HorizontalTable } from '../../components/Table/HorizontalTable';
 import { AddCommentModal } from './components/AddCommentModal';
 import { AddNameModal } from './components/AddNameModal';
@@ -25,6 +35,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
     const addNameModalRef = useRef<ModalRef>(null);
     const addAddressModalRef = useRef<ModalRef>(null);
     const addPhoneEmailRef = useRef<ModalRef>(null);
+
+    const deleteModalRef = useRef<ModalRef>(null);
 
     useEffect(() => {
         const tempArr = [];
@@ -82,9 +94,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                         id: 3,
                         title: (
                             <Button type="button" unstyled>
-                                <Icon.MoreHoriz />
+                                <Icon.MoreHoriz className="font-sans-lg" />
                             </Button>
-                        )
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
                     }
                 ]
             }
@@ -165,9 +179,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                         id: 5,
                         title: (
                             <Button type="button" unstyled>
-                                <Icon.MoreHoriz />
+                                <Icon.MoreHoriz className="font-sans-lg" />
                             </Button>
-                        )
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
                     }
                 ]
             });
@@ -205,9 +221,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                             id: 5,
                             title: (
                                 <Button type="button" unstyled>
-                                    <Icon.MoreHoriz />
+                                    <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
-                            )
+                            ),
+                            textAlign: 'center',
+                            type: 'actions'
                         }
                     ]
                 });
@@ -254,9 +272,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                             id: 7,
                             title: (
                                 <Button type="button" unstyled>
-                                    <Icon.MoreHoriz />
+                                    <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
-                            )
+                            ),
+                            textAlign: 'center',
+                            type: 'actions'
                         }
                     ]
                 });
@@ -273,6 +293,9 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
             phoneEmailTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
         }
     }, [patientProfileData]);
+
+    const [isEditModal, setIsEditModal] = useState<boolean>(false);
+    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
 
     return (
         <>
@@ -302,6 +325,17 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, id) => {
+                        console.log('type:', id);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addNameModalRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
@@ -309,7 +343,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                                 <Icon.Add className="margin-right-05" />
                                 Add name
                             </ModalToggleButton>
-                            <AddNameModal handleSubmission={handleFormSubmission} modalRef={addNameModalRef} />
+                            <AddNameModal
+                                modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
+                                handleSubmission={handleFormSubmission}
+                                modalRef={addNameModalRef}
+                            />
                         </div>
                     }
                     tableHeader={'Name'}
@@ -498,6 +536,37 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                     </Grid>
                 </Grid>
             </Grid>
+
+            {isDeleteModal && (
+                <Modal
+                    ref={deleteModalRef}
+                    id="example-modal-1"
+                    aria-labelledby="modal-1-heading"
+                    className="padding-0"
+                    aria-describedby="modal-1-description">
+                    <ModalHeading
+                        id="modal-1-heading"
+                        className="border-bottom border-base-lighter font-sans-lg padding-2">
+                        Delete name
+                    </ModalHeading>
+                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                        <Icon.Warning className="font-sans-2xl margin-x-2" />
+                        <p id="modal-1-description">
+                            Are you sure you want to delete Name record, Smith, Johnathan Test?
+                        </p>
+                    </div>
+                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                        <ButtonGroup>
+                            <ModalToggleButton outline modalRef={deleteModalRef} closer>
+                                Cancel
+                            </ModalToggleButton>
+                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
+                                Yes, delete
+                            </ModalToggleButton>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </Modal>
+            )}
         </>
     );
 };

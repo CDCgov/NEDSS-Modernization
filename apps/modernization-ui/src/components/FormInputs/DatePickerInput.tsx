@@ -1,4 +1,4 @@
-import { DatePicker, Label } from '@trussworks/react-uswds';
+import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import { useEffect, useState } from 'react';
 import { validateDate } from '../../utils/DateValidation';
@@ -12,6 +12,7 @@ type DatePickerProps = {
     className?: string;
     defaultValue?: string;
     errorMessage?: string;
+    flexBox?: boolean;
 };
 
 export const DatePickerInput = ({
@@ -22,7 +23,8 @@ export const DatePickerInput = ({
     onChange,
     className,
     defaultValue,
-    errorMessage
+    errorMessage,
+    flexBox
 }: DatePickerProps) => {
     const defaultVal: any = defaultValue?.split('/');
     const [defaultDate, setDefaultDate] = useState('');
@@ -44,7 +46,7 @@ export const DatePickerInput = ({
             setDefaultDate('0-0-0');
         }
     }, [defaultVal]);
-    return (
+    return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
@@ -54,5 +56,23 @@ export const DatePickerInput = ({
             {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
             <p className="text-red margin-y-1">{errorMessage}</p>
         </div>
+    ) : (
+        <Grid row className={`date-picker-input ${error === true ? 'error' : ''}`}>
+            <Grid col={6}>{label && <Label htmlFor={htmlFor}>{label}</Label>}</Grid>
+            <Grid col={6}>
+                {error && <small className="text-red">{'Not a valid date'}</small>}
+                {defaultDate && (
+                    <DatePicker
+                        defaultValue={defaultDate}
+                        id={id}
+                        onChange={onChange}
+                        className={className}
+                        name={name}
+                    />
+                )}
+                {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
+                <p className="text-red margin-y-1">{errorMessage}</p>
+            </Grid>
+        </Grid>
     );
 };
