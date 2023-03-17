@@ -6,6 +6,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
+import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patient.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -43,6 +44,11 @@ public class PatientUpdater {
             person.add(asAddMortalityLocator(data, id));
             return personRepository.save(person);
         }
+    }
+
+    public Person update(Person person, UpdateSexAndBirthData data) {
+        person.update(asUpdateSexAndBirthInfo(data));
+        return personRepository.save(person);
     }
 
     private PatientCommand.UpdateMortalityLocator asUpdateMortalityLocator(UpdateMortalityData data) {
@@ -87,6 +93,27 @@ public class PatientUpdater {
                 data.primaryLanguageCode(),
                 data.speaksEnglishCode(),
                 data.eharsId(),
+                data.updatedBy(),
+                Instant.now());
+    }
+
+    private PatientCommand.UpdateSexAndBirthInfo asUpdateSexAndBirthInfo(UpdateSexAndBirthData data) {
+        return new PatientCommand.UpdateSexAndBirthInfo(
+                data.patientId(),
+                data.asOf(),
+                data.dateOfBirth(),
+                data.birthGender(),
+                data.currentGender(),
+                data.additionalGender(),
+                data.transGenderInfo(),
+                data.birthCity(),
+                data.birthCntry(),
+                data.birthState(),
+                data.birthOrderNbr(),
+                data.multipleBirth(),
+                data.sexUnknown(),
+                data.currentAge(),
+                data.ageReportedTime(),
                 data.updatedBy(),
                 Instant.now());
     }

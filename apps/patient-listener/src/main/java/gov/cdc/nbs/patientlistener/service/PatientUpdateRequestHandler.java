@@ -41,82 +41,61 @@ public class PatientUpdateRequestHandler {
     private static final String EDIT_PATIENT = "EDIT-PATIENT";
 
     public void handlePatientGeneralInfoUpdate(final UpdateGeneralInfoData data) {
-        if (userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            var optional = personRepository.findById(data.patientId());
-            if (optional.isEmpty()) {
-                sendPatientCreateStatus(false, data.requestId(),
-                        "Failed to find patient in database: " + data.patientId());
-                return;
-            }
-
-            var person = patientUpdater.update(optional.get(), data);
-            updateElasticsearchPatient(person);
-            sendPatientCreateStatus(
-                    true,
-                    data.requestId(),
-                    "Successfully updated patient",
-                    data.patientId());
-
-        } else {
+        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
             notAuthorized(data.requestId());
         }
+        var optional = personRepository.findById(data.patientId());
+        if (optional.isEmpty()) {
+            sendPatientDoesntExistStatus(data.requestId(), data.patientId());
+            return;
+        }
+
+        var person = patientUpdater.update(optional.get(), data);
+        updateElasticsearchPatient(person);
+        sendPatientCreateStatus(
+                true,
+                data.requestId(),
+                "Successfully updated patient",
+                data.patientId());
     }
 
     public void handlePatientMortalityUpdate(final UpdateMortalityData data) {
-        if (userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            var optionalPerson = personRepository.findById(data.patientId());
-            if (optionalPerson.isEmpty()) {
-                sendPatientCreateStatus(
-                        false,
-                        data.requestId(),
-                        "Failed to find patient in database: " + data.patientId());
-                return;
-            }
-            var person = patientUpdater.update(optionalPerson.get(), data);
-            updateElasticsearchPatient(person);
-            sendPatientCreateStatus(
-                    true,
-                    data.requestId(),
-                    "Successfully updated patient mortality info",
-                    data.patientId());
-        } else {
+        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
             notAuthorized(data.requestId());
         }
+        var optionalPerson = personRepository.findById(data.patientId());
+        if (optionalPerson.isEmpty()) {
+            sendPatientDoesntExistStatus(data.requestId(), data.patientId());
+            return;
+        }
+
+        var person = patientUpdater.update(optionalPerson.get(), data);
+        updateElasticsearchPatient(person);
+        sendPatientCreateStatus(
+                true,
+                data.requestId(),
+                "Successfully updated patient mortality info",
+                data.patientId());
     }
 
 
     public void handlePatientSexAndBirthUpdate(final UpdateSexAndBirthData data) {
-        if (userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            var optionalPerson = personRepository.findById(data.patientId());
-            if (optionalPerson.isEmpty()) {
-                sendPatientCreateStatus(
-                        false,
-                        data.requestId(),
-                        "Failed to find patient in database: " + data.patientId());
-                return;
-            }
+        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
+            notAuthorized(data.requestId());
         }
-        // TODO fields:
-        // oldPerson.setBirthGenderCd(
-        //         input.birthGender() != null ? input.birthGender() : oldPerson.getBirthGenderCd());
-        // oldPerson.setCurrSexCd(input.currentGender() != null ? input.currentGender() : oldPerson.getCurrSexCd());
-        // oldPerson.setBirthTime(input.dateOfBirth() != null ? input.dateOfBirth() : oldPerson.getBirthTime());
-        // oldPerson.setAsOfDateSex(input.asOf() != null ? input.asOf() : oldPerson.getAsOfDateSex());
-        // oldPerson.setAgeReported(input.currentAge() != null ? input.currentAge() : oldPerson.getAgeReported());
-        // oldPerson.setAgeReportedTime(
-        //         input.ageReportedTime() != null ? input.ageReportedTime() : oldPerson.getAgeReportedTime());
-        // oldPerson.setBirthCityCd(input.birthCity() != null ? input.birthCity() : oldPerson.getBirthCityCd());
-        // oldPerson.setBirthCntryCd(input.birthCntry() != null ? input.birthCntry() : oldPerson.getBirthCntryCd());
-        // oldPerson.setBirthStateCd(input.birthState() != null ? input.birthState() : oldPerson.getBirthStateCd());
-        // oldPerson
-        //         .setBirthOrderNbr(input.birthOrderNbr() != null ? input.birthOrderNbr() : oldPerson.getBirthOrderNbr());
-        // oldPerson.setMultipleBirthInd(
-        //         input.multipleBirth() != null ? input.multipleBirth() : oldPerson.getMultipleBirthInd());
-        // oldPerson.setSexUnkReasonCd(input.sexunknown() != null ? input.sexunknown() : oldPerson.getSexUnkReasonCd());
-        // oldPerson.setAdditionalGenderCd(input.additionalGender() != null ? input.additionalGender().toString()
-        //         : oldPerson.getAdditionalGenderCd());
-        // oldPerson.setPreferredGenderCd(input.transGenderInfo() != null ? input.transGenderInfo().toString()
-        //         : oldPerson.getPreferredGenderCd());
+        var optionalPerson = personRepository.findById(data.patientId());
+        if (optionalPerson.isEmpty()) {
+            sendPatientDoesntExistStatus(data.requestId(), data.patientId());
+            return;
+        }
+
+        var person = patientUpdater.update(optionalPerson.get(), data);
+        updateElasticsearchPatient(person);
+        sendPatientCreateStatus(
+                true,
+                data.requestId(),
+                "Successfully updated patient sex and birth info",
+                data.patientId());
     }
 
     private void updateElasticsearchPatient(final Person person) {
@@ -127,6 +106,13 @@ public class PatientUpdateRequestHandler {
     private void notAuthorized(final String key) {
         log.debug("User lacks permission for patient create");
         sendPatientCreateStatus(false, key, "User not authorized to perform this operation");
+    }
+
+    private void sendPatientDoesntExistStatus(String requestId, long patientId) {
+        sendPatientCreateStatus(
+                false,
+                requestId,
+                "Failed to find patient in database: " + patientId);
     }
 
     private void sendPatientCreateStatus(boolean successful, String key, String message) {

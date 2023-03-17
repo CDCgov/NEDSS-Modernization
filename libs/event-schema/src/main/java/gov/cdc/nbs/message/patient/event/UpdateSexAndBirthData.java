@@ -19,7 +19,7 @@ public record UpdateSexAndBirthData(
         String birthState,
         Short birthOrderNbr,
         String multipleBirth,
-        String sexunknown,
+        String sexUnknown,
         String currentAge,
         Instant ageReportedTime) implements Serializable {
 }

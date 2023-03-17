@@ -28,6 +28,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -513,6 +514,36 @@ public class Person {
         this.setPrimLangCd(info.primaryLanguageCode());
         this.setSpeaksEnglishCd(info.speaksEnglishCode());
         this.setEharsId(info.eharsId());
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(UpdateSexAndBirthInfo info) {
+        this.setBirthGenderCd(info.birthGender());
+        this.setCurrSexCd(info.currentGender());
+        this.setBirthTime(info.dateOfBirth());
+        this.setAsOfDateSex(info.asOf());
+        this.setAgeReported(info.currentAge());
+        this.setAgeReportedTime(info.ageReportedTime());
+        this.setBirthCityCd(info.birthCity());
+        this.setBirthCntryCd(info.birthCntry());
+        this.setBirthStateCd(info.birthState());
+        this.setBirthOrderNbr(info.birthOrderNbr());
+        this.setMultipleBirthInd(info.multipleBirth());
+        this.setSexUnkReasonCd(info.sexunknown());
+        this.setAdditionalGenderCd(info.additionalGender());
+        this.setPreferredGenderCd(info.transGenderInfo());
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    private void setLastChange(PatientCommand command) {
+        this.setLastChgUserId(command.requester());
+        this.setLastChgTime(command.requestedOn());
     }
 
     @Override

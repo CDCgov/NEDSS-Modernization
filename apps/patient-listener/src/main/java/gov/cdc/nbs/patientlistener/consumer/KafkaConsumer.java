@@ -71,7 +71,6 @@ public class KafkaConsumer {
                     sendStatusMessage(false, "Invalid EventType specified.", key);
                     log.warn("Invalid EventType specified: {}", event.eventType());
                     throw new IllegalArgumentException("Invalid EventType specified");
-
             }
         } catch (JsonProcessingException e) {
             log.warn("Failed to parse kafka message: {}", e.getMessage());

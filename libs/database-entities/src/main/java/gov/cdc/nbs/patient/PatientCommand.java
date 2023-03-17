@@ -131,6 +131,25 @@ public sealed interface PatientCommand {
             String eharsId,
             long requester,
             Instant requestedOn) implements PatientCommand {
+    }
 
+    record UpdateSexAndBirthInfo(
+            long person,
+            Instant asOf,
+            Instant dateOfBirth,
+            Gender birthGender,
+            Gender currentGender,
+            String additionalGender,
+            String transGenderInfo,
+            String birthCity,
+            String birthCntry,
+            String birthState,
+            Short birthOrderNbr,
+            String multipleBirth,
+            String sexunknown,
+            String currentAge,
+            Instant ageReportedTime,
+            long requester,
+            Instant requestedOn) implements PatientCommand {
     }
 }
