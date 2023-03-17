@@ -5,6 +5,8 @@ describe('when a date value is given', () => {
         expect(externalizeDateTime('5/6/2025')).toBe('2025-05-06T05:00:00.000Z');
         expect(externalizeDateTime('11/6/2025')).toBe('2025-11-06T05:00:00.000Z');
         expect(externalizeDateTime('11/16/2025')).toBe('2025-11-16T05:00:00.000Z');
+        expect(externalizeDateTime('05/16/2025')).toBe('2025-05-16T05:00:00.000Z');
+        expect(externalizeDateTime('5/16/2025')).toBe('2025-05-16T05:00:00.000Z');
     });
 
     it('should transform a Date in the local timezone to the ISO-8601 Instant standard,', () => {

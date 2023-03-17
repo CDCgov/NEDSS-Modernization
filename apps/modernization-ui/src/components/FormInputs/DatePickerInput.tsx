@@ -1,7 +1,6 @@
 import { DatePicker, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import { useState } from 'react';
-import { isMatch } from 'date-fns/fp';
 
 type OnChange = (val?: string) => void;
 
@@ -15,7 +14,9 @@ type DatePickerProps = {
     defaultValue?: string;
 };
 
-const matches = isMatch('M/d/yyyy');
+const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
+
+const matches = (value: string) => inputFormat.test(value);
 
 const isValid = (value?: string) => !value || matches(value);
 
@@ -43,20 +44,25 @@ export const DatePickerInput = ({
         const valid = isValid(changed);
         setError(!valid);
 
-        fn && fn(changed);
+        valid && fn && fn(changed);
     };
 
     return (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
-            <DatePicker
-                id={id}
-                onChange={checkValidity(onChange)}
-                className={className}
-                name={name}
-                defaultValue={intialDefault}
-            />
+            {!intialDefault && (
+                <DatePicker id={id} onChange={checkValidity(onChange)} className={className} name={name} />
+            )}
+            {intialDefault && (
+                <DatePicker
+                    id={id}
+                    onChange={checkValidity(onChange)}
+                    className={className}
+                    name={name}
+                    defaultValue={intialDefault}
+                />
+            )}
         </div>
     );
 };

@@ -36,7 +36,7 @@ describe('DatePickerInput component tests', () => {
                     label="Test DP Label"
                     className="test-dp-class-name"
                     htmlFor="test-dp-id"
-                    defaultValue="12/21/"
+                    defaultValue="12/21/1"
                 />
             );
 
@@ -84,9 +84,9 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '12/15/2023');
+            await userEvent.type(input, '2/15/2023');
 
-            expect(onChange).toHaveBeenCalledWith('12/15/2023');
+            expect(onChange).toHaveBeenCalledWith('2/15/2023');
         });
 
         it('should alert value changes when a date is selected', async () => {
@@ -127,7 +127,7 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '12/31/2022');
+            await userEvent.type(input, '2/1/2022');
 
             const component = container.firstChild;
 
