@@ -108,8 +108,12 @@ public class PatientUpdateSteps {
                 validateMortalityInfo((UpdateMortalityData) payload.data());
                 break;
         }
+    }
 
-
+    @Then("I get an access denied exception for patient update")
+    public void I_get_an_access_denied_exception_for_patient_update() {
+        assertNull(response);
+        assertNotNull(accessDeniedException);
     }
 
     private MortalityInput createMortalityInput() {
