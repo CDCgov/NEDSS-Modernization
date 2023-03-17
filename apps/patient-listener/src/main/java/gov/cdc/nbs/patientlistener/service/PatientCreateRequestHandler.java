@@ -3,15 +3,11 @@ package gov.cdc.nbs.patientlistener.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
 import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
@@ -24,8 +20,7 @@ import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.message.RequestStatus;
-import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
-import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
+import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,15 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class PatientCreateRequestHandler {
-
-    @Value("${nbs.uid.seed}")
-    private long seed;
-
-    @Value("${nbs.uid.suffix}")
-    private String suffix;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Value("${kafkadef.topics.status.patient}")
+    private String statusTopic;
 
     @Autowired
     private UserService userService;
@@ -50,33 +38,23 @@ public class PatientCreateRequestHandler {
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
 
     @Autowired
-    private KafkaProducer producer;
+    private KafkaTemplate<String, RequestStatus> producer;
 
     @Autowired
     PatientCreator creator;
 
     @Transactional
-    public void handlePatientCreate(String message, String key) {
-        PatientCreateEvent createRequest;
-        try {
-            // convert message to PatientCreateRequest object
-            createRequest = objectMapper.readValue(message, PatientCreateEvent.class);
-        } catch (JsonProcessingException e) {
-            log.warn("Failed to map message to PatientCreateRequest object. Message: '{}'", message);
-            sendPatientCreateStatus(false, key, "Failed to parse message");
-            return;
-        }
-        long user = createRequest.createdBy();
-
+    public void handlePatientCreate(PatientCreateData data) {
+        long user = data.createdBy();
         log.debug("Attempting to validate permissions for user: {}", user);
         if (userService.isAuthorized(user, "FIND-PATIENT", "ADD-PATIENT")) {
-            creationAllowed(key, createRequest);
+            creationAllowed(data.request(), data);
         } else {
-            notAuthorized(key);
+            notAuthorized(data.request());
         }
     }
 
-    private void creationAllowed(final String key, final PatientCreateEvent createRequest) {
+    private void creationAllowed(final String key, final PatientCreateData createRequest) {
         // perform the creation
         log.debug("User permission validated. Creating patient");
         Person newPatient = createPatient(createRequest);
@@ -102,13 +80,13 @@ public class PatientCreateRequestHandler {
                 .message(message)
                 .entityId(entityId)
                 .build();
-        producer.requestPatientCreateStatusEnvelope(status);
+        producer.send(statusTopic, status);
     }
 
     /**
      * Creates a Person entity from the PatientInput and persists it to the database
      */
-    private Person createPatient(PatientCreateEvent request) {
+    private Person createPatient(PatientCreateData request) {
         return creator.create(request);
     }
 

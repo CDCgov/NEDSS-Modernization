@@ -23,8 +23,8 @@ import gov.cdc.nbs.message.PatientUpdateEventResponse;
 import gov.cdc.nbs.message.TemplateInput;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.UpdateMortalityEvent;
-import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthEvent;
+import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
+import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.Name;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneNumber;
@@ -168,9 +168,9 @@ class PatientUpdateTest {
 
     }
 
-    private UpdateMortalityEvent getPatientMortality() {
-        UpdateMortalityEvent input =
-                new UpdateMortalityEvent(1L,
+    private UpdateMortalityData getPatientMortality() {
+        UpdateMortalityData input =
+                new UpdateMortalityData(1L,
                         "id",
                         2L,
                         Instant.now(),
@@ -182,10 +182,10 @@ class PatientUpdateTest {
         return input;
     }
 
-    private UpdateSexAndBirthEvent getPatientSexAndBirth() {
+    private UpdateSexAndBirthData getPatientSexAndBirth() {
         short order = 1;
-        UpdateSexAndBirthEvent input =
-                new UpdateSexAndBirthEvent(Instant.now(),
+        UpdateSexAndBirthData input =
+                new UpdateSexAndBirthData(Instant.now(),
                         1L,
                         2L,
                         Instant.now(),

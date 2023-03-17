@@ -4,6 +4,7 @@ import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -97,6 +98,16 @@ public class PostalLocator extends Locator {
         applyCounty(address.county());
         applyCountry(address.country());
         this.censusTract = address.censusTract();
+    }
+
+
+    public PostalLocator(AddMortalityLocator add) {
+        super(add);
+        this.id = add.id();
+        this.cityDescTxt = add.cityOfDeath();
+        this.cntryCd = add.countryOfDeath();
+        this.cntyCd = add.countyOfDeath();
+        this.stateCd = add.stateOfDeath();
     }
 
     private void applyCity(final City city) {

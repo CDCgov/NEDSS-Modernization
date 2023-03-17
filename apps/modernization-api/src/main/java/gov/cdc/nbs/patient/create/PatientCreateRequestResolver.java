@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
+import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.service.IdGeneratorService;
+import gov.cdc.nbs.patient.IdGeneratorService;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -30,7 +30,7 @@ public class PatientCreateRequestResolver {
                 patientId,
                 requester,
                 PatientEventType.CREATE,
-                new PatientCreateEvent(
+                new PatientCreateData(
                         request,
                         patientId,
                         generateLocalId(),
@@ -52,14 +52,14 @@ public class PatientCreateRequestResolver {
                         input.getComments()));
     }
 
-    private Collection<PatientCreateEvent.Name> asNames(final Collection<PatientInput.Name> names) {
+    private Collection<PatientCreateData.Name> asNames(final Collection<PatientInput.Name> names) {
         return names.stream()
                 .map(this::asName)
                 .toList();
     }
 
-    private PatientCreateEvent.Name asName(final PatientInput.Name name) {
-        return new PatientCreateEvent.Name(
+    private PatientCreateData.Name asName(final PatientInput.Name name) {
+        return new PatientCreateData.Name(
                 name.getFirstName(),
                 name.getMiddleName(),
                 name.getLastName(),
@@ -67,17 +67,17 @@ public class PatientCreateRequestResolver {
                 name.getNameUseCd());
     }
 
-    private Collection<PatientCreateEvent.PostalAddress> asPostalAddresses(
+    private Collection<PatientCreateData.PostalAddress> asPostalAddresses(
             final Collection<PatientInput.PostalAddress> addresses) {
         return addresses.stream()
                 .map(this::asPostalAddress)
                 .toList();
     }
 
-    private PatientCreateEvent.PostalAddress asPostalAddress(final PatientInput.PostalAddress address) {
+    private PatientCreateData.PostalAddress asPostalAddress(final PatientInput.PostalAddress address) {
         long id = generateNbsId();
 
-        return new PatientCreateEvent.PostalAddress(
+        return new PatientCreateData.PostalAddress(
                 id,
                 address.getStreetAddress1(),
                 address.getStreetAddress2(),
@@ -89,33 +89,33 @@ public class PatientCreateRequestResolver {
                 address.getCensusTract());
     }
 
-    private Collection<PatientCreateEvent.PhoneNumber> asPhoneNumbers(
+    private Collection<PatientCreateData.PhoneNumber> asPhoneNumbers(
             final Collection<PatientInput.PhoneNumber> phoneNumbers) {
         return phoneNumbers.stream()
                 .map(this::asPhoneNumber)
                 .toList();
     }
 
-    private PatientCreateEvent.PhoneNumber asPhoneNumber(final PatientInput.PhoneNumber phoneNumber) {
+    private PatientCreateData.PhoneNumber asPhoneNumber(final PatientInput.PhoneNumber phoneNumber) {
         long id = generateNbsId();
 
-        return new PatientCreateEvent.PhoneNumber(
+        return new PatientCreateData.PhoneNumber(
                 id,
                 phoneNumber.getNumber(),
                 phoneNumber.getExtension(),
                 phoneNumber.getPhoneType());
     }
 
-    private Collection<PatientCreateEvent.EmailAddress> asEmailAddresses(final Collection<String> emails) {
+    private Collection<PatientCreateData.EmailAddress> asEmailAddresses(final Collection<String> emails) {
         return emails.stream()
                 .map(this::asEmailAddress)
                 .toList();
     }
 
-    private PatientCreateEvent.EmailAddress asEmailAddress(final String emailAddress) {
+    private PatientCreateData.EmailAddress asEmailAddress(final String emailAddress) {
         long id = generateNbsId();
 
-        return new PatientCreateEvent.EmailAddress(
+        return new PatientCreateData.EmailAddress(
                 id,
                 emailAddress);
     }

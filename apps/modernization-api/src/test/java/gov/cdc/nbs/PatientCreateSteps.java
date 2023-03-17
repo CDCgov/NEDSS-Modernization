@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.controller.PatientController;
-import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
+import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
@@ -75,7 +75,7 @@ public class PatientCreateSteps {
         var key = consumer.getKey();
         assertEquals(createPersonRequestId.getRequestId(), key);
 
-        var payload = mapper.readValue((String) consumer.getPayload(), PatientCreateEvent.class);
+        var payload = mapper.readValue((String) consumer.getPayload(), PatientCreateData.class);
         assertNotNull(payload);
 
         assertEquals(createPersonRequestId.getRequestId(), payload.request());

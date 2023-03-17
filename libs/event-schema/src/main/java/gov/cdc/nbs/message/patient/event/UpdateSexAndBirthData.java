@@ -1,13 +1,14 @@
 package gov.cdc.nbs.message.patient.event;
 
+import java.io.Serializable;
 import java.time.Instant;
-
 import gov.cdc.nbs.message.enums.Gender;
 
-public record UpdateSexAndBirthEvent(
-        Instant asOf,
-        long patient,
+public record UpdateSexAndBirthData(
+        String requestId,
+        long patientId,
         long updatedBy,
+        Instant asOf,
         Instant dateOfBirth,
         Gender birthGender,
         Gender currentGender,
@@ -20,5 +21,5 @@ public record UpdateSexAndBirthEvent(
         String multipleBirth,
         String sexunknown,
         String currentAge,
-        Instant ageReportedTime) {
+        Instant ageReportedTime) implements Serializable {
 }

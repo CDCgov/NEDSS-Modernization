@@ -1,5 +1,6 @@
 package gov.cdc.nbs.message.patient.event;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,7 +9,7 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 
-public record PatientCreateEvent(
+public record PatientCreateData(
         String request,
         Long patient,
         String patientLocalId,
@@ -28,8 +29,8 @@ public record PatientCreateEvent(
         long createdBy,
         Instant createdAt,
         Instant asOf,
-        String comments) {
-    public PatientCreateEvent(
+        String comments) implements Serializable {
+    public PatientCreateData(
             String request,
             Long patient,
             String patientLocalId,
@@ -72,7 +73,7 @@ public record PatientCreateEvent(
         this.comments = comments;
     }
 
-    public PatientCreateEvent(
+    public PatientCreateData(
             String requestId,
             Long patientId,
             String patientLocalId,
@@ -120,7 +121,7 @@ public record PatientCreateEvent(
             String middle,
             String last,
             Suffix suffix,
-            PatientInput.NameUseCd use) {
+            PatientInput.NameUseCd use) implements Serializable {
     }
 
 
@@ -133,13 +134,13 @@ public record PatientCreateEvent(
             String countyCode,
             String countryCode,
             String zip,
-            String censusTract) {
+            String censusTract) implements Serializable {
     }
 
 
     public record EmailAddress(
             long id,
-            String emailAddress) {
+            String emailAddress) implements Serializable {
     }
 
 
@@ -147,6 +148,6 @@ public record PatientCreateEvent(
             long id,
             String number,
             String extension,
-            PatientInput.PhoneType phoneType) {
+            PatientInput.PhoneType phoneType) implements Serializable {
     }
 }

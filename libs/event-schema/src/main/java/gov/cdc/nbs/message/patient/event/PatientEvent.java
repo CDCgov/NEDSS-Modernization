@@ -1,11 +1,18 @@
 package gov.cdc.nbs.message.patient.event;
 
-public record PatientEvent(
-        String requestId,
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+public record PatientEvent(String requestId,
         long patientId,
         long userId,
         PatientEventType eventType,
-        Record record) {
+        @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION) @JsonSubTypes( {
+                @Type(PatientCreateData.class),
+                @Type(UpdateGeneralInfoData.class),
+                @Type(UpdateMortalityData.class),
+                @Type(UpdateSexAndBirthData.class)}) Record data){
 
 
     public enum PatientEventType {

@@ -90,4 +90,47 @@ public sealed interface PatientCommand {
             long requester,
             Instant requestedOn) implements PatientCommand {
     }
+
+    record UpdateMortalityLocator(
+            long person,
+            Instant asOf,
+            Deceased deceased,
+            Instant deceasedTime,
+            String cityOfDeath,
+            String stateOfDeath,
+            String countyOfDeath,
+            String countryOfDeath,
+            long requester,
+            Instant requestedOn) implements PatientCommand {
+    }
+    record AddMortalityLocator(
+            long person,
+            long id,
+            Instant asOf,
+            Deceased deceased,
+            Instant deceasedTime,
+            String cityOfDeath,
+            String stateOfDeath,
+            String countyOfDeath,
+            String countryOfDeath,
+            long requester,
+            Instant requestedOn) implements PatientCommand {
+    }
+
+    record UpdateGeneralInfo(
+            long person,
+            Instant asOf,
+            String maritalStatus,
+            String mothersMaidenName,
+            Short adultsInHouseNumber,
+            Short childrenInHouseNumber,
+            String occupationCode,
+            String educationLevelCode,
+            String primaryLanguageCode,
+            String speaksEnglishCode,
+            String eharsId,
+            long requester,
+            Instant requestedOn) implements PatientCommand {
+
+    }
 }

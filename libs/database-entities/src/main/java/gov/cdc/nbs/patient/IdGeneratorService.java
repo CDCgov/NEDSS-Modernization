@@ -1,4 +1,4 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.patient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,9 @@
 package gov.cdc.nbs.message.patient.event;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-public record UpdateGeneralInfoEvent(
+public record UpdateGeneralInfoData(
         long patientId,
         String requestId,
         long updatedBy,
@@ -15,6 +16,5 @@ public record UpdateGeneralInfoEvent(
         String educationLevelCode,
         String primaryLanguageCode,
         String speaksEnglishCode,
-        String eharsId) {
-
+        String eharsId) implements Serializable {
 }

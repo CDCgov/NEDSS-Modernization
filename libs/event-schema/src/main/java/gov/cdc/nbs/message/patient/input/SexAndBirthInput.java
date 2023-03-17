@@ -3,7 +3,7 @@ package gov.cdc.nbs.message.patient.input;
 import java.time.Instant;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthEvent;
+import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,10 +34,11 @@ public class SexAndBirthInput {
                 input.getPatientId(),
                 userId,
                 PatientEventType.UPDATE_SEX_AND_BIRTH,
-                new UpdateSexAndBirthEvent(
-                        Instant.now(),
+                new UpdateSexAndBirthData(
+                        requestId,
                         input.getPatientId(),
                         userId,
+                        Instant.now(),
                         input.getDateOfBirth(),
                         input.getBirthGender(),
                         input.getCurrentGender(),

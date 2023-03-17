@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,12 +38,10 @@ public class NBSEntity {
                     CascadeType.MERGE,
                     CascadeType.REMOVE
             },
-            orphanRemoval = true
-    )
+            orphanRemoval = true)
     private List<EntityLocatorParticipation> entityLocatorParticipations;
 
-    protected NBSEntity() {
-    }
+    protected NBSEntity() {}
 
     public NBSEntity(Long id, String classCd) {
         this.id = id;
@@ -62,8 +61,7 @@ public class NBSEntity {
     }
 
     public EntityLocatorParticipation add(
-            final PatientCommand.AddAddress address
-    ) {
+            final PatientCommand.AddAddress address) {
 
         List<EntityLocatorParticipation> locators = ensureLocators();
 
@@ -72,8 +70,7 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
                 this,
                 identifier,
-                address
-        );
+                address);
 
         locators.add(participation);
 
@@ -89,8 +86,7 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
                 this,
                 identifier,
-                phoneNumber
-        );
+                phoneNumber);
 
         locators.add(participation);
 
@@ -106,11 +102,25 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
                 this,
                 identifier,
-                emailAddress
-        );
+                emailAddress);
 
         locators.add(participation);
 
+
+        return participation;
+    }
+
+    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
+        List<EntityLocatorParticipation> locators = ensureLocators();
+
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
+
+        EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
+                this,
+                identifier,
+                mortality);
+
+        locators.add(participation);
 
         return participation;
     }

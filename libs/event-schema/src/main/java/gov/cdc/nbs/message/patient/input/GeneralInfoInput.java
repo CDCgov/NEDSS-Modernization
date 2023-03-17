@@ -2,7 +2,7 @@ package gov.cdc.nbs.message.patient.input;
 
 import java.time.Instant;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoEvent;
+import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,7 @@ public class GeneralInfoInput {
                 input.getPatientId(),
                 userId,
                 PatientEventType.UPDATE_GENERAL_INFO,
-                new UpdateGeneralInfoEvent(
+                new UpdateGeneralInfoData(
                         input.getPatientId(),
                         requestId,
                         userId,

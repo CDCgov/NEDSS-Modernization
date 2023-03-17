@@ -1,17 +1,11 @@
 package gov.cdc.nbs.entity.odse;
 
 
-import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.patient.GenderConverter;
-import gov.cdc.nbs.patient.PatientCommand;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnTransformer;
-
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -25,11 +19,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import org.hibernate.annotations.ColumnTransformer;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.GenderConverter;
+import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -496,6 +496,23 @@ public class Person {
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
         return this.nbsEntity.add(emailAddress);
+    }
+
+    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
+        return this.nbsEntity.add(mortality);
+    }
+
+    public void update(PatientCommand.UpdateGeneralInfo info) {
+        this.setAsOfDateGeneral(info.asOf());
+        this.setMaritalStatusCd(info.maritalStatus());
+        this.setMothersMaidenNm(info.mothersMaidenName());
+        this.setAdultsInHouseNbr(info.adultsInHouseNumber());
+        this.setChildrenInHouseNbr(info.childrenInHouseNumber());
+        this.setOccupationCd(info.occupationCode());
+        this.setEducationLevelCd(info.educationLevelCode());
+        this.setPrimLangCd(info.primaryLanguageCode());
+        this.setSpeaksEnglishCd(info.speaksEnglishCode());
+        this.setEharsId(info.eharsId());
     }
 
     @Override

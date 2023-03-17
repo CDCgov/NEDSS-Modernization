@@ -57,7 +57,7 @@ class PatientCreateRequestHandlerTest {
 
     @Test
     @SuppressWarnings("squid:S5961")
-        // Allow more than 25 assertions
+    // Allow more than 25 assertions
     void should_create_patient_in_database_and_elasticsearch() {
         // Mock methods
 
@@ -77,7 +77,7 @@ class PatientCreateRequestHandlerTest {
                     "birthGender": "M",
                     "currentGender": "F",
                     "deceased": "N",
-                    "maritalStatus": "Marital Status",                    
+                    "maritalStatus": "Marital Status",
                     "names": [
                         {
                             "first": "First",
@@ -169,20 +169,20 @@ class PatientCreateRequestHandlerTest {
 
         assertThat(actual_person.getNbsEntity().getEntityLocatorParticipations()).satisfiesExactlyInAnyOrder(
                 actual_phone_locator -> assertThat(actual_phone_locator).isInstanceOf(
-                                TeleEntityLocatorParticipation.class)
+                        TeleEntityLocatorParticipation.class)
                         .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                         .returns("CP", EntityLocatorParticipation::getCd)
                         .extracting(TeleEntityLocatorParticipation::getLocator).returns(5801L, TeleLocator::getId)
                         .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
                         .returns("Extension", TeleLocator::getExtensionTxt),
                 actual_email_locator -> assertThat(actual_email_locator).isInstanceOf(
-                                TeleEntityLocatorParticipation.class)
+                        TeleEntityLocatorParticipation.class)
                         .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                         .returns("NET", EntityLocatorParticipation::getCd)
                         .extracting(TeleEntityLocatorParticipation::getLocator).returns(5099L, TeleLocator::getId)
                         .returns("AnEmail@email.com", TeleLocator::getEmailAddress),
                 actual_postal_locator -> assertThat(actual_postal_locator).isInstanceOf(
-                                PostalEntityLocatorParticipation.class)
+                        PostalEntityLocatorParticipation.class)
                         .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
                         .returns("H", EntityLocatorParticipation::getCd)
                         .extracting(PostalEntityLocatorParticipation::getLocator).returns(5953L, PostalLocator::getId)
@@ -228,7 +228,7 @@ class PatientCreateRequestHandlerTest {
                     "requestId": "RequestId",
                     "patientId": 191,
                     "patientLocalId": "PSN123GA01"
-                }               
+                }
                 """;
 
         // Send the request
@@ -276,10 +276,14 @@ class PatientCreateRequestHandlerTest {
         for (int i = 0; i < personAddresses.size(); i++) {
             var pa = personAddresses.get(i);
             var matchingRecord = esPerson.getAddress().stream().filter(esAddress -> esAddress.getStreetAddr1()
-                    .equals(pa.getStreetAddr1()) && esAddress.getStreetAddr2()
-                    .equals(pa.getStreetAddr2()) && esAddress.getCity().equals(pa.getCityCd()) && esAddress.getState()
-                    .equals(pa.getStateCd()) && esAddress.getCntyCd().equals(pa.getCntyCd()) && esAddress.getZip()
-                    .equals(pa.getZipCd()) && esAddress.getCntryCd().equals(pa.getCntryCd())).findFirst();
+                    .equals(pa.getStreetAddr1())
+                    && esAddress.getStreetAddr2()
+                            .equals(pa.getStreetAddr2())
+                    && esAddress.getCity().equals(pa.getCityCd()) && esAddress.getState()
+                            .equals(pa.getStateCd())
+                    && esAddress.getCntyCd().equals(pa.getCntyCd()) && esAddress.getZip()
+                            .equals(pa.getZipCd())
+                    && esAddress.getCntryCd().equals(pa.getCntryCd())).findFirst();
             assertTrue(matchingRecord.isPresent());
         }
 
@@ -315,8 +319,10 @@ class PatientCreateRequestHandlerTest {
             var pn = personNames.get(i);
             var matchingRecord = esPerson.getName().stream()
                     .filter(esName -> esName.getFirstNm().equals(pn.getFirstNm()) && esName.getMiddleNm()
-                            .equals(pn.getMiddleNm()) && esName.getLastNm()
-                            .equals(pn.getLastNm()) && esName.getNmSuffix().equals(pn.getNmSuffix().toString()))
+                            .equals(pn.getMiddleNm())
+                            && esName.getLastNm()
+                                    .equals(pn.getLastNm())
+                            && esName.getNmSuffix().equals(pn.getNmSuffix().toString()))
                     .findFirst();
             assertTrue(matchingRecord.isPresent());
         }

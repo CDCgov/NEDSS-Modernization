@@ -3,7 +3,7 @@ package gov.cdc.nbs.patientlistener.service;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.PatientCreateEvent;
+import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class PatientCreatorTest {
 
     @Test
     void should_create_person_from_patient_create_request() {
-        PatientCreateEvent request = new PatientCreateEvent(
+        PatientCreateData request = new PatientCreateData(
                 "request-id-value",
                 117L,
                 "patient-local-id-value",

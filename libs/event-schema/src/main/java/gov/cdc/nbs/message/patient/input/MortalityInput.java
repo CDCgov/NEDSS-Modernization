@@ -3,7 +3,7 @@ package gov.cdc.nbs.message.patient.input;
 import java.time.Instant;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.event.UpdateMortalityEvent;
+import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class MortalityInput {
                 input.getPatientId(),
                 userId,
                 PatientEventType.UPDATE_MORTALITY,
-                new UpdateMortalityEvent(
+                new UpdateMortalityData(
                         input.getPatientId(),
                         requestId,
                         userId,

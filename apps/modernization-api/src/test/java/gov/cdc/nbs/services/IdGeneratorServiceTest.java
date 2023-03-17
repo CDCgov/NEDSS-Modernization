@@ -18,10 +18,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
 
 import gov.cdc.nbs.entity.odse.LocalUidGenerator;
+import gov.cdc.nbs.patient.IdGeneratorService;
+import gov.cdc.nbs.patient.IdGeneratorService.EntityType;
+import gov.cdc.nbs.patient.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.repository.LocalUidGeneratorRepository;
-import gov.cdc.nbs.service.IdGeneratorService;
-import gov.cdc.nbs.service.IdGeneratorService.EntityType;
-import gov.cdc.nbs.service.IdGeneratorService.GeneratedId;
 
 @ActiveProfiles("test")
 class IdGeneratorServiceTest {
