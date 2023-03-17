@@ -24,7 +24,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import gov.cdc.nbs.containers.NbsElasticsearchContainer;
-import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.patient.PatientController;
 import io.cucumber.spring.CucumberContextConfiguration;
 
 @Suite

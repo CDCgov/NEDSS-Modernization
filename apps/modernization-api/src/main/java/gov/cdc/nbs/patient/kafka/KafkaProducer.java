@@ -1,4 +1,4 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.patient.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class KafkaRequestProducerService {
+public class KafkaProducer {
 
     @Autowired
     private KafkaTemplate<String, PatientEvent> kafkaPatientEventTemplate;

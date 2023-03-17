@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.consumer;
+package gov.cdc.nbs.patientlistener.kafka;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -56,7 +56,7 @@ public class KafkaConsumer {
                     createHandler.handlePatientCreate((PatientCreateData) event.data());
                     break;
                 case DELETE:
-                    deleteHandler.handlePatientDelete(event.patientId(), event.userId());
+                    deleteHandler.handlePatientDelete(key, event.patientId(), event.userId());
                     break;
                 case UPDATE_GENERAL_INFO:
                     updateHandler.handlePatientGeneralInfoUpdate((UpdateGeneralInfoData) event.data());
@@ -73,7 +73,7 @@ public class KafkaConsumer {
                     throw new IllegalArgumentException("Invalid EventType specified");
             }
         } catch (JsonProcessingException e) {
-            log.warn("Failed to parse kafka message: {}", e.getMessage());
+            log.warn("Failed to parse kafka message. Key: {}, Message: {}", key, e.getMessage());
             sendStatusMessage(false, "Failed to parse kafka message", key);
         }
     }

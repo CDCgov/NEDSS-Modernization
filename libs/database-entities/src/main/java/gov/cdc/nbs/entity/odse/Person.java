@@ -28,7 +28,6 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
-import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -521,7 +520,7 @@ public class Person {
         setLastChange(info);
     }
 
-    public void update(UpdateSexAndBirthInfo info) {
+    public void update(PatientCommand.UpdateSexAndBirthInfo info) {
         this.setBirthGenderCd(info.birthGender());
         this.setCurrSexCd(info.currentGender());
         this.setBirthTime(info.dateOfBirth());
@@ -539,6 +538,15 @@ public class Person {
 
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
+    }
+
+
+    public void delete(PatientCommand.Delete delete) {
+        this.setRecordStatusCd(RecordStatus.LOG_DEL);
+        this.setRecordStatusTime(Instant.now());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
+        setLastChange(delete);
     }
 
     private void setLastChange(PatientCommand command) {

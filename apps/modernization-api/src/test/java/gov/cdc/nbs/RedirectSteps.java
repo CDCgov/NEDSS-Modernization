@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.patient.PatientService;
 import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.SecurityLog;
@@ -34,7 +35,6 @@ import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
 import gov.cdc.nbs.service.EncryptionService;
-import gov.cdc.nbs.service.PatientService;
 import gov.cdc.nbs.support.UserMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.UserUtil;
@@ -154,8 +154,8 @@ public class RedirectSteps {
     @When("I navigate to the NBS advanced search page")
     public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
         response = mvc.perform(
-                        MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
-                                .cookie(new Cookie("JSESSIONID", sessionId)))
+                MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
+                        .cookie(new Cookie("JSESSIONID", sessionId)))
                 .andReturn().getResponse();
     }
 

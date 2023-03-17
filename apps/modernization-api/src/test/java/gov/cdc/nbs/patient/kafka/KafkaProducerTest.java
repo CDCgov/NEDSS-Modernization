@@ -1,4 +1,4 @@
-package gov.cdc.nbs.services;
+package gov.cdc.nbs.patient.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -19,7 +19,6 @@ import org.springframework.util.concurrent.SettableListenableFuture;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import gov.cdc.nbs.service.KafkaRequestProducerService;
 
 @ExtendWith(MockitoExtension.class)
 class KafkaProducerTest {
@@ -31,11 +30,11 @@ class KafkaProducerTest {
     ElasticsearchPersonRepository elasticPersonRepository;
 
     @InjectMocks
-    private KafkaRequestProducerService producer;
+    private KafkaProducer producer;
 
     public KafkaProducerTest() {
         MockitoAnnotations.openMocks(this);
-        producer = new KafkaRequestProducerService();
+        producer = new KafkaProducer();
     }
 
     @Test
@@ -55,7 +54,7 @@ class KafkaProducerTest {
         assertThat(actualRecord.patientId()).isEqualTo(1L);
         assertThat(actualRecord.userId()).isEqualTo(2L);
         assertThat(actualRecord.eventType()).isEqualTo(PatientEventType.CREATE);
-        assertThat(actualRecord.record()).isEqualTo(null);
+        assertThat(actualRecord.data()).isEqualTo(null);
 
         verifyNoMoreInteractions(kafkaEnvelopeTemplate);
     }

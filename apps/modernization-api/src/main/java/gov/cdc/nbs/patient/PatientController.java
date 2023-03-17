@@ -1,4 +1,4 @@
-package gov.cdc.nbs.controller;
+package gov.cdc.nbs.patient;
 
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,6 @@ import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
-import gov.cdc.nbs.service.PatientService;
 import lombok.AllArgsConstructor;
 
 @Controller

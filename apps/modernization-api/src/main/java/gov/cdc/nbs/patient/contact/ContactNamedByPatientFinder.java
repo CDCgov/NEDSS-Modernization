@@ -9,7 +9,6 @@ import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.patient.NameRenderer;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -39,43 +38,35 @@ class ContactNamedByPatientFinder {
 
     List<PatientContacts.NamedByPatient> find(final long patient) {
         return this.factory.selectDistinct(
-                        TRACING.id,
-                        TRACING.addTime,
-                        TRACING.localId,
-                        PRIORITY.codeDescTxt,
-                        DISPOSITION.codeDescTxt,
-                        CONTACT.id,
-                        CONTACT.nmPrefix,
-                        CONTACT.firstNm,
-                        CONTACT.lastNm,
-                        CONTACT.nmSuffix,
-                        INVESTIGATION.id,
-                        INVESTIGATION.localId,
-                        INVESTIGATION.cdDescTxt,
-                        NAMED_ON
-                )
+                TRACING.id,
+                TRACING.addTime,
+                TRACING.localId,
+                PRIORITY.codeDescTxt,
+                DISPOSITION.codeDescTxt,
+                CONTACT.id,
+                CONTACT.nmPrefix,
+                CONTACT.firstNm,
+                CONTACT.lastNm,
+                CONTACT.nmSuffix,
+                INVESTIGATION.id,
+                INVESTIGATION.localId,
+                INVESTIGATION.cdDescTxt,
+                NAMED_ON)
                 .from(TRACING)
                 .join(SUBJECT).on(
-                        TRACING.subjectNBSEntityUid.id.eq(SUBJECT.id)
-                )
+                        TRACING.subjectNBSEntityUid.id.eq(SUBJECT.id))
                 .join(INVESTIGATION).on(
-                        INVESTIGATION.id.eq(TRACING.subjectEntityPhcUid.id)
-                )
+                        INVESTIGATION.id.eq(TRACING.subjectEntityPhcUid.id))
                 .join(CONTACT).on(
-                        CONTACT.id.eq(TRACING.contactNBSEntityUid.id)
-                )
+                        CONTACT.id.eq(TRACING.contactNBSEntityUid.id))
                 .leftJoin(INTERVIEW).on(
-                        INTERVIEW.id.eq(TRACING.namedDuringInterviewUid)
-                )
+                        INTERVIEW.id.eq(TRACING.namedDuringInterviewUid))
                 .leftJoin(PRIORITY).on(
-                        PRIORITY.id.code.eq(TRACING.priorityCd)
-                )
+                        PRIORITY.id.code.eq(TRACING.priorityCd))
                 .leftJoin(DISPOSITION).on(
-                        DISPOSITION.id.code.eq(TRACING.dispositionCd)
-                )
+                        DISPOSITION.id.code.eq(TRACING.dispositionCd))
                 .where(TRACING.recordStatusCd.eq("ACTIVE"),
-                        SUBJECT.personParentUid.id.eq(patient)
-                )
+                        SUBJECT.personParentUid.id.eq(patient))
                 .fetch()
                 .stream()
                 .map(this::map)
@@ -101,8 +92,7 @@ class ContactNamedByPatientFinder {
                 namedOn,
                 priority,
                 disposition,
-                event
-        );
+                event);
     }
 
     private PatientContacts.NamedContact mapContact(final Tuple tuple) {
@@ -117,13 +107,11 @@ class ContactNamedByPatientFinder {
                 prefix,
                 first,
                 last,
-                suffix
-        );
+                suffix);
 
         return new PatientContacts.NamedContact(
                 Objects.requireNonNull(identifier, "A contact identifier is required."),
-                name
-        );
+                name);
     }
 
 }

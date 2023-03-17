@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient;
+package gov.cdc.nbs.patient.contact;
 
 import gov.cdc.nbs.message.enums.Suffix;
 import org.junit.jupiter.api.Test;

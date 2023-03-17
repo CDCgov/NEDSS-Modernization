@@ -152,4 +152,10 @@ public sealed interface PatientCommand {
             long requester,
             Instant requestedOn) implements PatientCommand {
     }
+
+    record Delete(
+            long person,
+            long requester,
+            Instant requestedOn) implements PatientCommand {
+    }
 }

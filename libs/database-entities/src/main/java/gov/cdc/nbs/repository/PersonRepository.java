@@ -21,4 +21,7 @@ public interface PersonRepository extends JpaRepository<Person, Long>, QuerydslP
 
     @Query(value = "SELECT p.person_uid from Person p where p.person_parent_uid=:personParentUid", nativeQuery = true)
     List<Long> getPersonIdsByPersonParentId(@Param("personParentUid") Long personParentUid);
+
+    @Query("SELECT count(*) FROM Person p where p.personParentUid.id =:personParentUid AND p.recordStatusCd= 'ACTIVE'")
+    Long findCountOfActiveRevisions(@Param("personParentUid") Long personParentUid);
 }

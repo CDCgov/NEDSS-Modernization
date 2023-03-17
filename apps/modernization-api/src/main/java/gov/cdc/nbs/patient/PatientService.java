@@ -1,4 +1,4 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.patient;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
@@ -54,7 +54,9 @@ import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
+import gov.cdc.nbs.patient.kafka.KafkaProducer;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.service.UserService;
 import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
 
@@ -71,7 +73,7 @@ public class PatientService {
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
     private final InstantConverter instantConverter = new InstantConverter();
-    private final KafkaRequestProducerService producer;
+    private final KafkaProducer producer;
     private final PatientCreateRequestResolver createRequestResolver;
     private final UserService userService;
 

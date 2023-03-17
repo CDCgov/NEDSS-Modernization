@@ -20,10 +20,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
