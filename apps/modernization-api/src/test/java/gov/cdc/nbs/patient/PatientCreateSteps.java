@@ -9,19 +9,18 @@ import java.util.concurrent.TimeUnit;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
+import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -74,7 +73,7 @@ public class PatientCreateSteps {
         assertNotNull(payload);
 
         assertEquals(createPersonRequestId.getRequestId(), payload.request());
-        var currentUserId = getCurrentUserId();
+        var currentUserId = UserUtil.getCurrentUserId();
 
         assertThat(payload.createdBy()).isEqualTo(currentUserId);
 
@@ -87,10 +86,5 @@ public class PatientCreateSteps {
         assertThat(payload.deceasedTime()).isEqualTo(input.getDeceasedTime());
 
         assertThat(payload.ethnicity()).isEqualTo(input.getEthnicityCode());
-    }
-
-    private Long getCurrentUserId() {
-        return ((NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getId();
     }
 }

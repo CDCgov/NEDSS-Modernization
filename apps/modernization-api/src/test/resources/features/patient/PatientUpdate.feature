@@ -13,7 +13,7 @@ Feature: I can send a patient update request
       | mortality     |
 
   @patient_update_permissions
-  Scenario: I cant send update request without proper permissions
+  Scenario: I cant send update requests without the proper permissions
     Given I have the authorities: "<authorities>" for the jurisdiction: "ALL" and program area: "STD"
     When I send a "<updateType>" update request
     Then I get an access denied exception for patient update

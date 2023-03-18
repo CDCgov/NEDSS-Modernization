@@ -9,13 +9,11 @@ import java.util.concurrent.TimeUnit;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
@@ -29,6 +27,7 @@ import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
+import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -92,7 +91,7 @@ public class PatientUpdateSteps {
 
         assertEquals(response.getRequestId(), payload.requestId());
         assertEquals(response.getPatientId(), payload.patientId());
-        assertEquals(getCurrentUserId(), payload.userId());
+        assertEquals(UserUtil.getCurrentUserId(), payload.userId());
 
         switch (updateType) {
             case "general info":
@@ -153,7 +152,7 @@ public class PatientUpdateSteps {
         var generalInfoInput = (GeneralInfoInput) input;
         assertEquals(generalInfoInput.getPatientId(), data.patientId());
         assertEquals(response.getRequestId(), data.requestId());
-        assertEquals(getCurrentUserId(), data.updatedBy());
+        assertEquals(UserUtil.getCurrentUserId(), data.updatedBy());
         assertEquals(generalInfoInput.getAsOf().getEpochSecond(), data.asOf().getEpochSecond());
         assertEquals(generalInfoInput.getMaritalStatus(), data.maritalStatus());
         assertEquals(generalInfoInput.getMothersMaidenName(), data.mothersMaidenName());
@@ -176,10 +175,5 @@ public class PatientUpdateSteps {
         assertEquals(mortalityInput.getStateOfDeath(), data.stateOfDeath());
         assertEquals(mortalityInput.getCountyOfDeath(), data.countyOfDeath());
         assertEquals(mortalityInput.getCountryOfDeath(), data.countryOfDeath());
-    }
-
-    private Long getCurrentUserId() {
-        return ((NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getId();
     }
 }
