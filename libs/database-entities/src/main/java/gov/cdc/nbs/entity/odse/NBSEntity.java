@@ -112,7 +112,10 @@ public class NBSEntity {
 
     public EntityLocatorParticipation add(AddMortalityLocator mortality) {
         List<EntityLocatorParticipation> locators = ensureLocators();
-
+        if (locators.stream().filter(l -> l.getUseCd().equals("DTH")).findFirst().isPresent()) {
+            // a mortality locator already exists, do not allow adding another
+            throw new UnsupportedOperationException("Unable to add more than one mortality locator");
+        }
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
 
         EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(

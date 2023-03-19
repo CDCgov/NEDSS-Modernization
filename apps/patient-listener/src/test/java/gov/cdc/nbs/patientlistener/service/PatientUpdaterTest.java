@@ -68,7 +68,6 @@ class PatientUpdaterTest {
         assertEquals(data.primaryLanguageCode(), savedPerson.getPrimLangCd());
         assertEquals(data.speaksEnglishCode(), savedPerson.getSpeaksEnglishCd());
         assertEquals(data.eharsId(), savedPerson.getEharsId());
-        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
         assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
         assertEquals(Short.valueOf((short) 2), savedPerson.getVersionCtrlNbr());
         assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
@@ -224,8 +223,6 @@ class PatientUpdaterTest {
         assertEquals(data.additionalGender(), savedPerson.getAdditionalGenderCd());
         assertEquals(data.transGenderInfo(), savedPerson.getPreferredGenderCd());
 
-
-        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
         assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
         assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
         assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());

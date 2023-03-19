@@ -49,6 +49,7 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
             final EntityLocatorParticipationId identifier,
             final PatientCommand.AddMortalityLocator add) {
         super(add, nbsEntity, identifier);
+        this.setAsOfDate(add.asOf());
         this.cd = "U";
         this.useCd = "DTH";
         this.locator = new PostalLocator(add);

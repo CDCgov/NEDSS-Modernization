@@ -1,5 +1,13 @@
 package gov.cdc.nbs.entity.odse;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.time.Instant;
+import java.util.Arrays;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
@@ -9,13 +17,8 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.Test;
-
-import java.time.Instant;
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
 
 class PersonTest {
 
@@ -312,6 +315,161 @@ class PersonTest {
         assertThat(actual.getVersionCtrlNbr()).isEqualTo((short) 2);
         assertThat(actual.getLastChgUserId()).isEqualTo((short) 131L);
         assertThat(actual.getLastChgTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    }
+
+    @Test
+    void should_set_general_info_fields() {
+        Person actual = new Person(121L, "local-id-value");
+        var command = new PatientCommand.UpdateGeneralInfo(
+                121L,
+                Instant.parse("2010-03-03T10:15:30.00Z"),
+                "marital status",
+                "mothers maiden name",
+                (short) 1,
+                (short) 2,
+                "occupation code",
+                "education level",
+                "prim language",
+                "speaks english",
+                "eharsId",
+                12L,
+                Instant.parse("2019-03-03T10:15:30.00Z"));
+
+        actual.update(command);
+
+        assertEquals(command.asOf().getEpochSecond(), actual.getAsOfDateGeneral().getEpochSecond());
+        assertEquals(command.maritalStatus(), actual.getMaritalStatusCd());
+        assertEquals(command.mothersMaidenName(), actual.getMothersMaidenNm());
+        assertEquals(command.adultsInHouseNumber(), actual.getAdultsInHouseNbr());
+        assertEquals(command.childrenInHouseNumber(), actual.getChildrenInHouseNbr());
+        assertEquals(command.occupationCode(), actual.getOccupationCd());
+        assertEquals(command.educationLevelCode(), actual.getEducationLevelCd());
+        assertEquals(command.primaryLanguageCode(), actual.getPrimLangCd());
+        assertEquals(command.speaksEnglishCode(), actual.getSpeaksEnglishCd());
+        assertEquals(command.eharsId(), actual.getEharsId());
+        assertThat(actual.getAsOfDateGeneral()).isEqualTo("2010-03-03T10:15:30.00Z");
+        assertThat(actual.getLastChgTime()).isEqualTo("2019-03-03T10:15:30.00Z");
+        assertEquals(Long.valueOf(command.requester()), actual.getLastChgUserId());
+        assertEquals(Short.valueOf((short) 2), actual.getVersionCtrlNbr());
+        assertEquals(Long.valueOf(command.requester()), actual.getLastChgUserId());
+    }
+
+    @Test
+    void should_set_birth_and_sex_fields() {
+        final String asOf = "2012-03-03T10:15:30.00Z";
+        final String dob = "2012-03-03T10:15:30.00Z";
+        final String ageReportedTime = "1990-04-05T10:15:30.00Z";
+        final String requestedOn = "2020-04-05T10:15:30.00Z";
+        Person actual = new Person(121L, "local-id-value");
+        PatientCommand.UpdateSexAndBirthInfo command = new UpdateSexAndBirthInfo(
+                123L,
+                Instant.parse(asOf),
+                Instant.parse(dob),
+                Gender.F,
+                Gender.M,
+                "additional gender info",
+                "trans info",
+                "birth city",
+                "birth Cntry",
+                "birth state",
+                (short) 1,
+                "multiple birth",
+                "sex unknown",
+                "current age",
+                Instant.parse(ageReportedTime),
+                321L,
+                Instant.parse(requestedOn));
+
+        actual.update(command);
+
+        assertEquals(command.birthGender(), actual.getBirthGenderCd());
+        assertEquals(command.currentGender(), actual.getCurrSexCd());
+        assertThat(actual.getBirthTime()).isEqualTo(dob);
+        assertThat(actual.getAsOfDateSex()).isEqualTo(asOf);
+        assertEquals(command.currentAge(), actual.getAgeReported());
+        assertThat(actual.getAgeReportedTime()).isEqualTo(ageReportedTime);
+        assertEquals(command.birthCity(), actual.getBirthCityCd());
+        assertEquals(command.birthCntry(), actual.getBirthCntryCd());
+        assertEquals(command.birthState(), actual.getBirthStateCd());
+        assertEquals(command.birthOrderNbr(), actual.getBirthOrderNbr());
+        assertEquals(command.multipleBirth(), actual.getMultipleBirthInd());
+        assertEquals(command.sexUnknown(), actual.getSexUnkReasonCd());
+        assertEquals(command.additionalGender(), actual.getAdditionalGenderCd());
+        assertEquals(command.transGenderInfo(), actual.getPreferredGenderCd());
+        assertEquals((short) 2, actual.getVersionCtrlNbr());
+        assertThat(actual.getLastChgTime()).isEqualTo(requestedOn);
+    }
+
+    @Test
+    void should_add_mortality_fields() {
+        final String asOf = "2012-03-03T10:15:30.00Z";
+        final String deceasedTime = "2012-03-03T10:15:30.00Z";
+        final String requestedOn = "2020-04-05T10:15:30.00Z";
+        Person actual = new Person(121L, "local-id-value");
+        PatientCommand.AddMortalityLocator command = new AddMortalityLocator(
+                121L,
+                987L,
+                Instant.parse(asOf),
+                Deceased.FALSE,
+                Instant.parse(deceasedTime),
+                "city of death",
+                "state of death",
+                "county of death",
+                "country of death",
+                456L,
+                Instant.parse(requestedOn));
+
+        actual.add(command);
+        var participation = actual.getNbsEntity().getEntityLocatorParticipations().get(0);
+        // validate entityLocatorParticipation
+        assertEquals(Long.valueOf(121L), participation.getId().getEntityUid());
+        assertEquals(Long.valueOf(987L), participation.getId().getLocatorUid());
+        assertThat(participation.getLastChgTime()).isEqualTo(requestedOn);
+        assertThat(participation.getAddTime()).isEqualTo(requestedOn);
+        assertEquals(Long.valueOf(456L), participation.getAddUserId());
+        assertEquals(Long.valueOf(456L), participation.getLastChgUserId());
+        assertThat(participation.getAsOfDate()).isEqualTo(asOf);
+        assertEquals(Short.valueOf((short) 1), participation.getVersionCtrlNbr());
+
+        // validate locator
+        var locator = (PostalLocator) participation.getLocator();
+        assertEquals(Long.valueOf(987L), locator.getId());
+        assertEquals(command.cityOfDeath(), locator.getCityDescTxt());
+        assertEquals(command.countryOfDeath(), locator.getCntryCd());
+        assertEquals(command.countyOfDeath(), locator.getCntyCd());
+        assertEquals(command.stateOfDeath(), locator.getStateCd());
+        assertThat(locator.getLastChgTime()).isEqualTo(requestedOn);
+        assertEquals(Long.valueOf(command.requester()), locator.getLastChgUserId());
+    }
+
+    @Test
+    void should_not_allow_two_mortality_locators() {
+        final String asOf = "2012-03-03T10:15:30.00Z";
+        final String deceasedTime = "2012-03-03T10:15:30.00Z";
+        final String requestedOn = "2020-04-05T10:15:30.00Z";
+        Person actual = new Person(121L, "local-id-value");
+        PatientCommand.AddMortalityLocator command = new AddMortalityLocator(
+                121L,
+                987L,
+                Instant.parse(asOf),
+                Deceased.FALSE,
+                Instant.parse(deceasedTime),
+                "city of death",
+                "state of death",
+                "county of death",
+                "country of death",
+                456L,
+                Instant.parse(requestedOn));
+        actual.add(command);
+        UnsupportedOperationException ex = null;
+        try {
+            actual.add(command);
+            // should not reach this assertion
+            assertTrue(false);
+        } catch (UnsupportedOperationException e) {
+            ex = e;
+        }
+        assertNotNull(ex);
     }
 
 }
