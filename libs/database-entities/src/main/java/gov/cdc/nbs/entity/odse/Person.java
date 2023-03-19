@@ -543,7 +543,7 @@ public class Person {
 
     public void delete(PatientCommand.Delete delete) {
         this.setRecordStatusCd(RecordStatus.LOG_DEL);
-        this.setRecordStatusTime(Instant.now());
+        this.setRecordStatusTime(delete.requestedOn());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
 
         setLastChange(delete);

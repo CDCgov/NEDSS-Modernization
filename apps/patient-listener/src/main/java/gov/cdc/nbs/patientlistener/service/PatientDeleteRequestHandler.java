@@ -49,6 +49,7 @@ public class PatientDeleteRequestHandler {
         var person = optional.get();
         person = patientDeleter.delete(person, userId);
         deleteElasticsearchPatient(person);
+        statusProducer.send(true, requestId, "Successfully deleted patient", patientId);
     }
 
     /*

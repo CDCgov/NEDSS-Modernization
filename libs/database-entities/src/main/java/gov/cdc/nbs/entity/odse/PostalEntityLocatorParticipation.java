@@ -55,15 +55,10 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public void updateMortalityLocator(PatientCommand.UpdateMortalityLocator update) {
-        var locator = getLocator();
-        locator.setCityDescTxt(update.cityOfDeath());
-        locator.setStateCd(update.stateOfDeath());
-        locator.setCntyCd(update.countyOfDeath());
-        locator.setCntryCd(update.countryOfDeath());
-        locator.setLastChgTime(update.requestedOn());
-        locator.setLastChgUserId(update.requester());
+        this.locator.update(update);
         this.setLastChgTime(update.requestedOn());
         this.setLastChgUserId(update.requester());
+        this.setAsOfDate(update.asOf());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
     }
 

@@ -27,6 +27,10 @@ public class StatusProducer {
                 .message(message)
                 .entityId(entityId)
                 .build();
+        send(status);
+    }
+
+    public void send(RequestStatus status) {
         template.send(statusTopic, status);
     }
 }

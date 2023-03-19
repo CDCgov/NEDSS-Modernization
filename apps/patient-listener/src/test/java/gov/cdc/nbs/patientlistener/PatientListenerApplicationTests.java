@@ -9,9 +9,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 
-import gov.cdc.nbs.patientlistener.config.KafkaConfig;
 
-@SpringBootTest(classes = {KafkaConfig.class})
+@SpringBootTest()
 @ActiveProfiles("test")
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class PatientListenerApplicationTests {

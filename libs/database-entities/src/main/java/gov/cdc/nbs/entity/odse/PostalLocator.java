@@ -5,6 +5,7 @@ import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import gov.cdc.nbs.patient.PatientCommand.UpdateMortalityLocator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -108,6 +109,15 @@ public class PostalLocator extends Locator {
         this.cntryCd = add.countryOfDeath();
         this.cntyCd = add.countyOfDeath();
         this.stateCd = add.stateOfDeath();
+    }
+
+    public void update(UpdateMortalityLocator update) {
+        this.setCityDescTxt(update.cityOfDeath());
+        this.setStateCd(update.stateOfDeath());
+        this.setCntyCd(update.countyOfDeath());
+        this.setCntryCd(update.countryOfDeath());
+        this.setLastChgTime(update.requestedOn());
+        this.setLastChgUserId(update.requester());
     }
 
     private void applyCity(final City city) {

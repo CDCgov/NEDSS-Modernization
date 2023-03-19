@@ -298,4 +298,20 @@ class PersonTest {
 
     }
 
+    @Test
+    void should_set_deleted_fields() {
+        Person actual = new Person(117L, "local-id-value");
+
+        actual.delete(new PatientCommand.Delete(
+                117L,
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")));
+
+        assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.LOG_DEL);
+        assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+        assertThat(actual.getVersionCtrlNbr()).isEqualTo((short) 2);
+        assertThat(actual.getLastChgUserId()).isEqualTo((short) 131L);
+        assertThat(actual.getLastChgTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    }
+
 }

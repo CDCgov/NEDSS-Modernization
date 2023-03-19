@@ -45,7 +45,8 @@ public class PatientUpdateRequestHandler {
      */
     public void handlePatientGeneralInfoUpdate(final UpdateGeneralInfoData data) {
         if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            notAuthorized(data.requestId());
+            sendNotAuthorizedStatus(data.requestId());
+            return;
         }
         var optional = personRepository.findById(data.patientId());
         if (optional.isEmpty()) {
@@ -70,7 +71,8 @@ public class PatientUpdateRequestHandler {
      */
     public void handlePatientMortalityUpdate(final UpdateMortalityData data) {
         if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            notAuthorized(data.requestId());
+            sendNotAuthorizedStatus(data.requestId());
+            return;
         }
         var optionalPerson = personRepository.findById(data.patientId());
         if (optionalPerson.isEmpty()) {
@@ -95,7 +97,8 @@ public class PatientUpdateRequestHandler {
      */
     public void handlePatientSexAndBirthUpdate(final UpdateSexAndBirthData data) {
         if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            notAuthorized(data.requestId());
+            sendNotAuthorizedStatus(data.requestId());
+            return;
         }
         var optionalPerson = personRepository.findById(data.patientId());
         if (optionalPerson.isEmpty()) {
@@ -119,7 +122,7 @@ public class PatientUpdateRequestHandler {
     }
 
 
-    private void notAuthorized(final String key) {
+    private void sendNotAuthorizedStatus(final String key) {
         log.debug("User lacks permission for patient create");
         statusProducer.send(false, key, "User not authorized to perform this operation");
     }

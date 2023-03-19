@@ -1,14 +1,11 @@
 package gov.cdc.nbs.patientlistener.kafka;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
@@ -22,26 +19,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class KafkaConsumer {
-
-    @Value("${kafkadef.topics.status.patient}")
-    private String statusTopic;
-
     private final ObjectMapper mapper;
     private final PatientCreateRequestHandler createHandler;
     private final PatientUpdateRequestHandler updateHandler;
     private final PatientDeleteRequestHandler deleteHandler;
-    private final KafkaTemplate<String, RequestStatus> statusTemplate;
+    private final StatusProducer statusProducer;
 
     public KafkaConsumer(ObjectMapper mapper,
             PatientCreateRequestHandler createHandler,
             PatientUpdateRequestHandler updateHandler,
             PatientDeleteRequestHandler deleteHandler,
-            KafkaTemplate<String, RequestStatus> statusTemplate) {
+            StatusProducer statusProducer) {
         this.mapper = mapper;
         this.createHandler = createHandler;
         this.updateHandler = updateHandler;
         this.deleteHandler = deleteHandler;
-        this.statusTemplate = statusTemplate;
+        this.statusProducer = statusProducer;
     }
 
 
@@ -68,24 +61,13 @@ public class KafkaConsumer {
                     updateHandler.handlePatientSexAndBirthUpdate((UpdateSexAndBirthData) event.data());
                     break;
                 default:
-                    sendStatusMessage(false, "Invalid EventType specified.", key);
+                    statusProducer.send(false, key, "Invalid EventType specified.");
                     log.warn("Invalid EventType specified: {}", event.eventType());
                     throw new IllegalArgumentException("Invalid EventType specified");
             }
         } catch (JsonProcessingException e) {
             log.warn("Failed to parse kafka message. Key: {}, Message: {}", key, e.getMessage());
-            sendStatusMessage(false, "Failed to parse kafka message", key);
+            statusProducer.send(false, key, "Failed to parse kafka message");
         }
-    }
-
-    private void sendStatusMessage(boolean success, String message, String requestId) {
-        statusTemplate.send(
-                statusTopic,
-                RequestStatus
-                        .builder()
-                        .successful(success)
-                        .message(message)
-                        .requestId(requestId)
-                        .build());
     }
 }

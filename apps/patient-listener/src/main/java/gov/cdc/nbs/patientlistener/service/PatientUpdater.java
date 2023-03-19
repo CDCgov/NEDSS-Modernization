@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patientlistener.service;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
@@ -30,20 +32,21 @@ public class PatientUpdater {
     }
 
     public Person update(final Person person, final UpdateMortalityData data) {
-        var mortalityElp = person.getNbsEntity()
-                .getEntityLocatorParticipations()
+        Optional.ofNullable(person.getNbsEntity().getEntityLocatorParticipations())
                 .stream()
+                .flatMap(List::stream)
                 .filter(elp -> elp.getUseCd().equals("DTH"))
-                .findFirst();
-        if (mortalityElp.isPresent()) {
-            var elp = (PostalEntityLocatorParticipation) mortalityElp.get();
-            elp.updateMortalityLocator(asUpdateMortalityLocator(data));
-            return personRepository.save(person);
-        } else {
-            var id = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
-            person.add(asAddMortalityLocator(data, id));
-            return personRepository.save(person);
-        }
+                .findFirst()
+                .ifPresentOrElse(elp -> {
+                    // If postalEntityLocator exists with useCd of "DTH", update it
+                    ((PostalEntityLocatorParticipation) elp).updateMortalityLocator(asUpdateMortalityLocator(data));
+                }, () -> {
+                    // If postalEntityLocator with useCd of "DTH" does not exist, create it
+                    var id = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
+                    person.add(asAddMortalityLocator(data, id));
+                });
+
+        return personRepository.save(person);
     }
 
     public Person update(Person person, UpdateSexAndBirthData data) {

@@ -1,29 +1,48 @@
 package gov.cdc.nbs.patientlistener.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.util.Objects;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.*;
-import gov.cdc.nbs.message.RequestStatus;
+import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonName;
+import gov.cdc.nbs.entity.odse.PersonRace;
+import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.patientlistener.producer.KafkaProducer;
+import gov.cdc.nbs.message.patient.event.PatientCreateData;
+import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
-import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
-import java.util.Objects;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class PatientCreateRequestHandlerTest {
 
@@ -34,13 +53,11 @@ class PatientCreateRequestHandlerTest {
     @Mock
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
     @Mock
-    private KafkaProducer producer;
+    private StatusProducer producer;
 
     @InjectMocks
     private PatientCreateRequestHandler patientService;
 
-    @Captor
-    ArgumentCaptor<RequestStatus> statusCaptor;
     @Captor
     ArgumentCaptor<Person> personCaptor;
     @Captor
@@ -58,7 +75,7 @@ class PatientCreateRequestHandlerTest {
     @Test
     @SuppressWarnings("squid:S5961")
     // Allow more than 25 assertions
-    void should_create_patient_in_database_and_elasticsearch() {
+    void should_create_patient_in_database_and_elasticsearch() throws JsonMappingException, JsonProcessingException {
         // Mock methods
 
         doReturn(true).when(userService).isAuthorized(269L, "FIND-PATIENT", "ADD-PATIENT");
@@ -132,9 +149,10 @@ class PatientCreateRequestHandlerTest {
                     "comments": "comments"
                 }
                 """;
+        var data = mapper.readValue(json, PatientCreateData.class);
 
         // call handlePatientCreate
-        patientService.handlePatientCreate(json, "request-id-value");
+        patientService.handlePatientCreate(data);
 
         // verify proper data saved to repositories
         verify(personRepository).save(personCaptor.capture());
@@ -197,46 +215,37 @@ class PatientCreateRequestHandlerTest {
         verifyElasticsearchPerson(elasticsearchPersonCaptor.getValue(), actual_person);
 
         // verify successful patient create status was posted to topic
-        verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
-
-        assertTrue(statusCaptor.getValue().isSuccessful());
-        assertEquals("request-id-value", statusCaptor.getValue().getRequestId());
-        assertEquals(actual_person.getId(), statusCaptor.getValue().getEntityId());
+        verify(producer).send(
+                true,
+                "RequestId",
+                "Successfully created patient",
+                191L);
     }
 
     @Test
-    void should_not_create_patient_for_an_invalid_message() {
-        // Send an invalid message
-        patientService.handlePatientCreate("bad message", "bad key");
-
-        // Verify error status is set
-        verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
-        assertFalse(statusCaptor.getValue().isSuccessful());
-
-        // Verify nothing was saved
-        verify(personRepository, never()).save(Mockito.any());
-        verify(elasticsearchPersonRepository, never()).save(Mockito.any());
-    }
-
-    @Test
-    void should_not_create_patient_if_requester_lacks_permission() {
+    void should_not_create_patient_if_requester_lacks_permission()
+            throws JsonMappingException, JsonProcessingException {
         // set invalid user credentials
         doReturn(false).when(userService).isAuthorized(anyLong(), any(), any());
 
         String json = """
                 {
-                    "requestId": "RequestId",
-                    "patientId": 191,
+                    "request": "RequestId",
+                    "patient": 191,
                     "patientLocalId": "PSN123GA01"
                 }
                 """;
 
+        var data = mapper.readValue(json, PatientCreateData.class);
+
         // Send the request
-        patientService.handlePatientCreate(json, "RequestId");
+        patientService.handlePatientCreate(data);
 
         // Verify error status is set
-        verify(producer).requestPatientCreateStatusEnvelope(statusCaptor.capture());
-        assertFalse(statusCaptor.getValue().isSuccessful());
+        verify(producer).send(
+                false,
+                "RequestId",
+                "User not authorized to perform this operation");
 
         // Verify nothing was saved
         verify(personRepository, never()).save(Mockito.any());

@@ -24,7 +24,7 @@ public class PatientCreateRequestHandler {
     private StatusProducer statusProducer;
 
     @Autowired
-    private PatientCreator creator;
+    PatientCreator creator;
 
     @Transactional
     public void handlePatientCreate(PatientCreateData data) {
