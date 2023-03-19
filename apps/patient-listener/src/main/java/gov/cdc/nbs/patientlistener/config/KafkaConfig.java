@@ -1,47 +1,24 @@
-package gov.cdc.nbs.config;
+package gov.cdc.nbs.patientlistener.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
-@ConditionalOnProperty("kafka.enabled")
 public class KafkaConfig {
-
-    @Value("${kafka.properties.topic.partition.count}")
-    private int topicPartitionCount;
-
-    @Value("${kafka.properties.topic.replication.factor}")
-    private int topicReplicationFactor;
 
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     @Value("${kafka.properties.schema.registry.url}")
     private String schemaRegistryUrl;
-
-    @Value("${kafkadef.topics.request.patient}")
-    private String patientTopic;
-
-    @Value("${kafka.enabled:true}")
-    private boolean kafkaEnabled;
-
-    @Bean
-    public NewTopic createPatientSearchTopic() {
-        return TopicBuilder.name(patientTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
-                .compact().build();
-    }
 
     @Bean
     public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
@@ -63,10 +40,4 @@ public class KafkaConfig {
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return config;
     }
-
-    @Bean
-    public CommonLoggingErrorHandler errorHandler() {
-        return new CommonLoggingErrorHandler();
-    }
-
 }

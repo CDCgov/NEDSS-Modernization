@@ -47,3 +47,5 @@ kafkadef:
             patient: patient
         status:
             patient: patient-status
+    groups:
+        patient: patient-group

@@ -37,8 +37,7 @@ public class KafkaConsumer {
         this.statusProducer = statusProducer;
     }
 
-
-    @KafkaListener(topics = "patient", groupId = "group")
+    @KafkaListener(topics = "${kafkadef.topics.request.patient}", groupId = "${kafkadef.groups.patient}")
     public void listenToPatientTopic(String message, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
         log.debug("Processing kafka message: {}", message);
         try {

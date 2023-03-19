@@ -72,3 +72,5 @@ kafkadef:
   topics:
     request:
       patient: patient
+    status:
+      patient: patient-status
