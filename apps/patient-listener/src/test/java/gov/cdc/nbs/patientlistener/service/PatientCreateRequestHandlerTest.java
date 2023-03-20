@@ -2,6 +2,7 @@ package gov.cdc.nbs.patientlistener.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -41,6 +42,7 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
+import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
@@ -241,13 +243,15 @@ class PatientCreateRequestHandlerTest {
         var data = mapper.readValue(json, PatientCreateData.class);
 
         // Send the request
-        patientService.handlePatientCreate(data);
+        UserNotAuthorizedException ex = null;
+        try {
+            patientService.handlePatientCreate(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
 
-        // Verify error status is set
-        verify(producer).send(
-                false,
-                "RequestId",
-                "User not authorized to perform this operation");
+        // Verify exception is thrown
+        assertNotNull(ex);
 
         // Verify nothing was saved
         verify(personRepository, never()).save(Mockito.any());

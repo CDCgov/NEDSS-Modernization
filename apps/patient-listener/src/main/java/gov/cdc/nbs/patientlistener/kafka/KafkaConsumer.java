@@ -11,6 +11,7 @@ import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.patientlistener.exception.KafkaException;
 import gov.cdc.nbs.patientlistener.service.PatientCreateRequestHandler;
 import gov.cdc.nbs.patientlistener.service.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.service.PatientUpdateRequestHandler;
@@ -37,7 +38,7 @@ public class KafkaConsumer {
         this.statusProducer = statusProducer;
     }
 
-    @KafkaListener(topics = "${kafkadef.topics.request.patient}", groupId = "${kafkadef.groups.patient}")
+    @KafkaListener(topics = "${kafkadef.topics.request.patient}", containerFactory = "kafkaListenerContainerFactory")
     public void listenToPatientTopic(String message, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
         log.debug("Processing kafka message: {}", message);
         try {
@@ -62,11 +63,11 @@ public class KafkaConsumer {
                 default:
                     statusProducer.send(false, key, "Invalid EventType specified.");
                     log.warn("Invalid EventType specified: {}", event.eventType());
-                    throw new IllegalArgumentException("Invalid EventType specified");
+                    throw new KafkaException("Invalid EventType specified", key);
             }
         } catch (JsonProcessingException e) {
             log.warn("Failed to parse kafka message. Key: {}, Message: {}", key, e.getMessage());
-            statusProducer.send(false, key, "Failed to parse kafka message");
+            throw new KafkaException("Failed to parse message into PatientEvent", key);
         }
     }
 }

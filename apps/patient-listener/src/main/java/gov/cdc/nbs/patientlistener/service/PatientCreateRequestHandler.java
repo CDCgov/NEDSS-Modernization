@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
+import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
@@ -49,7 +50,7 @@ public class PatientCreateRequestHandler {
 
     private void notAuthorized(final String key) {
         log.debug("User lacks permission for patient create");
-        statusProducer.send(false, key, "User not authorized to perform this operation");
+        throw new UserNotAuthorizedException(key);
     }
 
     /**

@@ -15,6 +15,7 @@ public class PatientDeleter {
     }
 
     public Person delete(final Person person, final long userId) {
+        // TODO check for active revisions
         person.delete(asDelete(person.getId(), userId));
         return personRepository.save(person);
     }

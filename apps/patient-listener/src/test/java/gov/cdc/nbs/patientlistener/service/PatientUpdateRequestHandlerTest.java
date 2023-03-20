@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patientlistener.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -19,6 +20,8 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
@@ -68,13 +71,21 @@ class PatientUpdateRequestHandlerTest {
         // set unauthorized mock
         when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
 
-        // call handle update gen info
-        updateHandler.handlePatientGeneralInfoUpdate(data);
+        UserNotAuthorizedException ex = null;
 
-        // verify save requests are not called, failure status sent
+        // call handle update gen info
+        try {
+            updateHandler.handlePatientGeneralInfoUpdate(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+
+        // verify  exception thrown, save requests are not called
+        assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(false), eq("RequestId"), Mockito.anyString());
+
     }
 
     @Test
@@ -83,14 +94,19 @@ class PatientUpdateRequestHandlerTest {
         // set authorized = true, patient = null
         when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        PatientNotFoundException ex = null;
 
         // call handle update gen info
-        updateHandler.handlePatientGeneralInfoUpdate(data);
+        try {
+            updateHandler.handlePatientGeneralInfoUpdate(data);
+        } catch (PatientNotFoundException e) {
+            ex = e;
+        }
 
-        // verify save requests are not called, failure status sent
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(false), eq("RequestId"), Mockito.anyString());
     }
 
     private UpdateGeneralInfoData getGeneralInfoData() {
@@ -134,13 +150,19 @@ class PatientUpdateRequestHandlerTest {
         // set unauthorized mock
         when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
 
-        // call handle update mortality info
-        updateHandler.handlePatientMortalityUpdate(data);
+        UserNotAuthorizedException ex = null;
 
-        // verify save requests are not called, failure status sent
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientMortalityUpdate(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(false), eq("RequestId"), Mockito.anyString());
     }
 
     @Test
@@ -151,13 +173,20 @@ class PatientUpdateRequestHandlerTest {
         when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
+        PatientNotFoundException ex = null;
+
+
         // call handle update mortality info
-        updateHandler.handlePatientMortalityUpdate(data);
+        try {
+            updateHandler.handlePatientMortalityUpdate(data);
+        } catch (PatientNotFoundException e) {
+            ex = e;
+        }
 
         // verify save requests are not called, failure status sent
+        assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(false), eq("RequestId"), Mockito.anyString());
     }
 
     private UpdateMortalityData getMortalityData() {
@@ -198,13 +227,19 @@ class PatientUpdateRequestHandlerTest {
         // set unauthorized mock
         when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
 
-        // call handle update mortality info
-        updateHandler.handlePatientSexAndBirthUpdate(data);
+        UserNotAuthorizedException ex = null;
 
-        // verify save requests are not called, failure status sent
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientSexAndBirthUpdate(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(false), eq("RequestId"), Mockito.anyString());
     }
 
     @Test
@@ -215,13 +250,19 @@ class PatientUpdateRequestHandlerTest {
         when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
-        // call handle update mortality info
-        updateHandler.handlePatientSexAndBirthUpdate(data);
+        PatientNotFoundException ex = null;
 
-        // verify save requests are not called, failure status sent
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientSexAndBirthUpdate(data);
+        } catch (PatientNotFoundException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(false), eq("RequestId"), Mockito.anyString());
     }
 
     private UpdateSexAndBirthData getSexAndBirthData() {

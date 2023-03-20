@@ -5,14 +5,14 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class PatientUpdateRequestHandler {
     private final PersonRepository personRepository;
@@ -45,16 +45,11 @@ public class PatientUpdateRequestHandler {
      */
     public void handlePatientGeneralInfoUpdate(final UpdateGeneralInfoData data) {
         if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            sendNotAuthorizedStatus(data.requestId());
-            return;
-        }
-        var optional = personRepository.findById(data.patientId());
-        if (optional.isEmpty()) {
-            sendPatientDoesntExistStatus(data.requestId(), data.patientId());
-            return;
+            throw new UserNotAuthorizedException(data.requestId());
         }
 
-        var person = patientUpdater.update(optional.get(), data);
+        var person = findPerson(data.patientId(), data.requestId());
+        person = patientUpdater.update(person, data);
         updateElasticsearchPatient(person);
         statusProducer.send(
                 true,
@@ -71,16 +66,11 @@ public class PatientUpdateRequestHandler {
      */
     public void handlePatientMortalityUpdate(final UpdateMortalityData data) {
         if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            sendNotAuthorizedStatus(data.requestId());
-            return;
-        }
-        var optionalPerson = personRepository.findById(data.patientId());
-        if (optionalPerson.isEmpty()) {
-            sendPatientDoesntExistStatus(data.requestId(), data.patientId());
-            return;
+            throw new UserNotAuthorizedException(data.requestId());
         }
 
-        var person = patientUpdater.update(optionalPerson.get(), data);
+        var person = findPerson(data.patientId(), data.requestId());
+        patientUpdater.update(person, data);
         updateElasticsearchPatient(person);
         statusProducer.send(
                 true,
@@ -97,16 +87,11 @@ public class PatientUpdateRequestHandler {
      */
     public void handlePatientSexAndBirthUpdate(final UpdateSexAndBirthData data) {
         if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            sendNotAuthorizedStatus(data.requestId());
-            return;
-        }
-        var optionalPerson = personRepository.findById(data.patientId());
-        if (optionalPerson.isEmpty()) {
-            sendPatientDoesntExistStatus(data.requestId(), data.patientId());
-            return;
+            throw new UserNotAuthorizedException(data.requestId());
         }
 
-        var person = patientUpdater.update(optionalPerson.get(), data);
+        var person = findPerson(data.patientId(), data.requestId());
+        patientUpdater.update(person, data);
         updateElasticsearchPatient(person);
         statusProducer.send(
                 true,
@@ -115,23 +100,17 @@ public class PatientUpdateRequestHandler {
                 data.patientId());
     }
 
+    private Person findPerson(final long patientId, final String requestId) {
+        var optional = personRepository.findById(patientId);
+        if (optional.isEmpty()) {
+            throw new PatientNotFoundException(patientId, requestId);
+        }
+        return optional.get();
+    }
 
     private void updateElasticsearchPatient(final Person person) {
         var esPerson = PersonConverter.toElasticsearchPerson(person);
         elasticsearchPersonRepository.save(esPerson);
-    }
-
-
-    private void sendNotAuthorizedStatus(final String key) {
-        log.debug("User lacks permission for patient create");
-        statusProducer.send(false, key, "User not authorized to perform this operation");
-    }
-
-    private void sendPatientDoesntExistStatus(String requestId, long patientId) {
-        statusProducer.send(
-                false,
-                requestId,
-                "Failed to find patient in database: " + patientId);
     }
 
 }

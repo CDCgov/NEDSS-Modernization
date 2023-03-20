@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patientlistener.kafka;
 
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
+import gov.cdc.nbs.patientlistener.exception.KafkaException;
 import gov.cdc.nbs.patientlistener.service.PatientCreateRequestHandler;
 import gov.cdc.nbs.patientlistener.service.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.service.PatientUpdateRequestHandler;
@@ -110,17 +111,20 @@ class KafkaConsumerTest {
 
     @Test
     void testBadData() {
-        consumer.listenToPatientTopic("bad message", "key");
+        KafkaException ex = null;
+        try {
+            consumer.listenToPatientTopic("bad message", "key");
+        } catch (KafkaException e) {
+            ex = e;
+        }
 
+        assertNotNull(ex);
         // No handler was called
         verify(createHandler, times(0)).handlePatientCreate(Mockito.any());
         verify(updateHandler, times(0)).handlePatientGeneralInfoUpdate(Mockito.any());
         verify(updateHandler, times(0)).handlePatientMortalityUpdate(Mockito.any());
         verify(updateHandler, times(0)).handlePatientSexAndBirthUpdate(Mockito.any());
         verify(deleteHandler, times(0)).handlePatientDelete(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
-
-        // A failure status was send
-        verify(statusProducer).send(eq(false), eq("key"), Mockito.anyString());
     }
 
 }

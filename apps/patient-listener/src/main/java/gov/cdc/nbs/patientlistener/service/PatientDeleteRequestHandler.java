@@ -2,6 +2,9 @@ package gov.cdc.nbs.patientlistener.service;
 
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.patientlistener.exception.KafkaException;
+import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -34,22 +37,26 @@ public class PatientDeleteRequestHandler {
      */
     public void handlePatientDelete(final String requestId, final long patientId, final long userId) {
         if (!userService.isAuthorized(userId, "VIEW-PATIENT", "DELETE-PATIENT")) {
-            statusProducer.send(false, requestId, "User not authorized to perform this operation");
-            return;
-        }
-        var optional = personRepository.findById(patientId);
-        if (optional.isEmpty()) {
-            statusProducer.send(
-                    false,
-                    requestId,
-                    "Failed to find patient in database: " + patientId);
-            return;
+            throw new UserNotAuthorizedException(requestId);
         }
 
-        var person = optional.get();
+        // do not allow delete if there are "Active Revisons"
+        if (personRepository.findCountOfActiveRevisions(patientId) > 1) {
+            throw new KafkaException("Cannot delete patient with Active Revisions", requestId);
+        }
+
+        var person = findPerson(patientId, requestId);
         person = patientDeleter.delete(person, userId);
         deleteElasticsearchPatient(person);
         statusProducer.send(true, requestId, "Successfully deleted patient", patientId);
+    }
+
+    private Person findPerson(final long patientId, final String requestId) {
+        var optional = personRepository.findById(patientId);
+        if (optional.isEmpty()) {
+            throw new PatientNotFoundException(patientId, requestId);
+        }
+        return optional.get();
     }
 
     /*
