@@ -21,15 +21,15 @@ services:
       - FORCE_RESTORE
     networks:
       - nbs
-  wildfly: 
+  wildfly:
     build: ./
     container_name: wildfly
     depends_on:
       - nbs-mssql
-    ports: 
+    ports:
       - "9990:9990"
       - "7001:7001"
-      - "8787:8787" 
+      - "8787:8787"
     networks:
       - nbs
   reverse-proxy:
@@ -41,15 +41,20 @@ services:
       - "8081:8081" # traefik dashboard
     networks:
       - nbs
+    environment:
+      - MODERNIZATION_UI_SERVER=${MODERNIZATION_UI_SERVER:-modernization-ui}
+      - MODERNIZATION_UI_PORT=${MODERNIZATION_UI_PORT:-80}
+      - MODERNIZATION_API_SERVER=${MODERNIZATION_API_SERVER:-modernization-api}
+      - MODERNIZATION_API_PORT=${MODERNIZATION_API_PORT:-8080}
     # volumes:
-    #   - ./proxy/:/etc/traefik/    
+    #   - ./proxy/:/etc/traefik/
   elasticsearch:
     container_name: elasticsearch
-    build:  ./elasticsearch
+    build: ./elasticsearch
     networks:
       - nbs
     ports:
-      - 9200:9200 
+      - 9200:9200
       - 9300:9300
     # environment:
     #   - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m" # Uncomment to limit memory usage
@@ -65,10 +70,10 @@ services:
     ports:
       - 5601:5601
     # volumes:
-    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml]   
+    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml]
   nifi:
     container_name: nifi
-    build: ./nifi 
+    build: ./nifi
     restart: unless-stopped
     ports:
       - 8443:8443
@@ -76,7 +81,7 @@ services:
     #   - ./nifi/nifi_drivers:/var/opt/nifi_drivers:ro
     #   - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw
     networks:
-      - nbs    
+      - nbs
 volumes:
   nbs-mssql-data:
 networks:

@@ -1,7 +1,13 @@
 http:
   routers:
     # Modernization app
+    login:
+      service: modernization-api
+      rule: "PathPrefix(`/login`)"
     modernizationForward:
+      service: modernization-api
+      rule: "Path(`/graphql`) || PathPrefix(`/encryption`)"
+    ui-forward:
       service: modernization
       rule: "PathPrefix(`/`)"
     # Base /nbs forward
@@ -10,12 +16,12 @@ http:
       rule: "PathPrefix(`/nbs`)"
     # NBS to modernization overrides
     simpleSearch:
-      service: modernization
+      service: modernization-api
       rule: "Path(`/nbs/HomePage.do`) && Query(`method=patientSearchSubmit`)"
       middlewares:
         - "simpleSearchRewritepath"
     advancedSearch:
-      service: modernization
+      service: modernization-api
       middlewares:
         - "advancedSearchRewritepath"
       rule: "Path(`/nbs/MyTaskList1.do`)&& Query(`ContextAction=GlobalPatient`)"
@@ -31,10 +37,14 @@ http:
       replacePath:
         path: /nbs/redirect/advancedSearch
   services:
+    modernization-api:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "MODERNIZATION_API_SERVER" | default "modernization-api" }}:{{ env "MODERNIZATION_API_PORT" | default "8080" }}/'
     modernization:
       loadBalancer:
         servers:
-          - url: "http://modernization-api:8080/"
+          - url: 'http://{{ env "MODERNIZATION_UI_SERVER" | default "modernization-api" }}:{{ env "MODERNIZATION_UI_PORT" | default "8080" }}/'
     nbs:
       loadBalancer:
         servers:

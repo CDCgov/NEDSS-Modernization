@@ -21,9 +21,9 @@
 ### Mac ARM system (M1/M2)
 
 1. Install [Java 17](docs/InstallJava.md)
-1. Install Node / NPM
-1. Clone [NBS](https://github.com/cdcent/NEDSSDev)
-1. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into. Example:
+2. Install Node / NPM
+3. Clone [NBS](https://github.com/cdcent/NEDSSDev)
+4. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into. Example:
 
    ```sh
    export NEDSS_HOME="/Users/michaelpeels/Projects/NBS/NEDSSDev"
@@ -33,52 +33,52 @@
 
    ```
 
-1. CD into the `cdc-sandbox` directory
+5. CD into the `cdc-sandbox` directory
    ```sh
    cd cdc-sandbox
    ```
-1. Run the NBS [build script](cdc-sandbox/build.sh) to build the image
+6. Run the NBS [build script](cdc-sandbox/build.sh) to build the image
    ```sh
    ./build.sh
    ```
-1. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1) and place it in `cdc-sandbox/db/restore/restore.d/`
-1. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
+7. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1) and place it in `cdc-sandbox/db/restore/restore.d/`
+8. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
    ```sh
    ./run.sh
    ```
-1. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
+9. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
    ```sh
    docker-compose up elasticsearch kibana reverse-proxy -d
    ```
-1. CD into the `apps/modernization-ui` directory
-   ```sh
-   cd ../apps/modernization-ui
-   ```
-1. Run `npm install`
-   ```sh
-   npm i
-   ```
-1. CD to the `apps/modernization-api` directory
-   ```sh
-   cd ../modernization-api
-   ```
-1. Start the `modernization-api` container
-   ```sh
-   docker-compose up modernization-api -d
-   ```
-1. CD into the `cdc-sandbox` directory and Start NiFi
-   ```sh
-   cd ../cdc-sandbox
-   docker-compose up nifi -d
-   ```
-1. Visit http://localhost:8080/nbs/login
+10. CD into the `apps/modernization-ui` directory
+    ```sh
+    cd ../apps/modernization-ui
+    ```
+11. Run `npm install`
+    ```sh
+    npm i
+    ```
+12. CD to the `apps/modernization-api` directory
+    ```sh
+    cd ../modernization-api
+    ```
+13. Start the `modernization-api` container
+    ```sh
+    docker-compose up modernization-api -d
+    ```
+14. CD into the `cdc-sandbox` directory and Start NiFi
+    ```sh
+    cd ../cdc-sandbox
+    docker-compose up nifi -d
+    ```
+15. Visit http://localhost:8080/nbs/login
 
-   ```
-   username: msa
-   password:
-   ```
+    ```
+    username: msa
+    password:
+    ```
 
-1. To create your own user account visit site (line 15):
+16. To create your own user account visit site (line 15):
 
 - Navigate to System Management
 - Expand Security Management
@@ -87,3 +87,50 @@
 - Add a Role & click submit
 
 ## Code Formatting
+
+## Running with local servers
+
+By default, the reverse proxy will route to the containerized `modernization-api` or `modernization-ui`.  Routing to a local `modernization-api` or `modernization-ui` servers can be achieved by altering the configuration to point to the local instances.
+
+| Name                     | Default             | Description                                                |
+|--------------------------|---------------------|------------------------------------------------------------|
+| MODERNIZATION_UI_SERVER  | `modernization-ui`  | The host name of the server that provides the frontend UI. |
+| MODERNIZATION_UI_PORT    | `80`                | The port the frontend UI is served from.                   |
+| MODERNIZATION_API_SERVER | `modernization-api` | The host name of the server that provides the backend API  |
+| MODERNIZATION_API_PORT   | `8080`              | The port the frontend UI is served from.                   |
+
+### Configuring the Reverse Proxy to use local modernization-ui
+
+Start the frontend UI locally by running the following command from the `apps/modernization-ui` folder.
+
+```shell
+npm run start
+```
+
+Start the reverse proxy configured to route to the local frontend instance by running the following command from the `cdc-sandbox` folder
+
+```shell
+MODERNIZATION_UI_SERVER=host.docker.internal MODERNIZATION_UI_PORT=3000 docker compose up -d reverse-proxy
+```
+
+### Configuring the Reverse Proxy to use local modernization-api
+
+Start the backend API locally listening on port 9080 from the root project folder.  The `cdc-sandbox` exposes the reverse-proxy on port `8080`, which is the default port for Spring Boot.  It must be changed in order for the backend to stat properly.
+
+```shell
+./gradlew :modernization-api:bootRun --args='--server.port=9080'
+```
+
+Start the reverse proxy configured to route to the local backend by running the following command from the `cdc-sandbox` folder
+
+```shell
+MODERNIZATION_API_SERVER=host.docker.internal MODERNIZATION_API_PORT=9080 docker compose up -d reverse-proxy
+```
+
+### Resetting to Docker only
+
+Start the reverse proxy by running the following command from the `cdc-sandbox` folder
+
+```shell
+docker compose up -d reverse-proxy
+```
