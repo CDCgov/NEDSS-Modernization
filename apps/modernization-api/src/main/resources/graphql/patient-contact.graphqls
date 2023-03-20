@@ -13,6 +13,7 @@ type NamedByPatient {
   priority: String
   disposition: String
   event: String!
+  associatedWith: PatientContactInvestigation
 }
 
 type NamedByContact {
