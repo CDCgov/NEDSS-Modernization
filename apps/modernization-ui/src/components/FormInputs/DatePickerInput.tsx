@@ -1,6 +1,6 @@
 import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 type OnChange = (val?: string) => void;
 
