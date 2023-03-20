@@ -1,0 +1,27 @@
+type PatientMorbidity {
+    morbidity: ID!
+    receivedOn: DateTime!
+    provider: String
+    reportedOn: DateTime!
+    condition: String!
+    jurisdiction: String!
+    event: String!
+    associatedWith: PatientMorbidityInvestigation
+}
+
+type PatientMorbidityInvestigation {
+    id: ID!
+    local: String!
+    condition: String!
+}
+
+type PatientMorbidityResults {
+    content: [PatientMorbidity]!
+    total: Int!
+    number: Int!
+}
+
+extend type Query {
+    findMorbidityReportsForPatient(patient: ID! page: Page ): PatientMorbidityResults
+}
+

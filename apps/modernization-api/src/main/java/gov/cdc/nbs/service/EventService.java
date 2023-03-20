@@ -1,11 +1,21 @@
 package gov.cdc.nbs.service;
 
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
+import gov.cdc.nbs.config.security.SecurityUtil.Operations;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.entity.elasticsearch.LabReport;
+import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
+import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -26,29 +36,9 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
-import gov.cdc.nbs.config.security.SecurityUtil.Operations;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.entity.odse.Observation;
-import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
-import gov.cdc.nbs.repository.ObservationRepository;
-import gov.cdc.nbs.repository.ParticipationRepository;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.time.FlexibleInstantConverter;
-import gov.cdc.nbs.util.Constants;
 
-
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
 public class EventService {
@@ -64,26 +54,15 @@ public class EventService {
     private final Integer maxPageSize;
     private final ElasticsearchOperations operations;
     private final SecurityService securityService;
-    @PersistenceContext
-    private final EntityManager entityManager;
-    private final PersonRepository personReposity;
-    private final ParticipationRepository participationRepository;
-    private final ObservationRepository oboservationRepository;
 
-    public EventService(@Value("${nbs.max-page-size: 50}") Integer maxPageSize,
+    public EventService(
+            @Value("${nbs.max-page-size: 50}") Integer maxPageSize,
             ElasticsearchOperations operations,
-            SecurityService securityService,
-            EntityManager entityManager,
-            PersonRepository personReposity,
-            ParticipationRepository participationRepository,
-            ObservationRepository oboservationRepository) {
+            SecurityService securityService
+    ) {
         this.maxPageSize = maxPageSize;
         this.operations = operations;
         this.securityService = securityService;
-        this.entityManager = entityManager;
-        this.personReposity = personReposity;
-        this.participationRepository = participationRepository;
-        this.oboservationRepository = oboservationRepository;
     }
 
     @PreAuthorize(VIEW_LAB_REPORT)
@@ -98,14 +77,6 @@ public class EventService {
         var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
         return performSearch(query, LabReport.class);
     }
-
-    @PreAuthorize(VIEW_MORBIDITY_REPORT)
-    public Page<Observation> findMorbidtyReportForPatient(Long patientId, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, maxPageSize);
-        List<Observation> reports = findMorbidityReportsForPatient(patientId);
-        return new PageImpl<>(reports, pageable, reports.size());
-    }
-
 
     private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
         var hits = operations.search(query, clazz);
@@ -363,7 +334,6 @@ public class EventService {
                 .build();
     }
 
-
     private Collection<SortBuilder<?>> buildLabReportSort(Pageable pageable) {
         if (pageable.getSort().isEmpty()) {
             return new ArrayList<>();
@@ -425,10 +395,12 @@ public class EventService {
     }
 
     /**
-     * Return a list of lab reports that the user has access to, are associated with a particular patient, and have the
+     * Return a list of lab reports that the user has access to, are associated with
+     * a particular patient, and have the
      * status of "UNPROCESSED"
      *
-     * This currently only returns lab reports as those are the only documents ingested in elasticsearch, but in the
+     * This currently only returns lab reports as those are the only documents
+     * ingested in elasticsearch, but in the
      * future will also include morbidity reports and case reports
      */
     public Page<LabReport> findDocumentsRequiringReviewForPatient(Long patientId, GraphQLPage page) {
@@ -459,16 +431,9 @@ public class EventService {
         return performSearch(query, LabReport.class);
     }
 
-    public List<Observation> findMorbidityReportsForPatient(Long patientId) {
-        List<Long> results = personReposity.getPersonIdsByPersonParentId(patientId);
-        List<Long> actIdResults = participationRepository
-                .findIdActUidByIdTypeCdAndIdSubjectEntityUidIn(Constants.REPORT_TYPE, results);
-        return oboservationRepository.findByIdIn(actIdResults);
-
-    }
-
     /**
-     * Adds a query to only return documents that the user has access to based on the users program area and
+     * Adds a query to only return documents that the user has access to based on
+     * the users program area and
      * jurisdiction access
      */
     private void addProgramAreaJurisdictionQuery(BoolQueryBuilder builder, String programJurisdictionField) {
