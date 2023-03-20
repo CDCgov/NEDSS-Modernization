@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
+import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.patientlistener.config.KafkaConfig;
 
 
@@ -18,10 +20,14 @@ import gov.cdc.nbs.patientlistener.config.KafkaConfig;
 class KafkaConfigTest {
 
     @Autowired
-    ConcurrentKafkaListenerContainerFactory<String, String> containerFactory;
+    private KafkaTemplate<String, RequestStatus> kafkaTemplate;
+
+    @Autowired
+    private ProducerFactory<String, RequestStatus> producerFactory;
 
     @Test
     void should_resolve_beans_for_kafka_resources() {
-        assertNotNull(containerFactory);
+        assertNotNull(kafkaTemplate);
+        assertNotNull(producerFactory);
     }
 }
