@@ -63,7 +63,7 @@ public class KafkaConfig {
     <V> ConcurrentKafkaListenerContainerFactory<String, V> concurrentKafkaListenerContainerFactory(
             KafkaErrorHandler errorHandler) {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, V>();
-        factory.setConsumerFactory(new DefaultKafkaConsumerFactory<String, V>(commonConsumerConfigs()));
+        factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(commonConsumerConfigs()));
         factory.setCommonErrorHandler(errorHandler);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
         return factory;

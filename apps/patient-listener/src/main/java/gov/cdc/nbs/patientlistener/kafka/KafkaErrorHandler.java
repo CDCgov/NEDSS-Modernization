@@ -17,7 +17,7 @@ public class KafkaErrorHandler implements CommonErrorHandler {
     }
 
     @Override
-    public void handleRecord(Exception thrownException, ConsumerRecord<?, ?> record, Consumer<?, ?> consumer,
+    public void handleRecord(Exception thrownException, ConsumerRecord<?, ?> consumerRecord, Consumer<?, ?> consumer,
             MessageListenerContainer container) {
         log.warn("Kafka Consumer encountered an exception: {}", thrownException.getMessage());
         var cause = thrownException.getCause();
@@ -25,7 +25,7 @@ public class KafkaErrorHandler implements CommonErrorHandler {
         if (cause instanceof KafkaException exception) {
             statusProducer.send(false, exception.getKey(), exception.getMessage());
         } else {
-            statusProducer.send(false, (String) record.key(), "Failed to process message");
+            statusProducer.send(false, (String) consumerRecord.key(), "Failed to process message");
         }
 
     }

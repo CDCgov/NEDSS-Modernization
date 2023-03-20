@@ -34,7 +34,7 @@ class PatientDeleterTest {
     }
 
     @Test
-    public void should_set_correct_fields() {
+    void should_set_correct_fields() {
         Person person = new Person(123L, "local-id");
         patientDeleter.delete(person, 321L);
 
