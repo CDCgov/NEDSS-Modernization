@@ -1,4 +1,4 @@
-package gov.cdc.nbs.services;
+package gov.cdc.nbs.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,7 +19,6 @@ import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import gov.cdc.nbs.service.EventService;
 import gov.cdc.nbs.util.Constants;
 
 
@@ -34,9 +33,9 @@ class FindMorbidityReportsForPatientTest {
 
     @Mock
     ObservationRepository oboservationRepository;
-    
+
     @Mock
-   	ElasticsearchPersonRepository elasticPersonRepository;
+    ElasticsearchPersonRepository elasticPersonRepository;
 
     @InjectMocks
     EventService eventService;

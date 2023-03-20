@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patientlistener;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.Assert.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,13 +12,13 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest()
 @ActiveProfiles("test")
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
-class PatientListenerApplicationTests {
+class KafkaConfigTest {
 
     @Autowired
     ConcurrentKafkaListenerContainerFactory<String, String> containerFactory;
 
     @Test
-    void contextLoads() {
+    void should_resolve_beans_for_kafka_resources() {
         assertNotNull(containerFactory);
     }
 }

@@ -36,7 +36,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
@@ -57,6 +56,7 @@ import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
 import gov.cdc.nbs.patient.kafka.KafkaProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.service.UserService;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
 import lombok.RequiredArgsConstructor;
 
@@ -72,7 +72,6 @@ public class PatientService {
     private final PersonRepository personRepository;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
-    private final InstantConverter instantConverter = new InstantConverter();
     private final KafkaProducer producer;
     private final PatientCreateRequestResolver createRequestResolver;
     private final UserService userService;
@@ -267,7 +266,7 @@ public class PatientService {
 
         if (filter.getDateOfBirth() != null) {
             String dobOperator = filter.getDateOfBirthOperator();
-            String dobString = (String) instantConverter.write(filter.getDateOfBirth());
+            String dobString = FlexibleInstantConverter.toString(filter.getDateOfBirth());
             if (dobOperator == null || dobOperator.equalsIgnoreCase("equal")) {
                 builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.BIRTH_TIME, dobString));
             } else if (dobOperator.equalsIgnoreCase("before")) {

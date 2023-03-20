@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,14 +46,14 @@ public class ElasticsearchOrganizationParticipation {
     private String typeDescTxt;
 
     @Field(name = PARTICIPATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant participationLastChangeTime;
 
     @Field(name = DISPLAY_NAME, type = FieldType.Text)
     private String name;
 
     @Field(name = ORGANIZATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant organizationLastChangeTime;
 
 }

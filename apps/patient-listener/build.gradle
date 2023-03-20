@@ -8,13 +8,23 @@ plugins {
     id "org.springframework.boot" version "${springBootVersion}"
     id "io.spring.dependency-management" version "1.0.12.RELEASE"
     id "java"
+    id 'jvm-test-suite'
+    id 'jacoco-report-aggregation'
 }
 
 group = 'gov.cdc.nbs'
 version = '0.0.1-SNAPSHOT'
 
-repositories {
-    mavenCentral()
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation libs.bundles.testing
+            }
+        }
+    }
 }
 
 dependencies {
@@ -78,12 +88,6 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.17.6"
 	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
 	testImplementation "org.testcontainers:elasticsearch:1.17.6"
-
-    testImplementation "org.assertj:assertj-core:3.24.2"
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
 
 compileJava.mustRunAfter(":database-entities:build")

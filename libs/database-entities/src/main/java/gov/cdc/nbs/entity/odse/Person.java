@@ -2,6 +2,7 @@ package gov.cdc.nbs.entity.odse;
 
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -413,7 +414,7 @@ public class Person {
 
         this.ssn = patient.ssn();
 
-        this.birthTime = patient.dateOfBirth();
+        this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant();
         this.birthGenderCd = patient.birthGender();
         this.currSexCd = patient.currentGender();
 
@@ -523,7 +524,7 @@ public class Person {
     public void update(PatientCommand.UpdateSexAndBirthInfo info) {
         this.setBirthGenderCd(info.birthGender());
         this.setCurrSexCd(info.currentGender());
-        this.setBirthTime(info.dateOfBirth());
+        this.setBirthTime(info.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant());
         this.setAsOfDateSex(info.asOf());
         this.setAgeReported(info.currentAge());
         this.setAgeReportedTime(info.ageReportedTime());

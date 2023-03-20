@@ -14,6 +14,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
+  DateTime: any;
 };
 
 export type Act = {
@@ -25,7 +26,7 @@ export type ActId = {
   __typename?: 'ActId';
   actIdSeq?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
-  lastChangeTime?: Maybe<Scalars['Date']>;
+  lastChangeTime?: Maybe<Scalars['DateTime']>;
   recordStatus?: Maybe<Scalars['String']>;
   rootExtensionTxt?: Maybe<Scalars['String']>;
   typeCd?: Maybe<Scalars['String']>;
@@ -33,9 +34,9 @@ export type ActId = {
 
 export type AssociatedInvestigation = {
   __typename?: 'AssociatedInvestigation';
-  actRelationshipLastChgTime?: Maybe<Scalars['Date']>;
+  actRelationshipLastChgTime?: Maybe<Scalars['DateTime']>;
   cdDescTxt?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['Date']>;
+  lastChgTime?: Maybe<Scalars['DateTime']>;
   localId?: Maybe<Scalars['String']>;
   publicHealthCaseUid?: Maybe<Scalars['Int']>;
 };
@@ -69,8 +70,8 @@ export type CountryCode = {
   codeShortDescTxt?: Maybe<Scalars['String']>;
   codeSystemCd?: Maybe<Scalars['String']>;
   codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['Date']>;
-  effectiveToTime?: Maybe<Scalars['Date']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
   excludedTxt?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   indentLevelNbr?: Maybe<Scalars['Int']>;
@@ -81,7 +82,7 @@ export type CountryCode = {
   seqNum?: Maybe<Scalars['Int']>;
   sourceConceptId?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type CountyCode = {
@@ -150,9 +151,9 @@ export type IdentificationTypeId = {
 export type Investigation = {
   __typename?: 'Investigation';
   actIds?: Maybe<Array<Maybe<ActId>>>;
-  activityFromTime?: Maybe<Scalars['Date']>;
-  activityToTime?: Maybe<Scalars['Date']>;
-  addTime?: Maybe<Scalars['Date']>;
+  activityFromTime?: Maybe<Scalars['DateTime']>;
+  activityToTime?: Maybe<Scalars['DateTime']>;
+  addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['Int']>;
   caseClassCd?: Maybe<Scalars['String']>;
   caseTypeCd?: Maybe<Scalars['String']>;
@@ -162,12 +163,12 @@ export type Investigation = {
   investigationStatusCd?: Maybe<Scalars['String']>;
   jurisdictionCd?: Maybe<Scalars['Int']>;
   jurisdictionCodeDescTxt?: Maybe<Scalars['String']>;
-  lastChangeTime?: Maybe<Scalars['Date']>;
+  lastChangeTime?: Maybe<Scalars['DateTime']>;
   lastChangeUserId?: Maybe<Scalars['Int']>;
   localId?: Maybe<Scalars['String']>;
   moodCd?: Maybe<Scalars['String']>;
-  notificationAddTime?: Maybe<Scalars['Date']>;
-  notificationLastChgTime?: Maybe<Scalars['Date']>;
+  notificationAddTime?: Maybe<Scalars['DateTime']>;
+  notificationLastChgTime?: Maybe<Scalars['DateTime']>;
   notificationLocalId?: Maybe<Scalars['String']>;
   notificationRecordStatusCd?: Maybe<Scalars['String']>;
   organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
@@ -175,16 +176,16 @@ export type Investigation = {
   personParticipations?: Maybe<Array<Maybe<PersonParticipation>>>;
   pregnantIndCd?: Maybe<Scalars['String']>;
   progAreaCd?: Maybe<Scalars['String']>;
-  publicHealthCaseLastChgTime?: Maybe<Scalars['Date']>;
+  publicHealthCaseLastChgTime?: Maybe<Scalars['DateTime']>;
   publicHealthCaseUid?: Maybe<Scalars['Int']>;
   recordStatus?: Maybe<Scalars['String']>;
-  rptFormCmpltTime?: Maybe<Scalars['Date']>;
+  rptFormCmpltTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type InvestigationEventDateSearch = {
   eventDateType: InvestigationEventDateType;
-  from: Scalars['Date'];
-  to: Scalars['Date'];
+  from: Scalars['DateTime'];
+  to: Scalars['DateTime'];
 };
 
 export enum InvestigationEventDateType {
@@ -245,8 +246,8 @@ export type Jurisdiction = {
   codeShortDescTxt?: Maybe<Scalars['String']>;
   codeSystemCd?: Maybe<Scalars['String']>;
   codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['Date']>;
-  effectiveToTime?: Maybe<Scalars['Date']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
   exportInd?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   indentLevelNbr?: Maybe<Scalars['Int']>;
@@ -256,30 +257,30 @@ export type Jurisdiction = {
   sourceConceptId?: Maybe<Scalars['String']>;
   stateDomainCd?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
   typeCd: Scalars['String'];
 };
 
 export type LabReport = {
   __typename?: 'LabReport';
   actIds?: Maybe<Array<Maybe<ActId>>>;
-  activityToTime?: Maybe<Scalars['Date']>;
-  addTime?: Maybe<Scalars['Date']>;
+  activityToTime?: Maybe<Scalars['DateTime']>;
+  addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['Int']>;
   associatedInvestigations?: Maybe<Array<Maybe<AssociatedInvestigation>>>;
   cdDescTxt?: Maybe<Scalars['String']>;
   classCd?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['Date']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
   electronicInd?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   jurisdictionCd?: Maybe<Scalars['Int']>;
   jurisdictionCodeDescTxt?: Maybe<Scalars['String']>;
-  lastChange?: Maybe<Scalars['Date']>;
+  lastChange?: Maybe<Scalars['DateTime']>;
   lastChgUserId?: Maybe<Scalars['Int']>;
   localId?: Maybe<Scalars['String']>;
   materialParticipations?: Maybe<Array<Maybe<MaterialParticipation>>>;
   moodCd?: Maybe<Scalars['String']>;
-  observationLastChgTime?: Maybe<Scalars['Date']>;
+  observationLastChgTime?: Maybe<Scalars['DateTime']>;
   observationUid?: Maybe<Scalars['Int']>;
   observations?: Maybe<Array<Maybe<Observation>>>;
   organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
@@ -287,7 +288,7 @@ export type LabReport = {
   pregnantIndCd?: Maybe<Scalars['String']>;
   programAreaCd?: Maybe<Scalars['String']>;
   recordStatusCd?: Maybe<Scalars['String']>;
-  rptToStateTime?: Maybe<Scalars['Date']>;
+  rptToStateTime?: Maybe<Scalars['DateTime']>;
   versionCtrlNbr?: Maybe<Scalars['Int']>;
 };
 
@@ -349,8 +350,8 @@ export type LabTestId = {
 
 export type LaboratoryEventDateSearch = {
   eventDateType: LaboratoryReportEventDateType;
-  from: Scalars['Date'];
-  to: Scalars['Date'];
+  from: Scalars['DateTime'];
+  to: Scalars['DateTime'];
 };
 
 export enum LaboratoryEventIdType {
@@ -437,7 +438,7 @@ export type MaterialParticipation = {
   cd?: Maybe<Scalars['String']>;
   cdDescTxt?: Maybe<Scalars['String']>;
   entityId?: Maybe<Scalars['String']>;
-  participationLastChangeTime?: Maybe<Scalars['Date']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
   participationRecordStatus?: Maybe<Scalars['String']>;
   subjectClassCd?: Maybe<Scalars['String']>;
   typeCd?: Maybe<Scalars['String']>;
@@ -449,10 +450,10 @@ export type MorbidtyObservation = {
   act?: Maybe<Act>;
   activityDurationAmt?: Maybe<Scalars['String']>;
   activityDurationUnitCd?: Maybe<Scalars['String']>;
-  activityFromTime?: Maybe<Scalars['Date']>;
-  activityToTime?: Maybe<Scalars['Date']>;
+  activityFromTime?: Maybe<Scalars['DateTime']>;
+  activityToTime?: Maybe<Scalars['DateTime']>;
   addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['Date']>;
+  addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['Int']>;
   altCd?: Maybe<Scalars['String']>;
   altCdDescTxt?: Maybe<Scalars['String']>;
@@ -474,15 +475,15 @@ export type MorbidtyObservation = {
   derivationExp?: Maybe<Scalars['Int']>;
   effectiveDurationAmt?: Maybe<Scalars['String']>;
   effectiveDurationUnitCd?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['Date']>;
-  effectiveToTime?: Maybe<Scalars['Date']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
   electronicInd?: Maybe<Scalars['String']>;
   groupLevelCd?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   jurisdictionCd?: Maybe<Scalars['String']>;
   labConditionCd?: Maybe<Scalars['String']>;
   lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['Date']>;
+  lastChgTime?: Maybe<Scalars['DateTime']>;
   lastChgUserId?: Maybe<Scalars['Int']>;
   localId?: Maybe<Scalars['String']>;
   methodCd?: Maybe<Scalars['String']>;
@@ -500,12 +501,12 @@ export type MorbidtyObservation = {
   progAreaCd?: Maybe<Scalars['String']>;
   programJurisdictionOid?: Maybe<Scalars['Int']>;
   recordStatusCd?: Maybe<Scalars['String']>;
-  recordStatusTime?: Maybe<Scalars['Date']>;
+  recordStatusTime?: Maybe<Scalars['DateTime']>;
   repeatNbr?: Maybe<Scalars['Int']>;
-  rptToStateTime?: Maybe<Scalars['Date']>;
+  rptToStateTime?: Maybe<Scalars['DateTime']>;
   sharedInd?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
   subjectPersonUid?: Maybe<Person>;
   targetSiteCd?: Maybe<Scalars['String']>;
   targetSiteDescTxt?: Maybe<Scalars['String']>;
@@ -516,10 +517,22 @@ export type MorbidtyObservation = {
   ynuCd?: Maybe<Scalars['String']>;
 };
 
+export type MortalityInput = {
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  cityOfDeath?: InputMaybe<Scalars['String']>;
+  countryOfDeath?: InputMaybe<Scalars['String']>;
+  countyOfDeath?: InputMaybe<Scalars['String']>;
+  deceased?: InputMaybe<Deceased>;
+  deceasedTime?: InputMaybe<Scalars['DateTime']>;
+  stateOfDeath?: InputMaybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createPatient: Scalars['String'];
-  updatePatient?: Maybe<UpdateResult>;
+  updateMortality?: Maybe<UpdateResult>;
+  updatePatientGeneralInfo?: Maybe<UpdateResult>;
+  updatePatientSexBirth?: Maybe<UpdateResult>;
 };
 
 
@@ -528,9 +541,21 @@ export type MutationCreatePatientArgs = {
 };
 
 
-export type MutationUpdatePatientArgs = {
+export type MutationUpdateMortalityArgs = {
+  id: Scalars['ID'];
+  patient: MortalityInput;
+};
+
+
+export type MutationUpdatePatientGeneralInfoArgs = {
   id: Scalars['ID'];
   patient: PersonInput;
+};
+
+
+export type MutationUpdatePatientSexBirthArgs = {
+  id: Scalars['ID'];
+  patient: UpdateSexAndBirthInput;
 };
 
 export type NbsEntity = {
@@ -580,9 +605,9 @@ export type NamedByContact = {
   condition?: Maybe<Scalars['String']>;
   contact: NamedContact;
   contactRecord: Scalars['ID'];
-  createdOn: Scalars['Date'];
+  createdOn: Scalars['DateTime'];
   event: Scalars['String'];
-  namedOn: Scalars['Date'];
+  namedOn: Scalars['DateTime'];
 };
 
 export type NamedByPatient = {
@@ -590,10 +615,10 @@ export type NamedByPatient = {
   condition?: Maybe<Scalars['String']>;
   contact: NamedContact;
   contactRecord: Scalars['ID'];
-  createdOn: Scalars['Date'];
+  createdOn: Scalars['DateTime'];
   disposition?: Maybe<Scalars['String']>;
   event: Scalars['String'];
-  namedOn: Scalars['Date'];
+  namedOn: Scalars['DateTime'];
   priority?: Maybe<Scalars['String']>;
 };
 
@@ -652,7 +677,7 @@ export enum Operator {
 export type Organization = {
   __typename?: 'Organization';
   addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['Date']>;
+  addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['ID']>;
   cd?: Maybe<Scalars['String']>;
   cdDescTxt?: Maybe<Scalars['String']>;
@@ -666,24 +691,24 @@ export type Organization = {
   durationUnitCd?: Maybe<Scalars['String']>;
   edxInd?: Maybe<Scalars['String']>;
   electronicInd?: Maybe<Scalars['String']>;
-  fromTime?: Maybe<Scalars['Date']>;
+  fromTime?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['ID']>;
   lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['Date']>;
+  lastChgTime?: Maybe<Scalars['DateTime']>;
   lastChgUserId?: Maybe<Scalars['Int']>;
   localId?: Maybe<Scalars['String']>;
   phoneCntryCd?: Maybe<Scalars['String']>;
   phoneNbr?: Maybe<Scalars['String']>;
   recordStatusCd?: Maybe<RecordStatus>;
-  recordStatusTime?: Maybe<Scalars['Date']>;
+  recordStatusTime?: Maybe<Scalars['DateTime']>;
   standardIndustryClassCd?: Maybe<Scalars['String']>;
   standardIndustryDescTxt?: Maybe<Scalars['String']>;
   stateCd?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
   streetAddr1?: Maybe<Scalars['String']>;
   streetAddr2?: Maybe<Scalars['String']>;
-  toTime?: Maybe<Scalars['Date']>;
+  toTime?: Maybe<Scalars['DateTime']>;
   userAffiliationTxt?: Maybe<Scalars['String']>;
   versionCtrlNbr?: Maybe<Scalars['Int']>;
   zipCd?: Maybe<Scalars['String']>;
@@ -705,8 +730,8 @@ export type OrganizationParticipation = {
   actUid?: Maybe<Scalars['Int']>;
   entityId?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
-  organizationLastChangeTime?: Maybe<Scalars['Date']>;
-  participationLastChangeTime?: Maybe<Scalars['Date']>;
+  organizationLastChangeTime?: Maybe<Scalars['DateTime']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
   participationRecordStatus?: Maybe<Scalars['String']>;
   subjectClassCd?: Maybe<Scalars['String']>;
   typeCd?: Maybe<Scalars['String']>;
@@ -762,8 +787,8 @@ export type PatientDocument = {
   condition?: Maybe<Scalars['String']>;
   document: Scalars['ID'];
   event: Scalars['String'];
-  receivedOn: Scalars['Date'];
-  reportedOn: Scalars['Date'];
+  receivedOn: Scalars['DateTime'];
+  reportedOn: Scalars['DateTime'];
   sendingFacility: Scalars['String'];
   type: Scalars['String'];
 };
@@ -783,11 +808,11 @@ export type PatientIdentificationTypeResults = {
 export type PatientTreatment = {
   __typename?: 'PatientTreatment';
   associatedWith: PatientTreatmentInvestigation;
-  createdOn: Scalars['Date'];
+  createdOn: Scalars['DateTime'];
   description: Scalars['String'];
   event: Scalars['String'];
   provider?: Maybe<Scalars['String']>;
-  treatedOn: Scalars['Date'];
+  treatedOn: Scalars['DateTime'];
   treatment: Scalars['ID'];
 };
 
@@ -801,38 +826,38 @@ export type PatientTreatmentInvestigation = {
 export type Person = {
   __typename?: 'Person';
   addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['Date']>;
+  addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['ID']>;
   additionalGenderCd?: Maybe<Scalars['String']>;
   administrativeGenderCd?: Maybe<Scalars['String']>;
   adultsInHouseNbr?: Maybe<Scalars['Int']>;
   ageCalc?: Maybe<Scalars['Int']>;
-  ageCalcTime?: Maybe<Scalars['Date']>;
+  ageCalcTime?: Maybe<Scalars['DateTime']>;
   ageCalcUnitCd?: Maybe<Scalars['String']>;
   ageCategoryCd?: Maybe<Scalars['String']>;
   ageReported?: Maybe<Scalars['String']>;
-  ageReportedTime?: Maybe<Scalars['Date']>;
+  ageReportedTime?: Maybe<Scalars['DateTime']>;
   ageReportedUnitCd?: Maybe<Scalars['String']>;
-  asOfDateAdmin?: Maybe<Scalars['Date']>;
-  asOfDateEthnicity?: Maybe<Scalars['Date']>;
-  asOfDateGeneral?: Maybe<Scalars['Date']>;
-  asOfDateMorbidity?: Maybe<Scalars['Date']>;
-  asOfDateSex?: Maybe<Scalars['Date']>;
+  asOfDateAdmin?: Maybe<Scalars['DateTime']>;
+  asOfDateEthnicity?: Maybe<Scalars['DateTime']>;
+  asOfDateGeneral?: Maybe<Scalars['DateTime']>;
+  asOfDateMorbidity?: Maybe<Scalars['DateTime']>;
+  asOfDateSex?: Maybe<Scalars['DateTime']>;
   birthCityCd?: Maybe<Scalars['String']>;
   birthCityDescTxt?: Maybe<Scalars['String']>;
   birthCntryCd?: Maybe<Scalars['String']>;
   birthGenderCd?: Maybe<Gender>;
   birthOrderNbr?: Maybe<Scalars['Int']>;
   birthStateCd?: Maybe<Scalars['String']>;
-  birthTime?: Maybe<Scalars['Date']>;
-  birthTimeCalc?: Maybe<Scalars['Date']>;
+  birthTime?: Maybe<Scalars['DateTime']>;
+  birthTimeCalc?: Maybe<Scalars['DateTime']>;
   cd?: Maybe<Scalars['String']>;
   cdDescTxt?: Maybe<Scalars['String']>;
   cellPhoneNbr?: Maybe<Scalars['String']>;
   childrenInHouseNbr?: Maybe<Scalars['Int']>;
   currSexCd?: Maybe<Scalars['String']>;
   deceasedIndCd?: Maybe<Scalars['String']>;
-  deceasedTime?: Maybe<Scalars['Date']>;
+  deceasedTime?: Maybe<Scalars['DateTime']>;
   dedupMatchInd?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   dlNum?: Maybe<Scalars['String']>;
@@ -850,7 +875,7 @@ export type Person = {
   ethnicityGroupCd?: Maybe<Scalars['String']>;
   firstNm?: Maybe<Scalars['String']>;
   groupNbr?: Maybe<Scalars['Int']>;
-  groupTime?: Maybe<Scalars['Date']>;
+  groupTime?: Maybe<Scalars['DateTime']>;
   hmCityCd?: Maybe<Scalars['String']>;
   hmCityDescTxt?: Maybe<Scalars['String']>;
   hmCntryCd?: Maybe<Scalars['String']>;
@@ -864,7 +889,7 @@ export type Person = {
   hmZipCd?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['Date']>;
+  lastChgTime?: Maybe<Scalars['DateTime']>;
   lastChgUserId?: Maybe<Scalars['ID']>;
   lastNm?: Maybe<Scalars['String']>;
   localId?: Maybe<Scalars['String']>;
@@ -889,12 +914,12 @@ export type Person = {
   raceDescTxt?: Maybe<Scalars['String']>;
   raceSeqNbr?: Maybe<Scalars['Int']>;
   recordStatusCd?: Maybe<RecordStatus>;
-  recordStatusTime?: Maybe<Scalars['Date']>;
+  recordStatusTime?: Maybe<Scalars['DateTime']>;
   sexUnkReasonCd?: Maybe<Scalars['String']>;
   speaksEnglishCd?: Maybe<Scalars['String']>;
   ssn?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
   survivedIndCd?: Maybe<Scalars['String']>;
   userAffiliationTxt?: Maybe<Scalars['String']>;
   versionCtrlNbr?: Maybe<Scalars['Int']>;
@@ -948,19 +973,27 @@ export type PersonIdentification = {
 export type PersonInput = {
   DateOfBirth?: InputMaybe<Scalars['Date']>;
   addresses?: InputMaybe<Array<InputMaybe<PostalAddress>>>;
-  asOf?: InputMaybe<Scalars['Date']>;
+  adultNbrInHouse?: InputMaybe<Scalars['Int']>;
+  asOf?: InputMaybe<Scalars['DateTime']>;
   birthGender?: InputMaybe<Gender>;
+  childrenNbrinHouse?: InputMaybe<Scalars['Int']>;
   comments?: InputMaybe<Scalars['String']>;
   currentGender?: InputMaybe<Gender>;
   deceased?: InputMaybe<Deceased>;
-  deceasedTime?: InputMaybe<Scalars['Date']>;
+  deceasedTime?: InputMaybe<Scalars['DateTime']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   ethnicityCode?: InputMaybe<Scalars['String']>;
+  hIVCaseId?: InputMaybe<Scalars['String']>;
+  highestEducationLvl?: InputMaybe<Scalars['String']>;
   identifications?: InputMaybe<Array<InputMaybe<Identification>>>;
   maritalStatus?: InputMaybe<Scalars['String']>;
+  mothersMaidenName?: InputMaybe<Scalars['String']>;
   names?: InputMaybe<Array<InputMaybe<Name>>>;
   phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
+  primaryLang?: InputMaybe<Scalars['String']>;
+  primaryOccupation?: InputMaybe<Scalars['String']>;
   raceCodes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  speaksEnglish?: InputMaybe<Scalars['String']>;
   ssn?: InputMaybe<Scalars['String']>;
 };
 
@@ -976,16 +1009,16 @@ export type PersonName = {
 export type PersonParticipation = {
   __typename?: 'PersonParticipation';
   actUid: Scalars['Int'];
-  birthTime?: Maybe<Scalars['Date']>;
+  birthTime?: Maybe<Scalars['DateTime']>;
   currSexCd?: Maybe<Scalars['String']>;
   entityId: Scalars['Int'];
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   localId?: Maybe<Scalars['String']>;
-  participationLastChangeTime?: Maybe<Scalars['Date']>;
+  participationLastChangeTime?: Maybe<Scalars['DateTime']>;
   participationRecordStatus?: Maybe<Scalars['String']>;
   personCd: Scalars['String'];
-  personLastChangeTime?: Maybe<Scalars['Date']>;
+  personLastChangeTime?: Maybe<Scalars['DateTime']>;
   personParentUid?: Maybe<Scalars['Int']>;
   personRecordStatus: Scalars['String'];
   subjectClassCd?: Maybe<Scalars['String']>;
@@ -1014,7 +1047,7 @@ export enum PhoneType {
 export type Place = {
   __typename?: 'Place';
   addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['Date']>;
+  addTime?: Maybe<Scalars['DateTime']>;
   addUserId?: Maybe<Scalars['Int']>;
   cd?: Maybe<Scalars['String']>;
   cdDescTxt?: Maybe<Scalars['String']>;
@@ -1025,23 +1058,23 @@ export type Place = {
   description?: Maybe<Scalars['String']>;
   durationAmt?: Maybe<Scalars['String']>;
   durationUnitCd?: Maybe<Scalars['String']>;
-  fromTime?: Maybe<Scalars['Date']>;
+  fromTime?: Maybe<Scalars['DateTime']>;
   id?: Maybe<Scalars['ID']>;
   lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['Date']>;
+  lastChgTime?: Maybe<Scalars['DateTime']>;
   lastChgUserId?: Maybe<Scalars['Int']>;
   localId?: Maybe<Scalars['String']>;
   nm?: Maybe<Scalars['String']>;
   phoneCntryCd?: Maybe<Scalars['String']>;
   phoneNbr?: Maybe<Scalars['String']>;
   recordStatusCd?: Maybe<Scalars['String']>;
-  recordStatusTime?: Maybe<Scalars['Date']>;
+  recordStatusTime?: Maybe<Scalars['DateTime']>;
   stateCd?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
   streetAddr1?: Maybe<Scalars['String']>;
   streetAddr2?: Maybe<Scalars['String']>;
-  toTime?: Maybe<Scalars['Date']>;
+  toTime?: Maybe<Scalars['DateTime']>;
   userAffiliationTxt?: Maybe<Scalars['String']>;
   versionCtrlNbr?: Maybe<Scalars['Int']>;
   zipCd?: Maybe<Scalars['String']>;
@@ -1099,7 +1132,7 @@ export type ProgramAreaCode = {
   nbsUid?: Maybe<Scalars['ID']>;
   progAreaDescTxt?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type ProviderFacilitySearch = {
@@ -1395,8 +1428,8 @@ export type StateCode = {
   codeSetNm?: Maybe<Scalars['String']>;
   codeSystemCd?: Maybe<Scalars['String']>;
   codeSystemDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['Date']>;
-  effectiveToTime?: Maybe<Scalars['Date']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
   excludedTxt?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   indentLevelNbr?: Maybe<Scalars['Int']>;
@@ -1408,7 +1441,7 @@ export type StateCode = {
   sourceConceptId?: Maybe<Scalars['String']>;
   stateNm?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['Date']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
 };
 
 export enum Suffix {
@@ -1424,7 +1457,23 @@ export enum Suffix {
 export type UpdateResult = {
   __typename?: 'UpdateResult';
   requestId?: Maybe<Scalars['String']>;
-  updatedPerson?: Maybe<Person>;
+};
+
+export type UpdateSexAndBirthInput = {
+  DateOfBirth?: InputMaybe<Scalars['DateTime']>;
+  additionalGender?: InputMaybe<Gender>;
+  ageReportedTime?: InputMaybe<Scalars['DateTime']>;
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  birthCity?: InputMaybe<Scalars['String']>;
+  birthCntry?: InputMaybe<Scalars['String']>;
+  birthGender?: InputMaybe<Gender>;
+  birthOrderNbr?: InputMaybe<Scalars['Int']>;
+  birthState?: InputMaybe<Scalars['String']>;
+  currentAge?: InputMaybe<Scalars['String']>;
+  currentGender?: InputMaybe<Gender>;
+  multipleBirth?: InputMaybe<Scalars['String']>;
+  sexunknown?: InputMaybe<Scalars['String']>;
+  transGenderInfo?: InputMaybe<Gender>;
 };
 
 export type User = {
@@ -1459,13 +1508,29 @@ export type CreatePatientMutationVariables = Exact<{
 
 export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: string };
 
-export type UpdatePatientMutationVariables = Exact<{
+export type UpdateMortalityMutationVariables = Exact<{
+  id: Scalars['ID'];
+  patient: MortalityInput;
+}>;
+
+
+export type UpdateMortalityMutation = { __typename?: 'Mutation', updateMortality?: { __typename?: 'UpdateResult', requestId?: string | null } | null };
+
+export type UpdatePatientGeneralInfoMutationVariables = Exact<{
   id: Scalars['ID'];
   patient: PersonInput;
 }>;
 
 
-export type UpdatePatientMutation = { __typename?: 'Mutation', updatePatient?: { __typename?: 'UpdateResult', requestId?: string | null, updatedPerson?: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: string | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: string | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: string | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, nbsEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null, personParentUid?: { __typename?: 'personParentUid', id?: string | null } | null } | null } | null };
+export type UpdatePatientGeneralInfoMutation = { __typename?: 'Mutation', updatePatientGeneralInfo?: { __typename?: 'UpdateResult', requestId?: string | null } | null };
+
+export type UpdatePatientSexBirthMutationVariables = Exact<{
+  id: Scalars['ID'];
+  patient: UpdateSexAndBirthInput;
+}>;
+
+
+export type UpdatePatientSexBirthMutation = { __typename?: 'Mutation', updatePatientSexBirth?: { __typename?: 'UpdateResult', requestId?: string | null } | null };
 
 export type FindAllConditionCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -1744,193 +1809,108 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
-export const UpdatePatientDocument = gql`
-    mutation updatePatient($id: ID!, $patient: PersonInput!) {
-  updatePatient(id: $id, patient: $patient) {
-    updatedPerson {
-      id
-      nbsEntity {
-        entityLocatorParticipations {
-          classCd
-          locator {
-            emailAddress
-            extenstionTxt
-            phoneNbrTxt
-            urlAddress
-            censusBlockCd
-            censusMinorCivilDivisionCd
-            censusTrackCd
-            cityCd
-            cityDescTxt
-            cntryCd
-            cntryDescTxt
-            cntyCd
-            cntyDescTxt
-            msaCongressDistrictCd
-            regionDistrictCd
-            stateCd
-            streetAddr1
-            streetAddr2
-            zipCd
-            geocodeMatchInd
-            withinCityLimitsInd
-            censusTract
-          }
-        }
-      }
-      entityIds {
-        typeDescTxt
-        typeCd
-        rootExtensionTxt
-        assigningAuthorityCd
-        assigningAuthorityDescTxt
-      }
-      names {
-        firstNm
-        middleNm
-        lastNm
-        nmSuffix
-        nmPrefix
-      }
-      addReasonCd
-      addTime
-      addUserId
-      administrativeGenderCd
-      ageCalc
-      ageCalcTime
-      ageCalcUnitCd
-      ageCategoryCd
-      ageReported
-      ageReportedTime
-      ageReportedUnitCd
-      birthGenderCd
-      birthOrderNbr
-      birthTime
-      birthTimeCalc
-      cd
-      cdDescTxt
-      currSexCd
-      deceasedIndCd
-      deceasedTime
-      description
-      educationLevelCd
-      educationLevelDescTxt
-      ethnicGroupInd
-      lastChgReasonCd
-      lastChgTime
-      lastChgUserId
-      localId
-      maritalStatusCd
-      maritalStatusDescTxt
-      mothersMaidenNm
-      multipleBirthInd
-      occupationCd
-      preferredGenderCd
-      primLangCd
-      primLangDescTxt
-      recordStatusCd
-      recordStatusTime
-      statusCd
-      statusTime
-      survivedIndCd
-      userAffiliationTxt
-      firstNm
-      lastNm
-      middleNm
-      nmPrefix
-      nmSuffix
-      preferredNm
-      hmStreetAddr1
-      hmStreetAddr2
-      hmCityCd
-      hmCityDescTxt
-      hmStateCd
-      hmZipCd
-      hmCntyCd
-      hmCntryCd
-      hmPhoneNbr
-      hmPhoneCntryCd
-      hmEmailAddr
-      cellPhoneNbr
-      wkStreetAddr1
-      wkStreetAddr2
-      wkCityCd
-      wkCityDescTxt
-      wkStateCd
-      wkZipCd
-      wkCntyCd
-      wkCntryCd
-      wkPhoneNbr
-      wkPhoneCntryCd
-      wkEmailAddr
-      ssn
-      medicaidNum
-      dlNum
-      dlStateCd
-      raceCd
-      raceSeqNbr
-      raceCategoryCd
-      ethnicityGroupCd
-      ethnicGroupSeqNbr
-      adultsInHouseNbr
-      childrenInHouseNbr
-      birthCityCd
-      birthCityDescTxt
-      birthCntryCd
-      birthStateCd
-      raceDescTxt
-      ethnicGroupDescTxt
-      versionCtrlNbr
-      asOfDateAdmin
-      asOfDateEthnicity
-      asOfDateGeneral
-      asOfDateMorbidity
-      asOfDateSex
-      electronicInd
-      personParentUid {
-        id
-      }
-      dedupMatchInd
-      groupNbr
-      groupTime
-      edxInd
-      speaksEnglishCd
-      additionalGenderCd
-      eharsId
-      ethnicUnkReasonCd
-      sexUnkReasonCd
-    }
+export const UpdateMortalityDocument = gql`
+    mutation updateMortality($id: ID!, $patient: MortalityInput!) {
+  updateMortality(id: $id, patient: $patient) {
     requestId
   }
 }
     `;
-export type UpdatePatientMutationFn = Apollo.MutationFunction<UpdatePatientMutation, UpdatePatientMutationVariables>;
+export type UpdateMortalityMutationFn = Apollo.MutationFunction<UpdateMortalityMutation, UpdateMortalityMutationVariables>;
 
 /**
- * __useUpdatePatientMutation__
+ * __useUpdateMortalityMutation__
  *
- * To run a mutation, you first call `useUpdatePatientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePatientMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateMortalityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMortalityMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updatePatientMutation, { data, loading, error }] = useUpdatePatientMutation({
+ * const [updateMortalityMutation, { data, loading, error }] = useUpdateMortalityMutation({
  *   variables: {
  *      id: // value for 'id'
  *      patient: // value for 'patient'
  *   },
  * });
  */
-export function useUpdatePatientMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientMutation, UpdatePatientMutationVariables>) {
+export function useUpdateMortalityMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMortalityMutation, UpdateMortalityMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientMutation, UpdatePatientMutationVariables>(UpdatePatientDocument, options);
+        return Apollo.useMutation<UpdateMortalityMutation, UpdateMortalityMutationVariables>(UpdateMortalityDocument, options);
       }
-export type UpdatePatientMutationHookResult = ReturnType<typeof useUpdatePatientMutation>;
-export type UpdatePatientMutationResult = Apollo.MutationResult<UpdatePatientMutation>;
-export type UpdatePatientMutationOptions = Apollo.BaseMutationOptions<UpdatePatientMutation, UpdatePatientMutationVariables>;
+export type UpdateMortalityMutationHookResult = ReturnType<typeof useUpdateMortalityMutation>;
+export type UpdateMortalityMutationResult = Apollo.MutationResult<UpdateMortalityMutation>;
+export type UpdateMortalityMutationOptions = Apollo.BaseMutationOptions<UpdateMortalityMutation, UpdateMortalityMutationVariables>;
+export const UpdatePatientGeneralInfoDocument = gql`
+    mutation updatePatientGeneralInfo($id: ID!, $patient: PersonInput!) {
+  updatePatientGeneralInfo(id: $id, patient: $patient) {
+    requestId
+  }
+}
+    `;
+export type UpdatePatientGeneralInfoMutationFn = Apollo.MutationFunction<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>;
+
+/**
+ * __useUpdatePatientGeneralInfoMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientGeneralInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientGeneralInfoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientGeneralInfoMutation, { data, loading, error }] = useUpdatePatientGeneralInfoMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      patient: // value for 'patient'
+ *   },
+ * });
+ */
+export function useUpdatePatientGeneralInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>(UpdatePatientGeneralInfoDocument, options);
+      }
+export type UpdatePatientGeneralInfoMutationHookResult = ReturnType<typeof useUpdatePatientGeneralInfoMutation>;
+export type UpdatePatientGeneralInfoMutationResult = Apollo.MutationResult<UpdatePatientGeneralInfoMutation>;
+export type UpdatePatientGeneralInfoMutationOptions = Apollo.BaseMutationOptions<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>;
+export const UpdatePatientSexBirthDocument = gql`
+    mutation updatePatientSexBirth($id: ID!, $patient: UpdateSexAndBirthInput!) {
+  updatePatientSexBirth(id: $id, patient: $patient) {
+    requestId
+  }
+}
+    `;
+export type UpdatePatientSexBirthMutationFn = Apollo.MutationFunction<UpdatePatientSexBirthMutation, UpdatePatientSexBirthMutationVariables>;
+
+/**
+ * __useUpdatePatientSexBirthMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientSexBirthMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientSexBirthMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientSexBirthMutation, { data, loading, error }] = useUpdatePatientSexBirthMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      patient: // value for 'patient'
+ *   },
+ * });
+ */
+export function useUpdatePatientSexBirthMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientSexBirthMutation, UpdatePatientSexBirthMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientSexBirthMutation, UpdatePatientSexBirthMutationVariables>(UpdatePatientSexBirthDocument, options);
+      }
+export type UpdatePatientSexBirthMutationHookResult = ReturnType<typeof useUpdatePatientSexBirthMutation>;
+export type UpdatePatientSexBirthMutationResult = Apollo.MutationResult<UpdatePatientSexBirthMutation>;
+export type UpdatePatientSexBirthMutationOptions = Apollo.BaseMutationOptions<UpdatePatientSexBirthMutation, UpdatePatientSexBirthMutationVariables>;
 export const FindAllConditionCodesDocument = gql`
     query findAllConditionCodes($page: Page) {
   findAllConditionCodes(page: $page) {

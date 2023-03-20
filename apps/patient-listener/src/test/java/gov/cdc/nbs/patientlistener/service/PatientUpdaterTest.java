@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -211,7 +213,7 @@ class PatientUpdaterTest {
         assertEquals(data.asOf().getEpochSecond(), savedPerson.getAsOfDateSex().getEpochSecond());
         assertEquals(data.birthGender(), savedPerson.getBirthGenderCd());
         assertEquals(data.currentGender(), savedPerson.getCurrSexCd());
-        assertEquals(data.dateOfBirth().getEpochSecond(), savedPerson.getBirthTime().getEpochSecond());
+        assertEquals(data.dateOfBirth(), LocalDate.ofInstant(savedPerson.getBirthTime(), ZoneId.systemDefault()));
         assertEquals(data.currentAge(), savedPerson.getAgeReported());
         assertEquals(data.ageReportedTime().getEpochSecond(), savedPerson.getAgeReportedTime().getEpochSecond());
         assertEquals(data.birthCity(), savedPerson.getBirthCityCd());
@@ -235,7 +237,7 @@ class PatientUpdaterTest {
                 123L,
                 321L,
                 Instant.now(),
-                Instant.now(),
+                LocalDate.now(),
                 Gender.F,
                 Gender.M,
                 "additional gender info",

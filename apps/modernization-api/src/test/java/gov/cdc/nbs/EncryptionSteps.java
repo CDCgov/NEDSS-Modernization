@@ -101,7 +101,7 @@ public class EncryptionSteps {
         filter.setCity(RandomUtil.getRandomString());
         filter.setState(RandomUtil.getRandomStateCode());
         filter.setCountry(RandomUtil.getRandomString());
-        filter.setDateOfBirth(RandomUtil.getRandomDateInPast());
+        filter.setDateOfBirth(RandomUtil.dateInPast());
         filter.setGender(RandomUtil.getRandomFromArray(Gender.values()));
         filter.setEthnicity(RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST));
         return filter;

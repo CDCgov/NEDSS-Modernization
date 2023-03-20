@@ -1,17 +1,16 @@
 package gov.cdc.nbs.entity.elasticsearch;
 
-import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
-
-import java.time.Instant;
-
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.Instant;
+
+import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
 
 @Getter
 @Setter
@@ -33,11 +32,11 @@ public class AssociatedInvestigation {
     private String localId;
 
     @Field(name = LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant lastChgTime;
 
     @Field(name = ACT_RELATIONSHIP_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant actRelationshipLastChgTime;
 
 }

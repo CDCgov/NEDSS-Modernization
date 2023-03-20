@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,7 @@ class PersonTest {
                 117L,
                 "patient-local-id",
                 "ssn-value",
-                Instant.parse("2000-09-03T15:17:39.00Z"),
+                LocalDate.parse("2000-09-03"),
                 Gender.M,
                 Gender.F,
                 Deceased.N,
@@ -66,7 +68,7 @@ class PersonTest {
         assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
 
         assertThat(actual.getSsn()).isEqualTo("ssn-value");
-        assertThat(actual.getBirthTime()).isEqualTo("2000-09-03T15:17:39.00Z");
+        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneId.systemDefault())).isEqualTo("2000-09-03");
         assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
         assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
@@ -357,14 +359,14 @@ class PersonTest {
     @Test
     void should_set_birth_and_sex_fields() {
         final String asOf = "2012-03-03T10:15:30.00Z";
-        final String dob = "2012-03-03T10:15:30.00Z";
+        final String dob = "2012-03-03";
         final String ageReportedTime = "1990-04-05T10:15:30.00Z";
         final String requestedOn = "2020-04-05T10:15:30.00Z";
         Person actual = new Person(121L, "local-id-value");
         PatientCommand.UpdateSexAndBirthInfo command = new UpdateSexAndBirthInfo(
                 123L,
                 Instant.parse(asOf),
-                Instant.parse(dob),
+                LocalDate.parse(dob),
                 Gender.F,
                 Gender.M,
                 "additional gender info",
@@ -384,7 +386,7 @@ class PersonTest {
 
         assertEquals(command.birthGender(), actual.getBirthGenderCd());
         assertEquals(command.currentGender(), actual.getCurrSexCd());
-        assertThat(actual.getBirthTime()).isEqualTo(dob);
+        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneId.systemDefault())).isEqualTo(dob);
         assertThat(actual.getAsOfDateSex()).isEqualTo(asOf);
         assertEquals(command.currentAge(), actual.getAgeReported());
         assertThat(actual.getAgeReportedTime()).isEqualTo(ageReportedTime);

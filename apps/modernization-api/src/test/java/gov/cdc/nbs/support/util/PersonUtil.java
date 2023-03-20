@@ -14,6 +14,8 @@ import gov.cdc.nbs.message.patient.input.PatientInput.PhoneNumber;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PatientInput.PostalAddress;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +48,7 @@ public class PersonUtil {
                         person.getNmSuffix(), null)));
 
         input.setSsn(person.getSsn());
-        input.setDateOfBirth(person.getBirthTime());
+        input.setDateOfBirth(LocalDate.ofInstant(person.getBirthTime(), ZoneId.systemDefault()));
         input.setBirthGender(person.getBirthGenderCd());
         input.setCurrentGender(person.getBirthGenderCd());
         input.setDeceased(person.getDeceasedIndCd());
@@ -78,7 +80,7 @@ public class PersonUtil {
         var input = new SexAndBirthInput();
         input.setAsOf(Instant.now());
         input.setPatientId(person.getId());
-        input.setDateOfBirth(person.getBirthTime());
+        input.setDateOfBirth(LocalDate.ofInstant(person.getBirthTime(), ZoneId.systemDefault()));
         input.setBirthGender(person.getBirthGenderCd());
         input.setCurrentGender(person.getCurrSexCd());
         input.setAdditionalGender(person.getAdditionalGenderCd());

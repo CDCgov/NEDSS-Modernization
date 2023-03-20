@@ -1,6 +1,7 @@
 package gov.cdc.nbs.message.patient.input;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class PatientInput {
     private String highestEducationLvl;
     private String primaryLang;
     private String speaksEnglish;
-    private Instant dateOfBirth;
+    private LocalDate dateOfBirth;
     private Gender birthGender;
     private Gender currentGender;
     private Deceased deceased;

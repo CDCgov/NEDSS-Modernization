@@ -133,7 +133,7 @@ public class PatientUpdateSteps {
         var sexAndBirthInput = (SexAndBirthInput) input;
         assertEquals(sexAndBirthInput.getAsOf().getEpochSecond(), data.asOf().getEpochSecond());
         assertEquals(sexAndBirthInput.getPatientId(), data.patientId());
-        assertEquals(sexAndBirthInput.getDateOfBirth().getEpochSecond(), data.dateOfBirth().getEpochSecond());
+        assertEquals(sexAndBirthInput.getDateOfBirth(), data.dateOfBirth());
         assertEquals(sexAndBirthInput.getBirthGender(), data.birthGender());
         assertEquals(sexAndBirthInput.getCurrentGender(), data.currentGender());
         assertEquals(sexAndBirthInput.getAdditionalGender(), data.additionalGender());

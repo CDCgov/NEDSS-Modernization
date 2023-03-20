@@ -5,16 +5,16 @@
 ### Prerequisites
 
 1. Java 17
-1. Node / NPM
-1. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
+2. Node / NPM
+3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
 
 ### VSCode
 
 1. In the ui directory run `npm install`
-1. In the modernization-api directory run `./gradlew build`
+2. In the modernization-api directory run `./gradlew build`
     - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
-1. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
-1. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
+3. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
+4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
 ## Tests
 
@@ -38,8 +38,19 @@ The Modernization API can be started from the root directory by runninng:
 ./gradlew :modernization-api:bootRun
 ```
 
-It assumes that ElasticSeach and MSSQL Server are running on `localhost`. Preconfigured containers are avaiable in
-the [CDC Sandbox](../../cdc-sandbox/README.md), `cdc-sandbox/elasticsearch` and `cdc-sandbox/db`
+It assumes that ElasticSeach and MSSQL Server are running on `localhost`. Preconfigured containers are available in
+the [CDC Sandbox](../../cdc-sandbox/README.md), `cdc-sandbox/elasticsearch` and `cdc-sandbox/db`.
+
+### Debugging
+
+The `bootRun` task is configured to allow remote debugging on port `5005` allowing any Java Debugger to attach without
+having to restart the application. The debug port can be changed at runtime by setting the `debug.port` property.
+
+For example, the debug port can be set to `8181` by executing.
+
+```bash
+./gradlew -Pdebug.port=8181 :modernization-api:bootRun
+```
 
 ## GraphQL
 
@@ -59,11 +70,11 @@ classes will be created under `libs/database-entities/build/generated/sources/an
 @PersistenceContext
 private final EntityManager entityManager;
 
-public List<Patient> findPatientsNamedJohn() {
-    JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-    var patient = QPatient.patient;
+public List<Patient> findPatientsNamedJohn(){
+    JPAQueryFactory queryFactory=new JPAQueryFactory(entityManager);
+    var patient=QPatient.patient;
     return queryFactory.selectFrom(patient).where(patient.firstNm.like("John")).fetch();
-}
+    }
 ```
 
 ## Swagger
@@ -85,3 +96,15 @@ and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference
 | nbs.wildfly.server       | localhost | The host name of the server running NBS Classic   |
 | nbs.wildfly.port         | 7001      | The port in which NBS Classic is listening        |
 | nbs.datasource.server    | localhost | The host name of the server running MS SQL Server |
+
+Configuration properties can be overwritten at runtime using the `--args` Gradle option to pass arguments to Spring
+Boot.
+
+For example, running the following will cause the modernization-api to connect to a database on a server named `other`
+by executing.
+
+```bash
+./gradlew :modernization-api:bootRun --args'--nbs-datasource.server=other '
+```
+
+

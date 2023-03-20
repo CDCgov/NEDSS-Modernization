@@ -56,31 +56,31 @@ type Person {
     entityIds: [PersonIdentification]
     names: [PersonName]
     addReasonCd: String
-    addTime: Date
+    addTime: DateTime
     addUserId: ID
     administrativeGenderCd: String
     ageCalc: Int
-    ageCalcTime: Date
+    ageCalcTime: DateTime
     ageCalcUnitCd: String
     ageCategoryCd: String
     ageReported: String
-    ageReportedTime: Date
+    ageReportedTime: DateTime
     ageReportedUnitCd: String
     birthGenderCd: Gender
     birthOrderNbr: Int
-    birthTime: Date
-    birthTimeCalc: Date
+    birthTime: DateTime
+    birthTimeCalc: DateTime
     cd: String
     cdDescTxt: String
     currSexCd: String
     deceasedIndCd: String
-    deceasedTime: Date
+    deceasedTime: DateTime
     description: String
     educationLevelCd: String
     educationLevelDescTxt: String
     ethnicGroupInd: String
     lastChgReasonCd: String
-    lastChgTime: Date
+    lastChgTime: DateTime
     lastChgUserId: ID
     localId: String
     maritalStatusCd: String
@@ -92,9 +92,9 @@ type Person {
     primLangCd: String
     primLangDescTxt: String
     recordStatusCd: RecordStatus
-    recordStatusTime: Date
+    recordStatusTime: DateTime
     statusCd: String
-    statusTime: Date
+    statusTime: DateTime
     survivedIndCd: String
     userAffiliationTxt: String
     firstNm: String
@@ -144,16 +144,16 @@ type Person {
     raceDescTxt: String
     ethnicGroupDescTxt: String
     versionCtrlNbr: Int
-    asOfDateAdmin: Date
-    asOfDateEthnicity: Date
-    asOfDateGeneral: Date
-    asOfDateMorbidity: Date
-    asOfDateSex: Date
+    asOfDateAdmin: DateTime
+    asOfDateEthnicity: DateTime
+    asOfDateGeneral: DateTime
+    asOfDateMorbidity: DateTime
+    asOfDateSex: DateTime
     electronicInd: String
     personParentUid: personParentUid
     dedupMatchInd: String
     groupNbr: Int
-    groupTime: Date
+    groupTime: DateTime
     edxInd: String
     speaksEnglishCd: String
     additionalGenderCd: String
@@ -173,7 +173,7 @@ input PersonInput {
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
-    deceasedTime: Date
+    deceasedTime: DateTime
     maritalStatus: String
     addresses: [PostalAddress]
     phoneNumbers: [PhoneNumber]
@@ -181,7 +181,7 @@ input PersonInput {
     identifications: [Identification]
     ethnicityCode: String
     raceCodes: [String]
-    asOf: Date
+    asOf: DateTime
     comments: String
     mothersMaidenName: String
     adultNbrInHouse: Int
@@ -195,7 +195,7 @@ input PersonInput {
 
 input GeneralInfoInput {
     patientId: ID!
-    asOf: Date
+    asOf: DateTime
     maritalStatus: String
     mothersMaidenName: String
     adultsInHouseNumber: Int
@@ -209,9 +209,9 @@ input GeneralInfoInput {
 
 input MortalityInput {
     patientId: ID!
-    asOf: Date
+    asOf: DateTime
     deceased: Deceased
-    deceasedTime: Date
+    deceasedTime: DateTime
     cityOfDeath: String
     stateOfDeath: String
     countyOfDeath: String
@@ -220,7 +220,7 @@ input MortalityInput {
 
 input UpdateSexAndBirthInput {
     patientId: ID!
-    asOf: Date
+    asOf: DateTime
     dateOfBirth: Date
     birthGender: Gender
     currentGender: Gender
@@ -233,8 +233,9 @@ input UpdateSexAndBirthInput {
     multipleBirth: String
     sexUnknown: String
     currentAge: String
-    ageReportedTime: Date
+    ageReportedTime: DateTime
 }
+
 input Name {
     firstName: String
     middleName: String

@@ -12,8 +12,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @ConditionalOnProperty("kafka.enabled")
@@ -44,15 +46,18 @@ public class KafkaConfig {
     }
 
     @Bean
-    public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
-        return buildKafkaTemplate();
+    <V> KafkaTemplate<String, V> kafkaTemplate(final ProducerFactory<String, V> factory) {
+        return new KafkaTemplate<>(factory);
     }
 
-    private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
-        var config = getKafkaConfig();
-        return new KafkaTemplate<>(
-                new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
-                        new JsonSerializer<>()));
+    @Bean
+    <V> ProducerFactory<String, V> producerFactory(final JsonSerializer<V> serializer) {
+        return new DefaultKafkaProducerFactory<>(getKafkaConfig(), new StringSerializer(), serializer);
+    }
+
+    @Bean
+    <T> JsonSerializer<T> kafkaMessageSerializer(final ObjectMapper mapper) {
+        return new JsonSerializer<>(mapper);
     }
 
     private Map<String, Object> getKafkaConfig() {

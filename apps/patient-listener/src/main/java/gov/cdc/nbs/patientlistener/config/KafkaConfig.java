@@ -9,35 +9,40 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class KafkaConfig {
-
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     @Value("${kafka.properties.schema.registry.url}")
     private String schemaRegistryUrl;
 
+    private static final String SCHEMA_URL = "schema.registry.url";
+
+
     @Bean
-    public <T> KafkaTemplate<String, T> kafkaTemplatePatientUpdate() {
-        return buildKafkaTemplate();
+    <V> KafkaTemplate<String, V> kafkaTemplate(final ProducerFactory<String, V> factory) {
+        return new KafkaTemplate<>(factory);
     }
 
-    private <T> KafkaTemplate<String, T> buildKafkaTemplate() {
-        var config = getKafkaConfig();
-        return new KafkaTemplate<>(
-                new DefaultKafkaProducerFactory<>(config, new StringSerializer(),
-                        new JsonSerializer<>()));
+    @Bean
+    <V> JsonSerializer<V> kafkaMessageSerializer(final ObjectMapper mapper) {
+        return new JsonSerializer<>(mapper);
     }
 
-    private Map<String, Object> getKafkaConfig() {
+    @Bean
+    <V> ProducerFactory<String, V> producerFactory(final JsonSerializer<V> serializer) {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put("schema.registry.url", schemaRegistryUrl);
+        config.put(SCHEMA_URL, schemaRegistryUrl);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        return config;
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+        return new DefaultKafkaProducerFactory<>(config, new StringSerializer(), serializer);
     }
+
 }

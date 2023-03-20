@@ -12,7 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
-
+import java.time.LocalDate;
+import java.time.ZoneId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -33,7 +34,7 @@ class PatientCreatorTest {
                 117L,
                 "patient-local-id-value",
                 "ssn-value",
-                Instant.parse("2000-09-03T15:17:39.00Z"),
+                LocalDate.parse("2000-09-03"),
                 Gender.M,
                 Gender.F,
                 Deceased.N,
@@ -58,7 +59,7 @@ class PatientCreatorTest {
         assertThat(actual.getId()).isEqualTo(117L);
         assertThat(actual.getLocalId()).isEqualTo("patient-local-id-value");
         assertThat(actual.getSsn()).isEqualTo("ssn-value");
-        assertThat(actual.getBirthTime()).isEqualTo("2000-09-03T15:17:39.00Z");
+        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneId.systemDefault())).isEqualTo("2000-09-03");
         assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
         assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);

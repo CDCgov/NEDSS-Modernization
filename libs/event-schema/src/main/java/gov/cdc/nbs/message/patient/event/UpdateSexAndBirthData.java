@@ -2,6 +2,7 @@ package gov.cdc.nbs.message.patient.event;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import gov.cdc.nbs.message.enums.Gender;
 
 public record UpdateSexAndBirthData(
@@ -9,7 +10,7 @@ public record UpdateSexAndBirthData(
         long patientId,
         long updatedBy,
         Instant asOf,
-        Instant dateOfBirth,
+        LocalDate dateOfBirth,
         Gender birthGender,
         Gender currentGender,
         String additionalGender,

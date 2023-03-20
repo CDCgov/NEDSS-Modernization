@@ -9,6 +9,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,7 +92,7 @@ class PatientCreateRequestHandlerTest {
                     "patient": 191,
                     "patientLocalId": "PSN123GA01",
                     "ssn": "SSN",
-                    "dateOfBirth": 1674494454.120914000,
+                    "dateOfBirth": "2023-01-23",
                     "birthGender": "M",
                     "currentGender": "F",
                     "deceased": "N",
@@ -163,7 +165,7 @@ class PatientCreateRequestHandlerTest {
         assertThat(actual_person.getStatusCd()).isEqualTo('A');
         assertThat(actual_person.getRecordStatusCd()).isEqualTo(RecordStatus.ACTIVE);
         assertThat(actual_person.getSsn()).isEqualTo("SSN");
-        assertThat(actual_person.getBirthTime()).isEqualTo("2023-01-23T17:20:54.120914Z");
+        assertThat(LocalDate.ofInstant(actual_person.getBirthTime(), ZoneId.systemDefault())).isEqualTo("2023-01-23");
         assertThat(actual_person.getBirthGenderCd()).isEqualTo(Gender.M);
         assertThat(actual_person.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual_person.getDeceasedIndCd()).isEqualTo(Deceased.N);

@@ -2,6 +2,7 @@ package gov.cdc.nbs.message.patient.event;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -14,7 +15,7 @@ public record PatientCreateData(
         Long patient,
         String patientLocalId,
         String ssn,
-        Instant dateOfBirth,
+        LocalDate dateOfBirth,
         Gender birthGender,
         Gender currentGender,
         Deceased deceased,
@@ -35,7 +36,7 @@ public record PatientCreateData(
             Long patient,
             String patientLocalId,
             String ssn,
-            Instant dateOfBirth,
+            LocalDate dateOfBirth,
             Gender birthGender,
             Gender currentGender,
             Deceased deceased,
@@ -78,7 +79,7 @@ public record PatientCreateData(
             Long patientId,
             String patientLocalId,
             String ssn,
-            Instant dateOfBirth,
+            LocalDate dateOfBirth,
             Gender birthGender,
             Gender currentGender,
             Deceased deceased,

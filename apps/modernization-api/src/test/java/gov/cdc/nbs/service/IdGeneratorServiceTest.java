@@ -1,4 +1,4 @@
-package gov.cdc.nbs.services;
+package gov.cdc.nbs.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

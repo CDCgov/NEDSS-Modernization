@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -229,7 +230,7 @@ class PatientUpdateRequestHandlerTest {
                 123L,
                 321L,
                 Instant.now(),
-                Instant.now(),
+                LocalDate.now(),
                 Gender.F,
                 Gender.M,
                 "additional gender info",

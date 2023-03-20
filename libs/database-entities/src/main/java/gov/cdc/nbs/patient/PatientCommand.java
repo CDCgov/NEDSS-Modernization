@@ -8,6 +8,7 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import java.time.Instant;
+import java.time.LocalDate;
 
 public sealed interface PatientCommand {
 
@@ -21,7 +22,7 @@ public sealed interface PatientCommand {
             long person,
             String localId,
             String ssn,
-            Instant dateOfBirth,
+            LocalDate dateOfBirth,
             Gender birthGender,
             Gender currentGender,
             Deceased deceased,
@@ -136,7 +137,7 @@ public sealed interface PatientCommand {
     record UpdateSexAndBirthInfo(
             long person,
             Instant asOf,
-            Instant dateOfBirth,
+            LocalDate dateOfBirth,
             Gender birthGender,
             Gender currentGender,
             String additionalGender,

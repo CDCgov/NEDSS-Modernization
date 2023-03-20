@@ -1,4 +1,4 @@
-package gov.cdc.nbs.services;
+package gov.cdc.nbs.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

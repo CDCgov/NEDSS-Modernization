@@ -1,6 +1,7 @@
 package gov.cdc.nbs.message.patient.input;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class SexAndBirthInput {
     private Instant asOf;
     private long patientId;
-    private Instant dateOfBirth;
+    private LocalDate dateOfBirth;
     private Gender birthGender;
     private Gender currentGender;
     private String additionalGender;
