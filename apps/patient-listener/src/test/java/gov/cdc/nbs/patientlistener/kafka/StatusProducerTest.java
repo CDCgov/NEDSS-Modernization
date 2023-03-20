@@ -1,80 +1,63 @@
 package gov.cdc.nbs.patientlistener.kafka;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import gov.cdc.nbs.message.RequestStatus;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.kafka.core.KafkaTemplate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.test.util.ReflectionTestUtils;
-import gov.cdc.nbs.message.RequestStatus;
 
+@ExtendWith(MockitoExtension.class)
 class StatusProducerTest {
 
-    @Mock
-    private KafkaTemplate<String, RequestStatus> template;
+  @Mock
+  private KafkaTemplate<String, RequestStatus> template;
 
-    @Captor
-    private ArgumentCaptor<RequestStatus> statusCaptor;
+  @Captor
+  private ArgumentCaptor<RequestStatus> statusCaptor;
 
-    @Captor
-    private ArgumentCaptor<String> keyCaptor;
+  private StatusProducer statusProducer;
 
-    @InjectMocks
-    private StatusProducer statusProducer;
+  @BeforeEach
+  void setup() {
+    statusProducer = new StatusProducer(template, "topic");
+  }
 
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-        ReflectionTestUtils.setField(statusProducer, "statusTopic", "topic");
-    }
+  @Test
+  void sendSuccessTest() {
 
-    @Test
-    void sendSuccessTest() {
-        var status = RequestStatus
-                .builder()
-                .successful(true)
-                .requestId("RequestId")
-                .message("Message")
-                .entityId(123L)
-                .build();
-        statusProducer.send(status);
+    statusProducer.successful("RequestId", "Message", 123L);
 
-        verify(template, times(1)).send("topic", status);
-    }
+    verify(template, times(1)).send(eq("topic"), statusCaptor.capture());
 
-    @Test
-    void sendFailTest() {
-        var status = RequestStatus
-                .builder()
-                .successful(false)
-                .requestId("RequestId")
-                .message("Message")
-                .entityId(123L)
-                .build();
-        statusProducer.send(status);
+    RequestStatus actual = statusCaptor.getValue();
 
-        verify(template, times(1)).send("topic", status);
-    }
+    assertThat(actual.isSuccessful()).isTrue();
+    assertThat(actual.getRequestId()).isEqualTo("RequestId");
+    assertThat(actual.getMessage()).isEqualTo("Message");
+    assertThat(actual.getEntityId()).isEqualTo(123L);
+  }
 
-    @Test
-    void sendTest() {
-        statusProducer.send(true, "key", "message");
-        verify(template, times(1)).send(eq("topic"), Mockito.any());
+  @Test
+  void sendFailTest() {
+    statusProducer.failure("RequestId", "Message");
 
-        verify(template).send(keyCaptor.capture(), statusCaptor.capture());
+    verify(template, times(1)).send(eq("topic"), statusCaptor.capture());
 
-        RequestStatus status = statusCaptor.getValue();
-        assertEquals(true, status.isSuccessful());
-        assertEquals("key", status.getRequestId());
-        assertEquals("message", status.getMessage());
-        assertEquals(null, status.getEntityId());
-    }
+    RequestStatus actual = statusCaptor.getValue();
+
+    assertThat(actual.isSuccessful()).isFalse();
+    assertThat(actual.getRequestId()).isEqualTo("RequestId");
+    assertThat(actual.getMessage()).isEqualTo("Message");
+    assertThat(actual.getEntityId()).isNull();
+  }
+
 }

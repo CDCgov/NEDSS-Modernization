@@ -219,8 +219,7 @@ class PatientCreateRequestHandlerTest {
         verifyElasticsearchPerson(elasticsearchPersonCaptor.getValue(), actual_person);
 
         // verify successful patient create status was posted to topic
-        verify(producer).send(
-                true,
+        verify(producer).successful(
                 "RequestId",
                 "Successfully created patient",
                 191L);

@@ -62,7 +62,7 @@ class PatientUpdateRequestHandlerTest {
         // verify save requests called, success status sent
         verify(patientUpdater, times(1)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(true), eq("RequestId"), Mockito.anyString(), eq(123L));
+        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(123L));
     }
 
     @Test
@@ -140,7 +140,7 @@ class PatientUpdateRequestHandlerTest {
         // verify save requests called, success status sent
         verify(patientUpdater, times(1)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(true), eq("RequestId"), Mockito.anyString(), eq(123L));
+        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(123L));
     }
 
     @Test
@@ -217,7 +217,7 @@ class PatientUpdateRequestHandlerTest {
         // verify save requests called, success status sent
         verify(patientUpdater, times(1)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
-        verify(statusProducer, times(1)).send(eq(true), eq("RequestId"), Mockito.anyString(), eq(123L));
+        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(123L));
     }
 
     @Test

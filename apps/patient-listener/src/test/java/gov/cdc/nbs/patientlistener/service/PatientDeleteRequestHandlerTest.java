@@ -1,17 +1,5 @@
 package gov.cdc.nbs.patientlistener.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patientlistener.exception.KafkaException;
 import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
@@ -20,6 +8,20 @@ import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PatientDeleteRequestHandlerTest {
     @Mock
@@ -53,7 +55,7 @@ class PatientDeleteRequestHandlerTest {
         deleteRequestHandler.handlePatientDelete("key", 123L, 321L);
 
         // verify success status, elasticsearch insert call
-        verify(statusProducer).send(eq(true), eq("key"), Mockito.anyString(), eq(123L));
+        verify(statusProducer).successful(eq("key"), Mockito.anyString(), eq(123L));
         verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
     }
 

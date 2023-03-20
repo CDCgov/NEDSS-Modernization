@@ -1,36 +1,43 @@
 package gov.cdc.nbs.patientlistener.kafka;
 
-import org.springframework.beans.factory.annotation.Value;
+import gov.cdc.nbs.message.RequestStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.message.RequestStatus;
 
 @Component
 public class StatusProducer {
-    private final KafkaTemplate<String, RequestStatus> template;
+  private final KafkaTemplate<String, RequestStatus> template;
+  private final String statusTopic;
 
-    public StatusProducer(KafkaTemplate<String, RequestStatus> template) {
-        this.template = template;
-    }
+  public StatusProducer(
+      final KafkaTemplate<String, RequestStatus> template,
+      final String statusTopic
+  ) {
+    this.template = template;
+    this.statusTopic = statusTopic;
+  }
 
-    @Value("${kafkadef.topics.status.patient}")
-    private String statusTopic;
 
-    public void send(boolean successful, String key, String message) {
-        send(successful, key, message, null);
-    }
+  public void successful(final String request, final String message, final long identifier) {
+    var status = RequestStatus.builder()
+        .successful(true)
+        .requestId(request)
+        .message(message)
+        .entityId(identifier)
+        .build();
+    send(status);
+  }
 
-    public void send(boolean successful, String key, String message, Long entityId) {
-        var status = RequestStatus.builder()
-                .successful(successful)
-                .requestId(key)
-                .message(message)
-                .entityId(entityId)
-                .build();
-        send(status);
-    }
+  public void failure(final String request, final String message) {
+    var status = RequestStatus.builder()
+        .successful(false)
+        .requestId(request)
+        .message(message)
+        .build();
+    send(status);
+  }
 
-    public void send(RequestStatus status) {
-        template.send(statusTopic, status);
-    }
+  private void send(final RequestStatus status) {
+    template.send(statusTopic, status);
+  }
 }

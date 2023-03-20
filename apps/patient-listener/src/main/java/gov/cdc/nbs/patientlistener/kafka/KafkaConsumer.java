@@ -61,7 +61,7 @@ public class KafkaConsumer {
                     updateHandler.handlePatientSexAndBirthUpdate((UpdateSexAndBirthData) event.data());
                     break;
                 default:
-                    statusProducer.send(false, key, "Invalid EventType specified.");
+                    statusProducer.failure(key, "Invalid EventType specified.");
                     log.warn("Invalid EventType specified: {}", event.eventType());
                     throw new KafkaException("Invalid EventType specified", key);
             }
