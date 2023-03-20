@@ -1,52 +1,52 @@
 extend type Query {
-    findPlaceById(id: ID!): Place
-    findAllPlaces(page: Page): [Place]!
-    findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
+  findPlaceById(id: ID!): Place
+  findAllPlaces(page: Page): [Place]!
+  findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
 }
 
 input PlaceFilter {
-    id: ID
-    description: String
-    nm: String
-    streetAddr1: String
-    streetAddr2: String
-    cityCd: String
-    cityDescTxt: String
-    stateCd: String
-    zipCd: String
+  id: ID
+  description: String
+  nm: String
+  streetAddr1: String
+  streetAddr2: String
+  cityCd: String
+  cityDescTxt: String
+  stateCd: String
+  zipCd: String
 }
 
 type Place {
-    id: ID
-    addReasonCd: String
-    addTime: Date
-    addUserId: Int
-    cd: String
-    cdDescTxt: String
-    description: String
-    durationAmt: String
-    durationUnitCd: String
-    fromTime: Date
-    lastChgReasonCd: String
-    lastChgTime: Date
-    lastChgUserId: Int
-    localId: String
-    nm: String
-    recordStatusCd: String
-    recordStatusTime: Date
-    statusCd: String
-    statusTime: Date
-    toTime: Date
-    userAffiliationTxt: String
-    streetAddr1: String
-    streetAddr2: String
-    cityCd: String
-    cityDescTxt: String
-    stateCd: String
-    zipCd: String
-    cntyCd: String
-    cntryCd: String
-    phoneNbr: String
-    phoneCntryCd: String
-    versionCtrlNbr: Int
+  id: ID
+  addReasonCd: String
+  addTime: DateTime
+  addUserId: Int
+  cd: String
+  cdDescTxt: String
+  description: String
+  durationAmt: String
+  durationUnitCd: String
+  fromTime: DateTime
+  lastChgReasonCd: String
+  lastChgTime: DateTime
+  lastChgUserId: Int
+  localId: String
+  nm: String
+  recordStatusCd: String
+  recordStatusTime: DateTime
+  statusCd: String
+  statusTime: DateTime
+  toTime: DateTime
+  userAffiliationTxt: String
+  streetAddr1: String
+  streetAddr2: String
+  cityCd: String
+  cityDescTxt: String
+  stateCd: String
+  zipCd: String
+  cntyCd: String
+  cntryCd: String
+  phoneNbr: String
+  phoneCntryCd: String
+  versionCtrlNbr: Int
 }

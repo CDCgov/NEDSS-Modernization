@@ -1,19 +1,19 @@
 type PatientTreatment {
-    treatment: ID!,
-    createdOn: Date!
-    provider : String
-    treatedOn: Date!
-    description: String!
-    event: String!
-    associatedWith: PatientTreatmentInvestigation!
+  treatment: ID!
+  createdOn: DateTime!
+  provider: String
+  treatedOn: DateTime!
+  description: String!
+  event: String!
+  associatedWith: PatientTreatmentInvestigation!
 }
 
 type PatientTreatmentInvestigation {
-    id: ID!,
-    local: String!
-    condition: String!
+  id: ID!
+  local: String!
+  condition: String!
 }
 
 extend type Query {
-    findTreatmentsForPatient(patient: ID!): [PatientTreatment]
+  findTreatmentsForPatient(patient: ID!): [PatientTreatment]
 }

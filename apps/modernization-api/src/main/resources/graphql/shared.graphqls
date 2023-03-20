@@ -1,62 +1,63 @@
 scalar Date
+scalar DateTime
 
 input Page {
-    pageSize: Int!
-    pageNumber: Int!
+  pageSize: Int!
+  pageNumber: Int!
 }
 
 input SortablePage {
-    pageSize: Int
-    pageNumber: Int
-    sortField: SortField
-    sortDirection: SortDirection
+  pageSize: Int
+  pageNumber: Int
+  sortField: SortField
+  sortDirection: SortDirection
 }
 
 type PersonParticipation {
-    actUid: Int!
-    localId: String
-    typeCd: String
-    entityId: Int!
-    subjectClassCd: String
-    participationRecordStatus: String
-    typeDescTxt: String
-    participationLastChangeTime: Date
-    firstName: String
-    lastName: String
-    birthTime: Date
-    currSexCd: String
-    personCd: String!
-    personParentUid: Int
-    personRecordStatus: String!
-    personLastChangeTime: Date
+  actUid: Int!
+  localId: String
+  typeCd: String
+  entityId: Int!
+  subjectClassCd: String
+  participationRecordStatus: String
+  typeDescTxt: String
+  participationLastChangeTime: DateTime
+  firstName: String
+  lastName: String
+  birthTime: DateTime
+  currSexCd: String
+  personCd: String!
+  personParentUid: Int
+  personRecordStatus: String!
+  personLastChangeTime: DateTime
 }
 
 type OrganizationParticipation {
-    actUid: Int
-    typeCd: String
-    entityId: Int
-    subjectClassCd: String
-    typeDescTxt: String
-    participationRecordStatus: String
-    participationLastChangeTime: Date
-    name: String
-    organizationLastChangeTime: Date
+  actUid: Int
+  typeCd: String
+  entityId: Int
+  subjectClassCd: String
+  typeDescTxt: String
+  participationRecordStatus: String
+  participationLastChangeTime: DateTime
+  name: String
+  organizationLastChangeTime: DateTime
 }
 
 enum SortField {
-    lastNm
-    birthTime
+  lastNm
+  birthTime
 }
 
 enum RecordStatus {
-    ACTIVE
-    INACTIVE
-    LOG_DEL
-    SUPERCEDED
+  ACTIVE
+  INACTIVE
+  LOG_DEL
+  SUPERCEDED
 }
 
 enum PregnancyStatus {
-    YES
-    NO
-    UNKNOWN
+  YES
+  NO
+  UNKNOWN
 }

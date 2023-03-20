@@ -1,21 +1,17 @@
 package gov.cdc.nbs.entity.enums.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class InstantConverterTest {
-    private final InstantConverter converter = new InstantConverter();
+import java.time.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class ElasticsearchInstantValueConverterTest {
+    private final ElasticsearchInstantValueConverter converter = new ElasticsearchInstantValueConverter();
 
     @ParameterizedTest
     @CsvSource({

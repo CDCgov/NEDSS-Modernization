@@ -1,8 +1,7 @@
 package gov.cdc.nbs.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.message.KafkaMessageSerializer;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -14,129 +13,73 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import gov.cdc.nbs.message.EnvelopeRequest;
-import gov.cdc.nbs.message.KafkaMessageSerializer;
-import gov.cdc.nbs.message.PatientCreateRequest;
-import gov.cdc.nbs.message.PatientDeleteRequest;
-import gov.cdc.nbs.message.PatientUpdateRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class KafkaConfig {
 
-    @Value("${kafka.properties.topic.partition.count}")
-    private int topicPartitionCount;
+  @Value("${kafka.properties.topic.partition.count}")
+  private int topicPartitionCount;
 
-    @Value("${kafka.properties.topic.replication.factor}")
-    private int topicReplicationFactor;
+  @Value("${kafka.properties.topic.replication.factor}")
+  private int topicReplicationFactor;
 
-    @Value("${kafka.bootstrap-servers}")
-    private String bootstrapServers;
+  @Value("${kafka.bootstrap-servers}")
+  private String bootstrapServers;
 
-    @Value("${kafka.properties.schema.registry.url}")
-    private String schemaRegistryUrl;
+  @Value("${kafka.properties.schema.registry.url}")
+  private String schemaRegistryUrl;
 
-    // general topic
-    @Value("${kafkadef.patient-search.topics.request.patient}")
-    private String patientSearchTopic;
+  // general topic
+  @Value("${kafkadef.patient-search.topics.request.patient}")
+  private String patientSearchTopic;
 
-    @Value("${kafka.enabled:true}")
-    private boolean kafkaEnabled;
+  @Value("${kafka.enabled:true}")
+  private boolean kafkaEnabled;
 
-	@Bean
-	public NewTopic createPatientSearchTopic() {
-		if (!kafkaEnabled) {
-			return null;
-		}
-		return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
-				.compact().build();
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Bean
-	public ProducerFactory<String, PatientCreateRequest> producerFactoryPatientCreate() {
-		if (!kafkaEnabled) {
-			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
-		} else {
-			var config = getKafkaConfig();			
-			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new JsonSerializer());
-		}
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Bean
-	public ProducerFactory<String, EnvelopeRequest> producerFactoryPatientSearch() {
-		if (!kafkaEnabled) {
-			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
-		} else {
-			var config = getKafkaConfig();			
-			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new JsonSerializer());
-		}
-	}
-	
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Bean
-	public ProducerFactory<String, PatientUpdateRequest> producerFactoryPatientUpdate() {
-		if (!kafkaEnabled) {
-			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
-		} else {
-			var config = getKafkaConfig();
-			config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaMessageSerializer.class);
-				
-			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
-		}
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Bean
-	public ProducerFactory<String, PatientDeleteRequest> producerFactoryPatientDelete() {
-		if (!kafkaEnabled) {
-			return new DefaultKafkaProducerFactory<>(new HashMap<>(), new StringSerializer(), new JsonSerializer<>());
-		} else {
-			var config = getKafkaConfig();
-			return new DefaultKafkaProducerFactory(config, new StringSerializer(), new KafkaMessageSerializer());
-		}
-	}
-	
-
-	private Map<String, Object> getKafkaConfig() {
-		Map<String, Object> config = new HashMap<>();
-		if (!kafkaEnabled) {
-			return config;
-		}
-		config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		config.put("schema.registry.url", schemaRegistryUrl);
-		config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		
-		return config;
-	}
-	
-	@Bean
-	public KafkaTemplate<String, PatientCreateRequest> kafkaTemplatePatientCreate() {
-		return new KafkaTemplate<>(producerFactoryPatientCreate());
-	}
-
-	@Bean
-	public KafkaTemplate<String, PatientUpdateRequest> kafkaTemplatePatientUpdate() {
-		return new KafkaTemplate<>(producerFactoryPatientUpdate());
-	}
-
-	@Bean
-	public KafkaTemplate<String, PatientDeleteRequest> kafkaTemplatePatientDelete() {
-		return new KafkaTemplate<>(producerFactoryPatientDelete());
-	}
-	
-	@Bean
-	public KafkaTemplate<String, EnvelopeRequest> kafkaTemplateSearch() {
-		return new KafkaTemplate<>(producerFactoryPatientSearch());
-	}
-
-    @Bean
-    public CommonLoggingErrorHandler errorHandler() {
-        return new CommonLoggingErrorHandler();
+  @Bean
+  public NewTopic createPatientSearchTopic() {
+    if (!kafkaEnabled) {
+      return null;
     }
+    return TopicBuilder.name(patientSearchTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
+        .compact().build();
+  }
+
+
+  private Map<String, Object> getKafkaConfig() {
+    Map<String, Object> config = new HashMap<>();
+    if (!kafkaEnabled) {
+      return config;
+    }
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+    config.put("schema.registry.url", schemaRegistryUrl);
+    config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+
+    return config;
+  }
+
+  @Bean
+  public CommonLoggingErrorHandler errorHandler() {
+    return new CommonLoggingErrorHandler();
+  }
+
+  @Bean
+  <V> KafkaTemplate<String, V> kafkaTemplate(final ProducerFactory<String, V> factory) {
+    return new KafkaTemplate<>(factory);
+  }
+
+  @Bean
+  <V> ProducerFactory<String, V> producerFactory(final KafkaMessageSerializer<V> serializer) {
+    return new DefaultKafkaProducerFactory<>(getKafkaConfig(), new StringSerializer(), serializer);
+  }
+
+  @Bean
+  <T> KafkaMessageSerializer<T> kafkaMessageSerializer(final ObjectMapper mapper) {
+    return new KafkaMessageSerializer<>(mapper);
+  }
 
 }

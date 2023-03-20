@@ -17,10 +17,10 @@ import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.DeceasedConverter;
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -155,7 +155,7 @@ public class ElasticsearchPerson {
     private String addReasonCd;
 
     @Field(name = ADD_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant addTime;
 
     @Field(name = ADD_USER_ID, type = FieldType.Long)
@@ -168,7 +168,7 @@ public class ElasticsearchPerson {
     private Short ageCalc;
 
     @Field(name = AGE_CALC_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant ageCalcTime;
 
     @Field(name = AGE_CALC_UNIT_CD, type = FieldType.Keyword)
@@ -181,7 +181,7 @@ public class ElasticsearchPerson {
     private String ageReported;
 
     @Field(name = AGE_REPORTED_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant ageReportedTime;
 
     @Field(name = AGE_REPORTED_UNIT_CD, type = FieldType.Keyword)
@@ -195,11 +195,11 @@ public class ElasticsearchPerson {
     private Short birthOrderNbr;
 
     @Field(name = BIRTH_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant birthTime;
 
     @Field(name = BIRTH_TIME_CALC, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant birthTimeCalc;
 
     @Field(name = CD_FIELD, type = FieldType.Keyword)
@@ -217,7 +217,7 @@ public class ElasticsearchPerson {
     private Deceased deceasedIndCd;
 
     @Field(name = DECEASED_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant deceasedTime;
 
     @Field(name = DESCRIPTION_FIELD, type = FieldType.Text)
@@ -236,7 +236,7 @@ public class ElasticsearchPerson {
     private String lastChgReasonCd;
 
     @Field(name = LAST_CHG_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant lastChgTime;
 
     @Field(name = LAST_CHG_USER_ID, type = FieldType.Long)
@@ -273,14 +273,14 @@ public class ElasticsearchPerson {
     private RecordStatus recordStatusCd;
 
     @Field(name = RECORD_STATUS_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant recordStatusTime;
 
     @Field(name = STATUS_CD, type = FieldType.Keyword)
     private Character statusCd;
 
     @Field(name = STATUS_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant statusTime;
 
     @Field(name = SURVIVED_IND_CD, type = FieldType.Keyword)
@@ -435,23 +435,23 @@ public class ElasticsearchPerson {
     private Short versionCtrlNbr;
 
     @Field(name = AS_OF_DATE_ADMIN, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant asOfDateAdmin;
 
     @Field(name = AS_OF_DATE_ETHNICITY, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant asOfDateEthnicity;
 
     @Field(name = AS_OF_DATE_GENERAL, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant asOfDateGeneral;
 
     @Field(name = AS_OF_DATE_MORBIDITY, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant asOfDateMorbidity;
 
     @Field(name = AS_OF_DATE_SEX, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant asOfDateSex;
 
     @Field(name = ELECTRONIC_IND, type = FieldType.Keyword)
@@ -464,7 +464,7 @@ public class ElasticsearchPerson {
     private Integer groupNbr;
 
     @Field(name = GROUP_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant groupTime;
 
     @Field(name = EDX_IND, type = FieldType.Keyword)

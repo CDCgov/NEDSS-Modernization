@@ -1,13 +1,13 @@
 extend type Query {
-    findAllProgramAreas(page: Page): [ProgramAreaCode]!
+  findAllProgramAreas(page: Page): [ProgramAreaCode]!
 }
 
 type ProgramAreaCode {
-    id: String!
-    progAreaDescTxt: String
-    nbsUid: ID
-    statusCd: String
-    statusTime: Date
-    codeSetNm: String
-    codeSeq: Int
+  id: String!
+  progAreaDescTxt: String
+  nbsUid: ID
+  statusCd: String
+  statusTime: DateTime
+  codeSetNm: String
+  codeSeq: Int
 }

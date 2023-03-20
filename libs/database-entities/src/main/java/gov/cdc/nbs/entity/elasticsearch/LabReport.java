@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.ValueConverter;
 
-import gov.cdc.nbs.entity.enums.converter.InstantConverter;
+import gov.cdc.nbs.entity.enums.converter.ElasticsearchInstantValueConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -63,7 +63,7 @@ public class LabReport {
     private Long observationUid;
 
     @Field(name = LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant lastChange;
 
     @Field(name = CLASS_CD, type = FieldType.Keyword)
@@ -73,7 +73,7 @@ public class LabReport {
     private String moodCd;
 
     @Field(name = OBSERVATION_LAST_CHG_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant observationLastChgTime;
 
     @Field(name = CD_DESC_TXT, type = FieldType.Text)
@@ -101,19 +101,19 @@ public class LabReport {
     private String localId;
 
     @Field(name = ACTIVITY_TO_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant activityToTime;
 
     @Field(name = EFFECTIVE_FROM_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant effectiveFromTime;
 
     @Field(name = RPT_TO_STATE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant rptToStateTime;
 
     @Field(name = ADD_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
-    @ValueConverter(InstantConverter.class)
+    @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant addTime;
 
     @Field(name = ELECTRONIC_IND, type = FieldType.Keyword)
