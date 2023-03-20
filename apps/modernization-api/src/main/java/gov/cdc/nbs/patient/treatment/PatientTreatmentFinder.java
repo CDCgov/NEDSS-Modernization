@@ -45,11 +45,11 @@ class PatientTreatmentFinder {
     List<PatientTreatment> find(long patient) {
 
         QPerson patients = QPerson.person;
-        QParticipation subjectOfTreatment = QParticipation.participation;
+        QParticipation subjectOfTreatment = new QParticipation("subject_of_treatment");
         QTreatment treatment = QTreatment.treatment;
         QTreatmentAdministered administered = QTreatmentAdministered.treatmentAdministered;
         QActRelationship relationship = QActRelationship.actRelationship;
-        QParticipation treatmentProvider = QParticipation.participation;
+        QParticipation treatmentProvider = new QParticipation("treatment_provider");
         QPersonName provider = QPersonName.personName;
         QPublicHealthCase investigation = QPublicHealthCase.publicHealthCase;
         QConditionCode condition = QConditionCode.conditionCode;
