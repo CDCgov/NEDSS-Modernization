@@ -37,14 +37,15 @@ public class PatientUpdater {
                 .flatMap(List::stream)
                 .filter(elp -> elp.getUseCd().equals("DTH"))
                 .findFirst()
-                .ifPresentOrElse(elp -> {
-                    // If postalEntityLocator exists with useCd of "DTH", update it
-                    ((PostalEntityLocatorParticipation) elp).updateMortalityLocator(asUpdateMortalityLocator(data));
-                }, () -> {
-                    // If postalEntityLocator with useCd of "DTH" does not exist, create it
-                    var id = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
-                    person.add(asAddMortalityLocator(data, id));
-                });
+                .ifPresentOrElse(
+                        elp ->
+                        // If postalEntityLocator exists with useCd of "DTH", update it
+                        ((PostalEntityLocatorParticipation) elp).updateMortalityLocator(asUpdateMortalityLocator(data)),
+                        () -> {
+                            // If postalEntityLocator with useCd of "DTH" does not exist, create it
+                            var id = idGenerator.getNextValidId(IdGeneratorService.EntityType.NBS).getId();
+                            person.add(asAddMortalityLocator(data, id));
+                        });
 
         return personRepository.save(person);
     }

@@ -54,7 +54,7 @@ class KafkaProducerTest {
         assertThat(actualRecord.patientId()).isEqualTo(1L);
         assertThat(actualRecord.userId()).isEqualTo(2L);
         assertThat(actualRecord.eventType()).isEqualTo(PatientEventType.CREATE);
-        assertThat(actualRecord.data()).isEqualTo(null);
+        assertThat(actualRecord.data()).isNull();
 
         verifyNoMoreInteractions(kafkaEnvelopeTemplate);
     }

@@ -11,10 +11,11 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.patientlistener.config.KafkaConfig;
+import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
 
 
 @AutoConfigureJson
-@SpringBootTest(classes = KafkaConfig.class)
+@SpringBootTest(classes = {KafkaConfig.class, StatusProducer.class})
 @ActiveProfiles("test")
 @EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 class KafkaConfigTest {

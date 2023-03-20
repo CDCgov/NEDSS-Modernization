@@ -93,6 +93,8 @@ class PatientUpdaterTest {
     }
 
     @Test
+    @SuppressWarnings("squid:S5961")
+    // Allow more than 25 assertions
     void should_update_mortality_info_new_locator() {
         when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(999L,"prefix","suffix"));
 

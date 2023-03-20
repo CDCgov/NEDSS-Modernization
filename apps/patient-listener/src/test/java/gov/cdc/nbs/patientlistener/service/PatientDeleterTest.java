@@ -17,7 +17,7 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.repository.PersonRepository;
 
-public class PatientDeleterTest {
+class PatientDeleterTest {
 
     @Mock
     private PersonRepository personRepository;
@@ -34,7 +34,7 @@ public class PatientDeleterTest {
     }
 
     @Test
-    void should_set_correct_fields() {
+    public void should_set_correct_fields() {
         Person person = new Person(123L, "local-id");
         patientDeleter.delete(person, 321L);
 
