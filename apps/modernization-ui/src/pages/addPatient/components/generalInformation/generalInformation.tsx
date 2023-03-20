@@ -14,7 +14,6 @@ export default function GeneralInformation({
     control?: any;
     errors?: any;
 }) {
-    console.log('errors:', errors);
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">

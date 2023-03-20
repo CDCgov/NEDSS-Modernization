@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
 import {
     Button,
@@ -17,6 +17,7 @@ import { AddNameModal } from './components/AddNameModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
 import { FindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 type DemographicProps = {
     patientProfileData: FindPatientsByFilterQuery['findPatientsByFilter'] | undefined;
@@ -24,11 +25,15 @@ type DemographicProps = {
 };
 
 export const Demographics = ({ patientProfileData, handleFormSubmission }: DemographicProps) => {
+    const { searchCriteria } = useContext(SearchCriteriaContext);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [tableBody, setTableBody] = useState<any>([]);
     const [nameTableBody, setNameTableBody] = useState<any>([]);
     const [addressTableBody, setAddressTableBody] = useState<any>([]);
     const [phoneEmailTableBody, setPhoneEmailTableBody] = useState<any>([]);
     const [identificationTableBody, setIdentificationTableBody] = useState<any>([]);
+    const [raceTableBody, setRaceTableBody] = useState<any>([]);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const addCommentModalRef = useRef<ModalRef>(null);
@@ -285,10 +290,50 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
         setAddressTableBody(tempArr);
     };
 
+    const raceTableData = (
+        raceId: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['ethnicGroupInd']
+    ) => {
+        const tempArr: any = [];
+        searchCriteria.races.map((race) => {
+            if (race.id.code === raceId) {
+                tempArr.push({
+                    id: 1,
+                    checkbox: false,
+                    tableDetails: [
+                        {
+                            id: 1,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 2,
+                            title: race.codeDescTxt
+                        },
+                        {
+                            id: 3,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 5,
+                            title: (
+                                <Button type="button" unstyled>
+                                    <Icon.MoreHoriz className="font-sans-lg" />
+                                </Button>
+                            ),
+                            textAlign: 'center',
+                            type: 'actions'
+                        }
+                    ]
+                });
+            }
+        });
+        setRaceTableBody(tempArr);
+    };
+
     useEffect(() => {
         if (patientProfileData && patientProfileData?.content?.length > 0) {
             namesTableData(patientProfileData?.content[0].names);
             idTableData(patientProfileData?.content[0].entityIds);
+            raceTableData(patientProfileData?.content[0].electronicInd);
             addressTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
             phoneEmailTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
         }
@@ -296,6 +341,12 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
 
     const [isEditModal, setIsEditModal] = useState<boolean>(false);
     const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isDeleteModal) {
+            deleteModalRef.current?.toggleModal();
+        }
+    }, [isDeleteModal]);
 
     return (
         <>
@@ -317,7 +368,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                         { name: 'General comment', sortable: true },
                         { name: 'Actions', sortable: true }
                     ]}
-                    tableBody={tableBody}
+                    tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
@@ -333,7 +384,6 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                         }
                         if (type === 'delete') {
                             setIsDeleteModal(true);
-                            deleteModalRef.current?.toggleModal();
                         }
                     }}
                     isPagination={true}
@@ -445,41 +495,40 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                 />
             </div>
 
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <TableComponent
+                    isPagination={true}
+                    buttons={
+                        <div className="grid-row">
+                            <Button type="button" className="grid-row">
+                                <Icon.Add className="margin-right-05" />
+                                Add race
+                            </Button>
+                        </div>
+                    }
+                    tableHeader={'Race'}
+                    tableHead={[
+                        { name: 'As of', sortable: true },
+                        { name: 'Race', sortable: true },
+                        { name: 'Detailed race', sortable: true },
+                        { name: 'Actions', sortable: false }
+                    ]}
+                    tableBody={raceTableBody}
+                    currentPage={currentPage}
+                    handleNext={(e) => setCurrentPage(e)}
+                />
+            </div>
+
             <Grid row gap className="margin-auto">
                 <Grid col={6}>
                     <Grid row>
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
-                                type="race"
-                                tableHeader="Race"
-                                tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Race:', text: 'White' },
-                                    { title: 'Detailed race:', text: '' }
-                                ]}
-                            />
-                        </Grid>
-
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
-                                type="ethnicity"
-                                tableHeader="Ethnicity"
-                                tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Ethnicity::', text: 'Not Hispanic or Latino' },
-                                    { title: 'Spanish origin:', text: '' },
-                                    { title: 'Reasons unknown:', text: '' }
-                                ]}
-                            />
-                        </Grid>
-
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
                                 type="general"
                                 tableHeader="General Patient Information"
                                 tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Marital status::', text: 'Married' },
+                                    { title: 'As of:', text: '' },
+                                    { title: 'Marital status::', text: '' },
                                     { title: 'Mother’s maiden name:', text: '' },
                                     { title: 'Number of adults in residence:', text: '' },
                                     { title: 'Number of children in residence:', text: '' },
@@ -491,22 +540,35 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                                 ]}
                             />
                         </Grid>
+
+                        <Grid col={12} className="margin-top-3 margin-bottom-2">
+                            <HorizontalTable
+                                type="mortality"
+                                tableHeader="Mortality"
+                                tableData={[
+                                    { title: 'As of:', text: '' },
+                                    { title: 'Is the patient deceased::', text: '' },
+                                    { title: 'Date of death:', text: '' },
+                                    { title: 'City of death:', text: '' },
+                                    { title: 'State of death:', text: '' },
+                                    { title: 'County of death:', text: '' },
+                                    { title: 'Country of death:', text: '' }
+                                ]}
+                            />
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
-                                type="mortality"
-                                tableHeader="Mortality"
+                                type="ethnicity"
+                                tableHeader="Ethnicity"
                                 tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Is the patient deceased::', text: 'No' },
-                                    { title: 'Date of death:', text: '' },
-                                    { title: 'City of death:', text: '' },
-                                    { title: 'State of death:', text: '' },
-                                    { title: 'County of death:', text: '' },
-                                    { title: 'Country of death:', text: '' }
+                                    { title: 'As of:', text: '' },
+                                    { title: 'Ethnicity::', text: '' },
+                                    { title: 'Spanish origin:', text: '' },
+                                    { title: 'Reasons unknown:', text: '' }
                                 ]}
                             />
                         </Grid>
@@ -516,10 +578,10 @@ export const Demographics = ({ patientProfileData, handleFormSubmission }: Demog
                                 type="sex"
                                 tableHeader="Sex & Birth"
                                 tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Date of death:', text: '01/07/1972' },
-                                    { title: 'Current age:', text: '50 Years' },
-                                    { title: 'Current sex:', text: 'Male' },
+                                    { title: 'As of:', text: '' },
+                                    { title: 'Date of death:', text: '' },
+                                    { title: 'Current age:', text: '' },
+                                    { title: 'Current sex:', text: '' },
                                     { title: 'Unknown reason:', text: '' },
                                     { title: 'Transgender information:', text: '' },
                                     { title: 'Additional gender:', text: '' },

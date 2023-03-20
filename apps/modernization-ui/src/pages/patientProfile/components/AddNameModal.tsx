@@ -228,6 +228,7 @@ export const AddNameModal = ({ modalRef, handleSubmission, modalHead }: AddComme
 
     const onSubmit = (data: any) => {
         console.log(data);
+        modalRef.current?.toggleModal();
         handleSubmission?.('success', `${data?.last}, ${data?.first}`);
         setSubmitted(true);
     };

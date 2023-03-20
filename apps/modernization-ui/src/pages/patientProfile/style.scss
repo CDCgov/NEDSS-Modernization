@@ -56,7 +56,6 @@
 .usa-alert {
     position: fixed;
     top: 15px;
-    right: 0px;
     animation: mymove 1s;
     animation-fill-mode: forwards;
 }
@@ -66,6 +65,6 @@
         right: -250px;
     }
     to {
-        right: 0;
+        right: 15px;
     }
 }
