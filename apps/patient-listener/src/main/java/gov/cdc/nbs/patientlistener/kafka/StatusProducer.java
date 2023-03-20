@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patientlistener.kafka;
 
 import gov.cdc.nbs.message.RequestStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ public class StatusProducer {
 
   public StatusProducer(
       final KafkaTemplate<String, RequestStatus> template,
+      @Value("${kafkadef.topics.status.patient}")
       final String statusTopic
   ) {
     this.template = template;
