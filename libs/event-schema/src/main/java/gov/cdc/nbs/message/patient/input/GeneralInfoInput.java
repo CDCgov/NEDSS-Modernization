@@ -34,7 +34,7 @@ public class GeneralInfoInput {
                         input.getPatientId(),
                         requestId,
                         userId,
-                        Instant.now(),
+                        input.getAsOf(),
                         input.getMaritalStatus(),
                         input.getMothersMaidenName(),
                         input.getAdultsInHouseNumber(),

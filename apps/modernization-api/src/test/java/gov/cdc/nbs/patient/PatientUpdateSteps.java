@@ -27,6 +27,7 @@ import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
+import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -118,7 +119,7 @@ public class PatientUpdateSteps {
     private MortalityInput createMortalityInput() {
         var input = new MortalityInput();
         input.setPatientId(1234L);
-        input.setAsOf(Instant.now());
+        input.setAsOf(RandomUtil.getRandomDateInPast());
         input.setDeceased(Deceased.Y);
         input.setDeceasedTime(Instant.now());
         input.setCityOfDeath("Deceased City");

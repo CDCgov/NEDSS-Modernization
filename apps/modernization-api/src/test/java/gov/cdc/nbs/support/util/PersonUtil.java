@@ -63,7 +63,7 @@ public class PersonUtil {
     public static GeneralInfoInput convertToGeneralInput(Person person) {
         var input = new GeneralInfoInput();
         input.setPatientId(person.getId());
-        input.setAsOf(Instant.now());
+        input.setAsOf(person.getAsOfDateGeneral());
         input.setMaritalStatus(person.getMaritalStatusCd());
         input.setMothersMaidenName(person.getMothersMaidenNm());
         input.setAdultsInHouseNumber(person.getAdultsInHouseNbr());
