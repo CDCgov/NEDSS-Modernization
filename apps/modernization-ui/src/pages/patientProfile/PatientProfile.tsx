@@ -15,13 +15,12 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
-    RecordStatus,
     useFindContactsForPatientLazyQuery,
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidtyReportForPatientLazyQuery,
-    useFindPatientsByFilterLazyQuery,
+    useFindPatientByIdLazyQuery,
     useFindTreatmentsForPatientLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
@@ -43,11 +42,13 @@ export const PatientProfile = () => {
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
-    const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
+    // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
     const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
     const [getTreatmentsData, { data: treatmentsData }] = useFindTreatmentsForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
     const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
+
+    const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -58,12 +59,9 @@ export const PatientProfile = () => {
 
     useEffect(() => {
         if (id) {
-            getPatientProfileData({
+            getPatientProfileDataById({
                 variables: {
-                    filter: {
-                        id: id,
-                        recordStatus: [RecordStatus.Active, RecordStatus.LogDel, RecordStatus.Superceded]
-                    }
+                    id: id
                 }
             });
         }
@@ -72,55 +70,52 @@ export const PatientProfile = () => {
     const [ethnicity, setEthnicity] = useState<string>('');
     const [race, setRace] = useState<string>('');
     useEffect(() => {
-        if (patientProfileData?.findPatientsByFilter.content) {
-            setProfileData(patientProfileData?.findPatientsByFilter.content[0]);
-            if (
-                patientProfileData?.findPatientsByFilter.content?.length > 0 &&
-                patientProfileData.findPatientsByFilter.content[0].id
-            ) {
+        if (patientProfileData?.findPatientById) {
+            setProfileData(patientProfileData?.findPatientById);
+            if (patientProfileData.findPatientById.id) {
                 getPatientInvestigationData({
                     variables: {
                         filter: {
-                            patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                            patientId: +patientProfileData.findPatientById.id
                         }
                     }
                 });
                 getPatientLabReportData({
                     variables: {
                         filter: {
-                            patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                            patientId: +patientProfileData.findPatientById.id
                         }
                     }
                 });
                 getMorbidityData({
                     variables: {
-                        patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                        patientId: +patientProfileData.findPatientById.id
                     }
                 });
                 getTreatmentsData({
                     variables: {
-                        patient: patientProfileData.findPatientsByFilter.content[0].id
+                        patient: patientProfileData.findPatientById.id
                     }
                 });
                 getDocumentsData({
                     variables: {
-                        patient: patientProfileData.findPatientsByFilter.content[0].id
+                        patient: patientProfileData.findPatientById.id
                     }
                 });
                 getContactsData({
                     variables: {
-                        patient: patientProfileData.findPatientsByFilter.content[0].id
+                        patient: patientProfileData.findPatientById.id
                     }
                 });
 
                 searchCriteria.ethnicities.map((ethinicity) => {
-                    if (ethinicity.id.code === patientProfileData.findPatientsByFilter.content[0].ethnicGroupInd) {
+                    if (ethinicity.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
                         setEthnicity(ethinicity.codeDescTxt);
                     }
                 });
 
                 searchCriteria.races.map((race) => {
-                    if (race.id.code === patientProfileData.findPatientsByFilter.content[0].ethnicGroupInd) {
+                    if (race.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
                         setRace(race.codeDescTxt);
                     }
                 });
@@ -340,7 +335,8 @@ export const PatientProfile = () => {
                             setAddedItem(message);
                             setAlertType(type);
                         }}
-                        patientProfileData={patientProfileData?.findPatientsByFilter}
+                        patientProfileData={patientProfileData?.findPatientById}
+                        ethnicity={ethnicity}
                     />
                 )}
 
