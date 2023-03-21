@@ -701,8 +701,14 @@ type PatientTreatmentInvestigation {
   condition: String!
 }
 
+type PatientTreatmentResults {
+  content: [PatientTreatment]!
+  total: Int!
+  number: Int!
+}
+
 extend type Query {
-  findTreatmentsForPatient(patient: ID!): [PatientTreatment]
+  findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
 }
 type Query {
   findPatientById(id: ID!): Person
