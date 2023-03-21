@@ -365,8 +365,8 @@ export const AdvancedSearch = () => {
 
     const handleClearAll = () => {
         setPersonFilter({ recordStatus: [RecordStatus.Active] });
-        setInvestigationFilter({});
-        setLabReportFilter({});
+        setInvestigationFilter(undefined);
+        setLabReportFilter(undefined);
         setSubmitted(false);
         setLastSearchType(undefined);
         navigate(`/advanced-search${activeTab ? '/' + activeTab : ''}`);
