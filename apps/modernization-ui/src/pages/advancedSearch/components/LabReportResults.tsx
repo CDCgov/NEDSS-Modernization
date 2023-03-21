@@ -84,7 +84,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         }
 
         const redirectPatientProfile = async () => {
-            navigate(`/patient-profile/${patient?.localId}`);
+            navigate(`/patient-profile/${patient?.personParentUid}`);
         };
 
         return (

@@ -50,7 +50,7 @@ spring:
       matching-strategy: ant_path_matcher
 
 kafka:
-  enabled: true
+  enabled: false
   bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
   listener:
     ack-mode: record

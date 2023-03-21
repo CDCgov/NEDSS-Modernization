@@ -84,7 +84,7 @@ export const InvestigationResults = ({
         }
 
         const redirectPatientProfile = async () => {
-            navigate(`/patient-profile/${patient?.localId}`);
+            navigate(`/patient-profile/${patient?.personParentUid}`);
         };
 
         return (
