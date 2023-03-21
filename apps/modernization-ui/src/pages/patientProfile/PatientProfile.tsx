@@ -1,4 +1,5 @@
 import {
+    Alert,
     Button,
     ButtonGroup,
     Grid,
@@ -10,19 +11,23 @@ import {
     ModalToggleButton
 } from '@trussworks/react-uswds';
 import './style.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
-    RecordStatus,
+    useFindContactsForPatientLazyQuery,
+    useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindPatientsByFilterLazyQuery
+    useFindMorbidtyReportForPatientLazyQuery,
+    useFindPatientByIdLazyQuery,
+    useFindTreatmentsForPatientLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
 import { Events } from './Events';
 import { Demographics } from './Demographics';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 enum ACTIVE_TAB {
     SUMMARY = 'Summary',
@@ -37,50 +42,148 @@ export const PatientProfile = () => {
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
-    const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
+    // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
+    const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
+    const [getTreatmentsData, { data: treatmentsData }] = useFindTreatmentsForPatientLazyQuery();
+    const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
+    const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
+
+    const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
     const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
 
+    const { searchCriteria } = useContext(SearchCriteriaContext);
+
     useEffect(() => {
         if (id) {
-            getPatientProfileData({
+            getPatientProfileDataById({
                 variables: {
-                    filter: {
-                        id: id,
-                        recordStatus: [RecordStatus.Active, RecordStatus.LogDel, RecordStatus.Superceded]
-                    }
+                    id: id
                 }
             });
         }
     }, []);
 
+    const [ethnicity, setEthnicity] = useState<string>('');
+    const [race, setRace] = useState<string>('');
     useEffect(() => {
-        if (patientProfileData?.findPatientsByFilter.content) {
-            setProfileData(patientProfileData?.findPatientsByFilter.content[0]);
-            if (
-                patientProfileData?.findPatientsByFilter.content?.length > 0 &&
-                patientProfileData.findPatientsByFilter.content[0].id
-            ) {
+        if (patientProfileData?.findPatientById) {
+            setProfileData(patientProfileData?.findPatientById);
+            if (patientProfileData.findPatientById.id) {
                 getPatientInvestigationData({
                     variables: {
                         filter: {
-                            patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                            patientId: +patientProfileData.findPatientById.id
                         }
                     }
                 });
                 getPatientLabReportData({
                     variables: {
                         filter: {
-                            patientId: +patientProfileData.findPatientsByFilter.content[0].id
+                            patientId: +patientProfileData.findPatientById.id
                         }
+                    }
+                });
+                getMorbidityData({
+                    variables: {
+                        patientId: +patientProfileData.findPatientById.id
+                    }
+                });
+                getTreatmentsData({
+                    variables: {
+                        patient: patientProfileData.findPatientById.id
+                    }
+                });
+                getDocumentsData({
+                    variables: {
+                        patient: patientProfileData.findPatientById.id
+                    }
+                });
+                getContactsData({
+                    variables: {
+                        patient: patientProfileData.findPatientById.id
+                    }
+                });
+
+                searchCriteria.ethnicities.map((ethinicity) => {
+                    if (ethinicity.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
+                        setEthnicity(ethinicity.codeDescTxt);
+                    }
+                });
+
+                searchCriteria.races.map((race) => {
+                    if (race.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
+                        setRace(race.codeDescTxt);
                     }
                 });
             }
         }
     }, [patientProfileData]);
+
+    const OrderedData = ({ data, type }: any) => {
+        return (
+            <div>
+                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">{type}</h5>
+                {data && data.length > 0 ? (
+                    data.map((add: string, ind: number) => (
+                        <p
+                            key={ind}
+                            className="margin-0 font-sans-2xs text-normal"
+                            style={{
+                                wordBreak: 'break-word',
+                                paddingRight: '15px',
+                                maxWidth: type === 'EMAIL' ? '165px' : 'auto'
+                            }}>
+                            {add}
+                        </p>
+                    ))
+                ) : (
+                    <p className="text-italic margin-0 text-gray-30">No Data</p>
+                )}
+            </div>
+        );
+    };
+
+    const newOrderPhone = (data: any) => {
+        const numbers: any = [];
+        data?.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
+        return <OrderedData data={numbers} type="PHONE NUMBER" />;
+    };
+
+    const newOrderEmail = (data: any) => {
+        const emails: any = [];
+        data?.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
+        return <OrderedData data={emails} type="EMAIL" />;
+    };
+
+    const newOrderAddress = (data: any) => {
+        const address: any = [];
+        data?.map(
+            (item: any) =>
+                item.classCd === 'PST' &&
+                address.push(
+                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${item.locator.stateCd ?? ''} ${
+                        item.locator.zipCd ?? ''
+                    } ${item.locator.cntryCd ?? ''}`
+                )
+        );
+        return <OrderedData data={address} type="ADDRESS" />;
+    };
+
+    const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
+    const [addedItem, setAddedItem] = useState<string>('');
+    const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+
+    useEffect(() => {
+        if (submittedSuccess) {
+            setTimeout(() => {
+                setSubmittedSuccess(false);
+            }, 5000);
+        }
+    }, [submittedSuccess]);
 
     return (
         <div className="height-full main-banner">
@@ -164,41 +267,26 @@ export const PatientProfile = () => {
                         </Grid>
 
                         <Grid row col={3}>
-                            <Grid col={12}>
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    PHONE
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">(555) 555-5555</p>
-                            </Grid>
+                            <Grid col={12}>{newOrderPhone(profileData?.nbsEntity?.entityLocatorParticipations)}</Grid>
                             <Grid col={12} className="margin-top-3">
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    EMAIL
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">sjohn@helloworld.com</p>
+                                {newOrderEmail(profileData?.nbsEntity?.entityLocatorParticipations)}
                             </Grid>
                         </Grid>
 
                         <Grid row col={3}>
-                            <Grid col={12}>
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    ADDRESS
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">
-                                    12 Main St, Apt 12 Atlanta, GA, 30342
-                                </p>
-                            </Grid>
+                            <Grid col={12}>{newOrderAddress(profileData?.nbsEntity?.entityLocatorParticipations)}</Grid>
                         </Grid>
 
                         <Grid row col={3}>
                             <Grid col={12}>
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">RACE</h5>
-                                <p className="margin-0 font-sans-1xs text-normal">White</p>
+                                <p className="margin-0 font-sans-1xs text-normal">{race || 'No data'}</p>
                             </Grid>
                             <Grid col={12} className="margin-top-3">
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                     ETHNICITY
                                 </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">Not Hispanic or Latino</p>
+                                <p className="margin-0 font-sans-1xs text-normal">{ethnicity}</p>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -233,10 +321,23 @@ export const PatientProfile = () => {
                     <Events
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
+                        morbidityData={morbidityData?.findMorbidtyReportForPatient}
+                        treatmentsData={treatmentsData?.findTreatmentsForPatient}
+                        documentsData={documentsData?.findDocumentsForPatient}
+                        contactsData={contactsData?.findContactsForPatient}
+                        profileData={profileData}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
-                    <Demographics patientProfileData={patientProfileData?.findPatientsByFilter} />
+                    <Demographics
+                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                            setSubmittedSuccess(true);
+                            setAddedItem(message);
+                            setAlertType(type);
+                        }}
+                        patientProfileData={patientProfileData?.findPatientById}
+                        ethnicity={ethnicity}
+                    />
                 )}
 
                 <div className="text-center margin-y-5">
@@ -246,6 +347,20 @@ export const PatientProfile = () => {
                     </Button>
                 </div>
             </div>
+
+            {submittedSuccess && (
+                <Alert
+                    type={alertType}
+                    heading="Success"
+                    headingLevel="h4"
+                    cta={
+                        <Button type="button" unstyled>
+                            <Icon.Close />
+                        </Button>
+                    }>
+                    Added new name, {addedItem}
+                </Alert>
+            )}
         </div>
     );
 };

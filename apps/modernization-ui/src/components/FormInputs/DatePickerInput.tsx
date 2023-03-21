@@ -1,4 +1,4 @@
-import { DatePicker, Label } from '@trussworks/react-uswds';
+import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import { useState } from 'react';
 
@@ -12,6 +12,8 @@ type DatePickerProps = {
     onChange?: OnChange;
     className?: string;
     defaultValue?: string;
+    errorMessage?: string;
+    flexBox?: boolean;
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
@@ -32,7 +34,8 @@ export const DatePickerInput = ({
     htmlFor = '',
     onChange,
     className,
-    defaultValue
+    defaultValue,
+    flexBox
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
     const validDefaultValue = !emptyDefaultValue && matches(defaultValue);
@@ -47,7 +50,7 @@ export const DatePickerInput = ({
         valid && fn && fn(changed);
     };
 
-    return (
+    return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
@@ -64,5 +67,24 @@ export const DatePickerInput = ({
                 />
             )}
         </div>
+    ) : (
+        <Grid row className={`date-picker-input ${error === true ? 'error' : ''}`}>
+            <Grid col={6}>{label && <Label htmlFor={htmlFor}>{label}</Label>}</Grid>
+            <Grid col={6}>
+                {error && <small className="text-red">{'Not a valid date'}</small>}
+                {!intialDefault && (
+                    <DatePicker id={id} onChange={checkValidity(onChange)} className={className} name={name} />
+                )}
+                {intialDefault && (
+                    <DatePicker
+                        id={id}
+                        onChange={checkValidity(onChange)}
+                        className={className}
+                        name={name}
+                        defaultValue={intialDefault}
+                    />
+                )}
+            </Grid>
+        </Grid>
     );
 };

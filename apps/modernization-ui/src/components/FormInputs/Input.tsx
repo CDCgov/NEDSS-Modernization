@@ -1,4 +1,4 @@
-import { ErrorMessage, Label, TextInput } from '@trussworks/react-uswds';
+import { ErrorMessage, Grid, Label, TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import './Input.scss';
 
@@ -14,6 +14,8 @@ type InputProps = {
     onChange?: any;
     defaultValue?: string;
     placeholder?: string;
+    inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined;
+    flexBox?: boolean;
 };
 
 export const Input = ({
@@ -28,9 +30,38 @@ export const Input = ({
     onChange,
     defaultValue,
     placeholder,
+    inputMode,
+    flexBox,
     ...props
 }: InputProps) => {
-    return (
+    return flexBox ? (
+        <Grid row className={`input ${error ? 'input--error' : ''}`}>
+            <Grid col={6}>
+                {label && (
+                    <Label htmlFor={htmlFor}>
+                        {label}
+                        <small className="text-red">{required && ' *'}</small>
+                    </Label>
+                )}
+            </Grid>
+            <Grid col={6}>
+                <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
+                <TextInput
+                    inputMode={inputMode}
+                    placeholder={placeholder}
+                    {...props}
+                    id={id}
+                    onChange={onChange}
+                    value={defaultValue ? defaultValue : ''}
+                    name={name || ''}
+                    validationStatus={error ? 'error' : undefined}
+                    aria-describedby={`${error}-message`}
+                    className={classNames(className)}
+                    type={type}
+                />
+            </Grid>
+        </Grid>
+    ) : (
         <div className={`input ${error ? 'input--error' : ''}`}>
             {label && (
                 <Label htmlFor={htmlFor}>
@@ -40,6 +71,7 @@ export const Input = ({
             )}
             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
             <TextInput
+                inputMode={inputMode}
                 placeholder={placeholder}
                 {...props}
                 id={id}

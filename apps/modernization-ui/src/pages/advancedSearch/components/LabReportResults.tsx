@@ -75,7 +75,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         let age: string | undefined;
         let sex: string | undefined;
         if (patient) {
-            name = `${patient.firstName}, ${patient.lastName}`;
+            name = !patient.lastName && !patient.firstName ? `No data` : `${patient.lastName}, ${patient.firstName}`;
             if (patient.birthTime) {
                 birthDate = formatDate(patient.birthTime);
                 age = calculateAge(new Date(patient.birthTime));
@@ -84,7 +84,7 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
         }
 
         const redirectPatientProfile = async () => {
-            navigate(`/patient-profile/${patient?.localId}`);
+            navigate(`/patient-profile/${patient?.personParentUid}`);
         };
 
         return (
