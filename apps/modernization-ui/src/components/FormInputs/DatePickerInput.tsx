@@ -1,6 +1,6 @@
 import { DatePicker, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { validateDate } from '../../utils/DateValidation';
 
 type DatePickerProps = {
@@ -28,6 +28,12 @@ export const DatePickerInput = ({
 
     useEffect(() => {
         if (defaultVal) {
+            setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
+        }
+    });
+
+    const validateDatePicker = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
+        if (defaultVal) {
             if (defaultVal[0] === '') {
                 setError(false);
                 setDefaultDate('');
@@ -36,20 +42,33 @@ export const DatePickerInput = ({
                 setError(false);
             } else {
                 setError(true);
-                setDefaultDate(`${defaultVal[2]}-${defaultVal[0]}-${defaultVal[1]}`);
             }
         } else {
-            setDefaultDate('0-0-0');
+            const currentVal = (event.target as HTMLInputElement).value;
+            if (!currentVal || validateDate(currentVal)) {
+                setError(false);
+            } else {
+                setError(true);
+            }
         }
-    }, [defaultVal]);
+    };
     return (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
             {defaultDate && (
-                <DatePicker defaultValue={defaultDate} id={id} onChange={onChange} className={className} name={name} />
+                <DatePicker
+                    defaultValue={defaultDate}
+                    id={id}
+                    onChange={onChange}
+                    className={className}
+                    name={name}
+                    onBlur={validateDatePicker}
+                />
             )}
-            {!defaultDate && <DatePicker id={id} onChange={onChange} className={className} name={name} />}
+            {!defaultDate && (
+                <DatePicker id={id} onChange={onChange} className={className} name={name} onBlur={validateDatePicker} />
+            )}
         </div>
     );
 };
