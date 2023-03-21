@@ -11,8 +11,10 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 @Entity
-@DiscriminatorValue("PST")
+@DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
 public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
+
+    static final String POSTAL_CLASS_CODE = "PST";
 
     @MapsId("locatorUid")
     @OneToOne(
@@ -56,6 +58,11 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
 
     public void setLocator(final PostalLocator locator) {
         this.locator = locator;
+    }
+
+    @Override
+    public String getClassCd() {
+        return POSTAL_CLASS_CODE;
     }
 
     @Override
