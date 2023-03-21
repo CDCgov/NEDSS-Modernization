@@ -10,7 +10,7 @@ on:
       - '.github/workflows/Build-elasticsearch.yaml'
 
 # Microservice name must correspond to an existing ECR
-#test Comment
+#test Comment 1
 env:
   microservice_name: elasticsearch
   dockerfile_relative_path: ./cdc-sandbox/elasticsearch
