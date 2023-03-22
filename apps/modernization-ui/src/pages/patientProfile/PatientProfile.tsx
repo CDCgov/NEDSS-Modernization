@@ -56,6 +56,13 @@ export const PatientProfile = () => {
     const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
 
     const { searchCriteria } = useContext(SearchCriteriaContext);
+    const openPrintableView = () => {
+        window.open(
+            `${window.location.origin}/nbs/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
+            '_blank',
+            'noreferrer'
+        );
+    };
 
     useEffect(() => {
         if (id) {
@@ -194,7 +201,7 @@ export const PatientProfile = () => {
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
                 <h1 className="font-sans-xl text-medium">Patient Profile</h1>
                 <div>
-                    <Button className="display-inline-flex print-btn" type={'submit'}>
+                    <Button type={'button'} className="display-inline-flex print-btn" onClick={openPrintableView}>
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>
