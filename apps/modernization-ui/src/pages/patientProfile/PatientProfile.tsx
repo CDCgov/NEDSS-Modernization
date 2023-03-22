@@ -68,7 +68,7 @@ export const PatientProfile = () => {
     }, []);
 
     const [ethnicity, setEthnicity] = useState<string>('');
-    const [race, setRace] = useState<string>('');
+    const [race, setRace] = useState<any>(undefined);
     useEffect(() => {
         if (patientProfileData?.findPatientById) {
             setProfileData(patientProfileData?.findPatientById);
@@ -114,10 +114,14 @@ export const PatientProfile = () => {
                     }
                 });
 
+                const raceArr: any = [];
                 searchCriteria.races.map((race) => {
-                    if (race.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
-                        setRace(race.codeDescTxt);
-                    }
+                    patientProfileData?.findPatientById?.races?.map((item: any) => {
+                        if (race.id.code === item?.raceCd) {
+                            raceArr.push(race.codeDescTxt);
+                            setRace(raceArr);
+                        }
+                    });
                 });
             }
         }
@@ -280,7 +284,9 @@ export const PatientProfile = () => {
                         <Grid row col={3}>
                             <Grid col={12}>
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">RACE</h5>
-                                <p className="margin-0 font-sans-1xs text-normal">{race || 'No data'}</p>
+                                <p className="margin-0 font-sans-1xs text-normal">
+                                    {race?.map((item: any) => item) || 'No data'}
+                                </p>
                             </Grid>
                             <Grid col={12} className="margin-top-3">
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
