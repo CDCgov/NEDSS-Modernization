@@ -40,7 +40,7 @@ export const AppRoutes = () => {
                 {state.isLoggedIn && (
                     <>
                         <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
-                        <Route path="/patient-profile/:id" element={<PatientProfile />} />
+                        <Route path="/patient-profile/:id/:printId" element={<PatientProfile />} />
                         <Route path="/add-patient" element={<AddPatient />} />
                         <Route path="*" element={<Navigate to="/advanced-search" />} />
                         <Route path="/" element={<Navigate to="/advanced-search" />} />
