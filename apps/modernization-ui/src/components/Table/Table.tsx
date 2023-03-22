@@ -96,7 +96,7 @@ export const TableComponent = ({
                                             <td
                                                 className={`${td?.textAlign ? `text-${td?.textAlign}` : ''} table-data`}
                                                 key={ind}>
-                                                {index === 0 && ind === 0 && item.checkbox && (
+                                                {ind === 0 && item.checkbox && (
                                                     <Checkbox key={index} id={td.title} name={'tableCheck'} label="" />
                                                 )}
                                                 {td?.type !== 'actions' && (

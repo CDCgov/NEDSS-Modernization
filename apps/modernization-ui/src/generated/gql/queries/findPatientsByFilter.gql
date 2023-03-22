@@ -38,6 +38,10 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                 assigningAuthorityCd
                 assigningAuthorityDescTxt
             }
+            races{
+                raceCd
+                recordStatusCd
+            }
             names{
                 firstNm
                 middleNm
