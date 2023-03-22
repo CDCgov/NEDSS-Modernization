@@ -826,6 +826,7 @@ export type PatientTreatmentInvestigation = {
 export type PatientTreatmentResults = {
   __typename?: 'PatientTreatmentResults';
   content: Array<Maybe<PatientTreatment>>;
+  number: Scalars['Int'];
   total: Scalars['Int'];
 };
 
@@ -1790,7 +1791,7 @@ export type FindTreatmentsForPatientQueryVariables = Exact<{
 }>;
 
 
-export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: { __typename?: 'PatientTreatmentResults', total: number, content: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> } | null };
+export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: { __typename?: 'PatientTreatmentResults', total: number, number: number, content: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> } | null };
 
 
 export const CreatePatientDocument = gql`
@@ -4617,6 +4618,7 @@ export const FindTreatmentsForPatientDocument = gql`
       }
     }
     total
+    number
   }
 }
     `;

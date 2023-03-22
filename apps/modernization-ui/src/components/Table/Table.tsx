@@ -142,7 +142,9 @@ export const TableComponent = ({
                             </tr>
                         ))
                     ) : (
-                        <tr className="text-center no-data not-available">Not Available</tr>
+                        <tr className="text-center no-data not-available">
+                            <td colSpan={tableHead.length}>Not Available</td>
+                        </tr>
                     )}
                 </tbody>
             </Table>
