@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import gov.cdc.nbs.message.enums.PregnancyStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,14 +31,16 @@ public class InvestigationFilter {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class InvestigationEventDateSearch {
-        private InvestigationEventDateType eventDateType;
+        private EventDateType eventDateType;
         private Instant from;
         private Instant to;
     }
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class ProviderFacilitySearch {
         private ReportingEntityType entityType;
         private Long id;
@@ -84,7 +87,7 @@ public class InvestigationFilter {
         UNKNOWN
     }
 
-    public enum InvestigationEventDateType {
+    public enum EventDateType {
         DATE_OF_REPORT,
         INVESTIGATION_CLOSED_DATE,
         INVESTIGATION_CREATE_DATE,

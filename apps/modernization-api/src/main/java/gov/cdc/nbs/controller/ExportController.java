@@ -1,20 +1,19 @@
 package gov.cdc.nbs.controller;
 
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.google.common.net.HttpHeaders;
 import com.itextpdf.text.DocumentException;
-
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
+import gov.cdc.nbs.investigation.InvestigationFinder;
 import gov.cdc.nbs.service.EventService;
 import gov.cdc.nbs.service.ExportService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,12 +27,15 @@ public class ExportController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private InvestigationFinder investigationFinder;
+
     @PostMapping(value = "/investigation/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_PDF_VALUE)
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public ResponseEntity<byte[]> generateInvestigationPdf(@RequestBody InvestigationFilter filter)
             throws DocumentException, IOException {
-        var investigations = eventService.findInvestigationsByFilterForExport(filter);
+        var investigations = investigationFinder.find(filter, Pageable.ofSize(1000));
         var pdf = exportService.generateInvestigationPdf(investigations);
 
         return ResponseEntity.ok()
@@ -48,7 +50,7 @@ public class ExportController {
     @PostMapping("/investigation/export/csv")
     @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
     public ResponseEntity<String> generateInvestigationCsv(@RequestBody InvestigationFilter filter) {
-        var investigations = eventService.findInvestigationsByFilterForExport(filter);
+        var investigations = investigationFinder.find(filter, Pageable.ofSize(1000));
         var csv = exportService.generateInvestigationCsv(investigations);
 
         return ResponseEntity.ok()
