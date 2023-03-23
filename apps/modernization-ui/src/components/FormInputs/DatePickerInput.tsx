@@ -1,6 +1,6 @@
 import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 type OnChange = (val?: string) => void;
 
@@ -43,10 +43,14 @@ export const DatePickerInput = ({
 
     const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
 
-    const checkValidity = (fn?: OnChange) => (changed?: string) => {
-        const valid = isValid(changed);
+    const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
+        const currentVal = (event.target as HTMLInputElement).value;
+        const valid = isValid(currentVal);
         setError(!valid);
+    };
 
+    const handleOnChange = (fn?: OnChange) => (changed?: string) => {
+        const valid = isValid(changed);
         valid && fn && fn(changed);
     };
 
@@ -55,12 +59,19 @@ export const DatePickerInput = ({
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
             {!intialDefault && (
-                <DatePicker id={id} onChange={checkValidity(onChange)} className={className} name={name} />
+                <DatePicker
+                    id={id}
+                    onBlur={checkValidity}
+                    onChange={handleOnChange(onChange)}
+                    className={className}
+                    name={name}
+                />
             )}
             {intialDefault && (
                 <DatePicker
                     id={id}
-                    onChange={checkValidity(onChange)}
+                    onBlur={checkValidity}
+                    onChange={handleOnChange(onChange)}
                     className={className}
                     name={name}
                     defaultValue={intialDefault}
@@ -73,12 +84,19 @@ export const DatePickerInput = ({
             <Grid col={6}>
                 {error && <small className="text-red">{'Not a valid date'}</small>}
                 {!intialDefault && (
-                    <DatePicker id={id} onChange={checkValidity(onChange)} className={className} name={name} />
+                    <DatePicker
+                        id={id}
+                        onBlur={checkValidity}
+                        onChange={handleOnChange(onChange)}
+                        className={className}
+                        name={name}
+                    />
                 )}
                 {intialDefault && (
                     <DatePicker
                         id={id}
-                        onChange={checkValidity(onChange)}
+                        onBlur={checkValidity}
+                        onChange={handleOnChange(onChange)}
                         className={className}
                         name={name}
                         defaultValue={intialDefault}
