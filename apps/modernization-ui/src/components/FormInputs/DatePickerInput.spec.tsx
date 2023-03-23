@@ -128,6 +128,7 @@ describe('DatePickerInput component tests', () => {
 
             const input = getByTestId('date-picker-external-input');
             await userEvent.type(input, '2/1/2022');
+            input.blur();
 
             const component = container.firstChild;
 
@@ -149,6 +150,7 @@ describe('DatePickerInput component tests', () => {
 
             const input = getByTestId('date-picker-external-input');
             await userEvent.type(input, '12/');
+            input.blur();
 
             const component = container.firstChild;
 
