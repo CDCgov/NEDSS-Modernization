@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.delete;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+
+import gov.cdc.nbs.patientlistener.request.delete.PatientDeleter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

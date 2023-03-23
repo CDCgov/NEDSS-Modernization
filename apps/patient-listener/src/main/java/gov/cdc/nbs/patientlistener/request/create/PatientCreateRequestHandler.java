@@ -1,9 +1,9 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.create;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
-import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
-import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
+import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
@@ -22,7 +22,7 @@ public class PatientCreateRequestHandler {
   private ElasticsearchPersonRepository elasticsearchPersonRepository;
 
   @Autowired
-  private StatusProducer statusProducer;
+  private PatientRequestStatusProducer statusProducer;
 
   @Autowired
   PatientCreator creator;

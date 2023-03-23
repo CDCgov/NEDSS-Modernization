@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.update;
 
 import java.time.Instant;
 import java.util.List;

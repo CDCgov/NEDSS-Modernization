@@ -1,6 +1,6 @@
-package gov.cdc.nbs.patientlistener.exception;
+package gov.cdc.nbs.patientlistener.request;
 
-public class PatientNotFoundException extends KafkaException {
+public class PatientNotFoundException extends PatientRequestException {
 
     public PatientNotFoundException(long patientId, String key) {
         super("Failed to find patient: " + patientId, key);

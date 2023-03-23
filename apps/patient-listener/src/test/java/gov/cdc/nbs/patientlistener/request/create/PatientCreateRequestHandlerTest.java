@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.create;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Objects;
+
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,8 +43,8 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
-import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
-import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
+import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
@@ -57,7 +58,7 @@ class PatientCreateRequestHandlerTest {
     @Mock
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
     @Mock
-    private StatusProducer producer;
+    private PatientRequestStatusProducer producer;
 
     @InjectMocks
     private PatientCreateRequestHandler patientService;
@@ -79,7 +80,7 @@ class PatientCreateRequestHandlerTest {
     @Test
     @SuppressWarnings("squid:S5961")
     // Allow more than 25 assertions
-    void should_create_patient_in_database_and_elasticsearch() throws JsonMappingException, JsonProcessingException {
+    void should_create_patient_in_database_and_elasticsearch() throws JsonProcessingException {
         // Mock methods
 
         doReturn(true).when(userService).isAuthorized(269L, "FIND-PATIENT", "ADD-PATIENT");
@@ -227,7 +228,7 @@ class PatientCreateRequestHandlerTest {
 
     @Test
     void should_not_create_patient_if_requester_lacks_permission()
-            throws JsonMappingException, JsonProcessingException {
+            throws JsonProcessingException {
         // set invalid user credentials
         doReturn(false).when(userService).isAuthorized(anyLong(), any(), any());
 

@@ -1,12 +1,12 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.update;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
-import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
-import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
+import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
@@ -18,14 +18,14 @@ public class PatientUpdateRequestHandler {
   private final PersonRepository personRepository;
   private final UserService userService;
   private final PatientUpdater patientUpdater;
-  private final StatusProducer statusProducer;
+  private final PatientRequestStatusProducer statusProducer;
   private final ElasticsearchPersonRepository elasticsearchPersonRepository;
 
 
   public PatientUpdateRequestHandler(PersonRepository personRepository,
       UserService userService,
       PatientUpdater patientUpdater,
-      StatusProducer statusProducer,
+      PatientRequestStatusProducer statusProducer,
       ElasticsearchPersonRepository elasticsearchPersonRepository) {
     this.personRepository = personRepository;
     this.userService = userService;

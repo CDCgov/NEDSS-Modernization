@@ -14,8 +14,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("gov.cdc.nbs.entity")
 public class PatientListenerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(PatientListenerApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(PatientListenerApplication.class, args);
+  }
 
 }

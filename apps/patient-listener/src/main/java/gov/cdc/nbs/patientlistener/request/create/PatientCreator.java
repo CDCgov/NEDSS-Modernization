@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.create;
 
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;

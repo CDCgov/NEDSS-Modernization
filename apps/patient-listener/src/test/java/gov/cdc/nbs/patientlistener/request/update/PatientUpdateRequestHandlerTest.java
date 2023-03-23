@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.update;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,9 +21,9 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
-import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
-import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
+import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
@@ -35,7 +36,7 @@ class PatientUpdateRequestHandlerTest {
     @Mock
     private PatientUpdater patientUpdater;
     @Mock
-    private StatusProducer statusProducer;
+    private PatientRequestStatusProducer statusProducer;
     @Mock
     private ElasticsearchPersonRepository elasticsearchPersonRepository;
 

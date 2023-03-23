@@ -1,7 +1,6 @@
 package gov.cdc.nbs.config;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -15,34 +14,24 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @ConditionalOnProperty("kafka.enabled")
 public class KafkaConfig {
 
-    @Value("${kafka.properties.topic.partition.count}")
-    private int topicPartitionCount;
-
-    @Value("${kafka.properties.topic.replication.factor}")
-    private int topicReplicationFactor;
-
-    @Value("${kafka.bootstrap-servers}")
-    private String bootstrapServers;
-
-    @Value("${kafka.properties.schema.registry.url}")
-    private String schemaRegistryUrl;
-
-    @Value("${kafkadef.topics.request.patient}")
-    private String patientTopic;
-
-    @Value("${kafka.enabled:true}")
-    private boolean kafkaEnabled;
-
     @Bean
-    public NewTopic createPatientSearchTopic() {
-        return TopicBuilder.name(patientTopic).partitions(topicPartitionCount).replicas(topicReplicationFactor)
-                .compact().build();
+    NewTopic createPatientSearchTopic(
+        @Value("${kafkadef.topics.patient.request}") final String topic,
+        @Value("${kafka.properties.topic.partition.count}") final int topicPartitionCount,
+        @Value("${kafka.properties.topic.replication.factor}") final int topicReplicationFactor
+        ) {
+      return TopicBuilder.name(topic)
+          .partitions(topicPartitionCount)
+          .replicas(topicReplicationFactor)
+          .compact().build();
     }
 
     @Bean
@@ -51,8 +40,18 @@ public class KafkaConfig {
     }
 
     @Bean
-    <V> ProducerFactory<String, V> producerFactory(final JsonSerializer<V> serializer) {
-        return new DefaultKafkaProducerFactory<>(getKafkaConfig(), new StringSerializer(), serializer);
+    <V> ProducerFactory<String, V> producerFactory(
+        final JsonSerializer<V> serializer,
+        @Value("${kafka.bootstrap-servers}")
+        final String bootstrapServers,
+        @Value("${kafka.properties.schema.registry.url}")
+        final String schemaRegistryUrl
+        ) {
+        return new DefaultKafkaProducerFactory<>(
+            getKafkaConfig(bootstrapServers, schemaRegistryUrl),
+            new StringSerializer(),
+            serializer
+        );
     }
 
     @Bean
@@ -60,7 +59,10 @@ public class KafkaConfig {
         return new JsonSerializer<>(mapper);
     }
 
-    private Map<String, Object> getKafkaConfig() {
+    private Map<String, Object> getKafkaConfig(
+        final String schemaRegistryUrl,
+        final String bootstrapServers
+    ) {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put("schema.registry.url", schemaRegistryUrl);
@@ -70,7 +72,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public CommonLoggingErrorHandler errorHandler() {
+    CommonLoggingErrorHandler errorHandler() {
         return new CommonLoggingErrorHandler();
     }
 

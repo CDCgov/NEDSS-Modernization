@@ -43,9 +43,8 @@ kafka:
         dlt.naming.pattern: -neds-part-dlt
 kafkadef:
     topics:
-        request:
-            patient: patient
-        status:
-            patient: patient-status
+        patient:
+            request: patient
+            status: patient-status
     groups:
         patient: patient-group

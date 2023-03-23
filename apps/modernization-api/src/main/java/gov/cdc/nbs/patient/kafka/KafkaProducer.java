@@ -20,7 +20,7 @@ public class KafkaProducer {
     @Value("${kafkadef.topics.request.patient}")
     private String patientTopic;
 
-    public void requestPatientEventEnvelope(PatientEvent request) {
+    public void requestPatientEventEnvelope(final PatientEvent request) {
         send(kafkaPatientEventTemplate, patientTopic, request.requestId(), request);
     }
 

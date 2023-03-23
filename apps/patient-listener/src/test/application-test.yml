@@ -25,10 +25,6 @@ kafka:
     message.max.attempt: 5
     retry.naming.pattern: -neds-part-retry
     dlt.naming.pattern: -neds-part-dlt
-kafkadef:
-  topics:
-    request:
-      patient: patient
 
 logging:
   level:

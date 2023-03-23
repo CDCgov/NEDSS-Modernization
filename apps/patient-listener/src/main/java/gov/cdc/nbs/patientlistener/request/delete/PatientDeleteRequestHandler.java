@@ -1,10 +1,10 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.delete;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patientlistener.exception.KafkaException;
-import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
-import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
-import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
+import gov.cdc.nbs.patientlistener.request.PatientRequestException;
+import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
@@ -15,14 +15,14 @@ import org.springframework.stereotype.Service;
 public class PatientDeleteRequestHandler {
   private final UserService userService;
   private final PatientDeleter patientDeleter;
-  private final StatusProducer statusProducer;
+  private final PatientRequestStatusProducer statusProducer;
   private final PersonRepository personRepository;
   private final ElasticsearchPersonRepository elasticsearchPersonRepository;
 
   public PatientDeleteRequestHandler(
       UserService userService,
       PatientDeleter patientDeleter,
-      StatusProducer statusProducer,
+      PatientRequestStatusProducer statusProducer,
       PersonRepository personRepository,
       ElasticsearchPersonRepository elasticsearchPersonRepository) {
     this.userService = userService;
@@ -42,7 +42,7 @@ public class PatientDeleteRequestHandler {
 
     // do not allow to delete if there are "Active Revisions"
     if (personRepository.findCountOfActiveRevisions(patientId) > 1) {
-      throw new KafkaException("Cannot delete patient with Active Revisions", requestId);
+      throw new PatientRequestException("Cannot delete patient with Active Revisions", requestId);
     }
 
     var person = findPerson(patientId, requestId);

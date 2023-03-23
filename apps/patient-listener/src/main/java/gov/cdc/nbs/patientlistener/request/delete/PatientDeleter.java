@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.delete;
 
 import java.time.Instant;
 import org.springframework.stereotype.Component;

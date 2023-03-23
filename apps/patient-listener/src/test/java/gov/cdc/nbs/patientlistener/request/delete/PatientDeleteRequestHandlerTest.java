@@ -1,10 +1,10 @@
-package gov.cdc.nbs.patientlistener.service;
+package gov.cdc.nbs.patientlistener.request.delete;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patientlistener.exception.KafkaException;
-import gov.cdc.nbs.patientlistener.exception.PatientNotFoundException;
-import gov.cdc.nbs.patientlistener.exception.UserNotAuthorizedException;
-import gov.cdc.nbs.patientlistener.kafka.StatusProducer;
+import gov.cdc.nbs.patientlistener.request.PatientRequestException;
+import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
+import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
@@ -29,7 +29,7 @@ class PatientDeleteRequestHandlerTest {
     @Mock
     private PatientDeleter patientDeleter;
     @Mock
-    private StatusProducer statusProducer;
+    private PatientRequestStatusProducer statusProducer;
     @Mock
     private PersonRepository personRepository;
     @Mock
@@ -67,11 +67,11 @@ class PatientDeleteRequestHandlerTest {
         when(personRepository.findCountOfActiveRevisions(123L)).thenReturn(2L);
         when(patientDeleter.delete(Mockito.any(), Mockito.anyLong())).thenAnswer(i->i.getArguments()[0]);
 
-        KafkaException ex = null;
+        PatientRequestException ex = null;
 
         // call handle delete
         try {
-        deleteRequestHandler.handlePatientDelete("key", 123L, 321L);} catch (KafkaException e) {
+        deleteRequestHandler.handlePatientDelete("key", 123L, 321L);} catch (PatientRequestException e) {
             ex = e;
         }
 
