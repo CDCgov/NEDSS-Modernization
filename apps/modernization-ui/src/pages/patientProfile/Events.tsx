@@ -8,7 +8,6 @@ import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
     FindMorbidtyReportForPatientQuery,
-    FindTreatmentsForPatientQuery,
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
@@ -16,22 +15,23 @@ import format from 'date-fns/format';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import { Config } from 'config';
+import { PatientTreatmentTable } from 'patient/profile/treatment';
 
 type EventTabProp = {
+    patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
     morbidityData?: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined;
-    treatmentsData?: FindTreatmentsForPatientQuery['findTreatmentsForPatient'] | undefined;
     documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
     contactsData?: FindContactsForPatientQuery['findContactsForPatient'] | undefined;
     profileData?: any;
 };
 
 export const Events = ({
+    patient,
     investigationData,
     labReports,
     morbidityData,
-    treatmentsData,
     documentsData,
     contactsData,
     profileData
@@ -50,7 +50,6 @@ export const Events = ({
     const [labCurrentPage, setLabCurrentPage] = useState<number>(1);
 
     const [morbidityResults, setMorbidityResults] = useState<any>();
-    const [treatmentResults, setTreatmentResults] = useState<any>();
     const [contactNamedByPatient, setContactNamedByPatient] = useState<any>();
     const [patientByContact, setPatientByContact] = useState<any>();
 
@@ -254,55 +253,6 @@ export const Events = ({
         });
     };
 
-    const getTreatmentData = (treatments: FindTreatmentsForPatientQuery['findTreatmentsForPatient'] | undefined) => {
-        const tempArr: TableBody[] = [];
-        treatments?.map((treatment) => {
-            tempArr.push({
-                id: treatment?.event,
-                checkbox: false,
-                tableDetails: [
-                    {
-                        id: 1,
-                        title: (
-                            <>
-                                {format(new Date(treatment?.createdOn), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(treatment?.createdOn), 'hh:mm a')}
-                            </>
-                        ),
-                        class: 'link',
-                        link: ''
-                    },
-                    {
-                        id: 2,
-                        title: treatment?.provider
-                    },
-                    { id: 4, title: format(new Date(treatment?.treatedOn), 'MM/dd/yyyy') },
-                    { id: 7, title: treatment?.description || null },
-                    {
-                        id: 5,
-                        title:
-                            !treatment || treatment?.associatedWith.condition?.length == 0 ? null : (
-                                <>
-                                    {treatment.associatedWith && treatment.associatedWith.condition.length > 0 && (
-                                        <div>
-                                            <p
-                                                className="margin-0 text-primary text-bold link"
-                                                style={{ wordBreak: 'break-word' }}>
-                                                {treatment.associatedWith?.local}
-                                            </p>
-                                            <p className="margin-0">{treatment.associatedWith.condition}</p>
-                                        </div>
-                                    )}
-                                </>
-                            )
-                    },
-                    { id: 8, title: treatment?.event || null }
-                ]
-            });
-            setTreatmentResults(tempArr);
-        });
-    };
-
     const getContactNameByPatient = (contacts: FindContactsForPatientQuery['findContactsForPatient'] | undefined) => {
         const tempArr: TableBody[] = [];
         const tempArrByContact: TableBody[] = [];
@@ -417,15 +367,12 @@ export const Events = ({
         if (documentsData) {
             console.log('documentsData:', documentsData);
         }
-        if (treatmentsData) {
-            console.log('treatmentsData:', treatmentsData);
-            getTreatmentData(treatmentsData);
-        }
+
         if (contactsData) {
             console.log('contactsData:', contactsData);
             getContactNameByPatient(contactsData);
         }
-    }, [investigationData, labReports, morbidityData, documentsData, treatmentsData, contactsData]);
+    }, [investigationData, labReports, morbidityData, documentsData, contactsData]);
 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
@@ -631,29 +578,7 @@ export const Events = ({
                 />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <TableComponent
-                    isPagination={true}
-                    buttons={
-                        <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add treatment
-                            </Button>
-                        </div>
-                    }
-                    tableHeader={'Treatments'}
-                    tableHead={[
-                        { name: 'Date created', sortable: true },
-                        { name: 'Provider', sortable: true },
-                        { name: 'Treatment date', sortable: true },
-                        { name: 'Treatment', sortable: true },
-                        { name: 'Associated with', sortable: false },
-                        { name: 'Event #', sortable: false }
-                    ]}
-                    tableBody={treatmentResults}
-                    currentPage={currentPage}
-                    handleNext={(e) => setCurrentPage(e)}
-                />
+                <PatientTreatmentTable patient={patient} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent

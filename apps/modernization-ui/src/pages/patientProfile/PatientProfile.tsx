@@ -20,8 +20,7 @@ import {
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidtyReportForPatientLazyQuery,
-    useFindPatientByIdLazyQuery,
-    useFindTreatmentsForPatientLazyQuery
+    useFindPatientByIdLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
@@ -45,7 +44,6 @@ export const PatientProfile = () => {
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
     // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
     const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
-    const [getTreatmentsData, { data: treatmentsData }] = useFindTreatmentsForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
     const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
 
@@ -98,11 +96,6 @@ export const PatientProfile = () => {
                 getMorbidityData({
                     variables: {
                         patientId: +patientProfileData.findPatientById.id
-                    }
-                });
-                getTreatmentsData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
                     }
                 });
                 getDocumentsData({
@@ -333,10 +326,10 @@ export const PatientProfile = () => {
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profileData} />}
                 {activeTab === ACTIVE_TAB.EVENT && (
                     <Events
+                        patient={id}
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
                         morbidityData={morbidityData?.findMorbidtyReportForPatient}
-                        treatmentsData={treatmentsData?.findTreatmentsForPatient}
                         documentsData={documentsData?.findDocumentsForPatient}
                         contactsData={contactsData?.findContactsForPatient}
                         profileData={profileData}

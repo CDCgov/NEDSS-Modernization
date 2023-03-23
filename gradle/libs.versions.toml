@@ -4,11 +4,12 @@ assertj = "3.24.2"
 
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref ="assertj"}
+mockito-inline = {module = "org.mockito:mockito-inline", version = "4.11.0"}
 springBoot = {module = "org.springframework.boot:spring-boot-starter", version.ref="springBoot"}
 springBoot-jpa = {module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref="springBoot"}
 
 [bundles]
-testing = ["assertj-core"]
+testing = ["assertj-core", "mockito-inline"]
 jpa = ["springBoot", "springBoot-jpa"]
 
 [plugins]

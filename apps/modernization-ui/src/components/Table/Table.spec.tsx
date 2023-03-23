@@ -44,7 +44,7 @@ describe('Table component', () => {
         const tableData = container.getElementsByClassName('table-data');
         expect(tableHeader[0].innerHTML).toBe('Test Table HeaderTest Sub Header');
         expect(tableHead[0].innerHTML).toBe('Start Date');
-        expect(tableData[0].innerHTML).toBe('10/05/2022');
+        expect(tableData[0]).toHaveTextContent('10/05/2022');
     });
 
     it('table with no data', async () => {

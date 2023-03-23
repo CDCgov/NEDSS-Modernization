@@ -823,6 +823,13 @@ export type PatientTreatmentInvestigation = {
   local: Scalars['String'];
 };
 
+export type PatientTreatmentResults = {
+  __typename?: 'PatientTreatmentResults';
+  content: Array<Maybe<PatientTreatment>>;
+  number: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type Person = {
   __typename?: 'Person';
   addReasonCd?: Maybe<Scalars['String']>;
@@ -1187,7 +1194,7 @@ export type Query = {
   findPlaceById?: Maybe<Place>;
   findPlacesByFilter: Array<Maybe<Place>>;
   findSnomedCodedResults: SnomedCodedResults;
-  findTreatmentsForPatient?: Maybe<Array<Maybe<PatientTreatment>>>;
+  findTreatmentsForPatient?: Maybe<PatientTreatmentResults>;
 };
 
 
@@ -1366,6 +1373,7 @@ export type QueryFindSnomedCodedResultsArgs = {
 
 
 export type QueryFindTreatmentsForPatientArgs = {
+  page?: InputMaybe<Page>;
   patient: Scalars['ID'];
 };
 
@@ -1779,10 +1787,11 @@ export type FindSnomedCodedResultsQuery = { __typename?: 'Query', findSnomedCode
 
 export type FindTreatmentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID'];
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> | null };
+export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: { __typename?: 'PatientTreatmentResults', total: number, number: number, content: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> } | null };
 
 
 export const CreatePatientDocument = gql`
@@ -4593,19 +4602,23 @@ export type FindSnomedCodedResultsQueryHookResult = ReturnType<typeof useFindSno
 export type FindSnomedCodedResultsLazyQueryHookResult = ReturnType<typeof useFindSnomedCodedResultsLazyQuery>;
 export type FindSnomedCodedResultsQueryResult = Apollo.QueryResult<FindSnomedCodedResultsQuery, FindSnomedCodedResultsQueryVariables>;
 export const FindTreatmentsForPatientDocument = gql`
-    query findTreatmentsForPatient($patient: ID!) {
-  findTreatmentsForPatient(patient: $patient) {
-    treatment
-    createdOn
-    provider
-    treatedOn
-    description
-    event
-    associatedWith {
-      id
-      local
-      condition
+    query findTreatmentsForPatient($patient: ID!, $page: Page) {
+  findTreatmentsForPatient(patient: $patient, page: $page) {
+    content {
+      treatment
+      createdOn
+      provider
+      treatedOn
+      description
+      event
+      associatedWith {
+        id
+        local
+        condition
+      }
     }
+    total
+    number
   }
 }
     `;
@@ -4623,6 +4636,7 @@ export const FindTreatmentsForPatientDocument = gql`
  * const { data, loading, error } = useFindTreatmentsForPatientQuery({
  *   variables: {
  *      patient: // value for 'patient'
+ *      page: // value for 'page'
  *   },
  * });
  */
