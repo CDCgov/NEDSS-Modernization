@@ -28,6 +28,7 @@ import { Summary } from './Summary';
 import { Events } from './Events';
 import { Demographics } from './Demographics';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { Config } from 'config';
 
 enum ACTIVE_TAB {
     SUMMARY = 'Summary',
@@ -58,7 +59,7 @@ export const PatientProfile = () => {
     const { searchCriteria } = useContext(SearchCriteriaContext);
     const openPrintableView = () => {
         window.open(
-            `${window.location.origin}/nbs/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
+            `${Config.nbsUrl}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
             '_blank',
             'noreferrer'
         );
