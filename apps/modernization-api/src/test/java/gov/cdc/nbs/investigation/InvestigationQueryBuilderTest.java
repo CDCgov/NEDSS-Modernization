@@ -48,7 +48,7 @@ import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 
-public class InvestigationQueryBuilderTest {
+class InvestigationQueryBuilderTest {
 
     @Mock
     private SecurityService securityService;
@@ -149,7 +149,7 @@ public class InvestigationQueryBuilderTest {
                 .findFirst()
                 .map(m -> (MatchQueryBuilder) m);
         assertTrue(clause.isPresent());
-        assertTrue(clause.get().value().equals("I"));
+        assertEquals("I", clause.get().value());
     }
 
     @Test
@@ -175,7 +175,7 @@ public class InvestigationQueryBuilderTest {
                 .findFirst()
                 .map(m -> (MatchQueryBuilder) m);
         assertTrue(clause.isPresent());
-        assertTrue(clause.get().value().equals("EVN"));
+        assertEquals("EVN", clause.get().value());
     }
 
     @Test
