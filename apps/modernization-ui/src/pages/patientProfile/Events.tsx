@@ -8,6 +8,7 @@ import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
     FindMorbidtyReportForPatientQuery,
+    FindTreatmentsForPatientQuery,
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
@@ -15,13 +16,14 @@ import format from 'date-fns/format';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import { Config } from 'config';
-import { PatientTreatmentTable } from 'patient/profile/treatment';
+import { PatientTreatmentTable } from '../../patient/profile/treatment';
 
 type EventTabProp = {
     patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
     morbidityData?: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined;
+    treatmentsData?: FindTreatmentsForPatientQuery['findTreatmentsForPatient'] | undefined;
     documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
     contactsData?: FindContactsForPatientQuery['findContactsForPatient'] | undefined;
     profileData?: any;
@@ -32,6 +34,7 @@ export const Events = ({
     investigationData,
     labReports,
     morbidityData,
+    treatmentsData,
     documentsData,
     contactsData,
     profileData
@@ -327,21 +330,20 @@ export const Events = ({
                     {
                         id: 5,
                         title:
-                            // !treatment || treatment?.associatedWith.condition?.length == 0 ? null : (
-                            //     <>
-                            //         {treatment.associatedWith && treatment.associatedWith.condition.length > 0 && (
-                            //             <div>
-                            //                 <p
-                            //                     className="margin-0 text-primary text-bold link"
-                            //                     style={{ wordBreak: 'break-word' }}>
-                            //                     {treatment.associatedWith?.local}
-                            //                 </p>
-                            //                 <p className="margin-0">{treatment.associatedWith.condition}</p>
-                            //             </div>
-                            //         )}
-                            //     </>
-                            // )
-                            null
+                            !contact || contact?.associatedWith?.condition?.length == 0 ? null : (
+                                <>
+                                    {contact?.associatedWith && contact?.associatedWith?.condition.length > 0 && (
+                                        <div>
+                                            <p
+                                                className="margin-0 text-primary text-bold link"
+                                                style={{ wordBreak: 'break-word' }}>
+                                                {contact?.associatedWith?.local}
+                                            </p>
+                                            <p className="margin-0">{contact?.associatedWith?.condition}</p>
+                                        </div>
+                                    )}
+                                </>
+                            )
                     },
                     { id: 8, title: contact?.event || null }
                 ]
@@ -367,12 +369,11 @@ export const Events = ({
         if (documentsData) {
             console.log('documentsData:', documentsData);
         }
-
         if (contactsData) {
             console.log('contactsData:', contactsData);
             getContactNameByPatient(contactsData);
         }
-    }, [investigationData, labReports, morbidityData, documentsData, contactsData]);
+    }, [investigationData, labReports, morbidityData, documentsData, treatmentsData, contactsData]);
 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
@@ -634,6 +635,19 @@ export const Events = ({
             {contactsData?.namedByContact && (
                 <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                     <TableComponent
+                        tableSubHeader={
+                            <div className="display-block margin-top-1">
+                                <span className="font-sans-md">Patients named by contacts</span>
+                                <p className="font-sans-sm text-normal">
+                                    <span className="text-bold">
+                                        {`${profileData?.lastNm}, ${profileData?.firstNm}`}’s
+                                    </span>{' '}
+                                    was named as a contact in the following{' '}
+                                    <span className="text-bold">{contactsData?.namedByContact[0]?.condition}</span>{' '}
+                                    investigation(s):
+                                </p>
+                            </div>
+                        }
                         isPagination={true}
                         tableHeader={'Contact records'}
                         tableHead={[

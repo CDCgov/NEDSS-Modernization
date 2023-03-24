@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
 import {
     Button,
@@ -17,18 +17,20 @@ import { AddNameModal } from './components/AddNameModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
 import { Deceased, FindPatientByIdQuery, FindPatientsByFilterQuery } from '../../generated/graphql/schema';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { format } from 'date-fns';
 import { DetailsNameModal } from './components/DetailsNameModal';
+import { AddIdentificationModal } from './components/AddIdentificationModal';
+import { AddRaceModal } from './components/AddRaceModal';
 
 type DemographicProps = {
     patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
     ethnicity?: string;
+    race?: any;
 };
 
-export const Demographics = ({ patientProfileData, handleFormSubmission, ethnicity }: DemographicProps) => {
-    const { searchCriteria } = useContext(SearchCriteriaContext);
+export const Demographics = ({ patientProfileData, handleFormSubmission, ethnicity, race }: DemographicProps) => {
+    // const { searchCriteria } = useContext(SearchCriteriaContext);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [tableBody, setTableBody] = useState<any>([]);
@@ -46,6 +48,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     const addNameModalRef = useRef<ModalRef>(null);
     const addAddressModalRef = useRef<ModalRef>(null);
     const addPhoneEmailRef = useRef<ModalRef>(null);
+    const addIdentificationRef = useRef<ModalRef>(null);
+    const addRaceRef = useRef<ModalRef>(null);
 
     const detailsNameModalRef = useRef<ModalRef>(null);
 
@@ -299,41 +303,37 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
         setAddressTableBody(tempArr);
     };
 
-    const raceTableData = (
-        raceId: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['ethnicGroupInd']
-    ) => {
+    const raceTableData = () => {
         const tempArr: any = [];
-        searchCriteria.races.map((race) => {
-            if (race.id.code === raceId) {
-                tempArr.push({
-                    id: 1,
-                    checkbox: false,
-                    tableDetails: [
-                        {
-                            id: 1,
-                            title: 'Not available yet'
-                        },
-                        {
-                            id: 2,
-                            title: race.codeDescTxt
-                        },
-                        {
-                            id: 3,
-                            title: 'Not available yet'
-                        },
-                        {
-                            id: 5,
-                            title: (
-                                <Button type="button" unstyled>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-                            ),
-                            textAlign: 'center',
-                            type: 'actions'
-                        }
-                    ]
-                });
-            }
+        race.map((raceItem: any) => {
+            tempArr.push({
+                id: 1,
+                checkbox: false,
+                tableDetails: [
+                    {
+                        id: 1,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 2,
+                        title: raceItem
+                    },
+                    {
+                        id: 3,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 5,
+                        title: (
+                            <Button type="button" unstyled>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
+                    }
+                ]
+            });
         });
         setRaceTableBody(tempArr);
     };
@@ -343,7 +343,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             console.log('patientProfileData:', patientProfileData);
             namesTableData(patientProfileData?.names);
             idTableData(patientProfileData?.entityIds);
-            raceTableData(patientProfileData?.electronicInd);
+            raceTableData();
             addressTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
             phoneEmailTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
             setGeneralTableData([
@@ -526,10 +526,16 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add identification
-                            </Button>
+                            <div className="grid-row">
+                                <ModalToggleButton
+                                    modalRef={addIdentificationRef}
+                                    opener
+                                    className="display-inline-flex">
+                                    <Icon.Add className="margin-right-05" />
+                                    Add identification
+                                </ModalToggleButton>
+                                <AddIdentificationModal modalRef={addIdentificationRef} />
+                            </div>
                         </div>
                     }
                     tableHeader={'Identification'}
@@ -551,10 +557,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <ModalToggleButton modalRef={addRaceRef} opener className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add race
-                            </Button>
+                            </ModalToggleButton>
+                            <AddRaceModal modalRef={addRaceRef} />
                         </div>
                     }
                     tableHeader={'Race'}
