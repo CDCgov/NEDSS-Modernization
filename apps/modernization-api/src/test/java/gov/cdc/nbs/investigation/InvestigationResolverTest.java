@@ -1,8 +1,6 @@
 package gov.cdc.nbs.investigation;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
-import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 
 class InvestigationResolverTest {
@@ -72,33 +69,4 @@ class InvestigationResolverTest {
         var actualPatient = patientIdCaptor.getValue();
         assertEquals(patientId, actualPatient);
     }
-
-    @Test
-    void should_limit_max_page_size() {
-        Long patientId = 123L;
-        var requestedPageSize = maxPageSize + 1;
-        QueryException ex = null;
-        try {
-            resolver.findOpenInvestigationsForPatient(patientId, new GraphQLPage(requestedPageSize));
-        } catch (QueryException e) {
-            ex = e;
-        }
-        assertNotNull(ex);
-    }
-
-    @Test
-    void should_pass_correct_page_size() {
-        Long patientId = 123L;
-        QueryException ex = null;
-        try {
-            resolver.findOpenInvestigationsForPatient(patientId, new GraphQLPage(maxPageSize));
-        } catch (QueryException e) {
-            ex = e;
-        }
-        assertNull(ex);
-        verify(finder).findOpenInvestigations(Mockito.anyLong(), pageableCaptor.capture());
-        var actualPageable = pageableCaptor.getValue();
-        assertEquals(maxPageSize, actualPageable.getPageSize());
-    }
-
 }

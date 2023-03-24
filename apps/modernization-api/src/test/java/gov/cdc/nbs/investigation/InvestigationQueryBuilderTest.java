@@ -1,5 +1,6 @@
 package gov.cdc.nbs.investigation;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -102,13 +103,7 @@ class InvestigationQueryBuilderTest {
         setAuthentication();
         var pageable = PageRequest.of(0, 20, Sort.by(Direction.ASC, "notSupported"));
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
-        IllegalArgumentException ex = null;
-        try {
-            queryBuilder.buildInvestigationQuery(null, pageable);
-        } catch (IllegalArgumentException e) {
-            ex = e;
-        }
-        assertNotNull(ex);
+        assertThrows(IllegalArgumentException.class, () -> queryBuilder.buildInvestigationQuery(null, pageable));
     }
 
     @Test
@@ -180,16 +175,8 @@ class InvestigationQueryBuilderTest {
         var must = ((BoolQueryBuilder) query.getQuery()).must();
 
         // Event type clause was added
-        var clause = must.stream()
-                .filter(m -> {
-                    if (m instanceof MatchQueryBuilder mq)
-                        return mq.fieldName().equals(Investigation.MOOD_CD);
-                    return false;
-                })
-                .findFirst()
-                .map(m -> (MatchQueryBuilder) m);
-        assertTrue(clause.isPresent());
-        assertEquals("EVN", clause.get().value());
+        var clause = findMatchQueryBuilder(Investigation.MOOD_CD, must);
+        assertEquals("EVN", clause.value());
     }
 
     @Test
