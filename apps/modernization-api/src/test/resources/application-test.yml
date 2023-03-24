@@ -39,12 +39,15 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
     consumer:
       auto-offset-reset: earliest
       group-id: group-id
 
 kafka:
   enabled: true
+
+
 kafkadef:
   topics:
     request:

@@ -11,6 +11,8 @@ import java.util.UUID;
 import java.util.function.Function;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -44,8 +46,6 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -378,29 +378,29 @@ public class PatientService {
 
     public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
         var user = SecurityUtil.getUserDetails();
-        var updateGeneralInfoEvent = GeneralInfoInput.toEvent(user.getId(), getRequestId(), input);
+        var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
         return sendPatientEvent(updateGeneralInfoEvent);
     }
 
     public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
         var user = SecurityUtil.getUserDetails();
-        var updateSexAndBirthEvent = SexAndBirthInput.toEvent(user.getId(), getRequestId(), input);
+        var updateSexAndBirthEvent = SexAndBirthInput.toRequest(user.getId(), getRequestId(), input);
         return sendPatientEvent(updateSexAndBirthEvent);
     }
 
     public PatientEventResponse updateMortality(MortalityInput input) {
         var user = SecurityUtil.getUserDetails();
-        var updateMortalityEvent = MortalityInput.toEvent(user.getId(), getRequestId(), input);
+        var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
         return sendPatientEvent(updateMortalityEvent);
     }
 
     public PatientEventResponse sendDeletePatientEvent(Long patientId) {
         var user = SecurityUtil.getUserDetails();
-        var deleteEvent = new PatientEvent(getRequestId(), patientId, user.getId(), PatientEventType.DELETE, null);
+        var deleteEvent = new PatientRequest.Delete(getRequestId(), patientId, user.getId());
         return sendPatientEvent(deleteEvent);
     }
 
-    private PatientEventResponse sendPatientEvent(PatientEvent request) {
+    private PatientEventResponse sendPatientEvent(PatientRequest request) {
         producer.requestPatientEventEnvelope(request);
         return new PatientEventResponse(request.requestId(), request.patientId());
     }

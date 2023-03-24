@@ -1,0 +1,19 @@
+spring:
+    kafka:
+        bootstrap-servers: localhost:9092
+        listener:
+            ackMode: record
+        consumer:
+            group-id: patient-group
+            enable-auto-commit: false
+            auto-offset-reset: earliest
+
+kafka:
+    enabled: true
+
+kafkadef:
+    groups:
+        patient: patient-group
+    topics:
+        patient:
+            request: patient

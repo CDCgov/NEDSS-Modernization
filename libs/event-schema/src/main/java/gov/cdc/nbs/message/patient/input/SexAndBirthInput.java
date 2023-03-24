@@ -1,13 +1,13 @@
 package gov.cdc.nbs.message.patient.input;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -28,13 +28,15 @@ public class SexAndBirthInput {
     private String currentAge;
     private Instant ageReportedTime;
 
-    public static PatientEvent toEvent(final long userId, final String requestId,
-            final SexAndBirthInput input) {
-        return new PatientEvent(
+    public static PatientRequest toRequest(
+        final long userId,
+        final String requestId,
+            final SexAndBirthInput input
+    ) {
+        return new PatientRequest.UpdateSexAndBirth(
                 requestId,
                 input.getPatientId(),
                 userId,
-                PatientEventType.UPDATE_SEX_AND_BIRTH,
                 new UpdateSexAndBirthData(
                         requestId,
                         input.getPatientId(),
@@ -52,6 +54,7 @@ public class SexAndBirthInput {
                         input.getMultipleBirth(),
                         input.getSexUnknown(),
                         input.getCurrentAge(),
-                        input.getAgeReportedTime()));
+                        input.getAgeReportedTime())
+        );
     }
 }

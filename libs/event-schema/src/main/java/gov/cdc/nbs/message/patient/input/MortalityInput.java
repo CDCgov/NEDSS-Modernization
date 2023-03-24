@@ -1,12 +1,12 @@
 package gov.cdc.nbs.message.patient.input;
 
-import java.time.Instant;
 import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
-import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -20,13 +20,15 @@ public class MortalityInput {
     private String countyOfDeath;
     private String countryOfDeath;
 
-    public static PatientEvent toEvent(final long userId, final String requestId,
-            final MortalityInput input) {
-        return new PatientEvent(
+    public static PatientRequest toRequest(
+        final long userId,
+        final String requestId,
+        final MortalityInput input
+    ) {
+        return new PatientRequest.UpdateMortality(
                 requestId,
                 input.getPatientId(),
                 userId,
-                PatientEventType.UPDATE_MORTALITY,
                 new UpdateMortalityData(
                         input.getPatientId(),
                         requestId,
@@ -37,6 +39,7 @@ public class MortalityInput {
                         input.getCityOfDeath(),
                         input.getStateOfDeath(),
                         input.getCountyOfDeath(),
-                        input.getCountryOfDeath()));
+                        input.getCountryOfDeath())
+        );
     }
 }

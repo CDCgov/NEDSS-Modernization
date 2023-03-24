@@ -41,8 +41,10 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @Transactional
 @Rollback(false)
 @Testcontainers
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092",
-        "port=9092"})
+@EmbeddedKafka(
+    partitions = 1,
+    topics = {"patient"}
+)
 public class RunCucumberTest {
     @Autowired
     private PatientController patientController;

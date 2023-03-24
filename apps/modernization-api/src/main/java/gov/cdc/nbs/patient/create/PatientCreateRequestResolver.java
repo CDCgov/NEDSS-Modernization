@@ -1,8 +1,7 @@
 package gov.cdc.nbs.patient.create;
 
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.IdGeneratorService;
 import org.springframework.stereotype.Component;
@@ -18,18 +17,18 @@ public class PatientCreateRequestResolver {
         this.idGeneratorService = idGeneratorService;
     }
 
-    public PatientEvent create(
+    public PatientRequest create(
             final long requester,
             final String request,
-            final PatientInput input) {
+            final PatientInput input
+    ) {
 
         var patientId = generateNbsId();
 
-        return new PatientEvent(
+        return new PatientRequest.Create(
                 request,
                 patientId,
                 requester,
-                PatientEventType.CREATE,
                 new PatientCreateData(
                         request,
                         patientId,
@@ -49,7 +48,8 @@ public class PatientCreateRequestResolver {
                         asEmailAddresses(input.getEmailAddresses()),
                         requester,
                         input.getAsOf(),
-                        input.getComments()));
+                        input.getComments())
+        );
     }
 
     private Collection<PatientCreateData.Name> asNames(final Collection<PatientInput.Name> names) {

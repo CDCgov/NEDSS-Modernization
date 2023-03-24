@@ -1,25 +1,26 @@
 package gov.cdc.nbs.patient;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.util.concurrent.TimeUnit;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -54,7 +55,7 @@ public class PatientDeleteSteps {
 
     @Then("the delete request is posted to kafka")
     public void the_delete_request_is_posted_to_kafka()
-            throws JsonMappingException, JsonProcessingException, InterruptedException {
+            throws JsonProcessingException, InterruptedException {
         assertNull(accessDeniedException);
         assertNotNull(response);
         boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
@@ -64,7 +65,7 @@ public class PatientDeleteSteps {
         var key = consumer.getKey();
         assertEquals(response.getRequestId(), key);
 
-        var payload = mapper.readValue((String) consumer.getPayload(), PatientEvent.class);
+        var payload = mapper.readValue((String) consumer.getPayload(), PatientRequest.Delete.class);
 
         assertEquals(response.getRequestId(), payload.requestId());
         assertEquals(response.getPatientId(), payload.patientId());

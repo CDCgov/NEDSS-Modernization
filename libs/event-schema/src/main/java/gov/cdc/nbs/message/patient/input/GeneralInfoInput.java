@@ -1,11 +1,11 @@
 package gov.cdc.nbs.message.patient.input;
 
-import java.time.Instant;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
-import gov.cdc.nbs.message.patient.event.PatientEvent.PatientEventType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -22,14 +22,15 @@ public class GeneralInfoInput {
     private String speaksEnglishCode;
     private String eharsId;
 
-    public static PatientEvent toEvent(final long userId,
-            final String requestId,
-            final GeneralInfoInput input) {
-        return new PatientEvent(
+    public static PatientRequest toRequest(
+        final long userId,
+        final String requestId,
+        final GeneralInfoInput input
+    ) {
+        return new PatientRequest.UpdateGeneralInfo(
                 requestId,
                 input.getPatientId(),
                 userId,
-                PatientEventType.UPDATE_GENERAL_INFO,
                 new UpdateGeneralInfoData(
                         input.getPatientId(),
                         requestId,
@@ -43,6 +44,8 @@ public class GeneralInfoInput {
                         input.getEducationLevelCode(),
                         input.getPrimaryLanguageCode(),
                         input.getSpeaksEnglishCode(),
-                        input.getEharsId()));
+                        input.getEharsId()
+                )
+        );
     }
 }

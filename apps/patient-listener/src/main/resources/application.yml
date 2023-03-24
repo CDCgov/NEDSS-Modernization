@@ -4,14 +4,19 @@ nbs:
         tokenIssuer: gov.cdc.nbs
         tokenExpirationMillis: 1800000 # 30 minutes
     elasticsearch:
-        url: http://localhost:9200
-    wildfly:
-        url: http://localhost:7001
+        server: localhost
+        port: 9200
+        url: http://${nbs.elasticsearch.server}:${nbs.elasticsearch.port}
     uid:
         suffix: GA01
         seed: 10000000
+    datasource:
+        server: localhost
 spring:
-    kafka.consumer.auto-offset-reset: earliest
+    profiles:
+        active: default,kafka
+        group:
+            test: default,kafka,embeddedkafka
     jpa:
         properties:
             hibernate:
@@ -22,29 +27,6 @@ spring:
                 dialect: org.hibernate.dialect.SQLServer2012Dialect
                 hbm2ddl.jdbc_metadata_extraction_strategy: individually
     datasource:
-        url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+        url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
         username: sa
         password: fake.fake.fake.1234
-
-kafka:
-    bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
-    listener:
-        ack-mode: record
-    properties:
-        schema:
-            registry:
-                url: http://localhost:9091
-        topic:
-            suffix: '-event'
-            partition.count: 1
-            replication.factor: 1
-        message.max.attempt: 5
-        retry.naming.pattern: -neds-part-retry
-        dlt.naming.pattern: -neds-part-dlt
-kafkadef:
-    topics:
-        patient:
-            request: patient
-            status: patient-status
-    groups:
-        patient: patient-group

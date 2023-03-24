@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.concurrent.TimeUnit;
+
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.patient.event.PatientCreateData;
-import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
@@ -75,9 +76,9 @@ public class PatientCreateSteps {
         var key = consumer.getKey();
         assertEquals(createPersonRequestId.getRequestId(), key);
 
-        var event = mapper.readValue((String) consumer.getPayload(), PatientEvent.class);
-        assertNotNull(event);
-        var payload = (PatientCreateData) event.data();
+        var request = mapper.readValue((String) consumer.getPayload(), PatientRequest.Create.class);
+        assertNotNull(request);
+        var payload = (PatientCreateData) request.data();
         assertEquals(createPersonRequestId.getRequestId(), payload.request());
         var currentUserId = UserUtil.getCurrentUserId();
 

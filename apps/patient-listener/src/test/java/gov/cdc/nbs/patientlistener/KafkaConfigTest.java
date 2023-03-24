@@ -3,6 +3,7 @@ package gov.cdc.nbs.patientlistener;
 import static org.junit.Assert.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,9 +16,9 @@ import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 
 
 @AutoConfigureJson
-@SpringBootTest(classes = {KafkaConfig.class, PatientRequestStatusProducer.class})
-@ActiveProfiles("test")
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
+@SpringBootTest(classes = {KafkaConfig.class, KafkaAutoConfiguration.class})
+@ActiveProfiles({"test"})
+@EmbeddedKafka(partitions = 1)
 class KafkaConfigTest {
 
     @Autowired
