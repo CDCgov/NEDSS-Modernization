@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
 
 @Controller
 public class LabReportResolver {

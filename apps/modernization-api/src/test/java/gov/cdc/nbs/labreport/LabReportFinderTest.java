@@ -23,8 +23,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.SearchHitsImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
+import gov.cdc.nbs.labreport.LabReportFilter.ProcessingStatus;
 
 public class LabReportFinderTest {
 

@@ -2,16 +2,15 @@ package gov.cdc.nbs.labreport;
 
 import java.time.Instant;
 import java.util.Arrays;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.LabReportDateType;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.LabReportProviderSearch;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.LaboratoryEventDateSearch;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.LaboratoryEventIdType;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.ProviderType;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
+import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
+import gov.cdc.nbs.labreport.LabReportFilter.LabReportDateType;
+import gov.cdc.nbs.labreport.LabReportFilter.LabReportProviderSearch;
+import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventDateSearch;
+import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventIdType;
+import gov.cdc.nbs.labreport.LabReportFilter.ProcessingStatus;
+import gov.cdc.nbs.labreport.LabReportFilter.ProviderType;
+import gov.cdc.nbs.labreport.LabReportFilter.UserType;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.support.util.RandomUtil;
 

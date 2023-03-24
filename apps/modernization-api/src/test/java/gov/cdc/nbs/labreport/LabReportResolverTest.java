@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
 
 public class LabReportResolverTest {
     @Mock

@@ -24,10 +24,9 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
+import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
+import gov.cdc.nbs.labreport.LabReportFilter.UserType;
 import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 

@@ -10,8 +10,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
+import gov.cdc.nbs.labreport.LabReportFilter.ProcessingStatus;
 
 
 @Component

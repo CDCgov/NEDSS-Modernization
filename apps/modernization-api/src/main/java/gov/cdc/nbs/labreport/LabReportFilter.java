@@ -1,4 +1,4 @@
-package gov.cdc.nbs.graphql.filter;
+package gov.cdc.nbs.labreport;
 
 import java.time.Instant;
 import java.util.List;
