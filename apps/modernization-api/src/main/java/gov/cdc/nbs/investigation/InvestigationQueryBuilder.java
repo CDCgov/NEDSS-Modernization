@@ -22,9 +22,8 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 

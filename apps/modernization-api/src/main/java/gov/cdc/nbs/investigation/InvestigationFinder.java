@@ -9,8 +9,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.InvestigationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
 
 @Component
 public class InvestigationFinder {

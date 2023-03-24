@@ -2,16 +2,15 @@ package gov.cdc.nbs.investigation;
 
 import java.time.Instant;
 import java.util.Collections;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.IdType;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.InvestigationEventDateSearch;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.EventDateType;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.InvestigationStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.ProcessingStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.ProviderFacilitySearch;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.ReportingEntityType;
+import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
+import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventDateSearch;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.ProviderFacilitySearch;
+import gov.cdc.nbs.investigation.InvestigationFilter.ReportingEntityType;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.support.util.RandomUtil;
 

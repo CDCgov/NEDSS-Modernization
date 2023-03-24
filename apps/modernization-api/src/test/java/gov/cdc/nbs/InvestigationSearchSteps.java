@@ -16,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.IdType;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.ProcessingStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter;
 import gov.cdc.nbs.investigation.InvestigationResolver;
+import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
+import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;

@@ -8,7 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 
 @Controller
 public class InvestigationResolver {

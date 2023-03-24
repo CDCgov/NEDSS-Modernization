@@ -22,8 +22,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.SearchHitsImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.InvestigationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
 
 class InvestigationFinderTest {
     @Mock
