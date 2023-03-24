@@ -4,22 +4,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.labreport.LabReportFinder;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
 import gov.cdc.nbs.support.EventMother;
@@ -40,7 +38,7 @@ public class DocumentsRequiringReviewSteps {
     private LabReportRepository labReportRepository;
 
     @Autowired
-    private EventController eventController;
+    private LabReportFinder labReportFinder;
 
     private Page<ElasticsearchPerson> personPage;
     private Page<LabReport> labReportResults;
@@ -61,8 +59,7 @@ public class DocumentsRequiringReviewSteps {
     public void a_patient_does_not_have_documents_requiring_review() {
         setAvailablePatients();
         var patientId = personPage.getContent().get(0).getPersonUid();
-        var reportsForPatient = eventController.findDocumentsRequiringReviewForPatient(patientId,
-                new GraphQLPage(10, 0));
+        var reportsForPatient = labReportFinder.findUnprocessedDocumentsForPatient(patientId, Pageable.ofSize(100));
         labReportRepository.deleteAll(reportsForPatient.getContent());
     }
 
@@ -70,7 +67,7 @@ public class DocumentsRequiringReviewSteps {
     public void i_search_for_documents_requiring_review_for_a_patient() {
         setAvailablePatients();
         var patientId = personPage.getContent().get(0).getPersonUid();
-        labReportResults = eventController.findDocumentsRequiringReviewForPatient(patientId, new GraphQLPage(10, 0));
+        labReportResults = labReportFinder.findUnprocessedDocumentsForPatient(patientId, Pageable.ofSize(100));
     }
 
     @Then("I receive a list of documents requiring review")

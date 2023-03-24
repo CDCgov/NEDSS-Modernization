@@ -1,12 +1,10 @@
 package gov.cdc.nbs;
 
 import static org.junit.Assert.assertTrue;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,10 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
@@ -29,6 +24,8 @@ import gov.cdc.nbs.graphql.filter.LabReportFilter.LaboratoryEventIdType;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.ProcessingStatus;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.ProviderType;
 import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
+import gov.cdc.nbs.labreport.LabReportFinder;
+import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
 import gov.cdc.nbs.support.EventMother;
@@ -48,7 +45,7 @@ public class LabReportSearchSteps {
     @Autowired
     private JurisdictionCodeRepository jurisdictionCodeRepository;
     @Autowired
-    private EventController eventController;
+    private LabReportFinder labReportFinder;
     private List<LabReport> labReportSearchResults;
 
     private static final Long PATIENT_ID = 8888888L;
@@ -63,7 +60,7 @@ public class LabReportSearchSteps {
     @When("I search laboratory events by {string} {string}")
     public void i_search_patients_by_laboratory_events(String field, String qualifier) {
         var filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
-        labReportSearchResults = eventController.findLabReportsByFilter(filter, null).getContent();
+        labReportSearchResults = labReportFinder.find(filter, null).getContent();
     }
 
     @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
@@ -72,7 +69,7 @@ public class LabReportSearchSteps {
         LabReportFilter filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
         updateLabReportFilter(filter, field2, qualifier2);
         updateLabReportFilter(filter, field3, qualifier3);
-        labReportSearchResults = eventController.findLabReportsByFilter(filter, null).getContent();
+        labReportSearchResults = labReportFinder.find(filter, null).getContent();
     }
 
     @Then("I find the lab report")
@@ -113,10 +110,10 @@ public class LabReportSearchSteps {
                 }
                 break;
             case "event date":
-                var eds = new LaboratoryEventDateSearch();
-                eds.setEventDateType(LabReportDateType.valueOf(qualifier));
-                eds.setFrom(Instant.now().minus(5, ChronoUnit.DAYS));
-                eds.setTo(Instant.now());
+                var eds = new LaboratoryEventDateSearch(
+                        LabReportDateType.valueOf(qualifier),
+                        Instant.now().minus(5, ChronoUnit.DAYS),
+                        Instant.now());
                 filter.setEventDateSearch(eds);
                 break;
             case "entry method":
@@ -139,9 +136,8 @@ public class LabReportSearchSteps {
                 filter.setLastUpdatedBy(EventMother.UPDATED_BY);
                 break;
             case "provider search":
-                var ps = new LabReportProviderSearch();
-                ps.setProviderType(ProviderType.valueOf(qualifier));
-                ps.setProviderId(PATIENT_ID);
+                var ps = new LabReportProviderSearch(ProviderType.valueOf(qualifier), PATIENT_ID);
+                filter.setProviderSearch(ps);
                 break;
             case "resulted test":
                 filter.setResultedTest("Acid-Fast Stain");

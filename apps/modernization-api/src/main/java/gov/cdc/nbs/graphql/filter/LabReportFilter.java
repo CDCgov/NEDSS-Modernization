@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import gov.cdc.nbs.message.enums.PregnancyStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +31,7 @@ public class LabReportFilter {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class LaboratoryEventDateSearch {
         private LabReportDateType eventDateType;
         private Instant from;
@@ -39,6 +41,7 @@ public class LabReportFilter {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class LabReportProviderSearch {
         private ProviderType providerType;
         private Long providerId;
