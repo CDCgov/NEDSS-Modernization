@@ -67,7 +67,7 @@ class InvestigationFinderTest {
     void should_create_open_investigation_filter() {
         Long patientId = 123L;
         mockMethods();
-        finder.find(patientId, null);
+        finder.findOpenInvestigations(patientId, null);
 
         verify(queryBuilder).buildInvestigationQuery(filterCaptor.capture(), pageableCaptor.capture());
         verify(operations, times(1)).search(Mockito.any(NativeSearchQuery.class), eq(Investigation.class));

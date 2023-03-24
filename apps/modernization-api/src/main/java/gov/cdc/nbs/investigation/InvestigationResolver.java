@@ -32,7 +32,6 @@ public class InvestigationResolver {
     @QueryMapping
     @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT') and hasAuthority('VIEW-INVESTIGATION')")
     public Page<Investigation> findOpenInvestigationsForPatient(@Argument Long patientId, @Argument GraphQLPage page) {
-        return investigationFinder.find(patientId,
-                GraphQLPage.toPageable(page, maxPageSize));
+        return investigationFinder.findOpenInvestigations(patientId, GraphQLPage.toPageable(page, maxPageSize));
     }
 }

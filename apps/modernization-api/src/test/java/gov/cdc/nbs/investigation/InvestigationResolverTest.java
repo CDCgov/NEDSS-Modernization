@@ -69,7 +69,7 @@ class InvestigationResolverTest {
     void should_pass_patientId() {
         Long patientId = 123L;
         resolver.findOpenInvestigationsForPatient(patientId, new GraphQLPage(maxPageSize));
-        verify(finder).find(patientIdCaptor.capture(), Mockito.any());
+        verify(finder).findOpenInvestigations(patientIdCaptor.capture(), Mockito.any());
         var actualPatient = patientIdCaptor.getValue();
         assertEquals(patientId, actualPatient);
     }
@@ -97,7 +97,7 @@ class InvestigationResolverTest {
             ex = e;
         }
         assertNull(ex);
-        verify(finder).find(Mockito.anyLong(), pageableCaptor.capture());
+        verify(finder).findOpenInvestigations(Mockito.anyLong(), pageableCaptor.capture());
         var actualPageable = pageableCaptor.getValue();
         assertEquals(maxPageSize, actualPageable.getPageSize());
     }

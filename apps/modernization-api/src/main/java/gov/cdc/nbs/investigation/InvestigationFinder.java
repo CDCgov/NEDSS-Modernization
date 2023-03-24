@@ -31,7 +31,7 @@ public class InvestigationFinder {
     }
 
     @PreAuthorize("hasAuthority('VIEWWORKUP-PATIENT') and hasAuthority('VIEW-INVESTIGATION')")
-    public Page<Investigation> find(Long patientId, Pageable pageable) {
+    public Page<Investigation> findOpenInvestigations(Long patientId, Pageable pageable) {
         var filter = new InvestigationFilter();
         filter.setPatientId(patientId);
         filter.setInvestigationStatus(InvestigationStatus.OPEN);
