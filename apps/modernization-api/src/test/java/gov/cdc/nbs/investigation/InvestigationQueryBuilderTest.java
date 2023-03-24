@@ -35,6 +35,7 @@ import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter.EventDateType;
@@ -43,6 +44,7 @@ import gov.cdc.nbs.graphql.filter.InvestigationFilter.InvestigationEventDateSear
 import gov.cdc.nbs.graphql.filter.InvestigationFilter.InvestigationStatus;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.graphql.filter.InvestigationFilter.ProcessingStatus;
+import gov.cdc.nbs.graphql.filter.InvestigationFilter.ReportingEntityType;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -71,9 +73,22 @@ class InvestigationQueryBuilderTest {
     }
 
     @Test
-    void should_include_sort() {
+    void should_include_lastNm_sort() {
         setAuthentication();
         var pageable = PageRequest.of(0, 20, Sort.by(Direction.ASC, "lastNm"));
+        when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
+        var query = queryBuilder.buildInvestigationQuery(null, pageable);
+        assertNotNull(query);
+        var sorts = query.getElasticsearchSorts();
+        assertNotNull(sorts);
+        var sort = sorts.get(0);
+        assertEquals(Direction.ASC.toString(), sort.order().name());
+    }
+
+    @Test
+    void should_include_birth_sort() {
+        setAuthentication();
+        var pageable = PageRequest.of(0, 20, Sort.by(Direction.ASC, "birthTime"));
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
         var query = queryBuilder.buildInvestigationQuery(null, pageable);
         assertNotNull(query);
@@ -453,6 +468,29 @@ class InvestigationQueryBuilderTest {
         assertEquals(FlexibleInstantConverter.toString(eds.getTo()), clause.to());
     }
 
+    @Test
+    void should_throw_query_exception_for_missing_date() {
+        // mock
+        setAuthentication();
+        var pageable = Pageable.ofSize(13);
+        when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
+
+        // method call
+        var eds = new InvestigationEventDateSearch(EventDateType.DATE_OF_REPORT, null,
+                Instant.now());
+        var filter = new InvestigationFilter();
+        filter.setEventDateSearch(eds);
+        QueryException ex = null;
+        try {
+            queryBuilder.buildInvestigationQuery(filter, pageable);
+        } catch (QueryException e) {
+            ex = e;
+        }
+
+        // assertions
+        assertNotNull(ex);
+    }
+
     private String getPathForDateType(EventDateType dateType) {
         return switch (dateType) {
             case DATE_OF_REPORT -> Investigation.RPT_FORM_COMPLETE_TIME;
@@ -548,6 +586,30 @@ class InvestigationQueryBuilderTest {
         var clause = findMatchQueryBuilder(
                 Investigation.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.ENTITY_ID, nested);
         assertEquals(123L, clause.value());
+    }
+
+    @Test
+    void should_include_provider() {
+        // mock
+        setAuthentication();
+        var pageable = Pageable.ofSize(13);
+        when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
+
+        // method call
+        var pfsearch = new InvestigationFilter.ProviderFacilitySearch(ReportingEntityType.PROVIDER, 123L);
+        var filter = new InvestigationFilter();
+        filter.setProviderFacilitySearch(pfsearch);
+
+        var query = queryBuilder.buildInvestigationQuery(filter, pageable);
+
+        // assertions
+        assertNotNull(query);
+        var must = ((BoolQueryBuilder) query.getQuery()).must();
+        var nested = findNestedQueryBuilders(must);
+        var clause = findMatchQueryBuilder(ElasticsearchPersonParticipation.ENTITY_ID, nested);
+        assertEquals(filter.getProviderFacilitySearch().getId(), clause.value());
+        var clause2 = findMatchQueryBuilder(ElasticsearchPersonParticipation.TYPE_CD, nested);
+        assertEquals("PerAsReporterOfPHC", clause2.value());
     }
 
     @Test
