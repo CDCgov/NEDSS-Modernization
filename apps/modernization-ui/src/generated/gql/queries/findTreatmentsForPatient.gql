@@ -1,15 +1,19 @@
-query findTreatmentsForPatient($patient: ID!){
-    findTreatmentsForPatient(patient: $patient){
-        treatment
-        createdOn
-        provider
-        treatedOn
-        description
-        event
-        associatedWith{
-            id
-            local
-            condition
+query findTreatmentsForPatient($patient: ID!, $page: Page){
+    findTreatmentsForPatient(patient: $patient, page: $page){
+        content{
+            treatment
+            createdOn
+            provider
+            treatedOn
+            description
+            event
+            associatedWith{
+                id
+                local
+                condition
+            }
         }
+        total
+        number
     }
 }

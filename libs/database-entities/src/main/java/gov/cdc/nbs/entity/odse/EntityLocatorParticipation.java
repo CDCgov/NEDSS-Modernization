@@ -131,4 +131,6 @@ public abstract class EntityLocatorParticipation {
     }
 
     public abstract Locator getLocator();
+
+    public abstract String getClassCd();
 }

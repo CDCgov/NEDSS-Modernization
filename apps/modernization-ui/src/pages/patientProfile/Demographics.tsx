@@ -1,23 +1,45 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
-import { Button, Grid, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import {
+    Button,
+    ButtonGroup,
+    Grid,
+    Icon,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton
+} from '@trussworks/react-uswds';
 import { HorizontalTable } from '../../components/Table/HorizontalTable';
 import { AddCommentModal } from './components/AddCommentModal';
 import { AddNameModal } from './components/AddNameModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
-import { FindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import { Deceased, FindPatientByIdQuery, FindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { format } from 'date-fns';
+import { DetailsNameModal } from './components/DetailsNameModal';
 
 type DemographicProps = {
-    patientProfileData: FindPatientsByFilterQuery['findPatientsByFilter'] | undefined;
+    patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
+    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
+    ethnicity?: string;
 };
 
-export const Demographics = ({ patientProfileData }: DemographicProps) => {
+export const Demographics = ({ patientProfileData, handleFormSubmission, ethnicity }: DemographicProps) => {
+    const { searchCriteria } = useContext(SearchCriteriaContext);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [tableBody, setTableBody] = useState<any>([]);
     const [nameTableBody, setNameTableBody] = useState<any>([]);
     const [addressTableBody, setAddressTableBody] = useState<any>([]);
     const [phoneEmailTableBody, setPhoneEmailTableBody] = useState<any>([]);
     const [identificationTableBody, setIdentificationTableBody] = useState<any>([]);
+    const [raceTableBody, setRaceTableBody] = useState<any>([]);
+    const [generalTableData, setGeneralTableData] = useState<any>(undefined);
+    const [morbidityTableData, setMorbidityTableData] = useState<any>(undefined);
+    const [ethnicityTableData, setEthnicityTableData] = useState<any>(undefined);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const addCommentModalRef = useRef<ModalRef>(null);
@@ -25,12 +47,16 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
     const addAddressModalRef = useRef<ModalRef>(null);
     const addPhoneEmailRef = useRef<ModalRef>(null);
 
+    const detailsNameModalRef = useRef<ModalRef>(null);
+
+    const deleteModalRef = useRef<ModalRef>(null);
+
     useEffect(() => {
         const tempArr = [];
         for (let i = 0; i < 3; i++) {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -70,7 +96,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         setTableBody([
             {
                 id: 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     { id: 1, title: `11/19/2022` },
                     {
@@ -81,9 +107,11 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                         id: 3,
                         title: (
                             <Button type="button" unstyled>
-                                <Icon.MoreHoriz />
+                                <Icon.MoreHoriz className="font-sans-lg" />
                             </Button>
-                        )
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
                     }
                 ]
             }
@@ -95,7 +123,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         names?.map((item, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -111,7 +139,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                     },
                     {
                         id: 4,
-                        title: `${item?.lastNm}, ${item?.firstNm} ${item?.middleNm}`
+                        title: `${item?.lastNm}, ${item?.firstNm}, ${item?.middleNm}`
                     },
                     {
                         id: 5,
@@ -125,11 +153,14 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                         id: 7,
                         title: (
                             <Button type="button" unstyled>
-                                <Icon.MoreHoriz />
+                                <Icon.MoreHoriz className="font-sans-lg" />
                             </Button>
-                        )
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
                     }
-                ]
+                ],
+                data: item
             });
         });
         setNameTableBody(tempArr);
@@ -140,7 +171,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         entityIds?.map((item, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
@@ -162,9 +193,11 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                         id: 5,
                         title: (
                             <Button type="button" unstyled>
-                                <Icon.MoreHoriz />
+                                <Icon.MoreHoriz className="font-sans-lg" />
                             </Button>
-                        )
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
                     }
                 ]
             });
@@ -180,7 +213,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
             if (element?.classCd !== 'PST') {
                 tempArr.push({
                     id: i + 1,
-                    checkbox: true,
+                    checkbox: false,
                     tableDetails: [
                         {
                             id: 1,
@@ -202,9 +235,11 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                             id: 5,
                             title: (
                                 <Button type="button" unstyled>
-                                    <Icon.MoreHoriz />
+                                    <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
-                            )
+                            ),
+                            textAlign: 'center',
+                            type: 'actions'
                         }
                     ]
                 });
@@ -221,7 +256,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
             if (element?.classCd === 'PST') {
                 tempArr.push({
                     id: i + 1,
-                    checkbox: true,
+                    checkbox: false,
                     tableDetails: [
                         {
                             id: 1,
@@ -251,9 +286,11 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                             id: 7,
                             title: (
                                 <Button type="button" unstyled>
-                                    <Icon.MoreHoriz />
+                                    <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
-                            )
+                            ),
+                            textAlign: 'center',
+                            type: 'actions'
                         }
                     ]
                 });
@@ -262,14 +299,100 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
         setAddressTableBody(tempArr);
     };
 
+    const raceTableData = (
+        raceId: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['ethnicGroupInd']
+    ) => {
+        const tempArr: any = [];
+        searchCriteria.races.map((race) => {
+            if (race.id.code === raceId) {
+                tempArr.push({
+                    id: 1,
+                    checkbox: false,
+                    tableDetails: [
+                        {
+                            id: 1,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 2,
+                            title: race.codeDescTxt
+                        },
+                        {
+                            id: 3,
+                            title: 'Not available yet'
+                        },
+                        {
+                            id: 5,
+                            title: (
+                                <Button type="button" unstyled>
+                                    <Icon.MoreHoriz className="font-sans-lg" />
+                                </Button>
+                            ),
+                            textAlign: 'center',
+                            type: 'actions'
+                        }
+                    ]
+                });
+            }
+        });
+        setRaceTableBody(tempArr);
+    };
+
     useEffect(() => {
-        if (patientProfileData && patientProfileData?.content?.length > 0) {
-            namesTableData(patientProfileData?.content[0].names);
-            idTableData(patientProfileData?.content[0].entityIds);
-            addressTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
-            phoneEmailTableData(patientProfileData?.content[0].nbsEntity.entityLocatorParticipations);
+        if (patientProfileData) {
+            console.log('patientProfileData:', patientProfileData);
+            namesTableData(patientProfileData?.names);
+            idTableData(patientProfileData?.entityIds);
+            raceTableData(patientProfileData?.electronicInd);
+            addressTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
+            phoneEmailTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
+            setGeneralTableData([
+                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateGeneral), 'MM/dd/yyyy') },
+                { title: 'Marital status::', text: '' },
+                { title: 'Mother’s maiden name:', text: patientProfileData.mothersMaidenNm },
+                { title: 'Number of adults in residence:', text: patientProfileData.adultsInHouseNbr },
+                { title: 'Number of children in residence:', text: patientProfileData.childrenInHouseNbr },
+                { title: 'Primary occupation:', text: '' },
+                { title: 'Highest level of education:', text: '' },
+                { title: 'Primary language:', text: '' },
+                { title: 'Speaks english:', text: '' },
+                { title: 'State HIV case ID:', text: '' }
+            ]);
+            setMorbidityTableData([
+                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateMorbidity), 'MM/dd/yyyy') },
+                {
+                    title: 'Is the patient deceased:',
+                    text:
+                        patientProfileData.deceasedIndCd === Deceased.N
+                            ? 'No'
+                            : patientProfileData.deceasedIndCd === Deceased.Y
+                            ? 'Yes'
+                            : 'Unknown'
+                },
+                { title: 'Date of death:', text: '' },
+                { title: 'City of death:', text: '' },
+                { title: 'State of death:', text: '' },
+                { title: 'County of death:', text: '' },
+                { title: 'Country of death:', text: '' }
+            ]);
+            setEthnicityTableData([
+                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateEthnicity), 'MM/dd/yyyy') },
+                { title: 'Ethnicity::', text: ethnicity },
+                { title: 'Spanish origin:', text: '' },
+                { title: 'Reasons unknown:', text: '' }
+            ]);
         }
     }, [patientProfileData]);
+
+    const [isEditModal, setIsEditModal] = useState<boolean>(false);
+    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+    const [nameDetails, setNameDetails] = useState<any>(undefined);
+
+    useEffect(() => {
+        if (isDeleteModal) {
+            deleteModalRef.current?.toggleModal();
+        }
+    }, [isDeleteModal]);
 
     return (
         <>
@@ -291,7 +414,7 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                         { name: 'General comment', sortable: true },
                         { name: 'Actions', sortable: true }
                     ]}
-                    tableBody={tableBody}
+                    tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
@@ -299,6 +422,20 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        console.log('type:', data);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addNameModalRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            detailsNameModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
@@ -306,7 +443,12 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                                 <Icon.Add className="margin-right-05" />
                                 Add name
                             </ModalToggleButton>
-                            <AddNameModal modalRef={addNameModalRef} />
+                            <AddNameModal
+                                modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
+                                handleSubmission={handleFormSubmission}
+                                modalRef={addNameModalRef}
+                            />
+                            <DetailsNameModal data={nameDetails} modalRef={detailsNameModalRef} />
                         </div>
                     }
                     tableHeader={'Name'}
@@ -404,70 +546,50 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                 />
             </div>
 
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <TableComponent
+                    isPagination={true}
+                    buttons={
+                        <div className="grid-row">
+                            <Button type="button" className="grid-row">
+                                <Icon.Add className="margin-right-05" />
+                                Add race
+                            </Button>
+                        </div>
+                    }
+                    tableHeader={'Race'}
+                    tableHead={[
+                        { name: 'As of', sortable: true },
+                        { name: 'Race', sortable: true },
+                        { name: 'Detailed race', sortable: true },
+                        { name: 'Actions', sortable: false }
+                    ]}
+                    tableBody={raceTableBody}
+                    currentPage={currentPage}
+                    handleNext={(e) => setCurrentPage(e)}
+                />
+            </div>
+
             <Grid row gap className="margin-auto">
                 <Grid col={6}>
                     <Grid row>
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
                             <HorizontalTable
-                                type="race"
-                                tableHeader="Race"
-                                tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Race:', text: 'White' },
-                                    { title: 'Detailed race:', text: '' }
-                                ]}
-                            />
-                        </Grid>
-
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
-                                type="ethnicity"
-                                tableHeader="Ethnicity"
-                                tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Ethnicity::', text: 'Not Hispanic or Latino' },
-                                    { title: 'Spanish origin:', text: '' },
-                                    { title: 'Reasons unknown:', text: '' }
-                                ]}
-                            />
-                        </Grid>
-
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
                                 type="general"
                                 tableHeader="General Patient Information"
-                                tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Marital status::', text: 'Married' },
-                                    { title: 'Mother’s maiden name:', text: '' },
-                                    { title: 'Number of adults in residence:', text: '' },
-                                    { title: 'Number of children in residence:', text: '' },
-                                    { title: 'Primary occupation:', text: '' },
-                                    { title: 'Highest level of education:', text: '' },
-                                    { title: 'Primary language:', text: '' },
-                                    { title: 'Speaks english:', text: '' },
-                                    { title: 'State HIV case ID:', text: '' }
-                                ]}
+                                tableData={generalTableData}
                             />
+                        </Grid>
+
+                        <Grid col={12} className="margin-top-3 margin-bottom-2">
+                            <HorizontalTable type="mortality" tableHeader="Mortality" tableData={morbidityTableData} />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
-                                type="mortality"
-                                tableHeader="Mortality"
-                                tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Is the patient deceased::', text: 'No' },
-                                    { title: 'Date of death:', text: '' },
-                                    { title: 'City of death:', text: '' },
-                                    { title: 'State of death:', text: '' },
-                                    { title: 'County of death:', text: '' },
-                                    { title: 'Country of death:', text: '' }
-                                ]}
-                            />
+                            <HorizontalTable type="ethnicity" tableHeader="Ethnicity" tableData={ethnicityTableData} />
                         </Grid>
 
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
@@ -475,10 +597,10 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                                 type="sex"
                                 tableHeader="Sex & Birth"
                                 tableData={[
-                                    { title: 'As of:', text: '09/19/2020' },
-                                    { title: 'Date of death:', text: '01/07/1972' },
-                                    { title: 'Current age:', text: '50 Years' },
-                                    { title: 'Current sex:', text: 'Male' },
+                                    { title: 'As of:', text: '' },
+                                    { title: 'Date of death:', text: '' },
+                                    { title: 'Current age:', text: '' },
+                                    { title: 'Current sex:', text: '' },
                                     { title: 'Unknown reason:', text: '' },
                                     { title: 'Transgender information:', text: '' },
                                     { title: 'Additional gender:', text: '' },
@@ -495,6 +617,37 @@ export const Demographics = ({ patientProfileData }: DemographicProps) => {
                     </Grid>
                 </Grid>
             </Grid>
+
+            {isDeleteModal && (
+                <Modal
+                    ref={deleteModalRef}
+                    id="example-modal-1"
+                    aria-labelledby="modal-1-heading"
+                    className="padding-0"
+                    aria-describedby="modal-1-description">
+                    <ModalHeading
+                        id="modal-1-heading"
+                        className="border-bottom border-base-lighter font-sans-lg padding-2">
+                        Delete name
+                    </ModalHeading>
+                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                        <Icon.Warning className="font-sans-2xl margin-x-2" />
+                        <p id="modal-1-description">
+                            Are you sure you want to delete Name record, Smith, Johnathan Test?
+                        </p>
+                    </div>
+                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                        <ButtonGroup>
+                            <ModalToggleButton outline modalRef={deleteModalRef} closer>
+                                Cancel
+                            </ModalToggleButton>
+                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
+                                Yes, delete
+                            </ModalToggleButton>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </Modal>
+            )}
         </>
     );
 };

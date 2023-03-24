@@ -22,9 +22,9 @@ describe('EthnicityForm', () => {
             jurisdictions: [],
             userResults: [],
             outbreaks: [],
-            states: [],
             races: [],
-            identificationTypes: []
+            identificationTypes: [],
+            states: []
         };
 
         const { getByText, getByTestId } = render(

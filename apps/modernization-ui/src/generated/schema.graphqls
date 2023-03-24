@@ -701,8 +701,14 @@ type PatientTreatmentInvestigation {
   condition: String!
 }
 
+type PatientTreatmentResults {
+  content: [PatientTreatment]!
+  total: Int!
+  number: Int!
+}
+
 extend type Query {
-  findTreatmentsForPatient(patient: ID!): [PatientTreatment]
+  findTreatmentsForPatient(patient: ID!, page: Page): PatientTreatmentResults
 }
 type Query {
   findPatientById(id: ID!): Person
@@ -770,6 +776,7 @@ type Person {
   id: ID
   nbsEntity: NBSEntity!
   entityIds: [PersonIdentification]
+  races: [PersonRace]
   names: [PersonName]
   addReasonCd: String
   addTime: DateTime
@@ -1027,6 +1034,11 @@ type PersonIdentification {
   rootExtensionTxt: String
   assigningAuthorityCd: String
   assigningAuthorityDescTxt: String
+}
+
+type PersonRace {
+  raceCd: String 
+  recordStatusCd: String
 }
 
 type PersonName {

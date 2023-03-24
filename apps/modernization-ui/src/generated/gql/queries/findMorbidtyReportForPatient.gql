@@ -91,6 +91,10 @@ query findMorbidtyReportForPatient($patientId: Int!, $page: Page){
                 assigningAuthorityCd
                 assigningAuthorityDescTxt
             }
+            races{
+                raceCd
+                recordStatusCd
+            }
             names{
                 firstNm
                 middleNm

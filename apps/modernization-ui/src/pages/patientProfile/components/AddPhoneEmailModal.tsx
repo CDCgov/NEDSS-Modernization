@@ -23,14 +23,15 @@ type AddCommentModalProps = {
 const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     return (
         <Form onSubmit={onSubmit} className="width-full maxw-full modal-form">
-            <div className="padding-2 modal-body">
+            <div className="modal-body">
                 <Grid row>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="phoneEmailAsOf"
                             render={({ field: { onChange, value } }) => (
                                 <DatePickerInput
+                                    flexBox
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="phoneEmailAsOf"
@@ -40,12 +41,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="type"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
+                                    flexBox
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="type"
@@ -56,12 +58,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="use"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
+                                    flexBox
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="use"
@@ -72,12 +75,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="countryCode"
                             render={({ field: { onChange, value } }) => (
                                 <Input
+                                    flexBox
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -89,12 +93,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="phoneNumber"
                             render={({ field: { onChange, value } }) => (
                                 <Input
+                                    flexBox
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -106,12 +111,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="ext"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
+                                    flexBox
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="ext"
@@ -122,12 +128,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="email"
                             render={({ field: { onChange, value } }) => (
                                 <Input
+                                    flexBox
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -139,12 +146,13 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="url"
                             render={({ field: { onChange, value } }) => (
                                 <Input
+                                    flexBox
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -156,22 +164,30 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             )}
                         />
                     </Grid>
-                    <Grid col={10}>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="additionalComments"
                             render={({ field: { onChange } }) => (
-                                <>
-                                    <Label htmlFor={'additionalComments'}>Additional comments</Label>
-                                    <Textarea onChange={onChange} name="additionalComments" id={'additionalComments'} />
-                                </>
+                                <Grid row>
+                                    <Grid col={6} className="flex-align-self-center">
+                                        <Label htmlFor={'additionalComments'}>Additional comments:</Label>
+                                    </Grid>
+                                    <Grid col={6}>
+                                        <Textarea
+                                            onChange={onChange}
+                                            name="additionalComments"
+                                            id={'additionalComments'}
+                                        />
+                                    </Grid>
+                                </Grid>
                             )}
                         />
                     </Grid>
                 </Grid>
             </div>
 
-            <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+            <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto margin-0">
                 <ButtonGroup>
                     <ModalToggleButton className="margin-top-0" outline modalRef={modalRef} closer>
                         Go back
@@ -196,7 +212,7 @@ export const AddPhoneEmailModal = ({ modalRef }: AddCommentModalProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="Add - Comment"
+            modalHeading="Add - Phone & Email"
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );
