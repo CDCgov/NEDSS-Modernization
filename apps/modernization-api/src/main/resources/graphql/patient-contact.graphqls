@@ -1,7 +1,12 @@
-type PatientContacts {
-  patient: ID!
-  namedByPatient: [NamedByPatient]
-  namedByContact: [NamedByContact]
+type NamedContact {
+  id: ID!
+  name: String!
+}
+
+type PatientContactInvestigation {
+  id: ID!
+  local: String!
+  condition: String!
 }
 
 type NamedByPatient {
@@ -16,6 +21,12 @@ type NamedByPatient {
   associatedWith: PatientContactInvestigation
 }
 
+type ContactsNamedByPatientResults {
+  content: [NamedByPatient]!
+  total: Int!
+  number: Int!
+}
+
 type NamedByContact {
   contactRecord: ID!
   createdOn: DateTime!
@@ -26,17 +37,16 @@ type NamedByContact {
   associatedWith: PatientContactInvestigation
 }
 
-type NamedContact {
-  id: ID!
-  name: String!
+type PatientNamedByContactResults {
+  content: [NamedByPatient]!
+  total: Int!
+  number: Int!
 }
 
-type PatientContactInvestigation {
-  id: ID!
-  local: String!
-  condition: String!
-}
 
 extend type Query {
-  findContactsForPatient(patient: ID!): PatientContacts
+
+  findContactsNamedByPatient(patient:ID!, page: Page) : ContactsNamedByPatientResults
+
+  findPatientNamedByContact(patient:ID!, page: Page) : PatientNamedByContactResults
 }

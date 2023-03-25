@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.contact;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.Coalesce;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.odse.QCtContact;
 import gov.cdc.nbs.entity.odse.QInterview;
@@ -10,6 +11,9 @@ import gov.cdc.nbs.entity.odse.QPublicHealthCase;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.NameRenderer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -38,7 +42,8 @@ class ContactNamedByPatientFinder {
   }
 
   List<PatientContacts.NamedByPatient> find(final long patient) {
-    return this.factory.selectDistinct(
+    return applyCriteria(
+        this.factory.selectDistinct(
             TRACING.id,
             TRACING.addTime,
             TRACING.localId,
@@ -53,8 +58,17 @@ class ContactNamedByPatientFinder {
             INVESTIGATION.localId,
             INVESTIGATION.cdDescTxt,
             NAMED_ON
-        )
-        .from(TRACING)
+        ),
+        patient
+    )
+        .fetch()
+        .stream()
+        .map(this::map)
+        .toList();
+  }
+
+  private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
+    return query.from(TRACING)
         .join(SUBJECT).on(
             TRACING.subjectNBSEntityUid.id.eq(SUBJECT.id)
         )
@@ -75,11 +89,7 @@ class ContactNamedByPatientFinder {
         )
         .where(TRACING.recordStatusCd.eq("ACTIVE"),
             SUBJECT.personParentUid.id.eq(patient)
-        )
-        .fetch()
-        .stream()
-        .map(this::map)
-        .toList();
+        );
   }
 
   private PatientContacts.NamedByPatient map(final Tuple tuple) {
@@ -140,5 +150,50 @@ class ContactNamedByPatientFinder {
         local,
         condition
     );
+  }
+
+  Page<PatientContacts.NamedByPatient> find(final long patient, final Pageable pageable) {
+    long total = resolveTotal(patient);
+
+    return total > 0
+        ? new PageImpl<>(resolvePage(patient, pageable), pageable, total)
+        : Page.empty(pageable);
+  }
+
+  private long resolveTotal(final long patient) {
+    Long total = applyCriteria(factory.selectDistinct(TRACING.countDistinct()), patient)
+        .fetchOne();
+    return total == null ? 0L : total;
+  }
+
+  private List<PatientContacts.NamedByPatient> resolvePage(
+      final long patient,
+      final Pageable pageable
+  ) {
+    return applyCriteria(
+        factory.selectDistinct(
+            TRACING.id,
+            TRACING.addTime,
+            TRACING.localId,
+            PRIORITY.codeDescTxt,
+            DISPOSITION.codeDescTxt,
+            CONTACT.id,
+            CONTACT.nmPrefix,
+            CONTACT.firstNm,
+            CONTACT.lastNm,
+            CONTACT.nmSuffix,
+            INVESTIGATION.id,
+            INVESTIGATION.localId,
+            INVESTIGATION.cdDescTxt,
+            NAMED_ON
+        ),
+        patient
+    )
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch()
+        .stream()
+        .map(this::map)
+        .toList();
   }
 }
