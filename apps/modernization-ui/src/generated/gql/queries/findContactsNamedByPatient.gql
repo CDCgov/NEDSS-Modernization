@@ -1,7 +1,6 @@
-query findContactsForPatient($patient: ID!){
-    findContactsForPatient(patient: $patient){
-        patient
-        namedByPatient{
+query findContactsNamedByPatient($patient: ID!, $page: Page){
+    findContactsNamedByPatient(patient: $patient, page: $page){
+        content{
             contactRecord
             createdOn
             condition
@@ -13,22 +12,13 @@ query findContactsForPatient($patient: ID!){
             priority
             disposition
             event
-        }
-        namedByContact{
-            contactRecord
-            createdOn
-            contact{
-                id
-                name
-            }
-            namedOn
-            condition
-            event
             associatedWith{
                 id
                 local
                 condition
             }
         }
+        total
+        number
     }
 }
