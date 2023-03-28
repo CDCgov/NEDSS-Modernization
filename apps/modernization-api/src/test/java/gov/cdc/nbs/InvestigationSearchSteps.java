@@ -14,14 +14,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.CaseStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.IdType;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.NotificationStatus;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter.ProcessingStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter;
+import gov.cdc.nbs.investigation.InvestigationResolver;
+import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
+import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;
@@ -37,7 +37,7 @@ import io.cucumber.java.en.When;
 @Rollback(false)
 public class InvestigationSearchSteps {
     @Autowired
-    private EventController eventController;
+    private InvestigationResolver investigationResolver;
     @Autowired
     private InvestigationRepository investigationRepository;
     @Autowired
@@ -106,13 +106,13 @@ public class InvestigationSearchSteps {
             default:
                 throw new IllegalArgumentException("Invalid field specified: " + field);
         }
-        investigationSearchResults = eventController.findInvestigationsByFilter(filter, null).getContent();
+        investigationSearchResults = investigationResolver.findInvestigationsByFilter(filter, null).getContent();
     }
 
     @When("I search investigation events by {string} {string}")
     public void i_search_patients_by_investigation_events(String field, String qualifier) {
         var filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
-        investigationSearchResults = eventController.findInvestigationsByFilter(filter, null).getContent();
+        investigationSearchResults = investigationResolver.findInvestigationsByFilter(filter, null).getContent();
     }
 
     @When("I search investigation events by {string} {string} {string} {string} {string} {string}")
@@ -121,7 +121,7 @@ public class InvestigationSearchSteps {
         InvestigationFilter filter = updateInvestigationFilter(new InvestigationFilter(), field, qualifier);
         updateInvestigationFilter(filter, field2, qualifier2);
         updateInvestigationFilter(filter, field3, qualifier3);
-        investigationSearchResults = eventController.findInvestigationsByFilter(filter, null).getContent();
+        investigationSearchResults = investigationResolver.findInvestigationsByFilter(filter, null).getContent();
 
     }
 

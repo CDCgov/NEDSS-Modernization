@@ -24,10 +24,11 @@ import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.controller.PatientController;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.InvestigationFilter;
 import gov.cdc.nbs.graphql.filter.LabReportFilter;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.investigation.InvestigationFilter;
+import gov.cdc.nbs.investigation.InvestigationResolver;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -50,6 +51,8 @@ public class PermissionSteps {
     ProgramAreaCodeRepository programAreaCodeRepository;
     @Autowired
     EventController eventController;
+    @Autowired
+    InvestigationResolver investigationResolver;
 
     @Before
     public void clearAuth() {
@@ -127,7 +130,7 @@ public class PermissionSteps {
                     response = patientController.findPatientsByFilter(patientFilter, page);
                     break;
                 case "findInvestigation":
-                    response = eventController.findInvestigationsByFilter(new InvestigationFilter(), page);
+                    response = investigationResolver.findInvestigationsByFilter(new InvestigationFilter(), page);
                     break;
                 case "findLabReport":
                     response = eventController.findLabReportsByFilter(new LabReportFilter(), page);
