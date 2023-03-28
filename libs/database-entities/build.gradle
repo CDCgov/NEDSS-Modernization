@@ -1,13 +1,7 @@
-buildscript {
-    ext {
-        springBootVersion = "2.7.8"
-        queryDslVersion = "5.0.0"
-    }
-}
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
-    id 'java'
     id 'jvm-test-suite'
-    id 'jacoco-report-aggregation'
 
     alias libs.plugins.springBoot apply false
     alias libs.plugins.springDependencies
@@ -15,6 +9,8 @@ plugins {
 
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
+
+
 
 testing {
     suites {
@@ -29,31 +25,29 @@ testing {
 }
 
 
+
 dependencyManagement {
     imports {
-        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom SpringBootPlugin.BOM_COORDINATES
     }
 }
 
 dependencies {
 
+    implementation project(':event-schema')
+
     // Spring
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
-    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
-
-    // event-schema
-    implementation project(':event-schema')
+    implementation libs.bundles.elasticsearch
 
     // lombok
-    implementation "org.projectlombok:lombok"
-    compileOnly "org.projectlombok:lombok"
-    annotationProcessor "org.projectlombok:lombok"
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
     // querydsl
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) {classifier('jpa')})
 
 }

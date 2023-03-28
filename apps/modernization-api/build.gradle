@@ -9,17 +9,8 @@ buildscript {
 plugins {
     id "org.springframework.boot" version "${springBootVersion}"
     id "io.spring.dependency-management" version "1.0.12.RELEASE"
-    id "java"
-    id "jacoco"
+    id 'jacoco-report-aggregation'
 }
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required
-    }
-}
-
 
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'

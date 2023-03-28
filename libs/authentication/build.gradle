@@ -1,61 +1,57 @@
-buildscript {
-    ext {
-        springBootVersion = "2.7.8"
-        queryDslVersion = "5.0.0"
-        blazePersistenceVersion = "1.6.8"
-    }
-}
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
-    id 'org.springframework.boot' version "${springBootVersion}" apply false
-    id "io.spring.dependency-management" version "1.0.12.RELEASE"
-    id 'java'
+    id 'jvm-test-suite'
+
+    alias libs.plugins.springBoot apply false
+    alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
 
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation libs.bundles.testing
+                implementation libs.bundles.kafkaTest
+            }
+        }
+    }
+}
+
 dependencyManagement {
     imports {
-        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        mavenBom SpringBootPlugin.BOM_COORDINATES
     }
 }
 dependencies {
-    // core
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
-
     implementation project(':database-entities')
 
-    // jwt
-    implementation "com.auth0:java-jwt:4.2.0"
+    // core
+    implementation libs.bundles.jpa
+    annotationProcessor libs.springBoot.jpa
+
+    implementation libs.bundles.security
 
     // database
-    implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+    implementation libs.mssql.jdbc
 
     // querydsl
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
     // blazebit for querydsl paging
-    implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
-    implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
-    implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
-    
-      // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.1'
-
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
+    implementation libs.bundles.blaze.persistence.queryDSL
+    implementation libs.bundles.jackson
 
     // lombok
-    implementation "org.projectlombok:lombok"
-    compileOnly "org.projectlombok:lombok"
-    annotationProcessor "org.projectlombok:lombok"
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
     // Kafka
-    implementation("org.springframework.kafka:spring-kafka")
-    implementation("io.confluent:kafka-avro-serializer:7.1.1")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
+    implementation libs.bundles.kafka
 }
