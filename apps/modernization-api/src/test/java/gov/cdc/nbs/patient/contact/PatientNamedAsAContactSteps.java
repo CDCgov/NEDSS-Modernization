@@ -63,7 +63,9 @@ public class PatientNamedAsAContactSteps {
   public void the_profile_contacts_that_named_the_patient_are_not_returned() {
     long patient = this.patients.one();
 
-    assertThatThrownBy(() -> this.resolver.find(patient, new GraphQLPage(5)))
+    GraphQLPage page = new GraphQLPage(5);
+
+    assertThatThrownBy(() -> this.resolver.find(patient, page))
         .isInstanceOf(AccessDeniedException.class);
   }
 

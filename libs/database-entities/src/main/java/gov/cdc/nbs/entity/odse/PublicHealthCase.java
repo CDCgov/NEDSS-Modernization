@@ -298,6 +298,7 @@ public class PublicHealthCase {
     private String coinfectionId;
 
     public PublicHealthCase() {
+        // no args constructor required for JPA
     }
 
     public Long getId() {

@@ -174,6 +174,7 @@ public class CtContact {
   private String contactReferralBasisCd;
 
   public CtContact() {
+    // no args constructor required for JPA
   }
 
   public Long getId() {
