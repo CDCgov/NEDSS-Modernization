@@ -17,7 +17,7 @@ import { Input } from '../../../components/FormInputs/Input';
 
 type AddCommentModalProps = {
     modalRef: any;
-    handleSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
+    handleSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
     modalHead?: string;
 };
 
@@ -227,9 +227,8 @@ export const AddNameModal = ({ modalRef, handleSubmission, modalHead }: AddComme
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     const onSubmit = (data: any) => {
-        console.log(data);
         modalRef.current?.toggleModal();
-        handleSubmission?.('success', `${data?.last}, ${data?.first}`);
+        handleSubmission?.('success', `${data?.last}, ${data?.first}`, data);
         setSubmitted(true);
     };
 

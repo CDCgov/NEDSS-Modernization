@@ -18,13 +18,17 @@ import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
 import { Deceased, FindPatientByIdQuery, FindPatientsByFilterQuery } from '../../generated/graphql/schema';
 import { format } from 'date-fns';
-import { DetailsNameModal } from './components/DetailsNameModal';
 import { AddIdentificationModal } from './components/AddIdentificationModal';
 import { AddRaceModal } from './components/AddRaceModal';
+import { DetailsNameModal } from './components/DemographicDetails/DetailsNameModal';
+import { DetailsAddressModal } from './components/DemographicDetails/DetailsAddressModal';
+import { DetailsPhoneEmailModal } from './components/DemographicDetails/DetailsPhoneEmailModal';
+import { DetailsIdentificationModal } from './components/DemographicDetails/DetailsIdentificationModa';
+import { DetailsRaceModal } from './components/DemographicDetails/DetailsRaceModal';
 
 type DemographicProps = {
     patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
-    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
+    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
     ethnicity?: string;
     race?: any;
 };
@@ -53,6 +57,10 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     const addRaceRef = useRef<ModalRef>(null);
 
     const detailsNameModalRef = useRef<ModalRef>(null);
+    const detailsAddressModalRef = useRef<ModalRef>(null);
+    const detailsPhoneEmailModalRef = useRef<ModalRef>(null);
+    const detailsIdentificationModalRef = useRef<ModalRef>(null);
+    const detailsRaceModalRef = useRef<ModalRef>(null);
 
     const deleteModalRef = useRef<ModalRef>(null);
 
@@ -273,7 +281,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         },
                         {
                             id: 3,
-                            title: element?.locator?.streetAddr1 + ' ' + element?.locator?.streetAddr1
+                            title: element?.locator?.streetAddr1 + ' ' + element?.locator?.streetAddr2
                         },
                         {
                             id: 4,
@@ -402,14 +410,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     }, [patientProfileData]);
 
     const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
     const [nameDetails, setNameDetails] = useState<any>(undefined);
-
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
+    const [isDeleteModal, setIsDeleteModal] = useState<any>(undefined);
 
     return (
         <>
@@ -447,6 +449,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         }
                         if (type === 'delete') {
                             setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
                         }
                         if (type === 'details') {
                             setNameDetails(data);
@@ -486,6 +489,21 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        console.log('type:', data);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addAddressModalRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            detailsAddressModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
@@ -494,6 +512,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                                 Add address
                             </ModalToggleButton>
                             <AddAddressModal modalRef={addAddressModalRef} />
+                            <DetailsAddressModal data={nameDetails} modalRef={detailsAddressModalRef} />
                         </div>
                     }
                     tableHeader={'Address'}
@@ -514,6 +533,21 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        console.log('type:', data);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addPhoneEmailRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            detailsPhoneEmailModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
@@ -522,6 +556,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                                 Add phone & email
                             </ModalToggleButton>
                             <AddPhoneEmailModal modalRef={addPhoneEmailRef} />
+                            <DetailsPhoneEmailModal data={nameDetails} modalRef={detailsPhoneEmailModalRef} />
                         </div>
                     }
                     tableHeader={'Phone & email'}
@@ -540,6 +575,21 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        console.log('type:', data);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addIdentificationRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            detailsIdentificationModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
@@ -552,6 +602,10 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                                     Add identification
                                 </ModalToggleButton>
                                 <AddIdentificationModal modalRef={addIdentificationRef} />
+                                <DetailsIdentificationModal
+                                    data={nameDetails}
+                                    modalRef={detailsIdentificationModalRef}
+                                />
                             </div>
                         </div>
                     }
@@ -571,6 +625,21 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        console.log('type:', data);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addRaceRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            detailsRaceModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
@@ -579,6 +648,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                                 Add race
                             </ModalToggleButton>
                             <AddRaceModal modalRef={addRaceRef} />
+                            <DetailsRaceModal data={nameDetails} modalRef={detailsRaceModalRef} />
                         </div>
                     }
                     tableHeader={'Race'}

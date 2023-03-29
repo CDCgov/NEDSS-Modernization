@@ -17,10 +17,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.investigation.InvestigationResolver;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;
@@ -42,7 +42,7 @@ public class OpenInvestigationSteps {
     private ElasticsearchPersonRepository personRepository;
 
     @Autowired
-    private EventController eventController;
+    private InvestigationResolver investigationResolver;
 
     private Page<ElasticsearchPerson> personPage;
     private Page<Investigation> investigationResults;
@@ -74,7 +74,7 @@ public class OpenInvestigationSteps {
     @When("I search for open investigations for a patient")
     public void i_search_for_open_investigations_for_a_patient() {
         var patientId = personPage.getContent().get(0).getPersonUid();
-        investigationResults = eventController.findOpenInvestigationsForPatient(patientId, new GraphQLPage(10));
+        investigationResults = investigationResolver.findOpenInvestigationsForPatient(patientId, new GraphQLPage(10));
     }
 
     @Then("I receive a list of open investigations")

@@ -194,6 +194,22 @@ export const Summary = ({ profileData }: SummaryProp) => {
         );
     };
 
+    const sortDocumentsData = (name: string, type: string) => {
+        investigationData(
+            investigations.slice().sort((a: any, b: any) => {
+                if (a[name] && b[name]) {
+                    if (a[name].toLowerCase() < b[name].toLowerCase()) {
+                        return type === 'asc' ? -1 : 1;
+                    }
+                    if (a[name].toLowerCase() > b[name].toLowerCase()) {
+                        return type === 'asc' ? 1 : -1;
+                    }
+                }
+                return 0;
+            })
+        );
+    };
+
     const handleSort = (name: string, type: string) => {
         switch (name.toLowerCase()) {
             case 'start date':
@@ -240,6 +256,55 @@ export const Summary = ({ profileData }: SummaryProp) => {
         }
     };
 
+    const handleDocumentSort = (name: string, type: string) => {
+        console.log('name.toLowerCase():', name.toLowerCase());
+        console.log('type:', type);
+        console.log('sortDocumentsData:', sortDocumentsData);
+        // switch (name.toLowerCase()) {
+        //     case 'start date':
+        //         investigationData(
+        //             investigations.slice().sort((a: any, b: any) => {
+        //                 const dateA: any = new Date(a.addTime);
+        //                 const dateB: any = new Date(b.addTime);
+        //                 return type === 'asc' ? dateB - dateA : dateA - dateB;
+        //             })
+        //         );
+        //         break;
+        //     case 'condition':
+        //         sortInvestigationData('cdDescTxt', type);
+        //         break;
+        //     case 'jurisdiction':
+        //         sortInvestigationData('jurisdictionCodeDescTxt', type);
+        //         break;
+        //     case 'investigator':
+        //         investigationData(
+        //             investigations.slice().sort((a: any, b: any) => {
+        //                 const firstInv = a?.personParticipations?.find(
+        //                     (person: any) => person?.typeCd === 'InvestgrOfPHC'
+        //                 ).lastName;
+        //                 const secondInv = b?.personParticipations?.find(
+        //                     (person: any) => person?.typeCd === 'InvestgrOfPHC'
+        //                 ).lastName;
+        //                 if (firstInv && secondInv) {
+        //                     if (firstInv.toLowerCase() < secondInv.toLowerCase()) {
+        //                         return type === 'asc' ? -1 : 1;
+        //                     }
+        //                     if (firstInv.toLowerCase() > secondInv.toLowerCase()) {
+        //                         return type === 'asc' ? 1 : -1;
+        //                     }
+        //                 }
+        //                 return 0;
+        //             })
+        //         );
+        //         break;
+        //     case 'case status':
+        //         sortInvestigationData('recordStatus', type);
+        //         break;
+        //     case 'notification':
+        //         sortInvestigationData('notificationRecordStatusCd', type);
+        // }
+    };
+
     return (
         <>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
@@ -280,6 +345,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
                     tableBody={documentReviewBody}
                     currentPage={documentCurrentPage}
                     handleNext={(e) => setDocumentCurrentPage(e)}
+                    sortData={handleDocumentSort}
                 />
             </div>
         </>

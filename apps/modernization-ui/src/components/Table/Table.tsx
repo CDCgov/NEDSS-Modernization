@@ -102,7 +102,7 @@ export const TableComponent = ({
                                                 {td?.type !== 'actions' && (
                                                     <span
                                                         className={
-                                                            index === 0 && ind === 0 && item.checkbox
+                                                            ind === 0 && item.checkbox
                                                                 ? 'check-title'
                                                                 : td.class
                                                                 ? td.class
@@ -123,8 +123,9 @@ export const TableComponent = ({
                                                         </Button>
                                                         {isActions === index && (
                                                             <Actions
-                                                                handleAction={(e: string) => {
-                                                                    handleAction?.(e, item);
+                                                                handleOutsideClick={() => setIsActions(null)}
+                                                                handleAction={(data: string) => {
+                                                                    handleAction?.(data, item);
                                                                     setIsActions(null);
                                                                 }}
                                                             />

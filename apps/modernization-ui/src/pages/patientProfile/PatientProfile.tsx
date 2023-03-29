@@ -15,13 +15,15 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
+    NameUseCd,
     useFindContactsForPatientLazyQuery,
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidtyReportForPatientLazyQuery,
     useFindPatientByIdLazyQuery,
-    useFindTreatmentsForPatientLazyQuery
+    useFindTreatmentsForPatientLazyQuery,
+    useUpdatePatientGeneralInfoMutation
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
@@ -48,8 +50,8 @@ export const PatientProfile = () => {
     const [getTreatmentsData, { data: treatmentsData }] = useFindTreatmentsForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
     const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
-
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
+    const [updateGeneralInfo, { data: generalInfoData }] = useUpdatePatientGeneralInfoMutation();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -196,6 +198,15 @@ export const PatientProfile = () => {
             }, 5000);
         }
     }, [submittedSuccess]);
+
+    function isEmpty(obj: any) {
+        for (const key in obj) {
+            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
+        }
+        return true;
+    }
+
+    console.log('generalInfoData:', generalInfoData);
 
     return (
         <div className="height-full main-banner">
@@ -345,7 +356,29 @@ export const PatientProfile = () => {
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
-                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                        handleFormSubmission={(
+                            type: 'error' | 'success' | 'warning' | 'info',
+                            message: string,
+                            data: any
+                        ) => {
+                            if (!isEmpty(data) && id) {
+                                console.log('data:', data);
+                                updateGeneralInfo({
+                                    variables: {
+                                        id,
+                                        patient: {
+                                            names: [
+                                                {
+                                                    firstName: data.first,
+                                                    lastName: data.last,
+                                                    middleName: data.middle,
+                                                    nameUseCd: NameUseCd.A
+                                                }
+                                            ]
+                                        }
+                                    }
+                                });
+                            }
                             setSubmittedSuccess(true);
                             setAddedItem(message);
                             setAlertType(type);

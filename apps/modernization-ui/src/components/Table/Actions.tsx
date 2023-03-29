@@ -1,8 +1,25 @@
+import { useEffect, useRef } from 'react';
 import { Button } from '@trussworks/react-uswds';
 
-export const Actions = ({ handleAction }: any) => {
+export const Actions = ({ handleAction, handleOutsideClick }: any) => {
+    const actionRef: any = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: any) {
+            if (actionRef.current && !actionRef.current.contains(event.target)) {
+                handleOutsideClick();
+            }
+        }
+        // Bind the event listener
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [actionRef]);
+
     return (
-        <div className="actions-card">
+        <div className="actions-card" ref={actionRef}>
             <Button
                 onClick={() => handleAction('details')}
                 unstyled
