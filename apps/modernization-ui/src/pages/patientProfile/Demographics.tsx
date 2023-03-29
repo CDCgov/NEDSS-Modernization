@@ -42,6 +42,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     const [generalTableData, setGeneralTableData] = useState<any>(undefined);
     const [morbidityTableData, setMorbidityTableData] = useState<any>(undefined);
     const [ethnicityTableData, setEthnicityTableData] = useState<any>(undefined);
+    const [sexAndBirthData, setSexAndBirthData] = useState<any>(undefined);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const addCommentModalRef = useRef<ModalRef>(null);
@@ -348,15 +349,15 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             phoneEmailTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
             setGeneralTableData([
                 { title: 'As of:', text: format(new Date(patientProfileData.asOfDateGeneral), 'MM/dd/yyyy') },
-                { title: 'Marital status::', text: '' },
+                { title: 'Marital status:', text: patientProfileData.maritalStatusCd },
                 { title: 'Mother’s maiden name:', text: patientProfileData.mothersMaidenNm },
                 { title: 'Number of adults in residence:', text: patientProfileData.adultsInHouseNbr },
                 { title: 'Number of children in residence:', text: patientProfileData.childrenInHouseNbr },
-                { title: 'Primary occupation:', text: '' },
-                { title: 'Highest level of education:', text: '' },
-                { title: 'Primary language:', text: '' },
-                { title: 'Speaks english:', text: '' },
-                { title: 'State HIV case ID:', text: '' }
+                { title: 'Primary occupation:', text: patientProfileData.occupationCd },
+                { title: 'Highest level of education:', text: patientProfileData.educationLevelCd },
+                { title: 'Primary language:', text: patientProfileData.primLangCd },
+                { title: 'Speaks english:', text: patientProfileData.speaksEnglishCd },
+                { title: 'State HIV case ID:', text: patientProfileData.eharsId }
             ]);
             setMorbidityTableData([
                 { title: 'As of:', text: format(new Date(patientProfileData.asOfDateMorbidity), 'MM/dd/yyyy') },
@@ -369,7 +370,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             ? 'Yes'
                             : 'Unknown'
                 },
-                { title: 'Date of death:', text: '' },
+                { title: 'Date of death:', text: patientProfileData.deceasedTime },
                 { title: 'City of death:', text: '' },
                 { title: 'State of death:', text: '' },
                 { title: 'County of death:', text: '' },
@@ -380,6 +381,22 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                 { title: 'Ethnicity::', text: ethnicity },
                 { title: 'Spanish origin:', text: '' },
                 { title: 'Reasons unknown:', text: '' }
+            ]);
+            setSexAndBirthData([
+                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateSex), 'MM/dd/yyyy') },
+                { title: 'Date of death:', text: patientProfileData.deceasedTime },
+                { title: 'Current age:', text: patientProfileData.ageReported },
+                { title: 'Current sex:', text: patientProfileData.currSexCd },
+                { title: 'Unknown reason:', text: patientProfileData.sexUnkReasonCd },
+                { title: 'Transgender information:', text: patientProfileData.preferredGenderCd },
+                { title: 'Additional gender:', text: patientProfileData.additionalGenderCd },
+                { title: 'Birth sex:', text: patientProfileData.birthGenderCd },
+                { title: 'Multiple birth:', text: patientProfileData.multipleBirthInd },
+                { title: 'Birth order:', text: patientProfileData.birthOrderNbr },
+                { title: 'Birth city:', text: patientProfileData.birthCityCd },
+                { title: 'Birth state:', text: patientProfileData.birthStateCd },
+                { title: 'Birth county:', text: '' },
+                { title: 'Birth country:', text: '' }
             ]);
         }
     }, [patientProfileData]);
@@ -600,26 +617,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         </Grid>
 
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
-                                type="sex"
-                                tableHeader="Sex & Birth"
-                                tableData={[
-                                    { title: 'As of:', text: '' },
-                                    { title: 'Date of death:', text: '' },
-                                    { title: 'Current age:', text: '' },
-                                    { title: 'Current sex:', text: '' },
-                                    { title: 'Unknown reason:', text: '' },
-                                    { title: 'Transgender information:', text: '' },
-                                    { title: 'Additional gender:', text: '' },
-                                    { title: 'Birth sex:', text: '' },
-                                    { title: 'Multiple birth:', text: '' },
-                                    { title: 'Birth order:', text: '' },
-                                    { title: 'Birth city:', text: '' },
-                                    { title: 'Birth state:', text: '' },
-                                    { title: 'Birth county:', text: '' },
-                                    { title: 'Birth country:', text: '' }
-                                ]}
-                            />
+                            <HorizontalTable type="sex" tableHeader="Sex & Birth" tableData={sexAndBirthData} />
                         </Grid>
                     </Grid>
                 </Grid>

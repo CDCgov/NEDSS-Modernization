@@ -593,7 +593,13 @@ export const Events = ({
                         </div>
                     }
                     tableHeader={'Documents'}
-                    tableHead={[]}
+                    tableHead={[
+                        { name: 'Date created', sortable: true },
+                        { name: 'Type', sortable: true },
+                        { name: 'Purpose', sortable: true },
+                        { name: 'Description', sortable: true },
+                        { name: 'Document ID', sortable: false }
+                    ]}
                     tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
