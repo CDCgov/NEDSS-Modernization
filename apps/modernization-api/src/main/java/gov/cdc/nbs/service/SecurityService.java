@@ -3,10 +3,7 @@ package gov.cdc.nbs.service;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
-
-import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,13 +53,4 @@ public class SecurityService {
         return (jurisdictionNbsUid * 100_000L) + programAreaId;
     }
 
-    /**
-     * Create a set of program area codes the user has access to
-     */
-    public Set<String> getProgramAreaCodes(NbsUserDetails userDetails) {
-        return userDetails.getAuthorities()
-                .stream()
-                .map(NbsAuthority::getProgramArea)
-                .collect(Collectors.toSet());
-    }
 }
