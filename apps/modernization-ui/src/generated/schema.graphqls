@@ -59,95 +59,6 @@ type EthnicityId {
     code: String!
 }
 extend type Query {
-  findMorbidtyReportForPatient(
-    patientId: Int!
-    page: Page
-  ): [MorbidtyObservation]
-}
-
-type MorbidtyObservation {
-  id: ID
-  act: Act
-  obsValueCodedList: [ObsValueCoded]
-  activityDurationAmt: String
-  activityDurationUnitCd: String
-  activityFromTime: DateTime
-  activityToTime: DateTime
-  addReasonCd: String
-  addTime: DateTime
-  addUserId: Int
-  cd: String
-  cdDescTxt: String
-  cdSystemCd: String
-  cdSystemDescTxt: String
-  confidentialityCd: String
-  confidentialityDescTxt: String
-  ctrlCdDisplayForm: String
-  ctrlCdUserDefined1: String
-  ctrlCdUserDefined2: String
-  ctrlCdUserDefined3: String
-  ctrlCdUserDefined4: String
-  derivationExp: Int
-  effectiveDurationAmt: String
-  effectiveDurationUnitCd: String
-  effectiveFromTime: DateTime
-  effectiveToTime: DateTime
-  electronicInd: String
-  groupLevelCd: String
-  jurisdictionCd: String
-  labConditionCd: String
-  lastChgReasonCd: String
-  lastChgTime: DateTime
-  lastChgUserId: Int
-  localId: String
-  methodCd: String
-  methodDescTxt: String
-  obsDomainCd: String
-  obsDomainCdSt1: String
-  pnuCd: String
-  priorityCd: String
-  priorityDescTxt: String
-  progAreaCd: String
-  recordStatusCd: String
-  recordStatusTime: DateTime
-  repeatNbr: Int
-  statusCd: String
-  statusTime: DateTime
-  subjectPersonUid: Person
-  targetSiteCd: String
-  targetSiteDescTxt: String
-  txt: String
-  userAffiliationTxt: String
-  valueCd: String
-  ynuCd: String
-  programJurisdictionOid: Int
-  sharedInd: String
-  versionCtrlNbr: Int
-  altCd: String
-  altCdDescTxt: String
-  altCdSystemCd: String
-  altCdSystemDescTxt: String
-  cdDerivedInd: String
-  rptToStateTime: DateTime
-  cdVersion: String
-  processingDecisionCd: String
-  pregnantIndCd: String
-  pregnantWeek: Int
-  processingDecisionTxt: String
-}
-
-type Act {
-  id: Int
-}
-
-type ObsValueCoded {
-  id: ObsValueCodedId
-}
-
-type ObsValueCodedId {
-  observationUid: ID
-}
-extend type Query {
     findAllPatientIdentificationTypes(page: Page): PatientIdentificationTypeResults!
 }
 
@@ -696,6 +607,43 @@ type PatientDocumentInvestigation {
 extend type Query {
   findDocumentsForPatient(patient: ID!): [PatientDocument]
 }
+type PatientMorbidity {
+    morbidity: ID!
+    receivedOn: DateTime!
+    provider: String
+    reportedOn: DateTime!
+    condition: String!
+    jurisdiction: String!
+    event: String!
+    associatedWith: PatientMorbidityInvestigation
+    treatments: [String]!
+    labResults: [PatientMorbidityLabResult]!
+}
+
+type PatientMorbidityInvestigation {
+    id: ID!
+    local: String!
+    condition: String!
+}
+
+type PatientMorbidityLabResult {
+    labTest: String!
+    status: String
+    codedResult: String
+    numericResult: String
+    textResult: String
+}
+
+type PatientMorbidityResults {
+    content: [PatientMorbidity]!
+    total: Int!
+    number: Int!
+}
+
+extend type Query {
+    findMorbidityReportsForPatient(patient: ID! page: Page ): PatientMorbidityResults
+}
+
 type PatientTreatment {
   treatment: ID!
   createdOn: DateTime!
