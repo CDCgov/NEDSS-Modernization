@@ -41,7 +41,7 @@ class PatientMorbidityFinder {
         ).fetch()
             .stream()
             .map(this.mapper::map)
-            .toList();
+            .collect(PatientMorbidityRowAccumulator.accumulating());
     }
 
     private JPAQuery<Tuple> selection() {
@@ -129,7 +129,8 @@ class PatientMorbidityFinder {
             .fetch()
             .stream()
             .map(this.mapper::map)
-            .toList();
+            .collect(PatientMorbidityRowAccumulator.accumulating())
+            ;
     }
 
 }

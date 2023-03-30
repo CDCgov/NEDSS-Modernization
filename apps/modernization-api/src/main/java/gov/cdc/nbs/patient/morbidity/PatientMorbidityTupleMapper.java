@@ -5,6 +5,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.NameRenderer;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 class PatientMorbidityTupleMapper {
@@ -39,6 +40,8 @@ class PatientMorbidityTupleMapper {
 
         PatientMorbidity.Investigation investigation = maybeMapInvestigation(tuple);
 
+        List<String> treatments = mapTreatments(tuple);
+
         return new PatientMorbidity(
             morbidity,
             receivedOn,
@@ -47,7 +50,8 @@ class PatientMorbidityTupleMapper {
             condition,
             jurisdiction,
             event,
-            investigation
+            investigation,
+            treatments
         );
     }
 
@@ -65,5 +69,11 @@ class PatientMorbidityTupleMapper {
         );
     }
 
+    private List<String> mapTreatments(final Tuple tuple) {
+        //  the mapper works on a single row meaning zero or one treatment will ever be returned.
+        String treatment = tuple.get(tables.treatment().cdDescTxt);
+
+        return treatment == null ? List.of() : List.of(treatment);
+    }
 
 }

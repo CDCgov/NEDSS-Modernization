@@ -6,6 +6,7 @@ import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.odse.QPublicHealthCase;
+import gov.cdc.nbs.entity.odse.QTreatment;
 import gov.cdc.nbs.entity.srte.QConditionCode;
 import gov.cdc.nbs.entity.srte.QJurisdictionCode;
 
@@ -20,45 +21,55 @@ class PatientMorbidityTables {
     private final QParticipation morbidityProvider;
     private final QPersonName provider;
     private final QConditionCode investigationCondition;
+    private final QActRelationship treatmentOfMorbidity;
+    private final QTreatment treatment;
 
-    public QObservation morbidity() {
+    QObservation morbidity() {
         return morbidity;
     }
 
-    public QJurisdictionCode jurisdiction() {
+    QJurisdictionCode jurisdiction() {
         return jurisdiction;
     }
 
-    public QParticipation subjectOfMorbidity() {
+    QParticipation subjectOfMorbidity() {
         return subjectOfMorbidity;
     }
 
-    public QConditionCode condition() {
+    QConditionCode condition() {
         return condition;
     }
 
-    public QPerson subject() {
+    QPerson subject() {
         return subject;
     }
 
-    public QActRelationship caseOfMorbidity() {
+    QActRelationship caseOfMorbidity() {
         return caseOfMorbidity;
     }
 
-    public QPublicHealthCase investigation() {
+    QPublicHealthCase investigation() {
         return investigation;
     }
 
-    public QParticipation morbidityProvider() {
+    QParticipation morbidityProvider() {
         return morbidityProvider;
     }
 
-    public QPersonName provider() {
+    QPersonName provider() {
         return provider;
     }
 
-    public QConditionCode investigationCondition() {
+    QConditionCode investigationCondition() {
         return investigationCondition;
+    }
+
+    QActRelationship treatmentOfMorbidity() {
+        return treatmentOfMorbidity;
+    }
+
+    QTreatment treatment() {
+        return treatment;
     }
 
     PatientMorbidityTables() {
@@ -72,5 +83,7 @@ class PatientMorbidityTables {
         morbidityProvider = new QParticipation("morbidity_provider");
         provider = new QPersonName("provider_name");
         investigationCondition = new QConditionCode("investigation_condition");
+        treatmentOfMorbidity = new QActRelationship("treatment_of_morbidity");
+        treatment = new QTreatment("treatment");
     }
 }

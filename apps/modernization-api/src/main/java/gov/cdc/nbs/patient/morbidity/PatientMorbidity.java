@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.morbidity;
 
 import java.time.Instant;
+import java.util.Collection;
 
 record PatientMorbidity(
     long morbidity,
@@ -10,7 +11,8 @@ record PatientMorbidity(
     String condition,
     String jurisdiction,
     String event,
-    Investigation associatedWith
+    Investigation associatedWith,
+    Collection<String> treatments
 ) {
 
   record Investigation(
