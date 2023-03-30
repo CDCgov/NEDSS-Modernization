@@ -2,31 +2,47 @@ package gov.cdc.nbs.patient.document;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.*;
+import gov.cdc.nbs.entity.odse.Act;
+import gov.cdc.nbs.entity.odse.NbsDocument;
+import gov.cdc.nbs.entity.odse.NbsDocumentMetadatum;
+import gov.cdc.nbs.entity.odse.Participation;
+import gov.cdc.nbs.entity.odse.ParticipationId;
+import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
 
 @Component
 class DocumentMother {
 
-  public static final String DOCUMENT_CLASS = "DOC";
-  public static final String PERSON_CLASS = "PSN";
-  private final TestUniqueIdGenerator idGenerator;
+  private static final String DOCUMENT_CLASS = "DOC";
+  private static final String PERSON_CLASS = "PSN";
 
+  private final MotherSettings settings;
+  private final TestUniqueIdGenerator idGenerator;
   private final EntityManager entityManager;
-  private final JPAQueryFactory factory;
+  private final TestDocumentCleaner cleaner;
+
+  private final TestDocuments documents;
 
   DocumentMother(
+      final MotherSettings settings,
       final TestUniqueIdGenerator idGenerator,
       final EntityManager entityManager,
-      final JPAQueryFactory factory
+      final TestDocumentCleaner cleaner,
+      final TestDocuments documents
   ) {
+    this.settings = settings;
     this.idGenerator = idGenerator;
     this.entityManager = entityManager;
-    this.factory = factory;
+    this.cleaner = cleaner;
+    this.documents = documents;
+  }
+
+  void reset() {
+    this.cleaner.clean(this.settings.starting());
+    this.documents.reset();
   }
 
   /**
@@ -50,17 +66,18 @@ class DocumentMother {
     document.setSharedInd('F');
     document.setVersionCtrlNbr((short) 1);
 
-    Instant now = Instant.now();
     document.setRecordStatusCd("ACTIVE");
-    document.setRecordStatusTime(now);
-    document.setAddTime(now);
-    document.setAddUserId(9999L);
+    document.setRecordStatusTime(settings.createdOn());
+    document.setAddTime(settings.createdOn());
+    document.setAddUserId(settings.createdBy());
 
     document.setNbsDocumentMetadataUid(metadatum());
 
     entityManager.persist(document);
 
     subjectOfDocument(patient, identifier);
+
+    this.documents.available(document.getId());
 
     return document;
   }
@@ -81,11 +98,10 @@ class DocumentMother {
     participation.setActClassCd(DOCUMENT_CLASS);
     participation.setSubjectClassCd(PERSON_CLASS);
 
-    Instant now = Instant.now();
     participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(now);
-    participation.setAddTime(now);
-    participation.setAddUserId(9999L);
+    participation.setRecordStatusTime(settings.createdOn());
+    participation.setAddTime(settings.createdOn());
+    participation.setAddUserId(settings.createdBy());
     participation.setActUid(act);
 
     act.addParticipation(participation);
@@ -96,9 +112,6 @@ class DocumentMother {
   }
 
   private NbsDocumentMetadatum metadatum() {
-    return this.factory.select(QNbsDocumentMetadatum.nbsDocumentMetadatum)
-        .from(QNbsDocumentMetadatum.nbsDocumentMetadatum)
-        .where(QNbsDocumentMetadatum.nbsDocumentMetadatum.id.eq((long) 1003))
-        .fetchOne();
+    return this.entityManager.getReference(NbsDocumentMetadatum.class, 1003L);
   }
 }

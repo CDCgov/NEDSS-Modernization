@@ -15,7 +15,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
-    useFindContactsForPatientLazyQuery,
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
@@ -45,7 +44,6 @@ export const PatientProfile = () => {
     // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
     const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
-    const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
@@ -99,11 +97,6 @@ export const PatientProfile = () => {
                     }
                 });
                 getDocumentsData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
-                    }
-                });
-                getContactsData({
                     variables: {
                         patient: patientProfileData.findPatientById.id
                     }
@@ -331,8 +324,6 @@ export const PatientProfile = () => {
                         labReports={labReportData?.findLabReportsByFilter}
                         morbidityData={morbidityData?.findMorbidtyReportForPatient}
                         documentsData={documentsData?.findDocumentsForPatient}
-                        contactsData={contactsData?.findContactsForPatient}
-                        profileData={profileData}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (

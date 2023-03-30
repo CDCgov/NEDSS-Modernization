@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @Component
 class TestDocumentCleaner {
 
-  public static final QNbsDocument DOCUMENT = QNbsDocument.nbsDocument;
+  private static final QNbsDocument DOCUMENT = QNbsDocument.nbsDocument;
   private final EntityManager entityManager;
   private final JPAQueryFactory factory;
 
@@ -22,10 +22,6 @@ class TestDocumentCleaner {
     this.factory = factory;
   }
 
-  /**
-   * Removes any Documents from the database with an id greater than the given {@code starting} value
-   * @param starting
-   */
   @Transactional
   void clean(final long starting) {
     this.factory.select(DOCUMENT)

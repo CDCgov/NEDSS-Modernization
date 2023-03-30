@@ -25,7 +25,8 @@ public record PatientContacts(
             Instant namedOn,
             String priority,
             String disposition,
-            String event
+            String event,
+            Investigation associatedWith
     ) {
 
     }
