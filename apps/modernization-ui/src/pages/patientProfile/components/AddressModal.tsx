@@ -19,6 +19,7 @@ import { stateList } from '../../../constant/states';
 
 type AddCommentModalProps = {
     modalRef: Ref<ModalRef> | undefined;
+    modalHead?: string;
 };
 
 const ModalBody = ({ control, onSubmit, modalRef }: any) => {
@@ -248,7 +249,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     );
 };
 
-export const AddAddressModal = ({ modalRef }: AddCommentModalProps) => {
+export const AddAddressModal = ({ modalRef, modalHead }: AddCommentModalProps) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
@@ -258,8 +259,8 @@ export const AddAddressModal = ({ modalRef }: AddCommentModalProps) => {
 
     return (
         <ModalComponent
+            modalHeading={modalHead ? 'Edit - Address' : 'Add - Address'}
             modalRef={modalRef}
-            modalHeading="Add - Address"
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );

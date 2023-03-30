@@ -142,7 +142,7 @@ export const AddRaceModal = ({ modalRef, handleSubmission, modalHead }: ModalPro
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading={modalHead || 'Add - Identification'}
+            modalHeading={modalHead || 'Add - Race'}
             modalBody={
                 <ModalBody
                     submitted={submitted}

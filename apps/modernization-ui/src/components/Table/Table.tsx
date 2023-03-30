@@ -1,4 +1,4 @@
-import { Button, Icon, Table, Pagination, Checkbox } from '@trussworks/react-uswds';
+import { Button, Icon, Table, Pagination, Checkbox, Fieldset } from '@trussworks/react-uswds';
 import React, { useState } from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
@@ -97,7 +97,14 @@ export const TableComponent = ({
                                                 className={`${td?.textAlign ? `text-${td?.textAlign}` : ''} table-data`}
                                                 key={ind}>
                                                 {ind === 0 && item.checkbox && (
-                                                    <Checkbox key={index} id={td.title} name={'tableCheck'} label="" />
+                                                    <Fieldset>
+                                                        <Checkbox
+                                                            key={index}
+                                                            id={`${td.title}-${index}`}
+                                                            name={'tableCheck'}
+                                                            label=""
+                                                        />
+                                                    </Fieldset>
                                                 )}
                                                 {td?.type !== 'actions' && (
                                                     <span
@@ -125,7 +132,7 @@ export const TableComponent = ({
                                                             <Actions
                                                                 handleOutsideClick={() => setIsActions(null)}
                                                                 handleAction={(data: string) => {
-                                                                    handleAction?.(data, item);
+                                                                    handleAction?.(data, JSON.stringify(item?.data));
                                                                     setIsActions(null);
                                                                 }}
                                                             />

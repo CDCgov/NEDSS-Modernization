@@ -2,6 +2,8 @@ import { Grid } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 export const DetailsPhoneEmailModal = ({ modalRef, data }: any) => {
+    data = data ? JSON.parse(data) : undefined;
+
     return (
         <ModalComponent
             modalRef={modalRef}

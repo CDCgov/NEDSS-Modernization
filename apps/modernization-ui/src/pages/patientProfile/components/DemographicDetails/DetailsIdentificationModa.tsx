@@ -2,10 +2,12 @@ import { Grid } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
 export const DetailsIdentificationModal = ({ modalRef, data }: any) => {
+    data = data ? JSON.parse(data) : undefined;
+
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="View details - Phone & Email"
+            modalHeading="View details - Identification"
             modalBody={
                 <div className="modal-body">
                     <Grid row>

@@ -1,13 +1,15 @@
 import { Grid } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 
-export const DetailsAddressModal = ({ modalRef, data }: any) => {
+export const DetailsAddressModal = ({ modalRef, data, bodyRef }: any) => {
+    data = data ? JSON.parse(data) : undefined;
+
     return (
         <ModalComponent
             modalRef={modalRef}
             modalHeading="View details - Address"
             modalBody={
-                <div className="modal-body">
+                <div className="modal-body" ref={bodyRef}>
                     <Grid row>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
@@ -25,7 +27,7 @@ export const DetailsAddressModal = ({ modalRef, data }: any) => {
                             <Grid row>
                                 <Grid col={6}>Address:</Grid>
                                 <Grid col={6}>
-                                    {data?.locator?.streetAddr1 + ' ' + data?.locator?.streetAddr2 ||
+                                    {data?.locator?.streetAddr1 + ' ' + (data?.locator?.streetAddr2 || '') ||
                                         'Not available yet'}
                                 </Grid>
                             </Grid>
@@ -39,7 +41,7 @@ export const DetailsAddressModal = ({ modalRef, data }: any) => {
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
                                 <Grid col={6}>State:</Grid>
-                                <Grid col={6}>{'Not available yet'}</Grid>
+                                <Grid col={6}>{data?.locator?.stateCd || 'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">

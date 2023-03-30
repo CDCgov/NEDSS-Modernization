@@ -212,7 +212,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         textAlign: 'center',
                         type: 'actions'
                     }
-                ]
+                ],
+                data: item
             });
         });
         setIdentificationTableBody(tempArr);
@@ -254,7 +255,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             textAlign: 'center',
                             type: 'actions'
                         }
-                    ]
+                    ],
+                    data: element
                 });
             }
         });
@@ -305,7 +307,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             textAlign: 'center',
                             type: 'actions'
                         }
-                    ]
+                    ],
+                    data: element
                 });
             }
         });
@@ -341,7 +344,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         textAlign: 'center',
                         type: 'actions'
                     }
-                ]
+                ],
+                data: raceItem
             });
         });
         setRaceTableBody(tempArr);
@@ -410,8 +414,20 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     }, [patientProfileData]);
 
     const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [nameDetails, setNameDetails] = useState<any>(undefined);
     const [isDeleteModal, setIsDeleteModal] = useState<any>(undefined);
+    const [addressModal, setAddressModal] = useState<any>(undefined);
+    const [emailModal, setEmailModal] = useState<any>(undefined);
+    const [idModal, setIdModal] = useState<any>(undefined);
+    const [raceModal, setRaceModal] = useState<any>(undefined);
+
+    const [nameDetails, setNameDetails] = useState<any>(undefined);
+
+    useEffect(() => {
+        addressModal && detailsAddressModalRef.current?.toggleModal();
+        emailModal && detailsPhoneEmailModalRef.current?.toggleModal();
+        idModal && detailsIdentificationModalRef.current?.toggleModal();
+        raceModal && detailsRaceModalRef.current?.toggleModal();
+    }, [addressModal, emailModal, idModal, raceModal]);
 
     return (
         <>
@@ -420,7 +436,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addCommentModalRef} opener className="display-inline-flex">
+                            <ModalToggleButton
+                                onClick={() => setIsEditModal(false)}
+                                modalRef={addCommentModalRef}
+                                opener
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add comment
                             </ModalToggleButton>
@@ -442,7 +462,6 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     handleAction={(type, data) => {
-                        console.log('type:', data);
                         if (type === 'edit') {
                             setIsEditModal(true);
                             addNameModalRef.current?.toggleModal();
@@ -459,10 +478,17 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addNameModalRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addNameModalRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add name
-                            </ModalToggleButton>
+                            </Button>
                             <AddNameModal
                                 modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
                                 handleSubmission={handleFormSubmission}
@@ -490,7 +516,6 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     handleAction={(type, data) => {
-                        console.log('type:', data);
                         if (type === 'edit') {
                             setIsEditModal(true);
                             addAddressModalRef.current?.toggleModal();
@@ -501,18 +526,34 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         }
                         if (type === 'details') {
                             setNameDetails(data);
+                            setEmailModal(false);
+                            setIdModal(false);
+                            setRaceModal(false);
+                            setAddressModal(true);
                             detailsAddressModalRef.current?.toggleModal();
                         }
                     }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addAddressModalRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addAddressModalRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add address
-                            </ModalToggleButton>
-                            <AddAddressModal modalRef={addAddressModalRef} />
-                            <DetailsAddressModal data={nameDetails} modalRef={detailsAddressModalRef} />
+                            </Button>
+                            <AddAddressModal
+                                modalHead={isEditModal ? 'Edit - Address' : 'Add - Address'}
+                                modalRef={addAddressModalRef}
+                            />
+                            {addressModal && (
+                                <DetailsAddressModal data={nameDetails} modalRef={detailsAddressModalRef} />
+                            )}
                         </div>
                     }
                     tableHeader={'Address'}
@@ -545,18 +586,34 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         }
                         if (type === 'details') {
                             setNameDetails(data);
+                            setIdModal(false);
+                            setRaceModal(false);
+                            setAddressModal(false);
+                            setEmailModal(true);
                             detailsPhoneEmailModalRef.current?.toggleModal();
                         }
                     }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addPhoneEmailRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addPhoneEmailRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add phone & email
-                            </ModalToggleButton>
-                            <AddPhoneEmailModal modalRef={addPhoneEmailRef} />
-                            <DetailsPhoneEmailModal data={nameDetails} modalRef={detailsPhoneEmailModalRef} />
+                            </Button>
+                            <AddPhoneEmailModal
+                                modalHead={isEditModal ? 'Edit - Phone & email' : 'Add - Phone & email'}
+                                modalRef={addPhoneEmailRef}
+                            />
+                            {emailModal && (
+                                <DetailsPhoneEmailModal data={nameDetails} modalRef={detailsPhoneEmailModalRef} />
+                            )}
                         </div>
                     }
                     tableHeader={'Phone & email'}
@@ -587,6 +644,10 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         }
                         if (type === 'details') {
                             setNameDetails(data);
+                            setEmailModal(false);
+                            setRaceModal(false);
+                            setAddressModal(false);
+                            setIdModal(true);
                             detailsIdentificationModalRef.current?.toggleModal();
                         }
                     }}
@@ -594,18 +655,27 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     buttons={
                         <div className="grid-row">
                             <div className="grid-row">
-                                <ModalToggleButton
-                                    modalRef={addIdentificationRef}
-                                    opener
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        addIdentificationRef.current?.toggleModal();
+                                        setNameDetails(null);
+                                        setIsEditModal(false);
+                                    }}
                                     className="display-inline-flex">
                                     <Icon.Add className="margin-right-05" />
                                     Add identification
-                                </ModalToggleButton>
-                                <AddIdentificationModal modalRef={addIdentificationRef} />
-                                <DetailsIdentificationModal
-                                    data={nameDetails}
-                                    modalRef={detailsIdentificationModalRef}
+                                </Button>
+                                <AddIdentificationModal
+                                    modalHead={isEditModal ? 'Edit - Identification' : 'Add - Identification'}
+                                    modalRef={addIdentificationRef}
                                 />
+                                {idModal && (
+                                    <DetailsIdentificationModal
+                                        data={nameDetails}
+                                        modalRef={detailsIdentificationModalRef}
+                                    />
+                                )}
                             </div>
                         </div>
                     }
@@ -637,18 +707,32 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         }
                         if (type === 'details') {
                             setNameDetails(data);
+                            setIdModal(false);
+                            setEmailModal(false);
+                            setAddressModal(false);
+                            setRaceModal(true);
                             detailsRaceModalRef.current?.toggleModal();
                         }
                     }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addRaceRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addIdentificationRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add race
-                            </ModalToggleButton>
-                            <AddRaceModal modalRef={addRaceRef} />
-                            <DetailsRaceModal data={nameDetails} modalRef={detailsRaceModalRef} />
+                            </Button>
+                            <AddRaceModal
+                                modalHead={isEditModal ? 'Edit - Race' : 'Add - Race'}
+                                modalRef={addRaceRef}
+                            />
+                            {raceModal && <DetailsRaceModal data={nameDetails} modalRef={detailsRaceModalRef} />}
                         </div>
                     }
                     tableHeader={'Race'}

@@ -25,6 +25,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
     const [totalDocuments, setTotalDocuments] = useState<number | undefined>(0);
 
     const [investigations, setInvenstigations] = useState<any>(0);
+    const [documents, setDocuments] = useState<any>(0);
 
     const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
@@ -39,14 +40,18 @@ export const Summary = ({ profileData }: SummaryProp) => {
         return labReport.organizationParticipations?.find((o) => o?.typeCd === 'AUT');
     };
 
+    const getOrderingFacility = (labReport: LabReport): OrganizationParticipation | undefined | null => {
+        return labReport.organizationParticipations?.find((o) => o?.typeCd === 'ORD');
+    };
+
     const getDescription = (labReport: LabReport) => {
         // TODO - there could be multiple tests associated with one lab report. How to display them in UI
-        const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
+        const observation = labReport.observations?.find((o) => o?.displayName && o?.cdDescTxt);
         if (observation) {
             return (
                 <>
-                    <strong>{observation.cdDescTxt}:</strong>
-                    <span>${observation.displayName}</span>
+                    <strong>{observation.cdDescTxt}:</strong> <br />
+                    <span>{observation.displayName}</span>
                 </>
             );
         } else {
@@ -129,23 +134,27 @@ export const Summary = ({ profileData }: SummaryProp) => {
                         id: 3,
                         title: (
                             <div>
-                                {getOrderingProvidorName(document) && (
+                                {getReportingFacility(document) && (
                                     <>
                                         <strong>Reporting facility:</strong>
                                         <br />
-                                        <span>{getOrderingProvidorName(document) ?? ''}</span>
-                                        <br />
+                                        <span>{getReportingFacility(document)?.name ?? ''}</span>
                                     </>
                                 )}
-                                {/* <strong>Ordering facility:</strong>
                                 <br />
-                                <span>Dekalb General</span>
-                                <br /> */}
-                                {getReportingFacility(document) && (
+                                {getOrderingProvidorName(document) && (
                                     <>
                                         <strong>Ordering provider:</strong>
                                         <br />
-                                        <span>Dr. Gene Davis SR</span>
+                                        <span>{getOrderingProvidorName(document) ?? ''}</span>
+                                    </>
+                                )}
+                                <br />
+                                {getOrderingFacility(document) && (
+                                    <>
+                                        <strong>Ordering facility:</strong>
+                                        <br />
+                                        <span>{getOrderingFacility(document)?.name ?? ''}</span>
                                     </>
                                 )}
                             </div>
@@ -156,7 +165,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
                         id: 5,
                         title: <div>{getDescription(document)}</div>
                     },
-                    { id: 6, title: 'OBS10001078GA01' }
+                    { id: 6, title: document?.localId }
                 ]
             });
             setDocumentReviewBody(tempArr);
@@ -175,11 +184,12 @@ export const Summary = ({ profileData }: SummaryProp) => {
         if (documentData?.findDocumentsRequiringReviewForPatient) {
             setTotalDocuments(documentData?.findDocumentsRequiringReviewForPatient?.total);
             getDocumentData(documentData?.findDocumentsRequiringReviewForPatient?.content);
+            setDocuments(documentData?.findDocumentsRequiringReviewForPatient?.content);
         }
     }, [documentData]);
 
     const sortInvestigationData = (name: string, type: string) => {
-        investigationData(
+        getDocumentData(
             investigations.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
                     if (a[name].toLowerCase() < b[name].toLowerCase()) {
@@ -195,8 +205,8 @@ export const Summary = ({ profileData }: SummaryProp) => {
     };
 
     const sortDocumentsData = (name: string, type: string) => {
-        investigationData(
-            investigations.slice().sort((a: any, b: any) => {
+        getDocumentData(
+            documents.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
                     if (a[name].toLowerCase() < b[name].toLowerCase()) {
                         return type === 'asc' ? -1 : 1;
@@ -257,52 +267,52 @@ export const Summary = ({ profileData }: SummaryProp) => {
     };
 
     const handleDocumentSort = (name: string, type: string) => {
-        console.log('name.toLowerCase():', name.toLowerCase());
-        console.log('type:', type);
-        console.log('sortDocumentsData:', sortDocumentsData);
-        // switch (name.toLowerCase()) {
-        //     case 'start date':
-        //         investigationData(
-        //             investigations.slice().sort((a: any, b: any) => {
-        //                 const dateA: any = new Date(a.addTime);
-        //                 const dateB: any = new Date(b.addTime);
-        //                 return type === 'asc' ? dateB - dateA : dateA - dateB;
-        //             })
-        //         );
-        //         break;
-        //     case 'condition':
-        //         sortInvestigationData('cdDescTxt', type);
-        //         break;
-        //     case 'jurisdiction':
-        //         sortInvestigationData('jurisdictionCodeDescTxt', type);
-        //         break;
-        //     case 'investigator':
-        //         investigationData(
-        //             investigations.slice().sort((a: any, b: any) => {
-        //                 const firstInv = a?.personParticipations?.find(
-        //                     (person: any) => person?.typeCd === 'InvestgrOfPHC'
-        //                 ).lastName;
-        //                 const secondInv = b?.personParticipations?.find(
-        //                     (person: any) => person?.typeCd === 'InvestgrOfPHC'
-        //                 ).lastName;
-        //                 if (firstInv && secondInv) {
-        //                     if (firstInv.toLowerCase() < secondInv.toLowerCase()) {
-        //                         return type === 'asc' ? -1 : 1;
-        //                     }
-        //                     if (firstInv.toLowerCase() > secondInv.toLowerCase()) {
-        //                         return type === 'asc' ? 1 : -1;
-        //                     }
-        //                 }
-        //                 return 0;
-        //             })
-        //         );
-        //         break;
-        //     case 'case status':
-        //         sortInvestigationData('recordStatus', type);
-        //         break;
-        //     case 'notification':
-        //         sortInvestigationData('notificationRecordStatusCd', type);
-        // }
+        switch (name.toLowerCase()) {
+            case 'date received':
+                getDocumentData(
+                    documents.slice().sort((a: any, b: any) => {
+                        const dateA: any = new Date(a.addTime);
+                        const dateB: any = new Date(b.addTime);
+                        return type === 'asc' ? dateB - dateA : dateA - dateB;
+                    })
+                );
+                break;
+            case 'document type':
+                getDocumentData(documents.slice().reverse());
+                break;
+            case 'reporting facility / provider':
+                getDocumentData(
+                    documents.slice().sort((a: any, b: any) => {
+                        if (getReportingFacility(a) && getReportingFacility(b)) {
+                            if ((getReportingFacility(a)?.name as string) < (getReportingFacility(b)?.name as string)) {
+                                return type === 'asc' ? -1 : 1;
+                            }
+                            if ((getReportingFacility(a)?.name as string) > (getReportingFacility(b)?.name as string)) {
+                                return type === 'asc' ? 1 : -1;
+                            }
+                        }
+                        return 0;
+                    })
+                );
+                break;
+            case 'description':
+                getDocumentData(
+                    documents.slice().sort((a: any, b: any) => {
+                        if (getDescription(a) && getDescription(b)) {
+                            if ((getDescription(a) as string) < (getDescription(b) as string)) {
+                                return type === 'asc' ? -1 : 1;
+                            }
+                            if ((getDescription(a) as string) > (getDescription(b) as string)) {
+                                return type === 'asc' ? 1 : -1;
+                            }
+                        }
+                        return 0;
+                    })
+                );
+                break;
+            case 'event #':
+                sortDocumentsData('localId', type);
+        }
     };
 
     return (
