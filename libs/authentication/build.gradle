@@ -17,7 +17,7 @@ testing {
 
             dependencies {
                 implementation libs.bundles.testing
-                implementation libs.bundles.kafkaTest
+                implementation libs.spring.kafka.test
             }
         }
     }
@@ -53,5 +53,5 @@ dependencies {
     annotationProcessor libs.lombok
 
     // Kafka
-    implementation libs.bundles.kafka
+    implementation libs.spring.kafka
 }

@@ -1,17 +1,10 @@
-buildscript {
-    ext {
-        springBootVersion = "2.7.8"
-        queryDslVersion = "5.0.0"
-        cucumberVersion = "7.8.0"
-        blazePersistenceVersion = "1.6.8"
-    }
-}
-plugins {
-    id "org.springframework.boot" version "${springBootVersion}"
-    id "io.spring.dependency-management" version "1.0.12.RELEASE"
-    id 'jacoco-report-aggregation'
-}
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
+plugins {
+    id 'jacoco'
+    alias libs.plugins.springBoot
+    alias libs.plugins.springDependencies
+}
 group = 'gov.cdc'
 version = '1.0.0-SNAPSHOT'
 
@@ -31,81 +24,68 @@ jar {
 apply from: file('logging.gradle')
 
 dependencies {
-    // core
-    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
-    // common
     implementation project(':modernization-ui')
     implementation project(':database-entities')
     implementation project(':event-schema')
     implementation project(':authentication')
 
-    // jwt
-    implementation "com.auth0:java-jwt:4.2.0"
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+
+    // core
+    implementation libs.bundles.jpa
+    annotationProcessor libs.springBoot.jpa
+
+    implementation libs.bundles.security
+    implementation libs.springBoot.web
 
     // graphql
-    implementation "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
-
+    implementation libs.springBoot.graphql
     // database
-    implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+    implementation libs.mssql.jdbc
 
     // querydsl
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
 
     // blazebit for querydsl paging
-    implementation "com.blazebit:blaze-persistence-core-impl:${blazePersistenceVersion}"
-    implementation "com.blazebit:blaze-persistence-integration-querydsl-expressions:${blazePersistenceVersion}"
-    implementation "com.blazebit:blaze-persistence-integration-hibernate-5.6:${blazePersistenceVersion}"
+    implementation libs.bundles.blaze.persistence.queryDSL
+    implementation libs.bundles.jackson
 
     // elasticsearch
-    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
+    implementation libs.bundles.elasticsearch
 
     // swagger
     implementation "io.springfox:springfox-boot-starter:3.0.0"
 
     // lombok
-    implementation "org.projectlombok:lombok"
-    compileOnly "org.projectlombok:lombok"
-    annotationProcessor "org.projectlombok:lombok"
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
     // itext pdf generation
     implementation "com.itextpdf:itextpdf:5.5.13.3"
 
-    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
-    
-      // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.1'
+    implementation "commons-codec:commons-codec:1.15"
 
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
+    implementation libs.bundles.jackson
+
+    // Kafka
+    implementation libs.spring.kafka
 
     // test
-    testImplementation "org.projectlombok:lombok"
-    testAnnotationProcessor "org.projectlombok:lombok"
-    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testImplementation "org.junit.platform:junit-platform-suite"
-    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
-    testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
-    testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
-    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter"
-    testImplementation "org.testcontainers:testcontainers:1.17.6"
-    testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-    testImplementation "org.testcontainers:elasticsearch:1.17.6"
-    testImplementation 'com.github.javafaker:javafaker:1.0.2'
-    testImplementation 'org.yaml:snakeyaml:1.33'
+
+    testImplementation libs.bundles.cucumber
+
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
 
     testImplementation libs.bundles.testing
-
-    // Kafka dependencies
-    implementation("org.springframework.kafka:spring-kafka")
-    implementation("io.confluent:kafka-avro-serializer:7.1.1")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation libs.spring.test
+    testImplementation libs.bundles.testcontainers.elasticsearch
+    testImplementation libs.bundles.javafaker
+    testImplementation libs.spring.kafka.test
 }
 
 configurations {
@@ -114,16 +94,21 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
-tasks.named("test") {
+test {
+    //  Cucumber only supports the JUnit Platform
     useJUnitPlatform()
     // always re-run tests
     test.outputs.upToDateWhen { false }
     systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
     finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+
+    }
 }
 
 tasks.withType(JavaExec).configureEach {

@@ -1,16 +1,9 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-
-buildscript {
-    ext {
-        springBootVersion = "2.7.8"
-    }
-}
 plugins {
     id 'jvm-test-suite'
-    id 'jacoco-report-aggregation'
 
-    alias libs.plugins.springBoot apply false
+    alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
 
@@ -24,20 +17,24 @@ testing {
 
             dependencies {
                 implementation libs.bundles.testing
+                implementation libs.spring.test
+                implementation libs.spring.kafka.test
+
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
+
+                implementation libs.bundles.testcontainers.elasticsearch
+
+                implementation libs.bundles.javafaker
+
             }
         }
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom SpringBootPlugin.BOM_COORDINATES
-    }
-}
-
 dependencies {
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
     implementation project(':database-entities')
     implementation project(':event-schema')
@@ -49,10 +46,10 @@ dependencies {
 
     implementation libs.bundles.security
 
-    implementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
+    implementation libs.spring.json
 
     // Kafka
-    implementation libs.bundles.kafka
+    implementation libs.spring.kafka
 
 
     // lombok
@@ -70,27 +67,7 @@ dependencies {
 
     // elasticsearch
     implementation libs.bundles.elasticsearch
-	
-	// test
-	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-	testImplementation "org.junit.platform:junit-platform-suite"
-	testImplementation "org.junit.jupiter:junit-jupiter"
-	testImplementation "org.testcontainers:testcontainers:1.17.6"
-	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-	testImplementation "org.testcontainers:elasticsearch:1.17.6"
-	testImplementation 'com.github.javafaker:javafaker:1.0.2'
-	testImplementation 'org.yaml:snakeyaml:1.33'
-	
 
-	testImplementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
-	testImplementation("org.springframework.kafka:spring-kafka-test")
-	testImplementation "org.testcontainers:testcontainers:1.17.6"
-	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-	testImplementation "org.testcontainers:elasticsearch:1.17.6"
 }
 
 compileJava.mustRunAfter(":database-entities:build")
