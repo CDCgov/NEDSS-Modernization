@@ -46,8 +46,6 @@ services:
       - MODERNIZATION_UI_PORT=${MODERNIZATION_UI_PORT:-80}
       - MODERNIZATION_API_SERVER=${MODERNIZATION_API_SERVER:-modernization-api}
       - MODERNIZATION_API_PORT=${MODERNIZATION_API_PORT:-8080}
-    # volumes:
-    #   - ./proxy/:/etc/traefik/
   elasticsearch:
     container_name: elasticsearch
     build: ./elasticsearch
