@@ -263,6 +263,7 @@ export const AdvancedSearch = () => {
     };
 
     const performInvestigationSearch = (filter: InvestigationFilter) => {
+        console.log('INVSEARCH', filter);
         findInvestigations({
             variables: {
                 filter: filter,
