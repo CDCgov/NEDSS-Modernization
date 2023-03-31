@@ -16,13 +16,11 @@ import { useParams } from 'react-router-dom';
 import {
     FindPatientsByFilterQuery,
     NameUseCd,
-    useFindContactsForPatientLazyQuery,
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidtyReportForPatientLazyQuery,
     useFindPatientByIdLazyQuery,
-    useFindTreatmentsForPatientLazyQuery,
     useUpdatePatientGeneralInfoMutation
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
@@ -47,9 +45,8 @@ export const PatientProfile = () => {
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
     // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
     const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
-    const [getTreatmentsData, { data: treatmentsData }] = useFindTreatmentsForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
-    const [getContactsData, { data: contactsData }] = useFindContactsForPatientLazyQuery();
+
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
     const [updateGeneralInfo, { data: generalInfoData }] = useUpdatePatientGeneralInfoMutation();
 
@@ -102,17 +99,7 @@ export const PatientProfile = () => {
                         patientId: +patientProfileData.findPatientById.id
                     }
                 });
-                getTreatmentsData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
-                    }
-                });
                 getDocumentsData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
-                    }
-                });
-                getContactsData({
                     variables: {
                         patient: patientProfileData.findPatientById.id
                     }
@@ -348,10 +335,7 @@ export const PatientProfile = () => {
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
                         morbidityData={morbidityData?.findMorbidtyReportForPatient}
-                        treatmentsData={treatmentsData?.findTreatmentsForPatient}
                         documentsData={documentsData?.findDocumentsForPatient}
-                        contactsData={contactsData?.findContactsForPatient}
-                        profileData={profileData}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (

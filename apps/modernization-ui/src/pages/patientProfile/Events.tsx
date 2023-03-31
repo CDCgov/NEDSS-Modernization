@@ -3,12 +3,10 @@ import { TableBody, TableComponent } from '../../components/Table/Table';
 import { Button, Icon } from '@trussworks/react-uswds';
 import {
     AssociatedInvestigation,
-    FindContactsForPatientQuery,
     FindDocumentsForPatientQuery,
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
     FindMorbidtyReportForPatientQuery,
-    FindTreatmentsForPatientQuery,
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
@@ -16,29 +14,19 @@ import format from 'date-fns/format';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import { Config } from 'config';
-import { PatientTreatmentTable } from '../../patient/profile/treatment';
+import { PatientTreatmentTable } from 'patient/profile/treatment';
+import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'patient/profile/contact';
 
 type EventTabProp = {
     patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
     morbidityData?: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined;
-    treatmentsData?: FindTreatmentsForPatientQuery['findTreatmentsForPatient'] | undefined;
     documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
-    contactsData?: FindContactsForPatientQuery['findContactsForPatient'] | undefined;
     profileData?: any;
 };
 
-export const Events = ({
-    patient,
-    investigationData,
-    labReports,
-    morbidityData,
-    treatmentsData,
-    documentsData,
-    contactsData,
-    profileData
-}: EventTabProp) => {
+export const Events = ({ patient, investigationData, labReports, morbidityData, documentsData }: EventTabProp) => {
     const { state } = useContext(UserContext);
     const NBS_URL = Config.nbsUrl;
 
@@ -54,9 +42,6 @@ export const Events = ({
 
     const [morbidityResults, setMorbidityResults] = useState<any>();
     const [morbidities, setMorbidities] = useState<any>();
-
-    const [contactNamedByPatient, setContactNamedByPatient] = useState<any>();
-    const [patientByContact, setPatientByContact] = useState<any>();
 
     const getData = (investigationData: any) => {
         const tempArr: TableBody[] = [];
@@ -258,106 +243,6 @@ export const Events = ({
         });
     };
 
-    const getContactNameByPatient = (contacts: FindContactsForPatientQuery['findContactsForPatient'] | undefined) => {
-        const tempArr: TableBody[] = [];
-        const tempArrByContact: TableBody[] = [];
-        contacts?.namedByPatient?.map((contact) => {
-            tempArr.push({
-                id: contact?.event,
-                checkbox: false,
-                tableDetails: [
-                    {
-                        id: 1,
-                        title: (
-                            <>
-                                {format(new Date(contact?.createdOn), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(contact?.createdOn), 'hh:mm a')}
-                            </>
-                        ),
-                        class: 'link',
-                        link: ''
-                    },
-                    {
-                        id: 2,
-                        title: contact?.contact?.name,
-                        class: 'link',
-                        link: ''
-                    },
-                    { id: 4, title: format(new Date(contact?.namedOn), 'MM/dd/yyyy') },
-                    { id: 7, title: contact?.condition || null },
-                    {
-                        id: 5,
-                        title:
-                            // !treatment || treatment?.associatedWith.condition?.length == 0 ? null : (
-                            //     <>
-                            //         {treatment.associatedWith && treatment.associatedWith.condition.length > 0 && (
-                            //             <div>
-                            //                 <p
-                            //                     className="margin-0 text-primary text-bold link"
-                            //                     style={{ wordBreak: 'break-word' }}>
-                            //                     {treatment.associatedWith?.local}
-                            //                 </p>
-                            //                 <p className="margin-0">{treatment.associatedWith.condition}</p>
-                            //             </div>
-                            //         )}
-                            //     </>
-                            // )
-                            null
-                    },
-                    { id: 8, title: contact?.event || null }
-                ]
-            });
-            setContactNamedByPatient(tempArr);
-        });
-        contacts?.namedByContact?.map((contact) => {
-            tempArrByContact.push({
-                id: contact?.event,
-                checkbox: false,
-                tableDetails: [
-                    {
-                        id: 1,
-                        title: (
-                            <>
-                                {format(new Date(contact?.createdOn), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(contact?.createdOn), 'hh:mm a')}
-                            </>
-                        ),
-                        class: 'link',
-                        link: ''
-                    },
-                    {
-                        id: 2,
-                        title: contact?.contact?.name,
-                        class: 'link',
-                        link: ''
-                    },
-                    { id: 4, title: format(new Date(contact?.namedOn), 'MM/dd/yyyy') },
-                    { id: 7, title: contact?.condition || null },
-                    {
-                        id: 5,
-                        title:
-                            !contact || contact?.associatedWith?.condition?.length == 0 ? null : (
-                                <>
-                                    {contact?.associatedWith && contact?.associatedWith?.condition.length > 0 && (
-                                        <div>
-                                            <p
-                                                className="margin-0 text-primary text-bold link"
-                                                style={{ wordBreak: 'break-word' }}>
-                                                {contact?.associatedWith?.local}
-                                            </p>
-                                            <p className="margin-0">{contact?.associatedWith?.condition}</p>
-                                        </div>
-                                    )}
-                                </>
-                            )
-                    },
-                    { id: 8, title: contact?.event || null }
-                ]
-            });
-            setPatientByContact(tempArrByContact);
-        });
-    };
-
     useEffect(() => {
         if (investigationData) {
             setTotalInvestigations(investigationData.total);
@@ -376,11 +261,7 @@ export const Events = ({
         if (documentsData) {
             console.log('documentsData:', documentsData);
         }
-        if (contactsData) {
-            console.log('contactsData:', contactsData);
-            getContactNameByPatient(contactsData);
-        }
-    }, [investigationData, labReports, morbidityData, documentsData, treatmentsData, contactsData]);
+    }, [investigationData, labReports, morbidityData, documentsData]);
 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
@@ -651,71 +532,14 @@ export const Events = ({
                     handleNext={(e) => setCurrentPage(e)}
                 />
             </div>
-            {contactsData?.namedByPatient && (
-                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                    <TableComponent
-                        tableSubHeader={
-                            <div className="display-block margin-top-1">
-                                <span className="font-sans-md">Contacts named by patient</span>
-                                <p className="font-sans-sm text-normal">
-                                    The following contacts were named in{' '}
-                                    <span className="text-bold">
-                                        {`${profileData?.lastNm}, ${profileData?.firstNm}`}’s
-                                    </span>{' '}
-                                    investigation of{' '}
-                                    <span className="text-bold">{contactsData?.namedByPatient[0]?.condition}</span>:
-                                </p>
-                            </div>
-                        }
-                        isPagination={true}
-                        tableHeader={'Contact records'}
-                        tableHead={[
-                            { name: 'Date created', sortable: true },
-                            { name: 'Named by', sortable: true },
-                            { name: 'Date named', sortable: true },
-                            { name: 'Description', sortable: true },
-                            { name: 'Associated with', sortable: true },
-                            { name: 'Event #', sortable: true }
-                        ]}
-                        tableBody={contactNamedByPatient}
-                        currentPage={currentPage}
-                        handleNext={(e) => setCurrentPage(e)}
-                    />
-                </div>
-            )}
 
-            {contactsData?.namedByContact && (
-                <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                    <TableComponent
-                        tableSubHeader={
-                            <div className="display-block margin-top-1">
-                                <span className="font-sans-md">Patients named by contacts</span>
-                                <p className="font-sans-sm text-normal">
-                                    <span className="text-bold">
-                                        {`${profileData?.lastNm}, ${profileData?.firstNm}`}’s
-                                    </span>{' '}
-                                    was named as a contact in the following{' '}
-                                    <span className="text-bold">{contactsData?.namedByContact[0]?.condition}</span>{' '}
-                                    investigation(s):
-                                </p>
-                            </div>
-                        }
-                        isPagination={true}
-                        tableHeader={'Contact records'}
-                        tableHead={[
-                            { name: 'Date created', sortable: true },
-                            { name: 'Named by', sortable: true },
-                            { name: 'Date named', sortable: true },
-                            { name: 'Description', sortable: true },
-                            { name: 'Associated with', sortable: true },
-                            { name: 'Event #', sortable: true }
-                        ]}
-                        tableBody={patientByContact}
-                        currentPage={currentPage}
-                        handleNext={(e) => setCurrentPage(e)}
-                    />
-                </div>
-            )}
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <ContactNamedByPatientTable patient={patient} />
+            </div>
+
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <PatientNamedByContactTable patient={patient} />
+            </div>
         </>
     );
 };

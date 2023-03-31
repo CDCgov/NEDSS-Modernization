@@ -8,8 +8,17 @@ import org.springframework.context.annotation.Configuration;
 class TestIdentityModule {
 
   @Bean
-  TestUniqueIdGenerator uniqueIdGenerator(final @Value("${testing.id-generation.starting}") long starting) {
-    return new TestUniqueIdGenerator(starting);
+  MotherSettings motherSettings(final @Value("${testing.id-generation.starting}") long starting) {
+    return new MotherSettings(
+        starting,
+        "TEST",
+        9999L
+    );
+  }
+
+  @Bean
+  TestUniqueIdGenerator uniqueIdGenerator(final MotherSettings settings) {
+    return new TestUniqueIdGenerator(settings);
   }
 
 }
