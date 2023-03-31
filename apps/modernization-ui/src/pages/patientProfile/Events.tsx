@@ -279,7 +279,9 @@ export const Events = ({
                     },
                     {
                         id: 2,
-                        title: contact?.contact?.name
+                        title: contact?.contact?.name,
+                        class: 'link',
+                        link: ''
                     },
                     { id: 4, title: format(new Date(contact?.namedOn), 'MM/dd/yyyy') },
                     { id: 7, title: contact?.condition || null },
@@ -325,7 +327,9 @@ export const Events = ({
                     },
                     {
                         id: 2,
-                        title: contact?.contact?.name
+                        title: contact?.contact?.name,
+                        class: 'link',
+                        link: ''
                     },
                     { id: 4, title: format(new Date(contact?.namedOn), 'MM/dd/yyyy') },
                     { id: 7, title: contact?.condition || null },

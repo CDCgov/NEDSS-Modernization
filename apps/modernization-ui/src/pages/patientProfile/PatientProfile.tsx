@@ -223,7 +223,7 @@ export const PatientProfile = () => {
                         className="delete-btn display-inline-flex"
                         type={'submit'}>
                         <Icon.Delete className="margin-right-05" />
-                        Delete Patient
+                        Delete patient
                     </ModalToggleButton>
                     <Modal
                         ref={modalRef}

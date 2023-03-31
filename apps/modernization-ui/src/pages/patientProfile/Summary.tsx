@@ -98,7 +98,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
                     { id: 4, title: investigation?.notificationRecordStatusCd },
                     { id: 5, title: investigation?.jurisdictionCodeDescTxt },
                     { id: 6, title: investigator ? investigator?.lastName + ' ' + investigator?.firstName : null },
-                    { id: 7, title: investigation?.localId },
+                    { id: 7, title: investigation?.localId, class: 'link', link: '' },
                     { id: 8, title: 'COIN1000XX01' }
                 ]
             });
@@ -119,7 +119,9 @@ export const Summary = ({ profileData }: SummaryProp) => {
                             <>
                                 Lab report <br /> {i % 2 == 0 && 'Electronic'}
                             </>
-                        )
+                        ),
+                        class: 'link',
+                        link: ''
                     },
                     {
                         id: 2,
@@ -189,7 +191,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
     }, [documentData]);
 
     const sortInvestigationData = (name: string, type: string) => {
-        getDocumentData(
+        investigationData(
             investigations.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
                     if (a[name].toLowerCase() < b[name].toLowerCase()) {
