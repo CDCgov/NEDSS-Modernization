@@ -52,6 +52,12 @@ public class Act {
     @OneToMany(mappedBy = "sourceActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ActRelationship> actRelationships;
 
+    public Act(final long identifier, final String classCd) {
+        this.id = identifier;
+        this.classCd = classCd;
+        this.moodCd = "EVN";
+    }
+
     public void addParticipation(final Participation participation) {
         participation.setActUid(this);
         ensureParticipation().add(participation);
