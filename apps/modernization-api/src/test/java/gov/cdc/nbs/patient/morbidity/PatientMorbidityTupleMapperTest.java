@@ -4,9 +4,11 @@ import com.querydsl.core.Tuple;
 import gov.cdc.nbs.message.enums.Suffix;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -116,5 +118,34 @@ class PatientMorbidityTupleMapperTest {
         PatientMorbidity actual = mapper.map(tuple);
 
         assertThat(actual.treatments()).containsExactly("treatment-value");
+    }
+
+    @Test
+    void should_map_patient_morbidity_with_lab_order_result_from_tuple() {
+
+        PatientMorbidityTables tables = new PatientMorbidityTables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.morbidity().id)).thenReturn(79L);
+
+        when(tuple.get(tables.labOrderResults().labTest().labTestDescTxt)).thenReturn("lab-test-value");
+        when(tuple.get(tables.labOrderResults().codedLabResult().labResultDescTxt)).thenReturn("coded-result-value");
+        when(tuple.get(tables.labOrderResults().numericResult().comparatorCd1)).thenReturn("=");
+        when(tuple.get(tables.labOrderResults().numericResult().numericValue1)).thenReturn(new BigDecimal("2351"));
+        when(tuple.get(tables.labOrderResults().textResult().valueTxt)).thenReturn("text-result-value");
+
+        PatientMorbidityTupleMapper mapper = new PatientMorbidityTupleMapper(tables);
+
+        PatientMorbidity morbidity = mapper.map(tuple);
+
+        assertThat(morbidity.labResults()).satisfiesExactly(
+            actual -> assertAll(
+                () -> assertThat(actual.labTest()).isEqualTo("lab-test-value"),
+                () -> assertThat(actual.codedResult()).isEqualTo("coded-result-value"),
+                () -> assertThat(actual.numericResult()).isEqualTo("=2351"),
+                () -> assertThat(actual.textResult()).isEqualTo("text-result-value")
+            )
+        );
     }
 }

@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.morbidity;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -11,7 +11,8 @@ import java.util.stream.Stream;
 class PatientMorbidityRowMerger {
 
     /**
-     * Merges two {@link PatientMorbidity} instances by combining the list of treatments.
+     * Merges two {@link PatientMorbidity} instances by combining the list of treatments from the {@code current} and
+     * {@code next} and by combining the list of lab order results from the {@code current} and {@code next}
      *
      * @param current A {@link PatientMorbidity}
      * @param next    Another A {@link PatientMorbidity}
@@ -19,9 +20,9 @@ class PatientMorbidityRowMerger {
      */
     PatientMorbidity merge(final PatientMorbidity current, final PatientMorbidity next) {
 
-        List<String> treatments = Stream.of(current.treatments(), next.treatments())
-            .flatMap(Collection::stream)
-            .toList();
+        Collection<String> treatments = merged(current.treatments(), next.treatments());
+
+        Collection<PatientMorbidity.LabOrderResult> labOrderResults = merged(current.labResults(), next.labResults());
 
         return new PatientMorbidity(
             current.morbidity(),
@@ -32,8 +33,14 @@ class PatientMorbidityRowMerger {
             current.jurisdiction(),
             current.event(),
             current.associatedWith(),
-            treatments
+            treatments,
+            labOrderResults
         );
     }
 
+    private <V> Collection<V> merged(final Collection<V> current, final Collection<V> next) {
+        return Stream.of(current, next)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toSet());
+    }
 }

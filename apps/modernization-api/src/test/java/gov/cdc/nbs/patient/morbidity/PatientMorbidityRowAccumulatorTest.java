@@ -9,6 +9,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -32,6 +33,7 @@ class PatientMorbidityRowAccumulatorTest {
                     "jurisdiction",
                     "event",
                     null,
+                    List.of(),
                     List.of()
                 )
             )
@@ -45,6 +47,7 @@ class PatientMorbidityRowAccumulatorTest {
                     "jurisdiction",
                     "event",
                     null,
+                    List.of(),
                     List.of()
                 )
             )
@@ -73,6 +76,7 @@ class PatientMorbidityRowAccumulatorTest {
                     "jurisdiction",
                     "event",
                     null,
+                    List.of(),
                     List.of()
                 )
             )
@@ -86,6 +90,7 @@ class PatientMorbidityRowAccumulatorTest {
                     "jurisdiction-other",
                     "event-other",
                     null,
+                    List.of(),
                     List.of()
                 )
             )
@@ -113,6 +118,7 @@ class PatientMorbidityRowAccumulatorTest {
                 "jurisdiction",
                 "event",
                 null,
+                List.of(),
                 List.of()
             )
         );
@@ -128,6 +134,7 @@ class PatientMorbidityRowAccumulatorTest {
                 "jurisdiction-other",
                 "event-other",
                 null,
+                List.of(),
                 List.of()
             )
         );
@@ -157,7 +164,8 @@ class PatientMorbidityRowAccumulatorTest {
                 "jurisdiction",
                 "event",
                 null,
-                List.of("A")
+                List.of("A"),
+                List.of(mock(PatientMorbidity.LabOrderResult.class))
             )
         );
 
@@ -172,16 +180,18 @@ class PatientMorbidityRowAccumulatorTest {
                 "jurisdiction-other",
                 "event-other",
                 null,
-                List.of("B")
+                List.of("B"),
+                List.of(mock(PatientMorbidity.LabOrderResult.class))
             )
         );
 
-        PatientMorbidityRowAccumulator actual = first.merge(second);
+        List<PatientMorbidity> actual = first.merge(second).accumulated();
 
-        assertThat(actual.accumulated()).satisfiesExactlyInAnyOrder(
+        assertThat(actual).satisfiesExactlyInAnyOrder(
             actual_morbidity -> assertAll(
                 () -> assertThat(actual_morbidity.morbidity()).isEqualTo(3L),
-                () -> assertThat(actual_morbidity.treatments()).contains("A", "B")
+                () -> assertThat(actual_morbidity.treatments()).contains("A", "B"),
+                () -> assertThat(actual_morbidity.labResults()).hasSize(2)
             )
         );
 

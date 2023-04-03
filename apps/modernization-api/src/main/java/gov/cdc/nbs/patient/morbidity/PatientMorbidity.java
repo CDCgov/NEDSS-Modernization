@@ -12,14 +12,25 @@ record PatientMorbidity(
     String jurisdiction,
     String event,
     Investigation associatedWith,
-    Collection<String> treatments
+    Collection<String> treatments,
+    Collection<LabOrderResult> labResults
 ) {
 
-  record Investigation(
-      long id,
-      String local,
-      String condition
-  ) {
-  }
+    record Investigation(
+        long id,
+        String local,
+        String condition
+    ) {
+    }
 
+
+    record LabOrderResult(
+        String labTest,
+        String status,
+        String codedResult,
+        String numericResult,
+        String textResult
+    ) {
+
+    }
 }

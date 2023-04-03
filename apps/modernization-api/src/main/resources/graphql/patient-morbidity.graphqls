@@ -7,12 +7,22 @@ type PatientMorbidity {
     jurisdiction: String!
     event: String!
     associatedWith: PatientMorbidityInvestigation
+    treatments: [String]!
+    labResults: [PatientMorbidityLabResult]!
 }
 
 type PatientMorbidityInvestigation {
     id: ID!
     local: String!
     condition: String!
+}
+
+type PatientMorbidityLabResult {
+    labTest: String!
+    status: String
+    codedResult: String
+    numericResult: String
+    textResult: String
 }
 
 type PatientMorbidityResults {

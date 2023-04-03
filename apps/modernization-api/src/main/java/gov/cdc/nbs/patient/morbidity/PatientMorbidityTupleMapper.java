@@ -5,15 +5,18 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.NameRenderer;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 class PatientMorbidityTupleMapper {
 
     private final PatientMorbidityTables tables;
+    private final LabOrderResultTupleMapper labOrderResultMapper;
 
     public PatientMorbidityTupleMapper(final PatientMorbidityTables tables) {
         this.tables = tables;
+        this.labOrderResultMapper = new LabOrderResultTupleMapper(tables.labOrderResults());
     }
 
     PatientMorbidity map(final Tuple tuple) {
@@ -42,6 +45,8 @@ class PatientMorbidityTupleMapper {
 
         List<String> treatments = mapTreatments(tuple);
 
+        Collection<PatientMorbidity.LabOrderResult> labOrderResults = mapLabOrderResults(tuple);
+
         return new PatientMorbidity(
             morbidity,
             receivedOn,
@@ -51,7 +56,8 @@ class PatientMorbidityTupleMapper {
             jurisdiction,
             event,
             investigation,
-            treatments
+            treatments,
+            labOrderResults
         );
     }
 
@@ -73,7 +79,15 @@ class PatientMorbidityTupleMapper {
         //  the mapper works on a single row meaning zero or one treatment will ever be returned.
         String treatment = tuple.get(tables.treatment().cdDescTxt);
 
-        return treatment == null ? List.of() : List.of(treatment);
+        return treatment == null
+            ? List.of()
+            : List.of(treatment);
     }
 
+
+    private Collection<PatientMorbidity.LabOrderResult> mapLabOrderResults(final Tuple tuple) {
+        return this.labOrderResultMapper.maybeMap(tuple)
+            .map(List::of)
+            .orElseGet(List::of);
+    }
 }
