@@ -1,17 +1,12 @@
 package gov.cdc.nbs.entity.odse;
 
 
-import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
-import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.patient.GenderConverter;
-import gov.cdc.nbs.patient.PatientCommand;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnTransformer;
-
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -25,11 +20,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import org.hibernate.annotations.ColumnTransformer;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.GenderConverter;
+import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -413,7 +414,7 @@ public class Person {
 
         this.ssn = patient.ssn();
 
-        this.birthTime = patient.dateOfBirth();
+        this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant();
         this.birthGenderCd = patient.birthGender();
         this.currSexCd = patient.currentGender();
 
@@ -496,6 +497,62 @@ public class Person {
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
         return this.nbsEntity.add(emailAddress);
+    }
+
+    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
+        return this.nbsEntity.add(mortality);
+    }
+
+    public void update(PatientCommand.UpdateGeneralInfo info) {
+        this.setAsOfDateGeneral(info.asOf());
+        this.setMaritalStatusCd(info.maritalStatus());
+        this.setMothersMaidenNm(info.mothersMaidenName());
+        this.setAdultsInHouseNbr(info.adultsInHouseNumber());
+        this.setChildrenInHouseNbr(info.childrenInHouseNumber());
+        this.setOccupationCd(info.occupationCode());
+        this.setEducationLevelCd(info.educationLevelCode());
+        this.setPrimLangCd(info.primaryLanguageCode());
+        this.setSpeaksEnglishCd(info.speaksEnglishCode());
+        this.setEharsId(info.eharsId());
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateSexAndBirthInfo info) {
+        this.setBirthGenderCd(info.birthGender());
+        this.setCurrSexCd(info.currentGender());
+        this.setBirthTime(info.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.setAsOfDateSex(info.asOf());
+        this.setAgeReported(info.currentAge());
+        this.setAgeReportedTime(info.ageReportedTime());
+        this.setBirthCityCd(info.birthCity());
+        this.setBirthCntryCd(info.birthCntry());
+        this.setBirthStateCd(info.birthState());
+        this.setBirthOrderNbr(info.birthOrderNbr());
+        this.setMultipleBirthInd(info.multipleBirth());
+        this.setSexUnkReasonCd(info.sexUnknown());
+        this.setAdditionalGenderCd(info.additionalGender());
+        this.setPreferredGenderCd(info.transGenderInfo());
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+
+    public void delete(PatientCommand.Delete delete) {
+        this.setRecordStatusCd(RecordStatus.LOG_DEL);
+        this.setRecordStatusTime(delete.requestedOn());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
+        setLastChange(delete);
+    }
+
+    private void setLastChange(PatientCommand command) {
+        this.setLastChgUserId(command.requester());
+        this.setLastChgTime(command.requestedOn());
     }
 
     @Override
