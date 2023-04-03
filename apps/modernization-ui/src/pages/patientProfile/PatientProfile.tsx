@@ -18,7 +18,7 @@ import {
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindMorbidtyReportForPatientLazyQuery,
+    useFindMorbidityReportsForPatientLazyQuery,
     useFindPatientByIdLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
@@ -42,7 +42,7 @@ export const PatientProfile = () => {
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
     // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
-    const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
+    const [getMorbidityData, { data: morbidityData }] = useFindMorbidityReportsForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
@@ -93,7 +93,7 @@ export const PatientProfile = () => {
                 });
                 getMorbidityData({
                     variables: {
-                        patientId: +patientProfileData.findPatientById.id
+                        patient: patientProfileData.findPatientById.id
                     }
                 });
                 getDocumentsData({
@@ -322,7 +322,7 @@ export const PatientProfile = () => {
                         patient={id}
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
-                        morbidityData={morbidityData?.findMorbidtyReportForPatient}
+                        morbidityData={morbidityData?.findMorbidityReportsForPatient}
                         documentsData={documentsData?.findDocumentsForPatient}
                     />
                 )}

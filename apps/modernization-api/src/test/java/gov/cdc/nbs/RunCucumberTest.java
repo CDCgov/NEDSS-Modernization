@@ -24,7 +24,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import gov.cdc.nbs.containers.NbsElasticsearchContainer;
-import gov.cdc.nbs.controller.PatientController;
+import gov.cdc.nbs.patient.PatientController;
 import io.cucumber.spring.CucumberContextConfiguration;
 
 @Suite
@@ -41,8 +41,10 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @Transactional
 @Rollback(false)
 @Testcontainers
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092",
-        "port=9092"})
+@EmbeddedKafka(
+    partitions = 1,
+    topics = {"patient"}
+)
 public class RunCucumberTest {
     @Autowired
     private PatientController patientController;

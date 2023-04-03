@@ -6,7 +6,7 @@ import {
     FindDocumentsForPatientQuery,
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
-    FindMorbidtyReportForPatientQuery,
+    FindMorbidityReportsForPatientQuery,
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
@@ -21,7 +21,7 @@ type EventTabProp = {
     patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
-    morbidityData?: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined;
+    morbidityData?: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined;
     documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
     profileData?: any;
 };
@@ -73,15 +73,6 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
 
     const getOrderingProviderName = (labReport: LabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
-        if (provider) {
-            return `${provider.firstName} ${provider.lastName}`;
-        } else {
-            return undefined;
-        }
-    };
-
-    const getMoribityProvider = (labReport: any): string | undefined => {
-        const provider = labReport.personParticipations?.find((p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -171,10 +162,10 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
     };
 
     const getMorbidityData = (
-        morbidities: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined
+        morbidities: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined
     ) => {
         const tempArr: TableBody[] = [];
-        morbidities?.map((morbidity, i: number) => {
+        morbidities?.content?.map((morbidity, i: number) => {
             tempArr.push({
                 id: i + 1,
                 checkbox: false,
@@ -183,8 +174,8 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         id: 1,
                         title: (
                             <>
-                                {format(new Date(morbidity?.addTime), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(morbidity?.addTime), 'hh:mm a')}
+                                {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
+                                {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
                             </>
                         ),
                         class: 'link',
@@ -194,11 +185,11 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         id: 2,
                         title: (
                             <div>
-                                {getMoribityProvider(morbidity) && (
+                                {morbidity?.provider && (
                                     <>
                                         <strong>Reporting facility:</strong>
                                         <br />
-                                        <span>{getMoribityProvider(morbidity) ?? ''}</span>
+                                        <span>{morbidity.provider}</span>
                                         <br />
                                     </>
                                 )}
@@ -209,8 +200,8 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         id: 3,
                         title: null
                     },
-                    { id: 4, title: morbidity?.labConditionCd },
-                    { id: 7, title: morbidity?.jurisdictionCd || null },
+                    { id: 4, title: morbidity?.condition },
+                    { id: 7, title: morbidity?.jurisdiction || null },
                     {
                         id: 5,
                         title:
@@ -235,7 +226,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                             null
                         // )
                     },
-                    { id: 8, title: morbidity?.localId || null }
+                    { id: 8, title: morbidity?.event || null }
                 ]
             });
             setMorbidityResults(tempArr);
