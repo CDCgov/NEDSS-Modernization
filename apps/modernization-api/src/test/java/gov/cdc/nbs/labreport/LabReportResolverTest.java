@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
 import gov.cdc.nbs.graphql.GraphQLPage;
 
-public class LabReportResolverTest {
+class LabReportResolverTest {
     @Mock
     private LabReportFinder finder;
 

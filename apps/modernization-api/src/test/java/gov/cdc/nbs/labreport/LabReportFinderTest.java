@@ -25,7 +25,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.labreport.LabReportFilter.ProcessingStatus;
 
-public class LabReportFinderTest {
+class LabReportFinderTest {
 
     @Mock
     private ElasticsearchOperations operations;

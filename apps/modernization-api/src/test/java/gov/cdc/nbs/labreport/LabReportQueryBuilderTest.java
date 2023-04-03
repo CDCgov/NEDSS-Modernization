@@ -52,7 +52,7 @@ import gov.cdc.nbs.service.SecurityService;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 
-public class LabReportQueryBuilderTest {
+class LabReportQueryBuilderTest {
     @Mock
     private SecurityService securityService;
 
