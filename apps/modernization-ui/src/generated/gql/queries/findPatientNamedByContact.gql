@@ -1,0 +1,24 @@
+query findPatientNamedByContact($patient: ID!, $page: Page){
+    findPatientNamedByContact(patient: $patient, page: $page){
+        content{
+            contactRecord
+            createdOn
+            condition
+            contact{
+                id
+                name
+            }
+            namedOn
+            priority
+            disposition
+            event
+            associatedWith{
+                id
+                local
+                condition
+            }
+        }
+        total
+        number
+    }
+}
