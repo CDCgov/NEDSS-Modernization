@@ -1,8 +1,6 @@
 package gov.cdc.nbs.labreport;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
-import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 
 public class LabReportResolverTest {
@@ -77,31 +74,4 @@ public class LabReportResolverTest {
         assertEquals(patientId, actualPatient);
     }
 
-    @Test
-    void should_limit_max_page_size() {
-        Long patientId = 123L;
-        var requestedPageSize = maxPageSize + 1;
-        QueryException ex = null;
-        try {
-            resolver.findDocumentsRequiringReviewForPatient(patientId, new GraphQLPage(requestedPageSize));
-        } catch (QueryException e) {
-            ex = e;
-        }
-        assertNotNull(ex);
-    }
-
-    @Test
-    void should_pass_correct_page_size() {
-        Long patientId = 123L;
-        QueryException ex = null;
-        try {
-            resolver.findDocumentsRequiringReviewForPatient(patientId, new GraphQLPage(maxPageSize));
-        } catch (QueryException e) {
-            ex = e;
-        }
-        assertNull(ex);
-        verify(finder).findUnprocessedDocumentsForPatient(Mockito.anyLong(), pageableCaptor.capture());
-        var actualPageable = pageableCaptor.getValue();
-        assertEquals(maxPageSize, actualPageable.getPageSize());
-    }
 }

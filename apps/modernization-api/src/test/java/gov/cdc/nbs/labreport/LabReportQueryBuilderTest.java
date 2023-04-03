@@ -2,6 +2,7 @@ package gov.cdc.nbs.labreport;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -103,13 +104,7 @@ public class LabReportQueryBuilderTest {
         setAuthentication();
         var pageable = PageRequest.of(0, 20, Sort.by(Direction.ASC, "notSupported"));
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
-        IllegalArgumentException ex = null;
-        try {
-            queryBuilder.buildLabReportQuery(null, pageable);
-        } catch (IllegalArgumentException e) {
-            ex = e;
-        }
-        assertNotNull(ex);
+        assertThrows(IllegalArgumentException.class, () -> queryBuilder.buildLabReportQuery(null, pageable));
     }
 
     @Test
@@ -335,14 +330,7 @@ public class LabReportQueryBuilderTest {
         var eds = new LabReportFilter.LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT, null, Instant.now());
         var filter = new LabReportFilter();
         filter.setEventDateSearch(eds);
-        QueryException ex = null;
-        try {
-            queryBuilder.buildLabReportQuery(filter, pageable);
-        } catch (QueryException e) {
-            ex = e;
-
-        }
-        assertNotNull(ex);
+        assertThrows(QueryException.class, () -> queryBuilder.buildLabReportQuery(filter, pageable));
     }
 
     @Test
