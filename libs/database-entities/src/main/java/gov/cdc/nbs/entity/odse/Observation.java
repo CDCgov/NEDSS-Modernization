@@ -1,16 +1,22 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.time.Instant;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -21,7 +27,14 @@ public class Observation {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+        },
+        optional = false
+    )
     @JoinColumn(name = "observation_uid", nullable = false)
     private Act act;
 
@@ -224,4 +237,12 @@ public class Observation {
     @Column(name = "processing_decision_txt", length = 1000)
     private String processingDecisionTxt;
 
+    public Observation(long identifier, String localId) {
+        this.id = identifier;
+        this.localId = localId;
+        this.sharedInd = 'F';
+        this.versionCtrlNbr = 1;
+
+        this.act = new Act(identifier, "OBS");
+    }
 }
