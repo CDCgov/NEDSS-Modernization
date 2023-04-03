@@ -1,6 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.message.PatientInput;
+import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 
 import javax.persistence.CascadeType;
@@ -25,24 +25,20 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
                     CascadeType.MERGE,
                     CascadeType.REMOVE
             },
-            optional = false
-    )
+            optional = false)
     @JoinColumn(
             referencedColumnName = "tele_locator_uid",
             name = "locator_uid",
             updatable = false,
-            insertable = false
-    )
+            insertable = false)
     private TeleLocator locator;
 
-    public TeleEntityLocatorParticipation() {
-    }
+    public TeleEntityLocatorParticipation() {}
 
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddPhoneNumber phoneNumber
-    ) {
+            final PatientCommand.AddPhoneNumber phoneNumber) {
         super(phoneNumber, nbs, identifier);
 
         resolveCodes(phoneNumber.type());
@@ -70,8 +66,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     public TeleEntityLocatorParticipation(
             final NBSEntity nbs,
             final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddEmailAddress emailAddress
-    ) {
+            final PatientCommand.AddEmailAddress emailAddress) {
         super(emailAddress, nbs, identifier);
 
         this.cd = "NET";

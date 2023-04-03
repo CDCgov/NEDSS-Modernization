@@ -1,5 +1,6 @@
-mutation updatePatientGeneralInfo($id: ID!, $patient: PersonInput!){
-    updatePatientGeneralInfo(id: $id, patient: $patient){
+mutation updatePatientGeneralInfo($input: GeneralInfoInput!){
+    updatePatientGeneralInfo(input: $input){
         requestId
+        patientId
     }
 }

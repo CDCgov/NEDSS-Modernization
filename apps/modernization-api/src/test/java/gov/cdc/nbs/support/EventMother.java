@@ -127,8 +127,9 @@ public class EventMother {
                         .build());
         var orgParticipations = Arrays.asList(
                 ElasticsearchOrganizationParticipation.builder()
-                        .typeCd("ORG")
+                        .typeCd("ORD")
                         .subjectClassCd("ORG")
+                        .entityId(personId)
                         .build(),
                 ElasticsearchOrganizationParticipation.builder()
                         .typeCd("ORG")
@@ -144,7 +145,7 @@ public class EventMother {
                         .personParentUid(personId)
                         .build(),
                 ElasticsearchPersonParticipation.builder()
-                        .typeCd("ORG")
+                        .typeCd("ORD")
                         .subjectClassCd("PSN")
                         .personRecordStatus("ACTIVE")
                         .entityId(personId)
