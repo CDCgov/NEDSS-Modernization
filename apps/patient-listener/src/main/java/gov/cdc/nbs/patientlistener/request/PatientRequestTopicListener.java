@@ -26,8 +26,7 @@ public class PatientRequestTopicListener {
             PatientCreateRequestHandler createHandler,
             PatientUpdateRequestHandler updateHandler,
             PatientDeleteRequestHandler deleteHandler,
-            PatientRequestStatusProducer statusProducer
-    ) {
+            PatientRequestStatusProducer statusProducer) {
         this.mapper = mapper;
         this.createHandler = createHandler;
         this.updateHandler = updateHandler;
@@ -49,12 +48,11 @@ public class PatientRequestTopicListener {
                 deleteHandler.handlePatientDelete(delete.requestId(), delete.patientId(), delete.userId());
             } else if (request instanceof PatientRequest.UpdateGeneralInfo update) {
                 updateHandler.handlePatientGeneralInfoUpdate(update.data());
-            }else if (request instanceof PatientRequest.UpdateMortality update) {
+            } else if (request instanceof PatientRequest.UpdateMortality update) {
                 updateHandler.handlePatientMortalityUpdate(update.data());
-            }else if (request instanceof PatientRequest.UpdateSexAndBirth update) {
+            } else if (request instanceof PatientRequest.UpdateSexAndBirth update) {
                 updateHandler.handlePatientSexAndBirthUpdate(update.data());
-            }
-            else {
+            } else {
                 receivedInvalidRequest(key, request);
             }
 
@@ -70,8 +68,8 @@ public class PatientRequestTopicListener {
     }
 
     private void failedParsing(final String key, final JsonProcessingException exception) {
-      log.warn("Failed to parse kafka message. Key: {}, Message: {}", key, exception.getMessage());
-      throw new PatientRequestException("Failed to parse message into PatientRequest", key);
+        log.warn("Failed to parse kafka message. Key: {}, Message: {}", key, exception.getMessage());
+        throw new PatientRequestException("Failed to parse message into PatientRequest", key);
     }
 
 }

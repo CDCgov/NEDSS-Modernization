@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 @Component
-public class TestPatientCleaner {
+class TestPatientCleaner {
 
   public static final QPerson PATIENT = QPerson.person;
   private final EntityManager entityManager;
@@ -17,13 +17,13 @@ public class TestPatientCleaner {
   private final JPAQueryFactory factory;
 
 
-  public TestPatientCleaner(final EntityManager entityManager, final JPAQueryFactory factory) {
+  TestPatientCleaner(final EntityManager entityManager, final JPAQueryFactory factory) {
     this.entityManager = entityManager;
     this.factory = factory;
   }
 
   @Transactional
-  public void clean(final long starting) {
+  void clean(final long starting) {
     this.factory.select(PATIENT)
         .from(PATIENT)
         .where(criteria(starting))

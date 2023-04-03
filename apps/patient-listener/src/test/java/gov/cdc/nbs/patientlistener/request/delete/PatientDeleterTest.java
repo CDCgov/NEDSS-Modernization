@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import gov.cdc.nbs.patientlistener.request.delete.PatientDeleter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

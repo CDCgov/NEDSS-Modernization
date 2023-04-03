@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patientlistener.request;
 
 import gov.cdc.nbs.message.RequestStatus;
-import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

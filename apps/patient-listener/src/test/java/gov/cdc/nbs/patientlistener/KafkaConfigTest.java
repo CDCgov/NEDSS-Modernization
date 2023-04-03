@@ -12,7 +12,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import gov.cdc.nbs.message.RequestStatus;
 import gov.cdc.nbs.patientlistener.config.KafkaConfig;
-import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 
 
 @AutoConfigureJson

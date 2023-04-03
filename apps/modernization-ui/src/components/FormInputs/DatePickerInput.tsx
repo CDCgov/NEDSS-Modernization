@@ -1,6 +1,6 @@
-import { DatePicker, Label } from '@trussworks/react-uswds';
+import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 type OnChange = (val?: string) => void;
 
@@ -12,6 +12,8 @@ type DatePickerProps = {
     onChange?: OnChange;
     className?: string;
     defaultValue?: string;
+    errorMessage?: string;
+    flexBox?: boolean;
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
@@ -32,7 +34,8 @@ export const DatePickerInput = ({
     htmlFor = '',
     onChange,
     className,
-    defaultValue
+    defaultValue,
+    flexBox
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
     const validDefaultValue = !emptyDefaultValue && matches(defaultValue);
@@ -40,29 +43,66 @@ export const DatePickerInput = ({
 
     const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue));
 
-    const checkValidity = (fn?: OnChange) => (changed?: string) => {
-        const valid = isValid(changed);
+    const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
+        const currentVal = (event.target as HTMLInputElement).value;
+        const valid = isValid(currentVal);
         setError(!valid);
+    };
 
+    const handleOnChange = (fn?: OnChange) => (changed?: string) => {
+        const valid = isValid(changed);
         valid && fn && fn(changed);
     };
 
-    return (
+    return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
             {error && <small className="text-red">{'Not a valid date'}</small>}
             {!intialDefault && (
-                <DatePicker id={id} onChange={checkValidity(onChange)} className={className} name={name} />
+                <DatePicker
+                    id={id}
+                    onBlur={checkValidity}
+                    onChange={handleOnChange(onChange)}
+                    className={className}
+                    name={name}
+                />
             )}
             {intialDefault && (
                 <DatePicker
                     id={id}
-                    onChange={checkValidity(onChange)}
+                    onBlur={checkValidity}
+                    onChange={handleOnChange(onChange)}
                     className={className}
                     name={name}
                     defaultValue={intialDefault}
                 />
             )}
         </div>
+    ) : (
+        <Grid row className={`date-picker-input ${error === true ? 'error' : ''}`}>
+            <Grid col={6}>{label && <Label htmlFor={htmlFor}>{label}</Label>}</Grid>
+            <Grid col={6}>
+                {error && <small className="text-red">{'Not a valid date'}</small>}
+                {!intialDefault && (
+                    <DatePicker
+                        id={id}
+                        onBlur={checkValidity}
+                        onChange={handleOnChange(onChange)}
+                        className={className}
+                        name={name}
+                    />
+                )}
+                {intialDefault && (
+                    <DatePicker
+                        id={id}
+                        onBlur={checkValidity}
+                        onChange={handleOnChange(onChange)}
+                        className={className}
+                        name={name}
+                        defaultValue={intialDefault}
+                    />
+                )}
+            </Grid>
+        </Grid>
     );
 };

@@ -12,8 +12,10 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 @Entity
-@DiscriminatorValue("TELE")
+@DiscriminatorValue(TeleEntityLocatorParticipation.TELECOM_CLASS_CODE)
 public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
+
+    static final String TELECOM_CLASS_CODE = "TELE";
 
     @MapsId("locatorUid")
     @OneToOne(
@@ -80,6 +82,11 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
     public void setLocator(final TeleLocator locator) {
         this.locator = locator;
+    }
+
+    @Override
+    public String getClassCd() {
+        return TELECOM_CLASS_CODE;
     }
 
     @Override

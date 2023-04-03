@@ -4,15 +4,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Component
 public class TestPatients {
 
   private final Collection<Long> identifiers;
+  private final TestPatientCleaner cleaner;
 
-  public TestPatients() {
+  public TestPatients(final TestPatientCleaner cleaner) {
+    this.cleaner = cleaner;
     identifiers = new ArrayList<>();
   }
 
@@ -20,21 +21,17 @@ public class TestPatients {
     this.identifiers.add(patient);
   }
 
-  void unavailable(final long patient) {
-    this.identifiers.remove(patient);
-  }
-
   void reset() {
+    this.identifiers.forEach(cleaner::clean);
     this.identifiers.clear();
   }
 
-  public Collection<Long> available() {
-    return List.copyOf(this.identifiers);
-  }
-
-  public Optional<Long> one() {
+  public Optional<Long> maybeOne() {
     return this.identifiers.stream().findFirst();
   }
 
+  public long one() {
+    return maybeOne().orElseThrow(() -> new IllegalStateException("there is no patient"));
+  }
 
 }

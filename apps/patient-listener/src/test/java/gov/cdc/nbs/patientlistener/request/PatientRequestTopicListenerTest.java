@@ -8,8 +8,6 @@ import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.patientlistener.request.PatientRequestException;
-import gov.cdc.nbs.patientlistener.request.PatientRequestTopicListener;
 import gov.cdc.nbs.patientlistener.request.create.PatientCreateRequestHandler;
 import gov.cdc.nbs.patientlistener.request.delete.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;

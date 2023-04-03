@@ -300,6 +300,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                         onClick={() => {
                             reset();
                             clearAll();
+                            setEventSearchType('');
                         }}
                         outline>
                         Clear all

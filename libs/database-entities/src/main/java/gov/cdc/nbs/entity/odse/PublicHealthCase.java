@@ -1,19 +1,20 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "Public_health_case")
 public class PublicHealthCase {
@@ -22,9 +23,30 @@ public class PublicHealthCase {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @OneToOne(
+        fetch = FetchType.LAZY,
+        optional = false,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        },
+        orphanRemoval = true
+    )
     @JoinColumn(name = "public_health_case_uid", nullable = false)
     private Act act;
+
+    @OneToMany(
+        mappedBy = "subjectEntityPhcUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        },
+        orphanRemoval = true
+    )
+    private List<CtContact> subjectContacts;
 
     @Column(name = "activity_duration_amt", length = 20)
     private String activityDurationAmt;
@@ -275,4 +297,703 @@ public class PublicHealthCase {
     @Column(name = "coinfection_id", length = 50)
     private String coinfectionId;
 
+    public PublicHealthCase() {
+        // no args constructor required for JPA
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Act getAct() {
+        return act;
+    }
+
+    public void setAct(Act act) {
+        this.act = act;
+    }
+
+    public List<CtContact> getSubjectContacts() {
+        return List.copyOf(subjectContacts);
+    }
+
+    private List<CtContact> ensureSubjectContacts() {
+        if(this.subjectContacts == null) {
+            this.subjectContacts = new ArrayList<>();
+        }
+
+        return this.subjectContacts;
+    }
+
+    public void addSubjectContact(final CtContact contact) {
+        this.ensureSubjectContacts().add(contact);
+    }
+
+    public String getActivityDurationAmt() {
+        return activityDurationAmt;
+    }
+
+    public void setActivityDurationAmt(String activityDurationAmt) {
+        this.activityDurationAmt = activityDurationAmt;
+    }
+
+    public String getActivityDurationUnitCd() {
+        return activityDurationUnitCd;
+    }
+
+    public void setActivityDurationUnitCd(String activityDurationUnitCd) {
+        this.activityDurationUnitCd = activityDurationUnitCd;
+    }
+
+    public Instant getActivityFromTime() {
+        return activityFromTime;
+    }
+
+    public void setActivityFromTime(Instant activityFromTime) {
+        this.activityFromTime = activityFromTime;
+    }
+
+    public Instant getActivityToTime() {
+        return activityToTime;
+    }
+
+    public void setActivityToTime(Instant activityToTime) {
+        this.activityToTime = activityToTime;
+    }
+
+    public String getAddReasonCd() {
+        return addReasonCd;
+    }
+
+    public void setAddReasonCd(String addReasonCd) {
+        this.addReasonCd = addReasonCd;
+    }
+
+    public Instant getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Instant addTime) {
+        this.addTime = addTime;
+    }
+
+    public Long getAddUserId() {
+        return addUserId;
+    }
+
+    public void setAddUserId(Long addUserId) {
+        this.addUserId = addUserId;
+    }
+
+    public String getCaseClassCd() {
+        return caseClassCd;
+    }
+
+    public void setCaseClassCd(String caseClassCd) {
+        this.caseClassCd = caseClassCd;
+    }
+
+    public Character getCaseTypeCd() {
+        return caseTypeCd;
+    }
+
+    public void setCaseTypeCd(Character caseTypeCd) {
+        this.caseTypeCd = caseTypeCd;
+    }
+
+    public String getCd() {
+        return cd;
+    }
+
+    public void setCd(String cd) {
+        this.cd = cd;
+    }
+
+    public String getCdDescTxt() {
+        return cdDescTxt;
+    }
+
+    public void setCdDescTxt(String cdDescTxt) {
+        this.cdDescTxt = cdDescTxt;
+    }
+
+    public String getCdSystemCd() {
+        return cdSystemCd;
+    }
+
+    public void setCdSystemCd(String cdSystemCd) {
+        this.cdSystemCd = cdSystemCd;
+    }
+
+    public String getCdSystemDescTxt() {
+        return cdSystemDescTxt;
+    }
+
+    public void setCdSystemDescTxt(String cdSystemDescTxt) {
+        this.cdSystemDescTxt = cdSystemDescTxt;
+    }
+
+    public String getConfidentialityCd() {
+        return confidentialityCd;
+    }
+
+    public void setConfidentialityCd(String confidentialityCd) {
+        this.confidentialityCd = confidentialityCd;
+    }
+
+    public String getConfidentialityDescTxt() {
+        return confidentialityDescTxt;
+    }
+
+    public void setConfidentialityDescTxt(String confidentialityDescTxt) {
+        this.confidentialityDescTxt = confidentialityDescTxt;
+    }
+
+    public String getDetectionMethodCd() {
+        return detectionMethodCd;
+    }
+
+    public void setDetectionMethodCd(String detectionMethodCd) {
+        this.detectionMethodCd = detectionMethodCd;
+    }
+
+    public String getDetectionMethodDescTxt() {
+        return detectionMethodDescTxt;
+    }
+
+    public void setDetectionMethodDescTxt(String detectionMethodDescTxt) {
+        this.detectionMethodDescTxt = detectionMethodDescTxt;
+    }
+
+    public Instant getDiagnosisTime() {
+        return diagnosisTime;
+    }
+
+    public void setDiagnosisTime(Instant diagnosisTime) {
+        this.diagnosisTime = diagnosisTime;
+    }
+
+    public String getDiseaseImportedCd() {
+        return diseaseImportedCd;
+    }
+
+    public void setDiseaseImportedCd(String diseaseImportedCd) {
+        this.diseaseImportedCd = diseaseImportedCd;
+    }
+
+    public String getDiseaseImportedDescTxt() {
+        return diseaseImportedDescTxt;
+    }
+
+    public void setDiseaseImportedDescTxt(String diseaseImportedDescTxt) {
+        this.diseaseImportedDescTxt = diseaseImportedDescTxt;
+    }
+
+    public String getEffectiveDurationAmt() {
+        return effectiveDurationAmt;
+    }
+
+    public void setEffectiveDurationAmt(String effectiveDurationAmt) {
+        this.effectiveDurationAmt = effectiveDurationAmt;
+    }
+
+    public String getEffectiveDurationUnitCd() {
+        return effectiveDurationUnitCd;
+    }
+
+    public void setEffectiveDurationUnitCd(String effectiveDurationUnitCd) {
+        this.effectiveDurationUnitCd = effectiveDurationUnitCd;
+    }
+
+    public Instant getEffectiveFromTime() {
+        return effectiveFromTime;
+    }
+
+    public void setEffectiveFromTime(Instant effectiveFromTime) {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+
+    public Instant getEffectiveToTime() {
+        return effectiveToTime;
+    }
+
+    public void setEffectiveToTime(Instant effectiveToTime) {
+        this.effectiveToTime = effectiveToTime;
+    }
+
+    public Short getGroupCaseCnt() {
+        return groupCaseCnt;
+    }
+
+    public void setGroupCaseCnt(Short groupCaseCnt) {
+        this.groupCaseCnt = groupCaseCnt;
+    }
+
+    public String getInvestigationStatusCd() {
+        return investigationStatusCd;
+    }
+
+    public void setInvestigationStatusCd(String investigationStatusCd) {
+        this.investigationStatusCd = investigationStatusCd;
+    }
+
+    public String getJurisdictionCd() {
+        return jurisdictionCd;
+    }
+
+    public void setJurisdictionCd(String jurisdictionCd) {
+        this.jurisdictionCd = jurisdictionCd;
+    }
+
+    public String getLastChgReasonCd() {
+        return lastChgReasonCd;
+    }
+
+    public void setLastChgReasonCd(String lastChgReasonCd) {
+        this.lastChgReasonCd = lastChgReasonCd;
+    }
+
+    public Instant getLastChgTime() {
+        return lastChgTime;
+    }
+
+    public void setLastChgTime(Instant lastChgTime) {
+        this.lastChgTime = lastChgTime;
+    }
+
+    public Long getLastChgUserId() {
+        return lastChgUserId;
+    }
+
+    public void setLastChgUserId(Long lastChgUserId) {
+        this.lastChgUserId = lastChgUserId;
+    }
+
+    public String getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(String localId) {
+        this.localId = localId;
+    }
+
+    public String getMmwrWeek() {
+        return mmwrWeek;
+    }
+
+    public void setMmwrWeek(String mmwrWeek) {
+        this.mmwrWeek = mmwrWeek;
+    }
+
+    public String getMmwrYear() {
+        return mmwrYear;
+    }
+
+    public void setMmwrYear(String mmwrYear) {
+        this.mmwrYear = mmwrYear;
+    }
+
+    public String getOutbreakInd() {
+        return outbreakInd;
+    }
+
+    public void setOutbreakInd(String outbreakInd) {
+        this.outbreakInd = outbreakInd;
+    }
+
+    public Instant getOutbreakFromTime() {
+        return outbreakFromTime;
+    }
+
+    public void setOutbreakFromTime(Instant outbreakFromTime) {
+        this.outbreakFromTime = outbreakFromTime;
+    }
+
+    public Instant getOutbreakToTime() {
+        return outbreakToTime;
+    }
+
+    public void setOutbreakToTime(Instant outbreakToTime) {
+        this.outbreakToTime = outbreakToTime;
+    }
+
+    public String getOutbreakName() {
+        return outbreakName;
+    }
+
+    public void setOutbreakName(String outbreakName) {
+        this.outbreakName = outbreakName;
+    }
+
+    public String getOutcomeCd() {
+        return outcomeCd;
+    }
+
+    public void setOutcomeCd(String outcomeCd) {
+        this.outcomeCd = outcomeCd;
+    }
+
+    public String getPatAgeAtOnset() {
+        return patAgeAtOnset;
+    }
+
+    public void setPatAgeAtOnset(String patAgeAtOnset) {
+        this.patAgeAtOnset = patAgeAtOnset;
+    }
+
+    public String getPatAgeAtOnsetUnitCd() {
+        return patAgeAtOnsetUnitCd;
+    }
+
+    public void setPatAgeAtOnsetUnitCd(String patAgeAtOnsetUnitCd) {
+        this.patAgeAtOnsetUnitCd = patAgeAtOnsetUnitCd;
+    }
+
+    public Long getPatientGroupId() {
+        return patientGroupId;
+    }
+
+    public void setPatientGroupId(Long patientGroupId) {
+        this.patientGroupId = patientGroupId;
+    }
+
+    public String getProgAreaCd() {
+        return progAreaCd;
+    }
+
+    public void setProgAreaCd(String progAreaCd) {
+        this.progAreaCd = progAreaCd;
+    }
+
+    public String getRecordStatusCd() {
+        return recordStatusCd;
+    }
+
+    public void setRecordStatusCd(String recordStatusCd) {
+        this.recordStatusCd = recordStatusCd;
+    }
+
+    public Instant getRecordStatusTime() {
+        return recordStatusTime;
+    }
+
+    public void setRecordStatusTime(Instant recordStatusTime) {
+        this.recordStatusTime = recordStatusTime;
+    }
+
+    public Short getRepeatNbr() {
+        return repeatNbr;
+    }
+
+    public void setRepeatNbr(Short repeatNbr) {
+        this.repeatNbr = repeatNbr;
+    }
+
+    public String getRptCntyCd() {
+        return rptCntyCd;
+    }
+
+    public void setRptCntyCd(String rptCntyCd) {
+        this.rptCntyCd = rptCntyCd;
+    }
+
+    public Instant getRptFormCmpltTime() {
+        return rptFormCmpltTime;
+    }
+
+    public void setRptFormCmpltTime(Instant rptFormCmpltTime) {
+        this.rptFormCmpltTime = rptFormCmpltTime;
+    }
+
+    public String getRptSourceCd() {
+        return rptSourceCd;
+    }
+
+    public void setRptSourceCd(String rptSourceCd) {
+        this.rptSourceCd = rptSourceCd;
+    }
+
+    public String getRptSourceCdDescTxt() {
+        return rptSourceCdDescTxt;
+    }
+
+    public void setRptSourceCdDescTxt(String rptSourceCdDescTxt) {
+        this.rptSourceCdDescTxt = rptSourceCdDescTxt;
+    }
+
+    public Instant getRptToCountyTime() {
+        return rptToCountyTime;
+    }
+
+    public void setRptToCountyTime(Instant rptToCountyTime) {
+        this.rptToCountyTime = rptToCountyTime;
+    }
+
+    public Instant getRptToStateTime() {
+        return rptToStateTime;
+    }
+
+    public void setRptToStateTime(Instant rptToStateTime) {
+        this.rptToStateTime = rptToStateTime;
+    }
+
+    public Character getStatusCd() {
+        return statusCd;
+    }
+
+    public void setStatusCd(Character statusCd) {
+        this.statusCd = statusCd;
+    }
+
+    public Instant getStatusTime() {
+        return statusTime;
+    }
+
+    public void setStatusTime(Instant statusTime) {
+        this.statusTime = statusTime;
+    }
+
+    public String getTransmissionModeCd() {
+        return transmissionModeCd;
+    }
+
+    public void setTransmissionModeCd(String transmissionModeCd) {
+        this.transmissionModeCd = transmissionModeCd;
+    }
+
+    public String getTransmissionModeDescTxt() {
+        return transmissionModeDescTxt;
+    }
+
+    public void setTransmissionModeDescTxt(String transmissionModeDescTxt) {
+        this.transmissionModeDescTxt = transmissionModeDescTxt;
+    }
+
+    public String getTxt() {
+        return txt;
+    }
+
+    public void setTxt(String txt) {
+        this.txt = txt;
+    }
+
+    public String getUserAffiliationTxt() {
+        return userAffiliationTxt;
+    }
+
+    public void setUserAffiliationTxt(String userAffiliationTxt) {
+        this.userAffiliationTxt = userAffiliationTxt;
+    }
+
+    public Long getProgramJurisdictionOid() {
+        return programJurisdictionOid;
+    }
+
+    public void setProgramJurisdictionOid(Long programJurisdictionOid) {
+        this.programJurisdictionOid = programJurisdictionOid;
+    }
+
+    public Character getSharedInd() {
+        return sharedInd;
+    }
+
+    public void setSharedInd(Character sharedInd) {
+        this.sharedInd = sharedInd;
+    }
+
+    public Short getVersionCtrlNbr() {
+        return versionCtrlNbr;
+    }
+
+    public void setVersionCtrlNbr(Short versionCtrlNbr) {
+        this.versionCtrlNbr = versionCtrlNbr;
+    }
+
+    public Instant getInvestigatorAssignedTime() {
+        return investigatorAssignedTime;
+    }
+
+    public void setInvestigatorAssignedTime(Instant investigatorAssignedTime) {
+        this.investigatorAssignedTime = investigatorAssignedTime;
+    }
+
+    public String getHospitalizedIndCd() {
+        return hospitalizedIndCd;
+    }
+
+    public void setHospitalizedIndCd(String hospitalizedIndCd) {
+        this.hospitalizedIndCd = hospitalizedIndCd;
+    }
+
+    public Instant getHospitalizedAdminTime() {
+        return hospitalizedAdminTime;
+    }
+
+    public void setHospitalizedAdminTime(Instant hospitalizedAdminTime) {
+        this.hospitalizedAdminTime = hospitalizedAdminTime;
+    }
+
+    public Instant getHospitalizedDischargeTime() {
+        return hospitalizedDischargeTime;
+    }
+
+    public void setHospitalizedDischargeTime(Instant hospitalizedDischargeTime) {
+        this.hospitalizedDischargeTime = hospitalizedDischargeTime;
+    }
+
+    public BigDecimal getHospitalizedDurationAmt() {
+        return hospitalizedDurationAmt;
+    }
+
+    public void setHospitalizedDurationAmt(BigDecimal hospitalizedDurationAmt) {
+        this.hospitalizedDurationAmt = hospitalizedDurationAmt;
+    }
+
+    public String getPregnantIndCd() {
+        return pregnantIndCd;
+    }
+
+    public void setPregnantIndCd(String pregnantIndCd) {
+        this.pregnantIndCd = pregnantIndCd;
+    }
+
+    public String getDayCareIndCd() {
+        return dayCareIndCd;
+    }
+
+    public void setDayCareIndCd(String dayCareIndCd) {
+        this.dayCareIndCd = dayCareIndCd;
+    }
+
+    public String getFoodHandlerIndCd() {
+        return foodHandlerIndCd;
+    }
+
+    public void setFoodHandlerIndCd(String foodHandlerIndCd) {
+        this.foodHandlerIndCd = foodHandlerIndCd;
+    }
+
+    public String getImportedCountryCd() {
+        return importedCountryCd;
+    }
+
+    public void setImportedCountryCd(String importedCountryCd) {
+        this.importedCountryCd = importedCountryCd;
+    }
+
+    public String getImportedStateCd() {
+        return importedStateCd;
+    }
+
+    public void setImportedStateCd(String importedStateCd) {
+        this.importedStateCd = importedStateCd;
+    }
+
+    public String getImportedCityDescTxt() {
+        return importedCityDescTxt;
+    }
+
+    public void setImportedCityDescTxt(String importedCityDescTxt) {
+        this.importedCityDescTxt = importedCityDescTxt;
+    }
+
+    public String getImportedCountyCd() {
+        return importedCountyCd;
+    }
+
+    public void setImportedCountyCd(String importedCountyCd) {
+        this.importedCountyCd = importedCountyCd;
+    }
+
+    public Instant getDeceasedTime() {
+        return deceasedTime;
+    }
+
+    public void setDeceasedTime(Instant deceasedTime) {
+        this.deceasedTime = deceasedTime;
+    }
+
+    public String getCountIntervalCd() {
+        return countIntervalCd;
+    }
+
+    public void setCountIntervalCd(String countIntervalCd) {
+        this.countIntervalCd = countIntervalCd;
+    }
+
+    public String getPriorityCd() {
+        return priorityCd;
+    }
+
+    public void setPriorityCd(String priorityCd) {
+        this.priorityCd = priorityCd;
+    }
+
+    public String getContactInvTxt() {
+        return contactInvTxt;
+    }
+
+    public void setContactInvTxt(String contactInvTxt) {
+        this.contactInvTxt = contactInvTxt;
+    }
+
+    public Instant getInfectiousFromDate() {
+        return infectiousFromDate;
+    }
+
+    public void setInfectiousFromDate(Instant infectiousFromDate) {
+        this.infectiousFromDate = infectiousFromDate;
+    }
+
+    public Instant getInfectiousToDate() {
+        return infectiousToDate;
+    }
+
+    public void setInfectiousToDate(Instant infectiousToDate) {
+        this.infectiousToDate = infectiousToDate;
+    }
+
+    public String getContactInvStatusCd() {
+        return contactInvStatusCd;
+    }
+
+    public void setContactInvStatusCd(String contactInvStatusCd) {
+        this.contactInvStatusCd = contactInvStatusCd;
+    }
+
+    public String getReferralBasisCd() {
+        return referralBasisCd;
+    }
+
+    public void setReferralBasisCd(String referralBasisCd) {
+        this.referralBasisCd = referralBasisCd;
+    }
+
+    public String getCurrProcessStateCd() {
+        return currProcessStateCd;
+    }
+
+    public void setCurrProcessStateCd(String currProcessStateCd) {
+        this.currProcessStateCd = currProcessStateCd;
+    }
+
+    public String getInvPriorityCd() {
+        return invPriorityCd;
+    }
+
+    public void setInvPriorityCd(String invPriorityCd) {
+        this.invPriorityCd = invPriorityCd;
+    }
+
+    public String getCoinfectionId() {
+        return coinfectionId;
+    }
+
+    public void setCoinfectionId(String coinfectionId) {
+        this.coinfectionId = coinfectionId;
+    }
 }

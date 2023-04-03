@@ -1,24 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { TableBody, TableComponent } from '../../components/Table/Table';
 import { Button, Icon } from '@trussworks/react-uswds';
 import {
     AssociatedInvestigation,
+    FindDocumentsForPatientQuery,
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
+    FindMorbidtyReportForPatientQuery,
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
 import format from 'date-fns/format';
+import { RedirectControllerService } from 'generated';
+import { UserContext } from 'providers/UserContext';
+import { Config } from 'config';
+import { PatientTreatmentTable } from 'patient/profile/treatment';
+import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'patient/profile/contact';
 
 type EventTabProp = {
+    patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
+    morbidityData?: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined;
+    documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
+    profileData?: any;
 };
 
-export const Events = ({ investigationData, labReports }: EventTabProp) => {
+export const Events = ({ patient, investigationData, labReports, morbidityData, documentsData }: EventTabProp) => {
+    const { state } = useContext(UserContext);
+    const NBS_URL = Config.nbsUrl;
+
     const [tableBody, setTableBody] = useState<any>([]);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [contactRecords, setContactRecords] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
     const [totalInvestigations, setTotalInvestigations] = useState<number | undefined>(0);
@@ -28,86 +40,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
     const [labData, setLabData] = useState<any>();
     const [labCurrentPage, setLabCurrentPage] = useState<number>(1);
 
-    useEffect(() => {
-        const contactTempArr = [];
-        for (let i = 0; i < 10; i++) {
-            // if (i < 5) {
-            //     labTempArr.push({
-            //         id: i + 1,
-            //         checkbox: true,
-            //         tableDetails: [
-            //             {
-            //                 id: 1,
-            //                 title: (
-            //                     <>
-            //                         08 / 30 / 2021 <br /> 10:36 am
-            //                     </>
-            //                 )
-            //             },
-            //             {
-            //                 id: 2,
-            //                 title: (
-            //                     <>
-            //                         <strong>Reporting facility:</strong>
-            //                         <br />
-            //                         <span>Lab Corp</span>
-            //                     </>
-            //                 )
-            //             },
-            //             { id: 3, title: null },
-            //             {
-            //                 id: 4,
-            //                 title: (
-            //                     <>
-            //                         <span className="margin-0">Acid-Fast Stain:</span>
-            //                         <br />
-            //                         <span>abnormal</span>
-            //                     </>
-            //                 )
-            //             },
-            //             {
-            //                 id: 5,
-            //                 title: (
-            //                     <>
-            //                         <a href="#" className="margin-0">
-            //                             CAS10004022ga01
-            //                         </a>
-            //                         <br />
-            //                         <span>Acute flaccid myelitis</span>
-            //                     </>
-            //                 )
-            //             },
-            //             { id: 6, title: 'BMIRD' },
-            //             { id: 7, title: 'Clayton County' },
-            //             { id: 8, title: 'OBS10003093GA01' }
-            //         ]
-            //     });
-            // }
-
-            if (i < 2) {
-                contactTempArr.push({
-                    id: i + 1,
-                    checkbox: true,
-                    tableDetails: [
-                        {
-                            id: 1,
-                            title: (
-                                <>
-                                    08 / 30 / 2021 <br /> 10:36 am
-                                </>
-                            )
-                        },
-                        { id: 2, title: 'TEST111, FIRSTMAX1' },
-                        { id: 3, title: '10/02/2021' },
-                        { id: 4, title: 'HIV Disposition: 2 - Prev. Neg, New Pos' },
-                        { id: 5, title: 'CA10004006GA01 HIV' },
-                        { id: 6, title: 'COIN10001003GA01 Field Follow-Up (S1)' }
-                    ]
-                });
-            }
-        }
-        setContactRecords(contactTempArr);
-    }, []);
+    const [morbidityResults, setMorbidityResults] = useState<any>();
 
     const getData = (investigationData: any) => {
         const tempArr: TableBody[] = [];
@@ -125,7 +58,12 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                     { id: 4, title: investigation?.notificationRecordStatusCd },
                     { id: 5, title: investigation?.jurisdictionCodeDescTxt },
                     { id: 6, title: investigator ? investigator?.lastName + ' ' + investigator?.firstName : null },
-                    { id: 7, title: investigation?.localId },
+                    {
+                        id: 7,
+                        title: <span onClick={() => console.log('asd')}>{investigation?.localId}</span>,
+                        class: 'link',
+                        link: ''
+                    },
                     { id: 8, title: 'COIN1000XX01' }
                 ]
             });
@@ -133,8 +71,17 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
         });
     };
 
-    const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
+    const getOrderingProviderName = (labReport: LabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
+        if (provider) {
+            return `${provider.firstName} ${provider.lastName}`;
+        } else {
+            return undefined;
+        }
+    };
+
+    const getMoribityProvider = (labReport: any): string | undefined => {
+        const provider = labReport.personParticipations?.find((p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -151,26 +98,28 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
         labReportData?.map((document: any, i: number) => {
             tempArr.push({
                 id: i + 1,
-                checkbox: true,
+                checkbox: false,
                 tableDetails: [
                     {
                         id: 1,
                         title: (
                             <>
                                 {format(new Date(document?.addTime), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(document?.addTime), 'hh:mm b')}
+                                {format(new Date(document?.addTime), 'hh:mm a')}
                             </>
-                        )
+                        ),
+                        class: 'link',
+                        link: ''
                     },
                     {
                         id: 2,
                         title: (
                             <div>
-                                {getOrderingProvidorName(document) && (
+                                {getOrderingProviderName(document) && (
                                     <>
                                         <strong>Reporting facility:</strong>
                                         <br />
-                                        <span>{getOrderingProvidorName(document) ?? ''}</span>
+                                        <span>{getOrderingProviderName(document) ?? ''}</span>
                                         <br />
                                     </>
                                 )}
@@ -201,7 +150,7 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                                             (i: AssociatedInvestigation, index: number) => (
                                                 <div key={index}>
                                                     <p
-                                                        className="margin-0 text-primary text-bold"
+                                                        className="margin-0 text-primary text-bold link"
                                                         style={{ wordBreak: 'break-word' }}>
                                                         {i?.localId}
                                                     </p>
@@ -221,20 +170,96 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
         });
     };
 
+    const getMorbidityData = (
+        morbidities: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined
+    ) => {
+        const tempArr: TableBody[] = [];
+        morbidities?.map((morbidity, i: number) => {
+            tempArr.push({
+                id: i + 1,
+                checkbox: false,
+                tableDetails: [
+                    {
+                        id: 1,
+                        title: (
+                            <>
+                                {format(new Date(morbidity?.addTime), 'MM/dd/yyyy')} <br />{' '}
+                                {format(new Date(morbidity?.addTime), 'hh:mm a')}
+                            </>
+                        ),
+                        class: 'link',
+                        link: ''
+                    },
+                    {
+                        id: 2,
+                        title: (
+                            <div>
+                                {getMoribityProvider(morbidity) && (
+                                    <>
+                                        <strong>Reporting facility:</strong>
+                                        <br />
+                                        <span>{getMoribityProvider(morbidity) ?? ''}</span>
+                                        <br />
+                                    </>
+                                )}
+                            </div>
+                        )
+                    },
+                    {
+                        id: 3,
+                        title: null
+                    },
+                    { id: 4, title: morbidity?.labConditionCd },
+                    { id: 7, title: morbidity?.jurisdictionCd || null },
+                    {
+                        id: 5,
+                        title:
+                            // !morbidity?. ||
+                            // morbidity?.associatedInvestigations.length == 0 ? null : (
+                            // <>
+                            //     {document.associatedInvestigations &&
+                            //         document.associatedInvestigations?.length > 0 &&
+                            //         document.associatedInvestigations?.map(
+                            //             (i: AssociatedInvestigation, index: number) => (
+                            //                 <div key={index}>
+                            //                     <p
+                            //                         className="margin-0 text-primary text-bold link"
+                            //                         style={{ wordBreak: 'break-word' }}>
+                            //                         {i?.localId}
+                            //                     </p>
+                            //                     <p className="margin-0">{i?.cdDescTxt}</p>
+                            //                 </div>
+                            //             )
+                            //         )}
+                            // </>
+                            null
+                        // )
+                    },
+                    { id: 8, title: morbidity?.localId || null }
+                ]
+            });
+            setMorbidityResults(tempArr);
+        });
+    };
+
     useEffect(() => {
         if (investigationData) {
             setTotalInvestigations(investigationData.total);
             getData(investigationData?.content);
             setInvenstigations(investigationData?.content);
         }
-    }, [investigationData]);
-
-    useEffect(() => {
         if (labReports) {
             setTotalLabReports(labReports?.total);
             getLabReport(labReports?.content);
         }
-    }, [labReports]);
+        if (morbidityData) {
+            console.log('morbidityData:', morbidityData);
+            getMorbidityData(morbidityData);
+        }
+        if (documentsData) {
+            console.log('documentsData:', documentsData);
+        }
+    }, [investigationData, labReports, morbidityData, documentsData]);
 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
@@ -309,7 +334,16 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                                 <Icon.Topic className="margin-right-05" />
                                 Compare investigations
                             </Button>
-                            <Button type="button" className="grid-row">
+                            <Button
+                                type="button"
+                                className="grid-row"
+                                onClick={() => {
+                                    RedirectControllerService.preparePatientDetailsUsingGet({
+                                        authorization: 'Bearer ' + state.getToken()
+                                    }).then(() => {
+                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddInvestigation`;
+                                    });
+                                }}>
                                 <Icon.Add className="margin-right-05" />
                                 Add investigation
                             </Button>
@@ -333,13 +367,21 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                     sortData={handleSort}
                 />
             </div>
-
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <Button
+                                type="button"
+                                className="grid-row"
+                                onClick={() => {
+                                    RedirectControllerService.preparePatientDetailsUsingGet({
+                                        authorization: 'Bearer ' + state.getToken()
+                                    }).then(() => {
+                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddLab`;
+                                    });
+                                }}>
                                 <Icon.Add className="margin-right-05" />
                                 Add lab report
                             </Button>
@@ -362,26 +404,41 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                     handleNext={(e) => setLabCurrentPage(e)}
                 />
             </div>
-
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <Button
+                                type="button"
+                                className="grid-row"
+                                onClick={() => {
+                                    RedirectControllerService.preparePatientDetailsUsingGet({
+                                        authorization: 'Bearer ' + state.getToken()
+                                    }).then(() => {
+                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddMorb`;
+                                    });
+                                }}>
                                 <Icon.Add className="margin-right-05" />
                                 Add morbidity report
                             </Button>
                         </div>
                     }
                     tableHeader={'Morbidity reports'}
-                    tableHead={[]}
-                    tableBody={[]}
+                    tableHead={[
+                        { name: 'Date received', sortable: true },
+                        { name: 'Provider', sortable: true },
+                        { name: 'Report date', sortable: true },
+                        { name: 'Condition', sortable: true },
+                        { name: 'Jurisdiction', sortable: false },
+                        { name: 'Associated with', sortable: true },
+                        { name: 'Event #', sortable: false }
+                    ]}
+                    tableBody={morbidityResults}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
             </div>
-
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     isPagination={true}
@@ -389,18 +446,27 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
                         <div className="grid-row">
                             <Button type="button" className="grid-row">
                                 <Icon.Add className="margin-right-05" />
-                                Add treatment
+                                Add vaccination
                             </Button>
                         </div>
                     }
-                    tableHeader={'Treatments'}
-                    tableHead={[]}
+                    tableHeader={'Vaccinations'}
+                    tableHead={[
+                        { name: 'Date created', sortable: true },
+                        { name: 'Provider', sortable: true },
+                        { name: 'Date adinistered', sortable: true },
+                        { name: 'Vaccine administered', sortable: true },
+                        { name: 'Associated with', sortable: true },
+                        { name: 'Events', sortable: true }
+                    ]}
                     tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
                 />
             </div>
-
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <PatientTreatmentTable patient={patient} />
+            </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     isPagination={true}
@@ -421,29 +487,11 @@ export const Events = ({ investigationData, labReports }: EventTabProp) => {
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <TableComponent
-                    isPagination={true}
-                    buttons={
-                        <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add document
-                            </Button>
-                        </div>
-                    }
-                    tableHeader={'Contact records'}
-                    tableHead={[
-                        { name: 'Date created', sortable: true },
-                        { name: 'Named by', sortable: true },
-                        { name: 'Date named', sortable: true },
-                        { name: 'Description', sortable: true },
-                        { name: 'Associated with', sortable: true },
-                        { name: 'Event #', sortable: true }
-                    ]}
-                    tableBody={[]}
-                    currentPage={currentPage}
-                    handleNext={(e) => setCurrentPage(e)}
-                />
+                <ContactNamedByPatientTable patient={patient} />
+            </div>
+
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <PatientNamedByContactTable patient={patient} />
             </div>
         </>
     );

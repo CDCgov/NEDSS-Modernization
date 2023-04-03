@@ -6,6 +6,7 @@ import AddPatient from '../pages/addPatient/AddPatient';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
+import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
@@ -41,6 +42,7 @@ export const AppRoutes = () => {
                     <>
                         <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                         <Route path="/patient-profile/:id" element={<PatientProfile />} />
+                        <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                         <Route path="/add-patient" element={<AddPatient />} />
                         <Route path="*" element={<Navigate to="/advanced-search" />} />
                         <Route path="/" element={<Navigate to="/advanced-search" />} />

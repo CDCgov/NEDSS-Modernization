@@ -4,45 +4,37 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-
 import java.util.List;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.repository.ObservationRepository;
 import gov.cdc.nbs.repository.ParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.util.Constants;
 
 
-@ExtendWith(MockitoExtension.class)
 class FindMorbidityReportsForPatientTest {
 
     @Mock
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Mock
-    ParticipationRepository participationRepository;
+    private ParticipationRepository participationRepository;
 
     @Mock
-    ObservationRepository oboservationRepository;
-
-    @Mock
-    ElasticsearchPersonRepository elasticPersonRepository;
+    private ObservationRepository oboservationRepository;
 
     @InjectMocks
-    EventService eventService;
+    private EventService eventService;
 
-    public FindMorbidityReportsForPatientTest() {
+    @BeforeEach
+    void setup() {
         MockitoAnnotations.openMocks(this);
-        eventService = new EventService(null, null, null);
     }
 
     @Test

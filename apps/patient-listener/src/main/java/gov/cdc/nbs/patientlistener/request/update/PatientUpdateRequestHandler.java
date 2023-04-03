@@ -12,6 +12,7 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PatientUpdateRequestHandler {
@@ -43,6 +44,7 @@ public class PatientUpdateRequestHandler {
    *
    * @param data
    */
+  @Transactional
   public void handlePatientGeneralInfoUpdate(final UpdateGeneralInfoData data) {
     if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
       throw new UserNotAuthorizedException(data.requestId());
@@ -64,6 +66,7 @@ public class PatientUpdateRequestHandler {
    *
    * @param data
    */
+  @Transactional
   public void handlePatientMortalityUpdate(final UpdateMortalityData data) {
     if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
       throw new UserNotAuthorizedException(data.requestId());
@@ -85,6 +88,7 @@ public class PatientUpdateRequestHandler {
    *
    * @param data
    */
+  @Transactional
   public void handlePatientSexAndBirthUpdate(final UpdateSexAndBirthData data) {
     if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
       throw new UserNotAuthorizedException(data.requestId());
