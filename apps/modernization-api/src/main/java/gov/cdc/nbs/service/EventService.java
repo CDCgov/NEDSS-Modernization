@@ -46,9 +46,6 @@ public class EventService {
     private static final String VIEW_LAB_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
             + BusinessObjects.OBSERVATIONLABREPORT
             + "')";
-    private static final String VIEW_MORBIDITY_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
-            + BusinessObjects.OBSERVATIONMORBIDITYREPORT
-            + "')";
     private static final String PATSBJ = "PATSBJ";
 
     private final Integer maxPageSize;

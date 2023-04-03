@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.morbidity;
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.NameRenderer;
-
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -29,11 +28,10 @@ class PatientMorbidityTupleMapper {
         Suffix providerSuffix = tuple.get(tables.provider().nmSuffix);
 
         String provider = NameRenderer.render(
-            providerPrefix,
-            providerFirstName,
-            providerLastName,
-            providerSuffix
-        );
+                providerPrefix,
+                providerFirstName,
+                providerLastName,
+                providerSuffix);
 
         Instant reportedOn = tuple.get(tables.morbidity().activityToTime);
         String condition = tuple.get(tables.condition().conditionShortNm);
@@ -48,17 +46,16 @@ class PatientMorbidityTupleMapper {
         Collection<PatientMorbidity.LabOrderResult> labOrderResults = mapLabOrderResults(tuple);
 
         return new PatientMorbidity(
-            morbidity,
-            receivedOn,
-            provider,
-            reportedOn,
-            condition,
-            jurisdiction,
-            event,
-            investigation,
-            treatments,
-            labOrderResults
-        );
+                morbidity,
+                receivedOn,
+                provider,
+                reportedOn,
+                condition,
+                jurisdiction,
+                event,
+                investigation,
+                treatments,
+                labOrderResults);
     }
 
     private PatientMorbidity.Investigation maybeMapInvestigation(final Tuple tuple) {
@@ -67,12 +64,11 @@ class PatientMorbidityTupleMapper {
         String condition = tuple.get(tables.investigationCondition().conditionShortNm);
 
         return identifier == null
-            ? null
-            : new PatientMorbidity.Investigation(
-            identifier,
-            local,
-            condition
-        );
+                ? null
+                : new PatientMorbidity.Investigation(
+                        identifier,
+                        local,
+                        condition);
     }
 
     private List<String> mapTreatments(final Tuple tuple) {
@@ -80,14 +76,14 @@ class PatientMorbidityTupleMapper {
         String treatment = tuple.get(tables.treatment().cdDescTxt);
 
         return treatment == null
-            ? List.of()
-            : List.of(treatment);
+                ? List.of()
+                : List.of(treatment);
     }
 
 
     private Collection<PatientMorbidity.LabOrderResult> mapLabOrderResults(final Tuple tuple) {
         return this.labOrderResultMapper.maybeMap(tuple)
-            .map(List::of)
-            .orElseGet(List::of);
+                .map(List::of)
+                .orElseGet(List::of);
     }
 }

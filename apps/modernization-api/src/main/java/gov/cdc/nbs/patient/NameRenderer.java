@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.contact;
+package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.message.enums.Suffix;
 

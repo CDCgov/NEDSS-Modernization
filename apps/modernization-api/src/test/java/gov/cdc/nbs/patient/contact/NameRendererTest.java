@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.contact;
 
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.NameRenderer;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

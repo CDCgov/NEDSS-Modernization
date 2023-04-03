@@ -1,0 +1,6 @@
+mutation deletePatient($patientId: ID!){
+    deletePatient(patientId: $patientId){
+        requestId
+        patientId
+    }
+}
