@@ -20,15 +20,15 @@ import com.auth0.jwt.algorithms.Algorithm;
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
-import gov.cdc.nbs.controller.EventController;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.investigation.InvestigationFilter;
 import gov.cdc.nbs.investigation.InvestigationResolver;
+import gov.cdc.nbs.labreport.LabReportFilter;
+import gov.cdc.nbs.labreport.LabReportResolver;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -50,7 +50,7 @@ public class PermissionSteps {
     @Autowired
     ProgramAreaCodeRepository programAreaCodeRepository;
     @Autowired
-    EventController eventController;
+    LabReportResolver labReportResolver;
     @Autowired
     InvestigationResolver investigationResolver;
 
@@ -133,7 +133,7 @@ public class PermissionSteps {
                     response = investigationResolver.findInvestigationsByFilter(new InvestigationFilter(), page);
                     break;
                 case "findLabReport":
-                    response = eventController.findLabReportsByFilter(new LabReportFilter(), page);
+                    response = labReportResolver.findLabReportsByFilter(new LabReportFilter(), page);
                     break;
                 case "findPatientsByOrganization":
                     var orgFilter = new OrganizationFilter();

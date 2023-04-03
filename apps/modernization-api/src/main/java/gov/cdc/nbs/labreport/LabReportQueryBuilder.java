@@ -1,21 +1,7 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.labreport;
 
-import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
-import gov.cdc.nbs.config.security.SecurityUtil.Operations;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
-import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
-import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.LabReportFilter;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.EventStatus;
-import gov.cdc.nbs.graphql.filter.LabReportFilter.UserType;
-import gov.cdc.nbs.time.FlexibleInstantConverter;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -24,67 +10,43 @@ import org.elasticsearch.search.sort.NestedSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
+import gov.cdc.nbs.entity.elasticsearch.Investigation;
+import gov.cdc.nbs.entity.elasticsearch.LabReport;
+import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
+import gov.cdc.nbs.labreport.LabReportFilter.UserType;
+import gov.cdc.nbs.service.SecurityService;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-@Service
-public class EventService {
-    private static final String HAS_AUTHORITY = "hasAuthority('";
-    private static final String VIEW_LAB_REPORT = HAS_AUTHORITY + Operations.VIEW + "-"
-            + BusinessObjects.OBSERVATIONLABREPORT
-            + "')";
+@Component
+public class LabReportQueryBuilder {
     private static final String PATSBJ = "PATSBJ";
 
-    private final Integer maxPageSize;
-    private final ElasticsearchOperations operations;
     private final SecurityService securityService;
 
-    public EventService(
-            @Value("${nbs.max-page-size: 50}") Integer maxPageSize,
-            ElasticsearchOperations operations,
-            SecurityService securityService
-    ) {
-        this.maxPageSize = maxPageSize;
-        this.operations = operations;
+    public LabReportQueryBuilder(SecurityService securityService) {
         this.securityService = securityService;
-    }
-
-    @PreAuthorize(VIEW_LAB_REPORT)
-    public Page<LabReport> findLabReportsByFilter(LabReportFilter filter, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, maxPageSize);
-        var query = buildLabReportQuery(filter, pageable);
-        return performSearch(query, LabReport.class);
-    }
-
-    @PreAuthorize(VIEW_LAB_REPORT)
-    public Page<LabReport> findLabReportsByFilterForExport(LabReportFilter filter) {
-        var query = buildLabReportQuery(filter, Pageable.ofSize(1000));
-        return performSearch(query, LabReport.class);
-    }
-
-    private <T> Page<T> performSearch(NativeSearchQuery query, Class<T> clazz) {
-        var hits = operations.search(query, clazz);
-        var list = hits.getSearchHits().stream().map(SearchHit::getContent).toList();
-        return new PageImpl<>(list, query.getPageable(), hits.getTotalHits());
     }
 
     @SuppressWarnings("squid:S3776")
     // ignore high cognitive complexity as the method is simply going through the
     // passed in parameters, checking if null, and if not appending to the query
-    private NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
+    public NativeSearchQuery buildLabReportQuery(LabReportFilter filter, Pageable pageable) {
+        if (pageable == null) {
+            pageable = Pageable.ofSize(25);
+        }
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
         // Lab reports are secured by Program Area and Jurisdiction
         addProgramAreaJurisdictionQuery(builder, LabReport.PROGRAM_JURISDICTION_OID);
@@ -261,7 +223,7 @@ public class EventService {
                                     LabReport.ORGANIZATION_PARTICIPATIONS + "."
                                             + ElasticsearchOrganizationParticipation.ENTITY_ID,
                                     pSearch.getProviderId()));
-                    var nestedOrderingFacilityQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                    var nestedOrderingFacilityQuery = QueryBuilders.nestedQuery(LabReport.ORGANIZATION_PARTICIPATIONS,
                             orderingFacilityQuery,
                             ScoreMode.None);
                     builder.must(nestedOrderingFacilityQuery);
@@ -280,7 +242,7 @@ public class EventService {
                                     LabReport.PERSON_PARTICIPATIONS + "."
                                             + ElasticsearchPersonParticipation.ENTITY_ID,
                                     pSearch.getProviderId()));
-                    var nestedOrderingProviderQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                    var nestedOrderingProviderQuery = QueryBuilders.nestedQuery(LabReport.PERSON_PARTICIPATIONS,
                             orderingProviderQuery,
                             ScoreMode.None);
                     builder.must(nestedOrderingProviderQuery);
@@ -295,7 +257,7 @@ public class EventService {
                                     LabReport.ORGANIZATION_PARTICIPATIONS + "."
                                             + ElasticsearchOrganizationParticipation.ENTITY_ID,
                                     pSearch.getProviderId()));
-                    var nestedReportingFacilityQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
+                    var nestedReportingFacilityQuery = QueryBuilders.nestedQuery(LabReport.ORGANIZATION_PARTICIPATIONS,
                             reportingFacilityQuery,
                             ScoreMode.None);
                     builder.must(nestedReportingFacilityQuery);
@@ -392,45 +354,7 @@ public class EventService {
     }
 
     /**
-     * Return a list of lab reports that the user has access to, are associated with
-     * a particular patient, and have the
-     * status of "UNPROCESSED"
-     *
-     * This currently only returns lab reports as those are the only documents
-     * ingested in elasticsearch, but in the
-     * future will also include morbidity reports and case reports
-     */
-    public Page<LabReport> findDocumentsRequiringReviewForPatient(Long patientId, GraphQLPage page) {
-        var pageable = GraphQLPage.toPageable(page, maxPageSize);
-
-        BoolQueryBuilder builder = QueryBuilders.boolQuery();
-        // Lab reports are secured by Program Area and Jurisdiction
-        addProgramAreaJurisdictionQuery(builder, LabReport.PROGRAM_JURISDICTION_OID);
-
-        // Patient id - must match parent uid as this is the Master Patient Record Id
-        var patientIdQuery = QueryBuilders.boolQuery();
-        patientIdQuery.must(
-                QueryBuilders.matchQuery(
-                        LabReport.PERSON_PARTICIPATIONS + "." + ElasticsearchPersonParticipation.PERSON_PARENT_UID,
-                        patientId));
-
-        builder.must(
-                QueryBuilders.nestedQuery(LabReport.PERSON_PARTICIPATIONS, patientIdQuery, ScoreMode.None));
-
-        // Status is Unprocessed
-        builder.must(QueryBuilders.matchQuery(LabReport.RECORD_STATUS_CD, "UNPROCESSED"));
-
-        var query = new NativeSearchQueryBuilder()
-                .withQuery(builder)
-                .withSorts(buildLabReportSort(pageable))
-                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
-                .build();
-        return performSearch(query, LabReport.class);
-    }
-
-    /**
-     * Adds a query to only return documents that the user has access to based on
-     * the users program area and
+     * Adds a query to only return documents that the user has access to based on the users program area and
      * jurisdiction access
      */
     private void addProgramAreaJurisdictionQuery(BoolQueryBuilder builder, String programJurisdictionField) {
