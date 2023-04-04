@@ -13,6 +13,8 @@ import {
 import './style.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { RedirectControllerService } from 'generated';
+import { UserContext } from 'providers/UserContext';
 import {
     FindPatientsByFilterQuery,
     useFindDocumentsForPatientLazyQuery,
@@ -36,6 +38,8 @@ enum ACTIVE_TAB {
 
 export const PatientProfile = () => {
     const { id } = useParams();
+    const { state } = useContext(UserContext);
+    const NBS_URL = Config.nbsUrl;
 
     const modalRef = useRef<ModalRef>(null);
 
@@ -54,11 +58,15 @@ export const PatientProfile = () => {
 
     const { searchCriteria } = useContext(SearchCriteriaContext);
     const openPrintableView = () => {
-        window.open(
-            `${Config.nbsUrl}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
-            '_blank',
-            'noreferrer'
-        );
+        RedirectControllerService.preparePatientDetailsUsingGet({
+            authorization: 'Bearer ' + state.getToken()
+        }).then(() => {
+            window.open(
+                `${NBS_URL}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
+                '_blank',
+                'noreferrer'
+            );
+        });
     };
 
     useEffect(() => {

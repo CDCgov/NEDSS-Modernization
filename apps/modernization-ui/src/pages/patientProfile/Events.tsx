@@ -332,7 +332,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                                     RedirectControllerService.preparePatientDetailsUsingGet({
                                         authorization: 'Bearer ' + state.getToken()
                                     }).then(() => {
-                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddInvestigation`;
+                                        window.location.href = `${NBS_URL}/LoadSelectCondition1.do?ContextAction=AddInvestigation`;
                                     });
                                 }}>
                                 <Icon.Add className="margin-right-05" />
@@ -370,7 +370,12 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                                     RedirectControllerService.preparePatientDetailsUsingGet({
                                         authorization: 'Bearer ' + state.getToken()
                                     }).then(() => {
-                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddLab`;
+                                        // URl should probably be:
+                                        // /nbs/LoadAddObservationLab1.do?method=createGenericLoad&ContextAction=AddLab
+                                        // But this internally checks for "DSPatientPersonUID" which is stored in some NBSContext.OBJECT_STORE
+                                        // for now putting in a temporary one that works, loads the "Add Lab report" page but with the tab "patient"
+                                        // in context rather that the tab "report"
+                                        window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
                                     });
                                 }}>
                                 <Icon.Add className="margin-right-05" />
@@ -407,7 +412,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                                     RedirectControllerService.preparePatientDetailsUsingGet({
                                         authorization: 'Bearer ' + state.getToken()
                                     }).then(() => {
-                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddMorb`;
+                                        window.location.href = `${NBS_URL}/LoadAddObservationMorb1.do?ContextAction=AddMorb`;
                                     });
                                 }}>
                                 <Icon.Add className="margin-right-05" />
@@ -461,14 +466,6 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     isPagination={true}
-                    buttons={
-                        <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add document
-                            </Button>
-                        </div>
-                    }
                     tableHeader={'Documents'}
                     tableHead={[]}
                     tableBody={[]}
