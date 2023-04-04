@@ -25,11 +25,7 @@ public class KafkaTestConsumer {
      *
      * @param consumerRecord
      */
-    @KafkaListener(topics = {"request-patient-search.patientsearch",
-            "request-patient-search.patientupdate",
-            "request-patient-search.patientdelete",
-            "patient-create-test"
-    })
+    @KafkaListener(topics = {"patient"})
     public void receive(ConsumerRecord<?, ?> consumerRecord) {
         payload = consumerRecord.value();
         key = consumerRecord.key();

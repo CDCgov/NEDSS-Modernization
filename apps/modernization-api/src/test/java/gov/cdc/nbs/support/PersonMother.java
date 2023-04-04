@@ -8,10 +8,10 @@ import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.PatientInput;
-import gov.cdc.nbs.message.PatientInput.PhoneType;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -57,6 +57,8 @@ public class PersonMother {
         person.setBirthCityCd(RandomUtil.getRandomString());
         person.setBirthStateCd(RandomUtil.getRandomStateCode());
         person.setBirthCntryCd("United States");
+        person.setAgeReportedTime(RandomUtil.getRandomDateInPast());
+        person.setAsOfDateGeneral(RandomUtil.getRandomDateInPast());
 
         NBSEntity entity = person.getNbsEntity();
 
@@ -86,9 +88,7 @@ public class PersonMother {
                         null,
                         PatientInput.NameUseCd.L,
                         id,
-                        now
-                )
-        );
+                        now));
 
         // ethnic group
         person.setEthnicGroupInd(RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST));
@@ -99,9 +99,7 @@ public class PersonMother {
                         id,
                         RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
                         id,
-                        now
-                )
-        );
+                        now));
 
         // Tele locator entry
         person.add(
@@ -112,9 +110,7 @@ public class PersonMother {
                         null,
                         PhoneType.HOME,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         // Postal locator entry
         person.add(
@@ -130,9 +126,7 @@ public class PersonMother {
                         RandomUtil.country(),
                         null,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         return person;
     }
@@ -159,9 +153,7 @@ public class PersonMother {
                         null,
                         PatientInput.NameUseCd.L,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         // phone numbers
         person.add(
@@ -172,9 +164,7 @@ public class PersonMother {
                         null,
                         PhoneType.HOME,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         person.add(
                 new PatientCommand.AddPhoneNumber(
@@ -184,9 +174,7 @@ public class PersonMother {
                         null,
                         PhoneType.WORK,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         person.add(
                 new PatientCommand.AddPhoneNumber(
@@ -196,9 +184,7 @@ public class PersonMother {
                         null,
                         PhoneType.CELL,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         // addresses
         person.add(
@@ -214,9 +200,7 @@ public class PersonMother {
                         new Country("840", "United States"),
                         null,
                         CREATED_BY_ID,
-                        now
-                )
-        );
+                        now));
 
         person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO_CODE);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
@@ -228,9 +212,7 @@ public class PersonMother {
                         id,
                         RaceMother.WHITE_CODE,
                         id,
-                        now
-                )
-        );
+                        now));
 
         return person;
     }

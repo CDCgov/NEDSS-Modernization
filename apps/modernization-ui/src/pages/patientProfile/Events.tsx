@@ -6,7 +6,7 @@ import {
     FindDocumentsForPatientQuery,
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
-    FindMorbidtyReportForPatientQuery,
+    FindMorbidityReportsForPatientQuery,
     LabReport,
     OrganizationParticipation
 } from '../../generated/graphql/schema';
@@ -21,7 +21,7 @@ type EventTabProp = {
     patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
-    morbidityData?: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined;
+    morbidityData?: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined;
     documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
     profileData?: any;
 };
@@ -74,15 +74,6 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
 
     const getOrderingProviderName = (labReport: LabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
-        if (provider) {
-            return `${provider.firstName} ${provider.lastName}`;
-        } else {
-            return undefined;
-        }
-    };
-
-    const getMoribityProvider = (labReport: any): string | undefined => {
-        const provider = labReport.personParticipations?.find((p: any) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
         if (provider) {
             return `${provider.firstName} ${provider.lastName}`;
         } else {
@@ -172,10 +163,10 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
     };
 
     const getMorbidityData = (
-        morbidities: FindMorbidtyReportForPatientQuery['findMorbidtyReportForPatient'] | undefined
+        morbidities: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined
     ) => {
         const tempArr: TableBody[] = [];
-        morbidities?.map((morbidity, i: number) => {
+        morbidities?.content?.map((morbidity, i: number) => {
             tempArr.push({
                 id: i + 1,
                 checkbox: false,
@@ -184,8 +175,8 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         id: 1,
                         title: (
                             <>
-                                {format(new Date(morbidity?.addTime), 'MM/dd/yyyy')} <br />{' '}
-                                {format(new Date(morbidity?.addTime), 'hh:mm a')}
+                                {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
+                                {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
                             </>
                         ),
                         class: 'link',
@@ -195,11 +186,11 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         id: 2,
                         title: (
                             <div>
-                                {getMoribityProvider(morbidity) && (
+                                {morbidity?.provider && (
                                     <>
                                         <strong>Reporting facility:</strong>
                                         <br />
-                                        <span>{getMoribityProvider(morbidity) ?? ''}</span>
+                                        <span>{morbidity.provider}</span>
                                         <br />
                                     </>
                                 )}
@@ -210,8 +201,8 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         id: 3,
                         title: null
                     },
-                    { id: 4, title: morbidity?.labConditionCd },
-                    { id: 7, title: morbidity?.jurisdictionCd || null },
+                    { id: 4, title: morbidity?.condition },
+                    { id: 7, title: morbidity?.jurisdiction || null },
                     {
                         id: 5,
                         title:
@@ -236,7 +227,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                             null
                         // )
                     },
-                    { id: 8, title: morbidity?.localId || null }
+                    { id: 8, title: morbidity?.event || null }
                 ]
             });
             setMorbidityResults(tempArr);
@@ -381,7 +372,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                                     RedirectControllerService.preparePatientDetailsUsingGet({
                                         authorization: 'Bearer ' + state.getToken()
                                     }).then(() => {
-                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddInvestigation`;
+                                        window.location.href = `${NBS_URL}/LoadSelectCondition1.do?ContextAction=AddInvestigation`;
                                     });
                                 }}>
                                 <Icon.Add className="margin-right-05" />
@@ -419,7 +410,12 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                                     RedirectControllerService.preparePatientDetailsUsingGet({
                                         authorization: 'Bearer ' + state.getToken()
                                     }).then(() => {
-                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddLab`;
+                                        // URl should probably be:
+                                        // /nbs/LoadAddObservationLab1.do?method=createGenericLoad&ContextAction=AddLab
+                                        // But this internally checks for "DSPatientPersonUID" which is stored in some NBSContext.OBJECT_STORE
+                                        // for now putting in a temporary one that works, loads the "Add Lab report" page but with the tab "patient"
+                                        // in context rather that the tab "report"
+                                        window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
                                     });
                                 }}>
                                 <Icon.Add className="margin-right-05" />
@@ -456,7 +452,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                                     RedirectControllerService.preparePatientDetailsUsingGet({
                                         authorization: 'Bearer ' + state.getToken()
                                     }).then(() => {
-                                        window.location.href = `${NBS_URL}/ViewFile1.do?ContextAction=AddMorb`;
+                                        window.location.href = `${NBS_URL}/LoadAddObservationMorb1.do?ContextAction=AddMorb`;
                                     });
                                 }}>
                                 <Icon.Add className="margin-right-05" />
@@ -511,14 +507,6 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     isPagination={true}
-                    buttons={
-                        <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add document
-                            </Button>
-                        </div>
-                    }
                     tableHeader={'Documents'}
                     tableHead={[
                         { name: 'Date created', sortable: true },

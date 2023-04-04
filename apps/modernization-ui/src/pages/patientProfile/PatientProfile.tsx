@@ -13,13 +13,15 @@ import {
 import './style.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { RedirectControllerService } from 'generated';
+import { UserContext } from 'providers/UserContext';
 import {
     FindPatientsByFilterQuery,
     NameUseCd,
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
-    useFindMorbidtyReportForPatientLazyQuery,
+    useFindMorbidityReportsForPatientLazyQuery,
     useFindPatientByIdLazyQuery,
     useUpdatePatientGeneralInfoMutation
 } from '../../generated/graphql/schema';
@@ -38,13 +40,15 @@ enum ACTIVE_TAB {
 
 export const PatientProfile = () => {
     const { id } = useParams();
+    const { state } = useContext(UserContext);
+    const NBS_URL = Config.nbsUrl;
 
     const modalRef = useRef<ModalRef>(null);
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
     // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
-    const [getMorbidityData, { data: morbidityData }] = useFindMorbidtyReportForPatientLazyQuery();
+    const [getMorbidityData, { data: morbidityData }] = useFindMorbidityReportsForPatientLazyQuery();
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
@@ -57,11 +61,15 @@ export const PatientProfile = () => {
 
     const { searchCriteria } = useContext(SearchCriteriaContext);
     const openPrintableView = () => {
-        window.open(
-            `${Config.nbsUrl}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
-            '_blank',
-            'noreferrer'
-        );
+        RedirectControllerService.preparePatientDetailsUsingGet({
+            authorization: 'Bearer ' + state.getToken()
+        }).then(() => {
+            window.open(
+                `${NBS_URL}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
+                '_blank',
+                'noreferrer'
+            );
+        });
     };
 
     useEffect(() => {
@@ -96,7 +104,7 @@ export const PatientProfile = () => {
                 });
                 getMorbidityData({
                     variables: {
-                        patientId: +patientProfileData.findPatientById.id
+                        patient: patientProfileData.findPatientById.id
                     }
                 });
                 getDocumentsData({
@@ -334,7 +342,7 @@ export const PatientProfile = () => {
                         patient={id}
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
-                        morbidityData={morbidityData?.findMorbidtyReportForPatient}
+                        morbidityData={morbidityData?.findMorbidityReportsForPatient}
                         documentsData={documentsData?.findDocumentsForPatient}
                     />
                 )}

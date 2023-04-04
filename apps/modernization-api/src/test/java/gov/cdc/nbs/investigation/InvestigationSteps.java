@@ -1,6 +1,5 @@
 package gov.cdc.nbs.investigation;
 
-import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.patient.TestPatients;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;

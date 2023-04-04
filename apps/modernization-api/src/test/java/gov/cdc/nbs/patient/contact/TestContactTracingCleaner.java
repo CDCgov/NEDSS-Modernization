@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.contact;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.odse.QCtContact;
-import gov.cdc.nbs.entity.odse.QPerson;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;

@@ -25,6 +25,11 @@ http:
       middlewares:
         - "advancedSearchRewritepath"
       rule: "Path(`/nbs/MyTaskList1.do`)&& Query(`ContextAction=GlobalPatient`)"
+    manualSearch:
+      service: modernization-api
+      middlewares:
+        - "advancedSearchRewritepath"
+      rule: "Path(`/nbs/MyTaskList1.do`)&& Query(`ContextAction=GlobalMP_ManualSearch`, `Mode1=ManualMerge`)"
     # Non '/nbs' NBS routes
     nbsLogo:
       service: nbs
