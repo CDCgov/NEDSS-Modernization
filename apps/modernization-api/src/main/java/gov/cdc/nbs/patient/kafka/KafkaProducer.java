@@ -16,7 +16,7 @@ public class KafkaProducer {
     @Autowired
     private KafkaTemplate<String, PatientRequest> kafkaPatientEventTemplate;
 
-    @Value("${kafkadef.topics.request.patient}")
+    @Value("${kafkadef.topics.patient.request}")
     private String patientTopic;
 
     public void requestPatientEventEnvelope(final PatientRequest request) {
