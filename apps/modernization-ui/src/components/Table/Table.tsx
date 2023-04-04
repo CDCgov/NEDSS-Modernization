@@ -25,6 +25,7 @@ export type TableContentProps = {
     tableHead: { name: string; sortable: boolean }[];
     tableBody: TableBody[];
     isPagination?: boolean;
+    pageSize?: number;
     totalResults?: number;
     currentPage?: number;
     handleNext?: (page: number) => void;
@@ -38,6 +39,7 @@ export const TableComponent = ({
     tableHead,
     tableBody,
     isPagination = false,
+    pageSize = TOTAL_TABLE_DATA,
     totalResults = 20,
     currentPage = 1,
     handleNext,
@@ -158,12 +160,12 @@ export const TableComponent = ({
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
                 <p className="margin-0 show-length-text">
-                    Showing {tableBody?.length} of {tableBody?.length}
+                    Showing {tableBody?.length} of {totalResults}
                 </p>
-                {isPagination && tableBody?.length >= TOTAL_TABLE_DATA && (
+                {isPagination && totalResults >= pageSize && (
                     <Pagination
                         className="margin-0 pagination"
-                        totalPages={Math.ceil(totalResults / TOTAL_TABLE_DATA)}
+                        totalPages={Math.ceil(totalResults / pageSize)}
                         currentPage={currentPage}
                         pathname={'/patient-profile'}
                         onClickNext={() => handleNext?.(currentPage + 1)}
