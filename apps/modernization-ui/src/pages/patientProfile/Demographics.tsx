@@ -23,7 +23,7 @@ import { AddRaceModal } from './components/AddRaceModal';
 import { DetailsNameModal } from './components/DemographicDetails/DetailsNameModal';
 import { DetailsAddressModal } from './components/DemographicDetails/DetailsAddressModal';
 import { DetailsPhoneEmailModal } from './components/DemographicDetails/DetailsPhoneEmailModal';
-import { DetailsIdentificationModal } from './components/DemographicDetails/DetailsIdentificationModa';
+import { DetailsIdentificationModal } from './components/DemographicDetails/DetailsIdentificationModal';
 import { DetailsRaceModal } from './components/DemographicDetails/DetailsRaceModal';
 
 type DemographicProps = {
@@ -575,7 +575,6 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     handleAction={(type, data) => {
-                        console.log('type:', data);
                         if (type === 'edit') {
                             setIsEditModal(true);
                             addPhoneEmailRef.current?.toggleModal();
@@ -633,7 +632,6 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     handleAction={(type, data) => {
-                        console.log('type:', data);
                         if (type === 'edit') {
                             setIsEditModal(true);
                             addIdentificationRef.current?.toggleModal();

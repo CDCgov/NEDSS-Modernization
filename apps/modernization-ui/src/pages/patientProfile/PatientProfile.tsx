@@ -17,13 +17,11 @@ import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import {
     FindPatientsByFilterQuery,
-    NameUseCd,
     useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidityReportsForPatientLazyQuery,
-    useFindPatientByIdLazyQuery,
-    useUpdatePatientGeneralInfoMutation
+    useFindPatientByIdLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
@@ -52,7 +50,6 @@ export const PatientProfile = () => {
     const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
-    const [updateGeneralInfo, { data: generalInfoData }] = useUpdatePatientGeneralInfoMutation();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -200,8 +197,6 @@ export const PatientProfile = () => {
         }
         return true;
     }
-
-    console.log('generalInfoData:', generalInfoData);
 
     return (
         <div className="height-full main-banner">
@@ -355,21 +350,6 @@ export const PatientProfile = () => {
                         ) => {
                             if (!isEmpty(data) && id) {
                                 console.log('data:', data);
-                                updateGeneralInfo({
-                                    variables: {
-                                        id,
-                                        patient: {
-                                            names: [
-                                                {
-                                                    firstName: data.first,
-                                                    lastName: data.last,
-                                                    middleName: data.middle,
-                                                    nameUseCd: NameUseCd.A
-                                                }
-                                            ]
-                                        }
-                                    }
-                                });
                             }
                             setSubmittedSuccess(true);
                             setAddedItem(message);

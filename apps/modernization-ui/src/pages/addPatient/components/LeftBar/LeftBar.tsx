@@ -22,6 +22,7 @@ export const LeftBar = ({ activeTab }: any) => {
                     New patient
                 </h6>
             </div>
+            {/* To be added new in future a list of other pages, for now its commented out as its not needed until designers have built out designs for these pages */}
             {/* <div className="border-base-light grid-row flex-no-wrap border-top padding-y-1 margin-x-3 cursor-pointer width-full">
                 <h6
                     className={`${
