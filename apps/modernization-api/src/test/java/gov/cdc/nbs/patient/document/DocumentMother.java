@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.document;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
 import gov.cdc.nbs.entity.odse.NbsDocument;

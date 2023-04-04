@@ -39,20 +39,19 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
     consumer:
       auto-offset-reset: earliest
       group-id: group-id
 
 kafka:
   enabled: true
+
+
 kafkadef:
-  patient-search:
-    topics:
-      request:
-        patient: request-patient-search.patientsearch
-        patientupdate: request-patient-search.patientupdate
-        patientdelete: request-patient-search.patientdelete
-        patientcreate: patient-create-test
+  topics:
+    request:
+      patient: patient
 
 testing:
   id-generation:

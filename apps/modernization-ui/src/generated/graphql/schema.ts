@@ -17,11 +17,6 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type Act = {
-  __typename?: 'Act';
-  id?: Maybe<Scalars['Int']>;
-};
-
 export type ActId = {
   __typename?: 'ActId';
   actIdSeq?: Maybe<Scalars['Int']>;
@@ -137,6 +132,20 @@ export enum Gender {
   M = 'M',
   U = 'U'
 }
+
+export type GeneralInfoInput = {
+  adultsInHouseNumber?: InputMaybe<Scalars['Int']>;
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  childrenInHouseNumber?: InputMaybe<Scalars['Int']>;
+  educationLevelCode?: InputMaybe<Scalars['String']>;
+  eharsId?: InputMaybe<Scalars['String']>;
+  maritalStatus?: InputMaybe<Scalars['String']>;
+  mothersMaidenName?: InputMaybe<Scalars['String']>;
+  occupationCode?: InputMaybe<Scalars['String']>;
+  patientId: Scalars['ID'];
+  primaryLanguageCode?: InputMaybe<Scalars['String']>;
+  speaksEnglishCode?: InputMaybe<Scalars['String']>;
+};
 
 export type Identification = {
   assigningAuthority?: InputMaybe<Scalars['String']>;
@@ -452,78 +461,6 @@ export type MaterialParticipation = {
   typeDescTxt?: Maybe<Scalars['String']>;
 };
 
-export type MorbidtyObservation = {
-  __typename?: 'MorbidtyObservation';
-  act?: Maybe<Act>;
-  activityDurationAmt?: Maybe<Scalars['String']>;
-  activityDurationUnitCd?: Maybe<Scalars['String']>;
-  activityFromTime?: Maybe<Scalars['DateTime']>;
-  activityToTime?: Maybe<Scalars['DateTime']>;
-  addReasonCd?: Maybe<Scalars['String']>;
-  addTime?: Maybe<Scalars['DateTime']>;
-  addUserId?: Maybe<Scalars['Int']>;
-  altCd?: Maybe<Scalars['String']>;
-  altCdDescTxt?: Maybe<Scalars['String']>;
-  altCdSystemCd?: Maybe<Scalars['String']>;
-  altCdSystemDescTxt?: Maybe<Scalars['String']>;
-  cd?: Maybe<Scalars['String']>;
-  cdDerivedInd?: Maybe<Scalars['String']>;
-  cdDescTxt?: Maybe<Scalars['String']>;
-  cdSystemCd?: Maybe<Scalars['String']>;
-  cdSystemDescTxt?: Maybe<Scalars['String']>;
-  cdVersion?: Maybe<Scalars['String']>;
-  confidentialityCd?: Maybe<Scalars['String']>;
-  confidentialityDescTxt?: Maybe<Scalars['String']>;
-  ctrlCdDisplayForm?: Maybe<Scalars['String']>;
-  ctrlCdUserDefined1?: Maybe<Scalars['String']>;
-  ctrlCdUserDefined2?: Maybe<Scalars['String']>;
-  ctrlCdUserDefined3?: Maybe<Scalars['String']>;
-  ctrlCdUserDefined4?: Maybe<Scalars['String']>;
-  derivationExp?: Maybe<Scalars['Int']>;
-  effectiveDurationAmt?: Maybe<Scalars['String']>;
-  effectiveDurationUnitCd?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  electronicInd?: Maybe<Scalars['String']>;
-  groupLevelCd?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  jurisdictionCd?: Maybe<Scalars['String']>;
-  labConditionCd?: Maybe<Scalars['String']>;
-  lastChgReasonCd?: Maybe<Scalars['String']>;
-  lastChgTime?: Maybe<Scalars['DateTime']>;
-  lastChgUserId?: Maybe<Scalars['Int']>;
-  localId?: Maybe<Scalars['String']>;
-  methodCd?: Maybe<Scalars['String']>;
-  methodDescTxt?: Maybe<Scalars['String']>;
-  obsDomainCd?: Maybe<Scalars['String']>;
-  obsDomainCdSt1?: Maybe<Scalars['String']>;
-  obsValueCodedList?: Maybe<Array<Maybe<ObsValueCoded>>>;
-  pnuCd?: Maybe<Scalars['String']>;
-  pregnantIndCd?: Maybe<Scalars['String']>;
-  pregnantWeek?: Maybe<Scalars['Int']>;
-  priorityCd?: Maybe<Scalars['String']>;
-  priorityDescTxt?: Maybe<Scalars['String']>;
-  processingDecisionCd?: Maybe<Scalars['String']>;
-  processingDecisionTxt?: Maybe<Scalars['String']>;
-  progAreaCd?: Maybe<Scalars['String']>;
-  programJurisdictionOid?: Maybe<Scalars['Int']>;
-  recordStatusCd?: Maybe<Scalars['String']>;
-  recordStatusTime?: Maybe<Scalars['DateTime']>;
-  repeatNbr?: Maybe<Scalars['Int']>;
-  rptToStateTime?: Maybe<Scalars['DateTime']>;
-  sharedInd?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['DateTime']>;
-  subjectPersonUid?: Maybe<Person>;
-  targetSiteCd?: Maybe<Scalars['String']>;
-  targetSiteDescTxt?: Maybe<Scalars['String']>;
-  txt?: Maybe<Scalars['String']>;
-  userAffiliationTxt?: Maybe<Scalars['String']>;
-  valueCd?: Maybe<Scalars['String']>;
-  versionCtrlNbr?: Maybe<Scalars['Int']>;
-  ynuCd?: Maybe<Scalars['String']>;
-};
-
 export type MortalityInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
   cityOfDeath?: InputMaybe<Scalars['String']>;
@@ -531,15 +468,17 @@ export type MortalityInput = {
   countyOfDeath?: InputMaybe<Scalars['String']>;
   deceased?: InputMaybe<Deceased>;
   deceasedTime?: InputMaybe<Scalars['DateTime']>;
+  patientId: Scalars['ID'];
   stateOfDeath?: InputMaybe<Scalars['String']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPatient: Scalars['String'];
-  updateMortality?: Maybe<UpdateResult>;
-  updatePatientGeneralInfo?: Maybe<UpdateResult>;
-  updatePatientSexBirth?: Maybe<UpdateResult>;
+  createPatient: PatientEventResponse;
+  deletePatient: PatientEventResponse;
+  updateMortality: PatientEventResponse;
+  updatePatientGeneralInfo: PatientEventResponse;
+  updatePatientSexBirth: PatientEventResponse;
 };
 
 
@@ -548,21 +487,23 @@ export type MutationCreatePatientArgs = {
 };
 
 
+export type MutationDeletePatientArgs = {
+  patientId: Scalars['ID'];
+};
+
+
 export type MutationUpdateMortalityArgs = {
-  id: Scalars['ID'];
-  patient: MortalityInput;
+  input: MortalityInput;
 };
 
 
 export type MutationUpdatePatientGeneralInfoArgs = {
-  id: Scalars['ID'];
-  patient: PersonInput;
+  input: GeneralInfoInput;
 };
 
 
 export type MutationUpdatePatientSexBirthArgs = {
-  id: Scalars['ID'];
-  patient: UpdateSexAndBirthInput;
+  input: UpdateSexAndBirthInput;
 };
 
 export type NbsEntity = {
@@ -648,16 +589,6 @@ export enum NotificationStatus {
 export type NotificationStatuses = {
   includeUnassigned: Scalars['Boolean'];
   statusList: Array<NotificationStatus>;
-};
-
-export type ObsValueCoded = {
-  __typename?: 'ObsValueCoded';
-  id?: Maybe<ObsValueCodedId>;
-};
-
-export type ObsValueCodedId = {
-  __typename?: 'ObsValueCodedId';
-  observationUid?: Maybe<Scalars['ID']>;
 };
 
 export type Observation = {
@@ -800,9 +731,52 @@ export type PatientDocumentInvestigation = {
   local: Scalars['String'];
 };
 
+export type PatientEventResponse = {
+  __typename?: 'PatientEventResponse';
+  patientId: Scalars['ID'];
+  requestId: Scalars['String'];
+};
+
 export type PatientIdentificationTypeResults = {
   __typename?: 'PatientIdentificationTypeResults';
   content: Array<Maybe<IdentificationType>>;
+  total: Scalars['Int'];
+};
+
+export type PatientMorbidity = {
+  __typename?: 'PatientMorbidity';
+  associatedWith?: Maybe<PatientMorbidityInvestigation>;
+  condition: Scalars['String'];
+  event: Scalars['String'];
+  jurisdiction: Scalars['String'];
+  labResults: Array<Maybe<PatientMorbidityLabResult>>;
+  morbidity: Scalars['ID'];
+  provider?: Maybe<Scalars['String']>;
+  receivedOn: Scalars['DateTime'];
+  reportedOn: Scalars['DateTime'];
+  treatments: Array<Maybe<Scalars['String']>>;
+};
+
+export type PatientMorbidityInvestigation = {
+  __typename?: 'PatientMorbidityInvestigation';
+  condition: Scalars['String'];
+  id: Scalars['ID'];
+  local: Scalars['String'];
+};
+
+export type PatientMorbidityLabResult = {
+  __typename?: 'PatientMorbidityLabResult';
+  codedResult?: Maybe<Scalars['String']>;
+  labTest: Scalars['String'];
+  numericResult?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
+  textResult?: Maybe<Scalars['String']>;
+};
+
+export type PatientMorbidityResults = {
+  __typename?: 'PatientMorbidityResults';
+  content: Array<Maybe<PatientMorbidity>>;
+  number: Scalars['Int'];
   total: Scalars['Int'];
 };
 
@@ -1192,7 +1166,7 @@ export type Query = {
   findLocalCodedResults: LocalCodedResults;
   findLocalLabTest: LocalLabTestResults;
   findLoincLabTest: LoincLabTestResults;
-  findMorbidtyReportForPatient?: Maybe<Array<Maybe<MorbidtyObservation>>>;
+  findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findOpenInvestigationsForPatient: InvestigationResults;
   findOrganizationById?: Maybe<Organization>;
   findOrganizationsByFilter: OrganizationResults;
@@ -1325,9 +1299,9 @@ export type QueryFindLoincLabTestArgs = {
 };
 
 
-export type QueryFindMorbidtyReportForPatientArgs = {
+export type QueryFindMorbidityReportsForPatientArgs = {
   page?: InputMaybe<Page>;
-  patientId: Scalars['Int'];
+  patient: Scalars['ID'];
 };
 
 
@@ -1485,14 +1459,8 @@ export enum Suffix {
   V = 'V'
 }
 
-export type UpdateResult = {
-  __typename?: 'UpdateResult';
-  requestId?: Maybe<Scalars['String']>;
-};
-
 export type UpdateSexAndBirthInput = {
-  DateOfBirth?: InputMaybe<Scalars['DateTime']>;
-  additionalGender?: InputMaybe<Gender>;
+  additionalGender?: InputMaybe<Scalars['String']>;
   ageReportedTime?: InputMaybe<Scalars['DateTime']>;
   asOf?: InputMaybe<Scalars['DateTime']>;
   birthCity?: InputMaybe<Scalars['String']>;
@@ -1502,9 +1470,11 @@ export type UpdateSexAndBirthInput = {
   birthState?: InputMaybe<Scalars['String']>;
   currentAge?: InputMaybe<Scalars['String']>;
   currentGender?: InputMaybe<Gender>;
+  dateOfBirth?: InputMaybe<Scalars['Date']>;
   multipleBirth?: InputMaybe<Scalars['String']>;
-  sexunknown?: InputMaybe<Scalars['String']>;
-  transGenderInfo?: InputMaybe<Gender>;
+  patientId: Scalars['ID'];
+  sexUnknown?: InputMaybe<Scalars['String']>;
+  transGenderInfo?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -1537,31 +1507,35 @@ export type CreatePatientMutationVariables = Exact<{
 }>;
 
 
-export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: string };
+export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type DeletePatientMutationVariables = Exact<{
+  patientId: Scalars['ID'];
+}>;
+
+
+export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
 export type UpdateMortalityMutationVariables = Exact<{
-  id: Scalars['ID'];
-  patient: MortalityInput;
+  input: MortalityInput;
 }>;
 
 
-export type UpdateMortalityMutation = { __typename?: 'Mutation', updateMortality?: { __typename?: 'UpdateResult', requestId?: string | null } | null };
+export type UpdateMortalityMutation = { __typename?: 'Mutation', updateMortality: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
 export type UpdatePatientGeneralInfoMutationVariables = Exact<{
-  id: Scalars['ID'];
-  patient: PersonInput;
+  input: GeneralInfoInput;
 }>;
 
 
-export type UpdatePatientGeneralInfoMutation = { __typename?: 'Mutation', updatePatientGeneralInfo?: { __typename?: 'UpdateResult', requestId?: string | null } | null };
+export type UpdatePatientGeneralInfoMutation = { __typename?: 'Mutation', updatePatientGeneralInfo: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
 export type UpdatePatientSexBirthMutationVariables = Exact<{
-  id: Scalars['ID'];
-  patient: UpdateSexAndBirthInput;
+  input: UpdateSexAndBirthInput;
 }>;
 
 
-export type UpdatePatientSexBirthMutation = { __typename?: 'Mutation', updatePatientSexBirth?: { __typename?: 'UpdateResult', requestId?: string | null } | null };
+export type UpdatePatientSexBirthMutation = { __typename?: 'Mutation', updatePatientSexBirth: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
 export type FindAllConditionCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -1725,13 +1699,13 @@ export type FindLoincLabTestQueryVariables = Exact<{
 
 export type FindLoincLabTestQuery = { __typename?: 'Query', findLoincLabTest: { __typename?: 'LoincLabTestResults', total: number, content: Array<{ __typename?: 'LoincCode', id?: string | null, componentName?: string | null, methodType?: string | null, systemCd?: string | null, property?: string | null, relatedClassCd?: string | null } | null> } };
 
-export type FindMorbidtyReportForPatientQueryVariables = Exact<{
-  patientId: Scalars['Int'];
+export type FindMorbidityReportsForPatientQueryVariables = Exact<{
+  patient: Scalars['ID'];
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindMorbidtyReportForPatientQuery = { __typename?: 'Query', findMorbidtyReportForPatient?: Array<{ __typename?: 'MorbidtyObservation', id?: string | null, activityDurationAmt?: string | null, activityDurationUnitCd?: string | null, activityFromTime?: any | null, activityToTime?: any | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, cdSystemCd?: string | null, cdSystemDescTxt?: string | null, confidentialityCd?: string | null, confidentialityDescTxt?: string | null, ctrlCdDisplayForm?: string | null, ctrlCdUserDefined1?: string | null, ctrlCdUserDefined2?: string | null, ctrlCdUserDefined3?: string | null, ctrlCdUserDefined4?: string | null, derivationExp?: number | null, effectiveDurationAmt?: string | null, effectiveDurationUnitCd?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, electronicInd?: string | null, groupLevelCd?: string | null, jurisdictionCd?: string | null, labConditionCd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, methodCd?: string | null, methodDescTxt?: string | null, obsDomainCd?: string | null, obsDomainCdSt1?: string | null, pnuCd?: string | null, priorityCd?: string | null, priorityDescTxt?: string | null, progAreaCd?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, repeatNbr?: number | null, statusCd?: string | null, statusTime?: any | null, targetSiteCd?: string | null, targetSiteDescTxt?: string | null, txt?: string | null, userAffiliationTxt?: string | null, valueCd?: string | null, ynuCd?: string | null, programJurisdictionOid?: number | null, sharedInd?: string | null, versionCtrlNbr?: number | null, altCd?: string | null, altCdDescTxt?: string | null, altCdSystemCd?: string | null, altCdSystemDescTxt?: string | null, cdDerivedInd?: string | null, rptToStateTime?: any | null, cdVersion?: string | null, processingDecisionCd?: string | null, pregnantIndCd?: string | null, pregnantWeek?: number | null, processingDecisionTxt?: string | null, act?: { __typename?: 'Act', id?: number | null } | null, obsValueCodedList?: Array<{ __typename?: 'ObsValueCoded', id?: { __typename?: 'ObsValueCodedId', observationUid?: string | null } | null } | null> | null, subjectPersonUid?: { __typename?: 'Person', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: string | null, administrativeGenderCd?: string | null, ageCalc?: number | null, ageCalcTime?: any | null, ageCalcUnitCd?: string | null, ageCategoryCd?: string | null, ageReported?: string | null, ageReportedTime?: any | null, ageReportedUnitCd?: string | null, birthGenderCd?: Gender | null, birthOrderNbr?: number | null, birthTime?: any | null, birthTimeCalc?: any | null, cd?: string | null, cdDescTxt?: string | null, currSexCd?: string | null, deceasedIndCd?: string | null, deceasedTime?: any | null, description?: string | null, educationLevelCd?: string | null, educationLevelDescTxt?: string | null, ethnicGroupInd?: string | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: string | null, localId?: string | null, maritalStatusCd?: string | null, maritalStatusDescTxt?: string | null, mothersMaidenNm?: string | null, multipleBirthInd?: string | null, occupationCd?: string | null, preferredGenderCd?: string | null, primLangCd?: string | null, primLangDescTxt?: string | null, recordStatusCd?: RecordStatus | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, survivedIndCd?: string | null, userAffiliationTxt?: string | null, firstNm?: string | null, lastNm?: string | null, middleNm?: string | null, nmPrefix?: string | null, nmSuffix?: string | null, preferredNm?: string | null, hmStreetAddr1?: string | null, hmStreetAddr2?: string | null, hmCityCd?: string | null, hmCityDescTxt?: string | null, hmStateCd?: string | null, hmZipCd?: string | null, hmCntyCd?: string | null, hmCntryCd?: string | null, hmPhoneNbr?: string | null, hmPhoneCntryCd?: string | null, hmEmailAddr?: string | null, cellPhoneNbr?: string | null, wkStreetAddr1?: string | null, wkStreetAddr2?: string | null, wkCityCd?: string | null, wkCityDescTxt?: string | null, wkStateCd?: string | null, wkZipCd?: string | null, wkCntyCd?: string | null, wkCntryCd?: string | null, wkPhoneNbr?: string | null, wkPhoneCntryCd?: string | null, wkEmailAddr?: string | null, ssn?: string | null, medicaidNum?: string | null, dlNum?: string | null, dlStateCd?: string | null, raceCd?: string | null, raceSeqNbr?: number | null, raceCategoryCd?: string | null, ethnicityGroupCd?: string | null, ethnicGroupSeqNbr?: number | null, adultsInHouseNbr?: number | null, childrenInHouseNbr?: number | null, birthCityCd?: string | null, birthCityDescTxt?: string | null, birthCntryCd?: string | null, birthStateCd?: string | null, raceDescTxt?: string | null, ethnicGroupDescTxt?: string | null, versionCtrlNbr?: number | null, asOfDateAdmin?: any | null, asOfDateEthnicity?: any | null, asOfDateGeneral?: any | null, asOfDateMorbidity?: any | null, asOfDateSex?: any | null, electronicInd?: string | null, dedupMatchInd?: string | null, groupNbr?: number | null, groupTime?: any | null, edxInd?: string | null, speaksEnglishCd?: string | null, additionalGenderCd?: string | null, eharsId?: string | null, ethnicUnkReasonCd?: string | null, sexUnkReasonCd?: string | null, nbsEntity: { __typename?: 'NBSEntity', entityLocatorParticipations?: Array<{ __typename?: 'LocatorParticipations', classCd?: string | null, locator?: { __typename?: 'Locator', emailAddress?: string | null, extenstionTxt?: string | null, phoneNbrTxt?: string | null, urlAddress?: string | null, censusBlockCd?: string | null, censusMinorCivilDivisionCd?: string | null, censusTrackCd?: string | null, cityCd?: string | null, cityDescTxt?: string | null, cntryCd?: string | null, cntryDescTxt?: string | null, cntyCd?: string | null, cntyDescTxt?: string | null, msaCongressDistrictCd?: string | null, regionDistrictCd?: string | null, stateCd?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, zipCd?: string | null, geocodeMatchInd?: string | null, withinCityLimitsInd?: string | null, censusTract?: string | null } | null } | null> | null }, entityIds?: Array<{ __typename?: 'PersonIdentification', typeDescTxt?: string | null, typeCd?: string | null, rootExtensionTxt?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null } | null> | null, races?: Array<{ __typename?: 'PersonRace', raceCd?: string | null, recordStatusCd?: string | null } | null> | null, names?: Array<{ __typename?: 'PersonName', firstNm?: string | null, middleNm?: string | null, lastNm?: string | null, nmSuffix?: string | null, nmPrefix?: string | null } | null> | null, personParentUid?: { __typename?: 'personParentUid', id?: string | null } | null } | null } | null> | null };
+export type FindMorbidityReportsForPatientQuery = { __typename?: 'Query', findMorbidityReportsForPatient?: { __typename?: 'PatientMorbidityResults', total: number, number: number, content: Array<{ __typename?: 'PatientMorbidity', morbidity: string, receivedOn: any, provider?: string | null, reportedOn: any, condition: string, jurisdiction: string, event: string, treatments: Array<string | null>, associatedWith?: { __typename?: 'PatientMorbidityInvestigation', id: string, local: string, condition: string } | null, labResults: Array<{ __typename?: 'PatientMorbidityLabResult', labTest: string, status?: string | null, codedResult?: string | null, numericResult?: string | null, textResult?: string | null } | null> } | null> } | null };
 
 export type FindOpenInvestigationsForPatientQueryVariables = Exact<{
   patientId: Scalars['Int'];
@@ -1821,7 +1795,10 @@ export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmen
 
 export const CreatePatientDocument = gql`
     mutation createPatient($patient: PersonInput!) {
-  createPatient(patient: $patient)
+  createPatient(patient: $patient) {
+    requestId
+    patientId
+  }
 }
     `;
 export type CreatePatientMutationFn = Apollo.MutationFunction<CreatePatientMutation, CreatePatientMutationVariables>;
@@ -1850,10 +1827,45 @@ export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
-export const UpdateMortalityDocument = gql`
-    mutation updateMortality($id: ID!, $patient: MortalityInput!) {
-  updateMortality(id: $id, patient: $patient) {
+export const DeletePatientDocument = gql`
+    mutation deletePatient($patientId: ID!) {
+  deletePatient(patientId: $patientId) {
     requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutation, DeletePatientMutationVariables>;
+
+/**
+ * __useDeletePatientMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *   },
+ * });
+ */
+export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientMutation, DeletePatientMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
+      }
+export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
+export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
+export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
+export const UpdateMortalityDocument = gql`
+    mutation updateMortality($input: MortalityInput!) {
+  updateMortality(input: $input) {
+    requestId
+    patientId
   }
 }
     `;
@@ -1872,8 +1884,7 @@ export type UpdateMortalityMutationFn = Apollo.MutationFunction<UpdateMortalityM
  * @example
  * const [updateMortalityMutation, { data, loading, error }] = useUpdateMortalityMutation({
  *   variables: {
- *      id: // value for 'id'
- *      patient: // value for 'patient'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -1885,9 +1896,10 @@ export type UpdateMortalityMutationHookResult = ReturnType<typeof useUpdateMorta
 export type UpdateMortalityMutationResult = Apollo.MutationResult<UpdateMortalityMutation>;
 export type UpdateMortalityMutationOptions = Apollo.BaseMutationOptions<UpdateMortalityMutation, UpdateMortalityMutationVariables>;
 export const UpdatePatientGeneralInfoDocument = gql`
-    mutation updatePatientGeneralInfo($id: ID!, $patient: PersonInput!) {
-  updatePatientGeneralInfo(id: $id, patient: $patient) {
+    mutation updatePatientGeneralInfo($input: GeneralInfoInput!) {
+  updatePatientGeneralInfo(input: $input) {
     requestId
+    patientId
   }
 }
     `;
@@ -1906,8 +1918,7 @@ export type UpdatePatientGeneralInfoMutationFn = Apollo.MutationFunction<UpdateP
  * @example
  * const [updatePatientGeneralInfoMutation, { data, loading, error }] = useUpdatePatientGeneralInfoMutation({
  *   variables: {
- *      id: // value for 'id'
- *      patient: // value for 'patient'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -1919,9 +1930,10 @@ export type UpdatePatientGeneralInfoMutationHookResult = ReturnType<typeof useUp
 export type UpdatePatientGeneralInfoMutationResult = Apollo.MutationResult<UpdatePatientGeneralInfoMutation>;
 export type UpdatePatientGeneralInfoMutationOptions = Apollo.BaseMutationOptions<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>;
 export const UpdatePatientSexBirthDocument = gql`
-    mutation updatePatientSexBirth($id: ID!, $patient: UpdateSexAndBirthInput!) {
-  updatePatientSexBirth(id: $id, patient: $patient) {
+    mutation updatePatientSexBirth($input: UpdateSexAndBirthInput!) {
+  updatePatientSexBirth(input: $input) {
     requestId
+    patientId
   }
 }
     `;
@@ -1940,8 +1952,7 @@ export type UpdatePatientSexBirthMutationFn = Apollo.MutationFunction<UpdatePati
  * @example
  * const [updatePatientSexBirthMutation, { data, loading, error }] = useUpdatePatientSexBirthMutation({
  *   variables: {
- *      id: // value for 'id'
- *      patient: // value for 'patient'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -3358,271 +3369,65 @@ export function useFindLoincLabTestLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type FindLoincLabTestQueryHookResult = ReturnType<typeof useFindLoincLabTestQuery>;
 export type FindLoincLabTestLazyQueryHookResult = ReturnType<typeof useFindLoincLabTestLazyQuery>;
 export type FindLoincLabTestQueryResult = Apollo.QueryResult<FindLoincLabTestQuery, FindLoincLabTestQueryVariables>;
-export const FindMorbidtyReportForPatientDocument = gql`
-    query findMorbidtyReportForPatient($patientId: Int!, $page: Page) {
-  findMorbidtyReportForPatient(patientId: $patientId, page: $page) {
-    id
-    act {
-      id
-    }
-    obsValueCodedList {
-      id {
-        observationUid
-      }
-    }
-    activityDurationAmt
-    activityDurationUnitCd
-    activityFromTime
-    activityToTime
-    addReasonCd
-    addTime
-    addUserId
-    cd
-    cdDescTxt
-    cdSystemCd
-    cdSystemDescTxt
-    confidentialityCd
-    confidentialityDescTxt
-    ctrlCdDisplayForm
-    ctrlCdUserDefined1
-    ctrlCdUserDefined2
-    ctrlCdUserDefined3
-    ctrlCdUserDefined4
-    derivationExp
-    effectiveDurationAmt
-    effectiveDurationUnitCd
-    effectiveFromTime
-    effectiveToTime
-    electronicInd
-    groupLevelCd
-    jurisdictionCd
-    labConditionCd
-    lastChgReasonCd
-    lastChgTime
-    lastChgUserId
-    localId
-    methodCd
-    methodDescTxt
-    obsDomainCd
-    obsDomainCdSt1
-    pnuCd
-    priorityCd
-    priorityDescTxt
-    progAreaCd
-    recordStatusCd
-    recordStatusTime
-    repeatNbr
-    statusCd
-    statusTime
-    subjectPersonUid {
-      id
-      nbsEntity {
-        entityLocatorParticipations {
-          classCd
-          locator {
-            emailAddress
-            extenstionTxt
-            phoneNbrTxt
-            urlAddress
-            censusBlockCd
-            censusMinorCivilDivisionCd
-            censusTrackCd
-            cityCd
-            cityDescTxt
-            cntryCd
-            cntryDescTxt
-            cntyCd
-            cntyDescTxt
-            msaCongressDistrictCd
-            regionDistrictCd
-            stateCd
-            streetAddr1
-            streetAddr2
-            zipCd
-            geocodeMatchInd
-            withinCityLimitsInd
-            censusTract
-          }
-        }
-      }
-      entityIds {
-        typeDescTxt
-        typeCd
-        rootExtensionTxt
-        assigningAuthorityCd
-        assigningAuthorityDescTxt
-      }
-      races {
-        raceCd
-        recordStatusCd
-      }
-      names {
-        firstNm
-        middleNm
-        lastNm
-        nmSuffix
-        nmPrefix
-      }
-      addReasonCd
-      addTime
-      addUserId
-      administrativeGenderCd
-      ageCalc
-      ageCalcTime
-      ageCalcUnitCd
-      ageCategoryCd
-      ageReported
-      ageReportedTime
-      ageReportedUnitCd
-      birthGenderCd
-      birthOrderNbr
-      birthTime
-      birthTimeCalc
-      cd
-      cdDescTxt
-      currSexCd
-      deceasedIndCd
-      deceasedTime
-      description
-      educationLevelCd
-      educationLevelDescTxt
-      ethnicGroupInd
-      lastChgReasonCd
-      lastChgTime
-      lastChgUserId
-      localId
-      maritalStatusCd
-      maritalStatusDescTxt
-      mothersMaidenNm
-      multipleBirthInd
-      occupationCd
-      preferredGenderCd
-      primLangCd
-      primLangDescTxt
-      recordStatusCd
-      recordStatusTime
-      statusCd
-      statusTime
-      survivedIndCd
-      userAffiliationTxt
-      firstNm
-      lastNm
-      middleNm
-      nmPrefix
-      nmSuffix
-      preferredNm
-      hmStreetAddr1
-      hmStreetAddr2
-      hmCityCd
-      hmCityDescTxt
-      hmStateCd
-      hmZipCd
-      hmCntyCd
-      hmCntryCd
-      hmPhoneNbr
-      hmPhoneCntryCd
-      hmEmailAddr
-      cellPhoneNbr
-      wkStreetAddr1
-      wkStreetAddr2
-      wkCityCd
-      wkCityDescTxt
-      wkStateCd
-      wkZipCd
-      wkCntyCd
-      wkCntryCd
-      wkPhoneNbr
-      wkPhoneCntryCd
-      wkEmailAddr
-      ssn
-      medicaidNum
-      dlNum
-      dlStateCd
-      raceCd
-      raceSeqNbr
-      raceCategoryCd
-      ethnicityGroupCd
-      ethnicGroupSeqNbr
-      adultsInHouseNbr
-      childrenInHouseNbr
-      birthCityCd
-      birthCityDescTxt
-      birthCntryCd
-      birthStateCd
-      raceDescTxt
-      ethnicGroupDescTxt
-      versionCtrlNbr
-      asOfDateAdmin
-      asOfDateEthnicity
-      asOfDateGeneral
-      asOfDateMorbidity
-      asOfDateSex
-      electronicInd
-      personParentUid {
+export const FindMorbidityReportsForPatientDocument = gql`
+    query findMorbidityReportsForPatient($patient: ID!, $page: Page) {
+  findMorbidityReportsForPatient(patient: $patient, page: $page) {
+    content {
+      morbidity
+      receivedOn
+      provider
+      reportedOn
+      condition
+      jurisdiction
+      event
+      associatedWith {
         id
+        local
+        condition
       }
-      dedupMatchInd
-      groupNbr
-      groupTime
-      edxInd
-      speaksEnglishCd
-      additionalGenderCd
-      eharsId
-      ethnicUnkReasonCd
-      sexUnkReasonCd
+      treatments
+      labResults {
+        labTest
+        status
+        codedResult
+        numericResult
+        textResult
+      }
     }
-    targetSiteCd
-    targetSiteDescTxt
-    txt
-    userAffiliationTxt
-    valueCd
-    ynuCd
-    programJurisdictionOid
-    sharedInd
-    versionCtrlNbr
-    altCd
-    altCdDescTxt
-    altCdSystemCd
-    altCdSystemDescTxt
-    cdDerivedInd
-    rptToStateTime
-    cdVersion
-    processingDecisionCd
-    pregnantIndCd
-    pregnantWeek
-    processingDecisionTxt
+    total
+    number
   }
 }
     `;
 
 /**
- * __useFindMorbidtyReportForPatientQuery__
+ * __useFindMorbidityReportsForPatientQuery__
  *
- * To run a query within a React component, call `useFindMorbidtyReportForPatientQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindMorbidtyReportForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFindMorbidityReportsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindMorbidityReportsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFindMorbidtyReportForPatientQuery({
+ * const { data, loading, error } = useFindMorbidityReportsForPatientQuery({
  *   variables: {
- *      patientId: // value for 'patientId'
+ *      patient: // value for 'patient'
  *      page: // value for 'page'
  *   },
  * });
  */
-export function useFindMorbidtyReportForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindMorbidtyReportForPatientQuery, FindMorbidtyReportForPatientQueryVariables>) {
+export function useFindMorbidityReportsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindMorbidtyReportForPatientQuery, FindMorbidtyReportForPatientQueryVariables>(FindMorbidtyReportForPatientDocument, options);
+        return Apollo.useQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
       }
-export function useFindMorbidtyReportForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMorbidtyReportForPatientQuery, FindMorbidtyReportForPatientQueryVariables>) {
+export function useFindMorbidityReportsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindMorbidtyReportForPatientQuery, FindMorbidtyReportForPatientQueryVariables>(FindMorbidtyReportForPatientDocument, options);
+          return Apollo.useLazyQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
         }
-export type FindMorbidtyReportForPatientQueryHookResult = ReturnType<typeof useFindMorbidtyReportForPatientQuery>;
-export type FindMorbidtyReportForPatientLazyQueryHookResult = ReturnType<typeof useFindMorbidtyReportForPatientLazyQuery>;
-export type FindMorbidtyReportForPatientQueryResult = Apollo.QueryResult<FindMorbidtyReportForPatientQuery, FindMorbidtyReportForPatientQueryVariables>;
+export type FindMorbidityReportsForPatientQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientQuery>;
+export type FindMorbidityReportsForPatientLazyQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientLazyQuery>;
+export type FindMorbidityReportsForPatientQueryResult = Apollo.QueryResult<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>;
 export const FindOpenInvestigationsForPatientDocument = gql`
     query findOpenInvestigationsForPatient($patientId: Int!, $page: Page) {
   findOpenInvestigationsForPatient(patientId: $patientId, page: $page) {
