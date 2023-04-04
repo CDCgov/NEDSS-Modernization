@@ -180,7 +180,7 @@ export default function AddPatient() {
                                                         On this page
                                                     </h3>
                                                     <div className="border-left border-base-lighter">
-                                                        <a href="#section-General_information">General Information</a>
+                                                        <a href="#section-General_information">General information</a>
                                                         <a href="#section-Name">Name information</a>
                                                         <a href="#section-Other">Other information</a>
                                                         <a href="#section-Address">Address</a>

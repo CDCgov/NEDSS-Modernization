@@ -41,6 +41,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
     const [labCurrentPage, setLabCurrentPage] = useState<number>(1);
 
     const [morbidityResults, setMorbidityResults] = useState<any>();
+    const [morbidities, setMorbidities] = useState<any>();
 
     const getData = (investigationData: any) => {
         const tempArr: TableBody[] = [];
@@ -153,7 +154,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                             )
                     },
                     { id: 6, title: document?.programAreaCd || null },
-                    { id: 7, title: document?.jurisdictionCodeDescTxt || null },
+                    { id: 7, title: document?.jurisdictionCd || null },
                     { id: 8, title: document?.localId || null }
                 ]
             });
@@ -246,6 +247,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
         if (morbidityData) {
             console.log('morbidityData:', morbidityData);
             getMorbidityData(morbidityData);
+            setMorbidities(morbidityData);
         }
         if (documentsData) {
             console.log('documentsData:', documentsData);
@@ -255,6 +257,22 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
             investigations.slice().sort((a: any, b: any) => {
+                if (a[name] && b[name]) {
+                    if (a[name].toLowerCase() < b[name].toLowerCase()) {
+                        return type === 'asc' ? -1 : 1;
+                    }
+                    if (a[name].toLowerCase() > b[name].toLowerCase()) {
+                        return type === 'asc' ? 1 : -1;
+                    }
+                }
+                return 0;
+            })
+        );
+    };
+
+    const sortMorbidityData = (name: string, type: string) => {
+        getMorbidityData(
+            morbidities.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
                     if (a[name].toLowerCase() < b[name].toLowerCase()) {
                         return type === 'asc' ? -1 : 1;
@@ -311,6 +329,28 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                 break;
             case 'notification':
                 sortInvestigationData('notificationRecordStatusCd', type);
+        }
+    };
+
+    const handleMorbiditySort = (name: string, type: string) => {
+        switch (name.toLowerCase()) {
+            case 'date received':
+                getMorbidityData(
+                    morbidities.slice().sort((a: any, b: any) => {
+                        const dateA: any = new Date(a.addTime);
+                        const dateB: any = new Date(b.addTime);
+                        return type === 'asc' ? dateB - dateA : dateA - dateB;
+                    })
+                );
+                break;
+            case 'condition':
+                sortMorbidityData('labConditionCd', type);
+                break;
+            case 'jurisdiction':
+                sortMorbidityData('jurisdictionCd', type);
+                break;
+            case 'event #':
+                sortMorbidityData('localId', type);
         }
     };
 
@@ -426,12 +466,13 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         { name: 'Provider', sortable: true },
                         { name: 'Report date', sortable: true },
                         { name: 'Condition', sortable: true },
-                        { name: 'Jurisdiction', sortable: false },
+                        { name: 'Jurisdiction', sortable: true },
                         { name: 'Associated with', sortable: true },
-                        { name: 'Event #', sortable: false }
+                        { name: 'Event #', sortable: true }
                     ]}
                     tableBody={morbidityResults}
                     currentPage={currentPage}
+                    sortData={handleMorbiditySort}
                     handleNext={(e) => setCurrentPage(e)}
                 />
             </div>
@@ -467,7 +508,13 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                 <TableComponent
                     isPagination={true}
                     tableHeader={'Documents'}
-                    tableHead={[]}
+                    tableHead={[
+                        { name: 'Date created', sortable: true },
+                        { name: 'Type', sortable: true },
+                        { name: 'Purpose', sortable: true },
+                        { name: 'Description', sortable: true },
+                        { name: 'Document ID', sortable: false }
+                    ]}
                     tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}

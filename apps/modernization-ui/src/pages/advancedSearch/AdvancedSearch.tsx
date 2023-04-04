@@ -705,11 +705,11 @@ export const AdvancedSearch = () => {
                     Search
                     <div className="button-group">
                         <Button
-                            disabled={
-                                (!patientData?.content || patientData.content.length === 0) &&
-                                (!labReportData?.content || labReportData.total === 0) &&
-                                (!investigationData?.content || investigationData.total === 0)
-                            }
+                            // disabled={
+                            //     (!patientData?.content || patientData.content.length === 0) &&
+                            //     (!labReportData?.content || labReportData.total === 0) &&
+                            //     (!investigationData?.content || investigationData.total === 0)
+                            // }
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
@@ -723,12 +723,12 @@ export const AdvancedSearch = () => {
                                 className="usa-nav__submenu add-patient-menu">
                                 <li className="usa-nav__submenu-item">
                                     <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
-                                        Add New Patient
+                                        Add new patient
                                     </Button>
                                 </li>
                                 <li className="usa-nav__submenu-item">
                                     <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
-                                        Add New Lab Report
+                                        Add new lab report
                                     </Button>
                                 </li>
                             </ul>

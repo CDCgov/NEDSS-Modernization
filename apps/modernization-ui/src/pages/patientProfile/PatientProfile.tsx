@@ -191,6 +191,13 @@ export const PatientProfile = () => {
         }
     }, [submittedSuccess]);
 
+    function isEmpty(obj: any) {
+        for (const key in obj) {
+            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
+        }
+        return true;
+    }
+
     return (
         <div className="height-full main-banner">
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
@@ -206,7 +213,7 @@ export const PatientProfile = () => {
                         className="delete-btn display-inline-flex"
                         type={'submit'}>
                         <Icon.Delete className="margin-right-05" />
-                        Delete Patient
+                        Delete patient
                     </ModalToggleButton>
                     <Modal
                         ref={modalRef}
@@ -336,13 +343,21 @@ export const PatientProfile = () => {
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
-                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                        handleFormSubmission={(
+                            type: 'error' | 'success' | 'warning' | 'info',
+                            message: string,
+                            data: any
+                        ) => {
+                            if (!isEmpty(data) && id) {
+                                console.log('data:', data);
+                            }
                             setSubmittedSuccess(true);
                             setAddedItem(message);
                             setAlertType(type);
                         }}
                         patientProfileData={patientProfileData?.findPatientById}
                         ethnicity={ethnicity}
+                        race={race}
                     />
                 )}
 

@@ -14,10 +14,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../components/FormInputs/DatePickerInput';
 import { SelectInput } from '../../../components/FormInputs/SelectInput';
 import { Input } from '../../../components/FormInputs/Input';
+import { stateList } from 'constant/states';
 
-type AddCommentModalProps = {
+type ModalProps = {
     modalRef: any;
-    handleSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
+    handleSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
     modalHead?: string;
 };
 
@@ -30,15 +31,15 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
-                            name="nameAsOf"
+                            name="asOf"
                             render={({ field: { onChange, value } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="nameAsOf"
-                                    htmlFor={'nameAsOf'}
-                                    label="Name as of"
+                                    name="asOf"
+                                    htmlFor={'asOf'}
+                                    label="As of"
                                 />
                             )}
                         />
@@ -63,122 +64,33 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
-                            name="prefex"
+                            name="id"
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    flexBox
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    type="text"
+                                    label="ID #"
+                                    name="id"
+                                    htmlFor="id"
+                                    id="id"
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
+                        <Controller
+                            control={control}
+                            name="state"
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="prefex"
-                                    htmlFor={'prefex'}
-                                    label="Prefex"
-                                    options={[]}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="suffix"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    name="suffix"
-                                    htmlFor={'suffix'}
-                                    label="Suffix"
-                                    options={[]}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="degree"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    name="degree"
-                                    htmlFor={'degree'}
-                                    label="Degree"
-                                    options={[]}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="first"
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="First"
-                                    name="first"
-                                    htmlFor="first"
-                                    id="first"
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="middle"
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Middle"
-                                    name="middle"
-                                    htmlFor="middle"
-                                    id="middle"
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="last"
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Last"
-                                    name="last"
-                                    htmlFor="last"
-                                    id="last"
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="secondLast"
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Second last"
-                                    name="secondLast"
-                                    htmlFor="secondLast"
-                                    id="secondLast"
+                                    htmlFor={'state'}
+                                    label="Issued state"
+                                    options={stateList}
                                 />
                             )}
                         />
@@ -220,22 +132,23 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     );
 };
 
-export const AddNameModal = ({ modalRef, handleSubmission, modalHead }: AddCommentModalProps) => {
+export const AddIdentificationModal = ({ modalRef, handleSubmission, modalHead }: ModalProps) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     const onSubmit = (data: any) => {
+        console.log(data);
         modalRef.current?.toggleModal();
-        handleSubmission?.('success', `${data?.last}, ${data?.first}`, data);
+        handleSubmission?.('success', `${data?.last}, ${data?.first}`);
         setSubmitted(true);
     };
-    console.log('modalHead:', modalHead);
+
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading={modalHead}
+            modalHeading={modalHead || 'Add - Identification'}
             modalBody={
                 <ModalBody
                     submitted={submitted}

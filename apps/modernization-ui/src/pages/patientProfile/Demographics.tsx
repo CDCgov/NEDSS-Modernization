@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TableComponent } from '../../components/Table/Table';
 import {
     Button,
@@ -17,18 +17,24 @@ import { AddNameModal } from './components/AddNameModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
 import { Deceased, FindPatientByIdQuery, FindPatientsByFilterQuery } from '../../generated/graphql/schema';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { format } from 'date-fns';
-import { DetailsNameModal } from './components/DetailsNameModal';
+import { AddIdentificationModal } from './components/AddIdentificationModal';
+import { AddRaceModal } from './components/AddRaceModal';
+import { DetailsNameModal } from './components/DemographicDetails/DetailsNameModal';
+import { DetailsAddressModal } from './components/DemographicDetails/DetailsAddressModal';
+import { DetailsPhoneEmailModal } from './components/DemographicDetails/DetailsPhoneEmailModal';
+import { DetailsIdentificationModal } from './components/DemographicDetails/DetailsIdentificationModal';
+import { DetailsRaceModal } from './components/DemographicDetails/DetailsRaceModal';
 
 type DemographicProps = {
     patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
-    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
+    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
     ethnicity?: string;
+    race?: any;
 };
 
-export const Demographics = ({ patientProfileData, handleFormSubmission, ethnicity }: DemographicProps) => {
-    const { searchCriteria } = useContext(SearchCriteriaContext);
+export const Demographics = ({ patientProfileData, handleFormSubmission, ethnicity, race }: DemographicProps) => {
+    // const { searchCriteria } = useContext(SearchCriteriaContext);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [tableBody, setTableBody] = useState<any>([]);
@@ -40,14 +46,21 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     const [generalTableData, setGeneralTableData] = useState<any>(undefined);
     const [morbidityTableData, setMorbidityTableData] = useState<any>(undefined);
     const [ethnicityTableData, setEthnicityTableData] = useState<any>(undefined);
+    const [sexAndBirthData, setSexAndBirthData] = useState<any>(undefined);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const addCommentModalRef = useRef<ModalRef>(null);
     const addNameModalRef = useRef<ModalRef>(null);
     const addAddressModalRef = useRef<ModalRef>(null);
     const addPhoneEmailRef = useRef<ModalRef>(null);
+    const addIdentificationRef = useRef<ModalRef>(null);
+    const addRaceRef = useRef<ModalRef>(null);
 
     const detailsNameModalRef = useRef<ModalRef>(null);
+    const detailsAddressModalRef = useRef<ModalRef>(null);
+    const detailsPhoneEmailModalRef = useRef<ModalRef>(null);
+    const detailsIdentificationModalRef = useRef<ModalRef>(null);
+    const detailsRaceModalRef = useRef<ModalRef>(null);
 
     const deleteModalRef = useRef<ModalRef>(null);
 
@@ -199,7 +212,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         textAlign: 'center',
                         type: 'actions'
                     }
-                ]
+                ],
+                data: item
             });
         });
         setIdentificationTableBody(tempArr);
@@ -241,7 +255,8 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             textAlign: 'center',
                             type: 'actions'
                         }
-                    ]
+                    ],
+                    data: element
                 });
             }
         });
@@ -268,7 +283,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         },
                         {
                             id: 3,
-                            title: element?.locator?.streetAddr1 + ' ' + element?.locator?.streetAddr1
+                            title: element?.locator?.streetAddr1 + ' ' + element?.locator?.streetAddr2
                         },
                         {
                             id: 4,
@@ -292,48 +307,46 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             textAlign: 'center',
                             type: 'actions'
                         }
-                    ]
+                    ],
+                    data: element
                 });
             }
         });
         setAddressTableBody(tempArr);
     };
 
-    const raceTableData = (
-        raceId: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['ethnicGroupInd']
-    ) => {
+    const raceTableData = () => {
         const tempArr: any = [];
-        searchCriteria.races.map((race) => {
-            if (race.id.code === raceId) {
-                tempArr.push({
-                    id: 1,
-                    checkbox: false,
-                    tableDetails: [
-                        {
-                            id: 1,
-                            title: 'Not available yet'
-                        },
-                        {
-                            id: 2,
-                            title: race.codeDescTxt
-                        },
-                        {
-                            id: 3,
-                            title: 'Not available yet'
-                        },
-                        {
-                            id: 5,
-                            title: (
-                                <Button type="button" unstyled>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-                            ),
-                            textAlign: 'center',
-                            type: 'actions'
-                        }
-                    ]
-                });
-            }
+        race.map((raceItem: any) => {
+            tempArr.push({
+                id: 1,
+                checkbox: false,
+                tableDetails: [
+                    {
+                        id: 1,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 2,
+                        title: raceItem
+                    },
+                    {
+                        id: 3,
+                        title: 'Not available yet'
+                    },
+                    {
+                        id: 5,
+                        title: (
+                            <Button type="button" unstyled>
+                                <Icon.MoreHoriz className="font-sans-lg" />
+                            </Button>
+                        ),
+                        textAlign: 'center',
+                        type: 'actions'
+                    }
+                ],
+                data: raceItem
+            });
         });
         setRaceTableBody(tempArr);
     };
@@ -343,20 +356,20 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             console.log('patientProfileData:', patientProfileData);
             namesTableData(patientProfileData?.names);
             idTableData(patientProfileData?.entityIds);
-            raceTableData(patientProfileData?.electronicInd);
+            raceTableData();
             addressTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
             phoneEmailTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
             setGeneralTableData([
                 { title: 'As of:', text: format(new Date(patientProfileData.asOfDateGeneral), 'MM/dd/yyyy') },
-                { title: 'Marital status::', text: '' },
+                { title: 'Marital status:', text: patientProfileData.maritalStatusCd },
                 { title: 'Mother’s maiden name:', text: patientProfileData.mothersMaidenNm },
                 { title: 'Number of adults in residence:', text: patientProfileData.adultsInHouseNbr },
                 { title: 'Number of children in residence:', text: patientProfileData.childrenInHouseNbr },
-                { title: 'Primary occupation:', text: '' },
-                { title: 'Highest level of education:', text: '' },
-                { title: 'Primary language:', text: '' },
-                { title: 'Speaks english:', text: '' },
-                { title: 'State HIV case ID:', text: '' }
+                { title: 'Primary occupation:', text: patientProfileData.occupationCd },
+                { title: 'Highest level of education:', text: patientProfileData.educationLevelCd },
+                { title: 'Primary language:', text: patientProfileData.primLangCd },
+                { title: 'Speaks english:', text: patientProfileData.speaksEnglishCd },
+                { title: 'State HIV case ID:', text: patientProfileData.eharsId }
             ]);
             setMorbidityTableData([
                 { title: 'As of:', text: format(new Date(patientProfileData.asOfDateMorbidity), 'MM/dd/yyyy') },
@@ -369,7 +382,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             ? 'Yes'
                             : 'Unknown'
                 },
-                { title: 'Date of death:', text: '' },
+                { title: 'Date of death:', text: patientProfileData.deceasedTime },
                 { title: 'City of death:', text: '' },
                 { title: 'State of death:', text: '' },
                 { title: 'County of death:', text: '' },
@@ -381,18 +394,40 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                 { title: 'Spanish origin:', text: '' },
                 { title: 'Reasons unknown:', text: '' }
             ]);
+            setSexAndBirthData([
+                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateSex), 'MM/dd/yyyy') },
+                { title: 'Date of death:', text: patientProfileData.deceasedTime },
+                { title: 'Current age:', text: patientProfileData.ageReported },
+                { title: 'Current sex:', text: patientProfileData.currSexCd },
+                { title: 'Unknown reason:', text: patientProfileData.sexUnkReasonCd },
+                { title: 'Transgender information:', text: patientProfileData.preferredGenderCd },
+                { title: 'Additional gender:', text: patientProfileData.additionalGenderCd },
+                { title: 'Birth sex:', text: patientProfileData.birthGenderCd },
+                { title: 'Multiple birth:', text: patientProfileData.multipleBirthInd },
+                { title: 'Birth order:', text: patientProfileData.birthOrderNbr },
+                { title: 'Birth city:', text: patientProfileData.birthCityCd },
+                { title: 'Birth state:', text: patientProfileData.birthStateCd },
+                { title: 'Birth county:', text: '' },
+                { title: 'Birth country:', text: '' }
+            ]);
         }
     }, [patientProfileData]);
 
     const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+    const [isDeleteModal, setIsDeleteModal] = useState<any>(undefined);
+    const [addressModal, setAddressModal] = useState<any>(undefined);
+    const [emailModal, setEmailModal] = useState<any>(undefined);
+    const [idModal, setIdModal] = useState<any>(undefined);
+    const [raceModal, setRaceModal] = useState<any>(undefined);
+
     const [nameDetails, setNameDetails] = useState<any>(undefined);
 
     useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
+        addressModal && detailsAddressModalRef.current?.toggleModal();
+        emailModal && detailsPhoneEmailModalRef.current?.toggleModal();
+        idModal && detailsIdentificationModalRef.current?.toggleModal();
+        raceModal && detailsRaceModalRef.current?.toggleModal();
+    }, [addressModal, emailModal, idModal, raceModal]);
 
     return (
         <>
@@ -401,7 +436,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addCommentModalRef} opener className="display-inline-flex">
+                            <ModalToggleButton
+                                onClick={() => setIsEditModal(false)}
+                                modalRef={addCommentModalRef}
+                                opener
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add comment
                             </ModalToggleButton>
@@ -423,13 +462,13 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
                     handleAction={(type, data) => {
-                        console.log('type:', data);
                         if (type === 'edit') {
                             setIsEditModal(true);
                             addNameModalRef.current?.toggleModal();
                         }
                         if (type === 'delete') {
                             setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
                         }
                         if (type === 'details') {
                             setNameDetails(data);
@@ -439,10 +478,17 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addNameModalRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addNameModalRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add name
-                            </ModalToggleButton>
+                            </Button>
                             <AddNameModal
                                 modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
                                 handleSubmission={handleFormSubmission}
@@ -469,14 +515,45 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addAddressModalRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            setEmailModal(false);
+                            setIdModal(false);
+                            setRaceModal(false);
+                            setAddressModal(true);
+                            detailsAddressModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addAddressModalRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addAddressModalRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add address
-                            </ModalToggleButton>
-                            <AddAddressModal modalRef={addAddressModalRef} />
+                            </Button>
+                            <AddAddressModal
+                                modalHead={isEditModal ? 'Edit - Address' : 'Add - Address'}
+                                modalRef={addAddressModalRef}
+                            />
+                            {addressModal && (
+                                <DetailsAddressModal data={nameDetails} modalRef={detailsAddressModalRef} />
+                            )}
                         </div>
                     }
                     tableHeader={'Address'}
@@ -497,14 +574,45 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addPhoneEmailRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            setIdModal(false);
+                            setRaceModal(false);
+                            setAddressModal(false);
+                            setEmailModal(true);
+                            detailsPhoneEmailModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <ModalToggleButton modalRef={addPhoneEmailRef} opener className="display-inline-flex">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addPhoneEmailRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add phone & email
-                            </ModalToggleButton>
-                            <AddPhoneEmailModal modalRef={addPhoneEmailRef} />
+                            </Button>
+                            <AddPhoneEmailModal
+                                modalHead={isEditModal ? 'Edit - Phone & email' : 'Add - Phone & email'}
+                                modalRef={addPhoneEmailRef}
+                            />
+                            {emailModal && (
+                                <DetailsPhoneEmailModal data={nameDetails} modalRef={detailsPhoneEmailModalRef} />
+                            )}
                         </div>
                     }
                     tableHeader={'Phone & email'}
@@ -523,13 +631,50 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addIdentificationRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            setEmailModal(false);
+                            setRaceModal(false);
+                            setAddressModal(false);
+                            setIdModal(true);
+                            detailsIdentificationModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add identification
-                            </Button>
+                            <div className="grid-row">
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        addIdentificationRef.current?.toggleModal();
+                                        setNameDetails(null);
+                                        setIsEditModal(false);
+                                    }}
+                                    className="display-inline-flex">
+                                    <Icon.Add className="margin-right-05" />
+                                    Add identification
+                                </Button>
+                                <AddIdentificationModal
+                                    modalHead={isEditModal ? 'Edit - Identification' : 'Add - Identification'}
+                                    modalRef={addIdentificationRef}
+                                />
+                                {idModal && (
+                                    <DetailsIdentificationModal
+                                        data={nameDetails}
+                                        modalRef={detailsIdentificationModalRef}
+                                    />
+                                )}
+                            </div>
                         </div>
                     }
                     tableHeader={'Identification'}
@@ -548,13 +693,44 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <TableComponent
+                    handleAction={(type, data) => {
+                        console.log('type:', data);
+                        if (type === 'edit') {
+                            setIsEditModal(true);
+                            addRaceRef.current?.toggleModal();
+                        }
+                        if (type === 'delete') {
+                            setIsDeleteModal(true);
+                            deleteModalRef.current?.toggleModal();
+                        }
+                        if (type === 'details') {
+                            setNameDetails(data);
+                            setIdModal(false);
+                            setEmailModal(false);
+                            setAddressModal(false);
+                            setRaceModal(true);
+                            detailsRaceModalRef.current?.toggleModal();
+                        }
+                    }}
                     isPagination={true}
                     buttons={
                         <div className="grid-row">
-                            <Button type="button" className="grid-row">
+                            <Button
+                                type="button"
+                                onClick={() => {
+                                    addIdentificationRef.current?.toggleModal();
+                                    setNameDetails(null);
+                                    setIsEditModal(false);
+                                }}
+                                className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
                                 Add race
                             </Button>
+                            <AddRaceModal
+                                modalHead={isEditModal ? 'Edit - Race' : 'Add - Race'}
+                                modalRef={addRaceRef}
+                            />
+                            {raceModal && <DetailsRaceModal data={nameDetails} modalRef={detailsRaceModalRef} />}
                         </div>
                     }
                     tableHeader={'Race'}
@@ -593,26 +769,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                         </Grid>
 
                         <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
-                                type="sex"
-                                tableHeader="Sex & Birth"
-                                tableData={[
-                                    { title: 'As of:', text: '' },
-                                    { title: 'Date of death:', text: '' },
-                                    { title: 'Current age:', text: '' },
-                                    { title: 'Current sex:', text: '' },
-                                    { title: 'Unknown reason:', text: '' },
-                                    { title: 'Transgender information:', text: '' },
-                                    { title: 'Additional gender:', text: '' },
-                                    { title: 'Birth sex:', text: '' },
-                                    { title: 'Multiple birth:', text: '' },
-                                    { title: 'Birth order:', text: '' },
-                                    { title: 'Birth city:', text: '' },
-                                    { title: 'Birth state:', text: '' },
-                                    { title: 'Birth county:', text: '' },
-                                    { title: 'Birth country:', text: '' }
-                                ]}
-                            />
+                            <HorizontalTable type="sex" tableHeader="Sex & Birth" tableData={sexAndBirthData} />
                         </Grid>
                     </Grid>
                 </Grid>
