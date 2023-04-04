@@ -77,7 +77,12 @@ public class RedirectController {
    * to set up the session variables so that we can navigate directly to Add Patient or Patient Details pages
    */
   @GetMapping("/preparePatientDetails")
-  @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+  @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
   public void preparePatientDetails(HttpServletRequest request) {
     String url = wildFlyUrl + "/nbs/HomePage.do?method=patientSearchSubmit";
     // copy cookie header that contains the JSESSIONID from the original request
