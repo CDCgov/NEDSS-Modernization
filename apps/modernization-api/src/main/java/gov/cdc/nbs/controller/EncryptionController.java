@@ -17,13 +17,23 @@ public class EncryptionController {
     private final EncryptionService encryptionService;
 
     @PostMapping("/encrypt")
-    @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+    @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
     public EncryptionResponse encrypt(@RequestBody Object object) {
         return new EncryptionResponse(encryptionService.handleEncryption(object));
     }
 
     @PostMapping("/decrypt")
-    @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+    @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
     public Object decrypt(@RequestBody String encryptedString) {
         return encryptionService.handleDecryption(encryptedString);
     }

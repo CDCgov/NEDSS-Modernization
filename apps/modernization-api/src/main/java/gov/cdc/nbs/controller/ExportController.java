@@ -33,7 +33,12 @@ public class ExportController {
 
     @PostMapping(value = "/investigation/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_PDF_VALUE)
-    @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+    @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
     public ResponseEntity<byte[]> generateInvestigationPdf(@RequestBody InvestigationFilter filter)
             throws DocumentException, IOException {
         var investigations = investigationFinder.find(filter, Pageable.ofSize(MAX_EXPORT_SIZE));
@@ -49,7 +54,12 @@ public class ExportController {
     }
 
     @PostMapping("/investigation/export/csv")
-    @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+    @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
     public ResponseEntity<String> generateInvestigationCsv(@RequestBody InvestigationFilter filter) {
         var investigations = investigationFinder.find(filter, Pageable.ofSize(MAX_EXPORT_SIZE));
         var csv = exportService.generateInvestigationCsv(investigations);
@@ -65,7 +75,12 @@ public class ExportController {
 
     @PostMapping(value = "/labreport/export/pdf", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_PDF_VALUE)
-    @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+    @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
     public ResponseEntity<byte[]> generateLabReportPdf(@RequestBody LabReportFilter filter)
             throws DocumentException, IOException {
         var labReports = labReportFinder.find(filter, Pageable.ofSize(MAX_EXPORT_SIZE));
@@ -79,7 +94,12 @@ public class ExportController {
     }
 
     @PostMapping("/labreport/export/csv")
-    @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+    @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
     public ResponseEntity<String> generateLabReportCsv(@RequestBody LabReportFilter filter) {
         var labReports = labReportFinder.find(filter, Pageable.ofSize(MAX_EXPORT_SIZE));
         var csv = exportService.generateLabReportCsv(labReports);
