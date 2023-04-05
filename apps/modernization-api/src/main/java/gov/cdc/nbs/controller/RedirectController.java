@@ -72,9 +72,13 @@ public class RedirectController {
     return redirectionService.handleRedirect(ADVANCED_SEARCH, request, response);
   }
   
+  /**
+   * Intercepts patient-profile from legacy page and re-routes/forwards the patient-profile to the modernized 
+   * patient profile page
+   */
   @ApiIgnore
   @PostMapping("/nbs/redirect/patientProfile")
-  public RedirectView redirectOpenInvestigation(
+  public RedirectView redirectPatientProfile(
           @RequestParam String MPRUid, 
           HttpServletRequest request,
           HttpServletResponse response) {
