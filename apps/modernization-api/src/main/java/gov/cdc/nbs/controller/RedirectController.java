@@ -25,6 +25,7 @@ import java.util.Map;
 @RestController
 public class RedirectController {
   private static final String ADVANCED_SEARCH = "/advanced-search";
+  private static final String PATIENT_PROFILE = "/patient-profile/";
 
   @Autowired
   PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
@@ -71,8 +72,6 @@ public class RedirectController {
     return redirectionService.handleRedirect(ADVANCED_SEARCH, request, response);
   }
   
-  private static final String PATIENT_PROFILE = "/patient-profile/";
-
   @ApiIgnore
   @PostMapping("/nbs/redirect/patientProfile")
   public RedirectView redirectOpenInvestigation(
