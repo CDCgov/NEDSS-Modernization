@@ -70,6 +70,17 @@ public class RedirectController {
       HttpServletResponse response) {
     return redirectionService.handleRedirect(ADVANCED_SEARCH, request, response);
   }
+  
+  private static final String PATIENT_PROFILE = "/patient-profile/";
+
+  @ApiIgnore
+  @PostMapping("/nbs/redirect/patientProfile")
+  public RedirectView redirectOpenInvestigation(
+          @RequestParam String MPRUid, 
+          HttpServletRequest request,
+          HttpServletResponse response) {
+      return redirectionService.handleRedirect(PATIENT_PROFILE + MPRUid, request, response);
+  }
 
   /**
    * Sends a GET request to
