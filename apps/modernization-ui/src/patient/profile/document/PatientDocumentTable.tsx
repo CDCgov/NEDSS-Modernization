@@ -82,7 +82,8 @@ export const PatientDocumentTable = ({ patient, pageSize, nbsBase }: Props) => {
 
         setItems(content);
 
-        setBodies(asTableBodies(nbsBase, content));
+        const sorted = sort(content, {});
+        setBodies(asTableBodies(nbsBase, sorted));
     };
 
     const [getDocuments] = useFindDocumentsForPatientLazyQuery({ onCompleted: handleComplete });

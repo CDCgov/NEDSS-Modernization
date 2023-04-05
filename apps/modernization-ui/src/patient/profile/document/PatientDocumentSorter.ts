@@ -1,5 +1,5 @@
 import { Document, Headers, isAssociatedWith } from './PatientDocuments';
-import { Direction, sortBy, sortByAlphanumeric, sortByDate, withDirection, simpleSort } from 'sorting';
+import { Direction, sortBy, sortByAlphanumeric, sortByDate, withDirection, simpleSort, descending } from 'sorting';
 
 type Comparator<T> = (left: T, right: T) => number;
 
@@ -41,4 +41,4 @@ const sortByAssociatedWith = (left: Document, right: Document): number => {
         : simpleSort(value, comp);
 };
 
-const defaultSort = sortByAlphanumeric('document');
+const defaultSort = descending(sortByDate('receivedOn'));

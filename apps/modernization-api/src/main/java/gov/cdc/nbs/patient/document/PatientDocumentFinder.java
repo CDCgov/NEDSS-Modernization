@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.document;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.enums.RecordStatus;
@@ -96,7 +98,8 @@ class PatientDocumentFinder {
             .leftJoin(INVESTIGATION).on(
                 INVESTIGATION.id.eq(RELATIONSHIP.id.targetActUid),
                 INVESTIGATION.recordStatusCd.ne(DELETED)
-            );
+            )
+            .orderBy(new OrderSpecifier<>(Order.DESC, DOCUMENT.addTime));
     }
 
     private PatientDocument map(final Tuple tuple) {

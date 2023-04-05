@@ -110,7 +110,9 @@ describe('when at least one document is available for a patient', () => {
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[0]).toContainHTML('<span class="link">10/07/2021 <br /> 10:01 AM</span>');
+        expect(tableData[0]).toContainHTML(
+            '<span class="link"><a href="base/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=document-id">10/07/2021 <br /> 10:01 AM</a></span>'
+        );
         expect(tableData[1].innerHTML).toContain('document-type-value');
         expect(tableData[2].innerHTML).toContain('sending-facility-value');
         expect(tableData[3].innerHTML).toContain('09/21/2021');

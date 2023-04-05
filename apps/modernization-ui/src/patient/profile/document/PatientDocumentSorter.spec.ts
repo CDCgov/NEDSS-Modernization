@@ -3,11 +3,11 @@ import { sort } from './PatientDocumentSorter';
 import { Headers } from './PatientDocuments';
 
 describe('when sorting documents', () => {
-    it('should default sorting to by id', () => {
+    it('should default sorting to by Date received descending', () => {
         const documents = [
             {
                 document: '1583',
-                receivedOn: new Date('2021-10-07T15:01:10Z'),
+                receivedOn: new Date('2023-10-07T00:00:00Z'),
                 type: 'type',
                 sendingFacility: 'sending-facility',
                 reportedOn: new Date('2021-09-21T17:04:11Z'),
@@ -15,7 +15,7 @@ describe('when sorting documents', () => {
             },
             {
                 document: '617',
-                receivedOn: new Date('2021-10-07T15:01:10Z'),
+                receivedOn: new Date('2021-10-07T00:00:00Z'),
                 type: 'type',
                 sendingFacility: 'sending-facility',
                 reportedOn: new Date('2021-09-21T17:04:11Z'),
@@ -23,7 +23,7 @@ describe('when sorting documents', () => {
             },
             {
                 document: '727',
-                receivedOn: new Date('2021-10-07T15:01:10Z'),
+                receivedOn: new Date('2022-02-06T00:00:00Z'),
                 type: 'type',
                 sendingFacility: 'sending-facility',
                 reportedOn: new Date('2021-09-21T17:04:11Z'),
@@ -34,9 +34,9 @@ describe('when sorting documents', () => {
         const actual = sort(documents, {});
 
         expect(actual).toEqual([
-            expect.objectContaining({ document: '617' }),
+            expect.objectContaining({ document: '1583' }),
             expect.objectContaining({ document: '727' }),
-            expect.objectContaining({ document: '1583' })
+            expect.objectContaining({ document: '617' })
         ]);
     });
 });
