@@ -30,6 +30,11 @@ http:
       rule: "Path(`/nbs/ManageUpdatedNotifications.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
       middlewares:
         - "patientProfileRewritepath"
+    rejectedNotificationsQueue:
+      service: modernization-api
+      rule: "Path(`/nbs/ReviewRejectedNotifications1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares:
+        - "patientProfileRewritepath"
     documentsRequiringSecurityAssignment:
       service: modernization-api
       rule: "Path(`/nbs/ObsNeedingAssignment1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
