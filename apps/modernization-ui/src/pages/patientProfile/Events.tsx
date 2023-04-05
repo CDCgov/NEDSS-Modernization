@@ -502,7 +502,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData }
                 <PatientTreatmentTable patient={patient} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientDocumentTable patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientDocumentTable patient={patient} pageSize={TOTAL_TABLE_DATA} nbsBase={NBS_URL} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">

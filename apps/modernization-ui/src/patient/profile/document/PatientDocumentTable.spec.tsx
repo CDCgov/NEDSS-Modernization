@@ -8,7 +8,7 @@ describe('when rendered', () => {
     it('should display sentence cased document headers', async () => {
         const { container } = render(
             <MockedProvider addTypename={false}>
-                <PatientDocumentTable pageSize={1}></PatientDocumentTable>
+                <PatientDocumentTable pageSize={1} nbsBase={'base'}></PatientDocumentTable>
             </MockedProvider>
         );
 
@@ -53,7 +53,7 @@ describe('when documents are not available for a patient', () => {
     it('should display Not Available', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientDocumentTable patient={'73'} pageSize={5}></PatientDocumentTable>
+                <PatientDocumentTable patient={'73'} pageSize={5} nbsBase={'base'}></PatientDocumentTable>
             </MockedProvider>
         );
 
@@ -102,7 +102,7 @@ describe('when at least one document is available for a patient', () => {
     it('should display the documents', async () => {
         const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientDocumentTable patient={'1823'} pageSize={5}></PatientDocumentTable>
+                <PatientDocumentTable patient={'1823'} pageSize={5} nbsBase={'base'}></PatientDocumentTable>
             </MockedProvider>
         );
 
@@ -163,7 +163,7 @@ describe('when documents are available for a patient', () => {
     it('should display the documents', async () => {
         const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientDocumentTable patient={'1823'} pageSize={5}></PatientDocumentTable>
+                <PatientDocumentTable patient={'1823'} pageSize={5} nbsBase={'base'}></PatientDocumentTable>
             </MockedProvider>
         );
 

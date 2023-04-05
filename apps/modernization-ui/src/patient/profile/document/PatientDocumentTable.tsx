@@ -1,22 +1,20 @@
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { useEffect, useState } from 'react';
 import format from 'date-fns/format';
-import { Document, AssociatedWith } from './PatientDocuments';
+import { Document, AssociatedWith, Headers } from './PatientDocuments';
 import { FindDocumentsForPatientQuery, useFindDocumentsForPatientLazyQuery } from 'generated/graphql/schema';
-import { Config } from 'config';
-
-const NBS_URL = Config.nbsUrl;
-
-export type Result = FindDocumentsForPatientQuery['findDocumentsForPatient'];
+import { transform } from './PatientDocumentTransformer';
+import { sort } from './PatientDocumentSorter';
+import { Direction } from 'sorting';
 
 const headers = [
-    { name: 'Date received', sortable: true },
-    { name: 'Type', sortable: true },
-    { name: 'Sending facility', sortable: true },
-    { name: 'Date reported', sortable: true },
-    { name: 'Condition', sortable: true },
-    { name: 'Associated with', sortable: true },
-    { name: 'Event ID', sortable: true }
+    { name: Headers.DateReceived, sortable: true },
+    { name: Headers.Type, sortable: true },
+    { name: Headers.SendingFacility, sortable: true },
+    { name: Headers.DateReported, sortable: true },
+    { name: Headers.Condition, sortable: true },
+    { name: Headers.AssociatedWith, sortable: true },
+    { name: Headers.EventID, sortable: true }
 ];
 
 const association = (association?: AssociatedWith | null) =>
@@ -30,54 +28,61 @@ const association = (association?: AssociatedWith | null) =>
         </>
     );
 
-const asTableBody = (document: Document | null): TableBody => ({
-    id: document?.event,
-    checkbox: false,
-    tableDetails: [
-        {
-            id: 1,
-            title: (
-                <>
-                    {format(new Date(document?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
-                    {format(new Date(document?.receivedOn), 'hh:mm a')}
-                </>
-            ),
-            class: 'link',
-            link: `${NBS_URL}/nbs/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=${document?.document}`
-        },
-        {
-            id: 2,
-            title: document?.type
-        },
-        { id: 3, title: document?.sendingFacility || null },
-        { id: 4, title: format(new Date(document?.reportedOn), 'MM/dd/yyyy') },
-        { id: 5, title: document?.condition || null },
-        {
-            id: 6,
-            title: association(document?.associatedWith)
-        },
-        { id: 7, title: document?.event || null }
-    ]
-});
+const asTableBody =
+    (nbsBase: string) =>
+    (document: Document): TableBody => ({
+        id: document?.event,
+        checkbox: false,
+        tableDetails: [
+            {
+                id: 1,
+                title: (
+                    <>
+                        {format(document?.receivedOn, 'MM/dd/yyyy')} <br /> {format(document?.receivedOn, 'hh:mm a')}
+                    </>
+                ),
+                class: 'link',
+                link: `${nbsBase}/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=${document?.document}`
+            },
+            {
+                id: 2,
+                title: document?.type
+            },
+            { id: 3, title: document?.sendingFacility || null },
+            { id: 4, title: format(new Date(document?.reportedOn), 'MM/dd/yyyy') },
+            { id: 5, title: document?.condition || null },
+            {
+                id: 6,
+                title: association(document?.associatedWith)
+            },
+            { id: 7, title: document?.event || null }
+        ]
+    });
 
-const asTableBodies = (documents: Result): TableBody[] => documents?.content?.map(asTableBody) || [];
+const asTableBodies = (nbsBase: string, documents: Document[]): TableBody[] =>
+    documents?.map(asTableBody(nbsBase)) || [];
 
 type Props = {
     patient?: string;
     pageSize: number;
+    nbsBase: string;
 };
 
-export const PatientDocumentTable = ({ patient, pageSize }: Props) => {
+export const PatientDocumentTable = ({ patient, pageSize, nbsBase }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    const [tableBodies, setTableBodies] = useState<TableBody[]>([]);
+    const [items, setItems] = useState<Document[]>([]);
+    const [bodies, setBodies] = useState<TableBody[]>([]);
 
     const handleComplete = (data: FindDocumentsForPatientQuery) => {
         const total = data?.findDocumentsForPatient?.total || 0;
         setTotal(total);
 
-        const bodies = asTableBodies(data.findDocumentsForPatient);
-        setTableBodies(bodies);
+        const content = transform(data?.findDocumentsForPatient);
+
+        setItems(content);
+
+        setBodies(asTableBodies(nbsBase, content));
     };
 
     const [getDocuments] = useFindDocumentsForPatientLazyQuery({ onCompleted: handleComplete });
@@ -96,16 +101,23 @@ export const PatientDocumentTable = ({ patient, pageSize }: Props) => {
         }
     }, [patient, currentPage]);
 
+    const handleSort = (name: string, direction: string): void => {
+        const criteria = { name: name as Headers, type: direction as Direction };
+        const sorted = sort(items, criteria);
+        setBodies(asTableBodies(nbsBase, sorted));
+    };
+
     return (
         <TableComponent
             tableHeader={'Documents'}
             tableHead={headers}
-            tableBody={tableBodies}
+            tableBody={bodies}
             isPagination={true}
             pageSize={pageSize}
             totalResults={total}
             currentPage={currentPage}
             handleNext={setCurrentPage}
+            sortData={handleSort}
         />
     );
 };
