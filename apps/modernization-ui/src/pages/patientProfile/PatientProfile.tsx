@@ -17,7 +17,6 @@ import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import {
     FindPatientsByFilterQuery,
-    useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidityReportsForPatientLazyQuery,
@@ -45,9 +44,7 @@ export const PatientProfile = () => {
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
-    // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
     const [getMorbidityData, { data: morbidityData }] = useFindMorbidityReportsForPatientLazyQuery();
-    const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
@@ -100,11 +97,6 @@ export const PatientProfile = () => {
                     }
                 });
                 getMorbidityData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
-                    }
-                });
-                getDocumentsData({
                     variables: {
                         patient: patientProfileData.findPatientById.id
                     }
@@ -338,7 +330,6 @@ export const PatientProfile = () => {
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
                         morbidityData={morbidityData?.findMorbidityReportsForPatient}
-                        documentsData={documentsData?.findDocumentsForPatient}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (

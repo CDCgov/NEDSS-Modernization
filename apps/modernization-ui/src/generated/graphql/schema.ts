@@ -731,6 +731,13 @@ export type PatientDocumentInvestigation = {
   local: Scalars['String'];
 };
 
+export type PatientDocumentResults = {
+  __typename?: 'PatientDocumentResults';
+  content: Array<Maybe<PatientDocument>>;
+  number: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type PatientEventResponse = {
   __typename?: 'PatientEventResponse';
   patientId: Scalars['ID'];
@@ -1159,7 +1166,7 @@ export type Query = {
   findAllStateCodes: Array<Maybe<StateCode>>;
   findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
-  findDocumentsForPatient?: Maybe<Array<Maybe<PatientDocument>>>;
+  findDocumentsForPatient?: Maybe<PatientDocumentResults>;
   findDocumentsRequiringReviewForPatient: LabReportResults;
   findInvestigationsByFilter: InvestigationResults;
   findLabReportsByFilter: LabReportResults;
@@ -1259,6 +1266,7 @@ export type QueryFindContactsNamedByPatientArgs = {
 
 
 export type QueryFindDocumentsForPatientArgs = {
+  page?: InputMaybe<Page>;
   patient: Scalars['ID'];
 };
 
@@ -1646,10 +1654,11 @@ export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContac
 
 export type FindDocumentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID'];
+  page?: InputMaybe<Page>;
 }>;
 
 
-export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocumentsForPatient?: Array<{ __typename?: 'PatientDocument', document: string, receivedOn: any, type: string, sendingFacility: string, reportedOn: any, condition?: string | null, event: string, associatedWith?: { __typename?: 'PatientDocumentInvestigation', id: string, local: string } | null } | null> | null };
+export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocumentsForPatient?: { __typename?: 'PatientDocumentResults', total: number, number: number, content: Array<{ __typename?: 'PatientDocument', document: string, receivedOn: any, type: string, sendingFacility: string, reportedOn: any, condition?: string | null, event: string, associatedWith?: { __typename?: 'PatientDocumentInvestigation', id: string, local: string } | null } | null> } | null };
 
 export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
   patientId: Scalars['Int'];
@@ -2835,19 +2844,23 @@ export type FindContactsNamedByPatientQueryHookResult = ReturnType<typeof useFin
 export type FindContactsNamedByPatientLazyQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientLazyQuery>;
 export type FindContactsNamedByPatientQueryResult = Apollo.QueryResult<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>;
 export const FindDocumentsForPatientDocument = gql`
-    query findDocumentsForPatient($patient: ID!) {
-  findDocumentsForPatient(patient: $patient) {
-    document
-    receivedOn
-    type
-    sendingFacility
-    reportedOn
-    condition
-    event
-    associatedWith {
-      id
-      local
+    query findDocumentsForPatient($patient: ID!, $page: Page) {
+  findDocumentsForPatient(patient: $patient, page: $page) {
+    content {
+      document
+      receivedOn
+      type
+      sendingFacility
+      reportedOn
+      condition
+      event
+      associatedWith {
+        id
+        local
+      }
     }
+    total
+    number
   }
 }
     `;
@@ -2865,6 +2878,7 @@ export const FindDocumentsForPatientDocument = gql`
  * const { data, loading, error } = useFindDocumentsForPatientQuery({
  *   variables: {
  *      patient: // value for 'patient'
+ *      page: // value for 'page'
  *   },
  * });
  */

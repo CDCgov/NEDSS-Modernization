@@ -3,7 +3,6 @@ import { TableBody, TableComponent } from '../../components/Table/Table';
 import { Button, Icon } from '@trussworks/react-uswds';
 import {
     AssociatedInvestigation,
-    FindDocumentsForPatientQuery,
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
     FindMorbidityReportsForPatientQuery,
@@ -16,17 +15,18 @@ import { UserContext } from 'providers/UserContext';
 import { Config } from 'config';
 import { PatientTreatmentTable } from 'patient/profile/treatment';
 import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'patient/profile/contact';
+import { PatientDocumentTable } from 'patient/profile/document';
+import { TOTAL_TABLE_DATA } from 'utils/util';
 
 type EventTabProp = {
     patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
     morbidityData?: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined;
-    documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
     profileData?: any;
 };
 
-export const Events = ({ patient, investigationData, labReports, morbidityData, documentsData }: EventTabProp) => {
+export const Events = ({ patient, investigationData, labReports, morbidityData }: EventTabProp) => {
     const { state } = useContext(UserContext);
     const NBS_URL = Config.nbsUrl;
 
@@ -249,10 +249,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
             getMorbidityData(morbidityData);
             setMorbidities(morbidityData);
         }
-        if (documentsData) {
-            console.log('documentsData:', documentsData);
-        }
-    }, [investigationData, labReports, morbidityData, documentsData]);
+    }, [investigationData, labReports, morbidityData]);
 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
@@ -505,20 +502,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                 <PatientTreatmentTable patient={patient} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <TableComponent
-                    isPagination={true}
-                    tableHeader={'Documents'}
-                    tableHead={[
-                        { name: 'Date created', sortable: true },
-                        { name: 'Type', sortable: true },
-                        { name: 'Purpose', sortable: true },
-                        { name: 'Description', sortable: true },
-                        { name: 'Document ID', sortable: false }
-                    ]}
-                    tableBody={[]}
-                    currentPage={currentPage}
-                    handleNext={(e) => setCurrentPage(e)}
-                />
+                <PatientDocumentTable patient={patient} pageSize={TOTAL_TABLE_DATA} nbsBase={NBS_URL} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
