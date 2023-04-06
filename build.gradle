@@ -48,5 +48,6 @@ sonarqube {
         property "sonar.projectKey", "CDCgov_NEDSS-Modernization"
         property "sonar.organization", "cdcgov"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${rootDir}/apps/modernization-api/build/reports/jacoco/test/jacocoTestReport.xml,${rootDir}/coverage-report/build/jacoco/testCodeCoverageReport/testCodeCoverageReport.xml"
     }
 }
