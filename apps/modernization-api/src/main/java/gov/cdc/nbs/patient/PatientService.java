@@ -176,12 +176,16 @@ public class PatientService {
             builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.SSN_FIELD, filter.getSsn()));
         }
 
-        if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isEmpty()) {
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getPhoneNumber())
-                            .defaultField("phone.telephoneNbr")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+        if (filter.getPhoneNumber() != null) {
+            String allDigitPhoneNumber = filter.getPhoneNumber().replaceAll("\\D", "");
+            if (!allDigitPhoneNumber.isEmpty()) {
+                builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
+                        QueryBuilders.queryStringQuery(
+                                addWildcards(allDigitPhoneNumber))
+                                .defaultField("phone.telephoneNbr")
+                                .defaultOperator(Operator.AND),
+                        ScoreMode.Avg));
+            }
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
