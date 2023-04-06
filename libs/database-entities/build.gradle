@@ -24,8 +24,6 @@ testing {
     }
 }
 
-
-
 dependencyManagement {
     imports {
         mavenBom SpringBootPlugin.BOM_COORDINATES
@@ -50,4 +48,8 @@ dependencies {
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) {classifier('jpa')})
 
+}
+
+compileJava {
+    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
 }

@@ -26,6 +26,18 @@ subprojects {
     if (!name.contains("-ui")) {
 
         apply plugin: 'java'
+        apply plugin: 'jacoco'
+
+        jacocoTestReport {
+            dependsOn test
+            reports {
+                xml.required = true
+            }
+        }
+
+        tasks.named('test') {
+            finalizedBy tasks.named('jacocoTestReport', JacocoReport)
+        }
 
     }
 }
