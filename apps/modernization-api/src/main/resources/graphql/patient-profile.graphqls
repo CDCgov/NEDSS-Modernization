@@ -1,0 +1,27 @@
+type PatientProfile {
+    id: ID!
+    asOf: DateTime!
+    local: String!
+    summary: PatientSummary
+}
+
+type PatientSummary {
+    legalName: PatientLegalName
+    birthday: Date
+    age: Int
+    gender: String
+    ethnicity: String
+    race:String
+}
+
+type PatientLegalName {
+    prefix: String
+    first: String
+    middle: String
+    last: String
+    suffix: String
+}
+
+extend type Query {
+    findPatientProfile(patient: ID!, asOf: DateTime): PatientProfile
+}

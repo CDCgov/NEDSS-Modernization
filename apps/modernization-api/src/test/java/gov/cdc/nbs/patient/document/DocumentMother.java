@@ -47,7 +47,7 @@ class DocumentMother {
   /**
    * Creates a Case Report associated with the given {@code patient}
    *
-   * @param patient The identifier of the patient.
+   * @param patient The id of the patient.
    * @return A {@link NbsDocument} representing a Case Report associated with a patient.
    */
   NbsDocument caseReport(final long patient) {
