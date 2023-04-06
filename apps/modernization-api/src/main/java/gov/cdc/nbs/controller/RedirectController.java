@@ -79,12 +79,12 @@ public class RedirectController {
   @ApiIgnore
   @PostMapping("/nbs/redirect/patientProfile")
   public RedirectView redirectPatientProfile(
-          @RequestParam String MPRUid, 
+          @RequestParam (name="MPRUid") String patientId, 
           HttpServletRequest request,
           HttpServletResponse response) {
-      return redirectionService.handleRedirect(PATIENT_PROFILE + MPRUid, request, response);
+      return redirectionService.handleRedirect(PATIENT_PROFILE + patientId, request, response);
   }
-
+  
   /**
    * Sends a GET request to
    * <WildFly_URL>/nbs/HomePage.do?method=patientSearchSubmit
