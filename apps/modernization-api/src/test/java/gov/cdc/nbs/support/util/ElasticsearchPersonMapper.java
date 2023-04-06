@@ -134,9 +134,9 @@ public class ElasticsearchPersonMapper {
     private static NestedPhone asNestedPhone(final TeleLocator locator) {
         NestedPhone nested = new NestedPhone();
         var phoneNbrTxt = locator.getPhoneNbrTxt();
-        phoneNbrTxt = phoneNbrTxt == null ? phoneNbrTxt : phoneNbrTxt.replaceAll("[\\D.]", "");
+        phoneNbrTxt = phoneNbrTxt == null ? phoneNbrTxt : phoneNbrTxt.replaceAll("\\D", "");
         var extensionTxt = locator.getExtensionTxt();
-        extensionTxt = extensionTxt == null ? extensionTxt : extensionTxt.replaceAll("[\\D.]", "");
+        extensionTxt = extensionTxt == null ? extensionTxt : extensionTxt.replaceAll("\\D", "");
         nested.setTelephoneNbr(phoneNbrTxt);
         nested.setExtensionTxt(extensionTxt);
         return nested;

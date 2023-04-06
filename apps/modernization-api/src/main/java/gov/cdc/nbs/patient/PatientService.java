@@ -177,7 +177,7 @@ public class PatientService {
         }
 
         if (filter.getPhoneNumber() != null) {
-            String allDigitPhoneNumber = filter.getPhoneNumber().replaceAll("[\\D.]", "");
+            String allDigitPhoneNumber = filter.getPhoneNumber().replaceAll("\\D", "");
             if (!allDigitPhoneNumber.isEmpty()) {
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
                         QueryBuilders.queryStringQuery(
