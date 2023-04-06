@@ -1,15 +1,10 @@
-buildscript {
-    ext {
-        springBootVersion = "2.7.8"
-        queryDslVersion = "5.0.0"
-    }
-}
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
-    id "org.springframework.boot" version "${springBootVersion}"
-    id "io.spring.dependency-management" version "1.0.12.RELEASE"
-    id "java"
     id 'jvm-test-suite'
-    id 'jacoco-report-aggregation'
+
+    alias libs.plugins.springBoot
+    alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc.nbs'
@@ -22,72 +17,57 @@ testing {
 
             dependencies {
                 implementation libs.bundles.testing
+                implementation libs.spring.test
+                implementation libs.spring.kafka.test
+
+                compileOnly libs.lombok
+                annotationProcessor libs.lombok
+
+                implementation libs.bundles.testcontainers.elasticsearch
+
+                implementation libs.bundles.javafaker
+
             }
         }
     }
 }
 
 dependencies {
-    // Spring
-    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
-    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
 
-    // Kafka
-    implementation 'org.springframework.kafka:spring-kafka'
-
-    // jwt
-    implementation "com.auth0:java-jwt:4.2.0"
-
-    // common
     implementation project(':database-entities')
     implementation project(':event-schema')
     implementation project(':authentication')
 
+    // Spring
+    implementation libs.bundles.jpa
+    annotationProcessor libs.springBoot.jpa
+
+    implementation libs.bundles.security
+
+    implementation libs.spring.json
+
+    // Kafka
+    implementation libs.spring.kafka
+
+
     // lombok
-    implementation "org.projectlombok:lombok"
-    compileOnly "org.projectlombok:lombok"
-    annotationProcessor "org.projectlombok:lombok"
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
     // database
-    implementation "com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17"
+    implementation libs.mssql.jdbc
 
 	// querydsl
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
-	
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.2'
-    
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
+    implementation libs.bundles.jackson
+
     // elasticsearch
-	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.6'
-	
-	// test
-	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-	testImplementation "org.junit.platform:junit-platform-suite"
-	testImplementation "org.junit.jupiter:junit-jupiter"
-	testImplementation "org.testcontainers:testcontainers:1.17.6"
-	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-	testImplementation "org.testcontainers:elasticsearch:1.17.6"
-	testImplementation 'com.github.javafaker:javafaker:1.0.2'
-	testImplementation 'org.yaml:snakeyaml:1.33'
-	
-	
-	testImplementation "org.projectlombok:lombok"
-	testAnnotationProcessor "org.projectlombok:lombok"
-	testImplementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-json:${springBootVersion}"
-	testImplementation("org.springframework.kafka:spring-kafka-test")
-	testImplementation "org.testcontainers:testcontainers:1.17.6"
-	testImplementation "org.testcontainers:junit-jupiter:1.17.6"
-	testImplementation "org.testcontainers:elasticsearch:1.17.6"
+    implementation libs.bundles.elasticsearch
+
 }
 
 compileJava.mustRunAfter(":database-entities:build")
