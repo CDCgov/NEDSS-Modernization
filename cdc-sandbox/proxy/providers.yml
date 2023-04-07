@@ -14,6 +14,38 @@ http:
     nbsForward:
       service: nbs
       rule: "PathPrefix(`/nbs`)"
+    # Redirect to modernization patient profile
+    openInvestigations: 
+      service: modernization-api
+      rule: "Path(`/nbs/MyProgramAreaInvestigations1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares: 
+         - "patientProfileRewritepath"
+    approvalQueueForInitialInvestigations:
+      service: modernization-api
+      rule: "Path(`/nbs/ReviewNotifications1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares:
+        - "patientProfileRewritepath"
+    updatedNotificationsQueue:
+      service: modernization-api
+      rule: "Path(`/nbs/ManageUpdatedNotifications.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares:
+        - "patientProfileRewritepath"
+    rejectedNotificationsQueue:
+      service: modernization-api
+      rule: "Path(`/nbs/ReviewRejectedNotifications1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares:
+        - "patientProfileRewritepath"
+    documentsRequiringSecurityAssignment:
+      service: modernization-api
+      rule: "Path(`/nbs/ObsNeedingAssignment1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares: 
+         - "patientProfileRewritepath"
+    documentsRequiringReview:
+      service: modernization-api
+      rule: "Path(`/nbs/NewLabReview1`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      middlewares:
+        - "patientProfileRewritepath"
+    
     # NBS to modernization overrides
     simpleSearch:
       service: modernization-api
@@ -41,6 +73,10 @@ http:
     advancedSearchRewritepath:
       replacePath:
         path: /nbs/redirect/advancedSearch
+    patientProfileRewritepath:
+      replacePath:
+        path: /nbs/redirect/patientProfile
+
   services:
     modernization-api:
       loadBalancer:
