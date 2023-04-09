@@ -69,16 +69,17 @@ Feature: Patient search
     Then I find the patient
 
     Examples:
-      | field      | qualifier | field2     | qualifier2 |
-      | last name  |           |            |            |
-      | first name |           |            |            |
-      | address    |           |            |            |
-      | city       |           |            |            |
-      | last name  |           | first name |            |
-      | first name |           | address    |            |
-      | last name  |           | address    |            |
-      | city       |           |            |            |
-      | last name  |           | city       |            |
+      | field       | qualifier | field2     | qualifier2 |
+      | last name   |           |            |            |
+      | first name  |           |            |            |
+      | address     |           |            |            |
+      | city        |           |            |            |
+      | last name   |           | first name |            |
+      | first name  |           | address    |            |
+      | last name   |           | address    |            |
+      | city        |           |            |            |
+      | last name   |           | city       |            |
+      | phone number|           |            |            |
 
   @patient_search_with_sorting
   Scenario: I can find the right patient when there are multiple ordered results

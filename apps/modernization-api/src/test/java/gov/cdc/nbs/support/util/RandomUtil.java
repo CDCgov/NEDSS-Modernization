@@ -59,8 +59,7 @@ public class RandomUtil {
     }
 
     public static String getRandomPhoneNumber() {
-        // format 123-456-7890
-        return getRandomNumericString(3) + "-" + getRandomNumericString(3) + "-" + getRandomNumericString(4);
+        return getRandomNumericString(10);
     }
 
     public static String getRandomNumericString(int length) {

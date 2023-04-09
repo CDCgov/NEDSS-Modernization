@@ -4,12 +4,13 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.google.common.net.HttpHeaders;
+
 import com.itextpdf.text.DocumentException;
 import gov.cdc.nbs.investigation.InvestigationFilter;
 import gov.cdc.nbs.investigation.InvestigationFinder;
