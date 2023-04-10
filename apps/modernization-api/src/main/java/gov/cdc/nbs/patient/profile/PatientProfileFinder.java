@@ -22,7 +22,8 @@ class PatientProfileFinder {
     Optional<PatientProfile> find(final long identifier, final Instant asOf) {
         return this.factory.select(
                 PERSON.id,
-                PERSON.localId
+                PERSON.localId,
+                PERSON.versionCtrlNbr
             )
             .from(PERSON)
             .where(PERSON.personParentUid.id.eq(identifier))

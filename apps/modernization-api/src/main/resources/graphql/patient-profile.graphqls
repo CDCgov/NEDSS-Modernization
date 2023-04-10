@@ -20,6 +20,21 @@ type PatientLegalName {
     suffix: String
 }
 
+type PatientAdministrative {
+    patient: ID!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    comment: String
+}
+
+type PatientAdministrativeResults {
+    content: [PatientAdministrative]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
 type PatientName {
     patient: ID!
     version: Int!
@@ -47,8 +62,10 @@ type PatientProfile {
     id: ID!
     asOf: DateTime!
     local: String!
+    version: Int!
     summary: PatientSummary
     names(page: Page): PatientNameResults
+    administrative(page: Page): PatientAdministrativeResults
 }
 
 extend type Query {
