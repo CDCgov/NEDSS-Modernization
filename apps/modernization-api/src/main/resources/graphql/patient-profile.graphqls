@@ -1,8 +1,6 @@
-type PatientProfile {
-    id: ID!
-    asOf: DateTime!
-    local: String!
-    summary: PatientSummary
+type PatientCodedValue {
+    id: String!
+    description: String!
 }
 
 type PatientSummary {
@@ -11,7 +9,7 @@ type PatientSummary {
     age: Int
     gender: String
     ethnicity: String
-    race:String
+    race: String
 }
 
 type PatientLegalName {
@@ -20,6 +18,37 @@ type PatientLegalName {
     middle: String
     last: String
     suffix: String
+}
+
+type PatientName {
+    patient: ID!
+    version: Int!
+    asOf: DateTime!
+    sequence: Int!
+    use: PatientCodedValue!
+    prefix: PatientCodedValue
+    first: String
+    middle: String
+    secondMiddle: String
+    last: String
+    secondLast: String
+    suffix: PatientCodedValue
+    degree: PatientCodedValue
+}
+
+type PatientNameResults {
+    content: [PatientName]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientProfile {
+    id: ID!
+    asOf: DateTime!
+    local: String!
+    summary: PatientSummary
+    names(page: Page): PatientNameResults
 }
 
 extend type Query {
