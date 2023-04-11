@@ -58,6 +58,31 @@ type PatientNameResults {
     size: Int!
 }
 
+type PatientAddress {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue
+    use: PatientCodedValue
+    address1: String
+    address2: String
+    city: String
+    county: PatientCodedValue
+    state: PatientCodedValue
+    zipcode: String
+    country: PatientCodedValue
+    censusTract: String
+    comment: String
+}
+
+type PatientAddressResults {
+    content: [PatientAddress]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -66,6 +91,7 @@ type PatientProfile {
     summary: PatientSummary
     names(page: Page): PatientNameResults
     administrative(page: Page): PatientAdministrativeResults
+    addresses(page: Page): PatientAddressResults
 }
 
 extend type Query {
