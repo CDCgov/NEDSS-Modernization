@@ -83,6 +83,28 @@ type PatientAddressResults {
     size: Int!
 }
 
+type PatientPhone {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue
+    use: PatientCodedValue
+    countryCode: String
+    number: String
+    extension: String
+    email: String
+    url: String
+    comment: String
+}
+
+type PatientPhoneResults {
+    content: [PatientPhone]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -92,6 +114,7 @@ type PatientProfile {
     names(page: Page): PatientNameResults
     administrative(page: Page): PatientAdministrativeResults
     addresses(page: Page): PatientAddressResults
+    phones(page: Page): PatientPhoneResults
 }
 
 extend type Query {
