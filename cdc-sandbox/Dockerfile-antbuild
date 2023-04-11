@@ -1,19 +1,19 @@
-FROM amazoncorretto:8-al2-jdk
+FROM maven:3.9-amazoncorretto-8
 
 ARG ant_version=1.10.12
-ARG maven_version=3.8.8
 
+# update
 RUN yum update -y
 RUN yum install -y tar gzip hostname
+
+# install ant
 WORKDIR /home
 ADD https://dlcdn.apache.org/ant/binaries/apache-ant-$ant_version-bin.tar.gz .
 RUN tar -zxvf apache-ant-$ant_version-bin.tar.gz
 RUN rm apache-ant-$ant_version*.gz
 ENV ANT_HOME=/home/apache-ant-$ant_version
-ADD https://dlcdn.apache.org/maven/maven-3/$maven_version/binaries/apache-maven-$maven_version-bin.tar.gz .
-RUN tar -zxvf apache-maven-$maven_version-bin.tar.gz
-RUN rm apache-maven-$maven_version-bin.tar.gz
-ENV MAVEN_HOME=/home/apache-maven-$maven_version
+
+# run build
 ENV JBOSS_HOME=build
 ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=ISO-8859-1
 ADD docker-entrypoint-ant.sh .
