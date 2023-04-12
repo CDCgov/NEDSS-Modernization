@@ -131,6 +131,24 @@ type PatientGender {
     additional: String
 }
 
+type PatientIdentification {
+    patient: Int!
+    id: ID!
+    sequence: Int!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue!
+    authority: PatientCodedValue
+    value: String
+}
+
+type PatientIdentificationResults {
+    content: [PatientIdentification]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -141,6 +159,7 @@ type PatientProfile {
     administrative(page: Page): PatientAdministrativeResults
     addresses(page: Page): PatientAddressResults
     phones(page: Page): PatientPhoneResults
+    identification(page: Page): PatientIdentificationResults
     birth: PatientBirth
     gender: PatientGender
 }
