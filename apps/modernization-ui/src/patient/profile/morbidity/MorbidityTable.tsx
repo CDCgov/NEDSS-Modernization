@@ -70,17 +70,29 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
 
     const sortData = (name: string, type: string) => {
         setMorbidityData(
-            morbidityData?.slice().sort((a: any, b: any) => {
-                if (a[name] && b[name]) {
-                    if (a[name].toLowerCase() < b[name].toLowerCase()) {
-                        return type === 'asc' ? -1 : 1;
-                    }
-                    if (a[name].toLowerCase() > b[name].toLowerCase()) {
-                        return type === 'asc' ? 1 : -1;
-                    }
-                }
-                return 0;
-            })
+            name === 'associatedWith'
+                ? morbidityData?.slice().sort((a: any, b: any) => {
+                      if (a[name] && b[name]) {
+                          if (a?.associatedWith?.condition.toLowerCase() < b?.associatedWith?.condition.toLowerCase()) {
+                              return type === 'asc' ? -1 : 1;
+                          }
+                          if (a?.associatedWith?.condition.toLowerCase() > b?.associatedWith?.condition.toLowerCase()) {
+                              return type === 'asc' ? 1 : -1;
+                          }
+                      }
+                      return 0;
+                  })
+                : morbidityData?.slice().sort((a: any, b: any) => {
+                      if (a[name] && b[name]) {
+                          if (a[name].toLowerCase() < b[name].toLowerCase()) {
+                              return type === 'asc' ? -1 : 1;
+                          }
+                          if (a[name].toLowerCase() > b[name].toLowerCase()) {
+                              return type === 'asc' ? 1 : -1;
+                          }
+                      }
+                      return 0;
+                  })
         );
     };
 
@@ -96,14 +108,29 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                     })
                 );
                 break;
+            case 'report date':
+                setMorbidityData(
+                    morbidityData.slice().sort((a: any, b: any) => {
+                        const dateA: any = new Date(a.reportedOn);
+                        const dateB: any = new Date(b.reportedOn);
+                        return type === 'asc' ? dateB - dateA : dateA - dateB;
+                    })
+                );
+                break;
+            case 'provider':
+                sortData('provider', type);
+                break;
             case 'condition':
-                sortData('labConditionCd', type);
+                sortData('condition', type);
                 break;
             case 'jurisdiction':
-                sortData('jurisdictionCd', type);
+                sortData('jurisdiction', type);
+                break;
+            case 'associated with':
+                sortData('associatedWith', type);
                 break;
             case 'event #':
-                sortData('localId', type);
+                sortData('event', type);
                 break;
         }
     };
@@ -139,7 +166,7 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                 style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
                                 className="font-sans-md table-data">
                                 {morbidity?.receivedOn ? (
-                                    <span className="check-title table-span">
+                                    <span className="table-span">
                                         {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
                                         {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
                                     </span>
@@ -164,7 +191,14 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                             <td
                                 style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
                                 className="font-sans-md table-data">
-                                <span className="no-data">No data</span>
+                                {morbidity?.reportedOn ? (
+                                    <span className="table-span">
+                                        {format(new Date(morbidity?.reportedOn), 'MM/dd/yyyy')} <br />{' '}
+                                        {format(new Date(morbidity?.reportedOn), 'hh:mm a')}
+                                    </span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
                             </td>
                             <td
                                 style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
@@ -187,28 +221,22 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                             <td
                                 style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
                                 className="font-sans-md table-data">
-                                {/* To be added associated with once added to the API response */}
-                                {/* {!morbidity || morbidity?.associatedInvestigations.length == 0 ? null : (
-                                    <>
-                                        {document.associatedInvestigations &&
-                                            document.associatedInvestigations?.length > 0 &&
-                                            document.associatedInvestigations?.map(
-                                                (i: AssociatedInvestigation, index: number) => (
-                                                    <div key={index}>
-                                                        <p
-                                                            className="margin-0 text-primary text-bold link"
-                                                            style={{ wordBreak: 'break-word' }}>
-                                                            {i?.localId}
-                                                        </p>
-                                                        <p className="margin-0">{i?.cdDescTxt}</p>
-                                                    </div>
-                                                )
-                                            )}
-                                    </>
-                                )} */}
-                                <span className="no-data">No data</span>
+                                {!morbidity || !morbidity?.associatedWith ? (
+                                    <span className="no-data">No data</span>
+                                ) : (
+                                    <div>
+                                        <p
+                                            className="margin-0 text-primary text-bold link"
+                                            style={{ wordBreak: 'break-word' }}>
+                                            {morbidity?.associatedWith?.id}
+                                        </p>
+                                        <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
+                                    </div>
+                                )}
                             </td>
-                            <td className="font-sans-md table-data">
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[6].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
                                 {morbidity?.event ? (
                                     <span>{morbidity?.event}</span>
                                 ) : (

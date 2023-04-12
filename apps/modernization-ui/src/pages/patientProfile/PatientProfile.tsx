@@ -17,7 +17,6 @@ import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import {
     FindPatientsByFilterQuery,
-    useFindDocumentsForPatientLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindPatientByIdLazyQuery
 } from '../../generated/graphql/schema';
@@ -41,8 +40,6 @@ export const PatientProfile = () => {
 
     const modalRef = useRef<ModalRef>(null);
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
-    // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
-    const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
@@ -85,11 +82,6 @@ export const PatientProfile = () => {
                         filter: {
                             patientId: +patientProfileData.findPatientById.id
                         }
-                    }
-                });
-                getDocumentsData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
                     }
                 });
 
@@ -316,11 +308,7 @@ export const PatientProfile = () => {
 
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profileData} />}
                 {activeTab === ACTIVE_TAB.EVENT && (
-                    <Events
-                        patient={id}
-                        labReports={labReportData?.findLabReportsByFilter}
-                        documentsData={documentsData?.findDocumentsForPatient}
-                    />
+                    <Events patient={id} labReports={labReportData?.findLabReportsByFilter} />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
