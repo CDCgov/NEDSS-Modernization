@@ -54,8 +54,8 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-    # environment:
-    #   - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m" # Uncomment to limit memory usage
+    environment:
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m" # limit memory usage
   kibana:
     container_name: kibana
     build: ./kibana
