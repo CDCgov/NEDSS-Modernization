@@ -34,8 +34,8 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
         { name: 'Test results', sortable: true, sort: 'all' },
         { name: 'Associated with', sortable: true, sort: 'all' },
         { name: 'Program area', sortable: true, sort: 'all' },
-        { name: 'Jurisdiction #', sortable: false, sort: 'all' },
-        { name: 'Event #', sortable: false, sort: 'all' }
+        { name: 'Jurisdiction', sortable: true, sort: 'all' },
+        { name: 'Event #', sortable: true, sort: 'all' }
     ]);
 
     const handleComplete = (data: FindLabReportsByFilterQuery) => {
@@ -119,10 +119,10 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
         setLabReportData(
             labReportData?.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
-                    if (a[name].toLowerCase() < b[name].toLowerCase()) {
+                    if (a[name] < b[name]) {
                         return type === 'asc' ? -1 : 1;
                     }
-                    if (a[name].toLowerCase() > b[name].toLowerCase()) {
+                    if (a[name] > b[name]) {
                         return type === 'asc' ? 1 : -1;
                     }
                 }
@@ -180,6 +180,9 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
             case 'program area':
                 sortData('programAreaCd', type);
                 break;
+            case 'jurisdiction':
+                sortData('jurisdictionCd', type);
+                break;
             case 'associated with':
                 setLabReportData(
                     labReportData?.slice().sort((a: any, b: any) => {
@@ -196,6 +199,9 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                         return 0;
                     })
                 );
+                break;
+            case 'event #':
+                sortData('localId', type);
         }
     };
 
@@ -317,14 +323,18 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td className="font-sans-md table-data">
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[6].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
                                 {report?.jurisdictionCd ? (
                                     <span>{report?.jurisdictionCd}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td className="font-sans-md table-data">
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[7].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
                                 {report?.localId ? (
                                     <span>{report?.localId}</span>
                                 ) : (

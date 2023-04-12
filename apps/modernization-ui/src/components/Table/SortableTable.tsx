@@ -16,6 +16,7 @@ export type TableContentProps = {
     tableSubHeader?: React.ReactNode | React.ReactNode[] | string;
     tableHead: { name: string; sortable: boolean; sort?: string }[];
     isPagination?: boolean;
+    pageSize?: number;
     totalResults?: number;
     currentPage?: number;
     handleNext?: (page: number) => void;
@@ -30,6 +31,7 @@ export const SortableTable = ({
     tableBody,
     isPagination = false,
     totalResults = 20,
+    pageSize = TOTAL_TABLE_DATA,
     currentPage = 1,
     handleNext,
     buttons,
@@ -106,10 +108,10 @@ export const SortableTable = ({
                 <p className="margin-0 show-length-text">
                     Showing {totalResults} of {totalResults}
                 </p>
-                {isPagination && totalResults >= TOTAL_TABLE_DATA && (
+                {isPagination && totalResults >= pageSize && (
                     <Pagination
                         className="margin-0 pagination"
-                        totalPages={Math.ceil(totalResults / TOTAL_TABLE_DATA)}
+                        totalPages={Math.ceil(totalResults / pageSize)}
                         currentPage={currentPage}
                         pathname={'/patient-profile'}
                         onClickNext={() => handleNext?.(currentPage + 1)}

@@ -1,4 +1,3 @@
-import { TableBody, TableComponent } from 'components/Table/Table';
 import { useEffect, useState } from 'react';
 import format from 'date-fns/format';
 import { Document, AssociatedWith, Headers } from './PatientDocuments';
@@ -6,16 +5,7 @@ import { FindDocumentsForPatientQuery, useFindDocumentsForPatientLazyQuery } fro
 import { transform } from './PatientDocumentTransformer';
 import { sort } from './PatientDocumentSorter';
 import { Direction } from 'sorting';
-
-const headers = [
-    { name: Headers.DateReceived, sortable: true },
-    { name: Headers.Type, sortable: true },
-    { name: Headers.SendingFacility, sortable: true },
-    { name: Headers.DateReported, sortable: true },
-    { name: Headers.Condition, sortable: true },
-    { name: Headers.AssociatedWith, sortable: true },
-    { name: Headers.EventID, sortable: true }
-];
+import { SortableTable } from 'components/Table/SortableTable';
 
 const association = (association?: AssociatedWith | null) =>
     association && (
@@ -28,40 +18,6 @@ const association = (association?: AssociatedWith | null) =>
         </>
     );
 
-const asTableBody =
-    (nbsBase: string) =>
-    (document: Document): TableBody => ({
-        id: document?.event,
-        checkbox: false,
-        tableDetails: [
-            {
-                id: 1,
-                title: (
-                    <>
-                        {format(document?.receivedOn, 'MM/dd/yyyy')} <br /> {format(document?.receivedOn, 'hh:mm a')}
-                    </>
-                ),
-                class: 'link',
-                link: `${nbsBase}/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=${document?.document}`
-            },
-            {
-                id: 2,
-                title: document?.type
-            },
-            { id: 3, title: document?.sendingFacility || null },
-            { id: 4, title: format(new Date(document?.reportedOn), 'MM/dd/yyyy') },
-            { id: 5, title: document?.condition || null },
-            {
-                id: 6,
-                title: association(document?.associatedWith)
-            },
-            { id: 7, title: document?.event || null }
-        ]
-    });
-
-const asTableBodies = (nbsBase: string, documents: Document[]): TableBody[] =>
-    documents?.map(asTableBody(nbsBase)) || [];
-
 type Props = {
     patient?: string;
     pageSize: number;
@@ -72,18 +28,22 @@ export const PatientDocumentTable = ({ patient, pageSize, nbsBase }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<Document[]>([]);
-    const [bodies, setBodies] = useState<TableBody[]>([]);
+    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
+        { name: Headers.DateReceived, sortable: true, sort: 'all' },
+        { name: Headers.Type, sortable: true, sort: 'all' },
+        { name: Headers.SendingFacility, sortable: true, sort: 'all' },
+        { name: Headers.DateReported, sortable: true, sort: 'all' },
+        { name: Headers.Condition, sortable: true, sort: 'all' },
+        { name: Headers.AssociatedWith, sortable: true, sort: 'all' },
+        { name: Headers.EventID, sortable: true, sort: 'all' }
+    ]);
 
     const handleComplete = (data: FindDocumentsForPatientQuery) => {
         const total = data?.findDocumentsForPatient?.total || 0;
         setTotal(total);
 
         const content = transform(data?.findDocumentsForPatient);
-
         setItems(content);
-
-        const sorted = sort(content, {});
-        setBodies(asTableBodies(nbsBase, sorted));
     };
 
     const [getDocuments] = useFindDocumentsForPatientLazyQuery({ onCompleted: handleComplete });
@@ -102,17 +62,106 @@ export const PatientDocumentTable = ({ patient, pageSize, nbsBase }: Props) => {
         }
     }, [patient, currentPage]);
 
+    const tableHeadChanges = (name: string, type: string) => {
+        tableHead.map((item) => {
+            if (item.name.toLowerCase() === name.toLowerCase()) {
+                item.sort = type;
+            } else {
+                item.sort = 'all';
+            }
+        });
+        setTableHead(tableHead);
+    };
+
     const handleSort = (name: string, direction: string): void => {
+        tableHeadChanges(name, direction);
         const criteria = { name: name as Headers, type: direction as Direction };
-        const sorted = sort(items, criteria);
-        setBodies(asTableBodies(nbsBase, sorted));
+        setItems(sort(items, criteria));
     };
 
     return (
-        <TableComponent
+        <SortableTable
             tableHeader={'Documents'}
-            tableHead={headers}
-            tableBody={bodies}
+            tableHead={tableHead}
+            tableBody={
+                items?.length > 0 &&
+                items?.map((document: any, index: number) => {
+                    return (
+                        <tr key={index}>
+                            <td
+                                style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
+                                className="font-sans-md table-data">
+                                {document?.receivedOn ? (
+                                    <a
+                                        href={`${nbsBase}/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=${document?.document}`}
+                                        className="table-span">
+                                        {format(document?.receivedOn, 'MM/dd/yyyy')} <br />{' '}
+                                        {format(document?.receivedOn, 'hh:mm a')}
+                                    </a>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
+                            </td>
+                            <td
+                                style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
+                                className="font-sans-md table-data">
+                                {document?.type ? (
+                                    <span>{document?.type}</span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
+                            </td>
+                            <td
+                                style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
+                                className="font-sans-md table-data">
+                                {document?.sendingFacility ? (
+                                    <span>{document?.sendingFacility}</span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
+                            </td>
+                            <td
+                                style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
+                                className="font-sans-md table-data">
+                                {document?.reportedOn ? (
+                                    <span className="table-span">
+                                        {format(new Date(document?.reportedOn), 'MM/dd/yyyy')}
+                                    </span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
+                            </td>
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[4].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
+                                {document?.condition ? (
+                                    <span>{document?.condition}</span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
+                            </td>
+                            <td
+                                style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
+                                className="font-sans-md table-data">
+                                {!document?.associatedWith ? (
+                                    <span className="no-data">No data</span>
+                                ) : (
+                                    association(document?.associatedWith)
+                                )}
+                            </td>
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[6].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
+                                {document?.event ? (
+                                    <span>{document?.event}</span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
+                            </td>
+                        </tr>
+                    );
+                })
+            }
             isPagination={true}
             pageSize={pageSize}
             totalResults={total}

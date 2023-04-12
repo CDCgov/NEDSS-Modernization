@@ -23,8 +23,8 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
         { name: 'Provider', sortable: true, sort: 'all' },
         { name: 'Treatment date', sortable: true, sort: 'all' },
         { name: 'Treatment', sortable: true, sort: 'all' },
-        { name: 'Associated with', sortable: false, sort: 'all' },
-        { name: 'Event #', sortable: false, sort: 'all' }
+        { name: 'Associated with', sortable: true, sort: 'all' },
+        { name: 'Event #', sortable: true, sort: 'all' }
     ]);
 
     const handleComplete = (data: FindTreatmentsForPatientQuery) => {
@@ -103,6 +103,9 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
             case 'provider':
                 sortData('provider', type);
                 break;
+            case 'associated with':
+                sortData('associatedWith', type);
+                break;
             case 'treatment date':
                 setTreatmentData(
                     treatmentData?.slice().sort((a: any, b: any) => {
@@ -116,7 +119,7 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                 sortData('description', type);
                 break;
             case 'event #':
-                sortData('localId', type);
+                sortData('event', type);
         }
     };
 

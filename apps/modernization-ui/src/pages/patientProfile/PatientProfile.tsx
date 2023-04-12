@@ -15,11 +15,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
-import {
-    FindPatientsByFilterQuery,
-    useFindLabReportsByFilterLazyQuery,
-    useFindPatientByIdLazyQuery
-} from '../../generated/graphql/schema';
+import { FindPatientsByFilterQuery, useFindPatientByIdLazyQuery } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
 import { Events } from './Events';
@@ -39,7 +35,6 @@ export const PatientProfile = () => {
     const NBS_URL = Config.nbsUrl;
 
     const modalRef = useRef<ModalRef>(null);
-    const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
@@ -77,14 +72,6 @@ export const PatientProfile = () => {
         if (patientProfileData?.findPatientById) {
             setProfileData(patientProfileData?.findPatientById);
             if (patientProfileData.findPatientById.id) {
-                getPatientLabReportData({
-                    variables: {
-                        filter: {
-                            patientId: +patientProfileData.findPatientById.id
-                        }
-                    }
-                });
-
                 searchCriteria.ethnicities.map((ethinicity) => {
                     if (ethinicity.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
                         setEthnicity(ethinicity.codeDescTxt);
@@ -307,9 +294,7 @@ export const PatientProfile = () => {
                 </div>
 
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profileData} />}
-                {activeTab === ACTIVE_TAB.EVENT && (
-                    <Events patient={id} labReports={labReportData?.findLabReportsByFilter} />
-                )}
+                {activeTab === ACTIVE_TAB.EVENT && <Events patient={id} />}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
                         handleFormSubmission={(

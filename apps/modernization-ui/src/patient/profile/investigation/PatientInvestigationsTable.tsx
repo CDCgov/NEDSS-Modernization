@@ -33,8 +33,8 @@ export const PatientInvestigationsTable = ({
         { name: 'Notification', sortable: true, sort: 'all' },
         { name: 'Jurisdiction', sortable: true, sort: 'all' },
         { name: 'Investigator', sortable: true, sort: 'all' },
-        { name: 'Investigation #', sortable: false, sort: 'all' },
-        { name: 'Co-infection #', sortable: false, sort: 'all' }
+        { name: 'Investigation #', sortable: true, sort: 'all' },
+        { name: 'Co-infection #', sortable: true, sort: 'all' }
     ]);
 
     const handleComplete = (data: FindInvestigationsByFilterQuery) => {
@@ -75,10 +75,10 @@ export const PatientInvestigationsTable = ({
         setInvestigationsData(
             investigationsData?.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
-                    if (a[name].toLowerCase() < b[name].toLowerCase()) {
+                    if (a[name] < b[name]) {
                         return type === 'asc' ? -1 : 1;
                     }
-                    if (a[name].toLowerCase() > b[name].toLowerCase()) {
+                    if (a[name] > b[name]) {
                         return type === 'asc' ? 1 : -1;
                     }
                 }
@@ -129,8 +129,15 @@ export const PatientInvestigationsTable = ({
             case 'case status':
                 sortData('recordStatus', type);
                 break;
+            case 'investigation #':
+                sortData('localId', type);
+                break;
+            case 'co-infection #':
+                sortData('localId', type);
+                break;
             case 'notification':
                 sortData('notificationRecordStatusCd', type);
+                break;
         }
     };
 
@@ -234,14 +241,20 @@ export const PatientInvestigationsTable = ({
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td className="font-sans-md table-data">
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[6].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
                                 {investigation?.localId ? (
                                     <span>{investigation?.localId}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td className="font-sans-md table-data">COIN1000XX01</td>
+                            <td
+                                className="font-sans-md table-data"
+                                style={{ background: tableHead[7].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
+                                <span className="no-data">No data</span>
+                            </td>
                         </tr>
                     );
                 })
