@@ -116,7 +116,6 @@ type PatientBirth {
     city: String
     state: PatientCodedValue
     country: PatientCodedValue
-
 }
 
 type PatientGender {
@@ -149,6 +148,18 @@ type PatientIdentificationResults {
     size: Int!
 }
 
+type PatientMortality {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    deceased: PatientCodedValue
+    deceasedOn: Date
+    city: String
+    state: PatientCodedValue
+    country: PatientCodedValue
+}
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -162,6 +173,7 @@ type PatientProfile {
     identification(page: Page): PatientIdentificationResults
     birth: PatientBirth
     gender: PatientGender
+    mortality: PatientMortality
 }
 
 extend type Query {
