@@ -105,6 +105,32 @@ type PatientPhoneResults {
     size: Int!
 }
 
+type PatientBirth {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    bornOn: Date
+    age: Int
+    multipleBirth: PatientCodedValue
+    city: String
+    state: PatientCodedValue
+    country: PatientCodedValue
+
+}
+
+type PatientGender {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    birth: PatientCodedValue
+    current: PatientCodedValue
+    unknownReason: PatientCodedValue
+    preferred: PatientCodedValue
+    additional: String
+}
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -115,6 +141,8 @@ type PatientProfile {
     administrative(page: Page): PatientAdministrativeResults
     addresses(page: Page): PatientAddressResults
     phones(page: Page): PatientPhoneResults
+    birth: PatientBirth
+    gender: PatientGender
 }
 
 extend type Query {
