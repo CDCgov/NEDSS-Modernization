@@ -88,6 +88,16 @@
 
 ## Code Formatting
 
+## Print Artifact Version
+
+```
+./gradlew printVersion
+
+
+> Task :printVersion
+Version: 1.0.0-SNAPSHOT
+```
+
 ## Running with local servers
 
 By default, the reverse proxy will route to the containerized `modernization-api` or `modernization-ui`.  Routing to a local `modernization-api` or `modernization-ui` servers can be achieved by altering the configuration to point to the local instances.
