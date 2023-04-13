@@ -18,6 +18,7 @@ import { Input } from '../../../components/FormInputs/Input';
 
 type AddCommentModalProps = {
     modalRef: Ref<ModalRef> | undefined;
+    modalHead?: string;
 };
 
 const ModalBody = ({ control, onSubmit, modalRef }: any) => {
@@ -201,7 +202,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     );
 };
 
-export const AddPhoneEmailModal = ({ modalRef }: AddCommentModalProps) => {
+export const AddPhoneEmailModal = ({ modalRef, modalHead }: AddCommentModalProps) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
@@ -212,7 +213,7 @@ export const AddPhoneEmailModal = ({ modalRef }: AddCommentModalProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="Add - Phone & Email"
+            modalHeading={modalHead ? 'Edit - Phone & Email' : 'Add - Phone & Email'}
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );

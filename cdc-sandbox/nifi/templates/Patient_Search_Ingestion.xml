@@ -1844,6 +1844,8 @@ end
 def add_phone(uid, person)
     telephoneNbr = person['telephoneNbr']
     extensionTxt = person['extensionTxt']
+ 	  telephoneNbr = telephoneNbr.tr('^0-9', '') if telephoneNbr
+ 	  extensionTxt = extensionTxt.tr('^0-9', '') if extensionTxt
     telephoneNbr = nil if telephoneNbr == ''
     extensionTxt = nil if extensionTxt == ''
     return if telephoneNbr.nil? &amp;&amp; extensionTxt.nil?
@@ -2768,5 +2770,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/08/2023 07:26:28 UTC</timestamp>
+    <timestamp>03/31/2023 04:57:22 UTC</timestamp>
 </template>

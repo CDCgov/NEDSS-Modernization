@@ -589,23 +589,29 @@ extend type Query {
   findPatientNamedByContact(patient:ID!, page: Page) : PatientNamedByContactResults
 }
 type PatientDocument {
-  document: ID!
-  receivedOn: DateTime!
-  type: String!
-  sendingFacility: String!
-  reportedOn: DateTime!
-  condition: String
-  event: String!
-  associatedWith: PatientDocumentInvestigation
+    document: ID!
+    receivedOn: DateTime!
+    type: String!
+    sendingFacility: String!
+    reportedOn: DateTime!
+    condition: String
+    event: String!
+    associatedWith: PatientDocumentInvestigation
 }
 
 type PatientDocumentInvestigation {
-  id: ID!
-  local: String!
+    id: ID!
+    local: String!
+}
+
+type PatientDocumentResults {
+    content: [PatientDocument]!
+    total: Int!
+    number: Int!
 }
 
 extend type Query {
-  findDocumentsForPatient(patient: ID!): [PatientDocument]
+    findDocumentsForPatient(patient: ID!, page: Page): PatientDocumentResults
 }
 type PatientMorbidity {
     morbidity: ID!

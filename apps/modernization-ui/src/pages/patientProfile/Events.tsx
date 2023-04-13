@@ -3,7 +3,6 @@ import { TableBody, TableComponent } from '../../components/Table/Table';
 import { Button, Icon } from '@trussworks/react-uswds';
 import {
     AssociatedInvestigation,
-    FindDocumentsForPatientQuery,
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
     FindMorbidityReportsForPatientQuery,
@@ -16,17 +15,18 @@ import { UserContext } from 'providers/UserContext';
 import { Config } from 'config';
 import { PatientTreatmentTable } from 'patient/profile/treatment';
 import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'patient/profile/contact';
+import { PatientDocumentTable } from 'patient/profile/document';
+import { TOTAL_TABLE_DATA } from 'utils/util';
 
 type EventTabProp = {
     patient: string | undefined;
     investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
     labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
     morbidityData?: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined;
-    documentsData?: FindDocumentsForPatientQuery['findDocumentsForPatient'] | undefined;
     profileData?: any;
 };
 
-export const Events = ({ patient, investigationData, labReports, morbidityData, documentsData }: EventTabProp) => {
+export const Events = ({ patient, investigationData, labReports, morbidityData }: EventTabProp) => {
     const { state } = useContext(UserContext);
     const NBS_URL = Config.nbsUrl;
 
@@ -41,6 +41,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
     const [labCurrentPage, setLabCurrentPage] = useState<number>(1);
 
     const [morbidityResults, setMorbidityResults] = useState<any>();
+    const [morbidities, setMorbidities] = useState<any>();
 
     const getData = (investigationData: any) => {
         const tempArr: TableBody[] = [];
@@ -153,7 +154,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                             )
                     },
                     { id: 6, title: document?.programAreaCd || null },
-                    { id: 7, title: document?.jurisdictionCodeDescTxt || null },
+                    { id: 7, title: document?.jurisdictionCd || null },
                     { id: 8, title: document?.localId || null }
                 ]
             });
@@ -246,15 +247,29 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
         if (morbidityData) {
             console.log('morbidityData:', morbidityData);
             getMorbidityData(morbidityData);
+            setMorbidities(morbidityData);
         }
-        if (documentsData) {
-            console.log('documentsData:', documentsData);
-        }
-    }, [investigationData, labReports, morbidityData, documentsData]);
+    }, [investigationData, labReports, morbidityData]);
 
     const sortInvestigationData = (name: string, type: string) => {
         getData(
             investigations.slice().sort((a: any, b: any) => {
+                if (a[name] && b[name]) {
+                    if (a[name].toLowerCase() < b[name].toLowerCase()) {
+                        return type === 'asc' ? -1 : 1;
+                    }
+                    if (a[name].toLowerCase() > b[name].toLowerCase()) {
+                        return type === 'asc' ? 1 : -1;
+                    }
+                }
+                return 0;
+            })
+        );
+    };
+
+    const sortMorbidityData = (name: string, type: string) => {
+        getMorbidityData(
+            morbidities.slice().sort((a: any, b: any) => {
                 if (a[name] && b[name]) {
                     if (a[name].toLowerCase() < b[name].toLowerCase()) {
                         return type === 'asc' ? -1 : 1;
@@ -311,6 +326,28 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                 break;
             case 'notification':
                 sortInvestigationData('notificationRecordStatusCd', type);
+        }
+    };
+
+    const handleMorbiditySort = (name: string, type: string) => {
+        switch (name.toLowerCase()) {
+            case 'date received':
+                getMorbidityData(
+                    morbidities.slice().sort((a: any, b: any) => {
+                        const dateA: any = new Date(a.addTime);
+                        const dateB: any = new Date(b.addTime);
+                        return type === 'asc' ? dateB - dateA : dateA - dateB;
+                    })
+                );
+                break;
+            case 'condition':
+                sortMorbidityData('labConditionCd', type);
+                break;
+            case 'jurisdiction':
+                sortMorbidityData('jurisdictionCd', type);
+                break;
+            case 'event #':
+                sortMorbidityData('localId', type);
         }
     };
 
@@ -426,12 +463,13 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                         { name: 'Provider', sortable: true },
                         { name: 'Report date', sortable: true },
                         { name: 'Condition', sortable: true },
-                        { name: 'Jurisdiction', sortable: false },
+                        { name: 'Jurisdiction', sortable: true },
                         { name: 'Associated with', sortable: true },
-                        { name: 'Event #', sortable: false }
+                        { name: 'Event #', sortable: true }
                     ]}
                     tableBody={morbidityResults}
                     currentPage={currentPage}
+                    sortData={handleMorbiditySort}
                     handleNext={(e) => setCurrentPage(e)}
                 />
             </div>
@@ -464,14 +502,7 @@ export const Events = ({ patient, investigationData, labReports, morbidityData, 
                 <PatientTreatmentTable patient={patient} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <TableComponent
-                    isPagination={true}
-                    tableHeader={'Documents'}
-                    tableHead={[]}
-                    tableBody={[]}
-                    currentPage={currentPage}
-                    handleNext={(e) => setCurrentPage(e)}
-                />
+                <PatientDocumentTable patient={patient} pageSize={TOTAL_TABLE_DATA} nbsBase={NBS_URL} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">

@@ -17,7 +17,6 @@ import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
 import {
     FindPatientsByFilterQuery,
-    useFindDocumentsForPatientLazyQuery,
     useFindInvestigationsByFilterLazyQuery,
     useFindLabReportsByFilterLazyQuery,
     useFindMorbidityReportsForPatientLazyQuery,
@@ -45,9 +44,7 @@ export const PatientProfile = () => {
 
     const [getPatientInvestigationData, { data: investigationData }] = useFindInvestigationsByFilterLazyQuery();
     const [getPatientLabReportData, { data: labReportData }] = useFindLabReportsByFilterLazyQuery();
-    // const [getPatientProfileData, { data: patientProfileData }] = useFindPatientsByFilterLazyQuery();
     const [getMorbidityData, { data: morbidityData }] = useFindMorbidityReportsForPatientLazyQuery();
-    const [getDocumentsData, { data: documentsData }] = useFindDocumentsForPatientLazyQuery();
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
 
@@ -100,11 +97,6 @@ export const PatientProfile = () => {
                     }
                 });
                 getMorbidityData({
-                    variables: {
-                        patient: patientProfileData.findPatientById.id
-                    }
-                });
-                getDocumentsData({
                     variables: {
                         patient: patientProfileData.findPatientById.id
                     }
@@ -191,6 +183,13 @@ export const PatientProfile = () => {
         }
     }, [submittedSuccess]);
 
+    function isEmpty(obj: any) {
+        for (const key in obj) {
+            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
+        }
+        return true;
+    }
+
     return (
         <div className="height-full main-banner">
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
@@ -206,7 +205,7 @@ export const PatientProfile = () => {
                         className="delete-btn display-inline-flex"
                         type={'submit'}>
                         <Icon.Delete className="margin-right-05" />
-                        Delete Patient
+                        Delete patient
                     </ModalToggleButton>
                     <Modal
                         ref={modalRef}
@@ -331,18 +330,25 @@ export const PatientProfile = () => {
                         investigationData={investigationData?.findInvestigationsByFilter}
                         labReports={labReportData?.findLabReportsByFilter}
                         morbidityData={morbidityData?.findMorbidityReportsForPatient}
-                        documentsData={documentsData?.findDocumentsForPatient}
                     />
                 )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
-                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                        handleFormSubmission={(
+                            type: 'error' | 'success' | 'warning' | 'info',
+                            message: string,
+                            data: any
+                        ) => {
+                            if (!isEmpty(data) && id) {
+                                console.log('data:', data);
+                            }
                             setSubmittedSuccess(true);
                             setAddedItem(message);
                             setAlertType(type);
                         }}
                         patientProfileData={patientProfileData?.findPatientById}
                         ethnicity={ethnicity}
+                        race={race}
                     />
                 )}
 

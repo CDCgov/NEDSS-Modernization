@@ -1,6 +1,9 @@
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
+        maven {
+            url "https://packages.confluent.io/maven"
+        }
     }
 }
 
@@ -22,3 +25,6 @@ include ':event-schema'
 project(':event-schema').projectDir = new File('libs/event-schema')
 include ':authentication'
 project(':authentication').projectDir = new File('libs/authentication')
+
+include ':coverage-report'
+

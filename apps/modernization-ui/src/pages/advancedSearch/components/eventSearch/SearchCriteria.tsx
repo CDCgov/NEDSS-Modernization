@@ -56,7 +56,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 label="Case status"
                 options={Object.values(CaseStatus).map((type) => {
                     return {
-                        name: formatInterfaceString(type),
+                        label: formatInterfaceString(type),
                         value: type
                     };
                 })}
@@ -68,7 +68,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 label="Current processing status"
                 options={Object.values(ProcessingStatus).map((type) => {
                     return {
-                        name: formatInterfaceString(type),
+                        label: formatInterfaceString(type),
                         value: type
                     };
                 })}
@@ -80,7 +80,7 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                 label="Notification status"
                 options={Object.values(NotificationStatus).map((type) => {
                     return {
-                        name: formatInterfaceString(type),
+                        label: formatInterfaceString(type),
                         value: type
                     };
                 })}

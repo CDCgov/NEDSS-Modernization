@@ -25,6 +25,7 @@ import java.util.Map;
 @RestController
 public class RedirectController {
   private static final String ADVANCED_SEARCH = "/advanced-search";
+  private static final String PATIENT_PROFILE = "/patient-profile/";
 
   @Autowired
   PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
@@ -70,14 +71,32 @@ public class RedirectController {
       HttpServletResponse response) {
     return redirectionService.handleRedirect(ADVANCED_SEARCH, request, response);
   }
-
+  
+  /**
+   * Intercepts patient-profile from legacy page and re-routes/forwards the patient-profile to the modernized 
+   * patient profile page
+   */
+  @ApiIgnore
+  @PostMapping("/nbs/redirect/patientProfile")
+  public RedirectView redirectPatientProfile(
+          @RequestParam (name="MPRUid") String patientId, 
+          HttpServletRequest request,
+          HttpServletResponse response) {
+      return redirectionService.handleRedirect(PATIENT_PROFILE + patientId, request, response);
+  }
+  
   /**
    * Sends a GET request to
    * <WildFly_URL>/nbs/HomePage.do?method=patientSearchSubmit
    * to set up the session variables so that we can navigate directly to Add Patient or Patient Details pages
    */
   @GetMapping("/preparePatientDetails")
-  @ApiImplicitParam(name = "Authorization", required = true, allowEmptyValue = false, paramType = "header")
+  @ApiImplicitParam(
+            name = "Authorization",
+            required = true,
+            allowEmptyValue = false,
+            paramType = "header",
+            dataTypeClass = String.class)
   public void preparePatientDetails(HttpServletRequest request) {
     String url = wildFlyUrl + "/nbs/HomePage.do?method=patientSearchSubmit";
     // copy cookie header that contains the JSESSIONID from the original request

@@ -45,7 +45,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             label="Program area"
                             options={searchCriteria.programAreas.map((p) => {
                                 return {
-                                    name: p.id,
+                                    label: p.id,
                                     value: p.id
                                 };
                             })}
@@ -58,7 +58,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             label="Jurisdiction"
                             options={searchCriteria.jurisdictions.map((j) => {
                                 return {
-                                    name: j.codeDescTxt,
+                                    label: j.codeDescTxt,
                                     value: j.id
                                 };
                             })}
