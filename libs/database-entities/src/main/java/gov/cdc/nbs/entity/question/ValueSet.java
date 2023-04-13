@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.syphilis_qb;
+package gov.cdc.nbs.entity.question;
 
 
 import javax.persistence.Column;

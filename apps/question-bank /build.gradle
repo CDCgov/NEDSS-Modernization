@@ -21,10 +21,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation 'org.flywaydb:flyway-core'
-	implementation 'org.flywaydb:flyway-mysql'
+	implementation 'com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework:spring-webflux'

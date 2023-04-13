@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.syphilis_qb;
+package gov.cdc.nbs.entity.question;
 
 
 import javax.persistence.Column;
@@ -80,7 +80,7 @@ public class Questions {
     private Long addUserId;
 
     @Column(name = "add_time")
-    private String addTime;
+    private LocalDateTime addTime;
 
     @Column(name = "last_chg_time")
     private SetterTime lastChgTime;
@@ -137,7 +137,7 @@ public class Questions {
     private String recordStatusCd;
 
     @Column(name = "record_status_time")
-    private String recordStatusTime;
+    private LocalDateTime recordStatusTime;
 
     @Column(name = "nbs_ui_component_uid")
     private Long nbsUiComponentUid;

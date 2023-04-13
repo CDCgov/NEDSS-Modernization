@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.syphilis_qb;
+package gov.cdc.nbs.entity.question;
 
 
 import java.util.List;
@@ -17,15 +17,6 @@ public class QuestionGroup {
     @GeneratedValue
     @Column(name = "question_set_uid", nullable = false)
     private Long questionGroupId;
-
-    @Column(name = "questions_question_uid", nullable = false)
-    private Long questionId;
-
-    @Column(name = "condition_set_condition_uid")
-    private Long conditionId;
-
-    @Column(name = "questionnaire_questionnaire_id")
-    private Long questionnaireId;
 
     @Column(name = "label")
     private String label;
