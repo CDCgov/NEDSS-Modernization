@@ -14,7 +14,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -66,7 +66,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_not_map_address_from_tuple_without_identifier() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -82,7 +82,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_not_map_address_from_tuple_without_patient() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -98,7 +98,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_not_map_address_from_tuple_without_version() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -114,7 +114,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple_with_known_county() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -135,7 +135,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple_unknown_county() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -155,7 +155,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple_with_known_state() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -176,7 +176,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple_with_unknown_state() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -196,7 +196,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple_with_known_country() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -217,7 +217,7 @@ class PatientAddressTupleMapperTest {
 
     @Test
     void should_map_address_from_tuple_with_unknown_country() {
-        PatientAddressTables tables = new PatientAddressTables();
+        PatientAddressTupleMapper.Tables tables = new PatientAddressTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 

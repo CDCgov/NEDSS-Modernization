@@ -21,10 +21,10 @@ public class SimpleCountyTupleMapper {
 
     public SimpleCounty map(final Tuple tuple) {
         String id = Objects.requireNonNull(
-            tuple.get(this.tables.address().cntryCd),
+            tuple.get(this.tables.address().cntyCd),
             "A county identifier is required"
         );
-        String description = tuple.get(this.tables.county().codeDescTxt);
+        String description = tuple.get(this.tables.county().codeShortDescTxt);
 
         return resolve(id, description);
     }
@@ -37,8 +37,8 @@ public class SimpleCountyTupleMapper {
     }
 
     public Optional<SimpleCounty> maybeMap(final Tuple tuple) {
-        String id = tuple.get(this.tables.address().cntryCd);
-        String description = tuple.get(this.tables.county().codeDescTxt);
+        String id = tuple.get(this.tables.address().cntyCd);
+        String description = tuple.get(this.tables.county().codeShortDescTxt);
 
         return id == null
             ? Optional.empty()

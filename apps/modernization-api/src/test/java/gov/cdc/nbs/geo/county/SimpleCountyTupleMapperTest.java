@@ -23,8 +23,8 @@ class SimpleCountyTupleMapperTest {
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.address().cntryCd)).thenReturn("county-id");
-        when(tuple.get(tables.county().codeDescTxt)).thenReturn("county-description");
+        when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
+        when(tuple.get(tables.county().codeShortDescTxt)).thenReturn("county-description");
 
         SimpleCountyTupleMapper mapper = new SimpleCountyTupleMapper(tables);
 
@@ -43,7 +43,7 @@ class SimpleCountyTupleMapperTest {
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.address().cntryCd)).thenReturn("county-id");
+        when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
 
         SimpleCountyTupleMapper mapper = new SimpleCountyTupleMapper(tables);
 
@@ -77,8 +77,8 @@ class SimpleCountyTupleMapperTest {
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.address().cntryCd)).thenReturn("county-id");
-        when(tuple.get(tables.county().codeDescTxt)).thenReturn("county-description");
+        when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
+        when(tuple.get(tables.county().codeShortDescTxt)).thenReturn("county-description");
 
         SimpleCountyTupleMapper mapper = new SimpleCountyTupleMapper(tables);
 
@@ -98,7 +98,7 @@ class SimpleCountyTupleMapperTest {
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.address().cntryCd)).thenReturn("county-id");
+        when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
 
         SimpleCountyTupleMapper mapper = new SimpleCountyTupleMapper(tables);
 

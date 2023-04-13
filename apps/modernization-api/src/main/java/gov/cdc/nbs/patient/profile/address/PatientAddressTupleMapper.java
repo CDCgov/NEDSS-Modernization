@@ -1,6 +1,12 @@
 package gov.cdc.nbs.patient.profile.address;
 
 import com.querydsl.core.Tuple;
+import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.entity.odse.QPostalEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.QPostalLocator;
+import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
+import gov.cdc.nbs.entity.srte.QCountryCode;
+import gov.cdc.nbs.entity.srte.QStateCode;
 import gov.cdc.nbs.geo.country.SimpleCountry;
 import gov.cdc.nbs.geo.country.SimpleCountryTupleMapper;
 import gov.cdc.nbs.geo.county.SimpleCounty;
@@ -14,12 +20,39 @@ import java.util.Objects;
 
 class PatientAddressTupleMapper {
 
-    private final PatientAddressTables tables;
+    record Tables(
+        QPerson patient,
+        QPostalEntityLocatorParticipation locators,
+        QPostalLocator address,
+        QCodeValueGeneral type,
+        QCodeValueGeneral use,
+        QCodeValueGeneral county,
+        QStateCode state,
+        QCountryCode country
+    ) {
+
+        Tables() {
+            this(
+                QPerson.person,
+                QPostalEntityLocatorParticipation.postalEntityLocatorParticipation,
+                QPostalLocator.postalLocator,
+                new QCodeValueGeneral("type"),
+                new QCodeValueGeneral("use"),
+                new QCodeValueGeneral("county"),
+                QStateCode.stateCode,
+                QCountryCode.countryCode
+            );
+        }
+
+    }
+
+
+    private final Tables tables;
     private final SimpleCountyTupleMapper countyMapper;
     private final SimpleStateTupleMapper stateMapper;
     private final SimpleCountryTupleMapper countryMapper;
 
-    PatientAddressTupleMapper(final PatientAddressTables tables) {
+    PatientAddressTupleMapper(final Tables tables) {
         this.tables = tables;
 
         this.countyMapper = new SimpleCountyTupleMapper(

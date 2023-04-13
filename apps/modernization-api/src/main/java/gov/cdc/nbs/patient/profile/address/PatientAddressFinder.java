@@ -20,12 +20,12 @@ class PatientAddressFinder {
     private static final String COUNTY_CODE_SET = "PHVS_COUNTY_FIPS_6-4";
 
     private final JPAQueryFactory factory;
-    private final PatientAddressTables tables;
+    private final PatientAddressTupleMapper.Tables tables;
     private final PatientAddressTupleMapper mapper;
 
     PatientAddressFinder(final JPAQueryFactory factory) {
         this.factory = factory;
-        this.tables = new PatientAddressTables();
+        this.tables = new PatientAddressTupleMapper.Tables();
         this.mapper = new PatientAddressTupleMapper(tables);
     }
 
