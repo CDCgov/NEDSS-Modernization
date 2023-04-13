@@ -160,6 +160,23 @@ type PatientMortality {
     country: PatientCodedValue
 }
 
+type PatientGeneral {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    maritalStatus: PatientCodedValue
+    maternalMaidenName: String
+    adultsInHouse: Int
+    childrenInHouse: Int
+    occupation: PatientCodedValue
+    educationLevel: PatientCodedValue
+    primaryLanguage: PatientCodedValue
+    speaksEnglish: PatientCodedValue
+    stateHIVCase: String
+}
+
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -174,6 +191,7 @@ type PatientProfile {
     birth: PatientBirth
     gender: PatientGender
     mortality: PatientMortality
+    general: PatientGeneral
 }
 
 extend type Query {
