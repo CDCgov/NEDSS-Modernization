@@ -48,7 +48,6 @@ class PatientIdentificationFinder {
     private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
         return query.from(this.tables.patient())
             .where(
-                //  administrative comments are on the parent record only
                 this.tables.patient().id.eq(patient),
                 this.tables.patient().cd.eq(PATIENT_CODE),
                 this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE)
