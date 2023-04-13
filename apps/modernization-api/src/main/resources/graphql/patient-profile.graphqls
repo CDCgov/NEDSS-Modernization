@@ -176,6 +176,15 @@ type PatientGeneral {
     stateHIVCase: String
 }
 
+type PatientEthnicity {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    ethnicGroup: PatientCodedValue!
+    unknownReason: PatientCodedValue
+    detailed: [PatientCodedValue]!
+}
 
 type PatientProfile {
     id: ID!
@@ -192,6 +201,7 @@ type PatientProfile {
     gender: PatientGender
     mortality: PatientMortality
     general: PatientGeneral
+    ethnicity: PatientEthnicity
 }
 
 extend type Query {
