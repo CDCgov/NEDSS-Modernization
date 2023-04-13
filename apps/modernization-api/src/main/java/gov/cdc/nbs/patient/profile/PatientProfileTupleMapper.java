@@ -3,34 +3,41 @@ package gov.cdc.nbs.patient.profile;
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPerson;
 
-import java.time.Instant;
 import java.util.Objects;
 
 class PatientProfileTupleMapper {
 
-    private final QPerson patient;
-
-    PatientProfileTupleMapper(final QPerson patient) {
-        this.patient = patient;
+    record Tables(
+        QPerson patient
+    ) {
+        Tables() {
+            this(QPerson.person);
+        }
     }
 
-    PatientProfile map(final Instant asOf, final Tuple tuple) {
+
+    private final Tables tables;
+
+    PatientProfileTupleMapper(final Tables tables) {
+        this.tables = tables;
+    }
+
+    PatientProfile map(final Tuple tuple) {
         long identifier = Objects.requireNonNull(
-            tuple.get(this.patient.id),
+            tuple.get(this.tables.patient().id),
             "A patient id is required"
         );
 
-        String local = tuple.get(this.patient.localId);
+        String local = tuple.get(this.tables.patient().localId);
         short version =
             Objects.requireNonNull(
-                tuple.get(this.patient.versionCtrlNbr),
+                tuple.get(this.tables.patient().versionCtrlNbr),
                 "A patient version is required"
             );
 
         return new PatientProfile(
             identifier,
             local,
-            asOf,
             version
         );
     }

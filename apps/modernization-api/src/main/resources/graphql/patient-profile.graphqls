@@ -208,7 +208,7 @@ type PatientProfile {
     asOf: DateTime!
     local: String!
     version: Int!
-    summary: PatientSummary
+    summary(asOf: DateTime): PatientSummary
     names(page: Page): PatientNameResults
     administrative(page: Page): PatientAdministrativeResults
     addresses(page: Page): PatientAddressResults
@@ -223,5 +223,5 @@ type PatientProfile {
 }
 
 extend type Query {
-    findPatientProfile(patient: ID!, asOf: DateTime): PatientProfile
+    findPatientProfile(patient: ID!): PatientProfile
 }

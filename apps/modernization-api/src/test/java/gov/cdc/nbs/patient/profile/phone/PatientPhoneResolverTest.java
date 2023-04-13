@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.time.Instant;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +32,6 @@ class PatientPhoneResolverTest {
         PatientProfile profile = mock(PatientProfile.class);
 
         when(profile.id()).thenReturn(2963L);
-        when(profile.asOf()).thenReturn(Instant.parse("2023-04-01T00:01:02Z"));
 
         GraphQLPage page = new GraphQLPage(5, 2);
 
@@ -65,7 +63,6 @@ class PatientPhoneResolverTest {
         PatientProfile profile = mock(PatientProfile.class);
 
         when(profile.id()).thenReturn(2963L);
-        when(profile.asOf()).thenReturn(Instant.parse("2023-04-01T00:01:02Z"));
 
         GraphQLPage page = null;
 

@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +24,6 @@ class PatientEthnicityResolverTest {
         PatientProfile profile = mock(PatientProfile.class);
 
         when(profile.id()).thenReturn(2963L);
-        when(profile.asOf()).thenReturn(Instant.parse("2023-04-01T00:01:02Z"));
 
         Optional<PatientEthnicity> actual = resolver.resolve(profile);
 
