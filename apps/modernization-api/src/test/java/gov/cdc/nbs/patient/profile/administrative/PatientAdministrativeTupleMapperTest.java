@@ -14,7 +14,7 @@ class PatientAdministrativeTupleMapperTest {
 
     @Test
     void should_map_administrative_from_tuple() {
-        PatientAdministrativeTables tables = new PatientAdministrativeTables();
+        PatientAdministrativeTupleMapper.Tables tables = new PatientAdministrativeTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
@@ -31,14 +31,14 @@ class PatientAdministrativeTupleMapperTest {
         assertThat(actual.patient()).isEqualTo(2357L);
         assertThat(actual.id()).isEqualTo(433L);
         assertThat(actual.asOf()).isEqualTo("2023-01-17T22:54:43Z");
-        assertThat(actual.version()).isEqualTo((short)227);
+        assertThat(actual.version()).isEqualTo((short) 227);
         assertThat(actual.comment()).isEqualTo("description-value");
 
     }
 
     @Test
     void should_not_map_administrative_from_tuple_without_identifier() {
-        PatientAdministrativeTables tables = new PatientAdministrativeTables();
+        PatientAdministrativeTupleMapper.Tables tables = new PatientAdministrativeTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
@@ -53,7 +53,7 @@ class PatientAdministrativeTupleMapperTest {
 
     @Test
     void should_not_map_administrative_from_tuple_without_patient() {
-        PatientAdministrativeTables tables = new PatientAdministrativeTables();
+        PatientAdministrativeTupleMapper.Tables tables = new PatientAdministrativeTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
         when(tuple.get(tables.patient().id)).thenReturn(433L);
@@ -68,7 +68,7 @@ class PatientAdministrativeTupleMapperTest {
 
     @Test
     void should_not_map_administrative_from_tuple_without_version() {
-        PatientAdministrativeTables tables = new PatientAdministrativeTables();
+        PatientAdministrativeTupleMapper.Tables tables = new PatientAdministrativeTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
         when(tuple.get(tables.patient().id)).thenReturn(433L);

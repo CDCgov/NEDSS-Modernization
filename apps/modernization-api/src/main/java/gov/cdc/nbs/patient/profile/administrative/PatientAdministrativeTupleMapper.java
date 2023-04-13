@@ -1,15 +1,24 @@
 package gov.cdc.nbs.patient.profile.administrative;
 
 import com.querydsl.core.Tuple;
+import gov.cdc.nbs.entity.odse.QPerson;
 
 import java.time.Instant;
 import java.util.Objects;
 
 class PatientAdministrativeTupleMapper {
 
-    private final PatientAdministrativeTables tables;
+    record Tables(QPerson patient) {
 
-    PatientAdministrativeTupleMapper(final PatientAdministrativeTables tables) {
+        Tables() {
+            this(QPerson.person);
+        }
+    }
+
+
+    private final PatientAdministrativeTupleMapper.Tables tables;
+
+    PatientAdministrativeTupleMapper(final PatientAdministrativeTupleMapper.Tables tables) {
         this.tables = tables;
     }
 

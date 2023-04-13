@@ -15,19 +15,18 @@ class PatientAdministrativeFinder {
     private static final String PATIENT_CODE = "PAT";
 
     private final JPAQueryFactory factory;
-    private final PatientAdministrativeTables tables;
+    private final PatientAdministrativeTupleMapper.Tables tables;
     private final PatientAdministrativeTupleMapper mapper;
 
     PatientAdministrativeFinder(final JPAQueryFactory factory) {
         this.factory = factory;
-        this.tables = new PatientAdministrativeTables();
+        this.tables = new PatientAdministrativeTupleMapper.Tables();
         mapper = new PatientAdministrativeTupleMapper(tables);
     }
 
     private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
         return query.from(this.tables.patient())
             .where(
-                //  administrative comments are on the parent record only
                 this.tables.patient().id.eq(patient),
                 this.tables.patient().cd.eq(PATIENT_CODE),
                 this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
