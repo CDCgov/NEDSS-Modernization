@@ -1,9 +1,9 @@
 package gov.cdc.nbs.message.enums;
 
 public enum Indicator {
-    Yes("Y", "Yes"),
-    No("N", "No"),
-    Unknown("UNK", "Unknown");
+    YES("Y", "Yes"),
+    NO("N", "No"),
+    UNKNOWN("UNK", "Unknown");
     private final String code;
     private final String display;
 

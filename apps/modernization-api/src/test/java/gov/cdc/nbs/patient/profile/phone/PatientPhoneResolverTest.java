@@ -81,7 +81,7 @@ class PatientPhoneResolverTest {
 
         Pageable actual_pageable = captor.getValue();
 
-        assertThat(actual_pageable.getPageNumber()).isEqualTo(0);
+        assertThat(actual_pageable.getPageNumber()).isZero();
         assertThat(actual_pageable.getPageSize()).isEqualTo(10);
     }
 }

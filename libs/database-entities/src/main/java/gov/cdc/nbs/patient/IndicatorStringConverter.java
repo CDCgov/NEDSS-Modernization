@@ -9,9 +9,9 @@ public class IndicatorStringConverter {
             return null;
         }
         return switch (value) {
-            case "Y" -> Indicator.Yes;
-            case "UNK" -> Indicator.Unknown;
-            case "N" -> Indicator.No;
+            case "Y" -> Indicator.YES;
+            case "UNK" -> Indicator.UNKNOWN;
+            case "N" -> Indicator.NO;
             default -> null;
         };
     }

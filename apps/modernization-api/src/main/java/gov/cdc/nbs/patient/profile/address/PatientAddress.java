@@ -1,5 +1,9 @@
 package gov.cdc.nbs.patient.profile.address;
 
+import gov.cdc.nbs.geo.country.SimpleCountry;
+import gov.cdc.nbs.geo.county.SimpleCounty;
+import gov.cdc.nbs.geo.state.SimpleState;
+
 import java.time.Instant;
 
 record PatientAddress(
@@ -12,10 +16,10 @@ record PatientAddress(
     String address1,
     String address2,
     String city,
-    County county,
-    State state,
+    SimpleCounty county,
+    SimpleState state,
     String zipcode,
-    Country country,
+    SimpleCountry country,
     String censusTract,
     String comment
 ) {
@@ -23,25 +27,14 @@ record PatientAddress(
     record Type(
         String id,
         String description
-    ) {}
+    ) {
+    }
+
 
     record Use(
         String id,
         String description
-    ) {}
+    ) {
+    }
 
-    record County(
-        String id,
-        String description
-    ) {}
-
-    record State(
-        String id,
-        String description
-    ) {}
-
-    record Country(
-        String id,
-        String description
-    ) {}
 }

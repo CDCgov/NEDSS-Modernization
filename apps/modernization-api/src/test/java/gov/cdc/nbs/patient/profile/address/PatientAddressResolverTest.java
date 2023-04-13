@@ -67,9 +67,7 @@ class PatientAddressResolverTest {
         when(profile.id()).thenReturn(2963L);
         when(profile.asOf()).thenReturn(Instant.parse("2023-04-01T00:01:02Z"));
 
-        GraphQLPage page = null;
-
-        Page<PatientAddress> actual = resolver.resolve(profile, page);
+        Page<PatientAddress> actual = resolver.resolve(profile, null);
 
         assertThat(actual)
             .as("The resolved patient addresses comes from the finder")
@@ -81,7 +79,7 @@ class PatientAddressResolverTest {
 
         Pageable actual_pageable = captor.getValue();
 
-        assertThat(actual_pageable.getPageNumber()).isEqualTo(0);
+        assertThat(actual_pageable.getPageNumber()).isZero();
         assertThat(actual_pageable.getPageSize()).isEqualTo(10);
     }
 }

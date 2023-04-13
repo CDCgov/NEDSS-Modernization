@@ -137,7 +137,7 @@ class PatientGeneralTupleMapperTest {
 
         PatientGeneral actual = mapper.map(tuple);
 
-        assertThat(actual.speaksEnglish()).isEqualTo(Indicator.Yes);
+        assertThat(actual.speaksEnglish()).isEqualTo(Indicator.YES);
 
     }
 

@@ -1,6 +1,12 @@
 package gov.cdc.nbs.patient.profile.address;
 
 import com.querydsl.core.Tuple;
+import gov.cdc.nbs.geo.country.SimpleCountry;
+import gov.cdc.nbs.geo.country.SimpleCountryTupleMapper;
+import gov.cdc.nbs.geo.county.SimpleCounty;
+import gov.cdc.nbs.geo.county.SimpleCountyTupleMapper;
+import gov.cdc.nbs.geo.state.SimpleState;
+import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -9,9 +15,33 @@ import java.util.Objects;
 class PatientAddressTupleMapper {
 
     private final PatientAddressTables tables;
+    private final SimpleCountyTupleMapper countyMapper;
+    private final SimpleStateTupleMapper stateMapper;
+    private final SimpleCountryTupleMapper countryMapper;
 
     PatientAddressTupleMapper(final PatientAddressTables tables) {
         this.tables = tables;
+
+        this.countyMapper = new SimpleCountyTupleMapper(
+            new SimpleCountyTupleMapper.Tables(
+                this.tables.address(),
+                this.tables.county()
+            )
+        );
+
+        this.stateMapper = new SimpleStateTupleMapper(
+            new SimpleStateTupleMapper.Tables(
+                this.tables.address(),
+                this.tables.state()
+            )
+        );
+
+        this.countryMapper = new SimpleCountryTupleMapper(
+            new SimpleCountryTupleMapper.Tables(
+                this.tables.address(),
+                this.tables.country()
+            )
+        );
     }
 
     PatientAddress map(final Tuple tuple) {
@@ -42,12 +72,12 @@ class PatientAddressTupleMapper {
         String address2 = tuple.get(tables.address().streetAddr2);
         String city = tuple.get(tables.address().cityDescTxt);
 
-        PatientAddress.County county = maybeMapCounty(tuple);
-        PatientAddress.State state = maybeMapState(tuple);
+        SimpleCounty county = this.countyMapper.maybeMap(tuple).orElse(null);
+        SimpleState state = this.stateMapper.maybeMap(tuple).orElse(null);
 
         String zipcode = tuple.get(tables.address().zipCd);
 
-        PatientAddress.Country country = maybeMapCountry(tuple);
+        SimpleCountry country = this.countryMapper.maybeMap(tuple).orElse(null);
 
         String censusTract = tuple.get(tables.address().censusTract);
         String comment = tuple.get(tables.locators().locatorDescTxt);
@@ -91,39 +121,4 @@ class PatientAddressTupleMapper {
         );
     }
 
-    private PatientAddress.County maybeMapCounty(final Tuple tuple) {
-        String id = tuple.get(this.tables.address().cntyCd);
-        String description = tuple.get(this.tables.county().codeShortDescTxt);
-
-        return id == null
-            ? null
-            : new PatientAddress.County(
-            id,
-            description == null ? id : description
-        );
-    }
-
-    private PatientAddress.State maybeMapState(final Tuple tuple) {
-        String id = tuple.get(this.tables.address().stateCd);
-        String description = tuple.get(this.tables.state().codeDescTxt);
-
-        return id == null
-            ? null
-            : new PatientAddress.State(
-            id,
-            description == null ? id : description
-        );
-    }
-
-    private PatientAddress.Country maybeMapCountry(final Tuple tuple) {
-        String id = tuple.get(this.tables.address().cntryCd);
-        String description = tuple.get(this.tables.country().codeDescTxt);
-
-        return id == null
-            ? null
-            : new PatientAddress.Country(
-            id,
-            description == null ? id : description
-        );
-    }
 }

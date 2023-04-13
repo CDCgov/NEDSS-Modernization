@@ -1,8 +1,6 @@
 package gov.cdc.nbs.patient.profile.general;
 
 import gov.cdc.nbs.patient.profile.PatientProfile;
-import gov.cdc.nbs.patient.profile.general.PatientGeneral;
-import gov.cdc.nbs.patient.profile.general.PatientGeneralFinder;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

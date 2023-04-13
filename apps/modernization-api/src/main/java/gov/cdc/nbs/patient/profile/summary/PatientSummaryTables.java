@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.profile.summary;
 import gov.cdc.nbs.entity.odse.QEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
-import gov.cdc.nbs.entity.odse.QPersonRace;
 import gov.cdc.nbs.entity.odse.QPostalLocator;
 import gov.cdc.nbs.entity.odse.QTeleLocator;
 import gov.cdc.nbs.entity.srte.QCityCodeValue;
