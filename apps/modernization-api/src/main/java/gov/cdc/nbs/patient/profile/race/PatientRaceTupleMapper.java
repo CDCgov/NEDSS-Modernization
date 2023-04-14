@@ -89,7 +89,7 @@ class PatientRaceTupleMapper {
         String id = tuple.get(this.tables.race().id);
         String description = tuple.get(this.tables.race().codeShortDescTxt);
 
-        if (id == null || Objects.equals(id, category.id())) {
+        if (id == null  || (category != null && Objects.equals(id, category.id()))) {
             return List.of();
         }
 

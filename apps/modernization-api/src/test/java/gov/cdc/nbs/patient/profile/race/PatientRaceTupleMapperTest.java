@@ -82,6 +82,29 @@ class PatientRaceTupleMapperTest {
         );
     }
 
+    @Test
+    void should_map_race_from_tuple_with_race_when_category_not_present() {
+        PatientRaceTupleMapper.Tables tables = new PatientRaceTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
+        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
+
+        when(tuple.get(tables.race().id)).thenReturn("race-id");
+        when(tuple.get(tables.race().codeShortDescTxt)).thenReturn("race-description");
+
+        PatientRaceTupleMapper mapper = new PatientRaceTupleMapper(tables);
+
+        PatientRace actual = mapper.map(tuple);
+
+        assertThat(actual.detailed()).satisfiesExactly(
+            actual_race -> assertThat(actual_race)
+                .returns("race-id", PatientRace.Race::id)
+                .returns("race-description", PatientRace.Race::description)
+        );
+    }
 
     @Test
     void should_map_race_from_tuple_without_race_when_same_as_category() {

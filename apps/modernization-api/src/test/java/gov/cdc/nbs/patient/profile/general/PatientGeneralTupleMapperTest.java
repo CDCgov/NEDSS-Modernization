@@ -122,6 +122,28 @@ class PatientGeneralTupleMapperTest {
     }
 
     @Test
+    void should_map_general_from_tuple_with_primary_language() {
+        PatientGeneralTupleMapper.Tables tables = new PatientGeneralTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
+        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
+
+        when(tuple.get(tables.language().id)).thenReturn("language-id");
+        when(tuple.get(tables.language().codeShortDescTxt)).thenReturn("language-description");
+
+        PatientGeneralTupleMapper mapper = new PatientGeneralTupleMapper(tables);
+
+        PatientGeneral actual = mapper.map(tuple);
+
+        assertThat(actual.primaryLanguage().id()).isEqualTo("language-id");
+        assertThat(actual.primaryLanguage().description()).isEqualTo("language-description");
+
+    }
+
+    @Test
     void should_map_general_from_tuple_with_speaks_english() {
         PatientGeneralTupleMapper.Tables tables = new PatientGeneralTupleMapper.Tables();
 

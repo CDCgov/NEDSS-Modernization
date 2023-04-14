@@ -2,12 +2,15 @@ package gov.cdc.nbs.patient.profile.birth;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.QPostalEntityLocatorParticipation;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 class PatientBirthFinder {
+    
+    private static final QPostalEntityLocatorParticipation LOCATORS = QPostalEntityLocatorParticipation.postalEntityLocatorParticipation;
     private static final String PATIENT_CODE = "PAT";
     private static final String BIRTH_ADDRESS_CODE = "BIR";
     private static final String ACTIVE_CODE = "ACTIVE";
@@ -41,13 +44,13 @@ class PatientBirthFinder {
                 this.tables.multipleBirth().id.codeSetNm.eq("YNU"),
                 this.tables.multipleBirth().id.code.eq(this.tables.patient().multipleBirthInd)
             )
-            .leftJoin(this.tables.locators()).on(
-                this.tables.locators().id.entityUid.eq(this.tables.patient().id),
-                this.tables.locators().useCd.eq(BIRTH_ADDRESS_CODE),
-                this.tables.locators().recordStatusCd.eq(ACTIVE_CODE)
+            .leftJoin(LOCATORS).on(
+                LOCATORS.id.entityUid.eq(this.tables.patient().id),
+                LOCATORS.useCd.eq(BIRTH_ADDRESS_CODE),
+                LOCATORS.recordStatusCd.eq(ACTIVE_CODE)
             )
             .leftJoin(this.tables.address()).on(
-                this.tables.address().id.eq(this.tables.locators().id.locatorUid)
+                this.tables.address().id.eq(LOCATORS.id.locatorUid)
             )
             .leftJoin(this.tables.state()).on(
                 this.tables.state().id.eq(this.tables.address().stateCd)

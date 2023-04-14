@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.profile.birth;
 
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.entity.odse.QPostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.QPostalLocator;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QCountryCode;
@@ -24,7 +23,6 @@ class PatientBirthTupleMapper {
     record Tables(
         QPerson patient,
         QCodeValueGeneral multipleBirth,
-        QPostalEntityLocatorParticipation locators,
         QPostalLocator address,
         QStateCode state,
         QCountryCode country
@@ -34,7 +32,6 @@ class PatientBirthTupleMapper {
             this(
                 QPerson.person,
                 new QCodeValueGeneral("multiple_birth"),
-                QPostalEntityLocatorParticipation.postalEntityLocatorParticipation,
                 QPostalLocator.postalLocator,
                 QStateCode.stateCode,
                 QCountryCode.countryCode
@@ -42,6 +39,7 @@ class PatientBirthTupleMapper {
         }
 
     }
+
 
     private final PatientBirthTupleMapper.Tables tables;
     private final Clock clock;
