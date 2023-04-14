@@ -706,6 +706,70 @@ export type Page = {
   pageSize: Scalars['Int'];
 };
 
+export type PatientAddress = {
+  __typename?: 'PatientAddress';
+  address1?: Maybe<Scalars['String']>;
+  address2?: Maybe<Scalars['String']>;
+  asOf: Scalars['DateTime'];
+  censusTract?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  comment?: Maybe<Scalars['String']>;
+  country?: Maybe<PatientCodedValue>;
+  county?: Maybe<PatientCodedValue>;
+  id: Scalars['ID'];
+  patient: Scalars['Int'];
+  state?: Maybe<PatientCodedValue>;
+  type?: Maybe<PatientCodedValue>;
+  use?: Maybe<PatientCodedValue>;
+  version: Scalars['Int'];
+  zipcode?: Maybe<Scalars['String']>;
+};
+
+export type PatientAddressResults = {
+  __typename?: 'PatientAddressResults';
+  content: Array<Maybe<PatientAddress>>;
+  number: Scalars['Int'];
+  size: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
+export type PatientAdministrative = {
+  __typename?: 'PatientAdministrative';
+  asOf: Scalars['DateTime'];
+  comment?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  patient: Scalars['ID'];
+  version: Scalars['Int'];
+};
+
+export type PatientAdministrativeResults = {
+  __typename?: 'PatientAdministrativeResults';
+  content: Array<Maybe<PatientAdministrative>>;
+  number: Scalars['Int'];
+  size: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
+export type PatientBirth = {
+  __typename?: 'PatientBirth';
+  age?: Maybe<Scalars['Int']>;
+  asOf: Scalars['DateTime'];
+  bornOn?: Maybe<Scalars['Date']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<PatientCodedValue>;
+  id: Scalars['ID'];
+  multipleBirth?: Maybe<PatientCodedValue>;
+  patient: Scalars['Int'];
+  state?: Maybe<PatientCodedValue>;
+  version: Scalars['Int'];
+};
+
+export type PatientCodedValue = {
+  __typename?: 'PatientCodedValue';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientContactInvestigation = {
   __typename?: 'PatientContactInvestigation';
   condition: Scalars['String'];
@@ -738,16 +802,86 @@ export type PatientDocumentResults = {
   total: Scalars['Int'];
 };
 
+export type PatientEthnicity = {
+  __typename?: 'PatientEthnicity';
+  asOf: Scalars['DateTime'];
+  detailed: Array<Maybe<PatientCodedValue>>;
+  ethnicGroup: PatientCodedValue;
+  id: Scalars['ID'];
+  patient: Scalars['Int'];
+  unknownReason?: Maybe<PatientCodedValue>;
+  version: Scalars['Int'];
+};
+
 export type PatientEventResponse = {
   __typename?: 'PatientEventResponse';
   patientId: Scalars['ID'];
   requestId: Scalars['String'];
 };
 
+export type PatientGender = {
+  __typename?: 'PatientGender';
+  additional?: Maybe<Scalars['String']>;
+  asOf: Scalars['DateTime'];
+  birth?: Maybe<PatientCodedValue>;
+  current?: Maybe<PatientCodedValue>;
+  id: Scalars['ID'];
+  patient: Scalars['Int'];
+  preferred?: Maybe<PatientCodedValue>;
+  unknownReason?: Maybe<PatientCodedValue>;
+  version: Scalars['Int'];
+};
+
+export type PatientGeneral = {
+  __typename?: 'PatientGeneral';
+  adultsInHouse?: Maybe<Scalars['Int']>;
+  asOf: Scalars['DateTime'];
+  childrenInHouse?: Maybe<Scalars['Int']>;
+  educationLevel?: Maybe<PatientCodedValue>;
+  id: Scalars['ID'];
+  maritalStatus?: Maybe<PatientCodedValue>;
+  maternalMaidenName?: Maybe<Scalars['String']>;
+  occupation?: Maybe<PatientCodedValue>;
+  patient: Scalars['Int'];
+  primaryLanguage?: Maybe<PatientCodedValue>;
+  speaksEnglish?: Maybe<PatientCodedValue>;
+  stateHIVCase?: Maybe<Scalars['String']>;
+  version: Scalars['Int'];
+};
+
+export type PatientIdentification = {
+  __typename?: 'PatientIdentification';
+  asOf: Scalars['DateTime'];
+  authority?: Maybe<PatientCodedValue>;
+  id: Scalars['ID'];
+  patient: Scalars['Int'];
+  sequence: Scalars['Int'];
+  type: PatientCodedValue;
+  value?: Maybe<Scalars['String']>;
+  version: Scalars['Int'];
+};
+
+export type PatientIdentificationResults = {
+  __typename?: 'PatientIdentificationResults';
+  content: Array<Maybe<PatientIdentification>>;
+  number: Scalars['Int'];
+  size: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type PatientIdentificationTypeResults = {
   __typename?: 'PatientIdentificationTypeResults';
   content: Array<Maybe<IdentificationType>>;
   total: Scalars['Int'];
+};
+
+export type PatientLegalName = {
+  __typename?: 'PatientLegalName';
+  first?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['String']>;
+  middle?: Maybe<Scalars['String']>;
+  prefix?: Maybe<Scalars['String']>;
+  suffix?: Maybe<Scalars['String']>;
 };
 
 export type PatientMorbidity = {
@@ -787,11 +921,181 @@ export type PatientMorbidityResults = {
   total: Scalars['Int'];
 };
 
+export type PatientMortality = {
+  __typename?: 'PatientMortality';
+  asOf: Scalars['DateTime'];
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<PatientCodedValue>;
+  deceased?: Maybe<PatientCodedValue>;
+  deceasedOn?: Maybe<Scalars['Date']>;
+  id: Scalars['ID'];
+  patient: Scalars['Int'];
+  state?: Maybe<PatientCodedValue>;
+  version: Scalars['Int'];
+};
+
+export type PatientName = {
+  __typename?: 'PatientName';
+  asOf: Scalars['DateTime'];
+  degree?: Maybe<PatientCodedValue>;
+  first?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['String']>;
+  middle?: Maybe<Scalars['String']>;
+  patient: Scalars['ID'];
+  prefix?: Maybe<PatientCodedValue>;
+  secondLast?: Maybe<Scalars['String']>;
+  secondMiddle?: Maybe<Scalars['String']>;
+  sequence: Scalars['Int'];
+  suffix?: Maybe<PatientCodedValue>;
+  use: PatientCodedValue;
+  version: Scalars['Int'];
+};
+
+export type PatientNameResults = {
+  __typename?: 'PatientNameResults';
+  content: Array<Maybe<PatientName>>;
+  number: Scalars['Int'];
+  size: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type PatientNamedByContactResults = {
   __typename?: 'PatientNamedByContactResults';
   content: Array<Maybe<NamedByPatient>>;
   number: Scalars['Int'];
   total: Scalars['Int'];
+};
+
+export type PatientPhone = {
+  __typename?: 'PatientPhone';
+  asOf: Scalars['DateTime'];
+  comment?: Maybe<Scalars['String']>;
+  countryCode?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  extension?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  number?: Maybe<Scalars['String']>;
+  patient: Scalars['Int'];
+  type?: Maybe<PatientCodedValue>;
+  url?: Maybe<Scalars['String']>;
+  use?: Maybe<PatientCodedValue>;
+  version: Scalars['Int'];
+};
+
+export type PatientPhoneResults = {
+  __typename?: 'PatientPhoneResults';
+  content: Array<Maybe<PatientPhone>>;
+  number: Scalars['Int'];
+  size: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
+export type PatientProfile = {
+  __typename?: 'PatientProfile';
+  addresses?: Maybe<PatientAddressResults>;
+  administrative?: Maybe<PatientAdministrativeResults>;
+  asOf: Scalars['DateTime'];
+  birth?: Maybe<PatientBirth>;
+  ethnicity?: Maybe<PatientEthnicity>;
+  gender?: Maybe<PatientGender>;
+  general?: Maybe<PatientGeneral>;
+  id: Scalars['ID'];
+  identification?: Maybe<PatientIdentificationResults>;
+  local: Scalars['String'];
+  mortality?: Maybe<PatientMortality>;
+  names?: Maybe<PatientNameResults>;
+  phones?: Maybe<PatientPhoneResults>;
+  races?: Maybe<PatientRaceResults>;
+  summary?: Maybe<PatientSummary>;
+  version: Scalars['Int'];
+};
+
+
+export type PatientProfileAddressesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type PatientProfileAdministrativeArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type PatientProfileIdentificationArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type PatientProfileNamesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type PatientProfilePhonesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type PatientProfileRacesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type PatientProfileSummaryArgs = {
+  asOf?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PatientRace = {
+  __typename?: 'PatientRace';
+  asOf: Scalars['DateTime'];
+  category: PatientCodedValue;
+  detailed?: Maybe<Array<Maybe<PatientCodedValue>>>;
+  id: Scalars['ID'];
+  patient: Scalars['Int'];
+  sequence: Scalars['Int'];
+  version: Scalars['Int'];
+};
+
+export type PatientRaceResults = {
+  __typename?: 'PatientRaceResults';
+  content: Array<Maybe<PatientRace>>;
+  number: Scalars['Int'];
+  size: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
+export type PatientSummary = {
+  __typename?: 'PatientSummary';
+  address?: Maybe<PatientSummaryAddress>;
+  age?: Maybe<Scalars['Int']>;
+  birthday?: Maybe<Scalars['Date']>;
+  email?: Maybe<Array<Maybe<PatientSummaryEmail>>>;
+  ethnicity?: Maybe<Scalars['String']>;
+  gender?: Maybe<Scalars['String']>;
+  legalName?: Maybe<PatientLegalName>;
+  phone?: Maybe<Array<Maybe<PatientSummaryPhone>>>;
+  race?: Maybe<Scalars['String']>;
+};
+
+export type PatientSummaryAddress = {
+  __typename?: 'PatientSummaryAddress';
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  street?: Maybe<Scalars['String']>;
+  zipcode?: Maybe<Scalars['String']>;
+};
+
+export type PatientSummaryEmail = {
+  __typename?: 'PatientSummaryEmail';
+  address?: Maybe<Scalars['String']>;
+  use?: Maybe<Scalars['String']>;
+};
+
+export type PatientSummaryPhone = {
+  __typename?: 'PatientSummaryPhone';
+  number?: Maybe<Scalars['String']>;
+  use?: Maybe<Scalars['String']>;
 };
 
 export type PatientTreatment = {
@@ -1179,6 +1483,7 @@ export type Query = {
   findOrganizationsByFilter: OrganizationResults;
   findPatientById?: Maybe<Person>;
   findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
+  findPatientProfile?: Maybe<PatientProfile>;
   findPatientsByFilter: PersonResults;
   findPatientsByOrganizationFilter: PersonResults;
   findPlaceById?: Maybe<Place>;
@@ -1337,6 +1642,11 @@ export type QueryFindPatientByIdArgs = {
 
 export type QueryFindPatientNamedByContactArgs = {
   page?: InputMaybe<Page>;
+  patient: Scalars['ID'];
+};
+
+
+export type QueryFindPatientProfileArgs = {
   patient: Scalars['ID'];
 };
 
@@ -1753,6 +2063,20 @@ export type FindPatientNamedByContactQueryVariables = Exact<{
 
 
 export type FindPatientNamedByContactQuery = { __typename?: 'Query', findPatientNamedByContact?: { __typename?: 'PatientNamedByContactResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, condition?: string | null, namedOn: any, priority?: string | null, disposition?: string | null, event: string, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
+
+export type FindPatientProfileQueryVariables = Exact<{
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  page?: InputMaybe<Page>;
+  page1?: InputMaybe<Page>;
+  page2?: InputMaybe<Page>;
+  page3?: InputMaybe<Page>;
+  page4?: InputMaybe<Page>;
+  page5?: InputMaybe<Page>;
+  patient: Scalars['ID'];
+}>;
+
+
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, asOf: any, local: string, version: number, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null } | null> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null } | null> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: string, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null } | null> } | null, addresses?: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null } | null> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, id: string, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: string, sequence: number, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed?: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> | null } | null> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -3932,6 +4256,323 @@ export function useFindPatientNamedByContactLazyQuery(baseOptions?: Apollo.LazyQ
 export type FindPatientNamedByContactQueryHookResult = ReturnType<typeof useFindPatientNamedByContactQuery>;
 export type FindPatientNamedByContactLazyQueryHookResult = ReturnType<typeof useFindPatientNamedByContactLazyQuery>;
 export type FindPatientNamedByContactQueryResult = Apollo.QueryResult<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>;
+export const FindPatientProfileDocument = gql`
+    query findPatientProfile($asOf: DateTime, $page: Page, $page1: Page, $page2: Page, $page3: Page, $page4: Page, $page5: Page, $patient: ID!) {
+  findPatientProfile(patient: $patient) {
+    id
+    asOf
+    local
+    version
+    summary(asOf: $asOf) {
+      legalName {
+        prefix
+        first
+        middle
+        last
+        suffix
+      }
+      birthday
+      age
+      gender
+      ethnicity
+      race
+      phone {
+        use
+        number
+      }
+      email {
+        use
+        address
+      }
+      address {
+        street
+        city
+        state
+        zipcode
+        country
+      }
+    }
+    names(page: $page) {
+      content {
+        patient
+        version
+        asOf
+        sequence
+        use {
+          id
+          description
+        }
+        prefix {
+          id
+          description
+        }
+        first
+        middle
+        secondMiddle
+        last
+        secondLast
+        suffix {
+          id
+          description
+        }
+        degree {
+          id
+          description
+        }
+      }
+      total
+      number
+      size
+    }
+    administrative(page: $page1) {
+      content {
+        patient
+        id
+        version
+        asOf
+        comment
+      }
+      total
+      number
+      size
+    }
+    addresses(page: $page2) {
+      content {
+        patient
+        id
+        version
+        asOf
+        type {
+          id
+          description
+        }
+        address1
+        address2
+        city
+        county {
+          id
+          description
+        }
+        state {
+          id
+          description
+        }
+        zipcode
+        country {
+          id
+          description
+        }
+        censusTract
+        comment
+      }
+      total
+      number
+      size
+    }
+    phones(page: $page3) {
+      content {
+        patient
+        id
+        version
+        asOf
+        countryCode
+        number
+        extension
+        email
+        url
+        comment
+      }
+      total
+      number
+      size
+    }
+    identification(page: $page4) {
+      content {
+        patient
+        id
+        sequence
+        version
+        asOf
+        authority {
+          id
+          description
+        }
+        value
+      }
+      total
+      number
+      size
+    }
+    races(page: $page5) {
+      content {
+        patient
+        id
+        sequence
+        version
+        asOf
+        category {
+          id
+          description
+        }
+        detailed {
+          id
+          description
+        }
+      }
+      total
+      number
+      size
+    }
+    birth {
+      patient
+      id
+      version
+      asOf
+      bornOn
+      age
+      multipleBirth {
+        id
+        description
+      }
+      city
+      state {
+        id
+        description
+      }
+      country {
+        id
+        description
+      }
+    }
+    gender {
+      patient
+      id
+      version
+      asOf
+      birth {
+        id
+        description
+      }
+      current {
+        id
+        description
+      }
+      unknownReason {
+        id
+        description
+      }
+      preferred {
+        id
+        description
+      }
+      additional
+    }
+    mortality {
+      patient
+      id
+      version
+      asOf
+      deceased {
+        id
+        description
+      }
+      deceasedOn
+      city
+      state {
+        id
+        description
+      }
+      country {
+        id
+        description
+      }
+    }
+    general {
+      patient
+      id
+      version
+      asOf
+      maritalStatus {
+        id
+        description
+      }
+      maternalMaidenName
+      adultsInHouse
+      childrenInHouse
+      occupation {
+        id
+        description
+      }
+      educationLevel {
+        id
+        description
+      }
+      primaryLanguage {
+        id
+        description
+      }
+      speaksEnglish {
+        id
+        description
+      }
+      stateHIVCase
+    }
+    ethnicity {
+      patient
+      id
+      version
+      asOf
+      ethnicGroup {
+        id
+        description
+      }
+      unknownReason {
+        id
+        description
+      }
+      detailed {
+        id
+        description
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindPatientProfileQuery__
+ *
+ * To run a query within a React component, call `useFindPatientProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindPatientProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindPatientProfileQuery({
+ *   variables: {
+ *      asOf: // value for 'asOf'
+ *      page: // value for 'page'
+ *      page1: // value for 'page1'
+ *      page2: // value for 'page2'
+ *      page3: // value for 'page3'
+ *      page4: // value for 'page4'
+ *      page5: // value for 'page5'
+ *      patient: // value for 'patient'
+ *   },
+ * });
+ */
+export function useFindPatientProfileQuery(baseOptions: Apollo.QueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
+      }
+export function useFindPatientProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
+        }
+export type FindPatientProfileQueryHookResult = ReturnType<typeof useFindPatientProfileQuery>;
+export type FindPatientProfileLazyQueryHookResult = ReturnType<typeof useFindPatientProfileLazyQuery>;
+export type FindPatientProfileQueryResult = Apollo.QueryResult<FindPatientProfileQuery, FindPatientProfileQueryVariables>;
 export const FindPatientsByFilterDocument = gql`
     query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage) {
   findPatientsByFilter(filter: $filter, page: $page) {

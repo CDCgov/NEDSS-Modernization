@@ -123,13 +123,13 @@ class ContactNamedByPatientFinder {
                 suffix);
 
         return new PatientContacts.NamedContact(
-                Objects.requireNonNull(identifier, "A contact id is required."),
+                Objects.requireNonNull(identifier, "A contact identifier is required."),
                 name);
     }
 
     private PatientContacts.Investigation mapInvestigation(final Tuple tuple) {
         Long identifier =
-                Objects.requireNonNull(tuple.get(INVESTIGATION.id), "An investigation id is required.");
+                Objects.requireNonNull(tuple.get(INVESTIGATION.id), "An investigation identifier is required.");
         String local = tuple.get(INVESTIGATION.localId);
         String condition = tuple.get(INVESTIGATION.cdDescTxt);
 

@@ -20,7 +20,7 @@ export class ExportControllerService {
         authorization,
         filter,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * filter
          */
@@ -51,7 +51,7 @@ export class ExportControllerService {
         authorization,
         filter,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * filter
          */
@@ -82,7 +82,7 @@ export class ExportControllerService {
         authorization,
         filter,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * filter
          */
@@ -113,7 +113,7 @@ export class ExportControllerService {
         authorization,
         filter,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * filter
          */

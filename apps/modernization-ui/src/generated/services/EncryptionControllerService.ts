@@ -18,7 +18,7 @@ export class EncryptionControllerService {
         authorization,
         encryptedString,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * encryptedString
          */
@@ -49,7 +49,7 @@ export class EncryptionControllerService {
         authorization,
         object,
     }: {
-        authorization: any,
+        authorization: string,
         /**
          * object
          */
