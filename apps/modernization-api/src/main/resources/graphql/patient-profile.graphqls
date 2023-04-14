@@ -186,6 +186,23 @@ type PatientEthnicity {
     detailed: [PatientCodedValue]!
 }
 
+type PatientRace {
+    patient: Int!
+    id: ID!
+    sequence: Int!
+    version: Int!
+    asOf: DateTime!
+    category: PatientCodedValue!
+    detailed: [PatientCodedValue]
+}
+
+type PatientRaceResults {
+    content: [PatientRace]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
 type PatientProfile {
     id: ID!
     asOf: DateTime!
@@ -197,6 +214,7 @@ type PatientProfile {
     addresses(page: Page): PatientAddressResults
     phones(page: Page): PatientPhoneResults
     identification(page: Page): PatientIdentificationResults
+    races(page: Page): PatientRaceResults
     birth: PatientBirth
     gender: PatientGender
     mortality: PatientMortality
