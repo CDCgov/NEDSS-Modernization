@@ -5,7 +5,7 @@ nbs:
 spring:
   flyway:
     enabled: true
-    schemas: MODERNIZATION
+    schemas: dbo
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
@@ -16,9 +16,9 @@ spring:
         hbm2ddl.jdbc_metadata_extraction_strategy: individually
         jdbc.time_zone: UTC
         format_sql: true
+        default_schema: dbo
     hibernate:
       ddl-auto: validate
-      default_schema: MODERNIZATION
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=question_bank;encrypt=true;trustServerCertificate=true;
     username: qb_admin

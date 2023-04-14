@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "answer_set", catalog = "question_bank", schema = "modernization")
+@Table(name = "answer_set", catalog = "question_bank")
 public class AnswerSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
