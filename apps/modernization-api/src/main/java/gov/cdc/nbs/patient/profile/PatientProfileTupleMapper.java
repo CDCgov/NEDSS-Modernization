@@ -24,14 +24,14 @@ class PatientProfileTupleMapper {
 
     PatientProfile map(final Tuple tuple) {
         long identifier = Objects.requireNonNull(
-            tuple.get(this.tables.patient().id),
+            tuple.get(this.tables.patient().personParentUid.id),
             "A patient id is required"
         );
 
-        String local = tuple.get(this.tables.patient().localId);
+        String local = tuple.get(this.tables.patient().personParentUid.localId);
         short version =
             Objects.requireNonNull(
-                tuple.get(this.tables.patient().versionCtrlNbr),
+                tuple.get(this.tables.patient().personParentUid.versionCtrlNbr),
                 "A patient version is required"
             );
 

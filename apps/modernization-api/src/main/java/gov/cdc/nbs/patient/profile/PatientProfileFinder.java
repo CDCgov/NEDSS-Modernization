@@ -19,13 +19,13 @@ class PatientProfileFinder {
     }
 
     Optional<PatientProfile> find(final long identifier) {
-        return this.factory.select(
-                this.tables.patient().id,
-                this.tables.patient().localId,
-                this.tables.patient().versionCtrlNbr
+        return this.factory.selectDistinct(
+                this.tables.patient().personParentUid.id,
+                this.tables.patient().personParentUid.localId,
+                this.tables.patient().personParentUid.versionCtrlNbr
             )
             .from(this.tables.patient())
-            .where(this.tables.patient().personParentUid.id.eq(identifier))
+            .where(this.tables.patient().id.eq(identifier))
             .fetch()
             .stream()
             .map(mapper::map)

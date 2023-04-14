@@ -17,9 +17,9 @@ class PatientProfileTupleMapperTest {
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(table.patient().id)).thenReturn(3167L);
-        when(tuple.get(table.patient().localId)).thenReturn("local-id-value");
-        when(tuple.get(table.patient().versionCtrlNbr)).thenReturn((short) 89);
+        when(tuple.get(table.patient().personParentUid.id)).thenReturn(3167L);
+        when(tuple.get(table.patient().personParentUid.localId)).thenReturn("local-id-value");
+        when(tuple.get(table.patient().personParentUid.versionCtrlNbr)).thenReturn((short) 89);
 
         PatientProfileTupleMapper mapper = new PatientProfileTupleMapper(table);
 
@@ -51,8 +51,8 @@ class PatientProfileTupleMapperTest {
         PatientProfileTupleMapper.Tables table = new PatientProfileTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
-        when(tuple.get(table.patient().id)).thenReturn(3167L);
-        when(tuple.get(table.patient().localId)).thenReturn("local-id-value");
+        when(tuple.get(table.patient().personParentUid.id)).thenReturn(3167L);
+        when(tuple.get(table.patient().personParentUid.localId)).thenReturn("local-id-value");
 
 
         PatientProfileTupleMapper mapper = new PatientProfileTupleMapper(table);
