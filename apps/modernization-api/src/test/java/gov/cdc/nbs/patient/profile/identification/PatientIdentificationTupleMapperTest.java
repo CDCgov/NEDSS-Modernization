@@ -72,6 +72,28 @@ class PatientIdentificationTupleMapperTest {
     }
 
     @Test
+    void should_map_identification_from_tuple_with_authority_lacking_description() {
+        PatientIdentificationTupleMapper.Tables tables = new PatientIdentificationTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
+        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.identification().asOfDate)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
+        when(tuple.get(tables.identification().id.entityIdSeq)).thenReturn((short) 557);
+        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
+
+        when(tuple.get(tables.identification().assigningAuthorityCd)).thenReturn("authority-id");
+
+        PatientIdentificationTupleMapper mapper = new PatientIdentificationTupleMapper(tables);
+
+        PatientIdentification actual = mapper.map(tuple);
+
+        assertThat(actual.authority().id()).isEqualTo("authority-id");
+        assertThat(actual.authority().description()).isEqualTo("authority-id");
+    }
+
+    @Test
     void should_not_map_identification_from_tuple_without_identifier() {
         PatientIdentificationTupleMapper.Tables tables = new PatientIdentificationTupleMapper.Tables();
 

@@ -862,7 +862,6 @@ type PatientEthnicity {
 type PatientRace {
     patient: Int!
     id: ID!
-    sequence: Int!
     version: Int!
     asOf: DateTime!
     category: PatientCodedValue!

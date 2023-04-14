@@ -91,9 +91,13 @@ class PatientIdentificationTupleMapper {
 
         return id == null
             ? null
-            : new PatientIdentification.Authority(
+            : resolveAuthority(id, description);
+    }
+
+    private PatientIdentification.Authority resolveAuthority(final String id, final String description) {
+        return new PatientIdentification.Authority(
             id,
-            description
+            description == null ? id : description
         );
     }
 }
