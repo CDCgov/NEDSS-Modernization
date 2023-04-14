@@ -878,7 +878,6 @@ type PatientRaceResults {
 
 type PatientProfile {
     id: ID!
-    asOf: DateTime!
     local: String!
     version: Int!
     summary(asOf: DateTime): PatientSummary
