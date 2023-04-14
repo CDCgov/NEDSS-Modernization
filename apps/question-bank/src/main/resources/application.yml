@@ -5,7 +5,7 @@ nbs:
 spring:
   flyway:
     enabled: true
-    schemas: dbo
+    schemas: question_bank
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
@@ -18,9 +18,9 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: validate
-      default_schema: dbo
+      default_schema: question_bank
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=question_bank;encrypt=true;trustServerCertificate=true;
-    username: sa
-    password: fake.fake.fake.1234
+    username: qb_admin
+    password: qb_admin
 
