@@ -1,0 +1,27 @@
+nbs:
+  datasource:
+    server: localhost
+
+spring:
+  flyway:
+    enabled: true
+    schemas: DBO
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        hbm2ddl.jdbc_metadata_extraction_strategy: individually
+        jdbc.time_zone: UTC
+        format_sql: true
+        default_schema: DBO
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:question_bank;MODE=MSSQLServer;DB_CLOSE_DELAY=-1;
+    username: sa
+    password: sa
+

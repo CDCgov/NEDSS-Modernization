@@ -1,0 +1,26 @@
+nbs:
+  datasource:
+    server: localhost
+
+spring:
+  flyway:
+    enabled: true
+    schemas: dbo
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        hbm2ddl.jdbc_metadata_extraction_strategy: individually
+        jdbc.time_zone: UTC
+        format_sql: true
+        default_schema: dbo
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=question_bank;encrypt=true;trustServerCertificate=true;
+    username: qb_admin
+    password: qb_admin
+
