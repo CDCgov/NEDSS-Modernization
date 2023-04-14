@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "questionnaire", catalog = "question_bank", schema = "question_bank")
+@Table(name = "questionnaire", catalog = "question_bank", schema = "modernization")
 public class Questionnaire {
     @Id
     @GeneratedValue

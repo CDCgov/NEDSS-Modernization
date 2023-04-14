@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "answer", catalog = "question_bank", schema = "question_bank")
+@Table(name = "answer", catalog = "question_bank", schema = "modernization")
 public class Answer {
 
     @Id
@@ -26,7 +26,7 @@ public class Answer {
     @Column(name = "display", nullable = false)
     private String display;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "val", nullable = false)
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)

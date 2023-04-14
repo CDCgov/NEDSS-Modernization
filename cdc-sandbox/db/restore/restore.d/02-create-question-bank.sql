@@ -6,9 +6,9 @@ CREATE LOGIN qb_admin WITH PASSWORD = 'qb_admin',DEFAULT_DATABASE = [question_ba
 GO
 USE question_bank;
 GO
-CREATE SCHEMA question_bank;
+CREATE SCHEMA MODERNIZATION;
 GO
-CREATE USER qb_admin FOR LOGIN qb_admin WITH DEFAULT_SCHEMA = [question_bank]; 
+CREATE USER qb_admin FOR LOGIN qb_admin WITH DEFAULT_SCHEMA = [MODERNIZATION]; 
 GO
 EXEC sp_addrolemember 'db_owner', 'qb_admin'
 GO
