@@ -1,14 +1,19 @@
 package gov.cdc.nbs.patient.profile.summary;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
-public record PatientSummary(
+ record PatientSummary(
+    long patient,
     Name legalName,
     LocalDate birthday,
     Integer age,
     String gender,
     String ethnicity,
-    String race
+    String race,
+    Collection<Phone> phone,
+    Collection<Email> email,
+    Address address
 ) {
 
     record Name(
@@ -19,4 +24,22 @@ public record PatientSummary(
         String suffix
     ) {
     }
+
+    record Phone (
+        String use,
+        String number
+    ){}
+
+    record Email (
+        String use,
+        String address
+    ){}
+
+    record Address(
+        String street,
+        String city,
+        String state,
+        String zipcode,
+        String country
+    ){}
 }

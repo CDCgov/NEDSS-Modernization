@@ -3,6 +3,24 @@ type PatientCodedValue {
     description: String!
 }
 
+type PatientSummaryAddress {
+    street: String
+    city: String
+    state: String
+    zipcode: String
+    country: String
+}
+
+type PatientSummaryPhone {
+    use: String
+    number: String
+}
+
+type PatientSummaryEmail {
+    use: String
+    address: String
+}
+
 type PatientSummary {
     legalName: PatientLegalName
     birthday: Date
@@ -10,6 +28,9 @@ type PatientSummary {
     gender: String
     ethnicity: String
     race: String
+    phone: [PatientSummaryPhone]
+    email: [PatientSummaryEmail]
+    address: PatientSummaryAddress
 }
 
 type PatientLegalName {
