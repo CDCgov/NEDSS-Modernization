@@ -45,7 +45,7 @@ public class PatientNamesAContactSteps {
 
     long investigation = investigations.one();
 
-    Person other = patientMother.patient();
+    Person other = patientMother.create();
 
     mother.namedByPatient(investigation, patient, other.getId());
 

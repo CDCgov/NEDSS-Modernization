@@ -38,7 +38,7 @@ public class PatientNamedAsAContactSteps {
   public void the_patient_is_named_as_a_contact() {
     long patient = patients.one();
 
-    Person other = patientMother.patient();
+    Person other = patientMother.create();
 
     PublicHealthCase investigation = investigationMother.investigation(other.getId());
 

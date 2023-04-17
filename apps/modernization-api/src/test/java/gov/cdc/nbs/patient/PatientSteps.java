@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public class PatientProfileSteps {
+public class PatientSteps {
 
-  @Autowired
-  PatientMother mother;
+    @Autowired
+    PatientMother mother;
 
-  @Before
-  public void clean() {
-    mother.reset();
-  }
+    @Before
+    public void clean() {
+        mother.reset();
+    }
 
-  @Given("I have a patient")
-  public void i_have_a_patient() {
-    mother.patient();
-  }
+    @Given("I have a patient")
+    public void i_have_a_patient() {
+        mother.create();
+    }
 
 }
