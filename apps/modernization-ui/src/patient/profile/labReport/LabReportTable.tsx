@@ -67,12 +67,12 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
             labReport.observations?.map(
                 (o) =>
                     o?.domainCd === 'Result' && (
-                        <>
+                        <div key={o.cdDescTxt}>
                             <strong>{o.cdDescTxt}:</strong>
                             <br />
                             <span>{o.displayName}</span>
                             <br />
-                        </>
+                        </div>
                     )
             ) || <span className="no-data">No data</span>
         );

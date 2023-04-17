@@ -456,6 +456,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     tableBody={[]}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
+                    totalResults={0}
                 />
             </div>
 
@@ -510,6 +511,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     tableBody={nameTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
+                    totalResults={nameTableBody.length}
                 />
             </div>
 
@@ -539,9 +541,11 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             <Button
                                 type="button"
                                 onClick={() => {
-                                    addAddressModalRef.current?.toggleModal();
                                     setNameDetails(null);
                                     setIsEditModal(false);
+                                    setTimeout(() => {
+                                        addAddressModalRef.current?.toggleModal();
+                                    }, 120);
                                 }}
                                 className="display-inline-flex">
                                 <Icon.Add className="margin-right-05" />
@@ -569,6 +573,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     tableBody={addressTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
+                    totalResults={addressTableBody.length}
                 />
             </div>
 
@@ -626,6 +631,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     tableBody={phoneEmailTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
+                    totalResults={phoneEmailTableBody.length}
                 />
             </div>
 
@@ -688,6 +694,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     tableBody={identificationTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
+                    totalResults={identificationTableBody.length}
                 />
             </div>
 
@@ -718,7 +725,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                             <Button
                                 type="button"
                                 onClick={() => {
-                                    addIdentificationRef.current?.toggleModal();
+                                    addRaceRef.current?.toggleModal();
                                     setNameDetails(null);
                                     setIsEditModal(false);
                                 }}
@@ -743,6 +750,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                     tableBody={raceTableBody}
                     currentPage={currentPage}
                     handleNext={(e) => setCurrentPage(e)}
+                    totalResults={raceTableBody.length}
                 />
             </div>
 
