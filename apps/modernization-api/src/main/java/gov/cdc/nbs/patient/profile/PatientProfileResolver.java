@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.profile;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ class PatientProfileResolver {
     }
 
     @QueryMapping("findPatientProfile")
+    @PreAuthorize("hasAuthority('FIND-PATIENT')")
     Optional<PatientProfile> find(
         @Argument("patient") final Long patient,
         @Argument("shortId") final Long shortId

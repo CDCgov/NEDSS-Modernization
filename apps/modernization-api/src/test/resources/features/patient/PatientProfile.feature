@@ -15,4 +15,11 @@ Feature: Patient Profile
     Then the profile is found
 
   Scenario: I cannot retrieve a profile without proper authorities
-    Then the profile is not found
+    Given I have the authorities: "NOTHING" for the jurisdiction: "ALL" and program area: "STD"
+    When a profile is requested by patient identifier
+    Then the profile is not accessible
+
+  Scenario: I cannot retrieve a profile without proper authorities
+    Given I have the authorities: "NOTHING" for the jurisdiction: "ALL" and program area: "STD"
+    When a profile is requested by short identifier
+    Then the profile is not accessible
