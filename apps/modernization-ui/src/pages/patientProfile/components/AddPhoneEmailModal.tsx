@@ -213,7 +213,7 @@ export const AddPhoneEmailModal = ({ modalRef, modalHead }: AddCommentModalProps
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading={modalHead ? 'Edit - Phone & Email' : 'Add - Phone & Email'}
+            modalHeading={modalHead}
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );

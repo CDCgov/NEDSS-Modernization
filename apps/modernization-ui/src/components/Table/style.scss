@@ -5,6 +5,10 @@
     align-items: center;
 }
 
+td {
+    font-size: 16px !important;
+}
+
 .no-data {
     color: #747474;
     font-style: italic;
@@ -50,5 +54,11 @@
 
     button:hover {
         border-bottom: 1px solid #dfe1e2;
+    }
+}
+
+.table-component {
+    .usa-table {
+        margin: 0 !important;
     }
 }
