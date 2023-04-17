@@ -18,7 +18,7 @@ public class PatientSteps {
 
     @Given("I have a patient")
     public void i_have_a_patient() {
-        mother.patient();
+        mother.create();
     }
 
 }

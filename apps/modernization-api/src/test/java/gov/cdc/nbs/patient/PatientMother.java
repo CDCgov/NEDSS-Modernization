@@ -40,7 +40,7 @@ public class PatientMother {
         this.patients.reset();
     }
 
-    public Person patient() {
+    public Person create() {
 
         String local = localIdentifierGenerator.generate();
 
