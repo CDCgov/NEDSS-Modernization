@@ -170,7 +170,7 @@ export const OpenInvestigations = ({ investigations, totalInvestigations }: any)
                                 </td>
                                 <td className="font-sans-md table-data">
                                     {investigation?.localId ? (
-                                        <span>{investigation?.localId}</span>
+                                        <a href="#">{investigation?.localId}</a>
                                     ) : (
                                         <span className="no-data">No data</span>
                                     )}

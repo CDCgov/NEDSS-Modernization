@@ -241,10 +241,10 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                 style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
                                 className="font-sans-md table-data">
                                 {report?.addTime ? (
-                                    <span>
+                                    <a href="#">
                                         {format(new Date(report?.addTime), 'MM/dd/yyyy')} <br />{' '}
                                         {format(new Date(report?.addTime), 'hh:mm a')}
-                                    </span>
+                                    </a>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}

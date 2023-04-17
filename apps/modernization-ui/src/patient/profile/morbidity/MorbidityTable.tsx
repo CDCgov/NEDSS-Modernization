@@ -166,10 +166,10 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                 style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
                                 className="font-sans-md table-data">
                                 {morbidity?.receivedOn ? (
-                                    <span className="table-span">
+                                    <a href="#" className="table-span">
                                         {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
                                         {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
-                                    </span>
+                                    </a>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}

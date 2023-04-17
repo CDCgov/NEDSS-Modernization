@@ -151,7 +151,7 @@ export const DocumentsReview = ({ documents, totalDocuments }: any) => {
                                 <td
                                     style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
                                     className="font-sans-md table-data">
-                                    <span>Lab report</span>
+                                    <a href="#">Lab report</a>
                                 </td>
                                 <td
                                     style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
