@@ -1,12 +1,15 @@
 package gov.cdc.nbs.patient.profile;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 class PatientProfileFinder {
+
+    private static final String PATIENT_CODE = "PAT";
 
     private final JPAQueryFactory factory;
     private final PatientProfileTupleMapper.Tables tables;
@@ -18,14 +21,18 @@ class PatientProfileFinder {
         this.mapper = new PatientProfileTupleMapper(this.tables);
     }
 
-    Optional<PatientProfile> find(final long identifier) {
+    Optional<PatientProfile> findById(final long identifier) {
         return this.factory.selectDistinct(
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
                 this.tables.patient().personParentUid.versionCtrlNbr
             )
             .from(this.tables.patient())
-            .where(this.tables.patient().id.eq(identifier))
+            .where(
+                this.tables.patient().cd.eq(PATIENT_CODE),
+                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
+                this.tables.patient().id.eq(identifier)
+            )
             .fetch()
             .stream()
             .map(mapper::map)
@@ -33,4 +40,21 @@ class PatientProfileFinder {
     }
 
 
+    Optional<PatientProfile> findByLocalId(final String local) {
+        return this.factory.selectDistinct(
+                this.tables.patient().personParentUid.id,
+                this.tables.patient().personParentUid.localId,
+                this.tables.patient().personParentUid.versionCtrlNbr
+            )
+            .from(this.tables.patient())
+            .where(
+                this.tables.patient().cd.eq(PATIENT_CODE),
+                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
+                this.tables.patient().localId.eq(local)
+            )
+            .fetch()
+            .stream()
+            .map(mapper::map)
+            .findFirst();
+    }
 }

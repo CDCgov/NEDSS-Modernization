@@ -226,6 +226,7 @@ type PatientRaceResults {
 type PatientProfile {
     id: ID!
     local: String!
+    shortId: Int
     version: Int!
     summary(asOf: DateTime): PatientSummary
     names(page: Page): PatientNameResults
@@ -242,5 +243,5 @@ type PatientProfile {
 }
 
 extend type Query {
-    findPatientProfile(patient: ID!): PatientProfile
+    findPatientProfile(patient: ID, shortId: Int): PatientProfile
 }

@@ -1,5 +1,6 @@
 query findPatientById($id: ID!){
     findPatientById(id: $id){
+        shortId
         id
         nbsEntity{
             entityLocatorParticipations{
