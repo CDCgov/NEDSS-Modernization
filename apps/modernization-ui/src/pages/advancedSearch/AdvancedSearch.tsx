@@ -932,7 +932,7 @@ export const AdvancedSearch = () => {
                             )}
                             {!submitted && (
                                 <div
-                                    className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
+                                    className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center text-normal flex-justify-center advanced-search-message"
                                     style={{
                                         background: 'white',
                                         border: '1px solid #DFE1E2',
