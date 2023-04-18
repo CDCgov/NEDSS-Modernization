@@ -214,7 +214,7 @@ export const PatientProfile = () => {
                         <p className="font-sans-xl text-bold margin-0">
                             {`${profileData?.lastNm}, ${profileData?.firstNm}`}
                         </p>
-                        <h5 className="font-sans-md text-medium margin-0">Patient ID: {profileData?.localId}</h5>
+                        <h5 className="font-sans-md text-medium margin-0">Patient ID: {profileData?.shortId}</h5>
                     </div>
                     <Grid row gap={3} className="padding-3">
                         <Grid row col={3}>

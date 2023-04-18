@@ -245,7 +245,7 @@ export const PatientInvestigationsTable = ({
                                 className="font-sans-md table-data"
                                 style={{ background: tableHead[6].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
                                 {investigation?.localId ? (
-                                    <span>{investigation?.localId}</span>
+                                    <a href="#">{investigation?.localId}</a>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
