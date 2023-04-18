@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javax.transaction.Transactional;
 
+import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGeneratorTestConfiguration;
 import org.junit.Test;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
@@ -15,6 +16,7 @@ import org.junit.platform.suite.api.Suite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -36,6 +38,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
 @CucumberContextConfiguration
 @SpringBootTest
+@Import(PatientLocalIdentifierGeneratorTestConfiguration.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @Transactional

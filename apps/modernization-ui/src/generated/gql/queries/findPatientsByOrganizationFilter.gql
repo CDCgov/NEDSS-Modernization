@@ -1,6 +1,7 @@
 query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: SortablePage){
     findPatientsByOrganizationFilter(filter: $filter, page: $page){
         content{
+            shortId
             id
             nbsEntity{
                 entityLocatorParticipations{

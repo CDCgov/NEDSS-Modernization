@@ -15,7 +15,7 @@ export class RedirectControllerService {
     public static preparePatientDetailsUsingGet({
         authorization,
     }: {
-        authorization: any,
+        authorization: string,
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',

@@ -1,0 +1,247 @@
+type PatientCodedValue {
+    id: String!
+    description: String!
+}
+
+type PatientSummaryAddress {
+    street: String
+    city: String
+    state: String
+    zipcode: String
+    country: String
+}
+
+type PatientSummaryPhone {
+    use: String
+    number: String
+}
+
+type PatientSummaryEmail {
+    use: String
+    address: String
+}
+
+type PatientSummary {
+    legalName: PatientLegalName
+    birthday: Date
+    age: Int
+    gender: String
+    ethnicity: String
+    race: String
+    phone: [PatientSummaryPhone]
+    email: [PatientSummaryEmail]
+    address: PatientSummaryAddress
+}
+
+type PatientLegalName {
+    prefix: String
+    first: String
+    middle: String
+    last: String
+    suffix: String
+}
+
+type PatientAdministrative {
+    patient: ID!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    comment: String
+}
+
+type PatientAdministrativeResults {
+    content: [PatientAdministrative]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientName {
+    patient: ID!
+    version: Int!
+    asOf: DateTime!
+    sequence: Int!
+    use: PatientCodedValue!
+    prefix: PatientCodedValue
+    first: String
+    middle: String
+    secondMiddle: String
+    last: String
+    secondLast: String
+    suffix: PatientCodedValue
+    degree: PatientCodedValue
+}
+
+type PatientNameResults {
+    content: [PatientName]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientAddress {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue
+    use: PatientCodedValue
+    address1: String
+    address2: String
+    city: String
+    county: PatientCodedValue
+    state: PatientCodedValue
+    zipcode: String
+    country: PatientCodedValue
+    censusTract: String
+    comment: String
+}
+
+type PatientAddressResults {
+    content: [PatientAddress]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientPhone {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue
+    use: PatientCodedValue
+    countryCode: String
+    number: String
+    extension: String
+    email: String
+    url: String
+    comment: String
+}
+
+type PatientPhoneResults {
+    content: [PatientPhone]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientBirth {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    bornOn: Date
+    age: Int
+    multipleBirth: PatientCodedValue
+    city: String
+    state: PatientCodedValue
+    country: PatientCodedValue
+}
+
+type PatientGender {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    birth: PatientCodedValue
+    current: PatientCodedValue
+    unknownReason: PatientCodedValue
+    preferred: PatientCodedValue
+    additional: String
+}
+
+type PatientIdentification {
+    patient: Int!
+    id: ID!
+    sequence: Int!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue!
+    authority: PatientCodedValue
+    value: String
+}
+
+type PatientIdentificationResults {
+    content: [PatientIdentification]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientMortality {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    deceased: PatientCodedValue
+    deceasedOn: Date
+    city: String
+    state: PatientCodedValue
+    country: PatientCodedValue
+}
+
+type PatientGeneral {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    maritalStatus: PatientCodedValue
+    maternalMaidenName: String
+    adultsInHouse: Int
+    childrenInHouse: Int
+    occupation: PatientCodedValue
+    educationLevel: PatientCodedValue
+    primaryLanguage: PatientCodedValue
+    speaksEnglish: PatientCodedValue
+    stateHIVCase: String
+}
+
+type PatientEthnicity {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    ethnicGroup: PatientCodedValue!
+    unknownReason: PatientCodedValue
+    detailed: [PatientCodedValue]!
+}
+
+type PatientRace {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    category: PatientCodedValue!
+    detailed: [PatientCodedValue]
+}
+
+type PatientRaceResults {
+    content: [PatientRace]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientProfile {
+    id: ID!
+    local: String!
+    shortId: Int
+    version: Int!
+    summary(asOf: DateTime): PatientSummary
+    names(page: Page): PatientNameResults
+    administrative(page: Page): PatientAdministrativeResults
+    addresses(page: Page): PatientAddressResults
+    phones(page: Page): PatientPhoneResults
+    identification(page: Page): PatientIdentificationResults
+    races(page: Page): PatientRaceResults
+    birth: PatientBirth
+    gender: PatientGender
+    mortality: PatientMortality
+    general: PatientGeneral
+    ethnicity: PatientEthnicity
+}
+
+extend type Query {
+    findPatientProfile(patient: ID, shortId: Int): PatientProfile
+}

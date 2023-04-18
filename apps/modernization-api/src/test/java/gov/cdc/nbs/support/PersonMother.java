@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityIdId;
 import gov.cdc.nbs.entity.odse.NBSEntity;
@@ -12,7 +13,6 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
@@ -35,7 +35,13 @@ public class PersonMother {
         return persons;
     }
 
+
+
     public static Person generateRandomPerson(long id) {
+        return generateRandomPerson(id, "PSN" + id + 10000000L);
+    }
+
+    public static Person generateRandomPerson(long id, final String local) {
         Instant now = Instant.now();
 
         Faker faker = new Faker();
@@ -43,7 +49,7 @@ public class PersonMother {
         final String middleName = RandomUtil.getRandomString();
         final String lastName = faker.name().lastName();
 
-        Person person = new Person(id, "PSN" + id + 10000000L);
+        Person person = new Person(id, local);
         person.setCd("PAT");
         person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setFirstNm(firstName);
@@ -80,53 +86,53 @@ public class PersonMother {
 
         // name
         person.add(
-                new PatientCommand.AddName(
-                        id,
-                        firstName,
-                        middleName,
-                        lastName,
-                        null,
-                        PatientInput.NameUseCd.L,
-                        id,
-                        now));
+            new PatientCommand.AddName(
+                id,
+                firstName,
+                middleName,
+                lastName,
+                null,
+                PatientInput.NameUseCd.L,
+                id,
+                now));
 
         // ethnic group
         person.setEthnicGroupInd(RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST));
 
         // race
         person.add(
-                new PatientCommand.AddRace(
-                        id,
-                        RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
-                        id,
-                        now));
+            new PatientCommand.AddRace(
+                id,
+                RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                id,
+                now));
 
         // Tele locator entry
         person.add(
-                new PatientCommand.AddPhoneNumber(
-                        id,
-                        id + 40000L,
-                        RandomUtil.getRandomPhoneNumber(),
-                        null,
-                        PhoneType.HOME,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddPhoneNumber(
+                id,
+                id + 40000L,
+                RandomUtil.getRandomPhoneNumber(),
+                null,
+                PhoneType.HOME,
+                CREATED_BY_ID,
+                now));
 
         // Postal locator entry
         person.add(
-                new PatientCommand.AddAddress(
-                        id,
-                        id + 80000L,
-                        faker.address().streetAddress(),
-                        null,
-                        new City(null, faker.address().city()),
-                        RandomUtil.getRandomStateCode(),
-                        faker.address().zipCode(),
-                        null,
-                        RandomUtil.country(),
-                        null,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddAddress(
+                id,
+                id + 80000L,
+                faker.address().streetAddress(),
+                null,
+                new City(null, faker.address().city()),
+                RandomUtil.getRandomStateCode(),
+                faker.address().zipCode(),
+                null,
+                RandomUtil.country(),
+                null,
+                CREATED_BY_ID,
+                now));
 
         return person;
     }
@@ -145,62 +151,62 @@ public class PersonMother {
 
         // name
         person.add(
-                new PatientCommand.AddName(
-                        id,
-                        "John",
-                        "Bob",
-                        "Doe",
-                        null,
-                        PatientInput.NameUseCd.L,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddName(
+                id,
+                "John",
+                "Bob",
+                "Doe",
+                null,
+                PatientInput.NameUseCd.L,
+                CREATED_BY_ID,
+                now));
 
         // phone numbers
         person.add(
-                new PatientCommand.AddPhoneNumber(
-                        id,
-                        id + 40000L,
-                        "111-222-3333",
-                        null,
-                        PhoneType.HOME,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddPhoneNumber(
+                id,
+                id + 40000L,
+                "111-222-3333",
+                null,
+                PhoneType.HOME,
+                CREATED_BY_ID,
+                now));
 
         person.add(
-                new PatientCommand.AddPhoneNumber(
-                        id,
-                        id + 40001L,
-                        "222-333-4444",
-                        null,
-                        PhoneType.WORK,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddPhoneNumber(
+                id,
+                id + 40001L,
+                "222-333-4444",
+                null,
+                PhoneType.WORK,
+                CREATED_BY_ID,
+                now));
 
         person.add(
-                new PatientCommand.AddPhoneNumber(
-                        id,
-                        id + 40002L,
-                        "444-555-6666",
-                        null,
-                        PhoneType.CELL,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddPhoneNumber(
+                id,
+                id + 40002L,
+                "444-555-6666",
+                null,
+                PhoneType.CELL,
+                CREATED_BY_ID,
+                now));
 
         // addresses
         person.add(
-                new PatientCommand.AddAddress(
-                        id,
-                        id + 80000L,
-                        "123 Main St",
-                        null,
-                        new City("1304000", "Atlanta"),
-                        StateCodeUtil.stateCodeMap.get("Georgia"),
-                        "30301",
-                        new County("13089"),
-                        new Country("840", "United States"),
-                        null,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddAddress(
+                id,
+                id + 80000L,
+                "123 Main St",
+                null,
+                new City("1304000", "Atlanta"),
+                StateCodeUtil.stateCodeMap.get("Georgia"),
+                "30301",
+                new County("13089"),
+                new Country("840", "United States"),
+                null,
+                CREATED_BY_ID,
+                now));
 
         person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO_CODE);
         person.setRecordStatusCd(RecordStatus.ACTIVE);
@@ -208,11 +214,11 @@ public class PersonMother {
 
         // race
         person.add(
-                new PatientCommand.AddRace(
-                        id,
-                        RaceMother.WHITE_CODE,
-                        id,
-                        now));
+            new PatientCommand.AddRace(
+                id,
+                RaceMother.WHITE_CODE,
+                id,
+                now));
 
         return person;
     }
@@ -231,42 +237,42 @@ public class PersonMother {
 
         // name
         person.add(
-                new PatientCommand.AddName(
-                        id,
-                        "Jane",
-                        "S",
-                        "Doe",
-                        null,
-                        PatientInput.NameUseCd.L,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddName(
+                id,
+                "Jane",
+                "S",
+                "Doe",
+                null,
+                PatientInput.NameUseCd.L,
+                CREATED_BY_ID,
+                now));
 
         // phone numbers
         person.add(
-                new PatientCommand.AddPhoneNumber(
-                        id,
-                        id + 40000L,
-                        "111-222-3333",
-                        null,
-                        PhoneType.HOME,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddPhoneNumber(
+                id,
+                id + 40000L,
+                "111-222-3333",
+                null,
+                PhoneType.HOME,
+                CREATED_BY_ID,
+                now));
 
         // addresses
         person.add(
-                new PatientCommand.AddAddress(
-                        id,
-                        id + 80000L,
-                        "123 Main St",
-                        null,
-                        new City("1304000", "Atlanta"),
-                        StateCodeUtil.stateCodeMap.get("Georgia"),
-                        "30301",
-                        new County("13089"),
-                        new Country("840", "United States"),
-                        null,
-                        CREATED_BY_ID,
-                        now));
+            new PatientCommand.AddAddress(
+                id,
+                id + 80000L,
+                "123 Main St",
+                null,
+                new City("1304000", "Atlanta"),
+                StateCodeUtil.stateCodeMap.get("Georgia"),
+                "30301",
+                new County("13089"),
+                new Country("840", "United States"),
+                null,
+                CREATED_BY_ID,
+                now));
 
         person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO_CODE);
         person.setRecordStatusCd(RecordStatus.LOG_DEL);
@@ -274,11 +280,11 @@ public class PersonMother {
 
         // race
         person.add(
-                new PatientCommand.AddRace(
-                        id,
-                        RaceMother.WHITE_CODE,
-                        id,
-                        now));
+            new PatientCommand.AddRace(
+                id,
+                RaceMother.WHITE_CODE,
+                id,
+                now));
 
         return person;
     }

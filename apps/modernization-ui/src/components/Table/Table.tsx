@@ -34,7 +34,7 @@ export type TableContentProps = {
     handleAction?: (type: string, data: any) => void;
 };
 
-const renderTitle = (detail: TableDetail) =>
+export const renderTitle = (detail: TableDetail) =>
     detail.link ? <a href={detail.link}>{detail.title}</a> : <>{detail.title}</>;
 
 export const TableComponent = ({

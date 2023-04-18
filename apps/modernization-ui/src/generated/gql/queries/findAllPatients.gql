@@ -1,6 +1,7 @@
 query findAllPatients($page: SortablePage){
     findAllPatients(page: $page){
         content{
+            shortId
             id
             nbsEntity{
                 entityLocatorParticipations{

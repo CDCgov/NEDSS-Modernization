@@ -650,6 +650,253 @@ extend type Query {
     findMorbidityReportsForPatient(patient: ID! page: Page ): PatientMorbidityResults
 }
 
+type PatientCodedValue {
+    id: String!
+    description: String!
+}
+
+type PatientSummaryAddress {
+    street: String
+    city: String
+    state: String
+    zipcode: String
+    country: String
+}
+
+type PatientSummaryPhone {
+    use: String
+    number: String
+}
+
+type PatientSummaryEmail {
+    use: String
+    address: String
+}
+
+type PatientSummary {
+    legalName: PatientLegalName
+    birthday: Date
+    age: Int
+    gender: String
+    ethnicity: String
+    race: String
+    phone: [PatientSummaryPhone]
+    email: [PatientSummaryEmail]
+    address: PatientSummaryAddress
+}
+
+type PatientLegalName {
+    prefix: String
+    first: String
+    middle: String
+    last: String
+    suffix: String
+}
+
+type PatientAdministrative {
+    patient: ID!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    comment: String
+}
+
+type PatientAdministrativeResults {
+    content: [PatientAdministrative]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientName {
+    patient: ID!
+    version: Int!
+    asOf: DateTime!
+    sequence: Int!
+    use: PatientCodedValue!
+    prefix: PatientCodedValue
+    first: String
+    middle: String
+    secondMiddle: String
+    last: String
+    secondLast: String
+    suffix: PatientCodedValue
+    degree: PatientCodedValue
+}
+
+type PatientNameResults {
+    content: [PatientName]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientAddress {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue
+    use: PatientCodedValue
+    address1: String
+    address2: String
+    city: String
+    county: PatientCodedValue
+    state: PatientCodedValue
+    zipcode: String
+    country: PatientCodedValue
+    censusTract: String
+    comment: String
+}
+
+type PatientAddressResults {
+    content: [PatientAddress]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientPhone {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue
+    use: PatientCodedValue
+    countryCode: String
+    number: String
+    extension: String
+    email: String
+    url: String
+    comment: String
+}
+
+type PatientPhoneResults {
+    content: [PatientPhone]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientBirth {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    bornOn: Date
+    age: Int
+    multipleBirth: PatientCodedValue
+    city: String
+    state: PatientCodedValue
+    country: PatientCodedValue
+}
+
+type PatientGender {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    birth: PatientCodedValue
+    current: PatientCodedValue
+    unknownReason: PatientCodedValue
+    preferred: PatientCodedValue
+    additional: String
+}
+
+type PatientIdentification {
+    patient: Int!
+    id: ID!
+    sequence: Int!
+    version: Int!
+    asOf: DateTime!
+    type: PatientCodedValue!
+    authority: PatientCodedValue
+    value: String
+}
+
+type PatientIdentificationResults {
+    content: [PatientIdentification]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientMortality {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    deceased: PatientCodedValue
+    deceasedOn: Date
+    city: String
+    state: PatientCodedValue
+    country: PatientCodedValue
+}
+
+type PatientGeneral {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    maritalStatus: PatientCodedValue
+    maternalMaidenName: String
+    adultsInHouse: Int
+    childrenInHouse: Int
+    occupation: PatientCodedValue
+    educationLevel: PatientCodedValue
+    primaryLanguage: PatientCodedValue
+    speaksEnglish: PatientCodedValue
+    stateHIVCase: String
+}
+
+type PatientEthnicity {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    ethnicGroup: PatientCodedValue!
+    unknownReason: PatientCodedValue
+    detailed: [PatientCodedValue]!
+}
+
+type PatientRace {
+    patient: Int!
+    id: ID!
+    version: Int!
+    asOf: DateTime!
+    category: PatientCodedValue!
+    detailed: [PatientCodedValue]
+}
+
+type PatientRaceResults {
+    content: [PatientRace]!
+    total: Int!
+    number: Int!
+    size: Int!
+}
+
+type PatientProfile {
+    id: ID!
+    local: String!
+    shortId: Int
+    version: Int!
+    summary(asOf: DateTime): PatientSummary
+    names(page: Page): PatientNameResults
+    administrative(page: Page): PatientAdministrativeResults
+    addresses(page: Page): PatientAddressResults
+    phones(page: Page): PatientPhoneResults
+    identification(page: Page): PatientIdentificationResults
+    races(page: Page): PatientRaceResults
+    birth: PatientBirth
+    gender: PatientGender
+    mortality: PatientMortality
+    general: PatientGeneral
+    ethnicity: PatientEthnicity
+}
+
+extend type Query {
+    findPatientProfile(patient: ID, shortId: Int): PatientProfile
+}
 type PatientTreatment {
   treatment: ID!
   createdOn: DateTime!
@@ -728,116 +975,117 @@ input PersonFilter {
 }
 
 type Person {
-  id: ID
-  nbsEntity: NBSEntity!
-  entityIds: [PersonIdentification]
-  races: [PersonRace]
-  names: [PersonName]
-  addReasonCd: String
-  addTime: DateTime
-  addUserId: ID
-  administrativeGenderCd: String
-  ageCalc: Int
-  ageCalcTime: DateTime
-  ageCalcUnitCd: String
-  ageCategoryCd: String
-  ageReported: String
-  ageReportedTime: DateTime
-  ageReportedUnitCd: String
-  birthGenderCd: Gender
-  birthOrderNbr: Int
-  birthTime: DateTime
-  birthTimeCalc: DateTime
-  cd: String
-  cdDescTxt: String
-  currSexCd: String
-  deceasedIndCd: String
-  deceasedTime: DateTime
-  description: String
-  educationLevelCd: String
-  educationLevelDescTxt: String
-  ethnicGroupInd: String
-  lastChgReasonCd: String
-  lastChgTime: DateTime
-  lastChgUserId: ID
-  localId: String
-  maritalStatusCd: String
-  maritalStatusDescTxt: String
-  mothersMaidenNm: String
-  multipleBirthInd: String
-  occupationCd: String
-  preferredGenderCd: String
-  primLangCd: String
-  primLangDescTxt: String
-  recordStatusCd: RecordStatus
-  recordStatusTime: DateTime
-  statusCd: String
-  statusTime: DateTime
-  survivedIndCd: String
-  userAffiliationTxt: String
-  firstNm: String
-  lastNm: String
-  middleNm: String
-  nmPrefix: String
-  nmSuffix: String
-  preferredNm: String
-  hmStreetAddr1: String
-  hmStreetAddr2: String
-  hmCityCd: String
-  hmCityDescTxt: String
-  hmStateCd: String
-  hmZipCd: String
-  hmCntyCd: String
-  hmCntryCd: String
-  hmPhoneNbr: String
-  hmPhoneCntryCd: String
-  hmEmailAddr: String
-  cellPhoneNbr: String
-  wkStreetAddr1: String
-  wkStreetAddr2: String
-  wkCityCd: String
-  wkCityDescTxt: String
-  wkStateCd: String
-  wkZipCd: String
-  wkCntyCd: String
-  wkCntryCd: String
-  wkPhoneNbr: String
-  wkPhoneCntryCd: String
-  wkEmailAddr: String
-  ssn: String
-  medicaidNum: String
-  dlNum: String
-  dlStateCd: String
-  raceCd: String
-  raceSeqNbr: Int
-  raceCategoryCd: String
-  ethnicityGroupCd: String
-  ethnicGroupSeqNbr: Int
-  adultsInHouseNbr: Int
-  childrenInHouseNbr: Int
-  birthCityCd: String
-  birthCityDescTxt: String
-  birthCntryCd: String
-  birthStateCd: String
-  raceDescTxt: String
-  ethnicGroupDescTxt: String
-  versionCtrlNbr: Int
-  asOfDateAdmin: DateTime
-  asOfDateEthnicity: DateTime
-  asOfDateGeneral: DateTime
-  asOfDateMorbidity: DateTime
-  asOfDateSex: DateTime
-  electronicInd: String
-  personParentUid: personParentUid
-  dedupMatchInd: String
-  groupNbr: Int
-  groupTime: DateTime
-  edxInd: String
-  speaksEnglishCd: String
-  additionalGenderCd: String
-  eharsId: String
-  ethnicUnkReasonCd: String
-  sexUnkReasonCd: String
+    shortId: Int
+    id: ID
+    nbsEntity: NBSEntity!
+    entityIds: [PersonIdentification]
+    races: [PersonRace]
+    names: [PersonName]
+    addReasonCd: String
+    addTime: DateTime
+    addUserId: ID
+    administrativeGenderCd: String
+    ageCalc: Int
+    ageCalcTime: DateTime
+    ageCalcUnitCd: String
+    ageCategoryCd: String
+    ageReported: String
+    ageReportedTime: DateTime
+    ageReportedUnitCd: String
+    birthGenderCd: Gender
+    birthOrderNbr: Int
+    birthTime: DateTime
+    birthTimeCalc: DateTime
+    cd: String
+    cdDescTxt: String
+    currSexCd: String
+    deceasedIndCd: String
+    deceasedTime: DateTime
+    description: String
+    educationLevelCd: String
+    educationLevelDescTxt: String
+    ethnicGroupInd: String
+    lastChgReasonCd: String
+    lastChgTime: DateTime
+    lastChgUserId: ID
+    localId: String
+    maritalStatusCd: String
+    maritalStatusDescTxt: String
+    mothersMaidenNm: String
+    multipleBirthInd: String
+    occupationCd: String
+    preferredGenderCd: String
+    primLangCd: String
+    primLangDescTxt: String
+    recordStatusCd: RecordStatus
+    recordStatusTime: DateTime
+    statusCd: String
+    statusTime: DateTime
+    survivedIndCd: String
+    userAffiliationTxt: String
+    firstNm: String
+    lastNm: String
+    middleNm: String
+    nmPrefix: String
+    nmSuffix: String
+    preferredNm: String
+    hmStreetAddr1: String
+    hmStreetAddr2: String
+    hmCityCd: String
+    hmCityDescTxt: String
+    hmStateCd: String
+    hmZipCd: String
+    hmCntyCd: String
+    hmCntryCd: String
+    hmPhoneNbr: String
+    hmPhoneCntryCd: String
+    hmEmailAddr: String
+    cellPhoneNbr: String
+    wkStreetAddr1: String
+    wkStreetAddr2: String
+    wkCityCd: String
+    wkCityDescTxt: String
+    wkStateCd: String
+    wkZipCd: String
+    wkCntyCd: String
+    wkCntryCd: String
+    wkPhoneNbr: String
+    wkPhoneCntryCd: String
+    wkEmailAddr: String
+    ssn: String
+    medicaidNum: String
+    dlNum: String
+    dlStateCd: String
+    raceCd: String
+    raceSeqNbr: Int
+    raceCategoryCd: String
+    ethnicityGroupCd: String
+    ethnicGroupSeqNbr: Int
+    adultsInHouseNbr: Int
+    childrenInHouseNbr: Int
+    birthCityCd: String
+    birthCityDescTxt: String
+    birthCntryCd: String
+    birthStateCd: String
+    raceDescTxt: String
+    ethnicGroupDescTxt: String
+    versionCtrlNbr: Int
+    asOfDateAdmin: DateTime
+    asOfDateEthnicity: DateTime
+    asOfDateGeneral: DateTime
+    asOfDateMorbidity: DateTime
+    asOfDateSex: DateTime
+    electronicInd: String
+    personParentUid: personParentUid
+    dedupMatchInd: String
+    groupNbr: Int
+    groupTime: DateTime
+    edxInd: String
+    speaksEnglishCd: String
+    additionalGenderCd: String
+    eharsId: String
+    ethnicUnkReasonCd: String
+    sexUnkReasonCd: String
 }
 
 type personParentUid {
@@ -1009,8 +1257,8 @@ type PersonIdentification {
 }
 
 type PersonRace {
-  raceCd: String 
-  recordStatusCd: String
+    raceCd: String
+    recordStatusCd: String
 }
 
 type PersonName {

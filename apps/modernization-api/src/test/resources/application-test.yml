@@ -44,6 +44,9 @@ spring:
       auto-offset-reset: earliest
       group-id: group-id
 
+  main:
+    allow-bean-definition-overriding: true
+
 kafka:
   enabled: true
 
