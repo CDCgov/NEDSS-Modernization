@@ -1,0 +1,22 @@
+type PatientInvestigation {
+    investigation: ID!
+    startedOn: DateTime
+    condition: String!
+    status: String!
+    caseStatus: String
+    jurisdiction: String!
+    event: String!
+    coInfection: String
+    notification: String
+    investigator: String
+}
+
+type PatientInvestigationResults {
+    content: [PatientInvestigation]!
+    total: Int!
+    number: Int!
+}
+
+extend type Query {
+    findInvestigationsForPatient(patient: ID!, page: Page, openOnly: Boolean): PatientInvestigationResults
+}

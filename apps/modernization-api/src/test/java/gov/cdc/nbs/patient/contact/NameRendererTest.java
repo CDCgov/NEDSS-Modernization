@@ -43,4 +43,20 @@ class NameRendererTest {
 
         assertThat(actual).isEqualTo("prefix first last");
     }
+
+    @Test
+    void should_render_first_name_only() {
+
+        String actual = NameRenderer.render("first", null);
+
+        assertThat(actual).isEqualTo("first");
+    }
+
+    @Test
+    void should_render_last_name_only() {
+
+        String actual = NameRenderer.render(null, "last");
+
+        assertThat(actual).isEqualTo("last");
+    }
 }

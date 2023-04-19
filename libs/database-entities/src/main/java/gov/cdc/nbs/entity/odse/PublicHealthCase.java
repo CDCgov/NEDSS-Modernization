@@ -301,6 +301,17 @@ public class PublicHealthCase {
         // no args constructor required for JPA
     }
 
+    public PublicHealthCase(final long identifier, final String local) {
+        this.id = identifier;
+        this.localId = local;
+        this.versionCtrlNbr = 1;
+        this.recordStatusCd = "ACTIVE";
+        this.sharedInd = 'F';
+
+        this.act = new Act(identifier, "CASE");
+        this.investigationStatusCd = "O";
+    }
+
     public Long getId() {
         return id;
     }
