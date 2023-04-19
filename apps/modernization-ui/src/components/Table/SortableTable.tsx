@@ -55,10 +55,7 @@ export const SortableTable = ({
                 <thead>
                     <tr>
                         {tableHead.map((head: any, index) => (
-                            <th
-                                key={index}
-                                scope="col"
-                                style={{ background: head.sort !== 'all' ? '#97d4ea' : 'transparent' }}>
+                            <th key={index} scope="col" className={head.sort !== 'all' ? 'sort-header' : ''}>
                                 <div className="table-head">
                                     <span className="head-name">{head.name}</span>
                                     {head.sortable && (
