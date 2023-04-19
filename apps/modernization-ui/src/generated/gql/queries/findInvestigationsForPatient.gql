@@ -1,0 +1,18 @@
+query findInvestigationsForPatient($patient: ID!, $page: Page, $openOnly: Boolean){
+    findInvestigationsForPatient(patient: $patient, page: $page, openOnly: $openOnly){
+        content{
+            investigation
+            startedOn
+            condition
+            status
+            caseStatus
+            jurisdiction
+            event
+            coInfection
+            notification
+            investigator
+        }
+        total
+        number
+    }
+}
