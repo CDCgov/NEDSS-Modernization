@@ -148,14 +148,10 @@ export const DocumentsReview = ({ documents, totalDocuments }: any) => {
                     data?.map((document: any, index: number) => {
                         return (
                             <tr key={index}>
-                                <td
-                                    style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                     <a href="#">Lab report</a>
                                 </td>
-                                <td
-                                    style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                                     {document?.addTime ? (
                                         <span>
                                             {format(new Date(document?.addTime), 'MM/dd/yyyy')} <br />{' '}
@@ -165,9 +161,7 @@ export const DocumentsReview = ({ documents, totalDocuments }: any) => {
                                         <span className="no-data">No data</span>
                                     )}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                                     <div>
                                         {getReportingFacility(document) && (
                                             <>
@@ -194,19 +188,13 @@ export const DocumentsReview = ({ documents, totalDocuments }: any) => {
                                         )}
                                     </div>
                                 </td>
-                                <td
-                                    style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                     <span className="no-data">No data</span>
                                 </td>
-                                <td
-                                    style={{ background: tableHead[4].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                     {getDescription(document)}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                     {document?.localId ? (
                                         <span>{document?.localId}</span>
                                     ) : (

@@ -167,9 +167,7 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
                 namedByPatientData?.map((item: any, index: number) => {
                     return (
                         <tr key={index}>
-                            <td
-                                style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                 {item?.createdOn ? (
                                     <a href="#" className="table-span">
                                         {format(new Date(item?.createdOn), 'MM/dd/yyyy')} <br />{' '}
@@ -179,28 +177,20 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                                 {item?.contact?.name ? item?.contact?.name : <span className="no-data">No data</span>}
                             </td>
-                            <td
-                                style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                                 {item?.namedOn ? (
                                     format(new Date(item?.namedOn), 'MM/dd/yyyy')
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                 {item ? description(item) : <span className="no-data">No data</span>}
                             </td>
-                            <td
-                                style={{ background: tableHead[4].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {item?.associatedWith ? (
                                     <div>
                                         <p
@@ -214,9 +204,7 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                 {item?.event ? item?.event : <span className="no-data">No data</span>}
                             </td>
                         </tr>

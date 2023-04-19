@@ -110,54 +110,42 @@ export const OpenInvestigations = ({ investigations, totalInvestigations }: any)
                         );
                         return (
                             <tr key={index}>
-                                <td
-                                    style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                     {investigation?.addTime ? (
                                         <span>{format(new Date(investigation?.addTime), 'MM/dd/yyyy')}</span>
                                     ) : (
                                         <span className="no-data">No data</span>
                                     )}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                                     {investigation?.cdDescTxt ? (
                                         <span>{investigation?.cdDescTxt}</span>
                                     ) : (
                                         <span className="no-data">No data</span>
                                     )}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                                     {investigation?.recordStatus ? (
                                         <span>{investigation?.recordStatus}</span>
                                     ) : (
                                         <span className="no-data">No data</span>
                                     )}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                     {investigation?.notificationRecordStatusCd ? (
                                         <span>{investigation?.notificationRecordStatusCd}</span>
                                     ) : (
                                         <span className="no-data">No data</span>
                                     )}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[4].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                     {investigation?.jurisdictionCodeDescTxt ? (
                                         <span>{investigation?.jurisdictionCodeDescTxt}</span>
                                     ) : (
                                         <span className="no-data">No data</span>
                                     )}
                                 </td>
-                                <td
-                                    style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                    className="font-sans-md table-data">
+                                <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                     {investigator ? (
                                         <span>
                                             {investigator
