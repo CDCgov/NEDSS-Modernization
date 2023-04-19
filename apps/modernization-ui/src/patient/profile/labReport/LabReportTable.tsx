@@ -237,9 +237,7 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                 labReportData?.map((report: any, index: number) => {
                     return (
                         <tr key={index}>
-                            <td
-                                style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                 {report?.addTime ? (
                                     <a href="#">
                                         {format(new Date(report?.addTime), 'MM/dd/yyyy')} <br />{' '}
@@ -249,9 +247,7 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                                 <div>
                                     {getReportingFacility(report) && (
                                         <>
@@ -278,23 +274,17 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                     )}
                                 </div>
                             </td>
-                            <td
-                                style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                                 <span className="no-data">No data</span>
                             </td>
-                            <td
-                                style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                 {getTestedResults(report) ? (
                                     getTestedResults(report)
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[4].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {!report.associatedInvestigations ? (
                                     <span className="no-data">No data</span>
                                 ) : (
@@ -314,27 +304,21 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                     </>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                 {report?.programAreaCd ? (
                                     <span>{report?.programAreaCd}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                className="font-sans-md table-data"
-                                style={{ background: tableHead[6].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
+                            <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
                                 {report?.jurisdictionCd ? (
                                     <span>{report?.jurisdictionCd}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                className="font-sans-md table-data"
-                                style={{ background: tableHead[7].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
+                            <td className={`font-sans-md table-data ${tableHead[7].sort !== 'all' && 'sort-td'}`}>
                                 {report?.localId ? (
                                     <span>{report?.localId}</span>
                                 ) : (

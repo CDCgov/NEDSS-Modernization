@@ -1122,6 +1122,31 @@ export type PatientTreatmentResults = {
   total: Scalars['Int'];
 };
 
+export type PatientVaccination = {
+  __typename?: 'PatientVaccination';
+  administered: Scalars['String'];
+  administeredOn: Scalars['DateTime'];
+  associatedWith?: Maybe<PatientVaccinationInvestigation>;
+  createdOn: Scalars['DateTime'];
+  event: Scalars['String'];
+  provider?: Maybe<Scalars['String']>;
+  vaccination: Scalars['ID'];
+};
+
+export type PatientVaccinationInvestigation = {
+  __typename?: 'PatientVaccinationInvestigation';
+  condition: Scalars['String'];
+  id: Scalars['ID'];
+  local: Scalars['String'];
+};
+
+export type PatientVaccinationResults = {
+  __typename?: 'PatientVaccinationResults';
+  content: Array<Maybe<PatientVaccination>>;
+  number: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type Person = {
   __typename?: 'Person';
   addReasonCd?: Maybe<Scalars['String']>;
@@ -1490,6 +1515,7 @@ export type Query = {
   findPlacesByFilter: Array<Maybe<Place>>;
   findSnomedCodedResults: SnomedCodedResults;
   findTreatmentsForPatient?: Maybe<PatientTreatmentResults>;
+  findVaccinationsForPatient?: Maybe<PatientVaccinationResults>;
 };
 
 
@@ -1682,6 +1708,12 @@ export type QueryFindSnomedCodedResultsArgs = {
 
 
 export type QueryFindTreatmentsForPatientArgs = {
+  page?: InputMaybe<Page>;
+  patient: Scalars['ID'];
+};
+
+
+export type QueryFindVaccinationsForPatientArgs = {
   page?: InputMaybe<Page>;
   patient: Scalars['ID'];
 };
@@ -2126,6 +2158,14 @@ export type FindTreatmentsForPatientQueryVariables = Exact<{
 
 
 export type FindTreatmentsForPatientQuery = { __typename?: 'Query', findTreatmentsForPatient?: { __typename?: 'PatientTreatmentResults', total: number, number: number, content: Array<{ __typename?: 'PatientTreatment', treatment: string, createdOn: any, provider?: string | null, treatedOn: any, description: string, event: string, associatedWith: { __typename?: 'PatientTreatmentInvestigation', id: string, local: string, condition: string } } | null> } | null };
+
+export type FindVaccinationsForPatientQueryVariables = Exact<{
+  patient: Scalars['ID'];
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindVaccinationsForPatientQuery = { __typename?: 'Query', findVaccinationsForPatient?: { __typename?: 'PatientVaccinationResults', total: number, number: number, content: Array<{ __typename?: 'PatientVaccination', vaccination: string, createdOn: any, provider?: string | null, administeredOn: any, administered: string, event: string, associatedWith?: { __typename?: 'PatientVaccinationInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 
 export const CreatePatientDocument = gql`
@@ -5188,3 +5228,53 @@ export function useFindTreatmentsForPatientLazyQuery(baseOptions?: Apollo.LazyQu
 export type FindTreatmentsForPatientQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientQuery>;
 export type FindTreatmentsForPatientLazyQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientLazyQuery>;
 export type FindTreatmentsForPatientQueryResult = Apollo.QueryResult<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>;
+export const FindVaccinationsForPatientDocument = gql`
+    query findVaccinationsForPatient($patient: ID!, $page: Page) {
+  findVaccinationsForPatient(patient: $patient, page: $page) {
+    content {
+      vaccination
+      createdOn
+      provider
+      administeredOn
+      administered
+      event
+      associatedWith {
+        id
+        local
+        condition
+      }
+    }
+    total
+    number
+  }
+}
+    `;
+
+/**
+ * __useFindVaccinationsForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindVaccinationsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindVaccinationsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindVaccinationsForPatientQuery({
+ *   variables: {
+ *      patient: // value for 'patient'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindVaccinationsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
+      }
+export function useFindVaccinationsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
+        }
+export type FindVaccinationsForPatientQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientQuery>;
+export type FindVaccinationsForPatientLazyQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientLazyQuery>;
+export type FindVaccinationsForPatientQueryResult = Apollo.QueryResult<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>;

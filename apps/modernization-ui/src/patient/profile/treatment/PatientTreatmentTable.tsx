@@ -141,9 +141,7 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                 treatmentData?.map((treatment: any, index: number) => {
                     return (
                         <tr key={index}>
-                            <td
-                                style={{ background: tableHead[0].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.createdOn ? (
                                     <a href="#" className="table-span">
                                         {format(new Date(treatment?.createdOn), 'MM/dd/yyyy')} <br />{' '}
@@ -153,18 +151,14 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[1].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.provider ? (
                                     <span>{treatment.provider}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[2].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.treatedOn ? (
                                     <span className="table-span">
                                         {format(new Date(treatment?.treatedOn), 'MM/dd/yyyy')} <br />{' '}
@@ -174,18 +168,14 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[3].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.description ? (
                                     <span>{treatment?.description}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td
-                                style={{ background: tableHead[4].sort !== 'all' ? '#e1f3f8' : 'transparent' }}
-                                className="font-sans-md table-data">
+                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {!treatment || !treatment?.associatedWith ? (
                                     <span className="no-data">No data</span>
                                 ) : (
@@ -199,9 +189,7 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                     </div>
                                 )}
                             </td>
-                            <td
-                                className="font-sans-md table-data"
-                                style={{ background: tableHead[5].sort !== 'all' ? '#e1f3f8' : 'transparent' }}>
+                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                 {treatment?.event ? (
                                     <span>{treatment?.event}</span>
                                 ) : (

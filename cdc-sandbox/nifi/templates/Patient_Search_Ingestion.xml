@@ -559,8 +559,8 @@
                 <connections>
                     <id>223087a1-2154-3cc0-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>10 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>a1bb84f8-113a-3d24-0000-000000000000</id>
@@ -584,8 +584,8 @@
                 <connections>
                     <id>3320a18d-9bd3-32ec-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>2 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>5b08a977-ec79-3c95-0000-000000000000</id>
@@ -609,8 +609,8 @@
                 <connections>
                     <id>9a57ad6a-5986-3999-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>2 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>f93626c1-e92c-37d1-0000-000000000000</id>
@@ -634,8 +634,8 @@
                 <connections>
                     <id>9da72b9f-dbaf-3545-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>2 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>da7d4cbc-5a72-34ab-0000-000000000000</id>
@@ -710,8 +710,8 @@
                 <connections>
                     <id>c98733f8-ed4f-33c2-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>2 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>a58680e5-21a2-3ab0-0000-000000000000</id>
@@ -735,8 +735,8 @@
                 <connections>
                     <id>cd100f6e-acf9-3699-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>2 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>9b746e3b-56ac-30ee-0000-000000000000</id>
@@ -810,8 +810,8 @@
                 <connections>
                     <id>f677f027-3290-3b6f-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
-                    <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                    <backPressureDataSizeThreshold>10 GB</backPressureDataSizeThreshold>
+                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>773a5bfb-0c8b-3782-0000-000000000000</id>
@@ -2523,7 +2523,7 @@ ProcessFiles.new.main(session)
                         <executionNode>ALL</executionNode>
                         <lossTolerant>false</lossTolerant>
                         <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                        <penaltyDuration>30 sec</penaltyDuration>
+                        <penaltyDuration>1 sec</penaltyDuration>
                         <properties>
                             <entry>
 <key>Database Connection Pooling Service</key>
@@ -2699,7 +2699,7 @@ WHERE
                             </entry>
                             <entry>
 <key>Max Wait Time</key>
-<value>0 seconds</value>
+<value>30 seconds</value>
                             </entry>
                             <entry>
 <key>dbf-normalize</key>
@@ -2770,5 +2770,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/31/2023 04:57:22 UTC</timestamp>
+    <timestamp>04/19/2023 07:06:26 UTC</timestamp>
 </template>
