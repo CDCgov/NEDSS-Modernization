@@ -27,7 +27,7 @@ public class ParticipationCleaner {
                 QAct.act.classCd.eq(classCode),
                 QAct.act.id.eq(identifier)
             ).fetch()
-            //  The all participation instances are associated with the Act entity that
+            //  All participation instances are associated with the Act entity that
             //  shares the same identifier.  Removing the Act will remove any associations.
             .forEach(entityManager::remove);
 

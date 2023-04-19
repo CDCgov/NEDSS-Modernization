@@ -7,7 +7,6 @@ import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
-import gov.cdc.nbs.patient.ParticipationCleaner;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
