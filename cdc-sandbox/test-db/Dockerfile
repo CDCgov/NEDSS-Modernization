@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azure-sql-edge:1.0.7
+FROM --platform=arm64 mcr.microsoft.com/azure-sql-edge:1.0.7 
 USER root
 
 # Install sqlcmd, see https://docs.microsoft.com/en-us/sql/tools/go-sqlcmd-utility?view=sql-server-ver16
