@@ -109,7 +109,7 @@ export const PatientProfile = () => {
                         </p>
                     ))
                 ) : (
-                    <p className="text-italic margin-0 text-gray-30">No Data</p>
+                    <p className="text-italic margin-0 text-gray-50">No Data</p>
                 )}
             </div>
         );
