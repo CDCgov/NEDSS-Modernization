@@ -2,7 +2,7 @@ name: Build and Push modernization-test-db to ECR
 on:
   push:
     branches:
-      - main
+      - test-db
     paths:
       - "cdc-sandbox/test-db/**"
 jobs:
