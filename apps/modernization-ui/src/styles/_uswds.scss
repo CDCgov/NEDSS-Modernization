@@ -1,17 +1,17 @@
-// button {
-//     white-space: nowrap;
-// }
+@import '../mixins/viewports';
 
-// .padding-x-3 {
-//     padding:  0.75rem 1.25rem;
-// }
-// .usa-button {
-//     padding:  0.75rem 1.25rem;
-//     width: auto;
-// }
-// .width-full {
-//     width: 100%;
-// }
-// img {
-//     margin-left: 6px;
-// }
+table.usa-table {
+    overflow-x: auto;
+    table-layout: fixed;
+    width: 100%;
+    thead {
+        width: 100%;
+    }
+}
+@include tablet {
+    table.usa-table {
+        display: block;
+        table-layout: auto;
+        overflow-x: auto;
+    }
+}
