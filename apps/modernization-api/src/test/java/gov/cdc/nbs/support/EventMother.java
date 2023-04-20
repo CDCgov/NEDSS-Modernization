@@ -17,16 +17,16 @@ public class EventMother {
     public static Long CREATED_BY = 999999L;
     public static Long UPDATED_BY = 999998L;
 
-    // jurisdiction codes from NBS_SRTE.Jurisdiction_code
-    public static Long DEKALB_CODE = 930005L;
-    public static Long CLAYTON_CODE = 930006L;
+    // jurisdiction codes from NBS_SRTE.Jurisdiction_code - nbs_uid
+    public static Long DEKALB_CODE = 13005L;
+    public static Long CLAYTON_CODE = 13006L;
 
     // from NBS_SRTE.Program_area_code
     public static Integer STD_ID = 15;
     public static Integer ARBO_ID = 13;
 
-    public static Long DEKALB_ARBO_OID = (DEKALB_CODE * 100000L) + ARBO_ID;
-    public static Long CLAYTON_STD_OID = (CLAYTON_CODE * 100000L) + STD_ID;
+    public static Long DEKALB_ARBO_OID = (DEKALB_CODE * 100000L) + ARBO_ID; // 1300500015
+    public static Long CLAYTON_STD_OID = (CLAYTON_CODE * 100000L) + STD_ID; // 1300600015
 
     public static Investigation investigation_bacterialVaginosis(Long personId) {
         var participations = Arrays.asList(ElasticsearchPersonParticipation.builder()
