@@ -1,7 +1,3 @@
-CREATE SEQUENCE hibernate_sequence
-    START WITH 1
-    INCREMENT BY 1;
-
 CREATE TABLE answer (
     id bigint IDENTITY NOT NULL,
     display varchar(255) NOT NULL,
@@ -31,6 +27,7 @@ CREATE TABLE question (
     units_set bigint,
     default_answer_id bigint,
     answer_set_id bigint,
+    question_type varchar(20),
     PRIMARY KEY (id)
 );
 

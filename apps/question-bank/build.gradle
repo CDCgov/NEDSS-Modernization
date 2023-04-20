@@ -30,6 +30,7 @@ testing {
 dependencies {
     implementation project(':authentication')
     // Spring
+    implementation libs.springBoot.web
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
