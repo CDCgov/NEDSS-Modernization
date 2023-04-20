@@ -2,7 +2,7 @@ import { SortableTable } from 'components/Table/SortableTable';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 
-export const OpenInvestigations = ({ investigations, totalInvestigations }: any) => {
+export const cleaqOpenInvestigations = ({ investigations, totalInvestigations }: any) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [data, setData] = useState<any>(investigations);
 

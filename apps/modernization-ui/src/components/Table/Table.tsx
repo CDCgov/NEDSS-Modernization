@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Actions } from './Actions';
+import { Direction } from 'sorting';
+
+type SortState = {
+    [key: string]: Direction;
+};
 
 export type TableDetail = {
     id: string | number;
@@ -13,16 +18,24 @@ export type TableDetail = {
     type?: string;
 };
 
+type Header = {
+    name: string;
+    sortable: boolean;
+};
+
 export type TableBody = {
     id: number | string | undefined | null;
     checkbox?: boolean;
     tableDetails: TableDetail[];
+    data?: any;
 };
+
+type SortHandler = (name: string, type: string) => void;
 
 export type TableContentProps = {
     tableHeader?: string;
     tableSubHeader?: React.ReactNode | React.ReactNode[] | string;
-    tableHead: { name: string; sortable: boolean }[];
+    tableHead: Header[];
     tableBody: TableBody[];
     isPagination?: boolean;
     pageSize?: number;
@@ -30,8 +43,19 @@ export type TableContentProps = {
     currentPage?: number;
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
-    sortData?: (name: string, type: string) => void;
+    sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
+};
+
+const nextDirection = (direction: Direction) => {
+    switch (direction) {
+        case Direction.None:
+            return Direction.Descending;
+        case Direction.Descending:
+            return Direction.Ascending;
+        case Direction.Ascending:
+            return Direction.None;
+    }
 };
 
 export const renderTitle = (detail: TableDetail) =>
@@ -51,12 +75,101 @@ export const TableComponent = ({
     handleAction,
     sortData
 }: TableContentProps) => {
-    const [sort, setSort] = useState<boolean>(false);
-    const handleSort = (headerName: string) => {
-        setSort(!sort);
-        sortData?.(headerName, !sort ? 'asc' : 'desc');
-    };
+    const initialState: SortState = {};
+    tableHead.forEach((header) => (initialState[header.name] = Direction.None));
+
+    const [sortState, setSortState] = useState<SortState>(initialState);
+
     const [isActions, setIsActions] = useState<any>(null);
+
+    const handleSort = (headerName: string) => {
+        const next = nextDirection(sortState[headerName]);
+
+        sortData?.(headerName, next);
+
+        setSortState({
+            ...initialState,
+            [headerName]: next
+        });
+    };
+
+    const resolveSortIcon = (direction: Direction) => {
+        switch (direction) {
+            case Direction.Ascending:
+                return <Icon.ArrowDownward color="black" />;
+            case Direction.Descending:
+                return <Icon.ArrowUpward color="black" />;
+            default:
+                return <Icon.SortArrow color="black" />;
+        }
+    };
+
+    const resolveSortAria = (direction: Direction) => {
+        switch (direction) {
+            case Direction.Ascending:
+                return 'ascending';
+            case Direction.Descending:
+                return 'descending';
+            default:
+                return;
+        }
+    };
+
+    const resolveHeaderStyle = (direction: Direction) => (direction !== Direction.None ? 'sort-header' : '');
+
+    const renderHeader = (head: Header, index: number) => {
+        const direction = sortState[head.name];
+        const ariaSort = resolveSortAria(direction);
+        const style = resolveHeaderStyle(direction);
+        return (
+            <th
+                key={index}
+                scope="col"
+                {...(style && { className: style })}
+                {...(ariaSort && { 'aria-sort': ariaSort })}>
+                <div className="table-head">
+                    <span className="head-name">{head.name}</span>
+                    {head.sortable && (
+                        <Button
+                            className="usa-button--unstyled"
+                            type={'button'}
+                            aria-label="sort"
+                            onClick={() => handleSort(head.name)}>
+                            {resolveSortIcon(direction)}
+                        </Button>
+                    )}
+                </div>
+            </th>
+        );
+    };
+
+    const isSorting = (header: string) => sortState[header] !== Direction.None;
+
+    const resolveDetailStyle = (detail: TableDetail, index: number) => {
+        let style = 'table-data';
+
+        if (detail.textAlign) {
+            style += `text-${detail?.textAlign}`;
+        }
+
+        if (isSorting(tableHead[index].name)) {
+            style += ' sort-td';
+        }
+
+        return style;
+    };
+
+    const dataNotAvailalbe = (
+        <tr className="text-center no-data not-available">
+            <td colSpan={tableHead.length}>Not Available</td>
+        </tr>
+    );
+
+    const renderNoDataDetail = (detail: TableDetail, column: number) => (
+        <td key={column} className={`no-data ${resolveDetailStyle(detail, column)}`}>
+            No data
+        </td>
+    );
 
     return (
         <div>
@@ -69,96 +182,74 @@ export const TableComponent = ({
             </div>
             <Table bordered={false} fullWidth>
                 <thead>
-                    <tr>
-                        {tableHead.map((head: any, index) => (
-                            <th key={index} scope="col">
-                                <div className="table-head">
-                                    <span className="head-name">{head.name}</span>
-                                    {head.sortable && (
-                                        <Button
-                                            className="usa-button--unstyled"
-                                            type={'button'}
-                                            onClick={() => handleSort(head.name)}>
-                                            <Icon.SortArrow color="black" />
-                                        </Button>
-                                    )}
-                                </div>
-                            </th>
-                        ))}
-                    </tr>
+                    <tr>{tableHead.map(renderHeader)}</tr>
                 </thead>
                 <tbody>
-                    {tableBody?.length > 0 ? (
-                        tableBody.map((item: any, index) => (
-                            <tr key={index}>
-                                {item.tableDetails.map((td: TableDetail, ind: number) =>
-                                    td.title ? (
-                                        td.title === 'Not available yet' ? (
-                                            <td key={ind} className="font-sans-md no-data table-data">
-                                                {td.title}
-                                            </td>
-                                        ) : (
-                                            <td
-                                                className={`${td?.textAlign ? `text-${td?.textAlign}` : ''} table-data`}
-                                                key={ind}>
-                                                {ind === 0 && item.checkbox && (
-                                                    <Fieldset>
-                                                        <Checkbox
-                                                            key={index}
-                                                            id={`${td.title}-${index}`}
-                                                            name={'tableCheck'}
-                                                            label=""
-                                                        />
-                                                    </Fieldset>
-                                                )}
-                                                {td?.type !== 'actions' && (
-                                                    <span
-                                                        className={
-                                                            ind === 0 && item.checkbox
-                                                                ? 'check-title'
-                                                                : td.class
-                                                                ? td.class
-                                                                : 'table-span'
-                                                        }>
-                                                        {renderTitle(td)}
-                                                    </span>
-                                                )}
-                                                {td?.type === 'actions' && (
-                                                    <div className="table-span">
-                                                        <Button
-                                                            onClick={() =>
-                                                                setIsActions(isActions === index ? null : index)
-                                                            }
-                                                            type="button"
-                                                            unstyled>
-                                                            {td.title}
-                                                        </Button>
-                                                        {isActions === index && (
-                                                            <Actions
-                                                                handleOutsideClick={() => setIsActions(null)}
-                                                                handleAction={(data: string) => {
-                                                                    handleAction?.(data, JSON.stringify(item?.data));
-                                                                    setIsActions(null);
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </td>
-                                        )
-                                    ) : (
-                                        <td key={ind} className="font-sans-md no-data table-data">
-                                            No data
-                                        </td>
-                                    )
-                                )}
-                            </tr>
-                        ))
-                    ) : (
-                        <tr className="text-center no-data not-available">
-                            <td colSpan={tableHead.length}>Not Available</td>
-                        </tr>
-                    )}
+                    {tableBody?.length > 0
+                        ? tableBody.map((item: TableBody, row: number) => (
+                              <tr key={row}>
+                                  {item.tableDetails.map((detail: TableDetail, column: number) =>
+                                      detail.title ? (
+                                          detail.title === 'Not available yet' ? (
+                                              <td
+                                                  key={column}
+                                                  className={`no-data ${resolveDetailStyle(detail, column)}`}>
+                                                  {detail.title}
+                                              </td>
+                                          ) : (
+                                              <td className={resolveDetailStyle(detail, column)} key={column}>
+                                                  {column === 0 && item.checkbox && (
+                                                      <Fieldset>
+                                                          <Checkbox
+                                                              key={row}
+                                                              id={`${detail.title}-${row}`}
+                                                              name={'tableCheck'}
+                                                              label=""
+                                                          />
+                                                      </Fieldset>
+                                                  )}
+                                                  {detail?.type !== 'actions' && (
+                                                      <span
+                                                          className={
+                                                              column === 0 && item.checkbox
+                                                                  ? 'check-title'
+                                                                  : detail.class
+                                                                  ? detail.class
+                                                                  : 'table-span'
+                                                          }>
+                                                          {renderTitle(detail)}
+                                                      </span>
+                                                  )}
+                                                  {detail?.type === 'actions' && (
+                                                      <div className="table-span">
+                                                          <Button
+                                                              onClick={() =>
+                                                                  setIsActions(isActions === row ? null : row)
+                                                              }
+                                                              type="button"
+                                                              unstyled>
+                                                              {detail.title}
+                                                          </Button>
+                                                          {isActions === row && (
+                                                              <Actions
+                                                                  handleOutsideClick={() => setIsActions(null)}
+                                                                  handleAction={(data: string) => {
+                                                                      handleAction?.(data, JSON.stringify(item?.data));
+                                                                      setIsActions(null);
+                                                                  }}
+                                                              />
+                                                          )}
+                                                      </div>
+                                                  )}
+                                              </td>
+                                          )
+                                      ) : (
+                                          renderNoDataDetail(detail, column)
+                                      )
+                                  )}
+                              </tr>
+                          ))
+                        : dataNotAvailalbe}
                 </tbody>
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">

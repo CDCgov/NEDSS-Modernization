@@ -1,8 +1,9 @@
-type Comparator<T> = (left: T, right: T) => number;
+export type Comparator<T> = (left: T, right: T) => number;
 
 export enum Direction {
+    None = 'all',
     Ascending = 'asc',
-    Decending = 'desc'
+    Descending = 'desc'
 }
 
 export const ascending = <T>(comparator: Comparator<T>): Comparator<T> => comparator;
@@ -14,10 +15,12 @@ export const descending =
 
 export const withDirection = <T>(c: Comparator<T>, type?: Direction): Comparator<T> => {
     switch (type) {
-        case Direction.Decending:
+        case Direction.Descending:
             return descending(c);
-        default:
+        case Direction.Ascending:
             return ascending(c);
+        default:
+            return c;
     }
 };
 
@@ -28,9 +31,9 @@ export const sortBy =
         const comparing = right[property];
 
         if (value > comparing) {
-            return -1;
-        } else if (value < comparing) {
             return 1;
+        } else if (value < comparing) {
+            return -1;
         } else {
             return 0;
         }
