@@ -1,6 +1,3 @@
-import { useState } from 'react';
-import { TableComponent } from '../../components/Table/Table';
-import { Button, Icon } from '@trussworks/react-uswds';
 import {
     FindInvestigationsByFilterQuery,
     FindLabReportsByFilterQuery,
@@ -14,6 +11,7 @@ import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientInvestigationsTable } from 'patient/profile/investigation';
 import { MorbidityTable } from 'patient/profile/morbidity';
 import { LabReportTable } from 'patient/profile/labReport';
+import { VaccinationTable } from 'patient/profile/vaccination';
 
 type EventTabProp = {
     patient: string | undefined;
@@ -25,8 +23,6 @@ type EventTabProp = {
 
 export const Events = ({ patient }: EventTabProp) => {
     const NBS_URL = Config.nbsUrl;
-
-    const [currentPage, setCurrentPage] = useState<number>(1);
 
     return (
         <>
@@ -42,29 +38,7 @@ export const Events = ({ patient }: EventTabProp) => {
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <TableComponent
-                    isPagination={true}
-                    buttons={
-                        <div className="grid-row">
-                            <Button type="button" className="grid-row">
-                                <Icon.Add className="margin-right-05" />
-                                Add vaccination
-                            </Button>
-                        </div>
-                    }
-                    tableHeader={'Vaccinations'}
-                    tableHead={[
-                        { name: 'Date created', sortable: true },
-                        { name: 'Provider', sortable: true },
-                        { name: 'Date adinistered', sortable: true },
-                        { name: 'Vaccine administered', sortable: true },
-                        { name: 'Associated with', sortable: true },
-                        { name: 'Events', sortable: true }
-                    ]}
-                    tableBody={[]}
-                    currentPage={currentPage}
-                    handleNext={(e) => setCurrentPage(e)}
-                />
+                <VaccinationTable patient={patient} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientTreatmentTable patient={patient} />
