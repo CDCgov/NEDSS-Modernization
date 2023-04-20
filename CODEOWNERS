@@ -1,0 +1,13 @@
+# This file details who the code owners are.  Code owners are automatically requested for review when a PR is created.
+# For details on the format, and condfiguration of this file see: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+/apps/modernization-api  jbarrows@enquizit.com mpeels@enquizit.com
+/apps/modernization-ui jbarrows@enquizit.com mpeels@enquizit.com
+/app/patient-listener jbarrows@enquizit.com
+/app/question-bank mpeels@enquizit.com
+/cdc-sandbox jbarrows@enquizit.com
+/libs/authentication jbarrows@enquizit.com mpeels@enquizit.com
+/libs/database-entities jbarrows@enquizit.com mpeels@enquizit.com
+/libs/event-schema jbarrows@enquizit.com mpeels@enquizit.com
+/patient-search jbarrows@enquizit.com
+/.github/workflows  szamfir@enquizit.com
