@@ -2,10 +2,9 @@ name: Build and Push modernization-test-db to ECR
 on:
   push:
     branches:
-      - test-db
+      - main
     paths:
       - "cdc-sandbox/test-db/**"
-      - ".github/workflows/**"
 jobs:
   call-build-microservice-container-workflow:
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-other-microservice-container.yaml@main

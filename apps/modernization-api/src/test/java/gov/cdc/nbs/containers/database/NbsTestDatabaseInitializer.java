@@ -21,6 +21,7 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
 
         private static final NbsDatabaseContainer INSTANCE = initialize();
 
+        @SuppressWarnings({ "resource" })
         private static NbsDatabaseContainer initialize() {
             NbsDatabaseContainer container = new NbsDatabaseContainer()
                 .withImagePullPolicy(PullPolicy.defaultPolicy());

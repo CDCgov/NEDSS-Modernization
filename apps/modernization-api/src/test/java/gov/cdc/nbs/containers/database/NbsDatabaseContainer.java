@@ -8,8 +8,7 @@ class NbsDatabaseContainer extends GenericContainer<NbsDatabaseContainer> {
     private static final int DEFAULT_PORT = 1433;
 
     public NbsDatabaseContainer() {
-        //  TODO: set to the actual name of the container
-        super(DockerImageName.parse("nbs-mssql-test:latest"));
+        super(DockerImageName.parse("cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.41470e8"));
 
         addExposedPorts(DEFAULT_PORT);
     }
