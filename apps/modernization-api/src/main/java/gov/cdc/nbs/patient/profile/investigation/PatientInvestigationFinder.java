@@ -74,6 +74,14 @@ class PatientInvestigationFinder {
             result = 31 * result + Arrays.hashCode(status);
             return result;
         }
+
+        @Override
+        public String toString() {
+            return "Criteria{" +
+                "patient=" + patient +
+                ", status=" + Arrays.toString(status) +
+                '}';
+        }
     }
 
 
