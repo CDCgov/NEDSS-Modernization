@@ -120,10 +120,11 @@ describe('when sorting documents by Type', () => {
 
     it('should sort ascending', () => {
         const actual = sort(documents, { name: Headers.Type, type: Direction.Ascending });
+
         expect(actual).toEqual([
-            expect.objectContaining({ document: '727' }),
+            expect.objectContaining({ document: '617' }),
             expect.objectContaining({ document: '1583' }),
-            expect.objectContaining({ document: '617' })
+            expect.objectContaining({ document: '727' })
         ]);
     });
 
@@ -131,9 +132,9 @@ describe('when sorting documents by Type', () => {
         const actual = sort(documents, { name: Headers.Type, type: Direction.Descending });
 
         expect(actual).toEqual([
-            expect.objectContaining({ document: '617' }),
+            expect.objectContaining({ document: '727' }),
             expect.objectContaining({ document: '1583' }),
-            expect.objectContaining({ document: '727' })
+            expect.objectContaining({ document: '617' })
         ]);
     });
 });
@@ -168,10 +169,11 @@ describe('when sorting documents by Sending facility', () => {
 
     it('should sort ascending', () => {
         const actual = sort(documents, { name: Headers.SendingFacility, type: Direction.Ascending });
+
         expect(actual).toEqual([
-            expect.objectContaining({ document: '727' }),
+            expect.objectContaining({ document: '617' }),
             expect.objectContaining({ document: '1583' }),
-            expect.objectContaining({ document: '617' })
+            expect.objectContaining({ document: '727' })
         ]);
     });
 
@@ -179,9 +181,9 @@ describe('when sorting documents by Sending facility', () => {
         const actual = sort(documents, { name: Headers.SendingFacility, type: Direction.Descending });
 
         expect(actual).toEqual([
-            expect.objectContaining({ document: '617' }),
+            expect.objectContaining({ document: '727' }),
             expect.objectContaining({ document: '1583' }),
-            expect.objectContaining({ document: '727' })
+            expect.objectContaining({ document: '617' })
         ]);
     });
 });
