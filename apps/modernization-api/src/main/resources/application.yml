@@ -18,6 +18,7 @@ nbs:
     seed: 10000000
   datasource:
     server: localhost
+    port: 1433
 
 logging:
   file.path: ./log/
@@ -42,7 +43,7 @@ spring:
         dialect: org.hibernate.dialect.SQLServer2012Dialect
         hbm2ddl.jdbc_metadata_extraction_strategy: individually
   datasource:
-    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+    url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa
     password: fake.fake.fake.1234
   mvc:
