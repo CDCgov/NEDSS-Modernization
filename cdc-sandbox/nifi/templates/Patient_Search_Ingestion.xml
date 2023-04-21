@@ -328,7 +328,7 @@
                 </entry>
                 <entry>
                     <key>Max Total Connections</key>
-                    <value>8</value>
+                    <value>16</value>
                 </entry>
                 <entry>
                     <key>Validation-query</key>
@@ -1802,6 +1802,7 @@ def add_entity_id(uid, person)
     recordStatusCd = person['recordStatusCd']
     recordStatusCd = nil if recordStatusCd == ''
     rootExtensionTxt = person['rootExtensionTxt']
+    rootExtensionTxt = rootExtensionTxt.gsub(/[^0-9a-z ]/i, '') if rootExtensionTxt	
     rootExtensionTxt = nil if rootExtensionTxt == ''
     return if typeCd.nil? &amp;&amp; recordStatusCd.nil? &amp;&amp; rootExtensionTxt.nil?
     entity_id = {"typeCd": typeCd, "recordStatusCd": recordStatusCd, "rootExtensionTxt": rootExtensionTxt }
@@ -2534,164 +2535,268 @@ ProcessFiles.new.main(session)
                             </entry>
                             <entry>
 <key>SQL select query</key>
-<value>SELECT distinct
-  p.person_parent_uid person_uid,
-  p.administrative_gender_cd, 
-  p.add_reason_cd, 
-  p.add_time, 
-  p.add_user_id, 
-  p.age_calc, 
-  p.age_calc_time, 
-  p.age_calc_unit_cd, 
-  p.age_category_cd, 
-  p.age_reported, 
-  p.age_reported_time, 
-  p.age_reported_unit_cd, 
-  p.as_of_date_admin, 
-  p.as_of_date_ethnicity, 
-  p.as_of_date_general, 
-  p.as_of_date_morbidity, 
-  p.as_of_date_sex, 
-  p.birth_gender_cd, 
-  p.birth_order_nbr,
-  p.birth_time,
-  p.birth_time_calc,
-  p.cd,
-  p.cd_desc_txt,
-  p.curr_sex_cd, 
-  p.deceased_ind_cd,
-  p.deceased_time,
-  p.description,
-  p.education_level_cd,
-  p.education_level_desc_txt,
-  p.electronic_ind,
-  p.ethnic_group_ind,
-  p.last_chg_reason_cd,
-  p.last_chg_time,
-  p.last_chg_user_id,
-  p.marital_status_cd,
-  p.marital_status_desc_txt,
-  p.mothers_maiden_nm,
-  p.multiple_birth_ind,
-  p.occupation_cd,
-  p.preferred_gender_cd,
-  p.prim_lang_cd,
-  p.prim_lang_desc_txt,
-  p.record_status_cd,
-  p.record_status_time,
-  p.status_cd,
-  p.status_time,
-  p.survived_ind_cd,
-  p.user_affiliation_txt,
-  p.nm_prefix,
-  p.preferred_nm,
-  p.hm_street_addr1,
-  p.hm_street_addr2,
-  p.hm_city_cd,
-  p.hm_city_desc_txt, 
-  p.hm_state_cd, 
-  p.hm_zip_cd, 
-  p.hm_cnty_cd, 
-  p.hm_cntry_cd,
-  p.hm_phone_nbr, 
-  p.hm_phone_cntry_cd,
-  p.hm_email_addr,
-  p.cell_phone_nbr,
-  p.wk_street_addr1,
-  p.wk_street_addr2, 
-  p.wk_city_cd, 
-  p.wk_city_desc_txt,
-  p.wk_state_cd,
-  p.wk_zip_cd,
-  p.wk_cnty_cd,
-  p.wk_cntry_cd,
-  p.wk_phone_nbr,
-  p.wk_phone_cntry_cd, 
-  p.wk_email_addr, 
-  p.SSN, 
-  p.medicaid_num, 
-  p.dl_num,
-  p.dl_state_cd,
-  p.race_seq_nbr,
-  p.race_category_cd, 
-  p.ethnicity_group_cd,
-  p.ethnic_group_seq_nbr,
-  p.ethnic_group_desc_txt, 
-  p.adults_in_house_nbr,
-  p.children_in_house_nbr,
-  p.birth_city_cd, 
-  p.birth_city_desc_txt,
-  p.birth_cntry_cd, 
-  p.birth_state_cd,
-  p.local_id, 
-  p.version_ctrl_nbr ,
-  p.group_nbr, 
-  p.group_time,
-  p.edx_ind,
-  p.speaks_english_cd,
-  p.additional_gender_cd,
-  p.ehars_id,
-  p.dedup_match_ind,
-  p.first_nm,
-  p.middle_nm,
-  p.last_nm,
-  p.nm_suffix,
-  pn.last_nm lastNm,
-  soundex(pn.last_nm) lastNmSndx,
-  pn.middle_nm middleNm,
-  pn.first_nm firstNm,
-  soundex(pn.first_nm) firstNmSndx,
-  pn.nm_use_cd,
-  pn.nm_suffix nmSuffix,
-  pn.nm_prefix nmPrefix,
-  pn.nm_degree,
-  pr.race_cd raceCd,
-  pr.race_desc_txt raceDescTxt,
-  plx.streetAddr1,
-  plx.streetAddr2,
-  plx.city,
-  plx.zip,
-  plx.cntyCd,
-  plx."state",
-  plx.cntryCd,
-  plt.locatorUid,
-  plt.telephoneNbr,
-  plt.extensionTxt,
-  plt.emailAddress,
-  ei.type_cd typeCd,
-  ei.record_status_cd recordStatusCd,
-  ei.root_extension_txt rootExtensionTxt
-FROM Person p
-  left join Person_name pn on p.person_uid=pn.person_uid
-  left join person_race pr on p.person_uid=pr.person_uid  
-  left join entity_id ei on p.person_uid = ei.entity_uid
-  left join (
-    select elpa.entity_uid elpa_entity_uid, 
-    pl.street_addr1 streetAddr1,
-    pl.street_addr2 streetAddr2,
-    pl.city_desc_txt city,
-    pl.zip_cd zip,
-    pl.cnty_cd cntyCd,
-    pl.state_cd "state",
-    pl.cntry_cd cntryCd
-    from entity_locator_participation elpa, postal_locator pl
-    where
-    pl.postal_locator_uid=elpa.locator_uid and elpa.class_cd='PST' and elpa.status_cd='A'   
-  ) plx on elpa_entity_uid=p.person_uid
-  left join(
-    select
-      elpt.entity_uid elpt_entity_uid, 
-      tl.tele_locator_uid locatorUid,
-      tl.phone_nbr_txt telephoneNbr,
-      tl.extension_txt extensionTxt,
-      tl.email_address emailAddress
-    from
-      entity_locator_participation elpt, tele_locator tl
-    WHERE
-      tl.tele_locator_uid=elpt.locator_uid and elpt.class_cd='TELE' and elpt.status_cd='A'   
-  ) plt on elpt_entity_uid=p.person_uid
-WHERE
-  p.person_uid in (${person_parent_uids})
+<value>java_import org.apache.commons.io.IOUtils
+java_import org.apache.nifi.processor.io.StreamCallback
+java_import Java::org.apache.nifi.processors.script.ExecuteScript
+import java.nio.charset.StandardCharsets
+require 'json'
+require 'net/http'
+require 'uri'
+
+def initialize_person_index
+    req = Net::HTTP::Put.new('/person')
+json = &lt;&lt;-JSON
+{
+    "mappings": {
+        "properties": {
+            "address": {
+                "type": "nested"
+            },
+            "phone": {
+                "type": "nested"
+            },
+            "email": {
+                "type": "nested"
+            },
+            "name": {
+                "type": "nested",
+            },
+            "race": {
+                "type": "nested"
+            },
+            "entity_id": {
+                "type": "nested"
+            },
+        }
+    }
+}
+JSON
+  req.body = json
+  req['Content-Type'] = 'application/json'
+  uri = URI.parse(ENV["ELASTICSEARCH_HTTP_HOSTS"])
+  resp = Net::HTTP.start(uri.host, uri.port) { |client| client.request(req) }
+end
+
+$person_by_uid = {}
+$phones_by_uid = {}
+$emails_by_uid = {}
+$names_by_uid = {}
+$races_by_uid = {}
+$addresses_by_uid = {}
+$entity_ids_by_uid = {}
+
+def add_entity_id(uid, person)
+    typeCd = person['typeCd']
+    typeCd = nil if typeCd == ''
+    recordStatusCd = person['recordStatusCd']
+    recordStatusCd = nil if recordStatusCd == ''
+    rootExtensionTxt = person['rootExtensionTxt']
+    rootExtensionTxt = rootExtensionTxt.gsub(/[^0-9a-z ]/i, '') if rootExtensionTxt	
+    rootExtensionTxt = nil if rootExtensionTxt == ''
+    return if typeCd.nil? &amp;&amp; recordStatusCd.nil? &amp;&amp; rootExtensionTxt.nil?
+    entity_id = {"typeCd": typeCd, "recordStatusCd": recordStatusCd, "rootExtensionTxt": rootExtensionTxt }
+    entity_ids_by_uid = $entity_ids_by_uid[uid]
+    if entity_ids_by_uid
+        $entity_ids_by_uid[uid].append(entity_id) unless entity_ids_by_uid.include?(entity_id)
+    else
+        $entity_ids_by_uid[uid]=[entity_id]
+    end
+end
+
+def add_email(uid, person)
+    emailAddress = person['emailAddress']
+    emailAddress = nil if emailAddress == ''
+    return if emailAddress.nil?
+    email = {"emailAddress": emailAddress&amp;.downcase}
+    emails_by_uid = $emails_by_uid[uid]
+    if emails_by_uid
+        $emails_by_uid[uid].append(email) unless emails_by_uid.include?(email)
+    else
+        $emails_by_uid[uid]=[email]
+    end
+end
+
+def add_race(uid, person)
+    raceCd = person['raceCd']
+    raceDescTxt = person['raceDescTxt']
+    raceCd = nil if raceCd == ''
+    raceDescTxt = nil if raceDescTxt == ''
+    return if raceCd.nil? &amp;&amp; raceDescTxt.nil?
+    race = {"raceCd": raceCd, "raceDescTxt": raceDescTxt}
+    races_by_uid = $races_by_uid[uid]
+    if races_by_uid
+        $races_by_uid[uid].append(race) unless races_by_uid.include?(race)
+    else
+        $races_by_uid[uid]=[race]
+    end
+end
+
+def add_phone(uid, person)
+    telephoneNbr = person['telephoneNbr']
+    extensionTxt = person['extensionTxt']
+ 	  telephoneNbr = telephoneNbr.tr('^0-9', '') if telephoneNbr
+ 	  extensionTxt = extensionTxt.tr('^0-9', '') if extensionTxt
+    telephoneNbr = nil if telephoneNbr == ''
+    extensionTxt = nil if extensionTxt == ''
+    return if telephoneNbr.nil? &amp;&amp; extensionTxt.nil?
+    phone = {"telephoneNbr": telephoneNbr, "extensionTxt": extensionTxt}
+    phones_by_uid = $phones_by_uid[uid]
+    if phones_by_uid
+        $phones_by_uid[uid].append(phone) unless phones_by_uid.include?(phone)
+    else
+        $phones_by_uid[uid]=[phone]
+    end
+end
+
+def add_address(uid, person)
+    streetAddr1 = person['streetAddr1']
+    streetAddr2 = person['streetAddr2']
+    city = person['city']
+    zip = person['zip']
+    cntyCd = person['cntyCd']
+    state = person['state']
+    cntryCd = person['cntryCd']
+    streetAddr1 = nil if streetAddr1 == ''
+    streetAddr2 = nil if streetAddr2 == ''
+    city = nil if city == ''
+    zip = nil if zip == ''
+    cntyCd = nil if cntyCd == ''
+    state = nil if state == ''
+    cntryCd = nil if cntryCd == ''
+    return if streetAddr1.nil? &amp;&amp; streetAddr2.nil? &amp;&amp; city.nil? &amp;&amp; zip.nil? &amp;&amp; cntyCd.nil? &amp;&amp; state.nil? &amp;&amp; cntryCd.nil?
+    address = {"streetAddr1": streetAddr1, "streetAddr2": streetAddr2, "city": city, "zip": zip, "cntyCd": cntyCd, "state": state, "cntryCd": cntryCd}
+    addresses_by_uid = $addresses_by_uid[uid]
+    if addresses_by_uid
+        $addresses_by_uid[uid].append(address) unless addresses_by_uid.include?(address)
+    else
+        $addresses_by_uid[uid]=[address]
+    end
+end
+
+def add_name(uid, person)
+    lastNm = person['lastNm']
+    lastNmSndx = person['lastNmSndx']
+    middleNm = person['middleNm']
+    firstNm = person['firstNm']
+    firstNmSndx = person['firstNmSndx']
+    nm_use_cd = person['nm_use_cd']
+    nmSuffix = person['nmSuffix']
+    nmDegree = person['nmDegree']
+    lastNm = nil if lastNm == ''
+    lastNmSndx = nil if lastNmSndx == ''
+    middleNm = nil if middleNm == ''
+    firstNm = nil if firstNm == ''
+    firstNmSndx = nil if firstNmSndx == ''
+    nm_use_cd = nil if nm_use_cd == ''
+    nmSuffix = nil if nmSuffix == ''
+    nmDegree = nil if nmDegree == ''
+    return if lastNm.nil? &amp;&amp; lastNmSndx.nil? &amp;&amp; middleNm.nil? &amp;&amp; firstNm.nil? &amp;&amp; firstNmSndx.nil? &amp;&amp; nmSuffix.nil? &amp;&amp; nmDegree.nil?
+    name = {"lastNm": lastNm, "lastNmSndx": lastNmSndx, "middleNm": middleNm, "firstNm": firstNm, "firstNmSndx": firstNmSndx, "nm_use_cd": nm_use_cd, "nmSuffix": nmSuffix, "nmDegree": nmDegree}
+    names_by_uid = $names_by_uid[uid]
+    if names_by_uid
+        $names_by_uid[uid].append(name) unless names_by_uid.include?(name)
+    else
+        $names_by_uid[uid]=[name]
+    end
+end
+
+def process_person_row_from_db(person)
+    uid = person['person_uid']
+    return unless uid
+    person.compact!
+    unless $person_by_uid[uid]
+        $person_by_uid[uid] = person
+    end
+    add_name(uid, person)
+    add_race(uid, person)
+    add_email(uid, person)
+    add_phone(uid, person)
+    add_address(uid, person)
+    add_entity_id(uid, person)
+end
+
+def delete_nested_keys_from_person_at_to_level(person)
+    person.delete('streetAddr1')
+    person.delete('streetAddr2')
+    person.delete('city')
+    person.delete('zip')
+    person.delete('cntyCd')
+    person.delete('state')
+    person.delete('cntryCd')
+
+    person.delete('telephoneNbr')
+    person.delete('extensionTxt')
+
+    person.delete('raceCd')
+    person.delete('raceDescTxt')
+
+    person.delete('emailAddress')
+
+    person.delete('typeCd')
+    person.delete('recordStatusCd')
+    person.delete('rootExtensionTxt')
+
+    person.delete('lastNm')
+    person.delete('lastNmSndx')
+    person.delete('middleNm')
+    person.delete('firstNm')
+    person.delete('firstNmSndx')
+    person.delete('nm_use_cd')
+    person.delete('nmSuffix')
+    person.delete('nmDegree')
+end
+
+def convert_person_data_into_person_list_with_nested_fields
+    $person_list = []
+    $person_by_uid.each do |uid, person|
+    		person['id'] = uid.to_s
+        person['address'] = $addresses_by_uid[uid]
+        person['phone'] = $phones_by_uid[uid]
+        person['email'] = $emails_by_uid[uid]
+        person['name'] = $names_by_uid[uid]
+        person['race'] = $races_by_uid[uid]
+        person['entity_id'] = $entity_ids_by_uid[uid]
+        delete_nested_keys_from_person_at_to_level(person)
+        $person_list.append(person)
+    end
+    $person_list
+end
+
+class JRubyStreamCallback2
+    include StreamCallback
+    def process(inputStream,outputStream)
+      text = IOUtils.toString(inputStream)
+      hash = JSON.parse(text)
+      if hash
+          hash.each do |person_hash|
+              process_person_row_from_db(person_hash)
+          end
+      end      
+      
+      person_list = convert_person_data_into_person_list_with_nested_fields
+      data = person_list.to_json
+      outputStream.write(data.to_java.getBytes(StandardCharsets::UTF_8))
+    end
+end
+
+class ProcessCollapseJson
+  def main(session)
+    flowFile = session.get()
+    initialize_person_index
+    if flowFile != nil
+      jrubyStreamCallback = JRubyStreamCallback2.new  
+      begin
+        session.write(flowFile, jrubyStreamCallback)
+        session.transfer(flowFile, ExecuteScript::REL_SUCCESS)
+      rescue
+        session.transfer(flowFile, ExecuteScript::REL_FAILURE)
+      end
+    end    
+  end
+end
+
+ProcessCollapseJson.new.main(session)
+
 </value>
                             </entry>
                             <entry>
@@ -2770,5 +2875,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/19/2023 07:06:26 UTC</timestamp>
+    <timestamp>04/21/2023 06:40:25 UTC</timestamp>
 </template>
