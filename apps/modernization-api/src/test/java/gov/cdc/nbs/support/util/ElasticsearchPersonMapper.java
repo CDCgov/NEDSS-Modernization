@@ -74,7 +74,7 @@ public class ElasticsearchPersonMapper {
                 .firstNm(person.getFirstNm())
                 .lastNm(person.getLastNm())
                 .name(List.of(name))
-                .ssn(person.getSsn())
+                .ssn(person.getSsn().replaceAll("\\D", ""))
                 .birthGenderCd(person.getBirthGenderCd())
                 .currSexCd(person.getCurrSexCd())
                 .email(asNestedEmails(person))

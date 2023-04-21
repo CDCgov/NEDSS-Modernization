@@ -173,7 +173,13 @@ public class PatientService {
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.SSN_FIELD, filter.getSsn()));
+            String allDigitSsn = filter.getPhoneNumber().replaceAll("\\D", "");
+            if (!allDigitSsn.isEmpty()) {
+                builder.must(QueryBuilders.queryStringQuery(
+                                addWildcards(allDigitSsn))
+                                .defaultField(ElasticsearchPerson.SSN_FIELD)
+                                .defaultOperator(Operator.AND));
+            }
         }
 
         if (filter.getPhoneNumber() != null) {

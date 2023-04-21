@@ -293,6 +293,9 @@ public class PatientSearchSteps {
             return filter;
         }
         switch (field) {
+            case "ssn":
+                filter.setSsn(RandomUtil.randomPartialDataSearchString(searchPatient.getSsn()));
+                break;
             case "phone number":
                 var teleLocator = PersonUtil.getTeleLocators(searchPatient).get(0);
                 filter.setPhoneNumber(RandomUtil.randomPartialDataSearchString(teleLocator.getPhoneNbrTxt()));

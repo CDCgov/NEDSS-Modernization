@@ -80,6 +80,7 @@ Feature: Patient search
       | city        |           |            |            |
       | last name   |           | city       |            |
       | phone number|           |            |            |
+      | ssn         |           |            |            |
 
   @patient_search_with_sorting
   Scenario: I can find the right patient when there are multiple ordered results

@@ -53,9 +53,8 @@ public class RandomUtil {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }
 
-    // format 123-456-789
     public static String getRandomSsn() {
-        return getRandomNumericString(3) + "-" + getRandomNumericString(3) + "-" + getRandomNumericString(3);
+        return getRandomNumericString(10);
     }
 
     public static String getRandomPhoneNumber() {
