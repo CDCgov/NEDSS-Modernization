@@ -56,8 +56,5 @@ kafkadef:
 testing:
   id-generation:
     starting: -20000000 # a negative id should reduce conflicts of ids in a live system
-<<<<<<< HEAD
-=======
   database:
     image: cdc-sandbox-test-db 
->>>>>>> 63e4819 (configurable database image)
