@@ -80,7 +80,7 @@ describe('when sorting documents by Date received', () => {
     });
 
     it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.DateReceived, type: Direction.Decending });
+        const actual = sort(documents, { name: Headers.DateReceived, type: Direction.Descending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '727' }),
@@ -120,20 +120,21 @@ describe('when sorting documents by Type', () => {
 
     it('should sort ascending', () => {
         const actual = sort(documents, { name: Headers.Type, type: Direction.Ascending });
-        expect(actual).toEqual([
-            expect.objectContaining({ document: '727' }),
-            expect.objectContaining({ document: '1583' }),
-            expect.objectContaining({ document: '617' })
-        ]);
-    });
-
-    it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.Type, type: Direction.Decending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '617' }),
             expect.objectContaining({ document: '1583' }),
             expect.objectContaining({ document: '727' })
+        ]);
+    });
+
+    it('should sort descending', () => {
+        const actual = sort(documents, { name: Headers.Type, type: Direction.Descending });
+
+        expect(actual).toEqual([
+            expect.objectContaining({ document: '727' }),
+            expect.objectContaining({ document: '1583' }),
+            expect.objectContaining({ document: '617' })
         ]);
     });
 });
@@ -168,20 +169,21 @@ describe('when sorting documents by Sending facility', () => {
 
     it('should sort ascending', () => {
         const actual = sort(documents, { name: Headers.SendingFacility, type: Direction.Ascending });
-        expect(actual).toEqual([
-            expect.objectContaining({ document: '727' }),
-            expect.objectContaining({ document: '1583' }),
-            expect.objectContaining({ document: '617' })
-        ]);
-    });
-
-    it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.SendingFacility, type: Direction.Decending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '617' }),
             expect.objectContaining({ document: '1583' }),
             expect.objectContaining({ document: '727' })
+        ]);
+    });
+
+    it('should sort descending', () => {
+        const actual = sort(documents, { name: Headers.SendingFacility, type: Direction.Descending });
+
+        expect(actual).toEqual([
+            expect.objectContaining({ document: '727' }),
+            expect.objectContaining({ document: '1583' }),
+            expect.objectContaining({ document: '617' })
         ]);
     });
 });
@@ -225,7 +227,7 @@ describe('when sorting documents by Date reported', () => {
     });
 
     it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.DateReported, type: Direction.Decending });
+        const actual = sort(documents, { name: Headers.DateReported, type: Direction.Descending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '727' }),
@@ -275,7 +277,7 @@ describe('when sorting documents by Condition', () => {
     });
 
     it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.Condition, type: Direction.Decending });
+        const actual = sort(documents, { name: Headers.Condition, type: Direction.Descending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '1583' }),
@@ -332,7 +334,7 @@ describe('when sorting documents by Associated with', () => {
     });
 
     it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.AssociatedWith, type: Direction.Decending });
+        const actual = sort(documents, { name: Headers.AssociatedWith, type: Direction.Descending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '1583' }),
@@ -380,7 +382,7 @@ describe('when sorting documents by Event ID', () => {
     });
 
     it('should sort descending', () => {
-        const actual = sort(documents, { name: Headers.EventID, type: Direction.Decending });
+        const actual = sort(documents, { name: Headers.EventID, type: Direction.Descending });
 
         expect(actual).toEqual([
             expect.objectContaining({ document: '727' }),

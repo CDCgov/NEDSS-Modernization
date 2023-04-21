@@ -875,6 +875,27 @@ export type PatientIdentificationTypeResults = {
   total: Scalars['Int'];
 };
 
+export type PatientInvestigation = {
+  __typename?: 'PatientInvestigation';
+  caseStatus?: Maybe<Scalars['String']>;
+  coInfection?: Maybe<Scalars['String']>;
+  condition: Scalars['String'];
+  event: Scalars['String'];
+  investigation: Scalars['ID'];
+  investigator?: Maybe<Scalars['String']>;
+  jurisdiction: Scalars['String'];
+  notification?: Maybe<Scalars['String']>;
+  startedOn?: Maybe<Scalars['DateTime']>;
+  status: Scalars['String'];
+};
+
+export type PatientInvestigationResults = {
+  __typename?: 'PatientInvestigationResults';
+  content: Array<Maybe<PatientInvestigation>>;
+  number: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export type PatientLegalName = {
   __typename?: 'PatientLegalName';
   first?: Maybe<Scalars['String']>;
@@ -1498,6 +1519,7 @@ export type Query = {
   findDocumentsForPatient?: Maybe<PatientDocumentResults>;
   findDocumentsRequiringReviewForPatient: LabReportResults;
   findInvestigationsByFilter: InvestigationResults;
+  findInvestigationsForPatient?: Maybe<PatientInvestigationResults>;
   findLabReportsByFilter: LabReportResults;
   findLocalCodedResults: LocalCodedResults;
   findLocalLabTest: LocalLabTestResults;
@@ -1611,6 +1633,13 @@ export type QueryFindDocumentsRequiringReviewForPatientArgs = {
 export type QueryFindInvestigationsByFilterArgs = {
   filter: InvestigationFilter;
   page?: InputMaybe<SortablePage>;
+};
+
+
+export type QueryFindInvestigationsForPatientArgs = {
+  openOnly?: InputMaybe<Scalars['Boolean']>;
+  page?: InputMaybe<Page>;
+  patient: Scalars['ID'];
 };
 
 
@@ -2018,6 +2047,15 @@ export type FindInvestigationsByFilterQueryVariables = Exact<{
 
 
 export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, progAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
+
+export type FindInvestigationsForPatientQueryVariables = Exact<{
+  patient: Scalars['ID'];
+  page?: InputMaybe<Page>;
+  openOnly?: InputMaybe<Scalars['Boolean']>;
+}>;
+
+
+export type FindInvestigationsForPatientQuery = { __typename?: 'Query', findInvestigationsForPatient?: { __typename?: 'PatientInvestigationResults', total: number, number: number, content: Array<{ __typename?: 'PatientInvestigation', investigation: string, startedOn?: any | null, condition: string, status: string, caseStatus?: string | null, jurisdiction: string, event: string, coInfection?: string | null, notification?: string | null, investigator?: string | null } | null> } | null };
 
 export type FindLabReportsByFilterQueryVariables = Exact<{
   filter: LabReportFilter;
@@ -3490,6 +3528,60 @@ export function useFindInvestigationsByFilterLazyQuery(baseOptions?: Apollo.Lazy
 export type FindInvestigationsByFilterQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterQuery>;
 export type FindInvestigationsByFilterLazyQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterLazyQuery>;
 export type FindInvestigationsByFilterQueryResult = Apollo.QueryResult<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>;
+export const FindInvestigationsForPatientDocument = gql`
+    query findInvestigationsForPatient($patient: ID!, $page: Page, $openOnly: Boolean) {
+  findInvestigationsForPatient(
+    patient: $patient
+    page: $page
+    openOnly: $openOnly
+  ) {
+    content {
+      investigation
+      startedOn
+      condition
+      status
+      caseStatus
+      jurisdiction
+      event
+      coInfection
+      notification
+      investigator
+    }
+    total
+    number
+  }
+}
+    `;
+
+/**
+ * __useFindInvestigationsForPatientQuery__
+ *
+ * To run a query within a React component, call `useFindInvestigationsForPatientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindInvestigationsForPatientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindInvestigationsForPatientQuery({
+ *   variables: {
+ *      patient: // value for 'patient'
+ *      page: // value for 'page'
+ *      openOnly: // value for 'openOnly'
+ *   },
+ * });
+ */
+export function useFindInvestigationsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
+      }
+export function useFindInvestigationsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
+        }
+export type FindInvestigationsForPatientQueryHookResult = ReturnType<typeof useFindInvestigationsForPatientQuery>;
+export type FindInvestigationsForPatientLazyQueryHookResult = ReturnType<typeof useFindInvestigationsForPatientLazyQuery>;
+export type FindInvestigationsForPatientQueryResult = Apollo.QueryResult<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>;
 export const FindLabReportsByFilterDocument = gql`
     query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage) {
   findLabReportsByFilter(filter: $filter, page: $page) {

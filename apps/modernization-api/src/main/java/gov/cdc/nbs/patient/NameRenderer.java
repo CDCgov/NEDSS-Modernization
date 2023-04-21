@@ -11,18 +11,27 @@ public class NameRenderer {
     private static final String NAME_SEPARATOR = " ";
 
     public static String render(
-            String prefix,
-            String first,
-            String last,
-            Suffix suffix) {
+        String prefix,
+        String first,
+        String last,
+        Suffix suffix
+    ) {
         String suffixDisplay = suffix == null ? null : suffix.name();
         return Stream.of(
                 prefix,
                 first,
                 last,
                 suffixDisplay).filter(Objects::nonNull)
-                .collect(Collectors.joining(NAME_SEPARATOR));
+            .collect(Collectors.joining(NAME_SEPARATOR));
     }
 
-    private NameRenderer() {}
+    public static String render(
+        String first,
+        String last
+    ) {
+        return render(null, first, last, null);
+    }
+
+    private NameRenderer() {
+    }
 }

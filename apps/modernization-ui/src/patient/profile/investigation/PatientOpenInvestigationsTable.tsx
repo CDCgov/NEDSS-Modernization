@@ -1,10 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { useEffect, useState } from 'react';
 import format from 'date-fns/format';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
 
-import { RedirectControllerService } from 'generated';
-import { UserContext } from 'providers/UserContext';
 import { Headers, Investigation } from './PatientInvestigation';
 import { transform } from './PatientInvestigationTransformer';
 import { sort } from './PatientInvestigationSorter';
@@ -15,24 +12,23 @@ const asTableBody =
     (nbsBase: string) =>
     (investigation: Investigation): TableBody => ({
         id: investigation.investigation,
-        checkbox: true,
+        checkbox: false,
         tableDetails: [
             {
                 id: 1,
                 title: investigation?.startedOn && format(investigation.startedOn, 'MM/dd/yyyy')
             },
-            { id: 2, title: investigation?.condition },
-            { id: 3, title: investigation?.status },
-            { id: 4, title: investigation?.caseStatus },
-            { id: 5, title: investigation?.notification },
-            { id: 6, title: investigation?.jurisdiction },
-            { id: 7, title: investigation?.investigator },
+            { id: 2, title: investigation?.condition || null },
+            { id: 3, title: investigation?.caseStatus || null },
+            { id: 4, title: investigation?.notification || null },
+            { id: 5, title: investigation?.jurisdiction || null },
+            { id: 6, title: investigation?.investigator || null },
             {
-                id: 8,
-                title: investigation?.event,
+                id: 7,
+                title: investigation?.event || null,
                 link: `${nbsBase}/ViewFile1.do?ContextAction=InvestigationIDOnEvents&publicHealthCaseUID=${investigation.investigation}`
             },
-            { id: 9, title: investigation?.coInfection || null }
+            { id: 8, title: investigation?.coInfection || null }
         ]
     });
 
@@ -42,7 +38,6 @@ const asTableBodies = (nbsBase: string, investigations: Investigation[]): TableB
 const headers = [
     { name: Headers.StartDate, sortable: true },
     { name: Headers.Condition, sortable: true },
-    { name: Headers.Status, sortable: true },
     { name: Headers.CaseStatus, sortable: true },
     { name: Headers.Notification, sortable: true },
     { name: Headers.Jurisdiction, sortable: true },
@@ -57,9 +52,7 @@ type Props = {
     nbsBase: string;
 };
 
-export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props) => {
-    const { state } = useContext(UserContext);
-
+export const PatientOpenInvestigationsTable = ({ patient, pageSize, nbsBase }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<any>([]);
@@ -83,7 +76,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props
             getInvestigation({
                 variables: {
                     patient: patient,
-                    openOnly: false,
+                    openOnly: true,
                     page: {
                         pageNumber: currentPage - 1,
                         pageSize
@@ -101,28 +94,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props
 
     return (
         <TableComponent
-            buttons={
-                <div className="grid-row">
-                    <Button disabled type="button" className="grid-row">
-                        <Icon.Topic className="margin-right-05" />
-                        Compare investigations
-                    </Button>
-                    <Button
-                        type="button"
-                        className="grid-row"
-                        onClick={() => {
-                            RedirectControllerService.preparePatientDetailsUsingGet({
-                                authorization: 'Bearer ' + state.getToken()
-                            }).then(() => {
-                                window.location.href = `${nbsBase}/LoadSelectCondition1.do?ContextAction=AddInvestigation`;
-                            });
-                        }}>
-                        <Icon.Add className="margin-right-05" />
-                        Add investigation
-                    </Button>
-                </div>
-            }
-            tableHeader={'Investigations'}
+            tableHeader={'Open Investigations'}
             tableHead={headers}
             tableBody={bodies}
             isPagination={true}
