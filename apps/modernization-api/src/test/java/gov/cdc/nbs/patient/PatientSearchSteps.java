@@ -293,6 +293,14 @@ public class PatientSearchSteps {
             return filter;
         }
         switch (field) {
+            case "identification":
+                var patientId = searchPatient.getEntityIds().get(0);
+                filter.setIdentification(
+                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
+                break;
+            case "ssn":
+                filter.setSsn(RandomUtil.randomPartialDataSearchString(searchPatient.getSsn()));
+                break;
             case "phone number":
                 var teleLocator = PersonUtil.getTeleLocators(searchPatient).get(0);
                 filter.setPhoneNumber(RandomUtil.randomPartialDataSearchString(teleLocator.getPhoneNbrTxt()));

@@ -328,7 +328,7 @@
                 </entry>
                 <entry>
                     <key>Max Total Connections</key>
-                    <value>8</value>
+                    <value>16</value>
                 </entry>
                 <entry>
                     <key>Validation-query</key>
@@ -1802,6 +1802,7 @@ def add_entity_id(uid, person)
     recordStatusCd = person['recordStatusCd']
     recordStatusCd = nil if recordStatusCd == ''
     rootExtensionTxt = person['rootExtensionTxt']
+    rootExtensionTxt = rootExtensionTxt.gsub(/[^0-9a-z ]/i, '') if rootExtensionTxt	
     rootExtensionTxt = nil if rootExtensionTxt == ''
     return if typeCd.nil? &amp;&amp; recordStatusCd.nil? &amp;&amp; rootExtensionTxt.nil?
     entity_id = {"typeCd": typeCd, "recordStatusCd": recordStatusCd, "rootExtensionTxt": rootExtensionTxt }
@@ -2534,7 +2535,7 @@ ProcessFiles.new.main(session)
                             </entry>
                             <entry>
 <key>SQL select query</key>
-<value>SELECT distinct
+<value>SELECT DISTINCT 
   p.person_parent_uid person_uid,
   p.administrative_gender_cd, 
   p.add_reason_cd, 
@@ -2691,7 +2692,7 @@ FROM Person p
       tl.tele_locator_uid=elpt.locator_uid and elpt.class_cd='TELE' and elpt.status_cd='A'   
   ) plt on elpt_entity_uid=p.person_uid
 WHERE
-  p.person_uid in (${person_parent_uids})
+  p.person_uid=p.person_parent_uid and p.person_uid in (${person_parent_uids})
 </value>
                             </entry>
                             <entry>
@@ -2770,5 +2771,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/19/2023 07:06:26 UTC</timestamp>
+    <timestamp>04/21/2023 07:20:58 UTC</timestamp>
 </template>
