@@ -9,27 +9,16 @@ import org.testcontainers.images.PullPolicy;
 class NbsTestDatabaseInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     @Override
+    @SuppressWarnings({"resource"}) // We don't want to close the container
     public void initialize(final ConfigurableApplicationContext context) {
-        NbsDatabaseContainer container = Holder.INSTANCE;
-
-        TestPropertyValues.of("spring.datasource.url=" + container.url())
-            .applyTo(context.getEnvironment());
-
-    }
-
-    private final static class Holder {
-
-        private static final NbsDatabaseContainer INSTANCE = initialize();
-
-        @SuppressWarnings({ "resource" })
-        private static NbsDatabaseContainer initialize() {
-            NbsDatabaseContainer container = new NbsDatabaseContainer()
+        final String image = context.getEnvironment().getProperty("testing.database.image");
+        NbsDatabaseContainer container = new NbsDatabaseContainer(image)
                 .withImagePullPolicy(PullPolicy.defaultPolicy());
 
-            container.start();
+        container.start();
 
-            return container;
-        }
+        TestPropertyValues.of("spring.datasource.url=" + container.url())
+                .applyTo(context.getEnvironment());
 
     }
 }
