@@ -59,7 +59,7 @@ class PatientVaccinationFinder {
                 this.tables.vaccination().recordStatusCd.eq("ACTIVE")
             )
             .where(
-                PATIENT.id.eq(patient),
+                PATIENT.personParentUid.id.eq(patient),
                 PATIENT.cd.eq(PATIENT_CODE),
                 PATIENT.recordStatusCd.eq(RecordStatus.ACTIVE)
             );
