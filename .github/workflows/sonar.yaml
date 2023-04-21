@@ -76,4 +76,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build jacocoTestReport sonar
+        run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=501715613725.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.lb
