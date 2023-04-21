@@ -255,21 +255,21 @@ public class PatientService {
         }
 
         if (filter.getIdentification() != null) {
-            BoolQueryBuilder identificationBuilder = QueryBuilders.boolQuery();
+            String allAlphanumericIdentificationNumber = filter.getIdentification().getIdentificationNumber().replaceAll("\\W", "");
+            if (!allAlphanumericIdentificationNumber.isEmpty()) {
+                builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
+                        QueryBuilders.queryStringQuery(
+                                addWildcards(allAlphanumericIdentificationNumber))
+                                .defaultField("entity_id.rootExtensionTxt")
+                                .defaultOperator(Operator.AND),
+                        ScoreMode.Avg));
 
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationNumber())
-                            .defaultField("entity_id.rootExtensionTxt")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
-
-            builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
-                            .defaultField("entity_id.typeCd")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
-
-            builder.must(identificationBuilder);
+                builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
+                        QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
+                                .defaultField("entity_id.typeCd")
+                                .defaultOperator(Operator.AND),
+                        ScoreMode.Avg));
+            }
         }
 
         addRecordStatusQuery(filter.getRecordStatus(), builder);
