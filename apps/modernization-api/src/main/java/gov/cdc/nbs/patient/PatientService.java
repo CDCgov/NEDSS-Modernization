@@ -173,7 +173,7 @@ public class PatientService {
         }
 
         if (filter.getSsn() != null && !filter.getSsn().isEmpty()) {
-            String allDigitSsn = filter.getPhoneNumber().replaceAll("\\D", "");
+            String allDigitSsn = filter.getSsn().replaceAll("\\D", "");
             if (!allDigitSsn.isEmpty()) {
                 builder.must(QueryBuilders.queryStringQuery(
                                 addWildcards(allDigitSsn))
