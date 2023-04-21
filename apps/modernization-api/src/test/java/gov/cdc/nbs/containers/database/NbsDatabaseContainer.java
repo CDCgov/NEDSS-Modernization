@@ -4,14 +4,11 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
 class NbsDatabaseContainer extends GenericContainer<NbsDatabaseContainer> {
-    private static final String IMAGE =
-            "501715613725.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.lb";
-
     private static final int DEFAULT_PORT = 1433;
 
-    public NbsDatabaseContainer() {
+    public NbsDatabaseContainer(final String image) {
         super(DockerImageName
-                .parse(IMAGE));
+                .parse(image));
         addExposedPorts(DEFAULT_PORT);
     }
 
