@@ -16,6 +16,7 @@ public class NbsElasticsearchContainer extends ElasticsearchContainer {
         super(DockerImageName.parse(ELASTIC_SEARCH_DOCKER)
                 .asCompatibleSubstituteFor("docker.elastic.co/elasticsearch/elasticsearch"));
         this.addEnv(CLUSTER_NAME, ELASTIC_SEARCH);
+        this.addEnv("ES_JAVA_OPTS", "-Xms256m -Xmx512m -XX:MaxDirectMemorySize=536870912");
     }
 
     public void startWithPlugins() throws UnsupportedOperationException, IOException, InterruptedException {
