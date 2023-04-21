@@ -31,17 +31,6 @@ jobs:
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Configure Environment Variables
-        run: |
-          github_repo_name="$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"        
-          echo "github_repo_name=$github_repo_name" >> $GITHUB_ENV
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: "arn:aws:iam::${{ env.accountid }}:role/cdc-github-${{ env.github_repo_name }}-${{ env.deployment_env }}-role"
-          aws-region: us-east-1
-
       - name: Set up JDK 18
         uses: actions/setup-java@v1
         with:
@@ -70,6 +59,17 @@ jobs:
         working-directory: ./apps/modernization-ui
         run: npm install
 
+      - name: Configure Environment Variables
+        run: |
+          github_repo_name="$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"        
+          echo "github_repo_name=$github_repo_name" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.accountid }}:role/cdc-github-${{ env.github_repo_name }}-${{ env.deployment_env }}-role"
+          aws-region: us-east-1
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -84,4 +84,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=501715613725.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.lb
+        run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.ba44794
