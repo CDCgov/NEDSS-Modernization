@@ -12,11 +12,17 @@
 
 1. In the ui directory run `npm install`
 2. In the modernization-api directory run `./gradlew build`
-    - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
+   - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
 3. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
 ## Tests
+
+Prior to running tests the `cdc-sandbox/test-db/` image must be built. To build this image run the following command in the `cdc-sandbox` directory.
+
+```sh
+docker-compose up test-db -d
+```
 
 To run all tests:
 
@@ -89,14 +95,14 @@ Environment Variable,
 and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference/html/features.html#features.external-config)
 . The default profile contains the following properties configuration most likely to change.
 
-| Name                           | Default   | Description                                         |
-|--------------------------------|-----------|-----------------------------------------------------|
-| nbs.elasticsearch.server       | localhost | The host name of the server running ElasticSearch   |
-| nbs.elasticsearch.port         | 9200      | The port in which ElasticSearch is listening        |
-| nbs.wildfly.server             | localhost | The host name of the server running NBS Classic     |
-| nbs.wildfly.port               | 7001      | The port in which NBS Classic is listening          |
-| nbs.datasource.server          | localhost | The host name of the server running MS SQL Server   |
-| nbs.identifier.person.initial  | 10000000  | The initial seed value for Person local identifiers |
+| Name                          | Default   | Description                                         |
+| ----------------------------- | --------- | --------------------------------------------------- |
+| nbs.elasticsearch.server      | localhost | The host name of the server running ElasticSearch   |
+| nbs.elasticsearch.port        | 9200      | The port in which ElasticSearch is listening        |
+| nbs.wildfly.server            | localhost | The host name of the server running NBS Classic     |
+| nbs.wildfly.port              | 7001      | The port in which NBS Classic is listening          |
+| nbs.datasource.server         | localhost | The host name of the server running MS SQL Server   |
+| nbs.identifier.person.initial | 10000000  | The initial seed value for Person local identifiers |
 
 Configuration properties can be overwritten at runtime using the `--args` Gradle option to pass arguments to Spring
 Boot.
@@ -107,5 +113,3 @@ by executing.
 ```bash
 ./gradlew :modernization-api:bootRun --args'--nbs-datasource.server=other '
 ```
-
-
