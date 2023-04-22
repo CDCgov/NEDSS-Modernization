@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id 'jvm-test-suite'
-
+    id 'jacoco'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
@@ -10,7 +10,7 @@ plugins {
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
 // Displays cucumber test results
-apply from: file('../modernization-api/logging.gradle')
+apply from: file('../../scripts/gradle/cucumber-logging.gradle')
 
 test {
     // always re-run tests
@@ -19,6 +19,13 @@ test {
     systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
 }
 
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['gov/cdc/nbs/questionbank/QuestionBankApplication.class'])
+        }))
+    }
+}
 
 testing {
     suites {

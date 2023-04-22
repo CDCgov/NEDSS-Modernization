@@ -20,7 +20,7 @@ jar {
 }
 
 // Displays cucumber test results
-apply from: file('logging.gradle')
+apply from: file('../../scripts/gradle/cucumber-logging.gradle')
 
 dependencies {
 
