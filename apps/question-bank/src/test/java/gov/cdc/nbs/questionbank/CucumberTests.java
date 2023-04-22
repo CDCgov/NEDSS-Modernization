@@ -23,7 +23,6 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @CucumberContextConfiguration
 @SpringBootTest
 @ActiveProfiles("test")
-class CucumberTest {
-
+class CucumberTests {
 
 }

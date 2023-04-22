@@ -1,11 +1,8 @@
-package gov.cdc.nbs.questionbank;
+package gov.cdc.nbs.questionbank.questionnaire;
 
 import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import gov.cdc.nbs.questionbank.entities.Questionnaire;
-import gov.cdc.nbs.questionbank.questionnaire.QuestionnaireContext;
-import gov.cdc.nbs.questionbank.questionnaire.QuestionnaireRepository;
-import gov.cdc.nbs.questionbank.questionnaire.QuestionnaireResolver;
 import gov.cdc.nbs.questionbank.support.QuestionnaireMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
