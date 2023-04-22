@@ -9,6 +9,16 @@ plugins {
 
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
+// Displays cucumber test results
+apply from: file('../modernization-api/logging.gradle')
+
+test {
+    // always re-run tests
+    test.outputs.upToDateWhen { false }
+    
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
+
 
 testing {
     suites {
@@ -23,10 +33,14 @@ testing {
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
                 implementation "com.h2database:h2"
+
+                implementation libs.bundles.cucumber
+
             }
         }
     }
 }
+
 dependencies {
     implementation project(':authentication')
     // Spring
@@ -47,5 +61,3 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 }
-
-compileJava.mustRunAfter(":authentication:build")

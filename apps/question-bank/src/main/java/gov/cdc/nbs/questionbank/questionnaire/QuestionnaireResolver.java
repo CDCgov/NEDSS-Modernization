@@ -13,8 +13,8 @@ public class QuestionnaireResolver {
         this.finder = finder;
     }
 
-    @QueryMapping
-    public Questionnaire questionnaire(@Argument QuestionnaireContext input) {
+    @QueryMapping()
+    public Questionnaire findQuestionnaire(@Argument QuestionnaireContext input) {
         return finder.find(input);
     }
 }

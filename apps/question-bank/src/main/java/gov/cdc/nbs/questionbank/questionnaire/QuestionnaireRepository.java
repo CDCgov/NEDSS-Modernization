@@ -6,5 +6,5 @@ import gov.cdc.nbs.questionbank.entities.Questionnaire;
 
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
 
-    public Optional<Questionnaire> findByConditionIdAndQuestionnaireType(Long conditionId, String questionnaireType);
+    public Optional<Questionnaire> findByConditionIdAndQuestionnaireType(long conditionId, String questionnaireType);
 }

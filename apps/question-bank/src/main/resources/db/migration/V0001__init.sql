@@ -44,7 +44,7 @@ CREATE TABLE question_group_questions (
 );
 
 CREATE TABLE questionnaire (
-    id bigint NOT NULL,
+    id bigint IDENTITY NOT NULL,
     condition_id bigint NOT NULL,
     questionnaire_type varchar(100) NOT NULL,
     PRIMARY KEY (id)

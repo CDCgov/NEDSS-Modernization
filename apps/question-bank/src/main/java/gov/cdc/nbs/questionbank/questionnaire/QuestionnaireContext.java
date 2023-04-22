@@ -1,5 +1,5 @@
 package gov.cdc.nbs.questionbank.questionnaire;
 
-public record QuestionnaireContext(Long conditionId, String questionnaireType) {
+public record QuestionnaireContext(long conditionId, String questionnaireType) {
 
 }

@@ -71,10 +71,6 @@ dependencies {
     // Kafka
     implementation libs.spring.kafka
 
-    // test
-    testImplementation "org.junit.platform:junit-platform-suite"
-    testImplementation "org.junit.jupiter:junit-jupiter"
-
     testImplementation libs.bundles.cucumber
 
     testCompileOnly libs.lombok
