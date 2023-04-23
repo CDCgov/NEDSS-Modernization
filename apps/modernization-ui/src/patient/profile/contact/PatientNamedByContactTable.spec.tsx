@@ -110,15 +110,37 @@ describe('when the patient has been named by a contact', () => {
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[0]).toContainHTML('<span class="link">03/17/2023 <br /> 03:08 PM</span>');
+        const dateCreated = await findByText(/03\/17\/2023/);
+
+        expect(dateCreated).toHaveTextContent('03:08 PM');
+
+        expect(tableData[0]).toContainElement(dateCreated);
+
         expect(tableData[1].innerHTML).toContain('Surma Singh');
         expect(tableData[2].innerHTML).toContain('01/17/2023');
-        expect(tableData[3]).toContainHTML(
-            '<b>condition-value</b><br/><b>Priority:</b> priority-value<br/><b>Disposition:</b> disposition-value<br/>'
-        );
-        expect(tableData[4]).toContainHTML(
-            '<div><p class="margin-0 text-primary text-bold link" style="word-break: break-word;">CAS10000000GA01</p><p class="margin-0">associated-condition</p></div></span>'
-        );
+
+        //  Description fields
+        const dispositionLabel = await findByText(/Disposition:/);
+        expect(tableData[3]).toContainElement(dispositionLabel);
+
+        const dispositionValue = await findByText(/disposition-value/);
+        expect(tableData[3]).toContainElement(dispositionValue);
+
+        const priorityLabel = await findByText(/Priority:/);
+        expect(tableData[3]).toContainElement(priorityLabel);
+
+        const priorityValue = await findByText(/priority-value/);
+        expect(tableData[3]).toContainElement(priorityValue);
+
+        //  Associated With
+        const association = await findByText('CAS10000000GA01');
+
+        expect(tableData[4]).toContainElement(association);
+
+        const associationCondition = await findByText('associated-condition');
+
+        expect(tableData[4]).toContainElement(associationCondition);
+
         expect(tableData[5]).toHaveTextContent('CON10000002GA01');
     });
 });
@@ -223,7 +245,11 @@ describe('when the patient has been named by a contact without a priority', () =
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[3]).toContainHTML('<b>condition-value</b><br/><b>Disposition:</b> disposition-value<br/>');
+        const dispositionLabel = await findByText(/Disposition:/);
+        expect(tableData[3]).toContainElement(dispositionLabel);
+
+        const dispositionValue = await findByText(/disposition-value/);
+        expect(tableData[3]).toContainElement(dispositionValue);
     });
 });
 
@@ -277,6 +303,10 @@ describe('when the patient has been named by a contact without a disposition', (
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[3]).toContainHTML('<b>condition-value</b><br/><b>Priority:</b> priority-value<br/>');
+        const priorityLabel = await findByText(/Priority:/);
+        expect(tableData[3]).toContainElement(priorityLabel);
+
+        const priorityValue = await findByText(/priority-value/);
+        expect(tableData[3]).toContainElement(priorityValue);
     });
 });
