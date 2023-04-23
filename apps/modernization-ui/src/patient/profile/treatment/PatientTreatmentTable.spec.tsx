@@ -98,7 +98,7 @@ describe('when treatments are available for a patient', () => {
     };
 
     it('should display the treatments', async () => {
-        const { container, findByText, getAllByRole } = render(
+        const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientTreatmentTable patient={'1823'} pageSize={5}></PatientTreatmentTable>
             </MockedProvider>

@@ -6,7 +6,7 @@ import {
 import { Config } from 'config';
 import { PatientTreatmentTable } from 'patient/profile/treatment';
 import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'patient/profile/contact';
-import { PatientDocumentTable } from 'patient/profile/document';
+import { PatientProfileDocuments } from 'patient/profile/document';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientInvestigationsTable } from 'patient/profile/investigation';
 import { MorbidityTable } from 'patient/profile/morbidity';
@@ -43,9 +43,8 @@ export const Events = ({ patient }: EventTabProp) => {
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientTreatmentTable patient={patient} />
             </div>
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientDocumentTable patient={patient} pageSize={TOTAL_TABLE_DATA} nbsBase={NBS_URL} />
-            </div>
+
+            <PatientProfileDocuments patient={patient} nbsBase={NBS_URL} pageSize={TOTAL_TABLE_DATA} />
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <ContactNamedByPatientTable patient={patient} />
