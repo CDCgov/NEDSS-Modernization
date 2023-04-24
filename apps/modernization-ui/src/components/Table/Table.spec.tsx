@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { TableComponent } from './Table';
 
 describe('Table component', () => {
@@ -86,5 +86,104 @@ describe('Table component', () => {
 
         const notAvailable = container.getElementsByClassName('no-data');
         expect(notAvailable[0].innerHTML).toBe('No data');
+    });
+});
+
+describe('when a table has a sortable header', () => {
+    it('should default to no active soriting', async () => {
+        const { getAllByRole } = render(
+            <TableComponent
+                tableHeader="Test Table Header"
+                tableSubHeader="Test Sub Header"
+                tableHead={[
+                    { name: 'A', sortable: true },
+                    { name: 'B', sortable: false }
+                ]}
+                tableBody={[
+                    {
+                        id: 1,
+                        tableDetails: [{ id: 1, title: 'one' }]
+                    }
+                ]}
+            />
+        );
+
+        const headers = getAllByRole('columnheader');
+
+        const sortableHeader = headers[0];
+
+        expect(sortableHeader).not.toHaveClass('sort-header');
+        expect(sortableHeader).not.toHaveAttribute('aria-sort');
+
+        const sortIcons = getAllByRole('button', { name: 'sort' });
+        expect(sortIcons[0]).not.toBeNull();
+        expect(sortIcons[1]).toBeUndefined();
+    });
+
+    it('should activate descending sort when button clicked', async () => {
+        const { getByRole, getAllByRole } = render(
+            <TableComponent
+                tableHeader="Test Table Header"
+                tableSubHeader="Test Sub Header"
+                tableHead={[
+                    { name: 'A', sortable: true },
+                    { name: 'B', sortable: false }
+                ]}
+                tableBody={[
+                    {
+                        id: 1,
+                        tableDetails: [{ id: 1, title: 'one' }]
+                    }
+                ]}
+            />
+        );
+
+        const sortIcon = getByRole('button', { name: 'sort' });
+
+        fireEvent.click(sortIcon);
+
+        const headers = getAllByRole('columnheader');
+
+        const sortableHeader = headers[0];
+
+        expect(sortableHeader).toHaveClass('sort-header');
+        expect(sortableHeader).toHaveAttribute('aria-sort', 'descending');
+
+        const nonSortableHeader = headers[1];
+        expect(nonSortableHeader).not.toHaveClass('sort-header');
+    });
+
+    it('should activate ascending sort when button clicked while a descending sort is active', async () => {
+        const { container, getByRole, getAllByRole } = render(
+            <TableComponent
+                tableHeader="Test Table Header"
+                tableSubHeader="Test Sub Header"
+                tableHead={[
+                    { name: 'A', sortable: true },
+                    { name: 'B', sortable: false }
+                ]}
+                tableBody={[
+                    {
+                        id: 1,
+                        tableDetails: [{ id: 1, title: 'one' }]
+                    }
+                ]}
+            />
+        );
+
+        const sortIcon = getByRole('button', { name: 'sort' });
+
+        fireEvent.click(sortIcon);
+        fireEvent.click(sortIcon);
+
+        const headers = getAllByRole('columnheader');
+
+        const sortableHeader = headers[0];
+
+        expect(sortableHeader).toHaveClass('sort-header');
+        expect(sortableHeader).toHaveAttribute('aria-sort', 'ascending');
+
+        const nonSortableHeader = headers[1];
+        expect(nonSortableHeader).not.toHaveClass('sort-header');
     });
 });

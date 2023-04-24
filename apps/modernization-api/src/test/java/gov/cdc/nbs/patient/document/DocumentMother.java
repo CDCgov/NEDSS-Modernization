@@ -111,6 +111,15 @@ class DocumentMother {
   }
 
   private NbsDocumentMetadatum metadatum() {
-    return this.entityManager.getReference(NbsDocumentMetadatum.class, 1003L);
-  }
+    var ref = entityManager.find(NbsDocumentMetadatum.class,1003L);
+  if (ref == null){
+    var metadatum = new NbsDocumentMetadatum();
+    metadatum.setId(1003L);
+    metadatum.setXmlSchemaLocation("schemaLocation");
+    metadatum.setDocumentViewXsl("docViewXsl");
+    entityManager.persist(metadatum);
+    return metadatum;
+  } 
+  return ref;
+}
 }

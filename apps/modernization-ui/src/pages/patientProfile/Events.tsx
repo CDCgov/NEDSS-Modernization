@@ -31,7 +31,7 @@ export const Events = ({ patient }: EventTabProp) => {
     return (
         <>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientInvestigationsTable patient={patient} />
+                <PatientInvestigationsTable patient={patient} pageSize={TOTAL_TABLE_DATA} nbsBase={NBS_URL} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <LabReportTable patient={patient} />

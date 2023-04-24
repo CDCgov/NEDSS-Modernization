@@ -80,6 +80,11 @@ services:
     #   - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw
     networks:
       - nbs
+  test-db:
+    build: ./test-db
+    container_name: test-db
+    ports:
+      - 1434:1433
 volumes:
   nbs-mssql-data:
 networks:

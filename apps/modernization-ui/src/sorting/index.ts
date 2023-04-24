@@ -9,3 +9,5 @@ export {
     sortByAlphanumeric,
     simpleSort
 } from './Sort';
+
+export type { Comparator } from './Sort';

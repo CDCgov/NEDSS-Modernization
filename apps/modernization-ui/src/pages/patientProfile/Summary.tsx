@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
-import {
-    useFindDocumentsRequiringReviewForPatientLazyQuery,
-    useFindOpenInvestigationsForPatientLazyQuery
-} from '../../generated/graphql/schema';
+import { useFindDocumentsRequiringReviewForPatientLazyQuery } from '../../generated/graphql/schema';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
-import { OpenInvestigations } from './components/SummaryTables/OpenInvestigations';
+import { Config } from 'config';
 import { DocumentsReview } from './components/SummaryTables/DocumentsReview';
+import { PatientOpenInvestigationsTable } from 'patient/profile/investigation/PatientOpenInvestigationsTable';
 
 type SummaryProp = {
     profileData: any;
 };
 
 export const Summary = ({ profileData }: SummaryProp) => {
-    const [getAllInvestigations, { data: openInvestigationData }] = useFindOpenInvestigationsForPatientLazyQuery();
     const [getDcouments, { data: documentData }] = useFindDocumentsRequiringReviewForPatientLazyQuery();
 
     const [currentPage] = useState<number>(1);
@@ -20,15 +17,6 @@ export const Summary = ({ profileData }: SummaryProp) => {
 
     useEffect(() => {
         if (profileData) {
-            getAllInvestigations({
-                variables: {
-                    patientId: parseInt(profileData.id),
-                    page: {
-                        pageNumber: currentPage - 1,
-                        pageSize: TOTAL_TABLE_DATA
-                    }
-                }
-            });
             getDcouments({
                 variables: {
                     patientId: parseInt(profileData.id),
@@ -43,11 +31,13 @@ export const Summary = ({ profileData }: SummaryProp) => {
 
     return (
         <>
-            <OpenInvestigations
-                investigations={openInvestigationData?.findOpenInvestigationsForPatient?.content}
-                totalInvestigations={openInvestigationData?.findOpenInvestigationsForPatient?.total}
-            />
-
+            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
+                <PatientOpenInvestigationsTable
+                    patient={profileData?.id}
+                    pageSize={TOTAL_TABLE_DATA}
+                    nbsBase={Config.nbsUrl}
+                />
+            </div>
             <DocumentsReview
                 documents={documentData?.findDocumentsRequiringReviewForPatient?.content}
                 totalDocuments={documentData?.findDocumentsRequiringReviewForPatient?.total}

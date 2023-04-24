@@ -1,56 +1,89 @@
 import { useContext, useEffect, useState } from 'react';
-import { Button, Checkbox, Fieldset, Icon } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import { FindInvestigationsByFilterQuery, useFindInvestigationsByFilterLazyQuery } from 'generated/graphql/schema';
+import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
 
-import { TOTAL_TABLE_DATA } from 'utils/util';
-import { SortableTable } from 'components/Table/SortableTable';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
-import { Config } from 'config';
+import { Headers, Investigation } from './PatientInvestigation';
+import { transform } from './PatientInvestigationTransformer';
+import { sort } from './PatientInvestigationSorter';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { Direction } from 'sorting';
 
-export type PatientInvestigations = FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
+const asTableBody =
+    (nbsBase: string) =>
+    (investigation: Investigation): TableBody => ({
+        id: investigation.investigation,
+        checkbox: true,
+        tableDetails: [
+            {
+                id: 1,
+                title: investigation?.startedOn && format(investigation.startedOn, 'MM/dd/yyyy')
+            },
+            { id: 2, title: investigation?.condition },
+            { id: 3, title: investigation?.status },
+            { id: 4, title: investigation?.caseStatus },
+            { id: 5, title: investigation?.notification },
+            { id: 6, title: investigation?.jurisdiction },
+            { id: 7, title: investigation?.investigator },
+            {
+                id: 8,
+                title: investigation?.event,
+                link: `${nbsBase}/ViewFile1.do?ContextAction=InvestigationIDOnEvents&publicHealthCaseUID=${investigation.investigation}`
+            },
+            { id: 9, title: investigation?.coInfection || null }
+        ]
+    });
 
-type PatientInvestigationTableProps = {
+const asTableBodies = (nbsBase: string, investigations: Investigation[]): TableBody[] =>
+    investigations?.map(asTableBody(nbsBase)) || [];
+
+const headers = [
+    { name: Headers.StartDate, sortable: true },
+    { name: Headers.Condition, sortable: true },
+    { name: Headers.Status, sortable: true },
+    { name: Headers.CaseStatus, sortable: true },
+    { name: Headers.Notification, sortable: true },
+    { name: Headers.Jurisdiction, sortable: true },
+    { name: Headers.Investigator, sortable: true },
+    { name: Headers.Investigation, sortable: true },
+    { name: Headers.CoInfection, sortable: true }
+];
+
+type Props = {
     patient?: string;
-    pageSize?: number;
+    pageSize: number;
+    nbsBase: string;
 };
 
-export const PatientInvestigationsTable = ({
-    patient,
-    pageSize = TOTAL_TABLE_DATA
-}: PatientInvestigationTableProps) => {
+export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props) => {
     const { state } = useContext(UserContext);
-    const NBS_URL = Config.nbsUrl;
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    const [investigationsData, setInvestigationsData] = useState<any>([]);
-    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
-        { name: 'Start Date', sortable: true, sort: 'all' },
-        { name: 'Condition', sortable: true, sort: 'all' },
-        { name: 'Case status', sortable: true, sort: 'all' },
-        { name: 'Notification', sortable: true, sort: 'all' },
-        { name: 'Jurisdiction', sortable: true, sort: 'all' },
-        { name: 'Investigator', sortable: true, sort: 'all' },
-        { name: 'Investigation #', sortable: true, sort: 'all' },
-        { name: 'Co-infection #', sortable: true, sort: 'all' }
-    ]);
+    const [items, setItems] = useState<any>([]);
+    const [bodies, setBodies] = useState<TableBody[]>([]);
 
-    const handleComplete = (data: FindInvestigationsByFilterQuery) => {
-        setTotal(data?.findInvestigationsByFilter?.total || 0);
-        setInvestigationsData(data.findInvestigationsByFilter?.content);
+    const handleComplete = (data: FindInvestigationsForPatientQuery) => {
+        setTotal(data?.findInvestigationsForPatient?.total || 0);
+
+        const content = transform(data?.findInvestigationsForPatient);
+
+        setItems(content);
+
+        const sorted = sort(content, {});
+        setBodies(asTableBodies(nbsBase, sorted));
     };
 
-    const [getInvestigation] = useFindInvestigationsByFilterLazyQuery({ onCompleted: handleComplete });
+    const [getInvestigation] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
             getInvestigation({
                 variables: {
-                    filter: {
-                        patientId: +patient
-                    },
+                    patient: patient,
+                    openOnly: false,
                     page: {
                         pageNumber: currentPage - 1,
                         pageSize
@@ -60,90 +93,14 @@ export const PatientInvestigationsTable = ({
         }
     }, [patient, currentPage]);
 
-    const tableHeadChanges = (name: string, type: string) => {
-        tableHead.map((item) => {
-            if (item.name.toLowerCase() === name.toLowerCase()) {
-                item.sort = type;
-            } else {
-                item.sort = 'all';
-            }
-        });
-        setTableHead(tableHead);
-    };
-
-    const sortData = (name: string, type: string) => {
-        setInvestigationsData(
-            investigationsData?.slice().sort((a: any, b: any) => {
-                if (a[name] && b[name]) {
-                    if (a[name] < b[name]) {
-                        return type === 'asc' ? -1 : 1;
-                    }
-                    if (a[name] > b[name]) {
-                        return type === 'asc' ? 1 : -1;
-                    }
-                }
-                return 0;
-            })
-        );
-    };
-
-    const handleSort = (name: string, type: string) => {
-        tableHeadChanges(name, type);
-        switch (name.toLowerCase()) {
-            case 'start date':
-                setInvestigationsData(
-                    investigationsData.slice().sort((a: any, b: any) => {
-                        const dateA: any = new Date(a.addTime);
-                        const dateB: any = new Date(b.addTime);
-                        return type === 'asc' ? dateB - dateA : dateA - dateB;
-                    })
-                );
-                break;
-            case 'condition':
-                sortData('cdDescTxt', type);
-                break;
-            case 'jurisdiction':
-                sortData('jurisdictionCodeDescTxt', type);
-                break;
-            case 'investigator':
-                setInvestigationsData(
-                    investigationsData.slice().sort((a: any, b: any) => {
-                        const firstInv = a?.personParticipations?.find(
-                            (person: any) => person?.typeCd === 'InvestgrOfPHC'
-                        ).lastName;
-                        const secondInv = b?.personParticipations?.find(
-                            (person: any) => person?.typeCd === 'InvestgrOfPHC'
-                        ).lastName;
-                        if (firstInv && secondInv) {
-                            if (firstInv.toLowerCase() < secondInv.toLowerCase()) {
-                                return type === 'asc' ? -1 : 1;
-                            }
-                            if (firstInv.toLowerCase() > secondInv.toLowerCase()) {
-                                return type === 'asc' ? 1 : -1;
-                            }
-                        }
-                        return 0;
-                    })
-                );
-                break;
-            case 'case status':
-                sortData('recordStatus', type);
-                break;
-            case 'investigation #':
-                sortData('localId', type);
-                break;
-            case 'co-infection #':
-                sortData('localId', type);
-                break;
-            case 'notification':
-                sortData('notificationRecordStatusCd', type);
-                break;
-        }
+    const handleSort = (name: string, direction: string): void => {
+        const criteria = { name: name as Headers, type: direction as Direction };
+        const sorted = sort(items, criteria);
+        setBodies(asTableBodies(nbsBase, sorted));
     };
 
     return (
-        <SortableTable
-            isPagination={true}
+        <TableComponent
             buttons={
                 <div className="grid-row">
                     <Button disabled type="button" className="grid-row">
@@ -157,7 +114,7 @@ export const PatientInvestigationsTable = ({
                             RedirectControllerService.preparePatientDetailsUsingGet({
                                 authorization: 'Bearer ' + state.getToken()
                             }).then(() => {
-                                window.location.href = `${NBS_URL}/LoadSelectCondition1.do?ContextAction=AddInvestigation`;
+                                window.location.href = `${nbsBase}/LoadSelectCondition1.do?ContextAction=AddInvestigation`;
                             });
                         }}>
                         <Icon.Add className="margin-right-05" />
@@ -166,83 +123,10 @@ export const PatientInvestigationsTable = ({
                 </div>
             }
             tableHeader={'Investigations'}
-            tableHead={tableHead}
-            tableBody={
-                investigationsData?.length > 0 &&
-                investigationsData?.map((investigation: any, index: number) => {
-                    const investigator = investigation?.personParticipations?.find(
-                        (person: any) => person?.typeCd === 'InvestgrOfPHC'
-                    );
-                    return (
-                        <tr key={index}>
-                            <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                                <Fieldset>
-                                    <Checkbox
-                                        key={index}
-                                        id={`${investigation?.addTime}`}
-                                        name={'tableCheck'}
-                                        label=""
-                                    />
-                                </Fieldset>
-                                {investigation?.addTime ? (
-                                    <span className="check-title table-span">
-                                        {format(new Date(investigation?.addTime), 'MM/dd/yyyy')}
-                                    </span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                                {investigation?.cdDescTxt ? (
-                                    <span>{investigation?.cdDescTxt}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                                {investigation?.recordStatus ? (
-                                    <span>{investigation?.recordStatus}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                                {investigation?.notificationRecordStatusCd ? (
-                                    <span>{investigation?.notificationRecordStatusCd}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                                {investigation?.jurisdictionCodeDescTxt ? (
-                                    <span>{investigation?.jurisdictionCodeDescTxt}</span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                                {investigator ? (
-                                    <span>
-                                        {investigator ? investigator?.lastName + ' ' + investigator?.firstName : null}
-                                    </span>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
-                                {investigation?.localId ? (
-                                    <a href="#">{investigation?.localId}</a>
-                                ) : (
-                                    <span className="no-data">No data</span>
-                                )}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[7].sort !== 'all' && 'sort-td'}`}>
-                                <span className="no-data">No data</span>
-                            </td>
-                        </tr>
-                    );
-                })
-            }
+            tableHead={headers}
+            tableBody={bodies}
+            isPagination={true}
+            pageSize={pageSize}
             totalResults={total}
             currentPage={currentPage}
             handleNext={setCurrentPage}
