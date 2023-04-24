@@ -14,7 +14,7 @@ public class QuestionnaireFinder {
 
     @Transactional
     public Questionnaire find(QuestionnaireContext context) {
-        return repository.findByConditionIdAndQuestionnaireType(
+        return repository.findByConditionAndType(
                 context.conditionId(),
                 context.questionnaireType())
                 .orElse(null);

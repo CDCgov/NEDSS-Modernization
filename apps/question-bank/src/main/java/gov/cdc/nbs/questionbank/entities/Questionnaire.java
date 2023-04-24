@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.entities;
 
-import java.util.Set;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,8 +25,12 @@ public class Questionnaire {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "condition_id", nullable = false)
-    private Long conditionId;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "questionnaire_conditions",
+            joinColumns = @JoinColumn(name = "questionnaire_id"),
+            inverseJoinColumns = @JoinColumn(name = "condition_id"))
+    private List<Condition> conditions;
 
     @Column(name = "questionnaire_type", length = 100, nullable = false)
     private String questionnaireType;
@@ -36,5 +40,5 @@ public class Questionnaire {
             name = "questionnaire_question_group",
             joinColumns = @JoinColumn(name = "questionnaire_id"),
             inverseJoinColumns = @JoinColumn(name = "question_group_id"))
-    private Set<QuestionGroup> questionGroups;
+    private List<QuestionGroup> questionGroups;
 }

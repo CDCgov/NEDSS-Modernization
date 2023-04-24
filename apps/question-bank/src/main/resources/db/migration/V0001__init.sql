@@ -43,9 +43,15 @@ CREATE TABLE question_group_questions (
     PRIMARY KEY (question_group_id, question_id)
 );
 
+CREATE TABLE condition (
+    id bigint IDENTITY NOT NULL,
+    name varchar(50) NOT NULL,
+    description varchar(300),
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE questionnaire (
     id bigint IDENTITY NOT NULL,
-    condition_id bigint NOT NULL,
     questionnaire_type varchar(100) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -55,6 +61,18 @@ CREATE TABLE questionnaire_question_group (
     question_group_id bigint NOT NULL,
     PRIMARY KEY (questionnaire_id, question_group_id)
 );
+
+CREATE TABLE questionnaire_conditions (
+    questionnaire_id bigint,
+    condition_id bigint,
+    PRIMARY KEY (questionnaire_id,condition_id)
+);
+
+ALTER TABLE questionnaire_conditions
+    ADD CONSTRAINT FKnjkg9cre7i0bejyyn783uk7up FOREIGN KEY (condition_id) REFERENCES condition;
+
+ALTER TABLE questionnaire_conditions
+    ADD CONSTRAINT FK8bhsllvenpcqne8qk5s1grebn FOREIGN KEY (questionnaire_id) REFERENCES questionnaire;
 
 ALTER TABLE question_group_questions
     ADD CONSTRAINT UK_by81ny1darfq17o2eea443ny0 UNIQUE (question_id);
