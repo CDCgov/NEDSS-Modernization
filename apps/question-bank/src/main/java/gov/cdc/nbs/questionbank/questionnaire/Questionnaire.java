@@ -31,7 +31,7 @@ public class Questionnaire {
     @ElementCollection
     @CollectionTable(
             name = "questionnaire_conditions",
-            joinColumns = @JoinColumn(name = "condition_cd"))
+            joinColumns = @JoinColumn(name = "questionnaire_id"))
     private List<String> conditionCodes;
 
     @Column(name = "questionnaire_type", length = 100, nullable = false)

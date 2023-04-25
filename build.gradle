@@ -17,6 +17,7 @@ plugins {
 
 version = '1.0.0-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
 apply plugin: "com.dipien.semantic-version"
+def cucumberScriptPath = file("./gradle/cucumber-logging.gradle")
 
 subprojects {
 
@@ -31,6 +32,9 @@ subprojects {
 
         apply plugin: 'java'
         apply plugin: 'jacoco'
+
+        // Displays cucumber test results
+        apply from: cucumberScriptPath
 
         jacocoTestReport {
             dependsOn test

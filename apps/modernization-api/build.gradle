@@ -19,9 +19,6 @@ jar {
     enabled = false
 }
 
-// Displays cucumber test results
-apply from: file('../../scripts/gradle/cucumber-logging.gradle')
-
 dependencies {
 
     implementation project(':modernization-ui')

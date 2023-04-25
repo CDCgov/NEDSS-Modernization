@@ -48,7 +48,7 @@ jackson = ["jackson-core", "jackson-datatype-jsr310"]
 jpa = ["springBoot", "springBoot-jpa"]
 elasticsearch = ["spring-elasticsearch"]
 kafka = ["spring-kafka"]
-testing = ["assertj-core", "mockito-inline", "junit", "junit-platform"]
+testing = ["assertj-core", "mockito-inline"]
 queryDSL = ["queryDSL-apt", "queryDSL-jpa"]
 blaze-persistence-queryDSL = [
     "blaze-persistence-core",
@@ -67,6 +67,8 @@ cucumber = [
     "cucumber-spring",
     "cucumber-junit",
     "cucumber-junit-platform-engine",
+    "junit",
+    "junit-platform",
 ]
 
 [plugins]

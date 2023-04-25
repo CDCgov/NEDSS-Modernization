@@ -56,12 +56,12 @@ CREATE TABLE questionnaire_question_group (
 );
 
 CREATE TABLE questionnaire_conditions (
-    condition_cd bigint,
+    questionnaire_id bigint,
     condition_codes varchar
 );
 
 ALTER TABLE questionnaire_conditions
-    ADD CONSTRAINT FKn4v3kv6138x2oii640mp9qsar FOREIGN KEY (condition_cd) REFERENCES questionnaire(id)
+    ADD CONSTRAINT FKn4v3kv6138x2oii640mp9qsar FOREIGN KEY (questionnaire_id) REFERENCES questionnaire(id);
 
 ALTER TABLE question_group_questions
     ADD CONSTRAINT UK_by81ny1darfq17o2eea443ny0 UNIQUE (question_id);

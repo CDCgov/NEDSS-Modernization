@@ -2,15 +2,12 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id 'jvm-test-suite'
-    id 'jacoco'
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
-// Displays cucumber test results
-apply from: file('../../scripts/gradle/cucumber-logging.gradle')
 
 test {
     // always re-run tests
@@ -61,10 +58,18 @@ dependencies {
     // graphql
     implementation libs.springBoot.graphql
 
+    // querydsl
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
     // database
     implementation libs.mssql.jdbc
 
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
+
+    // auth
+    implementation project(':authentication')
+
 }
