@@ -160,7 +160,7 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
     return (
         <SortableTable
             isPagination={true}
-            tableHeader={'Contact records (contacts named by patient)'}
+            tableHeader={'Contact records (patient named by contacts)'}
             tableHead={tableHead}
             tableBody={
                 namedByPatientData?.length > 0 &&

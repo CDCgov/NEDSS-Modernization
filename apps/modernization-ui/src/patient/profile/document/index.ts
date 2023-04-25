@@ -1,1 +1,1 @@
-export { PatientDocumentTable } from './PatientDocumentTable';
+export { PatientProfileDocuments } from './PatientProfileDocuments';
