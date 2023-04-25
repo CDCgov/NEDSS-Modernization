@@ -5,9 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import gov.cdc.nbs.questionbank.entities.Condition;
-import gov.cdc.nbs.questionbank.entities.Questionnaire;
-import gov.cdc.nbs.questionbank.support.ConditionMother;
 import gov.cdc.nbs.questionbank.support.QuestionnaireMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,20 +24,19 @@ public class QuestionnaireSteps {
 
     @Given("a {string} questionnaire exists with type {string}")
     public void a_questionnaire_exists(String condition, String type) {
-        Condition syphilis = ConditionMother.condition(condition);
         questionnaireRepository
                 .save(QuestionnaireMother.questionnaire(
                         type,
                         null,
-                        Collections.singletonList(syphilis)));
+                        Collections.singletonList("123")));
     }
 
     @When("I search for a questionnaire")
     public void i_search_for_a_questionnaire() {
         search = questionnaireRepository.findAll().get(0);
-        long conditionId = search.getConditions().get(0).getId();
+        String conditionCd = search.getConditionCodes().get(0);
         String type = search.getQuestionnaireType();
-        results = resolver.findQuestionnaire(new QuestionnaireContext(conditionId, type));
+        results = resolver.findQuestionnaire(new QuestionnaireContext(conditionCd, type));
     }
 
     @Then("the questionnaire is returned")

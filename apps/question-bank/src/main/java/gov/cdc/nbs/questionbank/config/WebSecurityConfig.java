@@ -21,8 +21,6 @@ public class WebSecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf()
-                .disable()
                 .build();
     }
 }

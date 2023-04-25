@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.questionnaire;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import gov.cdc.nbs.questionbank.entities.Questionnaire;
 
 @Component
 public class QuestionnaireFinder {
@@ -15,7 +14,7 @@ public class QuestionnaireFinder {
     @Transactional
     public Questionnaire find(QuestionnaireContext context) {
         return repository.findByConditionAndType(
-                context.conditionId(),
+                context.conditionCd(),
                 context.questionnaireType())
                 .orElse(null);
     }
