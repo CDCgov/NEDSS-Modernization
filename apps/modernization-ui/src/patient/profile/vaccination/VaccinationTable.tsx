@@ -1,42 +1,39 @@
 import { useEffect, useState } from 'react';
+import { Button, Icon } from '@trussworks/react-uswds';
+import format from 'date-fns/format';
+import { FindVaccinationsForPatientQuery, useFindVaccinationsForPatientLazyQuery } from 'generated/graphql/schema';
+
 import { TOTAL_TABLE_DATA } from 'utils/util';
-
-import { FindPatientNamedByContactQuery, useFindPatientNamedByContactLazyQuery } from 'generated/graphql/schema';
 import { SortableTable } from 'components/Table/SortableTable';
-import { Tracing } from './PatientContacts';
-import { format } from 'date-fns';
 
-export type Result = FindPatientNamedByContactQuery['findPatientNamedByContact'];
-
-type Props = {
+type PatientVaccinationTableProps = {
     patient?: string;
     pageSize?: number;
 };
 
-export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Props) => {
+export const VaccinationTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: PatientVaccinationTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
-    const [namedByPatientData, setNamedByPatientData] = useState<any>([]);
+    const [vaccinationData, setVaccinationData] = useState<any>([]);
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'Date created', sortable: true, sort: 'all' },
-        { name: 'Named by', sortable: true, sort: 'all' },
-        { name: 'Date named', sortable: true, sort: 'all' },
-        { name: 'Description', sortable: true, sort: 'all' },
+        { name: 'Provider', sortable: true, sort: 'all' },
+        { name: 'Date administered', sortable: true, sort: 'all' },
+        { name: 'Vaccine administered', sortable: true, sort: 'all' },
         { name: 'Associated with', sortable: true, sort: 'all' },
-        { name: 'Event #', sortable: true, sort: 'all' }
+        { name: 'Events', sortable: true, sort: 'all' }
     ]);
 
-    const handleComplete = (data: FindPatientNamedByContactQuery) => {
-        const total = data?.findPatientNamedByContact?.total || 0;
-        setTotal(total);
-        setNamedByPatientData(data.findPatientNamedByContact?.content);
+    const handleComplete = (data: FindVaccinationsForPatientQuery) => {
+        setTotal(data?.findVaccinationsForPatient?.total || 0);
+        setVaccinationData(data.findVaccinationsForPatient?.content);
     };
 
-    const [getContacts] = useFindPatientNamedByContactLazyQuery({ onCompleted: handleComplete });
+    const [getVaccination] = useFindVaccinationsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
-            getContacts({
+            getVaccination({
                 variables: {
                     patient: patient,
                     page: {
@@ -47,29 +44,6 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
             });
         }
     }, [patient, currentPage]);
-
-    const description = (contact: Tracing) => (
-        <>
-            {contact.condition && (
-                <>
-                    <b>{contact.condition}</b>
-                    <br />
-                </>
-            )}
-            {contact.priority && (
-                <>
-                    <b>Priority:</b> {contact.priority}
-                    <br />
-                </>
-            )}
-            {contact.disposition && (
-                <>
-                    <b>Disposition:</b> {contact.disposition}
-                    <br />
-                </>
-            )}
-        </>
-    );
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -83,10 +57,10 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
     };
 
     const sortData = (name: string, type: string) => {
-        setNamedByPatientData(
+        setVaccinationData(
             name === 'associatedWith'
-                ? namedByPatientData?.slice().sort((a: any, b: any) => {
-                      if (a?.associatedWith?.condition && b?.associatedWith?.condition) {
+                ? vaccinationData?.slice().sort((a: any, b: any) => {
+                      if (a[name] && b[name]) {
                           if (a?.associatedWith?.condition.toLowerCase() < b?.associatedWith?.condition.toLowerCase()) {
                               return type === 'asc' ? -1 : 1;
                           }
@@ -96,19 +70,7 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
                       }
                       return 0;
                   })
-                : name === 'name'
-                ? namedByPatientData?.slice().sort((a: any, b: any) => {
-                      if (a?.contact?.name && b?.contact?.name) {
-                          if (a?.contact?.name.toLowerCase() < b?.contact?.name.toLowerCase()) {
-                              return type === 'asc' ? -1 : 1;
-                          }
-                          if (a?.contact?.name.toLowerCase() > b?.contact?.name.toLowerCase()) {
-                              return type === 'asc' ? 1 : -1;
-                          }
-                      }
-                      return 0;
-                  })
-                : namedByPatientData?.slice().sort((a: any, b: any) => {
+                : vaccinationData?.slice().sort((a: any, b: any) => {
                       if (a[name] && b[name]) {
                           if (a[name].toLowerCase() < b[name].toLowerCase()) {
                               return type === 'asc' ? -1 : 1;
@@ -126,86 +88,112 @@ export const PatientNamedByContactTable = ({ patient, pageSize = TOTAL_TABLE_DAT
         tableHeadChanges(name, type);
         switch (name.toLowerCase()) {
             case 'date created':
-                setNamedByPatientData(
-                    namedByPatientData?.slice().sort((a: any, b: any) => {
+                setVaccinationData(
+                    vaccinationData.slice().sort((a: any, b: any) => {
                         const dateA: any = new Date(a.createdOn);
                         const dateB: any = new Date(b.createdOn);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;
                     })
                 );
                 break;
-            case 'named by':
-                sortData('name', type);
-                break;
-            case 'date named':
-                setNamedByPatientData(
-                    namedByPatientData?.slice().sort((a: any, b: any) => {
-                        const dateA: any = new Date(a.namedOn);
-                        const dateB: any = new Date(b.namedOn);
+            case 'date administered':
+                setVaccinationData(
+                    vaccinationData.slice().sort((a: any, b: any) => {
+                        const dateA: any = new Date(a.administeredOn);
+                        const dateB: any = new Date(b.administeredOn);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;
                     })
                 );
                 break;
-            case 'description':
-                sortData('condition', type);
+            case 'provider':
+                sortData('provider', type);
+                break;
+            case 'vaccine administered':
+                sortData('administered', type);
                 break;
             case 'associated with':
                 sortData('associatedWith', type);
                 break;
-            case 'event #':
+            case 'events':
                 sortData('event', type);
+                break;
         }
     };
+
+    console.log('vaccinationData:', vaccinationData);
 
     return (
         <SortableTable
             isPagination={true}
-            tableHeader={'Contact records (patient named by contacts)'}
+            buttons={
+                <div className="grid-row">
+                    <Button type="button" className="grid-row">
+                        <Icon.Add className="margin-right-05" />
+                        Add vaccination
+                    </Button>
+                </div>
+            }
+            tableHeader={'Vaccinations'}
             tableHead={tableHead}
             tableBody={
-                namedByPatientData?.length > 0 &&
-                namedByPatientData?.map((item: any, index: number) => {
+                vaccinationData?.length > 0 &&
+                vaccinationData?.map((vaccination: any, index: number) => {
                     return (
                         <tr key={index}>
                             <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                                {item?.createdOn ? (
+                                {vaccination?.createdOn ? (
                                     <a href="#" className="table-span">
-                                        {format(new Date(item?.createdOn), 'MM/dd/yyyy')} <br />{' '}
-                                        {format(new Date(item?.createdOn), 'hh:mm a')}
+                                        {format(new Date(vaccination?.createdOn), 'MM/dd/yyyy')} <br />{' '}
+                                        {format(new Date(vaccination?.createdOn), 'hh:mm a')}
                                     </a>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                                {item?.contact?.name ? item?.contact?.name : <span className="no-data">No data</span>}
+                                {vaccination?.provider ? (
+                                    <span>{vaccination.provider}</span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                                {item?.namedOn ? (
-                                    format(new Date(item?.namedOn), 'MM/dd/yyyy')
+                                {vaccination?.administeredOn ? (
+                                    <span className="table-span">
+                                        {format(new Date(vaccination?.administeredOn), 'MM/dd/yyyy')} <br />{' '}
+                                        {format(new Date(vaccination?.administeredOn), 'hh:mm a')}
+                                    </span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                                {item ? description(item) : <span className="no-data">No data</span>}
-                            </td>
-                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                                {item?.associatedWith ? (
-                                    <div>
-                                        <p
-                                            className="margin-0 text-primary text-bold link"
-                                            style={{ wordBreak: 'break-word' }}>
-                                            {item?.associatedWith?.local}
-                                        </p>
-                                        <p className="margin-0">{item?.associatedWith?.condition}</p>
-                                    </div>
+                                {vaccination?.administered ? (
+                                    <span>{vaccination?.administered}</span>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                                {item?.event ? item?.event : <span className="no-data">No data</span>}
+                                {!vaccination || !vaccination?.associatedWith ? (
+                                    <span className="no-data">No data</span>
+                                ) : (
+                                    <div>
+                                        <p
+                                            className="margin-0 text-primary text-bold link"
+                                            style={{ wordBreak: 'break-word' }}>
+                                            {vaccination?.associatedWith?.id}
+                                        </p>
+                                        <p className="margin-0">{vaccination?.associatedWith?.condition}</p>
+                                    </div>
+                                )}
+                            </td>
+                            <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
+                                {vaccination?.event ? (
+                                    <span>{vaccination?.event}</span>
+                                ) : (
+                                    <span className="no-data">No data</span>
+                                )}
                             </td>
                         </tr>
                     );

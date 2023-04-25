@@ -317,7 +317,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
     const raceTableData = () => {
         const tempArr: any = [];
-        race.map((raceItem: any) => {
+        race?.map((raceItem: any) => {
             tempArr.push({
                 id: 1,
                 checkbox: false,
