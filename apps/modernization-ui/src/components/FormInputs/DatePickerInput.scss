@@ -2,16 +2,16 @@
 
 .date-picker-input {
     &.error {
-        border-left: 2px solid $warning;
+        border-left: 2px solid $color-secondary-dark;
         padding-left: 1em;
         small {
             font-size: 1em;
             font-weight: 700;
         }
         input {
-            border: 2px solid $warning;
+            border: 2px solid $color-secondary-dark;
             &:focus {
-                outline: 2px solid $warning;
+                outline: 2px solid $color-secondary-dark;
             }
         }
     }

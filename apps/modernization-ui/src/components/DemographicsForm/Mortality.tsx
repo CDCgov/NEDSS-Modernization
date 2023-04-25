@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { stateList } from '../../constant/states';
+import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
 
 export const MortalityForm = ({ setMortalityForm }: any) => {
     const methods = useForm();
@@ -87,18 +87,27 @@ export const MortalityForm = ({ setMortalityForm }: any) => {
                     State of death:
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="state"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'state'}
-                                options={stateList}
+                    <SearchCriteriaContext.Consumer>
+                        {({ searchCriteria }) => (
+                            <Controller
+                                control={control}
+                                name="state"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'state'}
+                                        options={searchCriteria.states.map((state) => {
+                                            return {
+                                                value: state.id!,
+                                                name: state.codeDescTxt!
+                                            };
+                                        })}
+                                    />
+                                )}
                             />
                         )}
-                    />
+                    </SearchCriteriaContext.Consumer>
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
@@ -114,7 +123,7 @@ export const MortalityForm = ({ setMortalityForm }: any) => {
                                 defaultValue={value}
                                 onChange={onChange}
                                 htmlFor={'county'}
-                                options={stateList}
+                                options={[{ name: 'county', value: 'options' }]}
                             />
                         )}
                     />
@@ -133,7 +142,7 @@ export const MortalityForm = ({ setMortalityForm }: any) => {
                                 defaultValue={value}
                                 onChange={onChange}
                                 htmlFor={'country'}
-                                options={stateList}
+                                options={[{ name: 'county', value: 'options' }]}
                             />
                         )}
                     />

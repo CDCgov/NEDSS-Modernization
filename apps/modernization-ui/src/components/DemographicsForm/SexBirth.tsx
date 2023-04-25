@@ -4,7 +4,7 @@ import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
 import { Gender } from '../../generated/graphql/schema';
-import { stateList } from '../../constant/states';
+import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
 
 export const SexBirthForm = ({ setSexBirthForm }: any) => {
     const methods = useForm();
@@ -246,18 +246,27 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                     Birth state:
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="bState"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'bState'}
-                                options={stateList}
+                    <SearchCriteriaContext.Consumer>
+                        {({ searchCriteria }) => (
+                            <Controller
+                                control={control}
+                                name="bState"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'bState'}
+                                        options={searchCriteria.states.map((state) => {
+                                            return {
+                                                value: state.id!,
+                                                name: state.codeDescTxt!
+                                            };
+                                        })}
+                                    />
+                                )}
                             />
                         )}
-                    />
+                    </SearchCriteriaContext.Consumer>
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
