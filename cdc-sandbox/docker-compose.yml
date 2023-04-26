@@ -33,12 +33,20 @@ services:
     networks:
       - nbs
   reverse-proxy:
+    image: "traefik:2.10"
     container_name: traefik
-    restart: always
-    build: ./proxy
+    command:
+      - "--entrypoints.traefik.address=:8081"
+      - "--entrypoints.port.address=:8080"
+      - "--api.insecure=true"
+      - "--providers.file.filename=/etc/traefik/providers.yml"
+      - "--log.format=json"
+      - "--log.level=DEBUG"
     ports:
       - "8080:8080"
       - "8081:8081" # traefik dashboard
+    volumes:
+      - "./proxy/providers.new.yml:/etc/traefik/providers.yml"
     networks:
       - nbs
     environment:
