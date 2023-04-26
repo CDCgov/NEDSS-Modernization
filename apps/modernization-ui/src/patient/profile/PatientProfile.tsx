@@ -21,9 +21,10 @@ import {
     useFindPatientProfileLazyQuery
 } from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
-import { Summary } from './Summary';
-import { Events } from './Events';
-import { Demographics } from './Demographics';
+
+import { Summary } from 'pages/patientProfile/Summary';
+import { Events } from 'pages/patientProfile/Events';
+import { Demographics } from 'pages/patientProfile/Demographics';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { Config } from 'config';
 
