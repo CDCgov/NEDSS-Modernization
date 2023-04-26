@@ -1,14 +1,26 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
-
 plugins {
     id 'jvm-test-suite'
-
     alias libs.plugins.springBoot
     alias libs.plugins.springDependencies
 }
 
 group = 'gov.cdc'
 version = '0.0.1-SNAPSHOT'
+
+test {
+    // always re-run tests
+    test.outputs.upToDateWhen { false }
+    
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['gov/cdc/nbs/questionbank/QuestionBankApplication.class'])
+        }))
+    }
+}
 
 testing {
     suites {
@@ -23,13 +35,18 @@ testing {
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
                 implementation "com.h2database:h2"
+
+                implementation libs.bundles.cucumber
+
             }
         }
     }
 }
+
 dependencies {
     implementation project(':authentication')
     // Spring
+    implementation libs.springBoot.web
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
@@ -39,12 +56,18 @@ dependencies {
     // graphql
     implementation libs.springBoot.graphql
 
+    // querydsl
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
     // database
     implementation libs.mssql.jdbc
 
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
-}
 
-compileJava.mustRunAfter(":authentication:build")
+    // auth
+    implementation project(':authentication')
+
+}
