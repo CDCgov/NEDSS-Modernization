@@ -1,7 +1,3 @@
-CREATE SEQUENCE hibernate_sequence
-    START WITH 1
-    INCREMENT BY 1;
-
 CREATE TABLE answer (
     id bigint IDENTITY NOT NULL,
     display varchar(255) NOT NULL,
@@ -31,6 +27,7 @@ CREATE TABLE question (
     units_set bigint,
     default_answer_id bigint,
     answer_set_id bigint,
+    question_type varchar(20),
     PRIMARY KEY (id)
 );
 
@@ -47,8 +44,7 @@ CREATE TABLE question_group_questions (
 );
 
 CREATE TABLE questionnaire (
-    id bigint NOT NULL,
-    condition_id bigint NOT NULL,
+    id bigint IDENTITY NOT NULL,
     questionnaire_type varchar(100) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -58,6 +54,14 @@ CREATE TABLE questionnaire_question_group (
     question_group_id bigint NOT NULL,
     PRIMARY KEY (questionnaire_id, question_group_id)
 );
+
+CREATE TABLE questionnaire_conditions (
+    questionnaire_id bigint,
+    condition_codes varchar
+);
+
+ALTER TABLE questionnaire_conditions
+    ADD CONSTRAINT FKn4v3kv6138x2oii640mp9qsar FOREIGN KEY (questionnaire_id) REFERENCES questionnaire(id);
 
 ALTER TABLE question_group_questions
     ADD CONSTRAINT UK_by81ny1darfq17o2eea443ny0 UNIQUE (question_id);

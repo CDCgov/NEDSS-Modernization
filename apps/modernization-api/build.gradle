@@ -19,9 +19,6 @@ jar {
     enabled = false
 }
 
-// Displays cucumber test results
-apply from: file('logging.gradle')
-
 dependencies {
 
     implementation project(':modernization-ui')
@@ -70,10 +67,6 @@ dependencies {
 
     // Kafka
     implementation libs.spring.kafka
-
-    // test
-    testImplementation "org.junit.platform:junit-platform-suite"
-    testImplementation "org.junit.jupiter:junit-jupiter"
 
     testImplementation libs.bundles.cucumber
 

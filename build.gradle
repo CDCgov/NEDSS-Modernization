@@ -32,6 +32,9 @@ subprojects {
         apply plugin: 'java'
         apply plugin: 'jacoco'
 
+        // Displays cucumber test results
+        apply from: "${rootDir}/gradle/cucumber-logging.gradle"
+
         jacocoTestReport {
             dependsOn test
             reports {

@@ -39,6 +39,8 @@ cucumber-java = { module = "io.cucumber:cucumber-java", version.ref = "cucumber"
 cucumber-spring = { module = "io.cucumber:cucumber-spring", version.ref = "cucumber" }
 cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumber" }
 cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
+junit = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform = { module = "org.junit.platform:junit-platform-suite" }
 
 [bundles]
 security = ["java-jwt", "spring-security"]
@@ -48,11 +50,26 @@ elasticsearch = ["spring-elasticsearch"]
 kafka = ["spring-kafka"]
 testing = ["assertj-core", "mockito-inline"]
 queryDSL = ["queryDSL-apt", "queryDSL-jpa"]
-blaze-persistence-queryDSL = ["blaze-persistence-core", "blaze-persistence-queryDSL", "blaze-persistence-hibernate"]
+blaze-persistence-queryDSL = [
+    "blaze-persistence-core",
+    "blaze-persistence-queryDSL",
+    "blaze-persistence-hibernate",
+]
 testcontainers = ["testcontainers", "testcontainers-junit"]
-testcontainers-elasticsearch = ["testcontainers", "testcontainers-junit", "testcontainers-elasticsearch"]
+testcontainers-elasticsearch = [
+    "testcontainers",
+    "testcontainers-junit",
+    "testcontainers-elasticsearch",
+]
 javafaker = ["javafaker", "snakeyaml"]
-cucumber = ["cucumber-java", "cucumber-spring", "cucumber-junit", "cucumber-junit-platform-engine"]
+cucumber = [
+    "cucumber-java",
+    "cucumber-spring",
+    "cucumber-junit",
+    "cucumber-junit-platform-engine",
+    "junit",
+    "junit-platform",
+]
 
 [plugins]
 springDependencies = { id = "io.spring.dependency-management", version = "1.0.12.RELEASE" }
