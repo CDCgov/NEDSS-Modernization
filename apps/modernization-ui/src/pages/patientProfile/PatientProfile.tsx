@@ -15,7 +15,11 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
-import { FindPatientsByFilterQuery, useFindPatientByIdLazyQuery } from '../../generated/graphql/schema';
+import {
+    FindPatientsByFilterQuery,
+    useFindPatientByIdLazyQuery,
+    useFindPatientProfileLazyQuery
+} from '../../generated/graphql/schema';
 import { calculateAge } from '../../utils/util';
 import { Summary } from './Summary';
 import { Events } from './Events';
@@ -37,6 +41,7 @@ export const PatientProfile = () => {
     const modalRef = useRef<ModalRef>(null);
 
     const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
+    const [getPatientProfileData, { data: patientProfile }] = useFindPatientProfileLazyQuery();
 
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
@@ -61,6 +66,12 @@ export const PatientProfile = () => {
             getPatientProfileDataById({
                 variables: {
                     id: id
+                }
+            });
+
+            getPatientProfileData({
+                variables: {
+                    patient: id
                 }
             });
         }
@@ -91,54 +102,63 @@ export const PatientProfile = () => {
         }
     }, [patientProfileData]);
 
-    const OrderedData = ({ data, type }: any) => {
-        return (
-            <div>
-                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">{type}</h5>
-                {data && data.length > 0 ? (
-                    data.map((add: string, ind: number) => (
-                        <p
-                            key={ind}
-                            className="margin-0 font-sans-2xs text-normal"
-                            style={{
-                                wordBreak: 'break-word',
-                                paddingRight: '15px',
-                                maxWidth: type === 'EMAIL' ? '165px' : 'auto'
-                            }}>
-                            {add}
-                        </p>
-                    ))
-                ) : (
-                    <p className="text-italic margin-0 text-gray-30">No Data</p>
-                )}
-            </div>
-        );
-    };
-
     const newOrderPhone = (data: any) => {
-        const numbers: any = [];
-        data?.map((item: any) => item.locator.phoneNbrTxt && numbers.push(item.locator.phoneNbrTxt));
-        return <OrderedData data={numbers} type="PHONE NUMBER" />;
+        return (
+            <>
+                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">PHONE NUMBER</h5>
+                {data?.map((add: any, ind: number) => (
+                    <p
+                        key={ind}
+                        className="margin-0 font-sans-2xs text-normal"
+                        style={{
+                            wordBreak: 'break-word',
+                            paddingRight: '15px',
+                            maxWidth: 'auto'
+                        }}>
+                        {add?.number}
+                    </p>
+                )) || <p className="text-italic margin-0 text-gray-30">No Data</p>}
+            </>
+        );
     };
 
     const newOrderEmail = (data: any) => {
-        const emails: any = [];
-        data?.map((item: any) => item.locator.emailAddress && emails.push(item.locator.emailAddress));
-        return <OrderedData data={emails} type="EMAIL" />;
+        return (
+            <>
+                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">EMAIL</h5>
+                {data?.map((add: any, ind: number) => (
+                    <p
+                        key={ind}
+                        className="margin-0 font-sans-2xs text-normal"
+                        style={{
+                            wordBreak: 'break-word',
+                            paddingRight: '15px',
+                            maxWidth: '165px'
+                        }}>
+                        {add?.address}
+                    </p>
+                )) || <p className="text-italic margin-0 text-gray-30">No Data</p>}
+            </>
+        );
     };
 
     const newOrderAddress = (data: any) => {
-        const address: any = [];
-        data?.map(
-            (item: any) =>
-                item.classCd === 'PST' &&
-                address.push(
-                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${item.locator.stateCd ?? ''} ${
-                        item.locator.zipCd ?? ''
-                    } ${item.locator.cntryCd ?? ''}`
-                )
+        return (
+            data && (
+                <>
+                    <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">EMAIL</h5>
+                    <p
+                        className="margin-0 font-sans-2xs text-normal"
+                        style={{
+                            wordBreak: 'break-word',
+                            paddingRight: '15px',
+                            maxWidth: '165px'
+                        }}>
+                        {data?.street}, {data?.city}, {data?.state}, {data?.zipcode}, {data?.country}
+                    </p>
+                </>
+            )
         );
-        return <OrderedData data={address} type="ADDRESS" />;
     };
 
     const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
@@ -191,8 +211,9 @@ export const PatientProfile = () => {
                         <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                             <Icon.Warning className="font-sans-2xl margin-x-2" />
                             <p id="modal-1-description">
-                                Would you like to permenantly delete patient record {profileData?.localId},{' '}
-                                {`${profileData?.lastNm}, ${profileData?.firstNm}`}?
+                                Would you like to permenantly delete patient record{' '}
+                                {patientProfile?.findPatientProfile?.shortId},{' '}
+                                {`${patientProfile?.findPatientProfile?.summary?.legalName?.last}, ${patientProfile?.findPatientProfile?.summary?.legalName?.first}`}
                             </p>
                         </div>
                         <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
@@ -212,20 +233,18 @@ export const PatientProfile = () => {
                 <div className="margin-y-2 flex-row common-card">
                     <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
                         <p className="font-sans-xl text-bold margin-0">
-                            {`${profileData?.lastNm}, ${profileData?.firstNm}`}
+                            {`${patientProfile?.findPatientProfile?.summary?.legalName?.last}, ${patientProfile?.findPatientProfile?.summary?.legalName?.first}`}
                         </p>
-                        <h5 className="font-sans-md text-medium margin-0">Patient ID: {profileData?.shortId}</h5>
+                        <h5 className="font-sans-md text-medium margin-0">
+                            Patient ID: {patientProfile?.findPatientProfile?.shortId}
+                        </h5>
                     </div>
                     <Grid row gap={3} className="padding-3">
                         <Grid row col={3}>
                             <Grid col={12}>
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">SEX</h5>
                                 <p className="margin-0 font-sans-1xs text-normal">
-                                    {profileData?.currSexCd === 'M'
-                                        ? 'Male'
-                                        : profileData?.currSexCd === 'F'
-                                        ? 'Female'
-                                        : 'Unknown'}
+                                    {patientProfile?.findPatientProfile?.summary?.gender}
                                 </p>
                             </Grid>
                             <Grid col={12} className="margin-top-3">
@@ -233,37 +252,39 @@ export const PatientProfile = () => {
                                     DATE OF BIRTH
                                 </h5>
                                 <p className="margin-0 font-sans-1xs text-normal">
-                                    {new Date(profileData?.birthTime).toLocaleDateString('en-US', {
-                                        timeZone: 'UTC'
-                                    })}{' '}
-                                    ({calculateAge(new Date(profileData?.birthTime))})
+                                    {patientProfile?.findPatientProfile?.summary?.birthday} (
+                                    {calculateAge(new Date(patientProfile?.findPatientProfile?.summary?.birthday))})
                                 </p>
                             </Grid>
                         </Grid>
 
                         <Grid row col={3}>
-                            <Grid col={12}>{newOrderPhone(profileData?.nbsEntity?.entityLocatorParticipations)}</Grid>
+                            <Grid col={12}>{newOrderPhone(patientProfile?.findPatientProfile?.summary?.phone)}</Grid>
                             <Grid col={12} className="margin-top-3">
-                                {newOrderEmail(profileData?.nbsEntity?.entityLocatorParticipations)}
+                                {newOrderEmail(patientProfile?.findPatientProfile?.summary?.email)}
                             </Grid>
                         </Grid>
 
                         <Grid row col={3}>
-                            <Grid col={12}>{newOrderAddress(profileData?.nbsEntity?.entityLocatorParticipations)}</Grid>
+                            <Grid col={12}>
+                                {newOrderAddress(patientProfile?.findPatientProfile?.summary?.address)}
+                            </Grid>
                         </Grid>
 
                         <Grid row col={3}>
                             <Grid col={12}>
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">RACE</h5>
                                 <p className="margin-0 font-sans-1xs text-normal">
-                                    {race?.map((item: any) => item) || 'No data'}
+                                    {patientProfile?.findPatientProfile?.summary?.race || 'No data'}
                                 </p>
                             </Grid>
                             <Grid col={12} className="margin-top-3">
                                 <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
                                     ETHNICITY
                                 </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">{ethnicity}</p>
+                                <p className="margin-0 font-sans-1xs text-normal">
+                                    {patientProfile?.findPatientProfile?.summary?.ethnicity || 'No data'}
+                                </p>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -312,6 +333,7 @@ export const PatientProfile = () => {
                         patientProfileData={patientProfileData?.findPatientById}
                         ethnicity={ethnicity}
                         race={race}
+                        patientProfile={patientProfile?.findPatientProfile}
                     />
                 )}
 

@@ -13,32 +13,38 @@ import {
 } from '@trussworks/react-uswds';
 import { HorizontalTable } from '../../components/Table/HorizontalTable';
 import { AddCommentModal } from './components/AddCommentModal';
-import { AddNameModal } from './components/AddNameModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
-import { Deceased, FindPatientByIdQuery, FindPatientsByFilterQuery } from '../../generated/graphql/schema';
+import {
+    Deceased,
+    FindPatientByIdQuery,
+    FindPatientProfileQuery,
+    FindPatientsByFilterQuery,
+    useFindPatientProfileLazyQuery
+} from '../../generated/graphql/schema';
 import { format } from 'date-fns';
 import { AddIdentificationModal } from './components/AddIdentificationModal';
 import { AddRaceModal } from './components/AddRaceModal';
-import { DetailsNameModal } from './components/DemographicDetails/DetailsNameModal';
 import { DetailsAddressModal } from './components/DemographicDetails/DetailsAddressModal';
 import { DetailsPhoneEmailModal } from './components/DemographicDetails/DetailsPhoneEmailModal';
 import { DetailsIdentificationModal } from './components/DemographicDetails/DetailsIdentificationModal';
 import { DetailsRaceModal } from './components/DemographicDetails/DetailsRaceModal';
+import { NamesTable } from './demographicsTables/names/labReport';
+import { TOTAL_TABLE_DATA } from 'utils/util';
 
 type DemographicProps = {
     patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
     ethnicity?: string;
     race?: any;
+    patientProfile?: FindPatientProfileQuery['findPatientProfile'];
 };
 
-export const Demographics = ({ patientProfileData, handleFormSubmission, ethnicity, race }: DemographicProps) => {
-    // const { searchCriteria } = useContext(SearchCriteriaContext);
+export const Demographics = ({ patientProfileData, ethnicity, race, patientProfile }: DemographicProps) => {
+    const [getData, { data: profileData }] = useFindPatientProfileLazyQuery();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [tableBody, setTableBody] = useState<any>([]);
-    const [nameTableBody, setNameTableBody] = useState<any>([]);
     const [addressTableBody, setAddressTableBody] = useState<any>([]);
     const [phoneEmailTableBody, setPhoneEmailTableBody] = useState<any>([]);
     const [identificationTableBody, setIdentificationTableBody] = useState<any>([]);
@@ -50,19 +56,19 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const addCommentModalRef = useRef<ModalRef>(null);
-    const addNameModalRef = useRef<ModalRef>(null);
     const addAddressModalRef = useRef<ModalRef>(null);
     const addPhoneEmailRef = useRef<ModalRef>(null);
     const addIdentificationRef = useRef<ModalRef>(null);
     const addRaceRef = useRef<ModalRef>(null);
 
-    const detailsNameModalRef = useRef<ModalRef>(null);
     const detailsAddressModalRef = useRef<ModalRef>(null);
     const detailsPhoneEmailModalRef = useRef<ModalRef>(null);
     const detailsIdentificationModalRef = useRef<ModalRef>(null);
     const detailsRaceModalRef = useRef<ModalRef>(null);
 
     const deleteModalRef = useRef<ModalRef>(null);
+
+    const [namesCurrentPage, setNamesCurrentPage] = useState<number>(1);
 
     useEffect(() => {
         const tempArr = [];
@@ -129,55 +135,23 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
                 ]
             }
         ]);
+
+        getData({
+            variables: {}
+        });
     }, []);
 
-    const namesTableData = (names: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['names']) => {
-        const tempArr: any = [];
-        names?.map((item, i: number) => {
-            tempArr.push({
-                id: i + 1,
-                checkbox: false,
-                tableDetails: [
-                    {
-                        id: 1,
-                        title: 'Not available yet'
-                    },
-                    {
-                        id: 2,
-                        title: 'Not available yet'
-                    },
-                    {
-                        id: 3,
-                        title: item?.nmPrefix
-                    },
-                    {
-                        id: 4,
-                        title: `${item?.lastNm}, ${item?.firstNm}, ${item?.middleNm}`
-                    },
-                    {
-                        id: 5,
-                        title: item?.nmSuffix
-                    },
-                    {
-                        id: 6,
-                        title: 'Not available yet'
-                    },
-                    {
-                        id: 7,
-                        title: (
-                            <Button type="button" unstyled>
-                                <Icon.MoreHoriz className="font-sans-lg" />
-                            </Button>
-                        ),
-                        textAlign: 'center',
-                        type: 'actions'
-                    }
-                ],
-                data: item
-            });
+    useEffect(() => {
+        getData({
+            variables: {
+                shortId: patientProfile?.shortId,
+                page1: {
+                    pageNumber: namesCurrentPage - 1,
+                    pageSize: TOTAL_TABLE_DATA
+                }
+            }
         });
-        setNameTableBody(tempArr);
-    };
+    }, [namesCurrentPage]);
 
     const idTableData = (entityIds: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['entityIds']) => {
         const tempArr: any = [];
@@ -354,7 +328,6 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
     useEffect(() => {
         if (patientProfileData) {
             console.log('patientProfileData:', patientProfileData);
-            namesTableData(patientProfileData?.names);
             idTableData(patientProfileData?.entityIds);
             raceTableData();
             addressTableData(patientProfileData?.nbsEntity.entityLocatorParticipations);
@@ -461,58 +434,7 @@ export const Demographics = ({ patientProfileData, handleFormSubmission, ethnici
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <TableComponent
-                    handleAction={(type, data) => {
-                        if (type === 'edit') {
-                            setIsEditModal(true);
-                            addNameModalRef.current?.toggleModal();
-                        }
-                        if (type === 'delete') {
-                            setIsDeleteModal(true);
-                            deleteModalRef.current?.toggleModal();
-                        }
-                        if (type === 'details') {
-                            setNameDetails(data);
-                            detailsNameModalRef.current?.toggleModal();
-                        }
-                    }}
-                    isPagination={true}
-                    buttons={
-                        <div className="grid-row">
-                            <Button
-                                type="button"
-                                onClick={() => {
-                                    addNameModalRef.current?.toggleModal();
-                                    setNameDetails(null);
-                                    setIsEditModal(false);
-                                }}
-                                className="display-inline-flex">
-                                <Icon.Add className="margin-right-05" />
-                                Add name
-                            </Button>
-                            <AddNameModal
-                                modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
-                                handleSubmission={handleFormSubmission}
-                                modalRef={addNameModalRef}
-                            />
-                            <DetailsNameModal data={nameDetails} modalRef={detailsNameModalRef} />
-                        </div>
-                    }
-                    tableHeader={'Name'}
-                    tableHead={[
-                        { name: 'As of', sortable: true },
-                        { name: 'Type', sortable: true },
-                        { name: 'Prefix', sortable: true },
-                        { name: 'Name ( last, first middle )', sortable: true },
-                        { name: 'Suffix', sortable: true },
-                        { name: 'Degree', sortable: true },
-                        { name: 'Actions', sortable: true }
-                    ]}
-                    tableBody={nameTableBody}
-                    currentPage={currentPage}
-                    handleNext={(e) => setCurrentPage(e)}
-                    totalResults={nameTableBody.length}
-                />
+                <NamesTable currentPage={namesCurrentPage} data={profileData} setCurrentPage={setNamesCurrentPage} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
