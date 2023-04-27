@@ -1,4 +1,4 @@
-type Name = {
+export type Name = {
     prefix: string | null;
     first: string | null;
     middle: string | null;
@@ -6,17 +6,17 @@ type Name = {
     suffix: string | null;
 };
 
-type Phone = {
+export type Phone = {
     use: string;
     number: string;
 };
 
-type Email = {
+export type Email = {
     use: string;
     address: string;
 };
 
-type Address = {
+export type Address = {
     street: string | null;
     city: string | null;
     state: string | null;
@@ -25,10 +25,9 @@ type Address = {
 };
 
 export type PatientSummary = {
-    patient: number;
-    legalName: Name;
-    birthday: string;
-    age: number;
+    legalName: Name | null;
+    birthday: string | null;
+    age: number | null;
     gender: string | null;
     ethnicity: string | null;
     race: string | null;

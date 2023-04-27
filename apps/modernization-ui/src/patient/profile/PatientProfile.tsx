@@ -2,7 +2,6 @@ import {
     Alert,
     Button,
     ButtonGroup,
-    Grid,
     Icon,
     Modal,
     ModalFooter,
@@ -10,7 +9,7 @@ import {
     ModalRef,
     ModalToggleButton
 } from '@trussworks/react-uswds';
-import './style.scss';
+import 'pages/patientProfile/style.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RedirectControllerService } from 'generated';
@@ -19,14 +18,15 @@ import {
     FindPatientsByFilterQuery,
     useFindPatientByIdLazyQuery,
     useFindPatientProfileLazyQuery
-} from '../../generated/graphql/schema';
-import { calculateAge } from '../../utils/util';
+} from 'generated/graphql/schema';
 
 import { Summary } from 'pages/patientProfile/Summary';
 import { Events } from 'pages/patientProfile/Events';
 import { Demographics } from 'pages/patientProfile/Demographics';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { Config } from 'config';
+import { usePatientProfile } from './usePatientProfile';
+import { PatientProfileSummary } from './summary/PatientProfileSummary';
 
 enum ACTIVE_TAB {
     SUMMARY = 'Summary',
@@ -47,6 +47,9 @@ export const PatientProfile = () => {
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
+
+    const profile = usePatientProfile(id);
+
     const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
 
     const { searchCriteria } = useContext(SearchCriteriaContext);
@@ -102,65 +105,6 @@ export const PatientProfile = () => {
             }
         }
     }, [patientProfileData]);
-
-    const newOrderPhone = (data: any) => {
-        return (
-            <>
-                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">PHONE NUMBER</h5>
-                {data?.map((add: any, ind: number) => (
-                    <p
-                        key={ind}
-                        className="margin-0 font-sans-2xs text-normal"
-                        style={{
-                            wordBreak: 'break-word',
-                            paddingRight: '15px',
-                            maxWidth: 'auto'
-                        }}>
-                        {add?.number}
-                    </p>
-                )) || <p className="text-italic margin-0 text-gray-30">No Data</p>}
-            </>
-        );
-    };
-
-    const newOrderEmail = (data: any) => {
-        return (
-            <>
-                <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">EMAIL</h5>
-                {data?.map((add: any, ind: number) => (
-                    <p
-                        key={ind}
-                        className="margin-0 font-sans-2xs text-normal"
-                        style={{
-                            wordBreak: 'break-word',
-                            paddingRight: '15px',
-                            maxWidth: '165px'
-                        }}>
-                        {add?.address}
-                    </p>
-                )) || <p className="text-italic margin-0 text-gray-30">No Data</p>}
-            </>
-        );
-    };
-
-    const newOrderAddress = (data: any) => {
-        return (
-            data && (
-                <>
-                    <h5 className="margin-0 text-normal text-gray-50 margin-bottom-05">EMAIL</h5>
-                    <p
-                        className="margin-0 font-sans-2xs text-normal"
-                        style={{
-                            wordBreak: 'break-word',
-                            paddingRight: '15px',
-                            maxWidth: '165px'
-                        }}>
-                        {data?.street}, {data?.city}, {data?.state}, {data?.zipcode}, {data?.country}
-                    </p>
-                </>
-            )
-        );
-    };
 
     const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
     const [addedItem, setAddedItem] = useState<string>('');
@@ -231,65 +175,9 @@ export const PatientProfile = () => {
                 </div>
             </div>
             <div className="main-body">
-                <div className="margin-y-2 flex-row common-card">
-                    <div className="grid-row flex-align-center flex-justify padding-2 border-bottom border-base-lighter">
-                        <p className="font-sans-xl text-bold margin-0">
-                            {`${patientProfile?.findPatientProfile?.summary?.legalName?.last}, ${patientProfile?.findPatientProfile?.summary?.legalName?.first}`}
-                        </p>
-                        <h5 className="font-sans-md text-medium margin-0">
-                            Patient ID: {patientProfile?.findPatientProfile?.shortId}
-                        </h5>
-                    </div>
-                    <Grid row gap={3} className="padding-3">
-                        <Grid row col={3}>
-                            <Grid col={12}>
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">SEX</h5>
-                                <p className="margin-0 font-sans-1xs text-normal">
-                                    {patientProfile?.findPatientProfile?.summary?.gender}
-                                </p>
-                            </Grid>
-                            <Grid col={12} className="margin-top-3">
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    DATE OF BIRTH
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">
-                                    {patientProfile?.findPatientProfile?.summary?.birthday} (
-                                    {calculateAge(new Date(patientProfile?.findPatientProfile?.summary?.birthday))})
-                                </p>
-                            </Grid>
-                        </Grid>
-
-                        <Grid row col={3}>
-                            <Grid col={12}>{newOrderPhone(patientProfile?.findPatientProfile?.summary?.phone)}</Grid>
-                            <Grid col={12} className="margin-top-3">
-                                {newOrderEmail(patientProfile?.findPatientProfile?.summary?.email)}
-                            </Grid>
-                        </Grid>
-
-                        <Grid row col={3}>
-                            <Grid col={12}>
-                                {newOrderAddress(patientProfile?.findPatientProfile?.summary?.address)}
-                            </Grid>
-                        </Grid>
-
-                        <Grid row col={3}>
-                            <Grid col={12}>
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">RACE</h5>
-                                <p className="margin-0 font-sans-1xs text-normal">
-                                    {patientProfile?.findPatientProfile?.summary?.race || 'No data'}
-                                </p>
-                            </Grid>
-                            <Grid col={12} className="margin-top-3">
-                                <h5 className="margin-0 text-normal font-sans-1xs text-gray-50 margin-right-1">
-                                    ETHNICITY
-                                </h5>
-                                <p className="margin-0 font-sans-1xs text-normal">
-                                    {patientProfile?.findPatientProfile?.summary?.ethnicity || 'No data'}
-                                </p>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </div>
+                {profile && profile.summary && (
+                    <PatientProfileSummary patient={profile.patient} summary={profile.summary} />
+                )}
 
                 <div className="grid-row flex-align-center">
                     <h6
