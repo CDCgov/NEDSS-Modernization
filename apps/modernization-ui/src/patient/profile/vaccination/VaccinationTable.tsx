@@ -174,7 +174,7 @@ export const VaccinationTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patie
                                     <span className="no-data">No data</span>
                                 )}
                             </td>
-                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
+                            <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
                                 {!vaccination || !vaccination?.associatedWith ? (
                                     <span className="no-data">No data</span>
                                 ) : (
@@ -188,7 +188,7 @@ export const VaccinationTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patie
                                     </div>
                                 )}
                             </td>
-                            <td className={`font-sans-md table-data ${tableHead[6].sort !== 'all' && 'sort-td'}`}>
+                            <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
                                 {vaccination?.event ? (
                                     <span>{vaccination?.event}</span>
                                 ) : (
