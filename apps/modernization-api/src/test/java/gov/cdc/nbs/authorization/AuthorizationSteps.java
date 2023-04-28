@@ -4,6 +4,7 @@ import gov.cdc.nbs.entity.enums.SecurityEventType;
 import gov.cdc.nbs.entity.odse.SecurityLog;
 import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.repository.SecurityLogRepository;
+import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.UserMother;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.UserUtil;
@@ -22,7 +23,7 @@ public class AuthorizationSteps {
     AuthUserRepository authUserRepository;
 
     @Autowired
-    TestActiveSession activeSession;
+    TestActive<SessionCookie> activeSession;
 
     @Autowired
     TestActiveUser activeUser;
@@ -53,7 +54,7 @@ public class AuthorizationSteps {
 
 
         activeUser.active(user.getUserId());
-        activeSession.active(session);
+        activeSession.active(new SessionCookie(session));
     }
 
     @Given("A sessionId is not set")

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.redirect;
+package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

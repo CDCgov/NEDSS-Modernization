@@ -1,7 +1,7 @@
 package gov.cdc.nbs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authorization.TestActiveSession;
+import gov.cdc.nbs.authorization.SessionCookie;
 import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.servlet.http.Cookie;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
@@ -34,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RedirectSteps {
     @Autowired
-    private MockMvc mvc;
+    MockMvc mvc;
     @Autowired
-    private EncryptionService encryptionService;
+    EncryptionService encryptionService;
     @Autowired
-    private ObjectMapper mapper;
+    ObjectMapper mapper;
     @Autowired
-    private PatientService patientService;
+    PatientService patientService;
 
     private Page<Person> searchResponse;
 
@@ -49,7 +48,7 @@ public class RedirectSteps {
     private PatientFilter patientFilter;
 
     @Autowired
-    TestActiveSession activeSession;
+    TestActive<SessionCookie> activeSession;
 
     @Autowired
     TestActiveUser activeUser;
@@ -75,8 +74,10 @@ public class RedirectSteps {
             mvc
                 .perform(
                     MockMvcRequestBuilders.post("/nbs/redirect/simpleSearch")
-                        .cookie(new Cookie("JSESSIONID", activeSession.active())))
-                .andReturn().getResponse()
+                        .cookie(activeSession.active().asCookie())
+                )
+                .andReturn()
+                .getResponse()
         );
     }
 
@@ -96,7 +97,8 @@ public class RedirectSteps {
     @When("I send a search request to the NBS simple search")
     public void I_send_a_search_request_to_the_nbs_simple_search() throws Exception {
 
-        String session = activeSession.maybeActive().orElse(null);
+        SessionCookie session = activeSession.maybeActive()
+            .orElse(new SessionCookie(null));
 
         activeResponse.active(
             mvc.perform(
@@ -109,7 +111,7 @@ public class RedirectSteps {
                         .param("patientSearchVO.actId", "9876")
                         .param("patientSearchVO.localID", "1234")
                         .params(this.criteria)
-                        .cookie(new Cookie("JSESSIONID", session))
+                        .cookie(session.asCookie())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .accept(MediaType.ALL))
                 .andReturn()
@@ -172,7 +174,7 @@ public class RedirectSteps {
         activeResponse.active(
             mvc.perform(
                     MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
-                        .cookie(new Cookie("JSESSIONID", activeSession.active())))
+                        .cookie(activeSession.active().asCookie()))
                 .andReturn().getResponse()
         );
     }
@@ -183,7 +185,7 @@ public class RedirectSteps {
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        
+
         assertThat(response.getRedirectedUrl()).contains("/advanced-search");
     }
 

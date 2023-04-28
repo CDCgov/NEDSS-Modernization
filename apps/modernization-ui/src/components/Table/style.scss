@@ -77,3 +77,8 @@ td {
 .sort-td {
     background-color: #e1f3f8 !important;
 }
+
+table.usa-table thead tr {
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}

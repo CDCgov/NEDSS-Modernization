@@ -75,6 +75,7 @@ dependencies {
 
     testImplementation libs.bundles.testing
     testImplementation libs.spring.test
+    testImplementation libs.spring.security.test
     testImplementation libs.bundles.testcontainers.elasticsearch
     testImplementation libs.bundles.javafaker
     testImplementation libs.spring.kafka.test

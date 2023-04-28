@@ -5,9 +5,32 @@ import { MockedProvider } from '@apollo/client/testing';
 
 describe('when rendered', () => {
     it('should display sentence cased investigation headers', async () => {
+        const response = {
+            request: {
+                query: FindInvestigationsForPatientDocument,
+                variables: {
+                    patient: 'patient',
+                    openOnly: false,
+                    page: {
+                        pageNumber: 0,
+                        pageSize: 1
+                    }
+                }
+            },
+            result: {
+                data: {
+                    findInvestigationsForPatient: {
+                        content: [],
+                        total: 0,
+                        number: 0
+                    }
+                }
+            }
+        };
+
         const { container } = render(
-            <MockedProvider addTypename={false}>
-                <PatientInvestigationsTable pageSize={1} nbsBase={'base'}></PatientInvestigationsTable>
+            <MockedProvider mocks={[response]} addTypename={false}>
+                <PatientInvestigationsTable patient={'patient'} pageSize={1}></PatientInvestigationsTable>
             </MockedProvider>
         );
 
@@ -55,7 +78,7 @@ describe('when investigations are not available for a patient', () => {
     it('should display Not Available', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientInvestigationsTable patient={'73'} pageSize={5} nbsBase={'base'}></PatientInvestigationsTable>
+                <PatientInvestigationsTable patient={'73'} pageSize={5}></PatientInvestigationsTable>
             </MockedProvider>
         );
 
@@ -103,17 +126,13 @@ describe('when at least one investigation is available for a patient', () => {
     it('should display the investigations', async () => {
         const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientInvestigationsTable patient={'1823'} pageSize={5} nbsBase={'base'}></PatientInvestigationsTable>
+                <PatientInvestigationsTable patient={'1823'} pageSize={5}></PatientInvestigationsTable>
             </MockedProvider>
         );
 
         expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
 
         const event = await findByText('event');
-        expect(event).toHaveAttribute(
-            'href',
-            'base/ViewFile1.do?ContextAction=InvestigationIDOnEvents&publicHealthCaseUID=investigation-id'
-        );
 
         const tableData = container.getElementsByClassName('table-data');
 
