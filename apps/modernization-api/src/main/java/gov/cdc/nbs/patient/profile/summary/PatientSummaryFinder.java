@@ -67,7 +67,7 @@ class PatientSummaryFinder {
                 this.tables.emailUse().codeShortDescTxt,
                 this.tables.address().streetAddr1,
                 this.tables.address().cityDescTxt,
-                this.tables.state().codeDescTxt,
+                this.tables.state().stateNm,
                 this.tables.address().zipCd,
                 this.tables.country().codeDescTxt
             ).from(this.tables.patient())
