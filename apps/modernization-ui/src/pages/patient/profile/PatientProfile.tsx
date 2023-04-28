@@ -222,7 +222,7 @@ export const PatientProfile = () => {
                         patientProfileData={patientProfileData?.findPatientById}
                         ethnicity={ethnicity}
                         race={race}
-                        patientProfile={patientProfile?.findPatientProfile}
+                        id={id || ''}
                     />
                 )}
 

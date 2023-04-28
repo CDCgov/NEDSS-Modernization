@@ -1,5 +1,5 @@
 import { Direction } from 'sorting';
-import { sort } from '././PatientInvestigationSorter';
+import { sort } from './PatientInvestigationSorter';
 import { Headers } from './PatientInvestigation';
 
 describe('when sorting investigations', () => {

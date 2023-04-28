@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
-import { PatientProfile } from 'patient/profile';
+import { PatientProfile } from '../pages/patient/profile';
 import AddPatient from '../pages/addPatient/AddPatient';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';

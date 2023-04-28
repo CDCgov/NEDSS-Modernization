@@ -1,22 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import { FindPatientProfileQuery } from 'generated/graphql/schema';
 import { SortableTable } from 'components/Table/SortableTable';
 import { AddNameModal } from 'pages/patientProfile/components/AddNameModal';
 import { DetailsNameModal } from 'pages/patientProfile/components/DemographicDetails/DetailsNameModal';
 import { Actions } from 'components/Table/Actions';
+import { useFindPatientProfileNames } from '../useFindPatientProfileNames';
+import { TOTAL_TABLE_DATA } from 'utils/util';
 
 type PatientLabReportTableProps = {
-    data?: FindPatientProfileQuery;
-    pageSize?: number;
-    currentPage?: number;
-    setCurrentPage?: (page: number) => void;
+    patient: string | undefined;
 };
 
-export const NamesTable = ({ data, setCurrentPage, currentPage }: PatientLabReportTableProps) => {
-    console.log('data:', data);
+export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -26,12 +23,31 @@ export const NamesTable = ({ data, setCurrentPage, currentPage }: PatientLabRepo
         { name: 'Degree', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: true, sort: 'all' }
     ]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const addNameModalRef = useRef<ModalRef>(null);
+    const detailsNameModalRef = useRef<ModalRef>(null);
+    const deleteModalRef = useRef<ModalRef>(null);
+
     const [isEditModal, setIsEditModal] = useState<boolean>(false);
     const [nameDetails, setNameDetails] = useState<any>(undefined);
-    const detailsNameModalRef = useRef<ModalRef>(null);
     const [isActions, setIsActions] = useState<any>(null);
+
+    const [getProfile, { data }] = useFindPatientProfileNames();
+
+    useEffect(() => {
+        if (patient) {
+            getProfile({
+                variables: {
+                    patient: patient,
+                    page: {
+                        pageNumber: currentPage - 1,
+                        pageSize: TOTAL_TABLE_DATA
+                    }
+                }
+            });
+        }
+    }, [patient, currentPage]);
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -111,11 +127,33 @@ export const NamesTable = ({ data, setCurrentPage, currentPage }: PatientLabRepo
                     <td>
                         <div className="table-span">
                             <Button type="button" unstyled>
-                                <Button type="button" unstyled>
+                                <Button
+                                    type="button"
+                                    unstyled
+                                    onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
                             </Button>
-                            {/* <Actions handleOutsideClick={() => setIsActions(null)} /> */}
+                            {isActions === index && (
+                                <Actions
+                                    handleOutsideClick={() => setIsActions(null)}
+                                    handleAction={(type: string) => {
+                                        if (type === 'edit') {
+                                            setIsEditModal(true);
+                                            addNameModalRef.current?.toggleModal();
+                                        }
+                                        if (type === 'delete') {
+                                            // setIsDeleteModal(true);
+                                            deleteModalRef.current?.toggleModal();
+                                        }
+                                        if (type === 'details') {
+                                            setNameDetails(name);
+                                            detailsNameModalRef.current?.toggleModal();
+                                        }
+                                        setIsActions(null);
+                                    }}
+                                />
+                            )}
                         </div>
                     </td>
                 </tr>

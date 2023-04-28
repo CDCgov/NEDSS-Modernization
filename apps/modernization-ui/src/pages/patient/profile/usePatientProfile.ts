@@ -2,7 +2,7 @@ import { FindPatientProfileQuery } from 'generated/graphql/schema';
 import { useEffect, useState } from 'react';
 import { Patient } from './Patient';
 import { transform as patientTransformer } from './PatientTransformer';
-import { PatientSummary, transform as summaryTransformer } from 'patient/profile/summary';
+import { PatientSummary, transform as summaryTransformer } from 'pages/patient/profile/summary';
 import { useFindPatientProfileSummary } from './useFindPatientProfileSummary';
 
 type Profile = {

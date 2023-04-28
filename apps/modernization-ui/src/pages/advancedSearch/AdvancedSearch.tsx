@@ -1,5 +1,5 @@
 import { Alert, Button, Grid } from '@trussworks/react-uswds';
-import { externalize, internalize } from 'patient/search';
+import { externalize, internalize } from 'pages/patient/search';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { Config } from '../../config';

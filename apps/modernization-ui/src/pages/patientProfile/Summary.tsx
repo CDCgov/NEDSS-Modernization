@@ -3,7 +3,7 @@ import { useFindDocumentsRequiringReviewForPatientLazyQuery } from '../../genera
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Config } from 'config';
 import { DocumentsReview } from './components/SummaryTables/DocumentsReview';
-import { PatientOpenInvestigationsTable } from 'patient/profile/investigation/PatientOpenInvestigationsTable';
+import { PatientOpenInvestigationsTable } from 'pages/patient/profile/investigation/PatientOpenInvestigationsTable';
 
 type SummaryProp = {
     profileData: any;

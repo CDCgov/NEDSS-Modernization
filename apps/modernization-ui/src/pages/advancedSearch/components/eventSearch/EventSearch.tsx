@@ -17,6 +17,7 @@ import { SearchCriteria } from './SearchCriteria';
 import { LabSearchCriteria } from './LabSearchCriteria';
 import { setInvestigationFilters, setLabReportFilters } from '../../../../utils/util';
 import debounce from 'lodash.debounce';
+import { format } from 'date-fns';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;
@@ -201,16 +202,16 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
             if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
                 const eventDateSearch = {
                     eventDateType: body.eventDateType,
-                    from: body.from,
-                    to: body.to
+                    from: format(new Date(body.from), 'yyyy-MM-dd'),
+                    to: format(new Date(body.to), 'yyyy-MM-dd')
                 };
                 filterData.eventDateSearch = eventDateSearch;
             }
             if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
                 const eventDateSearch = {
                     eventDateType: body.labeventDateType,
-                    from: body.labfrom,
-                    to: body.labto
+                    from: format(new Date(body.labfrom), 'yyyy-MM-dd'),
+                    to: format(new Date(body.labto), 'yyyy-MM-dd')
                 };
                 filterData.eventDateSearch = eventDateSearch;
             }

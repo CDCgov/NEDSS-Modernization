@@ -15,13 +15,7 @@ import { HorizontalTable } from '../../components/Table/HorizontalTable';
 import { AddCommentModal } from './components/AddCommentModal';
 import { AddPhoneEmailModal } from './components/AddPhoneEmailModal';
 import { AddAddressModal } from './components/AddressModal';
-import {
-    Deceased,
-    FindPatientByIdQuery,
-    FindPatientProfileQuery,
-    FindPatientsByFilterQuery,
-    useFindPatientProfileLazyQuery
-} from '../../generated/graphql/schema';
+import { Deceased, FindPatientByIdQuery, FindPatientsByFilterQuery } from '../../generated/graphql/schema';
 import { format } from 'date-fns';
 import { AddIdentificationModal } from './components/AddIdentificationModal';
 import { AddRaceModal } from './components/AddRaceModal';
@@ -29,20 +23,17 @@ import { DetailsAddressModal } from './components/DemographicDetails/DetailsAddr
 import { DetailsPhoneEmailModal } from './components/DemographicDetails/DetailsPhoneEmailModal';
 import { DetailsIdentificationModal } from './components/DemographicDetails/DetailsIdentificationModal';
 import { DetailsRaceModal } from './components/DemographicDetails/DetailsRaceModal';
-import { NamesTable } from './demographicsTables/names/labReport';
-import { TOTAL_TABLE_DATA } from 'utils/util';
+import { NamesTable } from 'pages/patient/profile/names';
 
 type DemographicProps = {
     patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
     ethnicity?: string;
     race?: any;
-    patientProfile?: FindPatientProfileQuery['findPatientProfile'];
+    id: string;
 };
 
-export const Demographics = ({ patientProfileData, ethnicity, race, patientProfile }: DemographicProps) => {
-    const [getData, { data: profileData }] = useFindPatientProfileLazyQuery();
-
+export const Demographics = ({ patientProfileData, ethnicity, race, id }: DemographicProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [tableBody, setTableBody] = useState<any>([]);
     const [addressTableBody, setAddressTableBody] = useState<any>([]);
@@ -67,8 +58,6 @@ export const Demographics = ({ patientProfileData, ethnicity, race, patientProfi
     const detailsRaceModalRef = useRef<ModalRef>(null);
 
     const deleteModalRef = useRef<ModalRef>(null);
-
-    const [namesCurrentPage, setNamesCurrentPage] = useState<number>(1);
 
     useEffect(() => {
         const tempArr = [];
@@ -135,23 +124,7 @@ export const Demographics = ({ patientProfileData, ethnicity, race, patientProfi
                 ]
             }
         ]);
-
-        getData({
-            variables: {}
-        });
     }, []);
-
-    useEffect(() => {
-        getData({
-            variables: {
-                shortId: patientProfile?.shortId,
-                page1: {
-                    pageNumber: namesCurrentPage - 1,
-                    pageSize: TOTAL_TABLE_DATA
-                }
-            }
-        });
-    }, [namesCurrentPage]);
 
     const idTableData = (entityIds: FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]['entityIds']) => {
         const tempArr: any = [];
@@ -434,7 +407,7 @@ export const Demographics = ({ patientProfileData, ethnicity, race, patientProfi
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <NamesTable currentPage={namesCurrentPage} data={profileData} setCurrentPage={setNamesCurrentPage} />
+                <NamesTable patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
