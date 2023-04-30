@@ -190,7 +190,7 @@ class PatientSummaryTupleMapper {
     private PatientSummary.Address maybeMapAddress(final Tuple tuple) {
         String street = tuple.get(this.tables.address().streetAddr1);
         String city = tuple.get(this.tables.address().cityDescTxt);
-        String state = tuple.get(this.tables.state().codeDescTxt);
+        String state = tuple.get(this.tables.state().stateNm);
         String zip = tuple.get(this.tables.address().zipCd);
         String country = tuple.get(this.tables.country().codeDescTxt);
 

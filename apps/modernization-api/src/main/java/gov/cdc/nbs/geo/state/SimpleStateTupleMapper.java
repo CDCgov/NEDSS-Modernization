@@ -24,7 +24,7 @@ public class SimpleStateTupleMapper {
             tuple.get(this.tables.address().stateCd),
             "A state identifier is required"
         );
-        String description = tuple.get(this.tables.state().codeDescTxt);
+        String description = tuple.get(this.tables.state().stateNm);
 
         return resolve(id, description);
     }
@@ -38,7 +38,7 @@ public class SimpleStateTupleMapper {
 
     public Optional<SimpleState> maybeMap(final Tuple tuple) {
         String id = tuple.get(this.tables.address().stateCd);
-        String description = tuple.get(this.tables.state().codeDescTxt);
+        String description = tuple.get(this.tables.state().stateNm);
 
         return id == null
             ? Optional.empty()

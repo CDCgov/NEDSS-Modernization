@@ -306,7 +306,7 @@ class PatientSummaryTupleMapperTest {
 
         when(tuple.get(tables.address().streetAddr1)).thenReturn("street");
         when(tuple.get(tables.address().cityDescTxt)).thenReturn("city");
-        when(tuple.get(tables.state().codeDescTxt)).thenReturn("state");
+        when(tuple.get(tables.state().stateNm)).thenReturn("state");
         when(tuple.get(tables.address().zipCd)).thenReturn("zip");
         when(tuple.get(tables.country().codeDescTxt)).thenReturn("country");
 
@@ -366,7 +366,7 @@ class PatientSummaryTupleMapperTest {
 
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(113L);
 
-        when(tuple.get(tables.state().codeDescTxt)).thenReturn("state");
+        when(tuple.get(tables.state().stateNm)).thenReturn("state");
 
         PatientSummaryTupleMapper mapper = new PatientSummaryTupleMapper(tables);
 
