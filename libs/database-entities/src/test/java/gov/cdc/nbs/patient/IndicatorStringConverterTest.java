@@ -33,7 +33,7 @@ class IndicatorStringConverterTest {
 
     static Stream<Arguments> indicatorToString() {
         return Arrays.stream(Indicator.values())
-            .map(e -> arguments(e, e.code()));
+            .map(e -> arguments(e, e.getId()));
     }
 
 
@@ -48,7 +48,7 @@ class IndicatorStringConverterTest {
 
     static Stream<Arguments> stringToIndicator() {
         return Arrays.stream(Indicator.values())
-            .map(e -> arguments(e.code(), e));
+            .map(e -> arguments(e.getId(), e));
     }
 
     @Test
