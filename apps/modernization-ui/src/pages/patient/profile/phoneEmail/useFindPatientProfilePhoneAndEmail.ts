@@ -21,6 +21,10 @@ export const Query = gql`
                     email
                     url
                     comment
+                    type {
+                        id
+                        description
+                    }
                 }
                 total
                 number

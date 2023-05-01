@@ -131,12 +131,11 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
                         )}
                     </td>
                     <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                        {/* {identification?.type ? (
+                        {identification?.type ? (
                             <span>{identification?.type.description}</span>
                         ) : (
                             <span className="no-data">No data</span>
-                        )} */}
-                        <span className="no-data">No data</span>
+                        )}
                     </td>
                     <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                         {identification?.authority ? (

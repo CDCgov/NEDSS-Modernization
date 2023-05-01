@@ -21,6 +21,10 @@ export const Query = gql`
                         description
                     }
                     value
+                    type {
+                        id
+                        description
+                    }
                 }
                 total
                 number

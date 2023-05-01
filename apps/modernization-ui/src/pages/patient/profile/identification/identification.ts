@@ -1,3 +1,5 @@
+import { Maybe, PatientCodedValue } from 'generated/graphql/schema';
+
 export type Identification = {
     __typename?: 'PatientIdentification';
     patient: number;
@@ -7,4 +9,5 @@ export type Identification = {
     asOf: any;
     value?: string | null;
     authority?: { __typename?: 'PatientCodedValue'; id: string; description: string } | null;
+    type?: Maybe<PatientCodedValue>;
 } | null;
