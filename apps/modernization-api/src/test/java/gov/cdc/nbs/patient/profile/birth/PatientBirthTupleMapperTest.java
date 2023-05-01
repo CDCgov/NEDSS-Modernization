@@ -107,7 +107,7 @@ class PatientBirthTupleMapperTest {
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
 
         when(tuple.get(tables.address().stateCd)).thenReturn("state-id");
-        when(tuple.get(tables.state().codeDescTxt)).thenReturn("state-description");
+        when(tuple.get(tables.state().stateNm)).thenReturn("state-description");
 
         PatientBirthTupleMapper mapper = new PatientBirthTupleMapper(tables);
 

@@ -2,7 +2,13 @@ nbs:
   datasource:
     server: localhost
 
+
 spring:
+  graphql:
+    path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
   flyway:
     enabled: true
     schemas: dbo

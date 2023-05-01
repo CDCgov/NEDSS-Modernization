@@ -98,7 +98,7 @@ describe('when treatments are available for a patient', () => {
     };
 
     it('should display the treatments', async () => {
-        const { container, findByText, getAllByRole } = render(
+        const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientTreatmentTable patient={'1823'} pageSize={5}></PatientTreatmentTable>
             </MockedProvider>
@@ -108,13 +108,25 @@ describe('when treatments are available for a patient', () => {
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[0]).toContainHTML('<span class="link">03/20/2023 <br /> 10:36 AM</span>');
-        expect(tableData[1].innerHTML).toContain('DR Indiana Jones');
-        expect(tableData[2].innerHTML).toContain('03/01/2023');
-        expect(tableData[3].innerHTML).toContain('treatment-description');
-        expect(tableData[4]).toContainHTML(
-            '<div><p class="margin-0 text-primary text-bold link" style="word-break: break-word;">CAS10000000GA01</p><p class="margin-0">Pertussis</p></div></span>'
-        );
+        const dateCreated = await findByText(/03\/20\/2023/);
+
+        expect(dateCreated).toHaveTextContent('10:36 AM');
+
+        expect(tableData[0]).toContainElement(dateCreated);
+
+        expect(tableData[1]).toHaveTextContent('DR Indiana Jones');
+        expect(tableData[2]).toHaveTextContent('03/01/2023');
+        expect(tableData[3]).toHaveTextContent('treatment-description');
+
+        //  Associated With
+        const association = await findByText('CAS10000000GA01');
+
+        expect(tableData[4]).toContainElement(association);
+
+        const associationCondition = await findByText('Pertussis');
+
+        expect(tableData[4]).toContainElement(associationCondition);
+
         expect(tableData[5]).toHaveTextContent('TRT10000000GA01');
     });
 });

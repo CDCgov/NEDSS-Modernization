@@ -32,7 +32,7 @@ class PatientMortalityFinder {
                 tables.patient().deceasedTime,
                 tables.address().cityDescTxt,
                 tables.address().stateCd,
-                tables.state().codeDescTxt,
+                tables.state().stateNm,
                 tables.address().cntryCd,
                 tables.country().codeDescTxt
             ).from(this.tables.patient())
