@@ -1,0 +1,1 @@
+export { IdentificationsTable } from './IdentificationsTable';

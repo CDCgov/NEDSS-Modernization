@@ -82,7 +82,6 @@ export const PatientProfile = () => {
     }, []);
 
     const [ethnicity, setEthnicity] = useState<string>('');
-    const [race, setRace] = useState<any>(undefined);
     useEffect(() => {
         if (patientProfileData?.findPatientById) {
             setProfileData(patientProfileData?.findPatientById);
@@ -91,16 +90,6 @@ export const PatientProfile = () => {
                     if (ethinicity.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
                         setEthnicity(ethinicity.codeDescTxt);
                     }
-                });
-
-                const raceArr: any = [];
-                searchCriteria.races.map((race) => {
-                    patientProfileData?.findPatientById?.races?.map((item: any) => {
-                        if (race.id.code === item?.raceCd) {
-                            raceArr.push(race.codeDescTxt);
-                            setRace(raceArr);
-                        }
-                    });
                 });
             }
         }
@@ -221,7 +210,6 @@ export const PatientProfile = () => {
                         }}
                         patientProfileData={patientProfileData?.findPatientById}
                         ethnicity={ethnicity}
-                        race={race}
                         id={id || ''}
                     />
                 )}

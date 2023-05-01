@@ -2,6 +2,7 @@ import { Button, Icon, Table, Pagination } from '@trussworks/react-uswds';
 import React from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
+import { Direction } from 'sorting';
 
 export type TableDetail = {
     id: string | number;
@@ -22,7 +23,9 @@ export type TableContentProps = {
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
     sortData?: (name: string, type: string) => void;
+    sortDirectionData?: (name: string, type: Direction) => void;
     tableBody: any;
+    currentPageLength?: number;
 };
 
 export const SortableTable = ({
@@ -36,10 +39,13 @@ export const SortableTable = ({
     handleNext,
     buttons,
     tableSubHeader,
-    sortData
+    sortData,
+    sortDirectionData,
+    currentPageLength
 }: TableContentProps) => {
     const handleSort = (headerName: string, type: string) => {
         sortData?.(headerName, type);
+        sortDirectionData?.(headerName, type as Direction);
     };
 
     return (
@@ -55,7 +61,10 @@ export const SortableTable = ({
                 <thead>
                     <tr>
                         {tableHead.map((head: any, index) => (
-                            <th key={index} scope="col" className={head.sort !== 'all' ? 'sort-header' : ''}>
+                            <th
+                                key={index}
+                                scope="col"
+                                className={head.sortable && head.sort !== 'all' ? 'sort-header' : ''}>
                                 <div className="table-head">
                                     <span className="head-name">{head.name}</span>
                                     {head.sortable && (
@@ -103,7 +112,7 @@ export const SortableTable = ({
             </Table>
             <div className="padding-2 grid-row flex-align-center flex-justify">
                 <p className="margin-0 show-length-text">
-                    Showing {totalResults} of {totalResults}
+                    Showing {currentPageLength && currentPageLength + (currentPage - 1) * pageSize} of {totalResults}
                 </p>
                 {isPagination && totalResults >= pageSize && (
                     <Pagination

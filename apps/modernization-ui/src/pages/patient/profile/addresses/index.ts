@@ -1,0 +1,1 @@
+export { AddressesTable } from './AddressesTable';

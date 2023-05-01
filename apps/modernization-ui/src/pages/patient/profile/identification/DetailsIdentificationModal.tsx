@@ -1,53 +1,40 @@
 import { Grid } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { format } from 'date-fns';
 
-export const DetailsAddressModal = ({ modalRef, data, bodyRef }: any) => {
-    data = data ? JSON.parse(data) : undefined;
-
+export const DetailsIdentificationModal = ({ modalRef, data }: any) => {
+    console.log('data:', data);
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="View details - Address"
+            modalHeading="View details - Identification"
             modalBody={
-                <div className="modal-body" ref={bodyRef}>
+                <div className="modal-body">
                     <Grid row>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
                                 <Grid col={6}>As of:</Grid>
-                                <Grid col={6}>Not available yet</Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                            <Grid row>
-                                <Grid col={6}>Type:</Grid>
-                                <Grid col={6}>Not available yet</Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                            <Grid row>
-                                <Grid col={6}>Address:</Grid>
                                 <Grid col={6}>
-                                    {data?.locator?.streetAddr1 + ' ' + (data?.locator?.streetAddr2 || '') ||
-                                        'Not available yet'}
+                                    {data?.asOf ? format(new Date(data?.asOf), 'MM/dd/yyyy') : 'Not available yet'}
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
-                                <Grid col={6}>City:</Grid>
-                                <Grid col={6}>{data?.locator?.cityDescTxt || 'Not available yet'}</Grid>
+                                <Grid col={6}>Type:</Grid>
+                                <Grid col={6}>{'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
-                                <Grid col={6}>State:</Grid>
-                                <Grid col={6}>{data?.locator?.stateCd || 'Not available yet'}</Grid>
+                                <Grid col={6}>Authority:</Grid>
+                                <Grid col={6}>{data?.authority?.description || 'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
-                                <Grid col={6}>Zip:</Grid>
-                                <Grid col={6}>{data?.locator?.zipCd}</Grid>
+                                <Grid col={6}>Value:</Grid>
+                                <Grid col={6}>{data?.value || 'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">

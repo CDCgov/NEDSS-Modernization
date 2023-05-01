@@ -1,5 +1,5 @@
 import { Ref } from 'react';
-import { ModalComponent } from '../../../components/ModalComponent/ModalComponent';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import {
     Button,
     ButtonGroup,
@@ -12,10 +12,11 @@ import {
     Textarea
 } from '@trussworks/react-uswds';
 import { Controller, useForm } from 'react-hook-form';
-import { DatePickerInput } from '../../../components/FormInputs/DatePickerInput';
+import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 
 type AddCommentModalProps = {
     modalRef: Ref<ModalRef> | undefined;
+    modalHead?: string;
 };
 
 const ModalBody = ({ control, onSubmit, modalRef }: any) => {
@@ -76,7 +77,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
     );
 };
 
-export const AddCommentModal = ({ modalRef }: AddCommentModalProps) => {
+export const AddCommentModal = ({ modalRef, modalHead }: AddCommentModalProps) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
@@ -87,7 +88,7 @@ export const AddCommentModal = ({ modalRef }: AddCommentModalProps) => {
     return (
         <ModalComponent
             modalRef={modalRef}
-            modalHeading="Add - Comment"
+            modalHeading={modalHead}
             modalBody={<ModalBody control={control} onSubmit={handleSubmit(onSubmit)} modalRef={modalRef} />}
         />
     );

@@ -49,8 +49,8 @@ td {
     position: absolute;
     min-width: 130px;
     z-index: 1;
-    right: 50%;
-    transform: translate(50%, 0);
+    left: 0;
+    // transform: translate(50%, 0);
 
     button:hover {
         border-bottom: 1px solid #dfe1e2;

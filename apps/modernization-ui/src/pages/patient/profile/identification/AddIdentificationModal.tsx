@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ModalComponent } from '../../../components/ModalComponent/ModalComponent';
+import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import {
     Button,
     ButtonGroup,
@@ -11,9 +11,9 @@ import {
     Textarea
 } from '@trussworks/react-uswds';
 import { Controller, useForm } from 'react-hook-form';
-import { DatePickerInput } from '../../../components/FormInputs/DatePickerInput';
-import { SelectInput } from '../../../components/FormInputs/SelectInput';
-import { Input } from '../../../components/FormInputs/Input';
+import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
+import { SelectInput } from '../../../../components/FormInputs/SelectInput';
+import { Input } from '../../../../components/FormInputs/Input';
 import { stateList } from 'constant/states';
 
 type ModalProps = {
