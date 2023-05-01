@@ -135,9 +135,8 @@ input InvestigationFilter {
   programAreas: [String]
   jurisdictions: [ID]
   pregnancyStatus: PregnancyStatus
-  eventIdType: InvestigationEventIdType
-  eventId: String
-  eventDateSearch: InvestigationEventDateSearch
+  eventId: EventId
+  eventDate: InvestigationEventDateSearch
   createdBy: String
   lastUpdatedBy: String
   providerFacilitySearch: ProviderFacilitySearch
@@ -147,6 +146,11 @@ input InvestigationFilter {
   caseStatuses: CaseStatuses
   notificationStatuses: NotificationStatuses
   processingStatuses: ProcessingStatuses
+}
+
+input EventId {
+  type: InvestigationEventIdType!
+  id: String!
 }
 
 input CaseStatuses {
@@ -165,7 +169,7 @@ input ProcessingStatuses {
 }
 
 input InvestigationEventDateSearch {
-  eventDateType: InvestigationEventDateType!
+  type: InvestigationEventDateType!
   from: DateTime!
   to: DateTime!
 }
@@ -273,9 +277,8 @@ input LabReportFilter {
   programAreas: [String]
   jurisdictions: [ID]
   pregnancyStatus: PregnancyStatus
-  eventIdType: LaboratoryEventIdType
-  eventId: String
-  eventDateSearch: LaboratoryEventDateSearch
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
   entryMethods: [EntryMethod]
   enteredBy: [UserType]
   eventStatus: [EventStatus]
@@ -285,6 +288,11 @@ input LabReportFilter {
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
+}
+
+input LabReportEventId {
+  type: LaboratoryEventIdType!
+  id: String!
 }
 
 type LabReport {
@@ -353,7 +361,7 @@ type AssociatedInvestigation {
 }
 
 input LaboratoryEventDateSearch {
-  eventDateType: LaboratoryReportEventDateType!
+  type: LaboratoryReportEventDateType!
   from: DateTime!
   to: DateTime!
 }

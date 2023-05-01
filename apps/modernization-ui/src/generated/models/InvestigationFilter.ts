@@ -2,16 +2,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { InvestigationEventDateSearch } from './InvestigationEventDateSearch';
+import type { EventDate } from './EventDate';
+import type { EventId0 } from './EventId0';
 import type { ProviderFacilitySearch } from './ProviderFacilitySearch';
 
 export type InvestigationFilter = {
     caseStatuses?: Array<'CONFIRMED' | 'NOT_A_CASE' | 'PROBABLE' | 'SUSPECT' | 'UNASSIGNED' | 'UNKNOWN'>;
     conditions?: Array<string>;
     createdBy?: number;
-    eventDateSearch?: InvestigationEventDateSearch;
-    eventId?: string;
-    eventIdType?: InvestigationFilter.eventIdType;
+    eventDate?: EventDate;
+    eventId?: EventId0;
     investigationStatus?: InvestigationFilter.investigationStatus;
     investigatorId?: number;
     jurisdictions?: Array<number>;
@@ -26,14 +26,6 @@ export type InvestigationFilter = {
 };
 
 export namespace InvestigationFilter {
-
-    export enum eventIdType {
-        ABCS_CASE_ID = 'ABCS_CASE_ID',
-        CITY_COUNTY_CASE_ID = 'CITY_COUNTY_CASE_ID',
-        INVESTIGATION_ID = 'INVESTIGATION_ID',
-        NOTIFICATION_ID = 'NOTIFICATION_ID',
-        STATE_CASE_ID = 'STATE_CASE_ID',
-    }
 
     export enum investigationStatus {
         CLOSED = 'CLOSED',

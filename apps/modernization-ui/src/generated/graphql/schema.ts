@@ -122,6 +122,11 @@ export type EthnicityResults = {
   total: Scalars['Int'];
 };
 
+export type EventId = {
+  id: Scalars['String'];
+  type: InvestigationEventIdType;
+};
+
 export enum EventStatus {
   New = 'NEW',
   Update = 'UPDATE'
@@ -199,9 +204,9 @@ export type Investigation = {
 };
 
 export type InvestigationEventDateSearch = {
-  eventDateType: InvestigationEventDateType;
   from: Scalars['DateTime'];
   to: Scalars['DateTime'];
+  type: InvestigationEventDateType;
 };
 
 export enum InvestigationEventDateType {
@@ -225,9 +230,8 @@ export type InvestigationFilter = {
   caseStatuses?: InputMaybe<CaseStatuses>;
   conditions?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   createdBy?: InputMaybe<Scalars['String']>;
-  eventDateSearch?: InputMaybe<InvestigationEventDateSearch>;
-  eventId?: InputMaybe<Scalars['String']>;
-  eventIdType?: InputMaybe<InvestigationEventIdType>;
+  eventDate?: InputMaybe<InvestigationEventDateSearch>;
+  eventId?: InputMaybe<EventId>;
   investigationStatus?: InputMaybe<InvestigationStatus>;
   investigatorId?: InputMaybe<Scalars['ID']>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -308,14 +312,18 @@ export type LabReport = {
   versionCtrlNbr?: Maybe<Scalars['Int']>;
 };
 
+export type LabReportEventId = {
+  id: Scalars['String'];
+  type: LaboratoryEventIdType;
+};
+
 export type LabReportFilter = {
   codedResult?: InputMaybe<Scalars['String']>;
   createdBy?: InputMaybe<Scalars['ID']>;
   enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
   entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
-  eventDateSearch?: InputMaybe<LaboratoryEventDateSearch>;
-  eventId?: InputMaybe<Scalars['String']>;
-  eventIdType?: InputMaybe<LaboratoryEventIdType>;
+  eventDate?: InputMaybe<LaboratoryEventDateSearch>;
+  eventId?: InputMaybe<LabReportEventId>;
   eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['ID']>;
@@ -365,9 +373,9 @@ export type LabTestId = {
 };
 
 export type LaboratoryEventDateSearch = {
-  eventDateType: LaboratoryReportEventDateType;
   from: Scalars['DateTime'];
   to: Scalars['DateTime'];
+  type: LaboratoryReportEventDateType;
 };
 
 export enum LaboratoryEventIdType {

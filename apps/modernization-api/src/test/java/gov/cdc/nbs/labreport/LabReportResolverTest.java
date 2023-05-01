@@ -51,9 +51,8 @@ class LabReportResolverTest {
         assertEquals(filter.getProgramAreas(), actualFilter.getProgramAreas());
         assertEquals(filter.getJurisdictions(), actualFilter.getJurisdictions());
         assertEquals(filter.getPregnancyStatus(), actualFilter.getPregnancyStatus());
-        assertEquals(filter.getEventIdType(), actualFilter.getEventIdType());
         assertEquals(filter.getEventId(), actualFilter.getEventId());
-        assertEquals(filter.getEventDateSearch(), actualFilter.getEventDateSearch());
+        assertEquals(filter.getEventDate(), actualFilter.getEventDate());
         assertEquals(filter.getEntryMethods(), actualFilter.getEntryMethods());
         assertEquals(filter.getEnteredBy(), actualFilter.getEnteredBy());
         assertEquals(filter.getEventStatus(), actualFilter.getEventStatus());

@@ -1,7 +1,7 @@
 package gov.cdc.nbs;
 
 import static org.junit.Assert.assertTrue;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.labreport.LabReportFilter;
-import gov.cdc.nbs.labreport.LabReportFinder;
 import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.labreport.LabReportFilter.EventId;
 import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportDateType;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportProviderSearch;
@@ -25,6 +25,7 @@ import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventIdType;
 import gov.cdc.nbs.labreport.LabReportFilter.ProcessingStatus;
 import gov.cdc.nbs.labreport.LabReportFilter.ProviderType;
 import gov.cdc.nbs.labreport.LabReportFilter.UserType;
+import gov.cdc.nbs.labreport.LabReportFinder;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
@@ -100,21 +101,19 @@ public class LabReportSearchSteps {
             case "event id":
                 switch (qualifier) {
                     case "accession number":
-                        filter.setEventIdType(LaboratoryEventIdType.ACCESSION_NUMBER);
-                        filter.setEventId("accession number");
+                        filter.setEventId(new EventId(LaboratoryEventIdType.ACCESSION_NUMBER, "accession number"));
                         break;
                     case "lab id":
-                        filter.setEventIdType(LaboratoryEventIdType.LAB_ID);
-                        filter.setEventId("OBS10003024GA01");
+                        filter.setEventId(new EventId(LaboratoryEventIdType.LAB_ID, "OBS10003024GA01"));
                         break;
                 }
                 break;
             case "event date":
                 var eds = new LaboratoryEventDateSearch(
                         LabReportDateType.valueOf(qualifier),
-                        Instant.now().minus(5, ChronoUnit.DAYS),
-                        Instant.now());
-                filter.setEventDateSearch(eds);
+                        LocalDate.now().minus(5, ChronoUnit.DAYS),
+                        LocalDate.now().plusDays(1));
+                filter.setEventDate(eds);
                 break;
             case "entry method":
                 filter.setEntryMethods(Arrays.asList(EntryMethod.ELECTRONIC));

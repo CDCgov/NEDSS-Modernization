@@ -7,7 +7,9 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { EncryptionResponse } from './models/EncryptionResponse';
-export { InvestigationEventDateSearch } from './models/InvestigationEventDateSearch';
+export { EventDate } from './models/EventDate';
+export { EventId } from './models/EventId';
+export { EventId0 } from './models/EventId0';
 export { InvestigationFilter } from './models/InvestigationFilter';
 export { LaboratoryEventDateSearch } from './models/LaboratoryEventDateSearch';
 export { LabReportFilter } from './models/LabReportFilter';

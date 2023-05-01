@@ -47,9 +47,9 @@ class InvestigationResolverTest {
         assertEquals(filter.getProgramAreas(), actualFilter.getProgramAreas());
         assertEquals(filter.getJurisdictions(), actualFilter.getJurisdictions());
         assertEquals(filter.getPregnancyStatus(), actualFilter.getPregnancyStatus());
-        assertEquals(filter.getEventIdType(), actualFilter.getEventIdType());
+        assertEquals(filter.getEventId().getType(), actualFilter.getEventId().getType());
         assertEquals(filter.getEventId(), actualFilter.getEventId());
-        assertEquals(filter.getEventDateSearch(), actualFilter.getEventDateSearch());
+        assertEquals(filter.getEventDate(), actualFilter.getEventDate());
         assertEquals(filter.getCreatedBy(), actualFilter.getCreatedBy());
         assertEquals(filter.getLastUpdatedBy(), actualFilter.getLastUpdatedBy());
         assertEquals(filter.getProviderFacilitySearch(), actualFilter.getProviderFacilitySearch());

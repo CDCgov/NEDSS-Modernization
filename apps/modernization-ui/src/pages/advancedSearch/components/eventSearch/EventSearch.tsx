@@ -161,7 +161,6 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
     const onSubmit: any = (body: any) => {
         let filterData: InvestigationFilter | LabReportFilter = {};
         if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
-            // filterData.eventType = EventType.Investigation;
             filterData = {
                 conditions: body.conditon?.length > 0 ? body.conditon : undefined,
                 jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
@@ -173,9 +172,8 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 createdBy: body.createdBy && body.createdBy !== '- Select -' ? body.createdBy : undefined,
                 lastUpdatedBy:
                     body.lastUpdatedBy && body.lastUpdatedBy !== '- Select -' ? body.lastUpdatedBy : undefined
-            };
+            } as InvestigationFilter;
         } else if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
-            // filterData.eventType = EventType.LaboratoryReport;
             filterData = {
                 jurisdictions: body.labjurisdiction?.length > 0 ? body.labjurisdiction : undefined,
                 pregnancyStatus:
@@ -191,7 +189,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 enteredBy: body.enteredBy?.length > 0 ? body.enteredBy : undefined,
                 eventStatus: body.eventStatus?.length > 0 ? body.eventStatus : undefined,
                 processingStatus: body.processingStatus?.length > 0 ? body.processingStatus : undefined
-            };
+            } as LabReportFilter;
         } else {
             return;
         }
@@ -200,19 +198,19 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         if (body.eventDateType && body.eventDateType !== '- Select -' && body.from && body.to) {
             if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
                 const eventDateSearch = {
-                    eventDateType: body.eventDateType,
+                    type: body.eventDateType,
                     from: body.from,
                     to: body.to
                 };
-                filterData.eventDateSearch = eventDateSearch;
+                (filterData as InvestigationFilter).eventDate = eventDateSearch;
             }
             if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
                 const eventDateSearch = {
-                    eventDateType: body.labeventDateType,
+                    type: body.labeventDateType,
                     from: body.labfrom,
                     to: body.labto
                 };
-                filterData.eventDateSearch = eventDateSearch;
+                (filterData as LabReportFilter).eventDate = eventDateSearch;
             }
         }
 

@@ -1,23 +1,22 @@
 package gov.cdc.nbs.labreport;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
-
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LabReportFilter {
     private Long patientId;
     private List<String> programAreas;
     private List<Long> jurisdictions;
     private PregnancyStatus pregnancyStatus;
-    private LaboratoryEventIdType eventIdType;
-    private String eventId;
-    private LaboratoryEventDateSearch eventDateSearch;
+    private EventId eventId;
+    private LaboratoryEventDateSearch eventDate;
     private List<EntryMethod> entryMethods;
     private List<UserType> enteredBy;
     private List<EventStatus> eventStatus;
@@ -29,22 +28,30 @@ public class LabReportFilter {
     private String codedResult;
 
 
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class LaboratoryEventDateSearch {
-        private LabReportDateType eventDateType;
-        private Instant from;
-        private Instant to;
+        private LabReportDateType type;
+        private LocalDate from;
+        private LocalDate to;
     }
 
 
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class LabReportProviderSearch {
         private ProviderType providerType;
         private Long providerId;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class EventId {
+        private LaboratoryEventIdType type;
+        private String id;
     }
 
 
