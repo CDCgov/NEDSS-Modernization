@@ -296,7 +296,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                         className="width-full clear-btn"
                         type={'button'}
                         onClick={() => {
-                            reset();
+                            reset({});
                             clearAll();
                             setEventSearchType('');
                         }}
