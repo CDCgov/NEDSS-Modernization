@@ -131,6 +131,7 @@ export const TableComponent = ({
                     <span className="head-name">{head.name}</span>
                     {head.sortable && (
                         <Button
+                            disabled={!tableBody || tableBody.length <= 1}
                             className="usa-button--unstyled"
                             type={'button'}
                             aria-label="sort"
