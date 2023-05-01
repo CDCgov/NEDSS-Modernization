@@ -258,7 +258,7 @@ class LabReportQueryBuilderTest {
         var clause1 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.TYPE_CD, nested);
         assertEquals("Filler Number", clause1.value());
         var clause2 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT, nested);
-        assertEquals(filter.getEventId().getId(), clause2.value());
+        assertEquals(filter.getEventId().getLabEventId(), clause2.value());
     }
 
     @Test
@@ -279,7 +279,7 @@ class LabReportQueryBuilderTest {
 
         // Case type clause added
         var clause = findMatchQueryBuilder(LabReport.LOCAL_ID, must);
-        assertEquals(filter.getEventId().getId(), clause.value());
+        assertEquals(filter.getEventId().getLabEventId(), clause.value());
     }
 
     @ParameterizedTest

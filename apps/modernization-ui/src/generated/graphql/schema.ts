@@ -123,8 +123,8 @@ export type EthnicityResults = {
 };
 
 export type EventId = {
-  id: Scalars['String'];
-  type: InvestigationEventIdType;
+  investigationEventId: Scalars['String'];
+  investigationEventType: InvestigationEventIdType;
 };
 
 export enum EventStatus {
@@ -204,8 +204,8 @@ export type Investigation = {
 };
 
 export type InvestigationEventDateSearch = {
-  from: Scalars['DateTime'];
-  to: Scalars['DateTime'];
+  from: Scalars['Date'];
+  to: Scalars['Date'];
   type: InvestigationEventDateType;
 };
 
@@ -313,8 +313,8 @@ export type LabReport = {
 };
 
 export type LabReportEventId = {
-  id: Scalars['String'];
-  type: LaboratoryEventIdType;
+  labEventId: Scalars['String'];
+  labEventType: LaboratoryEventIdType;
 };
 
 export type LabReportFilter = {
@@ -373,8 +373,8 @@ export type LabTestId = {
 };
 
 export type LaboratoryEventDateSearch = {
-  from: Scalars['DateTime'];
-  to: Scalars['DateTime'];
+  from: Scalars['Date'];
+  to: Scalars['Date'];
   type: LaboratoryReportEventDateType;
 };
 

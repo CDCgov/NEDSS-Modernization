@@ -80,7 +80,7 @@ public class LabReportQueryBuilder {
         }
         // event Id
         if (filter.getEventId() != null) {
-            switch (filter.getEventId().getType()) {
+            switch (filter.getEventId().getLabEventType()) {
                 case ACCESSION_NUMBER:
                     var accessionNumberQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(
@@ -90,17 +90,17 @@ public class LabReportQueryBuilder {
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ACT_IDS + "."
                                             + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId().getId()));
+                                    filter.getEventId().getLabEventId()));
                     var nestedAccessionNumberQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
                             accessionNumberQuery,
                             ScoreMode.None);
                     builder.must(nestedAccessionNumberQuery);
                     break;
                 case LAB_ID:
-                    builder.must(QueryBuilders.matchQuery(LabReport.LOCAL_ID, filter.getEventId().getId()));
+                    builder.must(QueryBuilders.matchQuery(LabReport.LOCAL_ID, filter.getEventId().getLabEventId()));
                     break;
                 default:
-                    throw new QueryException("Invalid event type: " + filter.getEventId().getType());
+                    throw new QueryException("Invalid event type: " + filter.getEventId().getLabEventType());
             }
         }
         // event date search

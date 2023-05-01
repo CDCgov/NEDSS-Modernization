@@ -149,8 +149,8 @@ input InvestigationFilter {
 }
 
 input EventId {
-  type: InvestigationEventIdType!
-  id: String!
+  investigationEventType: InvestigationEventIdType!
+  investigationEventId: String!
 }
 
 input CaseStatuses {
@@ -170,8 +170,8 @@ input ProcessingStatuses {
 
 input InvestigationEventDateSearch {
   type: InvestigationEventDateType!
-  from: DateTime!
-  to: DateTime!
+  from: Date!
+  to: Date!
 }
 
 input ProviderFacilitySearch {
@@ -291,8 +291,8 @@ input LabReportFilter {
 }
 
 input LabReportEventId {
-  type: LaboratoryEventIdType!
-  id: String!
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
 }
 
 type LabReport {
@@ -362,8 +362,8 @@ type AssociatedInvestigation {
 
 input LaboratoryEventDateSearch {
   type: LaboratoryReportEventDateType!
-  from: DateTime!
-  to: DateTime!
+  from: Date!
+  to: Date!
 }
 
 input LabReportProviderSearch {

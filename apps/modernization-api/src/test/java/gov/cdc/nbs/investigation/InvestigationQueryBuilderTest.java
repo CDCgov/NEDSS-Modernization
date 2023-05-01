@@ -312,7 +312,7 @@ class InvestigationQueryBuilderTest {
         var clause2 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
                         nestedBuilders);
-        assertEquals(filter.getEventId().getId(), clause2.value());
+        assertEquals(filter.getEventId().getInvestigationEventId(), clause2.value());
     }
 
     @Test
@@ -346,7 +346,7 @@ class InvestigationQueryBuilderTest {
         var clause3 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
                         nestedBuilders);
-        assertEquals(filter.getEventId().getId(), clause3.value());
+        assertEquals(filter.getEventId().getInvestigationEventId(), clause3.value());
     }
 
 
@@ -381,7 +381,7 @@ class InvestigationQueryBuilderTest {
         var clause3 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
                         nestedBuilders);
-        assertEquals(filter.getEventId().getId(), clause3.value());
+        assertEquals(filter.getEventId().getInvestigationEventId(), clause3.value());
     }
 
     @Test
@@ -401,7 +401,7 @@ class InvestigationQueryBuilderTest {
         var must = ((BoolQueryBuilder) query.getQuery()).must();
 
         var clause = findMatchQueryBuilder(Investigation.LOCAL_ID, must);
-        assertEquals(filter.getEventId().getId(), clause.value());
+        assertEquals(filter.getEventId().getInvestigationEventId(), clause.value());
     }
 
     @Test
@@ -421,7 +421,7 @@ class InvestigationQueryBuilderTest {
         var must = ((BoolQueryBuilder) query.getQuery()).must();
 
         var clause = findMatchQueryBuilder(Investigation.NOTIFICATION_LOCAL_ID, must);
-        assertEquals(filter.getEventId().getId(), clause.value());
+        assertEquals(filter.getEventId().getInvestigationEventId(), clause.value());
     }
 
     @ParameterizedTest

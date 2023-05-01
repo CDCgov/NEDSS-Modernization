@@ -40,8 +40,8 @@ public class InvestigationFilter {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class EventId {
-        private IdType type;
-        private String id;
+        private IdType investigationEventType;
+        private String investigationEventId;
     }
 
     @Data

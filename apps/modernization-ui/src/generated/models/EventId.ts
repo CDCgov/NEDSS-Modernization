@@ -3,13 +3,13 @@
 /* eslint-disable */
 
 export type EventId = {
-    id?: string;
-    type?: EventId.type;
+    labEventId?: string;
+    labEventType?: EventId.labEventType;
 };
 
 export namespace EventId {
 
-    export enum type {
+    export enum labEventType {
         ACCESSION_NUMBER = 'ACCESSION_NUMBER',
         LAB_ID = 'LAB_ID',
     }

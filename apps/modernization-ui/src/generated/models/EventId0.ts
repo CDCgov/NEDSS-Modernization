@@ -3,13 +3,13 @@
 /* eslint-disable */
 
 export type EventId0 = {
-    id?: string;
-    type?: EventId0.type;
+    investigationEventId?: string;
+    investigationEventType?: EventId0.investigationEventType;
 };
 
 export namespace EventId0 {
 
-    export enum type {
+    export enum investigationEventType {
         ABCS_CASE_ID = 'ABCS_CASE_ID',
         CITY_COUNTY_CASE_ID = 'CITY_COUNTY_CASE_ID',
         INVESTIGATION_ID = 'INVESTIGATION_ID',

@@ -50,8 +50,8 @@ public class LabReportFilter {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class EventId {
-        private LaboratoryEventIdType type;
-        private String id;
+        private LaboratoryEventIdType labEventType;
+        private String labEventId;
     }
 
 

@@ -167,8 +167,6 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 pregnancyStatus:
                     body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
                 programAreas: body.programArea?.length > 0 ? body.programArea : undefined,
-                eventIdType: body.eventIdType && body.eventIdType !== '- Select -' ? body.eventIdType : undefined,
-                eventId: body.eventId || undefined,
                 createdBy: body.createdBy && body.createdBy !== '- Select -' ? body.createdBy : undefined,
                 lastUpdatedBy:
                     body.lastUpdatedBy && body.lastUpdatedBy !== '- Select -' ? body.lastUpdatedBy : undefined
@@ -179,9 +177,6 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 pregnancyStatus:
                     body.labpregnancyTest && body.labpregnancyTest !== '- Select -' ? body.labpregnancyTest : undefined,
                 programAreas: body.labprogramArea?.length > 0 ? body.labprogramArea : undefined,
-                eventIdType:
-                    body.labeventIdType && body.labeventIdType !== '- Select -' ? body.labeventIdType : undefined,
-                eventId: body.labeventId || undefined,
                 createdBy: body.labcreatedBy && body.labcreatedBy !== '- Select -' ? body.labcreatedBy : undefined,
                 lastUpdatedBy:
                     body.lablastUpdatedBy && body.lablastUpdatedBy !== '- Select -' ? body.lablastUpdatedBy : undefined,
@@ -193,8 +188,29 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         } else {
             return;
         }
+        // Lab Event Id
+        if (body.labeventIdType && body.labeventIdType !== '- Select -' && body.labeventId) {
+            if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
+                const eventIdSearch = {
+                    labEventType: body.labeventIdType,
+                    labEventId: body.labeventId
+                };
+                (filterData as LabReportFilter).eventId = eventIdSearch;
+            }
+        }
 
-        // Event Date Filters
+        // Investigation Event Id
+        if (body.eventIdType && body.eventIdType !== '- Select -' && body.eventId) {
+            if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
+                const eventIdSearch = {
+                    investigationEventType: body.eventIdType,
+                    investigationEventId: body.eventId
+                };
+                (filterData as InvestigationFilter).eventId = eventIdSearch;
+            }
+        }
+
+        // Investigation Event Date
         if (body.eventDateType && body.eventDateType !== '- Select -' && body.from && body.to) {
             if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
                 const eventDateSearch = {
@@ -204,6 +220,9 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 };
                 (filterData as InvestigationFilter).eventDate = eventDateSearch;
             }
+        }
+
+        if (body.labeventDateType && body.labeventDateType !== '- Select -' && body.labfrom && body.labto) {
             if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
                 const eventDateSearch = {
                     type: body.labeventDateType,

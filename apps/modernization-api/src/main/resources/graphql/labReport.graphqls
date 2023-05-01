@@ -29,8 +29,8 @@ input LabReportFilter {
 }
 
 input LabReportEventId {
-  type: LaboratoryEventIdType!
-  id: String!
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
 }
 
 type LabReport {

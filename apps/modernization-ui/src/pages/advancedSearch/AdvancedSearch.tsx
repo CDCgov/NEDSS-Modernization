@@ -388,86 +388,71 @@ export const AdvancedSearch = () => {
 
     const handleLabReportChipClose = (name: string, value: string) => {
         let tempLabReportFilter = labReportFilter as LabReportFilter;
-        // remove the closed chip from the display
-        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
-        setResultsChip(newChips);
-
-        // if the last chip was removed, reset search
-        if (newChips.length === 0) {
-            handleClearAll();
-            return;
-        }
 
         // remove the filter criteria associated with closed chip and resubmit search
         switch (name.trim()) {
-            case 'Program Areas':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    programAreas: tempLabReportFilter?.programAreas?.filter((pa) => pa !== value)
-                };
+            case 'Program Areas': {
+                const newProgramAreas = tempLabReportFilter?.programAreas?.filter((pa) => pa !== value);
+                if (newProgramAreas?.length === 0) {
+                    delete tempLabReportFilter.programAreas;
+                } else {
+                    tempLabReportFilter = {
+                        ...tempLabReportFilter,
+                        programAreas: newProgramAreas
+                    };
+                }
                 break;
-            case 'Jurisdictions':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    jurisdictions: tempLabReportFilter?.jurisdictions?.filter((j) => j !== value)
-                };
+            }
+            case 'Jurisdictions': {
+                const newJurisdictions = tempLabReportFilter?.jurisdictions?.filter((j) => j !== value);
+                if (newJurisdictions?.length === 0) {
+                    delete tempLabReportFilter.jurisdictions;
+                } else {
+                    tempLabReportFilter = {
+                        ...tempLabReportFilter,
+                        programAreas: newJurisdictions
+                    };
+                }
                 break;
+            }
             case 'Pregnancy Status':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    pregnancyStatus: undefined
-                };
+                delete tempLabReportFilter.pregnancyStatus;
                 break;
-            case 'Event Id Type':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    eventId: undefined
-                };
+            case 'Lab Event Type':
+            case 'Lab Event Id':
+                delete tempLabReportFilter.eventId;
                 break;
-            case 'Event Id':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    eventId: undefined
-                };
-                break;
-            case 'Event Date Type' || 'From' || 'To':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    eventDate: undefined
-                };
+            case 'From':
+            case 'To':
+            case 'Type':
+                delete tempLabReportFilter.eventDate;
                 break;
             case 'Created By':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    createdBy: undefined
-                };
+                delete tempLabReportFilter.createdBy;
                 break;
             case 'Last Updated By':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    lastUpdatedBy: undefined
-                };
+                delete tempLabReportFilter.lastUpdatedBy;
                 break;
-            case 'Entity Type' || 'Id':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    providerSearch: undefined
-                };
+            case 'Entity Type':
+            case 'Id':
+                delete tempLabReportFilter.providerSearch;
                 break;
             case 'Resulted Test':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    resultedTest: undefined
-                };
+                delete tempLabReportFilter.resultedTest;
                 break;
             case 'Coded Result':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    codedResult: undefined
-                };
+                delete tempLabReportFilter.codedResult;
                 break;
         }
-        handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
+
+        handleEventTags(tempLabReportFilter);
+
+        if (Object.entries(tempLabReportFilter).length === 0) {
+            setLabReportFilter({});
+            handleClearAll();
+        } else {
+            handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
+        }
     };
 
     const handleInvestigationChipClose = (name: string, value: string) => {
@@ -485,7 +470,6 @@ export const AdvancedSearch = () => {
                         conditions: newConditions
                     };
                 }
-
                 break;
             }
             case 'Program Areas': {
@@ -498,7 +482,6 @@ export const AdvancedSearch = () => {
                         programAreas: newProgramAreas
                     };
                 }
-
                 break;
             }
             case 'Jurisdictions': {
@@ -531,8 +514,8 @@ export const AdvancedSearch = () => {
             case 'Pregnancy Status':
                 delete tempInvestigationFilter.pregnancyStatus;
                 break;
-            case 'Event Id Type':
-            case 'Event Id':
+            case 'Investigation Event Type':
+            case 'Investigation Event Id':
                 delete tempInvestigationFilter.eventId;
                 break;
             case 'Type':
@@ -554,6 +537,7 @@ export const AdvancedSearch = () => {
 
         handleEventTags(tempInvestigationFilter);
         if (Object.entries(tempInvestigationFilter).length === 0) {
+            setInvestigationFilter({});
             handleClearAll();
         } else {
             handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
@@ -652,7 +636,7 @@ export const AdvancedSearch = () => {
             case SEARCH_TYPE.INVESTIGATION:
                 return !investigationData?.content || investigationData?.content?.length === 0;
             case SEARCH_TYPE.LAB_REPORT:
-                !labReportData?.content || labReportData?.content?.length === 0;
+                return !labReportData?.content || labReportData?.content?.length === 0;
         }
     }
 
@@ -686,7 +670,7 @@ export const AdvancedSearch = () => {
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
                             Add new
-                            <img src={'down-arrow-white.svg'} />
+                            <img src={'/down-arrow-white.svg'} />
                         </Button>
                         {showAddNewDropDown && (
                             <ul
@@ -788,8 +772,8 @@ export const AdvancedSearch = () => {
                                             (!investigationData?.content || investigationData?.content?.length === 0) &&
                                             (!labReportData?.content || labReportData?.content?.length === 0) &&
                                             (!patientData?.content || patientData?.content?.length === 0)
-                                                ? 'down-arrow-white.svg'
-                                                : 'down-arrow-blue.svg'
+                                                ? '/down-arrow-white.svg'
+                                                : '/down-arrow-blue.svg'
                                         }
                                     />
                                 </Button>
