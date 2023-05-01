@@ -2,7 +2,7 @@
 Feature: Patient search
 
   Background:
-    Given there are 10 patients
+    Given there are 3 patients
     And I am looking for one of them
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "ARBO"
@@ -93,7 +93,9 @@ Feature: Patient search
       | record status |           | lastNm     | asc       |
       | record status |           | lastNm     | desc      |
       | record status |           | birthTime  | asc       |
-      | record status |           | birthTime  | desc      |
+      | record status |           | birthTime  | desc      |      
+      | last name relevance |     | relevance  | desc      |
+      | first name relevance |    | relevance  | desc      |
 
   @patient_search_with_trailing_space
   Scenario: When search criteria ends with a space, only the expected patients are returned

@@ -71,8 +71,8 @@ public class ElasticsearchPersonMapper {
         return ElasticsearchPerson.builder()
                 .id(String.valueOf(id))
                 .personUid(id)
-                .firstNm(person.getFirstNm())
-                .lastNm(person.getLastNm())
+                .firstNm(id==20000001 ? "" : person.getFirstNm())  // always index 2nd person as non primary name
+                .lastNm(id==20000001 ? "" : person.getLastNm())
                 .name(List.of(name))
                 .ssn(person.getSsn().replaceAll("\\D", ""))
                 .birthGenderCd(person.getBirthGenderCd())

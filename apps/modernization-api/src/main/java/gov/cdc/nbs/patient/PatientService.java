@@ -63,6 +63,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PatientService {
+    private static final float FIRST_NAME_PRIMARY_BOOST = 2.0f;
+    private static final float FIRST_NAME_NON_PRIMARY_BOOST = 1.0f;
+    private static final float FIRST_NAME_SOUNDEX_BOOST = 0.5f;
+    private static final float LAST_NAME_PRIMARY_BOOST = 2.0f;
+    private static final float LAST_NAME_NON_PRIMARY_BOOST = 1.0f;
+    private static final float LAST_NAME_SOUNDEX_BOOST = 0.5f;
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -138,36 +144,44 @@ public class PatientService {
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
+
+            firstNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.FIRST_NM,
+                    filter.getFirstName()).boost(FIRST_NAME_PRIMARY_BOOST));
+
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
                             addWildcards(filter.getFirstName()))
                             .defaultField("name.firstNm")
                             .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                    ScoreMode.Avg).boost(FIRST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
             String firstNmSndx = soundex.encode(filter.getFirstName());
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
-                    ScoreMode.Avg));
+                    ScoreMode.Avg).boost(FIRST_NAME_SOUNDEX_BOOST));
 
             builder.must(firstNameBuilder);
         }
 
         if (filter.getLastName() != null && !filter.getLastName().isEmpty()) {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
+
+            lastNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.LAST_NM_KEYWORD,
+                    filter.getLastName()).boost(LAST_NAME_PRIMARY_BOOST));
+
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
                             addWildcards(filter.getLastName()))
                             .defaultField("name.lastNm")
                             .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                    ScoreMode.Avg).boost(LAST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
             String lastNmSndx = soundex.encode(filter.getLastName());
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
-                    ScoreMode.Avg));
+                    ScoreMode.Avg).boost(LAST_NAME_SOUNDEX_BOOST));
 
             builder.must(lastNameBuilder);
         }
@@ -427,6 +441,9 @@ public class PatientService {
         Collection<SortBuilder<?>> sorts = new ArrayList<>();
         pageable.getSort().stream().forEach(sort -> {
             switch (sort.getProperty()) {
+                case "relevance":
+                    sorts.add(SortBuilders.scoreSort());
+                    break;
                 case "lastNm":
                     sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD)
                             .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
