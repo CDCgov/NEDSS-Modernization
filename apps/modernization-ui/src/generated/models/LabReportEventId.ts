@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type EventId = {
+export type LabReportEventId = {
     labEventId?: string;
-    labEventType?: EventId.labEventType;
+    labEventType?: LabReportEventId.labEventType;
 };
 
-export namespace EventId {
+export namespace LabReportEventId {
 
     export enum labEventType {
         ACCESSION_NUMBER = 'ACCESSION_NUMBER',

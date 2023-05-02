@@ -15,7 +15,7 @@ public class InvestigationFilter {
     private List<String> programAreas;
     private List<Long> jurisdictions;
     private PregnancyStatus pregnancyStatus;
-    private EventId eventId;
+    private InvestigationEventId eventId;
     private EventDate eventDate;
     private Long createdBy;
     private Long lastUpdatedBy;
@@ -39,7 +39,7 @@ public class InvestigationFilter {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class EventId {
+    public static class InvestigationEventId {
         private IdType investigationEventType;
         private String investigationEventId;
     }

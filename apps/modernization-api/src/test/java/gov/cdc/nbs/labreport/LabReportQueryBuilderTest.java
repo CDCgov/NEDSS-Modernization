@@ -41,7 +41,7 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.labreport.LabReportFilter.EventId;
+import gov.cdc.nbs.labreport.LabReportFilter.LabReportEventId;
 import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportDateType;
 import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventIdType;
@@ -245,7 +245,7 @@ class LabReportQueryBuilderTest {
 
         // method call
         var filter = new LabReportFilter();
-        filter.setEventId(new EventId(LaboratoryEventIdType.ACCESSION_NUMBER, "eventId"));
+        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.ACCESSION_NUMBER, "eventId"));
         var query = queryBuilder.buildLabReportQuery(filter, Pageable.ofSize(10));
 
         // assertions
@@ -269,7 +269,7 @@ class LabReportQueryBuilderTest {
 
         // method call
         var filter = new LabReportFilter();
-        filter.setEventId(new EventId(LaboratoryEventIdType.LAB_ID, "labId"));
+        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.LAB_ID, "labId"));
         var query = queryBuilder.buildLabReportQuery(filter, Pageable.ofSize(10));
 
         // assertions

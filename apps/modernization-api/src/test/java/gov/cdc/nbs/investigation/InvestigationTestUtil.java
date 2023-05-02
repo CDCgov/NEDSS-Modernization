@@ -5,7 +5,7 @@ import java.util.Collections;
 import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDate;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
-import gov.cdc.nbs.investigation.InvestigationFilter.EventId;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventId;
 import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
 import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
@@ -27,7 +27,7 @@ public class InvestigationTestUtil {
         filter.setProgramAreas(Collections.singletonList("ProgramArea1"));
         filter.setJurisdictions(Collections.singletonList(321L));
         filter.setPregnancyStatus(PregnancyStatus.NO);
-        filter.setEventId(new EventId(IdType.ABCS_CASE_ID, "eventId"));
+        filter.setEventId(new InvestigationEventId(IdType.ABCS_CASE_ID, "eventId"));
 
         filter.setEventDate(new EventDate(
                 EventDateType.DATE_OF_REPORT,

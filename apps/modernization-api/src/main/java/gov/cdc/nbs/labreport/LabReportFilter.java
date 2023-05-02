@@ -15,7 +15,7 @@ public class LabReportFilter {
     private List<String> programAreas;
     private List<Long> jurisdictions;
     private PregnancyStatus pregnancyStatus;
-    private EventId eventId;
+    private LabReportEventId eventId;
     private LaboratoryEventDateSearch eventDate;
     private List<EntryMethod> entryMethods;
     private List<UserType> enteredBy;
@@ -49,7 +49,7 @@ public class LabReportFilter {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class EventId {
+    public static class LabReportEventId {
         private LaboratoryEventIdType labEventType;
         private String labEventId;
     }

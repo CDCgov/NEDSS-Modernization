@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type EventId0 = {
+export type InvestigationEventId = {
     investigationEventId?: string;
-    investigationEventType?: EventId0.investigationEventType;
+    investigationEventType?: InvestigationEventId.investigationEventType;
 };
 
-export namespace EventId0 {
+export namespace InvestigationEventId {
 
     export enum investigationEventType {
         ABCS_CASE_ID = 'ABCS_CASE_ID',

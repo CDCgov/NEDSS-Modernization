@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { EventId } from './EventId';
 import type { LaboratoryEventDateSearch } from './LaboratoryEventDateSearch';
+import type { LabReportEventId } from './LabReportEventId';
 import type { LabReportProviderSearch } from './LabReportProviderSearch';
 
 export type LabReportFilter = {
@@ -12,7 +12,7 @@ export type LabReportFilter = {
     enteredBy?: Array<'EXTERNAL' | 'INTERNAL'>;
     entryMethods?: Array<'ELECTRONIC' | 'MANUAL'>;
     eventDate?: LaboratoryEventDateSearch;
-    eventId?: EventId;
+    eventId?: LabReportEventId;
     eventStatus?: Array<'NEW' | 'UPDATE'>;
     jurisdictions?: Array<number>;
     lastUpdatedBy?: number;

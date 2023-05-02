@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import type { EventDate } from './EventDate';
-import type { EventId0 } from './EventId0';
+import type { InvestigationEventId } from './InvestigationEventId';
 import type { ProviderFacilitySearch } from './ProviderFacilitySearch';
 
 export type InvestigationFilter = {
@@ -11,7 +11,7 @@ export type InvestigationFilter = {
     conditions?: Array<string>;
     createdBy?: number;
     eventDate?: EventDate;
-    eventId?: EventId0;
+    eventId?: InvestigationEventId;
     investigationStatus?: InvestigationFilter.investigationStatus;
     investigatorId?: number;
     jurisdictions?: Array<number>;

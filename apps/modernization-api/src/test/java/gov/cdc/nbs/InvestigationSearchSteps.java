@@ -19,7 +19,7 @@ import gov.cdc.nbs.investigation.InvestigationFilter;
 import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDate;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
-import gov.cdc.nbs.investigation.InvestigationFilter.EventId;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventId;
 import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
 import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
@@ -187,19 +187,19 @@ public class InvestigationSearchSteps {
                 IdType type = IdType.valueOf(qualifier);
                 switch (type) {
                     case ABCS_CASE_ID:
-                        filter.setEventId(new EventId(type, "CityTypeRootExtensionText"));
+                        filter.setEventId(new InvestigationEventId(type, "CityTypeRootExtensionText"));
                         break;
                     case CITY_COUNTY_CASE_ID:
-                        filter.setEventId(new EventId(type, "CityTypeRootExtensionText"));
+                        filter.setEventId(new InvestigationEventId(type, "CityTypeRootExtensionText"));
                         break;
                     case INVESTIGATION_ID:
-                        filter.setEventId(new EventId(type, "CAS10001000GA01"));
+                        filter.setEventId(new InvestigationEventId(type, "CAS10001000GA01"));
                         break;
                     case NOTIFICATION_ID:
-                        filter.setEventId(new EventId(type, "notificationLocalId"));
+                        filter.setEventId(new InvestigationEventId(type, "notificationLocalId"));
                         break;
                     case STATE_CASE_ID:
-                        filter.setEventId(new EventId(type, "StateRootExtensionText"));
+                        filter.setEventId(new InvestigationEventId(type, "StateRootExtensionText"));
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid event id type specified: " +

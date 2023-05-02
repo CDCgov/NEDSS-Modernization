@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.labreport.LabReportFilter;
 import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
-import gov.cdc.nbs.labreport.LabReportFilter.EventId;
+import gov.cdc.nbs.labreport.LabReportFilter.LabReportEventId;
 import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportDateType;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportProviderSearch;
@@ -101,10 +101,11 @@ public class LabReportSearchSteps {
             case "event id":
                 switch (qualifier) {
                     case "accession number":
-                        filter.setEventId(new EventId(LaboratoryEventIdType.ACCESSION_NUMBER, "accession number"));
+                        filter.setEventId(
+                                new LabReportEventId(LaboratoryEventIdType.ACCESSION_NUMBER, "accession number"));
                         break;
                     case "lab id":
-                        filter.setEventId(new EventId(LaboratoryEventIdType.LAB_ID, "OBS10003024GA01"));
+                        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.LAB_ID, "OBS10003024GA01"));
                         break;
                 }
                 break;

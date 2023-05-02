@@ -40,7 +40,7 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDate;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
-import gov.cdc.nbs.investigation.InvestigationFilter.EventId;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventId;
 import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
 import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
@@ -295,7 +295,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId(new EventId(IdType.ABCS_CASE_ID, "eventId"));
+        filter.setEventId(new InvestigationEventId(IdType.ABCS_CASE_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -324,7 +324,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId(new EventId(IdType.CITY_COUNTY_CASE_ID, "eventId"));
+        filter.setEventId(new InvestigationEventId(IdType.CITY_COUNTY_CASE_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -359,7 +359,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId(new EventId(IdType.STATE_CASE_ID, "eventId"));
+        filter.setEventId(new InvestigationEventId(IdType.STATE_CASE_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -393,7 +393,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId(new EventId(IdType.INVESTIGATION_ID, "eventId"));
+        filter.setEventId(new InvestigationEventId(IdType.INVESTIGATION_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -413,7 +413,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId(new EventId(IdType.NOTIFICATION_ID, "eventId"));
+        filter.setEventId(new InvestigationEventId(IdType.NOTIFICATION_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions

@@ -8,10 +8,10 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { EncryptionResponse } from './models/EncryptionResponse';
 export { EventDate } from './models/EventDate';
-export { EventId } from './models/EventId';
-export { EventId0 } from './models/EventId0';
+export { InvestigationEventId } from './models/InvestigationEventId';
 export { InvestigationFilter } from './models/InvestigationFilter';
 export { LaboratoryEventDateSearch } from './models/LaboratoryEventDateSearch';
+export { LabReportEventId } from './models/LabReportEventId';
 export { LabReportFilter } from './models/LabReportFilter';
 export { LabReportProviderSearch } from './models/LabReportProviderSearch';
 export type { LoginRequest } from './models/LoginRequest';
