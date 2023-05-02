@@ -24,7 +24,7 @@ class SimpleStateTupleMapperTest {
         Tuple tuple = mock(Tuple.class);
 
         when(tuple.get(tables.address().stateCd)).thenReturn("state-id");
-        when(tuple.get(tables.state().codeDescTxt)).thenReturn("state-description");
+        when(tuple.get(tables.state().stateNm)).thenReturn("state-description");
 
         SimpleStateTupleMapper mapper = new SimpleStateTupleMapper(tables);
 
@@ -78,7 +78,7 @@ class SimpleStateTupleMapperTest {
         Tuple tuple = mock(Tuple.class);
 
         when(tuple.get(tables.address().stateCd)).thenReturn("state-id");
-        when(tuple.get(tables.state().codeDescTxt)).thenReturn("state-description");
+        when(tuple.get(tables.state().stateNm)).thenReturn("state-description");
 
         SimpleStateTupleMapper mapper = new SimpleStateTupleMapper(tables);
 

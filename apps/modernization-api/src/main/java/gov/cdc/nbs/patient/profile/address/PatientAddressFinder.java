@@ -45,7 +45,7 @@ class PatientAddressFinder {
             tables.address().cntyCd,
             tables.county().codeShortDescTxt,
             tables.address().stateCd,
-            tables.state().codeDescTxt,
+            tables.state().stateNm,
             tables.address().zipCd,
             tables.address().cntryCd,
             tables.country().codeDescTxt,
@@ -57,7 +57,7 @@ class PatientAddressFinder {
     private <R> JPAQuery<R> applyBaseCriteria(final JPAQuery<R> query, final long patient) {
         return query.from(this.tables.patient())
             .where(
-                this.tables.patient().personParentUid.id.eq(patient),
+                this.tables.patient().id.eq(patient),
                 this.tables.patient().cd.eq(PATIENT_CODE),
                 this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE)
             )

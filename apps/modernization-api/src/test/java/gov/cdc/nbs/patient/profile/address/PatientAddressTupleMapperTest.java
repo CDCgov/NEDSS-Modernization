@@ -164,7 +164,7 @@ class PatientAddressTupleMapperTest {
         when(tuple.get(tables.locators().versionCtrlNbr)).thenReturn((short) 269);
 
         when(tuple.get(tables.address().stateCd)).thenReturn("state-id");
-        when(tuple.get(tables.state().codeDescTxt)).thenReturn("state-description");
+        when(tuple.get(tables.state().stateNm)).thenReturn("state-description");
 
         PatientAddressTupleMapper mapper = new PatientAddressTupleMapper(tables);
 
