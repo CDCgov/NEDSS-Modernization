@@ -112,7 +112,7 @@ public class LabReportSearchSteps {
                 var eds = new LaboratoryEventDateSearch(
                         LabReportDateType.valueOf(qualifier),
                         LocalDate.now().minus(5, ChronoUnit.DAYS),
-                        LocalDate.now().plusDays(1));
+                        LocalDate.now().plusDays(2));
                 filter.setEventDate(eds);
                 break;
             case "entry method":

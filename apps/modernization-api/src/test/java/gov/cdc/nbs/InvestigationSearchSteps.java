@@ -210,7 +210,7 @@ public class InvestigationSearchSteps {
                 filter.setEventDate(new EventDate(
                         EventDateType.valueOf(qualifier),
                         LocalDate.now().minus(5, ChronoUnit.DAYS),
-                        LocalDate.now().plusDays(1)));
+                        LocalDate.now().plusDays(2)));
                 break;
             case "created by":
                 filter.setCreatedBy(EventMother.CREATED_BY);
