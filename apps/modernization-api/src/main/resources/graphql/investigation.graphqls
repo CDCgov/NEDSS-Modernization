@@ -58,9 +58,8 @@ input InvestigationFilter {
   programAreas: [String]
   jurisdictions: [ID]
   pregnancyStatus: PregnancyStatus
-  eventIdType: InvestigationEventIdType
-  eventId: String
-  eventDateSearch: InvestigationEventDateSearch
+  eventId: EventId
+  eventDate: InvestigationEventDateSearch
   createdBy: String
   lastUpdatedBy: String
   providerFacilitySearch: ProviderFacilitySearch
@@ -70,6 +69,11 @@ input InvestigationFilter {
   caseStatuses: CaseStatuses
   notificationStatuses: NotificationStatuses
   processingStatuses: ProcessingStatuses
+}
+
+input EventId {
+  investigationEventType: InvestigationEventIdType!
+  id: String!
 }
 
 input CaseStatuses {
@@ -88,9 +92,9 @@ input ProcessingStatuses {
 }
 
 input InvestigationEventDateSearch {
-  eventDateType: InvestigationEventDateType!
-  from: DateTime!
-  to: DateTime!
+  type: InvestigationEventDateType!
+  from: Date!
+  to: Date!
 }
 
 input ProviderFacilitySearch {

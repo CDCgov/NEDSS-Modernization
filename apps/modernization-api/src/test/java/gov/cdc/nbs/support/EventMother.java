@@ -29,6 +29,7 @@ public class EventMother {
     public static Long CLAYTON_STD_OID = (CLAYTON_CODE * 100000L) + STD_ID; // 1300600015
 
     public static Investigation investigation_bacterialVaginosis(Long personId) {
+        Instant now = Instant.now();
         var participations = Arrays.asList(ElasticsearchPersonParticipation.builder()
                 .typeCd("SubjOfPHC")
                 .entityId(personId)
@@ -41,6 +42,12 @@ public class EventMother {
                 .build());
         return Investigation.builder()
                 .id("Test_bacterial_vaginosis")
+                .rptFormCmpltTime(now)
+                .activityFromTime(now)
+                .activityToTime(now)
+                .publicHealthCaseLastChgTime(now)
+                .addTime(now)
+                .notificationAddTime(now)
                 .personParticipations(participations)
                 .investigationStatusCd("O")
                 .actIds(actIds)

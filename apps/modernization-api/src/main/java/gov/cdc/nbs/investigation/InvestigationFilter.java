@@ -1,24 +1,22 @@
 package gov.cdc.nbs.investigation;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
-
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 public class InvestigationFilter {
     private Long patientId;
     private List<String> conditions;
     private List<String> programAreas;
     private List<Long> jurisdictions;
     private PregnancyStatus pregnancyStatus;
-    private IdType eventIdType;
-    private String eventId;
-    private InvestigationEventDateSearch eventDateSearch;
+    private InvestigationEventId eventId;
+    private EventDate eventDate;
     private Long createdBy;
     private Long lastUpdatedBy;
     private ProviderFacilitySearch providerFacilitySearch;
@@ -29,18 +27,26 @@ public class InvestigationFilter {
     private List<NotificationStatus> notificationStatuses;
     private List<ProcessingStatus> processingStatuses;
 
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
-    public static class InvestigationEventDateSearch {
-        private EventDateType eventDateType;
-        private Instant from;
-        private Instant to;
+    @NoArgsConstructor
+    public static class EventDate {
+        private EventDateType type;
+        private LocalDate from;
+        private LocalDate to;
     }
 
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
+    public static class InvestigationEventId {
+        private IdType investigationEventType;
+        private String id;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ProviderFacilitySearch {
         private ReportingEntityType entityType;
         private Long id;

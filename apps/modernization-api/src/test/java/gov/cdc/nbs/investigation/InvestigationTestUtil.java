@@ -1,11 +1,12 @@
 package gov.cdc.nbs.investigation;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collections;
 import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.EventDate;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventId;
 import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
-import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventDateSearch;
 import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
@@ -26,13 +27,12 @@ public class InvestigationTestUtil {
         filter.setProgramAreas(Collections.singletonList("ProgramArea1"));
         filter.setJurisdictions(Collections.singletonList(321L));
         filter.setPregnancyStatus(PregnancyStatus.NO);
-        filter.setEventIdType(IdType.ABCS_CASE_ID);
-        filter.setEventId("eventId");
+        filter.setEventId(new InvestigationEventId(IdType.ABCS_CASE_ID, "eventId"));
 
-        filter.setEventDateSearch(new InvestigationEventDateSearch(
+        filter.setEventDate(new EventDate(
                 EventDateType.DATE_OF_REPORT,
-                RandomUtil.getRandomDateInPast(),
-                Instant.now()));
+                RandomUtil.dateInPast(),
+                LocalDate.now()));
         filter.setCreatedBy(999L);
         filter.setLastUpdatedBy(998L);
         filter.setProviderFacilitySearch(new ProviderFacilitySearch(ReportingEntityType.FACILITY, 777L));

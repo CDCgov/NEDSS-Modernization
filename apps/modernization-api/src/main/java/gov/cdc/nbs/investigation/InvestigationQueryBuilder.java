@@ -77,15 +77,15 @@ public class InvestigationQueryBuilder {
             builder.must(QueryBuilders.matchQuery(Investigation.PREGNANT_IND_CD, status));
         }
         // Event Id / Type
-        if (filter.getEventIdType() != null && filter.getEventId() != null) {
-            switch (filter.getEventIdType()) {
+        if (filter.getEventId() != null) {
+            switch (filter.getEventId().getInvestigationEventType()) {
                 case ABCS_CASE_ID:
                     var abcsCaseIdQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(Investigation.ACT_IDS + "." + ElasticsearchActId.ACT_ID_SEQ,
                                     2))
                             .must(QueryBuilders.matchQuery(
                                     Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId()));
+                                    filter.getEventId().getId()));
                     var nestedAbcsCaseQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, abcsCaseIdQuery,
                             ScoreMode.None);
                     builder.must(nestedAbcsCaseQuery);
@@ -98,7 +98,7 @@ public class InvestigationQueryBuilder {
                                     "CITY"))
                             .must(QueryBuilders.matchQuery(
                                     Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId()));
+                                    filter.getEventId().getId()));
                     var nestedCityCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, cityCountryCaseId,
                             ScoreMode.None);
                     builder.must(nestedCityCountyQuery);
@@ -111,32 +111,35 @@ public class InvestigationQueryBuilder {
                                     "STATE"))
                             .must(QueryBuilders.matchQuery(
                                     Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId()));
+                                    filter.getEventId().getId()));
                     var nestedStateCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, stateCountryCaseId,
                             ScoreMode.None);
                     builder.must(nestedStateCountyQuery);
                     break;
                 case INVESTIGATION_ID:
-                    builder.must(QueryBuilders.matchQuery(Investigation.LOCAL_ID, filter.getEventId()));
+                    builder.must(QueryBuilders.matchQuery(Investigation.LOCAL_ID,
+                            filter.getEventId().getId()));
                     break;
                 case NOTIFICATION_ID:
-                    builder.must(QueryBuilders.matchQuery(Investigation.NOTIFICATION_LOCAL_ID, filter.getEventId()));
+                    builder.must(
+                            QueryBuilders.matchQuery(Investigation.NOTIFICATION_LOCAL_ID,
+                                    filter.getEventId().getId()));
                     break;
 
                 default:
                     throw new QueryException("Invalid event id type: " +
-                            filter.getEventIdType());
+                            filter.getEventId().getInvestigationEventType());
             }
         }
         // Event date
-        var eds = filter.getEventDateSearch();
+        var eds = filter.getEventDate();
         if (eds != null) {
-            if (eds.getFrom() == null || eds.getTo() == null || eds.getEventDateType() == null) {
+            if (eds.getFrom() == null || eds.getTo() == null || eds.getType() == null) {
                 throw new QueryException(
                         "From, To, and EventDateType are required when querying by event date");
             }
             String field;
-            switch (eds.getEventDateType()) {
+            switch (eds.getType()) {
                 case DATE_OF_REPORT:
                     field = Investigation.RPT_FORM_COMPLETE_TIME;
                     break;
@@ -157,7 +160,7 @@ public class InvestigationQueryBuilder {
                     break;
                 default:
                     throw new QueryException("Invalid event date type " +
-                            eds.getEventDateType());
+                            eds.getType());
             }
             var from = FlexibleInstantConverter.toString(eds.getFrom());
             var to = FlexibleInstantConverter.toString(eds.getTo());

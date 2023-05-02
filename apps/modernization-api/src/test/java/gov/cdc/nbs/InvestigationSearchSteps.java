@@ -2,9 +2,10 @@ package gov.cdc.nbs;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,15 +14,17 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter;
-import gov.cdc.nbs.investigation.InvestigationResolver;
 import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.EventDate;
+import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventId;
 import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
 import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
+import gov.cdc.nbs.investigation.InvestigationResolver;
+import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.InvestigationRepository;
 import gov.cdc.nbs.support.EventMother;
@@ -181,27 +184,33 @@ public class InvestigationSearchSteps {
                 filter.setPregnancyStatus(PregnancyStatus.YES);
                 break;
             case "event id":
-                filter.setEventIdType(IdType.valueOf(qualifier));
-                switch (filter.getEventIdType()) {
+                IdType type = IdType.valueOf(qualifier);
+                switch (type) {
                     case ABCS_CASE_ID:
-                        filter.setEventId("CityTypeRootExtensionText");
+                        filter.setEventId(new InvestigationEventId(type, "CityTypeRootExtensionText"));
                         break;
                     case CITY_COUNTY_CASE_ID:
-                        filter.setEventId("CityTypeRootExtensionText");
+                        filter.setEventId(new InvestigationEventId(type, "CityTypeRootExtensionText"));
                         break;
                     case INVESTIGATION_ID:
-                        filter.setEventId("CAS10001000GA01");
+                        filter.setEventId(new InvestigationEventId(type, "CAS10001000GA01"));
                         break;
                     case NOTIFICATION_ID:
-                        filter.setEventId("notificationLocalId");
+                        filter.setEventId(new InvestigationEventId(type, "notificationLocalId"));
                         break;
                     case STATE_CASE_ID:
-                        filter.setEventId("StateRootExtensionText");
+                        filter.setEventId(new InvestigationEventId(type, "StateRootExtensionText"));
                         break;
                     default:
-                        throw new IllegalArgumentException("Invalid event id qualifer specified: " +
+                        throw new IllegalArgumentException("Invalid event id type specified: " +
                                 qualifier);
                 }
+                break;
+            case "event date":
+                filter.setEventDate(new EventDate(
+                        EventDateType.valueOf(qualifier),
+                        LocalDate.now().minus(5, ChronoUnit.DAYS),
+                        LocalDate.now().plusDays(2)));
                 break;
             case "created by":
                 filter.setCreatedBy(EventMother.CREATED_BY);

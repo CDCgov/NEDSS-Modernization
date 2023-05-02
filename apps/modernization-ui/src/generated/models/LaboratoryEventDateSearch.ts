@@ -3,14 +3,14 @@
 /* eslint-disable */
 
 export type LaboratoryEventDateSearch = {
-    eventDateType?: LaboratoryEventDateSearch.eventDateType;
     from?: string;
     to?: string;
+    type?: LaboratoryEventDateSearch.type;
 };
 
 export namespace LaboratoryEventDateSearch {
 
-    export enum eventDateType {
+    export enum type {
         DATE_OF_REPORT = 'DATE_OF_REPORT',
         DATE_OF_SPECIMEN_COLLECTION = 'DATE_OF_SPECIMEN_COLLECTION',
         DATE_RECEIVED_BY_PUBLIC_HEALTH = 'DATE_RECEIVED_BY_PUBLIC_HEALTH',

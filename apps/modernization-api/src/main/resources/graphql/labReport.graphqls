@@ -15,9 +15,8 @@ input LabReportFilter {
   programAreas: [String]
   jurisdictions: [ID]
   pregnancyStatus: PregnancyStatus
-  eventIdType: LaboratoryEventIdType
-  eventId: String
-  eventDateSearch: LaboratoryEventDateSearch
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
   entryMethods: [EntryMethod]
   enteredBy: [UserType]
   eventStatus: [EventStatus]
@@ -27,6 +26,11 @@ input LabReportFilter {
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
+}
+
+input LabReportEventId {
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
 }
 
 type LabReport {
@@ -95,9 +99,9 @@ type AssociatedInvestigation {
 }
 
 input LaboratoryEventDateSearch {
-  eventDateType: LaboratoryReportEventDateType!
-  from: DateTime!
-  to: DateTime!
+  type: LaboratoryReportEventDateType!
+  from: Date!
+  to: Date!
 }
 
 input LabReportProviderSearch {

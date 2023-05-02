@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +41,7 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.labreport.LabReportFilter.LabReportEventId;
 import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportDateType;
 import gov.cdc.nbs.labreport.LabReportFilter.LaboratoryEventIdType;
@@ -244,8 +245,7 @@ class LabReportQueryBuilderTest {
 
         // method call
         var filter = new LabReportFilter();
-        filter.setEventIdType(LaboratoryEventIdType.ACCESSION_NUMBER);
-        filter.setEventId("eventId");
+        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.ACCESSION_NUMBER, "eventId"));
         var query = queryBuilder.buildLabReportQuery(filter, Pageable.ofSize(10));
 
         // assertions
@@ -258,7 +258,7 @@ class LabReportQueryBuilderTest {
         var clause1 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.TYPE_CD, nested);
         assertEquals("Filler Number", clause1.value());
         var clause2 = findMatchQueryBuilder(LabReport.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT, nested);
-        assertEquals(filter.getEventId(), clause2.value());
+        assertEquals(filter.getEventId().getLabEventId(), clause2.value());
     }
 
     @Test
@@ -269,8 +269,7 @@ class LabReportQueryBuilderTest {
 
         // method call
         var filter = new LabReportFilter();
-        filter.setEventIdType(LaboratoryEventIdType.LAB_ID);
-        filter.setEventId("labId");
+        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.LAB_ID, "labId"));
         var query = queryBuilder.buildLabReportQuery(filter, Pageable.ofSize(10));
 
         // assertions
@@ -280,7 +279,7 @@ class LabReportQueryBuilderTest {
 
         // Case type clause added
         var clause = findMatchQueryBuilder(LabReport.LOCAL_ID, must);
-        assertEquals(filter.getEventId(), clause.value());
+        assertEquals(filter.getEventId().getLabEventId(), clause.value());
     }
 
     @ParameterizedTest
@@ -292,10 +291,10 @@ class LabReportQueryBuilderTest {
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
 
         // method call
-        var eds = new LabReportFilter.LaboratoryEventDateSearch(dateType, RandomUtil.getRandomDateInPast(),
-                Instant.now());
+        var eds = new LabReportFilter.LaboratoryEventDateSearch(dateType, RandomUtil.dateInPast(),
+                LocalDate.now());
         var filter = new LabReportFilter();
-        filter.setEventDateSearch(eds);
+        filter.setEventDate(eds);
         var query = queryBuilder.buildLabReportQuery(filter, pageable);
 
         // assertions
@@ -327,9 +326,10 @@ class LabReportQueryBuilderTest {
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
 
         // method call
-        var eds = new LabReportFilter.LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT, null, Instant.now());
+        var eds =
+                new LabReportFilter.LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT, null, LocalDate.now());
         var filter = new LabReportFilter();
-        filter.setEventDateSearch(eds);
+        filter.setEventDate(eds);
         assertThrows(QueryException.class, () -> queryBuilder.buildLabReportQuery(filter, pageable));
     }
 

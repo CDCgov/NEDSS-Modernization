@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 import type { LaboratoryEventDateSearch } from './LaboratoryEventDateSearch';
+import type { LabReportEventId } from './LabReportEventId';
 import type { LabReportProviderSearch } from './LabReportProviderSearch';
 
 export type LabReportFilter = {
@@ -10,9 +11,8 @@ export type LabReportFilter = {
     createdBy?: number;
     enteredBy?: Array<'EXTERNAL' | 'INTERNAL'>;
     entryMethods?: Array<'ELECTRONIC' | 'MANUAL'>;
-    eventDateSearch?: LaboratoryEventDateSearch;
-    eventId?: string;
-    eventIdType?: LabReportFilter.eventIdType;
+    eventDate?: LaboratoryEventDateSearch;
+    eventId?: LabReportEventId;
     eventStatus?: Array<'NEW' | 'UPDATE'>;
     jurisdictions?: Array<number>;
     lastUpdatedBy?: number;
@@ -25,11 +25,6 @@ export type LabReportFilter = {
 };
 
 export namespace LabReportFilter {
-
-    export enum eventIdType {
-        ACCESSION_NUMBER = 'ACCESSION_NUMBER',
-        LAB_ID = 'LAB_ID',
-    }
 
     export enum pregnancyStatus {
         NO = 'NO',
