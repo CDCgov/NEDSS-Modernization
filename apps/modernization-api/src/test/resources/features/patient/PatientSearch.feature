@@ -93,7 +93,7 @@ Feature: Patient search
       | record status |           | lastNm     | asc       |
       | record status |           | lastNm     | desc      |
       | record status |           | birthTime  | asc       |
-      | record status |           | birthTime  | desc      |
+      | record status |           | birthTime  | desc      |      
 
   @patient_search_with_trailing_space
   Scenario: When search criteria ends with a space, only the expected patients are returned
