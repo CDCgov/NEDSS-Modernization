@@ -41,7 +41,7 @@ public class InvestigationFilter {
     @NoArgsConstructor
     public static class InvestigationEventId {
         private IdType investigationEventType;
-        private String investigationEventId;
+        private String id;
     }
 
     @Data

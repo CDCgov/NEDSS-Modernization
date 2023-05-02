@@ -123,7 +123,7 @@ export type EthnicityResults = {
 };
 
 export type EventId = {
-  investigationEventId: Scalars['String'];
+  id: Scalars['String'];
   investigationEventType: InvestigationEventIdType;
 };
 

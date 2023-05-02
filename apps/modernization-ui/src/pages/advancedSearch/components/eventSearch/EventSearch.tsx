@@ -204,7 +204,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
             if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
                 const eventIdSearch = {
                     investigationEventType: body.eventIdType,
-                    investigationEventId: body.eventId
+                    id: body.eventId
                 };
                 (filterData as InvestigationFilter).eventId = eventIdSearch;
             }

@@ -150,7 +150,7 @@ input InvestigationFilter {
 
 input EventId {
   investigationEventType: InvestigationEventIdType!
-  investigationEventId: String!
+  id: String!
 }
 
 input CaseStatuses {

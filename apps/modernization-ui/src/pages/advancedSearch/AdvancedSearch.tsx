@@ -515,7 +515,7 @@ export const AdvancedSearch = () => {
                 delete tempInvestigationFilter.pregnancyStatus;
                 break;
             case 'Investigation Event Type':
-            case 'Investigation Event Id':
+            case 'Id':
                 delete tempInvestigationFilter.eventId;
                 break;
             case 'Type':

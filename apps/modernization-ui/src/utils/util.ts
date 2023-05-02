@@ -39,7 +39,7 @@ export const setInvestigationFilters = (investigationFilter: InvestigationFilter
         jurisdiction: investigationFilter.jurisdictions,
         pregnancyTest: investigationFilter.pregnancyStatus,
         eventIdType: investigationFilter.eventId?.investigationEventType,
-        eventId: investigationFilter.eventId?.investigationEventId,
+        eventId: investigationFilter.eventId?.id,
         eventDateType: investigationFilter.eventDate?.type,
         from: investigationFilter.eventDate?.from,
         to: investigationFilter.eventDate?.to,

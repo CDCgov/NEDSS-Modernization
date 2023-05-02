@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type InvestigationEventId = {
-    investigationEventId?: string;
+    id?: string;
     investigationEventType?: InvestigationEventId.investigationEventType;
 };
 

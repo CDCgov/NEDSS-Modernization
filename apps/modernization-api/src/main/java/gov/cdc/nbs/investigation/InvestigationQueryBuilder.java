@@ -85,7 +85,7 @@ public class InvestigationQueryBuilder {
                                     2))
                             .must(QueryBuilders.matchQuery(
                                     Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId().getInvestigationEventId()));
+                                    filter.getEventId().getId()));
                     var nestedAbcsCaseQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, abcsCaseIdQuery,
                             ScoreMode.None);
                     builder.must(nestedAbcsCaseQuery);
@@ -98,7 +98,7 @@ public class InvestigationQueryBuilder {
                                     "CITY"))
                             .must(QueryBuilders.matchQuery(
                                     Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId().getInvestigationEventId()));
+                                    filter.getEventId().getId()));
                     var nestedCityCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, cityCountryCaseId,
                             ScoreMode.None);
                     builder.must(nestedCityCountyQuery);
@@ -111,19 +111,19 @@ public class InvestigationQueryBuilder {
                                     "STATE"))
                             .must(QueryBuilders.matchQuery(
                                     Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId().getInvestigationEventId()));
+                                    filter.getEventId().getId()));
                     var nestedStateCountyQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS, stateCountryCaseId,
                             ScoreMode.None);
                     builder.must(nestedStateCountyQuery);
                     break;
                 case INVESTIGATION_ID:
                     builder.must(QueryBuilders.matchQuery(Investigation.LOCAL_ID,
-                            filter.getEventId().getInvestigationEventId()));
+                            filter.getEventId().getId()));
                     break;
                 case NOTIFICATION_ID:
                     builder.must(
                             QueryBuilders.matchQuery(Investigation.NOTIFICATION_LOCAL_ID,
-                                    filter.getEventId().getInvestigationEventId()));
+                                    filter.getEventId().getId()));
                     break;
 
                 default:
