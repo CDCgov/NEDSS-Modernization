@@ -1,0 +1,88 @@
+type Query {
+  questionnaire(input: QuestionnaireContext): Questionnaire
+}
+
+input QuestionnaireContext {
+  conditionId: ID!
+  questionnaireType: String!
+}
+
+type Questionnaire {
+  id: ID!
+  conditionId: ID!
+  questionnaireType: String!
+  questionGroups: [QuestionGroup]!
+}
+
+type QuestionGroup {
+  id: ID!
+  label: String
+  questions: [Question]!
+}
+
+union Question =
+    TextQuestion
+  | NumericQuestion
+  | DropDownQuestion
+  | DateQuestion
+
+type TextQuestion {
+  id: ID!
+  label: String!
+  tooltip: String
+  required: Boolean!
+  questionType: QuestionType
+  maxLength: Int
+  placeholder: String
+}
+
+type NumericQuestion {
+  id: ID!
+  label: String!
+  tooltip: String
+  required: Boolean!
+  questionType: QuestionType
+  minValue: Int
+  maxValue: Int
+  unitsSet: AnswerSet
+}
+
+type DropDownQuestion {
+  id: ID!
+  label: String!
+  tooltip: String
+  required: Boolean!
+  questionType: QuestionType
+  answerSet: AnswerSet
+  defaultAnswer: Answer
+  multiselect: Boolean!
+}
+
+type DateQuestion {
+  id: ID!
+  label: String!
+  tooltip: String
+  required: Boolean!
+  questionType: QuestionType
+  allowFuture: Boolean!
+}
+
+type AnswerSet {
+  id: ID!
+  name: String
+  description: String
+  answers: [Answer]!
+}
+
+type Answer {
+  id: ID!
+  display: String!
+  value: String!
+}
+
+enum QuestionType {
+  TEXT
+  NUMERIC
+  DROP_DOWN
+  DATE
+}

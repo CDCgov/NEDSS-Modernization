@@ -20,7 +20,7 @@ public class IndicatorStringConverter {
         if (value == null) {
             return null;
         }
-        return value.code();
+        return value.getId();
     }
 
     private IndicatorStringConverter() {

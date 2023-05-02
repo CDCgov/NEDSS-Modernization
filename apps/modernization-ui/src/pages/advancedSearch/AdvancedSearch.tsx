@@ -806,7 +806,7 @@ export const AdvancedSearch = () => {
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="padding-x-3 margin-top-0"
+                                    className="padding-x-3 sortBy-position"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
                                     outline>
@@ -881,6 +881,20 @@ export const AdvancedSearch = () => {
                                                 Date of birth (Descending)
                                             </Button>
                                         </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button
+                                                onClick={() => {
+                                                    setSort({
+                                                        sortDirection: SortDirection.Desc,
+                                                        sortField: SortField.Relevance
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
+                                                type={'button'}
+                                                unstyled>
+                                                Closest match
+                                            </Button>
+                                        </li>
                                     </ul>
                                 )}
                             </div>
@@ -890,7 +904,7 @@ export const AdvancedSearch = () => {
                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                     (!patientData?.content || patientData?.content?.length === 0)
                                 }
-                                className="width-full margin-top-0"
+                                className="width-full margin-top-0 invisible"
                                 type={'button'}
                                 onClick={handleExportClick}
                                 outline>
@@ -902,7 +916,7 @@ export const AdvancedSearch = () => {
                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                     (!patientData?.content || patientData?.content?.length === 0)
                                 }
-                                className="width-full margin-top-0"
+                                className="width-full margin-top-0 invisible"
                                 type={'button'}
                                 onClick={handlePrintClick}
                                 outline>

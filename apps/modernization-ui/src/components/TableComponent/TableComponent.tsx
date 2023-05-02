@@ -32,7 +32,10 @@ export const TableComponent = ({
                                 <div style={{ display: 'flex', border: 'none', alignItems: 'center' }}>
                                     {head.name}
                                     {head.sortable && (
-                                        <Button className="usa-button--unstyled" type={'button'}>
+                                        <Button
+                                            className="usa-button--unstyled"
+                                            type={'button'}
+                                            disabled={tableBody.length <= 1}>
                                             <Icon.SortArrow color="black" />
                                         </Button>
                                     )}

@@ -2,7 +2,7 @@ type PatientVaccination {
     vaccination: ID!
     createdOn: DateTime!
     provider: String
-    administeredOn: DateTime!
+    administeredOn: DateTime
     administered: String!
     event: String!
     associatedWith: PatientVaccinationInvestigation
