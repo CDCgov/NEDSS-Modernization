@@ -9,6 +9,7 @@ import java.util.Optional;
 @Component
 class PatientMortalityFinder {
 
+    private static final String COUNTY_CODE_SET = "PHVS_COUNTY_FIPS_6-4";
     private static final String PATIENT_CODE = "PAT";
     private static final String DEATH_ADDRESS_CODE = "DTH";
     private static final String ACTIVE_CODE = "ACTIVE";
@@ -33,6 +34,8 @@ class PatientMortalityFinder {
                 tables.address().cityDescTxt,
                 tables.address().stateCd,
                 tables.state().stateNm,
+                tables.address().cntyCd,
+                tables.county().codeDescTxt,
                 tables.address().cntryCd,
                 tables.country().codeDescTxt
             ).from(this.tables.patient())
@@ -46,6 +49,10 @@ class PatientMortalityFinder {
             )
             .leftJoin(this.tables.state()).on(
                 this.tables.state().id.eq(this.tables.address().stateCd)
+            )
+            .leftJoin(this.tables.county()).on(
+                this.tables.county().id.codeSetNm.eq(COUNTY_CODE_SET),
+                this.tables.county().id.code.eq(this.tables.address().cntyCd)
             )
             .leftJoin(this.tables.country()).on(
                 this.tables.country().id.eq(this.tables.address().cntryCd)

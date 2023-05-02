@@ -123,7 +123,7 @@ class PatientAddressTupleMapperTest {
         when(tuple.get(tables.locators().versionCtrlNbr)).thenReturn((short) 269);
 
         when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
-        when(tuple.get(tables.county().codeShortDescTxt)).thenReturn("county-description");
+        when(tuple.get(tables.county().codeDescTxt)).thenReturn("county-description");
 
         PatientAddressTupleMapper mapper = new PatientAddressTupleMapper(tables);
 
