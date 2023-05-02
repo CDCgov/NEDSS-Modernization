@@ -72,20 +72,37 @@ public class PatientSearchSteps {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(patientCount);
 
-        if (patientCount >= 3)  {
-            // make first 3 persons soundex,relevance/boost testable intentionally in worst order
-            Person soundexPerson = generatedPersons.get(0);
-            soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
-            soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
+        // make first person soundex testable
+        Person soundexPerson = generatedPersons.get(0);
+        soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
 
-            soundexPerson = generatedPersons.get(1);  // will become secondary name
-            soundexPerson.setFirstNm("John");
-            soundexPerson.setLastNm("Smith");
+        generatedPersons.forEach(personRepository::delete);
 
-            soundexPerson = generatedPersons.get(2); // will become primary legal name
-            soundexPerson.setFirstNm("John");
-            soundexPerson.setLastNm("Smith");
-        }
+        personRepository.flush();
+        // create new persons
+
+        personRepository.saveAll(generatedPersons);
+        elasticsearchPersonRepository.saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(generatedPersons));
+    }
+
+    @Given("there are 3 patients with soundex legal and secondary names")
+    public void there_are_relevance_patients(int patientCount) {
+        // person data is randomly generated but the Ids are always the same.
+        generatedPersons = PersonMother.getRandomPersons(3);
+
+        // make first 3 persons soundex,relevance/boost testable intentionally in worst order
+        Person soundexPerson = generatedPersons.get(0);
+        soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
+
+        soundexPerson = generatedPersons.get(1);  // will become secondary name
+        soundexPerson.setFirstNm("John");
+        soundexPerson.setLastNm("Smith");
+
+        soundexPerson = generatedPersons.get(2); // will become primary legal name
+        soundexPerson.setFirstNm("John");
+        soundexPerson.setLastNm("Smith");
 
         generatedPersons.forEach(personRepository::delete);
 

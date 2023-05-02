@@ -146,7 +146,7 @@ public class PatientService {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
 
             firstNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.FIRST_NM,
-                    filter.getFirstName()).boost(FIRST_NAME_PRIMARY_BOOST));
+                    filter.getFirstName().trim()).boost(FIRST_NAME_PRIMARY_BOOST));
 
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
@@ -156,7 +156,7 @@ public class PatientService {
                     ScoreMode.Avg).boost(FIRST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
-            String firstNmSndx = soundex.encode(filter.getFirstName());
+            String firstNmSndx = soundex.encode(filter.getFirstName().trim());
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
                     ScoreMode.Avg).boost(FIRST_NAME_SOUNDEX_BOOST));
@@ -168,7 +168,7 @@ public class PatientService {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
 
             lastNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.LAST_NM_KEYWORD,
-                    filter.getLastName()).boost(LAST_NAME_PRIMARY_BOOST));
+                    filter.getLastName().trim()).boost(LAST_NAME_PRIMARY_BOOST));
 
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(
@@ -178,7 +178,7 @@ public class PatientService {
                     ScoreMode.Avg).boost(LAST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
-            String lastNmSndx = soundex.encode(filter.getLastName());
+            String lastNmSndx = soundex.encode(filter.getLastName().trim());
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
                     QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
                     ScoreMode.Avg).boost(LAST_NAME_SOUNDEX_BOOST));
