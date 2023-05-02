@@ -202,7 +202,7 @@ class PatientSummaryFinder {
                 this.tables.emailUse().id.codeSetNm.eq("EL_USE_TELE_PAT"),
                 this.tables.emailUse().id.code.eq(this.tables.net().useCd)
             )
-            .where(this.tables.patient().personParentUid.id.eq(identifier), this.tables.patient().cd.eq(PATIENT_CODE))
+            .where(this.tables.patient().id.eq(identifier), this.tables.patient().cd.eq(PATIENT_CODE))
             .fetch()
             .stream()
             .map(mapper::map)

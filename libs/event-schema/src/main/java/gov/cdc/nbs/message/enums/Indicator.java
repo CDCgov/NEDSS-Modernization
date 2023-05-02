@@ -12,11 +12,11 @@ public enum Indicator {
         this.display = display;
     }
 
-    public String code() {
+    public String getId() {
         return code;
     }
 
-    public String display() {
+    public String getDescription() {
         return display;
     }
 }

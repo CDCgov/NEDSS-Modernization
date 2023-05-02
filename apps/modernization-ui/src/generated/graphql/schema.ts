@@ -1803,7 +1803,8 @@ export enum SortDirection {
 
 export enum SortField {
   BirthTime = 'birthTime',
-  LastNm = 'lastNm'
+  LastNm = 'lastNm',
+  Relevance = 'relevance',
 }
 
 export type SortablePage = {

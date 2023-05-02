@@ -214,3 +214,12 @@ button {
     margin-right: 15px;
     text-transform: capitalize !important;
 }
+
+.invisible {
+    visibility: hidden !important;
+}
+
+.sortBy-position {
+    position: absolute;
+    margin: -20px 0 0 70px;
+}
