@@ -87,7 +87,7 @@ public class PatientSearchSteps {
     }
 
     @Given("there are 3 patients with soundex legal and secondary names")
-    public void there_are_relevance_patients(int patientCount) {
+    public void there_are_relevance_patients() {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(3);
 

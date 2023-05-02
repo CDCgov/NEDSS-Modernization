@@ -7,7 +7,7 @@ Feature: Patient relevance search
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "STD"
     And I have the authorities: "FIND-PATIENT,VIEW-INVESTIGATION,VIEW-OBSERVATIONLABREPORT" for the jurisdiction: "ALL" and program area: "ARBO"
 
-  @patient_search_with__relevance_sorting
+  @patient_search_with_relevance_sorting
   Scenario: I can find the right patient when there are multiple ordered results
     When I search for patients sorted by "<search field>" "<qualifier>" "<sort field>" "<direction>"
     Then I find the patients sorted
