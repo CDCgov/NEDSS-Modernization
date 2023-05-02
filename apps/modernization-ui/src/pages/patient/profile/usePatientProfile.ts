@@ -5,7 +5,7 @@ import { transform as patientTransformer } from './PatientTransformer';
 import { PatientSummary, transform as summaryTransformer } from 'pages/patient/profile/summary';
 import { useFindPatientProfileSummary } from './useFindPatientProfileSummary';
 
-type Profile = {
+export type Profile = {
     patient: Patient;
     summary?: PatientSummary;
 };

@@ -14,16 +14,10 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RedirectControllerService } from 'generated';
 import { UserContext } from 'providers/UserContext';
-import {
-    FindPatientsByFilterQuery,
-    useFindPatientByIdLazyQuery,
-    useFindPatientProfileLazyQuery
-} from 'generated/graphql/schema';
 
 import { Summary } from 'pages/patientProfile/Summary';
 import { Events } from 'pages/patientProfile/Events';
 import { Demographics } from 'pages/patientProfile/Demographics';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
@@ -41,18 +35,12 @@ export const PatientProfile = () => {
 
     const modalRef = useRef<ModalRef>(null);
 
-    const [getPatientProfileDataById, { data: patientProfileData }] = useFindPatientByIdLazyQuery();
-    const [getPatientProfileData, { data: patientProfile }] = useFindPatientProfileLazyQuery();
-
     const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
 
     const profile = usePatientProfile(id);
 
-    const [profileData, setProfileData] = useState<FindPatientsByFilterQuery['findPatientsByFilter']['content'][0]>();
-
-    const { searchCriteria } = useContext(SearchCriteriaContext);
     const openPrintableView = () => {
         RedirectControllerService.preparePatientDetailsUsingGet({
             authorization: 'Bearer ' + state.getToken()
@@ -64,36 +52,6 @@ export const PatientProfile = () => {
             );
         });
     };
-
-    useEffect(() => {
-        if (id) {
-            getPatientProfileDataById({
-                variables: {
-                    id: id
-                }
-            });
-
-            getPatientProfileData({
-                variables: {
-                    patient: id
-                }
-            });
-        }
-    }, []);
-
-    const [ethnicity, setEthnicity] = useState<string>('');
-    useEffect(() => {
-        if (patientProfileData?.findPatientById) {
-            setProfileData(patientProfileData?.findPatientById);
-            if (patientProfileData.findPatientById.id) {
-                searchCriteria.ethnicities.map((ethinicity) => {
-                    if (ethinicity.id.code === patientProfileData?.findPatientById?.ethnicGroupInd) {
-                        setEthnicity(ethinicity.codeDescTxt);
-                    }
-                });
-            }
-        }
-    }, [patientProfileData]);
 
     const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
     const [addedItem, setAddedItem] = useState<string>('');
@@ -145,9 +103,8 @@ export const PatientProfile = () => {
                         <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                             <Icon.Warning className="font-sans-2xl margin-x-2" />
                             <p id="modal-1-description">
-                                Would you like to permenantly delete patient record{' '}
-                                {patientProfile?.findPatientProfile?.shortId},{' '}
-                                {`${patientProfile?.findPatientProfile?.summary?.legalName?.last}, ${patientProfile?.findPatientProfile?.summary?.legalName?.first}`}
+                                Would you like to permenantly delete patient record {profile?.patient?.shortId},{' '}
+                                {`${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
                             </p>
                         </div>
                         <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
@@ -192,7 +149,7 @@ export const PatientProfile = () => {
                     </h6>
                 </div>
 
-                {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profileData} />}
+                {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profile} />}
                 {activeTab === ACTIVE_TAB.EVENT && <Events patient={id} />}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
@@ -208,8 +165,6 @@ export const PatientProfile = () => {
                             setAddedItem(message);
                             setAlertType(type);
                         }}
-                        patientProfileData={patientProfileData?.findPatientById}
-                        ethnicity={ethnicity}
                         id={id || ''}
                     />
                 )}

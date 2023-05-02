@@ -3,10 +3,29 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
+import { useEffect } from 'react';
+import { PatientGeneral } from 'generated/graphql/schema';
+import { format } from 'date-fns';
 
-export const GeneralPatientInformation = ({ setGeneralForm }: any) => {
+export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneralForm: any; data?: PatientGeneral }) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
+    useEffect(() => {
+        if (data as PatientGeneral) {
+            methods.reset({
+                nameAsOf: data?.asOf ? format(new Date(data?.asOf), 'MM/dd/yyyy') : null,
+                maritalStatus: data?.maritalStatus?.id,
+                motherName: data?.maternalMaidenName,
+                adults: data?.adultsInHouse,
+                children: data?.childrenInHouse,
+                occupation: data?.occupation?.id,
+                education: data?.educationLevel?.id,
+                prmLang: data?.primaryLanguage?.id,
+                speakEng: data?.speaksEnglish?.id,
+                hiv: ''
+            });
+        }
+    }, [data]);
 
     const onSubmit = () => {
         setGeneralForm();
@@ -150,9 +169,9 @@ export const GeneralPatientInformation = ({ setGeneralForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="education"
+                        name="prmLang"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'education'} options={[]} />
+                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'prmLang'} options={[]} />
                         )}
                     />
                 </Grid>
@@ -164,9 +183,9 @@ export const GeneralPatientInformation = ({ setGeneralForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="education"
+                        name="speakEng"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'education'} options={[]} />
+                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'speakEng'} options={[]} />
                         )}
                     />
                 </Grid>

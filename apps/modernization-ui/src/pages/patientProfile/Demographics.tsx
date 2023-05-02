@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
     ButtonGroup,
     Grid,
@@ -9,87 +9,24 @@ import {
     ModalRef,
     ModalToggleButton
 } from '@trussworks/react-uswds';
-import { HorizontalTable } from '../../components/Table/HorizontalTable';
-import { Deceased, FindPatientByIdQuery } from '../../generated/graphql/schema';
-import { format } from 'date-fns';
 import { NamesTable } from 'pages/patient/profile/names';
 import { AddressesTable } from 'pages/patient/profile/addresses';
 import { PhoneAndEmailTable } from 'pages/patient/profile/phoneEmail';
 import { IdentificationsTable } from 'pages/patient/profile/identification';
 import { RacesTable } from 'pages/patient/profile/race';
 import { AdministrativeTable } from 'pages/patient/profile/administrative';
+import { GeneralPatient } from 'pages/patient/profile/generalInfo';
+import { Mortality } from 'pages/patient/profile/moratlity';
+import { Ethnicity } from 'pages/patient/profile/ethnicity';
+import { SexBirth } from 'pages/patient/profile/sexBirth';
 
 type DemographicProps = {
-    patientProfileData: FindPatientByIdQuery['findPatientById'] | undefined;
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
-    ethnicity?: string;
-    race?: any;
     id: string;
 };
 
-export const Demographics = ({ patientProfileData, ethnicity, id }: DemographicProps) => {
-    const [generalTableData, setGeneralTableData] = useState<any>(undefined);
-    const [morbidityTableData, setMorbidityTableData] = useState<any>(undefined);
-    const [ethnicityTableData, setEthnicityTableData] = useState<any>(undefined);
-    const [sexAndBirthData, setSexAndBirthData] = useState<any>(undefined);
-
+export const Demographics = ({ id }: DemographicProps) => {
     const deleteModalRef = useRef<ModalRef>(null);
-
-    useEffect(() => {
-        if (patientProfileData) {
-            setGeneralTableData([
-                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateGeneral), 'MM/dd/yyyy') },
-                { title: 'Marital status:', text: patientProfileData.maritalStatusCd },
-                { title: 'Mother’s maiden name:', text: patientProfileData.mothersMaidenNm },
-                { title: 'Number of adults in residence:', text: patientProfileData.adultsInHouseNbr },
-                { title: 'Number of children in residence:', text: patientProfileData.childrenInHouseNbr },
-                { title: 'Primary occupation:', text: patientProfileData.occupationCd },
-                { title: 'Highest level of education:', text: patientProfileData.educationLevelCd },
-                { title: 'Primary language:', text: patientProfileData.primLangCd },
-                { title: 'Speaks english:', text: patientProfileData.speaksEnglishCd },
-                { title: 'State HIV case ID:', text: patientProfileData.eharsId }
-            ]);
-            setMorbidityTableData([
-                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateMorbidity), 'MM/dd/yyyy') },
-                {
-                    title: 'Is the patient deceased:',
-                    text:
-                        patientProfileData.deceasedIndCd === Deceased.N
-                            ? 'No'
-                            : patientProfileData.deceasedIndCd === Deceased.Y
-                            ? 'Yes'
-                            : 'Unknown'
-                },
-                { title: 'Date of death:', text: patientProfileData.deceasedTime },
-                { title: 'City of death:', text: '' },
-                { title: 'State of death:', text: '' },
-                { title: 'County of death:', text: '' },
-                { title: 'Country of death:', text: '' }
-            ]);
-            setEthnicityTableData([
-                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateEthnicity), 'MM/dd/yyyy') },
-                { title: 'Ethnicity::', text: ethnicity },
-                { title: 'Spanish origin:', text: '' },
-                { title: 'Reasons unknown:', text: '' }
-            ]);
-            setSexAndBirthData([
-                { title: 'As of:', text: format(new Date(patientProfileData.asOfDateSex), 'MM/dd/yyyy') },
-                { title: 'Date of death:', text: patientProfileData.deceasedTime },
-                { title: 'Current age:', text: patientProfileData.ageReported },
-                { title: 'Current sex:', text: patientProfileData.currSexCd },
-                { title: 'Unknown reason:', text: patientProfileData.sexUnkReasonCd },
-                { title: 'Transgender information:', text: patientProfileData.preferredGenderCd },
-                { title: 'Additional gender:', text: patientProfileData.additionalGenderCd },
-                { title: 'Birth sex:', text: patientProfileData.birthGenderCd },
-                { title: 'Multiple birth:', text: patientProfileData.multipleBirthInd },
-                { title: 'Birth order:', text: patientProfileData.birthOrderNbr },
-                { title: 'Birth city:', text: patientProfileData.birthCityCd },
-                { title: 'Birth state:', text: patientProfileData.birthStateCd },
-                { title: 'Birth county:', text: '' },
-                { title: 'Birth country:', text: '' }
-            ]);
-        }
-    }, [patientProfileData]);
 
     const [isDeleteModal] = useState<any>(undefined);
 
@@ -122,28 +59,14 @@ export const Demographics = ({ patientProfileData, ethnicity, id }: DemographicP
             <Grid row gap className="margin-auto">
                 <Grid col={6}>
                     <Grid row>
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable
-                                type="general"
-                                tableHeader="General Patient Information"
-                                tableData={generalTableData}
-                            />
-                        </Grid>
-
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable type="mortality" tableHeader="Mortality" tableData={morbidityTableData} />
-                        </Grid>
+                        <GeneralPatient patient={id} />
+                        <Mortality patient={id} />
                     </Grid>
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable type="ethnicity" tableHeader="Ethnicity" tableData={ethnicityTableData} />
-                        </Grid>
-
-                        <Grid col={12} className="margin-top-3 margin-bottom-2">
-                            <HorizontalTable type="sex" tableHeader="Sex & Birth" tableData={sexAndBirthData} />
-                        </Grid>
+                        <Ethnicity patient={id} />
+                        <SexBirth patient={id} />
                     </Grid>
                 </Grid>
             </Grid>

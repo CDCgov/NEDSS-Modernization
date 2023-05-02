@@ -112,7 +112,8 @@ export const SortableTable = ({
             </Table>
             <div className="padding-2 grid-row flex-align-center flex-justify">
                 <p className="margin-0 show-length-text">
-                    Showing {currentPageLength && currentPageLength + (currentPage - 1) * pageSize} of {totalResults}
+                    Showing {currentPageLength ? currentPageLength + (currentPage - 1) * pageSize : totalResults} of{' '}
+                    {totalResults}
                 </p>
                 {isPagination && totalResults >= pageSize && (
                     <Pagination

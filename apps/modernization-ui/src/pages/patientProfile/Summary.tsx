@@ -4,9 +4,10 @@ import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Config } from 'config';
 import { DocumentsReview } from './components/SummaryTables/DocumentsReview';
 import { PatientOpenInvestigationsTable } from 'pages/patient/profile/investigation/PatientOpenInvestigationsTable';
+import { Profile } from 'pages/patient/profile/usePatientProfile';
 
 type SummaryProp = {
-    profileData: any;
+    profileData: Profile | undefined;
 };
 
 export const Summary = ({ profileData }: SummaryProp) => {
@@ -19,7 +20,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
         if (profileData) {
             getDcouments({
                 variables: {
-                    patientId: parseInt(profileData.id),
+                    patientId: parseInt(profileData?.patient.id),
                     page: {
                         pageNumber: documentCurrentPage - 1,
                         pageSize: TOTAL_TABLE_DATA
@@ -33,7 +34,7 @@ export const Summary = ({ profileData }: SummaryProp) => {
         <>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientOpenInvestigationsTable
-                    patient={profileData?.id}
+                    patient={profileData?.patient.id}
                     pageSize={TOTAL_TABLE_DATA}
                     nbsBase={Config.nbsUrl}
                 />
