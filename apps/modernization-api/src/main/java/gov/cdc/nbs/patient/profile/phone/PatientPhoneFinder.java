@@ -51,7 +51,7 @@ class PatientPhoneFinder {
     private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
         return query.from(this.tables.patient())
             .where(
-                this.tables.patient().personParentUid.id.eq(patient),
+                this.tables.patient().id.eq(patient),
                 this.tables.patient().cd.eq(PATIENT_CODE),
                 this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE)
             )

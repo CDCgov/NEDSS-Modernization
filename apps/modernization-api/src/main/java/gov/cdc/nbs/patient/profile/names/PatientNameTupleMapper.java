@@ -134,7 +134,7 @@ class PatientNameTupleMapper {
 
     private PatientName.Degree maybeMapDegree(final Tuple tuple) {
         String id = tuple.get(tables.name().nmDegree);
-        String description = tuple.get(tables.degree().codeShortDescTxt);
+        String description = tuple.get(tables.degree().codeDescTxt);
 
         return id == null
             ? null

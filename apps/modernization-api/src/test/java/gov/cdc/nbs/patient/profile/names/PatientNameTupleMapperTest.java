@@ -122,7 +122,7 @@ class PatientNameTupleMapperTest {
         when(tuple.get(tables.use().codeShortDescTxt)).thenReturn("use-code-description");
 
         when(tuple.get(tables.name().nmDegree)).thenReturn("degree-patient");
-        when(tuple.get(tables.degree().codeShortDescTxt)).thenReturn("degree-description");
+        when(tuple.get(tables.degree().codeDescTxt)).thenReturn("degree-description");
 
         PatientNameTupleMapper mapper = new PatientNameTupleMapper(tables);
 
