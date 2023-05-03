@@ -20,7 +20,6 @@ export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
         if (data?.findPatientProfile?.birth && data?.findPatientProfile?.gender) {
             setGeneralTableData([
                 { title: 'As of:', text: format(new Date(data?.findPatientProfile?.birth.asOf), 'MM/dd/yyyy') },
-                { title: 'Date of death:', text: '' },
                 { title: 'Current age:', text: data?.findPatientProfile?.birth?.age },
                 { title: 'Current sex:', text: data?.findPatientProfile?.gender?.current?.description },
                 { title: 'Unknown reason:', text: data?.findPatientProfile?.gender?.unknownReason?.description },
@@ -28,10 +27,10 @@ export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
                 { title: 'Additional gender:', text: data?.findPatientProfile?.gender?.additional },
                 { title: 'Birth sex:', text: data?.findPatientProfile?.gender?.birth?.description },
                 { title: 'Multiple birth:', text: data?.findPatientProfile?.birth?.multipleBirth?.description },
-                { title: 'Birth order:', text: '' },
+                { title: 'Birth order:', text: data?.findPatientProfile?.birth?.birthOrder },
                 { title: 'Birth city:', text: data?.findPatientProfile?.birth?.city },
                 { title: 'Birth state:', text: data?.findPatientProfile?.birth?.state?.description },
-                { title: 'Birth county:', text: '' },
+                { title: 'Birth county:', text: data?.findPatientProfile?.birth?.county?.description },
                 { title: 'Birth country:', text: data?.findPatientProfile?.birth?.country?.description }
             ]);
         }

@@ -20,12 +20,17 @@ export const Query = gql`
                     id
                     description
                 }
+                birthOrder
                 city
                 state {
                     id
                     description
                 }
                 country {
+                    id
+                    description
+                }
+                county {
                     id
                     description
                 }

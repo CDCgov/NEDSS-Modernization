@@ -17,7 +17,6 @@ import { SearchCriteria } from './SearchCriteria';
 import { LabSearchCriteria } from './LabSearchCriteria';
 import { setInvestigationFilters, setLabReportFilters } from '../../../../utils/util';
 import debounce from 'lodash.debounce';
-import { format } from 'date-fns';
 
 type EventSearchProps = {
     onSearch: (filter: InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => void;

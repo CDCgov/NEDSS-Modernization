@@ -1,7 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from 'react';
-import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
+import {
+    Button,
+    ButtonGroup,
+    Icon,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton
+} from '@trussworks/react-uswds';
 import { SortableTable } from 'components/Table/SortableTable';
 import { AddNameModal } from 'pages/patient/profile/names/AddNameModal';
 import { DetailsNameModal } from 'pages/patient/profile/names/DetailsNameModal';
@@ -10,7 +18,7 @@ import { useFindPatientProfileNames } from '../useFindPatientProfileNames';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Name } from './names';
 import { FindPatientProfileQuery } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, sortByDate, sortByNestedProperty, withDirection } from 'sorting/Sort';
+import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
 
 type PatientLabReportTableProps = {
     patient: string | undefined;
@@ -36,6 +44,8 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
     const [nameDetails, setNameDetails] = useState<any>(undefined);
     const [isActions, setIsActions] = useState<any>(null);
     const [names, setNames] = useState<Name[]>([]);
+
+    const [isDeleteModal, setIsDeleteModal] = useState<any>(undefined);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         if (data?.findPatientProfile?.names?.content && data?.findPatientProfile?.names?.content?.length > 0) {
@@ -100,108 +110,158 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
         }
     };
 
+    useEffect(() => {
+        if (isDeleteModal) {
+            deleteModalRef.current?.toggleModal();
+        }
+    }, [isDeleteModal]);
+
     return (
-        <SortableTable
-            isPagination={true}
-            buttons={
-                <div className="grid-row">
-                    <Button
-                        type="button"
-                        onClick={() => {
-                            addNameModalRef.current?.toggleModal();
-                            setNameDetails(null);
-                            setIsEditModal(false);
-                        }}
-                        className="display-inline-flex">
-                        <Icon.Add className="margin-right-05" />
-                        Add name
-                    </Button>
-                    <AddNameModal modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'} modalRef={addNameModalRef} />
-                    <DetailsNameModal data={nameDetails} modalRef={detailsNameModalRef} />
-                </div>
-            }
-            tableHeader={'Names'}
-            tableHead={tableHead}
-            tableBody={names?.map((name, index: number) => (
-                <tr key={index}>
-                    <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                        {name?.asOf ? (
-                            <a href="#">
-                                {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                            </a>
-                        ) : (
-                            <span className="no-data">No data</span>
-                        )}
-                    </td>
-                    <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
-                        {name?.use ? <span>{name?.use.description}</span> : <span className="no-data">No data</span>}
-                    </td>
-                    <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                        {name?.prefix ? (
-                            <span>{name?.prefix.description}</span>
-                        ) : (
-                            <span className="no-data">No data</span>
-                        )}
-                    </td>
-                    <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
-                        {name?.last || name?.first ? (
-                            <span>{`${name?.last}, ${name?.first}, ${name?.middle}`}</span>
-                        ) : (
-                            <span className="no-data">No data</span>
-                        )}
-                    </td>
-                    <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                        {name?.suffix ? (
-                            <span>{name?.suffix.description}</span>
-                        ) : (
-                            <span className="no-data">No data</span>
-                        )}
-                    </td>
-                    <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
-                        {name?.degree ? (
-                            <span>{name?.degree.description}</span>
-                        ) : (
-                            <span className="no-data">No data</span>
-                        )}
-                    </td>
-                    <td>
-                        <div className="table-span">
-                            <Button type="button" unstyled>
-                                <Button
-                                    type="button"
-                                    unstyled
-                                    onClick={() => setIsActions(isActions === index ? null : index)}>
-                                    <Icon.MoreHoriz className="font-sans-lg" />
-                                </Button>
-                            </Button>
-                            {isActions === index && (
-                                <Actions
-                                    handleOutsideClick={() => setIsActions(null)}
-                                    handleAction={(type: string) => {
-                                        if (type === 'edit') {
-                                            setIsEditModal(true);
-                                            addNameModalRef.current?.toggleModal();
-                                        }
-                                        if (type === 'delete') {
-                                            // setIsDeleteModal(true);
-                                            deleteModalRef.current?.toggleModal();
-                                        }
-                                        if (type === 'details') {
-                                            setNameDetails(name);
-                                            detailsNameModalRef.current?.toggleModal();
-                                        }
-                                        setIsActions(null);
-                                    }}
-                                />
+        <>
+            <SortableTable
+                isPagination={true}
+                buttons={
+                    <div className="grid-row">
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                addNameModalRef.current?.toggleModal();
+                                setNameDetails(null);
+                                setIsEditModal(false);
+                            }}
+                            className="display-inline-flex">
+                            <Icon.Add className="margin-right-05" />
+                            Add name
+                        </Button>
+                        <AddNameModal
+                            modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
+                            modalRef={addNameModalRef}
+                        />
+                        <DetailsNameModal data={nameDetails} modalRef={detailsNameModalRef} />
+                    </div>
+                }
+                tableHeader={'Names'}
+                tableHead={tableHead}
+                tableBody={names?.map((name, index: number) => (
+                    <tr key={index}>
+                        <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
+                            {name?.asOf ? (
+                                <a href="#">
+                                    {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
+                                </a>
+                            ) : (
+                                <span className="no-data">No data</span>
                             )}
-                        </div>
-                    </td>
-                </tr>
-            ))}
-            totalResults={data?.findPatientProfile?.names?.total}
-            currentPage={currentPage}
-            handleNext={setCurrentPage}
-            sortDirectionData={handleSort}
-        />
+                        </td>
+                        <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
+                            {name?.use ? (
+                                <span>{name?.use.description}</span>
+                            ) : (
+                                <span className="no-data">No data</span>
+                            )}
+                        </td>
+                        <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
+                            {name?.prefix ? (
+                                <span>{name?.prefix.description}</span>
+                            ) : (
+                                <span className="no-data">No data</span>
+                            )}
+                        </td>
+                        <td className={`font-sans-md table-data ${tableHead[3].sort !== 'all' && 'sort-td'}`}>
+                            {name?.last || name?.first ? (
+                                <span>{`${name?.last ? name?.last + ',' : ''} ${name?.first || ''} ${
+                                    name?.middle || ''
+                                }`}</span>
+                            ) : (
+                                <span className="no-data">No data</span>
+                            )}
+                        </td>
+                        <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
+                            {name?.suffix ? (
+                                <span>{name?.suffix.description}</span>
+                            ) : (
+                                <span className="no-data">No data</span>
+                            )}
+                        </td>
+                        <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
+                            {name?.degree ? (
+                                <span>{name?.degree.description}</span>
+                            ) : (
+                                <span className="no-data">No data</span>
+                            )}
+                        </td>
+                        <td>
+                            <div className="table-span">
+                                <Button type="button" unstyled>
+                                    <Button
+                                        type="button"
+                                        unstyled
+                                        onClick={() => setIsActions(isActions === index ? null : index)}>
+                                        <Icon.MoreHoriz className="font-sans-lg" />
+                                    </Button>
+                                </Button>
+                                {isActions === index && (
+                                    <Actions
+                                        handleOutsideClick={() => setIsActions(null)}
+                                        handleAction={(type: string) => {
+                                            if (type === 'edit') {
+                                                setIsEditModal(true);
+                                                addNameModalRef.current?.toggleModal();
+                                            }
+                                            if (type === 'delete') {
+                                                setIsDeleteModal(true);
+                                            }
+                                            if (type === 'details') {
+                                                setNameDetails(name);
+                                                detailsNameModalRef.current?.toggleModal();
+                                            }
+                                            setIsActions(null);
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </td>
+                    </tr>
+                ))}
+                totalResults={data?.findPatientProfile?.names?.total}
+                currentPage={currentPage}
+                handleNext={setCurrentPage}
+                sortDirectionData={handleSort}
+            />
+            {isDeleteModal && (
+                <Modal
+                    ref={deleteModalRef}
+                    id="example-modal-1"
+                    aria-labelledby="modal-1-heading"
+                    className="padding-0"
+                    aria-describedby="modal-1-description">
+                    <ModalHeading
+                        id="modal-1-heading"
+                        className="border-bottom border-base-lighter font-sans-lg padding-2">
+                        Delete name
+                    </ModalHeading>
+                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                        <Icon.Warning className="font-sans-2xl margin-x-2" />
+                        <p id="modal-1-description">
+                            Are you sure you want to delete Name record, Smith, Johnathan Test?
+                        </p>
+                    </div>
+                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                        <ButtonGroup>
+                            <ModalToggleButton
+                                onClick={() => setIsDeleteModal(false)}
+                                outline
+                                modalRef={deleteModalRef}
+                                closer>
+                                Cancel
+                            </ModalToggleButton>
+                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
+                                Yes, delete
+                            </ModalToggleButton>
+                        </ButtonGroup>
+                    </ModalFooter>
+                </Modal>
+            )}
+        </>
     );
 };

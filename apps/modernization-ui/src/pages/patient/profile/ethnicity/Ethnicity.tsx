@@ -19,7 +19,17 @@ export const Ethnicity = ({ patient }: PatientLabReportTableProps) => {
                     text: format(new Date(data?.findPatientProfile?.ethnicity.asOf), 'MM/dd/yyyy')
                 },
                 { title: 'Ethnicity::', text: data?.findPatientProfile?.ethnicity?.ethnicGroup?.description },
-                { title: 'Spanish origin:', text: '' },
+                {
+                    title: 'Spanish origin:',
+                    text: data?.findPatientProfile?.ethnicity?.detailed.map((detail, index: number) => (
+                        <span key={detail?.id}>
+                            {detail?.description}{' '}
+                            {data?.findPatientProfile?.ethnicity?.detailed &&
+                                data?.findPatientProfile?.ethnicity?.detailed?.length - 1 !== index &&
+                                '|'}{' '}
+                        </span>
+                    ))
+                },
                 { title: 'Reasons unknown:', text: data?.findPatientProfile?.ethnicity?.unknownReason?.description }
             ]);
         }

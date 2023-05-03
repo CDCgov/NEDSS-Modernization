@@ -25,7 +25,7 @@ export const Mortality = ({ patient }: PatientLabReportTableProps) => {
                 { title: 'Date of death:', text: data?.findPatientProfile?.mortality?.deceasedOn },
                 { title: 'City of death:', text: data?.findPatientProfile?.mortality?.city },
                 { title: 'State of death:', text: data?.findPatientProfile?.mortality?.state?.description },
-                { title: 'County of death:', text: '' },
+                { title: 'County of death:', text: data?.findPatientProfile?.mortality?.county?.description },
                 { title: 'Country of death:', text: data?.findPatientProfile?.mortality?.country?.description }
             ]);
         }

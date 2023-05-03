@@ -28,6 +28,10 @@ export const Query = gql`
                     id
                     description
                 }
+                county {
+                    id
+                    description
+                }
             }
         }
     }
