@@ -134,8 +134,10 @@ type PatientBirth {
     bornOn: Date
     age: Int
     multipleBirth: PatientCodedValue
+    birthOrder: Int
     city: String
     state: PatientCodedValue
+    county: PatientCodedValue
     country: PatientCodedValue
 }
 
@@ -178,6 +180,7 @@ type PatientMortality {
     deceasedOn: Date
     city: String
     state: PatientCodedValue
+    county: PatientCodedValue
     country: PatientCodedValue
 }
 

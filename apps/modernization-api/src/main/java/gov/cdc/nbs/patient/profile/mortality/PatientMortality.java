@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile.mortality;
 
 import gov.cdc.nbs.geo.country.SimpleCountry;
+import gov.cdc.nbs.geo.county.SimpleCounty;
 import gov.cdc.nbs.geo.state.SimpleState;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ record PatientMortality(
     LocalDate deceasedOn,
     String city,
     SimpleState state,
+    SimpleCounty county,
     SimpleCountry country
 ) {
     record Deceased(String id, String description) {

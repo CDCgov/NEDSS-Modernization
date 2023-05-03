@@ -9,6 +9,8 @@ import gov.cdc.nbs.entity.srte.QCountryCode;
 import gov.cdc.nbs.entity.srte.QStateCode;
 import gov.cdc.nbs.geo.country.SimpleCountry;
 import gov.cdc.nbs.geo.country.SimpleCountryTupleMapper;
+import gov.cdc.nbs.geo.county.SimpleCounty;
+import gov.cdc.nbs.geo.county.SimpleCountyTupleMapper;
 import gov.cdc.nbs.geo.state.SimpleState;
 import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -26,6 +28,7 @@ class PatientMortalityTupleMapper {
         QPostalEntityLocatorParticipation locators,
         QPostalLocator address,
         QStateCode state,
+        QCodeValueGeneral county,
         QCountryCode country
     ) {
 
@@ -36,6 +39,7 @@ class PatientMortalityTupleMapper {
                 QPostalEntityLocatorParticipation.postalEntityLocatorParticipation,
                 QPostalLocator.postalLocator,
                 QStateCode.stateCode,
+                new QCodeValueGeneral("county"),
                 QCountryCode.countryCode
             );
         }
@@ -45,6 +49,7 @@ class PatientMortalityTupleMapper {
     private final Tables tables;
     private final SimpleCountryTupleMapper countryMapper;
     private final SimpleStateTupleMapper stateMapper;
+    private final SimpleCountyTupleMapper countyMapper;
 
     PatientMortalityTupleMapper(final Tables tables) {
         this.tables = tables;
@@ -62,6 +67,12 @@ class PatientMortalityTupleMapper {
             )
         );
 
+        this.countyMapper = new SimpleCountyTupleMapper(
+            new SimpleCountyTupleMapper.Tables(
+                this.tables.address(),
+                this.tables.county()
+            )
+        );
     }
 
     PatientMortality map(final Tuple tuple) {
@@ -91,6 +102,8 @@ class PatientMortalityTupleMapper {
 
         SimpleState state = this.stateMapper.maybeMap(tuple).orElse(null);
 
+        SimpleCounty county = this.countyMapper.maybeMap(tuple).orElse(null);
+
         SimpleCountry country = this.countryMapper.maybeMap(tuple).orElse(null);
 
         return new PatientMortality(
@@ -102,6 +115,7 @@ class PatientMortalityTupleMapper {
             deceasedOn,
             city,
             state,
+            county,
             country
         );
     }
