@@ -43,7 +43,7 @@ class PatientAddressFinder {
             tables.address().streetAddr2,
             tables.address().cityDescTxt,
             tables.address().cntyCd,
-            tables.county().codeShortDescTxt,
+            tables.county().codeDescTxt,
             tables.address().stateCd,
             tables.state().stateNm,
             tables.address().zipCd,

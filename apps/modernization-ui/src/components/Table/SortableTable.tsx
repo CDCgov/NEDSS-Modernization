@@ -71,6 +71,7 @@ export const SortableTable = ({
                                         <>
                                             {head.sort === 'all' && (
                                                 <Button
+                                                    disabled={!tableBody || tableBody.length <= 1}
                                                     className="usa-button--unstyled"
                                                     type={'button'}
                                                     onClick={() => handleSort(head.name, 'desc')}>
@@ -79,6 +80,7 @@ export const SortableTable = ({
                                             )}
                                             {head.sort === 'desc' && (
                                                 <Button
+                                                    disabled={!tableBody || tableBody.length <= 1}
                                                     className="usa-button--unstyled"
                                                     type={'button'}
                                                     onClick={() => handleSort(head.name, 'asc')}>
@@ -87,6 +89,7 @@ export const SortableTable = ({
                                             )}
                                             {head.sort === 'asc' && (
                                                 <Button
+                                                    disabled={!tableBody || tableBody.length <= 1}
                                                     className="usa-button--unstyled"
                                                     type={'button'}
                                                     onClick={() => handleSort(head.name, 'desc')}>

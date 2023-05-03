@@ -76,7 +76,6 @@ export const MultiSelectControl = ({ control, name, options, label }: EventTypes
     const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
 
     const handleOnChange = (e: any, onChange: any) => {
-        console.log('CHANGE', e);
         const tempArr: any = [];
         e.map((re: any) => {
             tempArr.push(re.value);

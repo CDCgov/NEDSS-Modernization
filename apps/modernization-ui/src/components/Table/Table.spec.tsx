@@ -103,6 +103,10 @@ describe('when a table has a sortable header', () => {
                     {
                         id: 1,
                         tableDetails: [{ id: 1, title: 'one' }]
+                    },
+                    {
+                        id: 2,
+                        tableDetails: [{ id: 2, title: 'two' }]
                     }
                 ]}
             />
@@ -133,6 +137,10 @@ describe('when a table has a sortable header', () => {
                     {
                         id: 1,
                         tableDetails: [{ id: 1, title: 'one' }]
+                    },
+                    {
+                        id: 2,
+                        tableDetails: [{ id: 2, title: 'two' }]
                     }
                 ]}
             />
@@ -166,6 +174,10 @@ describe('when a table has a sortable header', () => {
                     {
                         id: 1,
                         tableDetails: [{ id: 1, title: 'one' }]
+                    },
+                    {
+                        id: 2,
+                        tableDetails: [{ id: 2, title: 'two' }]
                     }
                 ]}
             />

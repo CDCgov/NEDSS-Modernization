@@ -1,8 +1,9 @@
 package gov.cdc.nbs.labreport;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 import gov.cdc.nbs.labreport.LabReportFilter.EntryMethod;
+import gov.cdc.nbs.labreport.LabReportFilter.LabReportEventId;
 import gov.cdc.nbs.labreport.LabReportFilter.EventStatus;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportDateType;
 import gov.cdc.nbs.labreport.LabReportFilter.LabReportProviderSearch;
@@ -25,10 +26,9 @@ public class LabReportTestUtil {
         filter.setProgramAreas(Arrays.asList("PA1", "PA2"));
         filter.setJurisdictions(Arrays.asList(190L, 191L));
         filter.setPregnancyStatus(PregnancyStatus.YES);
-        filter.setEventIdType(LaboratoryEventIdType.ACCESSION_NUMBER);
-        filter.setEventId("eventId");
-        filter.setEventDateSearch(new LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT,
-                RandomUtil.getRandomDateInPast(), Instant.now()));
+        filter.setEventId(new LabReportEventId(LaboratoryEventIdType.ACCESSION_NUMBER, "eventId"));
+        filter.setEventDate(new LaboratoryEventDateSearch(LabReportDateType.DATE_OF_REPORT,
+                RandomUtil.dateInPast(), LocalDate.now()));
         filter.setEntryMethods(Arrays.asList(EntryMethod.ELECTRONIC));
         filter.setEnteredBy(Arrays.asList(UserType.EXTERNAL));
         filter.setEventStatus(Arrays.asList(EventStatus.UPDATE));

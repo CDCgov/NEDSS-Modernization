@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile.birth;
 
 import gov.cdc.nbs.geo.country.SimpleCountry;
+import gov.cdc.nbs.geo.county.SimpleCounty;
 import gov.cdc.nbs.geo.state.SimpleState;
 
 import java.time.Instant;
@@ -14,8 +15,10 @@ record PatientBirth(
     LocalDate bornOn,
     Integer age,
     MultipleBirth multipleBirth,
+    Short birthOrder,
     String city,
     SimpleState state,
+    SimpleCounty county,
     SimpleCountry country
 ) {
 

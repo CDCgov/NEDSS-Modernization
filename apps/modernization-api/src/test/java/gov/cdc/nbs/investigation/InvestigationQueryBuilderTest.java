@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -38,9 +38,10 @@ import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.investigation.InvestigationFilter.CaseStatus;
+import gov.cdc.nbs.investigation.InvestigationFilter.EventDate;
 import gov.cdc.nbs.investigation.InvestigationFilter.EventDateType;
+import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventId;
 import gov.cdc.nbs.investigation.InvestigationFilter.IdType;
-import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationEventDateSearch;
 import gov.cdc.nbs.investigation.InvestigationFilter.InvestigationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.NotificationStatus;
 import gov.cdc.nbs.investigation.InvestigationFilter.ProcessingStatus;
@@ -294,8 +295,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId("eventId");
-        filter.setEventIdType(IdType.ABCS_CASE_ID);
+        filter.setEventId(new InvestigationEventId(IdType.ABCS_CASE_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -312,7 +312,7 @@ class InvestigationQueryBuilderTest {
         var clause2 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
                         nestedBuilders);
-        assertEquals(filter.getEventId(), clause2.value());
+        assertEquals(filter.getEventId().getId(), clause2.value());
     }
 
     @Test
@@ -324,8 +324,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId("eventId");
-        filter.setEventIdType(IdType.CITY_COUNTY_CASE_ID);
+        filter.setEventId(new InvestigationEventId(IdType.CITY_COUNTY_CASE_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -347,7 +346,7 @@ class InvestigationQueryBuilderTest {
         var clause3 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
                         nestedBuilders);
-        assertEquals(filter.getEventId(), clause3.value());
+        assertEquals(filter.getEventId().getId(), clause3.value());
     }
 
 
@@ -360,8 +359,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId("eventId");
-        filter.setEventIdType(IdType.STATE_CASE_ID);
+        filter.setEventId(new InvestigationEventId(IdType.STATE_CASE_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -383,7 +381,7 @@ class InvestigationQueryBuilderTest {
         var clause3 =
                 findMatchQueryBuilder(Investigation.ACT_IDS + "." + ElasticsearchActId.ROOT_EXTENSION_TXT,
                         nestedBuilders);
-        assertEquals(filter.getEventId(), clause3.value());
+        assertEquals(filter.getEventId().getId(), clause3.value());
     }
 
     @Test
@@ -395,8 +393,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId("eventId");
-        filter.setEventIdType(IdType.INVESTIGATION_ID);
+        filter.setEventId(new InvestigationEventId(IdType.INVESTIGATION_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -404,7 +401,7 @@ class InvestigationQueryBuilderTest {
         var must = ((BoolQueryBuilder) query.getQuery()).must();
 
         var clause = findMatchQueryBuilder(Investigation.LOCAL_ID, must);
-        assertEquals(filter.getEventId(), clause.value());
+        assertEquals(filter.getEventId().getId(), clause.value());
     }
 
     @Test
@@ -416,8 +413,7 @@ class InvestigationQueryBuilderTest {
 
         // method call
         var filter = new InvestigationFilter();
-        filter.setEventId("eventId");
-        filter.setEventIdType(IdType.NOTIFICATION_ID);
+        filter.setEventId(new InvestigationEventId(IdType.NOTIFICATION_ID, "eventId"));
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -425,7 +421,7 @@ class InvestigationQueryBuilderTest {
         var must = ((BoolQueryBuilder) query.getQuery()).must();
 
         var clause = findMatchQueryBuilder(Investigation.NOTIFICATION_LOCAL_ID, must);
-        assertEquals(filter.getEventId(), clause.value());
+        assertEquals(filter.getEventId().getId(), clause.value());
     }
 
     @ParameterizedTest
@@ -437,10 +433,10 @@ class InvestigationQueryBuilderTest {
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
 
         // method call
-        var eds = new InvestigationEventDateSearch(dateType, RandomUtil.getRandomDateInPast(),
-                Instant.now());
+        var eds = new EventDate(dateType, RandomUtil.dateInPast(),
+                LocalDate.now());
         var filter = new InvestigationFilter();
-        filter.setEventDateSearch(eds);
+        filter.setEventDate(eds);
         var query = queryBuilder.buildInvestigationQuery(filter, pageable);
 
         // assertions
@@ -462,10 +458,10 @@ class InvestigationQueryBuilderTest {
         when(securityService.getProgramAreaJurisdictionOids(Mockito.any())).thenReturn(programAreaJurisdictionOids());
 
         // method call
-        var eds = new InvestigationEventDateSearch(EventDateType.DATE_OF_REPORT, null,
-                Instant.now());
+        var eds = new EventDate(EventDateType.DATE_OF_REPORT, null,
+                LocalDate.now());
         var filter = new InvestigationFilter();
-        filter.setEventDateSearch(eds);
+        filter.setEventDate(eds);
         QueryException ex = null;
         try {
             queryBuilder.buildInvestigationQuery(filter, pageable);

@@ -41,10 +41,12 @@ class PatientBirthTupleMapperTest {
         assertThat(actual.bornOn()).isEqualTo("1999-09-09");
 
         assertThat(actual.multipleBirth()).isNull();
+        assertThat(actual.birthOrder()).isNull();
 
         assertThat(actual.city()).isEqualTo("birth-city");
 
         assertThat(actual.state()).isNull();
+        assertThat(actual.county()).isNull();
         assertThat(actual.country()).isNull();
     }
 
@@ -97,6 +99,27 @@ class PatientBirthTupleMapperTest {
     }
 
     @Test
+    void should_map_birth_from_tuple_with_birth_order() {
+        PatientBirthTupleMapper.Tables tables = new PatientBirthTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
+        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
+
+        when(tuple.get(tables.patient().birthOrderNbr)).thenReturn((short) 5);
+
+        PatientBirthTupleMapper mapper = new PatientBirthTupleMapper(tables);
+
+        PatientBirth actual = mapper.map(tuple);
+
+        assertThat(actual.birthOrder()).isEqualTo((short) 5);
+
+
+    }
+
+    @Test
     void should_map_birth_from_tuple_with_birth_state() {
         PatientBirthTupleMapper.Tables tables = new PatientBirthTupleMapper.Tables();
 
@@ -115,6 +138,28 @@ class PatientBirthTupleMapperTest {
 
         assertThat(actual.state().id()).isEqualTo("state-id");
         assertThat(actual.state().description()).isEqualTo("state-description");
+
+    }
+
+    @Test
+    void should_map_birth_from_tuple_with_birth_county() {
+        PatientBirthTupleMapper.Tables tables = new PatientBirthTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
+        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
+
+        when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
+        when(tuple.get(tables.county().codeDescTxt)).thenReturn("county-description");
+
+        PatientBirthTupleMapper mapper = new PatientBirthTupleMapper(tables);
+
+        PatientBirth actual = mapper.map(tuple);
+
+        assertThat(actual.county().id()).isEqualTo("county-id");
+        assertThat(actual.county().description()).isEqualTo("county-description");
 
     }
 

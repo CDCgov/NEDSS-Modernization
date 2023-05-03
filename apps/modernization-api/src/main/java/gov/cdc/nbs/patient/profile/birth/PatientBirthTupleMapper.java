@@ -8,6 +8,8 @@ import gov.cdc.nbs.entity.srte.QCountryCode;
 import gov.cdc.nbs.entity.srte.QStateCode;
 import gov.cdc.nbs.geo.country.SimpleCountry;
 import gov.cdc.nbs.geo.country.SimpleCountryTupleMapper;
+import gov.cdc.nbs.geo.county.SimpleCounty;
+import gov.cdc.nbs.geo.county.SimpleCountyTupleMapper;
 import gov.cdc.nbs.geo.state.SimpleState;
 import gov.cdc.nbs.geo.state.SimpleStateTupleMapper;
 
@@ -25,6 +27,7 @@ class PatientBirthTupleMapper {
         QCodeValueGeneral multipleBirth,
         QPostalLocator address,
         QStateCode state,
+        QCodeValueGeneral county,
         QCountryCode country
     ) {
 
@@ -34,6 +37,7 @@ class PatientBirthTupleMapper {
                 new QCodeValueGeneral("multiple_birth"),
                 QPostalLocator.postalLocator,
                 QStateCode.stateCode,
+                new QCodeValueGeneral("county"),
                 QCountryCode.countryCode
             );
         }
@@ -46,6 +50,7 @@ class PatientBirthTupleMapper {
 
     private final SimpleCountryTupleMapper countryMapper;
     private final SimpleStateTupleMapper stateMapper;
+    private final SimpleCountyTupleMapper countyMapper;
 
     PatientBirthTupleMapper(
         final Clock clock,
@@ -65,6 +70,13 @@ class PatientBirthTupleMapper {
             new SimpleStateTupleMapper.Tables(
                 this.tables.address(),
                 this.tables.state()
+            )
+        );
+
+        this.countyMapper = new SimpleCountyTupleMapper(
+            new SimpleCountyTupleMapper.Tables(
+                this.tables.address(),
+                this.tables.county()
             )
         );
     }
@@ -98,12 +110,15 @@ class PatientBirthTupleMapper {
 
         PatientBirth.MultipleBirth multipleBirth = resolveMultipleBirth(tuple);
 
+        Short birthOrder = tuple.get(this.tables.patient.birthOrderNbr);
+
         String city = tuple.get(this.tables.address().cityDescTxt);
 
         SimpleState state = this.stateMapper.maybeMap(tuple).orElse(null);
 
-        SimpleCountry country = this.countryMapper.maybeMap(tuple).orElse(null);
+        SimpleCounty county = this.countyMapper.maybeMap(tuple).orElse(null);
 
+        SimpleCountry country = this.countryMapper.maybeMap(tuple).orElse(null);
 
         return new PatientBirth(
             patient,
@@ -113,8 +128,10 @@ class PatientBirthTupleMapper {
             birthday,
             age,
             multipleBirth,
+            birthOrder,
             city,
             state,
+            county,
             country
         );
     }

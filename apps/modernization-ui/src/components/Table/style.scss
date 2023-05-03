@@ -3,6 +3,13 @@
     justify-content: space-between;
     border: none;
     align-items: center;
+
+    button:disabled {
+        cursor: text;
+        .usa-icon {
+            color: #747474;
+        }
+    }
 }
 
 td {

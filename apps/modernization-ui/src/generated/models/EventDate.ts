@@ -2,15 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type InvestigationEventDateSearch = {
-    eventDateType?: InvestigationEventDateSearch.eventDateType;
+export type EventDate = {
     from?: string;
     to?: string;
+    type?: EventDate.type;
 };
 
-export namespace InvestigationEventDateSearch {
+export namespace EventDate {
 
-    export enum eventDateType {
+    export enum type {
         DATE_OF_REPORT = 'DATE_OF_REPORT',
         INVESTIGATION_CLOSED_DATE = 'INVESTIGATION_CLOSED_DATE',
         INVESTIGATION_CREATE_DATE = 'INVESTIGATION_CREATE_DATE',

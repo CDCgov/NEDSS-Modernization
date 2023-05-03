@@ -11,6 +11,7 @@ import java.util.Optional;
 class PatientBirthFinder {
     
     private static final QPostalEntityLocatorParticipation LOCATORS = QPostalEntityLocatorParticipation.postalEntityLocatorParticipation;
+    private static final String COUNTY_CODE_SET = "PHVS_COUNTY_FIPS_6-4";
     private static final String PATIENT_CODE = "PAT";
     private static final String BIRTH_ADDRESS_CODE = "BIR";
     private static final String ACTIVE_CODE = "ACTIVE";
@@ -33,10 +34,13 @@ class PatientBirthFinder {
                 tables.patient().asOfDateSex,
                 tables.patient().birthTime,
                 tables.patient().multipleBirthInd,
+                tables.patient().birthOrderNbr,
                 tables.multipleBirth().codeShortDescTxt,
                 tables.address().cityDescTxt,
                 tables.address().stateCd,
                 tables.state().stateNm,
+                tables.address().cntyCd,
+                tables.county().codeDescTxt,
                 tables.address().cntryCd,
                 tables.country().codeDescTxt
             ).from(this.tables.patient())
@@ -54,6 +58,10 @@ class PatientBirthFinder {
             )
             .leftJoin(this.tables.state()).on(
                 this.tables.state().id.eq(this.tables.address().stateCd)
+            )
+            .leftJoin(this.tables.county()).on(
+                this.tables.county().id.codeSetNm.eq(COUNTY_CODE_SET),
+                this.tables.county().id.code.eq(this.tables.address().cntyCd)
             )
             .leftJoin(this.tables.country()).on(
                 this.tables.country().id.eq(this.tables.address().cntryCd)

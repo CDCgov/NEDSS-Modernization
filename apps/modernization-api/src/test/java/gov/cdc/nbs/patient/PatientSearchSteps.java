@@ -86,6 +86,33 @@ public class PatientSearchSteps {
         elasticsearchPersonRepository.saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(generatedPersons));
     }
 
+    @Given("there are 3 patients with soundex legal and secondary names")
+    public void there_are_relevance_patients() {
+        // person data is randomly generated but the Ids are always the same.
+        generatedPersons = PersonMother.getRandomPersons(3);
+
+        // make first 3 persons soundex,relevance/boost testable intentionally in worst order
+        Person soundexPerson = generatedPersons.get(0);
+        soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
+        soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
+
+        soundexPerson = generatedPersons.get(1);  // will become secondary name
+        soundexPerson.setFirstNm("John");
+        soundexPerson.setLastNm("Smith");
+
+        soundexPerson = generatedPersons.get(2); // will become primary legal name
+        soundexPerson.setFirstNm("John");
+        soundexPerson.setLastNm("Smith");
+
+        generatedPersons.forEach(personRepository::delete);
+
+        personRepository.flush();
+        // create new persons
+
+        personRepository.saveAll(generatedPersons);
+        elasticsearchPersonRepository.saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(generatedPersons));
+    }
+
     @Given("I am looking for one of them")
     public void I_am_looking_for_one_of_them() {
         // pick one of the existing patients at random
@@ -188,6 +215,13 @@ public class PatientSearchSteps {
     @Then("I find the patients sorted")
     public void i_find_the_sorted_patients() {
         Comparator<Person> comparator = getPersonSortComparator(sortField, sortDirection);
+        if (comparator == null) {
+            // check relevance ordering manually (ie there is no simple comparator)
+            Assert.assertEquals(searchResults.get(0), generatedPersons.get(2));
+            Assert.assertEquals(searchResults.get(1), generatedPersons.get(1));
+            Assert.assertEquals(searchResults.get(2), generatedPersons.get(0));
+            return;
+        }
         List<Person> sortedPersons = generatedPersons.stream().sorted(comparator).collect(Collectors.toList());
         Assert.assertEquals(searchResults, sortedPersons);
     }
@@ -218,6 +252,12 @@ public class PatientSearchSteps {
             case "last name soundex":
                 searchPatient = generatedPersons.get(0);
                 filter.setLastName("Smith"); // finds Smyth
+                break;
+            case "last name relevance":
+                filter.setLastName("Smith");
+                break;
+            case "first name relevance":
+                filter.setFirstName("John");
                 break;
             case "last name":
                 filter.setLastName(searchPatient.getLastNm());
@@ -346,6 +386,9 @@ public class PatientSearchSteps {
     }
 
     private Comparator<Person> getPersonSortComparator(String field, Direction direction) {
+        if (field.equals("relevance")) {
+            return null;
+        }
         Comparator<Person> personSortComparator = (h1, h2) -> h1.getLastNm().compareTo(h2.getLastNm());
         if (direction == Direction.DESC) {
             if (field.equals("lastNm")) {

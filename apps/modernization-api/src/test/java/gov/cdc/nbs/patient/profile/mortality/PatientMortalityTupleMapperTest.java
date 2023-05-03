@@ -44,6 +44,7 @@ class PatientMortalityTupleMapperTest {
         assertThat(actual.city()).isEqualTo("city");
 
         assertThat(actual.state()).isNull();
+        assertThat(actual.county()).isNull();
         assertThat(actual.country()).isNull();
     }
 
@@ -87,6 +88,28 @@ class PatientMortalityTupleMapperTest {
 
         assertThat(actual.state().id()).isEqualTo("state-id");
         assertThat(actual.state().description()).isEqualTo("state-description");
+
+    }
+
+    @Test
+    void should_map_mortality_from_tuple_with_mortality_county() {
+        PatientMortalityTupleMapper.Tables tables = new PatientMortalityTupleMapper.Tables();
+
+        Tuple tuple = mock(Tuple.class);
+
+        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
+        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
+
+        when(tuple.get(tables.address().cntyCd)).thenReturn("county-id");
+        when(tuple.get(tables.county().codeDescTxt)).thenReturn("county-description");
+
+        PatientMortalityTupleMapper mapper = new PatientMortalityTupleMapper(tables);
+
+        PatientMortality actual = mapper.map(tuple);
+
+        assertThat(actual.county().id()).isEqualTo("county-id");
+        assertThat(actual.county().description()).isEqualTo("county-description");
 
     }
 

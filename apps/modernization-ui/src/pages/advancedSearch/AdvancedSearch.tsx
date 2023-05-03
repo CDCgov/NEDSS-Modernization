@@ -263,7 +263,6 @@ export const AdvancedSearch = () => {
     };
 
     const performInvestigationSearch = (filter: InvestigationFilter) => {
-        console.log('INVSEARCH', filter);
         findInvestigations({
             variables: {
                 filter: filter,
@@ -389,194 +388,160 @@ export const AdvancedSearch = () => {
 
     const handleLabReportChipClose = (name: string, value: string) => {
         let tempLabReportFilter = labReportFilter as LabReportFilter;
-        // remove the closed chip from the display
-        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
-        setResultsChip(newChips);
-
-        // if the last chip was removed, reset search
-        if (newChips.length === 0) {
-            handleClearAll();
-            return;
-        }
 
         // remove the filter criteria associated with closed chip and resubmit search
         switch (name.trim()) {
-            case 'Program Areas':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    programAreas: tempLabReportFilter?.programAreas?.filter((pa) => pa !== value)
-                };
+            case 'Program Areas': {
+                const newProgramAreas = tempLabReportFilter?.programAreas?.filter((pa) => pa !== value);
+                if (newProgramAreas?.length === 0) {
+                    delete tempLabReportFilter.programAreas;
+                } else {
+                    tempLabReportFilter = {
+                        ...tempLabReportFilter,
+                        programAreas: newProgramAreas
+                    };
+                }
                 break;
-            case 'Jurisdictions':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    jurisdictions: tempLabReportFilter?.jurisdictions?.filter((j) => j !== value)
-                };
+            }
+            case 'Jurisdictions': {
+                const newJurisdictions = tempLabReportFilter?.jurisdictions?.filter((j) => j !== value);
+                if (newJurisdictions?.length === 0) {
+                    delete tempLabReportFilter.jurisdictions;
+                } else {
+                    tempLabReportFilter = {
+                        ...tempLabReportFilter,
+                        programAreas: newJurisdictions
+                    };
+                }
                 break;
+            }
             case 'Pregnancy Status':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    pregnancyStatus: undefined
-                };
+                delete tempLabReportFilter.pregnancyStatus;
                 break;
-            case 'Event Id Type':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    eventIdType: undefined
-                };
+            case 'Lab Event Type':
+            case 'Lab Event Id':
+                delete tempLabReportFilter.eventId;
                 break;
-            case 'Event Id':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    eventId: undefined
-                };
-                break;
-            case 'Event Date Type' || 'From' || 'To':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    eventDateSearch: undefined
-                };
+            case 'From':
+            case 'To':
+            case 'Type':
+                delete tempLabReportFilter.eventDate;
                 break;
             case 'Created By':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    createdBy: undefined
-                };
+                delete tempLabReportFilter.createdBy;
                 break;
             case 'Last Updated By':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    lastUpdatedBy: undefined
-                };
+                delete tempLabReportFilter.lastUpdatedBy;
                 break;
-            case 'Entity Type' || 'Id':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    providerSearch: undefined
-                };
+            case 'Entity Type':
+            case 'Id':
+                delete tempLabReportFilter.providerSearch;
                 break;
             case 'Resulted Test':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    resultedTest: undefined
-                };
+                delete tempLabReportFilter.resultedTest;
                 break;
             case 'Coded Result':
-                tempLabReportFilter = {
-                    ...tempLabReportFilter,
-                    codedResult: undefined
-                };
+                delete tempLabReportFilter.codedResult;
                 break;
         }
-        handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
+
+        handleEventTags(tempLabReportFilter);
+
+        if (Object.entries(tempLabReportFilter).length === 0) {
+            setLabReportFilter({});
+            handleClearAll();
+        } else {
+            handleSubmit(tempLabReportFilter, SEARCH_TYPE.LAB_REPORT);
+        }
     };
 
     const handleInvestigationChipClose = (name: string, value: string) => {
         let tempInvestigationFilter = investigationFilter as InvestigationFilter;
-        // remove the closed chip from the display
-        const newChips = resultsChip.filter((c) => c.name != name || c.value != value);
-        setResultsChip(newChips);
-
-        // if the last chip was removed, reset search
-        if (newChips.length === 0) {
-            handleClearAll();
-            return;
-        }
 
         // remove the filter criteria associated with closed chip and resubmit search
         switch (name) {
-            case 'Conditions':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    conditions: tempInvestigationFilter?.conditions?.filter((c) => c !== value)
-                };
+            case 'Conditions': {
+                const newConditions = tempInvestigationFilter?.conditions?.filter((c) => c !== value);
+                if (newConditions?.length === 0) {
+                    delete tempInvestigationFilter.conditions;
+                } else {
+                    tempInvestigationFilter = {
+                        ...tempInvestigationFilter,
+                        conditions: newConditions
+                    };
+                }
                 break;
-            case 'Program Areas':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    programAreas: tempInvestigationFilter?.programAreas?.filter((pa) => pa !== value)
-                };
+            }
+            case 'Program Areas': {
+                const newProgramAreas = tempInvestigationFilter?.programAreas?.filter((pa) => pa !== value);
+                if (newProgramAreas?.length === 0) {
+                    delete tempInvestigationFilter.programAreas;
+                } else {
+                    tempInvestigationFilter = {
+                        ...tempInvestigationFilter,
+                        programAreas: newProgramAreas
+                    };
+                }
                 break;
-            case 'Jurisdictions':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    jurisdictions: tempInvestigationFilter?.jurisdictions?.filter((j) => j !== value)
-                };
+            }
+            case 'Jurisdictions': {
+                const newJurisdictions = tempInvestigationFilter?.jurisdictions?.filter((j) => j !== value);
+                if (newJurisdictions?.length === 0) {
+                    delete tempInvestigationFilter.jurisdictions;
+                } else {
+                    tempInvestigationFilter = {
+                        ...tempInvestigationFilter,
+                        jurisdictions: newJurisdictions
+                    };
+                }
                 break;
+            }
             case 'Investigation Status':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    investigationStatus: undefined
-                };
+                delete tempInvestigationFilter.investigationStatus;
                 break;
             case 'Outbreak Names':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    outbreakNames: undefined
-                };
+                delete tempInvestigationFilter.outbreakNames;
                 break;
             case 'Case Statuses':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    caseStatuses: undefined
-                };
+                delete tempInvestigationFilter.caseStatuses;
                 break;
             case 'Processing Statuses':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    processingStatuses: undefined
-                };
+                delete tempInvestigationFilter.processingStatuses;
                 break;
             case 'Notification Statuses':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    notificationStatuses: undefined
-                };
+                delete tempInvestigationFilter.notificationStatuses;
                 break;
             case 'Pregnancy Status':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    pregnancyStatus: undefined
-                };
+                delete tempInvestigationFilter.pregnancyStatus;
                 break;
-            case 'Event Id Type':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    eventIdType: undefined
-                };
+            case 'Investigation Event Type':
+            case 'Id':
+                delete tempInvestigationFilter.eventId;
                 break;
-            case 'Event Id':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    eventId: undefined
-                };
-                break;
-            case 'Event Date Type' || 'From' || 'To':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    eventDateSearch: undefined
-                };
+            case 'Type':
+            case 'From':
+            case 'To':
+            case 'Event Date Type':
+                delete tempInvestigationFilter.eventDate;
                 break;
             case 'Created By':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    createdBy: undefined
-                };
+                delete tempInvestigationFilter.createdBy;
                 break;
             case 'Last Updated By':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    lastUpdatedBy: undefined
-                };
+                delete tempInvestigationFilter.lastUpdatedBy;
                 break;
             case 'Entity Type' || 'Id':
-                tempInvestigationFilter = {
-                    ...tempInvestigationFilter,
-                    providerFacilitySearch: undefined
-                };
+                delete tempInvestigationFilter.providerFacilitySearch;
                 break;
         }
-        handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
+
+        handleEventTags(tempInvestigationFilter);
+        if (Object.entries(tempInvestigationFilter).length === 0) {
+            setInvestigationFilter({});
+            handleClearAll();
+        } else {
+            handleSubmit(tempInvestigationFilter, SEARCH_TYPE.INVESTIGATION);
+        }
     };
 
     const handlePersonChipClose = (name: string, value: string) => {
@@ -649,11 +614,6 @@ export const AdvancedSearch = () => {
     function handleAddNewPatientClick(): void {
         setShowAddNewDropDown(false);
         navigate('/add-patient');
-        // RedirectControllerService.preparePatientDetailsUsingGet({ authorization: 'Bearer ' + state.getToken() }).then(
-        //     () => {
-        //         window.location.href = `${NBS_URL}/PatientSearchResults1.do?ContextAction=Add`;
-        //     }
-        // );
     }
 
     function handleAddNewLabReportClick(): void {
@@ -676,7 +636,7 @@ export const AdvancedSearch = () => {
             case SEARCH_TYPE.INVESTIGATION:
                 return !investigationData?.content || investigationData?.content?.length === 0;
             case SEARCH_TYPE.LAB_REPORT:
-                !labReportData?.content || labReportData?.content?.length === 0;
+                return !labReportData?.content || labReportData?.content?.length === 0;
         }
     }
 
@@ -706,16 +666,11 @@ export const AdvancedSearch = () => {
                     Search
                     <div className="button-group">
                         <Button
-                            // disabled={
-                            //     (!patientData?.content || patientData.content.length === 0) &&
-                            //     (!labReportData?.content || labReportData.total === 0) &&
-                            //     (!investigationData?.content || investigationData.total === 0)
-                            // }
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
                             Add new
-                            <img src={'down-arrow-white.svg'} />
+                            <img src={'/down-arrow-white.svg'} />
                         </Button>
                         {showAddNewDropDown && (
                             <ul
@@ -806,7 +761,7 @@ export const AdvancedSearch = () => {
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="padding-x-3 margin-top-0"
+                                    className="padding-x-3 sortBy-position"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
                                     outline>
@@ -817,8 +772,8 @@ export const AdvancedSearch = () => {
                                             (!investigationData?.content || investigationData?.content?.length === 0) &&
                                             (!labReportData?.content || labReportData?.content?.length === 0) &&
                                             (!patientData?.content || patientData?.content?.length === 0)
-                                                ? 'down-arrow-white.svg'
-                                                : 'down-arrow-blue.svg'
+                                                ? '/down-arrow-white.svg'
+                                                : '/down-arrow-blue.svg'
                                         }
                                     />
                                 </Button>
@@ -881,6 +836,20 @@ export const AdvancedSearch = () => {
                                                 Date of birth (Descending)
                                             </Button>
                                         </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button
+                                                onClick={() => {
+                                                    setSort({
+                                                        sortDirection: SortDirection.Desc,
+                                                        sortField: SortField.Relevance
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
+                                                type={'button'}
+                                                unstyled>
+                                                Closest match
+                                            </Button>
+                                        </li>
                                     </ul>
                                 )}
                             </div>
@@ -890,7 +859,7 @@ export const AdvancedSearch = () => {
                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                     (!patientData?.content || patientData?.content?.length === 0)
                                 }
-                                className="width-full margin-top-0"
+                                className="width-full margin-top-0 invisible"
                                 type={'button'}
                                 onClick={handleExportClick}
                                 outline>
@@ -902,7 +871,7 @@ export const AdvancedSearch = () => {
                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                     (!patientData?.content || patientData?.content?.length === 0)
                                 }
-                                className="width-full margin-top-0"
+                                className="width-full margin-top-0 invisible"
                                 type={'button'}
                                 onClick={handlePrintClick}
                                 outline>

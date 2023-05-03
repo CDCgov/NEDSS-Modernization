@@ -79,8 +79,8 @@ public class LabReportQueryBuilder {
             builder.must(QueryBuilders.matchQuery(LabReport.PREGNANT_IND_CD, status));
         }
         // event Id
-        if (filter.getEventIdType() != null && filter.getEventId() != null) {
-            switch (filter.getEventIdType()) {
+        if (filter.getEventId() != null) {
+            switch (filter.getEventId().getLabEventType()) {
                 case ACCESSION_NUMBER:
                     var accessionNumberQuery = QueryBuilders.boolQuery()
                             .must(QueryBuilders.matchQuery(
@@ -90,27 +90,27 @@ public class LabReportQueryBuilder {
                             .must(QueryBuilders.matchQuery(
                                     LabReport.ACT_IDS + "."
                                             + ElasticsearchActId.ROOT_EXTENSION_TXT,
-                                    filter.getEventId()));
+                                    filter.getEventId().getLabEventId()));
                     var nestedAccessionNumberQuery = QueryBuilders.nestedQuery(Investigation.ACT_IDS,
                             accessionNumberQuery,
                             ScoreMode.None);
                     builder.must(nestedAccessionNumberQuery);
                     break;
                 case LAB_ID:
-                    builder.must(QueryBuilders.matchQuery(LabReport.LOCAL_ID, filter.getEventId()));
+                    builder.must(QueryBuilders.matchQuery(LabReport.LOCAL_ID, filter.getEventId().getLabEventId()));
                     break;
                 default:
-                    throw new QueryException("Invalid event type: " + filter.getEventIdType());
+                    throw new QueryException("Invalid event type: " + filter.getEventId().getLabEventType());
             }
         }
         // event date search
-        if (filter.getEventDateSearch() != null) {
-            var eds = filter.getEventDateSearch();
+        if (filter.getEventDate() != null) {
+            var eds = filter.getEventDate();
             if (eds.getFrom() == null || eds.getTo() == null) {
                 throw new QueryException("'From' and 'To' required when performing event date search");
             }
             String field;
-            switch (eds.getEventDateType()) {
+            switch (eds.getType()) {
                 case DATE_OF_REPORT:
                     field = LabReport.ACTIVITY_TO_TIME;
                     break;
@@ -128,7 +128,7 @@ public class LabReportQueryBuilder {
                     break;
                 default:
                     throw new QueryException(
-                            "Invalid event date type specified: " + eds.getEventDateType());
+                            "Invalid event date type specified: " + eds.getType());
             }
             var from = FlexibleInstantConverter.toString(eds.getFrom());
             var to = FlexibleInstantConverter.toString(eds.getTo());

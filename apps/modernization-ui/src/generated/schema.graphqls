@@ -135,9 +135,8 @@ input InvestigationFilter {
   programAreas: [String]
   jurisdictions: [ID]
   pregnancyStatus: PregnancyStatus
-  eventIdType: InvestigationEventIdType
-  eventId: String
-  eventDateSearch: InvestigationEventDateSearch
+  eventId: EventId
+  eventDate: InvestigationEventDateSearch
   createdBy: String
   lastUpdatedBy: String
   providerFacilitySearch: ProviderFacilitySearch
@@ -147,6 +146,11 @@ input InvestigationFilter {
   caseStatuses: CaseStatuses
   notificationStatuses: NotificationStatuses
   processingStatuses: ProcessingStatuses
+}
+
+input EventId {
+  investigationEventType: InvestigationEventIdType!
+  id: String!
 }
 
 input CaseStatuses {
@@ -165,9 +169,9 @@ input ProcessingStatuses {
 }
 
 input InvestigationEventDateSearch {
-  eventDateType: InvestigationEventDateType!
-  from: DateTime!
-  to: DateTime!
+  type: InvestigationEventDateType!
+  from: Date!
+  to: Date!
 }
 
 input ProviderFacilitySearch {
@@ -273,9 +277,8 @@ input LabReportFilter {
   programAreas: [String]
   jurisdictions: [ID]
   pregnancyStatus: PregnancyStatus
-  eventIdType: LaboratoryEventIdType
-  eventId: String
-  eventDateSearch: LaboratoryEventDateSearch
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
   entryMethods: [EntryMethod]
   enteredBy: [UserType]
   eventStatus: [EventStatus]
@@ -285,6 +288,11 @@ input LabReportFilter {
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
+}
+
+input LabReportEventId {
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
 }
 
 type LabReport {
@@ -353,9 +361,9 @@ type AssociatedInvestigation {
 }
 
 input LaboratoryEventDateSearch {
-  eventDateType: LaboratoryReportEventDateType!
-  from: DateTime!
-  to: DateTime!
+  type: LaboratoryReportEventDateType!
+  from: Date!
+  to: Date!
 }
 
 input LabReportProviderSearch {
@@ -808,8 +816,10 @@ type PatientBirth {
     bornOn: Date
     age: Int
     multipleBirth: PatientCodedValue
+    birthOrder: Int
     city: String
     state: PatientCodedValue
+    county: PatientCodedValue
     country: PatientCodedValue
 }
 
@@ -852,6 +862,7 @@ type PatientMortality {
     deceasedOn: Date
     city: String
     state: PatientCodedValue
+    county: PatientCodedValue
     country: PatientCodedValue
 }
 
@@ -948,7 +959,7 @@ type PatientVaccination {
     vaccination: ID!
     createdOn: DateTime!
     provider: String
-    administeredOn: DateTime!
+    administeredOn: DateTime
     administered: String!
     event: String!
     associatedWith: PatientVaccinationInvestigation
@@ -1480,6 +1491,7 @@ type OrganizationParticipation {
 enum SortField {
   lastNm
   birthTime
+  relevance
 }
 
 enum RecordStatus {

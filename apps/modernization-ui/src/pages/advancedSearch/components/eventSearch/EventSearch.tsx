@@ -162,29 +162,22 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
     const onSubmit: any = (body: any) => {
         let filterData: InvestigationFilter | LabReportFilter = {};
         if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
-            // filterData.eventType = EventType.Investigation;
             filterData = {
                 conditions: body.conditon?.length > 0 ? body.conditon : undefined,
                 jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
                 pregnancyStatus:
                     body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
                 programAreas: body.programArea?.length > 0 ? body.programArea : undefined,
-                eventIdType: body.eventIdType && body.eventIdType !== '- Select -' ? body.eventIdType : undefined,
-                eventId: body.eventId || undefined,
                 createdBy: body.createdBy && body.createdBy !== '- Select -' ? body.createdBy : undefined,
                 lastUpdatedBy:
                     body.lastUpdatedBy && body.lastUpdatedBy !== '- Select -' ? body.lastUpdatedBy : undefined
-            };
+            } as InvestigationFilter;
         } else if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
-            // filterData.eventType = EventType.LaboratoryReport;
             filterData = {
                 jurisdictions: body.labjurisdiction?.length > 0 ? body.labjurisdiction : undefined,
                 pregnancyStatus:
                     body.labpregnancyTest && body.labpregnancyTest !== '- Select -' ? body.labpregnancyTest : undefined,
                 programAreas: body.labprogramArea?.length > 0 ? body.labprogramArea : undefined,
-                eventIdType:
-                    body.labeventIdType && body.labeventIdType !== '- Select -' ? body.labeventIdType : undefined,
-                eventId: body.labeventId || undefined,
                 createdBy: body.labcreatedBy && body.labcreatedBy !== '- Select -' ? body.labcreatedBy : undefined,
                 lastUpdatedBy:
                     body.lablastUpdatedBy && body.lablastUpdatedBy !== '- Select -' ? body.lablastUpdatedBy : undefined,
@@ -192,28 +185,52 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                 enteredBy: body.enteredBy?.length > 0 ? body.enteredBy : undefined,
                 eventStatus: body.eventStatus?.length > 0 ? body.eventStatus : undefined,
                 processingStatus: body.processingStatus?.length > 0 ? body.processingStatus : undefined
-            };
+            } as LabReportFilter;
         } else {
             return;
         }
+        // Lab Event Id
+        if (body.labeventIdType && body.labeventIdType !== '- Select -' && body.labeventId) {
+            if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
+                const eventIdSearch = {
+                    labEventType: body.labeventIdType,
+                    labEventId: body.labeventId
+                };
+                (filterData as LabReportFilter).eventId = eventIdSearch;
+            }
+        }
 
-        // Event Date Filters
+        // Investigation Event Id
+        if (body.eventIdType && body.eventIdType !== '- Select -' && body.eventId) {
+            if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
+                const eventIdSearch = {
+                    investigationEventType: body.eventIdType,
+                    id: body.eventId
+                };
+                (filterData as InvestigationFilter).eventId = eventIdSearch;
+            }
+        }
+
+        // Investigation Event Date
         if (body.eventDateType && body.eventDateType !== '- Select -' && body.from && body.to) {
             if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
                 const eventDateSearch = {
-                    eventDateType: body.eventDateType,
-                    from: format(new Date(body.from), 'yyyy-MM-dd'),
-                    to: format(new Date(body.to), 'yyyy-MM-dd')
+                    type: body.eventDateType,
+                    from: body.from,
+                    to: body.to
                 };
-                filterData.eventDateSearch = eventDateSearch;
+                (filterData as InvestigationFilter).eventDate = eventDateSearch;
             }
+        }
+
+        if (body.labeventDateType && body.labeventDateType !== '- Select -' && body.labfrom && body.labto) {
             if (eventSearchType === SEARCH_TYPE.LAB_REPORT) {
                 const eventDateSearch = {
-                    eventDateType: body.labeventDateType,
-                    from: format(new Date(body.labfrom), 'yyyy-MM-dd'),
-                    to: format(new Date(body.labto), 'yyyy-MM-dd')
+                    type: body.labeventDateType,
+                    from: body.labfrom,
+                    to: body.labto
                 };
-                filterData.eventDateSearch = eventDateSearch;
+                (filterData as LabReportFilter).eventDate = eventDateSearch;
             }
         }
 
@@ -299,7 +316,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                         className="width-full clear-btn"
                         type={'button'}
                         onClick={() => {
-                            reset();
+                            reset({});
                             clearAll();
                             setEventSearchType('');
                         }}
