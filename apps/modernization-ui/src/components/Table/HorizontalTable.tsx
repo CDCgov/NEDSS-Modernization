@@ -1,20 +1,21 @@
 import { Button, Grid, Icon } from '@trussworks/react-uswds';
 import { ReactNode, useState } from 'react';
 import './style.scss';
-import { RaceForm } from '../DemographicsForm/Race';
 import { EthnicityForm } from '../DemographicsForm/Ethnicity';
 import { MortalityForm } from '../DemographicsForm/Mortality';
 import { GeneralPatientInformation } from '../DemographicsForm/GenearalPatientData';
 import { SexBirthForm } from '../DemographicsForm/SexBirth';
+import { PatientBirth, PatientEthnicity, PatientGeneral, PatientMortality } from 'generated/graphql/schema';
 
 export type TableProps = {
     tableHeader?: string;
     buttons?: ReactNode | ReactNode[];
     tableData?: any[];
     type?: 'race' | 'ethnicity' | 'general' | 'mortality' | 'sex' | undefined;
+    data?: PatientGeneral | PatientMortality | PatientEthnicity | PatientBirth;
 };
 
-export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: TableProps) => {
+export const HorizontalTable = ({ tableHeader, buttons, tableData, type, data }: TableProps) => {
     const [raceForm, setRaceForm] = useState<TableProps['type']>(undefined);
     buttons = (
         <Button type="button" className="grid-row" onClick={() => setRaceForm(type)}>
@@ -44,11 +45,21 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: Table
                         </Grid>
                     ))}
             </div>
-            {raceForm === 'race' && <RaceForm setRaceForm={() => setRaceForm(undefined)} />}
-            {raceForm === 'ethnicity' && <EthnicityForm setEthnicityForm={() => setRaceForm(undefined)} />}
-            {raceForm === 'mortality' && <MortalityForm setMortalityForm={() => setRaceForm(undefined)} />}
-            {raceForm === 'general' && <GeneralPatientInformation setGeneralForm={() => setRaceForm(undefined)} />}
-            {raceForm === 'sex' && <SexBirthForm setSexBirthForm={() => setRaceForm(undefined)} />}
+            {raceForm === 'ethnicity' && (
+                <EthnicityForm data={data as PatientEthnicity} setEthnicityForm={() => setRaceForm(undefined)} />
+            )}
+            {raceForm === 'mortality' && (
+                <MortalityForm data={data as PatientMortality} setMortalityForm={() => setRaceForm(undefined)} />
+            )}
+            {raceForm === 'general' && (
+                <GeneralPatientInformation
+                    data={data as PatientGeneral}
+                    setGeneralForm={() => setRaceForm(undefined)}
+                />
+            )}
+            {raceForm === 'sex' && (
+                <SexBirthForm data={data as PatientBirth} setSexBirthForm={() => setRaceForm(undefined)} />
+            )}
         </div>
     );
 };

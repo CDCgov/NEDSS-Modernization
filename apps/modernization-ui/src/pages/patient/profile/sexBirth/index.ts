@@ -1,0 +1,1 @@
+export { SexBirth } from './SexBirth';

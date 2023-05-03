@@ -1,0 +1,1 @@
+export { Mortality } from './Mortality';

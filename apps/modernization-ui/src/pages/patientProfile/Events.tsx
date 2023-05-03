@@ -4,14 +4,14 @@ import {
     FindMorbidityReportsForPatientQuery
 } from '../../generated/graphql/schema';
 import { Config } from 'config';
-import { PatientTreatmentTable } from 'patient/profile/treatment';
-import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'patient/profile/contact';
-import { PatientProfileDocuments } from 'patient/profile/document';
+import { PatientTreatmentTable } from 'pages/patient/profile/treatment';
+import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'pages/patient/profile/contact';
+import { PatientProfileDocuments } from 'pages/patient/profile/document';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { PatientInvestigationsTable } from 'patient/profile/investigation';
-import { MorbidityTable } from 'patient/profile/morbidity';
-import { LabReportTable } from 'patient/profile/labReport';
-import { VaccinationTable } from 'patient/profile/vaccination';
+import { PatientInvestigationsTable } from 'pages/patient/profile/investigation';
+import { MorbidityTable } from 'pages/patient/profile/morbidity';
+import { LabReportTable } from 'pages/patient/profile/labReport';
+import { VaccinationTable } from 'pages/patient/profile/vaccination';
 
 type EventTabProp = {
     patient: string | undefined;

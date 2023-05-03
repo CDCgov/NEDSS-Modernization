@@ -1,0 +1,1 @@
+export { NamesTable } from './NamesTable';

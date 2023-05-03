@@ -39,6 +39,21 @@ export const sortBy =
         }
     };
 
+export const sortByNestedProperty =
+    (property: any): Comparator<any> =>
+    (left: any, right: any): number => {
+        const value: any = left[property] && left[property]['description'];
+        const comparing: any = right[property] && right[property]['description'];
+
+        if (value > comparing) {
+            return 1;
+        } else if (value < comparing) {
+            return -1;
+        } else {
+            return 0;
+        }
+    };
+
 export const sortByAlpha =
     <T>(property: keyof T): Comparator<T> =>
     (left: T, right: T): number => {

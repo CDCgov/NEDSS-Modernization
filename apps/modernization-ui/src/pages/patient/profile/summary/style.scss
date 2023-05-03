@@ -1,0 +1,21 @@
+@import 'styles/colors';
+
+.summary-value {
+    h5 {
+        margin: 0 0 0.25rem 0;
+        color: $text-gray-50;
+        text-transform: uppercase;
+        font-weight: normal;
+    }
+    p {
+        margin: 0;
+        word-break: break-word;
+        padding-right: 1rem;
+        max-width: auto;
+        white-space: pre-wrap;
+
+        .email {
+            max-width: 3rem;
+        }
+    }
+}

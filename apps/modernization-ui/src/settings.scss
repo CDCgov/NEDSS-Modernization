@@ -27,3 +27,9 @@ $theme-hero-image: '~uswds/src/img/hero.png';
 .font-sans-xl {
     font-family: sans-serif !important;
 }
+
+p.no-data {
+    color: $text-gray-30;
+    margin: 0;
+    font-style: italic;
+}

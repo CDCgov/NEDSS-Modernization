@@ -1,0 +1,1 @@
+export { GeneralPatient } from './GeneralPatient';
