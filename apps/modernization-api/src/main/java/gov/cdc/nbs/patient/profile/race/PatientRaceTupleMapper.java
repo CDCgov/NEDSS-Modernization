@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.profile.race;
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonRace;
+import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QRaceCode;
 
 import java.time.Instant;
@@ -15,7 +16,7 @@ class PatientRaceTupleMapper {
     record Tables(
         QPerson patient,
         QPersonRace personRace,
-        QRaceCode category,
+        QCodeValueGeneral category,
         QRaceCode race
     ) {
 
@@ -23,7 +24,7 @@ class PatientRaceTupleMapper {
             this(
                 QPerson.person,
                 QPersonRace.personRace,
-                new QRaceCode("category"),
+                new QCodeValueGeneral("category"),
                 new QRaceCode("detailed_race")
             );
         }
@@ -70,7 +71,7 @@ class PatientRaceTupleMapper {
     }
 
     private PatientRace.Race maybeMapCategory(final Tuple tuple) {
-        String id = tuple.get(this.tables.category().id);
+        String id = tuple.get(this.tables.category().id.code);
         String description = tuple.get(this.tables.category().codeShortDescTxt);
 
         return asRace(id, description);

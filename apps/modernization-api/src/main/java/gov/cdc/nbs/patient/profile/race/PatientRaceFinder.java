@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.profile.race;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.accumulation.Accumulator;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +15,7 @@ class PatientRaceFinder {
 
     private static final String PATIENT_CODE = "PAT";
     private static final String ACTIVE_CODE = "ACTIVE";
+    private static final String RACE_CATEGORY_CODE_SET = "RACE_CALCULATED";
 
     private final JPAQueryFactory factory;
     private final PatientRaceTupleMapper.Tables tables;
@@ -39,7 +39,7 @@ class PatientRaceFinder {
 
     private long resolveTotal(final long patient) {
         Long total = applyCriteria(
-            factory.selectDistinct(this.tables.patient().countDistinct()),
+            factory.select(this.tables.patient().countDistinct()),
             patient
         )
             .fetchOne();
@@ -52,10 +52,11 @@ class PatientRaceFinder {
                 this.tables.personRace().personUid.id.eq(this.tables.patient().id),
                 this.tables.personRace().recordStatusCd.eq(ACTIVE_CODE)
             )
-            .join(this.tables.category()).on(
-                this.tables.category().id.eq(this.tables.personRace().raceCategoryCd)
+            .leftJoin(this.tables.category()).on(
+                this.tables.category().id.codeSetNm.eq(RACE_CATEGORY_CODE_SET),
+                this.tables.category().id.code.eq(this.tables.personRace().raceCategoryCd)
             )
-            .join(this.tables.race()).on(
+            .leftJoin(this.tables.race()).on(
                 this.tables.race().id.eq(this.tables.personRace().raceCd)
             )
             .where(
@@ -72,7 +73,7 @@ class PatientRaceFinder {
                 this.tables.patient().id,
                 this.tables.patient().versionCtrlNbr,
                 this.tables.personRace().asOfDate,
-                this.tables.category().id,
+                this.tables.category().id.code,
                 this.tables.category().codeShortDescTxt,
                 this.tables.race().id,
                 this.tables.race().codeShortDescTxt
@@ -84,7 +85,7 @@ class PatientRaceFinder {
             .fetch()
             .stream()
             .map(mapper::map)
-            .collect(Accumulator.collecting(PatientRace::patient, this.merger::merge))
+            .collect(PatientRaceAccumulator.accumulate(merger))
             ;
     }
 }
