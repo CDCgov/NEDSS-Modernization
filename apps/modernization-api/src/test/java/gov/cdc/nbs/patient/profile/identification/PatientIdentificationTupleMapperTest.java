@@ -18,8 +18,7 @@ class PatientIdentificationTupleMapperTest {
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
-        when(tuple.get(tables.patient().id)).thenReturn(433L);
+        when(tuple.get(tables.patient().id)).thenReturn(2357L);
         when(tuple.get(tables.identification().asOfDate)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
         when(tuple.get(tables.identification().id.entityIdSeq)).thenReturn((short) 557);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
@@ -34,7 +33,6 @@ class PatientIdentificationTupleMapperTest {
         PatientIdentification actual = mapper.map(tuple);
 
         assertThat(actual.patient()).isEqualTo(2357L);
-        assertThat(actual.id()).isEqualTo(433L);
         assertThat(actual.version()).isEqualTo((short) 227);
         assertThat(actual.sequence()).isEqualTo((short) 557);
         assertThat(actual.asOf()).isEqualTo("2023-01-17T22:54:43Z");
@@ -94,29 +92,11 @@ class PatientIdentificationTupleMapperTest {
     }
 
     @Test
-    void should_not_map_identification_from_tuple_without_identifier() {
-        PatientIdentificationTupleMapper.Tables tables = new PatientIdentificationTupleMapper.Tables();
-
-        Tuple tuple = mock(Tuple.class);
-        when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
-        when(tuple.get(tables.identification().asOfDate)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
-        when(tuple.get(tables.identification().id.entityIdSeq)).thenReturn((short) 557);
-        when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
-
-        PatientIdentificationTupleMapper mapper = new PatientIdentificationTupleMapper(tables);
-
-        assertThatThrownBy(() -> mapper.map(tuple))
-            .hasMessageContaining("identifier is required");
-
-    }
-
-    @Test
     void should_not_map_identification_from_tuple_without_patient() {
         PatientIdentificationTupleMapper.Tables tables = new PatientIdentificationTupleMapper.Tables();
 
         Tuple tuple = mock(Tuple.class);
 
-        when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.identification().asOfDate)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
         when(tuple.get(tables.identification().id.entityIdSeq)).thenReturn((short) 557);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
