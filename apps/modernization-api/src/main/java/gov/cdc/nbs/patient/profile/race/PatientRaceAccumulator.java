@@ -15,7 +15,7 @@ class PatientRaceAccumulator {
         );
     }
 
-    static private int unique(final PatientRace race) {
+    private static int unique(final PatientRace race) {
         return Objects.hash(race.id(), race.category().id());
     }
 
