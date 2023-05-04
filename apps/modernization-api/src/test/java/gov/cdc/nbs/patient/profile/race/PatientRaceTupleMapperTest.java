@@ -46,7 +46,7 @@ class PatientRaceTupleMapperTest {
         when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
 
-        when(tuple.get(tables.category().id)).thenReturn("category-id");
+        when(tuple.get(tables.category().id.code)).thenReturn("category-id");
         when(tuple.get(tables.category().codeShortDescTxt)).thenReturn("category-description");
 
         PatientRaceTupleMapper mapper = new PatientRaceTupleMapper(tables);
@@ -66,7 +66,7 @@ class PatientRaceTupleMapperTest {
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
         when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
-        when(tuple.get(tables.category().id)).thenReturn("category-id");
+        when(tuple.get(tables.category().id.code)).thenReturn("category-id");
 
         when(tuple.get(tables.race().id)).thenReturn("race-id");
         when(tuple.get(tables.race().codeShortDescTxt)).thenReturn("race-description");
@@ -116,7 +116,7 @@ class PatientRaceTupleMapperTest {
         when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
 
-        when(tuple.get(tables.category().id)).thenReturn("same-id");
+        when(tuple.get(tables.category().id.code)).thenReturn("same-id");
         when(tuple.get(tables.category().codeShortDescTxt)).thenReturn("same-description");
 
         when(tuple.get(tables.race().id)).thenReturn("same-id");

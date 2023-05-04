@@ -837,7 +837,6 @@ type PatientGender {
 
 type PatientIdentification {
     patient: Int!
-    id: ID!
     sequence: Int!
     version: Int!
     asOf: DateTime!

@@ -4,7 +4,6 @@ import java.time.Instant;
 
 record PatientIdentification(
     long patient,
-    long id,
     long sequence,
     short version,
     Instant asOf,

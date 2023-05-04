@@ -35,13 +35,8 @@ class PatientIdentificationTupleMapper {
 
     PatientIdentification map(final Tuple tuple) {
         long patient = Objects.requireNonNull(
-            tuple.get(this.tables.patient().personParentUid.id),
-            "An identification patient is required"
-        );
-
-        long identifier = Objects.requireNonNull(
             tuple.get(tables.patient().id),
-            "An identification identifier is required"
+            "An identification patient is required"
         );
 
         short version =
@@ -65,7 +60,6 @@ class PatientIdentificationTupleMapper {
 
         return new PatientIdentification(
             patient,
-            identifier,
             sequence,
             version,
             asOf,

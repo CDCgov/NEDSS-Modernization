@@ -66,7 +66,6 @@ class PatientIdentificationFinder {
     private List<PatientIdentification> resolvePage(final long patient, final Pageable pageable) {
         return applyCriteria(
             this.factory.select(
-                this.tables.patient().personParentUid.id,
                 this.tables.patient().id,
                 this.tables.patient().versionCtrlNbr,
                 this.tables.identification().asOfDate,

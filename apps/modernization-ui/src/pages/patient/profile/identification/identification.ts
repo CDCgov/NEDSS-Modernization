@@ -3,7 +3,6 @@ import { Maybe, PatientCodedValue } from 'generated/graphql/schema';
 export type Identification = {
     __typename?: 'PatientIdentification';
     patient: number;
-    id: string;
     sequence: number;
     version: number;
     asOf: any;
