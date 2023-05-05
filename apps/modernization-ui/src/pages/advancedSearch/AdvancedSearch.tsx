@@ -761,7 +761,7 @@ export const AdvancedSearch = () => {
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="padding-x-3 sortBy-position"
+                                    className="padding-x-3"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
                                     outline>
