@@ -50,6 +50,15 @@
                 color: #fff;
                 text-decoration: none;
                 font-weight: bold;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+
+                &:focus {
+                    outline: none;
+                    background-color: #003470;
+                }
             }
         }
 
