@@ -139,7 +139,6 @@ export const AddIdentificationModal = ({ modalRef, handleSubmission, modalHead }
     const [submitted, setSubmitted] = useState<boolean>(false);
 
     const onSubmit = (data: any) => {
-        console.log(data);
         modalRef.current?.toggleModal();
         handleSubmission?.('success', `${data?.last}, ${data?.first}`);
         setSubmitted(true);

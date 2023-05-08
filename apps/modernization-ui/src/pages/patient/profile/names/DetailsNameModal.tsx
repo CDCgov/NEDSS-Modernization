@@ -3,7 +3,6 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { format } from 'date-fns';
 
 export const DetailsNameModal = ({ modalRef, data }: any) => {
-    console.log('data:', data);
     return (
         <ModalComponent
             modalRef={modalRef}
