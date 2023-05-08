@@ -210,6 +210,7 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                                             }
                                             if (type === 'delete') {
                                                 setIsDeleteModal(true);
+                                                setNameDetails(name);
                                             }
                                             if (type === 'details') {
                                                 setNameDetails(name);
@@ -230,6 +231,7 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
             />
             {isDeleteModal && (
                 <Modal
+                    forceAction
                     ref={deleteModalRef}
                     id="example-modal-1"
                     aria-labelledby="modal-1-heading"
@@ -243,18 +245,14 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                     <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                         <Icon.Warning className="font-sans-2xl margin-x-2" />
                         <p id="modal-1-description">
-                            Are you sure you want to delete Name record, Smith, Johnathan Test?
+                            Are you sure you want to delete Name record, {nameDetails?.last}, {nameDetails?.first} Test?
                         </p>
                     </div>
                     <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
                         <ButtonGroup>
-                            <ModalToggleButton
-                                onClick={() => setIsDeleteModal(false)}
-                                outline
-                                modalRef={deleteModalRef}
-                                closer>
+                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
                                 Cancel
-                            </ModalToggleButton>
+                            </Button>
                             <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
                                 Yes, delete
                             </ModalToggleButton>

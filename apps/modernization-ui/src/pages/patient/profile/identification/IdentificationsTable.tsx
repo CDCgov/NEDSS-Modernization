@@ -85,11 +85,13 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
             case 'type':
                 setIdentifications(identifications.slice().sort(withDirection(sortByNestedProperty('type'), type)));
                 break;
-            case 'phone number':
-                setIdentifications(identifications.slice().sort(withDirection(sortByAlpha('number') as any, type)));
+            case 'authority':
+                setIdentifications(
+                    identifications.slice().sort(withDirection(sortByNestedProperty('authority'), type))
+                );
                 break;
-            case 'email address':
-                setIdentifications(identifications.slice().sort(withDirection(sortByAlpha('email') as any, type)));
+            case 'value':
+                setIdentifications(identifications.slice().sort(withDirection(sortByAlpha('value') as any, type)));
                 break;
         }
     };

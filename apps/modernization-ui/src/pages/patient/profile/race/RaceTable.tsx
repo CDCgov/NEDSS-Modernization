@@ -81,6 +81,15 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
             case 'race':
                 setRaces(races.slice().sort(withDirection(sortByNestedProperty('category'), type)));
                 break;
+            case 'detailed race':
+                setRaces(
+                    races?.slice().sort((a: Race, b: Race) => {
+                        const detailedA: any = a?.detailed?.[0]?.description;
+                        const detailedB: any = b?.detailed?.[0]?.description;
+                        return type === 'asc' ? detailedB - detailedA : detailedA - detailedB;
+                    })
+                );
+                break;
         }
     };
 

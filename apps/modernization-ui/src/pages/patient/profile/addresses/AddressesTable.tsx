@@ -102,6 +102,10 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
         }
     };
 
+    const getAddress = (name: PatientAddress) => {
+        return `${name?.address1 ?? ''} ${name?.address2 ?? ''} ${name?.address2 ?? ''}`;
+    };
+
     return (
         <SortableTable
             isPagination={true}
@@ -143,7 +147,7 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                     </td>
                     <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
                         {name?.address1 || name?.address2 ? (
-                            <span>{`${name?.address1} ${name?.address2 ? ', ' : ''} ${name?.address2}`}</span>
+                            <span>{getAddress(name)}</span>
                         ) : (
                             <span className="no-data">No data</span>
                         )}
