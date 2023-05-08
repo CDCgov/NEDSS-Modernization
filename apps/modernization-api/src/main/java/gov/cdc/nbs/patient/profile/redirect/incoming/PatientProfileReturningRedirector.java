@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import springfox.documentation.annotations.ApiIgnore;
@@ -17,11 +16,12 @@ import java.net.URI;
 class PatientProfileReturningRedirector {
 
     @ApiIgnore
-    @RequestMapping(value= {"/nbs/redirect/patientProfile/return","/nbs/redirect/patientProfile/{tab}/return"})
+    @GetMapping(
+        value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
+    )
     ResponseEntity<Void> redirectPatientProfileReturn(
         final HttpServletRequest request,
-        @PathVariable(required = false)
-        final String tab
+        @PathVariable(required = false) final String tab
     ) {
         String returning = ReturningPatientCookie.resolve(request.getCookies())
             .map(ReturningPatientCookie::patient)

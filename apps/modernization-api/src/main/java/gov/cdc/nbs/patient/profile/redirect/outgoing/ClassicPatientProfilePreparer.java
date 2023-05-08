@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class ClassicPatientProfilePreparer {
 
-    private static final String PATH = "/PatientSearchResults1.do";
+    private static final String LOCATION = "/PatientSearchResults1.do";
 
     private final RestTemplate template;
 
@@ -21,7 +21,7 @@ public class ClassicPatientProfilePreparer {
 
     public void prepare(final long patient) {
 
-        String profileLocation = UriComponentsBuilder.fromPath(PATH)
+        String profileLocation = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "ViewFile")
             .queryParam("uid", patient)
             .build()

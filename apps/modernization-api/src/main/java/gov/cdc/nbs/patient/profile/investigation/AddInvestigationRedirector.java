@@ -18,7 +18,7 @@ import java.net.URI;
 @RestController
 class AddInvestigationRedirector {
 
-    private static final String PATH = "/nbs/LoadSelectCondition1.do";
+    private static final String LOCATION = "/nbs/LoadSelectCondition1.do";
 
     private final ClassicPatientSearchPreparer searchPreparer;
     private final ClassicPatientProfilePreparer profilePreparer;
@@ -36,7 +36,7 @@ class AddInvestigationRedirector {
     ResponseEntity<Void> add(@PathVariable("patient") final long patient) {
         prepare(patient);
 
-        URI location = UriComponentsBuilder.fromPath(PATH)
+        URI location = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "AddInvestigation")
             .build()
             .toUri();

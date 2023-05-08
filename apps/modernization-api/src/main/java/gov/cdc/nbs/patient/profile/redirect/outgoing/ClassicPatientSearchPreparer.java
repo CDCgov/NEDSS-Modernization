@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class ClassicPatientSearchPreparer {
 
-    private static final String PATH = "/HomePage.do?method=patientSearchSubmit";
+    private static final String LOCATION = "/HomePage.do?method=patientSearchSubmit";
     private final RestTemplate template;
 
     public ClassicPatientSearchPreparer(
@@ -20,7 +20,7 @@ public class ClassicPatientSearchPreparer {
     public void prepare() {
 
         RequestEntity<Void> request = RequestEntity
-            .get(PATH)
+            .get(LOCATION)
             .build();
 
         this.template.exchange(request, Void.class);

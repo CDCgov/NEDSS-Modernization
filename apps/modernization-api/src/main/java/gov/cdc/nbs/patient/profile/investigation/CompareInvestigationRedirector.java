@@ -18,7 +18,7 @@ import java.net.URI;
 @RestController
 class CompareInvestigationRedirector {
 
-    private static final String PATH = "/nbs/ViewFile1.do";
+    private static final String LOCATION = "/nbs/ViewFile1.do";
 
     private final ClassicPatientSearchPreparer searchPreparer;
     private final ClassicPatientProfilePreparer profilePreparer;
@@ -41,7 +41,7 @@ class CompareInvestigationRedirector {
     ) {
         prepare(patient);
 
-        URI location = UriComponentsBuilder.fromPath(PATH)
+        URI location = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "CompareInvestigations")
             .queryParam("publicHealthCaseUID0", investigation)
             .queryParam("publicHealthCaseUID1", other)

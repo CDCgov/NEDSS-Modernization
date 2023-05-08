@@ -36,9 +36,14 @@ public record SessionCookie(String identifier) {
 
     }
 
+    @SuppressWarnings({"squid:S2092"})
     public Cookie asCookie() {
         Cookie cookie = new Cookie(J_SESSION_COOKIE_NAME, identifier);
         cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        // S2092 intra-container communication is currently not secure
+        cookie.setSecure(false);
         return cookie;
     }
 

@@ -15,7 +15,7 @@ class PatientProfileIncomingRedirector {
 
     private static final String PATIENT_PARENT_ID = "MPRUid";
     private static final String PATIENT_ID = "uid";
-    
+
 
     /**
      * Intercepts patient-profile from legacy page and re-routes/forwards the patient-profile to the modernized patient
