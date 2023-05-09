@@ -81,9 +81,7 @@ export const AddCommentModal = ({ modalRef, modalHead }: AddCommentModalProps) =
     const methods = useForm();
     const { handleSubmit, control } = methods;
 
-    const onSubmit = (data: any) => {
-        console.log(data);
-    };
+    const onSubmit = () => {};
 
     return (
         <ModalComponent

@@ -1,13 +1,18 @@
 package gov.cdc.nbs;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import javax.servlet.http.Cookie;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.authorization.SessionCookie;
+import gov.cdc.nbs.authorization.TestActiveUser;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.patient.PatientService;
+import gov.cdc.nbs.service.EncryptionService;
+import gov.cdc.nbs.support.TestActive;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,47 +22,39 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.entity.enums.SecurityEventType;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.SecurityLog;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.patient.PatientService;
-import gov.cdc.nbs.repository.AuthUserRepository;
-import gov.cdc.nbs.repository.SecurityLogRepository;
-import gov.cdc.nbs.service.EncryptionService;
-import gov.cdc.nbs.support.UserMother;
-import gov.cdc.nbs.support.util.RandomUtil;
-import gov.cdc.nbs.support.util.UserUtil;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class RedirectSteps {
     @Autowired
-    private MockMvc mvc;
+    MockMvc mvc;
     @Autowired
-    private SecurityLogRepository securityLogRepository;
+    EncryptionService encryptionService;
     @Autowired
-    private AuthUserRepository authUserRepository;
+    ObjectMapper mapper;
     @Autowired
-    private EncryptionService encryptionService;
-    @Autowired
-    private ObjectMapper mapper;
-    @Autowired
-    private PatientService patientService;
+    PatientService patientService;
 
-    private MockHttpServletResponse response;
-    private String sessionId;
     private Page<Person> searchResponse;
 
     private MultiValueMap<String, String> criteria;
 
     private PatientFilter patientFilter;
+
+    @Autowired
+    TestActive<SessionCookie> activeSession;
+
+    @Autowired
+    TestActiveUser activeUser;
+
+    @Autowired
+    TestActive<MockHttpServletResponse> activeResponse;
 
     @Before
     public void clearCriteria() {
@@ -69,42 +66,25 @@ public class RedirectSteps {
         this.patientFilter = null;
     }
 
-    @Given("I am logged into NBS and a security log entry exists")
-    public void i_am_logged_into_nbs_and_a_security_log_entry_exists() {
-        // make sure user exists
-        var user = UserMother.clerical();
-        UserUtil.insertIfNotExists(user, authUserRepository);
-        // insert security_log event with sessionId
-        sessionId = RandomUtil.getRandomString(40);
-        var log = new SecurityLog();
-        log.setId(securityLogRepository.getMaxId() + 1);
-        log.setEventTypeCd(SecurityEventType.LOGIN_SUCCESS);
-        log.setEventTime(Instant.now());
-        log.setSessionId(sessionId);
-        log.setNedssEntryId(user.getNedssEntryId());
-        log.setFirstNm(user.getUserFirstNm());
-        log.setLastNm(user.getUserLastNm());
-        securityLogRepository.save(log);
-    }
 
-    @Given("A sessionId is not set")
-    public void a_session_id_is_not_set() {
-        sessionId = null;
-    }
 
     @When("I send a request to the NBS simple search")
     public void i_send_a_request_to_the_nbs_simple_search() throws Exception {
-        response = mvc
+        activeResponse.active(
+            mvc
                 .perform(
-                        MockMvcRequestBuilders.post("/nbs/redirect/simpleSearch")
-                                .cookie(new Cookie("JSESSIONID", sessionId)))
-                .andReturn().getResponse();
+                    MockMvcRequestBuilders.post("/nbs/redirect/simpleSearch")
+                        .cookie(activeSession.active().asCookie())
+                )
+                .andReturn()
+                .getResponse()
+        );
     }
 
     @Then("I am redirected to the simple search react page")
     public void i_am_redirected_to_the_simple_search_react_page() {
-        assertEquals(HttpStatus.FOUND.value(), response.getStatus());
-        var redirectUrl = response.getRedirectedUrl();
+        assertEquals(HttpStatus.FOUND.value(), activeResponse.active().getStatus());
+        var redirectUrl = activeResponse.active().getRedirectedUrl();
         assertNotNull(redirectUrl);
         assertEquals("/advanced-search", redirectUrl);
     }
@@ -116,8 +96,13 @@ public class RedirectSteps {
 
     @When("I send a search request to the NBS simple search")
     public void I_send_a_search_request_to_the_nbs_simple_search() throws Exception {
-        response = mvc.perform(
-                MockMvcRequestBuilders
+
+        SessionCookie session = activeSession.maybeActive()
+            .orElse(new SessionCookie(null));
+
+        activeResponse.active(
+            mvc.perform(
+                    MockMvcRequestBuilders
                         .post("/nbs/redirect/simpleSearch")
                         .param("patientSearchVO.lastName", "Doe")
                         .param("patientSearchVO.firstName", "John")
@@ -126,13 +111,14 @@ public class RedirectSteps {
                         .param("patientSearchVO.actId", "9876")
                         .param("patientSearchVO.localID", "1234")
                         .params(this.criteria)
-                        .cookie(new Cookie("JSESSIONID", sessionId))
+                        .cookie(session.asCookie())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .accept(MediaType.ALL))
                 .andReturn()
-                .getResponse();
+                .getResponse()
+        );
 
-        this.patientFilter = resolveFilter(response.getRedirectedUrl());
+        this.patientFilter = resolveFilter(activeResponse.active().getRedirectedUrl());
     }
 
     private PatientFilter resolveFilter(final String url) {
@@ -164,17 +150,17 @@ public class RedirectSteps {
 
     @Then("My search params are passed to the simple search react page")
     public void my_search_params_are_passed_to_the_simple_search_react_page() {
-        var redirectUrl = response.getRedirectedUrl();
+        var redirectUrl = activeResponse.active().getRedirectedUrl();
 
         assertThat(redirectUrl)
-                .isNotNull()
-                .contains("/advanced-search?");
+            .isNotNull()
+            .contains("/advanced-search?");
 
         assertThat(patientFilter)
-                .returns("Doe", PatientFilter::getLastName)
-                .returns("John", PatientFilter::getFirstName)
-                .returns(Gender.M, PatientFilter::getGender)
-                .returns("1234", PatientFilter::getId);
+            .returns("Doe", PatientFilter::getLastName)
+            .returns("John", PatientFilter::getFirstName)
+            .returns(Gender.M, PatientFilter::getGender)
+            .returns("1234", PatientFilter::getId);
 
     }
 
@@ -185,33 +171,40 @@ public class RedirectSteps {
 
     @When("I navigate to the NBS advanced search page")
     public void i_navigate_to_the_NBS_advanced_search_page() throws Exception {
-        response = mvc.perform(
-                MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
-                        .cookie(new Cookie("JSESSIONID", sessionId)))
-                .andReturn().getResponse();
+        activeResponse.active(
+            mvc.perform(
+                    MockMvcRequestBuilders.get("/nbs/redirect/advancedSearch")
+                        .cookie(activeSession.active().asCookie()))
+                .andReturn().getResponse()
+        );
     }
 
     @Then("I am redirected to the advanced search react page")
     public void i_am_redirected_to_the_advanced_search_react_page() {
+        MockHttpServletResponse response = activeResponse.active();
         assertEquals(HttpStatus.FOUND.value(), response.getStatus());
         var redirectUrl = response.getRedirectedUrl();
         assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.contains("/advanced-search"));
+
+        assertThat(response.getRedirectedUrl()).contains("/advanced-search");
     }
 
     @Then("I am redirected to the timeout page")
     public void i_am_redirected_to_the_timeout_page() {
-        assertEquals(HttpStatus.FOUND.value(), response.getStatus());
-        var redirectUrl = response.getRedirectedUrl();
-        assertNotNull(redirectUrl);
-        assertTrue(redirectUrl.contains("/nbs/timeout"));
+        MockHttpServletResponse response = activeResponse.active();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.FOUND.value());
+
+        assertThat(response.getRedirectedUrl()).contains("/nbs/timeout");
+
     }
 
     @Then("the user Id is present in the redirect")
     public void the_user_id_is_present_in_the_redirect() {
+        MockHttpServletResponse response = activeResponse.active();
         var userIdCookie = response.getCookie("nbs_user");
         assertNotNull(userIdCookie);
-        assertEquals(UserMother.clerical().getUserId(), userIdCookie.getValue());
+        assertEquals(activeUser.active(), userIdCookie.getValue());
     }
 
 

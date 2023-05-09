@@ -12,7 +12,6 @@ export const Query = gql`
             identification(page: $page4) {
                 content {
                     patient
-                    id
                     sequence
                     version
                     asOf

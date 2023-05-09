@@ -3,7 +3,6 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { format } from 'date-fns';
 
 export const DetailsNameModal = ({ modalRef, data }: any) => {
-    console.log('data:', data);
     return (
         <ModalComponent
             modalRef={modalRef}
@@ -28,19 +27,19 @@ export const DetailsNameModal = ({ modalRef, data }: any) => {
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
                                 <Grid col={6}>Prefix:</Grid>
-                                <Grid col={6}>{data?.prefix || 'Not available yet'}</Grid>
+                                <Grid col={6}>{data?.prefix?.description || 'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
                                 <Grid col={6}>Suffix:</Grid>
-                                <Grid col={6}>{data?.suffix || 'Not available yet'}</Grid>
+                                <Grid col={6}>{data?.suffix?.description || 'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                             <Grid row>
                                 <Grid col={6}>Degree:</Grid>
-                                <Grid col={6}>{data?.degree || 'Not available yet'}</Grid>
+                                <Grid col={6}>{data?.degree?.description || 'Not available yet'}</Grid>
                             </Grid>
                         </Grid>
                         <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">

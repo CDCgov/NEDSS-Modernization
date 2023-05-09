@@ -7,7 +7,7 @@ services:
     environment:
       - NBS_DATASOURCE_SERVER=nbs-mssql
       - NBS_ELASTICSEARCH_SERVER=elasticsearch
-      - NBS_WILDFLY_SERVER=wildfly
+      - NBS_WILDFLY_SERVER=wildfly:7001
     networks:
       - nbs
 networks:

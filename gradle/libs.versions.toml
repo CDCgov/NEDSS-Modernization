@@ -17,9 +17,10 @@ springBoot-graphql = { module = "org.springframework.boot:spring-boot-starter-gr
 spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
 spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
 spring-elasticsearch = { module = "org.springframework.data:spring-data-elasticsearch", version = "4.4.6" }
-spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
 spring-json = { module = "org.springframework.boot:spring-boot-starter-json", version.ref = "springBoot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
+spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
+spring-security-test = {module = 'org.springframework.security:spring-security-test'}
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 queryDSL-apt = { module = "com.querydsl:querydsl-apt", version.ref = "queryDSL" }

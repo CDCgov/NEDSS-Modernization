@@ -92,7 +92,7 @@ export const SortableTable = ({
                                                     disabled={!tableBody || tableBody.length <= 1}
                                                     className="usa-button--unstyled"
                                                     type={'button'}
-                                                    onClick={() => handleSort(head.name, 'desc')}>
+                                                    onClick={() => handleSort(head.name, 'all')}>
                                                     <Icon.ArrowDownward color="black" />
                                                 </Button>
                                             )}
