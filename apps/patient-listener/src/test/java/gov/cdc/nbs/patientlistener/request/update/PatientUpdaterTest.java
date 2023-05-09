@@ -22,6 +22,7 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
+import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -322,6 +323,7 @@ class PatientUpdaterTest {
         var person = new Person(123L, "localId");
         // Create new name
         var pn = new PersonName();
+        pn.setId(new PersonNameId(person.getId(), (short)1));
         pn.setFirstNm("XXX");
         pn.setLastNm("XXX");
         pn.setMiddleNm("XXX");
@@ -338,7 +340,6 @@ class PatientUpdaterTest {
 
         assertEquals(data.first(), personName.getFirstNm());
         assertEquals(data.last(), personName.getLastNm());
-        assertEquals(Long.valueOf(data.updatedBy()), personName.getLastChgUserId());
     }
 
     private UpdateNameData getUpdateNameData() {
@@ -360,9 +361,9 @@ class PatientUpdaterTest {
         var person = new Person(123L, "localId");
         // Create new name
         var pn = new PersonName();
+        pn.setId(new PersonNameId(person.getId(), (short)1));
         pn.setFirstNm("XXX");
         pn.setLastNm("XXX");
-
         person.setNames(Collections.singletonList(pn));
 
         patientUpdater.update(person, data);

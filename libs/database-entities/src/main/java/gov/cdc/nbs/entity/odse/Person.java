@@ -546,7 +546,7 @@ public class Person {
         Collection<PersonName> existing = ensureNames();
         PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
 
-        existing.stream().filter(p -> p.getId() == identifier).findFirst().ifPresent(p -> {
+        existing.stream().filter(p -> p.getId()!=null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
             p.setFirstNm(info.first());
             p.setMiddleNm(info.middle());
             p.setLastNm(info.last());
@@ -561,9 +561,10 @@ public class Person {
     public void update(PatientCommand.DeleteNameInfo info) {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
-        Collection<PersonName> existing = ensureNames();
         PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-        existing.removeIf(item -> (item.getId() == identifier));
+        List<PersonName> arraylist = new ArrayList<>(this.names);
+        arraylist.removeIf(item -> (item.getId().equals(identifier)));
+        this.names = arraylist;
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
     }
