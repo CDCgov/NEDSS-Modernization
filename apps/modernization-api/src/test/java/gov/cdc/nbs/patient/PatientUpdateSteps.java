@@ -154,7 +154,7 @@ public class PatientUpdateSteps {
         input.setFirstName("First Name");
         input.setLastName("Last Name");
         input.setMiddleName("Middle Name");
-        input.setNameUseCd(NameUseCd.L);
+        input.setNameUseCd("L");
         input.setSuffix(Suffix.III);
         return input;
     }
