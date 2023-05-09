@@ -27,9 +27,6 @@ public class PersonName {
     @JoinColumn(name = "person_uid", nullable = false)
     private Person personUid;
 
-    @Column(name = "person_name_seq", nullable = false)
-    private Short personNameSeq;
-
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
 

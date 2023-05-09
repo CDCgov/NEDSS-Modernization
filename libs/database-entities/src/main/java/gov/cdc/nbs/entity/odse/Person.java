@@ -544,8 +544,9 @@ public class Person {
         this.setLastChgUserId(info.requester());
 
         Collection<PersonName> existing = ensureNames();
+        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
 
-        existing.stream().filter(p -> p.getPersonNameSeq() == info.personNameSeq()).findFirst().ifPresent(p -> {
+        existing.stream().filter(p -> p.getId() == identifier).findFirst().ifPresent(p -> {
             p.setFirstNm(info.first());
             p.setMiddleNm(info.middle());
             p.setLastNm(info.last());
@@ -561,7 +562,8 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
         Collection<PersonName> existing = ensureNames();
-        existing.removeIf(item -> (item.getPersonNameSeq() == info.personNameSeq()));
+        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
+        existing.removeIf(item -> (item.getId() == identifier));
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
     }
