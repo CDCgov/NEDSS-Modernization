@@ -14,7 +14,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Input } from '../../../../components/FormInputs/Input';
-import { stateList } from 'constant/states';
+import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
 
 type ModalProps = {
     modalRef: any;
@@ -80,20 +80,29 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="state"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    htmlFor={'state'}
-                                    label="Issued state"
-                                    options={stateList}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
+                                    name="state"
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'state'}
+                                            label="Issued state"
+                                            options={searchCriteria.states.map((state) => {
+                                                return {
+                                                    value: state.id!,
+                                                    name: state.codeDescTxt!
+                                                };
+                                            })}
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
