@@ -296,7 +296,13 @@ class PatientUpdaterTest {
         var data = getAddNameData();
         var person = new Person(123L, "localId");
         patientUpdater.update(person, data);
-    }
+        verify(personRepository).save(personCaptor.capture());
+        PersonName personName = (PersonName) personCaptor.getValue()
+                .getNames()
+                .get(0);
+                assertEquals(data.first(), personName.getFirstNm());
+                assertEquals(data.last(), personName.getLastNm());
+        }
 
     private AddNameData getAddNameData() {
         return new AddNameData(123L,
