@@ -462,6 +462,7 @@ public class Person {
         return personName;
     }
 
+
     private Collection<PersonName> ensureNames() {
         if (this.names == null) {
             this.names = new ArrayList<>();
@@ -517,6 +518,50 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
 
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateAdministrativeInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.setDescription(info.description());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.AddName info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.add(info);
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateNameInfo info) {
+        this.setAsOfDateGeneral(info.asOf());
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+
+        Collection<PersonName> existing = ensureNames();
+
+        existing.stream().filter(p -> p.getPersonNameSeq() == info.personNameSeq()).findFirst().ifPresent(p -> {
+            p.setFirstNm(info.first());
+            p.setMiddleNm(info.middle());
+            p.setLastNm(info.last());
+            p.setNmSuffix(info.suffix());
+            p.setNmUseCd(info.type());
+        });
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.DeleteNameInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        Collection<PersonName> existing = ensureNames();
+        existing.removeIf(item -> (item.getPersonNameSeq() == info.personNameSeq()));
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
     }

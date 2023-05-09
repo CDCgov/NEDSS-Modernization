@@ -46,8 +46,10 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
@@ -404,6 +406,30 @@ public class PatientService {
         var user = SecurityUtil.getUserDetails();
         var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
         return sendPatientEvent(updateGeneralInfoEvent);
+    }
+
+    public PatientEventResponse addPatientName(NameInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = NameInput.toRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientName(NameInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = NameInput.toRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientName(Long patientId, Short personNameSeq) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteName(getRequestId(), patientId, personNameSeq, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updateAdministrative(AdministrativeInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
     }
 
     public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {

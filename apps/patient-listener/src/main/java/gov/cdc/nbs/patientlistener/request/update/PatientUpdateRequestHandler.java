@@ -1,8 +1,12 @@
 package gov.cdc.nbs.patientlistener.request.update;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.message.patient.event.AddNameData;
+import gov.cdc.nbs.message.patient.event.DeleteNameData;
+import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
+import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
 import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
@@ -102,6 +106,90 @@ public class PatientUpdateRequestHandler {
         "Successfully updated patient sex and birth info",
         data.patientId()
     );
+  }
+
+  /**
+   * Sets the Person's administrative info to the specified values.
+   *
+   * @param data
+   */
+  @Transactional
+  public void handlePatientAdministrativeUpdate(final UpdateAdministrativeData data) {
+    if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
+      throw new UserNotAuthorizedException(data.requestId());
+    }
+
+    var person = findPerson(data.patientId(), data.requestId());
+    patientUpdater.update(person, data);
+    updateElasticsearchPatient(person);
+    statusProducer.successful(
+        data.requestId(),
+        "Successfully updated administrative info",
+        data.patientId()
+    );
+  }
+
+    /**
+   * Add a person name.
+   *
+   * @param data
+   */
+  @Transactional
+  public void handlePatientNameAdd(final AddNameData data) {
+    if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
+      throw new UserNotAuthorizedException(data.requestId());
+    }
+
+    var person = findPerson(data.patientId(), data.requestId());
+    patientUpdater.update(person, data);
+    updateElasticsearchPatient(person);
+    statusProducer.successful(
+        data.requestId(),
+        "Successfully updated patient mortality info",
+        data.patientId()
+    );
+  }
+
+  /**
+   * Update a person name.
+   *
+   * @param data
+   */
+  @Transactional
+  public void handlePatientNameUpdate(final UpdateNameData data) {
+    if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
+      throw new UserNotAuthorizedException(data.requestId());
+    }
+
+    var person = findPerson(data.patientId(), data.requestId());
+    patientUpdater.update(person, data);
+    updateElasticsearchPatient(person);
+    statusProducer.successful(
+        data.requestId(),
+        "Successfully updated patient mortality info",
+        data.patientId()
+    );
+  }
+
+    /**
+   * Delete a person name.
+   *
+   * @param data
+   */
+  @Transactional
+  public void handlePatientNameDelete(final String requestId, final long patientId, short personNameSeq, final long userId) {
+    // if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
+    //   throw new UserNotAuthorizedException(data.requestId());
+    // }
+
+    // var person = findPerson(data.patientId(), data.requestId());
+    // patientUpdater.update(person, data);
+    // updateElasticsearchPatient(person);
+    // statusProducer.successful(
+    //     data.requestId(),
+    //     "Successfully updated patient mortality info",
+    //     data.patientId()
+    // );
   }
 
   private Person findPerson(final long patientId, final String requestId) {
