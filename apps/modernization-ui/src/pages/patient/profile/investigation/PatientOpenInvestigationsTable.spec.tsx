@@ -7,7 +7,7 @@ describe('when rendered', () => {
     it('should display sentence cased investigation headers', async () => {
         const { container } = render(
             <MockedProvider addTypename={false}>
-                <PatientOpenInvestigationsTable pageSize={1} nbsBase={'base'}></PatientOpenInvestigationsTable>
+                <PatientOpenInvestigationsTable pageSize={1}></PatientOpenInvestigationsTable>
             </MockedProvider>
         );
 
@@ -54,10 +54,7 @@ describe('when investigations are not available for a patient', () => {
     it('should display Not Available', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientOpenInvestigationsTable
-                    patient={'73'}
-                    pageSize={5}
-                    nbsBase={'base'}></PatientOpenInvestigationsTable>
+                <PatientOpenInvestigationsTable patient={'73'} pageSize={5}></PatientOpenInvestigationsTable>
             </MockedProvider>
         );
 
@@ -105,20 +102,13 @@ describe('when at least one investigation is available for a patient', () => {
     it('should display the investigations', async () => {
         const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientOpenInvestigationsTable
-                    patient={'1823'}
-                    pageSize={5}
-                    nbsBase={'base'}></PatientOpenInvestigationsTable>
+                <PatientOpenInvestigationsTable patient={'1823'} pageSize={5}></PatientOpenInvestigationsTable>
             </MockedProvider>
         );
 
         expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
 
         const event = await findByText('event');
-        expect(event).toHaveAttribute(
-            'href',
-            'base/ViewFile1.do?ContextAction=InvestigationIDOnEvents&publicHealthCaseUID=investigation-id'
-        );
 
         const tableData = container.getElementsByClassName('table-data');
 

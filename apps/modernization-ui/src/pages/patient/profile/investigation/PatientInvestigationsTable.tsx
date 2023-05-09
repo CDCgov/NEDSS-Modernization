@@ -1,18 +1,17 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
 
-import { RedirectControllerService } from 'generated';
-import { UserContext } from 'providers/UserContext';
 import { Headers, Investigation } from './PatientInvestigation';
 import { transform } from './PatientInvestigationTransformer';
 import { sort } from './PatientInvestigationSorter';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { Direction } from 'sorting';
+import { ClassicButton, ClassicLink } from 'classic';
 
 const asTableBody =
-    (nbsBase: string) =>
+    (patient?: string) =>
     (investigation: Investigation): TableBody => ({
         id: investigation.investigation,
         checkbox: true,
@@ -29,15 +28,18 @@ const asTableBody =
             { id: 7, title: investigation?.investigator },
             {
                 id: 8,
-                title: investigation?.event,
-                link: `${nbsBase}/ViewFile1.do?ContextAction=InvestigationIDOnEvents&publicHealthCaseUID=${investigation.investigation}`
+                title: investigation?.event && (
+                    <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation.investigation}`}>
+                        {investigation?.event}
+                    </ClassicLink>
+                )
             },
             { id: 9, title: investigation?.coInfection || null }
         ]
     });
 
-const asTableBodies = (nbsBase: string, investigations: Investigation[]): TableBody[] =>
-    investigations?.map(asTableBody(nbsBase)) || [];
+const asTableBodies = (investigations: Investigation[], patient?: string): TableBody[] =>
+    investigations?.map(asTableBody(patient)) || [];
 
 const headers = [
     { name: Headers.StartDate, sortable: true },
@@ -52,14 +54,11 @@ const headers = [
 ];
 
 type Props = {
-    patient?: string;
+    patient: string | undefined;
     pageSize: number;
-    nbsBase: string;
 };
 
-export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props) => {
-    const { state } = useContext(UserContext);
-
+export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<any>([]);
@@ -73,7 +72,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props
         setItems(content);
 
         const sorted = sort(content, {});
-        setBodies(asTableBodies(nbsBase, sorted));
+        setBodies(asTableBodies(sorted, patient));
     };
 
     const [getInvestigation] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
@@ -96,7 +95,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props
     const handleSort = (name: string, direction: string): void => {
         const criteria = { name: name as Headers, type: direction as Direction };
         const sorted = sort(items, criteria);
-        setBodies(asTableBodies(nbsBase, sorted));
+        setBodies(asTableBodies(sorted, patient));
     };
 
     return (
@@ -107,19 +106,10 @@ export const PatientInvestigationsTable = ({ patient, pageSize, nbsBase }: Props
                         <Icon.Topic className="margin-right-05" />
                         Compare investigations
                     </Button>
-                    <Button
-                        type="button"
-                        className="grid-row"
-                        onClick={() => {
-                            RedirectControllerService.preparePatientDetailsUsingGet({
-                                authorization: 'Bearer ' + state.getToken()
-                            }).then(() => {
-                                window.location.href = `${nbsBase}/LoadSelectCondition1.do?ContextAction=AddInvestigation`;
-                            });
-                        }}>
+                    <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
                         <Icon.Add className="margin-right-05" />
                         Add investigation
-                    </Button>
+                    </ClassicButton>
                 </div>
             }
             tableHeader={'Investigations'}
