@@ -26,7 +26,9 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.AddNameData;
+import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
@@ -304,8 +306,8 @@ class PatientUpdaterTest {
                 "First Name",
                 "Middle Name",
                 "Last Name",
-                "Suffix",
-                "L");
+                Suffix.III,
+                NameUseCd.L);
     }
 
     @Test
@@ -316,6 +318,8 @@ class PatientUpdaterTest {
         var pn = new PersonName();
         pn.setFirstNm("XXX");
         pn.setLastNm("XXX");
+        pn.setMiddleNm("XXX");
+        pn.setNmSuffix(Suffix.ESQ);
 
         person.setNames(Collections.singletonList(pn));
 
@@ -323,10 +327,8 @@ class PatientUpdaterTest {
 
         verify(personRepository).save(personCaptor.capture());
         PersonName personName = (PersonName) personCaptor.getValue()
-                .getNbsEntity()
                 .getNames()
                 .get(0);
-
 
         assertEquals(data.first(), personName.getFirstNm());
         assertEquals(data.last(), personName.getLastNm());
@@ -342,13 +344,13 @@ class PatientUpdaterTest {
                 "First Name",
                 "Middle Name",
                 "Last Name",
-                "Suffix",
-                "L");
+                Suffix.III,
+                NameUseCd.L.toString());
     }
 
     @Test
     void should_delete_name_info() {
-        var data = getNameData();
+        var data = getDeleteNameData();
         var person = new Person(123L, "localId");
         // Create new name
         var pn = new PersonName();
@@ -360,14 +362,14 @@ class PatientUpdaterTest {
         patientUpdater.update(person, data);
 
         verify(personRepository).save(personCaptor.capture());
-        PersonName personName = (PersonName) personCaptor.getValue()
-                .getNbsEntity()
-                .getNames()
-                .get(0);
+        assertEquals(personCaptor.getValue().getNames().size(), 0);
+    }
 
-
-        assertEquals(data.first(), personName.getFirstNm());
-        assertEquals(data.last(), personName.getLastNm());
-        assertEquals(Long.valueOf(data.updatedBy()), personName.getLastChgUserId());
+    private DeleteNameData getDeleteNameData() {
+        return new DeleteNameData(123L,
+                (short)1,
+                "RequestId",
+                321L,
+                Instant.now());
     }
 }
