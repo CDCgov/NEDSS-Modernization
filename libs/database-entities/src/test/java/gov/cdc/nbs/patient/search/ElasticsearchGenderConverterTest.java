@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import gov.cdc.nbs.message.enums.Gender;
 
 
-public class ElasticsearchGenderConverterTest {
+class ElasticsearchGenderConverterTest {
     @Test
     void should_write_null_Gender_as_null_String() {
         ElasticsearchGenderConverter converter = new ElasticsearchGenderConverter();
