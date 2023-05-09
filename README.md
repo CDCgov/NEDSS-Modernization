@@ -22,7 +22,7 @@
 
 1. Install [Java 17](docs/InstallJava.md)
 2. Install Node / NPM
-3. Clone [NBS](https://github.com/cdcent/NEDSSDev)
+3. Clone [NBS 6.0.12](https://github.com/cdcent/NEDSSDev/tree/NBS_6.0.12)
 4. Set `NEDSS_HOME` environment variable, this should point to the directory `NBS` was cloned into. Example:
 
    ```sh
