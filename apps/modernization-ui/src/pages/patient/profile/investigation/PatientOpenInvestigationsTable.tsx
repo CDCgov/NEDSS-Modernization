@@ -7,9 +7,10 @@ import { transform } from './PatientInvestigationTransformer';
 import { sort } from './PatientInvestigationSorter';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { Direction } from 'sorting';
+import { ClassicLink } from 'classic';
 
 const asTableBody =
-    (nbsBase: string) =>
+    (patient?: string) =>
     (investigation: Investigation): TableBody => ({
         id: investigation.investigation,
         checkbox: false,
@@ -25,15 +26,18 @@ const asTableBody =
             { id: 6, title: investigation?.investigator || null },
             {
                 id: 7,
-                title: investigation?.event || null,
-                link: `${nbsBase}/ViewFile1.do?ContextAction=InvestigationIDOnEvents&publicHealthCaseUID=${investigation.investigation}`
+                title: investigation?.event && (
+                    <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation.investigation}`}>
+                        {investigation?.event}
+                    </ClassicLink>
+                )
             },
             { id: 8, title: investigation?.coInfection || null }
         ]
     });
 
-const asTableBodies = (nbsBase: string, investigations: Investigation[]): TableBody[] =>
-    investigations?.map(asTableBody(nbsBase)) || [];
+const asTableBodies = (investigations: Investigation[], patient?: string): TableBody[] =>
+    investigations?.map(asTableBody(patient)) || [];
 
 const headers = [
     { name: Headers.StartDate, sortable: true },
@@ -49,10 +53,9 @@ const headers = [
 type Props = {
     patient?: string;
     pageSize: number;
-    nbsBase: string;
 };
 
-export const PatientOpenInvestigationsTable = ({ patient, pageSize, nbsBase }: Props) => {
+export const PatientOpenInvestigationsTable = ({ patient, pageSize }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<any>([]);
@@ -66,7 +69,7 @@ export const PatientOpenInvestigationsTable = ({ patient, pageSize, nbsBase }: P
         setItems(content);
 
         const sorted = sort(content, {});
-        setBodies(asTableBodies(nbsBase, sorted));
+        setBodies(asTableBodies(sorted, patient));
     };
 
     const [getInvestigation] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
@@ -89,7 +92,7 @@ export const PatientOpenInvestigationsTable = ({ patient, pageSize, nbsBase }: P
     const handleSort = (name: string, direction: string): void => {
         const criteria = { name: name as Headers, type: direction as Direction };
         const sorted = sort(items, criteria);
-        setBodies(asTableBodies(nbsBase, sorted));
+        setBodies(asTableBodies(sorted, patient));
     };
 
     return (

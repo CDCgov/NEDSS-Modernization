@@ -13,3 +13,9 @@ $primary_color: #005ea2;
 .usa-label {
     margin-top: 15px !important;
 }
+
+a.profile {
+    color: $primary_color;
+    font-weight: 600;
+    text-decoration: none;
+}

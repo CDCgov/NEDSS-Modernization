@@ -1,20 +1,5 @@
 package gov.cdc.nbs;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.HashSet;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import gov.cdc.nbs.config.security.NbsAuthority;
@@ -24,16 +9,35 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.investigation.InvestigationFilter;
 import gov.cdc.nbs.investigation.InvestigationResolver;
 import gov.cdc.nbs.labreport.LabReportFilter;
 import gov.cdc.nbs.labreport.LabReportResolver;
+import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.repository.ProgramAreaCodeRepository;
+import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashSet;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -54,9 +58,13 @@ public class PermissionSteps {
     @Autowired
     InvestigationResolver investigationResolver;
 
+    @Autowired
+    TestActive<UserDetails> activeUserDetails;
+
     @Before
     public void clearAuth() {
         SecurityContextHolder.getContext().setAuthentication(null);
+        activeUserDetails.reset();
     }
 
     private Object response;
@@ -68,20 +76,20 @@ public class PermissionSteps {
         var nbsAuthorities = new HashSet<NbsAuthority>();
         var programAreas = programAreaCodeRepository.findAll();
         var programAreaEntry = programAreas.stream().filter(f -> f.getId().equals(programArea)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
+            .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
         for (var authority : authorities) {
             // Create a NbsAuthority object based on provided input
             var operationObject = authority.trim().split("-");
             var operation = operationObject.length > 0 ? operationObject[0] : null;
             var object = operationObject.length > 1 ? operationObject[1] : null;
             nbsAuthorities.add(NbsAuthority.builder()
-                    .businessOperation(operation)
-                    .businessObject(object)
-                    .authority(authority.trim())
-                    .jurisdiction(jurisdiction)
-                    .programArea(programArea)
-                    .programAreaUid(programAreaEntry.getNbsUid())
-                    .build());
+                .businessOperation(operation)
+                .businessObject(object)
+                .authority(authority.trim())
+                .jurisdiction(jurisdiction)
+                .programArea(programArea)
+                .programAreaUid(programAreaEntry.getNbsUid())
+                .build());
         }
 
         var currentAuth = SecurityContextHolder.getContext().getAuthentication();
@@ -89,34 +97,43 @@ public class PermissionSteps {
             // no auth is set, create a new NbsUserDetails object and set the authentication
             // on the securityContextHolder
             var nbsUserDetails = NbsUserDetails.builder()
-                    .id(1L)
-                    .username("MOCK-USER")
-                    .token(createToken("MOCK-USER"))
-                    .authorities(nbsAuthorities)
-                    .isEnabled(true)
-                    .build();
-            var pat = new PreAuthenticatedAuthenticationToken(nbsUserDetails, null, nbsUserDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(pat);
+                .id(1L)
+                .username("MOCK-USER")
+                .token(createToken("MOCK-USER"))
+                .authorities(nbsAuthorities)
+                .isEnabled(true)
+                .build();
+            applyUserDetails(nbsUserDetails);
 
         } else {
             // add authority to existing userDetails
             var existingUserDetails = (NbsUserDetails) currentAuth.getPrincipal();
             var existingAuthorities = existingUserDetails.getAuthorities();
             if (existingAuthorities == null) {
-                existingAuthorities = new HashSet<NbsAuthority>();
+                existingAuthorities = new HashSet<>();
             }
             existingAuthorities.addAll(nbsAuthorities);
             var nbsUserDetails = NbsUserDetails.builder()
-                    .id(existingUserDetails.getId())
-                    .username(existingUserDetails.getUsername())
-                    .token(existingUserDetails.getToken())
-                    .authorities(existingAuthorities)
-                    .isEnabled(existingUserDetails.isEnabled())
-                    .build();
-            var pat = new PreAuthenticatedAuthenticationToken(nbsUserDetails, null,
-                    nbsUserDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(pat);
+                .id(existingUserDetails.getId())
+                .username(existingUserDetails.getUsername())
+                .token(existingUserDetails.getToken())
+                .authorities(existingAuthorities)
+                .isEnabled(existingUserDetails.isEnabled())
+                .build();
+
+            applyUserDetails(nbsUserDetails);
         }
+    }
+
+    private void applyUserDetails(final NbsUserDetails userDetails) {
+        activeUserDetails.active(userDetails);
+
+        var pat = new PreAuthenticatedAuthenticationToken(
+            userDetails,
+            null,
+            userDetails.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(pat);
     }
 
     @When("I search for a patient by {string}")
@@ -170,11 +187,11 @@ public class PermissionSteps {
         Instant now = Instant.now();
         Instant expiry = Instant.now().plus(Duration.ofMillis(properties.getTokenExpirationMillis()));
         return JWT.create()
-                .withIssuer(properties.getTokenIssuer())
-                .withIssuedAt(now)
-                .withExpiresAt(expiry)
-                .withSubject(username)
-                .sign(algorithm);
+            .withIssuer(properties.getTokenIssuer())
+            .withIssuedAt(now)
+            .withExpiresAt(expiry)
+            .withSubject(username)
+            .sign(algorithm);
     }
 
 }
