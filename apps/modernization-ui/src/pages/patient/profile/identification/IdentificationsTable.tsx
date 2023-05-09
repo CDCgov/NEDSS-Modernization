@@ -172,13 +172,11 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
                         </td>
                         <td>
                             <div className="table-span">
-                                <Button type="button" unstyled>
-                                    <Button
-                                        type="button"
-                                        unstyled
-                                        onClick={() => setIsActions(isActions === index ? null : index)}>
-                                        <Icon.MoreHoriz className="font-sans-lg" />
-                                    </Button>
+                                <Button
+                                    type="button"
+                                    unstyled
+                                    onClick={() => setIsActions(isActions === index ? null : index)}>
+                                    <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
                                 {isActions === index && (
                                     <Actions
