@@ -12,11 +12,6 @@ type PatientLabReportTableProps = {
 export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
     const [generalTableData, setGeneralTableData] = useState<any>();
     const handleComplete = (data: FindPatientProfileQuery) => {
-        console.log(
-            'data?.findPatientProfile?.birth && data?.findPatientProfile?.gender:',
-            data?.findPatientProfile?.birth,
-            data?.findPatientProfile?.gender
-        );
         if (data?.findPatientProfile?.birth && data?.findPatientProfile?.gender) {
             setGeneralTableData([
                 { title: 'As of:', text: format(new Date(data?.findPatientProfile?.birth.asOf), 'MM/dd/yyyy') },

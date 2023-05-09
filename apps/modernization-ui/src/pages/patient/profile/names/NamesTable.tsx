@@ -1,15 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import format from 'date-fns/format';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import { SortableTable } from 'components/Table/SortableTable';
 import { AddNameModal } from 'pages/patient/profile/names/AddNameModal';
 import { DetailsNameModal } from 'pages/patient/profile/names/DetailsNameModal';
@@ -45,7 +36,7 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
     const [isActions, setIsActions] = useState<any>(null);
     const [names, setNames] = useState<Name[]>([]);
 
-    const [isDeleteModal, setIsDeleteModal] = useState<any>(undefined);
+    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
         if (data?.findPatientProfile?.names?.content && data?.findPatientProfile?.names?.content?.length > 0) {
@@ -192,14 +183,13 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                         </td>
                         <td>
                             <div className="table-span">
-                                <Button type="button" unstyled>
-                                    <Button
-                                        type="button"
-                                        unstyled
-                                        onClick={() => setIsActions(isActions === index ? null : index)}>
-                                        <Icon.MoreHoriz className="font-sans-lg" />
-                                    </Button>
+                                <Button
+                                    type="button"
+                                    unstyled
+                                    onClick={() => setIsActions(isActions === index ? null : index)}>
+                                    <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
+
                                 {isActions === index && (
                                     <Actions
                                         handleOutsideClick={() => setIsActions(null)}
@@ -210,6 +200,7 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                                             }
                                             if (type === 'delete') {
                                                 setIsDeleteModal(true);
+                                                setNameDetails(name);
                                             }
                                             if (type === 'details') {
                                                 setNameDetails(name);
@@ -230,6 +221,7 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
             />
             {isDeleteModal && (
                 <Modal
+                    forceAction
                     ref={deleteModalRef}
                     id="example-modal-1"
                     aria-labelledby="modal-1-heading"
@@ -243,21 +235,20 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                     <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                         <Icon.Warning className="font-sans-2xl margin-x-2" />
                         <p id="modal-1-description">
-                            Are you sure you want to delete Name record, Smith, Johnathan Test?
+                            Are you sure you want to delete Name record, {nameDetails?.last}, {nameDetails?.first}?
                         </p>
                     </div>
                     <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
                         <ButtonGroup>
-                            <ModalToggleButton
-                                onClick={() => setIsDeleteModal(false)}
-                                outline
-                                modalRef={deleteModalRef}
-                                closer>
+                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
                                 Cancel
-                            </ModalToggleButton>
-                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
+                            </Button>
+                            <Button
+                                type="button"
+                                className="padding-105 text-center"
+                                onClick={() => setIsDeleteModal(false)}>
                                 Yes, delete
-                            </ModalToggleButton>
+                            </Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </Modal>

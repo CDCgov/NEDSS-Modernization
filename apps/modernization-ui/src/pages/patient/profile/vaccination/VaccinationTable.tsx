@@ -120,8 +120,6 @@ export const VaccinationTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patie
         }
     };
 
-    console.log('vaccinationData:', vaccinationData);
-
     return (
         <SortableTable
             isPagination={true}
