@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import gov.cdc.nbs.message.enums.Gender;
 
-public class GenderStringConverterTest {
+class GenderStringConverterTest {
 
     @Test
     void should_convert_null_Gender_as_null_String() {
