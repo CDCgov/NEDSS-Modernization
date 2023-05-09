@@ -145,7 +145,7 @@ public class PatientUpdateRequestHandler {
     updateElasticsearchPatient(person);
     statusProducer.successful(
         data.requestId(),
-        "Successfully updated patient mortality info",
+        "Successfully add a patient name",
         data.patientId()
     );
   }
