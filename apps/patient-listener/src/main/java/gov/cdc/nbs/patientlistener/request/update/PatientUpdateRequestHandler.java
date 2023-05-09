@@ -166,7 +166,7 @@ public class PatientUpdateRequestHandler {
     updateElasticsearchPatient(person);
     statusProducer.successful(
         data.requestId(),
-        "Successfully updated patient mortality info",
+        "Successfully updated patient name",
         data.patientId()
     );
   }
@@ -178,18 +178,17 @@ public class PatientUpdateRequestHandler {
    */
   @Transactional
   public void handlePatientNameDelete(final String requestId, final long patientId, short personNameSeq, final long userId) {
-    // if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-    //   throw new UserNotAuthorizedException(data.requestId());
-    // }
-
-    // var person = findPerson(data.patientId(), data.requestId());
-    // patientUpdater.update(person, data);
-    // updateElasticsearchPatient(person);
-    // statusProducer.successful(
-    //     data.requestId(),
-    //     "Successfully updated patient mortality info",
-    //     data.patientId()
-    // );
+    if (!userService.isAuthorized(userId, VIEW_PATIENT, EDIT_PATIENT)) {
+      throw new UserNotAuthorizedException(requestId);
+    }
+    var person = findPerson(patientId, requestId);
+    patientUpdater.update(person, new DeleteNameData(patientId, personNameSeq, requestId, userId, null));
+    updateElasticsearchPatient(person);
+    statusProducer.successful(
+        requestId,
+        "Successfully deleted patient name",
+        userId
+    );
   }
 
   private Person findPerson(final long patientId, final String requestId) {
