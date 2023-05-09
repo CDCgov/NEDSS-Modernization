@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
 
 export const SuccessForm = ({ data }: any) => {
-    console.log('data:', data);
     return (
         <Grid row>
             <Grid col={10} className="margin-x-auto margin-top-5">

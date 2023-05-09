@@ -65,13 +65,6 @@ export const PatientProfile = () => {
         }
     }, [submittedSuccess]);
 
-    function isEmpty(obj: any) {
-        for (const key in obj) {
-            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
-        }
-        return true;
-    }
-
     return (
         <div className="height-full main-banner">
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
@@ -153,14 +146,7 @@ export const PatientProfile = () => {
                 {activeTab === ACTIVE_TAB.EVENT && <Events patient={id} />}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
-                        handleFormSubmission={(
-                            type: 'error' | 'success' | 'warning' | 'info',
-                            message: string,
-                            data: any
-                        ) => {
-                            if (!isEmpty(data) && id) {
-                                console.log('data:', data);
-                            }
+                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
                             setSubmittedSuccess(true);
                             setAddedItem(message);
                             setAlertType(type);
