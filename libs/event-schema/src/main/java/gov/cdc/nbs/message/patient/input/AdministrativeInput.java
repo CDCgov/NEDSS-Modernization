@@ -17,7 +17,7 @@ public class AdministrativeInput {
             final long userId,
             final String requestId,
             final AdministrativeInput input) {
-        return new PatientRequest.updateAdministrative(
+        return new PatientRequest.UpdateAdministrative(
                 requestId,
                 input.getPatientId(),
                 userId,
@@ -28,5 +28,5 @@ public class AdministrativeInput {
                         Instant.now(),
                         input.getDescription()));
 
-    };
+    }
 }

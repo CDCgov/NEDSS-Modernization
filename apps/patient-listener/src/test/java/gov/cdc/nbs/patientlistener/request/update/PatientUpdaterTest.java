@@ -377,7 +377,7 @@ class PatientUpdaterTest {
         patientUpdater.update(person, data);
 
         verify(personRepository).save(personCaptor.capture());
-        assertEquals(personCaptor.getValue().getNames().size(), 0);
+        assertEquals(0, personCaptor.getValue().getNames().size());
     }
 
     private DeleteNameData getDeleteNameData() {

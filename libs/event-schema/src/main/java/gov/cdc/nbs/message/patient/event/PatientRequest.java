@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(PatientRequest.AddName.class),
     @JsonSubTypes.Type(PatientRequest.UpdateName.class),
     @JsonSubTypes.Type(PatientRequest.DeleteName.class),
-    @JsonSubTypes.Type(PatientRequest.updateAdministrative.class),
+    @JsonSubTypes.Type(PatientRequest.UpdateAdministrative.class),
     @JsonSubTypes.Type(PatientRequest.UpdateGeneralInfo.class),
     @JsonSubTypes.Type(PatientRequest.UpdateMortality.class),
     @JsonSubTypes.Type(PatientRequest.UpdateSexAndBirth.class)
@@ -87,7 +87,7 @@ public sealed interface PatientRequest {
 ) implements PatientRequest {
 }
 
-record updateAdministrative(
+record UpdateAdministrative(
     String requestId,
     long patientId,
     long userId,

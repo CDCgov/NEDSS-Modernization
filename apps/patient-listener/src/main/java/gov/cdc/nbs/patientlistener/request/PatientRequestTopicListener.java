@@ -52,7 +52,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientMortalityUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateSexAndBirth update) {
                 updateHandler.handlePatientSexAndBirthUpdate(update.data());
-            } else if (request instanceof PatientRequest.updateAdministrative update) {
+            } else if (request instanceof PatientRequest.UpdateAdministrative update) {
                 updateHandler.handlePatientAdministrativeUpdate(update.data());
             } else if (request instanceof PatientRequest.AddName update) {
                 updateHandler.handlePatientNameUpdate(update.data());
