@@ -285,8 +285,8 @@ class PatientUpdaterTest {
 
     private UpdateAdministrativeData getAdministrativeData() {
         return new UpdateAdministrativeData(
-            123L,
-            "RequestId",
+                123L,
+                "RequestId",
                 321L,
                 Instant.now(),
                 "Administrative Data 1");
@@ -301,9 +301,12 @@ class PatientUpdaterTest {
         PersonName personName = (PersonName) personCaptor.getValue()
                 .getNames()
                 .get(0);
-                assertEquals(data.first(), personName.getFirstNm());
-                assertEquals(data.last(), personName.getLastNm());
-        }
+        assertEquals(data.first(), personName.getFirstNm());
+        assertEquals(data.middle(), personName.getMiddleNm());
+        assertEquals(data.last(), personName.getLastNm());
+        assertEquals(data.suffix(), personName.getNmSuffix());
+        assertEquals(data.type(), personName.getNmUseCd());
+    }
 
     private AddNameData getAddNameData() {
         return new AddNameData(123L,
@@ -323,7 +326,7 @@ class PatientUpdaterTest {
         var person = new Person(123L, "localId");
         // Create new name
         var pn = new PersonName();
-        pn.setId(new PersonNameId(person.getId(), (short)1));
+        pn.setId(new PersonNameId(person.getId(), (short) 1));
         pn.setFirstNm("XXX");
         pn.setLastNm("XXX");
         pn.setMiddleNm("XXX");
@@ -339,12 +342,15 @@ class PatientUpdaterTest {
                 .get(0);
 
         assertEquals(data.first(), personName.getFirstNm());
+        assertEquals(data.middle(), personName.getMiddleNm());
         assertEquals(data.last(), personName.getLastNm());
+        assertEquals(data.suffix(), personName.getNmSuffix());
+        assertEquals(data.type(), personName.getNmUseCd());
     }
 
     private UpdateNameData getUpdateNameData() {
         return new UpdateNameData(123L,
-                (short)1,
+                (short) 1,
                 "RequestId",
                 321L,
                 Instant.now(),
@@ -361,9 +367,11 @@ class PatientUpdaterTest {
         var person = new Person(123L, "localId");
         // Create new name
         var pn = new PersonName();
-        pn.setId(new PersonNameId(person.getId(), (short)1));
+        pn.setId(new PersonNameId(person.getId(), (short) 1));
         pn.setFirstNm("XXX");
         pn.setLastNm("XXX");
+        pn.setMiddleNm("XXX");
+        pn.setNmSuffix(Suffix.ESQ);
         person.setNames(Collections.singletonList(pn));
 
         patientUpdater.update(person, data);
@@ -374,7 +382,7 @@ class PatientUpdaterTest {
 
     private DeleteNameData getDeleteNameData() {
         return new DeleteNameData(123L,
-                (short)1,
+                (short) 1,
                 "RequestId",
                 321L,
                 Instant.now());
