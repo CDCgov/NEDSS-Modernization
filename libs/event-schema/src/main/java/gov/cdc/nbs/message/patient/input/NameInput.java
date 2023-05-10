@@ -18,13 +18,34 @@ public class NameInput {
     private Suffix suffix;
     private String nameUseCd;
 
-    public static PatientRequest toRequest(
+    public static PatientRequest toAddRequest(
+            final long userId,
+            final String requestId,
+            final NameInput input) {
+        return new PatientRequest.AddName(
+                requestId,
+                input.getPatientId(),
+                userId,
+                new UpdateNameData(
+                        input.getPatientId(),
+                        input.getPersonNameSeq(),
+                        requestId,
+                        userId,
+                        Instant.now(),
+                        input.getFirstName(),
+                        input.getMiddleName(),
+                        input.getLastName(),
+                        input.getSuffix(),
+                        input.getNameUseCd()));
+    }
+
+    public static PatientRequest toUpdateRequest(
             final long userId,
             final String requestId,
             final NameInput input) {
         return new PatientRequest.UpdateName(
-            requestId,
-            input.getPatientId(),
+                requestId,
+                input.getPatientId(),
                 userId,
                 new UpdateNameData(
                         input.getPatientId(),

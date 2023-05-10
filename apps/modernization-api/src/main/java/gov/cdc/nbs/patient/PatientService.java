@@ -410,13 +410,13 @@ public class PatientService {
 
     public PatientEventResponse addPatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toRequest(user.getId(), getRequestId(), input);
+        var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
         return sendPatientEvent(event);
     }
 
     public PatientEventResponse updatePatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toRequest(user.getId(), getRequestId(), input);
+        var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
         return sendPatientEvent(event);
     }
 
