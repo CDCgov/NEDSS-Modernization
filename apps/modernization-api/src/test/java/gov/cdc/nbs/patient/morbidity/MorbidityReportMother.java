@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.morbidity;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
-import gov.cdc.nbs.entity.odse.NbsDocument;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
@@ -19,6 +18,8 @@ class MorbidityReportMother {
     private static final String MORBIDITY_CLASS_CODE = "OBS";
     private static final String PERSON_CLASS = "PSN";
     private static final String SUBJECT_OF_MORBIDITY = "SubjOfMorbReport";
+    private static final String MORBIDITY_DISPLAY_FORM = "MorbReport";
+    private static final String MORBIDITY_DOMAIN = "Order";
 
     private final MotherSettings settings;
     private final TestUniqueIdGenerator idGenerator;
@@ -47,10 +48,10 @@ class MorbidityReportMother {
     }
 
     /**
-     * Creates a Case Report associated with the given {@code patient}
+     * Creates a Morbidity Report associated with the given {@code patient}
      *
      * @param patient The identifier of the patient.
-     * @return A {@link NbsDocument} representing a Case Report associated with a patient.
+     * @return An {@link Observation} representing a Lab Report associated with a patient.
      */
     Observation morbidityReport(final long patient) {
         long identifier = idGenerator.next();
@@ -58,6 +59,8 @@ class MorbidityReportMother {
 
         Observation observation = new Observation(identifier, localId);
         observation.setActivityToTime(RandomUtil.getRandomDateInPast());
+        observation.setCtrlCdDisplayForm(MORBIDITY_DISPLAY_FORM);
+        observation.setObsDomainCdSt1(MORBIDITY_DOMAIN);
 
         // Condition: Flu activity code (Influenza)
         observation.setCd("10570");
@@ -66,7 +69,7 @@ class MorbidityReportMother {
         // Jurisdiction: Out of system
         observation.setJurisdictionCd("999999");
 
-        observation.setRecordStatusCd("ACTIVE");
+        observation.setRecordStatusCd("UNPROCESSED");
         observation.setRecordStatusTime(settings.createdOn());
         observation.setAddTime(settings.createdOn());
         observation.setAddUserId(settings.createdBy());

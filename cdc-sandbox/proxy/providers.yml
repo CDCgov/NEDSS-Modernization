@@ -50,6 +50,30 @@ http:
       middlewares:
         - "patientProfileEventsReturnReplacePath"
 
+    classic-patient-profile-add-lab-report-completed:
+      service: modernization-api
+      rule: "(Path(`/nbs/AddObservationLab2.do`) && Query(`ContextAction=Submit`))"
+      middlewares:
+        - "patientProfileLabReportAddedReplacePath"
+
+    classic-patient-profile-add-lab-report-canceled:
+      service: modernization-api
+      rule: "(Path(`/nbs/AddObservationLab2.do`) && Query(`ContextAction=Cancel`))"
+      middlewares:
+        - "patientProfileEventsReturnReplacePath"
+
+    classic-patient-profile-add-morbidity-report-completed:
+      service: modernization-api
+      rule: "(Path(`/nbs/AddObservationMorb2.do`)"
+      middlewares:
+        - "patientProfileMorbidityReportAddedReplacePath"
+
+    classic-patient-profile-add-morbidity-report-canceled:
+      service: modernization-api
+      rule: "(Path(`/nbs/AddObservationMorb2.do`) && Query(`ContextAction=Cancel`))"
+      middlewares:
+        - "patientProfileEventsReturnReplacePath"
+
     # NBS to modernization overrides
     simpleSearch:
       service: modernization-api
@@ -87,6 +111,14 @@ http:
     patientProfileSummaryReturnReplacePath:
       replacePath:
         path: /nbs/redirect/patientProfile/summary/return
+
+    #
+    patientProfileLabReportAddedReplacePath:
+        replacePath:
+          path: /nbs/redirect/patient/report/lab/added
+    patientProfileMorbidityReportAddedReplacePath:
+      replacePath:
+        path: /nbs/redirect/patient/report/morbidity/added
 
   services:
     modernization-api:
