@@ -305,7 +305,7 @@ class PatientUpdaterTest {
         assertEquals(data.middle(), personName.getMiddleNm());
         assertEquals(data.last(), personName.getLastNm());
         assertEquals(data.suffix(), personName.getNmSuffix());
-        assertEquals(data.type(), personName.getNmUseCd());
+        assertEquals(data.type(), personName.getNmUseCd().toString());
     }
 
     private AddNameData getAddNameData() {
@@ -345,7 +345,7 @@ class PatientUpdaterTest {
         assertEquals(data.middle(), personName.getMiddleNm());
         assertEquals(data.last(), personName.getLastNm());
         assertEquals(data.suffix(), personName.getNmSuffix());
-        assertEquals(data.type(), personName.getNmUseCd());
+        assertEquals(data.type(), personName.getNmUseCd().toString());
     }
 
     private UpdateNameData getUpdateNameData() {
