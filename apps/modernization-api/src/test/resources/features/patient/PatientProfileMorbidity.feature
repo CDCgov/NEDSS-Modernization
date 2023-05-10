@@ -45,3 +45,14 @@ Feature: Patient Profile Morbidity Reports
     And I have the authorities: "OTHER" for the jurisdiction: "ALL" and program area: "STD"
     When a morbidity report is added from a Patient Profile
     Then I am not allowed to add a Classic NBS morbidity report
+
+  Scenario: A morbidity report is submitted from Classic NBS
+    Given I am logged into NBS and a security log entry exists
+    When a morbidity report is submitted from Classic NBS
+    Then the morbidity report is submitted to Classic NBS
+    Then I am redirected to the Modernized Patient Profile
+
+  Scenario: A morbidity report is submitted from Classic NBS and an Investigation is Created
+    Given I am logged into NBS and a security log entry exists
+    When a morbidity report is submitted and the user has chosen to also create an investigation
+    Then I am redirected to Classic NBS to Create an Investigation from the Morbidity Report

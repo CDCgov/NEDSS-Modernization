@@ -46,33 +46,21 @@ http:
 
     classic-patient-profile-investigations-merged:
       service: modernization-api
-      rule: "(Path(`/nbs/PageAction.do`) && Query(`method`,`mergeSubmit`) && Query(`ContextAction`,`Submit`))"
+      rule: "(Path(`/nbs/PageAction.do`) && Query(`method=mergeSubmit`,`ContextAction=Submit`))"
       middlewares:
         - "patientProfileEventsReturnReplacePath"
-
-    classic-patient-profile-add-lab-report-completed:
-      service: modernization-api
-      rule: "(Path(`/nbs/AddObservationLab2.do`) && Query(`ContextAction=Submit`))"
-      middlewares:
-        - "patientProfileLabReportAddedReplacePath"
-
-    classic-patient-profile-add-lab-report-canceled:
-      service: modernization-api
-      rule: "(Path(`/nbs/AddObservationLab2.do`) && Query(`ContextAction=Cancel`))"
-      middlewares:
-        - "patientProfileEventsReturnReplacePath"
-
-    classic-patient-profile-add-morbidity-report-completed:
-      service: modernization-api
-      rule: "(Path(`/nbs/AddObservationMorb2.do`)"
-      middlewares:
-        - "patientProfileMorbidityReportAddedReplacePath"
 
     classic-patient-profile-add-morbidity-report-canceled:
       service: modernization-api
       rule: "(Path(`/nbs/AddObservationMorb2.do`) && Query(`ContextAction=Cancel`))"
       middlewares:
         - "patientProfileEventsReturnReplacePath"
+
+    classic-patient-profile-add-morbidity-report-submitted:
+      service: modernization-api
+      rule: "Path(`/nbs/AddObservationMorb2.do`) && !Query(`ContextAction={*}`)"
+      middlewares:
+        - "patientProfileMorbidityReportSubmitReplacePath"
 
     # NBS to modernization overrides
     simpleSearch:
@@ -112,13 +100,9 @@ http:
       replacePath:
         path: /nbs/redirect/patientProfile/summary/return
 
-    #
-    patientProfileLabReportAddedReplacePath:
-        replacePath:
-          path: /nbs/redirect/patient/report/lab/added
-    patientProfileMorbidityReportAddedReplacePath:
+    patientProfileMorbidityReportSubmitReplacePath:
       replacePath:
-        path: /nbs/redirect/patient/report/morbidity/added
+        path: /nbs/redirect/patient/report/morbidity/submit
 
   services:
     modernization-api:
