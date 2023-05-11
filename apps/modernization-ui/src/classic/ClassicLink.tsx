@@ -1,6 +1,6 @@
 import { Link } from '@trussworks/react-uswds';
 import { useRedirect, redirectTo, navigateTo } from './useRedirect';
-import { useEffect } from 'react';
+import { MouseEvent, useEffect } from 'react';
 
 type Props = {
     url: string;
@@ -9,7 +9,8 @@ type Props = {
 export const ClassicLink = ({ url, children, ...defaultProps }: Props) => {
     const { redirect, dispatch } = useRedirect();
 
-    const handle = () => {
+    const handle = (event: MouseEvent) => {
+        event.preventDefault();
         redirectTo(url, dispatch);
     };
 

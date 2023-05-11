@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.investigation;
+package gov.cdc.nbs.patient.profile.report.morbidity;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
 import org.springframework.http.ResponseEntity;
@@ -13,26 +13,27 @@ import java.net.URI;
 
 @ApiIgnore
 @RestController
-class ViewInvestigationRedirector {
+class ViewMorbidityReportRedirector {
 
     private static final String LOCATION = "/nbs/ViewFile1.do";
 
     private final ClassicPatientProfileRedirector redirector;
 
-    ViewInvestigationRedirector(final ClassicPatientProfileRedirector redirector) {
+    ViewMorbidityReportRedirector(final ClassicPatientProfileRedirector redirector) {
         this.redirector = redirector;
     }
 
-    @PreAuthorize("hasAuthority('VIEW-INVESTIGATION')")
-    @GetMapping("/nbs/api/profile/{patient}/investigation/{investigation}")
+    @PreAuthorize("hasAuthority('VIEW-OBSERVATIONMORBIDITYREPORT')")
+    @GetMapping("/nbs/api/profile/{patient}/report/morbidity/{identifier}")
     ResponseEntity<Void> view(
         @PathVariable("patient") final long patient,
-        @PathVariable("investigation") final long investigation
+        @PathVariable("identifier") final long identifier
     ) {
 
+
         URI location = UriComponentsBuilder.fromPath(LOCATION)
-            .queryParam("ContextAction", "InvestigationIDOnSummary")
-            .queryParam("publicHealthCaseUID", investigation)
+            .queryParam("ContextAction", "ObservationMorbIDOnSummary")
+            .queryParam("observationUID", identifier)
             .build()
             .toUri();
 

@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { useEffect, useState } from 'react';
+import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
     FindMorbidityReportsForPatientQuery,
@@ -8,9 +8,8 @@ import {
 
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
-import { RedirectControllerService } from 'generated';
-import { UserContext } from 'providers/UserContext';
-import { Config } from 'config';
+
+import { ClassicButton, ClassicLink } from 'classic';
 
 export type PatientMorbidities = FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'];
 
@@ -20,9 +19,6 @@ type PatientMoribidityTableProps = {
 };
 
 export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: PatientMoribidityTableProps) => {
-    const { state } = useContext(UserContext);
-    const NBS_URL = Config.nbsUrl;
-
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [morbidityData, setMorbidityData] = useState<any>([]);
@@ -140,19 +136,10 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
             isPagination={true}
             buttons={
                 <div className="grid-row">
-                    <Button
-                        type="button"
-                        className="grid-row"
-                        onClick={() => {
-                            RedirectControllerService.preparePatientDetailsUsingGet({
-                                authorization: 'Bearer ' + state.getToken()
-                            }).then(() => {
-                                window.location.href = `${NBS_URL}/LoadAddObservationMorb1.do?ContextAction=AddMorb`;
-                            });
-                        }}>
+                    <ClassicButton url={`/nbs/api/profile/${patient}/report/morbidity`}>
                         <Icon.Add className="margin-right-05" />
                         Add morbidity report
-                    </Button>
+                    </ClassicButton>
                 </div>
             }
             tableHeader={'Morbidity reports'}
@@ -164,10 +151,11 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                         <tr key={index}>
                             <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                 {morbidity?.receivedOn ? (
-                                    <a href="#" className="table-span">
+                                    <ClassicLink
+                                        url={`/nbs/api/profile/${patient}/report/morbidity/${morbidity.morbidity}`}>
                                         {format(new Date(morbidity?.receivedOn), 'MM/dd/yyyy')} <br />{' '}
                                         {format(new Date(morbidity?.receivedOn), 'hh:mm a')}
-                                    </a>
+                                    </ClassicLink>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
@@ -213,11 +201,10 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                     <span className="no-data">No data</span>
                                 ) : (
                                     <div>
-                                        <p
-                                            className="margin-0 text-primary text-bold link"
-                                            style={{ wordBreak: 'break-word' }}>
-                                            {morbidity?.associatedWith?.id}
-                                        </p>
+                                        <ClassicLink
+                                            url={`/nbs/api/profile/${patient}/investigation/${morbidity?.associatedWith.id}`}>
+                                            {morbidity?.associatedWith?.local}
+                                        </ClassicLink>
                                         <p className="margin-0">{morbidity?.associatedWith?.condition}</p>
                                     </div>
                                 )}
