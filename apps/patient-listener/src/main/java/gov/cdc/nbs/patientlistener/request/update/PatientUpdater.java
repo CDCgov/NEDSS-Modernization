@@ -6,8 +6,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
+import gov.cdc.nbs.message.patient.event.AddNameData;
+import gov.cdc.nbs.message.patient.event.DeleteNameData;
+import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
+import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patient.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
@@ -28,6 +32,26 @@ public class PatientUpdater {
 
     public Person update(final Person person, final UpdateGeneralInfoData data) {
         person.update(asUpdateGeneralInfo(data));
+        return personRepository.save(person);
+    }
+
+    public Person update(final Person person, final UpdateAdministrativeData data) {
+        person.update(asUpdateAdministrativeInfo(data));
+        return personRepository.save(person);
+    }
+
+    public Person update(final Person person, final AddNameData data) {
+        person.update(asAddNameInfo(data));
+        return personRepository.save(person);
+    }
+
+    public Person update(final Person person, final UpdateNameData data) {
+        person.update(asUpdateNameInfo(data));
+        return personRepository.save(person);
+    }
+
+    public Person update(final Person person, final DeleteNameData data) {
+        person.update(asDeleteNameInfo(data));
         return personRepository.save(person);
     }
 
@@ -97,6 +121,50 @@ public class PatientUpdater {
                 data.primaryLanguageCode(),
                 data.speaksEnglishCode(),
                 data.eharsId(),
+                data.updatedBy(),
+                Instant.now());
+    }
+
+    private PatientCommand.UpdateAdministrativeInfo asUpdateAdministrativeInfo(UpdateAdministrativeData data) {
+        return new PatientCommand.UpdateAdministrativeInfo(
+                data.patientId(),
+                data.asOf(),
+                data.description(),
+                data.updatedBy(),
+                Instant.now());
+    }
+
+    private PatientCommand.AddName asAddNameInfo(AddNameData data) {
+        return new PatientCommand.AddName(
+                data.patientId(),
+                data.first(),
+                data.middle(),
+                data.last(),
+                data.suffix(),
+                data.type(),
+                data.updatedBy(),
+                Instant.now());
+    }
+
+    private PatientCommand.UpdateNameInfo asUpdateNameInfo(UpdateNameData data) {
+        return new PatientCommand.UpdateNameInfo(
+                data.patientId(),
+                data.asOf(),
+                data.personNameSeq(),
+                data.first(),
+                data.middle(),
+                data.last(),
+                data.suffix(),
+                data.type(),
+                data.updatedBy(),
+                Instant.now());
+    }
+
+    private PatientCommand.DeleteNameInfo asDeleteNameInfo(DeleteNameData data) {
+        return new PatientCommand.DeleteNameInfo(
+                data.patientId(),
+                data.asOf(),
+                data.personNameSeq(),
                 data.updatedBy(),
                 Instant.now());
     }

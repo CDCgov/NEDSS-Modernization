@@ -231,7 +231,6 @@ export const AddNameModal = ({ modalRef, handleSubmission, modalHead }: AddComme
         handleSubmission?.('success', `${data?.last}, ${data?.first}`, data);
         setSubmitted(true);
     };
-    console.log('modalHead:', modalHead);
     return (
         <ModalComponent
             modalRef={modalRef}

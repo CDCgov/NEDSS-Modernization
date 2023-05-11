@@ -10,42 +10,58 @@ http:
     ui-forward:
       service: modernization
       rule: "PathPrefix(`/`)"
+    modernization-nbs-api:
+      service: modernization-api
+      rule: "PathPrefix(`/nbs/api`)"
     # Base /nbs forward
     nbsForward:
       service: nbs
       rule: "PathPrefix(`/nbs`)"
-    # Redirect to modernization patient profile
-    openInvestigations: 
+    # Route to modernization Patient Profile:
+    classic-patient-profile:
       service: modernization-api
-      rule: "Path(`/nbs/MyProgramAreaInvestigations1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
-      middlewares: 
-         - "patientProfileRewritepath"
-    approvalQueueForInitialInvestigations:
-      service: modernization-api
-      rule: "Path(`/nbs/ReviewNotifications1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      rule: "Query(`ContextAction=ViewFile`) || Query(`ContextAction=FileSummary`)"
       middlewares:
-        - "patientProfileRewritepath"
-    updatedNotificationsQueue:
+        - "patientProfileReplacePath"
+
+    # Return to Patient Profile: Summary
+    classic-patient-profile-summary-return:
       service: modernization-api
-      rule: "Path(`/nbs/ManageUpdatedNotifications.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      rule: "Query(`ContextAction=ReturnToFileSummary`)"
       middlewares:
-        - "patientProfileRewritepath"
-    rejectedNotificationsQueue:
+        - "patientProfileSummaryReturnReplacePath"
+
+    # Return to Patient Profile: Events
+    classic-patient-profile-events-return:
       service: modernization-api
-      rule: "Path(`/nbs/ReviewRejectedNotifications1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      rule: "Query(`ContextAction=ReturnToFileEvents`)"
       middlewares:
-        - "patientProfileRewritepath"
-    documentsRequiringSecurityAssignment:
+        - "patientProfileEventsReturnReplacePath"
+
+    classic-patient-profile-add-investigation-canceled:
       service: modernization-api
-      rule: "Path(`/nbs/ObsNeedingAssignment1.do`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
-      middlewares: 
-         - "patientProfileRewritepath"
-    documentsRequiringReview:
-      service: modernization-api
-      rule: "Path(`/nbs/NewLabReview1`) && Query(`MPRUid=MPRUid:{id: [0-9]+}`, `ContextAction=ViewFile`)"
+      rule: "(Path(`/nbs/SelectCondition1.do`) && Query(`ContextAction=Cancel`))"
       middlewares:
-        - "patientProfileRewritepath"
-    
+        - "patientProfileEventsReturnReplacePath"
+
+    classic-patient-profile-investigations-merged:
+      service: modernization-api
+      rule: "(Path(`/nbs/PageAction.do`) && Query(`method=mergeSubmit`,`ContextAction=Submit`))"
+      middlewares:
+        - "patientProfileEventsReturnReplacePath"
+
+    classic-patient-profile-add-morbidity-report-canceled:
+      service: modernization-api
+      rule: "(Path(`/nbs/AddObservationMorb2.do`) && Query(`ContextAction=Cancel`))"
+      middlewares:
+        - "patientProfileEventsReturnReplacePath"
+
+    classic-patient-profile-add-morbidity-report-submitted:
+      service: modernization-api
+      rule: "Path(`/nbs/AddObservationMorb2.do`) && !Query(`ContextAction={*}`)"
+      middlewares:
+        - "patientProfileMorbidityReportSubmitReplacePath"
+
     # NBS to modernization overrides
     simpleSearch:
       service: modernization-api
@@ -73,9 +89,20 @@ http:
     advancedSearchRewritepath:
       replacePath:
         path: /nbs/redirect/advancedSearch
-    patientProfileRewritepath:
+    # Rewrite to modernization patient profile endpoints
+    patientProfileReplacePath:
       replacePath:
         path: /nbs/redirect/patientProfile
+    patientProfileEventsReturnReplacePath:
+      replacePath:
+        path: /nbs/redirect/patientProfile/events/return
+    patientProfileSummaryReturnReplacePath:
+      replacePath:
+        path: /nbs/redirect/patientProfile/summary/return
+
+    patientProfileMorbidityReportSubmitReplacePath:
+      replacePath:
+        path: /nbs/redirect/patient/report/morbidity/submit
 
   services:
     modernization-api:

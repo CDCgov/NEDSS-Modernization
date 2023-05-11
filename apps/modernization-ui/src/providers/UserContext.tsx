@@ -4,7 +4,7 @@ import { UserControllerService } from '../generated/services/UserControllerServi
 const USER_ID = 'nbs_user=';
 const TOKEN = 'nbs_token=';
 
-interface UserState {
+export interface UserState {
     isLoggedIn: boolean;
     isLoginPending: boolean;
     loginError: string | undefined;

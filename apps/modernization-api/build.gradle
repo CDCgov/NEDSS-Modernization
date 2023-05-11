@@ -75,9 +75,13 @@ dependencies {
 
     testImplementation libs.bundles.testing
     testImplementation libs.spring.test
+    testImplementation libs.spring.security.test
     testImplementation libs.bundles.testcontainers.elasticsearch
     testImplementation libs.bundles.javafaker
     testImplementation libs.spring.kafka.test
+
+    //  Required for testing multipart form-data from Classic NBS
+    testImplementation "commons-fileupload:commons-fileupload:1.5"
 }
 
 configurations {

@@ -761,7 +761,7 @@ export const AdvancedSearch = () => {
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="padding-x-3 sortBy-position"
+                                    className="padding-x-3"
                                     type={'button'}
                                     onClick={() => setShowSorting(!showSorting)}
                                     outline>
@@ -859,7 +859,8 @@ export const AdvancedSearch = () => {
                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                     (!patientData?.content || patientData?.content?.length === 0)
                                 }
-                                className="width-full margin-top-0 invisible"
+                                className="width-full margin-top-0"
+                                style={{ display: 'none' }}
                                 type={'button'}
                                 onClick={handleExportClick}
                                 outline>
@@ -871,7 +872,8 @@ export const AdvancedSearch = () => {
                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                     (!patientData?.content || patientData?.content?.length === 0)
                                 }
-                                className="width-full margin-top-0 invisible"
+                                className="width-full margin-top-0"
+                                style={{ display: 'none' }}
                                 type={'button'}
                                 onClick={handlePrintClick}
                                 outline>

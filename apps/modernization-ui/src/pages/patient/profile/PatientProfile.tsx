@@ -10,10 +10,8 @@ import {
     ModalToggleButton
 } from '@trussworks/react-uswds';
 import 'pages/patientProfile/style.scss';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { RedirectControllerService } from 'generated';
-import { UserContext } from 'providers/UserContext';
 
 import { Summary } from 'pages/patientProfile/Summary';
 import { Events } from 'pages/patientProfile/Events';
@@ -21,6 +19,16 @@ import { Demographics } from 'pages/patientProfile/Demographics';
 import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
+
+const openPrintableView = (patient: string | undefined) => () => {
+    if (patient) {
+        window.open(
+            `${Config.nbsUrl}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${patient}`,
+            '_blank',
+            'noreferrer'
+        );
+    }
+};
 
 enum ACTIVE_TAB {
     SUMMARY = 'Summary',
@@ -30,8 +38,6 @@ enum ACTIVE_TAB {
 
 export const PatientProfile = () => {
     const { id } = useParams();
-    const { state } = useContext(UserContext);
-    const NBS_URL = Config.nbsUrl;
 
     const modalRef = useRef<ModalRef>(null);
 
@@ -40,18 +46,6 @@ export const PatientProfile = () => {
     );
 
     const profile = usePatientProfile(id);
-
-    const openPrintableView = () => {
-        RedirectControllerService.preparePatientDetailsUsingGet({
-            authorization: 'Bearer ' + state.getToken()
-        }).then(() => {
-            window.open(
-                `${NBS_URL}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${id}`,
-                '_blank',
-                'noreferrer'
-            );
-        });
-    };
 
     const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
     const [addedItem, setAddedItem] = useState<string>('');
@@ -65,19 +59,15 @@ export const PatientProfile = () => {
         }
     }, [submittedSuccess]);
 
-    function isEmpty(obj: any) {
-        for (const key in obj) {
-            if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
-        }
-        return true;
-    }
-
     return (
         <div className="height-full main-banner">
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
                 <h1 className="font-sans-xl text-medium">Patient Profile</h1>
                 <div>
-                    <Button type={'button'} className="display-inline-flex print-btn" onClick={openPrintableView}>
+                    <Button
+                        type={'button'}
+                        className="display-inline-flex print-btn"
+                        onClick={openPrintableView(profile?.patient.id)}>
                         <Icon.Print className="margin-right-05" />
                         Print
                     </Button>
@@ -149,18 +139,11 @@ export const PatientProfile = () => {
                     </h6>
                 </div>
 
-                {activeTab === ACTIVE_TAB.SUMMARY && <Summary profileData={profile} />}
-                {activeTab === ACTIVE_TAB.EVENT && <Events patient={id} />}
+                {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={profile?.patient.id} />}
+                {activeTab === ACTIVE_TAB.EVENT && <Events patient={profile?.patient.id} />}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
                     <Demographics
-                        handleFormSubmission={(
-                            type: 'error' | 'success' | 'warning' | 'info',
-                            message: string,
-                            data: any
-                        ) => {
-                            if (!isEmpty(data) && id) {
-                                console.log('data:', data);
-                            }
+                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
                             setSubmittedSuccess(true);
                             setAddedItem(message);
                             setAlertType(type);

@@ -1,3 +1,5 @@
+@import '../../settings.scss';
+
 .nav-bar {
     .usa-logo__text,
     .usa-accordion__button {
@@ -21,8 +23,8 @@
             display: flex;
             align-items: center;
             &.active {
-                background-color: #005ea2;
-                color: white;
+                background-color: $color-bg-base-light;
+                color: $color-base-darkest;
             }
         }
     }
@@ -45,11 +47,26 @@
                 font-weight: bold;
                 font-size: 10pt;
                 font-family: Arial, sans-serif;
+                padding: .15em;
+                &:focus {
+                    background-color: $color-bg-base-light;
+                    color: $color-base-darkest;
+                    outline: none;
+                }
             }
             a {
                 color: #fff;
                 text-decoration: none;
                 font-weight: bold;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+
+                &:focus {
+                    outline: none;
+                    background-color: #003470;
+                }
             }
         }
 
