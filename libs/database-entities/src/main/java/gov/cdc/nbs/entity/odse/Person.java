@@ -462,6 +462,7 @@ public class Person {
         return personName;
     }
 
+
     private Collection<PersonName> ensureNames() {
         if (this.names == null) {
             this.names = new ArrayList<>();
@@ -517,6 +518,53 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
 
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateAdministrativeInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.setDescription(info.description());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.AddName info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.add(info);
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateNameInfo info) {
+        this.setAsOfDateGeneral(info.asOf());
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+
+        Collection<PersonName> existing = ensureNames();
+        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
+
+        existing.stream().filter(p -> p.getId()!=null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
+            p.setFirstNm(info.first());
+            p.setMiddleNm(info.middle());
+            p.setLastNm(info.last());
+            p.setNmSuffix(info.suffix());
+            p.setNmUseCd(info.type());
+        });
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.DeleteNameInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
+        List<PersonName> arraylist = new ArrayList<>(this.names);
+        arraylist.removeIf(item -> (item.getId().equals(identifier)));
+        this.names = arraylist;
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
     }

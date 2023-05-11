@@ -3,13 +3,18 @@ package gov.cdc.nbs.patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
+import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
+import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
@@ -71,6 +76,14 @@ public class PatientUpdateSteps {
                     input = createMortalityInput(123L);
                     response = patientController.updateMortality((MortalityInput) input);
                 }
+                case "administrative" -> {
+                    input = createAdministrativeInput(123L);
+                    response = patientController.updateAdministrative((AdministrativeInput) input);
+                }
+                case "name" -> {
+                    input = createNameInput(123L);
+                    response = patientController.updatePatientName((NameInput) input);
+                }
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
@@ -127,6 +140,24 @@ public class PatientUpdateSteps {
         return input;
     }
 
+    private AdministrativeInput createAdministrativeInput(final long patient) {
+        var input = new AdministrativeInput();
+        input.setPatientId(patient);
+        input.setDescription("Description 1");
+        return input;
+    }
+
+    private NameInput createNameInput(final long patient) {
+        var input = new NameInput();
+        input.setPatientId(patient);
+        input.setPersonNameSeq((short)1);
+        input.setFirstName("First Name");
+        input.setLastName("Last Name");
+        input.setMiddleName("Middle Name");
+        input.setNameUseCd("L");
+        input.setSuffix(Suffix.III);
+        return input;
+    }
 
     private void validateSexAndBirthInfo(final PatientRequest request) {
 
