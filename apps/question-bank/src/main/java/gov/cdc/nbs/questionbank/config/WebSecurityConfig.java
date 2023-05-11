@@ -37,7 +37,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-        		 .antMatchers("/graphql", "/encryption/*")	
+        		 .antMatchers("/graphql")	
                  .authenticated()	
                  .anyRequest().permitAll()	
                  .and()	

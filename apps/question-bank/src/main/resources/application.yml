@@ -5,7 +5,6 @@ nbs:
     tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
-    parameterSecret: Yq4vh+mbi4B4QYThc/M+33VtPJ5O2Adc
     max-page-size: 50
  
 spring:

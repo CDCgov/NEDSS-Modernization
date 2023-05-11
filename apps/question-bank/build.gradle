@@ -69,9 +69,6 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
     
-    // swagger
-    implementation "io.springfox:springfox-boot-starter:3.0.0"
-    
 
     // auth
     implementation project(':authentication')

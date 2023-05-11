@@ -54,6 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
         var cookie = new Cookie(TOKEN_COOKIE_NAME, userDetails.getToken());
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         cookie.setPath("/");
+        cookie.setSecure(true);
         return cookie;
     }
 
