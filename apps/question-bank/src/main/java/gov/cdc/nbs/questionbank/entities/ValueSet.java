@@ -5,7 +5,10 @@ package gov.cdc.nbs.questionbank.entities;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,13 +34,28 @@ public class ValueSet implements Serializable {
     @Column(name = "version", nullable = false)
     private Long version;
 
-    @Column(name = "name")
+    @Column(name = "code", nullable = false)
+    private String code;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private ValueSetType type;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", length = 200)
+    @Column(name = "description", length = 300)
     private String description;
 
     @OneToMany(mappedBy = "valueSet", fetch = FetchType.LAZY)
     private Set<Value> values;
+
+    @Embedded
+    private Audit audit;
+
+    public static enum ValueSetType {
+        LOCAL,
+        PHIN
+    }
 
 }

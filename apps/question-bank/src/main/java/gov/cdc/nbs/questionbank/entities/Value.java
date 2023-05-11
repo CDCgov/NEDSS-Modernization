@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,11 +25,20 @@ public class Value {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "code", nullable = false)
+    private String code;
+
     @Column(name = "display", nullable = false)
     private String display;
 
-    @Column(name = "val", nullable = false)
+    @Column(name = "value", nullable = false)
     private String value;
+
+    @Column(name = "comment")
+    private String comment;
+
+    @Embedded
+    private Audit audit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({@JoinColumn(name = "value_set_id"), @JoinColumn(name = "version")})

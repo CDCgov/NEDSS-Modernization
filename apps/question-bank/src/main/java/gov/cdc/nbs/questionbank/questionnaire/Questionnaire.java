@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.entities.Audit;
 import gov.cdc.nbs.questionbank.entities.QuestionGroup;
 import gov.cdc.nbs.questionbank.entities.Rule;
 import lombok.Getter;
@@ -51,4 +53,7 @@ public class Questionnaire {
             joinColumns = @JoinColumn(name = "questionnaire_id"),
             inverseJoinColumns = @JoinColumn(name = "rule_id"))
     private List<Rule> rules;
+
+    @Embedded
+    private Audit audit;
 }
