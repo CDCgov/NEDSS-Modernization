@@ -5,6 +5,7 @@ import { FindTreatmentsForPatientQuery, useFindTreatmentsForPatientLazyQuery } f
 
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
+import { ClassicLink } from 'classic';
 
 export type PatientTreatments = FindTreatmentsForPatientQuery['findTreatmentsForPatient'];
 
@@ -12,6 +13,25 @@ type PatientTreatmentTableProps = {
     patient?: string;
     pageSize?: number;
 };
+
+const displayCreatedOn = (patient: string, treatment: any) => {
+    const createdOn = new Date(treatment.createdOn);
+
+    return (
+        <ClassicLink url={`/nbs/api/profile/${patient}/treatment/${treatment.treatment}`}>
+            {format(createdOn, 'MM/dd/yyyy')} <br /> {format(createdOn, 'hh:mm a')}
+        </ClassicLink>
+    );
+};
+
+const displayAssociation = (patient: string, associatedWith: any) => (
+    <div>
+        <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${associatedWith.id}`}>
+            {associatedWith?.local}
+        </ClassicLink>
+        <p className="margin-0">{associatedWith?.condition}</p>
+    </div>
+);
 
 export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: PatientTreatmentTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -142,11 +162,8 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                     return (
                         <tr key={index}>
                             <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
-                                {treatment?.createdOn ? (
-                                    <a href="#" className="table-span">
-                                        {format(new Date(treatment?.createdOn), 'MM/dd/yyyy')} <br />{' '}
-                                        {format(new Date(treatment?.createdOn), 'hh:mm a')}
-                                    </a>
+                                {patient && treatment?.createdOn ? (
+                                    displayCreatedOn(patient, treatment)
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
@@ -176,17 +193,10 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[4].sort !== 'all' && 'sort-td'}`}>
-                                {!treatment || !treatment?.associatedWith ? (
-                                    <span className="no-data">No data</span>
+                                {patient && treatment?.associatedWith ? (
+                                    displayAssociation(patient, treatment.associatedWith)
                                 ) : (
-                                    <div>
-                                        <p
-                                            className="margin-0 text-primary text-bold link"
-                                            style={{ wordBreak: 'break-word' }}>
-                                            {treatment.associatedWith?.local}
-                                        </p>
-                                        <p className="margin-0">{treatment.associatedWith.condition}</p>
-                                    </div>
+                                    <span className="no-data">No data</span>
                                 )}
                             </td>
                             <td className={`font-sans-md table-data ${tableHead[5].sort !== 'all' && 'sort-td'}`}>
