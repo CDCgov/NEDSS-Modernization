@@ -78,10 +78,5 @@ dependencies {
 
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
 
 compileJava.mustRunAfter(":authentication:build")
