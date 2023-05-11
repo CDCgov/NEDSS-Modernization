@@ -321,6 +321,28 @@ class PatientUpdateRequestHandlerTest {
     }
 
     @Test
+    void testAdministrativeInfoUpdateUnauthorized() {
+        var data = getAdministrativeData();
+
+        // set unauthorized mock
+        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
+
+        UserNotAuthorizedException ex = null;
+
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientAdministrativeUpdate(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
+        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
+        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
+    }
+
+    @Test
     void testAddNameSuccess() {
         var data = getAddNameData();
 
@@ -348,6 +370,28 @@ class PatientUpdateRequestHandlerTest {
                 "Last Name",
                 Suffix.III,
                 NameUseCd.L);
+    }
+
+    @Test
+    void testNameAddUnauthorized() {
+        var data = getAddNameData();
+
+        // set unauthorized mock
+        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
+
+        UserNotAuthorizedException ex = null;
+
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientNameAdd(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
+        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
+        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
     }
 
     @Test
@@ -382,6 +426,28 @@ class PatientUpdateRequestHandlerTest {
     }
 
     @Test
+    void testNameUpdateUnauthorized() {
+        var data = getUpdateNameData();
+
+        // set unauthorized mock
+        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
+
+        UserNotAuthorizedException ex = null;
+
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientNameUpdate(data);
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
+        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
+        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
+    }
+
+    @Test
     void testDeleteNameSuccess() {
         var data = getDeleteNameData();
 
@@ -403,5 +469,27 @@ class PatientUpdateRequestHandlerTest {
                 "RequestId",
                 321L,
                 Instant.now());
+    }
+
+    @Test
+    void testNameDeleteUnauthorized() {
+        var data = getDeleteNameData();
+
+        // set unauthorized mock
+        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
+
+        UserNotAuthorizedException ex = null;
+
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientNameDelete(data.requestId(), data.patientId(), data.personNameSeq(), data.updatedBy());
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
+        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
+        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
     }
 }
