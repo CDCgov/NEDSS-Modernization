@@ -26,7 +26,7 @@ class TestMorbidityCleaner {
   void clean(final long starting) {
     this.factory.select(MORBIDITY)
         .from(MORBIDITY)
-        .where(criteria(starting))
+        .where(criteria(starting), MORBIDITY.ctrlCdDisplayForm.eq("MorbReport"))
         .fetch()
         .forEach(this::remove);
   }

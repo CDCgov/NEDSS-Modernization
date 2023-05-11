@@ -1,7 +1,5 @@
 package gov.cdc.nbs.support;
 
-import gov.cdc.nbs.investigation.TestInvestigations;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;

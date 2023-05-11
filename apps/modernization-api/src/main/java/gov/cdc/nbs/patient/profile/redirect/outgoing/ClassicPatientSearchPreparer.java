@@ -6,18 +6,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class ClassicPatientSearchPreparer {
+class ClassicPatientSearchPreparer {
 
     private static final String LOCATION = "/HomePage.do?method=patientSearchSubmit";
     private final RestTemplate template;
 
-    public ClassicPatientSearchPreparer(
+    ClassicPatientSearchPreparer(
         @Qualifier("classic") final RestTemplate template
     ) {
         this.template = template;
     }
 
-    public void prepare() {
+    void prepare() {
 
         RequestEntity<Void> request = RequestEntity
             .get(LOCATION)

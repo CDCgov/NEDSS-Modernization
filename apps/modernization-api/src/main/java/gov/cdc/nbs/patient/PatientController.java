@@ -13,8 +13,10 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
@@ -82,6 +84,30 @@ public class PatientController {
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
     public PatientEventResponse updatePatientGeneralInfo(@Argument GeneralInfoInput input) {
         return patientService.updatePatientGeneralInfo(input);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientEventResponse addPatientName(@Argument NameInput input) {
+        return patientService.addPatientName(input);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientEventResponse updatePatientName(@Argument NameInput input) {
+        return patientService.updatePatientName(input);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientEventResponse deletePatientName(@Argument Long patientId, @Argument Short personSeqNum) {
+        return patientService.deletePatientName(patientId, personSeqNum);
+    }
+
+    @MutationMapping()
+    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
+    public PatientEventResponse updateAdministrative(@Argument AdministrativeInput input) {
+        return patientService.updateAdministrative(input);
     }
 
     @MutationMapping()

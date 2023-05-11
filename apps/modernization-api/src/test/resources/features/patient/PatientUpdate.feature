@@ -11,6 +11,8 @@ Feature: I can send a patient update request
       | general info  |
       | sex and birth |
       | mortality     |
+      | administrative|
+      | name          |
 
   @patient_update_permissions
   Scenario: I cant send update requests without the proper permissions
@@ -26,6 +28,9 @@ Feature: I can send a patient update request
       | sex and birth | FIND-PATIENT,EDIT-PATIENT |
       | sex and birth | FIND-PATIENT,VIEW-PATIENT |
       | sex and birth | EDIT-PATIENT,VIEW-PATIENT |
-      | mortality     | FIND-PATIENT,EDIT-PATIENT |
-      | mortality     | FIND-PATIENT,VIEW-PATIENT |
-      | mortality     | EDIT-PATIENT,VIEW-PATIENT |
+      | administrative| FIND-PATIENT,EDIT-PATIENT |
+      | administrative| FIND-PATIENT,VIEW-PATIENT |
+      | administrative| EDIT-PATIENT,VIEW-PATIENT |
+      | name          | FIND-PATIENT,EDIT-PATIENT |
+      | name          | FIND-PATIENT,VIEW-PATIENT |
+      | name          | EDIT-PATIENT,VIEW-PATIENT |
