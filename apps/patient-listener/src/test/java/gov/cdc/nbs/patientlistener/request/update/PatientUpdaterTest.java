@@ -21,13 +21,21 @@ import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonName;
+import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.message.patient.event.AddNameData;
+import gov.cdc.nbs.message.patient.event.DeleteNameData;
+import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
+import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
 import gov.cdc.nbs.patient.IdGeneratorService;
 import gov.cdc.nbs.patient.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -252,6 +260,131 @@ class PatientUpdaterTest {
                 "multiple birth",
                 "sex unknown",
                 "current age",
+                Instant.now());
+    }
+
+    @Test
+    void should_update_administrative_info() {
+        var data = getAdministrativeData();
+        var person = new Person(123L, "localId");
+        person.setVersionCtrlNbr((short) 2);
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        var savedPerson = personCaptor.getValue();
+
+        var now = Instant.now();
+
+        assertEquals(data.description(), savedPerson.getDescription());
+
+        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
+        assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
+        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
+        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
+    }
+
+    private UpdateAdministrativeData getAdministrativeData() {
+        return new UpdateAdministrativeData(
+                123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "Administrative Data 1");
+    }
+
+    @Test
+    void should_add_name_info() {
+        var data = getAddNameData();
+        var person = new Person(123L, "localId");
+        patientUpdater.update(person, data);
+        verify(personRepository).save(personCaptor.capture());
+        PersonName personName = (PersonName) personCaptor.getValue()
+                .getNames()
+                .get(0);
+        assertEquals(data.first(), personName.getFirstNm());
+        assertEquals(data.middle(), personName.getMiddleNm());
+        assertEquals(data.last(), personName.getLastNm());
+        assertEquals(data.suffix(), personName.getNmSuffix());
+        assertEquals(data.type().toString(), personName.getNmUseCd());
+    }
+
+    private AddNameData getAddNameData() {
+        return new AddNameData(123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "First Name",
+                "Middle Name",
+                "Last Name",
+                Suffix.III,
+                NameUseCd.L);
+    }
+
+    @Test
+    void should_update_name_info() {
+        var data = getUpdateNameData();
+        var person = new Person(123L, "localId");
+        // Create new name
+        var pn = new PersonName();
+        pn.setId(new PersonNameId(person.getId(), (short) 1));
+        pn.setFirstNm("XXX");
+        pn.setLastNm("XXX");
+        pn.setMiddleNm("XXX");
+        pn.setNmSuffix(Suffix.ESQ);
+
+        person.setNames(Collections.singletonList(pn));
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        PersonName personName = (PersonName) personCaptor.getValue()
+                .getNames()
+                .get(0);
+
+        assertEquals(data.first(), personName.getFirstNm());
+        assertEquals(data.middle(), personName.getMiddleNm());
+        assertEquals(data.last(), personName.getLastNm());
+        assertEquals(data.suffix(), personName.getNmSuffix());
+        assertEquals(data.type(), personName.getNmUseCd().toString());
+    }
+
+    private UpdateNameData getUpdateNameData() {
+        return new UpdateNameData(123L,
+                (short) 1,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "First Name",
+                "Middle Name",
+                "Last Name",
+                Suffix.III,
+                NameUseCd.L.toString());
+    }
+
+    @Test
+    void should_delete_name_info() {
+        var data = getDeleteNameData();
+        var person = new Person(123L, "localId");
+        // Create new name
+        var pn = new PersonName();
+        pn.setId(new PersonNameId(person.getId(), (short) 1));
+        pn.setFirstNm("XXX");
+        pn.setLastNm("XXX");
+        pn.setMiddleNm("XXX");
+        pn.setNmSuffix(Suffix.ESQ);
+        person.setNames(Collections.singletonList(pn));
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        assertEquals(0, personCaptor.getValue().getNames().size());
+    }
+
+    private DeleteNameData getDeleteNameData() {
+        return new DeleteNameData(123L,
+                (short) 1,
+                "RequestId",
+                321L,
                 Instant.now());
     }
 }

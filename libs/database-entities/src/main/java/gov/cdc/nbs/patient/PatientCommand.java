@@ -7,6 +7,7 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.input.PatientInput;
+
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -118,6 +119,14 @@ public sealed interface PatientCommand {
             Instant requestedOn) implements PatientCommand {
     }
 
+    record UpdateAdministrativeInfo(
+        long person,
+        Instant asOf,
+        String description,
+        long requester,
+        Instant requestedOn) implements PatientCommand {
+}
+
     record UpdateGeneralInfo(
             long person,
             Instant asOf,
@@ -133,6 +142,19 @@ public sealed interface PatientCommand {
             long requester,
             Instant requestedOn) implements PatientCommand {
     }
+
+    record UpdateNameInfo(
+        long person,
+        Instant asOf,
+        short personNameSeq,
+        String first,
+        String middle,
+        String last,
+        Suffix suffix,
+        String type,
+        long requester,
+        Instant requestedOn) implements PatientCommand {
+}
 
     record UpdateSexAndBirthInfo(
             long person,
@@ -159,4 +181,12 @@ public sealed interface PatientCommand {
             long requester,
             Instant requestedOn) implements PatientCommand {
     }
+
+    record DeleteNameInfo(
+        long person,
+        Instant asOf,
+        short personNameSeq,
+        long requester,
+        Instant requestedOn) implements PatientCommand {
+}
 }

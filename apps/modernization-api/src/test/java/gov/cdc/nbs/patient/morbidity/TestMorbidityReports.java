@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Component
-class TestMorbidityReports {
+public class TestMorbidityReports {
   private final Collection<Long> identifiers;
 
   TestMorbidityReports() {
