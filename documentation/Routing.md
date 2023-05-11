@@ -19,7 +19,7 @@ THe following routes should be proxied to the `modernization-api` service.
 | Path is exactly `/graphql`    | `/graphql`    | Handles all GraphQL requests                           |
 | Path is exactly `/encryption` | `/encryption` | Encryption and Decryption of Patient Search parameters |
 | Path starts with `/`          | `/`           | Routes to the packaged frontend application            |
-| Path starts with `/nbs/api`   | `/nbs/api`    |                                                        |
+| Path starts with `/nbs/api`   | `/nbs/api`    | Routes to endpoints on the `modernization-api`         |
 
 ### Patient Search Routes
 
@@ -34,11 +34,11 @@ THe following routes should be proxied to the `modernization-api` service.
 Transforms requests to a Classic Patient Profile into an authenticated request that redirects to the Modernized Patient
 Profile of the Patient identified by the `MPRUid` or `uid` request parameter.
 
-| Criteria                                                                              | API Path                       | Description                                                                                              |
-|---------------------------------------------------------------------------------------|--------------------------------|----------------------------------------------------------------------------------------------------------|
-| Contains the Query Parameter `ContextAction` with a value of `ViewFile`               | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS.                                                          |
-| Contains the Query Parameter `ContextAction` with a value of `FileSummary`            | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS                                                           |
-| A GET request where the Query Parameter `ContextAction` with a value of `FileSummary` | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS after Morbidity Report `Submit and Create Investigation`  |
+| Criteria                                                                                  | API Path                       | Description                                                                                              |
+|-------------------------------------------------------------------------------------------|--------------------------------|----------------------------------------------------------------------------------------------------------|
+| A POST request Contains the Query Parameter `ContextAction` with a value of `ViewFile`    | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS.                                                          |
+| A POST request Contains the Query Parameter `ContextAction` with a value of `FileSummary` | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS                                                           |
+| A GET request where the Query Parameter `ContextAction` with a value of `FileSummary`     | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS after Morbidity Report `Submit and Create Investigation`  |
 
 Transforms requests to return to a Classic Profile into an authenticated request that redirects to the Modernized
 Patient Profile of the Patient identified by the value of the `Return-Patient` cookie. This cookie added to requests via
