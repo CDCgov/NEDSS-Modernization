@@ -1,0 +1,26 @@
+Background:
+Given I have logged in
+And that I have permissions to search
+And I am ready to search
+
+  Scenario I can navigate home
+
+  Scenario I can switch between patient and event search tabs
+
+  Scenario Use enters no search criteria
+
+  Scenario I can sort search results by different criteria
+
+  Scenario I can renter search criteria without redoing a search
+
+  Scenario I can page through results when there are more results than can be displayed on one page
+
+  Scenario I can clear all criteria and search results
+
+  Scenario I can click <action button> before searching
+
+  Scenario I can click <action button> after searching
+
+  Scenario I can generate a list of results in <downloadable format> format and download it
+
+
