@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -17,8 +18,8 @@ public class NumericQuestion extends Question {
     private Integer maxValue;
 
     @ManyToOne
-    @JoinColumn(name = "units_set")
-    private AnswerSet unitsSet;
+    @JoinColumns({@JoinColumn(name = "units_set"), @JoinColumn(name = "version")})
+    private ValueSet unitsSet;
 
     @Override
     public String getQuestionType() {

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -11,12 +12,12 @@ import javax.persistence.ManyToOne;
 public class DropDownQuestion extends Question {
 
     @ManyToOne
-    @JoinColumn(name = "answer_set_id")
-    private AnswerSet answerSet;
+    @JoinColumns({@JoinColumn(name = "answer_set_id"), @JoinColumn(name = "version")})
+    private ValueSet answerSet;
 
     @ManyToOne
     @JoinColumn(name = "default_answer_id")
-    private Answer defaultAnswer;
+    private Value defaultAnswer;
 
     @Column(name = "multiselect", nullable = false)
     private boolean multiSelect;

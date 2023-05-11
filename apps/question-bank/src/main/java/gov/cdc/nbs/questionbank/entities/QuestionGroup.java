@@ -34,7 +34,7 @@ public class QuestionGroup {
     @JoinTable(
             name = "question_group_questions",
             joinColumns = @JoinColumn(name = "question_group_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id"))
+            inverseJoinColumns = {@JoinColumn(name = "question_id"), @JoinColumn(name = "version")})
     private Set<Question> questions;
 
 }
