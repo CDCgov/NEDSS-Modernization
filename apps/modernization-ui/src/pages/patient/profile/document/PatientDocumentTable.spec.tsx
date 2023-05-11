@@ -25,15 +25,15 @@ describe('when rendered', () => {
     });
 });
 
-describe('when documents are not available for a patient', () => {
-    it('should display Not Available', async () => {
+describe('when documents are No data for a patient', () => {
+    it('should display No data', async () => {
         const { findByText } = render(
             <PageProvider>
                 <PatientDocumentTable nbsBase={'base'} documents={[]}></PatientDocumentTable>
             </PageProvider>
         );
 
-        expect(await findByText('Not Available')).toBeInTheDocument();
+        expect(await findByText('No data')).toBeInTheDocument();
     });
 });
 

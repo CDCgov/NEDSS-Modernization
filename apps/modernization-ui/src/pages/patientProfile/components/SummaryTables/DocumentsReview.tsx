@@ -141,7 +141,7 @@ export const DocumentsReview = ({ documents, totalDocuments }: any) => {
             <SortableTable
                 totalResults={totalDocuments}
                 isPagination={true}
-                tableHeader={'Open documents'}
+                tableHeader={'Documents requiring review'}
                 tableHead={tableHead}
                 tableBody={
                     data?.length > 0 &&

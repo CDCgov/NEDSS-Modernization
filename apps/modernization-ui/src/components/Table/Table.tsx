@@ -162,7 +162,7 @@ export const TableComponent = ({
 
     const dataNotAvailalbe = (
         <tr className="text-center no-data not-available">
-            <td colSpan={tableHead.length}>Not Available</td>
+            <td colSpan={tableHead.length}>No data</td>
         </tr>
     );
 
@@ -191,7 +191,7 @@ export const TableComponent = ({
                               <tr key={row}>
                                   {item.tableDetails.map((detail: TableDetail, column: number) =>
                                       detail.title ? (
-                                          detail.title === 'Not available yet' ? (
+                                          detail.title === 'No data' ? (
                                               <td
                                                   key={column}
                                                   className={`no-data ${resolveDetailStyle(detail, column)}`}>
