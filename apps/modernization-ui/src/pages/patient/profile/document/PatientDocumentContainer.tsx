@@ -3,10 +3,9 @@ import { PatientDocumentTable } from './PatientDocumentTable';
 
 type Props = {
     source: (patient?: string) => Document[];
-    nbsBase: string;
     patient?: string;
 };
 
-export const PatientDocumentContainer = ({ source, nbsBase, patient }: Props) => (
-    <PatientDocumentTable nbsBase={nbsBase} documents={source(patient)} />
+export const PatientDocumentContainer = ({ source, patient }: Props) => (
+    <PatientDocumentTable patient={patient} documents={source(patient)} />
 );
