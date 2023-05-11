@@ -1,9 +1,6 @@
 package gov.cdc.nbs.patient.profile.report.morbidity;
 
-import gov.cdc.nbs.patient.profile.redirect.ReturningPatientCookie;
-import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfilePreparer;
-import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientSearchPreparer;
-import org.springframework.http.HttpStatus;
+import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +17,10 @@ class ViewMorbidityReportRedirector {
 
     private static final String LOCATION = "/nbs/ViewFile1.do";
 
-    private final ClassicPatientSearchPreparer searchPreparer;
-    private final ClassicPatientProfilePreparer profilePreparer;
+    private final ClassicPatientProfileRedirector redirector;
 
-    ViewMorbidityReportRedirector(
-        final ClassicPatientSearchPreparer searchPreparer,
-        final ClassicPatientProfilePreparer profilePreparer
-    ) {
-        this.searchPreparer = searchPreparer;
-        this.profilePreparer = profilePreparer;
+    ViewMorbidityReportRedirector(final ClassicPatientProfileRedirector redirector) {
+        this.redirector = redirector;
     }
 
     @PreAuthorize("hasAuthority('VIEW-OBSERVATIONMORBIDITYREPORT')")
@@ -37,7 +29,7 @@ class ViewMorbidityReportRedirector {
         @PathVariable("patient") final long patient,
         @PathVariable("identifier") final long identifier
     ) {
-        prepare(patient);
+
 
         URI location = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "ObservationMorbIDOnSummary")
@@ -45,15 +37,8 @@ class ViewMorbidityReportRedirector {
             .build()
             .toUri();
 
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .location(location)
-            .headers(new ReturningPatientCookie(patient)::apply)
-            .build();
+        return redirector.preparedRedirect(patient, location);
     }
 
-    private void prepare(final long patient) {
-        searchPreparer.prepare();
-        profilePreparer.prepare(patient);
-    }
+
 }

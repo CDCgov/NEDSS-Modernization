@@ -7,19 +7,19 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
-public class ClassicPatientProfilePreparer {
+class ClassicPatientProfilePreparer {
 
     private static final String LOCATION = "/PatientSearchResults1.do";
 
     private final RestTemplate template;
 
-    public ClassicPatientProfilePreparer(
+    ClassicPatientProfilePreparer(
         @Qualifier("classic") final RestTemplate template
     ) {
         this.template = template;
     }
 
-    public void prepare(final long patient) {
+    void prepare(final long patient) {
 
         String profileLocation = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "ViewFile")

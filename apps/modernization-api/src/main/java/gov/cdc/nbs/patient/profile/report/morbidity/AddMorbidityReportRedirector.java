@@ -1,9 +1,6 @@
 package gov.cdc.nbs.patient.profile.report.morbidity;
 
-import gov.cdc.nbs.patient.profile.redirect.ReturningPatientCookie;
-import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfilePreparer;
-import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientSearchPreparer;
-import org.springframework.http.HttpStatus;
+import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,36 +17,21 @@ class AddMorbidityReportRedirector {
 
     private static final String LOCATION = "/nbs/ViewFile1.do";
 
-    private final ClassicPatientSearchPreparer searchPreparer;
-    private final ClassicPatientProfilePreparer profilePreparer;
+    private final ClassicPatientProfileRedirector redirector;
 
-    AddMorbidityReportRedirector(
-        final ClassicPatientSearchPreparer searchPreparer,
-        final ClassicPatientProfilePreparer profilePreparer
-    ) {
-        this.searchPreparer = searchPreparer;
-        this.profilePreparer = profilePreparer;
+    AddMorbidityReportRedirector(final ClassicPatientProfileRedirector redirector) {
+        this.redirector = redirector;
     }
 
     @PreAuthorize("hasAuthority('ADD-OBSERVATIONMORBIDITYREPORT')")
     @GetMapping("/nbs/api/profile/{patient}/report/morbidity")
     ResponseEntity<Void> add(@PathVariable("patient") final long patient) {
-        prepare(patient);
-
         URI location = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "AddMorb")
             .build()
             .toUri();
 
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .location(location)
-            .headers(new ReturningPatientCookie(patient)::apply)
-            .build();
+        return redirector.preparedRedirect(patient, location);
     }
 
-    private void prepare(final long patient) {
-        searchPreparer.prepare();
-        profilePreparer.prepare(patient);
-    }
 }
