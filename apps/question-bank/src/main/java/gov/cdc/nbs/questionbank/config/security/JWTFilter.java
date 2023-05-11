@@ -50,11 +50,11 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    @SuppressWarnings("squid:S3330")
     public Cookie createJWTCookie(NbsUserDetails userDetails) {
         var cookie = new Cookie(TOKEN_COOKIE_NAME, userDetails.getToken());
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         cookie.setPath("/");
-        cookie.setSecure(true);
         return cookie;
     }
 

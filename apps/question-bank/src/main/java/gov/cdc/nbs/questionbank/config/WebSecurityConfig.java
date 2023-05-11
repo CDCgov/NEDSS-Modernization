@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()	
+                .csrf().and()	
                 .addFilterBefore(jwtFilter, RequestHeaderAuthenticationFilter.class)
                 .build();
     }
