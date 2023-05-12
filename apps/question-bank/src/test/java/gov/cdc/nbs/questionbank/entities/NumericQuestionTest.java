@@ -8,6 +8,6 @@ class NumericQuestionTest {
     @Test
     void should_return_numeric() {
         var q = new NumericQuestion();
-        assertEquals(Question.QuestionType.NUMERIC, q.getQuestionType());
+        assertEquals("numeric_question", q.getDisplayType());
     }
 }

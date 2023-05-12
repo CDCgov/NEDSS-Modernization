@@ -4,12 +4,25 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@DiscriminatorValue(Question.QuestionType.NUMERIC)
-public class NumericQuestion extends Question {
+@DiscriminatorValue(NumericQuestion.type)
+public class NumericQuestion extends DisplayElement {
+    static final String type = "numeric_question";
+
+    @Column(name = "label", length = 300)
+    private String label;
+
+    @Column(name = "tooltip", length = 200)
+    private String tooltip;
+
+    @Column(name = "required")
+    private boolean required;
 
     @Column(name = "min_value")
     private Integer minValue;
@@ -18,12 +31,12 @@ public class NumericQuestion extends Question {
     private Integer maxValue;
 
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "units_set"), @JoinColumn(name = "version")})
+    @JoinColumn(name = "units_set")
     private ValueSet unitsSet;
 
     @Override
-    public String getQuestionType() {
-        return Question.QuestionType.NUMERIC;
+    public String getDisplayType() {
+        return type;
     }
 
 }

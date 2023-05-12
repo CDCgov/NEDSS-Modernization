@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
+import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 import gov.cdc.nbs.questionbank.support.QuestionnaireMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -19,7 +21,7 @@ public class QuestionnaireSteps {
     @Autowired
     private QuestionnaireResolver resolver;
 
-    private Questionnaire search;
+    private QuestionnaireEntity search;
     private Questionnaire results;
 
     @Given("a {string} questionnaire exists with type {string}")
@@ -42,7 +44,7 @@ public class QuestionnaireSteps {
     @Then("the questionnaire is returned")
     public void the_questionnaire_is_returned() {
         assertNotNull(results);
-        assertEquals(search.getId(), results.getId());
+        assertEquals(search.getId().longValue(), results.id());
     }
 
 }

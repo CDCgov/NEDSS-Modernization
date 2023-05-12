@@ -8,6 +8,6 @@ class DropDownQuestionTest {
     @Test
     void should_return_dropdown() {
         var question = new DropDownQuestion();
-        assertEquals(Question.QuestionType.DROP_DOWN, question.getQuestionType());
+        assertEquals("dropdown_question", question.getDisplayType());
     }
 }

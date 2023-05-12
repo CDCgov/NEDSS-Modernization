@@ -1,18 +1,18 @@
 package gov.cdc.nbs.questionbank.support;
 
 import java.util.List;
-import gov.cdc.nbs.questionbank.entities.QuestionGroup;
-import gov.cdc.nbs.questionbank.questionnaire.Questionnaire;
+import gov.cdc.nbs.questionbank.entities.ElementReference;
+import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 
 public class QuestionnaireMother {
 
-    public static Questionnaire questionnaire(
-            String type, List<QuestionGroup> questionGroups,
+    public static QuestionnaireEntity questionnaire(
+            String type, List<ElementReference> elements,
             List<String> conditions) {
-        var q = new Questionnaire();
+        var q = new QuestionnaireEntity();
         q.setConditionCodes(conditions);
         q.setQuestionnaireType(type);
-        q.setQuestionGroups(questionGroups);
+        q.setElements(elements);
         return q;
     }
 

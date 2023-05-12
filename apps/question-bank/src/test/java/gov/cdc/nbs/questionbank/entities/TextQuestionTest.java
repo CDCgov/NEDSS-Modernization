@@ -8,6 +8,6 @@ class TextQuestionTest {
     @Test
     void should_return_text() {
         var q = new TextQuestion();
-        assertEquals(Question.QuestionType.TEXT, q.getQuestionType());
+        assertEquals("text_question", q.getDisplayType());
     }
 }

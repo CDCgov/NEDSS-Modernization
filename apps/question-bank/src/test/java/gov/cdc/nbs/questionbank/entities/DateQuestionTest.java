@@ -8,6 +8,6 @@ class DateQuestionTest {
     @Test
     void should_return_date() {
         var q = new DateQuestion();
-        assertEquals(Question.QuestionType.DATE, q.getQuestionType());
+        assertEquals("date_question", q.getDisplayType());
     }
 }

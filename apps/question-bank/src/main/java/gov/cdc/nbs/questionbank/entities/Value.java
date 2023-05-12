@@ -1,14 +1,12 @@
 package gov.cdc.nbs.questionbank.entities;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -37,10 +35,7 @@ public class Value {
     @Column(name = "comment")
     private String comment;
 
-    @Embedded
-    private Audit audit;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({@JoinColumn(name = "value_set_id"), @JoinColumn(name = "version")})
+    @JoinColumn(name = "value_set_id")
     private ValueSet valueSet;
 }
