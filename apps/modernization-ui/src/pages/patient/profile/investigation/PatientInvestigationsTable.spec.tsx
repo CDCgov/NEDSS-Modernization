@@ -51,7 +51,7 @@ describe('when rendered', () => {
     });
 });
 
-describe('when investigations are not available for a patient', () => {
+describe('when investigations are No data for a patient', () => {
     const response = {
         request: {
             query: FindInvestigationsForPatientDocument,
@@ -75,14 +75,14 @@ describe('when investigations are not available for a patient', () => {
         }
     };
 
-    it('should display Not Available', async () => {
+    it('should display No data', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <PatientInvestigationsTable patient={'73'} pageSize={5}></PatientInvestigationsTable>
             </MockedProvider>
         );
 
-        expect(await findByText('Not Available')).toBeInTheDocument();
+        expect(await findByText('No data')).toBeInTheDocument();
     });
 });
 
