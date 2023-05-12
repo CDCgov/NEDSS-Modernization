@@ -558,7 +558,7 @@ export enum NameUseCd {
 export type NamedByContact = {
   __typename?: 'NamedByContact';
   associatedWith?: Maybe<PatientContactInvestigation>;
-  condition?: Maybe<Scalars['String']>;
+  condition: TracedCondition;
   contact: NamedContact;
   contactRecord: Scalars['ID'];
   createdOn: Scalars['DateTime'];
@@ -569,7 +569,7 @@ export type NamedByContact = {
 export type NamedByPatient = {
   __typename?: 'NamedByPatient';
   associatedWith?: Maybe<PatientContactInvestigation>;
-  condition?: Maybe<Scalars['String']>;
+  condition: TracedCondition;
   contact: NamedContact;
   contactRecord: Scalars['ID'];
   createdOn: Scalars['DateTime'];
@@ -1851,6 +1851,12 @@ export enum Suffix {
   V = 'V'
 }
 
+export type TracedCondition = {
+  __typename?: 'TracedCondition';
+  description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
 export type UpdateSexAndBirthInput = {
   additionalGender?: InputMaybe<Scalars['String']>;
   ageReportedTime?: InputMaybe<Scalars['DateTime']>;
@@ -2034,7 +2040,7 @@ export type FindContactsNamedByPatientQueryVariables = Exact<{
 }>;
 
 
-export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContactsNamedByPatient?: { __typename?: 'ContactsNamedByPatientResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, condition?: string | null, namedOn: any, priority?: string | null, disposition?: string | null, event: string, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
+export type FindContactsNamedByPatientQuery = { __typename?: 'Query', findContactsNamedByPatient?: { __typename?: 'ContactsNamedByPatientResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 export type FindDocumentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID'];
@@ -2145,7 +2151,7 @@ export type FindPatientNamedByContactQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientNamedByContactQuery = { __typename?: 'Query', findPatientNamedByContact?: { __typename?: 'PatientNamedByContactResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, condition?: string | null, namedOn: any, priority?: string | null, disposition?: string | null, event: string, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
+export type FindPatientNamedByContactQuery = { __typename?: 'Query', findPatientNamedByContact?: { __typename?: 'PatientNamedByContactResults', total: number, number: number, content: Array<{ __typename?: 'NamedByPatient', contactRecord: string, createdOn: any, namedOn: any, priority?: string | null, disposition?: string | null, event: string, condition: { __typename?: 'TracedCondition', id?: string | null, description?: string | null }, contact: { __typename?: 'NamedContact', id: string, name: string }, associatedWith?: { __typename?: 'PatientContactInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 export type FindPatientProfileQueryVariables = Exact<{
   asOf?: InputMaybe<Scalars['DateTime']>;
@@ -3211,7 +3217,10 @@ export const FindContactsNamedByPatientDocument = gql`
     content {
       contactRecord
       createdOn
-      condition
+      condition {
+        id
+        description
+      }
       contact {
         id
         name
@@ -4359,7 +4368,10 @@ export const FindPatientNamedByContactDocument = gql`
     content {
       contactRecord
       createdOn
-      condition
+      condition {
+        id
+        description
+      }
       contact {
         id
         name

@@ -1,2 +1,2 @@
-export { PatientNamedByContactTable } from './PatientNamedByContactTable';
-export { ContactNamedByPatientTable } from './ContactNamedByPatientTable';
+export { PatientProfileContactsNamedByPatient } from './PatientProfileContactsNamedByPatient';
+export { PatientProfilePatientNamedByContact } from './PatientProfilePatientNamedByContact';

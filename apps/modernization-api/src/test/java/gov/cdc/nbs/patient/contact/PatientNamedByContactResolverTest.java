@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.contact;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,58 +18,38 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PatientNamedByContactResolverTest {
-  @Test
-  void should_find_contacts_named_by_contact_for_provided_patient_using_the_finder() {
-    PatientNamedByContactFinder finder = mock(PatientNamedByContactFinder.class);
 
-    when(finder.find(anyLong()))
-        .thenReturn(List.of(mock(PatientContacts.NamedByContact.class)));
+    @Test
+    void should_find_paginated_contacts_named_by_contact_for_the_provided_patient_using_the_finder() {
 
-    PatientNamedByContactResolver resolver = new PatientNamedByContactResolver(25, finder);
+        PatientNamedByContactFinder finder = mock(PatientNamedByContactFinder.class);
 
-    Person patient = new Person(2963L, "local");
+        when(finder.find(anyLong(), any()))
+            .thenAnswer(args -> new PageImpl<>(
+                    List.of(mock(PatientContacts.NamedByPatient.class)),
+                    args.getArgument(1, Pageable.class),
+                    1L
+                )
+            );
 
-    List<PatientContacts.NamedByContact> actual = resolver.resolve(patient);
+        PatientNamedByContactResolver resolver = new PatientNamedByContactResolver(25, finder);
 
-    assertThat(actual)
-        .as("The resolved list of contacts comes from the finder")
-        .hasSize(1);
+        GraphQLPage page = new GraphQLPage(17, 2);
 
-    verify(finder).find(2963L);
+        Page<PatientContacts.NamedByContact> actual = resolver.find(1861L, page);
 
-  }
+        assertThat(actual)
+            .as("The resolved paginated list of patients comes from the finder")
+            .hasSize(1);
 
-  @Test
-  void should_find_paginated_contacts_named_by_contact_for_the_provided_patient_using_the_finder() {
+        ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
 
-    PatientNamedByContactFinder finder = mock(PatientNamedByContactFinder.class);
+        verify(finder).find(eq(1861L), captor.capture());
 
-    when(finder.find(anyLong(), any()))
-        .thenAnswer(args -> new PageImpl<>(
-                List.of(mock(PatientContacts.NamedByPatient.class)),
-                args.getArgument(1, Pageable.class),
-                1L
-            )
-        );
+        Pageable actual_pageable = captor.getValue();
 
-    PatientNamedByContactResolver resolver = new PatientNamedByContactResolver(25, finder);
-
-    GraphQLPage page = new GraphQLPage(17, 2);
-
-    Page<PatientContacts.NamedByContact> actual = resolver.find(1861L, page);
-
-    assertThat(actual)
-        .as("The resolved paginated list of patients comes from the finder")
-        .hasSize(1);
-
-    ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
-
-    verify(finder).find(eq(1861L), captor.capture());
-
-    Pageable actual_pageable = captor.getValue();
-
-    assertThat(actual_pageable.getPageNumber()).isEqualTo(2);
-    assertThat(actual_pageable.getPageSize()).isEqualTo(17);
-  }
+        assertThat(actual_pageable.getPageNumber()).isEqualTo(2);
+        assertThat(actual_pageable.getPageSize()).isEqualTo(17);
+    }
 
 }

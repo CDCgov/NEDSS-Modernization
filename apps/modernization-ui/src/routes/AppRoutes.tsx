@@ -3,10 +3,19 @@ import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patient/profile';
 import AddPatient from '../pages/addPatient/AddPatient';
-import { useContext, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
+
+const ScrollToTop = ({ children }: { children: ReactNode }) => {
+    const location = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
+
+    return <>{children}</>;
+};
 
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
@@ -37,22 +46,24 @@ export const AppRoutes = () => {
     return (
         <>
             {loading && <Spinner />}
-            <Routes>
-                {state.isLoggedIn && (
-                    <>
-                        <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
-                        <Route path="/patient-profile/:id" element={<PatientProfile />} />
-                        <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
-                        <Route path="/add-patient" element={<AddPatient />} />
-                        <Route path="*" element={<Navigate to="/advanced-search" />} />
-                        <Route path="/" element={<Navigate to="/advanced-search" />} />
-                    </>
-                )}
-                {!state.isLoggedIn && !state.isLoginPending && !loading && (
-                    <Route path="*" element={<Navigate to="/login" />} />
-                )}
-                <Route path="/login" element={<Login />} />
-            </Routes>
+            <ScrollToTop>
+                <Routes>
+                    {state.isLoggedIn && (
+                        <>
+                            <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
+                            <Route path="/patient-profile/:id" element={<PatientProfile />} />
+                            <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
+                            <Route path="/add-patient" element={<AddPatient />} />
+                            <Route path="*" element={<Navigate to="/advanced-search" />} />
+                            <Route path="/" element={<Navigate to="/advanced-search" />} />
+                        </>
+                    )}
+                    {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                        <Route path="*" element={<Navigate to="/login" />} />
+                    )}
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </ScrollToTop>
         </>
     );
 };

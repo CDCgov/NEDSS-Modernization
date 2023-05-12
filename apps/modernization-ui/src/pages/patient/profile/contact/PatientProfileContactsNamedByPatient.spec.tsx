@@ -1,35 +1,14 @@
-import { PatientNamedByContactTable } from './PatientNamedByContactTable';
 import { render } from '@testing-library/react';
-import { FindPatientNamedByContactDocument } from 'generated/graphql/schema';
-
 import { MockedProvider } from '@apollo/client/testing';
+import { FindContactsNamedByPatientDocument } from 'generated/graphql/schema';
 
-describe('when rendered', () => {
-    it('should display sentence cased headers', async () => {
-        const { container } = render(
-            <MockedProvider addTypename={false}>
-                <PatientNamedByContactTable pageSize={3}></PatientNamedByContactTable>
-            </MockedProvider>
-        );
-
-        const tableHeader = container.getElementsByClassName('table-header');
-        expect(tableHeader[0].innerHTML).toBe('Contact records (patient named by contacts)');
-
-        const tableHeads = container.getElementsByClassName('head-name');
-
-        expect(tableHeads[0].innerHTML).toBe('Date created');
-        expect(tableHeads[1].innerHTML).toBe('Named by');
-        expect(tableHeads[2].innerHTML).toBe('Date named');
-        expect(tableHeads[3].innerHTML).toBe('Description');
-        expect(tableHeads[4].innerHTML).toBe('Associated with');
-        expect(tableHeads[5].innerHTML).toBe('Event #');
-    });
-});
+import { PatientProfileContactsNamedByPatient } from './PatientProfileContactsNamedByPatient';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('when the patient has not been named by a contact', () => {
     const response = {
         request: {
-            query: FindPatientNamedByContactDocument,
+            query: FindContactsNamedByPatientDocument,
             variables: {
                 patient: '73',
                 page: {
@@ -40,7 +19,7 @@ describe('when the patient has not been named by a contact', () => {
         },
         result: {
             data: {
-                findPatientNamedByContact: {
+                findContactsNamedByPatient: {
                     content: [],
                     total: 0,
                     number: 0
@@ -51,9 +30,13 @@ describe('when the patient has not been named by a contact', () => {
 
     it('should display No data', async () => {
         const { findByText } = render(
-            <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientNamedByContactTable patient={'73'} pageSize={5}></PatientNamedByContactTable>
-            </MockedProvider>
+            <MemoryRouter>
+                <MockedProvider mocks={[response]} addTypename={false}>
+                    <PatientProfileContactsNamedByPatient
+                        patient={'73'}
+                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                </MockedProvider>
+            </MemoryRouter>
         );
 
         expect(await findByText('No data')).toBeInTheDocument();
@@ -64,7 +47,7 @@ describe('when the patient has been named by a contact', () => {
     it('should display the contacts', async () => {
         const response = {
             request: {
-                query: FindPatientNamedByContactDocument,
+                query: FindContactsNamedByPatientDocument,
                 variables: {
                     patient: '1823',
                     page: {
@@ -75,14 +58,17 @@ describe('when the patient has been named by a contact', () => {
             },
             result: {
                 data: {
-                    findPatientNamedByContact: {
+                    findContactsNamedByPatient: {
                         content: [
                             {
                                 contactRecord: '10055380',
                                 createdOn: '2023-03-17T20:08:45.213Z',
                                 contact: { id: '10000008', name: 'Surma Singh' },
                                 namedOn: '2023-01-17T05:00:00Z',
-                                condition: 'condition-value',
+                                condition: {
+                                    id: 'condition-id',
+                                    description: 'condition-description'
+                                },
                                 priority: 'priority-value',
                                 disposition: 'disposition-value',
                                 event: 'CON10000002GA01',
@@ -101,12 +87,14 @@ describe('when the patient has been named by a contact', () => {
         };
 
         const { container, findByText } = render(
-            <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientNamedByContactTable patient={'1823'} pageSize={5}></PatientNamedByContactTable>
-            </MockedProvider>
+            <MemoryRouter>
+                <MockedProvider mocks={[response]} addTypename={false}>
+                    <PatientProfileContactsNamedByPatient
+                        patient={'1823'}
+                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                </MockedProvider>
+            </MemoryRouter>
         );
-
-        expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
 
         const tableData = container.getElementsByClassName('table-data');
 
@@ -115,11 +103,13 @@ describe('when the patient has been named by a contact', () => {
         expect(dateCreated).toHaveTextContent('03:08 PM');
 
         expect(tableData[0]).toContainElement(dateCreated);
-
-        expect(tableData[1].innerHTML).toContain('Surma Singh');
-        expect(tableData[2].innerHTML).toContain('01/17/2023');
+        expect(tableData[1]).toHaveTextContent('Surma Singh');
+        expect(tableData[2]).toHaveTextContent('01/17/2023');
 
         //  Description fields
+        const conditionValue = await findByText(/condition-description/);
+        expect(tableData[3]).toContainElement(conditionValue);
+
         const dispositionLabel = await findByText(/Disposition:/);
         expect(tableData[3]).toContainElement(dispositionLabel);
 
@@ -136,7 +126,6 @@ describe('when the patient has been named by a contact', () => {
         const association = await findByText('CAS10000000GA01');
 
         expect(tableData[4]).toContainElement(association);
-
         const associationCondition = await findByText('associated-condition');
 
         expect(tableData[4]).toContainElement(associationCondition);
@@ -149,7 +138,7 @@ describe('when the patient has been named by a contact without an association', 
     it('should display a No Data for Associated With', async () => {
         const response = {
             request: {
-                query: FindPatientNamedByContactDocument,
+                query: FindContactsNamedByPatientDocument,
                 variables: {
                     patient: '1823',
                     page: {
@@ -160,14 +149,17 @@ describe('when the patient has been named by a contact without an association', 
             },
             result: {
                 data: {
-                    findPatientNamedByContact: {
+                    findContactsNamedByPatient: {
                         content: [
                             {
                                 contactRecord: '10055380',
                                 createdOn: '2023-03-17T20:08:45.213Z',
                                 contact: { id: '10000008', name: 'Surma Singh' },
                                 namedOn: '2023-01-17T05:00:00Z',
-                                condition: 'condition-value',
+                                condition: {
+                                    id: 'condition-id',
+                                    description: 'condition-description'
+                                },
                                 priority: 'priority-value',
                                 disposition: 'disposition-value',
                                 event: 'CON10000002GA01',
@@ -182,9 +174,13 @@ describe('when the patient has been named by a contact without an association', 
         };
 
         const { container, findByText } = render(
-            <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientNamedByContactTable patient={'1823'} pageSize={5}></PatientNamedByContactTable>
-            </MockedProvider>
+            <MemoryRouter>
+                <MockedProvider mocks={[response]} addTypename={false}>
+                    <PatientProfileContactsNamedByPatient
+                        patient={'1823'}
+                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                </MockedProvider>
+            </MemoryRouter>
         );
 
         expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
@@ -199,7 +195,7 @@ describe('when the patient has been named by a contact without a priority', () =
     it('should display a description without Priority', async () => {
         const response = {
             request: {
-                query: FindPatientNamedByContactDocument,
+                query: FindContactsNamedByPatientDocument,
                 variables: {
                     patient: '1823',
                     page: {
@@ -210,14 +206,17 @@ describe('when the patient has been named by a contact without a priority', () =
             },
             result: {
                 data: {
-                    findPatientNamedByContact: {
+                    findContactsNamedByPatient: {
                         content: [
                             {
                                 contactRecord: '10055380',
                                 createdOn: '2023-03-17T20:08:45.213Z',
                                 contact: { id: '10000008', name: 'Surma Singh' },
                                 namedOn: '2023-01-17T05:00:00Z',
-                                condition: 'condition-value',
+                                condition: {
+                                    id: 'condition-id',
+                                    description: 'condition-description'
+                                },
                                 priority: null,
                                 disposition: 'disposition-value',
                                 event: 'CON10000002GA01',
@@ -236,14 +235,20 @@ describe('when the patient has been named by a contact without a priority', () =
         };
 
         const { container, findByText } = render(
-            <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientNamedByContactTable patient={'1823'} pageSize={5}></PatientNamedByContactTable>
-            </MockedProvider>
+            <MemoryRouter>
+                <MockedProvider mocks={[response]} addTypename={false}>
+                    <PatientProfileContactsNamedByPatient
+                        patient={'1823'}
+                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                </MockedProvider>
+            </MemoryRouter>
         );
 
-        expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
-
         const tableData = container.getElementsByClassName('table-data');
+
+        //  Description fields
+        const conditionValue = await findByText(/condition-description/);
+        expect(tableData[3]).toContainElement(conditionValue);
 
         const dispositionLabel = await findByText(/Disposition:/);
         expect(tableData[3]).toContainElement(dispositionLabel);
@@ -257,7 +262,7 @@ describe('when the patient has been named by a contact without a disposition', (
     it('should display a description without Disposition', async () => {
         const response = {
             request: {
-                query: FindPatientNamedByContactDocument,
+                query: FindContactsNamedByPatientDocument,
                 variables: {
                     patient: '1823',
                     page: {
@@ -268,14 +273,17 @@ describe('when the patient has been named by a contact without a disposition', (
             },
             result: {
                 data: {
-                    findPatientNamedByContact: {
+                    findContactsNamedByPatient: {
                         content: [
                             {
                                 contactRecord: '10055380',
                                 createdOn: '2023-03-17T20:08:45.213Z',
                                 contact: { id: '10000008', name: 'Surma Singh' },
                                 namedOn: '2023-01-17T05:00:00Z',
-                                condition: 'condition-value',
+                                condition: {
+                                    id: 'condition-id',
+                                    description: 'condition-description'
+                                },
                                 priority: 'priority-value',
                                 disposition: null,
                                 event: 'CON10000002GA01',
@@ -294,14 +302,20 @@ describe('when the patient has been named by a contact without a disposition', (
         };
 
         const { container, findByText } = render(
-            <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientNamedByContactTable patient={'1823'} pageSize={5}></PatientNamedByContactTable>
-            </MockedProvider>
+            <MemoryRouter>
+                <MockedProvider mocks={[response]} addTypename={false}>
+                    <PatientProfileContactsNamedByPatient
+                        patient={'1823'}
+                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                </MockedProvider>
+            </MemoryRouter>
         );
 
-        expect(await findByText('Showing 1 of 1')).toBeInTheDocument();
-
         const tableData = container.getElementsByClassName('table-data');
+
+        //  Description fields
+        const conditionValue = await findByText(/condition-description/);
+        expect(tableData[3]).toContainElement(conditionValue);
 
         const priorityLabel = await findByText(/Priority:/);
         expect(tableData[3]).toContainElement(priorityLabel);

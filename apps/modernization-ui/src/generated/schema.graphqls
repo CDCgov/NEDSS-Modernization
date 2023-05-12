@@ -549,6 +549,11 @@ type NamedContact {
   name: String!
 }
 
+type TracedCondition {
+  id: String,
+  description: String
+}
+
 type PatientContactInvestigation {
   id: ID!
   local: String!
@@ -558,7 +563,7 @@ type PatientContactInvestigation {
 type NamedByPatient {
   contactRecord: ID!
   createdOn: DateTime!
-  condition: String
+  condition: TracedCondition!
   contact: NamedContact!
   namedOn: DateTime!
   priority: String
@@ -578,7 +583,7 @@ type NamedByContact {
   createdOn: DateTime!
   contact: NamedContact!
   namedOn: DateTime!
-  condition: String
+  condition: TracedCondition!
   event: String!
   associatedWith: PatientContactInvestigation
 }

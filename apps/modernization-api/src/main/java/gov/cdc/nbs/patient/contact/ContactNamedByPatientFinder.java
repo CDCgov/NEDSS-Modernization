@@ -30,9 +30,9 @@ class ContactNamedByPatientFinder {
     private static final QCodeValueGeneral DISPOSITION = new QCodeValueGeneral("disposition");
     private static final QInterview INTERVIEW = new QInterview("interview");
     private static final Coalesce<Instant> NAMED_ON = new Coalesce<>(Instant.class)
-            .add(TRACING.namedOnDate)
-            .add(INTERVIEW.interviewDate)
-            .add(TRACING.addTime);
+        .add(TRACING.namedOnDate)
+        .add(INTERVIEW.interviewDate)
+        .add(TRACING.addTime);
 
     private final JPAQueryFactory factory;
 
@@ -41,52 +41,28 @@ class ContactNamedByPatientFinder {
 
     }
 
-    List<PatientContacts.NamedByPatient> find(final long patient) {
-        return applyCriteria(
-                this.factory.selectDistinct(
-                        TRACING.id,
-                        TRACING.addTime,
-                        TRACING.localId,
-                        PRIORITY.codeDescTxt,
-                        DISPOSITION.codeDescTxt,
-                        CONTACT.id,
-                        CONTACT.nmPrefix,
-                        CONTACT.firstNm,
-                        CONTACT.lastNm,
-                        CONTACT.nmSuffix,
-                        INVESTIGATION.id,
-                        INVESTIGATION.localId,
-                        INVESTIGATION.cdDescTxt,
-                        NAMED_ON),
-                patient)
-                        .fetch()
-                        .stream()
-                        .map(this::map)
-                        .toList();
-    }
-
     private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
         return query.from(TRACING)
-                .join(SUBJECT).on(
-                        TRACING.subjectNBSEntityUid.id.eq(SUBJECT.id))
-                .join(INVESTIGATION).on(
-                        INVESTIGATION.id.eq(TRACING.subjectEntityPhcUid.id))
-                .join(CONTACT).on(
-                        CONTACT.id.eq(TRACING.contactNBSEntityUid.id))
-                .leftJoin(INTERVIEW).on(
-                        INTERVIEW.id.eq(TRACING.namedDuringInterviewUid))
-                .leftJoin(PRIORITY).on(
-                        PRIORITY.id.code.eq(TRACING.priorityCd))
-                .leftJoin(DISPOSITION).on(
-                        DISPOSITION.id.code.eq(TRACING.dispositionCd))
-                .where(TRACING.recordStatusCd.eq("ACTIVE"),
-                        SUBJECT.personParentUid.id.eq(patient));
+            .join(SUBJECT).on(
+                TRACING.subjectNBSEntityUid.id.eq(SUBJECT.id))
+            .join(INVESTIGATION).on(
+                INVESTIGATION.id.eq(TRACING.subjectEntityPhcUid.id))
+            .join(CONTACT).on(
+                CONTACT.id.eq(TRACING.contactNBSEntityUid.id))
+            .leftJoin(INTERVIEW).on(
+                INTERVIEW.id.eq(TRACING.namedDuringInterviewUid))
+            .leftJoin(PRIORITY).on(
+                PRIORITY.id.code.eq(TRACING.priorityCd))
+            .leftJoin(DISPOSITION).on(
+                DISPOSITION.id.code.eq(TRACING.dispositionCd))
+            .where(TRACING.recordStatusCd.eq("ACTIVE"),
+                SUBJECT.personParentUid.id.eq(patient));
     }
 
     private PatientContacts.NamedByPatient map(final Tuple tuple) {
         Long identifier = tuple.get(TRACING.id);
         Instant createdOn = tuple.get(TRACING.addTime);
-        String condition = tuple.get(INVESTIGATION.cdDescTxt);
+        PatientContacts.Condition condition = mapCondition(tuple);
         PatientContacts.NamedContact contact = mapContact(tuple);
         Instant namedOn = tuple.get(NAMED_ON);
 
@@ -97,15 +73,15 @@ class ContactNamedByPatientFinder {
         PatientContacts.Investigation investigation = mapInvestigation(tuple);
 
         return new PatientContacts.NamedByPatient(
-                Objects.requireNonNull(identifier),
-                createdOn,
-                condition,
-                contact,
-                namedOn,
-                priority,
-                disposition,
-                event,
-                investigation);
+            Objects.requireNonNull(identifier),
+            createdOn,
+            condition,
+            contact,
+            namedOn,
+            priority,
+            disposition,
+            event,
+            investigation);
     }
 
     private PatientContacts.NamedContact mapContact(final Tuple tuple) {
@@ -117,67 +93,77 @@ class ContactNamedByPatientFinder {
         Suffix suffix = tuple.get(CONTACT.nmSuffix);
 
         String name = NameRenderer.render(
-                prefix,
-                first,
-                last,
-                suffix);
+            prefix,
+            first,
+            last,
+            suffix);
 
         return new PatientContacts.NamedContact(
-                Objects.requireNonNull(identifier, "A contact identifier is required."),
-                name);
+            Objects.requireNonNull(identifier, "A contact identifier is required."),
+            name);
     }
 
     private PatientContacts.Investigation mapInvestigation(final Tuple tuple) {
         Long identifier =
-                Objects.requireNonNull(tuple.get(INVESTIGATION.id), "An investigation identifier is required.");
+            Objects.requireNonNull(tuple.get(INVESTIGATION.id), "An investigation identifier is required.");
         String local = tuple.get(INVESTIGATION.localId);
         String condition = tuple.get(INVESTIGATION.cdDescTxt);
 
         return new PatientContacts.Investigation(
-                identifier,
-                local,
-                condition);
+            identifier,
+            local,
+            condition);
+    }
+
+    private PatientContacts.Condition mapCondition(final Tuple tuple) {
+        String identifier = tuple.get(INVESTIGATION.cd);
+        String description = tuple.get(INVESTIGATION.cdDescTxt);
+
+        return new PatientContacts.Condition(identifier, description);
     }
 
     Page<PatientContacts.NamedByPatient> find(final long patient, final Pageable pageable) {
         long total = resolveTotal(patient);
 
         return total > 0
-                ? new PageImpl<>(resolvePage(patient, pageable), pageable, total)
-                : Page.empty(pageable);
+            ? new PageImpl<>(resolvePage(patient, pageable), pageable, total)
+            : Page.empty(pageable);
     }
 
     private long resolveTotal(final long patient) {
         Long total = applyCriteria(factory.selectDistinct(TRACING.countDistinct()), patient)
-                .fetchOne();
+            .fetchOne();
         return total == null ? 0L : total;
     }
 
     private List<PatientContacts.NamedByPatient> resolvePage(
-            final long patient,
-            final Pageable pageable) {
+        final long patient,
+        final Pageable pageable) {
         return applyCriteria(
-                factory.selectDistinct(
-                        TRACING.id,
-                        TRACING.addTime,
-                        TRACING.localId,
-                        PRIORITY.codeDescTxt,
-                        DISPOSITION.codeDescTxt,
-                        CONTACT.id,
-                        CONTACT.nmPrefix,
-                        CONTACT.firstNm,
-                        CONTACT.lastNm,
-                        CONTACT.nmSuffix,
-                        INVESTIGATION.id,
-                        INVESTIGATION.localId,
-                        INVESTIGATION.cdDescTxt,
-                        NAMED_ON),
-                patient)
-                        .offset(pageable.getOffset())
-                        .limit(pageable.getPageSize())
-                        .fetch()
-                        .stream()
-                        .map(this::map)
-                        .toList();
+            factory.selectDistinct(
+                TRACING.id,
+                TRACING.addTime,
+                TRACING.localId,
+                PRIORITY.codeDescTxt,
+                DISPOSITION.codeDescTxt,
+                CONTACT.id,
+                CONTACT.nmPrefix,
+                CONTACT.firstNm,
+                CONTACT.lastNm,
+                CONTACT.nmSuffix,
+                INVESTIGATION.id,
+                INVESTIGATION.localId,
+                INVESTIGATION.cd,
+                INVESTIGATION.cdDescTxt,
+                NAMED_ON
+            ),
+            patient
+        )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch()
+            .stream()
+            .map(this::map)
+            .toList();
     }
 }
