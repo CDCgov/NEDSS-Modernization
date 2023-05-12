@@ -49,14 +49,14 @@ describe('when the patient has not been named by a contact', () => {
         }
     };
 
-    it('should display Not Available', async () => {
+    it('should display No data', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
                 <ContactNamedByPatientTable patient={'73'} pageSize={5}></ContactNamedByPatientTable>
             </MockedProvider>
         );
 
-        expect(await findByText('Not Available')).toBeInTheDocument();
+        expect(await findByText('No data')).toBeInTheDocument();
     });
 });
 

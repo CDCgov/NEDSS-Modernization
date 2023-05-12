@@ -12,27 +12,34 @@ type PatientLabReportTableProps = {
 export const Ethnicity = ({ patient }: PatientLabReportTableProps) => {
     const [generalTableData, setGeneralTableData] = useState<any>();
     const handleComplete = (data: FindPatientProfileQuery) => {
-        if (data?.findPatientProfile?.ethnicity) {
-            setGeneralTableData([
-                {
-                    title: 'As of:',
-                    text: format(new Date(data?.findPatientProfile?.ethnicity.asOf), 'MM/dd/yyyy')
-                },
-                { title: 'Ethnicity::', text: data?.findPatientProfile?.ethnicity?.ethnicGroup?.description },
-                {
-                    title: 'Spanish origin:',
-                    text: data?.findPatientProfile?.ethnicity?.detailed.map((detail, index: number) => (
-                        <span key={detail?.id}>
-                            {detail?.description}{' '}
-                            {data?.findPatientProfile?.ethnicity?.detailed &&
-                                data?.findPatientProfile?.ethnicity?.detailed?.length - 1 !== index &&
-                                '|'}{' '}
-                        </span>
-                    ))
-                },
-                { title: 'Reasons unknown:', text: data?.findPatientProfile?.ethnicity?.unknownReason?.description }
-            ]);
-        }
+        setGeneralTableData([
+            {
+                title: 'As of:',
+                text: data?.findPatientProfile?.ethnicity
+                    ? format(new Date(data?.findPatientProfile?.ethnicity?.asOf), 'MM/dd/yyyy')
+                    : ''
+            },
+            { title: 'Ethnicity::', text: data?.findPatientProfile?.ethnicity?.ethnicGroup?.description || '' },
+            {
+                title: 'Spanish origin:',
+                text:
+                    data?.findPatientProfile?.ethnicity?.detailed &&
+                    data?.findPatientProfile?.ethnicity?.detailed?.length > 0
+                        ? data?.findPatientProfile?.ethnicity?.detailed.map((detail, index: number) => (
+                              <span key={detail?.id}>
+                                  {detail?.description}{' '}
+                                  {data?.findPatientProfile?.ethnicity?.detailed &&
+                                      data?.findPatientProfile?.ethnicity?.detailed?.length - 1 !== index &&
+                                      '|'}{' '}
+                              </span>
+                          ))
+                        : ''
+            },
+            {
+                title: 'Reasons unknown:',
+                text: data?.findPatientProfile?.ethnicity?.unknownReason?.description || ''
+            }
+        ]);
     };
 
     const [getProfile, { data }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });

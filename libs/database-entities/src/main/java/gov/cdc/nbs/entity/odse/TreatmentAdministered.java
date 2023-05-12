@@ -87,4 +87,11 @@ public class TreatmentAdministered {
     @Column(name = "status_time")
     private Instant statusTime;
 
+    public TreatmentAdministered(final Treatment treatment) {
+        short sequence = (short) (treatment.getAdministered().size() + (short)1);
+
+        this.id = new TreatmentAdministeredId(treatment.getId(), sequence);
+        this.treatmentUid = treatment;
+        this.cd = treatment.getCd();
+    }
 }
