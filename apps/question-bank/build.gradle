@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
     id 'jvm-test-suite'
     alias libs.plugins.springBoot
@@ -66,8 +68,12 @@ dependencies {
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
+    
 
     // auth
     implementation project(':authentication')
 
 }
+
+
+compileJava.mustRunAfter(":authentication:build")
