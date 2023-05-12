@@ -2,10 +2,11 @@ import { TableBody, TableComponent } from 'components/Table/Table';
 import { useEffect, useState } from 'react';
 import format from 'date-fns/format';
 import { Document, AssociatedWith, Headers } from './PatientDocuments';
-import { sort } from './PatientDocumentSorter';
+import { SortCriteria, sort } from './PatientDocumentSorter';
 import { Direction } from 'sorting';
 import { usePage } from 'page';
 import { goToPage } from 'page/page';
+import { ClassicLink } from 'classic';
 
 const headers = [
     { name: Headers.DateReceived, sortable: true },
@@ -17,32 +18,27 @@ const headers = [
     { name: Headers.EventID, sortable: true }
 ];
 
-const association = (association?: AssociatedWith | null) =>
-    association && (
-        <>
-            <div>
-                <p className="margin-0 text-primary text-bold link" style={{ wordBreak: 'break-word' }}>
-                    {association.local}
-                </p>
-            </div>
-        </>
-    );
+const displayReceivedOn = (patient: string, document: Document) => (
+    <ClassicLink url={`/nbs/api/profile/${patient}/document/${document.document}`}>
+        {format(document.receivedOn, 'MM/dd/yyyy')} <br /> {format(document.receivedOn, 'hh:mm a')}
+    </ClassicLink>
+);
+
+const association = (patient: string, association: AssociatedWith) => (
+    <div>
+        <ClassicLink url={`/nbs/api/profile/${patient}/document/${association.id}`}>{association?.local}</ClassicLink>
+    </div>
+);
 
 const asTableBody =
-    (nbsBase: string) =>
+    (patient: string) =>
     (document: Document): TableBody => ({
         id: document?.event,
         checkbox: false,
         tableDetails: [
             {
                 id: 1,
-                title: (
-                    <>
-                        {format(document?.receivedOn, 'MM/dd/yyyy')} <br /> {format(document?.receivedOn, 'hh:mm a')}
-                    </>
-                ),
-                class: 'link',
-                link: `${nbsBase}/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=${document?.document}`
+                title: displayReceivedOn(patient, document)
             },
             {
                 id: 2,
@@ -53,34 +49,35 @@ const asTableBody =
             { id: 5, title: document?.condition || null },
             {
                 id: 6,
-                title: association(document?.associatedWith)
+                title: document?.associatedWith && association(patient, document.associatedWith)
             },
             { id: 7, title: document?.event || null }
         ]
     });
 
-const asTableBodies = (nbsBase: string, documents: Document[]): TableBody[] =>
-    documents?.map(asTableBody(nbsBase)) || [];
+const asTableBodies = (patient: string, documents: Document[]): TableBody[] =>
+    documents?.map(asTableBody(patient)) || [];
 
 type Props = {
-    nbsBase: string;
+    patient?: string;
     documents: Document[];
 };
 
-export const PatientDocumentTable = ({ nbsBase, documents }: Props) => {
+export const PatientDocumentTable = ({ patient, documents }: Props) => {
     const { page, dispatch } = usePage();
+    const [criteria, setCriteria] = useState<SortCriteria>({});
 
     const [bodies, setBodies] = useState<TableBody[]>([]);
 
     useEffect(() => {
-        const sorted = sort(documents, {});
-        setBodies(asTableBodies(nbsBase, sorted));
-    }, [documents]);
+        if (patient) {
+            const sorted = sort(documents, criteria);
+            setBodies(asTableBodies(patient, sorted));
+        }
+    }, [documents, criteria]);
 
     const handleSort = (name: string, direction: string): void => {
-        const criteria = { name: name as Headers, type: direction as Direction };
-        const sorted = sort(documents, criteria);
-        setBodies(asTableBodies(nbsBase, sorted));
+        setCriteria({ name: name as Headers, type: direction as Direction });
     };
 
     return (

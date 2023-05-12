@@ -3,7 +3,6 @@ import {
     FindLabReportsByFilterQuery,
     FindMorbidityReportsForPatientQuery
 } from '../../generated/graphql/schema';
-import { Config } from 'config';
 import { PatientTreatmentTable } from 'pages/patient/profile/treatment';
 import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'pages/patient/profile/contact';
 import { PatientProfileDocuments } from 'pages/patient/profile/document';
@@ -22,8 +21,6 @@ type EventTabProp = {
 };
 
 export const Events = ({ patient }: EventTabProp) => {
-    const NBS_URL = Config.nbsUrl;
-
     return (
         <>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
@@ -44,7 +41,7 @@ export const Events = ({ patient }: EventTabProp) => {
                 <PatientTreatmentTable patient={patient} />
             </div>
 
-            <PatientProfileDocuments patient={patient} nbsBase={NBS_URL} pageSize={TOTAL_TABLE_DATA} />
+            <PatientProfileDocuments patient={patient} pageSize={TOTAL_TABLE_DATA} />
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <ContactNamedByPatientTable patient={patient} />

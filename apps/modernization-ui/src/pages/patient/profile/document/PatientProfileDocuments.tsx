@@ -5,15 +5,14 @@ import { PatientDocumentContainer } from './PatientDocumentContainer';
 
 type Props = {
     patient?: string;
-    nbsBase: string;
     pageSize: number;
 };
 
-export const PatientProfileDocuments = ({ patient, nbsBase, pageSize }: Props) => {
+export const PatientProfileDocuments = ({ patient, pageSize }: Props) => {
     return (
         <div className="margin-top-6 margin-bottom-2 flex-row common-card">
             <PageProvider pageSize={pageSize}>
-                <PatientDocumentContainer source={usePatientProfileDocumentsAPI} nbsBase={nbsBase} patient={patient} />
+                <PatientDocumentContainer source={usePatientProfileDocumentsAPI} patient={patient} />
             </PageProvider>
         </div>
     );
