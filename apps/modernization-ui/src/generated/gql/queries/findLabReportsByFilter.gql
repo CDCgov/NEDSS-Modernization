@@ -39,6 +39,7 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage){
                 personParentUid
                 personRecordStatus
                 personLastChangeTime
+                shortId
             }
             organizationParticipations{
                 actUid
