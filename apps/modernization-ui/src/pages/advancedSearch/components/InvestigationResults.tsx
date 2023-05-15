@@ -84,6 +84,7 @@ export const InvestigationResults = ({
         }
 
         const redirectPatientProfile = async () => {
+            console.log('patient:', investigation);
             navigate(`/patient-profile/${patient?.personParentUid}`);
         };
 

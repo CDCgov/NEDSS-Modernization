@@ -153,7 +153,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
     };
 
     const redirectPatientProfile = async (item: any) => {
-        navigate(`/patient-profile/${item.id}`);
+        navigate(`/patient-profile/${item.shortId}`);
     };
 
     return (
