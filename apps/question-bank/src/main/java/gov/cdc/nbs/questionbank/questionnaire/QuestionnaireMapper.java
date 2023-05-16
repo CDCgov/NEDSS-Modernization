@@ -11,7 +11,7 @@ import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 import gov.cdc.nbs.questionbank.entities.Reference;
 import gov.cdc.nbs.questionbank.entities.TextEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.Value;
+import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 
@@ -113,7 +113,7 @@ class QuestionnaireMapper {
                 valueSet.getValues().stream().map(this::toOption).toList());
     }
 
-    Questionnaire.Option toOption(Value value) {
+    Questionnaire.Option toOption(ValueEntity value) {
         return new Questionnaire.Option(
                 value.getId(),
                 value.getValue(),

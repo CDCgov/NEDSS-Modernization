@@ -21,7 +21,7 @@ import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 import gov.cdc.nbs.questionbank.entities.Reference;
 import gov.cdc.nbs.questionbank.entities.TextEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.Value;
+import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
 import gov.cdc.nbs.questionbank.entities.ValueSet.ValueSetType;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
@@ -283,15 +283,15 @@ class QuestionnaireMapperTest {
         return v;
     }
 
-    private List<Value> unitValues(ValueSet v) {
-        var values = new ArrayList<Value>();
+    private List<ValueEntity> unitValues(ValueSet v) {
+        var values = new ArrayList<ValueEntity>();
         values.add(milliliters(v));
         values.add(cubicCentimeters(v));
         return values;
     }
 
-    private Value milliliters(ValueSet vs) {
-        Value v = new Value();
+    private ValueEntity milliliters(ValueSet vs) {
+        ValueEntity v = new ValueEntity();
         v.setId(7L);
         v.setCode("m");
         v.setDisplay("milliliters");
@@ -301,8 +301,8 @@ class QuestionnaireMapperTest {
         return v;
     }
 
-    private Value cubicCentimeters(ValueSet vs) {
-        Value v = new Value();
+    private ValueEntity cubicCentimeters(ValueSet vs) {
+        ValueEntity v = new ValueEntity();
         v.setId(8L);
         v.setCode("cc");
         v.setDisplay("cubic centimeters");

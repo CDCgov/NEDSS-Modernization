@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entities;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "[value]", catalog = "question_bank")
-public class Value {
+public class ValueEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,7 +9,7 @@ public record Questionnaire(
         List<Element> elements) {
 
     public sealed interface Element permits Section, DisplayElement {
-        public long id = 0L;
+
     }
 
     public sealed interface DisplayElement extends Element

@@ -16,9 +16,9 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue(DisplayGroupRef.type)
+@DiscriminatorValue(DisplayGroupRef.TYPE)
 public class DisplayGroupRef extends Reference {
-    static final String type = "display_group";
+    static final String TYPE = "display_group";
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumns({@JoinColumn(name = "group_id"), @JoinColumn(name = "group_version")})
@@ -26,7 +26,7 @@ public class DisplayGroupRef extends Reference {
 
     @Override
     public String getReferenceType() {
-        return type;
+        return TYPE;
     }
 
 }

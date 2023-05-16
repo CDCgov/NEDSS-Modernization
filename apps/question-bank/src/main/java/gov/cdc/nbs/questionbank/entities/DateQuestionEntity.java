@@ -9,9 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(DateQuestionEntity.type)
+@DiscriminatorValue(DateQuestionEntity.TYPE)
 public class DateQuestionEntity extends DisplayElementEntity {
-    static final String type = "date_question";
+    static final String TYPE = "date_question";
 
     @Column(name = "label", length = 300)
     private String label;
@@ -24,6 +24,6 @@ public class DateQuestionEntity extends DisplayElementEntity {
 
     @Override
     public String getDisplayType() {
-        return type;
+        return TYPE;
     }
 }

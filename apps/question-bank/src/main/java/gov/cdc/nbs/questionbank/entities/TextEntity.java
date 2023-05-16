@@ -13,16 +13,16 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue(TextEntity.type)
+@DiscriminatorValue(TextEntity.TYPE)
 public class TextEntity extends DisplayElementEntity {
-    static final String type = "text";
+    static final String TYPE = "text";
 
     @Column(name = "text")
     private String text;
 
     @Override
     public String getDisplayType() {
-        return type;
+        return TYPE;
     }
 
 }

@@ -12,9 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(DisplayElementRef.type)
+@DiscriminatorValue(DisplayElementRef.TYPE)
 public class DisplayElementRef extends Reference {
-    static final String type = "display_element";
+    static final String TYPE = "display_element";
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumns({@JoinColumn(name = "display_element_id"), @JoinColumn(name = "display_element_version")})
@@ -22,7 +22,7 @@ public class DisplayElementRef extends Reference {
 
     @Override
     public String getReferenceType() {
-        return type;
+        return TYPE;
     }
 
 }

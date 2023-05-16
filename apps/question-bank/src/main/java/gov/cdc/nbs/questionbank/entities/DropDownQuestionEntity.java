@@ -11,9 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(DropDownQuestionEntity.type)
+@DiscriminatorValue(DropDownQuestionEntity.TYPE)
 public class DropDownQuestionEntity extends DisplayElementEntity {
-    static final String type = "dropdown_question";
+    static final String TYPE = "dropdown_question";
 
     @Column(name = "label", length = 300)
     private String label;
@@ -27,13 +27,13 @@ public class DropDownQuestionEntity extends DisplayElementEntity {
 
     @ManyToOne
     @JoinColumn(name = "default_answer_id")
-    private Value defaultAnswer;
+    private ValueEntity defaultAnswer;
 
     @Column(name = "multiselect", nullable = false)
     private boolean multiSelect;
 
     @Override
     public String getDisplayType() {
-        return type;
+        return TYPE;
     }
 }

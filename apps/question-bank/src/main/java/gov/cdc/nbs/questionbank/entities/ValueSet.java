@@ -43,10 +43,10 @@ public class ValueSet implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "valueSet", fetch = FetchType.LAZY)
-    private List<Value> values;
+    private List<ValueEntity> values;
 
 
-    public static enum ValueSetType {
+    public enum ValueSetType {
         LOCAL,
         PHIN
     }
