@@ -59,9 +59,8 @@ export const AdvancedSearch = () => {
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
     const wrapperRef = useRef<any>(null);
-    const [sort, setSort] = useState<{ sortDirection: SortDirection; sortField: SortField }>({
-        sortDirection: SortDirection.Asc,
-        sortField: SortField.LastNm
+    const [sort, setSort] = useState<{ sortDirection?: SortDirection; sortField: SortField }>({
+        sortField: SortField.Relevance
     });
     const PAGE_SIZE = 25;
 
@@ -783,6 +782,19 @@ export const AdvancedSearch = () => {
                                             <Button
                                                 onClick={() => {
                                                     setSort({
+                                                        sortField: SortField.Relevance
+                                                    });
+                                                    setShowSorting(false);
+                                                }}
+                                                type={'button'}
+                                                unstyled>
+                                                Closest match
+                                            </Button>
+                                        </li>
+                                        <li className="usa-nav__submenu-item">
+                                            <Button
+                                                onClick={() => {
+                                                    setSort({
                                                         sortDirection: SortDirection.Asc,
                                                         sortField: SortField.LastNm
                                                     });
@@ -834,20 +846,6 @@ export const AdvancedSearch = () => {
                                                 type={'button'}
                                                 unstyled>
                                                 Date of birth (Descending)
-                                            </Button>
-                                        </li>
-                                        <li className="usa-nav__submenu-item">
-                                            <Button
-                                                onClick={() => {
-                                                    setSort({
-                                                        sortDirection: SortDirection.Desc,
-                                                        sortField: SortField.Relevance
-                                                    });
-                                                    setShowSorting(false);
-                                                }}
-                                                type={'button'}
-                                                unstyled>
-                                                Closest match
                                             </Button>
                                         </li>
                                     </ul>
