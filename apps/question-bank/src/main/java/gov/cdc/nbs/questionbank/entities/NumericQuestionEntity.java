@@ -5,12 +5,14 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(NumericQuestionEntity.TYPE)
 public class NumericQuestionEntity extends DisplayElementEntity {
     static final String TYPE = "numeric_question";

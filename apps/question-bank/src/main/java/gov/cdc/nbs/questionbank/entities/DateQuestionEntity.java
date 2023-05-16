@@ -3,12 +3,14 @@ package gov.cdc.nbs.questionbank.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(DateQuestionEntity.TYPE)
 public class DateQuestionEntity extends DisplayElementEntity {
     static final String TYPE = "date_question";
