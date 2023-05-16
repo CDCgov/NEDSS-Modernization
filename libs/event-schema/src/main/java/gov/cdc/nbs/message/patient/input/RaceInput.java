@@ -1,5 +1,6 @@
 package gov.cdc.nbs.message.patient.input;
 
+import gov.cdc.nbs.message.patient.event.AddRaceData;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateRaceData;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class RaceInput {
                 requestId,
                 input.getPatientId(),
                 userId,
-                new UpdateRaceData(
+                new AddRaceData(
                         input.getPatientId(),
                         requestId,
                         userId,

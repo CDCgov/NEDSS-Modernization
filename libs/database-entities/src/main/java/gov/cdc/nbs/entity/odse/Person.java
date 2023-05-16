@@ -526,7 +526,7 @@ public class Person {
         return this.nbsEntity.add(mortality);
     }
 
-    public EntityLocatorParticipation update(final PatientCommand.UpdateAddress address) {
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateAddress address) {
         return this.nbsEntity.update(address);
     }
 
