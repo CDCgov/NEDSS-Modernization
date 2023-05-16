@@ -1,7 +1,7 @@
-import { usePage } from 'page';
-import { Document } from './PatientDocuments';
-import { FindDocumentsForPatientQuery, useFindDocumentsForPatientLazyQuery } from 'generated/graphql/schema';
 import { useEffect, useState } from 'react';
+import { FindDocumentsForPatientQuery, useFindDocumentsForPatientLazyQuery } from 'generated/graphql/schema';
+import { usePage, Status } from 'page';
+import { Document } from './PatientDocuments';
 import { transform } from './PatientDocumentTransformer';
 
 /**
@@ -13,12 +13,12 @@ import { transform } from './PatientDocumentTransformer';
 export const usePatientProfileDocumentsAPI = (patient?: string) => {
     const [documents, setDocuments] = useState<Document[]>([]);
 
-    const { page, dispatch: pageDispatch } = usePage();
+    const { page, ready } = usePage();
 
     const handleComplete = (data: FindDocumentsForPatientQuery) => {
         const total = data?.findDocumentsForPatient?.total || 0;
         const pageNumber = data?.findDocumentsForPatient?.number || 0;
-        pageDispatch({ type: 'ready', total: total, page: pageNumber + 1 });
+        ready(total, pageNumber + 1);
 
         const content = transform(data?.findDocumentsForPatient);
 
@@ -28,7 +28,7 @@ export const usePatientProfileDocumentsAPI = (patient?: string) => {
     const [getDocuments] = useFindDocumentsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patient) {
+        if (patient && page.status === Status.Requested) {
             getDocuments({
                 variables: {
                     patient: patient,
@@ -39,7 +39,7 @@ export const usePatientProfileDocumentsAPI = (patient?: string) => {
                 }
             });
         }
-    }, [patient, page.current]);
+    }, [patient, page]);
 
     return documents;
 };

@@ -3,6 +3,7 @@ import { PageProvider } from 'page';
 import { Headers } from './PatientContacts';
 import { PatientContactTable } from './PatientContactTable';
 import { MemoryRouter } from 'react-router-dom';
+import { ClassicModalProvider } from 'classic/ClassicModalContext';
 
 const headings = [
     { name: Headers.DateCreated, sortable: true },
@@ -16,21 +17,23 @@ const headings = [
 describe('when rendered', () => {
     it('should display sentence cased contact headers', async () => {
         const { container } = render(
-            <PageProvider>
-                <PatientContactTable
-                    patient={'patient'}
-                    tracings={[]}
-                    title="title-value"
-                    headings={[
-                        { name: Headers.DateCreated, sortable: true },
-                        { name: Headers.ContactsNamed, sortable: true },
-                        { name: Headers.NamedBy, sortable: true },
-                        { name: Headers.DateNamed, sortable: true },
-                        { name: Headers.Description, sortable: true },
-                        { name: Headers.AssociatedWith, sortable: true },
-                        { name: Headers.Event, sortable: true }
-                    ]}></PatientContactTable>
-            </PageProvider>
+            <ClassicModalProvider>
+                <PageProvider>
+                    <PatientContactTable
+                        patient={'patient'}
+                        tracings={[]}
+                        title="title-value"
+                        headings={[
+                            { name: Headers.DateCreated, sortable: true },
+                            { name: Headers.ContactsNamed, sortable: true },
+                            { name: Headers.NamedBy, sortable: true },
+                            { name: Headers.DateNamed, sortable: true },
+                            { name: Headers.Description, sortable: true },
+                            { name: Headers.AssociatedWith, sortable: true },
+                            { name: Headers.Event, sortable: true }
+                        ]}></PatientContactTable>
+                </PageProvider>
+            </ClassicModalProvider>
         );
 
         const tableHeader = container.getElementsByClassName('table-header');
@@ -51,7 +54,7 @@ describe('when rendered', () => {
 describe('when contacts are No data for a patient', () => {
     it('should display No data', async () => {
         const { findByText } = render(
-            <MemoryRouter>
+            <ClassicModalProvider>
                 <PageProvider>
                     <PatientContactTable
                         patient={'patient'}
@@ -59,7 +62,7 @@ describe('when contacts are No data for a patient', () => {
                         title="title-value"
                         headings={headings}></PatientContactTable>
                 </PageProvider>
-            </MemoryRouter>
+            </ClassicModalProvider>
         );
 
         expect(await findByText('No data')).toBeInTheDocument();
@@ -91,13 +94,15 @@ describe('when at least one contact is available for a patient', () => {
     it('should display the contact', async () => {
         const { container, findByText } = render(
             <MemoryRouter>
-                <PageProvider>
-                    <PatientContactTable
-                        patient={'patient'}
-                        tracings={tracings}
-                        title="title-value"
-                        headings={headings}></PatientContactTable>
-                </PageProvider>
+                <ClassicModalProvider>
+                    <PageProvider>
+                        <PatientContactTable
+                            patient={'patient'}
+                            tracings={tracings}
+                            title="title-value"
+                            headings={headings}></PatientContactTable>
+                    </PageProvider>
+                </ClassicModalProvider>
             </MemoryRouter>
         );
 

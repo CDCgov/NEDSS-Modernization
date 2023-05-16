@@ -1,28 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FindPatientNamedByContactQuery, useFindPatientNamedByContactLazyQuery } from 'generated/graphql/schema';
-import { usePage } from 'page';
-import { transform } from './PatientContactTransformer';
+import { usePage, Status } from 'page';
 import { Tracing } from './PatientContacts';
+import { transform } from './PatientContactTransformer';
 
-export const usePatientProfilePatientNamedByContactAPI = (patient?: string) => {
+export const usePatientProfilePatientNamedByContactAPI = (patient?: string): Tracing[] => {
     const [tracings, setTracings] = useState<Tracing[]>([]);
-
-    const { page, dispatch: pageDispatch } = usePage();
+    const { page, ready } = usePage();
 
     const handleComplete = (data: FindPatientNamedByContactQuery) => {
         const total = data?.findPatientNamedByContact?.total || 0;
-        const pageNumber = data?.findPatientNamedByContact?.number || 0;
-        pageDispatch({ type: 'ready', total: total, page: pageNumber + 1 });
+        const number = data?.findPatientNamedByContact?.number || 0;
+        ready(total, number + 1);
 
         const content = transform(data?.findPatientNamedByContact);
 
         setTracings(content);
     };
 
-    const [getTracings] = useFindPatientNamedByContactLazyQuery({ onCompleted: handleComplete });
+    const [getTracings] = useFindPatientNamedByContactLazyQuery({
+        onCompleted: handleComplete,
+        fetchPolicy: 'no-cache'
+    });
 
     useEffect(() => {
-        if (patient) {
+        if (patient && page.status === Status.Requested) {
             getTracings({
                 variables: {
                     patient: patient,
@@ -33,7 +35,7 @@ export const usePatientProfilePatientNamedByContactAPI = (patient?: string) => {
                 }
             });
         }
-    }, [patient, page.current]);
+    }, [patient, page]);
 
     return tracings;
 };

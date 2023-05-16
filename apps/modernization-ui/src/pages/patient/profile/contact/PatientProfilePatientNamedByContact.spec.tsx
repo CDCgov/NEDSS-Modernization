@@ -4,13 +4,16 @@ import { FindPatientNamedByContactDocument } from 'generated/graphql/schema';
 
 import { PatientProfilePatientNamedByContact } from './PatientProfilePatientNamedByContact';
 import { MemoryRouter } from 'react-router-dom';
+import { ClassicModalProvider } from 'classic';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { container } = render(
             <MemoryRouter>
                 <MockedProvider addTypename={false}>
-                    <PatientProfilePatientNamedByContact pageSize={3}></PatientProfilePatientNamedByContact>
+                    <ClassicModalProvider>
+                        <PatientProfilePatientNamedByContact pageSize={3}></PatientProfilePatientNamedByContact>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -75,9 +78,11 @@ describe('when the patient has been named by a contact', () => {
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfilePatientNamedByContact
-                        patient={'1823'}
-                        pageSize={5}></PatientProfilePatientNamedByContact>
+                    <ClassicModalProvider>
+                        <PatientProfilePatientNamedByContact
+                            patient={'1823'}
+                            pageSize={5}></PatientProfilePatientNamedByContact>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -164,9 +169,11 @@ describe('when the patient has been named by a contact without an association', 
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfilePatientNamedByContact
-                        patient={'1823'}
-                        pageSize={5}></PatientProfilePatientNamedByContact>
+                    <ClassicModalProvider>
+                        <PatientProfilePatientNamedByContact
+                            patient={'1823'}
+                            pageSize={5}></PatientProfilePatientNamedByContact>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -225,9 +232,11 @@ describe('when the patient has been named by a contact without a priority', () =
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfilePatientNamedByContact
-                        patient={'1823'}
-                        pageSize={5}></PatientProfilePatientNamedByContact>
+                    <ClassicModalProvider>
+                        <PatientProfilePatientNamedByContact
+                            patient={'1823'}
+                            pageSize={5}></PatientProfilePatientNamedByContact>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -291,9 +300,11 @@ describe('when the patient has been named by a contact without a disposition', (
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfilePatientNamedByContact
-                        patient={'1823'}
-                        pageSize={5}></PatientProfilePatientNamedByContact>
+                    <ClassicModalProvider>
+                        <PatientProfilePatientNamedByContact
+                            patient={'1823'}
+                            pageSize={5}></PatientProfilePatientNamedByContact>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );

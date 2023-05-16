@@ -4,6 +4,7 @@ import { FindContactsNamedByPatientDocument } from 'generated/graphql/schema';
 
 import { PatientProfileContactsNamedByPatient } from './PatientProfileContactsNamedByPatient';
 import { MemoryRouter } from 'react-router-dom';
+import { ClassicModalProvider } from 'classic';
 
 describe('when the patient has not been named by a contact', () => {
     const response = {
@@ -32,9 +33,11 @@ describe('when the patient has not been named by a contact', () => {
         const { findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfileContactsNamedByPatient
-                        patient={'73'}
-                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                    <ClassicModalProvider>
+                        <PatientProfileContactsNamedByPatient
+                            patient={'73'}
+                            pageSize={5}></PatientProfileContactsNamedByPatient>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -89,9 +92,11 @@ describe('when the patient has been named by a contact', () => {
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfileContactsNamedByPatient
-                        patient={'1823'}
-                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                    <ClassicModalProvider>
+                        <PatientProfileContactsNamedByPatient
+                            patient={'1823'}
+                            pageSize={5}></PatientProfileContactsNamedByPatient>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -176,9 +181,11 @@ describe('when the patient has been named by a contact without an association', 
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfileContactsNamedByPatient
-                        patient={'1823'}
-                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                    <ClassicModalProvider>
+                        <PatientProfileContactsNamedByPatient
+                            patient={'1823'}
+                            pageSize={5}></PatientProfileContactsNamedByPatient>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -237,9 +244,11 @@ describe('when the patient has been named by a contact without a priority', () =
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfileContactsNamedByPatient
-                        patient={'1823'}
-                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                    <ClassicModalProvider>
+                        <PatientProfileContactsNamedByPatient
+                            patient={'1823'}
+                            pageSize={5}></PatientProfileContactsNamedByPatient>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );
@@ -304,9 +313,11 @@ describe('when the patient has been named by a contact without a disposition', (
         const { container, findByText } = render(
             <MemoryRouter>
                 <MockedProvider mocks={[response]} addTypename={false}>
-                    <PatientProfileContactsNamedByPatient
-                        patient={'1823'}
-                        pageSize={5}></PatientProfileContactsNamedByPatient>
+                    <ClassicModalProvider>
+                        <PatientProfileContactsNamedByPatient
+                            patient={'1823'}
+                            pageSize={5}></PatientProfileContactsNamedByPatient>
+                    </ClassicModalProvider>
                 </MockedProvider>
             </MemoryRouter>
         );

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { usePage } from 'page';
 import { Document } from './PatientDocuments';
 import { PatientDocumentTable } from './PatientDocumentTable';
 
@@ -6,6 +8,15 @@ type Props = {
     patient?: string;
 };
 
-export const PatientDocumentContainer = ({ source, patient }: Props) => (
-    <PatientDocumentTable patient={patient} documents={source(patient)} />
-);
+export const PatientDocumentContainer = ({ source, patient }: Props) => {
+    const documents = source(patient);
+    const { firstPage } = usePage();
+
+    useEffect(() => {
+        if (patient) {
+            firstPage();
+        }
+    }, [patient]);
+
+    return <PatientDocumentTable patient={patient} documents={documents} />;
+};

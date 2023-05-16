@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { ClassicLink } from 'classic';
-import { usePage, goToPage } from 'page';
+import { ClassicLink, ClassicModalLink } from 'classic';
+import { usePage } from 'page';
 import { Direction } from 'sorting';
 import { AssociatedWith, Tracing, Contact, Headers } from './PatientContacts';
 import { SortCriteria, sort } from './PatientContactSorter';
@@ -14,14 +14,14 @@ const displayContact = (contact: Contact) => (
     </Link>
 );
 
-const displatAssociation = (patient: string, association?: AssociatedWith | null) =>
+const displayAssociation = (patient: string, association?: AssociatedWith | null) =>
     association && (
-        <div>
+        <>
             <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${association.id}`}>
                 {association?.local}
             </ClassicLink>
             <p className="margin-0">{association?.condition}</p>
-        </div>
+        </>
     );
 
 const displayDescription = (contact: Tracing) => (
@@ -47,19 +47,36 @@ const displayDescription = (contact: Tracing) => (
     </>
 );
 
-const asTableBody =
-    (patient: string) =>
-    (contact: Tracing | null): TableBody => ({
+type Props = {
+    patient?: string;
+    tracings: Tracing[];
+    title: string;
+    headings: { name: Headers; sortable: boolean }[];
+};
+
+export const PatientContactTable = ({ patient, tracings, title, headings }: Props) => {
+    const { page, request, reload } = usePage();
+    const [criteria, setCriteria] = useState<SortCriteria>({});
+
+    const [bodies, setBodies] = useState<TableBody[]>([]);
+
+    const handleModalClose = () => {
+        console.log('Contact Records Modal closed');
+        reload();
+    };
+
+    const asTableBody = (contact: Tracing): TableBody => ({
         id: contact?.event,
         checkbox: false,
         tableDetails: [
             {
                 id: 1,
                 title: contact && (
-                    <ClassicLink
-                        url={`/nbs/api/profile/${patient}/contact/${contact.contactRecord}?condition=${contact.condition?.id}`}>
+                    <ClassicModalLink
+                        url={`/nbs/api/profile/${patient}/contact/${contact.contactRecord}?condition=${contact.condition?.id}`}
+                        onClose={handleModalClose}>
                         {format(contact.createdOn, 'MM/dd/yyyy')} <br /> {format(contact.createdOn, 'hh:mm a')}
-                    </ClassicLink>
+                    </ClassicModalLink>
                 )
             },
             {
@@ -73,31 +90,17 @@ const asTableBody =
             },
             {
                 id: 5,
-                title: displatAssociation(patient, contact?.associatedWith)
+                title: patient && displayAssociation(patient, contact?.associatedWith)
             },
             { id: 6, title: contact?.event || null }
         ]
     });
 
-const asTableBodies = (patient: string, tracings: Tracing[]): TableBody[] => tracings?.map(asTableBody(patient)) || [];
-
-type Props = {
-    patient?: string;
-    tracings: Tracing[];
-    title: string;
-    headings: { name: Headers; sortable: boolean }[];
-};
-
-export const PatientContactTable = ({ patient, tracings, title, headings }: Props) => {
-    const { page, dispatch } = usePage();
-    const [criteria, setCriteria] = useState<SortCriteria>({});
-
-    const [bodies, setBodies] = useState<TableBody[]>([]);
-
     useEffect(() => {
         if (patient) {
             const sorted = sort(tracings, criteria);
-            setBodies(asTableBodies(patient, sorted));
+
+            setBodies(sorted.map(asTableBody));
         }
     }, [tracings, criteria]);
 
@@ -114,7 +117,7 @@ export const PatientContactTable = ({ patient, tracings, title, headings }: Prop
             pageSize={page.pageSize}
             totalResults={page.total}
             currentPage={page.current}
-            handleNext={goToPage(dispatch)}
+            handleNext={request}
             sortData={handleSort}
         />
     );

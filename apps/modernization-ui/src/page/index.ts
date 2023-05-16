@@ -1,1 +1,1 @@
-export { PageProvider, usePage, goToPage } from './page';
+export * from './usePage';
