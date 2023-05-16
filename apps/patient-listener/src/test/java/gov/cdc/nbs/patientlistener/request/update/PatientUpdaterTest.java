@@ -25,18 +25,26 @@ import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.message.patient.event.AddAddressData;
 import gov.cdc.nbs.message.patient.event.AddNameData;
+import gov.cdc.nbs.message.patient.event.AddPhoneData;
+import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
+import gov.cdc.nbs.message.patient.event.DeletePhoneData;
+import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEthnicityData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
+import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
+import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.patient.IdGeneratorService;
 import gov.cdc.nbs.patient.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -436,5 +444,114 @@ class PatientUpdaterTest {
                 321L,
                 Instant.now(),
                 "ethnicityCode");
+    }
+
+    @Test
+    void should_add_address_info() {
+        var data = getAddAddressData();
+        var person = new Person(123L, "localId");
+        patientUpdater.update(person, data);
+        verify(personRepository).save(personCaptor.capture());
+        var postalParticipation = (PostalEntityLocatorParticipation) personCaptor.getValue()
+                .getNbsEntity()
+                .getEntityLocatorParticipations()
+                .get(0);
+        var locator = postalParticipation.getLocator();
+        assertEquals(data.streetAddress1(), locator.getStreetAddr1());
+        assertEquals(data.streetAddress2(), locator.getStreetAddr2());
+    }
+
+    private AddAddressData getAddAddressData() {
+        return new AddAddressData(123L,
+                456L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "ST1",
+                "ST2",
+                "City",
+                "State",
+                "County",
+                "Country",
+                "zip",
+                "census");
+    }
+
+    @Test
+    void should_update_address_info() {
+        var data = getUpdateAddressData();
+        var person = new Person(123L, "localId");
+
+        var elp = new PostalEntityLocatorParticipation();
+        elp.setId(new EntityLocatorParticipationId(person.getId(), 456L));
+        elp.setNbsEntity(person.getNbsEntity());
+        elp.setVersionCtrlNbr((short) 321);
+
+        var postalLocator = new PostalLocator();
+        postalLocator.setId(456L);
+        postalLocator.setStreetAddr1("ST1");
+        postalLocator.setStreetAddr2("ST2");
+
+        elp.setLocator(postalLocator);
+        person.getNbsEntity().setEntityLocatorParticipations(Collections.singletonList(elp));
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        var postalParticipation = (PostalEntityLocatorParticipation) personCaptor.getValue()
+                .getNbsEntity()
+                .getEntityLocatorParticipations()
+                .get(0);
+        var locator = postalParticipation.getLocator();
+        assertEquals(data.streetAddress1(), locator.getStreetAddr1());
+        assertEquals(data.streetAddress2(), locator.getStreetAddr2());
+    }
+
+    private UpdateAddressData getUpdateAddressData() {
+        return new UpdateAddressData(123L,
+                (short) 456,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "ST1",
+                "ST2",
+                "City",
+                "State",
+                "County",
+                "Country",
+                "zip",
+                "census");
+    }
+
+    @Test
+    void should_delete_address_info() {
+        var data = getDeleteAddressData();
+        var person = new Person(123L, "localId");
+
+        var elp = new PostalEntityLocatorParticipation();
+        elp.setId(new EntityLocatorParticipationId(person.getId(), 456L));
+        elp.setNbsEntity(person.getNbsEntity());
+        elp.setVersionCtrlNbr((short) 1);
+
+        var postalLocator = new PostalLocator();
+        postalLocator.setId(456L);
+        postalLocator.setStreetAddr1("ST1");
+        postalLocator.setStreetAddr2("ST2");
+
+        elp.setLocator(postalLocator);
+        person.getNbsEntity().setEntityLocatorParticipations(Collections.singletonList(elp));
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+
+        assertEquals(0, personCaptor.getValue().getNbsEntity().getEntityLocatorParticipations().size());
+    }
+
+    private DeleteAddressData getDeleteAddressData() {
+        return new DeleteAddressData(123L,
+                (short) 456,
+                "RequestId",
+                321L,
+                Instant.now());
     }
 }

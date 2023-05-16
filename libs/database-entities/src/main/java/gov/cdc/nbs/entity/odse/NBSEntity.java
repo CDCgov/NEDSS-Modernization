@@ -98,8 +98,10 @@ public class NBSEntity {
     public boolean delete(
             final PatientCommand.DeleteAddress address) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
@@ -132,8 +134,10 @@ public class NBSEntity {
 
     public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
@@ -165,8 +169,10 @@ public class NBSEntity {
 
     public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, emailAddress.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 
     public EntityLocatorParticipation add(AddMortalityLocator mortality) {
@@ -189,7 +195,9 @@ public class NBSEntity {
 
     public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 }
