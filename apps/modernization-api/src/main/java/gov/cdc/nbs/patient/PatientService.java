@@ -53,6 +53,12 @@ import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
+import gov.cdc.nbs.message.patient.input.AddressInput;
+import gov.cdc.nbs.message.patient.input.EmailInput;
+import gov.cdc.nbs.message.patient.input.IdentificationInput;
+import gov.cdc.nbs.message.patient.input.PhoneInput;
+import gov.cdc.nbs.message.patient.input.EthnicityInput;
+import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
@@ -518,5 +524,101 @@ public class PatientService {
 
     private String getRequestId() {
         return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
+    }
+
+    public PatientEventResponse addPatientIdentification(IdentificationInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteIdentification(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse addPatientAddress(AddressInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = AddressInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientAddress(AddressInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteAddress(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse addPatientRace(RaceInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = RaceInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientRace(RaceInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = RaceInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientRace(Long patientId, String raceCd) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteRace(getRequestId(), patientId, raceCd, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updateEthnicity(EthnicityInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var updateEthnicityEvent = EthnicityInput.toRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(updateEthnicityEvent);
+    }
+
+    public PatientEventResponse addPatientPhone(PhoneInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientPhone(PhoneInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = PhoneInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientPhone(Long patientId, long id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeletePhone(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse addPatientEmail(EmailInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = EmailInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientEmail(EmailInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = EmailInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientEmail(Long patientId, long id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteEmail(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
     }
 }

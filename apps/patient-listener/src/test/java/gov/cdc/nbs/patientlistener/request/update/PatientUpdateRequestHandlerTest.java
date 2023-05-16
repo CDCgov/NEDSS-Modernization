@@ -27,6 +27,7 @@ import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.message.patient.event.UpdateEthnicityData;
 import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
 import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
@@ -87,8 +88,7 @@ class PatientUpdateRequestHandlerTest {
             ex = e;
         }
 
-
-        // verify  exception thrown, save requests are not called
+        // verify exception thrown, save requests are not called
         assertNotNull(ex);
         verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
         verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
@@ -181,7 +181,6 @@ class PatientUpdateRequestHandlerTest {
         when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         PatientNotFoundException ex = null;
-
 
         // call handle update mortality info
         try {
@@ -491,6 +490,55 @@ class PatientUpdateRequestHandlerTest {
                     data.patientId(),
                     data.personNameSeq(),
                     data.updatedBy());
+        } catch (UserNotAuthorizedException e) {
+            ex = e;
+        }
+
+        // verify exception thrown, save requests are not called
+        assertNotNull(ex);
+        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
+        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
+    }
+
+    @Test
+    void testEthnicityUpdateSuccess() {
+        var data = getEthnicityData();
+
+        // set valid mock returns
+        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Person(123L, "localId")));
+        when(patientUpdater.update(Mockito.any(), eq(data))).thenAnswer(i -> i.getArguments()[0]);
+
+        // call handle update gen info
+        updateHandler.handlePatientEthnicityUpdate(data);
+
+        // verify save requests called, success status sent
+        verify(patientUpdater, times(1)).update(Mockito.any(), eq(data));
+        verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
+        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(123L));
+    }
+
+    private UpdateEthnicityData getEthnicityData() {
+        return new UpdateEthnicityData(
+                123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "Ethnicity Data 1");
+    }
+
+    @Test
+    void testEthnicityInfoUpdateUnauthorized() {
+        var data = getEthnicityData();
+
+        // set unauthorized mock
+        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
+
+        UserNotAuthorizedException ex = null;
+
+        // call handle update mortality info
+        try {
+            updateHandler.handlePatientEthnicityUpdate(data);
         } catch (UserNotAuthorizedException e) {
             ex = e;
         }

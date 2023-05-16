@@ -13,6 +13,12 @@ Feature: I can send a patient update request
       | mortality     |
       | administrative|
       | name          |
+      | address       |
+      | email         |
+      | identification|
+      | phone         |
+      | ethnicity     |
+      | race          |
 
   @patient_update_permissions
   Scenario: I cant send update requests without the proper permissions
@@ -34,3 +40,24 @@ Feature: I can send a patient update request
       | name          | FIND-PATIENT,EDIT-PATIENT |
       | name          | FIND-PATIENT,VIEW-PATIENT |
       | name          | EDIT-PATIENT,VIEW-PATIENT |
+      | address       | FIND-PATIENT,EDIT-PATIENT |
+      | address       | FIND-PATIENT,VIEW-PATIENT |
+      | address       | EDIT-PATIENT,VIEW-PATIENT |
+      | ethnicity     | FIND-PATIENT,EDIT-PATIENT |
+      | ethnicity     | FIND-PATIENT,VIEW-PATIENT |
+      | ethnicity     | EDIT-PATIENT,VIEW-PATIENT |
+      | race          | FIND-PATIENT,EDIT-PATIENT |
+      | race          | FIND-PATIENT,VIEW-PATIENT |
+      | race          | EDIT-PATIENT,VIEW-PATIENT |
+      | mortality     | FIND-PATIENT,EDIT-PATIENT |
+      | mortality     | FIND-PATIENT,VIEW-PATIENT |
+      | mortality     | EDIT-PATIENT,VIEW-PATIENT |
+      | phone         | FIND-PATIENT,EDIT-PATIENT |
+      | phone         | FIND-PATIENT,VIEW-PATIENT |
+      | phone         | EDIT-PATIENT,VIEW-PATIENT |
+      | email         | FIND-PATIENT,EDIT-PATIENT |
+      | email         | FIND-PATIENT,VIEW-PATIENT |
+      | email         | EDIT-PATIENT,VIEW-PATIENT |
+      | identification| FIND-PATIENT,EDIT-PATIENT |
+      | identification| FIND-PATIENT,VIEW-PATIENT |
+      | identification| EDIT-PATIENT,VIEW-PATIENT |

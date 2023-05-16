@@ -1,6 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -462,12 +461,33 @@ public class Person {
         return personName;
     }
 
-
     private Collection<PersonName> ensureNames() {
         if (this.names == null) {
             this.names = new ArrayList<>();
         }
         return this.names;
+    }
+
+    public EntityId add(final PatientCommand.AddIdentification added) {
+
+        Collection<EntityId> existing = ensureEntityIds();
+        EntityIdId identifier = new EntityIdId(this.id, (short) existing.size());
+
+        EntityId entityId = new EntityId();
+        entityId.setId(identifier);
+        entityId.setAssigningAuthorityCd(added.assigningAuthority());
+        entityId.setRootExtensionTxt(added.identificationNumber());
+        entityId.setTypeCd(added.identificationType());
+        existing.add(entityId);
+
+        return entityId;
+    }
+
+    private Collection<EntityId> ensureEntityIds() {
+        if (this.entityIds == null) {
+            this.entityIds = new ArrayList<>();
+        }
+        return this.entityIds;
     }
 
     public PersonRace add(final PatientCommand.AddRace added) {
@@ -502,6 +522,30 @@ public class Person {
 
     public EntityLocatorParticipation add(AddMortalityLocator mortality) {
         return this.nbsEntity.add(mortality);
+    }
+
+    public EntityLocatorParticipation update(final PatientCommand.UpdateAddress address) {
+        return this.nbsEntity.update(address);
+    }
+
+    public EntityLocatorParticipation update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
+        return this.nbsEntity.update(phoneNumber);
+    }
+
+    public EntityLocatorParticipation update(final PatientCommand.UpdateEmailAddress emailAddress) {
+        return this.nbsEntity.update(emailAddress);
+    }
+
+    public EntityLocatorParticipation delete(final PatientCommand.DeleteAddress address) {
+        return this.nbsEntity.delete(address);
+    }
+
+    public EntityLocatorParticipation delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
+        return this.nbsEntity.delete(phoneNumber);
+    }
+
+    public EntityLocatorParticipation delete(final PatientCommand.DeleteEmailAddress emailAddress) {
+        return this.nbsEntity.delete(emailAddress);
     }
 
     public void update(PatientCommand.UpdateGeneralInfo info) {
@@ -546,7 +590,7 @@ public class Person {
         Collection<PersonName> existing = ensureNames();
         PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
 
-        existing.stream().filter(p -> p.getId()!=null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
+        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
             p.setFirstNm(info.first());
             p.setMiddleNm(info.middle());
             p.setLastNm(info.last());
@@ -589,7 +633,6 @@ public class Person {
         setLastChange(info);
     }
 
-
     public void delete(PatientCommand.Delete delete) {
         this.setRecordStatusCd(RecordStatus.LOG_DEL);
         this.setRecordStatusTime(delete.requestedOn());
@@ -623,5 +666,71 @@ public class Person {
         return "Person{" +
                 "id=" + id +
                 '}';
+    }
+
+    public void update(PatientCommand.AddIdentification info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.add(info);
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateIdentification info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+
+        Collection<EntityId> existing = ensureIdentifications();
+        EntityIdId identifier = new EntityIdId(info.person(), info.id());
+
+        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
+            p.setAssigningAuthorityCd(info.assigningAuthority());
+            p.setRootExtensionTxt(info.identificationNumber());
+            p.setTypeCd(info.identificationType());
+        });
+
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    private Collection<EntityId> ensureIdentifications() {
+        if (this.entityIds == null) {
+            this.entityIds = new ArrayList<>();
+        }
+        return this.entityIds;
+    }
+
+    public void delete(PatientCommand.DeleteIdentification info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        EntityIdId identifier = new EntityIdId(info.person(), info.id());
+        List<EntityId> arraylist = new ArrayList<>(this.entityIds);
+        arraylist.removeIf(item -> (item.getId().equals(identifier)));
+        this.entityIds = arraylist;
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateEthnicityInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.setEthnicityGroupCd(info.ethnicityCode());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void update(PatientCommand.UpdateRaceInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.setRaceCd(info.raceCd());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
+    }
+
+    public void delete(PatientCommand.DeleteRaceInfo info) {
+        this.setLastChgTime(info.requestedOn());
+        this.setLastChgUserId(info.requester());
+        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+        setLastChange(info);
     }
 }

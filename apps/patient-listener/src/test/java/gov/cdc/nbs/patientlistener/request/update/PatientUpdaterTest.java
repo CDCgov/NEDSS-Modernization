@@ -31,6 +31,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.AddNameData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
+import gov.cdc.nbs.message.patient.event.UpdateEthnicityData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
@@ -386,5 +387,54 @@ class PatientUpdaterTest {
                 "RequestId",
                 321L,
                 Instant.now());
+    }
+
+    /*
+     * @Test
+     * void should_update_race_info() {
+     * var data = getRaceData();
+     * var person = new Person(123L, "localId");
+     * person.setVersionCtrlNbr((short) 2);
+     * patientUpdater.update(person, data);
+     * 
+     * verify(personRepository).save(personCaptor.capture());
+     * var savedPerson = personCaptor.getValue();
+     * 
+     * var now = Instant.now();
+     * 
+     * assertEquals(data.raceCd(), savedPerson.getRaceCd());
+     * 
+     * assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
+     * assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
+     * assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
+     * assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
+     * }
+     */
+    @Test
+    void should_update_ethnicity_info() {
+        var data = getEthnicityData();
+        var person = new Person(123L, "localId");
+        person.setVersionCtrlNbr((short) 2);
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        var savedPerson = personCaptor.getValue();
+
+        var now = Instant.now();
+
+        assertEquals(data.ethnicityGroupCd(), savedPerson.getEthnicityGroupCd());
+
+        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
+        assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
+        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
+        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
+    }
+
+    private UpdateEthnicityData getEthnicityData() {
+        return new UpdateEthnicityData(123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "ethnicityCode");
     }
 }
