@@ -155,6 +155,13 @@ public sealed interface PatientCommand {
                         Instant requestedOn) implements PatientCommand {
         }
 
+        record DeleteMortalityLocator(
+                        long person,
+                        long id,
+                        long requester,
+                        Instant requestedOn) implements PatientCommand {
+        }
+
         record AddMortalityLocator(
                         long person,
                         long id,

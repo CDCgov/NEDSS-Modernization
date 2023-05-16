@@ -186,4 +186,10 @@ public class NBSEntity {
 
         return participation;
     }
+
+    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
+        List<EntityLocatorParticipation> existing = ensureLocators();
+        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+    }
 }

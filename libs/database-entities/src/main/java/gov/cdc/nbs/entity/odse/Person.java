@@ -538,6 +538,10 @@ public class Person {
         return this.nbsEntity.update(emailAddress);
     }
 
+    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
+        return this.nbsEntity.delete(mortality);
+    }
+
     public boolean delete(final PatientCommand.DeleteAddress address) {
         return this.nbsEntity.delete(address);
     }
@@ -722,10 +726,15 @@ public class Person {
         setLastChange(info);
     }
 
-    public void delete(PatientCommand.DeleteRaceInfo info) {
+    public boolean delete(PatientCommand.DeleteRaceInfo info) {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
+        List<PersonRace> arraylist = new ArrayList<>(this.races);
+        boolean isDeleted = arraylist.removeIf(
+                item -> (item.getPersonUid().getId() == info.person() && item.getRaceCd().equals(info.raceCd())));
+        this.races = arraylist;
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
+        return isDeleted;
     }
 }

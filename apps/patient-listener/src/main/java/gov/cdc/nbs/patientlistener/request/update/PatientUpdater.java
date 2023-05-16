@@ -29,6 +29,7 @@ import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.AddIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
+import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.AddPhoneData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
@@ -165,6 +166,11 @@ public class PatientUpdater {
                             person.add(asAddMortalityLocator(data, id));
                         });
 
+        return personRepository.save(person);
+    }
+
+    public Person update(final Person person, final DeleteMortalityData data) {
+        person.delete(asDeleteMortalityLocator(data));
         return personRepository.save(person);
     }
 
@@ -408,6 +414,14 @@ public class PatientUpdater {
 
     private PatientCommand.DeletePhoneNumber asDeletePhoneInfo(DeletePhoneData data) {
         return new PatientCommand.DeletePhoneNumber(
+                data.patientId(),
+                data.id(),
+                data.updatedBy(),
+                Instant.now());
+    }
+
+    private PatientCommand.DeleteMortalityLocator asDeleteMortalityLocator(DeleteMortalityData data) {
+        return new PatientCommand.DeleteMortalityLocator(
                 data.patientId(),
                 data.id(),
                 data.updatedBy(),
