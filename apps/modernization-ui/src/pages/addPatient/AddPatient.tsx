@@ -121,10 +121,7 @@ export default function AddPatient() {
                                             type={'button'}>
                                             Save and add new lab report
                                         </Button>
-                                        <Button
-                                            disabled={disabled}
-                                            className="padding-x-3 add-patient-button"
-                                            type={'submit'}>
+                                        <Button className="padding-x-3 add-patient-button" type={'submit'}>
                                             Save changes
                                         </Button>
                                     </div>
@@ -160,6 +157,7 @@ export default function AddPatient() {
                                             control={control}
                                             id={'section-Telephone'}
                                             title="Telephone"
+                                            errors={errors}
                                         />
                                         <EthnicityFields id={'section-Ethnicity'} title="Ethnicity" />
                                         <RaceFields id={'section-Race'} title={'Race'} />
