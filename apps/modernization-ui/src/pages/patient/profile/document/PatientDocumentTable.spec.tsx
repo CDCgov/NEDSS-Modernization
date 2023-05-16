@@ -6,7 +6,7 @@ describe('when rendered', () => {
     it('should display sentence cased document headers', async () => {
         const { container } = render(
             <PageProvider>
-                <PatientDocumentTable nbsBase={'base'} documents={[]}></PatientDocumentTable>
+                <PatientDocumentTable patient={'patient'} documents={[]}></PatientDocumentTable>
             </PageProvider>
         );
 
@@ -25,15 +25,15 @@ describe('when rendered', () => {
     });
 });
 
-describe('when documents are not available for a patient', () => {
-    it('should display Not Available', async () => {
+describe('when documents are No data for a patient', () => {
+    it('should display No data', async () => {
         const { findByText } = render(
             <PageProvider>
-                <PatientDocumentTable nbsBase={'base'} documents={[]}></PatientDocumentTable>
+                <PatientDocumentTable patient={'patient'} documents={[]}></PatientDocumentTable>
             </PageProvider>
         );
 
-        expect(await findByText('Not Available')).toBeInTheDocument();
+        expect(await findByText('No data')).toBeInTheDocument();
     });
 });
 
@@ -58,7 +58,7 @@ describe('when at least one document is available for a patient', () => {
     it('should display the documents', async () => {
         const { container, findByText } = render(
             <PageProvider>
-                <PatientDocumentTable nbsBase={'base'} documents={documents}></PatientDocumentTable>
+                <PatientDocumentTable patient={'patient'} documents={documents}></PatientDocumentTable>
             </PageProvider>
         );
 
@@ -67,10 +67,6 @@ describe('when at least one document is available for a patient', () => {
         const dateCreated = await findByText(/10\/07\/2021/);
 
         expect(dateCreated).toHaveTextContent('10:01 AM');
-        expect(dateCreated).toHaveAttribute(
-            'href',
-            'base/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=document-id'
-        );
 
         expect(tableData[0]).toContainElement(dateCreated);
 

@@ -1,14 +1,19 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.time.Instant;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -85,4 +90,24 @@ public class ActRelationship {
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
 
+    public ActRelationship(
+        Act source,
+        Act target,
+        String type
+    ) {
+        this.id = new ActRelationshipId(
+            source.getId(),
+            target.getId(),
+            type
+        );
+
+        this.sourceActUid = source;
+        this.sourceClassCd = source.getClassCd();
+
+        this.targetActUid = target;
+        this.targetClassCd = target.getClassCd();
+
+        this.recordStatusCd = "ACTIVE";
+        this.statusCd = 'A';
+    }
 }

@@ -1,7 +1,9 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,11 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -49,10 +48,21 @@ public class Act {
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private List<Intervention> interventions;
 
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
+    private List<Treatment> treatments;
+
     @OneToMany(mappedBy = "targetActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ActRelationship> targetActRelationships;
 
-    @OneToMany(mappedBy = "sourceActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(
+        mappedBy = "sourceActUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        }
+    )
     private List<ActRelationship> actRelationships;
 
     public Act(final long identifier, final String classCd) {
@@ -67,10 +77,26 @@ public class Act {
     }
 
     private List<Participation> ensureParticipation() {
-        if(this.participations == null) {
+        if (this.participations == null) {
             this.participations = new ArrayList<>();
         }
 
         return this.participations;
+    }
+
+    private List<ActRelationship> ensureRelationships() {
+        if(this.actRelationships == null) {
+            this.actRelationships = new ArrayList<>();
+        }
+        return this.actRelationships;
+    }
+
+    public void addRelationship(final Act target, final String type) {
+        ActRelationship relationship = new ActRelationship(
+            this,
+            target,
+            type
+        );
+        ensureRelationships().add(relationship);
     }
 }

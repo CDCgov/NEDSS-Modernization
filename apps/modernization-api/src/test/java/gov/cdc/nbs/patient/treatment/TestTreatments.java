@@ -1,10 +1,8 @@
-package gov.cdc.nbs.patient.document;
+package gov.cdc.nbs.patient.treatment;
 
 import gov.cdc.nbs.support.TestAvailable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestDocuments extends TestAvailable<Long> {
-
-
+public class TestTreatments extends TestAvailable<Long> {
 }

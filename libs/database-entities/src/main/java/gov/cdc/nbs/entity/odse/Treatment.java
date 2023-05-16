@@ -1,15 +1,22 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -20,9 +27,27 @@ public class Treatment {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.REMOVE
+        },
+        optional = false
+    )
     @JoinColumn(name = "treatment_uid", nullable = false)
     private Act act;
+
+    @OneToMany(
+        mappedBy = "treatmentUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        }
+    )
+    private List<TreatmentAdministered> administered;
 
     @Column(name = "activity_duration_amt", length = 20)
     private String activityDurationAmt;
@@ -105,4 +130,30 @@ public class Treatment {
     @Column(name = "version_ctrl_nbr")
     private Short versionCtrlNbr;
 
+    public Treatment(long identifier, String localId) {
+        this.id = identifier;
+        this.localId = localId;
+        this.sharedInd = 'F';
+        this.versionCtrlNbr = 1;
+
+        this.act = new Act(identifier, "TRMT");
+
+    }
+
+    private List<TreatmentAdministered> ensureAdministered() {
+        if (this.administered == null) {
+            this.administered = new ArrayList<>();
+        }
+        return this.administered;
+    }
+
+    public List<TreatmentAdministered> getAdministered() {
+        return this.administered == null ? List.of() : List.copyOf(this.administered);
+    }
+
+    public TreatmentAdministered administer() {
+        TreatmentAdministered given = new TreatmentAdministered(this);
+        ensureAdministered().add(given);
+        return given;
+    }
 }

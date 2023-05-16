@@ -12,26 +12,29 @@ type PatientLabReportTableProps = {
 export const GeneralPatient = ({ patient }: PatientLabReportTableProps) => {
     const [generalTableData, setGeneralTableData] = useState<any>();
     const handleComplete = (data: FindPatientProfileQuery) => {
-        if (data?.findPatientProfile?.general) {
-            setGeneralTableData([
-                {
-                    title: 'As of:',
-                    text: format(new Date(data?.findPatientProfile?.general.asOf), 'MM/dd/yyyy')
-                },
-                { title: 'Marital status:', text: data?.findPatientProfile?.general.maritalStatus?.description },
-                { title: 'Mother’s maiden name:', text: data?.findPatientProfile?.general.maternalMaidenName },
-                { title: 'Number of adults in residence:', text: data?.findPatientProfile?.general.adultsInHouse },
-                { title: 'Number of children in residence:', text: data?.findPatientProfile?.general.childrenInHouse },
-                { title: 'Primary occupation:', text: data?.findPatientProfile?.general.occupation?.description },
-                {
-                    title: 'Highest level of education:',
-                    text: data?.findPatientProfile?.general.educationLevel?.description
-                },
-                { title: 'Primary language:', text: data?.findPatientProfile?.general.primaryLanguage?.description },
-                { title: 'Speaks english:', text: data?.findPatientProfile?.general.speaksEnglish?.description },
-                { title: 'State HIV case ID:', text: data?.findPatientProfile?.general.stateHIVCase }
-            ]);
-        }
+        setGeneralTableData([
+            {
+                title: 'As of:',
+                text: data?.findPatientProfile?.general
+                    ? format(new Date(data?.findPatientProfile?.general?.asOf), 'MM/dd/yyyy')
+                    : ''
+            },
+            { title: 'Marital status:', text: data?.findPatientProfile?.general?.maritalStatus?.description || '' },
+            { title: 'Mother’s maiden name:', text: data?.findPatientProfile?.general?.maternalMaidenName || '' },
+            { title: 'Number of adults in residence:', text: data?.findPatientProfile?.general?.adultsInHouse || '' },
+            {
+                title: 'Number of children in residence:',
+                text: data?.findPatientProfile?.general?.childrenInHouse || ''
+            },
+            { title: 'Primary occupation:', text: data?.findPatientProfile?.general?.occupation?.description || '' },
+            {
+                title: 'Highest level of education:',
+                text: data?.findPatientProfile?.general?.educationLevel?.description || ''
+            },
+            { title: 'Primary language:', text: data?.findPatientProfile?.general?.primaryLanguage?.description || '' },
+            { title: 'Speaks english:', text: data?.findPatientProfile?.general?.speaksEnglish?.description || '' },
+            { title: 'State HIV case ID:', text: data?.findPatientProfile?.general?.stateHIVCase || '' }
+        ]);
     };
 
     const [getProfile, { data }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });

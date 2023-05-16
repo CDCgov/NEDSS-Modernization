@@ -3,13 +3,12 @@ import { render } from '@testing-library/react';
 import { FindDocumentsForPatientDocument } from 'generated/graphql/schema';
 
 import { MockedProvider } from '@apollo/client/testing';
-import { PageProvider } from 'page';
 
 describe('when rendered', () => {
     it('should display sentence cased document headers', async () => {
         const { container } = render(
             <MockedProvider addTypename={false}>
-                <PatientProfileDocuments nbsBase={'base'} pageSize={1}></PatientProfileDocuments>
+                <PatientProfileDocuments pageSize={1}></PatientProfileDocuments>
             </MockedProvider>
         );
 
@@ -28,7 +27,7 @@ describe('when rendered', () => {
     });
 });
 
-describe('when documents are not available for a patient', () => {
+describe('when documents are No data for a patient', () => {
     const response = {
         request: {
             query: FindDocumentsForPatientDocument,
@@ -51,14 +50,14 @@ describe('when documents are not available for a patient', () => {
         }
     };
 
-    it('should display Not Available', async () => {
+    it('should display No data', async () => {
         const { findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientProfileDocuments patient={'73'} nbsBase={'base'} pageSize={10}></PatientProfileDocuments>
+                <PatientProfileDocuments patient={'73'} pageSize={10}></PatientProfileDocuments>
             </MockedProvider>
         );
 
-        expect(await findByText('Not Available')).toBeInTheDocument();
+        expect(await findByText('No data')).toBeInTheDocument();
     });
 });
 
@@ -103,7 +102,7 @@ describe('when at least one document is available for a patient', () => {
     it('should display the documents', async () => {
         const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientProfileDocuments patient={'1823'} nbsBase={'base'} pageSize={10}></PatientProfileDocuments>
+                <PatientProfileDocuments patient={'1823'} pageSize={10}></PatientProfileDocuments>
             </MockedProvider>
         );
 
@@ -114,10 +113,6 @@ describe('when at least one document is available for a patient', () => {
         const dateCreated = await findByText(/10\/07\/2021/);
 
         expect(dateCreated).toHaveTextContent('10:01 AM');
-        expect(dateCreated).toHaveAttribute(
-            'href',
-            'base/ViewFile1.do?ContextAction=DocumentIDOnEvents&nbsDocumentUid=document-id'
-        );
 
         expect(tableData[0]).toContainElement(dateCreated);
 
@@ -176,7 +171,7 @@ describe('when documents are available for a patient', () => {
     it('should display the documents', async () => {
         const { container, findByText } = render(
             <MockedProvider mocks={[response]} addTypename={false}>
-                <PatientProfileDocuments patient={'1823'} nbsBase={'base'} pageSize={5}></PatientProfileDocuments>
+                <PatientProfileDocuments patient={'1823'} pageSize={5}></PatientProfileDocuments>
             </MockedProvider>
         );
 
