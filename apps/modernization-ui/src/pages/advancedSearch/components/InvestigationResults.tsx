@@ -84,7 +84,7 @@ export const InvestigationResults = ({
         }
 
         const redirectPatientProfile = async () => {
-            navigate(`/patient-profile/${patient?.personParentUid}`);
+            navigate(`/patient-profile/${patient?.shortId}`);
         };
 
         return (
@@ -118,7 +118,7 @@ export const InvestigationResults = ({
                     </div>
                     <div className="grid-row flex-align-center">
                         <h5 className="margin-0 text-normal font-sans-3xs text-gray-50 margin-right-1">PATIENT ID</h5>
-                        <p className="margin-0 font-sans-2xs text-normal">{patient?.localId}</p>
+                        <p className="margin-0 font-sans-2xs text-normal">{patient?.shortId}</p>
                     </div>
                 </Grid>
             </Grid>

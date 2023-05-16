@@ -45,6 +45,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
                 personParentUid
                 personRecordStatus
                 personLastChangeTime
+                shortId
             }
             organizationParticipations{
                 actUid

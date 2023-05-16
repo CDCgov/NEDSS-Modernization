@@ -30,7 +30,7 @@ export const usePatientProfile = (patient?: string) => {
         if (patient) {
             getProfile({
                 variables: {
-                    patient: patient
+                    shortId: +patient
                 }
             });
         }
