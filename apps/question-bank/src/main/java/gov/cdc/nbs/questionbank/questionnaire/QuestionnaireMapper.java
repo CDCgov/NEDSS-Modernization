@@ -98,14 +98,14 @@ class QuestionnaireMapper {
         }
     }
 
-    private Questionnaire.Section toSection(DisplayElementGroupEntity displayGroup) {
+    Questionnaire.Section toSection(DisplayElementGroupEntity displayGroup) {
         return new Questionnaire.Section(
                 displayGroup.getId(),
                 displayGroup.getLabel(),
                 displayGroup.getElements().stream().map(this::toDisplayElement).toList());
     }
 
-    private Questionnaire.OptionSet toOptionSet(ValueSet valueSet) {
+    Questionnaire.OptionSet toOptionSet(ValueSet valueSet) {
         return new Questionnaire.OptionSet(
                 valueSet.getId(),
                 valueSet.getName(),
@@ -113,7 +113,7 @@ class QuestionnaireMapper {
                 valueSet.getValues().stream().map(this::toOption).toList());
     }
 
-    private Questionnaire.Option toOption(Value value) {
+    Questionnaire.Option toOption(Value value) {
         return new Questionnaire.Option(
                 value.getId(),
                 value.getValue(),

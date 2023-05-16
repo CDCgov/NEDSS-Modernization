@@ -41,6 +41,14 @@ class QuestionnaireMapperTest {
     void should_return_questionnaire() {
         Questionnaire q = questionnaireMapper.toQuestionnaire(emptyEntity());
         assertNotNull(q);
+        assertEquals(0, q.elements().size());
+    }
+
+    @Test
+    void should_return_questionnaire_with_content() {
+        Questionnaire q = questionnaireMapper.toQuestionnaire(fullEntity());
+        assertNotNull(q);
+        assertEquals(6, q.elements().size());
     }
 
     @Test
@@ -55,6 +63,26 @@ class QuestionnaireMapperTest {
     }
 
     @Test
+    void toElement_should_return_text_element() {
+        DisplayElementRef ref = displayRef(textEntity(), 1);
+        Questionnaire.Element element = questionnaireMapper.toElement(ref);
+        assertThat(element).isInstanceOf(Questionnaire.Text.class);
+    }
+
+    @Test
+    void toElement_should_return_section() {
+        DisplayElementGroupEntity entity = groupElementEntity();
+        DisplayGroupRef ref = displayGroupRef(entity, 1);
+        Questionnaire.Section element = (Section) questionnaireMapper.toElement(ref);
+        assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getLabel(), element.label());
+        TextEntity textEntity = (TextEntity) entity.getElements().get(0);
+        Questionnaire.Text text = (Text) element.elements().get(0);
+        assertEquals(textEntity.getText(), text.text());
+        assertEquals(textEntity.getId().longValue(), text.id());
+    }
+
+    @Test
     void toDisplayElement_should_throw_exception_for_invalid_type() {
         DisplayElementEntity element = new DisplayElementEntity() {
             @Override
@@ -66,101 +94,81 @@ class QuestionnaireMapperTest {
     }
 
     @Test
-    void should_return_questionnaire_with_correct_content() {
-        QuestionnaireEntity entity = fullEntity();
-        Questionnaire q = questionnaireMapper.toQuestionnaire(entity);
-        assertNotNull(q);
-        assertThat(q.conditions()).containsExactly(entity.getConditionCodes().get(0));
-
-
-        // text element
-        var textEntity = ((TextEntity) ((DisplayElementRef) entity.getReferences().get(0)).getDisplayElementEntity());
-        var textElement = (Text) q.elements().get(0);
-        assertEquals(textEntity.getText(), textElement.text());
-        assertEquals(textEntity.getId().longValue(), textElement.id());
-
-        // text question
-        var textQuestionEntity =
-                ((TextQuestionEntity) ((DisplayElementRef) entity.getReferences().get(1)).getDisplayElementEntity());
-        var textQuestionElement = (TextQuestion) q.elements().get(1);
-        assertEquals(textQuestionEntity.getLabel(), textQuestionElement.label());
-        assertEquals(textQuestionEntity.getId().longValue(), textQuestionElement.id());
-        assertEquals(textQuestionEntity.getMaxLength(), textQuestionElement.maxLength());
-        assertEquals(textQuestionEntity.getPlaceholder(), textQuestionElement.placeholder());
-        assertEquals(textQuestionEntity.getTooltip(), textQuestionElement.tooltip());
-
-        // numeric question
-        var numericQuestionEntity =
-                ((NumericQuestionEntity) ((DisplayElementRef) entity.getReferences().get(2)).getDisplayElementEntity());
-        var numericQuestionElement = (NumericQuestion) q.elements().get(2);
-        assertEquals(numericQuestionEntity.getLabel(), numericQuestionElement.label());
-        assertEquals(numericQuestionEntity.getId().longValue(), numericQuestionElement.id());
-        assertEquals(numericQuestionEntity.getMaxValue(), numericQuestionElement.maxValue());
-        assertEquals(numericQuestionEntity.getMinValue(), numericQuestionElement.minValue());
-        assertEquals(numericQuestionEntity.getTooltip(), numericQuestionElement.tooltip());
-
-        assertEquals(numericQuestionEntity.getUnitsSet().getName(), numericQuestionElement.unitOptions().name());
-        assertEquals(numericQuestionEntity.getUnitsSet().getDescription(),
-                numericQuestionElement.unitOptions().description());
-
-        numericQuestionEntity.getUnitsSet().getValues().forEach(v -> {
-            Optional<Option> o = numericQuestionElement.unitOptions().options().stream().filter(option -> {
-                return option.display().equals(v.getDisplay()) &&
-                        option.id() == v.getId().longValue() &&
-                        option.value().equals(v.getValue());
-            }).findFirst();
-            assertTrue(o.isPresent());
-        });
-
-        // date question
-        var dateQuestionEntity =
-                ((DateQuestionEntity) ((DisplayElementRef) entity.getReferences().get(3)).getDisplayElementEntity());
-        var dateQuestionElement = (DateQuestion) q.elements().get(3);
-        assertEquals(dateQuestionEntity.getId().longValue(), dateQuestionElement.id());
-        assertEquals(dateQuestionEntity.getLabel(), dateQuestionElement.label());
-        assertEquals(dateQuestionEntity.getTooltip(), dateQuestionElement.tooltip());
-        assertEquals(dateQuestionEntity.isAllowFuture(), dateQuestionElement.allowFutureDates());
-
-        // drop down question
-        var ddQuestionEntity =
-                ((DropDownQuestionEntity) ((DisplayElementRef) entity.getReferences().get(4))
-                        .getDisplayElementEntity());
-        var ddQuestionElement = (DropDownQuestion) q.elements().get(4);
-
-        assertEquals(ddQuestionEntity.getId().longValue(), ddQuestionElement.id());
-        assertEquals(ddQuestionEntity.getLabel(), ddQuestionElement.label());
-        assertEquals(ddQuestionEntity.getTooltip(), ddQuestionElement.tooltip());
-        assertEquals(ddQuestionEntity.isMultiSelect(), ddQuestionElement.isMultiSelect());
-        assertEquals(ddQuestionEntity.getDefaultAnswer().getDisplay(), ddQuestionElement.defaultOption().display());
-        assertEquals(ddQuestionEntity.getDefaultAnswer().getValue(), ddQuestionElement.defaultOption().value());
-        assertEquals(ddQuestionEntity.getValueSet().getName(), ddQuestionElement.optionSet().name());
-        assertEquals(ddQuestionEntity.getValueSet().getId().longValue(), ddQuestionElement.optionSet().id());
-        assertEquals(ddQuestionEntity.getValueSet().getDescription(), ddQuestionElement.optionSet().description());
-
-        ddQuestionEntity.getValueSet().getValues().forEach(v -> {
-            Optional<Option> o = ddQuestionElement.optionSet().options().stream().filter(option -> {
-                return option.display().equals(v.getDisplay()) &&
-                        option.id() == v.getId().longValue() &&
-                        option.value().equals(v.getValue());
-            }).findFirst();
-            assertTrue(o.isPresent());
-        });
-
-        // display group
-        var displayGroupEntity =
-                ((DisplayElementGroupEntity) ((DisplayGroupRef) entity.getReferences().get(5)).getDisplayGroup());
-        var section = (Section) q.elements().get(5);
-        assertEquals(displayGroupEntity.getId().longValue(), section.id());
-        assertEquals(displayGroupEntity.getLabel(), section.label());
-
-
-        TextEntity groupTextEntity = (TextEntity) displayGroupEntity.getElements().get(0);
-        Text sectionText = (Text) section.elements().get(0);
-
-        assertEquals(groupTextEntity.getId().longValue(), sectionText.id());
-        assertEquals(groupTextEntity.getText(), sectionText.text());
+    void toDisplayElement_should_return_Text() {
+        TextEntity entity = textEntity();
+        Questionnaire.Text element = (Text) questionnaireMapper.toDisplayElement(entity);
+        assertEquals(entity.getText(), element.text());
+        assertEquals(entity.getId().longValue(), element.id());
     }
 
+    @Test
+    void toDisplayElement_should_return_TextQuestion() {
+        TextQuestionEntity entity = textQuestionEntity();
+        Questionnaire.TextQuestion element = (TextQuestion) questionnaireMapper.toDisplayElement(entity);
+
+        assertEquals(entity.getLabel(), element.label());
+        assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getMaxLength(), element.maxLength());
+        assertEquals(entity.getPlaceholder(), element.placeholder());
+        assertEquals(entity.getTooltip(), element.tooltip());
+    }
+
+    @Test
+    void toDisplayElement_should_return_NumericQuestion() {
+        NumericQuestionEntity entity = numericQuestionEntity();
+        Questionnaire.NumericQuestion element = (NumericQuestion) questionnaireMapper.toDisplayElement(entity);
+        assertEquals(entity.getLabel(), element.label());
+        assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getMaxValue(), element.maxValue());
+        assertEquals(entity.getMinValue(), element.minValue());
+        assertEquals(entity.getTooltip(), element.tooltip());
+
+        assertEquals(entity.getUnitsSet().getName(), element.unitOptions().name());
+        assertEquals(entity.getUnitsSet().getDescription(), element.unitOptions().description());
+
+        entity.getUnitsSet().getValues().forEach(v -> {
+            Optional<Option> o = element.unitOptions().options().stream().filter(option -> {
+                return option.display().equals(v.getDisplay()) &&
+                        option.id() == v.getId().longValue() &&
+                        option.value().equals(v.getValue());
+            }).findFirst();
+            assertTrue(o.isPresent());
+        });
+    }
+
+    @Test
+    void toDisplayElement_should_return_DateQuestion() {
+        DateQuestionEntity entity = dateQuestionEntity();
+        Questionnaire.DateQuestion element = (DateQuestion) questionnaireMapper.toDisplayElement(entity);
+        assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getLabel(), element.label());
+        assertEquals(entity.getTooltip(), element.tooltip());
+        assertEquals(entity.isAllowFuture(), element.allowFutureDates());
+    }
+
+    @Test
+    void toDisplayElement_should_return_DropDownQuestion() {
+        DropDownQuestionEntity entity = dropDownQuestionEntity();
+        Questionnaire.DropDownQuestion element = (DropDownQuestion) questionnaireMapper.toDisplayElement(entity);
+        assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getLabel(), element.label());
+        assertEquals(entity.getTooltip(), element.tooltip());
+        assertEquals(entity.isMultiSelect(), element.isMultiSelect());
+        assertEquals(entity.getDefaultAnswer().getDisplay(), element.defaultOption().display());
+        assertEquals(entity.getDefaultAnswer().getValue(), element.defaultOption().value());
+        assertEquals(entity.getValueSet().getName(), element.optionSet().name());
+        assertEquals(entity.getValueSet().getId().longValue(), element.optionSet().id());
+        assertEquals(entity.getValueSet().getDescription(), element.optionSet().description());
+
+        entity.getValueSet().getValues().forEach(v -> {
+            Optional<Option> o = element.optionSet().options().stream().filter(option -> {
+                return option.display().equals(v.getDisplay()) &&
+                        option.id() == v.getId().longValue() &&
+                        option.value().equals(v.getValue());
+            }).findFirst();
+            assertTrue(o.isPresent());
+        });
+    }
 
     private QuestionnaireEntity emptyEntity() {
         QuestionnaireEntity entity = new QuestionnaireEntity();
@@ -213,14 +221,14 @@ class QuestionnaireMapperTest {
         return ref;
     }
 
-    private DisplayElementEntity textEntity() {
+    private TextEntity textEntity() {
         var e = new TextEntity();
         e.setId(1L);
         e.setText("Text element");
         return e;
     }
 
-    private DisplayElementEntity dropDownQuestionEntity() {
+    private DropDownQuestionEntity dropDownQuestionEntity() {
         var e = new DropDownQuestionEntity();
         e.setId(2L);
         e.setDefaultAnswer(milliliters(null));
@@ -231,7 +239,7 @@ class QuestionnaireMapperTest {
         return e;
     }
 
-    private DisplayElementEntity dateQuestionEntity() {
+    private DateQuestionEntity dateQuestionEntity() {
         var e = new DateQuestionEntity();
         e.setId(3L);
         e.setAllowFuture(true);
@@ -241,7 +249,7 @@ class QuestionnaireMapperTest {
         return e;
     }
 
-    private DisplayElementEntity textQuestionEntity() {
+    private TextQuestionEntity textQuestionEntity() {
         var e = new TextQuestionEntity();
         e.setId(4L);
         e.setLabel("Text question label");
@@ -252,7 +260,7 @@ class QuestionnaireMapperTest {
         return e;
     }
 
-    private DisplayElementEntity numericQuestionEntity() {
+    private NumericQuestionEntity numericQuestionEntity() {
         var e = new NumericQuestionEntity();
         e.setId(5L);
         e.setLabel("Numeric question label");
