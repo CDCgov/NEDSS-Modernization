@@ -121,10 +121,12 @@ public class NBSEntity {
         List<EntityLocatorParticipation> existing = ensureLocators();
         Optional<EntityLocatorParticipation> elp = existing.stream()
                 .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
-        if (elp != null) {
+        if (elp.isPresent()) {
+            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
+            pl.setPhoneNbrTxt(phoneNumber.number());
+            pl.setExtensionTxt(phoneNumber.extension());
         }
         return elp;
-
     }
 
     public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
@@ -153,7 +155,9 @@ public class NBSEntity {
         List<EntityLocatorParticipation> existing = ensureLocators();
         Optional<EntityLocatorParticipation> elp = existing.stream()
                 .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
-        if (elp != null) {
+        if (elp.isPresent()) {
+            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
+            pl.setEmailAddress(emailAddress.email());
         }
         return elp;
     }

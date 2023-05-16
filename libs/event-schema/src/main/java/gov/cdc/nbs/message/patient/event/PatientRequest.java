@@ -201,7 +201,7 @@ public sealed interface PatientRequest {
                         String requestId,
                         long patientId,
                         long userId,
-                        UpdateRaceData data) implements PatientRequest {
+                        AddRaceData data) implements PatientRequest {
         }
 
         record UpdateRace(

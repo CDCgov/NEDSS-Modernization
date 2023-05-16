@@ -3,6 +3,7 @@ package gov.cdc.nbs.patientlistener.request.update;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.AddNameData;
+import gov.cdc.nbs.message.patient.event.AddRaceData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
@@ -233,7 +234,7 @@ public class PatientUpdateRequestHandler {
    * @param data
    */
   @Transactional
-  public void handlePatientRaceAdd(final UpdateRaceData data) {
+  public void handlePatientRaceAdd(final AddRaceData data) {
     if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
       throw new UserNotAuthorizedException(data.requestId());
     }
