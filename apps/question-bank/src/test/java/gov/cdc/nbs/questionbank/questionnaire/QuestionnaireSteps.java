@@ -18,9 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class QuestionnaireSteps {
 
     @Autowired
-    private QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
     private QuestionnaireResolver resolver;
 
     @Autowired
@@ -32,12 +29,11 @@ public class QuestionnaireSteps {
     @Given("a {string} questionnaire exists with type {string}")
     public void a_questionnaire_exists(String condition, String type) {
         questionnaireMother.clean();
-        questionnaireMother.questionnaire(type, Collections.singletonList("123"));
+        search = questionnaireMother.questionnaire(type, Collections.singletonList("123"));
     }
 
     @When("I search for a questionnaire")
     public void i_search_for_a_questionnaire() {
-        search = questionnaireRepository.findAll().get(0);
         String conditionCd = search.getConditionCodes().get(0);
         String type = search.getQuestionnaireType();
         results = resolver.findQuestionnaire(new QuestionnaireContext(conditionCd, type));

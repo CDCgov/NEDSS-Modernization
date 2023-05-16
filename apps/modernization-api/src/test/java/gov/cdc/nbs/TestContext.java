@@ -1,8 +1,7 @@
 package gov.cdc.nbs;
 
 import org.springframework.test.web.servlet.MvcResult;
-
-import gov.cdc.nbs.entity.odse.AuthUser;
+import gov.cdc.nbs.authentication.AuthUser;
 
 /**
  * Used to store data that will be shared between steps. Always call TestContext.clear() in a @Before block

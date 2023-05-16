@@ -30,6 +30,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final String TOKEN_COOKIE_NAME = "nbs_token";
+
     private final UserService userService;
     private final JWTVerifier verifier;
     private final SecurityProperties securityProperties;

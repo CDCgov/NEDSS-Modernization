@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.authentication;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.NBSEntity;
+import gov.cdc.nbs.entity.odse.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

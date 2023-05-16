@@ -41,6 +41,6 @@ public class QuestionnaireEntity {
     private List<Reference> references;
 
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Rule> rules;
+    private List<QuestionnaireRule> rules;
 
 }

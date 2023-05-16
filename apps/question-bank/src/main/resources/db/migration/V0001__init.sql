@@ -43,7 +43,7 @@
         primary key (id)
     );
 
-    create table question_bank.dbo.[rule] (
+    create table question_bank.dbo.questionnaire_rule (
        id bigint identity not null,
         questionnaire_id bigint,
         primary key (id)
@@ -116,8 +116,8 @@
        foreign key (group_id, group_version) 
        references question_bank.dbo.display_element_group;
 
-    alter table question_bank.dbo.[rule] 
-       add constraint FKcyuurxnu583ioocdgr7iarauo 
+    alter table question_bank.dbo.questionnaire_rule 
+       add constraint FK2m2g4ebe8m5ejl29cktnehj2b 
        foreign key (questionnaire_id) 
        references question_bank.dbo.questionnaire;
 
