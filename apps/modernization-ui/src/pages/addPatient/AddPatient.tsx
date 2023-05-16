@@ -96,11 +96,6 @@ export default function AddPatient() {
         setSuccessSubmit(true);
     };
 
-    // TODO
-    const isIncomplete = () => {
-        return Object.keys(control._fields).some((field) => !control.getFieldState(field).isDirty);
-    };
-
     window.addEventListener('load', () => {
         const sections = Array.from(document.querySelectorAll('section[id]'));
 
