@@ -2,6 +2,8 @@ import { Button, Grid } from '@trussworks/react-uswds';
 import FormCard from '../../../../components/FormCard/FormCard';
 import { Controller } from 'react-hook-form';
 import { Input } from '../../../../components/FormInputs/Input';
+import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
+import { validatePhoneNumber } from 'validation/phone';
 
 export default function ContactFields({
     id,
@@ -10,7 +12,8 @@ export default function ContactFields({
     phoneNumberFields,
     emailFields,
     phoneNumberAppend,
-    emailFieldAppend
+    emailFieldAppend,
+    errors
 }: {
     id?: string;
     title?: string;
@@ -19,6 +22,7 @@ export default function ContactFields({
     emailFields: any;
     phoneNumberAppend: any;
     emailFieldAppend: any;
+    errors: any;
 }) {
     return (
         <FormCard id={id} title={title}>
@@ -28,15 +32,19 @@ export default function ContactFields({
                         <Controller
                             control={control}
                             name="homePhone"
+                            rules={{
+                                validate: {
+                                    properNumber: (value) => validatePhoneNumber(value)
+                                }
+                            }}
                             render={({ field: { onChange, value } }) => (
-                                <Input
+                                <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
-                                    type="tel"
                                     label="Home phone"
                                     defaultValue={value}
-                                    htmlFor="homePhone"
                                     id="homePhone"
+                                    error={errors && errors.homePhone && 'Invalid phone number'}
                                 />
                             )}
                         />
@@ -47,15 +55,19 @@ export default function ContactFields({
                         <Controller
                             control={control}
                             name="workPhone"
+                            rules={{
+                                validate: {
+                                    properNumber: (value) => validatePhoneNumber(value)
+                                }
+                            }}
                             render={({ field: { onChange, value } }) => (
-                                <Input
+                                <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
-                                    type="tel"
                                     label="Work phone"
                                     defaultValue={value}
-                                    htmlFor="workPhone"
                                     id="workPhone"
+                                    error={errors && errors.workPhone && 'Invalid phone number'}
                                 />
                             )}
                         />
@@ -84,17 +96,20 @@ export default function ContactFields({
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                name={`phoneNumbers[${index}].cellPhone`}
+                                name={`cellPhone_${index}`}
+                                rules={{
+                                    validate: {
+                                        properNumber: (value) => validatePhoneNumber(value)
+                                    }
+                                }}
                                 render={({ field: { onChange, value } }) => (
-                                    <Input
-                                        inputMode="numeric"
+                                    <PhoneNumberInput
                                         placeholder="333-444-555"
                                         onChange={onChange}
-                                        type="tel"
                                         label="Cell phone"
                                         defaultValue={value}
-                                        htmlFor={`phoneNumbers[${index}].cellPhone`}
-                                        id={`phoneNumbers[${index}].cellPhone`}
+                                        id={`cellPhone_${index}`}
+                                        error={errors && errors[`cellPhone_${index}`] && 'Invalid phone number'}
                                     />
                                 )}
                             />
@@ -122,7 +137,13 @@ export default function ContactFields({
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                name={`emailAddresses[${index}].email`}
+                                name={`emailAddresses_${index}`}
+                                rules={{
+                                    pattern: {
+                                        value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                                        message: 'Invalid email'
+                                    }
+                                }}
                                 render={({ field: { onChange, value } }) => (
                                     <Input
                                         placeholder="jdoe@gmail.com"
@@ -130,8 +151,13 @@ export default function ContactFields({
                                         type="text"
                                         label="Email"
                                         defaultValue={value}
-                                        htmlFor={`emailAddresses[${index}].email`}
-                                        id={`emailAddresses[${index}].email`}
+                                        htmlFor={`emailAddresses_${index}`}
+                                        id={`emailAddresses_${index}`}
+                                        error={
+                                            errors &&
+                                            errors[`emailAddresses_${index}`] &&
+                                            errors[`emailAddresses_${index}`].message
+                                        }
                                     />
                                 )}
                             />

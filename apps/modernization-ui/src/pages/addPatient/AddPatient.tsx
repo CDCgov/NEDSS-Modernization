@@ -1,5 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Accordion, Button, DatePicker, Form, Grid, Label } from '@trussworks/react-uswds';
+import {
+    Accordion,
+    Button,
+    ButtonGroup,
+    DatePicker,
+    Form,
+    Grid,
+    Icon,
+    Label,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton
+} from '@trussworks/react-uswds';
 import './AddPatient.scss';
 import NameFields from './components/nameFields/NameFields';
 import AddressFields, { InputAddressFields } from './components/addressFields/AddressFields';
@@ -7,7 +21,7 @@ import { AccordionItemProps } from '@trussworks/react-uswds/lib/components/Accor
 import PersonalDetails, { InputPersonalDetailsFields } from './components/personalDetails/PersonalDetails';
 import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields, { InputEthnicityFields } from './components/ethnicityFields/EthnicityFields';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ACTIVE_TAB, LeftBar } from './components/LeftBar/LeftBar';
 import RaceFields from './components/Race/RaceFields';
 import GeneralInformation from './components/generalInformation/generalInformation';
@@ -20,6 +34,7 @@ export default function AddPatient() {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
     const [submitData, setSubmitData] = useState<any>();
+    const modalRef = useRef<ModalRef>(null);
     function isEmpty(obj: any) {
         for (const key in obj) {
             if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
@@ -27,12 +42,16 @@ export default function AddPatient() {
         return true;
     }
 
+    type formDefaultValueType = { [key: string]: [{ [key: string]: any }] };
+
+    const defaultValues: formDefaultValueType = {
+        identification: [{ identificationType: null, assigningAuthority: null, identificationNumber: '' }],
+        phoneNumbers: [{ cellPhone: null }],
+        emailAddresses: [{ email: null }]
+    };
+
     const methods = useForm({
-        defaultValues: {
-            identification: [{ identificationType: null, assigningAuthority: null, identificationNumber: '' }],
-            phoneNumbers: [{ cellPhone: null }],
-            emailAddresses: [{ email: null }]
-        }
+        defaultValues: defaultValues
     });
     const {
         handleSubmit,
@@ -121,18 +140,74 @@ export default function AddPatient() {
                                             type={'button'}>
                                             Save and add new lab report
                                         </Button>
-                                        <Button
-                                            disabled={disabled}
-                                            className="padding-x-3 add-patient-button"
-                                            type={'submit'}>
-                                            Save changes
-                                        </Button>
+                                        {!isValid && (
+                                            <Button className="padding-x-3 add-patient-button" type={'submit'}>
+                                                Save changes
+                                            </Button>
+                                        )}
+
+                                        {isValid && (
+                                            <span>
+                                                <ModalToggleButton
+                                                    modalRef={modalRef}
+                                                    opener
+                                                    className="delete-btn display-inline-flex">
+                                                    Save changes
+                                                </ModalToggleButton>
+                                                <Modal
+                                                    ref={modalRef}
+                                                    id="example-incomplete-form-confirmation-modal"
+                                                    aria-labelledby="incomplete-form-confirmation-modal-heading"
+                                                    className="padding-0"
+                                                    aria-describedby="incomplete-form-confirmation-modal-description">
+                                                    <ModalHeading
+                                                        id="incomplete-form-confirmation-modal-heading"
+                                                        className="border-bottom border-base-lighter font-sans-lg padding-2">
+                                                        Missing data
+                                                    </ModalHeading>
+                                                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                                                        <Icon.Warning className="font-sans-2xl margin-x-2" />
+                                                        <h3>Are you sure?</h3>
+                                                    </div>
+                                                    <div className="margin-left-3">
+                                                        <p
+                                                            className="margin-left-9 padding-right-2"
+                                                            id="incomplete-form-confirmation-modal-description">
+                                                            You are about to add a new patient with missing data.
+                                                        </p>
+                                                    </div>
+                                                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                                                        <ButtonGroup>
+                                                            <ModalToggleButton outline modalRef={modalRef} closer>
+                                                                Go back
+                                                            </ModalToggleButton>
+                                                            <ModalToggleButton
+                                                                onClick={handleSubmit(submit)}
+                                                                modalRef={modalRef}
+                                                                closer
+                                                                className="padding-105 text-center">
+                                                                Continue anyways
+                                                            </ModalToggleButton>
+                                                        </ButtonGroup>
+                                                    </ModalFooter>
+                                                </Modal>
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </Grid>
                             <div className="content">
                                 <Grid row className="padding-3">
                                     <Grid col={9}>
+                                        {!isValid && (
+                                            <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
+                                                <Icon.Error className="font-sans-2xl margin-x-2" />
+                                                <p id="form-error">
+                                                    You have some invalid inputs. Please correct the invalid inputs
+                                                    before moving forward.
+                                                </p>
+                                            </div>
+                                        )}
                                         <GeneralInformation
                                             errors={errors}
                                             control={control}
@@ -160,6 +235,7 @@ export default function AddPatient() {
                                             control={control}
                                             id={'section-Telephone'}
                                             title="Telephone"
+                                            errors={errors}
                                         />
                                         <EthnicityFields id={'section-Ethnicity'} title="Ethnicity" />
                                         <RaceFields id={'section-Race'} title={'Race'} />
