@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -528,23 +530,23 @@ public class Person {
         return this.nbsEntity.update(address);
     }
 
-    public EntityLocatorParticipation update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
         return this.nbsEntity.update(phoneNumber);
     }
 
-    public EntityLocatorParticipation update(final PatientCommand.UpdateEmailAddress emailAddress) {
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         return this.nbsEntity.update(emailAddress);
     }
 
-    public EntityLocatorParticipation delete(final PatientCommand.DeleteAddress address) {
+    public boolean delete(final PatientCommand.DeleteAddress address) {
         return this.nbsEntity.delete(address);
     }
 
-    public EntityLocatorParticipation delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
+    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
         return this.nbsEntity.delete(phoneNumber);
     }
 
-    public EntityLocatorParticipation delete(final PatientCommand.DeleteEmailAddress emailAddress) {
+    public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
         return this.nbsEntity.delete(emailAddress);
     }
 
@@ -680,7 +682,7 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
 
-        Collection<EntityId> existing = ensureIdentifications();
+        Collection<EntityId> existing = ensureEntityIds();
         EntityIdId identifier = new EntityIdId(info.person(), info.id());
 
         existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
@@ -691,13 +693,6 @@ public class Person {
 
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
-    }
-
-    private Collection<EntityId> ensureIdentifications() {
-        if (this.entityIds == null) {
-            this.entityIds = new ArrayList<>();
-        }
-        return this.entityIds;
     }
 
     public void delete(PatientCommand.DeleteIdentification info) {

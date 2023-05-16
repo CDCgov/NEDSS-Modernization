@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -79,22 +80,25 @@ public class NBSEntity {
 
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
         List<EntityLocatorParticipation> existing = ensureLocators();
+        EntityLocatorParticipation elp = null;
         existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
             PostalLocator pl = ((PostalEntityLocatorParticipation) p).getLocator();
             pl.setStreetAddr1(address.address1());
             pl.setStreetAddr2(address.address2());
+            pl.setCensusTract(address.censusTract());
+            pl.setCityCd(address.city().code());
+            pl.setCntryCd(address.country().code());
+            pl.setStateCd(address.state());
+            pl.setZipCd(address.zip());
         });
-
-        return null;
+        return elp;
     }
 
-    public EntityLocatorParticipation delete(
+    public boolean delete(
             final PatientCommand.DeleteAddress address) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
         List<EntityLocatorParticipation> existing = ensureLocators();
-        existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-
-        return null;
+        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
@@ -112,18 +116,21 @@ public class NBSEntity {
         return participation;
     }
 
-    public EntityLocatorParticipation update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
         List<EntityLocatorParticipation> existing = ensureLocators();
-        existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        return null;
+        Optional<EntityLocatorParticipation> elp = existing.stream()
+                .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
+        if (elp != null) {
+        }
+        return elp;
+
     }
 
-    public EntityLocatorParticipation delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
+    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
         List<EntityLocatorParticipation> existing = ensureLocators();
-        existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        return null;
+        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
@@ -141,22 +148,20 @@ public class NBSEntity {
         return participation;
     }
 
-    public EntityLocatorParticipation update(final PatientCommand.UpdateEmailAddress emailAddress) {
-        // EntityLocatorParticipationId identifier = new
-        // EntityLocatorParticipationId(this.id, emailAddress.id());
-        // List<TeleEntityLocatorParticipation> existing = ensureLocators();
-        // existing.stream().filter(p -> p.getId()!=null &&
-        // p.getId().equals(identifier)).findFirst().ifPresent(p -> {
-        // p.setEmailAddress(emailAddress.email());
-        // });
-        return null;
-    }
-
-    public EntityLocatorParticipation delete(final PatientCommand.DeleteEmailAddress emailAddress) {
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, emailAddress.id());
         List<EntityLocatorParticipation> existing = ensureLocators();
-        existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        return null;
+        Optional<EntityLocatorParticipation> elp = existing.stream()
+                .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
+        if (elp != null) {
+        }
+        return elp;
+    }
+
+    public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, emailAddress.id());
+        List<EntityLocatorParticipation> existing = ensureLocators();
+        return existing.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
     }
 
     public EntityLocatorParticipation add(AddMortalityLocator mortality) {
