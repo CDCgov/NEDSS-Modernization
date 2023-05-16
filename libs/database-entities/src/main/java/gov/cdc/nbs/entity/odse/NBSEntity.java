@@ -75,14 +75,15 @@ public class NBSEntity {
         return participation;
     }
 
-    public EntityLocatorParticipation update(
+    public Optional<EntityLocatorParticipation> update(
             final PatientCommand.UpdateAddress address) {
 
         EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
         List<EntityLocatorParticipation> existing = ensureLocators();
-        EntityLocatorParticipation elp = null;
-        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
-            PostalLocator pl = ((PostalEntityLocatorParticipation) p).getLocator();
+        Optional<EntityLocatorParticipation> elp = existing.stream()
+                .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
+        if (elp.isPresent()) {
+            PostalLocator pl = ((PostalEntityLocatorParticipation) elp.get()).getLocator();
             pl.setStreetAddr1(address.address1());
             pl.setStreetAddr2(address.address2());
             pl.setCensusTract(address.censusTract());
@@ -90,7 +91,7 @@ public class NBSEntity {
             pl.setCntryCd(address.country().code());
             pl.setStateCd(address.state());
             pl.setZipCd(address.zip());
-        });
+        }
         return elp;
     }
 
