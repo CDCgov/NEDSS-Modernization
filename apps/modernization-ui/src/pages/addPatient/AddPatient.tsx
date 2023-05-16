@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Accordion, Button, DatePicker, Form, Grid, Label } from '@trussworks/react-uswds';
+import { Accordion, Button, DatePicker, Form, Grid, Icon, Label } from '@trussworks/react-uswds';
 import './AddPatient.scss';
 import NameFields from './components/nameFields/NameFields';
 import AddressFields, { InputAddressFields } from './components/addressFields/AddressFields';
@@ -130,6 +130,15 @@ export default function AddPatient() {
                             <div className="content">
                                 <Grid row className="padding-3">
                                     <Grid col={9}>
+                                        {!isValid && (
+                                            <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
+                                                <Icon.Error className="font-sans-2xl margin-x-2" />
+                                                <p id="form-error">
+                                                    You have some invalid inputs. Please correct the invalid inputs
+                                                    before moving forward.
+                                                </p>
+                                            </div>
+                                        )}
                                         <GeneralInformation
                                             errors={errors}
                                             control={control}
