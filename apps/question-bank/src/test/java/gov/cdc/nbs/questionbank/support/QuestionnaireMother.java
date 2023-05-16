@@ -15,11 +15,9 @@ public class QuestionnaireMother {
     }
 
     public QuestionnaireEntity questionnaire(
-            String type,
             List<String> conditions) {
         var q = new QuestionnaireEntity();
         q.setConditionCodes(conditions);
-        q.setQuestionnaireType(type);
         return repository.save(q);
     }
 

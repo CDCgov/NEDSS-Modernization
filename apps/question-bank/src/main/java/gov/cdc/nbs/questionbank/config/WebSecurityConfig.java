@@ -4,8 +4,12 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,7 +21,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import gov.cdc.nbs.questionbank.config.security.JWTFilter;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
@@ -28,6 +31,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@ConditionalOnProperty("nbs.security.enabled")
+@Import({gov.cdc.nbs.service.UserService.class, gov.cdc.nbs.config.security.JWTSecurityConfig.class})
+@EnableJpaRepositories({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
+@EntityScan({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
 public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
     private final ObjectMapper mapper;

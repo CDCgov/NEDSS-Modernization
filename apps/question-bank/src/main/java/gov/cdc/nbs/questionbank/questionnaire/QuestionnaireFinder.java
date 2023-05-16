@@ -16,7 +16,7 @@ public class QuestionnaireFinder {
 
     @Transactional
     public Questionnaire find(QuestionnaireContext context) {
-        return repository.findByConditionAndType(context.conditionCd(), context.questionnaireType())
+        return repository.findOneByConditionCodes(context.conditionCd())
                 .map(questionnaireMapper::toQuestionnaire)
                 .orElse(null);
     }

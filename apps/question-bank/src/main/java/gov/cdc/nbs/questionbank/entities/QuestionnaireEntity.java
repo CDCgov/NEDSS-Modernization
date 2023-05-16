@@ -33,8 +33,11 @@ public class QuestionnaireEntity {
             joinColumns = @JoinColumn(name = "questionnaire_id"))
     private List<String> conditionCodes;
 
-    @Column(name = "questionnaire_type", length = 100, nullable = false)
-    private String questionnaireType;
+    @Column(name = "name", length = 255)
+    private String name;
+
+    @Column(name = "description", length = 500)
+    private String description;
 
     @OrderBy("display_order")
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -39,7 +39,8 @@
 
     create table question_bank.dbo.questionnaire (
        id bigint identity not null,
-        questionnaire_type varchar(100) not null,
+        description varchar(500),
+        name varchar(255),
         primary key (id)
     );
 

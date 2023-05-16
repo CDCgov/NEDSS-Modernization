@@ -26,17 +26,16 @@ public class QuestionnaireSteps {
     private QuestionnaireEntity search;
     private Questionnaire results;
 
-    @Given("a {string} questionnaire exists with type {string}")
-    public void a_questionnaire_exists(String condition, String type) {
+    @Given("a {string} questionnaire exists")
+    public void a_questionnaire_exists(String condition) {
         questionnaireMother.clean();
-        search = questionnaireMother.questionnaire(type, Collections.singletonList("123"));
+        search = questionnaireMother.questionnaire(Collections.singletonList("123"));
     }
 
     @When("I search for a questionnaire")
     public void i_search_for_a_questionnaire() {
         String conditionCd = search.getConditionCodes().get(0);
-        String type = search.getQuestionnaireType();
-        results = resolver.findQuestionnaire(new QuestionnaireContext(conditionCd, type));
+        results = resolver.findQuestionnaire(new QuestionnaireContext(conditionCd));
     }
 
     @Then("the questionnaire is returned")
