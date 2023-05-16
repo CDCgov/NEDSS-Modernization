@@ -61,7 +61,7 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
         if (patient) {
             getProfile({
                 variables: {
-                    patient: patient,
+                    shortId: +patient,
                     page2: {
                         pageNumber: currentPage - 1,
                         pageSize: TOTAL_TABLE_DATA

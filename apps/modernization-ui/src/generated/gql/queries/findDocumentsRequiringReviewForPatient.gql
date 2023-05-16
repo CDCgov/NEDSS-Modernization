@@ -39,6 +39,7 @@ query findDocumentsRequiringReviewForPatient($patientId: Int!, $page: Page){
                 personParentUid
                 personRecordStatus
                 personLastChangeTime
+                shortId
             }
             organizationParticipations{
                 actUid

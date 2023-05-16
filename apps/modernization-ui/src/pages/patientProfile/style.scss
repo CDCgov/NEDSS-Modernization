@@ -60,6 +60,13 @@
     animation-fill-mode: forwards;
 }
 
+.advanced-search-alert {
+    .usa-alert {
+        position: relative !important;
+        left: 0;
+    }
+}
+
 @keyframes mymove {
     from {
         right: -250px;
