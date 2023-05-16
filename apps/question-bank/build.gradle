@@ -71,3 +71,7 @@ dependencies {
     implementation project(':authentication')
 
 }
+
+compileJava {
+    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
+}

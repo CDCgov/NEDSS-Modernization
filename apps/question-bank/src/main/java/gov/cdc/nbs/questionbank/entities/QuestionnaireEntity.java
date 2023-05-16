@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,11 @@ public class QuestionnaireEntity {
     @Column(name = "questionnaire_type", length = 100, nullable = false)
     private String questionnaireType;
 
+    @OrderBy("display_order")
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ElementReference> elements;
+    private List<Reference> references;
+
+    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Rule> rules;
 
 }

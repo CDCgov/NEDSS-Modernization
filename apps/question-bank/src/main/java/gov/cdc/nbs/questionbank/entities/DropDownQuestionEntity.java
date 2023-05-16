@@ -11,8 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(DropDownQuestion.type)
-public class DropDownQuestion extends DisplayElement {
+@DiscriminatorValue(DropDownQuestionEntity.type)
+public class DropDownQuestionEntity extends DisplayElementEntity {
     static final String type = "dropdown_question";
 
     @Column(name = "label", length = 300)
@@ -20,9 +20,6 @@ public class DropDownQuestion extends DisplayElement {
 
     @Column(name = "tooltip", length = 200)
     private String tooltip;
-
-    @Column(name = "required")
-    private boolean required;
 
     @ManyToOne
     @JoinColumn(name = "value_set_id")

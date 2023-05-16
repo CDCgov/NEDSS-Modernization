@@ -24,11 +24,15 @@ import lombok.Setter;
 @Table(name = "display_element", catalog = "question_bank")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "display_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class DisplayElement implements Serializable {
+public abstract class DisplayElementEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Id
+    @Column(name = "version", nullable = false)
+    private Integer version;
 
     public abstract String getDisplayType();
 }

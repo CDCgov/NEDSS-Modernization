@@ -8,8 +8,8 @@ import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 
 public interface QuestionnaireRepository extends JpaRepository<QuestionnaireEntity, Long> {
 
-    @Query("SELECT q FROM QuestionnaireEntity q WHERE :conditionCd IN q.conditionCodes AND q.questionnaireType =:questionnaireType")
+    @Query("SELECT q FROM QuestionnaireEntity q JOIN q.conditionCodes c WHERE c =:conditionCd AND q.questionnaireType =:questionnaireType")
     public Optional<QuestionnaireEntity> findByConditionAndType(
-            @Param("conditionCd") String conditioncd,
+            @Param("conditionCd") String conditionCd,
             @Param("questionnaireType") String questionnaireType);
 }

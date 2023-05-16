@@ -1,19 +1,31 @@
 package gov.cdc.nbs.questionbank.support;
 
 import java.util.List;
-import gov.cdc.nbs.questionbank.entities.ElementReference;
+import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
+import gov.cdc.nbs.questionbank.questionnaire.QuestionnaireRepository;
 
+@Component
 public class QuestionnaireMother {
 
-    public static QuestionnaireEntity questionnaire(
-            String type, List<ElementReference> elements,
+    private final QuestionnaireRepository repository;
+
+    public QuestionnaireMother(QuestionnaireRepository repository) {
+        this.repository = repository;
+    }
+
+    public QuestionnaireEntity questionnaire(
+            String type,
             List<String> conditions) {
         var q = new QuestionnaireEntity();
         q.setConditionCodes(conditions);
         q.setQuestionnaireType(type);
-        q.setElements(elements);
-        return q;
+        return repository.save(q);
     }
+
+    public void clean() {
+        repository.deleteAll();
+    }
+
 
 }

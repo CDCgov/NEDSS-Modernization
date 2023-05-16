@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "value", catalog = "question_bank")
+@Table(name = "[value]", catalog = "question_bank")
 public class Value {
 
     @Id
@@ -29,8 +29,11 @@ public class Value {
     @Column(name = "display", nullable = false)
     private String display;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "[value]", nullable = false)
     private String value;
+
+    @Column(name = "display_order", nullable = false)
+    private Integer displayOrder;
 
     @Column(name = "comment")
     private String comment;

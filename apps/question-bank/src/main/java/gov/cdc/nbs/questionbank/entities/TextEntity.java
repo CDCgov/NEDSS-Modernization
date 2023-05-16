@@ -3,14 +3,18 @@ package gov.cdc.nbs.questionbank.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(Text.type)
-public class Text extends DisplayElement {
+@AllArgsConstructor
+@NoArgsConstructor
+@DiscriminatorValue(TextEntity.type)
+public class TextEntity extends DisplayElementEntity {
     static final String type = "text";
 
     @Column(name = "text")

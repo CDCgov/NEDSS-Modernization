@@ -4,6 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,15 +13,15 @@ import lombok.Setter;
 @Setter
 @Entity
 @DiscriminatorValue(DisplayElementRef.type)
-public class DisplayElementRef extends ElementReference {
+public class DisplayElementRef extends Reference {
     static final String type = "display_element";
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "element_id")
-    private DisplayElement element;
+    @JoinColumns({@JoinColumn(name = "display_element_id"), @JoinColumn(name = "display_element_version")})
+    private DisplayElementEntity displayElementEntity;
 
     @Override
-    public String getElementType() {
+    public String getReferenceType() {
         return type;
     }
 

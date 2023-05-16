@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.entities;
 
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -43,7 +43,7 @@ public class ValueSet implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "valueSet", fetch = FetchType.LAZY)
-    private Set<Value> values;
+    private List<Value> values;
 
 
     public static enum ValueSetType {

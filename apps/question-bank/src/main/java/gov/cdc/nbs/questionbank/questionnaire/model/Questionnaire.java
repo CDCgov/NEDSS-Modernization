@@ -1,17 +1,18 @@
 package gov.cdc.nbs.questionbank.questionnaire.model;
 
 import java.util.Collection;
+import java.util.List;
 
 public record Questionnaire(
         long id,
-        Collection<String> conditions,
-        Collection<Element> elements) {
+        List<String> conditions,
+        List<Element> elements) {
 
-    sealed interface Element permits Section, DisplayElement {
+    public sealed interface Element permits Section, DisplayElement {
         public long id = 0L;
     }
 
-    sealed interface DisplayElement extends Element
+    public sealed interface DisplayElement extends Element
             permits Text,
             TextQuestion,
             NumericQuestion,
@@ -22,7 +23,7 @@ public record Questionnaire(
     public record Section(
             long id,
             String label,
-            Collection<DisplayElement> elements) implements Element {
+            List<DisplayElement> elements) implements Element {
     }
 
     public record Text(
@@ -34,7 +35,6 @@ public record Questionnaire(
             long id,
             String label,
             String tooltip,
-            boolean required,
             Integer maxLength,
             String placeholder) implements DisplayElement {
     }
@@ -43,7 +43,6 @@ public record Questionnaire(
             long id,
             String label,
             String tooltip,
-            boolean required,
             Integer minValue,
             Integer maxValue,
             OptionSet unitOptions) implements DisplayElement {
@@ -53,7 +52,6 @@ public record Questionnaire(
             long id,
             String label,
             String tooltip,
-            boolean required,
             OptionSet optionSet,
             Option defaultOption,
             boolean isMultiSelect) implements DisplayElement {
@@ -63,7 +61,6 @@ public record Questionnaire(
             long id,
             String label,
             String tooltip,
-            boolean required,
             boolean allowFutureDates) implements DisplayElement {
     }
 

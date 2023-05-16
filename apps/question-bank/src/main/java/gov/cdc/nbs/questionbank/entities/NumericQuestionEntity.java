@@ -3,15 +3,17 @@ package gov.cdc.nbs.questionbank.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue(DateQuestion.type)
-public class DateQuestion extends DisplayElement {
-    static final String type = "date_question";
+@DiscriminatorValue(NumericQuestionEntity.type)
+public class NumericQuestionEntity extends DisplayElementEntity {
+    static final String type = "numeric_question";
 
     @Column(name = "label", length = 300)
     private String label;
@@ -19,14 +21,19 @@ public class DateQuestion extends DisplayElement {
     @Column(name = "tooltip", length = 200)
     private String tooltip;
 
-    @Column(name = "required")
-    private boolean required;
+    @Column(name = "min_value")
+    private Integer minValue;
 
-    @Column(name = "allow_future_dates", nullable = false)
-    private boolean allowFuture;
+    @Column(name = "max_value")
+    private Integer maxValue;
+
+    @ManyToOne
+    @JoinColumn(name = "units_set")
+    private ValueSet unitsSet;
 
     @Override
     public String getDisplayType() {
         return type;
     }
+
 }
