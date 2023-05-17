@@ -1,7 +1,9 @@
 package gov.cdc.nbs.investigation;
 
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.PatientMother;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,10 @@ import javax.persistence.EntityManager;
 public class InvestigationSteps {
 
     @Autowired
-    TestPatients patients;
+    TestPatientIdentifier patients;
+
+    @Autowired
+    PatientMother patientMother;
 
     @Autowired
     TestInvestigations investigations;
@@ -31,15 +36,20 @@ public class InvestigationSteps {
 
     @Given("the patient is a subject of an investigation")
     public void the_patient_is_a_subject_of_an_investigation() {
-        mother.investigation(patients.one());
+        PatientIdentifier revision = patientMother.revise(patients.one());
+
+        mother.investigation(revision.id());
     }
 
     @Given("the patient is a subject of {int} investigations")
     public void the_patient_is_a_subject_N_investigation(final int n) {
-        long patient = patients.one();
+        PatientIdentifier patient = patients.one();
 
         for (int i = 0; i < n; i++) {
-            mother.investigation(patient);
+
+            PatientIdentifier revision = patientMother.revise(patient);
+
+            mother.investigation(revision.id());
         }
     }
 

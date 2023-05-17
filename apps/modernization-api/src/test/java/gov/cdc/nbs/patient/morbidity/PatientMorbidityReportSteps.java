@@ -1,7 +1,9 @@
 package gov.cdc.nbs.patient.morbidity;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.PatientMother;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,7 +19,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientMorbidityReportSteps {
 
     @Autowired
-    TestPatients patients;
+    TestPatientIdentifier patients;
+
+    @Autowired
+    PatientMother patientMother;
 
     @Autowired
     PatientMorbidityResolver resolver;
@@ -32,14 +37,14 @@ public class PatientMorbidityReportSteps {
 
     @When("the patient has a Morbidity Report")
     public void the_patient_has_a_morbidity_report() {
-        long patient = patients.one();
+        PatientIdentifier revision = patientMother.revise(patients.one());
 
-        mother.morbidityReport(patient);
+        mother.morbidityReport(revision.id());
     }
 
     @Then("the profile has an associated morbidity report")
     public void the_profile_has_an_associated_morbidity_report() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientMorbidity> actual = this.resolver.find(patient, new GraphQLPage(5));
         assertThat(actual).isNotEmpty();
@@ -48,7 +53,7 @@ public class PatientMorbidityReportSteps {
 
     @Then("the profile has no associated morbidity report")
     public void the_profile_has_no_associated_morbidity_report() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientMorbidity> actual = this.resolver.find(patient, new GraphQLPage(5));
         assertThat(actual).isEmpty();
@@ -57,7 +62,7 @@ public class PatientMorbidityReportSteps {
 
     @Then("the profile morbidity reports are not returned")
     public void the_profile_morbidity_reports_are_not_returned() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         GraphQLPage page = new GraphQLPage(5);
 

@@ -1,7 +1,9 @@
 package gov.cdc.nbs.patient.document;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.PatientMother;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,7 +19,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientDocumentSteps {
 
     @Autowired
-    TestPatients patients;
+    TestPatientIdentifier patients;
+
+    @Autowired
+    PatientMother patientMother;
 
     @Autowired
     PatientDocumentByPatientResolver resolver;
@@ -32,14 +37,15 @@ public class PatientDocumentSteps {
 
     @When("the patient has a Case Report")
     public void the_patient_has_a_Case_Report() {
-        long patient = this.patients.one();
-        this.mother.caseReport(patient);
+        PatientIdentifier revision = patientMother.revise(patients.one());
+
+        this.mother.caseReport(revision.id());
     }
 
 
     @Then("the profile has an associated document")
     public void the_profile_has_an_associated_document() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientDocument> actual = this.resolver.find(patient, new GraphQLPage(1));
         assertThat(actual).isNotEmpty();
@@ -47,7 +53,7 @@ public class PatientDocumentSteps {
 
     @Then("the profile documents are not returned")
     public void the_profile_documents_are_not_returned() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
 
         GraphQLPage page = new GraphQLPage(1);
@@ -63,7 +69,7 @@ public class PatientDocumentSteps {
 
     @Then("the profile has no associated document")
     public void the_profile_has_no_associated_document() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientDocument> actual = this.resolver.find(patient, new GraphQLPage(1));
         assertThat(actual).isEmpty();
