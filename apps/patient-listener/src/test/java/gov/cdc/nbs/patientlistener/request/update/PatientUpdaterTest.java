@@ -26,6 +26,7 @@ import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonNameId;
+import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
@@ -38,11 +39,13 @@ import gov.cdc.nbs.message.patient.event.AddEmailData;
 import gov.cdc.nbs.message.patient.event.AddIdentificationData;
 import gov.cdc.nbs.message.patient.event.AddNameData;
 import gov.cdc.nbs.message.patient.event.AddPhoneData;
+import gov.cdc.nbs.message.patient.event.AddRaceData;
 import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
+import gov.cdc.nbs.message.patient.event.DeleteRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
@@ -52,6 +55,7 @@ import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
+import gov.cdc.nbs.message.patient.event.UpdateRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
@@ -815,5 +819,77 @@ class PatientUpdaterTest {
                 "RequestId",
                 321L,
                 Instant.now());
+    }
+
+    @Test
+    void should_add_race_info() {
+        var data = getAddRaceData();
+        var person = new Person(123L, "localId");
+        patientUpdater.update(person, data);
+        verify(personRepository).save(personCaptor.capture());
+        var personRace = (PersonRace) personCaptor.getValue()
+                .getRaces()
+                .get(0);
+        assertEquals(data.raceCd(), personRace.getRaceCd());
+    }
+
+    private AddRaceData getAddRaceData() {
+        return new AddRaceData(123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "race");
+    }
+
+    @Test
+    void should_update_race_info() {
+        var data = getUpdateRaceData();
+        var person = new Person(123L, "localId");
+
+        var personRace = new PersonRace();
+        personRace.setPersonUid(person);
+        personRace.setRaceCd("race");
+        person.setRaces(List.of(personRace));
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        personRace = (PersonRace) personCaptor.getValue()
+                .getRaces()
+                .get(0);
+        assertEquals(data.raceCd(), personRace.getRaceCd());
+    }
+
+    private UpdateRaceData getUpdateRaceData() {
+        return new UpdateRaceData(123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "race");
+    }
+
+    @Test
+    void should_delete_race_info() {
+        var data = getDeleteRaceData();
+        var person = new Person(123L, "localId");
+
+        var personRace = new PersonRace();
+        personRace.setPersonUid(person);
+        personRace.setRaceCd("race");
+        person.setRaces(List.of(personRace));
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+
+        assertEquals(0, personCaptor.getValue().getRaces().size());
+    }
+
+    private DeleteRaceData getDeleteRaceData() {
+        return new DeleteRaceData(123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "race");
     }
 }
