@@ -43,6 +43,7 @@ import gov.cdc.nbs.message.patient.event.AddRaceData;
 import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
+import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
 import gov.cdc.nbs.message.patient.event.DeleteRaceData;
@@ -230,6 +231,38 @@ class PatientUpdaterTest {
                 "State of Death",
                 "County of death",
                 "Country of death");
+    }
+
+    @Test
+    void should_delete_mortality_info() {
+        var data = getDeleteMortalityData();
+        var person = new Person(123L, "localId");
+        // Create EntityLocatorParticipation
+        var elp = new PostalEntityLocatorParticipation();
+        elp.setId(new EntityLocatorParticipationId(person.getId(), 456L));
+        elp.setNbsEntity(person.getNbsEntity());
+        elp.setUseCd("DTH");
+        elp.setVersionCtrlNbr((short) 1);
+
+        // Create PostalLocator
+        var postalLocator = new PostalLocator();
+        postalLocator.setId(456L);
+
+        elp.setLocator(postalLocator);
+        person.getNbsEntity().setEntityLocatorParticipations(Collections.singletonList(elp));
+        assertEquals(1, person.getNbsEntity().getEntityLocatorParticipations().size());
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        assertEquals(0, personCaptor.getValue().getNbsEntity().getEntityLocatorParticipations().size());
+    }
+
+    private DeleteMortalityData getDeleteMortalityData() {
+        return new DeleteMortalityData(123L,
+                (short) 456,
+                "RequestId",
+                321L,
+                Instant.now());
     }
 
     @Test
