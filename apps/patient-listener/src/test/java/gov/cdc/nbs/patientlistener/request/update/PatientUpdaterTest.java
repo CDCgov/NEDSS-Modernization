@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.EntityId;
+import gov.cdc.nbs.entity.odse.EntityIdId;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
@@ -32,10 +35,12 @@ import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.AddAddressData;
 import gov.cdc.nbs.message.patient.event.AddEmailData;
+import gov.cdc.nbs.message.patient.event.AddIdentificationData;
 import gov.cdc.nbs.message.patient.event.AddNameData;
 import gov.cdc.nbs.message.patient.event.AddPhoneData;
 import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
+import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateAddressData;
@@ -43,6 +48,7 @@ import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateEthnicityData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
+import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
@@ -401,27 +407,6 @@ class PatientUpdaterTest {
                 Instant.now());
     }
 
-    /*
-     * @Test
-     * void should_update_race_info() {
-     * var data = getRaceData();
-     * var person = new Person(123L, "localId");
-     * person.setVersionCtrlNbr((short) 2);
-     * patientUpdater.update(person, data);
-     * 
-     * verify(personRepository).save(personCaptor.capture());
-     * var savedPerson = personCaptor.getValue();
-     * 
-     * var now = Instant.now();
-     * 
-     * assertEquals(data.raceCd(), savedPerson.getRaceCd());
-     * 
-     * assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
-     * assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
-     * assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
-     * assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
-     * }
-     */
     @Test
     void should_update_ethnicity_info() {
         var data = getEthnicityData();
@@ -744,6 +729,88 @@ class PatientUpdaterTest {
 
     private DeleteEmailData getDeleteEmailData() {
         return new DeleteEmailData(123L,
+                (short) 456,
+                "RequestId",
+                321L,
+                Instant.now());
+    }
+
+    @Test
+    void should_add_identification_info() {
+        var data = getAddIdentificationData();
+        var person = new Person(123L, "localId");
+        patientUpdater.update(person, data);
+        verify(personRepository).save(personCaptor.capture());
+        var entityId = (EntityId) personCaptor.getValue()
+                .getEntityIds()
+                .get(0);
+        assertEquals(data.identificationNumber(), entityId.getRootExtensionTxt());
+        assertEquals(data.identificationType(), entityId.getTypeCd());
+    }
+
+    private AddIdentificationData getAddIdentificationData() {
+        return new AddIdentificationData(123L,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "123456789",
+                "assign",
+                "ssn");
+    }
+
+    @Test
+    void should_update_identification_info() {
+        var data = getUpdateIdentificationData();
+        var person = new Person(123L, "localId");
+
+        var entityId = new EntityId();
+        entityId.setId(new EntityIdId(123L, (short) 456));
+        entityId.setRootExtensionTxt("123456789");
+        entityId.setTypeCd("ssn");
+        person.setEntityIds(List.of(entityId));
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+        entityId = (EntityId) personCaptor.getValue()
+                .getEntityIds()
+                .get(0);
+        assertEquals(data.identificationNumber(), entityId.getRootExtensionTxt());
+        assertEquals(data.identificationType(), entityId.getTypeCd());
+    }
+
+    private UpdateIdentificationData getUpdateIdentificationData() {
+        return new UpdateIdentificationData(123L,
+                (short) 456,
+                "RequestId",
+                321L,
+                Instant.now(),
+                "123456789",
+                "assign",
+                "ssn");
+    }
+
+    @Test
+    void should_delete_identification_info() {
+        var data = getDeleteIdentificationData();
+        var person = new Person(123L, "localId");
+
+        var entityId = new EntityId();
+        entityId.setId(new EntityIdId(123L, (short) 456));
+        entityId.setRootExtensionTxt("123456789");
+        entityId.setTypeCd("ssn");
+        person.setEntityIds(List.of(entityId));
+        assertEquals(1, person.getEntityIds().size());
+
+        patientUpdater.update(person, data);
+
+        verify(personRepository).save(personCaptor.capture());
+
+        assertEquals(0, personCaptor.getValue().getEntityIds().size());
+    }
+
+    private DeleteIdentificationData getDeleteIdentificationData() {
+        return new DeleteIdentificationData(123L,
                 (short) 456,
                 "RequestId",
                 321L,
