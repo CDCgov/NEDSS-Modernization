@@ -86,7 +86,7 @@ class ContactNamedByPatientFinder {
 
     private PatientContacts.NamedContact mapContact(final Tuple tuple) {
 
-        Long identifier = tuple.get(CONTACT.id);
+        String identifier = tuple.get(CONTACT.localId);
         String prefix = tuple.get(CONTACT.nmPrefix);
         String first = tuple.get(CONTACT.firstNm);
         String last = tuple.get(CONTACT.lastNm);
@@ -96,7 +96,8 @@ class ContactNamedByPatientFinder {
             prefix,
             first,
             last,
-            suffix);
+            suffix
+        );
 
         return new PatientContacts.NamedContact(
             Objects.requireNonNull(identifier, "A contact identifier is required."),
@@ -146,7 +147,7 @@ class ContactNamedByPatientFinder {
                 TRACING.localId,
                 PRIORITY.codeDescTxt,
                 DISPOSITION.codeDescTxt,
-                CONTACT.id,
+                CONTACT.localId,
                 CONTACT.nmPrefix,
                 CONTACT.firstNm,
                 CONTACT.lastNm,

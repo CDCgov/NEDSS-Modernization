@@ -61,7 +61,6 @@ export const PatientContactTable = ({ patient, tracings, title, headings }: Prop
     const [bodies, setBodies] = useState<TableBody[]>([]);
 
     const handleModalClose = () => {
-        console.log('Contact Records Modal closed');
         reload();
     };
 

@@ -25,7 +25,6 @@ export const usePatientProfileContactNamedByPatientAPI = (patient?: string): Tra
 
     useEffect(() => {
         if (patient && page.status === Status.Requested) {
-            console.log(patient, page);
             getTracings({
                 variables: {
                     patient: patient,

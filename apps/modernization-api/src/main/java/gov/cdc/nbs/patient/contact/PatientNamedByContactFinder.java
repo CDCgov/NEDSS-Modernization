@@ -67,7 +67,7 @@ class PatientNamedByContactFinder {
                 this.tables.tracing().id,
                 this.tables.tracing().addTime,
                 this.tables.tracing().localId,
-                this.tables.subject().id,
+                this.tables.subject().localId,
                 this.tables.subject().nmPrefix,
                 this.tables.subject().firstNm,
                 this.tables.subject().lastNm,

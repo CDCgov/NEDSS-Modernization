@@ -86,7 +86,7 @@ class PatientNamedByContactTupleMapper {
     }
 
     private PatientContacts.NamedContact mapContact(final Tuple tuple) {
-        Long identifier = tuple.get(this.tables.subject().id);
+        String identifier = tuple.get(this.tables.subject().localId);
         String prefix = tuple.get(this.tables.subject().nmPrefix);
         String first = tuple.get(this.tables.subject().firstNm);
         String last = tuple.get(this.tables.subject().lastNm);

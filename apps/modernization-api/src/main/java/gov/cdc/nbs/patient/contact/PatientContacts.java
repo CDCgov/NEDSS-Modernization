@@ -12,7 +12,7 @@ public record PatientContacts(
 ) {
 
     record NamedContact(
-            long id,
+            String local,
             String name
     ) {
 

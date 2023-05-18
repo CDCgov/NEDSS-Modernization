@@ -24,7 +24,7 @@ class PatientNamedByContactTupleMapperTest {
         when(tuple.get(tables.tracing().addTime)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
         when(tuple.get(tables.namedOn())).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
 
-        when(tuple.get(tables.subject().id)).thenReturn(433L);
+        when(tuple.get(tables.subject().localId)).thenReturn("local");
 
         when(tuple.get(tables.associatedWith().investigation().id)).thenReturn(227L);
         when(tuple.get(tables.associatedWith().investigation().localId)).thenReturn("investigation-local");
@@ -46,7 +46,7 @@ class PatientNamedByContactTupleMapperTest {
             .returns("condition-description", PatientContacts.Condition::description);
 
         assertThat(actual.contact())
-            .returns(433L, PatientContacts.NamedContact::id);
+            .returns("local", PatientContacts.NamedContact::local);
 
         assertThat(actual.namedOn()).isEqualTo("2023-01-17T22:54:43Z");
         assertThat(actual.event()).isEqualTo("event");
