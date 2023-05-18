@@ -75,5 +75,8 @@ dependencies {
 
 }
 
-
 compileJava.mustRunAfter(":authentication:build")
+
+compileJava {
+    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
+}

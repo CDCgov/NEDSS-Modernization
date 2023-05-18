@@ -21,31 +21,32 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
+import gov.cdc.nbs.authentication.AuthProgAreaAdmin;
+import gov.cdc.nbs.authentication.AuthUser;
+import gov.cdc.nbs.authentication.AuthUserRepository;
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.AuthProgAreaAdmin;
-import gov.cdc.nbs.entity.odse.AuthUser;
-import gov.cdc.nbs.entity.odse.QAuthBusObjRt;
-import gov.cdc.nbs.entity.odse.QAuthBusObjType;
-import gov.cdc.nbs.entity.odse.QAuthBusOpRt;
-import gov.cdc.nbs.entity.odse.QAuthBusOpType;
-import gov.cdc.nbs.entity.odse.QAuthPermSet;
-import gov.cdc.nbs.entity.odse.QAuthUser;
-import gov.cdc.nbs.entity.odse.QAuthUserRole;
+import gov.cdc.nbs.authentication.QAuthBusObjRt;
+import gov.cdc.nbs.authentication.QAuthBusObjType;
+import gov.cdc.nbs.authentication.QAuthBusOpRt;
+import gov.cdc.nbs.authentication.QAuthBusOpType;
+import gov.cdc.nbs.authentication.QAuthPermSet;
+import gov.cdc.nbs.authentication.QAuthUser;
+import gov.cdc.nbs.authentication.QAuthUserRole;
 import gov.cdc.nbs.entity.srte.QProgramAreaCode;
 import gov.cdc.nbs.exception.BadTokenException;
-import gov.cdc.nbs.repository.AuthUserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
+
     private final Algorithm algorithm;
     private final SecurityProperties properties;
     private final AuthUserRepository authUserRepository;
+
     @PersistenceContext
     private final EntityManager entityManager;
 
@@ -138,8 +139,7 @@ public class UserService implements UserDetailsService {
      * <li>user has the 'user' role, and the permission applies to 'user'
      * <li>user has the 'guest' role and the permission applies to 'guest'.
      * </ul>
-     * The Authority string is set to BusinessOperation-businessObject,
-     * e.g.: VIEW-PATIENT
+     * The Authority string is set to BusinessOperation-businessObject, e.g.: VIEW-PATIENT
      */
     private Set<NbsAuthority> getUserPermissions(AuthUser user) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);

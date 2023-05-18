@@ -2,11 +2,12 @@ nbs:
   datasource:
     server: localhost
   security:
+    enabled: false
     tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
     max-page-size: 50
- 
+
 spring:
   graphql:
     path: /graphql
@@ -28,7 +29,7 @@ spring:
         format_sql: true
         default_schema: dbo
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=question_bank;encrypt=true;trustServerCertificate=true;
     username: qb_admin

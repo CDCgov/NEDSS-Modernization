@@ -1,9 +1,9 @@
 package gov.cdc.nbs.support.util;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.cdc.nbs.authentication.AuthUser;
+import gov.cdc.nbs.authentication.AuthUserRepository;
 import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.entity.odse.AuthUser;
-import gov.cdc.nbs.repository.AuthUserRepository;
 
 public class UserUtil {
     public static AuthUser insertIfNotExists(AuthUser user, AuthUserRepository repository) {

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.authentication;
 
 import java.time.Instant;
 
@@ -29,21 +29,27 @@ import lombok.Setter;
 @Setter
 @Entity
 @Builder
-@Table(name = "Auth_bus_obj_rt")
-public class AuthBusObjRt {
+@Table(name = "Auth_bus_op_rt")
+public class AuthBusOpRt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_bus_obj_rt_uid", nullable = false)
+    @Column(name = "auth_bus_op_rt_uid", nullable = false)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "auth_bus_op_type_uid", nullable = false)
+    private AuthBusOpType authBusOpTypeUid;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_perm_set_uid", nullable = false, insertable = false, updatable = false)
-    private AuthPermSet authPermSetUid;
+    @JoinColumn(name = "auth_bus_obj_rt_uid", nullable = false)
+    private AuthBusObjRt authBusObjRtUid;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_bus_obj_type_uid", nullable = false)
-    private AuthBusObjType authBusObjTypeUid;
+    @Column(name = "bus_op_user_rt")
+    private Character busOpUserRt;
+
+    @Column(name = "bus_op_guest_rt")
+    private Character busOpGuestRt;
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;

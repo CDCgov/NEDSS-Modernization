@@ -12,15 +12,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import gov.cdc.nbs.authentication.AuthUser;
+import gov.cdc.nbs.authentication.AuthUserRepository;
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
-import gov.cdc.nbs.entity.odse.AuthUser;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.model.LoginRequest;
 import gov.cdc.nbs.model.LoginResponse;
-import gov.cdc.nbs.repository.AuthUserRepository;
 import gov.cdc.nbs.service.UserService;
 
 @RestController

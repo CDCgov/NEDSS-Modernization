@@ -1,9 +1,8 @@
 package gov.cdc.nbs.support;
 
 import java.time.Instant;
-
+import gov.cdc.nbs.authentication.AuthUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.AuthUser;
 
 public class UserMother {
     public static AuthUser clerical() {

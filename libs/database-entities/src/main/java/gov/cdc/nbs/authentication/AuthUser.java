@@ -1,8 +1,7 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.authentication;
 
 import java.time.Instant;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -79,9 +76,8 @@ public class AuthUser {
     @Column(name = "nedss_entry_id", nullable = false)
     private Long nedssEntryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "external_org_uid")
-    private Organization externalOrgUid;
+    @Column(name = "external_org_uid")
+    private String externalOrgUid;
 
     @Column(name = "user_password", length = 100)
     private String userPassword;
@@ -111,8 +107,7 @@ public class AuthUser {
     @Column(name = "jurisdiction_derivation_ind")
     private Character jurisdictionDerivationInd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "provider_uid")
-    private NBSEntity providerUid;
+    @Column(name = "provider_uid")
+    private String providerUid;
 
 }

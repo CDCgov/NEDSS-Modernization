@@ -1,7 +1,6 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.authentication;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +9,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
-
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -19,40 +16,22 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Builder
-@Table(name = "Auth_user_role")
-public class AuthUserRole {
+@Table(name = "Auth_prog_area_admin")
+public class AuthProgAreaAdmin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_user_role_uid", nullable = false)
+    @Column(name = "auth_prog_area_admin_uid", nullable = false)
     private Long id;
-
-    @Column(name = "auth_role_nm", length = 100)
-    private String authRoleNm;
 
     @Column(name = "prog_area_cd", length = 100)
     private String progAreaCd;
-
-    @Column(name = "jurisdiction_cd", length = 100)
-    private String jurisdictionCd;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "auth_user_uid", nullable = false)
     private AuthUser authUserUid;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_perm_set_uid", nullable = false)
-    private AuthPermSet authPermSetUid;
-
-    @Column(name = "role_guest_ind")
-    private Character roleGuestInd;
-
-    @Column(name = "read_only_ind")
-    private Character readOnlyInd;
-
-    @Column(name = "disp_seq_nbr")
-    private Integer dispSeqNbr;
+    @Column(name = "Auth_user_ind", nullable = false)
+    private Character authUserInd;
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;
@@ -66,9 +45,8 @@ public class AuthUserRole {
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", nullable = false, length = 20)
-    private RecordStatus recordStatusCd;
+    private String recordStatusCd;
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.questionnaire;
+package gov.cdc.nbs.questionbank.entities;
 
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -11,10 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import gov.cdc.nbs.questionbank.entities.QuestionGroup;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "questionnaire", catalog = "question_bank")
-public class Questionnaire {
+public class QuestionnaireEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -34,13 +33,17 @@ public class Questionnaire {
             joinColumns = @JoinColumn(name = "questionnaire_id"))
     private List<String> conditionCodes;
 
-    @Column(name = "questionnaire_type", length = 100, nullable = false)
-    private String questionnaireType;
+    @Column(name = "name", length = 255)
+    private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "questionnaire_question_group",
-            joinColumns = @JoinColumn(name = "questionnaire_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_group_id"))
-    private List<QuestionGroup> questionGroups;
+    @Column(name = "description", length = 500)
+    private String description;
+
+    @OrderBy("display_order")
+    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Reference> references;
+
+    @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<QuestionnaireRule> rules;
+
 }

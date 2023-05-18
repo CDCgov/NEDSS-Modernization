@@ -5,44 +5,44 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
+import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 import gov.cdc.nbs.questionbank.support.QuestionnaireMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @Transactional
 public class QuestionnaireSteps {
 
     @Autowired
-    private QuestionnaireRepository questionnaireRepository;
-
-    @Autowired
     private QuestionnaireResolver resolver;
 
-    private Questionnaire search;
+    @Autowired
+    private QuestionnaireMother questionnaireMother;
+
+    private QuestionnaireEntity search;
     private Questionnaire results;
 
-    @Given("a {string} questionnaire exists with type {string}")
-    public void a_questionnaire_exists(String condition, String type) {
-        questionnaireRepository
-                .save(QuestionnaireMother.questionnaire(
-                        type,
-                        null,
-                        Collections.singletonList("123")));
+    @Given("a {string} questionnaire exists")
+    public void a_questionnaire_exists(String condition) {
+        questionnaireMother.clean();
+        search = questionnaireMother.questionnaire(Collections.singletonList("123"));
     }
 
     @When("I search for a questionnaire")
     public void i_search_for_a_questionnaire() {
-        search = questionnaireRepository.findAll().get(0);
         String conditionCd = search.getConditionCodes().get(0);
-        String type = search.getQuestionnaireType();
-        results = resolver.findQuestionnaire(new QuestionnaireContext(conditionCd, type));
+        results = resolver.findQuestionnaire(new QuestionnaireContext(conditionCd));
     }
 
     @Then("the questionnaire is returned")
     public void the_questionnaire_is_returned() {
         assertNotNull(results);
-        assertEquals(search.getId(), results.getId());
+        assertEquals(search.getId().longValue(), results.id());
+        assertThat(search.getConditionCodes()).containsExactly("123");
     }
 
 }

@@ -9,29 +9,33 @@ input QuestionnaireContext {
 
 type Questionnaire {
   id: ID!
-  conditionId: ID!
-  questionnaireType: String!
-  questionGroups: [QuestionGroup]!
+  conditions: [String!]!
+  elements: [Element]!
 }
 
-type QuestionGroup {
+type OptionSet {
   id: ID!
-  label: String
-  questions: [Question]!
+  name: String!
+  description: String
+  options: [Option]!
 }
 
-union Question =
-    TextQuestion
-  | NumericQuestion
-  | DropDownQuestion
-  | DateQuestion
+type Option {
+  id: ID!
+  value: String!
+  display: String!
+}
+
+type Text {
+  id: ID!
+  text: String!
+}
 
 type TextQuestion {
   id: ID!
   label: String!
   tooltip: String
   required: Boolean!
-  questionType: QuestionType
   maxLength: Int
   placeholder: String
 }
@@ -41,10 +45,9 @@ type NumericQuestion {
   label: String!
   tooltip: String
   required: Boolean!
-  questionType: QuestionType
   minValue: Int
   maxValue: Int
-  unitsSet: AnswerSet
+  unitOptions: OptionSet
 }
 
 type DropDownQuestion {
@@ -52,10 +55,9 @@ type DropDownQuestion {
   label: String!
   tooltip: String
   required: Boolean!
-  questionType: QuestionType
-  answerSet: AnswerSet
-  defaultAnswer: Answer
-  multiselect: Boolean!
+  optionSet: OptionSet
+  defaultOption: Option
+  isMultiSelect: Boolean!
 }
 
 type DateQuestion {
@@ -63,26 +65,26 @@ type DateQuestion {
   label: String!
   tooltip: String
   required: Boolean!
-  questionType: QuestionType
   allowFuture: Boolean!
 }
 
-type AnswerSet {
+union DisplayElement =
+    Text
+  | TextQuestion
+  | NumericQuestion
+  | DropDownQuestion
+  | DateQuestion
+
+type Section {
   id: ID!
-  name: String
-  description: String
-  answers: [Answer]!
+  label: String!
+  elements: [DisplayElement]!
 }
 
-type Answer {
-  id: ID!
-  display: String!
-  value: String!
-}
-
-enum QuestionType {
-  TEXT
-  NUMERIC
-  DROP_DOWN
-  DATE
-}
+union Element =
+    Section
+  | Text
+  | TextQuestion
+  | NumericQuestion
+  | DropDownQuestion
+  | DateQuestion

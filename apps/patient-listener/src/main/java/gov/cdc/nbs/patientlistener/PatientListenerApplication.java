@@ -9,13 +9,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan({"gov.cdc.nbs"})
-@EnableJpaRepositories("gov.cdc.nbs")
+@EnableJpaRepositories({"gov.cdc.nbs.repository", "gov.cdc.nbs.authentication"})
 @EnableElasticsearchRepositories("gov.cdc.nbs.repository.elasticsearch")
-@EntityScan("gov.cdc.nbs.entity")
+@EntityScan("gov.cdc.nbs")
 public class PatientListenerApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(PatientListenerApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(PatientListenerApplication.class, args);
+    }
 
 }

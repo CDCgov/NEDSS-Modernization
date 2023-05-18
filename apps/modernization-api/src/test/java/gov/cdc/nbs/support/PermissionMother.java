@@ -1,9 +1,8 @@
 package gov.cdc.nbs.support;
 
 import java.time.Instant;
-
+import gov.cdc.nbs.authentication.AuthPermSet;
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.AuthPermSet;
 
 public class PermissionMother {
     public static Long SYSTEM_USER_ID = 10191001L;

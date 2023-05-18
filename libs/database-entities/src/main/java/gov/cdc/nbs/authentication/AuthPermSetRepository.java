@@ -1,8 +1,6 @@
-package gov.cdc.nbs.repository;
+package gov.cdc.nbs.authentication;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import gov.cdc.nbs.entity.odse.AuthPermSet;
 
 public interface AuthPermSetRepository extends JpaRepository<AuthPermSet, Long> {
 

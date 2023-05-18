@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.authentication;
 
 import java.time.Instant;
 
