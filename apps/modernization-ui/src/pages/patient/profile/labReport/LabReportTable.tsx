@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { useEffect, useState } from 'react';
+import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import {
     AssociatedInvestigation,
@@ -11,9 +11,7 @@ import {
 
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
-import { RedirectControllerService } from 'generated';
-import { UserContext } from 'providers/UserContext';
-import { Config } from 'config';
+import { ClassicButton, ClassicLink } from 'classic';
 
 type PatientLabReportTableProps = {
     patient?: string;
@@ -21,9 +19,6 @@ type PatientLabReportTableProps = {
 };
 
 export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: PatientLabReportTableProps) => {
-    const { state } = useContext(UserContext);
-    const NBS_URL = Config.nbsUrl;
-
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [labReportData, setLabReportData] = useState<any>([]);
@@ -210,24 +205,10 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
             isPagination={true}
             buttons={
                 <div className="grid-row">
-                    <Button
-                        type="button"
-                        className="grid-row"
-                        onClick={() => {
-                            RedirectControllerService.preparePatientDetailsUsingGet({
-                                authorization: 'Bearer ' + state.getToken()
-                            }).then(() => {
-                                // URl should probably be:
-                                // /nbs/LoadAddObservationLab1.do?method=createGenericLoad&ContextAction=AddLab
-                                // But this internally checks for "DSPatientPersonUID" which is stored in some NBSContext.OBJECT_STORE
-                                // for now putting in a temporary one that works, loads the "Add Lab report" page but with the tab "patient"
-                                // in context rather that the tab "report"
-                                window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
-                            });
-                        }}>
+                    <ClassicButton url={`/nbs/api/profile/${patient}/report/lab`}>
                         <Icon.Add className="margin-right-05" />
                         Add lab report
-                    </Button>
+                    </ClassicButton>
                 </div>
             }
             tableHeader={'Lab reports'}
@@ -239,10 +220,11 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                         <tr key={index}>
                             <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                                 {report?.addTime ? (
-                                    <a href="#">
+                                    <ClassicLink
+                                        url={`/nbs/api/profile/${patient}/report/lab/${report.observationUid}`}>
                                         {format(new Date(report?.addTime), 'MM/dd/yyyy')} <br />{' '}
                                         {format(new Date(report?.addTime), 'hh:mm a')}
-                                    </a>
+                                    </ClassicLink>
                                 ) : (
                                     <span className="no-data">No data</span>
                                 )}
@@ -290,14 +272,13 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
                                 ) : (
                                     <>
                                         {report.associatedInvestigations?.map(
-                                            (i: AssociatedInvestigation, index: number) => (
+                                            (investigation: AssociatedInvestigation, index: number) => (
                                                 <div key={index}>
-                                                    <p
-                                                        className="margin-0 text-primary text-bold link"
-                                                        style={{ wordBreak: 'break-word' }}>
-                                                        {i?.localId}
-                                                    </p>
-                                                    <p className="margin-0">{i?.cdDescTxt}</p>
+                                                    <ClassicLink
+                                                        url={`/nbs/api/profile/${patient}/investigation/${investigation.publicHealthCaseUid}`}>
+                                                        {investigation?.localId}
+                                                    </ClassicLink>
+                                                    <p className="margin-0">{investigation?.cdDescTxt}</p>
                                                 </div>
                                             )
                                         )}

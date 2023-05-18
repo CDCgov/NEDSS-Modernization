@@ -34,11 +34,11 @@ THe following routes should be proxied to the `modernization-api` service.
 Transforms requests to a Classic Patient Profile into an authenticated request that redirects to the Modernized Patient
 Profile of the Patient identified by the `MPRUid` or `uid` request parameter.
 
-| Criteria                                                                                  | API Path                       | Description                                                                                              |
-|-------------------------------------------------------------------------------------------|--------------------------------|----------------------------------------------------------------------------------------------------------|
-| A POST request Contains the Query Parameter `ContextAction` with a value of `ViewFile`    | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS.                                                          |
-| A POST request Contains the Query Parameter `ContextAction` with a value of `FileSummary` | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS                                                           |
-| A GET request where the Query Parameter `ContextAction` with a value of `FileSummary`     | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS after Morbidity Report `Submit and Create Investigation`  |
+| Criteria                                                                               | API Path                       | Description                                                                                              |
+|----------------------------------------------------------------------------------------|--------------------------------|----------------------------------------------------------------------------------------------------------|
+| A POST request where the Query Parameter `ContextAction` with a value of `ViewFile`    | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS.                                                          |
+| A POST request where the Query Parameter `ContextAction` with a value of `FileSummary` | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS                                                           |
+| A GET request where the Query Parameter `ContextAction` with a value of `FileSummary`  | `/nbs/redirect/patientProfile` | View a Patient Profile link within Classic NBS after Morbidity Report `Submit and Create Investigation`  |
 
 Transforms requests to return to a Classic Profile into an authenticated request that redirects to the Modernized
 Patient Profile of the Patient identified by the value of the `Return-Patient` cookie. This cookie added to requests via
@@ -51,3 +51,4 @@ an API call prior to redirecting to Classic NBS.
 | Path is exactly `/nbs/PageAction.do` containing the Query Parameter `method` with a value of `mergeSubmit` and the Query Parameter `ContextAction` with a value of `Submit` | `/nbs/redirect/patientProfile/events/return`    | Return to the Classic Patient Profile after completing a `Compare investigation`                                                    |
 | Path is exactly `/nbs/AddObservationMorb2.do` containing the Query Parameter `ContextAction` with a value of `Cancel`                                                       | `/nbs/redirect/patientProfile/events/return`    | Return to the Classic Patient Profile after cancelling an `Add morbidity report`                                                    |
 | A POST request where the Path is exactly `/nbs/AddObservationMorb2.do` without any Query Parameters.                                                                        | `/nbs/redirect/patient/report/morbidity/submit` | Submitting a Morbidity Report after completing the Classic form displayed when a Morbidity Report is added from the Patient Profile |
+| A POST request where the Path is exactly `/nbs/AddObservationLab2.do` containing the Query Parameter `ContextAction` with a value of `Submit`                               | `/nbs/redirect/patient/report/lab/submit`       | Submitting a Lab Report after completing the Classic form displayed when a Lab Report is added from the Patient Profile             |

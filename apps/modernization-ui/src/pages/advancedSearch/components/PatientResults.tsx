@@ -153,7 +153,7 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
     };
 
     const redirectPatientProfile = async (item: any) => {
-        navigate(`/patient-profile/${item.id}`);
+        navigate(`/patient-profile/${item.shortId}`);
     };
 
     return (
@@ -188,14 +188,19 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
                                             <h5 className="margin-0 text-normal font-sans-3xs text-gray-50">
                                                 LEGAL NAME
                                             </h5>
-                                            <p
+                                            <a
                                                 onClick={() => redirectPatientProfile(item)}
+                                                tabIndex={0}
                                                 className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"
-                                                style={{ wordBreak: 'break-word', cursor: 'pointer' }}>
+                                                style={{
+                                                    wordBreak: 'break-word',
+                                                    cursor: 'pointer',
+                                                    textDecoration: 'none'
+                                                }}>
                                                 {!item.lastNm && !item.firstNm
                                                     ? `No data`
                                                     : `${item.lastNm}, ${item.firstNm}`}
-                                            </p>
+                                            </a>
                                         </Grid>
                                         <Grid col={12} className="margin-bottom-2">
                                             <div className="grid-row flex-align-center">

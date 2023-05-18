@@ -48,7 +48,7 @@ export const Ethnicity = ({ patient }: PatientLabReportTableProps) => {
         if (patient) {
             getProfile({
                 variables: {
-                    patient: patient
+                    shortId: +patient
                 }
             });
         }

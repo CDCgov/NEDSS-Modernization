@@ -6,20 +6,31 @@ type PhoneNumberInputProps = {
     defaultValue?: string;
     onChange?: any;
     error?: any;
+    placeholder?: string;
+    id?: string;
 };
-export const PhoneNumberInput = ({ label, defaultValue, onChange, error, ...props }: PhoneNumberInputProps) => {
+export const PhoneNumberInput = ({
+    label,
+    defaultValue,
+    onChange,
+    error,
+    placeholder,
+    id,
+    ...props
+}: PhoneNumberInputProps) => {
     return (
         <div className={`phone-number-input ${error ? 'input--error' : ''}`}>
-            <Label htmlFor="phoneNumber">{label}</Label>
+            <Label htmlFor={id || 'phoneNumber'}>{label}</Label>
             <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
             <TextInput
                 {...props}
-                id="phoneNumber"
+                id={id || 'phoneNumber'}
                 onChange={onChange}
                 value={defaultValue ? defaultValue : ''}
-                name="phoneNumber"
+                name={id || 'phoneNumber'}
                 validationStatus={error ? 'error' : undefined}
                 type="tel"
+                placeholder={placeholder || ''}
             />
         </div>
     );
