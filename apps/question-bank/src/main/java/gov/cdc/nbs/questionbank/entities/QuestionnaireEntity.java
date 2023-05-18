@@ -27,10 +27,10 @@ public class QuestionnaireEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ElementCollection
     @CollectionTable(
             name = "questionnaire_conditions",
             joinColumns = @JoinColumn(name = "questionnaire_id"))
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> conditionCodes;
 
     @Column(name = "name", length = 255)
