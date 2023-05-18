@@ -9,13 +9,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.kafka.exception.RequestException;
+import gov.cdc.nbs.questionbank.kafka.message.QuestionBankRequest;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
+import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
 import gov.cdc.nbs.questionbank.question.QuestionHandler;
 
 @ExtendWith(MockitoExtension.class)
@@ -97,9 +101,35 @@ class TopicListenerTest {
     }
 
     @Test
-    void testInvalidMessage() {
+    void testJsonProcessingException() {
         String message = "bad message";
         assertThrows(RequestException.class, () -> consumer.onMessage(message, "requestId"));
+    }
+
+    @Test
+    void testInvalidRequest() throws JsonMappingException, JsonProcessingException {
+        ObjectMapper mockMapper = Mockito.mock(ObjectMapper.class);
+        RequestStatusProducer producer = Mockito.mock(RequestStatusProducer.class);
+        TopicListener listener = new TopicListener(mockMapper, createHandler, producer);
+
+        Mockito.when(mockMapper.readValue(Mockito.anyString(), Mockito.eq(QuestionBankRequest.class)))
+                .thenReturn(
+                        new QuestionBankRequest() {
+                            @Override
+                            public String requestId() {
+                                return "";
+                            }
+
+                            @Override
+                            public long userId() {
+                                return 1L;
+                            }
+                        });
+
+        assertThrows(RequestException.class, () -> listener.onMessage("any message", "some key"));
+
+        verify(producer, times(1)).failure(Mockito.any(), Mockito.any());
+        verify(createHandler, times(0)).handleQuestionRequest((Mockito.any()));
     }
 
 }

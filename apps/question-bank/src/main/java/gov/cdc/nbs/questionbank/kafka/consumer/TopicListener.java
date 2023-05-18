@@ -46,16 +46,15 @@ public class TopicListener {
                 receivedInvalidRequest(key, request);
             }
 
-
         } catch (JsonProcessingException e) {
             failedParsing(key, e);
         }
     }
 
     private void receivedInvalidRequest(final String key, final QuestionBankRequest request) {
-        statusProducer.failure(key, "Invalid EventType specified.");
-        log.warn("Invalid EventType specified: {}", request.type());
-        throw new RequestException("Invalid EventType specified", key);
+        statusProducer.failure(key, "Invalid QuestionBankRequest type specified.");
+        log.warn("Invalid QuestionBankRequest specified: {}", request.type());
+        throw new RequestException("Invalid QuestionBankRequest type specified", key);
     }
 
     private void failedParsing(final String key, final JsonProcessingException exception) {
