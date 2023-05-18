@@ -27,7 +27,7 @@ class RequestPropertiesTest {
     @Test
     void should_have_proper_defaults() {
         RequestProperties newProps = new RequestProperties();
-        assertEquals(newProps.status(), "questionbank-status");
-        assertEquals(newProps.request(), "questionbank");
+        assertEquals("questionbank-status", newProps.status());
+        assertEquals("questionbank", newProps.request());
     }
 }
