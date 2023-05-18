@@ -4,6 +4,7 @@ import gov.cdc.nbs.containers.NbsElasticsearchContainer;
 import gov.cdc.nbs.containers.database.EmbeddedNbsDatabase;
 import gov.cdc.nbs.patient.PatientController;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGeneratorTestConfiguration;
+import gov.cdc.nbs.patient.profile.EnableClassicMockRestServer;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.junit.Test;
 import org.junit.platform.suite.api.ConfigurationParameter;
@@ -49,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
     partitions = 1,
     topics = {"patient"}
 )
+@EnableClassicMockRestServer
 public class RunCucumberTest {
     @Autowired
     private PatientController patientController;
