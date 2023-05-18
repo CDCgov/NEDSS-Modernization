@@ -60,7 +60,7 @@ public class TopicListener {
 
     private void failedParsing(final String key, final JsonProcessingException exception) {
         log.warn("Failed to parse kafka message. Key: {}, Message: {}", key, exception.getMessage());
-        throw new RequestException("Failed to parse message into PatientRequest", key);
+        throw new RequestException("Failed to parse message into QuestionBankRequest", key);
     }
 
 }
