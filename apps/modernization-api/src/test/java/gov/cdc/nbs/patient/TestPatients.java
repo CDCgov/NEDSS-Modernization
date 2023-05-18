@@ -1,37 +1,26 @@
 package gov.cdc.nbs.patient;
 
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.TestAvailable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 @Component
 public class TestPatients {
 
-  private final Collection<Long> identifiers;
-  private final TestPatientCleaner cleaner;
+    private final TestAvailable<PatientIdentifier> patients;
 
-  public TestPatients(final TestPatientCleaner cleaner) {
-    this.cleaner = cleaner;
-    identifiers = new ArrayList<>();
-  }
+    public TestPatients(final TestAvailable<PatientIdentifier> patients) {
+        this.patients = patients;
+    }
 
-  void available(final long patient) {
-    this.identifiers.add(patient);
-  }
+    public Optional<Long> maybeOne() {
+        return this.patients.maybeOne().map(PatientIdentifier::id);
+    }
 
-  void reset() {
-    this.identifiers.forEach(cleaner::clean);
-    this.identifiers.clear();
-  }
-
-  public Optional<Long> maybeOne() {
-    return this.identifiers.stream().findFirst();
-  }
-
-  public long one() {
-    return maybeOne().orElseThrow(() -> new IllegalStateException("there is no patient"));
-  }
+    public long one() {
+        return maybeOne().orElseThrow(() -> new IllegalStateException("there is no patient"));
+    }
 
 }

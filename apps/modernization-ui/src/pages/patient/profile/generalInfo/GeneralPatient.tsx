@@ -43,7 +43,7 @@ export const GeneralPatient = ({ patient }: PatientLabReportTableProps) => {
         if (patient) {
             getProfile({
                 variables: {
-                    patient: patient
+                    shortId: +patient
                 }
             });
         }

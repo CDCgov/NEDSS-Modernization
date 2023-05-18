@@ -1473,6 +1473,7 @@ type PersonParticipation {
   personParentUid: Int
   personRecordStatus: String!
   personLastChangeTime: DateTime
+  shortId: Int
 }
 
 type OrganizationParticipation {

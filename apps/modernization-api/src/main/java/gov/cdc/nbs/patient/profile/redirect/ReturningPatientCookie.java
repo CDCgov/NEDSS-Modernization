@@ -14,10 +14,12 @@ public record ReturningPatientCookie(String patient) {
     }
 
     public static Optional<ReturningPatientCookie> resolve(final Cookie[] cookies) {
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(RETURNING_PATIENT_COOKIE)) {
-                String identifier = cookie.getValue();
-                return Optional.of(new ReturningPatientCookie(identifier));
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(RETURNING_PATIENT_COOKIE)) {
+                    String identifier = cookie.getValue();
+                    return Optional.of(new ReturningPatientCookie(identifier));
+                }
             }
         }
         return Optional.empty();

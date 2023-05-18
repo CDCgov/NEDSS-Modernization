@@ -36,6 +36,7 @@ import { InvestigationResults } from './components/InvestigationResults';
 import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
+import { Icon } from '@trussworks/react-uswds';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -891,13 +892,20 @@ export const AdvancedSearch = () => {
                     {!isLoading() && (
                         <>
                             {submitted && isEmptyFilter() && (
-                                <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center">
+                                <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-alert">
                                     <Alert
                                         type="error"
                                         // heading="You did not make a search"
                                         headingLevel="h4"
                                         className="width-full">
-                                        <>You must enter at least one item to search</>
+                                        <div className="display-flex flex-justify flex-align-center">
+                                            You must enter at least one item to search
+                                            <Icon.Close
+                                                onClick={() => setSubmitted(false)}
+                                                className="margin-left-05"
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                        </div>
                                     </Alert>
                                 </div>
                             )}

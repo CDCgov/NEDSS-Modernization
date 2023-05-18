@@ -1,8 +1,9 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.authorization.SessionCookie;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.TestAvailable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PatientProfileIncomingRedirectionSteps {
 
     @Autowired
-    TestPatients patients;
+    TestAvailable<PatientIdentifier> patients;
 
     @Autowired
     MockMvc mvc;
@@ -36,7 +37,7 @@ public class PatientProfileIncomingRedirectionSteps {
     @When("Redirecting a Classic Master Patient Record Profile")
     public void redirecting_a_classic_master_patient_record_profile() throws Exception {
 
-        long patient = patients.one();
+        PatientIdentifier patient = patients.one();
 
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
@@ -44,7 +45,7 @@ public class PatientProfileIncomingRedirectionSteps {
             mvc
                 .perform(
                     MockMvcRequestBuilders.post("/nbs/redirect/patientProfile")
-                        .param("MPRUid", String.valueOf(patient))
+                        .param("MPRUid", String.valueOf(patient.id()))
                         .cookie(session.asCookie())
                 )
                 .andReturn()
@@ -54,7 +55,7 @@ public class PatientProfileIncomingRedirectionSteps {
 
     @When("Redirecting a Classic Revision Patient Profile")
     public void redirecting_a_classic_revision_patient_profile() throws Exception {
-        long patient = patients.one();
+        PatientIdentifier patient = patients.one();
 
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
@@ -62,7 +63,7 @@ public class PatientProfileIncomingRedirectionSteps {
             mvc
                 .perform(
                     MockMvcRequestBuilders.post("/nbs/redirect/patientProfile")
-                        .param("uid", String.valueOf(patient))
+                        .param("uid", String.valueOf(patient.id()))
                         .cookie(session.asCookie())
                 )
                 .andReturn()
@@ -72,12 +73,12 @@ public class PatientProfileIncomingRedirectionSteps {
 
     @Then("I am redirected to the Modernized Patient Profile")
     public void i_am_redirected_to_the_modernized_patient_profile() {
-        long patient = patients.one();
+        PatientIdentifier patient = patients.one();
 
         MockHttpServletResponse response = activeResponse.active();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.SEE_OTHER.value());
-        assertThat(response.getRedirectedUrl()).contains("/patient-profile/" + patient);
+        assertThat(response.getRedirectedUrl()).contains("/patient-profile/" + patient.shortId());
 
     }
 }
