@@ -29,6 +29,10 @@ spring:
     url: jdbc:h2:mem:question_bank;MODE=MSSQLServer;DB_CLOSE_DELAY=-1;
     username: sa
     password: sa
+  kafka:
+    boostrap-servers: ${spring.kafka.bootstrap-servers}
+    consumer:
+      auto-offset-reset: earliest
 
 logging:
   level:

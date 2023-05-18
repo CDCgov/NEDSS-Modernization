@@ -11,7 +11,6 @@ import gov.cdc.nbs.questionbank.support.QuestionnaireMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Transactional
@@ -42,7 +41,8 @@ public class QuestionnaireSteps {
     public void the_questionnaire_is_returned() {
         assertNotNull(results);
         assertEquals(search.getId().longValue(), results.id());
-        assertThat(search.getConditionCodes()).containsExactly("123");
+        assertEquals(1, results.conditions().size());
+        assertEquals("123", results.conditions().get(0));
     }
 
 }
