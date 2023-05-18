@@ -1,12 +1,11 @@
-import { TableBody, TableComponent } from 'components/Table/Table';
 import { useEffect, useState } from 'react';
 import format from 'date-fns/format';
-import { Document, AssociatedWith, Headers } from './PatientDocuments';
-import { SortCriteria, sort } from './PatientDocumentSorter';
 import { Direction } from 'sorting';
 import { usePage } from 'page';
-import { goToPage } from 'page/page';
 import { ClassicLink } from 'classic';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { Document, AssociatedWith, Headers } from './PatientDocuments';
+import { SortCriteria, sort } from './PatientDocumentSorter';
 
 const headers = [
     { name: Headers.DateReceived, sortable: true },
@@ -64,7 +63,7 @@ type Props = {
 };
 
 export const PatientDocumentTable = ({ patient, documents }: Props) => {
-    const { page, dispatch } = usePage();
+    const { page, request } = usePage();
     const [criteria, setCriteria] = useState<SortCriteria>({});
 
     const [bodies, setBodies] = useState<TableBody[]>([]);
@@ -89,7 +88,7 @@ export const PatientDocumentTable = ({ patient, documents }: Props) => {
             pageSize={page.pageSize}
             totalResults={page.total}
             currentPage={page.current}
-            handleNext={goToPage(dispatch)}
+            handleNext={request}
             sortData={handleSort}
         />
     );

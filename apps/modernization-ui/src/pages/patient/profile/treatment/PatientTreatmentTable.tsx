@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindTreatmentsForPatientQuery, useFindTreatmentsForPatientLazyQuery } from 'generated/graphql/schema';
 
@@ -146,14 +145,6 @@ export const PatientTreatmentTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: 
     return (
         <SortableTable
             isPagination={true}
-            buttons={
-                <div className="grid-row">
-                    <Button type="button" className="grid-row">
-                        <Icon.Add className="margin-right-05" />
-                        Add treatment
-                    </Button>
-                </div>
-            }
             tableHeader={'Treatments'}
             tableHead={tableHead}
             tableBody={
