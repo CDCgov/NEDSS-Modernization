@@ -33,6 +33,7 @@ testing {
                 implementation libs.bundles.jpa
                 implementation libs.bundles.testing
                 implementation libs.spring.test
+                implementation libs.spring.kafka.test
 
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
@@ -64,6 +65,9 @@ dependencies {
 
     // database
     implementation libs.mssql.jdbc
+
+    // Kafka
+    implementation libs.spring.kafka
 
     // lombok
     compileOnly libs.lombok

@@ -1,0 +1,34 @@
+package gov.cdc.nbs.questionbank.kafka;
+
+import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.context.ActiveProfiles;
+import gov.cdc.nbs.questionbank.kafka.config.KafkaConfig;
+import gov.cdc.nbs.questionbank.kafka.message.RequestStatus;
+
+
+@AutoConfigureJson
+@SpringBootTest(classes = {KafkaConfig.class, KafkaAutoConfiguration.class})
+@ActiveProfiles({"test"})
+@EmbeddedKafka(partitions = 1)
+class KafkaConfigTest {
+
+    @Autowired
+    private KafkaTemplate<String, RequestStatus> kafkaTemplate;
+
+    @Autowired
+    private ProducerFactory<String, RequestStatus> producerFactory;
+
+    @Test
+    void should_resolve_beans_for_kafka_resources() {
+        assertNotNull(kafkaTemplate);
+        assertNotNull(producerFactory);
+    }
+}

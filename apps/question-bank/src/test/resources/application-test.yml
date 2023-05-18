@@ -30,3 +30,6 @@ spring:
     username: sa
     password: sa
 
+logging:
+  level:
+    root: INFO

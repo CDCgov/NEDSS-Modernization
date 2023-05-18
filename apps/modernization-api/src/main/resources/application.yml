@@ -50,7 +50,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
   kafka:
     bootstrap-servers: localhost:9092,localhost:9095,localhost:29092,localhost:29095
     listener:
