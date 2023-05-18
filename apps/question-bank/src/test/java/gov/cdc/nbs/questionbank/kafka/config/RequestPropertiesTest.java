@@ -20,8 +20,8 @@ class RequestPropertiesTest {
 
     @Test
     void should_have_config_properties() {
-        assertEquals(properties.status(), status);
-        assertEquals(properties.request(), request);
+        assertEquals(status, properties.status());
+        assertEquals(request, properties.request());
     }
 
     @Test
