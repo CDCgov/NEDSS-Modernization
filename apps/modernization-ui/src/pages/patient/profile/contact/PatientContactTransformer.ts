@@ -1,6 +1,7 @@
 import { FindContactsNamedByPatientQuery, FindPatientNamedByContactQuery } from 'generated/graphql/schema';
-import { Tracing, Condition } from './PatientContacts';
 import { mapNonNull } from 'utils/mapNonNull';
+import { asLocalDate } from 'date';
+import { Tracing, Condition } from './PatientContacts';
 
 type NamedByPatientResult = FindContactsNamedByPatientQuery['findContactsNamedByPatient'];
 type NamedByContactResult = FindPatientNamedByContactQuery['findPatientNamedByContact'];
@@ -46,7 +47,7 @@ const internalized = (content: Content): Tracing | null =>
     content && {
         ...content,
         createdOn: new Date(content.createdOn),
-        namedOn: new Date(content.namedOn),
+        namedOn: asLocalDate(content.namedOn),
         condition: (content.condition && ensureCondition(content.condition)) || null
     };
 

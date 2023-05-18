@@ -71,7 +71,7 @@ describe('when the result has content', () => {
                         id: 'patient-one-id',
                         name: 'patient-one-name'
                     },
-                    namedOn: new Date('2023-01-17T00:00:00Z'),
+                    namedOn: new Date('2023-01-17T05:00:00Z'),
                     event: 'event-one',
                     associatedWith: {
                         id: 'associated-id',
@@ -90,7 +90,7 @@ describe('when the result has content', () => {
                         id: 'patient-other-id',
                         name: 'patient-other-name'
                     },
-                    namedOn: new Date('2018-10-27T00:00:00Z'),
+                    namedOn: new Date('2018-10-27T05:00:00Z'),
                     event: 'event-other'
                 })
             ])
