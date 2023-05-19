@@ -13,6 +13,26 @@ type Mutation {
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
     updateMortality(input: MortalityInput!): PatientEventResponse!
     deletePatient(patientId: ID!): PatientEventResponse!
+    addPatientAddress(input: AddressInput!): PatientEventResponse!
+    addPatientEmail(input: EmailInput!): PatientEventResponse!
+    addPatientIdentification(input: IdentificationInput!): PatientEventResponse!
+    addPatientName(input: NameInput!): PatientEventResponse!
+    addPatientPhone(input: PhoneInput!): PatientEventResponse!
+    addPatientRace(input: RaceInput!): PatientEventResponse!
+    updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
+    updateEthnicity(input: EthnicityInput!): PatientEventResponse!
+    updatePatientAddress(input: AddressInput!): PatientEventResponse!
+    updatePatientEmail(input: EmailInput!): PatientEventResponse!
+    updatePatientIdentification(input: IdentificationInput!): PatientEventResponse!
+    updatePatientName(input: NameInput!): PatientEventResponse!
+    updatePatientPhone(input: PhoneInput!): PatientEventResponse!
+    updatePatientRace(input: RaceInput!): PatientEventResponse!
+    deletePatientAddress(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    deletePatientIdentification(patientId: Int!, entitySeqNum: Int!): PatientEventResponse!
+    deletePatientName(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    deletePatientRace(patientId: Int!, raceCd: String!): PatientEventResponse!
 }
 
 type PatientEventResponse {
@@ -207,6 +227,68 @@ input GeneralInfoInput {
     primaryLanguageCode: String
     speaksEnglishCode: String
     eharsId: String
+}
+
+input AddressInput {
+    patientId: ID!
+    id: Int
+    streetAddress1: String
+    streetAddress2: String
+    city: String
+    stateCode: String
+    countyCode: String
+    countryCode: String
+    zip: String
+    censusTract: String
+}
+
+input AdministrativeInput {
+    patientId: ID!
+    description: String
+}
+
+input EmailInput {
+    patientId: ID!
+    id: Int
+    emailAddress: String
+}
+
+input EthnicityInput {
+    patientId: ID!
+    asOf: DateTime
+    ethnicityCode: String!
+}
+
+input IdentificationInput {
+    patientId: ID!
+    id: Int
+    identificationNumber: String!
+    identificationType: String!
+    assigningAuthority: String
+}
+
+input NameInput {
+    patientId: ID!
+    personNameSeq: Int
+    firstName: String
+    middleName: String
+    lastName: String
+    suffix: Suffix
+    nameUseCd: NameUseCd!
+}
+
+input PhoneInput {
+    patientId: ID!
+    id: Int
+    number: String
+    extension: String
+    phoneType: PhoneType!
+}
+
+input RaceInput {
+    patientId: ID!
+    asOf: DateTime
+    raceCd: String!
 }
 
 input MortalityInput {
