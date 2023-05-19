@@ -1830,10 +1830,12 @@ end
 def add_race(uid, person)
     raceCd = person['raceCd']
     raceDescTxt = person['raceDescTxt']
+    raceCategoryCd = person['raceCategoryCd']
     raceCd = nil if raceCd == ''
     raceDescTxt = nil if raceDescTxt == ''
-    return if raceCd.nil? &amp;&amp; raceDescTxt.nil?
-    race = {"raceCd": raceCd, "raceDescTxt": raceDescTxt}
+    raceCategoryCd = nil if raceCategoryCd == ''
+    return if raceCd.nil? &amp;&amp; raceDescTxt.nil? &amp;&amp; raceCategoryCd.nil?
+    race = {"raceCd": raceCd, "raceDescTxt": raceDescTxt, "raceCategoryCd": raceCategoryCd}
     races_by_uid = $races_by_uid[uid]
     if races_by_uid
         $races_by_uid[uid].append(race) unless races_by_uid.include?(race)
@@ -1940,6 +1942,7 @@ def delete_nested_keys_from_person_at_to_level(person)
 
     person.delete('raceCd')
     person.delete('raceDescTxt')
+    person.delete('raceCategoryCd')
 
     person.delete('emailAddress')
 
@@ -2648,6 +2651,7 @@ ProcessFiles.new.main(session)
   pn.nm_degree,
   pr.race_cd raceCd,
   pr.race_desc_txt raceDescTxt,
+  pr.race_category_cd raceCategoryCd,
   plx.streetAddr1,
   plx.streetAddr2,
   plx.city,
@@ -2771,5 +2775,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/21/2023 07:20:58 UTC</timestamp>
+    <timestamp>05/19/2023 06:43:00 UTC</timestamp>
 </template>

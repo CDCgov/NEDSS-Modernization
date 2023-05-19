@@ -13,5 +13,6 @@ import lombok.Setter;
 @Builder
 public class NestedRace {
     private String raceCd;
+    private String raceCategoryCd;
     private String raceDescTxt;
 }
