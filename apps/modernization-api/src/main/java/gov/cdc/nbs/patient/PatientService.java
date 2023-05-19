@@ -192,9 +192,9 @@ public class PatientService {
             String allDigitSsn = filter.getSsn().replaceAll("\\D", "");
             if (!allDigitSsn.isEmpty()) {
                 builder.must(QueryBuilders.queryStringQuery(
-                                addWildcards(allDigitSsn))
-                                .defaultField(ElasticsearchPerson.SSN_FIELD)
-                                .defaultOperator(Operator.AND));
+                        addWildcards(allDigitSsn))
+                        .defaultField(ElasticsearchPerson.SSN_FIELD)
+                        .defaultOperator(Operator.AND));
             }
         }
 
@@ -267,11 +267,15 @@ public class PatientService {
 
         if (filter.getRace() != null) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.RACE_FIELD,
-                    QueryBuilders.matchQuery("race.raceDescTxt", filter.getRace()), ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getRace())
+                            .defaultField("race.raceCategoryCd")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
         }
 
         if (filter.getIdentification() != null) {
-            String allAlphanumericIdentificationNumber = filter.getIdentification().getIdentificationNumber().replaceAll("\\W", "");
+            String allAlphanumericIdentificationNumber = filter.getIdentification().getIdentificationNumber()
+                    .replaceAll("\\W", "");
             if (!allAlphanumericIdentificationNumber.isEmpty()) {
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
                         QueryBuilders.queryStringQuery(
@@ -363,7 +367,8 @@ public class PatientService {
     }
 
     /**
-     * Adds the record status to the query builder. If no record status is specified, throw a QueryException.
+     * Adds the record status to the query builder. If no record status is
+     * specified, throw a QueryException.
      */
     private void addRecordStatusQuery(Collection<RecordStatus> recordStatus, BoolQueryBuilder builder) {
         if (recordStatus == null || recordStatus.isEmpty()) {
@@ -391,7 +396,8 @@ public class PatientService {
     }
 
     /**
-     * Generates a patient id and localId. Posts the request along with Id's to Kafka
+     * Generates a patient id and localId. Posts the request along with Id's to
+     * Kafka
      */
     public PatientEventResponse sendCreatePatientRequest(PatientInput input) {
         // create 'create patient' message and post to kafka
