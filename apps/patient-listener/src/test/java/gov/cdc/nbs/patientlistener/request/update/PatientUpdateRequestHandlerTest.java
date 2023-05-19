@@ -457,7 +457,10 @@ class PatientUpdateRequestHandlerTest {
         when(patientUpdater.update(Mockito.any(), eq(data))).thenAnswer(i -> i.getArguments()[0]);
 
         // call handle update gen info
-        updateHandler.handlePatientNameDelete(data.requestId(), data.patientId(), data.personNameSeq(),
+        updateHandler.handlePatientNameDelete(
+                data.requestId(),
+                data.patientId(),
+                data.personNameSeq(),
                 data.updatedBy());
 
         // verify save requests called, success status sent
@@ -483,7 +486,10 @@ class PatientUpdateRequestHandlerTest {
 
         // call handle update mortality info
         try {
-            updateHandler.handlePatientNameDelete(data.requestId(), data.patientId(), data.personNameSeq(),
+            updateHandler.handlePatientNameDelete(
+                    data.requestId(),
+                    data.patientId(),
+                    data.personNameSeq(),
                     data.updatedBy());
         } catch (UserNotAuthorizedException e) {
             ex = e;
