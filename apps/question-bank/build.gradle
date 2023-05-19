@@ -47,7 +47,9 @@ testing {
 }
 
 dependencies {
+
     implementation project(':authentication')
+    
     // Spring
     implementation libs.springBoot.web
     implementation libs.bundles.jpa
@@ -62,6 +64,10 @@ dependencies {
     // querydsl
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
+    // blazebit for querydsl paging
+    implementation libs.bundles.blaze.persistence.queryDSL
+    implementation libs.bundles.jackson
 
     // database
     implementation libs.mssql.jdbc

@@ -50,10 +50,11 @@ class KafkaConfigTest {
         var request = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
                 1L,
-                "a label",
-                "tooltip",
-                100,
-                "placeholder");
+                new QuestionRequest.TextQuestionData(
+                        "a label",
+                        "tooltip",
+                        100,
+                        "placeholder"));
 
 
         // Send a create text question request
@@ -69,9 +70,9 @@ class KafkaConfigTest {
         assertThat(actual)
                 .returns("requestId", QuestionRequest.CreateTextQuestionRequest::requestId)
                 .returns(1L, QuestionRequest.CreateTextQuestionRequest::userId)
-                .returns("a label", QuestionRequest.CreateTextQuestionRequest::label)
-                .returns("tooltip", QuestionRequest.CreateTextQuestionRequest::tooltip)
-                .returns(100, QuestionRequest.CreateTextQuestionRequest::maxLength)
-                .returns("placeholder", QuestionRequest.CreateTextQuestionRequest::placeholder);
+                .returns("a label", (a) -> a.data().label())
+                .returns("tooltip", (a) -> a.data().tooltip())
+                .returns(100, (a) -> a.data().maxLength())
+                .returns("placeholder", (a) -> a.data().placeholder());
     }
 }

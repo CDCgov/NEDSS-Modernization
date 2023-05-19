@@ -7,10 +7,14 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
     record CreateTextQuestionRequest(
             String requestId,
             long userId,
+            TextQuestionData data) implements QuestionRequest {
+    }
+
+    record TextQuestionData(
             String label,
             String tooltip,
             Integer maxLength,
-            String placeholder) implements QuestionRequest {
+            String placeholder) {
     }
 
     record UpdateTextQuestionRequest(

@@ -1,0 +1,14 @@
+type Mutation {
+  createTextQuestion(textQuestion: TextQuestionData!): QuestionResponse!
+}
+
+input TextQuestionData {
+  label: String!
+  tooltip: String
+  maxLength: Int
+  placeholder: String
+}
+
+type QuestionResponse {
+  requestId: String!
+}
