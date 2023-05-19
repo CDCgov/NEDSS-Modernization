@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { Icon } from '@trussworks/react-uswds';
+import { TableBody, TableComponent } from 'components/Table/Table';
 import { format } from 'date-fns';
 import { usePage } from 'page';
 import { Direction } from 'sorting';
-import { TableBody, TableComponent } from 'components/Table/Table';
-import { ClassicLink, ClassicModalLink } from 'classic';
+import { ClassicLink, ClassicModalButton, ClassicModalLink } from 'classic';
 import { Vaccination, AssociatedWith, Headers } from './PatientVaccination';
 import { SortCriteria, sort } from './PatientVaccinationSorter';
 
@@ -40,6 +41,13 @@ export const PatientVaccinationTable = ({ patient, vaccinations }: Props) => {
     const handleModalClose = () => {
         reload();
     };
+
+    const buttons = (
+        <ClassicModalButton url={`/nbs/api/profile/${patient}/vaccination`} onClose={handleModalClose}>
+            <Icon.Add className="margin-right-05" />
+            Add vaccination
+        </ClassicModalButton>
+    );
 
     const asTableBody = (vaccination: Vaccination): TableBody => ({
         id: vaccination?.event,
@@ -87,6 +95,7 @@ export const PatientVaccinationTable = ({ patient, vaccinations }: Props) => {
     return (
         <TableComponent
             tableHeader={'Vaccinations'}
+            buttons={buttons}
             tableHead={headings}
             tableBody={bodies}
             isPagination={true}
