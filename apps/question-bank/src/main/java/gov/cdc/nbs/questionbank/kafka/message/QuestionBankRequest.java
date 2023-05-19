@@ -8,7 +8,8 @@ import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 @JsonSubTypes({
         @JsonSubTypes.Type(QuestionRequest.class),
         @JsonSubTypes.Type(QuestionRequest.CreateTextQuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.UpdateTextQuestionRequest.class)
+        @JsonSubTypes.Type(QuestionRequest.UpdateTextQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.DeleteQuestionRequest.class)
 })
 public interface QuestionBankRequest {
 
