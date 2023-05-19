@@ -22,5 +22,14 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             Integer maxLength,
             String placeholder) implements QuestionRequest {
     }
+    
+    record DeleteQuestionRequest(
+    		String requestId,	
+    		long questionId,	
+    		long userId	
+    		) implements QuestionRequest {
+
+    }
+    
 
 }
