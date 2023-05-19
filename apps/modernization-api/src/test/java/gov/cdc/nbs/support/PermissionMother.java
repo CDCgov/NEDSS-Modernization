@@ -2,7 +2,7 @@ package gov.cdc.nbs.support;
 
 import java.time.Instant;
 import gov.cdc.nbs.authentication.entity.AuthPermSet;
-import gov.cdc.nbs.authentication.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 
 public class PermissionMother {
     public static Long SYSTEM_USER_ID = 10191001L;
@@ -18,7 +18,7 @@ public class PermissionMother {
                 .addUserId(SYSTEM_USER_ID)
                 .lastChgTime(now)
                 .lastChgUserId(SYSTEM_USER_ID)
-                .recordStatusCd(RecordStatus.ACTIVE)
+                .recordStatusCd(AuthRecordStatus.ACTIVE)
                 .recordStatusTime(now)
                 .build();
     }

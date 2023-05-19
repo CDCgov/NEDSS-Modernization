@@ -1,6 +1,6 @@
 package gov.cdc.nbs.authentication.enums;
 
-public enum RecordStatus {
+public enum AuthRecordStatus {
     ACTIVE,
     INACTIVE,
     LOG_DEL,

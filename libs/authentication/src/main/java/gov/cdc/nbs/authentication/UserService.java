@@ -29,7 +29,7 @@ import gov.cdc.nbs.authentication.entity.QAuthPermSet;
 import gov.cdc.nbs.authentication.entity.QAuthProgramAreaCode;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
 import gov.cdc.nbs.authentication.entity.QAuthUserRole;
-import gov.cdc.nbs.authentication.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
@@ -108,7 +108,7 @@ public class UserService implements UserDetailsService {
                 .username(authUser.getUserId())
                 .password(null)
                 .authorities(getUserPermissions(authUser))
-                .isEnabled(authUser.getRecordStatusCd().equals(RecordStatus.ACTIVE))
+                .isEnabled(authUser.getRecordStatusCd().equals(AuthRecordStatus.ACTIVE))
                 .token(token)
                 .build();
     }

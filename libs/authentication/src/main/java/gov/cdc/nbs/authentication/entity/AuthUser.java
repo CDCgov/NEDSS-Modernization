@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import gov.cdc.nbs.authentication.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -99,7 +99,7 @@ public class AuthUser {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", nullable = false, length = 20)
-    private RecordStatus recordStatusCd;
+    private AuthRecordStatus recordStatusCd;
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;

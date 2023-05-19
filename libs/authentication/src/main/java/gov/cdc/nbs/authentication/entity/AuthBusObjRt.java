@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import gov.cdc.nbs.authentication.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,7 +58,7 @@ public class AuthBusObjRt {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "record_status_cd", nullable = false, length = 20)
-    private RecordStatus recordStatusCd;
+    private AuthRecordStatus recordStatusCd;
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;

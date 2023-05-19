@@ -20,7 +20,7 @@ import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.entity.AuthUserRole;
 import gov.cdc.nbs.authentication.entity.AuthUserRoleRepository;
-import gov.cdc.nbs.authentication.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import gov.cdc.nbs.controller.UserController;
 import gov.cdc.nbs.support.PermissionMother;
 import gov.cdc.nbs.support.UserMother;
@@ -103,7 +103,7 @@ public class FindUsersSteps {
                     .addUserId(10000000L)
                     .lastChgTime(now)
                     .lastChgUserId(10000000L)
-                    .recordStatusCd(RecordStatus.ACTIVE)
+                    .recordStatusCd(AuthRecordStatus.ACTIVE)
                     .recordStatusTime(now)
                     .build();
             roleRepository.save(newRole);
