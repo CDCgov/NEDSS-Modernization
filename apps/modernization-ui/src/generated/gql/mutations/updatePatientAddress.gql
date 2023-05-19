@@ -1,0 +1,6 @@
+mutation updatePatientAddress($input: AddressInput!){
+    updatePatientAddress(input: $input){
+        requestId
+        patientId
+    }
+}
