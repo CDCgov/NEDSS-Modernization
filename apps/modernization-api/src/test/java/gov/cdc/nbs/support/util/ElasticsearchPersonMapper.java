@@ -100,7 +100,7 @@ public class ElasticsearchPersonMapper {
     private static NestedRace asRace(final PersonRace race) {
         NestedRace nested = new NestedRace();
         nested.setRaceCd(race.getRaceCd());
-
+        nested.setRaceCategoryCd(race.getRaceCategoryCd());
         String description = race.getRaceDescTxt();
 
         nested.setRaceDescTxt(description == null ? race.getRaceCd() : description);
