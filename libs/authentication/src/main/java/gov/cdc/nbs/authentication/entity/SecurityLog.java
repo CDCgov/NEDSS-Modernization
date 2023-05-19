@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.authentication.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import gov.cdc.nbs.entity.enums.SecurityEventType;
-
+import gov.cdc.nbs.authentication.enums.SecurityEventType;
 import java.time.Instant;
 
 @AllArgsConstructor

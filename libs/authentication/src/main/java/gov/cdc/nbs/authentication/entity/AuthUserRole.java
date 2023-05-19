@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
-
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -20,7 +19,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Builder
-@Table(name = "Auth_user_role")
+@Table(name = "Auth_user_role", catalog = "NBS_ODSE")
 public class AuthUserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

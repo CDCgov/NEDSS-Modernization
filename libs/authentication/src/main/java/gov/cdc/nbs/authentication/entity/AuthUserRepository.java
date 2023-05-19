@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import java.util.List;
 import java.util.Optional;

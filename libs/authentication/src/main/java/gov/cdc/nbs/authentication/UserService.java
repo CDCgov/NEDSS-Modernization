@@ -1,4 +1,4 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.authentication;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -7,35 +7,32 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.authentication.AuthProgAreaAdmin;
-import gov.cdc.nbs.authentication.AuthUser;
-import gov.cdc.nbs.authentication.AuthUserRepository;
+import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
+import gov.cdc.nbs.authentication.entity.AuthUser;
+import gov.cdc.nbs.authentication.entity.AuthUserRepository;
+import gov.cdc.nbs.authentication.entity.QAuthBusObjRt;
+import gov.cdc.nbs.authentication.entity.QAuthBusObjType;
+import gov.cdc.nbs.authentication.entity.QAuthBusOpRt;
+import gov.cdc.nbs.authentication.entity.QAuthBusOpType;
+import gov.cdc.nbs.authentication.entity.QAuthPermSet;
+import gov.cdc.nbs.authentication.entity.QAuthProgramAreaCode;
+import gov.cdc.nbs.authentication.entity.QAuthUser;
+import gov.cdc.nbs.authentication.entity.QAuthUserRole;
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import gov.cdc.nbs.config.security.NbsAuthority;
 import gov.cdc.nbs.config.security.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityProperties;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.authentication.QAuthBusObjRt;
-import gov.cdc.nbs.authentication.QAuthBusObjType;
-import gov.cdc.nbs.authentication.QAuthBusOpRt;
-import gov.cdc.nbs.authentication.QAuthBusOpType;
-import gov.cdc.nbs.authentication.QAuthPermSet;
-import gov.cdc.nbs.authentication.QAuthUser;
-import gov.cdc.nbs.authentication.QAuthUserRole;
-import gov.cdc.nbs.entity.srte.QProgramAreaCode;
 import gov.cdc.nbs.exception.BadTokenException;
 import lombok.RequiredArgsConstructor;
 
@@ -150,7 +147,7 @@ public class UserService implements UserDetailsService {
         var permSet = QAuthPermSet.authPermSet;
         var objRt = QAuthBusObjRt.authBusObjRt;
         var opRt = QAuthBusOpRt.authBusOpRt;
-        var programAreaCode = QProgramAreaCode.programAreaCode;
+        var authProgramAreaCode = QAuthProgramAreaCode.authProgramAreaCode;
         var query = queryFactory
                 .selectDistinct(
                         authRole.roleGuestInd,
@@ -159,7 +156,7 @@ public class UserService implements UserDetailsService {
                         opType.busOpNm,
                         objType.busObjNm,
                         authRole.progAreaCd,
-                        programAreaCode.nbsUid,
+                        authProgramAreaCode.nbsUid,
                         authRole.jurisdictionCd)
                 .from(authUser)
                 .join(authRole)
@@ -174,8 +171,8 @@ public class UserService implements UserDetailsService {
                 .on(opRt.authBusObjRtUid.id.eq(objRt.id))
                 .join(opType)
                 .on(opType.id.eq(opRt.authBusOpTypeUid.id))
-                .leftJoin(programAreaCode)
-                .on(authRole.progAreaCd.eq(programAreaCode.id))
+                .leftJoin(authProgramAreaCode)
+                .on(authRole.progAreaCd.eq(authProgramAreaCode.id))
                 .where(authUser.id.eq(user.getId()));
 
         return query.fetch().stream().map(this::buildNbsAuthority).filter(Objects::nonNull).collect(Collectors.toSet());
@@ -191,7 +188,7 @@ public class UserService implements UserDetailsService {
         var businessOperation = t.get(QAuthBusOpType.authBusOpType.busOpNm);
         var businessObject = t.get(QAuthBusObjType.authBusObjType.busObjNm);
         var progArea = t.get(QAuthUserRole.authUserRole.progAreaCd);
-        var progAreaCode = t.get(QProgramAreaCode.programAreaCode.nbsUid);
+        var progAreaCode = t.get(QAuthProgramAreaCode.authProgramAreaCode.nbsUid);
         var jurisdiction = t.get(QAuthUserRole.authUserRole.jurisdictionCd);
         // if current user is assigned 'user' role and perm is valid for 'user' role
         // or current user has 'guest' role and perm is valid for 'guest' role

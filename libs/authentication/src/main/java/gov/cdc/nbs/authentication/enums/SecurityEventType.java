@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.enums;
+package gov.cdc.nbs.authentication.enums;
 
 public enum SecurityEventType {
     LOGIN_SUCCESS,

@@ -18,8 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
-import gov.cdc.nbs.service.UserService;
+import gov.cdc.nbs.authentication.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Component

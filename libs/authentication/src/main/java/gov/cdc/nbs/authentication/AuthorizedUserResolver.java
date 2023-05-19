@@ -1,10 +1,11 @@
-package gov.cdc.nbs;
+package gov.cdc.nbs.authentication;
 
-import gov.cdc.nbs.authentication.AuthUser;
-import gov.cdc.nbs.authentication.AuthUserRepository;
-import gov.cdc.nbs.entity.enums.SecurityEventType;
-import gov.cdc.nbs.entity.odse.SecurityLog;
-import gov.cdc.nbs.repository.SecurityLogRepository;
+import gov.cdc.nbs.authentication.entity.AuthUser;
+import gov.cdc.nbs.authentication.entity.AuthUserRepository;
+import gov.cdc.nbs.authentication.entity.SecurityLog;
+import gov.cdc.nbs.authentication.enums.SecurityEventType;
+import gov.cdc.nbs.authentication.repository.SecurityLogRepository;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;

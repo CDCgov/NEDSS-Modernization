@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Auth_user")
+@Table(name = "Auth_user", catalog = "NBS_ODSE")
 public class AuthUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

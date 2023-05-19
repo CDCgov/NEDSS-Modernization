@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import java.time.Instant;
 
@@ -6,17 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,21 +24,21 @@ import lombok.Setter;
 @Setter
 @Entity
 @Builder
-@Table(name = "Auth_bus_obj_rt")
-public class AuthBusObjRt {
+@Table(name = "Auth_perm_set", catalog = "NBS_ODSE")
+public class AuthPermSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_bus_obj_rt_uid", nullable = false)
+    @Column(name = "auth_perm_set_uid", nullable = false)
     private Long id;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_perm_set_uid", nullable = false, insertable = false, updatable = false)
-    private AuthPermSet authPermSetUid;
+    @Column(name = "perm_set_nm", length = 100)
+    private String permSetNm;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_bus_obj_type_uid", nullable = false)
-    private AuthBusObjType authBusObjTypeUid;
+    @Column(name = "perm_set_desc", length = 1000)
+    private String permSetDesc;
+
+    @Column(name = "sys_defined_perm_set_ind")
+    private Character sysDefinedPermSetInd;
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;

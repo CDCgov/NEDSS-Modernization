@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import java.time.Instant;
 
@@ -6,12 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,24 +28,21 @@ import lombok.Setter;
 @Setter
 @Entity
 @Builder
-@Table(name = "Auth_bus_obj_type")
-public class AuthBusObjType {
+@Table(name = "Auth_bus_obj_rt", catalog = "NBS_ODSE")
+public class AuthBusObjRt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_bus_obj_type_uid", nullable = false)
+    @Column(name = "auth_bus_obj_rt_uid", nullable = false)
     private Long id;
 
-    @Column(name = "bus_obj_nm", length = 100)
-    private String busObjNm;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "auth_perm_set_uid", nullable = false, insertable = false, updatable = false)
+    private AuthPermSet authPermSetUid;
 
-    @Column(name = "bus_obj_disp_nm", length = 1000)
-    private String busObjDispNm;
-
-    @Column(name = "prog_area_ind")
-    private Character progAreaInd;
-
-    @Column(name = "jurisdiction_ind")
-    private Character jurisdictionInd;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "auth_bus_obj_type_uid", nullable = false)
+    private AuthBusObjType authBusObjTypeUid;
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;
@@ -61,8 +62,5 @@ public class AuthBusObjType {
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;
-
-    @Column(name = "operation_sequence", nullable = false)
-    private Integer operationSequence;
 
 }

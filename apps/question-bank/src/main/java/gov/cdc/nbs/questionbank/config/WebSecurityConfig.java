@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @ConditionalOnProperty("nbs.security.enabled")
-@Import({gov.cdc.nbs.service.UserService.class, gov.cdc.nbs.config.security.JWTSecurityConfig.class})
+@Import({gov.cdc.nbs.authentication.UserService.class, gov.cdc.nbs.config.security.JWTSecurityConfig.class})
 @EnableJpaRepositories({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
 @EntityScan({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
 public class WebSecurityConfig {

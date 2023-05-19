@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "Auth_prog_area_admin")
+@Table(name = "Auth_prog_area_admin", catalog = "NBS_ODSE")
 public class AuthProgAreaAdmin {
     @Id
     @Column(name = "auth_prog_area_admin_uid", nullable = false)

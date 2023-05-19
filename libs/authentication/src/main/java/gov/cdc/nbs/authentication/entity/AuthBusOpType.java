@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import java.time.Instant;
 
@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,22 +23,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "Auth_bus_op_type", catalog = "NBS_ODSE")
 @Builder
-@Table(name = "Auth_perm_set")
-public class AuthPermSet {
+public class AuthBusOpType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_perm_set_uid", nullable = false)
+    @Column(name = "auth_bus_op_type_uid", nullable = false)
     private Long id;
 
-    @Column(name = "perm_set_nm", length = 100)
-    private String permSetNm;
+    @Column(name = "bus_op_nm", length = 100)
+    private String busOpNm;
 
-    @Column(name = "perm_set_desc", length = 1000)
-    private String permSetDesc;
-
-    @Column(name = "sys_defined_perm_set_ind")
-    private Character sysDefinedPermSetInd;
+    @Column(name = "bus_op_disp_nm", length = 1000)
+    private String busOpDispNm;
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;
@@ -58,5 +55,8 @@ public class AuthPermSet {
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;
+
+    @Column(name = "operation_sequence", nullable = false)
+    private Integer operationSequence;
 
 }

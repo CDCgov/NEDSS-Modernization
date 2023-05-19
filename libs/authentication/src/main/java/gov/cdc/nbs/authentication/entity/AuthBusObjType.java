@@ -1,4 +1,4 @@
-package gov.cdc.nbs.authentication;
+package gov.cdc.nbs.authentication.entity;
 
 import java.time.Instant;
 
@@ -6,17 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.authentication.enums.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,27 +24,24 @@ import lombok.Setter;
 @Setter
 @Entity
 @Builder
-@Table(name = "Auth_bus_op_rt")
-public class AuthBusOpRt {
+@Table(name = "Auth_bus_obj_type", catalog = "NBS_ODSE")
+public class AuthBusObjType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_bus_op_rt_uid", nullable = false)
+    @Column(name = "auth_bus_obj_type_uid", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_bus_op_type_uid", nullable = false)
-    private AuthBusOpType authBusOpTypeUid;
+    @Column(name = "bus_obj_nm", length = 100)
+    private String busObjNm;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "auth_bus_obj_rt_uid", nullable = false)
-    private AuthBusObjRt authBusObjRtUid;
+    @Column(name = "bus_obj_disp_nm", length = 1000)
+    private String busObjDispNm;
 
-    @Column(name = "bus_op_user_rt")
-    private Character busOpUserRt;
+    @Column(name = "prog_area_ind")
+    private Character progAreaInd;
 
-    @Column(name = "bus_op_guest_rt")
-    private Character busOpGuestRt;
+    @Column(name = "jurisdiction_ind")
+    private Character jurisdictionInd;
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;
@@ -69,5 +61,8 @@ public class AuthBusOpRt {
 
     @Column(name = "record_status_time", nullable = false)
     private Instant recordStatusTime;
+
+    @Column(name = "operation_sequence", nullable = false)
+    private Integer operationSequence;
 
 }
