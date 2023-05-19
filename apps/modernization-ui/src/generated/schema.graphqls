@@ -1007,7 +1007,7 @@ type Mutation {
     addPatientRace(input: RaceInput!): PatientEventResponse!
     updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
     updateEthnicity(input: EthnicityInput!): PatientEventResponse!
-    updatePatientAddress(input: MortalityInput!): PatientEventResponse!
+    updatePatientAddress(input: AddressInput!): PatientEventResponse!
     updatePatientEmail(input: EmailInput!): PatientEventResponse!
     updatePatientIdentification(input: IdentificationInput!): PatientEventResponse!
     updatePatientName(input: NameInput!): PatientEventResponse!
