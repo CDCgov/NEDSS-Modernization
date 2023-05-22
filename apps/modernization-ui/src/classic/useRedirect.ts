@@ -2,21 +2,27 @@ import { UserState } from 'providers/UserContext';
 import { useEffect, useReducer } from 'react';
 import { useUser } from 'user';
 
+enum Status {
+    Idle,
+    Redirecting,
+    Redirected
+}
+
 type Redirect = {
-    redirecting: boolean;
+    status: Status;
     url: string | null;
     location: string | null;
 };
 
-type Action = { type: 'redirect'; url: string } | { type: 'redirected'; location: string };
+type Action = { type: 'redirect'; url: string } | { type: 'redirected'; location: string } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
 const redirectReducer = (state: Redirect, action: Action) => {
     switch (action.type) {
         case 'redirect':
-            return { redirecting: true, url: action.url, location: null };
+            return { status: Status.Redirecting, url: action.url, location: null };
         case 'redirected':
-            return { ...state, redirecting: false, location: action.location };
+            return { status: Status.Redirected, url: null, location: action.location };
         default:
             return state;
     }
@@ -31,7 +37,7 @@ const resolveRedirect = (user: UserState, url: string) => {
 const useRedirect = () => {
     const { state: user } = useUser();
 
-    const initial = { redirecting: false, url: '', location: null };
+    const initial = { status: Status.Idle, url: '', location: null };
 
     const [redirect, dispatch] = useReducer(redirectReducer, initial);
 
@@ -52,4 +58,4 @@ const redirectTo = (url: string, dispatch: Dispatch) => dispatch({ type: 'redire
 
 const navigateTo = (location: string) => (window.location.href = location);
 
-export { useRedirect, redirectTo, navigateTo };
+export { useRedirect, redirectTo, navigateTo, Status };

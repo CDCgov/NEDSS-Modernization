@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patientlistener.request.delete;
 
+import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patientlistener.request.PatientRequestException;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
@@ -7,7 +8,6 @@ import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import gov.cdc.nbs.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

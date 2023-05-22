@@ -12,15 +12,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.AuthUser;
-import gov.cdc.nbs.authentication.AuthUserRepository;
-import gov.cdc.nbs.config.security.NbsAuthority;
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.config.security.SecurityProperties;
+import gov.cdc.nbs.authentication.NbsAuthority;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.UserService;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
+import gov.cdc.nbs.authentication.entity.AuthUser;
+import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.model.LoginRequest;
 import gov.cdc.nbs.model.LoginResponse;
-import gov.cdc.nbs.service.UserService;
 
 @RestController
 public class UserController {

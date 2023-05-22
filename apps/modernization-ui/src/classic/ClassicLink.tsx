@@ -1,4 +1,3 @@
-import { Link } from '@trussworks/react-uswds';
 import { useRedirect, redirectTo, navigateTo } from './useRedirect';
 import { MouseEvent, useEffect } from 'react';
 
@@ -21,8 +20,8 @@ export const ClassicLink = ({ url, children, ...defaultProps }: Props) => {
     }, [redirect.location]);
 
     return (
-        <Link href="#" onClick={handle} {...defaultProps} className={'profile'}>
+        <a href="#" onClick={handle} {...defaultProps}>
             {children}
-        </Link>
+        </a>
     );
 };

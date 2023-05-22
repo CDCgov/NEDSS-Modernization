@@ -14,14 +14,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import gov.cdc.nbs.authentication.AuthPermSet;
-import gov.cdc.nbs.authentication.AuthPermSetRepository;
-import gov.cdc.nbs.authentication.AuthUser;
-import gov.cdc.nbs.authentication.AuthUserRepository;
-import gov.cdc.nbs.authentication.AuthUserRole;
-import gov.cdc.nbs.authentication.AuthUserRoleRepository;
+import gov.cdc.nbs.authentication.entity.AuthAudit;
+import gov.cdc.nbs.authentication.entity.AuthPermSet;
+import gov.cdc.nbs.authentication.entity.AuthPermSetRepository;
+import gov.cdc.nbs.authentication.entity.AuthUser;
+import gov.cdc.nbs.authentication.entity.AuthUserRepository;
+import gov.cdc.nbs.authentication.entity.AuthUserRole;
+import gov.cdc.nbs.authentication.entity.AuthUserRoleRepository;
+import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import gov.cdc.nbs.controller.UserController;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.support.PermissionMother;
 import gov.cdc.nbs.support.UserMother;
 import io.cucumber.java.Before;
@@ -89,6 +90,13 @@ public class FindUsersSteps {
         var existingRole = roleRepository.findByUserAndPermissionSet(user.getId(), permSet.getId(), programArea);
         if (!existingRole.isPresent()) {
             var now = Instant.now();
+            var audit = new AuthAudit();
+            audit.setAddTime(now);
+            audit.setAddUserId(10000000L);
+            audit.setLastChgTime(now);
+            audit.setLastChgUserId(10000000L);
+            audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
+            audit.setRecordStatusTime(now);
             var newRole = AuthUserRole
                     .builder()
                     .authRoleNm(permSet.getPermSetNm())
@@ -99,12 +107,7 @@ public class FindUsersSteps {
                     .roleGuestInd('F')
                     .readOnlyInd('T')
                     .dispSeqNbr(0)
-                    .addTime(now)
-                    .addUserId(10000000L)
-                    .lastChgTime(now)
-                    .lastChgUserId(10000000L)
-                    .recordStatusCd(RecordStatus.ACTIVE)
-                    .recordStatusTime(now)
+                    .audit(audit)
                     .build();
             roleRepository.save(newRole);
         }

@@ -4,13 +4,17 @@ import {
     FindMorbidityReportsForPatientQuery
 } from '../../generated/graphql/schema';
 import { PatientTreatmentTable } from 'pages/patient/profile/treatment';
-import { PatientNamedByContactTable, ContactNamedByPatientTable } from 'pages/patient/profile/contact';
+import {
+    PatientProfileContactsNamedByPatient,
+    PatientProfilePatientNamedByContact
+} from 'pages/patient/profile/contact';
 import { PatientProfileDocuments } from 'pages/patient/profile/document';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientInvestigationsTable } from 'pages/patient/profile/investigation';
 import { MorbidityTable } from 'pages/patient/profile/morbidity';
 import { LabReportTable } from 'pages/patient/profile/labReport';
-import { VaccinationTable } from 'pages/patient/profile/vaccination';
+import { PatientProfileVaccinations } from 'pages/patient/profile/vaccination';
+import { ClassicModalProvider } from 'classic/ClassicModalContext';
 
 type EventTabProp = {
     patient: string | undefined;
@@ -22,7 +26,7 @@ type EventTabProp = {
 
 export const Events = ({ patient }: EventTabProp) => {
     return (
-        <>
+        <ClassicModalProvider>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientInvestigationsTable patient={patient} pageSize={TOTAL_TABLE_DATA} />
             </div>
@@ -34,22 +38,16 @@ export const Events = ({ patient }: EventTabProp) => {
                 <MorbidityTable patient={patient} />
             </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <VaccinationTable patient={patient} />
-            </div>
+            <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} />
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientTreatmentTable patient={patient} />
             </div>
 
             <PatientProfileDocuments patient={patient} pageSize={TOTAL_TABLE_DATA} />
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <ContactNamedByPatientTable patient={patient} />
-            </div>
+            <PatientProfileContactsNamedByPatient patient={patient} pageSize={TOTAL_TABLE_DATA} />
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientNamedByContactTable patient={patient} />
-            </div>
-        </>
+            <PatientProfilePatientNamedByContact patient={patient} pageSize={TOTAL_TABLE_DATA} />
+        </ClassicModalProvider>
     );
 };

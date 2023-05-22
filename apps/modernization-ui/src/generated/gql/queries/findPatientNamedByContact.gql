@@ -3,7 +3,10 @@ query findPatientNamedByContact($patient: ID!, $page: Page){
         content{
             contactRecord
             createdOn
-            condition
+            condition{
+                id
+                description
+            }
             contact{
                 id
                 name

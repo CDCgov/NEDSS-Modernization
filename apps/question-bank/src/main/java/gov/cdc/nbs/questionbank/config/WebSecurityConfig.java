@@ -21,7 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.questionbank.config.security.JWTFilter;
+import gov.cdc.nbs.authentication.JWTFilter;
+import gov.cdc.nbs.authentication.config.AuthenticationConfig;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @ConditionalOnProperty("nbs.security.enabled")
-@Import({gov.cdc.nbs.service.UserService.class, gov.cdc.nbs.config.security.JWTSecurityConfig.class})
+@Import(AuthenticationConfig.class)
 @EnableJpaRepositories({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
 @EntityScan({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
 public class WebSecurityConfig {

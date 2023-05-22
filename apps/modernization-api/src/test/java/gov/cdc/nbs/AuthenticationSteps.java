@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authentication.AuthUserRepository;
+import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.model.LoginRequest;
 import gov.cdc.nbs.support.UserMother;
 import io.cucumber.java.Before;

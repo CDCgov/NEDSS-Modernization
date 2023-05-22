@@ -44,7 +44,8 @@ public class ElasticsearchPersonMapper {
 
         var race = new NestedRace();
         race.setRaceCd(person.getRaceCd());
-        race.setRaceDescTxt(person.getRaceCd());
+        race.setRaceDescTxt(person.getRaceDescTxt());
+        race.setRaceCategoryCd(person.getRaceCategoryCd());
 
         var nestedEntityIds = new ArrayList<NestedEntityId>();
         if (person.getEntityIds() != null && !person.getEntityIds().isEmpty()) {
@@ -99,7 +100,7 @@ public class ElasticsearchPersonMapper {
     private static NestedRace asRace(final PersonRace race) {
         NestedRace nested = new NestedRace();
         nested.setRaceCd(race.getRaceCd());
-
+        nested.setRaceCategoryCd(race.getRaceCategoryCd());
         String description = race.getRaceDescTxt();
 
         nested.setRaceDescTxt(description == null ? race.getRaceCd() : description);
