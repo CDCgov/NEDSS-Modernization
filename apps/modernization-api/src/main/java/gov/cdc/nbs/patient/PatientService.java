@@ -76,6 +76,12 @@ public class PatientService {
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
+    @Value("${nbs.uid.suffix: GA01}")
+    private String patientIdSuffix;
+    @Value("${nbs.uid.seed: 10000000}")
+    private long patientIdSeed;
+    @Value("${nbs.uid.prefix: PSN}")
+    private String patientIdPrefix;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -147,10 +153,9 @@ public class PatientService {
                 try {
                     long shortId = Long.parseLong(filter.getId());
                     PatientIdentifierSettings settings = new PatientIdentifierSettings(
-                        // TODO get these from global settings
-                        "PSN",
-                        1,
-                        "GA01"
+                        patientIdPrefix,
+                        patientIdSeed,
+                        patientIdSuffix
                     );
                     PatientLocalIdentifierResolver resolver = new PatientLocalIdentifierResolver(settings);
                     String localId = resolver.resolve(shortId);
