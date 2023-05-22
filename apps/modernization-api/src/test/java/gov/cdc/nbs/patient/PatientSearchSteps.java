@@ -30,6 +30,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -50,6 +51,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 @Rollback(false)
 public class PatientSearchSteps {
+    @Value("${nbs.uid.suffix: GA01}")
+    private String patientIdSuffix;
+    @Value("${nbs.uid.seed: 10000000}")
+    private long patientIdSeed;
+    @Value("${nbs.uid.prefix: PSN}")
+    private String patientIdPrefix;
 
     @Autowired
     private PersonRepository personRepository;
@@ -286,9 +293,9 @@ public class PatientSearchSteps {
                 break;
             case "patient short id":
                 PatientIdentifierSettings settings = new PatientIdentifierSettings(
-                        "PSN",
-                        0,
-                        "GA01");
+                        patientIdPrefix,
+                        patientIdSeed,
+                        patientIdSuffix);
                 PatientShortIdentifierResolver resolver = new PatientShortIdentifierResolver(settings);
                 OptionalLong shortId = resolver.resolve(searchPatient.getLocalId());
                 filter.setId(shortId.toString());
