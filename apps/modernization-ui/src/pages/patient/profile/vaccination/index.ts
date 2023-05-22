@@ -1,1 +1,1 @@
-export { VaccinationTable } from './VaccinationTable';
+export { PatientProfileVaccinations } from './PatientProfileVaccinations';

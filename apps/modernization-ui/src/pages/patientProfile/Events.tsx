@@ -13,7 +13,7 @@ import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientInvestigationsTable } from 'pages/patient/profile/investigation';
 import { MorbidityTable } from 'pages/patient/profile/morbidity';
 import { LabReportTable } from 'pages/patient/profile/labReport';
-import { VaccinationTable } from 'pages/patient/profile/vaccination';
+import { PatientProfileVaccinations } from 'pages/patient/profile/vaccination';
 import { ClassicModalProvider } from 'classic/ClassicModalContext';
 
 type EventTabProp = {
@@ -38,9 +38,7 @@ export const Events = ({ patient }: EventTabProp) => {
                 <MorbidityTable patient={patient} />
             </div>
 
-            <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <VaccinationTable patient={patient} />
-            </div>
+            <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} />
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientTreatmentTable patient={patient} />
             </div>
