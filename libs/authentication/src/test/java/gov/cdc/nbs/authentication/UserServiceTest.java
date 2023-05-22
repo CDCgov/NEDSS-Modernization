@@ -73,7 +73,7 @@ class UserServiceTest {
         assertEquals(authUser.getProgAreaAdminInd().equals('T'), userDetails.isProgramAreaAdmin());
         assertTrue(authUser.getAdminProgramAreas().stream()
                 .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
-        assertEquals(authUser.getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
+        assertEquals(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
     }
 
     @Test
@@ -98,7 +98,7 @@ class UserServiceTest {
         assertEquals(authUser.getProgAreaAdminInd().equals('T'), userDetails.isProgramAreaAdmin());
         assertTrue(authUser.getAdminProgramAreas().stream()
                 .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
-        assertEquals(authUser.getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
+        assertEquals(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
     }
 
     @Test

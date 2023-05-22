@@ -1,17 +1,12 @@
 package gov.cdc.nbs.authentication.entity;
 
-import java.time.Instant;
-
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,23 +35,7 @@ public class AuthPermSet {
     @Column(name = "sys_defined_perm_set_ind")
     private Character sysDefinedPermSetInd;
 
-    @Column(name = "add_time", nullable = false)
-    private Instant addTime;
-
-    @Column(name = "add_user_id", nullable = false)
-    private Long addUserId;
-
-    @Column(name = "last_chg_time", nullable = false)
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id", nullable = false)
-    private Long lastChgUserId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "record_status_cd", nullable = false, length = 20)
-    private AuthRecordStatus recordStatusCd;
-
-    @Column(name = "record_status_time", nullable = false)
-    private Instant recordStatusTime;
+    @Embedded
+    private AuthAudit audit;
 
 }

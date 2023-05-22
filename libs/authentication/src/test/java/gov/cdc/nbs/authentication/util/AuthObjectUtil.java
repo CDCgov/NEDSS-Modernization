@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
@@ -25,24 +26,31 @@ public class AuthObjectUtil {
         user.setProgAreaAdminInd('T');
         user.setAdminProgramAreas(AuthObjectUtil.progAreaAdmins(user));
         user.setUserId("test");
-        user.setRecordStatusCd(AuthRecordStatus.ACTIVE);
+        user.setAudit(audit());
         return user;
     }
 
-    public static List<AuthProgAreaAdmin> progAreaAdmins(AuthUser user) {
+    public static AuthAudit audit() {
         var now = Instant.now();
+        var audit = new AuthAudit();
+        audit.setAddTime(now);
+        audit.setAddUserId(999L);
+        audit.setLastChgTime(now);
+        audit.setLastChgUserId(999L);
+        audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
+        audit.setRecordStatusTime(now);
+        return audit;
+    }
+
+    public static List<AuthProgAreaAdmin> progAreaAdmins(AuthUser user) {
         var adminAreas = new ArrayList<AuthProgAreaAdmin>();
         adminAreas.add(
-                new AuthProgAreaAdmin(null,
+                new AuthProgAreaAdmin(
+                        null,
                         "progArea",
                         user,
                         'T',
-                        now,
-                        123L,
-                        now,
-                        123L,
-                        "ACTIVE",
-                        now));
+                        audit()));
         return adminAreas;
     }
 

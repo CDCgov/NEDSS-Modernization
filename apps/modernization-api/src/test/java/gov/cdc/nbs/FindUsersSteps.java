@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import gov.cdc.nbs.authentication.entity.AuthAudit;
 import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import gov.cdc.nbs.authentication.entity.AuthPermSetRepository;
 import gov.cdc.nbs.authentication.entity.AuthUser;
@@ -89,6 +90,13 @@ public class FindUsersSteps {
         var existingRole = roleRepository.findByUserAndPermissionSet(user.getId(), permSet.getId(), programArea);
         if (!existingRole.isPresent()) {
             var now = Instant.now();
+            var audit = new AuthAudit();
+            audit.setAddTime(now);
+            audit.setAddUserId(10000000L);
+            audit.setLastChgTime(now);
+            audit.setLastChgUserId(10000000L);
+            audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
+            audit.setRecordStatusTime(now);
             var newRole = AuthUserRole
                     .builder()
                     .authRoleNm(permSet.getPermSetNm())
@@ -99,12 +107,7 @@ public class FindUsersSteps {
                     .roleGuestInd('F')
                     .readOnlyInd('T')
                     .dispSeqNbr(0)
-                    .addTime(now)
-                    .addUserId(10000000L)
-                    .lastChgTime(now)
-                    .lastChgUserId(10000000L)
-                    .recordStatusCd(AuthRecordStatus.ACTIVE)
-                    .recordStatusTime(now)
+                    .audit(audit)
                     .build();
             roleRepository.save(newRole);
         }

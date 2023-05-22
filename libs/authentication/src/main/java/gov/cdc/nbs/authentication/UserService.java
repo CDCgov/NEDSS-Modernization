@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService {
                 .username(authUser.getUserId())
                 .password(null)
                 .authorities(permissionFinder.getUserPermissions(authUser))
-                .isEnabled(authUser.getRecordStatusCd().equals(AuthRecordStatus.ACTIVE))
+                .isEnabled(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE))
                 .token(token)
                 .build();
     }
