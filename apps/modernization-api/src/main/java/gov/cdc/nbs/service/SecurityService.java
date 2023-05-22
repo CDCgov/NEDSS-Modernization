@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import lombok.RequiredArgsConstructor;
 

@@ -13,13 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
-import gov.cdc.nbs.config.security.NbsAuthority;
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.exception.BadTokenException;
 import lombok.RequiredArgsConstructor;
 

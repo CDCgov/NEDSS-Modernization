@@ -1,34 +1,32 @@
-package gov.cdc.nbs.questionbank.config.security;
+package gov.cdc.nbs.authentication;
 
 import java.io.IOException;
 import java.util.Optional;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import gov.cdc.nbs.authentication.UserService;
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.config.security.SecurityProperties;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty("nbs.security.enabled")
 public class JWTFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final String TOKEN_COOKIE_NAME = "nbs_token";
-
     private final UserService userService;
     private final JWTVerifier verifier;
     private final SecurityProperties securityProperties;
@@ -37,7 +35,10 @@ public class JWTFilter extends OncePerRequestFilter {
      * On every request, validate the JWT, and load user details from the UserService.
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
         verifyAndDecodeJWT(request)
                 .map(userService::findUserByToken)
@@ -49,7 +50,6 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    @SuppressWarnings({"squid:S2092", "squid:S3330"})
     public Cookie createJWTCookie(NbsUserDetails userDetails) {
         var cookie = new Cookie(TOKEN_COOKIE_NAME, userDetails.getToken());
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
@@ -59,7 +59,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     /**
      * Pulls the JWT from the "Authorization" header and validates it against the
-     * {@link gov.cdc.nbs.config.security.JWTSecurityConfig#jwtVerifier verifier}
+     * {@link gov.cdc.nbs.authentication.config.JWTSecurityConfig#jwtVerifier verifier}
      */
     public Optional<DecodedJWT> verifyAndDecodeJWT(HttpServletRequest request) {
         try {

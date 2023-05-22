@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import gov.cdc.nbs.authentication.NbsAuthority;
+import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.entity.AuthProgAreaAdmin;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
-import gov.cdc.nbs.config.security.NbsAuthority;
-import gov.cdc.nbs.config.security.NbsUserDetails;
 
 public class AuthObjectUtil {
     public static final String BUSINESS_OBJECT = "OBJECT";

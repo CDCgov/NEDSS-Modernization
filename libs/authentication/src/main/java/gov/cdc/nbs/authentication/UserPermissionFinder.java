@@ -16,7 +16,6 @@ import gov.cdc.nbs.authentication.entity.QAuthPermSet;
 import gov.cdc.nbs.authentication.entity.QAuthProgramAreaCode;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
 import gov.cdc.nbs.authentication.entity.QAuthUserRole;
-import gov.cdc.nbs.config.security.NbsAuthority;
 
 @Component
 public class UserPermissionFinder {

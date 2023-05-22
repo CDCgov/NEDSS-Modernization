@@ -19,12 +19,11 @@ import org.mockito.Spy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import gov.cdc.nbs.authentication.util.AuthObjectUtil;
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.config.security.SecurityProperties;
 import gov.cdc.nbs.exception.BadTokenException;
 
 class UserServiceTest {

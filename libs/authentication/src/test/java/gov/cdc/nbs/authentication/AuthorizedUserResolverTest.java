@@ -62,6 +62,17 @@ class AuthorizedUserResolverTest {
         assertTrue(optional.isEmpty());
     }
 
+    @Test
+    void should_not_resolve_empty_log() {
+        when(securityLogRepository
+            .findBySessionIdOrderByEventTimeDesc(Mockito.anyString()))
+            .thenReturn(Arrays.asList());
+        when(authUserRepository.findByNedssEntryId(Mockito.anyLong())).thenReturn(authUser());
+
+        var optional = resolver.resolve("test");
+        assertTrue(optional.isEmpty());
+    }
+
     private Optional<AuthUser> authUser() {
         var user = new AuthUser();
         user.setId(1L);

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.config.security;
+package gov.cdc.nbs.authentication;
 
 import org.springframework.security.core.GrantedAuthority;
 

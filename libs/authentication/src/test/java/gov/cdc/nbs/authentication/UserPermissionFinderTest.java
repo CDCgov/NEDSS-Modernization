@@ -23,7 +23,6 @@ import gov.cdc.nbs.authentication.entity.QAuthProgramAreaCode;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
 import gov.cdc.nbs.authentication.entity.QAuthUserRole;
 import gov.cdc.nbs.authentication.util.AuthObjectUtil;
-import gov.cdc.nbs.config.security.NbsAuthority;
 
 class UserPermissionFinderTest {
 

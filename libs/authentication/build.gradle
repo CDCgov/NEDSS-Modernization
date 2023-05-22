@@ -33,6 +33,7 @@ dependencies {
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
+    implementation libs.springBoot.web
     implementation libs.bundles.security
 
     // database
