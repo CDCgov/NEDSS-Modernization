@@ -2,7 +2,7 @@ package gov.cdc.nbs.authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -117,8 +117,7 @@ class JWTFilterTest {
         verify(userService, never()).findUserByToken(Mockito.any());
         verify(response, never()).addCookie(Mockito.any());
 
-        assertThrows(NullPointerException.class,
-                () -> SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
     @Test
@@ -140,8 +139,7 @@ class JWTFilterTest {
         verify(userService, never()).findUserByToken(Mockito.any());
         verify(response, never()).addCookie(Mockito.any());
 
-        assertThrows(NullPointerException.class,
-                () -> SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
     @Test
@@ -163,8 +161,7 @@ class JWTFilterTest {
         verify(userService, never()).findUserByToken(Mockito.any());
         verify(response, never()).addCookie(Mockito.any());
 
-        assertThrows(NullPointerException.class,
-                () -> SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
 

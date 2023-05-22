@@ -2,19 +2,16 @@ package gov.cdc.nbs.authentication;
 
 import java.io.IOException;
 import java.util.Optional;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -50,8 +47,13 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    @SuppressWarnings({"squid:S2092", "squid:S3330"})
     public Cookie createJWTCookie(NbsUserDetails userDetails) {
         var cookie = new Cookie(TOKEN_COOKIE_NAME, userDetails.getToken());
+        // S2092 intra-container communication is currently not secure
+        cookie.setSecure(true);
+        // S3330 currently read by frontend codebase
+        cookie.setHttpOnly(false);
         cookie.setMaxAge(securityProperties.getTokenExpirationSeconds());
         cookie.setPath("/");
         return cookie;
