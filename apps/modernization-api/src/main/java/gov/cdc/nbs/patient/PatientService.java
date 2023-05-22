@@ -55,6 +55,8 @@ import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
+import gov.cdc.nbs.patient.identifier.PatientIdentifierSettings;
+import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.patient.kafka.KafkaProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.service.UserService;
@@ -141,7 +143,25 @@ public class PatientService {
         builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD_FIELD, "PAT"));
 
         if (filter.getId() != null) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, filter.getId()));
+            if (Character.isDigit(filter.getId().charAt(0))) {
+                try {
+                    long shortId = Long.parseLong(filter.getId());
+                    PatientIdentifierSettings settings = new PatientIdentifierSettings(
+                        // TODO get these from global settings
+                        "PSN",
+                        1,
+                        "GA01"
+                    );
+                    PatientLocalIdentifierResolver resolver = new PatientLocalIdentifierResolver(settings);
+                    String localId = resolver.resolve(shortId);
+                    builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, localId));    
+                } catch (NumberFormatException exception) {
+                    // skip this criteria.  it's not a short id or long id
+                }
+            }
+            else {
+                builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, filter.getId()));
+            }
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {

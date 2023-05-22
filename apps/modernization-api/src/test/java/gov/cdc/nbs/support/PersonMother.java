@@ -38,7 +38,7 @@ public class PersonMother {
 
 
     public static Person generateRandomPerson(long id) {
-        return generateRandomPerson(id, "PSN" + id + 10000000L);
+        return generateRandomPerson(id, "PSN" + id + "GA01");
     }
 
     public static Person generateRandomPerson(long id, final String local) {
