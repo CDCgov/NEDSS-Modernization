@@ -457,7 +457,7 @@ public class PatientUpdater {
         return new PatientCommand.UpdateEthnicityInfo(
                 data.patientId(),
                 data.asOf(),
-                data.ethnicityGroupCd(),
+                data.ethnicityGroupInd(),
                 data.updatedBy(),
                 Instant.now());
     }

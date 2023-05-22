@@ -713,7 +713,7 @@ public class Person {
     public void update(PatientCommand.UpdateEthnicityInfo info) {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
-        this.setEthnicityGroupCd(info.ethnicityCode());
+        this.setEthnicGroupInd(info.ethnicityCode());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
     }

@@ -8,5 +8,5 @@ public record UpdateEthnicityData(
                 String requestId,
                 long updatedBy,
                 Instant asOf,
-                String ethnicityGroupCd) implements Serializable {
+                String ethnicityGroupInd) implements Serializable {
 }
