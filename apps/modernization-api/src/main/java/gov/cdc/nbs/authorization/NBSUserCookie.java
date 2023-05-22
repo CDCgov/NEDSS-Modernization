@@ -1,9 +1,8 @@
 package gov.cdc.nbs.authorization;
 
-import gov.cdc.nbs.config.security.SecurityProperties;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 
 public record NBSUserCookie(String user) {
 
@@ -11,9 +10,8 @@ public record NBSUserCookie(String user) {
 
     @SuppressWarnings({"squid:S2092", "squid:S3330"})
     public void apply(
-        final SecurityProperties properties,
-        final HttpServletResponse response
-    ) {
+            final SecurityProperties properties,
+            final HttpServletResponse response) {
         Cookie cookie = new Cookie(USER_COOKIE_NAME, user);
         cookie.setPath("/");
         cookie.setMaxAge(properties.getTokenExpirationSeconds());

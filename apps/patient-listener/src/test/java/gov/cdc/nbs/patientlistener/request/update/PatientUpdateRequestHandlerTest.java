@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -32,7 +33,6 @@ import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import gov.cdc.nbs.service.UserService;
 
 class PatientUpdateRequestHandlerTest {
     @Mock
@@ -457,7 +457,11 @@ class PatientUpdateRequestHandlerTest {
         when(patientUpdater.update(Mockito.any(), eq(data))).thenAnswer(i -> i.getArguments()[0]);
 
         // call handle update gen info
-        updateHandler.handlePatientNameDelete(data.requestId(), data.patientId(), data.personNameSeq(), data.updatedBy());
+        updateHandler.handlePatientNameDelete(
+                data.requestId(),
+                data.patientId(),
+                data.personNameSeq(),
+                data.updatedBy());
 
         // verify save requests called, success status sent
         verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(321L));
@@ -482,7 +486,11 @@ class PatientUpdateRequestHandlerTest {
 
         // call handle update mortality info
         try {
-            updateHandler.handlePatientNameDelete(data.requestId(), data.patientId(), data.personNameSeq(), data.updatedBy());
+            updateHandler.handlePatientNameDelete(
+                    data.requestId(),
+                    data.patientId(),
+                    data.personNameSeq(),
+                    data.updatedBy());
         } catch (UserNotAuthorizedException e) {
             ex = e;
         }

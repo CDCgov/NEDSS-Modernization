@@ -1,9 +1,9 @@
 package gov.cdc.nbs.authorization;
 
-import gov.cdc.nbs.authentication.AuthUserRepository;
-import gov.cdc.nbs.entity.enums.SecurityEventType;
-import gov.cdc.nbs.entity.odse.SecurityLog;
-import gov.cdc.nbs.repository.SecurityLogRepository;
+import gov.cdc.nbs.authentication.entity.AuthUserRepository;
+import gov.cdc.nbs.authentication.entity.SecurityLog;
+import gov.cdc.nbs.authentication.enums.SecurityEventType;
+import gov.cdc.nbs.authentication.repository.SecurityLogRepository;
 import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.UserMother;
 import gov.cdc.nbs.support.util.RandomUtil;

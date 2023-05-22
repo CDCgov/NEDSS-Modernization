@@ -1,19 +1,18 @@
 package gov.cdc.nbs.config.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.cdc.nbs.authentication.NbsUserDetails;
 
 public class SecurityUtil {
 
-    private SecurityUtil() {
-    }
+    private SecurityUtil() {}
 
     public static NbsUserDetails getUserDetails() {
         return (NbsUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public static class Operations {
-        private Operations() {
-        }
+        private Operations() {}
 
         public static final String ADD = "ADD";
         public static final String ANY = "ANY";
@@ -84,8 +83,7 @@ public class SecurityUtil {
 
 
     public static class BusinessObjects {
-        private BusinessObjects() {
-        }
+        private BusinessObjects() {}
 
         public static final String SRT = "SRT";
         public static final String PLACE = "PLACE";

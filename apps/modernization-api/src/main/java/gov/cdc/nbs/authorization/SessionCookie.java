@@ -1,9 +1,8 @@
 package gov.cdc.nbs.authorization;
 
-import gov.cdc.nbs.config.security.SecurityProperties;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 import java.util.Optional;
 
 public record SessionCookie(String identifier) {
@@ -26,9 +25,8 @@ public record SessionCookie(String identifier) {
     }
 
     public void apply(
-        final SecurityProperties properties,
-        final HttpServletResponse response
-    ) {
+            final SecurityProperties properties,
+            final HttpServletResponse response) {
         Cookie cookie = asCookie();
         cookie.setMaxAge(properties.getTokenExpirationSeconds());
 

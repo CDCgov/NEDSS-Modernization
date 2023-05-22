@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
-import gov.cdc.nbs.patient.profile.redirect.ReturningPatientCookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 

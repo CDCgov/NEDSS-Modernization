@@ -1,10 +1,10 @@
 package gov.cdc.nbs.redirect.incoming;
 
 
-import gov.cdc.nbs.config.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
 
 @Configuration
 class ClassicIncomingAuthenticationFilterConfiguration {
@@ -15,15 +15,14 @@ class ClassicIncomingAuthenticationFilterConfiguration {
      */
     @Bean
     FilterRegistrationBean<ClassicIncomingAuthenticationFilter> classicIncomingAuthenticationFilterRegistration(
-        final ClassicIncomingContextResolver resolver,
-        final SecurityProperties securityProperties
-    ) {
+            final ClassicIncomingContextResolver resolver,
+            final SecurityProperties securityProperties) {
 
-        ClassicIncomingAuthenticationFilter
-            filter = new ClassicIncomingAuthenticationFilter(resolver, securityProperties);
+        ClassicIncomingAuthenticationFilter filter =
+                new ClassicIncomingAuthenticationFilter(resolver, securityProperties);
 
         FilterRegistrationBean<ClassicIncomingAuthenticationFilter> registration =
-            new FilterRegistrationBean<>(filter);
+                new FilterRegistrationBean<>(filter);
         registration.addUrlPatterns("/nbs/redirect/*");
 
 
