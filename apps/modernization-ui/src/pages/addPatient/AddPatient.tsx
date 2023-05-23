@@ -117,8 +117,8 @@ export default function AddPatient() {
         }).then((re) => {
             console.log('re:', re);
         });
-        // setSubmitData(data);
-        // setSuccessSubmit(true);
+        setSubmitData(data);
+        setSuccessSubmit(true);
     };
 
     useEffect(() => {
@@ -172,7 +172,7 @@ export default function AddPatient() {
                                             Save changes
                                         </Button>
 
-                                        {isValid && (
+                                        {/* {isValid && (
                                             <span>
                                                 <ModalToggleButton
                                                     modalRef={modalRef}
@@ -218,7 +218,7 @@ export default function AddPatient() {
                                                     </ModalFooter>
                                                 </Modal>
                                             </span>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
                             </Grid>
