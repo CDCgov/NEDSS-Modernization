@@ -1,18 +1,42 @@
 package gov.cdc.nbs.patient;
 
-import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
-import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.querydsl.BlazeJPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import gov.cdc.nbs.authentication.UserService;
+import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.QLabEvent;
+import gov.cdc.nbs.entity.odse.QOrganization;
+import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
+import gov.cdc.nbs.message.patient.input.AddressInput;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
+import gov.cdc.nbs.message.patient.input.EmailInput;
+import gov.cdc.nbs.message.patient.input.EthnicityInput;
+import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.IdentificationInput;
+import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.NameInput;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PhoneInput;
+import gov.cdc.nbs.message.patient.input.RaceInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
+import gov.cdc.nbs.message.util.Constants;
+import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
+import gov.cdc.nbs.patient.identifier.PatientIdentifierSettings;
+import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
+import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
+import graphql.com.google.common.collect.Ordering;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -32,43 +56,19 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
-import com.blazebit.persistence.CriteriaBuilderFactory;
-import com.blazebit.persistence.querydsl.BlazeJPAQuery;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import gov.cdc.nbs.authentication.UserService;
-import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.QLabEvent;
-import gov.cdc.nbs.entity.odse.QOrganization;
-import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.OrganizationFilter;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
-import gov.cdc.nbs.message.patient.input.AddressInput;
-import gov.cdc.nbs.message.patient.input.EmailInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
-import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.EthnicityInput;
-import gov.cdc.nbs.message.patient.input.RaceInput;
-import gov.cdc.nbs.message.util.Constants;
-import gov.cdc.nbs.model.PatientEventResponse;
-import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
-import gov.cdc.nbs.patient.identifier.PatientIdentifierSettings;
-import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
-import gov.cdc.nbs.patient.kafka.KafkaProducer;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.time.FlexibleInstantConverter;
-import graphql.com.google.common.collect.Ordering;
-import lombok.RequiredArgsConstructor;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+
+import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
+import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -94,7 +94,7 @@ public class PatientService {
     private final PersonRepository personRepository;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
-    private final KafkaProducer producer;
+    private final PatientEventRequester requester;
     private final PatientCreateRequestResolver createRequestResolver;
     private final UserService userService;
 
@@ -160,18 +160,16 @@ public class PatientService {
                 try {
                     long shortId = Long.parseLong(shortOrLongIdStripped);
                     PatientIdentifierSettings settings = new PatientIdentifierSettings(
-                        patientIdPrefix,
-                        patientIdSeed,
-                        patientIdSuffix
-                    );
+                            patientIdPrefix,
+                            patientIdSeed,
+                            patientIdSuffix);
                     PatientLocalIdentifierResolver resolver = new PatientLocalIdentifierResolver(settings);
                     String localId = resolver.resolve(shortId);
-                    builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, localId));    
+                    builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, localId));
                 } catch (NumberFormatException exception) {
-                    // skip this criteria.  it's not a short id or long id
+                    // skip this criteria. it's not a short id or long id
                 }
-            }
-            else {
+            } else {
                 builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, filter.getId()));
             }
         }
@@ -482,15 +480,8 @@ public class PatientService {
         return sendPatientEvent(updateMortalityEvent);
     }
 
-    public PatientEventResponse sendDeletePatientEvent(Long patientId) {
-        var user = SecurityUtil.getUserDetails();
-        var deleteEvent = new PatientRequest.Delete(getRequestId(), patientId, user.getId());
-        return sendPatientEvent(deleteEvent);
-    }
-
     private PatientEventResponse sendPatientEvent(PatientRequest request) {
-        producer.requestPatientEventEnvelope(request);
-        return new PatientEventResponse(request.requestId(), request.patientId());
+        return this.requester.request(request);
     }
 
     private String addWildcards(String searchString) {

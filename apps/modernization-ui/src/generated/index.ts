@@ -21,4 +21,6 @@ export { ProviderFacilitySearch } from './models/ProviderFacilitySearch';
 export { EncryptionControllerService } from './services/EncryptionControllerService';
 export { ExportControllerService } from './services/ExportControllerService';
 export { RedirectControllerService } from './services/RedirectControllerService';
+export { SubmitLabReportRedirectorService } from './services/SubmitLabReportRedirectorService';
+export { SubmitMorbidityReportRedirectorService } from './services/SubmitMorbidityReportRedirectorService';
 export { UserControllerService } from './services/UserControllerService';

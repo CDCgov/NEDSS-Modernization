@@ -28,6 +28,9 @@ public class PatientProfileSteps {
     @Autowired
     PatientProfileResolver resolver;
 
+    @Autowired
+    PatientProfileDeletableResolver isDeletableResolver;
+
     PatientProfile profile;
 
     Exception exception;
@@ -73,5 +76,19 @@ public class PatientProfileSteps {
 
         assertThat(this.profile).isNull();
         assertThat(this.exception).isInstanceOf(AccessDeniedException.class);
+    }
+
+    @Then("the patient can be deleted")
+    public void the_patient_can_be_deleted() {
+        boolean deletable = this.isDeletableResolver.resolve(this.profile);
+
+        assertThat(deletable).isTrue();
+    }
+
+    @Then("the patient can not be deleted")
+    public void the_patient_can_not_be_deleted() {
+        boolean deletable = this.isDeletableResolver.resolve(this.profile);
+
+        assertThat(deletable).isFalse();
     }
 }

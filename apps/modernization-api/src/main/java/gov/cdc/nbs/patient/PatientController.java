@@ -1,12 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects;
 import gov.cdc.nbs.config.security.SecurityUtil.Operations;
 import gov.cdc.nbs.entity.odse.Person;
@@ -27,6 +20,14 @@ import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -34,25 +35,23 @@ public class PatientController {
     private static final String AND = " and ";
     private static final String HAS_AUTHORITY = "hasAuthority('";
     private static final String FIND_PATIENT = HAS_AUTHORITY + Operations.FIND + "-" + BusinessObjects.PATIENT
-            + "')";
+        + "')";
     private static final String ADD_PATIENT = HAS_AUTHORITY + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
     private static final String ADD_AND_FIND_PATIENT = ADD_PATIENT + AND + FIND_PATIENT;
 
     private static final String EDIT_PATIENT = HAS_AUTHORITY + Operations.EDIT + "-" + BusinessObjects.PATIENT
-            + "')";
+        + "')";
 
     private static final String VIEW_PATIENT = HAS_AUTHORITY + Operations.VIEW + "-" + BusinessObjects.PATIENT
-            + "')";
+        + "')";
     private static final String FIND_AND_EDIT_AND_VIEW = FIND_PATIENT + AND + EDIT_PATIENT + AND + VIEW_PATIENT;
-    private static final String DELETE_PATIENT = HAS_AUTHORITY + Operations.DELETE + "-" + BusinessObjects.PATIENT
-            + "')";
-    private static final String VIEW_AND_DELETE_PATIENT = VIEW_PATIENT + AND + DELETE_PATIENT;
+
     private final PatientService patientService;
 
     @QueryMapping()
     @PreAuthorize(FIND_PATIENT)
     public Page<Person> findPatientsByOrganizationFilter(@Argument OrganizationFilter filter,
-            @Argument GraphQLPage page) {
+        @Argument GraphQLPage page) {
         return patientService.findPatientsByOrganizationFilter(filter, page);
     }
 
@@ -72,12 +71,6 @@ public class PatientController {
     @PreAuthorize(FIND_PATIENT)
     public Optional<Person> findPatientById(@Argument Long id) {
         return patientService.findPatientById(id);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(VIEW_AND_DELETE_PATIENT)
-    public PatientEventResponse deletePatient(@Argument Long patientId) {
-        return patientService.sendDeletePatientEvent(patientId);
     }
 
     @MutationMapping()

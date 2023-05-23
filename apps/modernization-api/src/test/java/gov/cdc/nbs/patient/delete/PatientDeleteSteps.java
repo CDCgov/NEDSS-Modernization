@@ -1,9 +1,10 @@
-package gov.cdc.nbs.patient;
+package gov.cdc.nbs.patient.delete;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -24,7 +25,7 @@ public class PatientDeleteSteps {
     TestPatientIdentifier patients;
 
     @Autowired
-    PatientController patientController;
+    PatientDeleteController controller;
 
     @Autowired
     KafkaTestConsumer consumer;
@@ -45,7 +46,7 @@ public class PatientDeleteSteps {
         long patient = patients.one().id();
 
         try {
-            response = patientController.deletePatient(patient);
+            response = controller.delete(patient);
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
         }
