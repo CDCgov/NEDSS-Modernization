@@ -6,6 +6,7 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
 
     record CreateTextQuestionRequest(
             String requestId,
+            long questionId,
             long userId,
             String label,
             String tooltip,

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
@@ -24,8 +25,9 @@ import lombok.Setter;
 @Table(name = "display_element", catalog = "question_bank")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "display_type", discriminatorType = DiscriminatorType.STRING)
+@IdClass(DisplayElementEntityId.class)
 public abstract class DisplayElementEntity implements Serializable {
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -33,6 +35,9 @@ public abstract class DisplayElementEntity implements Serializable {
     @Id
     @Column(name = "version", nullable = false)
     private Integer version;
+    
+    @Column(name = "active", nullable = false)
+    private boolean active = true;
 
     public abstract String getDisplayType();
 }

@@ -15,6 +15,7 @@
         default_answer_id bigint,
         value_set_id bigint,
         units_set bigint,
+        active bit not null default 1,
         primary key (version, id)
     );
 
