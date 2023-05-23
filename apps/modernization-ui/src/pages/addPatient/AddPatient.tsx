@@ -29,12 +29,17 @@ import { IdentificationFields } from './components/identificationFields/Identifi
 import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
 import { SuccessForm } from './components/SuccessForm/SuccessForm';
+import { NameUseCd, useCreatePatientMutation } from 'generated/graphql/schema';
+import { format } from 'date-fns';
 
 export default function AddPatient() {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
     const [submitData, setSubmitData] = useState<any>();
+    const [handleSavePatient] = useCreatePatientMutation();
+
     const modalRef = useRef<ModalRef>(null);
+
     function isEmpty(obj: any) {
         for (const key in obj) {
             if (obj[key] !== undefined && obj[key] != '' && key !== 'recordStatus') return false;
@@ -92,11 +97,31 @@ export default function AddPatient() {
     }, [isValid]);
 
     const submit = (data: any) => {
-        setSubmitData(data);
-        setSuccessSubmit(true);
+        console.log('data:', format(new Date(data?.asOf), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`));
+        handleSavePatient({
+            variables: {
+                patient: {
+                    asOf: format(new Date(data?.asOf), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`),
+                    comments: data?.additionalComments,
+                    names: [
+                        {
+                            lastName: data?.lastName,
+                            firstName: data?.firstName,
+                            middleName: data?.middleName,
+                            suffix: data?.suffix,
+                            nameUseCd: NameUseCd.Ad
+                        }
+                    ]
+                }
+            }
+        }).then((re) => {
+            console.log('re:', re);
+        });
+        // setSubmitData(data);
+        // setSuccessSubmit(true);
     };
 
-    window.addEventListener('load', () => {
+    useEffect(() => {
         const sections = Array.from(document.querySelectorAll('section[id]'));
 
         const scrollHandler: any = (entries: any) => {
@@ -119,7 +144,7 @@ export default function AddPatient() {
 
         // noinspection JSCheckFunctionSignatures
         sections.forEach((section) => observer.observe(section));
-    });
+    }, []);
 
     return (
         <>
@@ -140,11 +165,12 @@ export default function AddPatient() {
                                             type={'button'}>
                                             Save and add new lab report
                                         </Button>
-                                        {!isValid && (
-                                            <Button className="padding-x-3 add-patient-button" type={'submit'}>
-                                                Save changes
-                                            </Button>
-                                        )}
+                                        <Button
+                                            disabled={disabled}
+                                            className="padding-x-3 add-patient-button"
+                                            type={'submit'}>
+                                            Save changes
+                                        </Button>
 
                                         {isValid && (
                                             <span>
@@ -199,7 +225,7 @@ export default function AddPatient() {
                             <div className="content">
                                 <Grid row className="padding-3">
                                     <Grid col={9}>
-                                        {!isValid && (
+                                        {!isValid && successSubmit && (
                                             <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
                                                 <Icon.Error className="font-sans-2xl margin-x-2" />
                                                 <p id="form-error">
@@ -275,7 +301,7 @@ export default function AddPatient() {
                     </Grid>
                 </Grid>
             )}
-            {successSubmit && <SuccessForm data={submitData} />}
+            {successSubmit && <SuccessForm setSuccessSubmit={setSuccessSubmit} data={submitData} />}
         </>
     );
 }

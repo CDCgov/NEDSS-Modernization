@@ -13,15 +13,15 @@ export default function NameFields({ id, title, control }: { id?: string; title?
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="last-name"
+                            name="lastName"
                             render={({ field: { onChange, value } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     label="Last"
                                     defaultValue={value}
-                                    htmlFor="last-name"
-                                    id="last-name"
+                                    htmlFor="lastName"
+                                    id="lastName"
                                 />
                             )}
                         />
@@ -31,14 +31,14 @@ export default function NameFields({ id, title, control }: { id?: string; title?
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="first-name"
+                            name="firstName"
                             render={({ field: { onChange, value } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     defaultValue={value}
-                                    htmlFor="first-name"
-                                    id="first-name"
+                                    htmlFor="firstName"
+                                    id="firstName"
                                     label="First"
                                 />
                             )}
@@ -49,14 +49,14 @@ export default function NameFields({ id, title, control }: { id?: string; title?
                     <Grid col={6}>
                         <Controller
                             control={control}
-                            name="middle-name"
+                            name="middleName"
                             render={({ field: { onChange, value } }) => (
                                 <Input
                                     onChange={onChange}
                                     type="text"
                                     defaultValue={value}
-                                    htmlFor="middle-name"
-                                    id="middle-name"
+                                    htmlFor="middleName"
+                                    id="middleName"
                                     label="Middle"
                                 />
                             )}

@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
 
-export const SuccessForm = ({ data }: any) => {
+export const SuccessForm = ({ data, setSuccessSubmit }: any) => {
     return (
         <Grid row>
             <Grid col={10} className="margin-x-auto margin-top-5">
@@ -14,7 +14,7 @@ export const SuccessForm = ({ data }: any) => {
                         </p>
                         <ButtonGroup className="flex-justify-center margin-top-3">
                             <Button type="button">View patient</Button>
-                            <Button type="button" outline>
+                            <Button onClick={() => setSuccessSubmit(false)} type="button" outline>
                                 Add another patient
                             </Button>
                         </ButtonGroup>

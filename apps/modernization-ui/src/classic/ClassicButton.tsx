@@ -1,6 +1,7 @@
 import { Button } from '@trussworks/react-uswds';
 import { useRedirect, redirectTo, navigateTo } from './useRedirect';
 import { useEffect } from 'react';
+import React from 'react';
 
 type Props = {
     url: string;
