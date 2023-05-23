@@ -47,7 +47,7 @@ public class PersonRace {
     @Embedded
     private Audit audit;
 
-    protected PersonRace() {
+    public PersonRace() {
 
     }
 

@@ -51,11 +51,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 @Rollback(false)
 public class PatientSearchSteps {
-    @Value("${nbs.uid.suffix: GA01}")
+    @Value("${nbs.uid.suffix:GA01}")
     private String patientIdSuffix;
     @Value("${nbs.uid.seed: 10000000}")
     private long patientIdSeed;
-    @Value("${nbs.uid.prefix: PSN}")
+    @Value("${nbs.uid.prefix:PSN}")
     private String patientIdPrefix;
 
     @Autowired
@@ -298,7 +298,7 @@ public class PatientSearchSteps {
                         patientIdSuffix);
                 PatientShortIdentifierResolver resolver = new PatientShortIdentifierResolver(settings);
                 OptionalLong shortId = resolver.resolve(searchPatient.getLocalId());
-                filter.setId(shortId.toString());
+                filter.setId(String.valueOf(shortId.getAsLong()));
                 break;
             case "ssn":
                 filter.setSsn(searchPatient.getSsn());
