@@ -22,10 +22,8 @@ import lombok.Setter;
 public class ValueEntity implements Serializable {
 
     @Id
+    @GenericGenerator(name = "UUID", strategy = "gov.cdc.nbs.questionbank.entities.UUIDGenerator")
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator")
     @Type(type = "uuid-char")
     @Column(name = "id", columnDefinition = "uniqueidentifier", nullable = false)
     private UUID id;

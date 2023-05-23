@@ -21,14 +21,14 @@
         default_answer_id uniqueidentifier,
         value_set_id uniqueidentifier,
         units_set uniqueidentifier,
-        primary key (id, version)
+        primary key nonclustered (id, version)
     );
 
     create table question_bank.dbo.display_element_group (
        version int not null,
         id uniqueidentifier not null,
         label varchar(255) not null,
-        primary key (version, id)
+        primary key nonclustered (version, id)
     );
 
     create table question_bank.dbo.group_or_element_ref (
@@ -47,13 +47,13 @@
        id uniqueidentifier not null,
         description varchar(500),
         name varchar(255),
-        primary key (id)
+        primary key nonclustered (id)
     );
 
     create table question_bank.dbo.questionnaire_rule (
        id uniqueidentifier not null,
         questionnaire_id uniqueidentifier,
-        primary key (id)
+        primary key nonclustered (id)
     );
 
     create table question_bank.dbo.[value] (
@@ -64,7 +64,7 @@
         display_order int not null,
         [value] varchar(255) not null,
         value_set_id uniqueidentifier,
-        primary key (id)
+        primary key nonclustered (id)
     );
 
     create table question_bank.dbo.value_set (
@@ -73,7 +73,7 @@
         description varchar(300),
         name varchar(255) not null,
         type varchar(255) not null,
-        primary key (id)
+        primary key nonclustered (id)
     );
 
     create table dbo.display_element_group_elements (
@@ -82,7 +82,7 @@
         element_id uniqueidentifier not null,
         element_version int not null,
         display_order int not null,
-        primary key (group_id, group_version, display_order)
+        primary key nonclustered (group_id, group_version, display_order)
     );
 
     create table dbo.questionnaire_conditions (
