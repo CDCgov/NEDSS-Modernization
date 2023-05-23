@@ -45,7 +45,7 @@ public class PatientRequestTopicListener {
             if (request instanceof PatientRequest.Create create) {
                 createHandler.handlePatientCreate(create.data());
             } else if (request instanceof PatientRequest.Delete delete) {
-                deleteHandler.handlePatientDelete(delete.requestId(), delete.patientId(), delete.userId());
+                deleteHandler.handle(delete);
             } else if (request instanceof PatientRequest.UpdateGeneralInfo update) {
                 updateHandler.handlePatientGeneralInfoUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateMortality update) {

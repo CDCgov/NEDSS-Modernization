@@ -1,15 +1,5 @@
 package gov.cdc.nbs.authentication;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -20,6 +10,16 @@ import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import gov.cdc.nbs.exception.BadTokenException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.stream.Collectors;
+
+import static gov.cdc.nbs.authentication.NbsAuthorities.allowsAny;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
     private final SecurityProperties properties;
     private final AuthUserRepository authUserRepository;
     private final UserPermissionFinder permissionFinder;
+    private final UserAuthorizationVerifier verifier;
 
     @Override
     public NbsUserDetails loadUserByUsername(String username) {
@@ -39,30 +40,13 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean isAuthorized(final long user, final String... permissions) {
-        return authUserRepository.findById(user)
-                // introduce query to bypass unnecessary mapping of entire object
-                // should only need the authorities or even do the entire check in JPQL
-                .map(
-                        authUser -> permissionFinder.getUserPermissions(authUser)
-                                .stream()
-                                .anyMatch(allowsAny(permissions)))
-                .orElse(false);
+        return this.verifier.isAuthorized(user, permissions);
     }
 
     public boolean isAuthorized(final NbsUserDetails userDetails, final String... permissions) {
         return userDetails.getAuthorities()
                 .stream()
                 .anyMatch(allowsAny(permissions));
-    }
-
-    private Predicate<NbsAuthority> allows(final String permission) {
-        return authority -> Objects.equals(authority.getAuthority(), permission);
-    }
-
-    private Predicate<NbsAuthority> allowsAny(final String... permissions) {
-        return Arrays.stream(permissions)
-                .map(this::allows)
-                .reduce(ignored -> false, Predicate::or);
     }
 
     /**

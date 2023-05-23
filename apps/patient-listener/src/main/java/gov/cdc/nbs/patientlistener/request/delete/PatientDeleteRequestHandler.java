@@ -1,72 +1,54 @@
 package gov.cdc.nbs.patientlistener.request.delete;
 
-import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patientlistener.request.PatientRequestException;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
-import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
 import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
-import gov.cdc.nbs.patientlistener.util.PersonConverter;
 import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 @Service
 public class PatientDeleteRequestHandler {
-    private final UserService userService;
-    private final PatientDeleter patientDeleter;
+
+    private final PatientDeletionCheck check;
+    private final PatientDeleter deleter;
     private final PatientRequestStatusProducer statusProducer;
-    private final PersonRepository personRepository;
-    private final ElasticsearchPersonRepository elasticsearchPersonRepository;
+    private final EntityManager entityManager;
 
     public PatientDeleteRequestHandler(
-            UserService userService,
-            PatientDeleter patientDeleter,
-            PatientRequestStatusProducer statusProducer,
-            PersonRepository personRepository,
-            ElasticsearchPersonRepository elasticsearchPersonRepository) {
-        this.userService = userService;
-        this.patientDeleter = patientDeleter;
+        final PatientDeletionCheck check,
+        final PatientDeleter deleter,
+        final PatientRequestStatusProducer statusProducer,
+        final EntityManager entityManager
+    ) {
+        this.check = check;
+        this.deleter = deleter;
         this.statusProducer = statusProducer;
-        this.personRepository = personRepository;
-        this.elasticsearchPersonRepository = elasticsearchPersonRepository;
+        this.entityManager = entityManager;
     }
 
     /*
      * Sets a patients RecordStatus to 'LOG_DEL'
      */
-    public void handlePatientDelete(final String requestId, final long patientId, final long userId) {
-        if (!userService.isAuthorized(userId, "VIEW-PATIENT", "DELETE-PATIENT")) {
-            throw new UserNotAuthorizedException(requestId);
-        }
+    @Transactional
+    public void handle(final PatientRequest.Delete request) {
+        check.check(request);
 
-        // do not allow to delete if there are "Active Revisions"
-        if (personRepository.findCountOfActiveRevisions(patientId) > 1) {
-            throw new PatientRequestException("Cannot delete patient with Active Revisions", requestId);
-        }
-
-        var person = findPerson(patientId, requestId);
-        person = patientDeleter.delete(person, userId);
-        deleteElasticsearchPatient(person);
-        statusProducer.successful(requestId, "Successfully deleted patient", patientId);
+        var person = findPerson(request.patientId(), request.requestId());
+        deleter.delete(person, request.userId());
+        statusProducer.successful(request.requestId(), "Successfully deleted patient", request.patientId());
     }
 
     private Person findPerson(final long patientId, final String requestId) {
-        var optional = personRepository.findById(patientId);
-        if (optional.isEmpty()) {
+        Person person = this.entityManager.find(Person.class, patientId);
+        if (person == null) {
             throw new PatientNotFoundException(patientId, requestId);
         }
-        return optional.get();
+        return person;
     }
-
-    /*
-     * Converts the 'deleted' Person to an ElasticsearchPerson and saves to ES. This will overwrite the existing entry
-     */
-    private void deleteElasticsearchPatient(Person person) {
-        var esPerson = PersonConverter.toElasticsearchPerson(person);
-        elasticsearchPersonRepository.save(esPerson);
-    }
-
 
 
 }
