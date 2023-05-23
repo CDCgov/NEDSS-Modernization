@@ -2,17 +2,19 @@ package gov.cdc.nbs.questionbank.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,9 +31,13 @@ public class DisplayElementGroupEntity implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    @Column(name = "id", columnDefinition = "uniqueidentifier", nullable = false)
+    private UUID id;
 
     @Id
     @Column(name = "version", nullable = false)

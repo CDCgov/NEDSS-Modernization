@@ -41,7 +41,7 @@ public class QuestionnaireSteps {
     @Then("the questionnaire is returned")
     public void the_questionnaire_is_returned() {
         assertNotNull(results);
-        assertEquals(search.getId().longValue(), results.id());
+        assertEquals(search.getId(), results.id());
         assertEquals(1, results.conditions().size());
         assertEquals("123", results.conditions().get(0));
     }

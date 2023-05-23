@@ -3,20 +3,20 @@ package gov.cdc.nbs.questionbank.entities;
 
 
 import java.io.Serializable;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.persistence.Version;
-import org.hibernate.annotations.SQLInsert;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,9 +32,13 @@ import lombok.Setter;
 public abstract class DisplayElementEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    @Column(name = "id", columnDefinition = "uniqueidentifier", nullable = false)
+    private UUID id;
 
     @Id
     @Column(name = "version", nullable = false)

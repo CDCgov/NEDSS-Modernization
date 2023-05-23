@@ -1,32 +1,32 @@
 
     create table question_bank.dbo.display_element (
        display_type varchar(31) not null,
+        id uniqueidentifier not null,
         version int not null,
-        id bigint identity not null,
-        allow_future_dates bit not null,
+        add_time datetime2 not null,
+        add_user bigint not null,
+        last_update_time datetime2 not null,
+        last_update_user bigint not null,
+        status varchar(20) not null,
+        status_time datetime2 not null,
+        allow_future_dates bit,
         label varchar(300),
         tooltip varchar(200),
-        multiselect bit not null,
+        multiselect bit,
         max_value int,
         min_value int,
         text varchar(255),
         max_length int,
         placeholder varchar(100),
-        default_answer_id bigint,
-        value_set_id bigint,
-        units_set bigint,
-        add_time datetime not null,
-        add_user bigint not null,
-        last_update_time datetime not null,
-        last_update_user bigint not null,
-        status varchar(20) not null,
-        status_time datetime not null,
-        primary key (version, id)
+        default_answer_id uniqueidentifier,
+        value_set_id uniqueidentifier,
+        units_set uniqueidentifier,
+        primary key (id, version)
     );
 
     create table question_bank.dbo.display_element_group (
-       version int identity not null,
-        id bigint not null,
+       version int not null,
+        id uniqueidentifier not null,
         label varchar(255) not null,
         primary key (version, id)
     );
@@ -35,40 +35,40 @@
        reference_type varchar(31) not null,
         id bigint identity not null,
         display_order int not null,
-        questionnaire_id bigint not null,
-        display_element_id int,
-        display_element_version bigint,
+        questionnaire_id uniqueidentifier not null,
+        display_element_id uniqueidentifier,
+        display_element_version int,
         group_id int,
-        group_version bigint,
+        group_version uniqueidentifier,
         primary key (id)
     );
 
     create table question_bank.dbo.questionnaire (
-       id bigint identity not null,
+       id uniqueidentifier not null,
         description varchar(500),
         name varchar(255),
         primary key (id)
     );
 
     create table question_bank.dbo.questionnaire_rule (
-       id bigint identity not null,
-        questionnaire_id bigint,
+       id uniqueidentifier not null,
+        questionnaire_id uniqueidentifier,
         primary key (id)
     );
 
     create table question_bank.dbo.[value] (
-       id bigint identity not null,
+       id uniqueidentifier not null,
         code varchar(255) not null,
         comment varchar(255),
         display varchar(255) not null,
         display_order int not null,
         [value] varchar(255) not null,
-        value_set_id bigint,
+        value_set_id uniqueidentifier,
         primary key (id)
     );
 
     create table question_bank.dbo.value_set (
-       id bigint identity not null,
+       id uniqueidentifier not null,
         code varchar(255) not null,
         description varchar(300),
         name varchar(255) not null,
@@ -78,15 +78,15 @@
 
     create table dbo.display_element_group_elements (
        group_id int not null,
-        group_version bigint not null,
-        element_id int not null,
-        element_version bigint not null,
+        group_version uniqueidentifier not null,
+        element_id uniqueidentifier not null,
+        element_version int not null,
         display_order int not null,
         primary key (group_id, group_version, display_order)
     );
 
     create table dbo.questionnaire_conditions (
-       questionnaire_id bigint not null,
+       questionnaire_id uniqueidentifier not null,
         condition_codes varchar(255)
     );
 

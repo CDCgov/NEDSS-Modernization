@@ -31,7 +31,7 @@ public class DropDownQuestionEntity extends DisplayElementEntity {
     @JoinColumn(name = "default_answer_id")
     private ValueEntity defaultAnswer;
 
-    @Column(name = "multiselect", nullable = false)
+    @Column(name = "multiselect")
     private boolean multiSelect;
 
     @Override

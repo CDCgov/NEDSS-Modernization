@@ -1,15 +1,17 @@
 package gov.cdc.nbs.questionbank.entities;
 
 import java.io.Serializable;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +22,13 @@ import lombok.Setter;
 public class ValueEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type = "uuid-char")
+    @Column(name = "id", columnDefinition = "uniqueidentifier", nullable = false)
+    private UUID id;
 
     @Column(name = "code", nullable = false)
     private String code;

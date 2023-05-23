@@ -32,8 +32,10 @@ public class QuestionHandler {
     private void createTextQuestion(QuestionRequest.CreateTextQuestionRequest request) {
         if (userService.isAuthorized(request.userId(), "LDFADMINISTRATION-SYSTEM")) {
             TextQuestionEntity entity = creator.create(request.data(), request.userId());
-            statusProducer.successful(request.requestId(), "Successfully created Text Question",
-                    entity.getId());
+            statusProducer.successful(
+                    request.requestId(),
+                    "Successfully created Text Question",
+                    entity.getId().toString());
         } else {
             notAuthorized("User not authorized to create Text Question", request.requestId());
         }

@@ -21,7 +21,7 @@ public class DateQuestionEntity extends DisplayElementEntity {
     @Column(name = "tooltip", length = 200)
     private String tooltip;
 
-    @Column(name = "allow_future_dates", nullable = false)
+    @Column(name = "allow_future_dates")
     private boolean allowFuture;
 
     @Override
