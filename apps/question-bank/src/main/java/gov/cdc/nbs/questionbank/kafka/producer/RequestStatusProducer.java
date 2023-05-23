@@ -18,7 +18,8 @@ public class RequestStatusProducer {
     }
 
 
-    public void successful(final String request,
+    public void successful(
+            final String request,
             final String message,
             final long identifier) {
         var status = new RequestStatus(

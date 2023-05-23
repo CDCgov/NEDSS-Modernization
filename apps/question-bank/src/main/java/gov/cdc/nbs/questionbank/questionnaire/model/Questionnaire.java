@@ -28,11 +28,13 @@ public record Questionnaire(
 
     public record Text(
             long id,
+            Integer version,
             String text) implements DisplayElement {
     }
 
     public record TextQuestion(
             long id,
+            Integer version,
             String label,
             String tooltip,
             Integer maxLength,
@@ -41,6 +43,7 @@ public record Questionnaire(
 
     public record NumericQuestion(
             long id,
+            Integer version,
             String label,
             String tooltip,
             Integer minValue,
@@ -50,6 +53,7 @@ public record Questionnaire(
 
     public record DropDownQuestion(
             long id,
+            Integer version,
             String label,
             String tooltip,
             OptionSet optionSet,
@@ -59,6 +63,7 @@ public record Questionnaire(
 
     public record DateQuestion(
             long id,
+            Integer version,
             String label,
             String tooltip,
             boolean allowFutureDates) implements DisplayElement {

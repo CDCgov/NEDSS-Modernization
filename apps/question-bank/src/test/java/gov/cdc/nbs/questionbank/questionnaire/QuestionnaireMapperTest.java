@@ -80,6 +80,7 @@ class QuestionnaireMapperTest {
         Questionnaire.Text text = (Text) element.elements().get(0);
         assertEquals(textEntity.getText(), text.text());
         assertEquals(textEntity.getId().longValue(), text.id());
+        assertEquals(textEntity.getVersion(), text.version());
     }
 
     @Test
@@ -99,6 +100,7 @@ class QuestionnaireMapperTest {
         Questionnaire.Text element = (Text) questionnaireMapper.toDisplayElement(entity);
         assertEquals(entity.getText(), element.text());
         assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getVersion(), element.version());
     }
 
     @Test
@@ -108,6 +110,7 @@ class QuestionnaireMapperTest {
 
         assertEquals(entity.getLabel(), element.label());
         assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getMaxLength(), element.maxLength());
         assertEquals(entity.getPlaceholder(), element.placeholder());
         assertEquals(entity.getTooltip(), element.tooltip());
@@ -119,6 +122,7 @@ class QuestionnaireMapperTest {
         Questionnaire.NumericQuestion element = (NumericQuestion) questionnaireMapper.toDisplayElement(entity);
         assertEquals(entity.getLabel(), element.label());
         assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getMaxValue(), element.maxValue());
         assertEquals(entity.getMinValue(), element.minValue());
         assertEquals(entity.getTooltip(), element.tooltip());
@@ -141,6 +145,7 @@ class QuestionnaireMapperTest {
         DateQuestionEntity entity = dateQuestionEntity();
         Questionnaire.DateQuestion element = (DateQuestion) questionnaireMapper.toDisplayElement(entity);
         assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getLabel(), element.label());
         assertEquals(entity.getTooltip(), element.tooltip());
         assertEquals(entity.isAllowFuture(), element.allowFutureDates());
@@ -151,6 +156,7 @@ class QuestionnaireMapperTest {
         DropDownQuestionEntity entity = dropDownQuestionEntity();
         Questionnaire.DropDownQuestion element = (DropDownQuestion) questionnaireMapper.toDisplayElement(entity);
         assertEquals(entity.getId().longValue(), element.id());
+        assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getLabel(), element.label());
         assertEquals(entity.getTooltip(), element.tooltip());
         assertEquals(entity.isMultiSelect(), element.isMultiSelect());
@@ -224,6 +230,7 @@ class QuestionnaireMapperTest {
     private TextEntity textEntity() {
         var e = new TextEntity();
         e.setId(1L);
+        e.setVersion(1);
         e.setText("Text element");
         return e;
     }
@@ -231,20 +238,20 @@ class QuestionnaireMapperTest {
     private DropDownQuestionEntity dropDownQuestionEntity() {
         var e = new DropDownQuestionEntity();
         e.setId(2L);
+        e.setVersion(1);
         e.setDefaultAnswer(milliliters(null));
         e.setLabel("Dropdown question label");
         e.setMultiSelect(true);
         e.setValueSet(unitValueSet());
-        e.setVersion(1);
         return e;
     }
 
     private DateQuestionEntity dateQuestionEntity() {
         var e = new DateQuestionEntity();
         e.setId(3L);
+        e.setVersion(1);
         e.setAllowFuture(true);
         e.setLabel("Date question label");
-        e.setVersion(1);
         e.setTooltip("Date question tooltip");
         return e;
     }
@@ -252,22 +259,22 @@ class QuestionnaireMapperTest {
     private TextQuestionEntity textQuestionEntity() {
         var e = new TextQuestionEntity();
         e.setId(4L);
+        e.setVersion(1);
         e.setLabel("Text question label");
         e.setMaxLength(100);
         e.setPlaceholder("Text Question Placeholder");
         e.setTooltip("Text Question tooltip");
-        e.setVersion(1);
         return e;
     }
 
     private NumericQuestionEntity numericQuestionEntity() {
         var e = new NumericQuestionEntity();
         e.setId(5L);
+        e.setVersion(1);
         e.setLabel("Numeric question label");
         e.setTooltip("Numeric question tooltip");
         e.setMaxValue(100);
         e.setMinValue(15);
-        e.setVersion(2);
         e.setUnitsSet(unitValueSet());
         return e;
     }

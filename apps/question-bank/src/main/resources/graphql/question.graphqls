@@ -1,5 +1,5 @@
 type Mutation {
-  createTextQuestion(textQuestion: TextQuestionData!): QuestionResponse!
+  createTextQuestion(data: TextQuestionData!): QuestionResponse!
 }
 
 input TextQuestionData {

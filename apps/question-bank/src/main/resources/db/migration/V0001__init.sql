@@ -1,8 +1,8 @@
 
     create table question_bank.dbo.display_element (
        display_type varchar(31) not null,
-        version int identity not null,
-        id bigint not null,
+        version int not null,
+        id bigint identity not null,
         allow_future_dates bit not null,
         label varchar(300),
         tooltip varchar(200),
@@ -15,6 +15,12 @@
         default_answer_id bigint,
         value_set_id bigint,
         units_set bigint,
+        add_time datetime not null,
+        add_user bigint not null,
+        last_update_time datetime not null,
+        last_update_user bigint not null,
+        status varchar(20) not null,
+        status_time datetime not null,
         primary key (version, id)
     );
 
