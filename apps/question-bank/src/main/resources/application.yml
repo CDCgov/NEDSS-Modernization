@@ -41,7 +41,7 @@ spring:
     listener:
       ackMode: record
     consumer:
-      group-id: patient-group
+      group-id: question-group
       enable-auto-commit: false
       auto-offset-reset: earliest
 
@@ -50,7 +50,7 @@ kafka:
 
 kafkadef:
   groups:
-    patient: patient-group
+    patient: question-group
   topics:
     questionbank:
       request: questionbank

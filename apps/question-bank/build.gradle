@@ -34,10 +34,12 @@ testing {
                 implementation libs.bundles.testing
                 implementation libs.spring.test
                 implementation libs.spring.kafka.test
+                implementation 'org.awaitility:awaitility:4.2.0'
+
 
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
-                implementation "com.h2database:h2"
+                implementation libs.bundles.testcontainers
 
                 implementation libs.bundles.cucumber
 
