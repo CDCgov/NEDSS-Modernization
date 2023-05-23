@@ -82,11 +82,11 @@ public class PatientService {
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
-    @Value("${nbs.uid.suffix: GA01}")
+    @Value("${nbs.uid.suffix:GA01}")
     private String patientIdSuffix;
     @Value("${nbs.uid.seed: 10000000}")
     private long patientIdSeed;
-    @Value("${nbs.uid.prefix: PSN}")
+    @Value("${nbs.uid.prefix:PSN}")
     private String patientIdPrefix;
 
     @PersistenceContext
@@ -155,9 +155,10 @@ public class PatientService {
         builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD_FIELD, "PAT"));
 
         if (filter.getId() != null) {
-            if (Character.isDigit(filter.getId().charAt(0))) {
+            String shortOrLongIdStripped = filter.getId().strip();
+            if (Character.isDigit(shortOrLongIdStripped.charAt(0))) {
                 try {
-                    long shortId = Long.parseLong(filter.getId());
+                    long shortId = Long.parseLong(shortOrLongIdStripped);
                     PatientIdentifierSettings settings = new PatientIdentifierSettings(
                         patientIdPrefix,
                         patientIdSeed,

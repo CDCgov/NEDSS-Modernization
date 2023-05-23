@@ -16,19 +16,15 @@ import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonMother {
-    @Value("${nbs.uid.suffix: GA01}")
-    static private String patientIdSuffix;
-    @Value("${nbs.uid.seed: 10000000}")
-    static private long patientIdSeed;
-    @Value("${nbs.uid.prefix: PSN}")
-    static private String patientIdPrefix;
+    private static String patientIdSuffix = "GA01";
+    private static long patientIdSeed = 10000000;
+    private static String patientIdPrefix = "PSN";
 
     private static final Long CREATED_BY_ID = 999999L;
 

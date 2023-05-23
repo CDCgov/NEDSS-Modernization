@@ -51,11 +51,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 @Rollback(false)
 public class PatientSearchSteps {
-    @Value("${nbs.uid.suffix: GA01}")
+    @Value("${nbs.uid.suffix:GA01}")
     private String patientIdSuffix;
     @Value("${nbs.uid.seed: 10000000}")
     private long patientIdSeed;
-    @Value("${nbs.uid.prefix: PSN}")
+    @Value("${nbs.uid.prefix:PSN}")
     private String patientIdPrefix;
 
     @Autowired
