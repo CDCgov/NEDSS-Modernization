@@ -298,7 +298,7 @@ public class PatientSearchSteps {
                         patientIdSuffix);
                 PatientShortIdentifierResolver resolver = new PatientShortIdentifierResolver(settings);
                 OptionalLong shortId = resolver.resolve(searchPatient.getLocalId());
-                filter.setId(shortId.toString());
+                filter.setId(String.valueOf(shortId.getAsLong()));
                 break;
             case "ssn":
                 filter.setSsn(searchPatient.getSsn());
