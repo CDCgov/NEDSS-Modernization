@@ -31,7 +31,6 @@ import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
-import gov.cdc.nbs.patient.identifier.PatientIdentifierSettings;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
@@ -82,12 +81,6 @@ public class PatientService {
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
-    @Value("${nbs.uid.suffix:GA01}")
-    private String patientIdSuffix;
-    @Value("${nbs.uid.seed: 10000000}")
-    private long patientIdSeed;
-    @Value("${nbs.uid.prefix:PSN}")
-    private String patientIdPrefix;
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -97,6 +90,7 @@ public class PatientService {
     private final PatientEventRequester requester;
     private final PatientCreateRequestResolver createRequestResolver;
     private final UserService userService;
+    private final PatientLocalIdentifierResolver resolver;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -158,12 +152,8 @@ public class PatientService {
             String shortOrLongIdStripped = filter.getId().strip();
             if (Character.isDigit(shortOrLongIdStripped.charAt(0))) {
                 try {
-                    long shortId = Long.parseLong(shortOrLongIdStripped);
-                    PatientIdentifierSettings settings = new PatientIdentifierSettings(
-                            patientIdPrefix,
-                            patientIdSeed,
-                            patientIdSuffix);
-                    PatientLocalIdentifierResolver resolver = new PatientLocalIdentifierResolver(settings);
+                    long shortId = Long.parseLong(filter.getId());
+
                     String localId = resolver.resolve(shortId);
                     builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, localId));
                 } catch (NumberFormatException exception) {
@@ -453,12 +443,6 @@ public class PatientService {
     public PatientEventResponse updatePatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientName(Long patientId, Short personNameSeq) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteName(getRequestId(), patientId, personNameSeq, user.getId());
         return sendPatientEvent(event);
     }
 

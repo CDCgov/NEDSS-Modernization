@@ -99,12 +99,6 @@ public class PatientController {
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientName(@Argument Long patientId, @Argument Short personSeqNum) {
-        return patientService.deletePatientName(patientId, personSeqNum);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
     public PatientEventResponse updateAdministrative(@Argument AdministrativeInput input) {
         return patientService.updateAdministrative(input);
     }
