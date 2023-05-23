@@ -7,6 +7,8 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
+import gov.cdc.nbs.patient.identifier.PatientIdentifierSettings;
+import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import gov.cdc.nbs.support.PersonMother;
@@ -28,6 +30,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -35,6 +38,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalLong;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -47,6 +51,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 @Rollback(false)
 public class PatientSearchSteps {
+    @Value("${nbs.uid.suffix: GA01}")
+    private String patientIdSuffix;
+    @Value("${nbs.uid.seed: 10000000}")
+    private long patientIdSeed;
+    @Value("${nbs.uid.prefix: PSN}")
+    private String patientIdPrefix;
 
     @Autowired
     private PersonRepository personRepository;
@@ -91,12 +101,13 @@ public class PatientSearchSteps {
         // person data is randomly generated but the Ids are always the same.
         generatedPersons = PersonMother.getRandomPersons(3);
 
-        // make first 3 persons soundex,relevance/boost testable intentionally in worst order
+        // make first 3 persons soundex,relevance/boost testable intentionally in worst
+        // order
         Person soundexPerson = generatedPersons.get(0);
         soundexPerson.setFirstNm("Jon"); // soundex equivalent to John
         soundexPerson.setLastNm("Smyth"); // soundex equivalent to Smith
 
-        soundexPerson = generatedPersons.get(1);  // will become secondary name
+        soundexPerson = generatedPersons.get(1); // will become secondary name
         soundexPerson.setFirstNm("John");
         soundexPerson.setLastNm("Smith");
 
@@ -279,6 +290,15 @@ public class PatientSearchSteps {
                 break;
             case "patient id":
                 filter.setId(searchPatient.getLocalId());
+                break;
+            case "patient short id":
+                PatientIdentifierSettings settings = new PatientIdentifierSettings(
+                        patientIdPrefix,
+                        patientIdSeed,
+                        patientIdSuffix);
+                PatientShortIdentifierResolver resolver = new PatientShortIdentifierResolver(settings);
+                OptionalLong shortId = resolver.resolve(searchPatient.getLocalId());
+                filter.setId(shortId.toString());
                 break;
             case "ssn":
                 filter.setSsn(searchPatient.getSsn());
