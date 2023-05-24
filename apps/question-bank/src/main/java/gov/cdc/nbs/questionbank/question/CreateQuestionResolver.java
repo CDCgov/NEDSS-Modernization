@@ -26,15 +26,61 @@ public class CreateQuestionResolver {
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public QuestionResponse createTextQuestion(@Argument QuestionRequest.TextQuestionData data) {
-        // Build request
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
         var request = new QuestionRequest.CreateTextQuestionRequest(reqestId, userId, data);
 
-        // post request to kafka
         producer.requestEventEnvelope(request);
 
-        // return response
         return new QuestionResponse(reqestId);
     }
+
+    @MutationMapping()
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public QuestionResponse createDateQuestion(@Argument QuestionRequest.DateQuestionData data) {
+        String reqestId = UUID.randomUUID().toString();
+        long userId = getUserId();
+        var request = new QuestionRequest.CreateDateQuestionRequest(reqestId, userId, data);
+
+        producer.requestEventEnvelope(request);
+
+        return new QuestionResponse(reqestId);
+    }
+
+    @MutationMapping()
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public QuestionResponse createDropdownQuestion(@Argument QuestionRequest.DropDownQuestionData data) {
+        String reqestId = UUID.randomUUID().toString();
+        long userId = getUserId();
+        var request = new QuestionRequest.CreateDropDownQuestionRequest(reqestId, userId, data);
+
+        producer.requestEventEnvelope(request);
+
+        return new QuestionResponse(reqestId);
+    }
+
+    @MutationMapping()
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public QuestionResponse createNumericQuestion(@Argument QuestionRequest.NumericQuestionData data) {
+        String reqestId = UUID.randomUUID().toString();
+        long userId = getUserId();
+        var request = new QuestionRequest.CreateNumericQuestionRequest(reqestId, userId, data);
+
+        producer.requestEventEnvelope(request);
+
+        return new QuestionResponse(reqestId);
+    }
+
+    @MutationMapping()
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public QuestionResponse createTextElement(@Argument QuestionRequest.TextData data) {
+        String reqestId = UUID.randomUUID().toString();
+        long userId = getUserId();
+        var request = new QuestionRequest.CreateTextElementRequest(reqestId, userId, data);
+
+        producer.requestEventEnvelope(request);
+
+        return new QuestionResponse(reqestId);
+    }
+
 }

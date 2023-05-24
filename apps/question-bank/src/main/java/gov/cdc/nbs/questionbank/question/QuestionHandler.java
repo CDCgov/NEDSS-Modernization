@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.question;
 
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.authentication.UserService;
-import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.kafka.exception.RequestException;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
@@ -24,21 +24,33 @@ public class QuestionHandler {
     }
 
     public void handleQuestionRequest(QuestionRequest request) {
-        if (request instanceof QuestionRequest.CreateTextQuestionRequest createTextQuestionRequest) {
-            createTextQuestion(createTextQuestionRequest);
+        if (userService.isAuthorized(request.userId(), "LDFADMINISTRATION-SYSTEM")) {
+            createQuestion(request);
+        } else {
+            notAuthorized("User not authorized to create Question", request.requestId());
         }
     }
 
-    private void createTextQuestion(QuestionRequest.CreateTextQuestionRequest request) {
-        if (userService.isAuthorized(request.userId(), "LDFADMINISTRATION-SYSTEM")) {
-            TextQuestionEntity entity = creator.create(request.data(), request.userId());
-            statusProducer.successful(
-                    request.requestId(),
-                    "Successfully created Text Question",
-                    entity.getId().toString());
+    private void createQuestion(QuestionRequest request) {
+        DisplayElementEntity entity;
+        if (request instanceof QuestionRequest.CreateTextQuestionRequest createTextQuestionRequest) {
+            entity = creator.create(createTextQuestionRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateDateQuestionRequest createDateQuestionRequest) {
+            entity = creator.create(createDateQuestionRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateDropDownQuestionRequest createDropDownRequest) {
+            entity = creator.create(createDropDownRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateNumericQuestionRequest createNumericRequest) {
+            entity = creator.create(createNumericRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateTextElementRequest createTextElementRequest) {
+            entity = creator.create(createTextElementRequest.data(), request.userId());
         } else {
-            notAuthorized("User not authorized to create Text Question", request.requestId());
+            throw new RequestException("Failed to handle question type", request.requestId());
         }
+
+        statusProducer.successful(
+                request.requestId(),
+                "Successfully created Question",
+                entity.getId().toString());
     }
 
     private void notAuthorized(String message, String requestId) {

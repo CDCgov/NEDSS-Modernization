@@ -42,7 +42,7 @@ public class AuditInfo {
         INACTIVE
     }
 
-    public AuditInfo(QuestionCommand.AddTextQuestion command) {
+    public AuditInfo(QuestionCommand command) {
         this(command.requestedOn(), command.userId());
     }
 

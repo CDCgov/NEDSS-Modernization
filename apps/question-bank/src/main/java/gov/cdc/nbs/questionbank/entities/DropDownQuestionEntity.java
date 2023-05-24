@@ -5,13 +5,18 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(DropDownQuestionEntity.TYPE)
 public class DropDownQuestionEntity extends DisplayElementEntity {
@@ -38,4 +43,14 @@ public class DropDownQuestionEntity extends DisplayElementEntity {
     public String getDisplayType() {
         return TYPE;
     }
+
+    public DropDownQuestionEntity(QuestionCommand.AddDropDownQuestion command) {
+        this.label = command.label();
+        this.tooltip = command.tooltip();
+        this.valueSet = command.valueSet();
+        this.defaultAnswer = command.defaultValue();
+        this.setAudit(new AuditInfo(command));
+        this.setVersion(1);
+    }
+
 }
