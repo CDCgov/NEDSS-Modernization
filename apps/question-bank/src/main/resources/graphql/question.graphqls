@@ -1,5 +1,9 @@
 type Mutation {
   createTextQuestion(data: TextQuestionData!): QuestionResponse!
+  createDateQuestion(data: DateQuestionData!): QuestionResponse!
+  createDropdownQuestion(data: DropDownQuestionData!): QuestionResponse!
+  createNumericQuestion(data: NumericQuestionData!): QuestionResponse!
+  createTextElement(data: TextData!): QuestionResponse!
 }
 
 input TextQuestionData {
@@ -7,6 +11,32 @@ input TextQuestionData {
   tooltip: String
   maxLength: Int
   placeholder: String
+}
+
+input DateQuestionData {
+  labael: String!
+  tooltip: String
+  allowFutureDates: Boolean!
+}
+
+input DropDownQuestionData {
+  label: String!
+  tooltip: String
+  valueSet: String
+  defaultValue: String
+  isMultiSelect: Boolean!
+}
+
+input NumericQuestionData {
+  label: String!
+  tooltip: String
+  minValue: Int
+  maxValue: Int
+  unitValueSet: String
+}
+
+input TextData {
+  text: String!
 }
 
 type QuestionResponse {
