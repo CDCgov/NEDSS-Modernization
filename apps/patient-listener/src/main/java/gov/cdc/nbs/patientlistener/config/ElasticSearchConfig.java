@@ -13,8 +13,10 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
+@EnableElasticsearchRepositories("gov.cdc.nbs.repository.elasticsearch")
 @Slf4j
 @SuppressWarnings("deprecation")
 public class ElasticSearchConfig {

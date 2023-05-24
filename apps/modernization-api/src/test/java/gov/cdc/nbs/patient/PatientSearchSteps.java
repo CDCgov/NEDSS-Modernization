@@ -7,7 +7,6 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter.Identification;
-import gov.cdc.nbs.patient.identifier.PatientIdentifierSettings;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
@@ -30,7 +29,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -41,7 +39,10 @@ import java.util.List;
 import java.util.OptionalLong;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -51,12 +52,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Transactional
 @Rollback(false)
 public class PatientSearchSteps {
-    @Value("${nbs.uid.suffix:GA01}")
-    private String patientIdSuffix;
-    @Value("${nbs.uid.seed: 10000000}")
-    private long patientIdSeed;
-    @Value("${nbs.uid.prefix:PSN}")
-    private String patientIdPrefix;
+
+    @Autowired
+    PatientShortIdentifierResolver resolver;
 
     @Autowired
     private PersonRepository personRepository;
@@ -292,11 +290,6 @@ public class PatientSearchSteps {
                 filter.setId(searchPatient.getLocalId());
                 break;
             case "patient short id":
-                PatientIdentifierSettings settings = new PatientIdentifierSettings(
-                        patientIdPrefix,
-                        patientIdSeed,
-                        patientIdSuffix);
-                PatientShortIdentifierResolver resolver = new PatientShortIdentifierResolver(settings);
                 OptionalLong shortId = resolver.resolve(searchPatient.getLocalId());
                 filter.setId(String.valueOf(shortId.getAsLong()));
                 break;

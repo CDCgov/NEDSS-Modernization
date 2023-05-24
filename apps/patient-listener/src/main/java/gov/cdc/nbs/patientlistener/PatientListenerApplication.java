@@ -1,17 +1,11 @@
 package gov.cdc.nbs.patientlistener;
 
+import gov.cdc.nbs.authentication.EnableNBSAuthentication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"gov.cdc.nbs"})
-@EnableJpaRepositories({"gov.cdc.nbs.repository", "gov.cdc.nbs.authentication"})
-@EnableElasticsearchRepositories("gov.cdc.nbs.repository.elasticsearch")
-@EntityScan("gov.cdc.nbs")
+@EnableNBSAuthentication
 public class PatientListenerApplication {
 
     public static void main(String[] args) {
