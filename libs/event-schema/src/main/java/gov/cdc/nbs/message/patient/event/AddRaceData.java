@@ -8,5 +8,6 @@ public record AddRaceData(
                 String requestId,
                 long updatedBy,
                 Instant asOf,
-                String raceCd) implements Serializable {
+                String raceCd,
+                String raceCategoryCd) implements Serializable {
 }

@@ -105,6 +105,7 @@ public class PersonMother {
                 new PatientCommand.AddRace(
                         id,
                         RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                        RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
                         id,
                         now));
 
@@ -218,6 +219,7 @@ public class PersonMother {
                 new PatientCommand.AddRace(
                         id,
                         RaceMother.WHITE_CODE,
+                        RaceMother.WHITE_CODE,
                         id,
                         now));
 
@@ -283,6 +285,7 @@ public class PersonMother {
         person.add(
                 new PatientCommand.AddRace(
                         id,
+                        RaceMother.WHITE_CODE,
                         RaceMother.WHITE_CODE,
                         id,
                         now));

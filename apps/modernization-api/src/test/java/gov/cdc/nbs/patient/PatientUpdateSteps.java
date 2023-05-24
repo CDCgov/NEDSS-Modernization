@@ -187,6 +187,7 @@ public class PatientUpdateSteps {
         var input = new RaceInput();
         input.setPatientId(patient);
         input.setRaceCd("r1");
+        input.setRaceCategoryCd("r2");
         return input;
     }
 

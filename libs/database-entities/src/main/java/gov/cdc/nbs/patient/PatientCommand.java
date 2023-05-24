@@ -50,6 +50,7 @@ public sealed interface PatientCommand {
 
         record AddRace(
                         long person,
+                        String code,
                         String category,
                         long requester,
                         Instant requestedOn) implements PatientCommand {
@@ -258,6 +259,7 @@ public sealed interface PatientCommand {
         record UpdateRaceInfo(
                         long person,
                         String raceCd,
+                        String raceCategoryCd,
                         Instant asOf,
                         long requester,
                         Instant requestedOn) implements PatientCommand {

@@ -289,6 +289,7 @@ input RaceInput {
     patientId: ID!
     asOf: DateTime
     raceCd: String!
+    raceCategoryCd: String!
 }
 
 input MortalityInput {
