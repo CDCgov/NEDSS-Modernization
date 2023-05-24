@@ -5,6 +5,7 @@ type Query {
     findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
     findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
     findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
+    findNameSuffixes(): KeyValuePairResults!
 }
 
 type Mutation {
@@ -43,6 +44,16 @@ type PatientEventResponse {
 type PersonResults {
     content: [Person!]!
     total: Int!
+}
+
+type KeyValuePairResults {
+    content: [KeyValuePair!]!
+    total: Int!
+}
+
+type KeyValuePair {
+    key: String!
+    value: String!
 }
 
 input PersonFilter {
