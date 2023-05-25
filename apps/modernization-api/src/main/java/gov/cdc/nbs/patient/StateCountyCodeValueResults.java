@@ -5,6 +5,5 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
-public class KeyValuePairResults extends Results<KeyValuePair> {
-
+public class StateCountyCodeValueResults extends Results<StateCountCodeValue>{
 }
