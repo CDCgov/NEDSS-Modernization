@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
+import java.time.Clock;
 import java.time.Instant;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -23,12 +24,15 @@ class QuestionCreator {
 
     private final DisplayElementRepository displayElementRepository;
     private final EntityManager entityManager;
+    private final Clock clock;
 
     public QuestionCreator(
             DisplayElementRepository displayElementRepository,
-            EntityManager entityManager) {
+            EntityManager entityManager,
+            Clock clock) {
         this.displayElementRepository = displayElementRepository;
         this.entityManager = entityManager;
+        this.clock = clock;
     }
 
     @Transactional
@@ -56,11 +60,10 @@ class QuestionCreator {
     }
 
     private AddTextQuestion asAdd(long userId, TextQuestionData data) {
-        Instant now = Instant.now();
         return new AddTextQuestion(
                 null,
                 userId,
-                now,
+                Instant.now(clock),
                 data.label(),
                 data.tooltip(),
                 data.maxLength(),
@@ -69,22 +72,20 @@ class QuestionCreator {
     }
 
     private AddDateQuestion asAdd(long userId, QuestionRequest.DateQuestionData data) {
-        Instant now = Instant.now();
         return new AddDateQuestion(
                 null,
                 userId,
-                now,
+                Instant.now(clock),
                 data.label(),
                 data.tooltip(),
                 data.allowFutureDates());
     }
 
     private AddDropDownQuestion adAdd(long userId, QuestionRequest.DropdownQuestionData data) {
-        Instant now = Instant.now();
         return new AddDropDownQuestion(
                 null,
                 userId,
-                now,
+                Instant.now(clock),
                 data.label(),
                 data.tooltip(),
                 getReference(ValueSet.class, data.valueSet()),
@@ -93,11 +94,10 @@ class QuestionCreator {
     }
 
     private AddNumericQuestion asAdd(long userId, QuestionRequest.NumericQuestionData data) {
-        Instant now = Instant.now();
         return new AddNumericQuestion(
                 null,
                 userId,
-                now,
+                Instant.now(clock),
                 data.label(),
                 data.tooltip(),
                 data.minValue(),

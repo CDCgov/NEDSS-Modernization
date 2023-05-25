@@ -35,9 +35,7 @@ public class ValueSetMother {
         valueSet.setType(ValueSetType.LOCAL);
         valueSet.setValues(values);
 
-        valueSet = repository.save(valueSet);
-        repository.flush();
-        return valueSet;
+        return repository.save(valueSet);
     }
 
     private ValueEntity yes(ValueSet valueSet) {

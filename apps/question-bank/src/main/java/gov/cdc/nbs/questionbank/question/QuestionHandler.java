@@ -1,9 +1,11 @@
 package gov.cdc.nbs.questionbank.question;
 
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.kafka.exception.RequestException;
+import gov.cdc.nbs.questionbank.kafka.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
 
@@ -27,7 +29,7 @@ public class QuestionHandler {
         if (userService.isAuthorized(request.userId(), "LDFADMINISTRATION-SYSTEM")) {
             createQuestion(request);
         } else {
-            notAuthorized("User not authorized to create Question", request.requestId());
+            notAuthorized(request.requestId());
         }
     }
 
@@ -44,14 +46,17 @@ public class QuestionHandler {
         } else {
             throw new RequestException("Failed to handle question type", request.requestId());
         }
-
-        statusProducer.successful(
-                request.requestId(),
-                "Successfully created Question",
-                entity.getId().toString());
+        sendSuccess(request.requestId(), entity.getId());
     }
 
-    private void notAuthorized(String message, String requestId) {
-        throw new RequestException(message, requestId);
+    private void sendSuccess(String requestId, UUID id) {
+        statusProducer.successful(
+                requestId,
+                "Successfully created Question",
+                id.toString());
+    }
+
+    private void notAuthorized(String requestId) {
+        throw new UserNotAuthorizedException(requestId);
     }
 }

@@ -78,9 +78,7 @@ public class UserMother {
         user.setAudit(audit);
         user.setAuthUserRoles(Collections.singletonList(role));
         user.setAdminProgramAreas(Collections.singletonList(progAreaAdmin));
-        user = userRepository.save(user);
-        userRepository.flush();
-        return user;
+        return userRepository.save(user);
     }
 
     private void setSecurityContext(AuthUser user) {
