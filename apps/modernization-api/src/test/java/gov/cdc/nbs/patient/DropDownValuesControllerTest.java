@@ -59,7 +59,7 @@ class DropDownValuesControllerTest {
                         .anyMatch(expectedKeyValue::equals),
                 String.format("Expected: (%s, %s), Actual: %s",
                         expectedKeyValue.getKey(),
-                        expectedKeyValue.getValue(), actualResults.getContent().toString())));
+                        expectedKeyValue.getValue(), actualResults.getContent())));
 
     }
 

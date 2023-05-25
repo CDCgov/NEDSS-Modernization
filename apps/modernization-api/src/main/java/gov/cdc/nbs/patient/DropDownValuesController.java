@@ -6,7 +6,6 @@ import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.repository.NaicsIndustryCodeRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
