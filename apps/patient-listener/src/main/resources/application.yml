@@ -30,3 +30,5 @@ spring:
         url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
         username: sa
         password: fake.fake.fake.1234
+server:
+    port: 8281

@@ -3,6 +3,8 @@ package gov.cdc.nbs.authentication;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -21,7 +23,10 @@ import gov.cdc.nbs.authentication.entity.QAuthUserRole;
 public class UserPermissionFinder {
     private final JPAQueryFactory queryFactory;
 
-    public UserPermissionFinder(final JPAQueryFactory queryFactory) {
+    public UserPermissionFinder(
+        @Qualifier("authentication")
+        final JPAQueryFactory queryFactory
+    ) {
         this.queryFactory = queryFactory;
     }
 
