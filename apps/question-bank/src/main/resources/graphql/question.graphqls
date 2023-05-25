@@ -3,7 +3,6 @@ type Mutation {
   createDateQuestion(data: DateQuestionData!): QuestionResponse!
   createDropdownQuestion(data: DropDownQuestionData!): QuestionResponse!
   createNumericQuestion(data: NumericQuestionData!): QuestionResponse!
-  createTextElement(data: TextData!): QuestionResponse!
 }
 
 input TextQuestionData {
@@ -33,10 +32,6 @@ input NumericQuestionData {
   minValue: Int
   maxValue: Int
   unitValueSet: String
-}
-
-input TextData {
-  text: String!
 }
 
 type QuestionResponse {

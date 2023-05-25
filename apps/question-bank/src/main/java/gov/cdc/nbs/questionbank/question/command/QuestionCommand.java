@@ -54,10 +54,4 @@ public sealed interface QuestionCommand {
             ValueSet unitsOptions) implements QuestionCommand {
     };
 
-    record AddTextElement(
-            Long question,
-            long userId,
-            Instant requestedOn,
-            String text) implements QuestionCommand {
-    };
 }

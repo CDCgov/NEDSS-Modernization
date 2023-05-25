@@ -5,6 +5,7 @@ package gov.cdc.nbs.questionbank.entities;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -47,7 +48,7 @@ public class ValueSet implements Serializable {
     @Column(name = "description", length = 300)
     private String description;
 
-    @OneToMany(mappedBy = "valueSet", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "valueSet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ValueEntity> values;
 
 

@@ -37,12 +37,10 @@ public class QuestionHandler {
             entity = creator.create(createTextQuestionRequest.data(), request.userId());
         } else if (request instanceof QuestionRequest.CreateDateQuestionRequest createDateQuestionRequest) {
             entity = creator.create(createDateQuestionRequest.data(), request.userId());
-        } else if (request instanceof QuestionRequest.CreateDropDownQuestionRequest createDropDownRequest) {
+        } else if (request instanceof QuestionRequest.CreateDropdownQuestionRequest createDropDownRequest) {
             entity = creator.create(createDropDownRequest.data(), request.userId());
         } else if (request instanceof QuestionRequest.CreateNumericQuestionRequest createNumericRequest) {
             entity = creator.create(createNumericRequest.data(), request.userId());
-        } else if (request instanceof QuestionRequest.CreateTextElementRequest createTextElementRequest) {
-            entity = creator.create(createTextElementRequest.data(), request.userId());
         } else {
             throw new RequestException("Failed to handle question type", request.requestId());
         }

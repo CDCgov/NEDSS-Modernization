@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,11 +27,5 @@ public class TextEntity extends DisplayElementEntity {
         return TYPE;
     }
 
-
-    public TextEntity(QuestionCommand.AddTextElement command) {
-        this.text = command.text();
-        this.setAudit(new AuditInfo(command));
-        this.setVersion(1);
-    }
 
 }

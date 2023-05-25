@@ -18,8 +18,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@DiscriminatorValue(DropDownQuestionEntity.TYPE)
-public class DropDownQuestionEntity extends DisplayElementEntity {
+@DiscriminatorValue(DropdownQuestionEntity.TYPE)
+public class DropdownQuestionEntity extends DisplayElementEntity {
     static final String TYPE = "dropdown_question";
 
     @Column(name = "label", length = 300)
@@ -44,11 +44,12 @@ public class DropDownQuestionEntity extends DisplayElementEntity {
         return TYPE;
     }
 
-    public DropDownQuestionEntity(QuestionCommand.AddDropDownQuestion command) {
+    public DropdownQuestionEntity(QuestionCommand.AddDropDownQuestion command) {
         this.label = command.label();
         this.tooltip = command.tooltip();
         this.valueSet = command.valueSet();
         this.defaultAnswer = command.defaultValue();
+        this.multiSelect = command.isMultiSelect();
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);
     }

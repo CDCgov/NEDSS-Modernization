@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.kafka.message.question;
 
+import java.util.UUID;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankRequest;
 
 public sealed interface QuestionRequest extends QuestionBankRequest {
@@ -29,17 +30,17 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             boolean allowFutureDates) {
     }
 
-    record CreateDropDownQuestionRequest(
+    record CreateDropdownQuestionRequest(
             String requestId,
             long userId,
-            DropDownQuestionData data) implements QuestionRequest {
+            DropdownQuestionData data) implements QuestionRequest {
     }
 
-    record DropDownQuestionData(
+    record DropdownQuestionData(
             String label,
             String tooltip,
-            String valueSet,
-            String defaultValue,
+            UUID valueSet,
+            UUID defaultValue,
             boolean isMultiSelect) {
     }
 
@@ -54,16 +55,7 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String tooltip,
             Integer minValue,
             Integer maxValue,
-            String unitValueSet) {
-    }
-
-    record CreateTextElementRequest(
-            String requestId,
-            long userId,
-            TextData data) implements QuestionRequest {
-    }
-
-    record TextData(String text) {
+            UUID unitValueSet) {
     }
 
     record UpdateTextQuestionRequest(

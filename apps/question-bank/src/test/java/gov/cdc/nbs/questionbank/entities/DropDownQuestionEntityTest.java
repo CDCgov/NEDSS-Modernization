@@ -7,7 +7,7 @@ class DropDownQuestionEntityTest {
 
     @Test
     void should_return_dropdown() {
-        var question = new DropDownQuestionEntity();
+        var question = new DropdownQuestionEntity();
         assertEquals("dropdown_question", question.getDisplayType());
     }
 }

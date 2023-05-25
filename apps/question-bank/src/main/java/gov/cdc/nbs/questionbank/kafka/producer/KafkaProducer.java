@@ -25,6 +25,7 @@ public class KafkaProducer {
                 new ListenableFutureCallback<>() {
                     @Override
                     public void onFailure(Throwable ex) {
+                        System.out.println("Failed to send message: " + ex.getMessage());
                         log.error("Failed to send message key={} message={} error={}", request.requestId(), request,
                                 ex);
                     }

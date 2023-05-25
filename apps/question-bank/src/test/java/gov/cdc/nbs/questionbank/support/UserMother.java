@@ -31,18 +31,9 @@ public class UserMother {
     private AuthPermSetRepository permSetRepository;
 
     public AuthUser adminUser() {
-        AuthUser user = userRepository.findByUserId("admin").orElse(createAdminUser());
-        setSecurityContext(user);
-        return user;
-    }
-
-    private void setSecurityContext(AuthUser user) {
-        NbsUserDetails userDetails = userService.loadUserByUsername(user.getUserId());
-        SecurityContextHolder.getContext().setAuthentication(
-                new PreAuthenticatedAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()));
+        var admin = userRepository.findByUserId("admin").orElseGet(() -> createAdminUser());
+        setSecurityContext(admin);
+        return admin;
     }
 
     private AuthUser createAdminUser() {
@@ -87,6 +78,17 @@ public class UserMother {
         user.setAudit(audit);
         user.setAuthUserRoles(Collections.singletonList(role));
         user.setAdminProgramAreas(Collections.singletonList(progAreaAdmin));
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        userRepository.flush();
+        return user;
+    }
+
+    private void setSecurityContext(AuthUser user) {
+        NbsUserDetails userDetails = userService.loadUserByUsername(user.getUserId());
+        SecurityContextHolder.getContext().setAuthentication(
+                new PreAuthenticatedAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()));
     }
 }

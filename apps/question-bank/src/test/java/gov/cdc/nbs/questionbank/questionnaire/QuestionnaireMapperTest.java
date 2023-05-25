@@ -16,7 +16,7 @@ import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.entities.DisplayElementGroupEntity;
 import gov.cdc.nbs.questionbank.entities.DisplayElementRef;
 import gov.cdc.nbs.questionbank.entities.DisplayGroupRef;
-import gov.cdc.nbs.questionbank.entities.DropDownQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 import gov.cdc.nbs.questionbank.entities.Reference;
@@ -154,7 +154,7 @@ class QuestionnaireMapperTest {
 
     @Test
     void toDisplayElement_should_return_DropDownQuestion() {
-        DropDownQuestionEntity entity = dropDownQuestionEntity();
+        DropdownQuestionEntity entity = dropDownQuestionEntity();
         Questionnaire.DropDownQuestion element = (DropDownQuestion) questionnaireMapper.toDisplayElement(entity);
         assertEquals(entity.getId(), element.id());
         assertEquals(entity.getVersion(), element.version());
@@ -236,8 +236,8 @@ class QuestionnaireMapperTest {
         return e;
     }
 
-    private DropDownQuestionEntity dropDownQuestionEntity() {
-        var e = new DropDownQuestionEntity();
+    private DropdownQuestionEntity dropDownQuestionEntity() {
+        var e = new DropdownQuestionEntity();
         e.setId(UUID.randomUUID());
         e.setVersion(1);
         e.setDefaultAnswer(milliliters(null));

@@ -5,19 +5,17 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entities.DateQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.DropDownQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.TextEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.TextQuestionData;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddTextQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddDateQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddDropDownQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddNumericQuestion;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddTextElement;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddTextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.DisplayElementRepository;
 
 @Component
@@ -46,20 +44,14 @@ class QuestionCreator {
     }
 
     @Transactional
-    DropDownQuestionEntity create(QuestionRequest.DropDownQuestionData data, long userId) {
-        DropDownQuestionEntity entity = new DropDownQuestionEntity(adAdd(userId, data));
+    DropdownQuestionEntity create(QuestionRequest.DropdownQuestionData data, long userId) {
+        DropdownQuestionEntity entity = new DropdownQuestionEntity(adAdd(userId, data));
         return displayElementRepository.save(entity);
     }
 
     @Transactional
     NumericQuestionEntity create(QuestionRequest.NumericQuestionData data, long userId) {
         NumericQuestionEntity entity = new NumericQuestionEntity(asAdd(userId, data));
-        return displayElementRepository.save(entity);
-    }
-
-    @Transactional
-    TextEntity create(QuestionRequest.TextData data, long userId) {
-        TextEntity entity = new TextEntity(asAdd(userId, data));
         return displayElementRepository.save(entity);
     }
 
@@ -86,7 +78,7 @@ class QuestionCreator {
                 data.allowFutureDates());
     }
 
-    private AddDropDownQuestion adAdd(long userId, QuestionRequest.DropDownQuestionData data) {
+    private AddDropDownQuestion adAdd(long userId, QuestionRequest.DropdownQuestionData data) {
         Instant now = Instant.now();
         return new AddDropDownQuestion(
                 null,
@@ -110,16 +102,6 @@ class QuestionCreator {
                 data.minValue(),
                 data.maxValue(),
                 getReference(ValueSet.class, data.unitValueSet()));
-    }
-
-    private AddTextElement asAdd(long userId, QuestionRequest.TextData data) {
-        Instant now = Instant.now();
-        return new AddTextElement(
-                null,
-                userId,
-                now,
-                data.text());
-
     }
 
     private <T> T getReference(Class<T> clazz, Object primaryKey) {

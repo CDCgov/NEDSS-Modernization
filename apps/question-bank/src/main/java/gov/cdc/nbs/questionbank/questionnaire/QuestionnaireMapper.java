@@ -5,7 +5,7 @@ import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.entities.DisplayElementGroupEntity;
 import gov.cdc.nbs.questionbank.entities.DisplayElementRef;
 import gov.cdc.nbs.questionbank.entities.DisplayGroupRef;
-import gov.cdc.nbs.questionbank.entities.DropDownQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 import gov.cdc.nbs.questionbank.entities.Reference;
@@ -89,7 +89,7 @@ class QuestionnaireMapper {
                     dq.getTooltip(),
                     dq.isAllowFuture());
 
-        } else if (element instanceof DropDownQuestionEntity ddq) {
+        } else if (element instanceof DropdownQuestionEntity ddq) {
             return new Questionnaire.DropDownQuestion(
                     ddq.getId(),
                     ddq.getVersion(),

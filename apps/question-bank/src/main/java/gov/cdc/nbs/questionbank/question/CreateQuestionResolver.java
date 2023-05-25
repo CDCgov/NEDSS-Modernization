@@ -49,10 +49,10 @@ public class CreateQuestionResolver {
 
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public QuestionResponse createDropdownQuestion(@Argument QuestionRequest.DropDownQuestionData data) {
+    public QuestionResponse createDropdownQuestion(@Argument QuestionRequest.DropdownQuestionData data) {
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
-        var request = new QuestionRequest.CreateDropDownQuestionRequest(reqestId, userId, data);
+        var request = new QuestionRequest.CreateDropdownQuestionRequest(reqestId, userId, data);
 
         producer.requestEventEnvelope(request);
 
@@ -71,16 +71,5 @@ public class CreateQuestionResolver {
         return new QuestionResponse(reqestId);
     }
 
-    @MutationMapping()
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public QuestionResponse createTextElement(@Argument QuestionRequest.TextData data) {
-        String reqestId = UUID.randomUUID().toString();
-        long userId = getUserId();
-        var request = new QuestionRequest.CreateTextElementRequest(reqestId, userId, data);
-
-        producer.requestEventEnvelope(request);
-
-        return new QuestionResponse(reqestId);
-    }
 
 }
