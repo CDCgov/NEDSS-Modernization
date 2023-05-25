@@ -10,6 +10,7 @@ input TextQuestionData {
   tooltip: String
   maxLength: Int
   placeholder: String
+  defaultValue: String
 }
 
 input DateQuestionData {
@@ -31,6 +32,7 @@ input NumericQuestionData {
   tooltip: String
   minValue: Int
   maxValue: Int
+  defaultValue: Int
   unitValueSet: String
 }
 

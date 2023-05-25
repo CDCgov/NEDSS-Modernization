@@ -43,7 +43,8 @@ class KafkaProducerTest {
                         "a label",
                         "a tooltip",
                         11,
-                        "a placeholder"));
+                        "a placeholder",
+                        "some default text"));
         ListenableFuture<SendResult<String, QuestionBankRequest>> future = new SettableListenableFuture<>();
         Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
@@ -77,7 +78,8 @@ class KafkaProducerTest {
                         "a label",
                         "a tooltip",
                         11,
-                        "a placeholder"));
+                        "a placeholder",
+                        "default"));
 
         ListenableFutureCallback<SendResult<String, QuestionBankRequest>> callback =
                 Mockito.mock(ListenableFutureCallback.class);
@@ -105,7 +107,8 @@ class KafkaProducerTest {
                         "a label",
                         "a tooltip",
                         11,
-                        "a placeholder"));
+                        "a placeholder",
+                        "default"));
 
         ListenableFutureCallback<SendResult<String, QuestionBankRequest>> callback =
                 Mockito.mock(ListenableFutureCallback.class);

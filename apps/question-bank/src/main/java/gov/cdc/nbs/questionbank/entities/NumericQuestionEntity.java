@@ -34,6 +34,9 @@ public class NumericQuestionEntity extends DisplayElementEntity {
     @Column(name = "max_value")
     private Integer maxValue;
 
+    @Column(name = "default_numeric_value")
+    private Integer defaultNumericValue;
+
     @ManyToOne
     @JoinColumn(name = "units_set")
     private ValueSet unitsSet;
@@ -48,6 +51,7 @@ public class NumericQuestionEntity extends DisplayElementEntity {
         this.tooltip = command.tooltip();
         this.minValue = command.minValue();
         this.maxValue = command.maxValue();
+        this.defaultNumericValue = command.defaultValue();
         this.unitsSet = command.unitsOptions();
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);

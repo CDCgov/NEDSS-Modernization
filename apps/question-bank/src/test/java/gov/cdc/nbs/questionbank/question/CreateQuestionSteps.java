@@ -169,6 +169,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.tooltip(), created.getTooltip());
         assertEquals(actual.maxLength(), created.getMaxLength());
         assertEquals(actual.placeholder(), created.getPlaceholder());
+        assertEquals(actual.defaultValue(), created.getDefaultTextValue());
 
         validateAudit(created.getAudit());
     }
@@ -183,6 +184,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.tooltip(), created.getTooltip());
         assertEquals(actual.minValue(), created.getMinValue());
         assertEquals(actual.maxValue(), created.getMaxValue());
+        assertEquals(actual.defaultValue(), created.getDefaultNumericValue());
         assertEquals(actual.unitValueSet(), created.getUnitsSet());
 
         validateAudit(created.getAudit());
@@ -231,7 +233,8 @@ public class CreateQuestionSteps {
                 "test label",
                 "test tooltip",
                 13,
-                "test placeholder");
+                "test placeholder",
+                "some default value");
     }
 
     private DateQuestionData dateQuestionData() {
@@ -247,6 +250,7 @@ public class CreateQuestionSteps {
                 "test tooltip",
                 -3,
                 543,
+                -2,
                 null);
     }
 

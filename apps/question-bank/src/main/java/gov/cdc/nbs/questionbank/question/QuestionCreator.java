@@ -64,7 +64,8 @@ class QuestionCreator {
                 data.label(),
                 data.tooltip(),
                 data.maxLength(),
-                data.placeholder());
+                data.placeholder(),
+                data.defaultValue());
     }
 
     private AddDateQuestion asAdd(long userId, QuestionRequest.DateQuestionData data) {
@@ -101,6 +102,7 @@ class QuestionCreator {
                 data.tooltip(),
                 data.minValue(),
                 data.maxValue(),
+                data.defaultValue(),
                 getReference(ValueSet.class, data.unitValueSet()));
     }
 

@@ -15,7 +15,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String label,
             String tooltip,
             Integer maxLength,
-            String placeholder) {
+            String placeholder,
+            String defaultValue) {
     }
 
     record CreateDateQuestionRequest(
@@ -55,6 +56,7 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String tooltip,
             Integer minValue,
             Integer maxValue,
+            Integer defaultValue,
             UUID unitValueSet) {
     }
 

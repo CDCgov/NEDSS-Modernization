@@ -54,7 +54,8 @@ class KafkaConfigTest {
                         "a label",
                         "tooltip",
                         100,
-                        "placeholder"));
+                        "placeholder",
+                        "some default"));
 
 
         // Send a create text question request

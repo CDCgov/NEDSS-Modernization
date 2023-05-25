@@ -32,6 +32,9 @@ public class TextQuestionEntity extends DisplayElementEntity {
     @Column(name = "placeholder", length = 100)
     private String placeholder;
 
+    @Column(name = "default_text_value")
+    private String defaultTextValue;
+
     @Override
     public String getDisplayType() {
         return TYPE;
@@ -42,6 +45,7 @@ public class TextQuestionEntity extends DisplayElementEntity {
         this.tooltip = command.tooltip();
         this.maxLength = command.maxLength();
         this.placeholder = command.placeholder();
+        this.defaultTextValue = command.defaultValue();
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);
     }

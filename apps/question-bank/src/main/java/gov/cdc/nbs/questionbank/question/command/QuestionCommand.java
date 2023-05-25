@@ -18,7 +18,8 @@ public sealed interface QuestionCommand {
             String label,
             String tooltip,
             Integer maxLength,
-            String placeholder) implements QuestionCommand {
+            String placeholder,
+            String defaultValue) implements QuestionCommand {
     }
 
     record AddDateQuestion(
@@ -51,6 +52,7 @@ public sealed interface QuestionCommand {
             String tooltip,
             Integer minValue,
             Integer maxValue,
+            Integer defaultValue,
             ValueSet unitsOptions) implements QuestionCommand {
     };
 
