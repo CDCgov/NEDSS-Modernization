@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.config.SecurityProperties;
+import gov.cdc.nbs.authorization.ActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
@@ -45,10 +46,14 @@ import static org.junit.Assert.assertNull;
 @ActiveProfiles("test")
 @Transactional
 public class PermissionSteps {
+
     @Autowired
-    private SecurityProperties properties;
+    TestActive<ActiveUser> activeUser;
+
     @Autowired
-    private Algorithm algorithm;
+    SecurityProperties properties;
+    @Autowired
+    Algorithm algorithm;
     @Autowired
     PatientController patientController;
     @Autowired
@@ -76,33 +81,41 @@ public class PermissionSteps {
         var nbsAuthorities = new HashSet<NbsAuthority>();
         var programAreas = programAreaCodeRepository.findAll();
         var programAreaEntry = programAreas.stream().filter(f -> f.getId().equals(programArea)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
+            .orElseThrow(() -> new IllegalArgumentException("Unable to find program area: " + programArea));
         for (var authority : authorities) {
             // Create a NbsAuthority object based on provided input
             var operationObject = authority.trim().split("-");
             var operation = operationObject.length > 0 ? operationObject[0] : null;
             var object = operationObject.length > 1 ? operationObject[1] : null;
             nbsAuthorities.add(NbsAuthority.builder()
-                    .businessOperation(operation)
-                    .businessObject(object)
-                    .authority(authority.trim())
-                    .jurisdiction(jurisdiction)
-                    .programArea(programArea)
-                    .programAreaUid(programAreaEntry.getNbsUid())
-                    .build());
+                .businessOperation(operation)
+                .businessObject(object)
+                .authority(authority.trim())
+                .jurisdiction(jurisdiction)
+                .programArea(programArea)
+                .programAreaUid(programAreaEntry.getNbsUid())
+                .build());
         }
 
         var currentAuth = SecurityContextHolder.getContext().getAuthentication();
         if (currentAuth == null) {
             // no auth is set, create a new NbsUserDetails object and set the authentication
             // on the securityContextHolder
+
+            //  The active user is set by the "I am logged into NBS and a security log entry exists" step and is not
+            //  always called in a feature.  When a user is not active then just give the ID of 1.  Will fix the features
+            //  to always activate a user.
+            long id = activeUser.maybeActive()
+                .map(ActiveUser::id)
+                .orElse(1L);
+
             var nbsUserDetails = NbsUserDetails.builder()
-                    .id(1L)
-                    .username("MOCK-USER")
-                    .token(createToken("MOCK-USER"))
-                    .authorities(nbsAuthorities)
-                    .isEnabled(true)
-                    .build();
+                .id(id)
+                .username("MOCK-USER")
+                .token(createToken("MOCK-USER"))
+                .authorities(nbsAuthorities)
+                .isEnabled(true)
+                .build();
             applyUserDetails(nbsUserDetails);
 
         } else {
@@ -114,12 +127,12 @@ public class PermissionSteps {
             }
             existingAuthorities.addAll(nbsAuthorities);
             var nbsUserDetails = NbsUserDetails.builder()
-                    .id(existingUserDetails.getId())
-                    .username(existingUserDetails.getUsername())
-                    .token(existingUserDetails.getToken())
-                    .authorities(existingAuthorities)
-                    .isEnabled(existingUserDetails.isEnabled())
-                    .build();
+                .id(existingUserDetails.getId())
+                .username(existingUserDetails.getUsername())
+                .token(existingUserDetails.getToken())
+                .authorities(existingAuthorities)
+                .isEnabled(existingUserDetails.isEnabled())
+                .build();
 
             applyUserDetails(nbsUserDetails);
         }
@@ -129,9 +142,9 @@ public class PermissionSteps {
         activeUserDetails.active(userDetails);
 
         var pat = new PreAuthenticatedAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+            userDetails,
+            null,
+            userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(pat);
     }
 
@@ -186,11 +199,11 @@ public class PermissionSteps {
         Instant now = Instant.now();
         Instant expiry = Instant.now().plus(Duration.ofMillis(properties.getTokenExpirationMillis()));
         return JWT.create()
-                .withIssuer(properties.getTokenIssuer())
-                .withIssuedAt(now)
-                .withExpiresAt(expiry)
-                .withSubject(username)
-                .sign(algorithm);
+            .withIssuer(properties.getTokenIssuer())
+            .withIssuedAt(now)
+            .withExpiresAt(expiry)
+            .withSubject(username)
+            .sign(algorithm);
     }
 
 }

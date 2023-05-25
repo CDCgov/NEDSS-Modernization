@@ -29,7 +29,10 @@ public class AuthUser {
     @Column(name = "auth_user_uid", nullable = false)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {
+        CascadeType.MERGE,
+        CascadeType.REMOVE
+    })
     @JoinColumn(name = "auth_user_uid")
     private List<AuthUserRole> authUserRoles;
 

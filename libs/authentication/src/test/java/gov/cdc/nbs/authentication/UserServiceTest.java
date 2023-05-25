@@ -1,22 +1,5 @@
 package gov.cdc.nbs.authentication;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-import java.util.HashSet;
-import java.util.Optional;
-import javax.persistence.EntityManager;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import gov.cdc.nbs.authentication.config.SecurityProperties;
@@ -25,6 +8,25 @@ import gov.cdc.nbs.authentication.entity.AuthUserRepository;
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 import gov.cdc.nbs.authentication.util.AuthObjectUtil;
 import gov.cdc.nbs.exception.BadTokenException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import javax.persistence.EntityManager;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class UserServiceTest {
     @Mock
@@ -39,11 +41,14 @@ class UserServiceTest {
     @Mock
     private UserPermissionFinder permissionFinder;
 
+    @Mock
+    private UserAuthorizationVerifier verifier;
+
     @Spy
     private SecurityProperties properties = new SecurityProperties(
-            "secret",
-            "test-issuer",
-            10000);
+        "secret",
+        "test-issuer",
+        10000);
 
     @InjectMocks
     private UserService service;
@@ -72,7 +77,7 @@ class UserServiceTest {
         assertEquals(authUser.getMasterSecAdminInd().equals('T'), userDetails.isMasterSecurityAdmin());
         assertEquals(authUser.getProgAreaAdminInd().equals('T'), userDetails.isProgramAreaAdmin());
         assertTrue(authUser.getAdminProgramAreas().stream()
-                .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
+            .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
         assertEquals(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
     }
 
@@ -97,7 +102,7 @@ class UserServiceTest {
         assertEquals(authUser.getMasterSecAdminInd().equals('T'), userDetails.isMasterSecurityAdmin());
         assertEquals(authUser.getProgAreaAdminInd().equals('T'), userDetails.isProgramAreaAdmin());
         assertTrue(authUser.getAdminProgramAreas().stream()
-                .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
+            .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
         assertEquals(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
     }
 
@@ -122,23 +127,10 @@ class UserServiceTest {
     }
 
     @Test
-    void should_be_authorized_user_id() {
-        // Mock
-        when(repository.findById(1L)).thenReturn(Optional.of(AuthObjectUtil.authUser()));
-        when(permissionFinder.getUserPermissions(Mockito.any())).thenReturn(AuthObjectUtil.authorities());
-        
-        // test
-        assertTrue(service.isAuthorized(1L, AuthObjectUtil.AUTHORITY));
-    }
+    void should_delegate_user_authorization_to_verifier() {
+        service.isAuthorized(1L, "PERMISSION");
 
-    @Test
-    void should_not_be_authorized_user_id() {
-        // Mock
-        when(repository.findById(1L)).thenReturn(Optional.of(AuthObjectUtil.authUser()));
-        when(permissionFinder.getUserPermissions(Mockito.any())).thenReturn(new HashSet<>());
-
-        // test
-        assertFalse(service.isAuthorized(1L, "different-permission"));
+        verify(verifier).isAuthorized(1L, "PERMISSION");
     }
 
     @Test
