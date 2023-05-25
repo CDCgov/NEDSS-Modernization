@@ -16,4 +16,7 @@ public class NbsAuthorities {
             .reduce(ignored -> false, Predicate::or);
     }
 
+    private NbsAuthorities() {
+        
+    }
 }

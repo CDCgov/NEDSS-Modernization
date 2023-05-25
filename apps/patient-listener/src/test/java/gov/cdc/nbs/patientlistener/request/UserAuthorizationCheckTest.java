@@ -4,6 +4,7 @@ import gov.cdc.nbs.authentication.UserAuthorizationVerifier;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -22,8 +23,7 @@ class UserAuthorizationCheckTest {
 
         PatientRequest.Delete request = new PatientRequest.Delete("key", 123L, 321L);
 
-        check.authorized(request, "AUTHORIZED");
-
+        assertThatNoException().isThrownBy(() -> check.authorized(request, "AUTHORIZED"));
     }
 
     @Test

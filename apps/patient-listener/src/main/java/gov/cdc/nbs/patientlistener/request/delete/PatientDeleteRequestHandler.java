@@ -4,7 +4,6 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
 import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
-import gov.cdc.nbs.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

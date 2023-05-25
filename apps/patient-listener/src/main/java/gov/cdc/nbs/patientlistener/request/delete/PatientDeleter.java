@@ -3,7 +3,6 @@ package gov.cdc.nbs.patientlistener.request.delete;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patientlistener.util.PersonConverter;
-import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import org.springframework.stereotype.Component;
 
