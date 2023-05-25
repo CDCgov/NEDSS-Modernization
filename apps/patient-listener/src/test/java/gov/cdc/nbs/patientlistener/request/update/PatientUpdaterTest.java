@@ -871,7 +871,8 @@ class PatientUpdaterTest {
                 "RequestId",
                 321L,
                 Instant.now(),
-                "race");
+                "race",
+                "race category");
     }
 
     @Test
@@ -882,6 +883,7 @@ class PatientUpdaterTest {
         var personRace = new PersonRace();
         personRace.setPersonUid(person);
         personRace.setRaceCd("race");
+        personRace.setRaceCategoryCd("race category");
         person.setRaces(List.of(personRace));
 
         patientUpdater.update(person, data);
@@ -898,7 +900,8 @@ class PatientUpdaterTest {
                 "RequestId",
                 321L,
                 Instant.now(),
-                "race");
+                "race",
+                "race category");
     }
 
     @Test
@@ -909,6 +912,7 @@ class PatientUpdaterTest {
         var personRace = new PersonRace();
         personRace.setPersonUid(person);
         personRace.setRaceCd("race");
+        personRace.setRaceCategoryCd("race category");
         person.setRaces(List.of(personRace));
 
         patientUpdater.update(person, data);

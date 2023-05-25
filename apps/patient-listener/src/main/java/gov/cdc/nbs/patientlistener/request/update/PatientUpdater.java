@@ -432,6 +432,7 @@ public class PatientUpdater {
         return new PatientCommand.AddRace(
                 data.patientId(),
                 data.raceCd(),
+                data.raceCategoryCd(),
                 data.updatedBy(),
                 Instant.now());
     }
@@ -440,6 +441,7 @@ public class PatientUpdater {
         return new PatientCommand.UpdateRaceInfo(
                 data.patientId(),
                 data.raceCd(),
+                data.raceCategoryCd(),
                 data.asOf(),
                 data.updatedBy(),
                 Instant.now());

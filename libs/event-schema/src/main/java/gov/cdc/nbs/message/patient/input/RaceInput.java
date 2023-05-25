@@ -14,6 +14,7 @@ public class RaceInput {
     private long patientId;
     private Instant asOf;
     private String raceCd;
+    private String raceCategoryCd;
 
     public static PatientRequest toAddRequest(
             final long userId,
@@ -28,7 +29,8 @@ public class RaceInput {
                         requestId,
                         userId,
                         input.getAsOf(),
-                        input.getRaceCd()));
+                        input.getRaceCd(),
+                        input.getRaceCategoryCd()));
     }
 
     public static PatientRequest toUpdateRequest(
@@ -44,6 +46,7 @@ public class RaceInput {
                         requestId,
                         userId,
                         input.getAsOf(),
-                        input.getRaceCd()));
+                        input.getRaceCd(),
+                        input.getRaceCategoryCd()));
     }
 }
