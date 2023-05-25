@@ -1,14 +1,19 @@
 package gov.cdc.nbs.patient;
 
+import gov.cdc.nbs.repository.NaicsIndustryCodeRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DropDownValuesControllerTest {
 
-    private DropDownValuesController classUnderTest = new DropDownValuesController();
+    @Mock
+    private NaicsIndustryCodeRepository naicsIndustryCodeRepository;
+    private final DropDownValuesController classUnderTest = new DropDownValuesController(naicsIndustryCodeRepository);
 
     @Test
     void findNameSuffixes() {
@@ -41,17 +46,21 @@ class DropDownValuesControllerTest {
                                 .build(),
                         KeyValuePair.builder()
                                 .key("V")
-                                .value("V / Fifth")
+                                .value("V / The Fifth")
                                 .build()
                 ))
                 .build();
         KeyValuePairResults actualResults = classUnderTest.findNameSuffixes();
         assertEquals(expectedResults.getTotal(), actualResults.getTotal());
-        expectedResults.getContent().forEach( expectedKeyValue -> assertTrue(actualResults.getContent().contains(expectedKeyValue), String.format("Expected: (%s, %s), Actual: %s", expectedKeyValue.getKey(), expectedKeyValue.getValue(), actualResults.getContent().toString())));
+
+        expectedResults.getContent().forEach(expectedKeyValue -> assertTrue(actualResults
+                        .getContent()
+                        .stream()
+                        .anyMatch(expectedKeyValue::equals),
+                String.format("Expected: (%s, %s), Actual: %s",
+                        expectedKeyValue.getKey(),
+                        expectedKeyValue.getValue(), actualResults.getContent().toString())));
 
     }
 
-    @Test
-    void findGenders() {
-    }
 }
