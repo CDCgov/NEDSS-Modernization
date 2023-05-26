@@ -2,9 +2,10 @@ package gov.cdc.nbs.questionbank.questionnaire.model;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public record Questionnaire(
-        long id,
+        UUID id,
         List<String> conditions,
         List<Element> elements) {
 
@@ -21,18 +22,20 @@ public record Questionnaire(
     }
 
     public record Section(
-            long id,
+            UUID id,
             String label,
             List<DisplayElement> elements) implements Element {
     }
 
     public record Text(
-            long id,
+            UUID id,
+            Integer version,
             String text) implements DisplayElement {
     }
 
     public record TextQuestion(
-            long id,
+            UUID id,
+            Integer version,
             String label,
             String tooltip,
             Integer maxLength,
@@ -40,7 +43,8 @@ public record Questionnaire(
     }
 
     public record NumericQuestion(
-            long id,
+            UUID id,
+            Integer version,
             String label,
             String tooltip,
             Integer minValue,
@@ -49,7 +53,8 @@ public record Questionnaire(
     }
 
     public record DropDownQuestion(
-            long id,
+            UUID id,
+            Integer version,
             String label,
             String tooltip,
             OptionSet optionSet,
@@ -58,21 +63,22 @@ public record Questionnaire(
     }
 
     public record DateQuestion(
-            long id,
+            UUID id,
+            Integer version,
             String label,
             String tooltip,
             boolean allowFutureDates) implements DisplayElement {
     }
 
     public record OptionSet(
-            long id,
+            UUID id,
             String name,
             String description,
             Collection<Option> options) {
     }
 
     public record Option(
-            long id,
+            UUID id,
             String value,
             String display) {
     }

@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entities;
 
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -8,12 +9,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,10 +24,13 @@ import lombok.Setter;
 @Entity
 @Table(name = "questionnaire", catalog = "question_bank")
 public class QuestionnaireEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GenericGenerator(name = "UUID", strategy = "gov.cdc.nbs.questionbank.entities.UUIDGenerator")
+    @GeneratedValue(generator = "UUID")
+    @Type(type = "uuid-char")
+    @Column(name = "id", columnDefinition = "uniqueidentifier", nullable = false)
+    private UUID id;
 
     @CollectionTable(
             name = "questionnaire_conditions",

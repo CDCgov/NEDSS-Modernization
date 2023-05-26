@@ -11,11 +11,12 @@ import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import gov.cdc.nbs.questionbank.container.EmbeddedNbsDatabase;
 import gov.cdc.nbs.questionbank.questionnaire.QuestionnaireRepository;
 import io.cucumber.spring.CucumberContextConfiguration;
-
-
 
 @Suite
 @IncludeEngines("cucumber")
@@ -25,6 +26,9 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
 @CucumberContextConfiguration
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:19092", "port=19092"})
+@Testcontainers
+@EmbeddedNbsDatabase
 @SpringBootTest
 @ActiveProfiles("test")
 class CucumberTests {

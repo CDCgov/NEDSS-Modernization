@@ -30,13 +30,14 @@ public class AuthUser {
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {
-        CascadeType.MERGE,
-        CascadeType.REMOVE
+            CascadeType.MERGE,
+            CascadeType.REMOVE,
+            CascadeType.PERSIST
     })
     @JoinColumn(name = "auth_user_uid")
     private List<AuthUserRole> authUserRoles;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "auth_user_uid")
     private List<AuthProgAreaAdmin> adminProgramAreas;
 
