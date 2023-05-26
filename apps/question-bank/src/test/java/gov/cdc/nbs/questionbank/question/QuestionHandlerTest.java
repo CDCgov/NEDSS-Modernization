@@ -51,8 +51,9 @@ class QuestionHandlerTest {
         when(userService.isAuthorized(userId, permission)).thenReturn(false);
 
         // when i submit a question request,  then i receive an exception
+        QuestionRequest request = createTextQuestionRequest();
         assertThrows(UserNotAuthorizedException.class, () ->
-            handler.handleQuestionRequest(createTextQuestionRequest()));
+            handler.handleQuestionRequest(request));
     }
 
     @Test

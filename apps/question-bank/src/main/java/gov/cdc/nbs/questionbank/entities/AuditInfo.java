@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuditInfo {
+public class AuditInfo implements Serializable {
 
     @Column(name = "add_time", nullable = false)
     private Instant addTime;

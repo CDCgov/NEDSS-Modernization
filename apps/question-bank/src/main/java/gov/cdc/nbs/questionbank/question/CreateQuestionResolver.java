@@ -17,9 +17,9 @@ public class CreateQuestionResolver {
 
     CreateQuestionResolver(
             KafkaProducer producer,
-            UserDetailsProvider UserDetailsProvider) {
+            UserDetailsProvider userDetailsProvider) {
         this.producer = producer;
-        this.userDetailsProvider = UserDetailsProvider;
+        this.userDetailsProvider = userDetailsProvider;
     }
 
     private long getUserId() {

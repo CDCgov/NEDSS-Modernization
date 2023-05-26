@@ -54,6 +54,6 @@ public sealed interface QuestionCommand {
             Integer maxValue,
             Integer defaultValue,
             ValueSet unitsOptions) implements QuestionCommand {
-    };
+    }
 
 }

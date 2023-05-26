@@ -42,8 +42,8 @@ class RequestStatusProducerTest {
         RequestStatus status = statusCaptor.getValue();
 
         assertThat(status.isSuccessful()).isTrue();
-        assertThat("RequestId").isEqualTo(status.requestId());
-        assertThat("Message").isEqualTo(status.message());
+        assertThat(status.requestId()).isEqualTo("RequestId");
+        assertThat(status.message()).isEqualTo("Message");
         assertThat(uuid).isEqualTo(status.id());
     }
 

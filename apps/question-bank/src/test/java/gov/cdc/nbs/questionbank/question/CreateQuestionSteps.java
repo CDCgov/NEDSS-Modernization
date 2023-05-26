@@ -185,7 +185,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.minValue(), created.getMinValue());
         assertEquals(actual.maxValue(), created.getMaxValue());
         assertEquals(actual.defaultValue(), created.getDefaultNumericValue());
-        assertEquals(actual.unitValueSet(), created.getUnitsSet());
+        assertEquals(actual.unitValueSet(), created.getUnitsSet().getId());
 
         validateAudit(created.getAudit());
     }
