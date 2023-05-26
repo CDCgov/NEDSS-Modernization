@@ -60,7 +60,6 @@ public class QuestionHandler {
 
 		} else if (request.type().equals(QuestionRequest.UpdateTextQuestionRequest.class.getSimpleName())) {
 			// Handle update request
-			//UpdateTextQuestionRequest updateRequest = (UpdateTextQuestionRequest) request;
 			Optional<DisplayElementEntity> updated = null;
 			String additionalMessage = null;
 			try {
