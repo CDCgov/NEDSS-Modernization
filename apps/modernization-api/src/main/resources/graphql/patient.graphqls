@@ -13,7 +13,6 @@ type Query {
     findAllAddressUses(page: Page): AddressUseResults!
     findAllPhoneAndEmailType(page: Page): PhoneAndEmailTypeResults!
     findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
-    findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
     findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
