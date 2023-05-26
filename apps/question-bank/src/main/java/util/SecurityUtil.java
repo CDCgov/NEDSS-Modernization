@@ -1,8 +1,7 @@
 package util;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import gov.cdc.nbs.config.security.NbsUserDetails;
+import gov.cdc.nbs.authentication.NbsUserDetails;
 
 public class SecurityUtil {
 
