@@ -19,6 +19,7 @@ import gov.cdc.nbs.questionbank.entities.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.kafka.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DateQuestionData;
@@ -136,7 +137,8 @@ class QuestionHandlerTest {
                         "tooltip",
                         25,
                         "placeholder",
-                        "defaultValue"));
+                        "defaultValue",
+                        CodeSet.LOCAL));
     }
 
     private QuestionRequest.CreateDateQuestionRequest createDateQuestionRequest() {
@@ -146,7 +148,8 @@ class QuestionHandlerTest {
                 new DateQuestionData(
                         "label",
                         "tooltip",
-                        true));
+                        true,
+                        CodeSet.LOCAL));
     }
 
     private QuestionRequest.CreateDropdownQuestionRequest createDropdownQuestionRequest() {
@@ -158,7 +161,8 @@ class QuestionHandlerTest {
                         "tooltip",
                         UUID.randomUUID(),
                         UUID.randomUUID(),
-                        true));
+                        true,
+                        CodeSet.LOCAL));
     }
 
     private QuestionRequest.CreateNumericQuestionRequest createNumericQuestionRequest() {
@@ -171,7 +175,8 @@ class QuestionHandlerTest {
                         1,
                         3,
                         2,
-                        UUID.randomUUID()));
+                        UUID.randomUUID(),
+                        CodeSet.LOCAL));
     }
 
     private TextQuestionEntity textEntity() {
