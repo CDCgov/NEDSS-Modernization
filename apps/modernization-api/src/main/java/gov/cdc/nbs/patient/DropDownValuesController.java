@@ -61,20 +61,6 @@ public class DropDownValuesController {
                 .build();
     }
 
-    @QueryMapping
-    public KeyValuePairResults findNameType() {
-        List<KeyValuePair> keyValuePairList = Arrays.stream(Indicator.values())
-                .map(value -> KeyValuePair.builder()
-                        .key(value.name())
-                        .value(value.getDescription())
-                        .build())
-                .toList();
-        return KeyValuePairResults.builder()
-                .content(keyValuePairList)
-                .total(keyValuePairList.size())
-                .build();
-    }
-
     public NaicsIndustryCodeResults findAllNaicsIndustryCodes() {
         List<NaicsIndustryCode> naicsIndustryCodeRepositoryAll = naicsIndustryCodeRepository.findAll();
         return NaicsIndustryCodeResults.builder()

@@ -52,7 +52,7 @@ Feature: Dropdown element retrieval for patient data entry
       | M   | Maiden Name            |
       | MO  | Mother's Name          |
       | P   | Name of Partner/Spouse |
-      | R   | Religioius             |
+      | R   | Religious             |
       | S   | Coded Pseudo           |
 
   Scenario: I can retrieve Name Prefix

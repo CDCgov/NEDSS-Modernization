@@ -37,7 +37,18 @@ public class PatientDataEntryDropDownSteps {
             case "Name Suffix" -> actualKeyValuePairResults = dropDownValuesController.findNameSuffixes();
             case "Gender" -> actualKeyValuePairResults = dropDownValuesController.findGenders();
             case "Yes/No/Unknown" -> actualKeyValuePairResults = dropDownValuesController.findYesNoUnk();
-            case "Name Type" -> actualKeyValuePairResults = dropDownValuesController.findNameType();
+            case "Name Type" -> {
+                Page<CodeValueGeneral> allNameTypes = codeValueGeneralController.findAllNameTypes(page);
+                actualKeyValuePairResults = KeyValuePairResults.builder()
+                        .total(allNameTypes.getNumberOfElements())
+                        .content(allNameTypes.map(codeValueGeneral ->
+                                        KeyValuePair.builder()
+                                                .key(codeValueGeneral.getId().getCode())
+                                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                                .build())
+                                .toList())
+                        .build();
+            }
             case "Name Prefix" -> {
                 Page<CodeValueGeneral> allNamePrefixes = codeValueGeneralController.findAllNamePrefixes(page);
                 actualKeyValuePairResults = KeyValuePairResults.builder()
