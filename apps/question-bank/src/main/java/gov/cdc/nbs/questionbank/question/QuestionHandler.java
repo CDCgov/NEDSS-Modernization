@@ -58,6 +58,23 @@ public class QuestionHandler {
 						Constants.DELETE_FAILURE_MESSAGE + " : " + additionalMessage);
 			}
 
+		} else if (request.type().equals(QuestionRequest.UpdateTextQuestionRequest.class.getSimpleName())) {
+			// Handle update request
+			//UpdateTextQuestionRequest updateRequest = (UpdateTextQuestionRequest) request;
+			Optional<DisplayElementEntity> updated = null;
+			String additionalMessage = null;
+			try {
+				updated = questionRepository.updateQuestion(request.questionId());
+			} catch (Exception e) {
+				additionalMessage = e.getMessage();
+			}
+			if (updated != null && updated.isPresent()) {
+				requestStatusProducer.successful(request.requestId(), Constants.UPDATE_SUCCESS_MESSAGE,
+						request.questionId());
+			} else {
+				requestStatusProducer.failure(request.requestId(),
+						Constants.UPDATE_FAILURE_MESSAGE + " : " + additionalMessage);
+			}
 		}
 	}
 
@@ -68,6 +85,16 @@ public class QuestionHandler {
 	}
 
 	private QuestionBankEventResponse sendQuestionDeleteEvent(QuestionRequest request, Long questionId) {
+		producer.requestEventEnvelope(request);
+		return new QuestionBankEventResponse(request.requestId(), questionId);
+	}
+	public QuestionBankEventResponse sendUpdateQuestionEvent(Long questionId, String title, String description) {
+		var user = SecurityUtil.getUserDetails();
+		var updateEvent = new QuestionRequest.UpdateTextQuestionRequest(getRequestId(), questionId, user.getId(), title, description);
+		return sendQuestionUpdateEvent(updateEvent, questionId);
+	}
+
+	private QuestionBankEventResponse sendQuestionUpdateEvent(QuestionRequest request, Long questionId) {
 		producer.requestEventEnvelope(request);
 		return new QuestionBankEventResponse(request.requestId(), questionId);
 	}

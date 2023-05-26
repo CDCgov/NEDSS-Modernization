@@ -15,4 +15,8 @@ public interface QuestionRepository extends JpaRepository<DisplayElementEntity, 
 	public Optional<DisplayElementEntity> deleteQuestion(@Param("questionId") Long questionId,
 			@Param("questionActive") boolean questionActive);
 
+	@Query("UPDATE DisplayElementEntity SET questionText=:newQuestionText WHERE id=:questionId")
+	public Optional<DisplayElementEntity> updateQuestion(@Param("questionId") Long questionId);
+
 }
+

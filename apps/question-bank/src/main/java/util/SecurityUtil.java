@@ -25,6 +25,7 @@ public class SecurityUtil {
         public static final String MERGE = "MERGE";
         public static final String CREATE = "CREATE";
         public static final String DELETE = "DELETE";
+        public static final String UPDATE = "UPDATE";
         public static final String REVIEW = "REVIEW";
         public static final String MANAGE = "MANAGE";
         public static final String MESSAGE = "MESSAGE";
