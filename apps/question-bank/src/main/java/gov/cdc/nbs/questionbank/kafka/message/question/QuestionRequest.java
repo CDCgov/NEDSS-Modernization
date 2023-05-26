@@ -12,6 +12,7 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String tooltip,
             Integer maxLength,
             String placeholder) implements QuestionRequest {
+        
     }
 
     record UpdateTextQuestionRequest(

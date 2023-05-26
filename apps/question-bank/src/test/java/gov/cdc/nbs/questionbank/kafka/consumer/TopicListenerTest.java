@@ -93,11 +93,8 @@ class TopicListenerTest {
         assertThat(actual)
                 .returns("requestId", QuestionRequest.UpdateTextQuestionRequest::requestId)
                 .returns(321L, QuestionRequest.UpdateTextQuestionRequest::questionId)
-                .returns(123L, QuestionRequest.UpdateTextQuestionRequest::userId)
-                .returns("some label", QuestionRequest.UpdateTextQuestionRequest::label)
-                .returns("tooltip", QuestionRequest.UpdateTextQuestionRequest::tooltip)
-                .returns(10, QuestionRequest.UpdateTextQuestionRequest::maxLength)
-                .returns("placeholder", QuestionRequest.UpdateTextQuestionRequest::placeholder);
+                .returns(123L, QuestionRequest.UpdateTextQuestionRequest::userId);
+
     }
 
     @Test
@@ -123,6 +120,11 @@ class TopicListenerTest {
                             @Override
                             public long userId() {
                                 return 1L;
+                            }
+
+                            @Override
+                            public long questionId() {
+                                return 0;
                             }
                         });
 
