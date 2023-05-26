@@ -95,7 +95,7 @@ class CreateQuestionResolverTest {
         when(userDetailsProvider.getCurrentUserDetails()).thenReturn(userDetails());
 
         // given I submit a create text question request
-        var data =dropdownQuestionData();
+        var data = dropdownQuestionData();
         resolver.createDropdownQuestion(data);
 
         // then the request is send to kafka

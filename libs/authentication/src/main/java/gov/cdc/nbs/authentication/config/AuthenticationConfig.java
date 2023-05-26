@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Import;
         gov.cdc.nbs.authentication.UserService.class,
         gov.cdc.nbs.authentication.config.JWTSecurityConfig.class,
         gov.cdc.nbs.authentication.JWTFilter.class,
-        gov.cdc.nbs.authentication.UserPermissionFinder.class})
+        gov.cdc.nbs.authentication.UserPermissionFinder.class,
+        gov.cdc.nbs.authentication.UserDetailsProvider.class
+})
 public class AuthenticationConfig {
 
 }
