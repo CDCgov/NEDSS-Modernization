@@ -22,7 +22,6 @@ import util.SecurityUtil;
 @Service
 @RequiredArgsConstructor
 public class QuestionHandler {
-	
 	private final KafkaProducer producer;
 	private final QuestionRepository questionRepository;
 	private final RequestProperties requestProperties;
