@@ -27,6 +27,24 @@ export type ActId = {
   typeCd?: Maybe<Scalars['String']>;
 };
 
+export type AddressInput = {
+  censusTract?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  countryCode?: InputMaybe<Scalars['String']>;
+  countyCode?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  patientId: Scalars['ID'];
+  stateCode?: InputMaybe<Scalars['String']>;
+  streetAddress1?: InputMaybe<Scalars['String']>;
+  streetAddress2?: InputMaybe<Scalars['String']>;
+  zip?: InputMaybe<Scalars['String']>;
+};
+
+export type AdministrativeInput = {
+  description?: InputMaybe<Scalars['String']>;
+  patientId: Scalars['ID'];
+};
+
 export type AssociatedInvestigation = {
   __typename?: 'AssociatedInvestigation';
   actRelationshipLastChgTime?: Maybe<Scalars['DateTime']>;
@@ -100,6 +118,12 @@ export enum Deceased {
   Y = 'Y'
 }
 
+export type EmailInput = {
+  emailAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  patientId: Scalars['ID'];
+};
+
 export enum EntryMethod {
   Electronic = 'ELECTRONIC',
   Manual = 'MANUAL'
@@ -114,6 +138,12 @@ export type Ethnicity = {
 export type EthnicityId = {
   __typename?: 'EthnicityId';
   code: Scalars['String'];
+};
+
+export type EthnicityInput = {
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  ethnicityCode: Scalars['String'];
+  patientId: Scalars['ID'];
 };
 
 export type EthnicityResults = {
@@ -156,6 +186,14 @@ export type Identification = {
   assigningAuthority?: InputMaybe<Scalars['String']>;
   identificationNumber: Scalars['String'];
   identificationType: Scalars['String'];
+};
+
+export type IdentificationInput = {
+  assigningAuthority?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  identificationNumber: Scalars['String'];
+  identificationType: Scalars['String'];
+  patientId: Scalars['ID'];
 };
 
 export type IdentificationType = {
@@ -482,11 +520,61 @@ export type MortalityInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addPatientAddress: PatientEventResponse;
+  addPatientEmail: PatientEventResponse;
+  addPatientIdentification: PatientEventResponse;
+  addPatientName: PatientEventResponse;
+  addPatientPhone: PatientEventResponse;
+  addPatientRace: PatientEventResponse;
   createPatient: PatientEventResponse;
   deletePatient: PatientEventResponse;
+  deletePatientAddress: PatientEventResponse;
+  deletePatientEmail: PatientEventResponse;
+  deletePatientIdentification: PatientEventResponse;
+  deletePatientName: PatientEventResponse;
+  deletePatientPhone: PatientEventResponse;
+  deletePatientRace: PatientEventResponse;
+  updateAdministrative: PatientEventResponse;
+  updateEthnicity: PatientEventResponse;
   updateMortality: PatientEventResponse;
+  updatePatientAddress: PatientEventResponse;
+  updatePatientEmail: PatientEventResponse;
   updatePatientGeneralInfo: PatientEventResponse;
+  updatePatientIdentification: PatientEventResponse;
+  updatePatientName: PatientEventResponse;
+  updatePatientPhone: PatientEventResponse;
+  updatePatientRace: PatientEventResponse;
   updatePatientSexBirth: PatientEventResponse;
+};
+
+
+export type MutationAddPatientAddressArgs = {
+  input: AddressInput;
+};
+
+
+export type MutationAddPatientEmailArgs = {
+  input: EmailInput;
+};
+
+
+export type MutationAddPatientIdentificationArgs = {
+  input: IdentificationInput;
+};
+
+
+export type MutationAddPatientNameArgs = {
+  input: NameInput;
+};
+
+
+export type MutationAddPatientPhoneArgs = {
+  input: PhoneInput;
+};
+
+
+export type MutationAddPatientRaceArgs = {
+  input: RaceInput;
 };
 
 
@@ -500,13 +588,89 @@ export type MutationDeletePatientArgs = {
 };
 
 
+export type MutationDeletePatientAddressArgs = {
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+};
+
+
+export type MutationDeletePatientEmailArgs = {
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+};
+
+
+export type MutationDeletePatientIdentificationArgs = {
+  entitySeqNum: Scalars['Int'];
+  patientId: Scalars['Int'];
+};
+
+
+export type MutationDeletePatientNameArgs = {
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+};
+
+
+export type MutationDeletePatientPhoneArgs = {
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+};
+
+
+export type MutationDeletePatientRaceArgs = {
+  patientId: Scalars['Int'];
+  raceCd: Scalars['String'];
+};
+
+
+export type MutationUpdateAdministrativeArgs = {
+  input: AdministrativeInput;
+};
+
+
+export type MutationUpdateEthnicityArgs = {
+  input: EthnicityInput;
+};
+
+
 export type MutationUpdateMortalityArgs = {
   input: MortalityInput;
 };
 
 
+export type MutationUpdatePatientAddressArgs = {
+  input: AddressInput;
+};
+
+
+export type MutationUpdatePatientEmailArgs = {
+  input: EmailInput;
+};
+
+
 export type MutationUpdatePatientGeneralInfoArgs = {
   input: GeneralInfoInput;
+};
+
+
+export type MutationUpdatePatientIdentificationArgs = {
+  input: IdentificationInput;
+};
+
+
+export type MutationUpdatePatientNameArgs = {
+  input: NameInput;
+};
+
+
+export type MutationUpdatePatientPhoneArgs = {
+  input: PhoneInput;
+};
+
+
+export type MutationUpdatePatientRaceArgs = {
+  input: RaceInput;
 };
 
 
@@ -524,6 +688,16 @@ export type Name = {
   lastName?: InputMaybe<Scalars['String']>;
   middleName?: InputMaybe<Scalars['String']>;
   nameUseCd: NameUseCd;
+  suffix?: InputMaybe<Suffix>;
+};
+
+export type NameInput = {
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  middleName?: InputMaybe<Scalars['String']>;
+  nameUseCd: NameUseCd;
+  patientId: Scalars['ID'];
+  personNameSeq?: InputMaybe<Scalars['Int']>;
   suffix?: InputMaybe<Suffix>;
 };
 
@@ -1026,6 +1200,7 @@ export type PatientProfile = {
   addresses?: Maybe<PatientAddressResults>;
   administrative?: Maybe<PatientAdministrativeResults>;
   birth?: Maybe<PatientBirth>;
+  deletable: Scalars['Boolean'];
   ethnicity?: Maybe<PatientEthnicity>;
   gender?: Maybe<PatientGender>;
   general?: Maybe<PatientGeneral>;
@@ -1394,6 +1569,14 @@ export type PersonResults = {
   __typename?: 'PersonResults';
   content: Array<Person>;
   total: Scalars['Int'];
+};
+
+export type PhoneInput = {
+  extension?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  number?: InputMaybe<Scalars['String']>;
+  patientId: Scalars['ID'];
+  phoneType: PhoneType;
 };
 
 export type PhoneNumber = {
@@ -1769,6 +1952,12 @@ export type RaceId = {
   code: Scalars['String'];
 };
 
+export type RaceInput = {
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  patientId: Scalars['ID'];
+  raceCd: Scalars['String'];
+};
+
 export type RaceResults = {
   __typename?: 'RaceResults';
   content: Array<Maybe<Race>>;
@@ -1900,6 +2089,48 @@ export type PersonParentUid = {
   id?: Maybe<Scalars['ID']>;
 };
 
+export type AddPatientAddressMutationVariables = Exact<{
+  input: AddressInput;
+}>;
+
+
+export type AddPatientAddressMutation = { __typename?: 'Mutation', addPatientAddress: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type AddPatientEmailMutationVariables = Exact<{
+  input: EmailInput;
+}>;
+
+
+export type AddPatientEmailMutation = { __typename?: 'Mutation', addPatientEmail: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type AddPatientIdentificationMutationVariables = Exact<{
+  input: IdentificationInput;
+}>;
+
+
+export type AddPatientIdentificationMutation = { __typename?: 'Mutation', addPatientIdentification: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type AddPatientNameMutationVariables = Exact<{
+  input: NameInput;
+}>;
+
+
+export type AddPatientNameMutation = { __typename?: 'Mutation', addPatientName: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type AddPatientPhoneMutationVariables = Exact<{
+  input: PhoneInput;
+}>;
+
+
+export type AddPatientPhoneMutation = { __typename?: 'Mutation', addPatientPhone: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type AddPatientRaceMutationVariables = Exact<{
+  input: RaceInput;
+}>;
+
+
+export type AddPatientRaceMutation = { __typename?: 'Mutation', addPatientRace: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
 export type CreatePatientMutationVariables = Exact<{
   patient: PersonInput;
 }>;
@@ -1914,6 +2145,68 @@ export type DeletePatientMutationVariables = Exact<{
 
 export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
+export type DeletePatientAddressMutationVariables = Exact<{
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+}>;
+
+
+export type DeletePatientAddressMutation = { __typename?: 'Mutation', deletePatientAddress: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type DeletePatientEmailMutationVariables = Exact<{
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+}>;
+
+
+export type DeletePatientEmailMutation = { __typename?: 'Mutation', deletePatientEmail: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type DeletePatientIdentificationMutationVariables = Exact<{
+  patientId: Scalars['Int'];
+  entitySeqNum: Scalars['Int'];
+}>;
+
+
+export type DeletePatientIdentificationMutation = { __typename?: 'Mutation', deletePatientIdentification: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type DeletePatientNameMutationVariables = Exact<{
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+}>;
+
+
+export type DeletePatientNameMutation = { __typename?: 'Mutation', deletePatientName: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type DeletePatientPhoneMutationVariables = Exact<{
+  patientId: Scalars['Int'];
+  personSeqNum: Scalars['Int'];
+}>;
+
+
+export type DeletePatientPhoneMutation = { __typename?: 'Mutation', deletePatientPhone: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type DeletePatientRaceMutationVariables = Exact<{
+  patientId: Scalars['Int'];
+  raceCd: Scalars['String'];
+}>;
+
+
+export type DeletePatientRaceMutation = { __typename?: 'Mutation', deletePatientRace: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdateAdministrativeMutationVariables = Exact<{
+  input: AdministrativeInput;
+}>;
+
+
+export type UpdateAdministrativeMutation = { __typename?: 'Mutation', updateAdministrative: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdateEthnicityMutationVariables = Exact<{
+  input: EthnicityInput;
+}>;
+
+
+export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
 export type UpdateMortalityMutationVariables = Exact<{
   input: MortalityInput;
 }>;
@@ -1921,12 +2214,54 @@ export type UpdateMortalityMutationVariables = Exact<{
 
 export type UpdateMortalityMutation = { __typename?: 'Mutation', updateMortality: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
+export type UpdatePatientAddressMutationVariables = Exact<{
+  input: AddressInput;
+}>;
+
+
+export type UpdatePatientAddressMutation = { __typename?: 'Mutation', updatePatientAddress: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdatePatientEmailMutationVariables = Exact<{
+  input: EmailInput;
+}>;
+
+
+export type UpdatePatientEmailMutation = { __typename?: 'Mutation', updatePatientEmail: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
 export type UpdatePatientGeneralInfoMutationVariables = Exact<{
   input: GeneralInfoInput;
 }>;
 
 
 export type UpdatePatientGeneralInfoMutation = { __typename?: 'Mutation', updatePatientGeneralInfo: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdatePatientIdentificationMutationVariables = Exact<{
+  input: IdentificationInput;
+}>;
+
+
+export type UpdatePatientIdentificationMutation = { __typename?: 'Mutation', updatePatientIdentification: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdatePatientNameMutationVariables = Exact<{
+  input: NameInput;
+}>;
+
+
+export type UpdatePatientNameMutation = { __typename?: 'Mutation', updatePatientName: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdatePatientPhoneMutationVariables = Exact<{
+  input: PhoneInput;
+}>;
+
+
+export type UpdatePatientPhoneMutation = { __typename?: 'Mutation', updatePatientPhone: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+
+export type UpdatePatientRaceMutationVariables = Exact<{
+  input: RaceInput;
+}>;
+
+
+export type UpdatePatientRaceMutation = { __typename?: 'Mutation', updatePatientRace: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
 export type UpdatePatientSexBirthMutationVariables = Exact<{
   input: UpdateSexAndBirthInput;
@@ -2166,7 +2501,7 @@ export type FindPatientProfileQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId?: number | null, version: number, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null } | null> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null } | null> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: string, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null } | null> } | null, addresses?: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null } | null> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: string, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed?: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> | null } | null> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> } | null } | null };
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId?: number | null, version: number, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null } | null> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null } | null> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: string, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null } | null> } | null, addresses?: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null } | null> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: string, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed?: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> | null } | null> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -2224,6 +2559,210 @@ export type FindVaccinationsForPatientQueryVariables = Exact<{
 export type FindVaccinationsForPatientQuery = { __typename?: 'Query', findVaccinationsForPatient?: { __typename?: 'PatientVaccinationResults', total: number, number: number, content: Array<{ __typename?: 'PatientVaccination', vaccination: string, createdOn: any, provider?: string | null, administeredOn?: any | null, administered: string, event: string, associatedWith?: { __typename?: 'PatientVaccinationInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
 
 
+export const AddPatientAddressDocument = gql`
+    mutation addPatientAddress($input: AddressInput!) {
+  addPatientAddress(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type AddPatientAddressMutationFn = Apollo.MutationFunction<AddPatientAddressMutation, AddPatientAddressMutationVariables>;
+
+/**
+ * __useAddPatientAddressMutation__
+ *
+ * To run a mutation, you first call `useAddPatientAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPatientAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPatientAddressMutation, { data, loading, error }] = useAddPatientAddressMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddPatientAddressMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientAddressMutation, AddPatientAddressMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPatientAddressMutation, AddPatientAddressMutationVariables>(AddPatientAddressDocument, options);
+      }
+export type AddPatientAddressMutationHookResult = ReturnType<typeof useAddPatientAddressMutation>;
+export type AddPatientAddressMutationResult = Apollo.MutationResult<AddPatientAddressMutation>;
+export type AddPatientAddressMutationOptions = Apollo.BaseMutationOptions<AddPatientAddressMutation, AddPatientAddressMutationVariables>;
+export const AddPatientEmailDocument = gql`
+    mutation addPatientEmail($input: EmailInput!) {
+  addPatientEmail(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type AddPatientEmailMutationFn = Apollo.MutationFunction<AddPatientEmailMutation, AddPatientEmailMutationVariables>;
+
+/**
+ * __useAddPatientEmailMutation__
+ *
+ * To run a mutation, you first call `useAddPatientEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPatientEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPatientEmailMutation, { data, loading, error }] = useAddPatientEmailMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddPatientEmailMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientEmailMutation, AddPatientEmailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPatientEmailMutation, AddPatientEmailMutationVariables>(AddPatientEmailDocument, options);
+      }
+export type AddPatientEmailMutationHookResult = ReturnType<typeof useAddPatientEmailMutation>;
+export type AddPatientEmailMutationResult = Apollo.MutationResult<AddPatientEmailMutation>;
+export type AddPatientEmailMutationOptions = Apollo.BaseMutationOptions<AddPatientEmailMutation, AddPatientEmailMutationVariables>;
+export const AddPatientIdentificationDocument = gql`
+    mutation addPatientIdentification($input: IdentificationInput!) {
+  addPatientIdentification(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type AddPatientIdentificationMutationFn = Apollo.MutationFunction<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>;
+
+/**
+ * __useAddPatientIdentificationMutation__
+ *
+ * To run a mutation, you first call `useAddPatientIdentificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPatientIdentificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPatientIdentificationMutation, { data, loading, error }] = useAddPatientIdentificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddPatientIdentificationMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>(AddPatientIdentificationDocument, options);
+      }
+export type AddPatientIdentificationMutationHookResult = ReturnType<typeof useAddPatientIdentificationMutation>;
+export type AddPatientIdentificationMutationResult = Apollo.MutationResult<AddPatientIdentificationMutation>;
+export type AddPatientIdentificationMutationOptions = Apollo.BaseMutationOptions<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>;
+export const AddPatientNameDocument = gql`
+    mutation addPatientName($input: NameInput!) {
+  addPatientName(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type AddPatientNameMutationFn = Apollo.MutationFunction<AddPatientNameMutation, AddPatientNameMutationVariables>;
+
+/**
+ * __useAddPatientNameMutation__
+ *
+ * To run a mutation, you first call `useAddPatientNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPatientNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPatientNameMutation, { data, loading, error }] = useAddPatientNameMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddPatientNameMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientNameMutation, AddPatientNameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPatientNameMutation, AddPatientNameMutationVariables>(AddPatientNameDocument, options);
+      }
+export type AddPatientNameMutationHookResult = ReturnType<typeof useAddPatientNameMutation>;
+export type AddPatientNameMutationResult = Apollo.MutationResult<AddPatientNameMutation>;
+export type AddPatientNameMutationOptions = Apollo.BaseMutationOptions<AddPatientNameMutation, AddPatientNameMutationVariables>;
+export const AddPatientPhoneDocument = gql`
+    mutation addPatientPhone($input: PhoneInput!) {
+  addPatientPhone(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type AddPatientPhoneMutationFn = Apollo.MutationFunction<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>;
+
+/**
+ * __useAddPatientPhoneMutation__
+ *
+ * To run a mutation, you first call `useAddPatientPhoneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPatientPhoneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPatientPhoneMutation, { data, loading, error }] = useAddPatientPhoneMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddPatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>(AddPatientPhoneDocument, options);
+      }
+export type AddPatientPhoneMutationHookResult = ReturnType<typeof useAddPatientPhoneMutation>;
+export type AddPatientPhoneMutationResult = Apollo.MutationResult<AddPatientPhoneMutation>;
+export type AddPatientPhoneMutationOptions = Apollo.BaseMutationOptions<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>;
+export const AddPatientRaceDocument = gql`
+    mutation addPatientRace($input: RaceInput!) {
+  addPatientRace(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type AddPatientRaceMutationFn = Apollo.MutationFunction<AddPatientRaceMutation, AddPatientRaceMutationVariables>;
+
+/**
+ * __useAddPatientRaceMutation__
+ *
+ * To run a mutation, you first call `useAddPatientRaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPatientRaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPatientRaceMutation, { data, loading, error }] = useAddPatientRaceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddPatientRaceMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientRaceMutation, AddPatientRaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPatientRaceMutation, AddPatientRaceMutationVariables>(AddPatientRaceDocument, options);
+      }
+export type AddPatientRaceMutationHookResult = ReturnType<typeof useAddPatientRaceMutation>;
+export type AddPatientRaceMutationResult = Apollo.MutationResult<AddPatientRaceMutation>;
+export type AddPatientRaceMutationOptions = Apollo.BaseMutationOptions<AddPatientRaceMutation, AddPatientRaceMutationVariables>;
 export const CreatePatientDocument = gql`
     mutation createPatient($patient: PersonInput!) {
   createPatient(patient: $patient) {
@@ -2292,6 +2831,284 @@ export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOption
 export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
 export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
 export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
+export const DeletePatientAddressDocument = gql`
+    mutation deletePatientAddress($patientId: Int!, $personSeqNum: Int!) {
+  deletePatientAddress(patientId: $patientId, personSeqNum: $personSeqNum) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientAddressMutationFn = Apollo.MutationFunction<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>;
+
+/**
+ * __useDeletePatientAddressMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientAddressMutation, { data, loading, error }] = useDeletePatientAddressMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      personSeqNum: // value for 'personSeqNum'
+ *   },
+ * });
+ */
+export function useDeletePatientAddressMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>(DeletePatientAddressDocument, options);
+      }
+export type DeletePatientAddressMutationHookResult = ReturnType<typeof useDeletePatientAddressMutation>;
+export type DeletePatientAddressMutationResult = Apollo.MutationResult<DeletePatientAddressMutation>;
+export type DeletePatientAddressMutationOptions = Apollo.BaseMutationOptions<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>;
+export const DeletePatientEmailDocument = gql`
+    mutation deletePatientEmail($patientId: Int!, $personSeqNum: Int!) {
+  deletePatientEmail(patientId: $patientId, personSeqNum: $personSeqNum) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientEmailMutationFn = Apollo.MutationFunction<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>;
+
+/**
+ * __useDeletePatientEmailMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientEmailMutation, { data, loading, error }] = useDeletePatientEmailMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      personSeqNum: // value for 'personSeqNum'
+ *   },
+ * });
+ */
+export function useDeletePatientEmailMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>(DeletePatientEmailDocument, options);
+      }
+export type DeletePatientEmailMutationHookResult = ReturnType<typeof useDeletePatientEmailMutation>;
+export type DeletePatientEmailMutationResult = Apollo.MutationResult<DeletePatientEmailMutation>;
+export type DeletePatientEmailMutationOptions = Apollo.BaseMutationOptions<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>;
+export const DeletePatientIdentificationDocument = gql`
+    mutation deletePatientIdentification($patientId: Int!, $entitySeqNum: Int!) {
+  deletePatientIdentification(patientId: $patientId, entitySeqNum: $entitySeqNum) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientIdentificationMutationFn = Apollo.MutationFunction<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>;
+
+/**
+ * __useDeletePatientIdentificationMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientIdentificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientIdentificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientIdentificationMutation, { data, loading, error }] = useDeletePatientIdentificationMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      entitySeqNum: // value for 'entitySeqNum'
+ *   },
+ * });
+ */
+export function useDeletePatientIdentificationMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>(DeletePatientIdentificationDocument, options);
+      }
+export type DeletePatientIdentificationMutationHookResult = ReturnType<typeof useDeletePatientIdentificationMutation>;
+export type DeletePatientIdentificationMutationResult = Apollo.MutationResult<DeletePatientIdentificationMutation>;
+export type DeletePatientIdentificationMutationOptions = Apollo.BaseMutationOptions<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>;
+export const DeletePatientNameDocument = gql`
+    mutation deletePatientName($patientId: Int!, $personSeqNum: Int!) {
+  deletePatientName(patientId: $patientId, personSeqNum: $personSeqNum) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientNameMutationFn = Apollo.MutationFunction<DeletePatientNameMutation, DeletePatientNameMutationVariables>;
+
+/**
+ * __useDeletePatientNameMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientNameMutation, { data, loading, error }] = useDeletePatientNameMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      personSeqNum: // value for 'personSeqNum'
+ *   },
+ * });
+ */
+export function useDeletePatientNameMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientNameMutation, DeletePatientNameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientNameMutation, DeletePatientNameMutationVariables>(DeletePatientNameDocument, options);
+      }
+export type DeletePatientNameMutationHookResult = ReturnType<typeof useDeletePatientNameMutation>;
+export type DeletePatientNameMutationResult = Apollo.MutationResult<DeletePatientNameMutation>;
+export type DeletePatientNameMutationOptions = Apollo.BaseMutationOptions<DeletePatientNameMutation, DeletePatientNameMutationVariables>;
+export const DeletePatientPhoneDocument = gql`
+    mutation deletePatientPhone($patientId: Int!, $personSeqNum: Int!) {
+  deletePatientPhone(patientId: $patientId, personSeqNum: $personSeqNum) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientPhoneMutationFn = Apollo.MutationFunction<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>;
+
+/**
+ * __useDeletePatientPhoneMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientPhoneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientPhoneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientPhoneMutation, { data, loading, error }] = useDeletePatientPhoneMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      personSeqNum: // value for 'personSeqNum'
+ *   },
+ * });
+ */
+export function useDeletePatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>(DeletePatientPhoneDocument, options);
+      }
+export type DeletePatientPhoneMutationHookResult = ReturnType<typeof useDeletePatientPhoneMutation>;
+export type DeletePatientPhoneMutationResult = Apollo.MutationResult<DeletePatientPhoneMutation>;
+export type DeletePatientPhoneMutationOptions = Apollo.BaseMutationOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>;
+export const DeletePatientRaceDocument = gql`
+    mutation deletePatientRace($patientId: Int!, $raceCd: String!) {
+  deletePatientRace(patientId: $patientId, raceCd: $raceCd) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type DeletePatientRaceMutationFn = Apollo.MutationFunction<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>;
+
+/**
+ * __useDeletePatientRaceMutation__
+ *
+ * To run a mutation, you first call `useDeletePatientRaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePatientRaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePatientRaceMutation, { data, loading, error }] = useDeletePatientRaceMutation({
+ *   variables: {
+ *      patientId: // value for 'patientId'
+ *      raceCd: // value for 'raceCd'
+ *   },
+ * });
+ */
+export function useDeletePatientRaceMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>(DeletePatientRaceDocument, options);
+      }
+export type DeletePatientRaceMutationHookResult = ReturnType<typeof useDeletePatientRaceMutation>;
+export type DeletePatientRaceMutationResult = Apollo.MutationResult<DeletePatientRaceMutation>;
+export type DeletePatientRaceMutationOptions = Apollo.BaseMutationOptions<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>;
+export const UpdateAdministrativeDocument = gql`
+    mutation updateAdministrative($input: AdministrativeInput!) {
+  updateAdministrative(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdateAdministrativeMutationFn = Apollo.MutationFunction<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>;
+
+/**
+ * __useUpdateAdministrativeMutation__
+ *
+ * To run a mutation, you first call `useUpdateAdministrativeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAdministrativeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAdministrativeMutation, { data, loading, error }] = useUpdateAdministrativeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateAdministrativeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>(UpdateAdministrativeDocument, options);
+      }
+export type UpdateAdministrativeMutationHookResult = ReturnType<typeof useUpdateAdministrativeMutation>;
+export type UpdateAdministrativeMutationResult = Apollo.MutationResult<UpdateAdministrativeMutation>;
+export type UpdateAdministrativeMutationOptions = Apollo.BaseMutationOptions<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>;
+export const UpdateEthnicityDocument = gql`
+    mutation updateEthnicity($input: EthnicityInput!) {
+  updateEthnicity(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdateEthnicityMutationFn = Apollo.MutationFunction<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>;
+
+/**
+ * __useUpdateEthnicityMutation__
+ *
+ * To run a mutation, you first call `useUpdateEthnicityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateEthnicityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateEthnicityMutation, { data, loading, error }] = useUpdateEthnicityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateEthnicityMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>(UpdateEthnicityDocument, options);
+      }
+export type UpdateEthnicityMutationHookResult = ReturnType<typeof useUpdateEthnicityMutation>;
+export type UpdateEthnicityMutationResult = Apollo.MutationResult<UpdateEthnicityMutation>;
+export type UpdateEthnicityMutationOptions = Apollo.BaseMutationOptions<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>;
 export const UpdateMortalityDocument = gql`
     mutation updateMortality($input: MortalityInput!) {
   updateMortality(input: $input) {
@@ -2326,6 +3143,74 @@ export function useUpdateMortalityMutation(baseOptions?: Apollo.MutationHookOpti
 export type UpdateMortalityMutationHookResult = ReturnType<typeof useUpdateMortalityMutation>;
 export type UpdateMortalityMutationResult = Apollo.MutationResult<UpdateMortalityMutation>;
 export type UpdateMortalityMutationOptions = Apollo.BaseMutationOptions<UpdateMortalityMutation, UpdateMortalityMutationVariables>;
+export const UpdatePatientAddressDocument = gql`
+    mutation updatePatientAddress($input: AddressInput!) {
+  updatePatientAddress(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdatePatientAddressMutationFn = Apollo.MutationFunction<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>;
+
+/**
+ * __useUpdatePatientAddressMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientAddressMutation, { data, loading, error }] = useUpdatePatientAddressMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientAddressMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>(UpdatePatientAddressDocument, options);
+      }
+export type UpdatePatientAddressMutationHookResult = ReturnType<typeof useUpdatePatientAddressMutation>;
+export type UpdatePatientAddressMutationResult = Apollo.MutationResult<UpdatePatientAddressMutation>;
+export type UpdatePatientAddressMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>;
+export const UpdatePatientEmailDocument = gql`
+    mutation updatePatientEmail($input: EmailInput!) {
+  updatePatientEmail(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdatePatientEmailMutationFn = Apollo.MutationFunction<UpdatePatientEmailMutation, UpdatePatientEmailMutationVariables>;
+
+/**
+ * __useUpdatePatientEmailMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientEmailMutation, { data, loading, error }] = useUpdatePatientEmailMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientEmailMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientEmailMutation, UpdatePatientEmailMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientEmailMutation, UpdatePatientEmailMutationVariables>(UpdatePatientEmailDocument, options);
+      }
+export type UpdatePatientEmailMutationHookResult = ReturnType<typeof useUpdatePatientEmailMutation>;
+export type UpdatePatientEmailMutationResult = Apollo.MutationResult<UpdatePatientEmailMutation>;
+export type UpdatePatientEmailMutationOptions = Apollo.BaseMutationOptions<UpdatePatientEmailMutation, UpdatePatientEmailMutationVariables>;
 export const UpdatePatientGeneralInfoDocument = gql`
     mutation updatePatientGeneralInfo($input: GeneralInfoInput!) {
   updatePatientGeneralInfo(input: $input) {
@@ -2360,6 +3245,142 @@ export function useUpdatePatientGeneralInfoMutation(baseOptions?: Apollo.Mutatio
 export type UpdatePatientGeneralInfoMutationHookResult = ReturnType<typeof useUpdatePatientGeneralInfoMutation>;
 export type UpdatePatientGeneralInfoMutationResult = Apollo.MutationResult<UpdatePatientGeneralInfoMutation>;
 export type UpdatePatientGeneralInfoMutationOptions = Apollo.BaseMutationOptions<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>;
+export const UpdatePatientIdentificationDocument = gql`
+    mutation updatePatientIdentification($input: IdentificationInput!) {
+  updatePatientIdentification(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdatePatientIdentificationMutationFn = Apollo.MutationFunction<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>;
+
+/**
+ * __useUpdatePatientIdentificationMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientIdentificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientIdentificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientIdentificationMutation, { data, loading, error }] = useUpdatePatientIdentificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientIdentificationMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>(UpdatePatientIdentificationDocument, options);
+      }
+export type UpdatePatientIdentificationMutationHookResult = ReturnType<typeof useUpdatePatientIdentificationMutation>;
+export type UpdatePatientIdentificationMutationResult = Apollo.MutationResult<UpdatePatientIdentificationMutation>;
+export type UpdatePatientIdentificationMutationOptions = Apollo.BaseMutationOptions<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>;
+export const UpdatePatientNameDocument = gql`
+    mutation updatePatientName($input: NameInput!) {
+  updatePatientName(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdatePatientNameMutationFn = Apollo.MutationFunction<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>;
+
+/**
+ * __useUpdatePatientNameMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientNameMutation, { data, loading, error }] = useUpdatePatientNameMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientNameMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>(UpdatePatientNameDocument, options);
+      }
+export type UpdatePatientNameMutationHookResult = ReturnType<typeof useUpdatePatientNameMutation>;
+export type UpdatePatientNameMutationResult = Apollo.MutationResult<UpdatePatientNameMutation>;
+export type UpdatePatientNameMutationOptions = Apollo.BaseMutationOptions<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>;
+export const UpdatePatientPhoneDocument = gql`
+    mutation updatePatientPhone($input: PhoneInput!) {
+  updatePatientPhone(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdatePatientPhoneMutationFn = Apollo.MutationFunction<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>;
+
+/**
+ * __useUpdatePatientPhoneMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientPhoneMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientPhoneMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientPhoneMutation, { data, loading, error }] = useUpdatePatientPhoneMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>(UpdatePatientPhoneDocument, options);
+      }
+export type UpdatePatientPhoneMutationHookResult = ReturnType<typeof useUpdatePatientPhoneMutation>;
+export type UpdatePatientPhoneMutationResult = Apollo.MutationResult<UpdatePatientPhoneMutation>;
+export type UpdatePatientPhoneMutationOptions = Apollo.BaseMutationOptions<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>;
+export const UpdatePatientRaceDocument = gql`
+    mutation updatePatientRace($input: RaceInput!) {
+  updatePatientRace(input: $input) {
+    requestId
+    patientId
+  }
+}
+    `;
+export type UpdatePatientRaceMutationFn = Apollo.MutationFunction<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>;
+
+/**
+ * __useUpdatePatientRaceMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientRaceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientRaceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientRaceMutation, { data, loading, error }] = useUpdatePatientRaceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientRaceMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>(UpdatePatientRaceDocument, options);
+      }
+export type UpdatePatientRaceMutationHookResult = ReturnType<typeof useUpdatePatientRaceMutation>;
+export type UpdatePatientRaceMutationResult = Apollo.MutationResult<UpdatePatientRaceMutation>;
+export type UpdatePatientRaceMutationOptions = Apollo.BaseMutationOptions<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>;
 export const UpdatePatientSexBirthDocument = gql`
     mutation updatePatientSexBirth($input: UpdateSexAndBirthInput!) {
   updatePatientSexBirth(input: $input) {
@@ -4427,6 +5448,7 @@ export const FindPatientProfileDocument = gql`
     local
     shortId
     version
+    deletable
     summary(asOf: $asOf) {
       legalName {
         prefix

@@ -57,7 +57,26 @@ public class PatientMother {
 
         long shortId = this.resolver.resolve(local).orElse(0L);
 
-        identifiers.available(new PatientIdentifier(patient.getId(),  shortId, local));
+        identifiers.available(new PatientIdentifier(patient.getId(), shortId, local));
         return patient;
+    }
+
+    public PatientIdentifier revise(final PatientIdentifier identifier) {
+        Person parent = this.entityManager.find(Person.class, identifier.id());
+
+        long id = idGenerator.next();
+
+        Person revision = parent.revise(
+            new PatientCommand.Revise(
+                identifier.id(),
+                id,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+
+        this.entityManager.persist(revision);
+
+        return new PatientIdentifier(id, identifier.shortId(), identifier.local());
     }
 }

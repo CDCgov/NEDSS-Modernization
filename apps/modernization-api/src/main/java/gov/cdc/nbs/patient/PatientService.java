@@ -1,18 +1,41 @@
 package gov.cdc.nbs.patient;
 
-import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
-import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.querydsl.BlazeJPAQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import gov.cdc.nbs.authentication.UserService;
+import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
+import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.QLabEvent;
+import gov.cdc.nbs.entity.odse.QOrganization;
+import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.exception.QueryException;
+import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.graphql.filter.OrganizationFilter;
+import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
+import gov.cdc.nbs.message.patient.input.AddressInput;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
+import gov.cdc.nbs.message.patient.input.EmailInput;
+import gov.cdc.nbs.message.patient.input.EthnicityInput;
+import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.IdentificationInput;
+import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.NameInput;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PhoneInput;
+import gov.cdc.nbs.message.patient.input.RaceInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
+import gov.cdc.nbs.message.util.Constants;
+import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
+import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
+import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.time.FlexibleInstantConverter;
+import graphql.com.google.common.collect.Ordering;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -32,35 +55,19 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
-import com.blazebit.persistence.CriteriaBuilderFactory;
-import com.blazebit.persistence.querydsl.BlazeJPAQuery;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import gov.cdc.nbs.authentication.UserService;
-import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.QLabEvent;
-import gov.cdc.nbs.entity.odse.QOrganization;
-import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.exception.QueryException;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.filter.OrganizationFilter;
-import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
-import gov.cdc.nbs.message.util.Constants;
-import gov.cdc.nbs.model.PatientEventResponse;
-import gov.cdc.nbs.patient.create.PatientCreateRequestResolver;
-import gov.cdc.nbs.patient.kafka.KafkaProducer;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.time.FlexibleInstantConverter;
-import graphql.com.google.common.collect.Ordering;
-import lombok.RequiredArgsConstructor;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Function;
+
+import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
+import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -80,9 +87,10 @@ public class PatientService {
     private final PersonRepository personRepository;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
-    private final KafkaProducer producer;
+    private final PatientEventRequester requester;
     private final PatientCreateRequestResolver createRequestResolver;
     private final UserService userService;
+    private final PatientLocalIdentifierResolver resolver;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -141,7 +149,19 @@ public class PatientService {
         builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.CD_FIELD, "PAT"));
 
         if (filter.getId() != null) {
-            builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, filter.getId()));
+            String shortOrLongIdStripped = filter.getId().strip();
+            if (Character.isDigit(shortOrLongIdStripped.charAt(0))) {
+                try {
+                    long shortId = Long.parseLong(filter.getId());
+
+                    String localId = resolver.resolve(shortId);
+                    builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, localId));
+                } catch (NumberFormatException exception) {
+                    // skip this criteria. it's not a short id or long id
+                }
+            } else {
+                builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.LOCAL_ID, filter.getId()));
+            }
         }
 
         if (filter.getFirstName() != null && !filter.getFirstName().isEmpty()) {
@@ -426,12 +446,6 @@ public class PatientService {
         return sendPatientEvent(event);
     }
 
-    public PatientEventResponse deletePatientName(Long patientId, Short personNameSeq) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteName(getRequestId(), patientId, personNameSeq, user.getId());
-        return sendPatientEvent(event);
-    }
-
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
@@ -450,15 +464,8 @@ public class PatientService {
         return sendPatientEvent(updateMortalityEvent);
     }
 
-    public PatientEventResponse sendDeletePatientEvent(Long patientId) {
-        var user = SecurityUtil.getUserDetails();
-        var deleteEvent = new PatientRequest.Delete(getRequestId(), patientId, user.getId());
-        return sendPatientEvent(deleteEvent);
-    }
-
     private PatientEventResponse sendPatientEvent(PatientRequest request) {
-        producer.requestPatientEventEnvelope(request);
-        return new PatientEventResponse(request.requestId(), request.patientId());
+        return this.requester.request(request);
     }
 
     private String addWildcards(String searchString) {
@@ -493,5 +500,101 @@ public class PatientService {
 
     private String getRequestId() {
         return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
+    }
+
+    public PatientEventResponse addPatientIdentification(IdentificationInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteIdentification(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse addPatientAddress(AddressInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = AddressInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientAddress(AddressInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteAddress(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse addPatientRace(RaceInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = RaceInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientRace(RaceInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = RaceInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientRace(Long patientId, String raceCd) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteRace(getRequestId(), patientId, raceCd, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updateEthnicity(EthnicityInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var updateEthnicityEvent = EthnicityInput.toRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(updateEthnicityEvent);
+    }
+
+    public PatientEventResponse addPatientPhone(PhoneInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientPhone(PhoneInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = PhoneInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientPhone(Long patientId, long id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeletePhone(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse addPatientEmail(EmailInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = EmailInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientEmail(EmailInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = EmailInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientEmail(Long patientId, long id) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteEmail(getRequestId(), patientId, id, user.getId());
+        return sendPatientEvent(event);
     }
 }

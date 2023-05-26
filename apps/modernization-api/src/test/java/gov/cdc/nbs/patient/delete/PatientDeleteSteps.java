@@ -1,53 +1,52 @@
-package gov.cdc.nbs.patient;
+package gov.cdc.nbs.patient.delete;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.service.KafkaTestConsumer;
-import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.TimeUnit;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles("test")
 public class PatientDeleteSteps {
 
     @Autowired
-    private PatientController patientController;
+    TestActiveUser activeUser;
 
     @Autowired
-    private KafkaTestConsumer consumer;
+    TestPatientIdentifier patients;
 
     @Autowired
-    private ObjectMapper mapper;
+    PatientDeleteController controller;
+
+    @Autowired
+    KafkaTestConsumer consumer;
 
     @Before
-    public void resetConsumer() {
-        consumer.resetLatch();
+    public void reset() {
+        consumer.reset();
+        response = null;
+        accessDeniedException = null;
     }
 
     private PatientEventResponse response;
     private AccessDeniedException accessDeniedException;
-    private long patientId = 123L;
 
     @When("I send a patient delete request")
     public void i_send_a_patient_delete_request() {
+
+        long patient = patients.one().id();
+
         try {
-            response = patientController.deletePatient(patientId);
+            response = controller.delete(patient);
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
         }
@@ -55,21 +54,22 @@ public class PatientDeleteSteps {
 
     @Then("the delete request is posted to kafka")
     public void the_delete_request_is_posted_to_kafka()
-            throws JsonProcessingException, InterruptedException {
+        throws JsonProcessingException, InterruptedException {
         assertNull(accessDeniedException);
         assertNotNull(response);
-        boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
 
-        assertTrue(messageConsumed);
+        assertThat(consumer.consumed()).isTrue();
 
         var key = consumer.getKey();
-        assertEquals(response.getRequestId(), key);
 
-        var payload = mapper.readValue((String) consumer.getPayload(), PatientRequest.Delete.class);
+        assertThat(response.getRequestId()).isEqualTo(key);
 
-        assertEquals(response.getRequestId(), payload.requestId());
-        assertEquals(response.getPatientId(), payload.patientId());
-        assertEquals(UserUtil.getCurrentUserId(), payload.userId());
+        var payload = consumer.payload(PatientRequest.Delete.class);
+
+        assertThat(payload.requestId()).isEqualTo(response.getRequestId());
+        assertThat(payload.patientId()).isEqualTo(response.getPatientId());
+        assertThat(payload.userId()).isEqualTo(activeUser.active().id());
+
     }
 
     @Then("I get an access denied exception for patient delete")

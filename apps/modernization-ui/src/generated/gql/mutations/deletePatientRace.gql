@@ -1,0 +1,6 @@
+mutation deletePatientRace($patientId: Int!, $raceCd: String!){
+    deletePatientRace(patientId: $patientId, raceCd: $raceCd){
+        requestId
+        patientId
+    }
+}

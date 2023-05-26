@@ -1,125 +1,92 @@
 package gov.cdc.nbs.patientlistener.request.delete;
 
-import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patientlistener.request.PatientRequestException;
+import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
-import gov.cdc.nbs.patientlistener.request.UserNotAuthorizedException;
+import gov.cdc.nbs.patientlistener.request.PatientRequestException;
 import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
-import gov.cdc.nbs.repository.PersonRepository;
-import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
+import javax.persistence.EntityManager;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class PatientDeleteRequestHandlerTest {
     @Mock
-    private UserService userService;
+    private PatientDeletionCheck check;
+
     @Mock
     private PatientDeleter patientDeleter;
     @Mock
     private PatientRequestStatusProducer statusProducer;
     @Mock
-    private PersonRepository personRepository;
-    @Mock
-    private ElasticsearchPersonRepository elasticsearchPersonRepository;
+    private EntityManager entityManager;
 
     @InjectMocks
-    private PatientDeleteRequestHandler deleteRequestHandler;
-
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
+    private PatientDeleteRequestHandler handler;
 
     @Test
-    void testSuccess() {
-        // set valid mock returns
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Person(123L, "localId")));
-        when(personRepository.findCountOfActiveRevisions(123L)).thenReturn(1L);
-        when(patientDeleter.delete(Mockito.any(), Mockito.anyLong())).thenAnswer(i->i.getArguments()[0]);
+    void should_delete_the_patient() {
+        // Given the user can delete a patient
+        //  And I have a patient
+        when(entityManager.find(eq(Person.class), Mockito.anyLong())).thenReturn(new Person(123L, "localId"));
+        //  And the user is not associated with any events
+        when(patientDeleter.delete(Mockito.any(), Mockito.anyLong())).thenAnswer(i -> i.getArguments()[0]);
 
-        // call handle delete
-        deleteRequestHandler.handlePatientDelete("key", 123L, 321L);
+        //  When the patient is deleted
+        PatientRequest.Delete request = new PatientRequest.Delete("key", 123L, 321L);
+        handler.handle(request);
 
         // verify success status, elasticsearch insert call
-        verify(statusProducer).successful(eq("key"), Mockito.anyString(), eq(123L));
-        verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
+        verify(statusProducer).successful(eq("key"), anyString(), eq(123L));
     }
 
     @Test
-    void testTooManyActiveRevisions() {
-        // set valid mock returns
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Person(123L, "localId")));
-        when(personRepository.findCountOfActiveRevisions(123L)).thenReturn(2L);
-        when(patientDeleter.delete(Mockito.any(), Mockito.anyLong())).thenAnswer(i->i.getArguments()[0]);
+    void should_not_delete_patient_when_checks_fail() {
+        // Given the user can delete a patient
+        //  And I have a patient
+        //  And the patient is associated with at least one event
+        doThrow(new PatientRequestException("", "")).when(check).check(Mockito.any());
 
-        PatientRequestException ex = null;
+        //  When the patient is deleted
+        PatientRequest.Delete request = new PatientRequest.Delete("key", 123L, 321L);
 
-        // call handle delete
-        try {
-        deleteRequestHandler.handlePatientDelete("key", 123L, 321L);} catch (PatientRequestException e) {
-            ex = e;
-        }
+        assertThatThrownBy(() -> handler.handle(request))
+            .isInstanceOf(PatientRequestException.class);
 
         // verify exception thrown, No calls made to perform deletion
-        assertNotNull(ex);
-        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
+
         verify(patientDeleter, times(0)).delete(Mockito.any(), Mockito.anyLong());
     }
 
     @Test
-    void testUnauthorized() {
-        // set authorize check to return false
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
-
-        UserNotAuthorizedException ex = null;
-        
-        // call handle delete
-        try {
-        deleteRequestHandler.handlePatientDelete("key", 123L, 321L);} 
-        catch(UserNotAuthorizedException e) {
-            ex= e;
-        }
-
-        // verify exception thrown. No calls made to perform deletion
-        assertNotNull(ex);
-        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-        verify(patientDeleter, times(0)).delete(Mockito.any(), Mockito.anyLong());
-    }
-
-    @Test
-    void testPatientNotFound() {
-        // set authorized check to return true
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+    void should_not_delete_when_patient_is_not_found() {
+        // Given the user can delete a patient
+        //  And the patient is associated with at least one event
         // set personRepository to return empty for Id
-        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
-        PatientNotFoundException ex = null;
-        
         // call handle delete
-        try {
-        deleteRequestHandler.handlePatientDelete("key", 123L, 321L);} 
-        catch(PatientNotFoundException e) {
-            ex= e;
-        }
+        PatientRequest.Delete request = new PatientRequest.Delete("key", 123L, 321L);
+
+        assertThatThrownBy(
+            () -> handler.handle(request)
+        )
+            .isInstanceOf(PatientNotFoundException.class)
+        ;
 
         // verify exception thrown. No calls made to perform deletion
-        assertNotNull(ex);
-        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
         verify(patientDeleter, times(0)).delete(Mockito.any(), Mockito.anyLong());
     }
 

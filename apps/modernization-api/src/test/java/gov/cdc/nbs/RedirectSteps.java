@@ -204,7 +204,7 @@ public class RedirectSteps {
         MockHttpServletResponse response = activeResponse.active();
         var userIdCookie = response.getCookie("nbs_user");
         assertNotNull(userIdCookie);
-        assertEquals(activeUser.active(), userIdCookie.getValue());
+        assertEquals(activeUser.active().username(), userIdCookie.getValue());
     }
 
 

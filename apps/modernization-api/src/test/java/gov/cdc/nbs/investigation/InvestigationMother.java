@@ -64,7 +64,7 @@ public class InvestigationMother {
         return investigation;
     }
 
-    private Participation subjectOf(final Act act, final long patient) {
+    private void subjectOf(final Act act, final long patient) {
 
         // create the participation
         ParticipationId identifier = new ParticipationId(patient, act.getId(), "SubjOfPHC");
@@ -82,6 +82,5 @@ public class InvestigationMother {
 
         act.addParticipation(participation);
 
-        return participation;
     }
 }

@@ -9,8 +9,8 @@ public class TestActive<I> {
 
     private I active;
 
-    public void active(final I session) {
-        this.active = session;
+    public void active(final I identifier) {
+        this.active = identifier;
     }
 
     public void reset() {

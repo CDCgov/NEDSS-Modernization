@@ -93,6 +93,7 @@ class PersonTest {
                 new PatientCommand.AddRace(
                         117L,
                         "race-code-value",
+                        "race-category-value",
                         131L,
                         Instant.parse("2020-03-03T10:15:30.00Z")));
 

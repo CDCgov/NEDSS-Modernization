@@ -1,14 +1,15 @@
 package gov.cdc.nbs.questionbank.config;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.authentication.JWTFilter;
+import graphql.GraphQLError;
+import graphql.GraphqlErrorBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -20,12 +21,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authentication.JWTFilter;
-import gov.cdc.nbs.authentication.config.AuthenticationConfig;
-import graphql.GraphQLError;
-import graphql.GraphqlErrorBuilder;
-import lombok.RequiredArgsConstructor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @Configuration
@@ -33,9 +32,8 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @ConditionalOnProperty("nbs.security.enabled")
-@Import(AuthenticationConfig.class)
-@EnableJpaRepositories({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
-@EntityScan({"gov.cdc.nbs.questionbank", "gov.cdc.nbs.authentication"})
+@EnableJpaRepositories({"gov.cdc.nbs.questionbank"})
+@EntityScan({"gov.cdc.nbs.questionbank"})
 public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
     private final ObjectMapper mapper;

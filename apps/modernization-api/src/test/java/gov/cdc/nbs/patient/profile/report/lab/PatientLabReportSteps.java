@@ -1,6 +1,9 @@
 package gov.cdc.nbs.patient.profile.report.lab;
 
+import gov.cdc.nbs.patient.PatientMother;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PatientLabReportSteps {
 
     @Autowired
-    TestPatients patients;
+    TestPatientIdentifier patients;
+
+    @Autowired
+    PatientMother patientMother;
 
     @Autowired
     LabReportMother mother;
@@ -22,8 +28,8 @@ public class PatientLabReportSteps {
 
     @When("the patient has a lab Report")
     public void the_patient_has_a_lab_report() {
-        long patient =patients.one();
+        PatientIdentifier revision = patientMother.revise(patients.one());
 
-        mother.labReport(patient);
+        mother.labReport(revision.id());
     }
 }

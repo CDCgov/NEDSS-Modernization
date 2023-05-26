@@ -78,6 +78,7 @@ class PatientCreator {
         return new PatientCommand.AddRace(
                 request.patient(),
                 race,
+                race,
                 request.createdBy(),
                 request.createdAt());
     }

@@ -4,6 +4,5 @@ import gov.cdc.nbs.support.TestActive;
 import org.springframework.stereotype.Component;
 
 @Component
-public
-class TestActiveUser extends TestActive<String> {
+public class TestActiveUser extends TestActive<ActiveUser> {
 }

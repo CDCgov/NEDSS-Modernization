@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -30,18 +31,15 @@ public class NBSEntity {
     @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Participation> participations;
 
-    @OneToMany(
-            mappedBy = "id.entityUid",
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            },
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<EntityLocatorParticipation> entityLocatorParticipations;
 
-    protected NBSEntity() {}
+    protected NBSEntity() {
+    }
 
     public NBSEntity(Long id, String classCd) {
         this.id = id;
@@ -74,8 +72,36 @@ public class NBSEntity {
 
         locators.add(participation);
 
-
         return participation;
+    }
+
+    public Optional<EntityLocatorParticipation> update(
+            final PatientCommand.UpdateAddress address) {
+
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
+        List<EntityLocatorParticipation> existing = ensureLocators();
+        Optional<EntityLocatorParticipation> elp = existing.stream()
+                .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
+        if (elp.isPresent()) {
+            PostalLocator pl = ((PostalEntityLocatorParticipation) elp.get()).getLocator();
+            pl.setStreetAddr1(address.address1());
+            pl.setStreetAddr2(address.address2());
+            pl.setCensusTract(address.censusTract());
+            pl.setCityCd(address.city().code());
+            pl.setCntryCd(address.country().code());
+            pl.setStateCd(address.state());
+            pl.setZipCd(address.zip());
+        }
+        return elp;
+    }
+
+    public boolean delete(
+            final PatientCommand.DeleteAddress address) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
@@ -90,8 +116,28 @@ public class NBSEntity {
 
         locators.add(participation);
 
-
         return participation;
+    }
+
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
+        List<EntityLocatorParticipation> existing = ensureLocators();
+        Optional<EntityLocatorParticipation> elp = existing.stream()
+                .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
+        if (elp.isPresent()) {
+            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
+            pl.setPhoneNbrTxt(phoneNumber.number());
+            pl.setExtensionTxt(phoneNumber.extension());
+        }
+        return elp;
+    }
+
+    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
@@ -106,8 +152,27 @@ public class NBSEntity {
 
         locators.add(participation);
 
-
         return participation;
+    }
+
+    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, emailAddress.id());
+        List<EntityLocatorParticipation> existing = ensureLocators();
+        Optional<EntityLocatorParticipation> elp = existing.stream()
+                .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
+        if (elp.isPresent()) {
+            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
+            pl.setEmailAddress(emailAddress.email());
+        }
+        return elp;
+    }
+
+    public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, emailAddress.id());
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 
     public EntityLocatorParticipation add(AddMortalityLocator mortality) {
@@ -126,5 +191,13 @@ public class NBSEntity {
         locators.add(participation);
 
         return participation;
+    }
+
+    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
+        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
+        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
+        this.entityLocatorParticipations = elps;
+        return isDeleted;
     }
 }
