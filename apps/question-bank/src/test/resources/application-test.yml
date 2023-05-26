@@ -1,3 +1,6 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:19092
 testing:
   database:
     image: cdc-sandbox-test-db 
