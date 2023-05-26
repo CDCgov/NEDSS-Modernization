@@ -1,5 +1,5 @@
 type Mutation {
-	deleteQuestion(patientId: ID!): QuestionBankEventResponse!
+  deleteQuestion(patientId: ID!): QuestionBankEventResponse!
   createTextQuestion(data: TextQuestionData!): QuestionResponse!
   createDateQuestion(data: DateQuestionData!): QuestionResponse!
   createDropdownQuestion(data: DropDownQuestionData!): QuestionResponse!
