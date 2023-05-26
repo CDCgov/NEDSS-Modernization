@@ -258,6 +258,7 @@ input EthnicityInput {
     patientId: ID!
     asOf: DateTime
     ethnicityCode: String!
+    ethnicUnkReasonCd: String
 }
 
 input IdentificationInput {

@@ -1514,6 +1514,7 @@ export type PersonInput = {
   deceased?: InputMaybe<Deceased>;
   deceasedTime?: InputMaybe<Scalars['DateTime']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  ethnicUnkReasonCd?: InputMaybe<Scalars['String']>;
   ethnicityCode?: InputMaybe<Scalars['String']>;
   hIVCaseId?: InputMaybe<Scalars['String']>;
   highestEducationLvl?: InputMaybe<Scalars['String']>;
