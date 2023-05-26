@@ -3,22 +3,34 @@ package gov.cdc.nbs.questionbank.questionnaire.model;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 
 public record Questionnaire(
         UUID id,
         List<String> conditions,
-        List<Element> elements) {
+        List<Tab> tabs) {
 
+    public record Tab(String name, List<Element> elements) {
+    }
     public sealed interface Element permits Section, DisplayElement {
 
     }
 
     public sealed interface DisplayElement extends Element
             permits Text,
-            TextQuestion,
+            Question {
+        UUID id();
+
+        Integer version();
+    }
+
+    public sealed interface Question extends DisplayElement
+            permits TextQuestion,
             NumericQuestion,
             DateQuestion,
-            DropDownQuestion {
+            DropdownQuestion {
+        CodeSet codeSet();
+
     }
 
     public record Section(
@@ -39,7 +51,9 @@ public record Questionnaire(
             String label,
             String tooltip,
             Integer maxLength,
-            String placeholder) implements DisplayElement {
+            String placeholder,
+            String defaultValue,
+            CodeSet codeSet) implements Question {
     }
 
     public record NumericQuestion(
@@ -49,17 +63,20 @@ public record Questionnaire(
             String tooltip,
             Integer minValue,
             Integer maxValue,
-            OptionSet unitOptions) implements DisplayElement {
+            Integer defaultValue,
+            OptionSet unitOptions,
+            CodeSet codeSet) implements Question {
     }
 
-    public record DropDownQuestion(
+    public record DropdownQuestion(
             UUID id,
             Integer version,
             String label,
             String tooltip,
             OptionSet optionSet,
             Option defaultOption,
-            boolean isMultiSelect) implements DisplayElement {
+            boolean isMultiSelect,
+            CodeSet codeSet) implements Question {
     }
 
     public record DateQuestion(
@@ -67,7 +84,8 @@ public record Questionnaire(
             Integer version,
             String label,
             String tooltip,
-            boolean allowFutureDates) implements DisplayElement {
+            boolean allowFutureDates,
+            CodeSet codeSet) implements Question {
     }
 
     public record OptionSet(

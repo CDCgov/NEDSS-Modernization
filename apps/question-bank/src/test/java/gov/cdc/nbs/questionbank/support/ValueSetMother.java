@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.entities.ValueSet.ValueSetType;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 
 @Component
@@ -32,7 +32,7 @@ public class ValueSetMother {
         valueSet.setCode("yesNoUnknownCode");
         valueSet.setDescription("yesNoUnknown value set used for testing");
         valueSet.setName(YES_NO_UNKNOWN);
-        valueSet.setType(ValueSetType.LOCAL);
+        valueSet.setCodeSet(CodeSet.LOCAL);
         valueSet.setValues(values);
 
         return repository.save(valueSet);

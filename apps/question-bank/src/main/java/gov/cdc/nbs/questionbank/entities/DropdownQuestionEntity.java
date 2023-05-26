@@ -50,6 +50,7 @@ public class DropdownQuestionEntity extends DisplayElementEntity {
         this.valueSet = command.valueSet();
         this.defaultAnswer = command.defaultValue();
         this.multiSelect = command.isMultiSelect();
+        this.setCodeSet(command.codeSet());
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);
     }

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Table(name = "group_or_element_ref", catalog = "question_bank")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "reference_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Reference {
+public abstract class ReferenceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +33,8 @@ public abstract class Reference {
     private Integer displayOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionnaire_id", nullable = false)
-    private QuestionnaireEntity questionnaire;
+    @JoinColumn(name = "tab_id", nullable = false)
+    private TabEntity tab;
 
     public abstract String getReferenceType();
 

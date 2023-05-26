@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @DiscriminatorValue(DisplayElementRef.TYPE)
-public class DisplayElementRef extends Reference {
+public class DisplayElementRef extends ReferenceEntity {
     static final String TYPE = "display_element";
 
     @OneToOne(fetch = FetchType.EAGER)

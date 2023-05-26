@@ -1,4 +1,3 @@
-
     create table question_bank.dbo.display_element (
        display_type varchar(31) not null,
         id uniqueidentifier not null,
@@ -9,17 +8,18 @@
         last_update_user bigint not null,
         status varchar(20) not null,
         status_time datetime2 not null,
+        code_set varchar(20) not null,
         allow_future_dates bit,
         label varchar(300),
-        tooltip varchar(255),
-        default_text_value varchar(255),
+        tooltip varchar(200),
         multiselect bit,
+        default_numeric_value int,
         max_value int,
         min_value int,
-        default_numeric_value int,
         text varchar(255),
+        default_text_value varchar(255),
         max_length int,
-        placeholder varchar(255),
+        placeholder varchar(100),
         default_answer_id uniqueidentifier,
         value_set_id uniqueidentifier,
         units_set uniqueidentifier,
@@ -37,7 +37,7 @@
        reference_type varchar(31) not null,
         id bigint identity not null,
         display_order int not null,
-        questionnaire_id uniqueidentifier not null,
+        tab_id uniqueidentifier not null,
         display_element_id uniqueidentifier,
         display_element_version int,
         group_id int,
@@ -47,14 +47,25 @@
 
     create table question_bank.dbo.questionnaire (
        id uniqueidentifier not null,
+        version int not null,
         description varchar(500),
         name varchar(255),
-        primary key nonclustered (id)
+        primary key nonclustered (id, version)
     );
 
     create table question_bank.dbo.questionnaire_rule (
        id uniqueidentifier not null,
-        questionnaire_id uniqueidentifier,
+        questionnaire_id uniqueidentifier not null,
+        version int not null,
+        primary key nonclustered (id)
+    );
+
+    create table question_bank.dbo.tab (
+       id uniqueidentifier not null,
+        display_order int not null,
+        name varchar(100) not null,
+        questionnaire_id uniqueidentifier not null,
+        version int not null,
         primary key nonclustered (id)
     );
 
@@ -74,7 +85,7 @@
         code varchar(255) not null,
         description varchar(300),
         name varchar(255) not null,
-        type varchar(255) not null,
+        code_set varchar(20) not null,
         primary key nonclustered (id)
     );
 
@@ -89,6 +100,7 @@
 
     create table dbo.questionnaire_conditions (
        questionnaire_id uniqueidentifier not null,
+        questionnaire_version int not null,
         condition_codes varchar(255)
     );
 
@@ -111,9 +123,9 @@
        references question_bank.dbo.value_set;
 
     alter table question_bank.dbo.group_or_element_ref 
-       add constraint FKhombk3318f2gjg7rj2gw63r3h 
-       foreign key (questionnaire_id) 
-       references question_bank.dbo.questionnaire;
+       add constraint FKj4xcdcd32serk2e9sbamkcfte 
+       foreign key (tab_id) 
+       references question_bank.dbo.tab;
 
     alter table question_bank.dbo.group_or_element_ref 
        add constraint FK98f1j618ub117an4ovl5y6jv2 
@@ -126,8 +138,13 @@
        references question_bank.dbo.display_element_group;
 
     alter table question_bank.dbo.questionnaire_rule 
-       add constraint FK2m2g4ebe8m5ejl29cktnehj2b 
-       foreign key (questionnaire_id) 
+       add constraint FKhh0hnrxhvrkg00mdj8joul74o 
+       foreign key (questionnaire_id, version) 
+       references question_bank.dbo.questionnaire;
+
+    alter table question_bank.dbo.tab 
+       add constraint FK1yfpk1pgtssw29pmejyw14et7 
+       foreign key (questionnaire_id, version) 
        references question_bank.dbo.questionnaire;
 
     alter table question_bank.dbo.[value] 
@@ -146,6 +163,6 @@
        references question_bank.dbo.display_element_group;
 
     alter table dbo.questionnaire_conditions 
-       add constraint FK8bhsllvenpcqne8qk5s1grebn 
-       foreign key (questionnaire_id) 
+       add constraint FKtkfc1ypw3m4xffsp9f9mxw11v 
+       foreign key (questionnaire_id, questionnaire_version) 
        references question_bank.dbo.questionnaire;
