@@ -86,9 +86,9 @@ public class QuestionHandler {
 		producer.requestEventEnvelope(request);
 		return new QuestionBankEventResponse(request.requestId(), questionId);
 	}
-	public QuestionBankEventResponse sendUpdateQuestionEvent(Long questionId, String title, String description) {
+	public QuestionBankEventResponse sendUpdateQuestionEvent(Long questionId) {
 		var user = SecurityUtil.getUserDetails();
-		var updateEvent = new QuestionRequest.UpdateTextQuestionRequest(getRequestId(), questionId, user.getId(), title, description);
+		var updateEvent = new QuestionRequest.UpdateTextQuestionRequest(getRequestId(), questionId, user.getId());
 		return sendQuestionUpdateEvent(updateEvent, questionId);
 	}
 

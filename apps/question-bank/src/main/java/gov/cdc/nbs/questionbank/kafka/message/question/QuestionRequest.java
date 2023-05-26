@@ -17,11 +17,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
     record UpdateTextQuestionRequest(
             String requestId,
             long questionId,
-            long userId,
-            String label,
-            String tooltip,
-            Integer maxLength,
-            String placeholder) implements QuestionRequest {
+            long userId
+    ) implements QuestionRequest {
     }
     
     record DeleteQuestionRequest(
