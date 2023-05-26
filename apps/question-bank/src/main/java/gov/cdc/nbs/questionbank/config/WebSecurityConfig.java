@@ -1,10 +1,8 @@
 package gov.cdc.nbs.questionbank.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.authentication.JWTFilter;
-import graphql.GraphQLError;
-import graphql.GraphqlErrorBuilder;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -21,10 +19,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.authentication.JWTFilter;
+import graphql.GraphQLError;
+import graphql.GraphqlErrorBuilder;
+import lombok.RequiredArgsConstructor;
 
 
 @Configuration
@@ -42,6 +41,10 @@ public class WebSecurityConfig {
     private String graphQLEndpoint;
 
     @Bean
+    @SuppressWarnings("squid:S4502")
+    // Stateless applications implementing Bearer JWT scheme are protected against CSRF
+    // https://www.baeldung.com/spring-security-csrf#:~:text=If%20our%20stateless%20API%20uses,as%20we'll%20see%20next.
+    // https://docs.spring.io/spring-security/reference/features/exploits/csrf.html#csrf-protection-ssa
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
                 .antMatchers("/graphiql")
