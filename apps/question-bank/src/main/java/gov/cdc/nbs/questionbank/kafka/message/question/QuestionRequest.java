@@ -12,6 +12,10 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             int maxLength,
             String placeholder) implements QuestionRequest {
 
+        @Override
+        public long userId() {
+            return 0;
+        }
     }
 
     record UpdateTextQuestionRequest(
