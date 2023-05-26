@@ -1,8 +1,10 @@
+server:
+  port: 8095
 nbs:
   datasource:
     server: localhost
   security:
-    enabled: false
+    enabled: true
     tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
@@ -32,14 +34,14 @@ spring:
       ddl-auto: none
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=question_bank;encrypt=true;trustServerCertificate=true;
-    username: qb_admin
-    password: qb_admin
+    username: sa
+    password: fake.fake.fake.1234
   kafka:
     bootstrap-servers: localhost:9092
     listener:
       ackMode: record
     consumer:
-      group-id: patient-group
+      group-id: question-group
       enable-auto-commit: false
       auto-offset-reset: earliest
 
@@ -48,7 +50,7 @@ kafka:
 
 kafkadef:
   groups:
-    patient: patient-group
+    patient: question-group
   topics:
     questionbank:
       request: questionbank

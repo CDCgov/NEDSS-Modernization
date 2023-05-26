@@ -4,7 +4,7 @@ public record RequestStatus(
         boolean isSuccessful,
         String message,
         String requestId,
-        Long id) {
+        String id) {
 
 
 }

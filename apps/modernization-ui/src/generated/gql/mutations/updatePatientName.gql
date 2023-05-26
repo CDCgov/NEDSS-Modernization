@@ -1,0 +1,6 @@
+mutation updatePatientName($input: NameInput!){
+    updatePatientName(input: $input){
+        requestId
+        patientId
+    }
+}

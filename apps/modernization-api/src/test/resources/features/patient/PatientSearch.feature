@@ -20,6 +20,7 @@ Feature: Patient search
       | first name soundex |           |
       | race          |           |
       | patient id    |           |
+      | patient short id |           |
       | ssn           |           |
       | phone number  |           |
       | date of birth | before    |
@@ -48,6 +49,7 @@ Feature: Patient search
       | first name    |           | ssn        |            | gender  |            |
       | race          |           | address    |            | city    |            |
       | patient id    |           | first name |            | city    |            |
+      | patient short id |           | first name |            | city    |            |
       | ssn           |           | first name |            | city    |            |
       | phone number  |           | ethnicity  |            | city    |            |
       | date of birth | before    | first name |            | city    |            |

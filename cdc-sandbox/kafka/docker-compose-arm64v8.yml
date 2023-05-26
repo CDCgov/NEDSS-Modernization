@@ -52,7 +52,6 @@ services:
     container_name: kafka-ui
     ports:
       - "8008:8080"
-    restart: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=nedss-modernization
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-local:9095

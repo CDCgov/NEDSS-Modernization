@@ -2,7 +2,9 @@ package gov.cdc.nbs.patient.treatment;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.investigation.TestInvestigations;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.PatientMother;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -18,7 +20,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientTreatmentSteps {
 
     @Autowired
-    TestPatients patients;
+    TestPatientIdentifier patients;
+
+    @Autowired
+    PatientMother patientMother;
 
     @Autowired
     TestInvestigations investigations;
@@ -36,15 +41,16 @@ public class PatientTreatmentSteps {
 
     @When("the patient is a subject of a Treatment")
     public void the_patient_is_a_subject_of_a_treatment() {
-        long patient = patients.one();
+        PatientIdentifier revision = patientMother.revise(patients.one());
+
         long investigation = investigations.one();
 
-        mother.treated(patient, investigation);
+        mother.treated(revision.id(), investigation);
     }
 
     @Then("the profile has an associated Treatment")
     public void the_profile_has_an_associated_treatment() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientTreatment> actual = this.resolver.find(patient, new GraphQLPage(5));
         assertThat(actual).isNotEmpty();
@@ -52,7 +58,7 @@ public class PatientTreatmentSteps {
 
     @Then("the profile has no associated Treatments")
     public void the_profile_has_no_associated_treatments() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientTreatment> actual = this.resolver.find(patient, new GraphQLPage(5));
         assertThat(actual).isEmpty();
@@ -60,7 +66,7 @@ public class PatientTreatmentSteps {
 
     @Then("the profile Treatments are not returned")
     public void the_profile_treatments_are_not_returned() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         GraphQLPage page = new GraphQLPage(5);
 

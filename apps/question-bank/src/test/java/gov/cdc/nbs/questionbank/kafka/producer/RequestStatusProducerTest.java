@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,17 +34,17 @@ class RequestStatusProducerTest {
 
     @Test
     void sendSuccessTest() {
-
-        statusProducer.successful("RequestId", "Message", 123L);
+        String uuid = UUID.randomUUID().toString();
+        statusProducer.successful("RequestId", "Message", uuid);
 
         verify(template, times(1)).send(eq("status"), statusCaptor.capture());
 
-        RequestStatus actual = statusCaptor.getValue();
+        RequestStatus status = statusCaptor.getValue();
 
-        assertThat(actual.isSuccessful()).isTrue();
-        assertThat(actual.requestId()).isEqualTo("RequestId");
-        assertThat(actual.message()).isEqualTo("Message");
-        assertThat(actual.id()).isEqualTo(123L);
+        assertThat(status.isSuccessful()).isTrue();
+        assertThat(status.requestId()).isEqualTo("RequestId");
+        assertThat(status.message()).isEqualTo("Message");
+        assertThat(uuid).isEqualTo(status.id());
     }
 
     @Test

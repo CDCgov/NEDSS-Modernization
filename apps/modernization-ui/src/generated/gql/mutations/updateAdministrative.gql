@@ -1,0 +1,6 @@
+mutation updateAdministrative($input: AdministrativeInput!){
+    updateAdministrative(input: $input){
+        requestId
+        patientId
+    }
+}

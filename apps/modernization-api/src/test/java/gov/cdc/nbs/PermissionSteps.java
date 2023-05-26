@@ -2,9 +2,10 @@ package gov.cdc.nbs;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import gov.cdc.nbs.config.security.NbsAuthority;
-import gov.cdc.nbs.config.security.NbsUserDetails;
-import gov.cdc.nbs.config.security.SecurityProperties;
+import gov.cdc.nbs.authentication.NbsAuthority;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.config.SecurityProperties;
+import gov.cdc.nbs.authorization.ActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
@@ -45,10 +46,14 @@ import static org.junit.Assert.assertNull;
 @ActiveProfiles("test")
 @Transactional
 public class PermissionSteps {
+
     @Autowired
-    private SecurityProperties properties;
+    TestActive<ActiveUser> activeUser;
+
     @Autowired
-    private Algorithm algorithm;
+    SecurityProperties properties;
+    @Autowired
+    Algorithm algorithm;
     @Autowired
     PatientController patientController;
     @Autowired
@@ -96,8 +101,16 @@ public class PermissionSteps {
         if (currentAuth == null) {
             // no auth is set, create a new NbsUserDetails object and set the authentication
             // on the securityContextHolder
+
+            //  The active user is set by the "I am logged into NBS and a security log entry exists" step and is not
+            //  always called in a feature.  When a user is not active then just give the ID of 1.  Will fix the features
+            //  to always activate a user.
+            long id = activeUser.maybeActive()
+                .map(ActiveUser::id)
+                .orElse(1L);
+
             var nbsUserDetails = NbsUserDetails.builder()
-                .id(1L)
+                .id(id)
                 .username("MOCK-USER")
                 .token(createToken("MOCK-USER"))
                 .authorities(nbsAuthorities)
@@ -131,8 +144,7 @@ public class PermissionSteps {
         var pat = new PreAuthenticatedAuthenticationToken(
             userDetails,
             null,
-            userDetails.getAuthorities()
-        );
+            userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(pat);
     }
 

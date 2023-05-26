@@ -2,7 +2,6 @@ package gov.cdc.nbs.authentication;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import gov.cdc.nbs.config.security.NbsUserDetails;
 
 public class SecurityUtil {
 

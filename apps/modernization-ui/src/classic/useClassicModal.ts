@@ -43,15 +43,7 @@ const useClassicModal = (): ClassicModal => {
         throw new Error('useClassicModal must be used within a ClassicModalProvider');
     }
 
-    if (!context.current) {
-        throw new Error('The receiving form for the Classic Modal could not be found');
-    }
-
     const form = context.current;
-
-    if (window.document.forms[0] != form) {
-        throw new Error('The receiving form for the Classic Modal must be the first form available in the document');
-    }
 
     const [state, dispatch] = useReducer(classicModalReducer, { status: Status.Idle });
 
@@ -64,6 +56,16 @@ const useClassicModal = (): ClassicModal => {
     };
 
     const showModal = (location: string) => {
+        if (!context.current) {
+            throw new Error('The receiving form for the Classic Modal could not be found');
+        }
+
+        if (window.document.forms[0] != form) {
+            throw new Error(
+                'The receiving form for the Classic Modal must be the first form available in the document'
+            );
+        }
+
         const modal = window.open(location, 'classic', features);
         if (modal) {
             dispatch({ type: 'opened' });
@@ -71,14 +73,14 @@ const useClassicModal = (): ClassicModal => {
     };
 
     useEffect(() => {
-        if (state.url && state.status === Status.Opening) {
+        if (form && state.url && state.status === Status.Opening) {
             //  NBS Classic will invoke the submit method directly, the default handling of the form should be disabled to prevent it from triggering navigation.
             form.submit = () => dispatch({ type: 'closed' });
             showModal(state.url);
-        } else if (state.status === Status.Closed) {
+        } else if (form && state.status === Status.Closed) {
             form.submit = () => {};
         }
-    }, [state]);
+    }, [form, state]);
 
     return { state, open, reset };
 };

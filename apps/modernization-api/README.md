@@ -12,13 +12,14 @@
 
 1. In the ui directory run `npm install`
 2. In the modernization-api directory run `./gradlew build`
-   - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
+    - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
 3. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
 ## Tests
 
-Prior to running tests the `cdc-sandbox/test-db/` image must be built. To build this image run the following command in the `cdc-sandbox` directory.
+Prior to running tests the `cdc-sandbox/test-db/` image must be built. To build this image run the following command in
+the `cdc-sandbox` directory.
 
 ```sh
 docker-compose up test-db -d
@@ -44,8 +45,17 @@ The Modernization API can be started from the root directory by runninng:
 ./gradlew :modernization-api:bootRun
 ```
 
-It assumes that ElasticSeach and MSSQL Server are running on `localhost`. Preconfigured containers are available in
+It assumes that Elasticsearch and MSSQL Server are running on `localhost`. Preconfigured containers are available in
 the [CDC Sandbox](../../cdc-sandbox/README.md), `cdc-sandbox/elasticsearch` and `cdc-sandbox/db`.
+
+### Connecting to Kafka
+
+The Modernization API can connect to the Kafka instance defined in `cdc-sandbox/kafka` by starting the service
+with `kafka.enabled` set to true.
+
+```shell
+./gradlew :modernization-api:bootRun --args='--kafka.enabled' 
+```
 
 ### Debugging
 
@@ -96,7 +106,7 @@ and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference
 . The default profile contains the following properties configuration most likely to change.
 
 | Name                          | Default   | Description                                         |
-| ----------------------------- | --------- | --------------------------------------------------- |
+|-------------------------------|-----------|-----------------------------------------------------|
 | nbs.elasticsearch.server      | localhost | The host name of the server running ElasticSearch   |
 | nbs.elasticsearch.port        | 9200      | The port in which ElasticSearch is listening        |
 | nbs.wildfly.server            | localhost | The host name of the server running NBS Classic     |
@@ -113,3 +123,10 @@ by executing.
 ```bash
 ./gradlew :modernization-api:bootRun --args'--nbs-datasource.server=other '
 ```
+### Kafka Configuration
+
+| Name                                        | Default         | Description                                                               |
+|---------------------------------------------|-----------------|---------------------------------------------------------------------------|
+| kafka.enabled                               | false           | Weather or not the Modernization API connects to Kafka                    |
+| spring.kafka.bootstrap-servers              | localhost:9092  | URL of one or more Kafka brokers to obtain information about the cluster. |
+| spring.kafka.properties.schema.registry.url | localhost:9091  | URL of the server providing the centralized message schema repository.    |

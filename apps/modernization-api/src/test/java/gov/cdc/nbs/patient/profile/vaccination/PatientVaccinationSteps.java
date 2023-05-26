@@ -1,7 +1,9 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.PatientMother;
+import gov.cdc.nbs.patient.TestPatientIdentifier;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,13 +19,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientVaccinationSteps {
 
     @Autowired
-    TestPatients patients;
+    TestPatientIdentifier patients;
 
     @Autowired
     PatientVaccinationResolver resolver;
 
     @Autowired
     VaccinationMother mother;
+
+    @Autowired
+    PatientMother patientMother;
 
     @Before
     public void clean() {
@@ -32,13 +37,14 @@ public class PatientVaccinationSteps {
 
     @When("the patient is vaccinated")
     public void the_patient_has_a_Case_Report() {
-        long patient = this.patients.one();
-        this.mother.vaccinate(patient);
+        PatientIdentifier revision = patientMother.revise(patients.one());
+
+        this.mother.vaccinate(revision.id());
     }
 
     @Then("the profile has an associated vaccination")
     public void the_profile_has_an_associated_vaccination() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientVaccination> actual = this.resolver.find(patient, new GraphQLPage(1));
         assertThat(actual).isNotEmpty();
@@ -46,7 +52,7 @@ public class PatientVaccinationSteps {
 
     @Then("the profile has no associated vaccination")
     public void the_profile_has_no_associated_vaccination() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         Page<PatientVaccination> actual = this.resolver.find(patient, new GraphQLPage(1));
         assertThat(actual).isEmpty();
@@ -54,7 +60,7 @@ public class PatientVaccinationSteps {
 
     @Then("the profile vaccinations are not accessible")
     public void the_profile_vaccinations_are_not_accessible() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         GraphQLPage page = new GraphQLPage(1);
 

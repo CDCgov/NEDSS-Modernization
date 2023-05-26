@@ -1,53 +1,60 @@
 package gov.cdc.nbs.patientlistener.request.delete;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class PatientDeleterTest {
 
-    @Mock
-    private PersonRepository personRepository;
+    @Test
+    void should_set_correct_fields() {
 
-    @Captor
-    private ArgumentCaptor<Person> personCaptor;
+        Clock clock = Clock.fixed(Instant.parse("2023-04-04T02:03:04Z"), ZoneId.of("UTC"));
+        ElasticsearchPersonRepository searchRepository = mock(ElasticsearchPersonRepository.class);
 
-    @InjectMocks
-    private PatientDeleter patientDeleter;
+        PatientDeleter deleter = new PatientDeleter(clock, searchRepository);
 
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
+        Person person = new Person(123L, "local-id");
+        deleter.delete(person, 321L);
+
+        assertThat(person.getRecordStatusCd()).isEqualTo(RecordStatus.LOG_DEL);
+        assertThat(person.getRecordStatusTime()).isEqualTo("2023-04-04T02:03:04Z");
+
+        assertThat(person.getVersionCtrlNbr()).isEqualTo((short) 2);
+        assertThat(person.getLastChgUserId()).isEqualTo(321L);
+        assertThat(person.getLastChgTime()).isEqualTo("2023-04-04T02:03:04Z");
+
     }
 
     @Test
-    void should_set_correct_fields() {
+    void should_update_search_index() {
+        Clock clock = Clock.fixed(Instant.parse("2023-04-04T02:03:04Z"), ZoneId.of("UTC"));
+
+        ElasticsearchPersonRepository searchRepository = mock(ElasticsearchPersonRepository.class);
+
+        PatientDeleter deleter = new PatientDeleter(clock, searchRepository);
+
         Person person = new Person(123L, "local-id");
-        patientDeleter.delete(person, 321L);
+        deleter.delete(person, 321L);
 
-        verify(personRepository, times(1)).save(personCaptor.capture());
-        var savedPerson = personCaptor.getValue();
+        ArgumentCaptor<ElasticsearchPerson> captor = ArgumentCaptor.forClass(ElasticsearchPerson.class);
 
+        verify(searchRepository, times(1)).save(captor.capture());
 
-        var now = Instant.now();
-        assertEquals(RecordStatus.LOG_DEL, savedPerson.getRecordStatusCd());
-        assertTrue(savedPerson.getRecordStatusTime().until(now, ChronoUnit.SECONDS) < 5);
-        assertEquals(2, savedPerson.getVersionCtrlNbr().intValue());
-        assertEquals(321, savedPerson.getLastChgUserId().intValue());
-        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
+        ElasticsearchPerson actual = captor.getValue();
+
+        assertThat(actual).returns(123L, ElasticsearchPerson::getPersonUid);
     }
 }

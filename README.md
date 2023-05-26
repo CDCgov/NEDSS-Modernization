@@ -7,6 +7,7 @@
 - [Modernization API](apps/modernization-api/README.md)
 - [Modernization UI](apps/modernization-ui/README.md)
 - [Patient Listener](apps/patient-listener/README.md)
+- [Question Bank](apps/question-bank/README.md)
 - [CDC Sandbox](cdc-sandbox/README.md)
 - [Database-Entities](libs/database-entities/README.md)
 - [Event-Schema](libs/event-schema/README.md)
@@ -100,10 +101,10 @@ Version: 1.0.0-SNAPSHOT
 
 ## Running with local servers
 
-By default, the reverse proxy will route to the containerized `modernization-api` or `modernization-ui`.  Routing to a local `modernization-api` or `modernization-ui` servers can be achieved by altering the configuration to point to the local instances.
+By default, the reverse proxy will route to the containerized `modernization-api` or `modernization-ui`. Routing to a local `modernization-api` or `modernization-ui` servers can be achieved by altering the configuration to point to the local instances.
 
 | Name                     | Default             | Description                                                |
-|--------------------------|---------------------|------------------------------------------------------------|
+| ------------------------ | ------------------- | ---------------------------------------------------------- |
 | MODERNIZATION_UI_SERVER  | `modernization-ui`  | The host name of the server that provides the frontend UI. |
 | MODERNIZATION_UI_PORT    | `80`                | The port the frontend UI is served from.                   |
 | MODERNIZATION_API_SERVER | `modernization-api` | The host name of the server that provides the backend API  |
@@ -125,7 +126,7 @@ MODERNIZATION_UI_SERVER=host.docker.internal MODERNIZATION_UI_PORT=3000 docker c
 
 ### Configuring the Reverse Proxy to use local modernization-api
 
-Start the backend API locally listening on port 9080 from the root project folder.  The `cdc-sandbox` exposes the reverse-proxy on port `8080`, which is the default port for Spring Boot.  It must be changed in order for the backend to stat properly.
+Start the backend API locally listening on port 9080 from the root project folder. The `cdc-sandbox` exposes the reverse-proxy on port `8080`, which is the default port for Spring Boot. It must be changed in order for the backend to stat properly.
 
 ```shell
 ./gradlew :modernization-api:bootRun --args='--server.port=9080'

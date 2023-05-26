@@ -3,22 +3,19 @@ package gov.cdc.nbs.questionbank.question;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
-import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
 import gov.cdc.nbs.questionbank.kafka.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
-import gov.cdc.nbs.questionbank.kafka.message.RequestStatus;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import gov.cdc.nbs.questionbank.kafka.producer.KafkaProducer;
 import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
-import gov.cdc.nbs.service.UserService;
 import lombok.RequiredArgsConstructor;
+import gov.cdc.nbs.authentication.UserService;
+import gov.cdc.nbs.questionbank.kafka.exception.RequestException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,34 +23,33 @@ public class QuestionHandler {
 	
 	private final KafkaProducer producer;
 	private final QuestionRepository questionRepository;
-	private final RequestProperties requestProperties;
+    private final QuestionCreator creator;
+    private final RequestStatusProducer statusProducer;
 	private  UserService userService;
-
-	@Autowired
-	private KafkaTemplate<String, RequestStatus> kafkaQuestionStatusEventTemplate;
 
 	@Value("${kafkadef.topics.questionbank.status}")
 	private String questionBankTopic;
 
 	public void handleQuestionRequest(QuestionRequest request) {
 		if (userService.isAuthorized(request.userId(), "LDFADMINISTRATION-SYSTEM")) {
-			RequestStatusProducer requestStatusProducer = new RequestStatusProducer(kafkaQuestionStatusEventTemplate,
-					requestProperties);
 			// delete question aka marke question inactive
 			if (request.type().equals(QuestionRequest.DeleteQuestionRequest.class.getSimpleName())) {
-				sendDeleteQuestionResponseStatus(requestStatusProducer, request);
+				sendDeleteQuestionResponseStatus(request);
+			}
+			else {
+				createQuestion(request);	
 			}
 		} else {
 			notAuthorized(request.requestId());
 		}
 	}
-
+	
 	public QuestionBankEventResponse sendDeleteQuestionEvent(Long questionId, Long userId) {
 		var deleteEvent = new QuestionRequest.DeleteQuestionRequest(getRequestId(), questionId, userId);
 		return sendQuestionDeleteEvent(deleteEvent, questionId);
 	}
 	
-	public void sendDeleteQuestionResponseStatus(RequestStatusProducer requestStatusProducer, QuestionRequest request) {
+	public void sendDeleteQuestionResponseStatus(QuestionRequest request) {
 		Optional<DisplayElementEntity> updated = null;
 		String additionalMessage = null;
 		try {
@@ -63,14 +59,14 @@ public class QuestionHandler {
 		}
 		if (updated != null && updated.isPresent()) {
 			if (!updated.get().isActive()) {
-				requestStatusProducer.successful(request.requestId(), Constants.DELETE_SUCCESS_MESSAGE,
-						request.questionId());
+				statusProducer.successful(request.requestId(), Constants.DELETE_SUCCESS_MESSAGE,
+						String.valueOf(request.questionId()));
 			} else {
-				requestStatusProducer.failure(request.requestId(),
+				statusProducer.failure(request.requestId(),
 						Constants.DELETE_FAILURE_MESSAGE + " : " + additionalMessage);
 			}
 		} else {
-			requestStatusProducer.failure(request.requestId(),
+			statusProducer.failure(request.requestId(),
 					Constants.DELETE_FAILURE_MESSAGE + " : " + additionalMessage);
 		}
 
@@ -85,8 +81,31 @@ public class QuestionHandler {
 		return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
 	}
 	
-	private void notAuthorized(String requestId) {
-		throw new UserNotAuthorizedException(requestId);
-	}
 
+    private void createQuestion(QuestionRequest request) {
+        DisplayElementEntity entity;
+        if (request instanceof QuestionRequest.CreateTextQuestionRequest createTextQuestionRequest) {
+            entity = creator.create(createTextQuestionRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateDateQuestionRequest createDateQuestionRequest) {
+            entity = creator.create(createDateQuestionRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateDropdownQuestionRequest createDropDownRequest) {
+            entity = creator.create(createDropDownRequest.data(), request.userId());
+        } else if (request instanceof QuestionRequest.CreateNumericQuestionRequest createNumericRequest) {
+            entity = creator.create(createNumericRequest.data(), request.userId());
+        } else {
+            throw new RequestException("Failed to handle question type", request.requestId());
+        }
+        sendSuccess(request.requestId(), entity.getId());
+    }
+
+    private void sendSuccess(String requestId, UUID id) {
+        statusProducer.successful(
+                requestId,
+                "Successfully created Question",
+                id.toString());
+    }
+
+    private void notAuthorized(String requestId) {
+        throw new UserNotAuthorizedException(requestId);
+    }
 }

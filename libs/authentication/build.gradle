@@ -17,6 +17,7 @@ testing {
 
             dependencies {
                 implementation libs.bundles.testing
+                implementation libs.spring.test
                 implementation libs.spring.kafka.test
             }
         }
@@ -29,12 +30,11 @@ dependencyManagement {
     }
 }
 dependencies {
-    implementation project(':database-entities')
-
     // core
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
+    implementation libs.springBoot.web
     implementation libs.bundles.security
 
     // database
@@ -52,6 +52,8 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
-    // Kafka
-    implementation libs.spring.kafka
+}
+
+compileJava {
+    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
 }
