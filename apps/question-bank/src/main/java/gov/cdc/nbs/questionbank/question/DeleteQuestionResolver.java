@@ -6,8 +6,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import gov.cdc.nbs.authentication.SecurityUtil;
-import gov.cdc.nbs.authentication.SecurityUtil.BusinessObjects;
-import gov.cdc.nbs.authentication.SecurityUtil.Operations;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import lombok.AllArgsConstructor;
 

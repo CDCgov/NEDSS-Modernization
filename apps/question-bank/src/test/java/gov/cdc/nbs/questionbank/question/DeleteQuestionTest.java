@@ -19,7 +19,7 @@ import gov.cdc.nbs.questionbank.kafka.message.RequestStatus;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
 
-public class DeleteQuestionTest {
+ class DeleteQuestionTest {
 
 	@Autowired
 	RequestStatusProducer requestStatusProducer;
@@ -39,7 +39,7 @@ public class DeleteQuestionTest {
 	}
 
 	@Test
-	public void sendDeleteQuestionResponseStatus() {
+	void sendDeleteQuestionResponseStatus() {
 
 		String requestId = UUID.randomUUID().toString();
 		Long questionId = UUID.randomUUID().getLeastSignificantBits();
@@ -56,8 +56,8 @@ public class DeleteQuestionTest {
 
 		QuestionRequest.DeleteQuestionRequest actualRecord = captor.getValue();
 		assertEquals(requestId, actualRecord.requestId());
-		assertTrue(userId.equals(actualRecord.userId()));
-		assertTrue(questionId.equals(actualRecord.questionId()));
+		assertEquals(userId.longValue() ,actualRecord.userId() );
+		assertEquals(questionId.longValue() ,actualRecord.questionId());
 
 	}
 

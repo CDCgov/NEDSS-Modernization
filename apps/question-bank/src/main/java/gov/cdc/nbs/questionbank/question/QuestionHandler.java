@@ -50,14 +50,14 @@ public class QuestionHandler {
 	}
 	
 	public void sendDeleteQuestionResponseStatus(QuestionRequest request) {
-		Optional<DisplayElementEntity> updated = null;
+		Optional<DisplayElementEntity> updated = Optional.empty();
 		String additionalMessage = null;
 		try {
 			updated = questionRepository.deleteQuestion(request.questionId(), false);
 		} catch (Exception e) {
 			additionalMessage = e.getMessage();
 		}
-		if (updated != null && updated.isPresent()) {
+		if (updated.isPresent()) {
 			if (!updated.get().isActive()) {
 				statusProducer.successful(request.requestId(), Constants.DELETE_SUCCESS_MESSAGE,
 						String.valueOf(request.questionId()));
