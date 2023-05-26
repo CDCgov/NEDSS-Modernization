@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.profile.report.lab;
 
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
-import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.When;
