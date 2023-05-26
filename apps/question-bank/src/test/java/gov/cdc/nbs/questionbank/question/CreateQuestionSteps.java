@@ -251,7 +251,7 @@ public class CreateQuestionSteps {
                 -3,
                 543,
                 -2,
-                null);
+                valueSet.getId());
     }
 
     private DropdownQuestionData dropdownQuestionData() {
