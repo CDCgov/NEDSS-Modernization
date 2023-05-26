@@ -47,5 +47,5 @@ having to restart the application. The debug port can be changed at runtime by s
 For example, the debug port can be set to `8181` by executing.
 
 ```bash
-./gradlew -Pdebug.port=8181 :patient-listener:bootRun
+./gradlew -Pdebug.port=8181 :question-bank:bootRun
 ```
