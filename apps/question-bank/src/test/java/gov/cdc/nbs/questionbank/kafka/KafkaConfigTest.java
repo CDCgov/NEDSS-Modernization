@@ -49,6 +49,7 @@ class KafkaConfigTest {
     void should_send_and_receive_message() {
         var request = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
+                0,
                 1L,
                 "a label",
                 "tooltip",

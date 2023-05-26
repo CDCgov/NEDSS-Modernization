@@ -38,6 +38,7 @@ class KafkaProducerTest {
     void testSendEvent() {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
+                0,
                 13L,
                 "a label",
                 "a tooltip",
@@ -71,6 +72,7 @@ class KafkaProducerTest {
     void should_throw_producer_error() {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
+                0,
                 13L,
                 "a label",
                 "a tooltip",
@@ -98,6 +100,7 @@ class KafkaProducerTest {
     void should_trigger_success() {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
+                0,
                 13L,
                 "a label",
                 "a tooltip",
@@ -118,4 +121,26 @@ class KafkaProducerTest {
         verify(callback, times(0)).onFailure(Mockito.any());
         verify(callback, times(1)).onSuccess(Mockito.any());
     }
+    
+	@Test
+	void testDeleteEvent() {
+		var message = new QuestionRequest.DeleteQuestionRequest("requestId", 13L, 11L);
+		ListenableFuture<SendResult<String, QuestionBankRequest>> future = new SettableListenableFuture<>();
+		Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
+
+		producer.requestEventEnvelope(message);
+
+		ArgumentCaptor<QuestionRequest.DeleteQuestionRequest> envelopeEventArgumentCaptor = ArgumentCaptor
+				.forClass(QuestionRequest.DeleteQuestionRequest.class);
+
+		verify(kafkaEnvelopeTemplate).send(nullable(String.class), eq("requestId"),
+				envelopeEventArgumentCaptor.capture());
+
+		QuestionRequest.DeleteQuestionRequest actualRecord = envelopeEventArgumentCaptor.getValue();
+		assertThat(actualRecord.requestId()).isEqualTo("requestId");
+		assertThat(actualRecord.questionId()).isEqualTo(13L);
+		assertThat(actualRecord.userId()).isEqualTo(11L);
+
+		verifyNoMoreInteractions(kafkaEnvelopeTemplate);
+	}
 }

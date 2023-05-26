@@ -27,7 +27,7 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "display_type", discriminatorType = DiscriminatorType.STRING)
 @IdClass(DisplayElementEntityId.class)
 public abstract class DisplayElementEntity implements Serializable {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;

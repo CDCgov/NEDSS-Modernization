@@ -10,14 +10,15 @@ import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
+import gov.cdc.nbs.questionbank.kafka.exception.UserNotAuthorizedException;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import gov.cdc.nbs.questionbank.kafka.message.RequestStatus;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import gov.cdc.nbs.questionbank.kafka.producer.KafkaProducer;
 import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
+import gov.cdc.nbs.service.UserService;
 import lombok.RequiredArgsConstructor;
-import util.SecurityUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class QuestionHandler {
 	private final KafkaProducer producer;
 	private final QuestionRepository questionRepository;
 	private final RequestProperties requestProperties;
+	private  UserService userService;
 
 	@Autowired
 	private KafkaTemplate<String, RequestStatus> kafkaQuestionStatusEventTemplate;
@@ -34,37 +36,44 @@ public class QuestionHandler {
 	private String questionBankTopic;
 
 	public void handleQuestionRequest(QuestionRequest request) {
-		RequestStatusProducer requestStatusProducer = new RequestStatusProducer(kafkaQuestionStatusEventTemplate,
-				requestProperties);
-		// delete question aka marke question inactive
-		if (request.type().equals(QuestionRequest.DeleteQuestionRequest.class.getSimpleName())) {
-			Optional<DisplayElementEntity> updated = null;
-			String additionalMessage = null;
-			try {
-				updated = questionRepository.deleteQuestion(request.questionId(), false);
-			} catch (Exception e) {
-				additionalMessage = e.getMessage();
+		if (userService.isAuthorized(request.userId(), "LDFADMINISTRATION-SYSTEM")) {
+			RequestStatusProducer requestStatusProducer = new RequestStatusProducer(kafkaQuestionStatusEventTemplate,
+					requestProperties);
+			// delete question aka marke question inactive
+			if (request.type().equals(QuestionRequest.DeleteQuestionRequest.class.getSimpleName())) {
+				sendDeleteQuestionResponseStatus(requestStatusProducer, request);
 			}
-			if (updated != null && updated.isPresent()) {
-				if (!updated.get().isActive()) {
-					requestStatusProducer.successful(request.requestId(), Constants.DELETE_SUCCESS_MESSAGE,
-							request.questionId());
-				} else {
-					requestStatusProducer.failure(request.requestId(),
-							Constants.DELETE_FAILURE_MESSAGE + " : " + additionalMessage);
-				}
+		} else {
+			notAuthorized(request.requestId());
+		}
+	}
+
+	public QuestionBankEventResponse sendDeleteQuestionEvent(Long questionId, Long userId) {
+		var deleteEvent = new QuestionRequest.DeleteQuestionRequest(getRequestId(), questionId, userId);
+		return sendQuestionDeleteEvent(deleteEvent, questionId);
+	}
+	
+	public void sendDeleteQuestionResponseStatus(RequestStatusProducer requestStatusProducer, QuestionRequest request) {
+		Optional<DisplayElementEntity> updated = null;
+		String additionalMessage = null;
+		try {
+			updated = questionRepository.deleteQuestion(request.questionId(), false);
+		} catch (Exception e) {
+			additionalMessage = e.getMessage();
+		}
+		if (updated != null && updated.isPresent()) {
+			if (!updated.get().isActive()) {
+				requestStatusProducer.successful(request.requestId(), Constants.DELETE_SUCCESS_MESSAGE,
+						request.questionId());
 			} else {
 				requestStatusProducer.failure(request.requestId(),
 						Constants.DELETE_FAILURE_MESSAGE + " : " + additionalMessage);
 			}
-
+		} else {
+			requestStatusProducer.failure(request.requestId(),
+					Constants.DELETE_FAILURE_MESSAGE + " : " + additionalMessage);
 		}
-	}
 
-	public QuestionBankEventResponse sendDeleteQuestionEvent(Long questionId) {
-		var user = SecurityUtil.getUserDetails();
-		var deleteEvent = new QuestionRequest.DeleteQuestionRequest(getRequestId(), questionId, user.getId());
-		return sendQuestionDeleteEvent(deleteEvent, questionId);
 	}
 
 	private QuestionBankEventResponse sendQuestionDeleteEvent(QuestionRequest request, Long questionId) {
@@ -74,6 +83,10 @@ public class QuestionHandler {
 
 	private String getRequestId() {
 		return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
+	}
+	
+	private void notAuthorized(String requestId) {
+		throw new UserNotAuthorizedException(requestId);
 	}
 
 }

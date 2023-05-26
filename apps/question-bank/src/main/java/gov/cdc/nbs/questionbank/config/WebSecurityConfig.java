@@ -45,13 +45,16 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .antMatchers(graphQLEndpoint)
-                .authenticated()
+        		.antMatchers("/graphiql", "/graphql")
+                .anyRequest().authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(this::writeErrorMessage)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf()
+                .ignoringAntMatchers("/graphiql", "/graphql")
                 .and()
                 .addFilterBefore(jwtFilter, RequestHeaderAuthenticationFilter.class)
                 .build();
@@ -66,7 +69,8 @@ public class WebSecurityConfig {
             AuthenticationException ex) throws IOException {
         if (ex instanceof InsufficientAuthenticationException || ex instanceof UsernameNotFoundException) {
             // If graphql endpoint, write graphql error	
-            if (req.getRequestURI().contains(graphQLEndpoint)) {
+			if (req.getRequestURI().contains(graphQLEndpoint)
+					|| req.getAttribute("javax.servlet.forward.request_uri").equals(graphQLEndpoint)) {
                 res.setContentType("application/json;charset=UTF-8");
                 GraphQLError error = GraphqlErrorBuilder
                         .newError()

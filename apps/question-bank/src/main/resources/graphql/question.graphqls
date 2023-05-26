@@ -1,0 +1,9 @@
+type Mutation {
+	deleteQuestion(patientId: ID!): QuestionBankEventResponse!
+
+}
+
+type QuestionBankEventResponse {
+    requestId: String!
+    questionId: ID!
+}
