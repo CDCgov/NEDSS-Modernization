@@ -1955,6 +1955,7 @@ export type RaceId = {
 export type RaceInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
   patientId: Scalars['ID'];
+  raceCategoryCd: Scalars['String'];
   raceCd: Scalars['String'];
 };
 

@@ -469,7 +469,8 @@ class PatientUpdaterTest {
                 "RequestId",
                 321L,
                 Instant.now(),
-                "ethnicityCode");
+                "ethnicityCode",
+                "ethnicUnkReasonCd");
     }
 
     @Test

@@ -213,6 +213,7 @@ input PersonInput {
     primaryLang: String
     speaksEnglish: String
     hIVCaseId: String
+    ethnicUnkReasonCd: String
 }
 
 input GeneralInfoInput {

@@ -460,6 +460,7 @@ public class PatientUpdater {
                 data.patientId(),
                 data.asOf(),
                 data.ethnicityGroupInd(),
+                data.ethnicUnkReasonCd(),
                 data.updatedBy(),
                 Instant.now());
     }
