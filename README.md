@@ -46,7 +46,7 @@
 8. Unzip the restore file contents to `cdc-sandbox/db/restore/`
 
    ```sh
-   unzip -j db-restore.zip
+   unzip -j db-restore.zip -d <path-to-cdc-sandbox/db/restore/>
    ```
 
 9. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
