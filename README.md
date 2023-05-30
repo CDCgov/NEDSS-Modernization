@@ -43,43 +43,47 @@
    ./build.sh
    ```
 7. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1) and place it in `cdc-sandbox/db/restore/restore.d/`
-8. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
+8. Unzip the downloaded restore file
+    ```sh
+    unzip db-restore.zip
+    ```
+9. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
    ```sh
    ./run.sh
    ```
-9. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
+10. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
    ```sh
    docker-compose up elasticsearch kibana reverse-proxy -d
    ```
-10. CD into the `apps/modernization-ui` directory
+11. CD into the `apps/modernization-ui` directory
     ```sh
     cd ../apps/modernization-ui
     ```
-11. Run `npm install`
+12. Run `npm install`
     ```sh
     npm i
     ```
-12. CD to the `apps/modernization-api` directory
+13. CD to the `apps/modernization-api` directory
     ```sh
     cd ../modernization-api
     ```
-13. Start the `modernization-api` container
+14. Start the `modernization-api` container
     ```sh
     docker-compose up modernization-api -d
     ```
-14. CD into the `cdc-sandbox` directory and Start NiFi
+15. CD into the `cdc-sandbox` directory and Start NiFi
     ```sh
     cd ../cdc-sandbox
     docker-compose up nifi -d
     ```
-15. Visit http://localhost:8080/nbs/login
+16. Visit http://localhost:8080/nbs/login
 
     ```
     username: msa
     password:
     ```
 
-16. To create your own user account visit site (line 15):
+17. To create your own user account visit site (line 15):
 
 - Navigate to System Management
 - Expand Security Management
