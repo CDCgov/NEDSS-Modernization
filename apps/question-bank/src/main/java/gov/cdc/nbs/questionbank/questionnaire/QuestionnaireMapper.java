@@ -5,7 +5,7 @@ import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.entities.DisplayElementGroupEntity;
 import gov.cdc.nbs.questionbank.entities.DisplayElementRef;
 import gov.cdc.nbs.questionbank.entities.DisplayGroupRef;
-import gov.cdc.nbs.questionbank.entities.DropDownQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 import gov.cdc.nbs.questionbank.entities.Reference;
@@ -61,10 +61,13 @@ class QuestionnaireMapper {
      */
     Questionnaire.DisplayElement toDisplayElement(DisplayElementEntity element) {
         if (element instanceof TextEntity t) {
-            return new Questionnaire.Text(t.getId(), t.getText());
+            return new Questionnaire.Text(t.getId(),
+                    t.getVersion(),
+                    t.getText());
         } else if (element instanceof TextQuestionEntity tq) {
             return new Questionnaire.TextQuestion(
                     tq.getId(),
+                    tq.getVersion(),
                     tq.getLabel(),
                     tq.getTooltip(),
                     tq.getMaxLength(),
@@ -72,6 +75,7 @@ class QuestionnaireMapper {
         } else if (element instanceof NumericQuestionEntity nq) {
             return new Questionnaire.NumericQuestion(
                     nq.getId(),
+                    nq.getVersion(),
                     nq.getLabel(),
                     nq.getTooltip(),
                     nq.getMinValue(),
@@ -80,13 +84,15 @@ class QuestionnaireMapper {
         } else if (element instanceof DateQuestionEntity dq) {
             return new Questionnaire.DateQuestion(
                     dq.getId(),
+                    dq.getVersion(),
                     dq.getLabel(),
                     dq.getTooltip(),
                     dq.isAllowFuture());
 
-        } else if (element instanceof DropDownQuestionEntity ddq) {
+        } else if (element instanceof DropdownQuestionEntity ddq) {
             return new Questionnaire.DropDownQuestion(
                     ddq.getId(),
+                    ddq.getVersion(),
                     ddq.getLabel(),
                     ddq.getTooltip(),
                     toOptionSet(ddq.getValueSet()),

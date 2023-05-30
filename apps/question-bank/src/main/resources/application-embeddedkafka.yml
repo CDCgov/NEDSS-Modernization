@@ -1,7 +1,0 @@
-spring:
-  kafka:
-    bootstrap-servers: ${spring.embedded.kafka.brokers}
-
-logging:
-  level:
-    root: INFO

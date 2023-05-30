@@ -5,13 +5,18 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(NumericQuestionEntity.TYPE)
 public class NumericQuestionEntity extends DisplayElementEntity {
@@ -29,6 +34,9 @@ public class NumericQuestionEntity extends DisplayElementEntity {
     @Column(name = "max_value")
     private Integer maxValue;
 
+    @Column(name = "default_numeric_value")
+    private Integer defaultNumericValue;
+
     @ManyToOne
     @JoinColumn(name = "units_set")
     private ValueSet unitsSet;
@@ -36,6 +44,17 @@ public class NumericQuestionEntity extends DisplayElementEntity {
     @Override
     public String getDisplayType() {
         return TYPE;
+    }
+
+    public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
+        this.label = command.label();
+        this.tooltip = command.tooltip();
+        this.minValue = command.minValue();
+        this.maxValue = command.maxValue();
+        this.defaultNumericValue = command.defaultValue();
+        this.unitsSet = command.unitsOptions();
+        this.setAudit(new AuditInfo(command));
+        this.setVersion(1);
     }
 
 }

@@ -39,10 +39,12 @@ class KafkaProducerTest {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
                 13L,
-                "a label",
-                "a tooltip",
-                11,
-                "a placeholder");
+                new QuestionRequest.TextQuestionData(
+                        "a label",
+                        "a tooltip",
+                        11,
+                        "a placeholder",
+                        "some default text"));
         ListenableFuture<SendResult<String, QuestionBankRequest>> future = new SettableListenableFuture<>();
         Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
@@ -57,10 +59,10 @@ class KafkaProducerTest {
         QuestionRequest.CreateTextQuestionRequest actualRecord = envelopeEventArgumentCaptor.getValue();
         assertThat(actualRecord.requestId()).isEqualTo("requestId");
         assertThat(actualRecord.userId()).isEqualTo(13L);
-        assertThat(actualRecord.label()).isEqualTo("a label");
-        assertThat(actualRecord.tooltip()).isEqualTo("a tooltip");
-        assertThat(actualRecord.maxLength()).isEqualTo(11);
-        assertThat(actualRecord.placeholder()).isEqualTo("a placeholder");
+        assertThat(actualRecord.data().label()).isEqualTo("a label");
+        assertThat(actualRecord.data().tooltip()).isEqualTo("a tooltip");
+        assertThat(actualRecord.data().maxLength()).isEqualTo(11);
+        assertThat(actualRecord.data().placeholder()).isEqualTo("a placeholder");
 
 
         verifyNoMoreInteractions(kafkaEnvelopeTemplate);
@@ -72,10 +74,12 @@ class KafkaProducerTest {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
                 13L,
-                "a label",
-                "a tooltip",
-                11,
-                "a placeholder");
+                new QuestionRequest.TextQuestionData(
+                        "a label",
+                        "a tooltip",
+                        11,
+                        "a placeholder",
+                        "default"));
 
         ListenableFutureCallback<SendResult<String, QuestionBankRequest>> callback =
                 Mockito.mock(ListenableFutureCallback.class);
@@ -99,10 +103,12 @@ class KafkaProducerTest {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
                 13L,
-                "a label",
-                "a tooltip",
-                11,
-                "a placeholder");
+                new QuestionRequest.TextQuestionData(
+                        "a label",
+                        "a tooltip",
+                        11,
+                        "a placeholder",
+                        "default"));
 
         ListenableFutureCallback<SendResult<String, QuestionBankRequest>> callback =
                 Mockito.mock(ListenableFutureCallback.class);

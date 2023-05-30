@@ -27,4 +27,5 @@ public class TextEntity extends DisplayElementEntity {
         return TYPE;
     }
 
+
 }

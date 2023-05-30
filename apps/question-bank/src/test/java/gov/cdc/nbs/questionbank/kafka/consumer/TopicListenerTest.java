@@ -43,10 +43,12 @@ class TopicListenerTest {
                   "type": "QuestionRequest$CreateTextQuestionRequest",
                   "requestId": "requestId",
                   "userId": 123,
-                  "label": "some label",
-                  "tooltip": "tooltip",
-                  "maxLength": 10,
-                  "placeholder": "placeholder"
+                  "data": {
+                    "label": "some label",
+                    "tooltip": "tooltip",
+                    "maxLength": 10,
+                    "placeholder": "placeholder"
+                  }
                 }
                 """;
 
@@ -61,10 +63,10 @@ class TopicListenerTest {
         assertThat(actual)
                 .returns("requestId", QuestionRequest.CreateTextQuestionRequest::requestId)
                 .returns(123L, QuestionRequest.CreateTextQuestionRequest::userId)
-                .returns("some label", QuestionRequest.CreateTextQuestionRequest::label)
-                .returns("tooltip", QuestionRequest.CreateTextQuestionRequest::tooltip)
-                .returns(10, QuestionRequest.CreateTextQuestionRequest::maxLength)
-                .returns("placeholder", QuestionRequest.CreateTextQuestionRequest::placeholder);
+                .returns("some label", (a) -> a.data().label())
+                .returns("tooltip", (a) -> a.data().tooltip())
+                .returns(10, (a) -> a.data().maxLength())
+                .returns("placeholder", (a) -> a.data().placeholder());
     }
 
     @Test

@@ -9,15 +9,15 @@ import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
         @JsonSubTypes.Type(QuestionRequest.class),
         @JsonSubTypes.Type(QuestionRequest.CreateTextQuestionRequest.class),
         @JsonSubTypes.Type(QuestionRequest.UpdateTextQuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.DeleteQuestionRequest.class)
+        @JsonSubTypes.Type(QuestionRequest.CreateDateQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.CreateDropdownQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.CreateNumericQuestionRequest.class)
 })
 public interface QuestionBankRequest {
 
     String requestId();
 
     long userId();
-    
-    long questionId();
 
     default String type() {
         return QuestionBankRequest.class.getSimpleName();

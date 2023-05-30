@@ -34,10 +34,12 @@ testing {
                 implementation libs.bundles.testing
                 implementation libs.spring.test
                 implementation libs.spring.kafka.test
+                implementation 'org.awaitility:awaitility:4.2.0'
+
 
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
-                implementation "com.h2database:h2"
+                implementation libs.bundles.testcontainers
 
                 implementation libs.bundles.cucumber
 
@@ -47,7 +49,9 @@ testing {
 }
 
 dependencies {
+
     implementation project(':authentication')
+    
     // Spring
     implementation libs.springBoot.web
     implementation libs.bundles.jpa
@@ -62,6 +66,10 @@ dependencies {
     // querydsl
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
+    // blazebit for querydsl paging
+    implementation libs.bundles.blaze.persistence.queryDSL
+    implementation libs.bundles.jackson
 
     // database
     implementation libs.mssql.jdbc
@@ -83,4 +91,17 @@ compileJava.mustRunAfter(":authentication:build")
 
 compileJava {
     options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
+}
+
+tasks.withType(JavaExec).configureEach {
+
+    debugOptions {
+        enabled = true
+        server = true
+        suspend = false
+        port = java.util.Optional.ofNullable(findProperty('debug.port'))
+                .map(Object::toString)
+                .map(Integer::parseInt)
+                .orElse(18095)
+    }
 }
