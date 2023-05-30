@@ -11,7 +11,7 @@ import {
 } from '@trussworks/react-uswds';
 import 'pages/patientProfile/style.scss';
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Summary } from 'pages/patientProfile/Summary';
 import { Events } from 'pages/patientProfile/Events';
@@ -19,6 +19,7 @@ import { Demographics } from 'pages/patientProfile/Demographics';
 import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
+import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -47,9 +48,28 @@ export const PatientProfile = () => {
 
     const profile = usePatientProfile(id);
 
+    const navigate = useNavigate();
     const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
     const [addedItem, setAddedItem] = useState<string>('');
     const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
+
+    const handleComplete = (data: DeletePatientMutation) => {
+        if (data && data.deletePatient && data.deletePatient.requestId) {
+            navigate('/advanced-search');
+        }
+    };
+
+    const [deletePatient] = useDeletePatientMutation({ onCompleted: handleComplete });
+
+    function handleDeletePatient() {
+        if (id) {
+            deletePatient({
+                variables: {
+                    patientId: id
+                }
+            });
+        }
+    }
 
     useEffect(() => {
         if (submittedSuccess) {
@@ -102,7 +122,11 @@ export const PatientProfile = () => {
                                 <ModalToggleButton outline modalRef={modalRef} closer>
                                     No, go back
                                 </ModalToggleButton>
-                                <ModalToggleButton modalRef={modalRef} closer className="padding-105 text-center">
+                                <ModalToggleButton
+                                    onClick={handleDeletePatient}
+                                    modalRef={modalRef}
+                                    closer
+                                    className="padding-105 text-center">
                                     Yes, delete
                                 </ModalToggleButton>
                             </ButtonGroup>

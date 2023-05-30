@@ -161,7 +161,7 @@ export default function AddPatient() {
                                     <div className="button-group">
                                         <Button
                                             disabled={disabled}
-                                            className="padding-x-3 add-patient-button"
+                                            className="padding-x-3 add-patient-button hide-button"
                                             type={'button'}>
                                             Save and add new lab report
                                         </Button>
