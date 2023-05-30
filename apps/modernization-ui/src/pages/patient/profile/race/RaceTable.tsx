@@ -136,9 +136,9 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
                     <tr key={index}>
                         <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                             {race?.asOf ? (
-                                <a href="#">
+                                <span>
                                     {format(new Date(race?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </a>
+                                </span>
                             ) : (
                                 <span className="no-data">No data</span>
                             )}
