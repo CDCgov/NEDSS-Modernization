@@ -152,9 +152,9 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                     <tr key={index}>
                         <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                             {name?.asOf ? (
-                                <a href="#">
+                                <span>
                                     {format(new Date(name?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </a>
+                                </span>
                             ) : (
                                 <span className="no-data">No data</span>
                             )}
