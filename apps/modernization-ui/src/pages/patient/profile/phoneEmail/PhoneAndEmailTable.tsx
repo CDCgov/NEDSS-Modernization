@@ -137,9 +137,9 @@ export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
                     <tr key={index}>
                         <td className={`font-sans-md table-data ${tableHead[0].sort !== 'all' && 'sort-td'}`}>
                             {phone?.asOf ? (
-                                <a href="#">
+                                <span>
                                     {format(new Date(phone?.asOf), 'MM/dd/yyyy')} <br />{' '}
-                                </a>
+                                </span>
                             ) : (
                                 <span className="no-data">No data</span>
                             )}
