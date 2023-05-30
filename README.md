@@ -42,19 +42,23 @@
    ```sh
    ./build.sh
    ```
-7. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1) and place it in `cdc-sandbox/db/restore/restore.d/`
-8. Unzip the downloaded restore file
-    ```sh
-    unzip db-restore.zip
-    ```
+7. Download the [database restore file](https://enquizit.sharepoint.com/:u:/s/CDCNBSProject/EQtb-5WSO9xGrocNofv_eMgBH1WX30TNV0wTlZ84E5coYg?e=uNtem1)
+8. Unzip the restore file contents to `cdc-sandbox/db/restore/`
+
+   ```sh
+   unzip -j db-restore.zip
+   ```
+
 9. Run the NBS [run script](cdc-sandbox/run.sh) to start the `nbs-mssql` database and `nbs`. NBS runs inside [WildFly 10.0.0](https://www.wildfly.org/news/2016/01/30/WildFly10-Released/), so the container is named `wildfly`
    ```sh
    ./run.sh
    ```
 10. Start `Elasticsearch`, `Kibana`, and the [Traefik](https://traefik.io/) reverse proxy
-   ```sh
-   docker-compose up elasticsearch kibana reverse-proxy -d
-   ```
+
+```sh
+docker-compose up elasticsearch kibana reverse-proxy -d
+```
+
 11. CD into the `apps/modernization-ui` directory
     ```sh
     cd ../apps/modernization-ui
