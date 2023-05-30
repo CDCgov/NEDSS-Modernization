@@ -282,7 +282,7 @@ public class PatientSearchSteps {
                 filter.setRace(searchPatient.getRaces().get(0).getRaceCategoryCd());
                 break;
             case "identification":
-                var patientId = searchPatient.getEntityIds().get(0);
+                var patientId = searchPatient.identifications().get(0);
                 filter.setIdentification(
                         new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
@@ -347,7 +347,7 @@ public class PatientSearchSteps {
         }
         switch (field) {
             case "identification":
-                var patientId = searchPatient.getEntityIds().get(0);
+                var patientId = searchPatient.identifications().get(0);
                 filter.setIdentification(
                         new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;

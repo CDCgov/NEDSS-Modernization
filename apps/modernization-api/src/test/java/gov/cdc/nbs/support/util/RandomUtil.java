@@ -1,15 +1,17 @@
 package gov.cdc.nbs.support.util;
 
+import gov.cdc.nbs.address.Country;
+import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.message.enums.Gender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
-
-import gov.cdc.nbs.address.Country;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RandomUtil {
     private static final Random RANDOM = new Random();
@@ -50,7 +52,7 @@ public class RandomUtil {
         int leftLimit = 48; // 0
         int rightLimit = 126; // ~
         return RANDOM.ints(leftLimit, rightLimit + 1).limit(length)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }
 
     public static String getRandomSsn() {
@@ -65,14 +67,14 @@ public class RandomUtil {
         int leftLimit = 48; // 0
         int rightLimit = 57; // 9
         return RANDOM.ints(leftLimit, rightLimit + 1).limit(length)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
     }
 
     public static Instant getRandomDateInPast() {
         var oneDayMillis = 86_400_000;
         var nowMillis = Instant.now().toEpochMilli() - oneDayMillis;
         return Instant.ofEpochMilli(RANDOM.nextLong(nowMillis)).atZone(ZoneId.systemDefault()).toInstant()
-                .truncatedTo(ChronoUnit.DAYS);
+            .truncatedTo(ChronoUnit.DAYS);
     }
 
     public static String getRandomStateCode() {
@@ -88,14 +90,22 @@ public class RandomUtil {
         return data.substring(0, new Random().nextInt(len - 1) + 1);
     }
 
+    public static Deceased deceased() {
+        return getRandomFromArray(Deceased.values());
+    }
+
+    public static Gender gender() {
+        return getRandomFromArray(Gender.values());
+    }
+
     public static Country country() {
         int limit = CountryCodeUtil.countryCodeMap.size();
         int index = RANDOM.nextInt(limit);
 
         return CountryCodeUtil.countryCodeMap.entrySet().stream().skip(index)
-                .map(e -> new Country(e.getValue(), e.getKey()))
-                .findFirst()
-                .orElse(null);
+            .map(e -> new Country(e.getValue(), e.getKey()))
+            .findFirst()
+            .orElse(null);
     }
 
     public static LocalDate dateInPast() {
