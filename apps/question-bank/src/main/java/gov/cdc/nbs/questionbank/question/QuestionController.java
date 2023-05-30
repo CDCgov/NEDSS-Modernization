@@ -19,10 +19,10 @@ public class QuestionController {
 	private static final String VIEW_QUESTION = HAS_AUTHORITY + Operations.VIEW + "-" + BusinessObjects.QUESTION + "')";
 	private static final String DELETE_QUESTION = HAS_AUTHORITY + Operations.DELETE + "-" + BusinessObjects.QUESTION;
 
-	private static final String UPDATE_QUESTION = HAS_AUTHORITY + Operations.UPDATE + "-" + BusinessObjects.QUESTION;
+	//private static final String UPDATE_QUESTION = HAS_AUTHORITY + Operations.UPDATE + "-" + BusinessObjects.QUESTION;
 
 	private static final String VIEW_AND_DELETE_QUESTION = VIEW_QUESTION + AND + DELETE_QUESTION;
-	private static final String VIEW_AND_UPDATE_QUESTION = VIEW_QUESTION + AND + UPDATE_QUESTION;
+	//private static final String VIEW_AND_UPDATE_QUESTION = VIEW_QUESTION + AND + UPDATE_QUESTION;
 
 	private final QuestionHandler questionController;
 
@@ -31,12 +31,5 @@ public class QuestionController {
 	public QuestionBankEventResponse deleteQuestion(@Argument Long questionId) {
 		return questionController.sendDeleteQuestionEvent(questionId);
 	}
-
-	@MutationMapping()
-	@PreAuthorize(VIEW_AND_UPDATE_QUESTION)
-	public QuestionBankEventResponse updateQuestion(@Argument Long questionId) {
-		return questionController.sendUpdateQuestionEvent(questionId);
-	}
-
-
 }
+

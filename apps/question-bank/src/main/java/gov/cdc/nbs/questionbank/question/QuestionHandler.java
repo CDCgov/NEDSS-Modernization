@@ -44,7 +44,7 @@ public class QuestionHandler {
 			} catch (Exception e) {
 				additionalMessage = e.getMessage();
 			}
-			if (updated != null && updated.isPresent()) {
+			if (updated.isPresent()) {
 				if (!updated.get().isActive()) {
 					requestStatusProducer.successful(request.requestId(), Constants.DELETE_SUCCESS_MESSAGE,
 							request.questionId());
@@ -66,7 +66,7 @@ public class QuestionHandler {
 			} catch (Exception e) {
 				additionalMessage = e.getMessage();
 			}
-			if (updated != null && updated.isPresent()) {
+			if (updated.isPresent()) {
 				requestStatusProducer.successful(request.requestId(), Constants.UPDATE_SUCCESS_MESSAGE,
 						request.questionId());
 			} else {
