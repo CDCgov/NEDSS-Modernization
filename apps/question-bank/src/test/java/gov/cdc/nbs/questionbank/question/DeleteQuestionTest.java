@@ -1,64 +1,88 @@
 package gov.cdc.nbs.questionbank.question;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
-import gov.cdc.nbs.questionbank.kafka.message.RequestStatus;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
+
+import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.kafka.message.DeleteQuestionRequest;
+import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
+import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 
  class DeleteQuestionTest {
-
-	@Autowired
-	RequestStatusProducer requestStatusProducer;
-
-	RequestProperties requestProperties;
-
+	
 	@Mock
-	KafkaTemplate<String, RequestStatus> kafkaQuestionStatusEventTemplate;
+	KafkaTemplate<String, DeleteQuestionRequest> kafkaQuestionDeleteTemplate;
 
-	@Mock
+	@InjectMocks
 	QuestionHandler questionHandler;
+	
+	@Mock
+	QuestionRepository questionRepository;
+	
+	@Mock
+	QuestionDeleteEventProducer questionDeleteProducer;
+	
+	@Mock
+	RequestStatusProducer statusProducer;
+	
+	@Mock
+	QuestionCreator creator;
+	
+	
 
 	public DeleteQuestionTest() {
 		MockitoAnnotations.openMocks(this);
-		requestProperties = new RequestProperties(UUID.randomUUID().toString(), "questionbank-status");
-		requestStatusProducer = new RequestStatusProducer(kafkaQuestionStatusEventTemplate, requestProperties);
+		questionHandler = new QuestionHandler(questionRepository,questionDeleteProducer,creator, statusProducer);
 	}
 
 	@Test
-	void sendDeleteQuestionResponseStatus() {
-
-		String requestId = UUID.randomUUID().toString();
+	void processDeleteQuestion() {
+		
 		Long questionId = UUID.randomUUID().getLeastSignificantBits();
 		Long userId = UUID.randomUUID().getLeastSignificantBits();
+		
+		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
+		.thenReturn(1);
 
-		var deleteEvent = new QuestionRequest.DeleteQuestionRequest(requestId, questionId, userId);
+	    QuestionBankEventResponse result =  questionHandler.processDeleteQuestion(questionId, userId);
 
-		ArgumentCaptor<QuestionRequest.DeleteQuestionRequest> captor = ArgumentCaptor
-				.forClass(QuestionRequest.DeleteQuestionRequest.class);
+		assertEquals(questionId.longValue() ,result.getQuestionId().longValue());
+		assertEquals(result.getMessage(), Constants.DELETE_SUCCESS_MESSAGE);
 
-		questionHandler.sendDeleteQuestionResponseStatus(deleteEvent);
+	}
+	
+	@Test
+	void deleteQuestion() {
+		Long questionId = UUID.randomUUID().getLeastSignificantBits();
+		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
+				.thenReturn(1);
+		int result = questionHandler.deleteQuestion(questionId);
+		assertEquals(result, 1);
 
-		verify(questionHandler, times(1)).sendDeleteQuestionResponseStatus(captor.capture());
+	}
 
-		QuestionRequest.DeleteQuestionRequest actualRecord = captor.getValue();
-		assertEquals(requestId, actualRecord.requestId());
-		assertEquals(userId.longValue() ,actualRecord.userId() );
-		assertEquals(questionId.longValue() ,actualRecord.questionId());
+	@Test
+	void deleteNonExistentQuestion() {
+		int  result = questionHandler.deleteQuestion(null);
+		assertEquals(result, -1);
+	}
 
+	public TextQuestionEntity testQuestion(Long questionId) {
+		TextQuestionEntity question = new TextQuestionEntity(
+				new QuestionCommand.AddTextQuestion(questionId, UUID.randomUUID().getLeastSignificantBits(),
+						Instant.now(), "Test", "ToolTip", Integer.valueOf(100), "placeholder", "default"));
+		return question;
 	}
 
 }

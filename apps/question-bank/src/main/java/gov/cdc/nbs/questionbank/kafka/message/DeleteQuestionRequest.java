@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class QuestionBankEventResponse {
-	private String message;
-	private Long questionId;
+@NoArgsConstructor
+public class DeleteQuestionRequest {
+	
+	private String requestId;
+	private long questionId;
+	private long userId;
 
 }
