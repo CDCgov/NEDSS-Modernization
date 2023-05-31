@@ -155,7 +155,7 @@ class KafkaProducerTest {
 
 		DeleteQuestionRequest actualRecord = envelopeEventArgumentCaptor.getValue();
 		assertThat(actualRecord.getRequestId()).isEqualTo("requestId");
-		assertThat(actualRecord.getRequestId()).isEqualTo(13L);
+		assertThat(actualRecord.getQuestionId()).isEqualTo(13L);
 		assertThat(actualRecord.getUserId()).isEqualTo(11L);
 
 		verifyNoMoreInteractions(kafkaQuestionDeleteTemplate);

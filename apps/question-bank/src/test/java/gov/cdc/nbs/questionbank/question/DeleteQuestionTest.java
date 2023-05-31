@@ -58,7 +58,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 	    QuestionBankEventResponse result =  questionHandler.processDeleteQuestion(questionId, userId);
 
 		assertEquals(questionId.longValue() ,result.getQuestionId().longValue());
-		assertEquals(result.getMessage(), Constants.DELETE_SUCCESS_MESSAGE);
+		assertEquals(Constants.DELETE_SUCCESS_MESSAGE, result.getMessage());
 
 	}
 	
@@ -68,7 +68,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
 				.thenReturn(1);
 		int result = questionHandler.deleteQuestion(questionId);
-		assertEquals(result, 1);
+		assertEquals(1,result);
 
 	}
 

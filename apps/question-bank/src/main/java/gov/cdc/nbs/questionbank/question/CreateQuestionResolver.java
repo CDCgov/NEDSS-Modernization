@@ -55,7 +55,7 @@ public class CreateQuestionResolver {
     public QuestionResponse createDropdownQuestion(@Argument QuestionRequest.DropdownQuestionData data) {
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
-        var request = new QuestionRequest.CreateDropdownQuestionRequest(reqestId,userId, data);
+        var request = new QuestionRequest.CreateDropdownQuestionRequest(reqestId, userId, data);
 
         producer.requestEventEnvelope(request);
 

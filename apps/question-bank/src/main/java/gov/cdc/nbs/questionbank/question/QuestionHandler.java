@@ -69,9 +69,8 @@ public class QuestionHandler {
 		DeleteQuestionRequest event = DeleteQuestionRequest.builder().questionId(questionId).userId(userId)
 				.requestId(getRequestId()).build();
 		sendQuestionDeleteEvent(event);
-		QuestionBankEventResponse response = QuestionBankEventResponse.builder().questionId(questionId)
+		return  QuestionBankEventResponse.builder().questionId(questionId)
 				.message(Constants.DELETE_SUCCESS_MESSAGE).build();
-		return response;
 	}
 
 	public int  deleteQuestion(Long questionId) {

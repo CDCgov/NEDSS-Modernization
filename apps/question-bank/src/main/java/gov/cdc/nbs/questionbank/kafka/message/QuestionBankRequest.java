@@ -12,8 +12,7 @@ public interface QuestionBankRequest {
 
     String requestId();
 
-    long userId();
-    
+    long userId();    
 
     default String type() {
         return QuestionBankRequest.class.getSimpleName();
