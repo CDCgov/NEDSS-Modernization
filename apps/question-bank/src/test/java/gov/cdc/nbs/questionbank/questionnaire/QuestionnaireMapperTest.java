@@ -19,12 +19,13 @@ import gov.cdc.nbs.questionbank.entities.DisplayGroupRef;
 import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
-import gov.cdc.nbs.questionbank.entities.Reference;
+import gov.cdc.nbs.questionbank.entities.ReferenceEntity;
+import gov.cdc.nbs.questionbank.entities.TabEntity;
 import gov.cdc.nbs.questionbank.entities.TextEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.entities.ValueSet.ValueSetType;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.DateQuestion;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.DropDownQuestion;
@@ -42,19 +43,20 @@ class QuestionnaireMapperTest {
     void should_return_questionnaire() {
         Questionnaire q = questionnaireMapper.toQuestionnaire(emptyEntity());
         assertNotNull(q);
-        assertEquals(0, q.elements().size());
+        assertEquals(0, q.tabs().size());
     }
 
     @Test
     void should_return_questionnaire_with_content() {
         Questionnaire q = questionnaireMapper.toQuestionnaire(fullEntity());
         assertNotNull(q);
-        assertEquals(6, q.elements().size());
+        assertEquals(1, q.tabs().size());
+        assertEquals(6, q.tabs().get(0).elements().size());
     }
 
     @Test
     void toElement_should_throw_exception_for_invalid_type() {
-        Reference ref = new Reference() {
+        ReferenceEntity ref = new ReferenceEntity() {
             @Override
             public String getReferenceType() {
                 return "invalid type";
@@ -181,7 +183,7 @@ class QuestionnaireMapperTest {
         QuestionnaireEntity entity = new QuestionnaireEntity();
         entity.setId(UUID.randomUUID());
         entity.setConditionCodes(Arrays.asList("condition"));
-        entity.setReferences(new ArrayList<>());
+        entity.setTabs(new ArrayList<>());
         entity.setRules(new ArrayList<>());
         return entity;
     }
@@ -190,12 +192,21 @@ class QuestionnaireMapperTest {
         QuestionnaireEntity entity = new QuestionnaireEntity();
         entity.setId(UUID.randomUUID());
         entity.setConditionCodes(Arrays.asList("condition"));
-        entity.setReferences(allReferenceTypes());
+        entity.setTabs(Arrays.asList(tab(allReferenceTypes())));
         return entity;
     }
 
-    private List<Reference> allReferenceTypes() {
-        var references = new ArrayList<Reference>();
+    private TabEntity tab(List<ReferenceEntity> references) {
+        TabEntity entity = new TabEntity();
+        entity.setName("test tab");
+        entity.setId(UUID.randomUUID());
+        entity.setReferences(references);
+        entity.setDisplayOrder(0);
+        return entity;
+    }
+
+    private List<ReferenceEntity> allReferenceTypes() {
+        var references = new ArrayList<ReferenceEntity>();
         references.add(displayRef(textEntity(), 1));
         references.add(displayRef(textQuestionEntity(), 2));
         references.add(displayRef(numericQuestionEntity(), 3));
@@ -286,7 +297,7 @@ class QuestionnaireMapperTest {
         v.setCode("unit-code");
         v.setDescription("Value set for units");
         v.setName("Units");
-        v.setType(ValueSetType.LOCAL);
+        v.setCodeSet(CodeSet.LOCAL);
         v.setValues(unitValues(v));
         return v;
     }

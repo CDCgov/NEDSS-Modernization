@@ -53,6 +53,7 @@ public class NumericQuestionEntity extends DisplayElementEntity {
         this.maxValue = command.maxValue();
         this.defaultNumericValue = command.defaultValue();
         this.unitsSet = command.unitsOptions();
+        this.setCodeSet(command.codeSet());
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);
     }

@@ -8,7 +8,8 @@ import gov.cdc.nbs.questionbank.entities.DisplayGroupRef;
 import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
-import gov.cdc.nbs.questionbank.entities.Reference;
+import gov.cdc.nbs.questionbank.entities.ReferenceEntity;
+import gov.cdc.nbs.questionbank.entities.TabEntity;
 import gov.cdc.nbs.questionbank.entities.TextEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
@@ -28,11 +29,15 @@ class QuestionnaireMapper {
         return new Questionnaire(
                 entity.getId(),
                 entity.getConditionCodes(),
-                entity.getReferences().stream().map(this::toElement).toList());
+                entity.getTabs().stream().map(this::toTab).toList());
+    }
+
+    Questionnaire.Tab toTab(TabEntity entity) {
+        return new Questionnaire.Tab(entity.getName(), entity.getReferences().stream().map(this::toElement).toList());
     }
 
     /**
-     * Accepts a {@link gov.cdc.nbs.questionbank.entities.Reference Reference} and converts it into a
+     * Accepts a {@link gov.cdc.nbs.questionbank.entities.ReferenceEntity Reference} and converts it into a
      * {@link gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.Element Questionnaire.Element}.
      * 
      * A reference can be either a DisplayElementRef that references a
@@ -42,7 +47,7 @@ class QuestionnaireMapper {
      * @param ref
      * @return
      */
-    Questionnaire.Element toElement(Reference ref) {
+    Questionnaire.Element toElement(ReferenceEntity ref) {
         if (ref instanceof DisplayElementRef displayElementRef) {
             return toDisplayElement(displayElementRef.getDisplayElementEntity());
         } else if (ref instanceof DisplayGroupRef displayGroupRef) {

@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @DiscriminatorValue(DisplayGroupRef.TYPE)
-public class DisplayGroupRef extends Reference {
+public class DisplayGroupRef extends ReferenceEntity {
     static final String TYPE = "display_group";
 
     @OneToOne(fetch = FetchType.EAGER)
