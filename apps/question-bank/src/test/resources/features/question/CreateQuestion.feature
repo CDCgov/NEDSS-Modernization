@@ -1,5 +1,5 @@
 @create_question
-Feature: Question create
+Feature: A user with the necessary permissions is able to create a new question
 
     Background:
         Given No questions exist

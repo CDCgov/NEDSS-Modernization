@@ -21,7 +21,7 @@ import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 public class EntityMapper {
 
     /**
-     * EntityMapper Converts a {@link gov.cdc.nbs.questionbank.entities.QuestionnaireEntity QuestionnaireEntity} into a
+     * Converts a {@link gov.cdc.nbs.questionbank.entities.QuestionnaireEntity QuestionnaireEntity} into a
      * {@link gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire Questionnaire}.
      * 
      * @param optional
@@ -39,10 +39,10 @@ public class EntityMapper {
     }
 
     /**
-     * Accepts a {@link gov.cdc.nbs.questionbank.entities.ReferenceEntity Reference} and converts it into a
+     * Accepts a {@link gov.cdc.nbs.questionbank.entities.ReferenceEntity ReferenceEntity} and converts it into a
      * {@link gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.Element Questionnaire.Element}.
      * 
-     * A reference can be either a DisplayElementRef that references a
+     * A referenceEntity can be either a DisplayElementRef that references a
      * {@link gov.cdc.nbs.questionbank.entities.DisplayElementEntity DisplayElementEntity} or a DisplayElementGroupRef
      * that references a {@link gov.cdc.nbs.questionbank.entities.DisplayElementGroupEntity DisplayElementGroupEntity}.
      * 
@@ -61,7 +61,8 @@ public class EntityMapper {
 
     /**
      * Converts a {@link gov.cdc.nbs.questionbank.entities.DisplayElementEntity DisplayElementEntity} to its
-     * corresponding {@link gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.Element Questionnaire.Element}.
+     * corresponding {@link gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.DisplayElement
+     * Questionnaire.DisplayElement}.
      * 
      * @param element
      * @return
