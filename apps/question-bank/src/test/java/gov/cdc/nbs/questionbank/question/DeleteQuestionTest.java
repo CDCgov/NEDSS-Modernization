@@ -81,7 +81,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 	public TextQuestionEntity testQuestion(Long questionId) {
 		TextQuestionEntity question = new TextQuestionEntity(
 				new QuestionCommand.AddTextQuestion(questionId, UUID.randomUUID().getLeastSignificantBits(),
-						Instant.now(), "Test", "ToolTip", Integer.valueOf(100), "placeholder", "default"));
+						Instant.now(), "Test", "ToolTip", Integer.valueOf(100), "placeholder", "default", null));
 		return question;
 	}
 

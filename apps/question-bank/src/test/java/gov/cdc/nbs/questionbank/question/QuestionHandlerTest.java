@@ -131,7 +131,6 @@ class QuestionHandlerTest {
     private QuestionRequest.CreateTextQuestionRequest createTextQuestionRequest() {
         return new QuestionRequest.CreateTextQuestionRequest(
                 "text request Id",
-                0,
                 userId,
                 new TextQuestionData(
                         "label",
@@ -145,7 +144,6 @@ class QuestionHandlerTest {
     private QuestionRequest.CreateDateQuestionRequest createDateQuestionRequest() {
         return new QuestionRequest.CreateDateQuestionRequest(
                 "text request Id",
-                0,
                 userId,
                 new DateQuestionData(
                         "label",
@@ -157,7 +155,6 @@ class QuestionHandlerTest {
     private QuestionRequest.CreateDropdownQuestionRequest createDropdownQuestionRequest() {
         return new QuestionRequest.CreateDropdownQuestionRequest(
                 "text request Id",
-                0,
                 userId,
                 new DropdownQuestionData(
                         "label",
@@ -171,7 +168,6 @@ class QuestionHandlerTest {
     private QuestionRequest.CreateNumericQuestionRequest createNumericQuestionRequest() {
         return new QuestionRequest.CreateNumericQuestionRequest(
                 "text request Id",
-                0,
                 userId,
                 new NumericQuestionData(
                         "label",

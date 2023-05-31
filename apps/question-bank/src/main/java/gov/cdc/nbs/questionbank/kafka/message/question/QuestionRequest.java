@@ -17,7 +17,6 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
 
     record CreateTextQuestionRequest(
             String requestId,
-            long questionId,
             long userId,
             TextQuestionData data) implements QuestionRequest {
     }
@@ -33,7 +32,6 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
 
     record CreateDateQuestionRequest(
             String requestId,
-            long questionId,
             long userId,
             DateQuestionData data) implements QuestionRequest {
     }
@@ -47,7 +45,6 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
 
     record CreateDropdownQuestionRequest(
             String requestId,
-            long questionId,
             long userId,
             DropdownQuestionData data) implements QuestionRequest {
     }
@@ -63,7 +60,6 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
 
     record CreateNumericQuestionRequest(
             String requestId,
-            long questionId,
             long userId,
             NumericQuestionData data) implements QuestionRequest {
     }
@@ -87,14 +83,5 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             Integer maxLength,
             String placeholder) implements QuestionRequest {
     }
-    
-    record DeleteQuestionRequest(
-    		String requestId,	
-    		long questionId,	
-    		long userId	
-    		) implements QuestionRequest {
-
-    }
-    
 
 }

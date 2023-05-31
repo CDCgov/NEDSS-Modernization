@@ -31,7 +31,7 @@ public class CreateQuestionResolver {
     public QuestionResponse createTextQuestion(@Argument QuestionRequest.TextQuestionData data) {
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
-        var request = new QuestionRequest.CreateTextQuestionRequest(reqestId,0, userId, data);
+        var request = new QuestionRequest.CreateTextQuestionRequest(reqestId, userId, data);
 
         producer.requestEventEnvelope(request);
 
@@ -43,7 +43,7 @@ public class CreateQuestionResolver {
     public QuestionResponse createDateQuestion(@Argument QuestionRequest.DateQuestionData data) {
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
-        var request = new QuestionRequest.CreateDateQuestionRequest(reqestId,0, userId, data);
+        var request = new QuestionRequest.CreateDateQuestionRequest(reqestId, userId, data);
 
         producer.requestEventEnvelope(request);
 
@@ -55,7 +55,7 @@ public class CreateQuestionResolver {
     public QuestionResponse createDropdownQuestion(@Argument QuestionRequest.DropdownQuestionData data) {
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
-        var request = new QuestionRequest.CreateDropdownQuestionRequest(reqestId, 0,userId, data);
+        var request = new QuestionRequest.CreateDropdownQuestionRequest(reqestId,userId, data);
 
         producer.requestEventEnvelope(request);
 
@@ -67,7 +67,7 @@ public class CreateQuestionResolver {
     public QuestionResponse createNumericQuestion(@Argument QuestionRequest.NumericQuestionData data) {
         String reqestId = UUID.randomUUID().toString();
         long userId = getUserId();
-        var request = new QuestionRequest.CreateNumericQuestionRequest(reqestId,0, userId, data);
+        var request = new QuestionRequest.CreateNumericQuestionRequest(reqestId, userId, data);
 
         producer.requestEventEnvelope(request);
 

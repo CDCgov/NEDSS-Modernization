@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
-import gov.cdc.nbs.questionbank.entities.DisplayElementId;
+import gov.cdc.nbs.questionbank.entities.VersionId;
 
-public interface QuestionRepository extends JpaRepository<DisplayElementEntity, DisplayElementId> {
+public interface QuestionRepository extends JpaRepository<DisplayElementEntity, VersionId> {
 
 	@Modifying
 	@Query("UPDATE DisplayElementEntity SET active=:questionActive where id=:questionId")

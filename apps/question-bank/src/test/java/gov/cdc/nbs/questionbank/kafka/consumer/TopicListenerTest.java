@@ -102,30 +102,6 @@ class TopicListenerTest {
                 .returns("placeholder", QuestionRequest.UpdateTextQuestionRequest::placeholder);
     }
     
-	@Test
-	void testReceivingDeleteRequest() throws JsonProcessingException {
-		String message = """
-				{
-				  "type": "QuestionRequest$DeleteQuestionRequest",
-				  "questionId": 321,
-				  "requestId": "requestId",
-				  "userId": 123
-				}
-				""";
-
-		consumer.onMessage(message, "requestId");
-
-		ArgumentCaptor<QuestionRequest.DeleteQuestionRequest> captor = ArgumentCaptor
-				.forClass(QuestionRequest.DeleteQuestionRequest.class);
-
-		verify(createHandler, times(1)).handleQuestionRequest(captor.capture());
-
-		QuestionRequest.DeleteQuestionRequest actual = captor.getValue();
-		assertThat(actual).returns("requestId", QuestionRequest.DeleteQuestionRequest::requestId)
-				.returns(321L, QuestionRequest.DeleteQuestionRequest::questionId)
-				.returns(123L, QuestionRequest.DeleteQuestionRequest::userId);
-	}
-
     @Test
     void testJsonProcessingException() {
         String message = "bad message";
@@ -149,10 +125,6 @@ class TopicListenerTest {
                             @Override
                             public long userId() {
                                 return 1L;
-                            }
-                            @Override
-                            public long questionId() {
-                            	return 1L;
                             }
                         });
 

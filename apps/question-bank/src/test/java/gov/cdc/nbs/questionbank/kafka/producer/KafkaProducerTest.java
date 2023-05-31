@@ -19,8 +19,10 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.util.concurrent.SettableListenableFuture;
 import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
+import gov.cdc.nbs.questionbank.kafka.message.DeleteQuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankRequest;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
+import gov.cdc.nbs.questionbank.question.QuestionDeleteEventProducer;
 
 @ExtendWith(MockitoExtension.class)
 class KafkaProducerTest {
@@ -28,18 +30,24 @@ class KafkaProducerTest {
     @Mock
     private KafkaTemplate<String, QuestionBankRequest> kafkaEnvelopeTemplate;
 
+	@Mock
+    private KafkaTemplate<String, DeleteQuestionRequest> kafkaQuestionDeleteTemplate;
+
     @InjectMocks
     private KafkaProducer producer;
 
+	 @InjectMocks
+    private QuestionDeleteEventProducer deleteEventProducer;
+
     public KafkaProducerTest() {
         producer = new KafkaProducer();
+		deleteEventProducer = new QuestionDeleteEventProducer(kafkaQuestionDeleteTemplate);
     }
 
     @Test
     void testSendEvent() {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
-                0,
                 13L,
                 new QuestionRequest.TextQuestionData(
                         "a label",
@@ -76,7 +84,6 @@ class KafkaProducerTest {
     void should_throw_producer_error() {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
-                0,
                 13L,
                 new QuestionRequest.TextQuestionData(
                         "a label",
@@ -107,7 +114,6 @@ class KafkaProducerTest {
     void should_trigger_success() {
         var message = new QuestionRequest.CreateTextQuestionRequest(
                 "requestId",
-                0,
                 13L,
                 new QuestionRequest.TextQuestionData(
                         "a label",
@@ -134,23 +140,24 @@ class KafkaProducerTest {
     
 	@Test
 	void testDeleteEvent() {
-		var message = new QuestionRequest.DeleteQuestionRequest("requestId", 13L, 11L);
-		ListenableFuture<SendResult<String, QuestionBankRequest>> future = new SettableListenableFuture<>();
-		Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
+		DeleteQuestionRequest message = DeleteQuestionRequest.builder().requestId("requestId").questionId(13L)
+				.userId(11l).build();
+		ListenableFuture<SendResult<String, DeleteQuestionRequest>> future = new SettableListenableFuture<>();
+		Mockito.when(kafkaQuestionDeleteTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
-		producer.requestEventEnvelope(message);
+		deleteEventProducer.send(message);
 
-		ArgumentCaptor<QuestionRequest.DeleteQuestionRequest> envelopeEventArgumentCaptor = ArgumentCaptor
-				.forClass(QuestionRequest.DeleteQuestionRequest.class);
+		ArgumentCaptor<DeleteQuestionRequest> envelopeEventArgumentCaptor = ArgumentCaptor
+				.forClass(DeleteQuestionRequest.class);
 
-		verify(kafkaEnvelopeTemplate).send(nullable(String.class), eq("requestId"),
+		verify(kafkaQuestionDeleteTemplate).send(nullable(String.class), eq("requestId"),
 				envelopeEventArgumentCaptor.capture());
 
-		QuestionRequest.DeleteQuestionRequest actualRecord = envelopeEventArgumentCaptor.getValue();
-		assertThat(actualRecord.requestId()).isEqualTo("requestId");
-		assertThat(actualRecord.questionId()).isEqualTo(13L);
-		assertThat(actualRecord.userId()).isEqualTo(11L);
+		DeleteQuestionRequest actualRecord = envelopeEventArgumentCaptor.getValue();
+		assertThat(actualRecord.getRequestId()).isEqualTo("requestId");
+		assertThat(actualRecord.getRequestId()).isEqualTo(13L);
+		assertThat(actualRecord.getUserId()).isEqualTo(11L);
 
-		verifyNoMoreInteractions(kafkaEnvelopeTemplate);
+		verifyNoMoreInteractions(kafkaQuestionDeleteTemplate);
 	}
 }
