@@ -5,6 +5,18 @@ type Query {
     findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
     findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
     findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
+    findNameSuffixes(page: Page): KeyValuePairResults!
+    findAllNameTypes(page: Page):NameTypeResults!
+    findAllNamePrefixes(page: Page): NamePrefixResults!
+    findAllDegrees(page: Page): DegreeResults!
+    findAllAddressTypes(page: Page): AddressTypeResults!
+    findAllAddressUses(page: Page): AddressUseResults!
+    findAllPhoneAndEmailType(page: Page): PhoneAndEmailTypeResults!
+    findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
+    findAllIdentificationTypes(page: Page): IdentificationTypesResults!
+    findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
+    findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
+    findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
 }
 
 type Mutation {
@@ -35,6 +47,132 @@ type Mutation {
     deletePatientRace(patientId: Int!, raceCd: String!): PatientEventResponse!
 }
 
+type NaicsIndustryCodeResults {
+    content: [NaicsIndustryCode!]!
+    total:Int!
+}
+
+type NaicsIndustryCode {
+    id: ID!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
+    keyInfoTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: String
+    parentIsCd: String
+    statusCd: String
+    statusTime: String
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+}
+
+type StateCountyCodeValueResults {
+    content: [StateCountyCodeValue!]!
+    total:Int!
+}
+
+type StateCountyCodeValue {
+    id: ID!
+    code_desc_txt: String!
+    state_cd: String!
+}
+
+type AssigningAuthorResults {
+    content: [AssigningAuthor!]!
+    total:Int!
+}
+
+type AssigningAuthor {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type IdentificationTypesResults {
+    content: [IdentificationTypes!]!
+    total:Int!
+}
+
+type IdentificationTypes {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type PhoneAndEmailUseResults {
+    content: [PhoneAndEmailUse!]!
+    total:Int!
+}
+
+type PhoneAndEmailUse {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type PhoneAndEmailTypeResults {
+    content: [PhoneAndEmailType!]!
+    total:Int!
+}
+
+type PhoneAndEmailType {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type AddressUseResults {
+    content: [AddressUse!]!
+    total:Int!
+}
+
+type AddressUse {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type AddressTypeResults {
+    content: [AddressType!]!
+    total:Int!
+}
+
+type AddressType {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type DegreeResults {
+    content: [Degree!]!
+    total:Int!
+}
+
+type Degree {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type NamePrefixResults {
+    content: [NamePrefix!]!
+    total:Int!
+}
+
+type NamePrefix {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
+type NameTypeResults {
+    content: [NameType!]!
+    total:Int!
+}
+
+type NameType {
+    id: ID!
+    code_short_desc_txt: String!
+}
+
 type PatientEventResponse {
     requestId: String!
     patientId: ID!
@@ -43,6 +181,16 @@ type PatientEventResponse {
 type PersonResults {
     content: [Person!]!
     total: Int!
+}
+
+type KeyValuePairResults {
+    content: [KeyValuePair!]!
+    total: Int!
+}
+
+type KeyValuePair {
+    key: String!
+    value: String!
 }
 
 input PersonFilter {

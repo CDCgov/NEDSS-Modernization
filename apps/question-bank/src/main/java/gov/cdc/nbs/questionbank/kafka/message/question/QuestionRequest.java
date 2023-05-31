@@ -1,8 +1,18 @@
 package gov.cdc.nbs.questionbank.kafka.message.question;
 
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankRequest;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(QuestionRequest.CreateTextQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.UpdateTextQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.CreateDateQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.CreateDropdownQuestionRequest.class),
+        @JsonSubTypes.Type(QuestionRequest.CreateNumericQuestionRequest.class)})
 public sealed interface QuestionRequest extends QuestionBankRequest {
 
     record CreateTextQuestionRequest(
@@ -17,7 +27,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String tooltip,
             Integer maxLength,
             String placeholder,
-            String defaultValue) {
+            String defaultValue,
+            CodeSet codeSet) {
     }
 
     record CreateDateQuestionRequest(
@@ -30,7 +41,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
     record DateQuestionData(
             String label,
             String tooltip,
-            boolean allowFutureDates) {
+            boolean allowFutureDates,
+            CodeSet codeSet) {
     }
 
     record CreateDropdownQuestionRequest(
@@ -45,7 +57,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String tooltip,
             UUID valueSet,
             UUID defaultValue,
-            boolean isMultiSelect) {
+            boolean isMultiSelect,
+            CodeSet codeSet) {
     }
 
     record CreateNumericQuestionRequest(
@@ -61,7 +74,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             Integer minValue,
             Integer maxValue,
             Integer defaultValue,
-            UUID unitValueSet) {
+            UUID unitValueSet,
+            CodeSet codeSet) {
     }
 
     record UpdateTextQuestionRequest(

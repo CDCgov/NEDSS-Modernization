@@ -7,8 +7,10 @@ import java.util.UUID;
 public record Questionnaire(
         UUID id,
         List<String> conditions,
-        List<Element> elements) {
+        List<Tab> tabs) {
 
+    public record Tab(String name, List<Element> elements) {
+    }
     public sealed interface Element permits Section, DisplayElement {
 
     }

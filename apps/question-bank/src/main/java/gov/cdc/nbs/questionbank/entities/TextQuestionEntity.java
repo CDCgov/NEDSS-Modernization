@@ -46,6 +46,7 @@ public class TextQuestionEntity extends DisplayElementEntity {
         this.maxLength = command.maxLength();
         this.placeholder = command.placeholder();
         this.defaultTextValue = command.defaultValue();
+        this.setCodeSet(command.codeSet());
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);
     }

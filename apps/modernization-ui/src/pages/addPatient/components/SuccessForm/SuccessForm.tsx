@@ -1,6 +1,14 @@
 import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
+import { useNavigate } from 'react-router-dom';
 
 export const SuccessForm = ({ data, setSuccessSubmit }: any) => {
+    const navigate = useNavigate();
+
+    function handleViewPatient(): void {
+        // TODO: Hard coded to this profile for now. Once new patient creation is ready, we can pass that id instead.
+        // At the time of this code, patient creation is not ready.
+        navigate('/patient-profile/63000');
+    }
     return (
         <Grid row>
             <Grid col={10} className="margin-x-auto margin-top-5">
@@ -13,7 +21,9 @@ export const SuccessForm = ({ data, setSuccessSubmit }: any) => {
                             You have successfully added “{data?.['first-name']}, {data?.['last-name']}”
                         </p>
                         <ButtonGroup className="flex-justify-center margin-top-3">
-                            <Button type="button">View patient</Button>
+                            <Button type="button" onClick={handleViewPatient}>
+                                View patient
+                            </Button>
                             <Button onClick={() => setSuccessSubmit(false)} type="button" outline>
                                 Add another patient
                             </Button>

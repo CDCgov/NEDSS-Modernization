@@ -6,12 +6,7 @@ import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(QuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.CreateTextQuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.UpdateTextQuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.CreateDateQuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.CreateDropdownQuestionRequest.class),
-        @JsonSubTypes.Type(QuestionRequest.DeleteQuestionRequest.class)
+        @JsonSubTypes.Type(QuestionRequest.class)
 })
 public interface QuestionBankRequest {
 

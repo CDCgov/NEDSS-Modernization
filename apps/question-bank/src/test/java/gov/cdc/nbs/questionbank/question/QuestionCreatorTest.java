@@ -22,6 +22,7 @@ import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DateQuestionData;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DropdownQuestionData;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.NumericQuestionData;
@@ -145,14 +146,16 @@ class QuestionCreatorTest {
                 "test tooltip",
                 13,
                 "test placeholder",
-                "some default value");
+                "some default value",
+                CodeSet.LOCAL);
     }
 
     private DateQuestionData dateQuestionData() {
         return new DateQuestionData(
                 "test label",
                 "test tooltip",
-                true);
+                true,
+                CodeSet.LOCAL);
     }
 
     private NumericQuestionData numericQuestionData() {
@@ -162,7 +165,8 @@ class QuestionCreatorTest {
                 -3,
                 543,
                 -2,
-                null);
+                null,
+                CodeSet.LOCAL);
     }
 
     private DropdownQuestionData dropdownQuestionData() {
@@ -171,7 +175,8 @@ class QuestionCreatorTest {
                 "test tooltip",
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                true);
+                true,
+                CodeSet.LOCAL);
     }
 
 }

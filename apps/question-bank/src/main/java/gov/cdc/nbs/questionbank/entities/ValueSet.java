@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,8 +40,8 @@ public class ValueSet implements Serializable {
     private String code;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private ValueSetType type;
+    @Column(name = "code_set", nullable = false, length = 20)
+    private CodeSet codeSet;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -50,11 +51,5 @@ public class ValueSet implements Serializable {
 
     @OneToMany(mappedBy = "valueSet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ValueEntity> values;
-
-
-    public enum ValueSetType {
-        LOCAL,
-        PHIN
-    }
 
 }

@@ -9,17 +9,17 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Getter
 @Setter
-public class DisplayElementId implements Serializable {
+public class VersionId implements Serializable {
 
     private UUID id;
 
     private Integer version;
 
-    public DisplayElementId() {
+    public VersionId() {
         this.version = 1;
     }
 
-    public DisplayElementId(UUID id, Integer version) {
+    public VersionId(UUID id, Integer version) {
         this.id = id;
         this.version = version;
     }

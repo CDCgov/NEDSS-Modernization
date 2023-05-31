@@ -18,6 +18,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.util.concurrent.SettableListenableFuture;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankRequest;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 
@@ -45,7 +46,8 @@ class KafkaProducerTest {
                         "a tooltip",
                         11,
                         "a placeholder",
-                        "some default text"));
+                        "some default text",
+                        CodeSet.LOCAL));
         ListenableFuture<SendResult<String, QuestionBankRequest>> future = new SettableListenableFuture<>();
         Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
@@ -81,7 +83,8 @@ class KafkaProducerTest {
                         "a tooltip",
                         11,
                         "a placeholder",
-                        "default"));
+                        "default",
+                        CodeSet.LOCAL));
 
         ListenableFutureCallback<SendResult<String, QuestionBankRequest>> callback =
                 Mockito.mock(ListenableFutureCallback.class);
@@ -111,7 +114,8 @@ class KafkaProducerTest {
                         "a tooltip",
                         11,
                         "a placeholder",
-                        "default"));
+                        "default",
+                        CodeSet.LOCAL));
 
         ListenableFutureCallback<SendResult<String, QuestionBankRequest>> callback =
                 Mockito.mock(ListenableFutureCallback.class);

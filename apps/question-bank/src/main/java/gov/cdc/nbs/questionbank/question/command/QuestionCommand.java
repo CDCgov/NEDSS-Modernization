@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.question.command;
 import java.time.Instant;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 
 public sealed interface QuestionCommand {
     Long question();
@@ -19,7 +20,8 @@ public sealed interface QuestionCommand {
             String tooltip,
             Integer maxLength,
             String placeholder,
-            String defaultValue) implements QuestionCommand {
+            String defaultValue,
+            CodeSet codeSet) implements QuestionCommand {
     }
 
     record AddDateQuestion(
@@ -28,7 +30,8 @@ public sealed interface QuestionCommand {
             Instant requestedOn,
             String label,
             String tooltip,
-            boolean allowFutureDates) implements QuestionCommand {
+            boolean allowFutureDates,
+            CodeSet codeSet) implements QuestionCommand {
 
     }
 
@@ -40,7 +43,8 @@ public sealed interface QuestionCommand {
             String tooltip,
             ValueSet valueSet,
             ValueEntity defaultValue,
-            boolean isMultiSelect) implements QuestionCommand {
+            boolean isMultiSelect,
+            CodeSet codeSet) implements QuestionCommand {
 
     }
 
@@ -53,7 +57,8 @@ public sealed interface QuestionCommand {
             Integer minValue,
             Integer maxValue,
             Integer defaultValue,
-            ValueSet unitsOptions) implements QuestionCommand {
+            ValueSet unitsOptions,
+            CodeSet codeSet) implements QuestionCommand {
     }
 
 }
