@@ -5,9 +5,15 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.entities.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.questionnaire.EntityMapper;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class CreateQuestionResolver {
 
@@ -31,30 +37,42 @@ public class CreateQuestionResolver {
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Questionnaire.TextQuestion createTextQuestion(@Argument QuestionRequest.CreateTextQuestion data) {
+        log.debug("Received create text question request: {}", data);
         long userId = getUserId();
-        return entityMapper.toTextQuestion(questionCreator.create(data, userId));
+        TextQuestionEntity entity = questionCreator.create(data, userId);
+        log.debug("Successfully created text question entity: {}", entity.getId().toString());
+        return entityMapper.toTextQuestion(entity);
     }
 
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Questionnaire.DateQuestion createDateQuestion(@Argument QuestionRequest.CreateDateQuestion data) {
+        log.debug("Received create date question request: {}", data);
         long userId = getUserId();
-        return entityMapper.toDateQuestion(questionCreator.create(data, userId));
+        DateQuestionEntity entity = questionCreator.create(data, userId);
+        log.debug("Successfully created date question entity: {}", entity.getId().toString());
+        return entityMapper.toDateQuestion(entity);
     }
 
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Questionnaire.DropdownQuestion createDropdownQuestion(
             @Argument QuestionRequest.CreateDropdownQuestion data) {
+        log.debug("Received create dropdown question request: {}", data);
         long userId = getUserId();
-        return entityMapper.toDropdownQuestion(questionCreator.create(data, userId));
+        DropdownQuestionEntity entity = questionCreator.create(data, userId);
+        log.debug("Successfully created dropdown question entity: {}", entity.getId().toString());
+        return entityMapper.toDropdownQuestion(entity);
     }
 
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Questionnaire.NumericQuestion createNumericQuestion(@Argument QuestionRequest.CreateNumericQuestion data) {
+        log.debug("Received create numeric question request: {}", data);
         long userId = getUserId();
-        return entityMapper.toNumericQuestion(questionCreator.create(data, userId));
+        NumericQuestionEntity entity = questionCreator.create(data, userId);
+        log.debug("Successfully created numeric question entity: {}", entity.getId().toString());
+        return entityMapper.toNumericQuestion(entity);
     }
 
 }
