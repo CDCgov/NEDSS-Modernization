@@ -18,6 +18,9 @@ tasks.named("test") { testTask ->
     afterSuite { desc, result ->
 
         if (desc.parent) return // Only summarize results for whole modules
+        if (desc.getParent() == null) {
+            rootProject.ext.testFailures += result.getFailedTestCount() //count failures
+        }
 
         String summary = "${testTask.project.name}:${testTask.name} results: ${result.resultType} " +
                 "(" +
