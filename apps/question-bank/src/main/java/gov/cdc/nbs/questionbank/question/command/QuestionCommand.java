@@ -61,4 +61,16 @@ public sealed interface QuestionCommand {
             CodeSet codeSet) implements QuestionCommand {
     }
 
+
+    record UpdateTextQuestion(
+            Long question,
+            long userId,
+            Instant requestedOn,
+            String label,
+            String tooltip,
+            Integer maxLength,
+            String placeholder,
+            String defaultValue) implements QuestionCommand {
+    }
+
 }

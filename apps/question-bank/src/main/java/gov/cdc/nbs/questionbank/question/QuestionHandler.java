@@ -49,6 +49,17 @@ public class QuestionHandler {
         sendSuccess(request.requestId(), entity.getId());
     }
 
+    private void updateQuestion(QuestionRequest request){
+        DisplayElementEntity entity;
+        if (request instanceof QuestionRequest.UpdateTextQuestionRequest updateTextQuestionRequest) {
+            entity = creator.create(updateTextQuestionRequest.data(), request.userId());
+        } else {
+            throw new RequestException("Failed to handle question type", request.requestId());
+        }
+        sendSuccess(request.requestId(), entity.getId());
+
+    }
+
     private void sendSuccess(String requestId, UUID id) {
         statusProducer.successful(
                 requestId,

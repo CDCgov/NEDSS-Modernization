@@ -59,6 +59,25 @@ class QuestionCreator {
         return displayElementRepository.save(entity);
     }
 
+    // Update question
+    @Transactional
+    TextQuestionEntity update(QuestionRequest.UpdateTextQuestionRequest data, long userId) {
+        TextQuestionEntity entity = new UpdateTextQuestion(asAdd(userId, data));
+        return displayElementRepository.save(entity);
+    }
+
+    private UpdateTextQuestion asAdd(long userId, QuestionRequest.UpdateTextQuestionRequest data) {
+        return new AddTextQuestion(
+                null,
+                userId,
+                Instant.now(clock),
+                data.label(),
+                data.tooltip(),
+                data.maxLength(),
+                data.placeholder(),
+                data.defaultValue());
+    }
+
     private AddTextQuestion asAdd(long userId, TextQuestionData data) {
         return new AddTextQuestion(
                 null,

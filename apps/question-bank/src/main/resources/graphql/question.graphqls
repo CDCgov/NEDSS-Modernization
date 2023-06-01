@@ -3,6 +3,7 @@ type Mutation {
   createDateQuestion(data: DateQuestionData!): QuestionResponse!
   createDropdownQuestion(data: DropDownQuestionData!): QuestionResponse!
   createNumericQuestion(data: NumericQuestionData!): QuestionResponse!
+  updateTextQuestion(data: TextQuestionData!): QuestionResponse!
 }
 
 input TextQuestionData {
