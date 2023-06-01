@@ -65,7 +65,7 @@ public class QuestionHandler {
     }
 
 
-    public class QuestionBank {
+    public static class QuestionBank {
         public static void main(String[] args) {
             // Example usage
             Long questionId = 123L;
