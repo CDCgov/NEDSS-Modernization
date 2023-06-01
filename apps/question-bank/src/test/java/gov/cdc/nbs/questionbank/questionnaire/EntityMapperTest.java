@@ -28,27 +28,27 @@ import gov.cdc.nbs.questionbank.entities.ValueSet;
 import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.DateQuestion;
-import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.DropDownQuestion;
+import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.DropdownQuestion;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.NumericQuestion;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.Option;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.Section;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.Text;
 import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire.TextQuestion;
 
-class QuestionnaireMapperTest {
+class EntityMapperTest {
 
-    private final QuestionnaireMapper questionnaireMapper = new QuestionnaireMapper();
+    EntityMapper entityMapper = new EntityMapper();
 
     @Test
     void should_return_questionnaire() {
-        Questionnaire q = questionnaireMapper.toQuestionnaire(emptyEntity());
+        Questionnaire q = entityMapper.toQuestionnaire(emptyEntity());
         assertNotNull(q);
         assertEquals(0, q.tabs().size());
     }
 
     @Test
     void should_return_questionnaire_with_content() {
-        Questionnaire q = questionnaireMapper.toQuestionnaire(fullEntity());
+        Questionnaire q = entityMapper.toQuestionnaire(fullEntity());
         assertNotNull(q);
         assertEquals(1, q.tabs().size());
         assertEquals(6, q.tabs().get(0).elements().size());
@@ -62,13 +62,13 @@ class QuestionnaireMapperTest {
                 return "invalid type";
             }
         };
-        assertThrows(IllegalArgumentException.class, () -> questionnaireMapper.toElement(ref));
+        assertThrows(IllegalArgumentException.class, () -> entityMapper.toElement(ref));
     }
 
     @Test
     void toElement_should_return_text_element() {
         DisplayElementRef ref = displayRef(textEntity(), 1);
-        Questionnaire.Element element = questionnaireMapper.toElement(ref);
+        Questionnaire.Element element = entityMapper.toElement(ref);
         assertThat(element).isInstanceOf(Questionnaire.Text.class);
     }
 
@@ -76,7 +76,7 @@ class QuestionnaireMapperTest {
     void toElement_should_return_section() {
         DisplayElementGroupEntity entity = groupElementEntity();
         DisplayGroupRef ref = displayGroupRef(entity, 1);
-        Questionnaire.Section element = (Section) questionnaireMapper.toElement(ref);
+        Questionnaire.Section element = (Section) entityMapper.toElement(ref);
         assertEquals(entity.getId(), element.id());
         assertEquals(entity.getLabel(), element.label());
         TextEntity textEntity = (TextEntity) entity.getElements().get(0);
@@ -94,13 +94,13 @@ class QuestionnaireMapperTest {
                 return "bad type";
             }
         };
-        assertThrows(IllegalArgumentException.class, () -> questionnaireMapper.toDisplayElement(element));
+        assertThrows(IllegalArgumentException.class, () -> entityMapper.toDisplayElement(element));
     }
 
     @Test
     void toDisplayElement_should_return_Text() {
         TextEntity entity = textEntity();
-        Questionnaire.Text element = (Text) questionnaireMapper.toDisplayElement(entity);
+        Questionnaire.Text element = (Text) entityMapper.toDisplayElement(entity);
         assertEquals(entity.getText(), element.text());
         assertEquals(entity.getId(), element.id());
         assertEquals(entity.getVersion(), element.version());
@@ -109,7 +109,7 @@ class QuestionnaireMapperTest {
     @Test
     void toDisplayElement_should_return_TextQuestion() {
         TextQuestionEntity entity = textQuestionEntity();
-        Questionnaire.TextQuestion element = (TextQuestion) questionnaireMapper.toDisplayElement(entity);
+        Questionnaire.TextQuestion element = (TextQuestion) entityMapper.toDisplayElement(entity);
 
         assertEquals(entity.getLabel(), element.label());
         assertEquals(entity.getId(), element.id());
@@ -117,17 +117,19 @@ class QuestionnaireMapperTest {
         assertEquals(entity.getMaxLength(), element.maxLength());
         assertEquals(entity.getPlaceholder(), element.placeholder());
         assertEquals(entity.getTooltip(), element.tooltip());
+        assertEquals(entity.getDefaultTextValue(), element.defaultValue());
     }
 
     @Test
     void toDisplayElement_should_return_NumericQuestion() {
         NumericQuestionEntity entity = numericQuestionEntity();
-        Questionnaire.NumericQuestion element = (NumericQuestion) questionnaireMapper.toDisplayElement(entity);
+        Questionnaire.NumericQuestion element = (NumericQuestion) entityMapper.toDisplayElement(entity);
         assertEquals(entity.getLabel(), element.label());
         assertEquals(entity.getId(), element.id());
         assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getMaxValue(), element.maxValue());
         assertEquals(entity.getMinValue(), element.minValue());
+        assertEquals(entity.getDefaultNumericValue(), element.defaultValue());
         assertEquals(entity.getTooltip(), element.tooltip());
 
         assertEquals(entity.getUnitsSet().getName(), element.unitOptions().name());
@@ -146,7 +148,7 @@ class QuestionnaireMapperTest {
     @Test
     void toDisplayElement_should_return_DateQuestion() {
         DateQuestionEntity entity = dateQuestionEntity();
-        Questionnaire.DateQuestion element = (DateQuestion) questionnaireMapper.toDisplayElement(entity);
+        Questionnaire.DateQuestion element = (DateQuestion) entityMapper.toDisplayElement(entity);
         assertEquals(entity.getId(), element.id());
         assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getLabel(), element.label());
@@ -157,7 +159,7 @@ class QuestionnaireMapperTest {
     @Test
     void toDisplayElement_should_return_DropDownQuestion() {
         DropdownQuestionEntity entity = dropDownQuestionEntity();
-        Questionnaire.DropDownQuestion element = (DropDownQuestion) questionnaireMapper.toDisplayElement(entity);
+        Questionnaire.DropdownQuestion element = (DropdownQuestion) entityMapper.toDisplayElement(entity);
         assertEquals(entity.getId(), element.id());
         assertEquals(entity.getVersion(), element.version());
         assertEquals(entity.getLabel(), element.label());

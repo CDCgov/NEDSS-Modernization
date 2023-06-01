@@ -16,25 +16,18 @@ import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.kafka.message.DeleteQuestionRequest;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
-import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 
  class DeleteQuestionTest {
 	
 	@Mock
 	KafkaTemplate<String, DeleteQuestionRequest> kafkaQuestionDeleteTemplate;
-
-	@InjectMocks
-	QuestionHandler questionHandler;
 	
 	@Mock
 	QuestionRepository questionRepository;
 	
-	@Mock
-	QuestionDeleteEventProducer questionDeleteProducer;
-	
-	@Mock
-	RequestStatusProducer statusProducer;
+	@InjectMocks
+	DeleteQuestionService deleteQuestionService;
 	
 	@Mock
 	QuestionCreator creator;
@@ -43,7 +36,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 
 	public DeleteQuestionTest() {
 		MockitoAnnotations.openMocks(this);
-		questionHandler = new QuestionHandler(questionRepository,questionDeleteProducer,creator, statusProducer);
+		deleteQuestionService = new DeleteQuestionService(kafkaQuestionDeleteTemplate,questionRepository);
 	}
 
 	@Test
@@ -55,7 +48,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
 		.thenReturn(1);
 
-	    QuestionBankEventResponse result =  questionHandler.processDeleteQuestion(questionId, userId);
+	    QuestionBankEventResponse result =  deleteQuestionService.processDeleteQuestion(questionId, userId);
 
 		assertEquals(questionId.longValue() ,result.getQuestionId().longValue());
 		assertEquals(Constants.DELETE_SUCCESS_MESSAGE, result.getMessage());
@@ -67,14 +60,14 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 		Long questionId = UUID.randomUUID().getLeastSignificantBits();
 		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
 				.thenReturn(1);
-		int result = questionHandler.deleteQuestion(questionId);
+		int result = deleteQuestionService.deleteQuestion(questionId);
 		assertEquals(1,result);
 
 	}
 
 	@Test
 	void deleteNonExistentQuestion() {
-		int  result = questionHandler.deleteQuestion(null);
+		int  result = deleteQuestionService.deleteQuestion(null);
 		assertEquals(result, -1);
 	}
 

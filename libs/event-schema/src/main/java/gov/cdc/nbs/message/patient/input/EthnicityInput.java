@@ -13,6 +13,7 @@ public class EthnicityInput {
     private long patientId;
     private Instant asOf;
     private String ethnicityCode;
+    private String ethnicUnkReasonCd;
 
     public static PatientRequest toRequest(
             final long userId,
@@ -27,6 +28,7 @@ public class EthnicityInput {
                         requestId,
                         userId,
                         input.getAsOf(),
-                        input.getEthnicityCode()));
+                        input.getEthnicityCode(),
+                        input.getEthnicUnkReasonCd()));
     }
 }

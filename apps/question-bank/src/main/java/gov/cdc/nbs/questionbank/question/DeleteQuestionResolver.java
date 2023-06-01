@@ -14,14 +14,14 @@ import lombok.AllArgsConstructor;
 public class DeleteQuestionResolver {
 
 
-	private final QuestionHandler questionHandler;
+	private final DeleteQuestionService deleteQuestionService;
 	private final UserDetailsProvider userDetailsProvider;
 
 	@MutationMapping()
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public QuestionBankEventResponse deleteQuestion(@Argument Long questionId) {
 		Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-		return questionHandler.processDeleteQuestion(questionId,userId);
+		return  deleteQuestionService.processDeleteQuestion(questionId,userId);
 	}
 
 }

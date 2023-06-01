@@ -31,48 +31,11 @@ type Text {
   text: String!
 }
 
-type TextQuestion {
-  id: ID!
-  label: String!
-  tooltip: String
-  required: Boolean!
-  maxLength: Int
-  placeholder: String
-}
-
-type NumericQuestion {
-  id: ID!
-  label: String!
-  tooltip: String
-  required: Boolean!
-  minValue: Int
-  maxValue: Int
-  unitOptions: OptionSet
-}
-
-type DropDownQuestion {
-  id: ID!
-  label: String!
-  tooltip: String
-  required: Boolean!
-  optionSet: OptionSet
-  defaultOption: Option
-  isMultiSelect: Boolean!
-}
-
-type DateQuestion {
-  id: ID!
-  label: String!
-  tooltip: String
-  required: Boolean!
-  allowFuture: Boolean!
-}
-
 union DisplayElement =
     Text
   | TextQuestion
   | NumericQuestion
-  | DropDownQuestion
+  | DropdownQuestion
   | DateQuestion
 
 type Section {
@@ -86,5 +49,5 @@ union Element =
   | Text
   | TextQuestion
   | NumericQuestion
-  | DropDownQuestion
+  | DropdownQuestion
   | DateQuestion

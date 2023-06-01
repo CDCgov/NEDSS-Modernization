@@ -1,9 +1,60 @@
 type Mutation {
+  createTextQuestion(data: TextQuestionData!): TextQuestion!
+  createDateQuestion(data: DateQuestionData!): DateQuestion!
+  createDropdownQuestion(data: DropDownQuestionData!): DropdownQuestion!
+  createNumericQuestion(data: NumericQuestionData!): NumericQuestion!
   deleteQuestion(questionId: ID!): QuestionBankEventResponse!
-  createTextQuestion(data: TextQuestionData!): QuestionResponse!
-  createDateQuestion(data: DateQuestionData!): QuestionResponse!
-  createDropdownQuestion(data: DropDownQuestionData!): QuestionResponse!
-  createNumericQuestion(data: NumericQuestionData!): QuestionResponse!
+}
+
+type TextQuestion {
+  id: ID!
+  version: Int!
+  codeSet: CodeSet!
+  label: String
+  tooltip: String
+  maxLength: Int
+  placeholder: String
+}
+
+type DateQuestion {
+  id: ID!
+  version: Int!
+  codeSet: CodeSet!
+  label: String
+  tooltip: String
+  allowFutureDate: Boolean!
+}
+
+type DropdownQuestion {
+  id: ID!
+  version: Int!
+  codeSet: CodeSet!
+  label: String
+  tooltip: String
+  optionSet: OptionSet
+  defaultOption: Option
+  isMultiSelect: Boolean!
+}
+
+type NumericQuestion {
+  id: ID!
+  version: Int!
+  codeSet: CodeSet!
+  label: String
+  tooltip: String
+  minValue: Int
+  maxValue: Int
+  unitOptions: OptionSet
+}
+
+type QuestionBankEventResponse {
+    message: String!
+    questionId: ID!
+}
+
+enum CodeSet {
+  PHIN
+  LOCAL
 }
 
 input TextQuestionData {
@@ -12,12 +63,14 @@ input TextQuestionData {
   maxLength: Int
   placeholder: String
   defaultValue: String
+  codeSet: CodeSet!
 }
 
 input DateQuestionData {
   labael: String!
   tooltip: String
   allowFutureDates: Boolean!
+  codeSet: CodeSet!
 }
 
 input DropDownQuestionData {
@@ -26,6 +79,7 @@ input DropDownQuestionData {
   valueSet: String
   defaultValue: String
   isMultiSelect: Boolean!
+  codeSet: CodeSet!
 }
 
 input NumericQuestionData {
@@ -35,13 +89,5 @@ input NumericQuestionData {
   maxValue: Int
   defaultValue: Int
   unitValueSet: String
-}
-
-type QuestionBankEventResponse {
-    message: String!
-    questionId: ID!
-}
-
-type QuestionResponse {
-  requestId: String!
+  codeSet: CodeSet!
 }

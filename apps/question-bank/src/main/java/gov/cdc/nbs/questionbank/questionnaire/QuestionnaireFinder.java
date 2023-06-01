@@ -7,17 +7,17 @@ import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 @Component
 public class QuestionnaireFinder {
     private final QuestionnaireRepository repository;
-    private final QuestionnaireMapper questionnaireMapper;
+    private final EntityMapper entityMapper;
 
-    public QuestionnaireFinder(QuestionnaireRepository repository) {
+    public QuestionnaireFinder(QuestionnaireRepository repository, EntityMapper entityMapper) {
         this.repository = repository;
-        this.questionnaireMapper = new QuestionnaireMapper();
+        this.entityMapper = entityMapper;
     }
 
     @Transactional
     public Questionnaire find(QuestionnaireContext context) {
         return repository.findOneByConditionCodes(context.conditionCd())
-                .map(questionnaireMapper::toQuestionnaire)
+                .map(entityMapper::toQuestionnaire)
                 .orElse(null);
     }
 

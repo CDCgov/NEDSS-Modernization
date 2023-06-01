@@ -252,6 +252,7 @@ public sealed interface PatientCommand {
                         long person,
                         Instant asOf,
                         String ethnicityCode,
+                        String ethnicUnkReasonCd,
                         long requester,
                         Instant requestedOn) implements PatientCommand {
         }

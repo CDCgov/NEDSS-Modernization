@@ -457,6 +457,7 @@ class PatientUpdaterTest {
         var now = Instant.now();
 
         assertEquals(data.ethnicityGroupInd(), savedPerson.getEthnicGroupInd());
+        assertEquals(data.ethnicUnkReasonCd(), savedPerson.getEthnicUnkReasonCd());
 
         assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
         assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
@@ -469,7 +470,8 @@ class PatientUpdaterTest {
                 "RequestId",
                 321L,
                 Instant.now(),
-                "ethnicityCode");
+                "ethnicityCode",
+                "ethnicUnkReasonCd");
     }
 
     @Test
