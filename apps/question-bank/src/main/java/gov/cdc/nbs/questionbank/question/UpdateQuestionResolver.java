@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -18,8 +17,7 @@ public class UpdateQuestionResolver {
 
     @MutationMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public QuestionRequest updateQuestion(@Argument Long questionId) {
-    //public QuestionResponse updateQuestion(@Argument QuestionRequest.UpdateTextQuestionRequest data) {
+    public String updateQuestion(@Argument Long questionId) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return questionHandler.updateQuestion();
     }

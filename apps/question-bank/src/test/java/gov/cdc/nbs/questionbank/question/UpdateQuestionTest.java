@@ -14,7 +14,7 @@ import gov.cdc.nbs.questionbank.kafka.producer.RequestStatusProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import org.junit.jupiter.api.Test;
 
-public class UpdateQuestionTest {
+    class UpdateQuestionTest {
 
     void processUpdateQuestion() {
 

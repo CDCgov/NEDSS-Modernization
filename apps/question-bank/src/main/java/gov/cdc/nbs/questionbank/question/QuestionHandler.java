@@ -59,8 +59,9 @@ public class QuestionHandler {
         sendSuccess(request.requestId(), entity.getId());
     }
 
-    public QuestionRequest updateQuestion() {
-        return updateQuestion();
+    public String updateQuestion() {
+
+        return "";
     }
 
 
@@ -99,36 +100,6 @@ public class QuestionHandler {
     private static void sendQuestionUpdateEvent(QuestionRequest.UpdateTextQuestionRequest status) {
         questionUpdateProducer.send(status);
     }
-
-
-
-    /*public QuestionRequest processUpdateQuestion(Long questionId, Long userId) {
-
-        // delete question send response to user
-        updateQuestion(questionId);
-        // send delete event info to topic
-     QuestionRequest.UpdateTextQuestionRequest event = QuestionRequest.UpdateTextQuestionRequest;
-        sendQuestionUpdateEvent(event);
-        QuestionRequest response = QuestionRequest.UpdateTextQuestionRequest
-                .message(Constants.UPDATE_SUCCESS_MESSAGE).build();
-        return response;
-    }
-
-    public int  updateQuestion(Long questionId) {
-        int  updated = -1;
-        if (questionId == null)
-            return updated;
-        try {
-            // mark question as inactive
-            updated = QuestionRepository.updateQuestion(questionId);
-        } catch (Exception e) {
-            throw new RequestException("Failed to update. ");
-        }
-
-        return updated;
-
-    }
-*/
     private void sendSuccess(String requestId, UUID id) {
         statusProducer.successful(
                 requestId,
