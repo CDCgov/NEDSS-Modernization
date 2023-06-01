@@ -29,5 +29,6 @@ class RequestPropertiesTest {
         RequestProperties newProps = new RequestProperties();
         assertEquals("questionbank-status", newProps.status());
         assertEquals("questionbank", newProps.request());
+        assertEquals("question-created", newProps.questionCreated());
     }
 }

@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -13,20 +14,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entities.AuditInfo;
 import gov.cdc.nbs.questionbank.entities.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
 import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
 import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DateQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DropdownQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.NumericQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.TextQuestionData;
+import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
+import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateDateQuestion;
+import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateDropdownQuestion;
+import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateNumericQuestion;
+import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateTextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.DisplayElementRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +41,9 @@ class QuestionCreatorTest {
 
     @Mock
     private EntityManager entityManager;
+
+    @Mock
+    private QuestionCreatedEventProducer createEvent;
 
     private final Instant expectedTime = Instant.now();
 
@@ -52,8 +59,10 @@ class QuestionCreatorTest {
 
     @Test
     void should_create_text_question() {
+        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+
         // given question data
-        TextQuestionData data = textQuestionData();
+        CreateTextQuestion data = textQuestionData();
 
         // when a create request is received
         creator.create(data, userId);
@@ -69,12 +78,17 @@ class QuestionCreatorTest {
         assertEquals(data.placeholder(), actual.getPlaceholder());
         assertEquals(data.defaultValue(), actual.getDefaultTextValue());
         validateAudit(actual.getAudit());
+
+        // and the create event producer is called
+        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
     }
 
     @Test
     void should_create_numeric_question() {
+        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+
         // given question data
-        NumericQuestionData data = numericQuestionData();
+        CreateNumericQuestion data = numericQuestionData();
 
         // when a create request is received
         creator.create(data, userId);
@@ -90,12 +104,17 @@ class QuestionCreatorTest {
         assertEquals(data.maxValue(), actual.getMaxValue());
         assertEquals(data.defaultValue(), actual.getDefaultNumericValue());
         validateAudit(actual.getAudit());
+
+        // and the create event producer is called
+        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
     }
 
     @Test
     void should_create_dropdown_question() {
+        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+
         // given question data
-        DropdownQuestionData data = dropdownQuestionData();
+        CreateDropdownQuestion data = dropdownQuestionData();
 
         // when a create request is received
         creator.create(data, userId);
@@ -112,12 +131,17 @@ class QuestionCreatorTest {
         verify(entityManager, times(1))
                 .getReference(ValueEntity.class, data.defaultValue());
         validateAudit(actual.getAudit());
+
+        // and the create event producer is called
+        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
     }
 
     @Test
     void should_create_date_question() {
+        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+
         // given question data
-        DateQuestionData data = dateQuestionData();
+        CreateDateQuestion data = dateQuestionData();
 
         // when a create request is received
         creator.create(data, userId);
@@ -131,6 +155,9 @@ class QuestionCreatorTest {
         assertEquals(data.tooltip(), actual.getTooltip());
         assertEquals(data.allowFutureDates(), actual.isAllowFuture());
         validateAudit(actual.getAudit());
+
+        // and the create event producer is called
+        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
     }
 
     private void validateAudit(AuditInfo auditInfo) {
@@ -140,8 +167,8 @@ class QuestionCreatorTest {
         assertEquals(expectedTime, auditInfo.getLastUpdate());
     }
 
-    private TextQuestionData textQuestionData() {
-        return new TextQuestionData(
+    private CreateTextQuestion textQuestionData() {
+        return new CreateTextQuestion(
                 "test label",
                 "test tooltip",
                 13,
@@ -150,16 +177,16 @@ class QuestionCreatorTest {
                 CodeSet.LOCAL);
     }
 
-    private DateQuestionData dateQuestionData() {
-        return new DateQuestionData(
+    private CreateDateQuestion dateQuestionData() {
+        return new CreateDateQuestion(
                 "test label",
                 "test tooltip",
                 true,
                 CodeSet.LOCAL);
     }
 
-    private NumericQuestionData numericQuestionData() {
-        return new NumericQuestionData(
+    private CreateNumericQuestion numericQuestionData() {
+        return new CreateNumericQuestion(
                 "test label",
                 "test tooltip",
                 -3,
@@ -169,8 +196,8 @@ class QuestionCreatorTest {
                 CodeSet.LOCAL);
     }
 
-    private DropdownQuestionData dropdownQuestionData() {
-        return new DropdownQuestionData(
+    private CreateDropdownQuestion dropdownQuestionData() {
+        return new CreateDropdownQuestion(
                 "test label",
                 "test tooltip",
                 UUID.randomUUID(),

@@ -6,9 +6,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.time.Instant;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.awaitility.Awaitility;
-import org.awaitility.Durations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,12 +16,12 @@ import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionResponse;
 import gov.cdc.nbs.questionbank.question.repository.DateQuestionRepository;
 import gov.cdc.nbs.questionbank.question.repository.DisplayElementRepository;
 import gov.cdc.nbs.questionbank.question.repository.DropdownQuestionRepository;
 import gov.cdc.nbs.questionbank.question.repository.NumericQuestionRepository;
 import gov.cdc.nbs.questionbank.question.repository.TextQuestionRepository;
+import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
 import gov.cdc.nbs.questionbank.support.QuestionDataMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
 import gov.cdc.nbs.questionbank.support.ValueSetMother;
@@ -62,7 +59,7 @@ public class CreateQuestionSteps {
 
     private ValueSet valueSet;
 
-    private QuestionResponse response;
+    private Questionnaire.Question response;
 
     private Exception exception;
 
@@ -122,11 +119,6 @@ public class CreateQuestionSteps {
 
     @Then("the {string} question is created")
     public void is_created(String requestType) {
-        // wait on request to be processed successfully
-        Awaitility.await()
-                .atMost(10, TimeUnit.SECONDS)
-                .pollDelay(Durations.ONE_SECOND)
-                .until(() -> repository.findAll().size() > 0);
 
         // verify proper entity was created
         switch (requestType) {
@@ -170,6 +162,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.maxLength(), created.getMaxLength());
         assertEquals(actual.placeholder(), created.getPlaceholder());
         assertEquals(actual.defaultValue(), created.getDefaultTextValue());
+        assertEquals(actual.codeSet(), created.getCodeSet());
 
         validateAudit(created.getAudit());
     }
@@ -186,6 +179,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.maxValue(), created.getMaxValue());
         assertEquals(actual.defaultValue(), created.getDefaultNumericValue());
         assertEquals(actual.unitValueSet(), created.getUnitsSet().getId());
+        assertEquals(actual.codeSet(), created.getCodeSet());
 
         validateAudit(created.getAudit());
     }
@@ -203,6 +197,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.defaultValue(), created.getDefaultAnswer().getId());
         assertEquals(actual.isMultiSelect(), created.isMultiSelect());
         assertEquals(actual.valueSet(), created.getValueSet().getId());
+        assertEquals(actual.codeSet(), created.getCodeSet());
 
         validateAudit(created.getAudit());
     }
@@ -216,6 +211,7 @@ public class CreateQuestionSteps {
         assertEquals(actual.label(), created.getLabel());
         assertEquals(actual.tooltip(), created.getTooltip());
         assertEquals(actual.allowFutureDates(), created.isAllowFuture());
+        assertEquals(actual.codeSet(), created.getCodeSet());
 
         validateAudit(created.getAudit());
     }
