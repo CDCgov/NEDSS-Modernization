@@ -124,10 +124,6 @@ class TopicListenerTest {
                                 return 1L;
                             }
 
-                            @Override
-                            public long questionId() {
-                                return 0;
-                            }
                         });
 
         assertThrows(RequestException.class, () -> listener.onMessage("any message", "some key"));

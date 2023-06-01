@@ -81,7 +81,8 @@ public sealed interface QuestionRequest extends QuestionBankRequest {
             String label,
             String tooltip,
             Integer maxLength,
-            String placeholder) implements QuestionRequest {
+            String placeholder
+    ) implements QuestionRequest {
     }
 
 }
