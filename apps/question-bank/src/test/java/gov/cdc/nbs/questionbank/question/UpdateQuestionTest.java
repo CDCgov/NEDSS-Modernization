@@ -44,7 +44,7 @@ class UpdateQuestionTest<QuestionService> {
         @Nested
         public class QuestionBankTest<QuestionUpdateProducer> {
             @Test
-            public void testUpdateQuestion_WhenQuestionIdAndUpdatedQuestionNotNull() {
+            void testUpdateQuestion_WhenQuestionIdAndUpdatedQuestionNotNull() {
                 // Create a mock QuestionRepository
                 QuestionRepository questionRepository = mock(QuestionRepository.class);
                 when(QuestionRepository.updateQuestion(anyLong(), anyString())).thenReturn(1);
@@ -61,7 +61,7 @@ class UpdateQuestionTest<QuestionService> {
             }
 
             @Test
-            public void testUpdateQuestion_WhenQuestionIdNull() {
+            void testUpdateQuestion_WhenQuestionIdNull() {
                 // Call the method under test
                 int updated = QuestionHandler.QuestionBank.updateQuestion(null, "This is the updated question.");
 
@@ -70,7 +70,7 @@ class UpdateQuestionTest<QuestionService> {
             }
 
             @Test
-            public void testUpdateQuestion_WhenUpdatedQuestionNull() {
+            void testUpdateQuestion_WhenUpdatedQuestionNull() {
                 // Call the method under test
                 int updated = QuestionHandler.QuestionBank.updateQuestion(123L, null);
 
@@ -79,7 +79,7 @@ class UpdateQuestionTest<QuestionService> {
             }
 
             @Test
-            public void testSendQuestionUpdateEvent() {
+            void testSendQuestionUpdateEvent() {
                 // Create a mock QuestionRequest.UpdateTextQuestionRequest
                 QuestionRequest.UpdateTextQuestionRequest status = mock(QuestionRequest.UpdateTextQuestionRequest.class);
 
@@ -90,7 +90,7 @@ class UpdateQuestionTest<QuestionService> {
                 //QuestionHandler.QuestionBank.updateQuestion(status);
 
                 // Verify that the QuestionUpdateProducer's send method was called with the correct argument
-                verify(questionUpdateProducer, times(1)).equals(eq(status));
+                verify(questionUpdateProducer, times(1)).equals(status);
             }
         }
 
