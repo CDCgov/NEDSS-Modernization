@@ -311,9 +311,11 @@ class PersonTest {
         Person actual = new Person(117L, "local-id-value");
 
         actual.delete(new PatientCommand.Delete(
-            117L,
-            131L,
-            Instant.parse("2020-03-03T10:15:30.00Z")));
+                117L,
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.LOG_DEL);
         assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
