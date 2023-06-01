@@ -19,16 +19,13 @@ import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DateQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DropdownQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.NumericQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.TextQuestionData;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionResponse;
 import gov.cdc.nbs.questionbank.question.repository.DateQuestionRepository;
 import gov.cdc.nbs.questionbank.question.repository.DisplayElementRepository;
 import gov.cdc.nbs.questionbank.question.repository.DropdownQuestionRepository;
 import gov.cdc.nbs.questionbank.question.repository.NumericQuestionRepository;
 import gov.cdc.nbs.questionbank.question.repository.TextQuestionRepository;
+import gov.cdc.nbs.questionbank.support.QuestionDataMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
 import gov.cdc.nbs.questionbank.support.ValueSetMother;
 import io.cucumber.java.en.Given;
@@ -95,19 +92,22 @@ public class CreateQuestionSteps {
         try {
             switch (requestType) {
                 case "text": {
-                    response = resolver.createTextQuestion(textQuestionData());
+                    response = resolver.createTextQuestion(QuestionDataMother.textQuestionData());
                     break;
                 }
                 case "numeric": {
-                    response = resolver.createNumericQuestion(numericQuestionData());
+                    response = resolver.createNumericQuestion(QuestionDataMother.numericQuestionData(valueSet.getId()));
                     break;
                 }
                 case "date": {
-                    response = resolver.createDateQuestion(dateQuestionData());
+                    response = resolver.createDateQuestion(QuestionDataMother.dateQuestionData());
                     break;
                 }
                 case "dropdown": {
-                    response = resolver.createDropdownQuestion(dropdownQuestionData());
+                    response = resolver.createDropdownQuestion(
+                            QuestionDataMother.dropdownQuestionData(
+                                    valueSet.getId(),
+                                    valueSet.getValues().get(0).getId()));
                     break;
                 }
                 default: {
@@ -163,7 +163,7 @@ public class CreateQuestionSteps {
         List<TextQuestionEntity> results = textQuestionRepository.findAll();
         assertEquals(1, results.size());
         var created = results.get(0);
-        var actual = textQuestionData();
+        var actual = QuestionDataMother.textQuestionData();
 
         assertEquals(actual.label(), created.getLabel());
         assertEquals(actual.tooltip(), created.getTooltip());
@@ -178,7 +178,7 @@ public class CreateQuestionSteps {
         List<NumericQuestionEntity> results = numericQuestionRepository.findAll();
         assertEquals(1, results.size());
         var created = results.get(0);
-        var actual = numericQuestionData();
+        var actual = QuestionDataMother.numericQuestionData(valueSet.getId());
 
         assertEquals(actual.label(), created.getLabel());
         assertEquals(actual.tooltip(), created.getTooltip());
@@ -194,7 +194,9 @@ public class CreateQuestionSteps {
         List<DropdownQuestionEntity> results = dropdownQuestionRepository.findAll();
         assertEquals(1, results.size());
         var created = results.get(0);
-        var actual = dropdownQuestionData();
+        var actual = QuestionDataMother.dropdownQuestionData(
+                valueSet.getId(),
+                valueSet.getValues().get(0).getId());
 
         assertEquals(actual.label(), created.getLabel());
         assertEquals(actual.tooltip(), created.getTooltip());
@@ -209,7 +211,7 @@ public class CreateQuestionSteps {
         List<DateQuestionEntity> results = dateQuestionRepository.findAll();
         assertEquals(1, results.size());
         var created = results.get(0);
-        var actual = dateQuestionData();
+        var actual = QuestionDataMother.dateQuestionData();
 
         assertEquals(actual.label(), created.getLabel());
         assertEquals(actual.tooltip(), created.getTooltip());
@@ -225,42 +227,6 @@ public class CreateQuestionSteps {
         assertTrue(auditInfo.getAddTime().getEpochSecond() > thirtySecondsAgo);
         assertEquals(userId, auditInfo.getLastUpdateUserId());
         assertTrue(auditInfo.getLastUpdate().getEpochSecond() > thirtySecondsAgo);
-    }
-
-
-    private TextQuestionData textQuestionData() {
-        return new TextQuestionData(
-                "test label",
-                "test tooltip",
-                13,
-                "test placeholder",
-                "some default value");
-    }
-
-    private DateQuestionData dateQuestionData() {
-        return new DateQuestionData(
-                "test label",
-                "test tooltip",
-                true);
-    }
-
-    private NumericQuestionData numericQuestionData() {
-        return new NumericQuestionData(
-                "test label",
-                "test tooltip",
-                -3,
-                543,
-                -2,
-                valueSet.getId());
-    }
-
-    private DropdownQuestionData dropdownQuestionData() {
-        return new DropdownQuestionData(
-                "test label",
-                "test tooltip",
-                valueSet.getId(),
-                valueSet.getValues().get(0).getId(),
-                true);
     }
 
 }

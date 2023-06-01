@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@IdClass(VersionId.class)
 @Table(name = "questionnaire", catalog = "question_bank")
 public class QuestionnaireEntity {
 
@@ -32,9 +34,16 @@ public class QuestionnaireEntity {
     @Column(name = "id", columnDefinition = "uniqueidentifier", nullable = false)
     private UUID id;
 
+    @Id
+    @Column(name = "version", nullable = false)
+    private Integer version;
+
     @CollectionTable(
             name = "questionnaire_conditions",
-            joinColumns = @JoinColumn(name = "questionnaire_id"))
+            joinColumns = {
+                    @JoinColumn(name = "questionnaire_id"),
+                    @JoinColumn(name = "questionnaire_version")
+            })
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> conditionCodes;
 
@@ -46,7 +55,7 @@ public class QuestionnaireEntity {
 
     @OrderBy("display_order")
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Reference> references;
+    private List<TabEntity> tabs;
 
     @OneToMany(mappedBy = "questionnaire", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<QuestionnaireRule> rules;

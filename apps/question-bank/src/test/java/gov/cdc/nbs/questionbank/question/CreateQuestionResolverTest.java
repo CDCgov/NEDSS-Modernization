@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -14,11 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DateQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.DropdownQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.NumericQuestionData;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.TextQuestionData;
 import gov.cdc.nbs.questionbank.kafka.producer.KafkaProducer;
+import gov.cdc.nbs.questionbank.support.QuestionDataMother;
 
 @ExtendWith(MockitoExtension.class)
 class CreateQuestionResolverTest {
@@ -38,7 +34,7 @@ class CreateQuestionResolverTest {
         when(userDetailsProvider.getCurrentUserDetails()).thenReturn(userDetails());
 
         // given I submit a create text question request
-        var data = textQuestionData();
+        var data = QuestionDataMother.textQuestionData();
         resolver.createTextQuestion(data);
 
         // then the request is send to kafka
@@ -57,7 +53,7 @@ class CreateQuestionResolverTest {
         when(userDetailsProvider.getCurrentUserDetails()).thenReturn(userDetails());
 
         // given I submit a create text question request
-        var data = dateQuestionData();
+        var data = QuestionDataMother.dateQuestionData();
         resolver.createDateQuestion(data);
 
         // then the request is send to kafka
@@ -76,7 +72,7 @@ class CreateQuestionResolverTest {
         when(userDetailsProvider.getCurrentUserDetails()).thenReturn(userDetails());
 
         // given I submit a create text question request
-        var data = numericQuestionData();
+        var data = QuestionDataMother.numericQuestionData();
         resolver.createNumericQuestion(data);
 
         // then the request is send to kafka
@@ -95,7 +91,7 @@ class CreateQuestionResolverTest {
         when(userDetailsProvider.getCurrentUserDetails()).thenReturn(userDetails());
 
         // given I submit a create text question request
-        var data = dropdownQuestionData();
+        var data = QuestionDataMother.dropdownQuestionData();
         resolver.createDropdownQuestion(data);
 
         // then the request is send to kafka
@@ -119,41 +115,6 @@ class CreateQuestionResolverTest {
                 null,
                 null,
                 null,
-                true);
-    }
-
-    private TextQuestionData textQuestionData() {
-        return new TextQuestionData(
-                "test label",
-                "test tooltip",
-                13,
-                "test placeholder",
-                "some default value");
-    }
-
-    private DateQuestionData dateQuestionData() {
-        return new DateQuestionData(
-                "test label",
-                "test tooltip",
-                true);
-    }
-
-    private NumericQuestionData numericQuestionData() {
-        return new NumericQuestionData(
-                "test label",
-                "test tooltip",
-                -3,
-                543,
-                -2,
-                null);
-    }
-
-    private DropdownQuestionData dropdownQuestionData() {
-        return new DropdownQuestionData(
-                "test label",
-                "test tooltip",
-                UUID.randomUUID(),
-                UUID.randomUUID(),
                 true);
     }
 

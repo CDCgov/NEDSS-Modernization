@@ -38,6 +38,7 @@ public class DateQuestionEntity extends DisplayElementEntity {
         this.label = command.label();
         this.tooltip = command.tooltip();
         this.allowFuture = command.allowFutureDates();
+        this.setCodeSet(command.codeSet());
         this.setAudit(new AuditInfo(command));
         this.setVersion(1);
     }

@@ -68,7 +68,8 @@ class QuestionCreator {
                 data.tooltip(),
                 data.maxLength(),
                 data.placeholder(),
-                data.defaultValue());
+                data.defaultValue(),
+                data.codeSet());
     }
 
     private AddDateQuestion asAdd(long userId, QuestionRequest.DateQuestionData data) {
@@ -78,7 +79,8 @@ class QuestionCreator {
                 Instant.now(clock),
                 data.label(),
                 data.tooltip(),
-                data.allowFutureDates());
+                data.allowFutureDates(),
+                data.codeSet());
     }
 
     private AddDropDownQuestion adAdd(long userId, QuestionRequest.DropdownQuestionData data) {
@@ -90,7 +92,8 @@ class QuestionCreator {
                 data.tooltip(),
                 getReference(ValueSet.class, data.valueSet()),
                 getReference(ValueEntity.class, data.defaultValue()),
-                data.isMultiSelect());
+                data.isMultiSelect(),
+                data.codeSet());
     }
 
     private AddNumericQuestion asAdd(long userId, QuestionRequest.NumericQuestionData data) {
@@ -103,7 +106,8 @@ class QuestionCreator {
                 data.minValue(),
                 data.maxValue(),
                 data.defaultValue(),
-                getReference(ValueSet.class, data.unitValueSet()));
+                getReference(ValueSet.class, data.unitValueSet()),
+                data.codeSet());
     }
 
     private <T> T getReference(Class<T> clazz, Object primaryKey) {
