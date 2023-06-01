@@ -361,6 +361,7 @@ input PersonInput {
     primaryLang: String
     speaksEnglish: String
     hIVCaseId: String
+    ethnicUnkReasonCd: String
 }
 
 input GeneralInfoInput {
@@ -405,6 +406,7 @@ input EthnicityInput {
     patientId: ID!
     asOf: DateTime
     ethnicityCode: String!
+    ethnicUnkReasonCd: String
 }
 
 input IdentificationInput {

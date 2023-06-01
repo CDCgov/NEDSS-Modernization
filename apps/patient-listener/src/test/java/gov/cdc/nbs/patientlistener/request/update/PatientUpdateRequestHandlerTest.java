@@ -523,7 +523,8 @@ class PatientUpdateRequestHandlerTest {
                 "RequestId",
                 321L,
                 Instant.now(),
-                "Ethnicity Data 1");
+                "Ethnicity Data 1",
+                "Ethnicity Data 2");
     }
 
     @Test

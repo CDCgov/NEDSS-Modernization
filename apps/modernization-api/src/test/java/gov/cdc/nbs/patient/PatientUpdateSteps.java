@@ -180,6 +180,7 @@ public class PatientUpdateSteps {
         var input = new EthnicityInput();
         input.setPatientId(patient);
         input.setEthnicityCode("e1");
+        input.setEthnicUnkReasonCd("e2");
         return input;
     }
 

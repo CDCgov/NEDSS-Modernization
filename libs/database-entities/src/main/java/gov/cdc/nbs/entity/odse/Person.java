@@ -729,6 +729,7 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
         this.setEthnicGroupInd(info.ethnicityCode());
+        this.setEthnicUnkReasonCd(info.ethnicUnkReasonCd());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         setLastChange(info);
     }
