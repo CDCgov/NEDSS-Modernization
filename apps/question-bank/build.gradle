@@ -14,6 +14,11 @@ test {
     test.outputs.upToDateWhen { false }
     
     systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+
+    // support Github actions overriding the configured database image
+    if (System.getProperty("testing.database.image") != null) {
+        systemProperty "testing.database.image", System.getProperty("testing.database.image")
+    }
 }
 
 jacocoTestReport {
@@ -43,10 +48,6 @@ testing {
 
                 implementation libs.bundles.cucumber
 
-            }
-            // support Github actions overriding the configured database image
-            if (System.getProperty("testing.database.image") != null) {
-                systemProperty "testing.database.image", System.getProperty("testing.database.image")
             }
         }
     }
