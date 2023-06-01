@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +38,8 @@ class CreateQuestionResolverTest {
     @Test
     void should_send_create_text_request() {
         TextQuestionEntity mockEntity = Mockito.mock(TextQuestionEntity.class);
+        UUID uuid = UUID.randomUUID();
+        when(mockEntity.getId()).thenReturn(uuid);
         when(creator.create(Mockito.any(QuestionRequest.CreateTextQuestion.class), eq(1234L))).thenReturn(mockEntity);
 
         // given I am authenticated
@@ -54,6 +57,8 @@ class CreateQuestionResolverTest {
     @Test
     void should_send_create_date_request() {
         DateQuestionEntity mockEntity = Mockito.mock(DateQuestionEntity.class);
+        UUID uuid = UUID.randomUUID();
+        when(mockEntity.getId()).thenReturn(uuid);
         when(creator.create(Mockito.any(QuestionRequest.CreateDateQuestion.class), eq(1234L))).thenReturn(mockEntity);
 
         // given I am authenticated
@@ -71,6 +76,8 @@ class CreateQuestionResolverTest {
     @Test
     void should_send_create_numeric_request() {
         NumericQuestionEntity mockEntity = Mockito.mock(NumericQuestionEntity.class);
+        UUID uuid = UUID.randomUUID();
+        when(mockEntity.getId()).thenReturn(uuid);
         when(creator.create(Mockito.any(QuestionRequest.CreateNumericQuestion.class), eq(1234L)))
                 .thenReturn(mockEntity);
 
@@ -89,6 +96,8 @@ class CreateQuestionResolverTest {
     @Test
     void should_send_create_dropdown_request() {
         DropdownQuestionEntity mockEntity = Mockito.mock(DropdownQuestionEntity.class);
+        UUID uuid = UUID.randomUUID();
+        when(mockEntity.getId()).thenReturn(uuid);
         when(creator.create(Mockito.any(QuestionRequest.CreateDropdownQuestion.class), eq(1234L)))
                 .thenReturn(mockEntity);
 
