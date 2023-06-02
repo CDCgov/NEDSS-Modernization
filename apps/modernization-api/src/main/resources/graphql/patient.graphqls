@@ -70,12 +70,18 @@ type PersonResults {
     total: Int!
 }
 
+input IdentificationCriteria {
+    identificationNumber: String!
+    identificationType: String!
+    assigningAuthority: String
+}
+
 input PersonFilter {
     id: ID
     lastName: String
     firstName: String
     race: String
-    identification: Identification
+    identification: IdentificationCriteria
     ssn: String
     phoneNumber: String
     email: String
@@ -213,18 +219,50 @@ type personParentUid {
     id: ID
 }
 
+input NewPatientName {
+    first: String
+    middle: String
+    last: String
+    suffix: Suffix
+    use: NameUseCd!
+}
+
+input NewPatientAddress {
+    streetAddress1: String
+    streetAddress2: String
+    city: String
+    state: String
+    county: String
+    country: String
+    zip: String
+    censusTract: String
+}
+
+input NewPatientPhoneNumber {
+    number: String!
+    extension: String
+    type: String!
+    use: String!
+}
+
+input NewPatientIdentification {
+    value: String!
+    type: String!
+    authority: String
+}
+
 input PersonInput {
-    names: [Name]
+    names: [NewPatientName]
     dateOfBirth: Date
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
     deceasedTime: DateTime
     maritalStatus: String
-    addresses: [PostalAddress]
-    phoneNumbers: [PhoneNumber]
+    addresses: [NewPatientAddress]
+    phoneNumbers: [NewPatientPhoneNumber]
     emailAddresses: [String]
-    identifications: [Identification]
+    identifications: [NewPatientIdentification]
     ethnicity: String
     races: [String]
     asOf: DateTime
@@ -337,38 +375,6 @@ input UpdateSexAndBirthInput {
     sexUnknown: String
     currentAge: String
     ageReportedTime: DateTime
-}
-
-input Name {
-    first: String
-    middle: String
-    last: String
-    suffix: Suffix
-    use: NameUseCd!
-}
-
-input PostalAddress {
-    streetAddress1: String
-    streetAddress2: String
-    city: String
-    state: String
-    county: String
-    country: String
-    zip: String
-    censusTract: String
-}
-
-input PhoneNumber {
-    number: String!
-    extension: String
-    type: String!
-    use: String!
-}
-
-input Identification {
-    value: String!
-    type: String!
-    authority: String
 }
 
 enum NameUseCd {

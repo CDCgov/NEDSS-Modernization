@@ -9,6 +9,7 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.TestAvailable;
 import gov.cdc.nbs.support.util.RandomUtil;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -44,10 +45,18 @@ public class PatientCreateSteps {
     private AccessDeniedException accessDeniedException;
 
 
-    @Before
+    @Before("@patient_create")
     public void reset() {
         this.input.reset();
         this.patients.reset();
+    }
+
+    @After("@patient_create")
+    public void clean() {
+        //  patient creator uses the IdGeneratorService to resolve patient ids, these id's are not cleaned by
+        //  the TestPatientCleaner.  Ideally, the created patient would stick around, however the search tests can fail
+        //  when extra patients exist in the database.
+        this.patient.maybeActive().ifPresent(repository::delete);
     }
 
     @Given("I am adding a new patient")
