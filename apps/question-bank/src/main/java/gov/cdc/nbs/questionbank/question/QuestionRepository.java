@@ -17,8 +17,7 @@ public interface QuestionRepository extends JpaRepository<DisplayElementEntity, 
 
 	@Transactional
 	@Modifying
-	@Query("UPDATE DisplayElementEntity SET active=:questionActive where id=:questionId")
-	public int deleteQuestion(@Param("questionId") UUID questionId,
-			@Param("questionActive") boolean questionActive);
+	@Query("UPDATE DisplayElementEntity SET active=FALSE where id=:questionId")
+	public int deleteQuestion(@Param("questionId") UUID questionId);
 
 }

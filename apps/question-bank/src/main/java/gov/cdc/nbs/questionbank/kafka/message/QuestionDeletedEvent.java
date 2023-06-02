@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteQuestionRequest {
+public class QuestionDeletedEvent {
 	
 	private String requestId;
 	private UUID questionId;

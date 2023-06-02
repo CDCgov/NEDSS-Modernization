@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.questionbank.exception.DeleteException;
-import gov.cdc.nbs.questionbank.kafka.message.DeleteQuestionRequest;
+import gov.cdc.nbs.questionbank.kafka.message.QuestionDeletedEvent;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class DeleteQuestionService {
 	@Value("${kafkadef.topics.questionbank.deletestatus}")
 	private String questionDeleteStatusTopic;
 
-	private final KafkaTemplate<String, DeleteQuestionRequest> kafkaQuestionDeleteTemplate;
+	private final KafkaTemplate<String, QuestionDeletedEvent> kafkaQuestionDeleteTemplate;
 
 	private final QuestionRepository questionRepository;
 
@@ -30,7 +30,7 @@ public class DeleteQuestionService {
 		// delete question send response to user
 		deleteQuestion(questionId);
 		// send delete event info to topic
-		DeleteQuestionRequest event = DeleteQuestionRequest.builder().questionId(questionId).userId(userId)
+		QuestionDeletedEvent event = QuestionDeletedEvent.builder().questionId(questionId).userId(userId)
 				.requestId(getRequestId()).build();
 		send(event);
 		return QuestionBankEventResponse.builder().questionId(questionId).message(Constants.DELETE_SUCCESS_MESSAGE)
@@ -44,7 +44,7 @@ public class DeleteQuestionService {
 			return updated;
 		try {
 			// mark question as inactive
-			updated = questionRepository.deleteQuestion(questionId, false);
+			updated = questionRepository.deleteQuestion(questionId);
 		} catch (Exception e) {
 			throw new DeleteException();
 		}
@@ -53,7 +53,7 @@ public class DeleteQuestionService {
 
 	}
 
-	private void send(final DeleteQuestionRequest status) {
+	private void send(final QuestionDeletedEvent status) {
 		kafkaQuestionDeleteTemplate.send(questionDeleteStatusTopic, status);
 	}
 

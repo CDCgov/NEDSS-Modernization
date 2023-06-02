@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.kafka.message.DeleteQuestionRequest;
+import gov.cdc.nbs.questionbank.kafka.message.QuestionDeletedEvent;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
@@ -21,7 +21,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
  class DeleteQuestionTest {
 	
 	@Mock
-	KafkaTemplate<String, DeleteQuestionRequest> kafkaQuestionDeleteTemplate;
+	KafkaTemplate<String, QuestionDeletedEvent> kafkaQuestionDeleteTemplate;
 	
 	@Mock
 	QuestionRepository questionRepository;
@@ -45,7 +45,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 		UUID questionId = UUID.randomUUID();
 		Long userId = UUID.randomUUID().getLeastSignificantBits();
 		
-		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
+		when(questionRepository.deleteQuestion(questionId))
 		.thenReturn(1);
 
 	    QuestionBankEventResponse result =  deleteQuestionService.processDeleteQuestion(questionId, userId);
@@ -58,7 +58,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 	@Test
 	void deleteQuestion() {
 		UUID questionId = UUID.randomUUID();
-		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
+		when(questionRepository.deleteQuestion(questionId))
 				.thenReturn(1);
 		int result = deleteQuestionService.deleteQuestion(questionId);
 		assertEquals(1,result);
