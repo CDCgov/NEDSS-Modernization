@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(DropdownQuestionEntity.TYPE)
-public class DropdownQuestionEntity extends QuestionEntity {
+public final class DropdownQuestionEntity extends QuestionEntity {
     static final String TYPE = "dropdown_question";
 
     @ManyToOne

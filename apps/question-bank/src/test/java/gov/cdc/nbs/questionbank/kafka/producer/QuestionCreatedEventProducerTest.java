@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
+import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer.EnabledProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.questionnaire.EntityMapper;
 
@@ -32,7 +33,7 @@ class QuestionCreatedEventProducerTest {
     private RequestProperties properties = new RequestProperties(null, null, "test-created-topic");
 
     @InjectMocks
-    private QuestionCreatedEventProducer producer;
+    private EnabledProducer producer;
 
     @Test
     void should_set_correct_data_for_question() {

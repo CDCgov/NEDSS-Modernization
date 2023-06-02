@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(DateQuestionEntity.TYPE)
-public class DateQuestionEntity extends QuestionEntity {
+public final class DateQuestionEntity extends QuestionEntity {
     static final String TYPE = "date_question";
 
     @Column(name = "allow_future_dates")

@@ -32,6 +32,9 @@ public class FindQuestionResolver {
     }
 
     private Pageable toPageable(QuestionPage page) {
+        if (page == null) {
+            return null;
+        }
         return PageRequest.of(page.pageNumber(), page.pageSize());
     }
 

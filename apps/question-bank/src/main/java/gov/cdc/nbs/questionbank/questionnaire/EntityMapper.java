@@ -153,6 +153,9 @@ public class EntityMapper {
     }
 
     public Questionnaire.OptionSet toOptionSet(ValueSet valueSet) {
+        if (valueSet == null) {
+            return null;
+        }
         return new Questionnaire.OptionSet(
                 valueSet.getId(),
                 valueSet.getName(),
@@ -161,6 +164,9 @@ public class EntityMapper {
     }
 
     public Questionnaire.Option toOption(ValueEntity value) {
+        if (value == null) {
+            return null;
+        }
         return new Questionnaire.Option(
                 value.getId(),
                 value.getValue(),

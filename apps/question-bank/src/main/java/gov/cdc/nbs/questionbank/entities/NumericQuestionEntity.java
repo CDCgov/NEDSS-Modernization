@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(NumericQuestionEntity.TYPE)
-public class NumericQuestionEntity extends QuestionEntity {
+public final class NumericQuestionEntity extends QuestionEntity {
     static final String TYPE = "numeric_question";
 
     @Column(name = "min_value")

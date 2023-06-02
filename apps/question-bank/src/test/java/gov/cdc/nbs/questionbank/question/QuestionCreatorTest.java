@@ -26,7 +26,7 @@ import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.ValueEntity;
 import gov.cdc.nbs.questionbank.entities.ValueSet;
 import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
-import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
+import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer.DisabledProducer;
 import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateDateQuestion;
 import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateDropdownQuestion;
 import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateNumericQuestion;
@@ -43,7 +43,7 @@ class QuestionCreatorTest {
     private EntityManager entityManager;
 
     @Mock
-    private QuestionCreatedEventProducer createEvent;
+    private DisabledProducer createEvent;
 
     private final Instant expectedTime = Instant.now();
 

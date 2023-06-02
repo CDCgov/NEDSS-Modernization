@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(TextQuestionEntity.TYPE)
-public class TextQuestionEntity extends QuestionEntity {
+public final class TextQuestionEntity extends QuestionEntity {
     static final String TYPE = "text_question";
 
     @Column(name = "max_length")
