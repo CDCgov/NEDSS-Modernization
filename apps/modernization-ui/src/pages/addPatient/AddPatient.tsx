@@ -105,11 +105,11 @@ export default function AddPatient() {
                     comments: data?.additionalComments,
                     names: [
                         {
-                            lastName: data?.lastName,
-                            firstName: data?.firstName,
-                            middleName: data?.middleName,
+                            last: data?.lastName,
+                            first: data?.firstName,
+                            middle: data?.middleName,
                             suffix: data?.suffix,
-                            nameUseCd: NameUseCd.Ad
+                            use: NameUseCd.L
                         }
                     ]
                 }

@@ -18,25 +18,25 @@ Feature: Patient search
       | last name soundex  |           |
       | first name         |           |
       | first name soundex |           |
-      | race          |           |
-      | patient id    |           |
-      | patient short id |           |
-      | ssn           |           |
-      | phone number  |           |
-      | date of birth | before    |
-      | date of birth | after     |
-      | date of birth | equal     |
-      | gender        |           |
-      | deceased      |           |
-      | address       |           |
-      | city          |           |
-      | state         |           |
-      | country       |           |
-      | zip code      |           |
-      | ethnicity     |           |
-      | record status |           |
-      | email         |           |
-      | identification|           |
+      | race               |           |
+      | patient id         |           |
+      | patient short id   |           |
+      | ssn                |           |
+      | phone number       |           |
+      | date of birth      | before    |
+      | date of birth      | after     |
+      | date of birth      | equal     |
+      | gender             |           |
+      | deceased           |           |
+      | address            |           |
+      | city               |           |
+      | state              |           |
+      | country            |           |
+      | zip code           |           |
+      | ethnicity          |           |
+      | record status      |           |
+      | email              |           |
+      | identification     |           |
 
   @patient_multi_data_search
   Scenario: I can find a Patient by patient data using multiple fields
@@ -44,26 +44,26 @@ Feature: Patient search
     Then I find the patient
 
     Examples:
-      | field         | qualifier | field2     | qualifier2 | field3  | qualifier3 |
-      | last name     |           | first name |            | city    |            |
-      | first name    |           | ssn        |            | gender  |            |
-      | race          |           | address    |            | city    |            |
-      | patient id    |           | first name |            | city    |            |
+      | field            | qualifier | field2     | qualifier2 | field3  | qualifier3 |
+      | last name        |           | first name |            | city    |            |
+      | first name       |           | ssn        |            | gender  |            |
+      | race             |           | address    |            | city    |            |
+      | patient id       |           | first name |            | city    |            |
       | patient short id |           | first name |            | city    |            |
-      | ssn           |           | first name |            | city    |            |
-      | phone number  |           | ethnicity  |            | city    |            |
-      | date of birth | before    | first name |            | city    |            |
-      | date of birth | after     | last name  |            | address |            |
-      | date of birth | equal     | first name |            | city    |            |
-      | gender        |           | first name |            | city    |            |
-      | deceased      |           | ssn        |            | city    |            |
-      | address       |           | first name |            | ssn     |            |
-      | city          |           | zip code   |            | state   |            |
-      | state         |           | first name |            | city    |            |
-      | country       |           | first name |            | gender  |            |
-      | zip code      |           | first name |            | city    |            |
-      | ethnicity     |           | first name |            | race    |            |
-      | record status |           | first name |            | city    |            |
+      | ssn              |           | first name |            | city    |            |
+      | phone number     |           | ethnicity  |            | city    |            |
+      | date of birth    | before    | first name |            | city    |            |
+      | date of birth    | after     | last name  |            | address |            |
+      | date of birth    | equal     | first name |            | city    |            |
+      | gender           |           | first name |            | city    |            |
+      | deceased         |           | ssn        |            | city    |            |
+      | address          |           | first name |            | ssn     |            |
+      | city             |           | zip code   |            | state   |            |
+      | state            |           | first name |            | city    |            |
+      | country          |           | first name |            | gender  |            |
+      | zip code         |           | first name |            | city    |            |
+      | ethnicity        |           | first name |            | race    |            |
+      | record status    |           | first name |            | city    |            |
 
   @patient_multi_data_partial_search
   Scenario: I can find a Patient by patient data using multiple partial fields
@@ -71,19 +71,19 @@ Feature: Patient search
     Then I find the patient
 
     Examples:
-      | field       | qualifier | field2     | qualifier2 |
-      | last name   |           |            |            |
-      | first name  |           |            |            |
-      | address     |           |            |            |
-      | city        |           |            |            |
-      | last name   |           | first name |            |
-      | first name  |           | address    |            |
-      | last name   |           | address    |            |
-      | city        |           |            |            |
-      | last name   |           | city       |            |
-      | phone number|           |            |            |
-      | ssn         |           |            |            |
-      | identification         |           |            |            |
+      | field          | qualifier | field2     | qualifier2 |
+      | last name      |           |            |            |
+      | first name     |           |            |            |
+      | address        |           |            |            |
+      | city           |           |            |            |
+      | last name      |           | first name |            |
+      | first name     |           | address    |            |
+      | last name      |           | address    |            |
+      | city           |           |            |            |
+      | last name      |           | city       |            |
+      | phone number   |           |            |            |
+      | ssn            |           |            |            |
+      | identification |           |            |            |
 
   @patient_search_with_sorting
   Scenario: I can find the right patient when there are multiple ordered results
@@ -95,7 +95,7 @@ Feature: Patient search
       | record status |           | lastNm     | asc       |
       | record status |           | lastNm     | desc      |
       | record status |           | birthTime  | asc       |
-      | record status |           | birthTime  | desc      |      
+      | record status |           | birthTime  | desc      |
 
   @patient_search_with_trailing_space
   Scenario: When search criteria ends with a space, only the expected patients are returned
@@ -123,6 +123,5 @@ Feature: Patient search
 
   @patient_search_record_status_deleted_invalid_permission
   Scenario: I cant search for deleted records without the correct permission
-    Given A deleted patient exists
     When I search for a record status of "LOG_DEL"
     Then I dont have permissions to execute the search

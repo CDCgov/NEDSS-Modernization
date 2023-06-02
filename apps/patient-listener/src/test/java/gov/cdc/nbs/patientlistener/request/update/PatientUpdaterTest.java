@@ -1,27 +1,7 @@
 package gov.cdc.nbs.patientlistener.request.update;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
-import gov.cdc.nbs.entity.odse.EntityIdId;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonName;
@@ -62,7 +42,29 @@ import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.patient.IdGeneratorService;
 import gov.cdc.nbs.patient.IdGeneratorService.GeneratedId;
+import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PatientUpdaterTest {
 
@@ -127,9 +129,9 @@ class PatientUpdaterTest {
 
     @Test
     @SuppressWarnings("squid:S5961")
-    // Allow more than 25 assertions
+        // Allow more than 25 assertions
     void should_update_mortality_info_new_locator() {
-        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(999L,"prefix","suffix"));
+        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(999L, "prefix", "suffix"));
 
         var data = getMortalityData();
         var person = new Person(123L, "localId");
@@ -138,14 +140,14 @@ class PatientUpdaterTest {
 
         verify(personRepository).save(personCaptor.capture());
         var postalParticipation = (PostalEntityLocatorParticipation) personCaptor.getValue()
-                .getNbsEntity()
-                .getEntityLocatorParticipations()
-                .get(0);
+            .getNbsEntity()
+            .getEntityLocatorParticipations()
+            .get(0);
 
         // validate entityLocatorParticipation
         var now = Instant.now();
-        assertEquals(Long.valueOf(123L) ,postalParticipation.getId().getEntityUid());
-        assertEquals(Long.valueOf(999L) ,postalParticipation.getId().getLocatorUid());
+        assertEquals(Long.valueOf(123L), postalParticipation.getId().getEntityUid());
+        assertEquals(Long.valueOf(999L), postalParticipation.getId().getLocatorUid());
         assertEquals(Long.valueOf(data.updatedBy()), postalParticipation.getAddUserId());
         assertTrue(postalParticipation.getAddTime().until(now, ChronoUnit.SECONDS) < 5);
         assertTrue(postalParticipation.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
@@ -155,7 +157,7 @@ class PatientUpdaterTest {
         assertEquals(Character.valueOf('A'), postalParticipation.getStatusCd());
         assertTrue(postalParticipation.getStatusTime().until(now, ChronoUnit.SECONDS) < 5);
         assertEquals(data.asOf().getEpochSecond(), postalParticipation.getAsOfDate().getEpochSecond());
-        assertEquals(Short.valueOf((short)1), postalParticipation.getVersionCtrlNbr());
+        assertEquals(Short.valueOf((short) 1), postalParticipation.getVersionCtrlNbr());
         assertEquals("U", postalParticipation.getCd());
         assertEquals("DTH", postalParticipation.getUseCd());
 
@@ -781,7 +783,7 @@ class PatientUpdaterTest {
         patientUpdater.update(person, data);
         verify(personRepository).save(personCaptor.capture());
         var entityId = (EntityId) personCaptor.getValue()
-                .getEntityIds()
+                .identifications()
                 .get(0);
         assertEquals(data.identificationNumber(), entityId.getRootExtensionTxt());
         assertEquals(data.identificationType(), entityId.getTypeCd());
@@ -802,17 +804,20 @@ class PatientUpdaterTest {
         var data = getUpdateIdentificationData();
         var person = new Person(123L, "localId");
 
-        var entityId = new EntityId();
-        entityId.setId(new EntityIdId(123L, (short) 456));
-        entityId.setRootExtensionTxt("123456789");
-        entityId.setTypeCd("ssn");
-        person.setEntityIds(List.of(entityId));
+        person.add(
+                new PatientCommand.AddIdentification(
+                        person.getId(),
+                        "123456789",
+                        "OTH",
+                        "ssn",
+                        9999L,
+                        Instant.now()));
 
         patientUpdater.update(person, data);
 
         verify(personRepository).save(personCaptor.capture());
-        entityId = (EntityId) personCaptor.getValue()
-                .getEntityIds()
+        EntityId entityId = personCaptor.getValue()
+                .identifications()
                 .get(0);
         assertEquals(data.identificationNumber(), entityId.getRootExtensionTxt());
         assertEquals(data.identificationType(), entityId.getTypeCd());
@@ -831,50 +836,49 @@ class PatientUpdaterTest {
 
     @Test
     void should_delete_identification_info() {
-        var data = getDeleteIdentificationData();
         var person = new Person(123L, "localId");
 
-        var entityId = new EntityId();
-        entityId.setId(new EntityIdId(123L, (short) 456));
-        entityId.setRootExtensionTxt("123456789");
-        entityId.setTypeCd("ssn");
-        person.setEntityIds(List.of(entityId));
-        assertEquals(1, person.getEntityIds().size());
+        person.add(
+                new PatientCommand.AddIdentification(
+                        person.getId(),
+                        "123456789",
+                        "OTH",
+                        "ssn",
+                        9999L,
+                        Instant.now()));
+
+        var data = new DeleteIdentificationData(
+                123L,
+                (short) 0,
+                "RequestId",
+                321L,
+                Instant.now());
 
         patientUpdater.update(person, data);
 
         verify(personRepository).save(personCaptor.capture());
 
-        assertEquals(0, personCaptor.getValue().getEntityIds().size());
-    }
-
-    private DeleteIdentificationData getDeleteIdentificationData() {
-        return new DeleteIdentificationData(123L,
-                (short) 456,
-                "RequestId",
-                321L,
-                Instant.now());
+        assertThat(personCaptor.getValue().identifications()).isEmpty();
     }
 
     @Test
     void should_add_race_info() {
-        var data = getAddRaceData();
+        var data = new AddRaceData(123L,
+            "RequestId",
+            321L,
+            Instant.now(),
+            "race",
+            "race category");
+
         var person = new Person(123L, "localId");
         patientUpdater.update(person, data);
         verify(personRepository).save(personCaptor.capture());
         var personRace = (PersonRace) personCaptor.getValue()
                 .getRaces()
                 .get(0);
-        assertEquals(data.raceCategoryCd(), personRace.getRaceCd());
-    }
 
-    private AddRaceData getAddRaceData() {
-        return new AddRaceData(123L,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "race",
-                "race category");
+        assertThat(data.raceCategoryCd()).isEqualTo(personRace.getRaceCategoryCd());
+        assertThat(data.raceCd()).isEqualTo(personRace.getRaceCd());
     }
 
     @Test

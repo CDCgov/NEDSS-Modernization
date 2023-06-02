@@ -1,0 +1,9 @@
+query findAllAddressTypes($page: Page){
+    findAllAddressTypes(page: $page){
+        content{
+            id
+            code_short_desc_txt
+        }
+        total
+    }
+}

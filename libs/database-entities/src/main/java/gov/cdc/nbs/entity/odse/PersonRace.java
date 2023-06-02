@@ -55,15 +55,16 @@ public class PersonRace {
             final Person person,
             final PatientCommand.AddRace added
     ) {
-        this.raceCd = added.category();
         this.personUid = person;
+        this.asOfDate = added.asOf();
+        this.raceCategoryCd = added.category();
+        this.raceCd = added.code();
 
         this.recordStatusCd = "ACTIVE";
         this.recordStatusTime = added.requestedOn();
 
         this.audit = new Audit(added.requester(), added.requestedOn());
 
-        this.raceCategoryCd = added.category();
 
     }
 }

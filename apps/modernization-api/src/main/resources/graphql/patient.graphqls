@@ -1,26 +1,26 @@
 type Query {
     findPatientById(id: ID!): Person
     findAllPatients(page: SortablePage): PersonResults!
-    findPatientsByFilter(filter: PersonFilter!, page: SortablePage): PersonResults!
-    findPatientsByOrganizationFilter(filter: OrganizationFilter!, page: SortablePage): PersonResults!
-    findDocumentsRequiringReviewForPatient(patientId: Int!, page: Page): LabReportResults!
-    findOpenInvestigationsForPatient(patientId: Int!, page: Page): InvestigationResults!
-    findNameSuffixes(page: Page): KeyValuePairResults!
-    findAllNameTypes(page: Page):NameTypeResults!
-    findAllNamePrefixes(page: Page): NamePrefixResults!
-    findAllDegrees(page: Page): DegreeResults!
-    findAllAddressTypes(page: Page): AddressTypeResults!
-    findAllAddressUses(page: Page): AddressUseResults!
-    findAllPhoneAndEmailType(page: Page): PhoneAndEmailTypeResults!
-    findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
-    findAllIdentificationTypes(page: Page): IdentificationTypesResults!
-    findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
-    findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
+    findPatientsByFilter(
+        filter: PersonFilter!
+        page: SortablePage
+    ): PersonResults!
+    findPatientsByOrganizationFilter(
+        filter: OrganizationFilter!
+        page: SortablePage
+    ): PersonResults!
+    findDocumentsRequiringReviewForPatient(
+        patientId: Int!
+        page: Page
+    ): LabReportResults!
+    findOpenInvestigationsForPatient(
+        patientId: Int!
+        page: Page
+    ): InvestigationResults!
 }
 
 type Mutation {
-    createPatient(patient: PersonInput!): PatientEventResponse!
+    createPatient(patient: PersonInput!): PatientCreatedResponse!
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientEventResponse!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
     updateMortality(input: MortalityInput!): PatientEventResponse!
@@ -35,142 +35,29 @@ type Mutation {
     updateEthnicity(input: EthnicityInput!): PatientEventResponse!
     updatePatientAddress(input: AddressInput!): PatientEventResponse!
     updatePatientEmail(input: EmailInput!): PatientEventResponse!
-    updatePatientIdentification(input: IdentificationInput!): PatientEventResponse!
+    updatePatientIdentification(
+        input: IdentificationInput!
+    ): PatientEventResponse!
     updatePatientName(input: NameInput!): PatientEventResponse!
     updatePatientPhone(input: PhoneInput!): PatientEventResponse!
     updatePatientRace(input: RaceInput!): PatientEventResponse!
-    deletePatientAddress(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    deletePatientAddress(
+        patientId: Int!
+        personSeqNum: Int!
+    ): PatientEventResponse!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientIdentification(patientId: Int!, entitySeqNum: Int!): PatientEventResponse!
+    deletePatientIdentification(
+        patientId: Int!
+        entitySeqNum: Int!
+    ): PatientEventResponse!
     deletePatientName(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
     deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
     deletePatientRace(patientId: Int!, raceCd: String!): PatientEventResponse!
 }
 
-type NaicsIndustryCodeResults {
-    content: [NaicsIndustryCode!]!
-    total:Int!
-}
-
-type NaicsIndustryCode {
-    id: ID!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: DateTime
-    effectiveToTime: DateTime
-    keyInfoTxt: String
-    indentLevelNbr: Int
-    isModifiableInd: String
-    parentIsCd: String
-    statusCd: String
-    statusTime: String
-    codeSetNm: String
-    seqNum: Int
-    nbsUid: Int
-    sourceConceptId: String
-}
-
-type StateCountyCodeValueResults {
-    content: [StateCountyCodeValue!]!
-    total:Int!
-}
-
-type StateCountyCodeValue {
-    id: ID!
-    code_desc_txt: String!
-    state_cd: String!
-}
-
-type AssigningAuthorResults {
-    content: [AssigningAuthor!]!
-    total:Int!
-}
-
-type AssigningAuthor {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type IdentificationTypesResults {
-    content: [IdentificationTypes!]!
-    total:Int!
-}
-
-type IdentificationTypes {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type PhoneAndEmailUseResults {
-    content: [PhoneAndEmailUse!]!
-    total:Int!
-}
-
-type PhoneAndEmailUse {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type PhoneAndEmailTypeResults {
-    content: [PhoneAndEmailType!]!
-    total:Int!
-}
-
-type PhoneAndEmailType {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type AddressUseResults {
-    content: [AddressUse!]!
-    total:Int!
-}
-
-type AddressUse {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type AddressTypeResults {
-    content: [AddressType!]!
-    total:Int!
-}
-
-type AddressType {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type DegreeResults {
-    content: [Degree!]!
-    total:Int!
-}
-
-type Degree {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type NamePrefixResults {
-    content: [NamePrefix!]!
-    total:Int!
-}
-
-type NamePrefix {
-    id: ID!
-    code_short_desc_txt: String!
-}
-
-type NameTypeResults {
-    content: [NameType!]!
-    total:Int!
-}
-
-type NameType {
-    id: ID!
-    code_short_desc_txt: String!
+type PatientCreatedResponse {
+    id: Int!
+    shortId: Int!
 }
 
 type PatientEventResponse {
@@ -183,14 +70,10 @@ type PersonResults {
     total: Int!
 }
 
-type KeyValuePairResults {
-    content: [KeyValuePair!]!
-    total: Int!
-}
-
-type KeyValuePair {
-    key: String!
-    value: String!
+input IdentificationCriteria {
+    identificationNumber: String!
+    identificationType: String!
+    assigningAuthority: String
 }
 
 input PersonFilter {
@@ -198,7 +81,7 @@ input PersonFilter {
     lastName: String
     firstName: String
     race: String
-    identification: Identification
+    identification: IdentificationCriteria
     ssn: String
     phoneNumber: String
     email: String
@@ -336,32 +219,55 @@ type personParentUid {
     id: ID
 }
 
+input NewPatientName {
+    first: String
+    middle: String
+    last: String
+    suffix: Suffix
+    use: NameUseCd!
+}
+
+input NewPatientAddress {
+    streetAddress1: String
+    streetAddress2: String
+    city: String
+    state: String
+    county: String
+    country: String
+    zip: String
+    censusTract: String
+}
+
+input NewPatientPhoneNumber {
+    number: String!
+    extension: String
+    type: String!
+    use: String!
+}
+
+input NewPatientIdentification {
+    value: String!
+    type: String!
+    authority: String
+}
+
 input PersonInput {
-    names: [Name]
-    ssn: String
-    DateOfBirth: Date
+    names: [NewPatientName]
+    dateOfBirth: Date
     birthGender: Gender
     currentGender: Gender
     deceased: Deceased
     deceasedTime: DateTime
     maritalStatus: String
-    addresses: [PostalAddress]
-    phoneNumbers: [PhoneNumber]
+    addresses: [NewPatientAddress]
+    phoneNumbers: [NewPatientPhoneNumber]
     emailAddresses: [String]
-    identifications: [Identification]
-    ethnicityCode: String
-    raceCodes: [String]
+    identifications: [NewPatientIdentification]
+    ethnicity: String
+    races: [String]
     asOf: DateTime
     comments: String
-    mothersMaidenName: String
-    adultNbrInHouse: Int
-    childrenNbrinHouse: Int
-    primaryOccupation: String
-    highestEducationLvl: String
-    primaryLang: String
-    speaksEnglish: String
-    hIVCaseId: String
-    ethnicUnkReasonCd: String
+    stateHIVCase: String
 }
 
 input GeneralInfoInput {
@@ -469,37 +375,6 @@ input UpdateSexAndBirthInput {
     sexUnknown: String
     currentAge: String
     ageReportedTime: DateTime
-}
-
-input Name {
-    firstName: String
-    middleName: String
-    lastName: String
-    suffix: Suffix
-    nameUseCd: NameUseCd!
-}
-
-input PostalAddress {
-    streetAddress1: String
-    streetAddress2: String
-    city: String
-    stateCode: String
-    countyCode: String
-    countryCode: String
-    zip: String
-    censusTract: String
-}
-
-input PhoneNumber {
-    number: String!
-    extension: String
-    phoneType: PhoneType!
-}
-
-input Identification {
-    identificationNumber: String!
-    identificationType: String!
-    assigningAuthority: String
 }
 
 enum NameUseCd {
