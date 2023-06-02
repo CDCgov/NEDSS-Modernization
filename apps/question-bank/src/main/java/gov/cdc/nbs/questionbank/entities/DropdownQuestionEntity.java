@@ -19,14 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(DropdownQuestionEntity.TYPE)
-public class DropdownQuestionEntity extends DisplayElementEntity {
+public class DropdownQuestionEntity extends QuestionEntity {
     static final String TYPE = "dropdown_question";
-
-    @Column(name = "label", length = 300)
-    private String label;
-
-    @Column(name = "tooltip", length = 200)
-    private String tooltip;
 
     @ManyToOne
     @JoinColumn(name = "value_set_id")
@@ -45,8 +39,8 @@ public class DropdownQuestionEntity extends DisplayElementEntity {
     }
 
     public DropdownQuestionEntity(QuestionCommand.AddDropDownQuestion command) {
-        this.label = command.label();
-        this.tooltip = command.tooltip();
+        this.setLabel(command.label());
+        this.setTooltip(command.tooltip());
         this.valueSet = command.valueSet();
         this.defaultAnswer = command.defaultValue();
         this.multiSelect = command.isMultiSelect();

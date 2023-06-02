@@ -13,10 +13,11 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
-import gov.cdc.nbs.questionbank.entities.AuditInfo;
 import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
 import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.questionnaire.EntityMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,26 +55,21 @@ class QuestionCreatedEventProducerTest {
 
 
     private TextQuestionEntity textQuestion() {
-        TextQuestionEntity entity = new TextQuestionEntity(
+        TextQuestionEntity entity = new TextQuestionEntity(add());
+        entity.setId(UUID.randomUUID());
+        return entity;
+    }
+
+    private QuestionCommand.AddTextQuestion add() {
+        return new QuestionCommand.AddTextQuestion(
+                null,
+                123L,
+                Instant.now(),
                 "Label",
                 "Tooltip",
                 13,
                 "placeHolder",
-                "default value for text");
-        entity.setId(UUID.randomUUID());
-        entity.setAudit(audit());
-        return entity;
-    }
-
-    private AuditInfo audit() {
-        Instant now = Instant.now();
-        AuditInfo audit = new AuditInfo(
-                now,
-                123L,
-                now,
-                321L,
-                AuditInfo.Status.ACTIVE,
-                now);
-        return audit;
+                "default value",
+                CodeSet.LOCAL);
     }
 }

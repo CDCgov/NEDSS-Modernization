@@ -5,6 +5,15 @@ type Mutation {
   createNumericQuestion(data: NumericQuestionData!): NumericQuestion!
 }
 
+extend type Query {
+  findQuestions(filter: QuestionFilter!, page: QuestionPage): QuestionResults
+}
+
+type QuestionResults {
+  content: [Question!]!
+  total: Int!
+}
+
 type TextQuestion {
   id: ID!
   version: Int!
@@ -84,4 +93,24 @@ input NumericQuestionData {
   defaultValue: Int
   unitValueSet: String
   codeSet: CodeSet!
+}
+
+input QuestionFilter {
+  searchText: String!
+}
+
+union Question =
+    TextQuestion
+  | NumericQuestion
+  | DropdownQuestion
+  | DateQuestion
+
+input QuestionPage {
+  pageSize: Int
+  pageNumber: Int
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }

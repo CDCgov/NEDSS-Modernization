@@ -17,14 +17,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(DateQuestionEntity.TYPE)
-public class DateQuestionEntity extends DisplayElementEntity {
+public class DateQuestionEntity extends QuestionEntity {
     static final String TYPE = "date_question";
-
-    @Column(name = "label", length = 300)
-    private String label;
-
-    @Column(name = "tooltip", length = 200)
-    private String tooltip;
 
     @Column(name = "allow_future_dates")
     private boolean allowFuture;
@@ -35,8 +29,8 @@ public class DateQuestionEntity extends DisplayElementEntity {
     }
 
     public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
-        this.label = command.label();
-        this.tooltip = command.tooltip();
+        this.setLabel(command.label());
+        this.setTooltip(command.tooltip());
         this.allowFuture = command.allowFutureDates();
         this.setCodeSet(command.codeSet());
         this.setAudit(new AuditInfo(command));

@@ -19,14 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(NumericQuestionEntity.TYPE)
-public class NumericQuestionEntity extends DisplayElementEntity {
+public class NumericQuestionEntity extends QuestionEntity {
     static final String TYPE = "numeric_question";
-
-    @Column(name = "label", length = 300)
-    private String label;
-
-    @Column(name = "tooltip", length = 200)
-    private String tooltip;
 
     @Column(name = "min_value")
     private Integer minValue;
@@ -47,8 +41,8 @@ public class NumericQuestionEntity extends DisplayElementEntity {
     }
 
     public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
-        this.label = command.label();
-        this.tooltip = command.tooltip();
+        this.setLabel(command.label());
+        this.setTooltip(command.tooltip());
         this.minValue = command.minValue();
         this.maxValue = command.maxValue();
         this.defaultNumericValue = command.defaultValue();

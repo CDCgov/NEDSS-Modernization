@@ -11,6 +11,7 @@ nbs:
     max-page-size: 50
 
 spring:
+  data.web.pageable.max-page-size: 50
   graphql:
     path: /graphql
     graphiql:
@@ -46,7 +47,7 @@ spring:
       auto-offset-reset: earliest
 
 kafka:
-    enabled: true
+    enabled: false
 
 kafkadef:
   groups:

@@ -1,7 +1,8 @@
 package gov.cdc.nbs.questionbank.question;
 
-import java.util.Collection;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,11 +22,17 @@ public class FindQuestionResolver {
 
     @QueryMapping()
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public Collection<Questionnaire.Question> findQuestions(@Argument QuestionFilter filter, @Argument Pageable page) {
+    public Page<Questionnaire.Question> findQuestions(
+            @Argument QuestionFilter filter,
+            @Argument QuestionPage page) {
         log.debug("Received findQuestions request with filter: {}", filter);
-        Collection<Questionnaire.Question> questions = finder.find(filter, page);
-        log.debug("Found {} questions", questions.size());
+        Page<Questionnaire.Question> questions = finder.find(filter, toPageable(page));
+        log.debug("Found {} questions", questions.getTotalElements());
         return questions;
+    }
+
+    private Pageable toPageable(QuestionPage page) {
+        return PageRequest.of(page.pageNumber(), page.pageSize());
     }
 
 }

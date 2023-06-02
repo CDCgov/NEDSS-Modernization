@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.entities.DisplayElementRef;
 import gov.cdc.nbs.questionbank.entities.DisplayGroupRef;
 import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
 import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entities.QuestionEntity;
 import gov.cdc.nbs.questionbank.entities.QuestionnaireEntity;
 import gov.cdc.nbs.questionbank.entities.ReferenceEntity;
 import gov.cdc.nbs.questionbank.entities.TabEntity;
@@ -70,16 +71,24 @@ public class EntityMapper {
     public Questionnaire.DisplayElement toDisplayElement(DisplayElementEntity element) {
         if (element instanceof TextEntity t) {
             return toText(t);
-        } else if (element instanceof TextQuestionEntity tq) {
-            return toTextQuestion(tq);
-        } else if (element instanceof NumericQuestionEntity nq) {
-            return toNumericQuestion(nq);
-        } else if (element instanceof DateQuestionEntity dq) {
-            return toDateQuestion(dq);
-        } else if (element instanceof DropdownQuestionEntity ddq) {
-            return toDropdownQuestion(ddq);
+        } else if (element instanceof QuestionEntity qe) {
+            return toQuestion(qe);
         } else {
             throw new IllegalArgumentException("Unsupported display type: " + element.getDisplayType());
+        }
+    }
+
+    public Questionnaire.Question toQuestion(QuestionEntity entity) {
+        if (entity instanceof TextQuestionEntity tq) {
+            return toTextQuestion(tq);
+        } else if (entity instanceof NumericQuestionEntity nq) {
+            return toNumericQuestion(nq);
+        } else if (entity instanceof DateQuestionEntity dq) {
+            return toDateQuestion(dq);
+        } else if (entity instanceof DropdownQuestionEntity ddq) {
+            return toDropdownQuestion(ddq);
+        } else {
+            throw new IllegalArgumentException("Unsupported question type: " + entity.getDisplayType());
         }
     }
 

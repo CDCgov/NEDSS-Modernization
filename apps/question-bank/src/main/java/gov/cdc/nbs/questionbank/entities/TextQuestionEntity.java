@@ -17,14 +17,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue(TextQuestionEntity.TYPE)
-public class TextQuestionEntity extends DisplayElementEntity {
+public class TextQuestionEntity extends QuestionEntity {
     static final String TYPE = "text_question";
-
-    @Column(name = "label", length = 300)
-    private String label;
-
-    @Column(name = "tooltip", length = 200)
-    private String tooltip;
 
     @Column(name = "max_length")
     private Integer maxLength;
@@ -41,8 +35,8 @@ public class TextQuestionEntity extends DisplayElementEntity {
     }
 
     public TextQuestionEntity(QuestionCommand.AddTextQuestion command) {
-        this.label = command.label();
-        this.tooltip = command.tooltip();
+        this.setLabel(command.label());
+        this.setTooltip(command.tooltip());
         this.maxLength = command.maxLength();
         this.placeholder = command.placeholder();
         this.defaultTextValue = command.defaultValue();
