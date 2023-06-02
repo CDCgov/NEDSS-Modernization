@@ -38,22 +38,28 @@ public class PatientCreator {
 
         Person person = new Person(asAdd(context, identifier, input));
 
-        input.getNames().stream().map(name -> asName(context, identifier, name))
+        input.getNames().stream()
+            .map(name -> asName(context, identifier, name))
             .forEach(person::add);
 
-        input.getRaces().stream().map(race -> asRace(context, identifier, input.getAsOf(), race))
+        input.getRaces().stream()
+            .map(race -> asRace(context, identifier, input.getAsOf(), race))
             .forEach(person::add);
 
-        input.getAddresses().stream().map(address -> asAddress(context, identifier, address))
+        input.getAddresses().stream()
+            .map(address -> asAddress(context, identifier, address))
             .forEach(person::add);
 
-        input.getPhoneNumbers().stream().map(phoneNumber -> asPhoneNumber(context, identifier, phoneNumber))
+        input.getPhoneNumbers().stream()
+            .map(phoneNumber -> asPhoneNumber(context, identifier, phoneNumber))
             .forEach(person::add);
 
-        input.getEmailAddresses().stream().map(emailAddress -> asEmailAddress(context, identifier, emailAddress))
+        input.getEmailAddresses().stream()
+            .map(emailAddress -> asEmailAddress(context, identifier, emailAddress))
             .forEach(person::add);
 
-        input.getIdentifications().stream().map(identification -> asIdentification(context, identifier, identification))
+        input.getIdentifications().stream()
+            .map(identification -> asIdentification(context, identifier, identification))
             .forEach(person::add);
 
         this.entityManager.persist(person);
