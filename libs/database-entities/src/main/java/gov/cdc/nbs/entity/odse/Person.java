@@ -407,7 +407,6 @@ public class Person {
         this.cd = "PAT";
         this.electronicInd = 'N';
         this.edxInd = "Y";
-        this.dedupMatchInd = 'F';
         this.personParentUid = this;
         this.statusCd = 'A';
     }
@@ -420,6 +419,7 @@ public class Person {
 
         if (patient.dateOfBirth() != null) {
             this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant();
+            this.birthTimeCalc = this.birthTime;
         }
 
         this.birthGenderCd = patient.birthGender();
@@ -428,28 +428,17 @@ public class Person {
         this.deceasedIndCd = patient.deceased();
         this.deceasedTime = patient.deceasedTime();
 
-        if (this.deceasedIndCd != null) {
-            this.asOfDateMorbidity = patient.asOf();
-        }
-
         this.maritalStatusCd = patient.maritalStatus();
         this.ethnicGroupInd = patient.ethnicityCode();
 
-        if (this.ethnicGroupInd != null) {
-            this.asOfDateEthnicity = patient.asOf();
-        }
-
         this.description = patient.comments();
-
-        if (this.description != null) {
-            this.asOfDateAdmin = patient.asOf();
-        }
-
         this.eharsId = patient.stateHIVCase();
 
         this.asOfDateGeneral = patient.asOf();
-
         this.asOfDateSex = patient.asOf();
+        this.asOfDateAdmin = patient.asOf();
+        this.asOfDateEthnicity = patient.asOf();
+        this.asOfDateMorbidity = patient.asOf();
 
         this.statusTime = patient.requestedOn();
         this.recordStatusCd = RecordStatus.ACTIVE;
@@ -490,12 +479,13 @@ public class Person {
             this.nmSuffix = added.suffix();
         }
 
-        PersonNameId identifier = new PersonNameId(this.id, (short) existing.size());
+        PersonNameId identifier = new PersonNameId(this.id, (short) (existing.size() + 1));
 
         PersonName personName = new PersonName(
             identifier,
             this,
-            added);
+            added
+        );
 
         existing.add(personName);
 

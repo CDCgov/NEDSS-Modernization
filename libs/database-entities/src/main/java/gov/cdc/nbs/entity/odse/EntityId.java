@@ -102,6 +102,9 @@ public class EntityId {
         this.assigningAuthorityCd = added.assigningAuthority();
         this.rootExtensionTxt = added.identificationNumber();
 
+        this.statusCd = 'A';
+        this.statusTime = added.requestedOn();
+
         this.recordStatusCd = "ACTIVE";
         this.recordStatusTime = added.requestedOn();
 
