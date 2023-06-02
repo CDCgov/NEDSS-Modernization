@@ -1,20 +1,20 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -38,8 +38,14 @@ public class NBSEntity {
     }, orphanRemoval = true)
     private List<EntityLocatorParticipation> entityLocatorParticipations;
 
-    protected NBSEntity() {
-    }
+    @OneToOne(mappedBy = "contactNBSEntityUid", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    }, orphanRemoval = true)
+    private CtContact ctContact;
+
+    protected NBSEntity() {}
 
     public NBSEntity(Long id, String classCd) {
         this.id = id;
