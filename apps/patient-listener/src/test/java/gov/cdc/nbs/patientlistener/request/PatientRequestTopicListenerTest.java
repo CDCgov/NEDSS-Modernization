@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.PatientCreateData;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.patientlistener.request.create.PatientCreateRequestHandler;
 import gov.cdc.nbs.patientlistener.request.delete.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;
 import gov.cdc.nbs.time.json.EventSchemaJacksonModuleFactory;
@@ -36,8 +34,7 @@ class PatientRequestTopicListenerTest {
         new ObjectMapper()
             .setSerializationInclusion(Include.NON_NULL)
             .registerModule(EventSchemaJacksonModuleFactory.create());
-    @Mock
-    private PatientCreateRequestHandler createHandler;
+
     @Mock
     private PatientUpdateRequestHandler updateHandler;
     @Mock
@@ -45,44 +42,6 @@ class PatientRequestTopicListenerTest {
 
     @InjectMocks
     private PatientRequestTopicListener consumer;
-
-
-    @Test
-    void testReceivingCreateRequest() {
-
-        String message = """
-            {
-              "type": "PatientRequest$Create",
-              "requestId": "requestId",
-              "patientId": 1234,
-              "userId": 123,
-              "data": {
-                "patient": 2027,
-                "names": [],
-                "races": [],
-                "addresses": [],
-                "phoneNumbers": [],
-                "emailAddresses": [],
-                "createdBy": 2293
-              }
-            }           
-            """;
-        consumer.onMessage(message, "requestId");
-
-        ArgumentCaptor<PatientCreateData> captor = ArgumentCaptor.forClass(PatientCreateData.class);
-
-        verify(createHandler, times(1)).handlePatientCreate(captor.capture());
-
-        verifyNoInteractions(updateHandler);
-        verifyNoInteractions(deleteHandler);
-
-        PatientCreateData actual = captor.getValue();
-
-        assertThat(actual)
-            .returns(2027L, PatientCreateData::patient)
-            .returns(2293L, PatientCreateData::createdBy)
-        ;
-    }
 
     @Test
     void testReceivingDeleteRequest() {
@@ -96,7 +55,6 @@ class PatientRequestTopicListenerTest {
             """;
         consumer.onMessage(message, "message-key");
 
-        verifyNoInteractions(createHandler);
         verifyNoInteractions(updateHandler);
 
         ArgumentCaptor<PatientRequest.Delete> captor = ArgumentCaptor.forClass(PatientRequest.Delete.class);
@@ -135,7 +93,6 @@ class PatientRequestTopicListenerTest {
 
         verify(updateHandler, times(1)).handlePatientGeneralInfoUpdate(captor.capture());
 
-        verifyNoInteractions(createHandler);
         verifyNoInteractions(deleteHandler);
         verifyNoMoreInteractions(updateHandler);
 
@@ -171,7 +128,6 @@ class PatientRequestTopicListenerTest {
 
         verify(updateHandler, times(1)).handlePatientMortalityUpdate(captor.capture());
 
-        verifyNoInteractions(createHandler);
         verifyNoInteractions(deleteHandler);
         verifyNoMoreInteractions(updateHandler);
 
@@ -208,7 +164,6 @@ class PatientRequestTopicListenerTest {
 
         verify(updateHandler, times(1)).handlePatientSexAndBirthUpdate(captor.capture());
 
-        verifyNoInteractions(createHandler);
         verifyNoInteractions(deleteHandler);
         verifyNoMoreInteractions(updateHandler);
 
@@ -230,7 +185,6 @@ class PatientRequestTopicListenerTest {
             .hasMessage("Failed to parse message into PatientRequest");
 
         // No handler was called
-        verify(createHandler, times(0)).handlePatientCreate(Mockito.any());
         verify(updateHandler, times(0)).handlePatientGeneralInfoUpdate(Mockito.any());
         verify(updateHandler, times(0)).handlePatientMortalityUpdate(Mockito.any());
         verify(updateHandler, times(0)).handlePatientSexAndBirthUpdate(Mockito.any());

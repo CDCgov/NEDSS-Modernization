@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -31,12 +30,6 @@ public class TeleLocator extends Locator {
 
     @Column(name = "phone_nbr_txt", length = 20)
     private String phoneNbrTxt;
-
-    @Column(name = "record_status_cd", length = 20)
-    private String recordStatusCd;
-
-    @Column(name = "record_status_time")
-    private Instant recordStatusTime;
 
     @Column(name = "url_address", length = 100)
     private String urlAddress;
@@ -63,10 +56,10 @@ public class TeleLocator extends Locator {
     @Override
     public String toString() {
         return "TeleLocator{" +
-                "id=" + id +
-                ", emailAddress='" + emailAddress + '\'' +
-                ", extensionTxt='" + extensionTxt + '\'' +
-                ", phoneNbrTxt='" + phoneNbrTxt + '\'' +
-                '}';
+            "id=" + id +
+            ", emailAddress='" + emailAddress + '\'' +
+            ", extensionTxt='" + extensionTxt + '\'' +
+            ", phoneNbrTxt='" + phoneNbrTxt + '\'' +
+            '}';
     }
 }
