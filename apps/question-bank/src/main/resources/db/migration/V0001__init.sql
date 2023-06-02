@@ -19,6 +19,7 @@
         text varchar(255),
         default_text_value varchar(255),
         max_length int,
+        active bit not null default 1,
         placeholder varchar(100),
         default_answer_id uniqueidentifier,
         value_set_id uniqueidentifier,
