@@ -9,7 +9,7 @@ import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionEvent;
 import gov.cdc.nbs.questionbank.questionnaire.EntityMapper;
 
-public interface QuestionCreatedEventProducer {
+public sealed interface QuestionCreatedEventProducer {
     void send(final QuestionCreatedEvent status);
 
     void send(final DisplayElementEntity entity);
@@ -17,7 +17,7 @@ public interface QuestionCreatedEventProducer {
 
     @Component
     @ConditionalOnProperty(name = "kafka.enabled", havingValue = "false")
-    public static class DisabledProducer implements QuestionCreatedEventProducer {
+    public static final class DisabledProducer implements QuestionCreatedEventProducer {
 
         @Override
         public void send(final QuestionCreatedEvent status) {
@@ -33,8 +33,8 @@ public interface QuestionCreatedEventProducer {
 
     @Component
     @ConditionalOnProperty("kafka.enabled")
-    public static class EnabledProducer implements QuestionCreatedEventProducer {
-        private final String statusTopic;
+    public static final class EnabledProducer implements QuestionCreatedEventProducer {
+        private final String topic;
         private final EntityMapper entityMapper;
         private final KafkaTemplate<String, QuestionEvent> template;
 
@@ -44,7 +44,7 @@ public interface QuestionCreatedEventProducer {
                 final RequestProperties properties) {
             this.template = template;
             this.entityMapper = entityMapper;
-            this.statusTopic = properties.questionCreated();
+            this.topic = properties.questionCreated();
         }
 
         public void send(DisplayElementEntity entity) {
@@ -55,7 +55,7 @@ public interface QuestionCreatedEventProducer {
         }
 
         public void send(final QuestionCreatedEvent status) {
-            template.send(statusTopic, status);
+            template.send(topic, status);
         }
 
     }

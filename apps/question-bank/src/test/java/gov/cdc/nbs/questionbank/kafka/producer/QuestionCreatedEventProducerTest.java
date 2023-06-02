@@ -30,7 +30,7 @@ class QuestionCreatedEventProducerTest {
     private EntityMapper entityMapper = new EntityMapper();
 
     @Spy
-    private RequestProperties properties = new RequestProperties(null, null, "test-created-topic");
+    private RequestProperties properties = new RequestProperties("test-created-topic", "");
 
     @InjectMocks
     private EnabledProducer producer;
