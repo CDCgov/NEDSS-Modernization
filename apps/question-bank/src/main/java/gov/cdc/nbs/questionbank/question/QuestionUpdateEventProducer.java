@@ -1,10 +1,10 @@
 package gov.cdc.nbs.questionbank.question;
+
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest.UpdateTextQuestionRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
-import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

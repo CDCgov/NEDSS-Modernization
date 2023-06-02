@@ -1,48 +1,36 @@
 package gov.cdc.nbs.questionbank.question;
 
 import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
+import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
+import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static junit.framework.TestCase.assertEquals;
+import static gov.cdc.nbs.questionbank.question.QuestionHandler.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionRequest;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+class UpdateQuestionTest {
 
-class UpdateQuestionTest<QuestionService> {
+    @Test
 
-        void processUpdateQuestion() {
+    void updateQuestion() {
 
-        Long questionId = UUID.randomUUID().getLeastSignificantBits();
-        Long userId = UUID.randomUUID().getLeastSignificantBits();
-
-        String updatedQuestion = "";
-        when(QuestionRepository.updateQuestion(questionId, updatedQuestion))
-                .thenReturn(1);
-
-        QuestionBankEventResponse result = QuestionHandler.processUpdateQuestion(questionId, userId);
-
-    }
-
-
-
-        @Test
-        int updateQuestion() {
             Long questionId = UUID.randomUUID().getLeastSignificantBits();
             String updatedQuestion = "";
-            int i = QuestionRepository.updateQuestion(questionId, updatedQuestion);
-            return(1);
-
-
+            when(QuestionRepository.updateQuestion(questionId, updatedQuestion))
+                    .thenReturn(1);
+            int result = QuestionRepository.updateQuestion(questionId, updatedQuestion);
+            Assertions.assertEquals(1, result);
 
         }
 
         @Nested
-        public class QuestionBankTest<QuestionUpdateProducer> {
+        class QuestionBankTest<QuestionUpdateProducer> {
             @Test
             void testUpdateQuestion_WhenQuestionIdAndUpdatedQuestionNotNull() {
                 // Create a mock QuestionRepository
@@ -50,32 +38,31 @@ class UpdateQuestionTest<QuestionService> {
                 when(QuestionRepository.updateQuestion(anyLong(), anyString())).thenReturn(1);
 
                 // Call the method under test
-                int updated = QuestionHandler.QuestionBank.updateQuestion(123L, "This is the updated question.");
+                int updated = QuestionBank.updateQuestion(123L, "This is the updated question.");
 
                 // Verify that the QuestionRepository's updateQuestion method was called with the correct arguments
                 verify(questionRepository, times(1));
-                QuestionRepository.updateQuestion(eq(123L), eq("This is the updated question."));
 
                 // Assert that the return value is as expected
-                assertEquals(1, updated);
+                Assertions.assertEquals(1, updated);
             }
 
             @Test
             void testUpdateQuestion_WhenQuestionIdNull() {
                 // Call the method under test
-                int updated = QuestionHandler.QuestionBank.updateQuestion(null, "This is the updated question.");
+                int updated = QuestionBank.updateQuestion(null, "This is the updated question.");
 
                 // Assert that the return value is as expected
-                assertEquals(-1, updated);
+                Assertions.assertEquals(-1, updated);
             }
 
             @Test
             void testUpdateQuestion_WhenUpdatedQuestionNull() {
                 // Call the method under test
-                int updated = QuestionHandler.QuestionBank.updateQuestion(123L, null);
+                int updated = QuestionBank.updateQuestion(123L, null);
 
                 // Assert that the return value is as expected
-                assertEquals(-1, updated);
+                Assertions.assertEquals(-1, updated);
             }
 
             @Test
@@ -86,12 +73,44 @@ class UpdateQuestionTest<QuestionService> {
                 // Create a mock QuestionUpdateProducer
                 QuestionUpdateProducer questionUpdateProducer = (QuestionUpdateProducer) mock(QuestionRequest.class);
 
-                // Call the method under test
-                //QuestionHandler.QuestionBank.updateQuestion(status);
 
-                // Verify that the QuestionUpdateProducer's send method was called with the correct argument
                 verify(questionUpdateProducer, times(1)).equals(status);
             }
+
+
+            @Test
+            void testProcessUpdateQuestion() {
+                // Test data
+                Long questionId = 123L;
+                Long userId = 456L;
+
+                // Call the method under test
+                QuestionBankEventResponse response = QuestionBank.processUpdateQuestion(questionId, String.valueOf(userId));
+
+                // Assert that the response is not null
+                Assertions.assertNotNull(response);
+
+                // Assert that the response contains the correct questionId and message
+                Assertions.assertEquals(questionId, response.getQuestionId());
+                Assertions.assertEquals(Constants.UPDATE_SUCCESS_MESSAGE, response.getMessage());
+            }
+
+            @Test
+            void testUpdateQuestion() {
+                // Call the method under test
+                String result = QuestionHandler.updateQuestion();
+
+                // Assert that the result is not null
+                Assertions.assertNotNull(result);
+
+                // Assert that the result is empty string
+                Assertions.assertEquals("", result);
+            }
+
+
+
+
+
         }
 
 

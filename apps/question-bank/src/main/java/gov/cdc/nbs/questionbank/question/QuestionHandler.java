@@ -28,11 +28,7 @@ public class QuestionHandler {
         this.creator = creator;
         this.userService = userService;
         this.statusProducer = statusProducer;
-        this.questionUpdateProducer = questionUpdateProducer;
-    }
-
-    public static QuestionBankEventResponse processUpdateQuestion(Long questionId, Long userId) {
-        return null;
+        QuestionHandler.questionUpdateProducer = questionUpdateProducer;
     }
 
     public void handleQuestionRequest(QuestionRequest request) {
@@ -59,7 +55,7 @@ public class QuestionHandler {
         sendSuccess(request.requestId(), entity.getId());
     }
 
-    public String updateQuestion() {
+    public static String updateQuestion() {
 
         return "";
     }
@@ -69,19 +65,17 @@ public class QuestionHandler {
         public static void main(String[] args) {
             // Example usage
             Long questionId = 123L;
-            Long userId = 456L;
             String updatedQuestion = "This is the updated question.";
 
-            QuestionBankEventResponse response = processUpdateQuestion(questionId, userId, updatedQuestion);
+            QuestionBankEventResponse response = processUpdateQuestion(questionId, updatedQuestion);
             System.out.println(response.getMessage());
         }
 
-        public static QuestionBankEventResponse processUpdateQuestion(Long questionId, Long userId, String updatedQuestion) {
+        public static QuestionBankEventResponse processUpdateQuestion(Long questionId, String updatedQuestion) {
             updateQuestion(questionId, updatedQuestion);
 
-            sendQuestionUpdateEvent(null);
-            QuestionBankEventResponse response = new QuestionBankEventResponse(Constants.UPDATE_SUCCESS_MESSAGE, questionId);
-            return response;
+            sendQuestionUpdateEvent();
+            return new QuestionBankEventResponse(Constants.UPDATE_SUCCESS_MESSAGE, questionId);
         }
 
         public static int updateQuestion(Long questionId, String updatedQuestion) {
@@ -97,8 +91,8 @@ public class QuestionHandler {
         }
     }
 
-    private static void sendQuestionUpdateEvent(QuestionRequest.UpdateTextQuestionRequest status) {
-        questionUpdateProducer.send(status);
+    private static void sendQuestionUpdateEvent() {
+        questionUpdateProducer.send(null);
     }
     private void sendSuccess(String requestId, UUID id) {
         statusProducer.successful(
