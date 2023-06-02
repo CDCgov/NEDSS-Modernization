@@ -99,7 +99,7 @@ class PersonTest {
 
         assertThat(actual.getRaces()).satisfiesExactly(
                 actual_race -> assertThat(actual_race)
-                        .returns("race-code-value", PersonRace::getRaceCd));
+                        .returns("race-category-value", PersonRace::getRaceCd));
 
     }
 

@@ -865,7 +865,7 @@ class PatientUpdaterTest {
         var personRace = (PersonRace) personCaptor.getValue()
                 .getRaces()
                 .get(0);
-        assertEquals(data.raceCd(), personRace.getRaceCd());
+        assertEquals(data.raceCategoryCd(), personRace.getRaceCd());
     }
 
     private AddRaceData getAddRaceData() {
