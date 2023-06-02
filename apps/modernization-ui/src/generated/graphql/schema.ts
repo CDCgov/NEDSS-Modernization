@@ -600,7 +600,7 @@ export type Mutation = {
   addPatientPhone: PatientEventResponse;
   addPatientRace: PatientEventResponse;
   createPatient: PatientCreatedResponse;
-  deletePatient: PatientEventResponse;
+  deletePatient: PatientDeleteResult;
   deletePatientAddress: PatientEventResponse;
   deletePatientEmail: PatientEventResponse;
   deletePatientIdentification: PatientEventResponse;
@@ -657,7 +657,7 @@ export type MutationCreatePatientArgs = {
 
 
 export type MutationDeletePatientArgs = {
-  patientId: Scalars['ID'];
+  patient: Scalars['ID'];
 };
 
 
@@ -1113,6 +1113,19 @@ export type PatientCreatedResponse = {
   __typename?: 'PatientCreatedResponse';
   id: Scalars['Int'];
   shortId: Scalars['Int'];
+};
+
+export type PatientDeleteFailed = {
+  __typename?: 'PatientDeleteFailed';
+  patient: Scalars['Int'];
+  reason: Scalars['String'];
+};
+
+export type PatientDeleteResult = PatientDeleteFailed | PatientDeleteSuccessful;
+
+export type PatientDeleteSuccessful = {
+  __typename?: 'PatientDeleteSuccessful';
+  patient: Scalars['Int'];
 };
 
 export type PatientDocument = {
@@ -2373,11 +2386,11 @@ export type CreatePatientMutationVariables = Exact<{
 export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'PatientCreatedResponse', id: number, shortId: number } };
 
 export type DeletePatientMutationVariables = Exact<{
-  patientId: Scalars['ID'];
+  patient: Scalars['ID'];
 }>;
 
 
-export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename: 'PatientDeleteFailed', patient: number, reason: string } | { __typename: 'PatientDeleteSuccessful', patient: number } };
 
 export type DeletePatientAddressMutationVariables = Exact<{
   patientId: Scalars['Int'];
@@ -3114,10 +3127,16 @@ export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatient
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
 export const DeletePatientDocument = gql`
-    mutation deletePatient($patientId: ID!) {
-  deletePatient(patientId: $patientId) {
-    requestId
-    patientId
+    mutation deletePatient($patient: ID!) {
+  deletePatient(patient: $patient) {
+    __typename
+    ... on PatientDeleteSuccessful {
+      patient
+    }
+    ... on PatientDeleteFailed {
+      patient
+      reason
+    }
   }
 }
     `;
@@ -3136,7 +3155,7 @@ export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutat
  * @example
  * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
  *   variables: {
- *      patientId: // value for 'patientId'
+ *      patient: // value for 'patient'
  *   },
  * });
  */

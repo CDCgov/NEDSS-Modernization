@@ -1,6 +1,12 @@
-mutation deletePatient($patientId: ID!){
-    deletePatient(patientId: $patientId){
-        requestId
-        patientId
+mutation deletePatient($patient: ID!){
+    deletePatient(patient: $patient){
+        __typename
+        ... on PatientDeleteSuccessful {
+            patient
+        }
+        ... on PatientDeleteFailed {
+            patient
+            reason
+        }
     }
 }

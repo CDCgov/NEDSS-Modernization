@@ -3,7 +3,6 @@ package gov.cdc.nbs.patientlistener.request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.patientlistener.request.delete.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -17,17 +16,14 @@ public class PatientRequestTopicListener {
     private final ObjectMapper mapper;
 
     private final PatientUpdateRequestHandler updateHandler;
-    private final PatientDeleteRequestHandler deleteHandler;
     private final PatientRequestStatusProducer statusProducer;
 
     public PatientRequestTopicListener(
         ObjectMapper mapper,
         PatientUpdateRequestHandler updateHandler,
-        PatientDeleteRequestHandler deleteHandler,
         PatientRequestStatusProducer statusProducer) {
         this.mapper = mapper;
         this.updateHandler = updateHandler;
-        this.deleteHandler = deleteHandler;
         this.statusProducer = statusProducer;
     }
 
@@ -39,9 +35,7 @@ public class PatientRequestTopicListener {
             var request = mapper.readValue(message, PatientRequest.class);
             log.debug("Successfully parsed message to PatientEvent. RequestId: {}", request.requestId());
 
-             if (request instanceof PatientRequest.Delete delete) {
-                deleteHandler.handle(delete);
-            } else if (request instanceof PatientRequest.UpdateGeneralInfo update) {
+            if (request instanceof PatientRequest.UpdateGeneralInfo update) {
                 updateHandler.handlePatientGeneralInfoUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateMortality update) {
                 updateHandler.handlePatientMortalityUpdate(update.data());

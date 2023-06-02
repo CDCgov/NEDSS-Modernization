@@ -608,7 +608,7 @@ public class Person {
         this.setLastChgUserId(info.requester());
 
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.UpdateAdministrativeInfo info) {
@@ -616,7 +616,7 @@ public class Person {
         this.setLastChgUserId(info.requester());
         this.setDescription(info.description());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.AddName info) {
@@ -624,7 +624,7 @@ public class Person {
         this.setLastChgUserId(info.requester());
         this.add(info);
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.UpdateNameInfo info) {
@@ -644,7 +644,7 @@ public class Person {
         });
 
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.DeleteNameInfo info) {
@@ -655,7 +655,7 @@ public class Person {
         arraylist.removeIf(item -> (item.getId().equals(identifier)));
         this.names = arraylist;
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.UpdateSexAndBirthInfo info) {
@@ -675,20 +675,20 @@ public class Person {
         this.setPreferredGenderCd(info.transGenderInfo());
 
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
-    public void delete(PatientCommand.Delete delete) {
-        this.setRecordStatusCd(RecordStatus.LOG_DEL);
-        this.setRecordStatusTime(delete.requestedOn());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+    public void delete(final PatientCommand.Delete delete) {
+        this.recordStatusCd = RecordStatus.LOG_DEL;
+        this.recordStatusTime = delete.requestedOn();
+        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
 
-        setLastChange(delete);
+        changed(delete);
     }
 
-    private void setLastChange(PatientCommand command) {
-        this.setLastChgUserId(command.requester());
-        this.setLastChgTime(command.requestedOn());
+    private void changed(final PatientCommand command) {
+        this.lastChgUserId = command.requester();
+        this.lastChgTime = command.requestedOn();
     }
 
     @Override
@@ -718,7 +718,7 @@ public class Person {
         this.setLastChgUserId(info.requester());
         this.add(info);
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.UpdateIdentification info) {
@@ -726,7 +726,7 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void delete(PatientCommand.DeleteIdentification info) {
@@ -734,7 +734,7 @@ public class Person {
         this.setLastChgTime(info.requestedOn());
         this.setLastChgUserId(info.requester());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.UpdateEthnicityInfo info) {
@@ -743,7 +743,7 @@ public class Person {
         this.setEthnicGroupInd(info.ethnicityCode());
         this.setEthnicUnkReasonCd(info.ethnicUnkReasonCd());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public void update(PatientCommand.UpdateRaceInfo info) {
@@ -751,7 +751,7 @@ public class Person {
         this.setLastChgUserId(info.requester());
         this.setRaceCd(info.raceCd());
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
     }
 
     public boolean delete(PatientCommand.DeleteRaceInfo info) {
@@ -762,7 +762,7 @@ public class Person {
             item -> (item.getPersonUid().getId() == info.person() && item.getRaceCd().equals(info.raceCd())));
         this.races = arraylist;
         this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        setLastChange(info);
+        changed(info);
         return isDeleted;
     }
 }

@@ -1156,12 +1156,23 @@ type Query {
     ): InvestigationResults!
 }
 
+type PatientDeleteSuccessful {
+    patient: Int!
+}
+
+type PatientDeleteFailed {
+    patient: Int!
+    reason: String!
+}
+
+union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
+
 type Mutation {
     createPatient(patient: PersonInput!): PatientCreatedResponse!
+    deletePatient(patient: ID!): PatientDeleteResult!
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientEventResponse!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
     updateMortality(input: MortalityInput!): PatientEventResponse!
-    deletePatient(patientId: ID!): PatientEventResponse!
     addPatientAddress(input: AddressInput!): PatientEventResponse!
     addPatientEmail(input: EmailInput!): PatientEventResponse!
     addPatientIdentification(input: IdentificationInput!): PatientEventResponse!
