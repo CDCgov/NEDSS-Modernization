@@ -122,7 +122,6 @@ public class PostalLocator extends Locator {
 
     private void applyCity(final City city) {
         if (city != null) {
-            this.cityCd = city.code();
             this.cityDescTxt = city.description();
         }
     }

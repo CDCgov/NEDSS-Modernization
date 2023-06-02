@@ -54,18 +54,20 @@ export const PatientProfile = () => {
     const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
     const handleComplete = (data: DeletePatientMutation) => {
-        if (data && data.deletePatient && data.deletePatient.requestId) {
+        if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
             navigate('/advanced-search');
+        } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
+            // display this message somewhere, data.deletePatient.reason
         }
     };
 
     const [deletePatient] = useDeletePatientMutation({ onCompleted: handleComplete });
 
     function handleDeletePatient() {
-        if (id) {
+        if (profile?.patient) {
             deletePatient({
                 variables: {
-                    patientId: id
+                    patient: profile.patient.id
                 }
             });
         }

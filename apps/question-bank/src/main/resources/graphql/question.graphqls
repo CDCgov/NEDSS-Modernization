@@ -3,6 +3,7 @@ type Mutation {
   createDateQuestion(data: DateQuestionData!): DateQuestion!
   createDropdownQuestion(data: DropDownQuestionData!): DropdownQuestion!
   createNumericQuestion(data: NumericQuestionData!): NumericQuestion!
+  deleteQuestion(questionId: ID!): QuestionBankEventResponse!
 }
 
 extend type Query {
@@ -53,6 +54,11 @@ type NumericQuestion {
   minValue: Int
   maxValue: Int
   unitOptions: OptionSet
+}
+
+type QuestionBankEventResponse {
+    message: String!
+    questionId: ID!
 }
 
 enum CodeSet {

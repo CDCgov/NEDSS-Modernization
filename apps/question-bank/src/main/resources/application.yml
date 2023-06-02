@@ -57,3 +57,4 @@ kafkadef:
       request: questionbank
       status: questionbank-status
       question-created: question-created
+      deletestatus: deletequestion-status

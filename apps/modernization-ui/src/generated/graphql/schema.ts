@@ -190,6 +190,7 @@ export type EthnicityId = {
 
 export type EthnicityInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
+  ethnicUnkReasonCd?: InputMaybe<Scalars['String']>;
   ethnicityCode: Scalars['String'];
   patientId: Scalars['ID'];
 };
@@ -230,7 +231,7 @@ export type GeneralInfoInput = {
   speaksEnglishCode?: InputMaybe<Scalars['String']>;
 };
 
-export type Identification = {
+export type IdentificationCriteria = {
   assigningAuthority?: InputMaybe<Scalars['String']>;
   identificationNumber: Scalars['String'];
   identificationType: Scalars['String'];
@@ -598,8 +599,8 @@ export type Mutation = {
   addPatientName: PatientEventResponse;
   addPatientPhone: PatientEventResponse;
   addPatientRace: PatientEventResponse;
-  createPatient: PatientEventResponse;
-  deletePatient: PatientEventResponse;
+  createPatient: PatientCreatedResponse;
+  deletePatient: PatientDeleteResult;
   deletePatientAddress: PatientEventResponse;
   deletePatientEmail: PatientEventResponse;
   deletePatientIdentification: PatientEventResponse;
@@ -656,7 +657,7 @@ export type MutationCreatePatientArgs = {
 
 
 export type MutationDeletePatientArgs = {
-  patientId: Scalars['ID'];
+  patient: Scalars['ID'];
 };
 
 
@@ -782,14 +783,6 @@ export type NaicsIndustryCodeResults = {
   total: Scalars['Int'];
 };
 
-export type Name = {
-  firstName?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  middleName?: InputMaybe<Scalars['String']>;
-  nameUseCd: NameUseCd;
-  suffix?: InputMaybe<Suffix>;
-};
-
 export type NameInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
@@ -880,6 +873,38 @@ export type NamedContact = {
   __typename?: 'NamedContact';
   id: Scalars['ID'];
   name: Scalars['String'];
+};
+
+export type NewPatientAddress = {
+  censusTract?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  county?: InputMaybe<Scalars['String']>;
+  state?: InputMaybe<Scalars['String']>;
+  streetAddress1?: InputMaybe<Scalars['String']>;
+  streetAddress2?: InputMaybe<Scalars['String']>;
+  zip?: InputMaybe<Scalars['String']>;
+};
+
+export type NewPatientIdentification = {
+  authority?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type NewPatientName = {
+  first?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['String']>;
+  middle?: InputMaybe<Scalars['String']>;
+  suffix?: InputMaybe<Suffix>;
+  use: NameUseCd;
+};
+
+export type NewPatientPhoneNumber = {
+  extension?: InputMaybe<Scalars['String']>;
+  number: Scalars['String'];
+  type: Scalars['String'];
+  use: Scalars['String'];
 };
 
 export enum NotificationStatus {
@@ -1082,6 +1107,25 @@ export type PatientContactInvestigation = {
   condition: Scalars['String'];
   id: Scalars['ID'];
   local: Scalars['String'];
+};
+
+export type PatientCreatedResponse = {
+  __typename?: 'PatientCreatedResponse';
+  id: Scalars['Int'];
+  shortId: Scalars['Int'];
+};
+
+export type PatientDeleteFailed = {
+  __typename?: 'PatientDeleteFailed';
+  patient: Scalars['Int'];
+  reason: Scalars['String'];
+};
+
+export type PatientDeleteResult = PatientDeleteFailed | PatientDeleteSuccessful;
+
+export type PatientDeleteSuccessful = {
+  __typename?: 'PatientDeleteSuccessful';
+  patient: Scalars['Int'];
 };
 
 export type PatientDocument = {
@@ -1603,7 +1647,7 @@ export type PersonFilter = {
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
   id?: InputMaybe<Scalars['ID']>;
-  identification?: InputMaybe<Identification>;
+  identification?: InputMaybe<IdentificationCriteria>;
   lastName?: InputMaybe<Scalars['String']>;
   mortalityStatus?: InputMaybe<Scalars['String']>;
   phoneNumber?: InputMaybe<Scalars['String']>;
@@ -1626,31 +1670,22 @@ export type PersonIdentification = {
 };
 
 export type PersonInput = {
-  DateOfBirth?: InputMaybe<Scalars['Date']>;
-  addresses?: InputMaybe<Array<InputMaybe<PostalAddress>>>;
-  adultNbrInHouse?: InputMaybe<Scalars['Int']>;
+  addresses?: InputMaybe<Array<InputMaybe<NewPatientAddress>>>;
   asOf?: InputMaybe<Scalars['DateTime']>;
   birthGender?: InputMaybe<Gender>;
-  childrenNbrinHouse?: InputMaybe<Scalars['Int']>;
   comments?: InputMaybe<Scalars['String']>;
   currentGender?: InputMaybe<Gender>;
+  dateOfBirth?: InputMaybe<Scalars['Date']>;
   deceased?: InputMaybe<Deceased>;
   deceasedTime?: InputMaybe<Scalars['DateTime']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicUnkReasonCd?: InputMaybe<Scalars['String']>;
-  ethnicityCode?: InputMaybe<Scalars['String']>;
-  hIVCaseId?: InputMaybe<Scalars['String']>;
-  highestEducationLvl?: InputMaybe<Scalars['String']>;
-  identifications?: InputMaybe<Array<InputMaybe<Identification>>>;
+  ethnicity?: InputMaybe<Scalars['String']>;
+  identifications?: InputMaybe<Array<InputMaybe<NewPatientIdentification>>>;
   maritalStatus?: InputMaybe<Scalars['String']>;
-  mothersMaidenName?: InputMaybe<Scalars['String']>;
-  names?: InputMaybe<Array<InputMaybe<Name>>>;
-  phoneNumbers?: InputMaybe<Array<InputMaybe<PhoneNumber>>>;
-  primaryLang?: InputMaybe<Scalars['String']>;
-  primaryOccupation?: InputMaybe<Scalars['String']>;
-  raceCodes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  speaksEnglish?: InputMaybe<Scalars['String']>;
-  ssn?: InputMaybe<Scalars['String']>;
+  names?: InputMaybe<Array<InputMaybe<NewPatientName>>>;
+  phoneNumbers?: InputMaybe<Array<InputMaybe<NewPatientPhoneNumber>>>;
+  races?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  stateHIVCase?: InputMaybe<Scalars['String']>;
 };
 
 export type PersonName = {
@@ -1727,12 +1762,6 @@ export type PhoneInput = {
   phoneType: PhoneType;
 };
 
-export type PhoneNumber = {
-  extension?: InputMaybe<Scalars['String']>;
-  number: Scalars['String'];
-  phoneType: PhoneType;
-};
-
 export enum PhoneType {
   Cell = 'CELL',
   Home = 'HOME',
@@ -1785,17 +1814,6 @@ export type PlaceFilter = {
   streetAddr1?: InputMaybe<Scalars['String']>;
   streetAddr2?: InputMaybe<Scalars['String']>;
   zipCd?: InputMaybe<Scalars['String']>;
-};
-
-export type PostalAddress = {
-  censusTract?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  countryCode?: InputMaybe<Scalars['String']>;
-  countyCode?: InputMaybe<Scalars['String']>;
-  stateCode?: InputMaybe<Scalars['String']>;
-  streetAddress1?: InputMaybe<Scalars['String']>;
-  streetAddress2?: InputMaybe<Scalars['String']>;
-  zip?: InputMaybe<Scalars['String']>;
 };
 
 export enum PregnancyStatus {
@@ -2365,14 +2383,14 @@ export type CreatePatientMutationVariables = Exact<{
 }>;
 
 
-export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type CreatePatientMutation = { __typename?: 'Mutation', createPatient: { __typename?: 'PatientCreatedResponse', id: number, shortId: number } };
 
 export type DeletePatientMutationVariables = Exact<{
-  patientId: Scalars['ID'];
+  patient: Scalars['ID'];
 }>;
 
 
-export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename: 'PatientDeleteFailed', patient: number, reason: string } | { __typename: 'PatientDeleteSuccessful', patient: number } };
 
 export type DeletePatientAddressMutationVariables = Exact<{
   patientId: Scalars['Int'];
@@ -3077,8 +3095,8 @@ export type AddPatientRaceMutationOptions = Apollo.BaseMutationOptions<AddPatien
 export const CreatePatientDocument = gql`
     mutation createPatient($patient: PersonInput!) {
   createPatient(patient: $patient) {
-    requestId
-    patientId
+    id
+    shortId
   }
 }
     `;
@@ -3109,10 +3127,16 @@ export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatient
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
 export const DeletePatientDocument = gql`
-    mutation deletePatient($patientId: ID!) {
-  deletePatient(patientId: $patientId) {
-    requestId
-    patientId
+    mutation deletePatient($patient: ID!) {
+  deletePatient(patient: $patient) {
+    __typename
+    ... on PatientDeleteSuccessful {
+      patient
+    }
+    ... on PatientDeleteFailed {
+      patient
+      reason
+    }
   }
 }
     `;
@@ -3131,7 +3155,7 @@ export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutat
  * @example
  * const [deletePatientMutation, { data, loading, error }] = useDeletePatientMutation({
  *   variables: {
- *      patientId: // value for 'patientId'
+ *      patient: // value for 'patient'
  *   },
  * });
  */

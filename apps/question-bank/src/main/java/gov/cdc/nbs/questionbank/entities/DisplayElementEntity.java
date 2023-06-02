@@ -44,6 +44,9 @@ public abstract class DisplayElementEntity implements Serializable {
     @Id
     @Column(name = "version", nullable = false)
     private Integer version;
+    
+    @Column(name = "active", nullable = false)
+    private boolean active = true;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "code_set")

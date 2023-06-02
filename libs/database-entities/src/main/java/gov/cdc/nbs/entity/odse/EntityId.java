@@ -1,8 +1,12 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.patient.PatientCommand;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,16 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.Instant;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
-@Setter
 @Entity
 @Table(name = "Entity_id")
 public class EntityId {
@@ -30,15 +28,6 @@ public class EntityId {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "entity_uid", nullable = false)
     private NBSEntity nbsEntityUid;
-
-    @Column(name = "add_reason_cd", length = 20)
-    private String addReasonCd;
-
-    @Column(name = "add_time")
-    private Instant addTime;
-
-    @Column(name = "add_user_id")
-    private Long addUserId;
 
     @Column(name = "assigning_authority_cd", length = 199)
     private String assigningAuthorityCd;
@@ -57,15 +46,6 @@ public class EntityId {
 
     @Column(name = "effective_to_time")
     private Instant effectiveToTime;
-
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
-
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
 
     @Column(name = "record_status_cd", length = 20)
     private String recordStatusCd;
@@ -103,4 +83,39 @@ public class EntityId {
     @Column(name = "assigning_authority_id_type", length = 50)
     private String assigningAuthorityIdType;
 
+    @Embedded
+    private Audit audit;
+
+    protected EntityId() {
+
+    }
+
+    public EntityId(
+        final NBSEntity nbs,
+        final EntityIdId identifier,
+        final PatientCommand.AddIdentification added
+    ) {
+        this.nbsEntityUid = nbs;
+        this.id = identifier;
+
+        this.typeCd = added.identificationType();
+        this.assigningAuthorityCd = added.assigningAuthority();
+        this.rootExtensionTxt = added.identificationNumber();
+
+        this.statusCd = 'A';
+        this.statusTime = added.requestedOn();
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = added.requestedOn();
+
+        this.audit = new Audit(added.requester(), added.requestedOn());
+    }
+
+    public void update(final PatientCommand.UpdateIdentification info) {
+        this.assigningAuthorityCd = info.assigningAuthority();
+        this.rootExtensionTxt = info.identificationNumber();
+        this.typeCd = info.identificationType();
+
+        this.audit.changed(info.requester(), info.requestedOn(), "Identification Updated");
+    }
 }

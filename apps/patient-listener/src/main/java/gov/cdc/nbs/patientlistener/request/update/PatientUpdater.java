@@ -390,15 +390,17 @@ public class PatientUpdater {
                 Instant.now());
     }
 
-    private PatientCommand.AddPhoneNumber asAddPhoneInfo(AddPhoneData data) {
+    private PatientCommand.AddPhoneNumber asAddPhoneInfo(final AddPhoneData data) {
         return new PatientCommand.AddPhoneNumber(
                 data.patientId(),
                 data.patientId(),
                 data.number(),
                 data.extension(),
-                data.phoneType(),
+                data.phoneType().type(),
+                data.phoneType().use(),
                 data.updatedBy(),
-                Instant.now());
+                Instant.now()
+        );
     }
 
     private PatientCommand.UpdatePhoneNumber asUpdatePhoneInfo(UpdatePhoneData data) {

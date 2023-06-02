@@ -4,13 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.PatientCreateData;
-import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.patientlistener.request.create.PatientCreateRequestHandler;
-import gov.cdc.nbs.patientlistener.request.delete.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;
 import gov.cdc.nbs.time.json.EventSchemaJacksonModuleFactory;
 import org.junit.jupiter.api.Test;
@@ -18,15 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,81 +29,11 @@ class PatientRequestTopicListenerTest {
         new ObjectMapper()
             .setSerializationInclusion(Include.NON_NULL)
             .registerModule(EventSchemaJacksonModuleFactory.create());
-    @Mock
-    private PatientCreateRequestHandler createHandler;
+
     @Mock
     private PatientUpdateRequestHandler updateHandler;
-    @Mock
-    private PatientDeleteRequestHandler deleteHandler;
-
     @InjectMocks
     private PatientRequestTopicListener consumer;
-
-
-    @Test
-    void testReceivingCreateRequest() {
-
-        String message = """
-            {
-              "type": "PatientRequest$Create",
-              "requestId": "requestId",
-              "patientId": 1234,
-              "userId": 123,
-              "data": {
-                "patient": 2027,
-                "names": [],
-                "races": [],
-                "addresses": [],
-                "phoneNumbers": [],
-                "emailAddresses": [],
-                "createdBy": 2293
-              }
-            }           
-            """;
-        consumer.onMessage(message, "requestId");
-
-        ArgumentCaptor<PatientCreateData> captor = ArgumentCaptor.forClass(PatientCreateData.class);
-
-        verify(createHandler, times(1)).handlePatientCreate(captor.capture());
-
-        verifyNoInteractions(updateHandler);
-        verifyNoInteractions(deleteHandler);
-
-        PatientCreateData actual = captor.getValue();
-
-        assertThat(actual)
-            .returns(2027L, PatientCreateData::patient)
-            .returns(2293L, PatientCreateData::createdBy)
-        ;
-    }
-
-    @Test
-    void testReceivingDeleteRequest() {
-        String message = """
-            {
-            "type":"PatientRequest$Delete",
-            "requestId":"request-id",
-            "patientId":2927,
-            "userId":1901
-            }
-            """;
-        consumer.onMessage(message, "message-key");
-
-        verifyNoInteractions(createHandler);
-        verifyNoInteractions(updateHandler);
-
-        ArgumentCaptor<PatientRequest.Delete> captor = ArgumentCaptor.forClass(PatientRequest.Delete.class);
-
-        verify(deleteHandler, times(1)).handle(captor.capture());
-
-        PatientRequest.Delete actual = captor.getValue();
-
-        assertThat(actual)
-            .returns("request-id", PatientRequest::requestId)
-            .returns(2927L, PatientRequest::patientId)
-            .returns(1901L, PatientRequest::userId)
-        ;
-    }
 
     @Test
     void testReceivingUpdateGenInfoRequest() {
@@ -134,9 +57,6 @@ class PatientRequestTopicListenerTest {
         ArgumentCaptor<UpdateGeneralInfoData> captor = ArgumentCaptor.forClass(UpdateGeneralInfoData.class);
 
         verify(updateHandler, times(1)).handlePatientGeneralInfoUpdate(captor.capture());
-
-        verifyNoInteractions(createHandler);
-        verifyNoInteractions(deleteHandler);
         verifyNoMoreInteractions(updateHandler);
 
         UpdateGeneralInfoData actual = captor.getValue();
@@ -171,8 +91,6 @@ class PatientRequestTopicListenerTest {
 
         verify(updateHandler, times(1)).handlePatientMortalityUpdate(captor.capture());
 
-        verifyNoInteractions(createHandler);
-        verifyNoInteractions(deleteHandler);
         verifyNoMoreInteractions(updateHandler);
 
         UpdateMortalityData actual = captor.getValue();
@@ -208,8 +126,6 @@ class PatientRequestTopicListenerTest {
 
         verify(updateHandler, times(1)).handlePatientSexAndBirthUpdate(captor.capture());
 
-        verifyNoInteractions(createHandler);
-        verifyNoInteractions(deleteHandler);
         verifyNoMoreInteractions(updateHandler);
 
         UpdateSexAndBirthData actual = captor.getValue();
@@ -220,21 +136,6 @@ class PatientRequestTopicListenerTest {
         assertThat(actual.birthGender()).isEqualTo(Gender.M);
         assertThat(actual.currentGender()).isEqualTo(Gender.U);
         assertThat(actual.dateOfBirth()).isEqualTo("2001-05-11");
-    }
-
-    @Test
-    void testBadData() {
-
-        assertThatThrownBy(() -> consumer.onMessage("bad message", "key"))
-            .isInstanceOf(PatientRequestException.class)
-            .hasMessage("Failed to parse message into PatientRequest");
-
-        // No handler was called
-        verify(createHandler, times(0)).handlePatientCreate(Mockito.any());
-        verify(updateHandler, times(0)).handlePatientGeneralInfoUpdate(Mockito.any());
-        verify(updateHandler, times(0)).handlePatientMortalityUpdate(Mockito.any());
-        verify(updateHandler, times(0)).handlePatientSexAndBirthUpdate(Mockito.any());
-        verify(deleteHandler, times(0)).handle(Mockito.any());
     }
 
 }

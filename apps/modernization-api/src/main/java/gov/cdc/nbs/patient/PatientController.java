@@ -6,18 +6,17 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
+import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
+import gov.cdc.nbs.message.patient.input.EmailInput;
+import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
-import gov.cdc.nbs.message.patient.input.AddressInput;
-import gov.cdc.nbs.message.patient.input.EmailInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.RaceInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,9 +35,6 @@ public class PatientController {
     private static final String HAS_AUTHORITY = "hasAuthority('";
     private static final String FIND_PATIENT = HAS_AUTHORITY + Operations.FIND + "-" + BusinessObjects.PATIENT
         + "')";
-    private static final String ADD_PATIENT = HAS_AUTHORITY + Operations.ADD + "-" + BusinessObjects.PATIENT + "')";
-    private static final String ADD_AND_FIND_PATIENT = ADD_PATIENT + AND + FIND_PATIENT;
-
     private static final String EDIT_PATIENT = HAS_AUTHORITY + Operations.EDIT + "-" + BusinessObjects.PATIENT
         + "')";
 
@@ -73,11 +69,6 @@ public class PatientController {
         return patientService.findPatientById(id);
     }
 
-    @MutationMapping()
-    @PreAuthorize(ADD_AND_FIND_PATIENT)
-    public PatientEventResponse createPatient(@Argument PatientInput patient) {
-        return patientService.sendCreatePatientRequest(patient);
-    }
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)

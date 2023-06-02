@@ -1,6 +1,6 @@
 mutation createPatient($patient: PersonInput!){
     createPatient(patient: $patient){
-        requestId
-        patientId
+        id
+        shortId
     }
 }
