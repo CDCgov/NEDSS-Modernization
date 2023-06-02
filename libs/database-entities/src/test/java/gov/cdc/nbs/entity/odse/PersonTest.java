@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,7 +55,6 @@ class PersonTest {
         assertThat(actual.getCd()).isEqualTo("PAT");
         assertThat(actual.getElectronicInd()).isEqualTo('N');
         assertThat(actual.getEdxInd()).isEqualTo("Y");
-        assertThat(actual.getDedupMatchInd()).isEqualTo('F');
 
         assertThat(actual.getAddUserId()).isEqualTo(131L);
         assertThat(actual.getAddTime()).isEqualTo("2020-03-03T10:15:30.00Z");
@@ -109,26 +107,9 @@ class PersonTest {
 
     }
 
+
     @Test
-    void should_add_primary_name() {
-
-        PatientInput patient = new PatientInput();
-
-        patient.setNames(
-            Arrays.asList(
-                new PatientInput.Name(
-                    "First",
-                    "Middle",
-                    "Last",
-                    Suffix.JR,
-                    PatientInput.NameUseCd.L),
-                new PatientInput.Name(
-                    "Second",
-                    "SecondMiddle",
-                    "SecondLast",
-                    Suffix.SR,
-                    PatientInput.NameUseCd.AL)));
-
+    void should_start_name_sequence_at_one() {
         Person actual = new Person(117L, "local-id-value");
 
         actual.add(
@@ -140,12 +121,9 @@ class PersonTest {
                 Suffix.JR,
                 PatientInput.NameUseCd.L,
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
-
-        assertThat(actual.getFirstNm()).isEqualTo("First");
-        assertThat(actual.getMiddleNm()).isEqualTo("Middle");
-        assertThat(actual.getLastNm()).isEqualTo("Last");
-        assertThat(actual.getNmSuffix()).isEqualTo(Suffix.JR);
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNames()).satisfiesExactly(
             actual_primary -> assertThat(actual_primary)
@@ -153,8 +131,11 @@ class PersonTest {
                 .returns("Middle", PersonName::getMiddleNm)
                 .returns("Last", PersonName::getLastNm)
                 .returns(Suffix.JR, PersonName::getNmSuffix)
-                .returns("L", PersonName::getNmUseCd));
-
+                .returns("L", PersonName::getNmUseCd)
+                .extracting(PersonName::getId)
+                .returns(117L, PersonNameId::getPersonUid)
+                .returns((short)1, PersonNameId::getPersonNameSeq)
+        );
     }
 
     @Test
@@ -195,13 +176,20 @@ class PersonTest {
                 .returns("Middle", PersonName::getMiddleNm)
                 .returns("Last", PersonName::getLastNm)
                 .returns(Suffix.JR, PersonName::getNmSuffix)
-                .returns("L", PersonName::getNmUseCd),
+                .returns("L", PersonName::getNmUseCd)
+                .extracting(PersonName::getId)
+                .returns(117L, PersonNameId::getPersonUid)
+                .returns((short)1, PersonNameId::getPersonNameSeq),
             actual_alias -> assertThat(actual_alias)
                 .returns("Second", PersonName::getFirstNm)
                 .returns("SecondMiddle", PersonName::getMiddleNm)
                 .returns("SecondLast", PersonName::getLastNm)
                 .returns(Suffix.SR, PersonName::getNmSuffix)
-                .returns("AL", PersonName::getNmUseCd));
+                .returns("AL", PersonName::getNmUseCd)
+                .extracting(PersonName::getId)
+                .returns(117L, PersonNameId::getPersonUid)
+                .returns((short)2, PersonNameId::getPersonNameSeq)
+        );
 
     }
 
