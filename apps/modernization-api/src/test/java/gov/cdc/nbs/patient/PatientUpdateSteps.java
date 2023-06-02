@@ -19,6 +19,7 @@ import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.update.PatientUpdateController;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
@@ -45,6 +46,9 @@ public class PatientUpdateSteps {
     private PatientController patientController;
 
     @Autowired
+    private PatientUpdateController patientUpdateController;
+
+    @Autowired
     private KafkaTestConsumer consumer;
 
     @Autowired
@@ -65,41 +69,48 @@ public class PatientUpdateSteps {
             switch (updateType) {
                 case "general info" -> {
                     input = PersonUtil.convertToGeneralInput(PersonMother.generateRandomPerson(123L));
-                    response = patientController.updatePatientGeneralInfo((GeneralInfoInput) input);
+                    response = patientUpdateController.updatePatientGeneralInfo((GeneralInfoInput) input);
                 }
                 case "sex and birth" -> {
                     input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(123L));
-                    response = patientController.updatePatientSexBirth((SexAndBirthInput) input);
+                    response = patientUpdateController.updatePatientSexBirth((SexAndBirthInput) input);
                 }
                 case "mortality" -> {
                     input = createMortalityInput(123L);
-                    response = patientController.updateMortality((MortalityInput) input);
+                    response = patientUpdateController.updateMortality((MortalityInput) input);
                 }
                 case "administrative" -> {
                     input = createAdministrativeInput(123L);
-                    response = patientController.updateAdministrative((AdministrativeInput) input);
+                    response = patientUpdateController.updateAdministrative((AdministrativeInput) input);
                 }
                 case "name" -> {
                     input = createNameInput(123L);
-                    response = patientController.updatePatientName((NameInput) input);
+                    response = patientUpdateController.updatePatientName((NameInput) input);
                 }
                 case "address" -> {
                     input = createAddressInput(123L);
-                    response = patientController.updatePatientAddress((AddressInput) input);
+                    response = patientUpdateController.updatePatientAddress((AddressInput) input);
                 }
                 case "email" -> {
                     input = createEmailInput(123L);
-                    response = patientController.updatePatientEmail((EmailInput) input);
+                    response = patientUpdateController.updatePatientEmail((EmailInput) input);
                 }
                 case "identification" -> {
                     input = createIdentificationInput(123L);
-                    response = patientController.updatePatientIdentification((IdentificationInput) input);
+                    response = patientUpdateController.updatePatientIdentification((IdentificationInput) input);
                 }
                 case "phone" -> {
                     input = createPhoneInput(123L);
-                    response = patientController.updatePatientPhone((PhoneInput) input);
+                    response = patientUpdateController.updatePatientPhone((PhoneInput) input);
                 }
-
+                case "race" -> {
+                    input = createRaceInput(123L);
+                    response = patientUpdateController.updatePatientRace((RaceInput) input);
+                }
+                case "ethnicity" -> {
+                    input = createEthnicityInput(123L);
+                    response = patientUpdateController.updateEthnicity((EthnicityInput) input);
+                }
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
