@@ -7,6 +7,7 @@ import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import gov.cdc.nbs.questionbank.kafka.message.QuestionDeletedEvent;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionDeletedEventProducer;
+import gov.cdc.nbs.questionbank.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

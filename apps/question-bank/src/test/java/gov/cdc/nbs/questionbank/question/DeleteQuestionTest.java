@@ -15,6 +15,7 @@ import gov.cdc.nbs.questionbank.kafka.message.QuestionBankEventResponse;
 import gov.cdc.nbs.questionbank.kafka.message.util.Constants;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionDeletedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.repository.QuestionRepository;
 
 class DeleteQuestionTest {
 
@@ -54,7 +55,7 @@ class DeleteQuestionTest {
     }
 
     @Test
-        
+
     void deleteQuestion() {
         UUID questionId = UUID.randomUUID();
         when(questionRepository.deleteQuestion(questionId))
