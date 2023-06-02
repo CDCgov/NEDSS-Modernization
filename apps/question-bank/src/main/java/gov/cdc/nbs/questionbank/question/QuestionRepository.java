@@ -1,6 +1,10 @@
 package gov.cdc.nbs.questionbank.question;
 
 
+import java.util.UUID;
+
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +15,10 @@ import gov.cdc.nbs.questionbank.entities.VersionId;
 
 public interface QuestionRepository extends JpaRepository<DisplayElementEntity, VersionId> {
 
+	@Transactional
 	@Modifying
 	@Query("UPDATE DisplayElementEntity SET active=:questionActive where id=:questionId")
-	public int deleteQuestion(@Param("questionId") Long questionId,
+	public int deleteQuestion(@Param("questionId") UUID questionId,
 			@Param("questionActive") boolean questionActive);
 
 }

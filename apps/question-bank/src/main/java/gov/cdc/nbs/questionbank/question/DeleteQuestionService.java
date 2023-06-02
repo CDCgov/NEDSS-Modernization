@@ -2,6 +2,8 @@ package gov.cdc.nbs.questionbank.question;
 
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ public class DeleteQuestionService {
 
 	private final QuestionRepository questionRepository;
 
-	public QuestionBankEventResponse processDeleteQuestion(Long questionId, Long userId) {
+	public QuestionBankEventResponse processDeleteQuestion(UUID questionId, Long userId) {
 		// delete question send response to user
 		deleteQuestion(questionId);
 		// send delete event info to topic
@@ -35,7 +37,8 @@ public class DeleteQuestionService {
 				.build();
 	}
 
-	public int deleteQuestion(Long questionId) {
+
+	public int deleteQuestion(UUID questionId) {
 		int updated = -1;
 		if (questionId == null)
 			return updated;

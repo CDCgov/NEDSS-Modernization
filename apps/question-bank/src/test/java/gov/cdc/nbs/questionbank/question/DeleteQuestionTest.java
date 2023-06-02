@@ -42,7 +42,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 	@Test
 	void processDeleteQuestion() {
 		
-		Long questionId = UUID.randomUUID().getLeastSignificantBits();
+		UUID questionId = UUID.randomUUID();
 		Long userId = UUID.randomUUID().getLeastSignificantBits();
 		
 		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
@@ -50,14 +50,14 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 
 	    QuestionBankEventResponse result =  deleteQuestionService.processDeleteQuestion(questionId, userId);
 
-		assertEquals(questionId.longValue() ,result.getQuestionId().longValue());
+		assertEquals(questionId ,result.getQuestionId());
 		assertEquals(Constants.DELETE_SUCCESS_MESSAGE, result.getMessage());
 
 	}
 	
 	@Test
 	void deleteQuestion() {
-		Long questionId = UUID.randomUUID().getLeastSignificantBits();
+		UUID questionId = UUID.randomUUID();
 		when(questionRepository.deleteQuestion(questionId, Boolean.FALSE))
 				.thenReturn(1);
 		int result = deleteQuestionService.deleteQuestion(questionId);

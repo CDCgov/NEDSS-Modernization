@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.kafka.message;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class DeleteQuestionRequest {
 	
 	private String requestId;
-	private long questionId;
+	private UUID questionId;
 	private long userId;
 
 }

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.question;
 
+import java.util.UUID;
+
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +21,7 @@ public class DeleteQuestionResolver {
 
 	@MutationMapping()
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-	public QuestionBankEventResponse deleteQuestion(@Argument Long questionId) {
+	public QuestionBankEventResponse deleteQuestion(@Argument UUID questionId) {
 		Long userId = userDetailsProvider.getCurrentUserDetails().getId();
 		return  deleteQuestionService.processDeleteQuestion(questionId,userId);
 	}
