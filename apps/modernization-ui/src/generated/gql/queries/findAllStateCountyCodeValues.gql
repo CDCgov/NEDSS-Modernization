@@ -1,0 +1,10 @@
+query findAllStateCountyCodeValues($page: Page){
+    findAllStateCountyCodeValues(page: $page){
+        content{
+            id
+            code_desc_txt
+            state_cd
+        }
+        total
+    }
+}

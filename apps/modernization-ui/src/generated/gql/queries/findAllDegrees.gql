@@ -1,0 +1,9 @@
+query findAllDegrees($page: Page){
+    findAllDegrees(page: $page){
+        content{
+            id
+            code_short_desc_txt
+        }
+        total
+    }
+}

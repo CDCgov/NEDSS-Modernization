@@ -3,7 +3,6 @@ package gov.cdc.nbs.patientlistener.request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.patientlistener.request.create.PatientCreateRequestHandler;
 import gov.cdc.nbs.patientlistener.request.delete.PatientDeleteRequestHandler;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -16,19 +15,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class PatientRequestTopicListener {
     private final ObjectMapper mapper;
-    private final PatientCreateRequestHandler createHandler;
+
     private final PatientUpdateRequestHandler updateHandler;
     private final PatientDeleteRequestHandler deleteHandler;
     private final PatientRequestStatusProducer statusProducer;
 
     public PatientRequestTopicListener(
-            ObjectMapper mapper,
-            PatientCreateRequestHandler createHandler,
-            PatientUpdateRequestHandler updateHandler,
-            PatientDeleteRequestHandler deleteHandler,
-            PatientRequestStatusProducer statusProducer) {
+        ObjectMapper mapper,
+        PatientUpdateRequestHandler updateHandler,
+        PatientDeleteRequestHandler deleteHandler,
+        PatientRequestStatusProducer statusProducer) {
         this.mapper = mapper;
-        this.createHandler = createHandler;
         this.updateHandler = updateHandler;
         this.deleteHandler = deleteHandler;
         this.statusProducer = statusProducer;
@@ -42,9 +39,7 @@ public class PatientRequestTopicListener {
             var request = mapper.readValue(message, PatientRequest.class);
             log.debug("Successfully parsed message to PatientEvent. RequestId: {}", request.requestId());
 
-            if (request instanceof PatientRequest.Create create) {
-                createHandler.handlePatientCreate(create.data());
-            } else if (request instanceof PatientRequest.Delete delete) {
+             if (request instanceof PatientRequest.Delete delete) {
                 deleteHandler.handle(delete);
             } else if (request instanceof PatientRequest.UpdateGeneralInfo update) {
                 updateHandler.handlePatientGeneralInfoUpdate(update.data());
@@ -60,7 +55,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientNameUpdate(update.data());
             } else if (request instanceof PatientRequest.DeleteName delete) {
                 updateHandler.handlePatientNameDelete(delete.requestId(), delete.patientId(), delete.personNameSeq(),
-                        delete.userId());
+                    delete.userId());
             } else if (request instanceof PatientRequest.UpdateEthnicity update) {
                 updateHandler.handlePatientEthnicityUpdate(update.data());
 
@@ -70,7 +65,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientRaceUpdate(update.data());
             } else if (request instanceof PatientRequest.DeleteRace delete) {
                 updateHandler.handlePatientRaceDelete(delete.requestId(), delete.patientId(), delete.raceCd(),
-                        delete.userId());
+                    delete.userId());
 
             } else if (request instanceof PatientRequest.AddAddress update) {
                 updateHandler.handlePatientAddressAdd(update.data());
@@ -78,7 +73,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientAddressUpdate(update.data());
             } else if (request instanceof PatientRequest.DeleteAddress delete) {
                 updateHandler.handlePatientAddressDelete(delete.requestId(), delete.patientId(), delete.id(),
-                        delete.userId());
+                    delete.userId());
 
             } else if (request instanceof PatientRequest.AddEmail update) {
                 updateHandler.handlePatientEmailAdd(update.data());
@@ -86,7 +81,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientEmailUpdate(update.data());
             } else if (request instanceof PatientRequest.DeleteEmail delete) {
                 updateHandler.handlePatientEmailDelete(delete.requestId(), delete.patientId(), delete.id(),
-                        delete.userId());
+                    delete.userId());
 
             } else if (request instanceof PatientRequest.AddIdentification update) {
                 updateHandler.handlePatientIdentificationAdd(update.data());
@@ -94,7 +89,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientIdentificationUpdate(update.data());
             } else if (request instanceof PatientRequest.DeleteIdentification delete) {
                 updateHandler.handlePatientIdentificationDelete(delete.requestId(), delete.patientId(), delete.id(),
-                        delete.userId());
+                    delete.userId());
 
             } else if (request instanceof PatientRequest.AddPhone update) {
                 updateHandler.handlePatientPhoneAdd(update.data());
@@ -102,7 +97,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientPhoneUpdate(update.data());
             } else if (request instanceof PatientRequest.DeletePhone delete) {
                 updateHandler.handlePatientPhoneDelete(delete.requestId(), delete.patientId(), delete.id(),
-                        delete.userId());
+                    delete.userId());
             } else {
                 receivedInvalidRequest(key, request);
             }

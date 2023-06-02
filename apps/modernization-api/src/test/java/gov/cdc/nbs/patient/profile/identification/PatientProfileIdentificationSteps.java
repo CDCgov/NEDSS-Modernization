@@ -1,26 +1,85 @@
 package gov.cdc.nbs.patient.profile.identification;
 
+import com.github.javafaker.Faker;
+import gov.cdc.nbs.entity.odse.EntityId;
+import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.patient.PatientAssertions;
+import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.patient.profile.PatientProfile;
+import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.util.RandomUtil;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PatientProfileIdentificationSteps {
 
+    private final Faker faker = new Faker();
     @Autowired
     TestPatients patients;
 
     @Autowired
     PatientIdentificationResolver resolver;
 
+    @Autowired
+    TestActive<PatientInput> input;
+
+    @Autowired
+    TestPatient patient;
+
+    @Given("the new patient's Social Security Number is entered")
+    public void the_new_patient_ssn_is_entered() {
+        PatientInput.Identification identification = new PatientInput.Identification(
+            faker.idNumber().ssnValid(),
+            "SS",
+            "ANY"
+        );
+
+
+        this.input.active().getIdentifications().add(identification);
+    }
+
+    @Given("the new patient's identification is entered")
+    public void the_new_patient_identification_is_entered() {
+        PatientInput.Identification identification = new PatientInput.Identification(
+            RandomUtil.getRandomString(),
+            RandomUtil.getRandomString(),
+            RandomUtil.getRandomString()
+        );
+
+
+        this.input.active().getIdentifications().add(identification);
+    }
+
+    @Then("the new patient has the entered identification")
+    @Transactional
+    public void the_new_patient_has_the_entered_identification() {
+        Person actual = patient.managed();
+
+        Collection<EntityId> identifications = actual.identifications();
+
+        if (!identifications.isEmpty()) {
+
+            assertThat(identifications)
+                .satisfiesExactlyInAnyOrder(
+                    PatientAssertions.containsIdentifications(input.active().getIdentifications()));
+        }
+
+    }
+
     @Then("the profile has associated identifications")
-    public void the_profile_has_associated_identificationes() {
+    public void the_profile_has_associated_identifications() {
         long patient = this.patients.one();
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
@@ -32,7 +91,7 @@ public class PatientProfileIdentificationSteps {
     }
 
     @Then("the profile has associated no identifications")
-    public void the_profile_has_no_associated_identificationes() {
+    public void the_profile_has_no_associated_identifications() {
         long patient = this.patients.one();
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);

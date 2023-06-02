@@ -38,14 +38,15 @@ class KafkaProducerTest {
 
     @Test
     void testPatientSearchEvent() {
-        var message = new PatientRequest.Create("Request-ID", 1L, 2L, null);
+        var message = new PatientRequest.Delete("Request-ID", 1L, 2L);
         ListenableFuture<SendResult<String, PatientRequest>> future = new SettableListenableFuture<>();
         Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
         producer.requestPatientEventEnvelope(message);
 
         ArgumentCaptor<PatientRequest> envelopeEventArgumentCaptor = ArgumentCaptor.forClass(PatientRequest.class);
-        verify(kafkaEnvelopeTemplate).send(nullable(String.class), eq("Request-ID"), envelopeEventArgumentCaptor.capture());
+        verify(kafkaEnvelopeTemplate).send(nullable(String.class), eq("Request-ID"),
+            envelopeEventArgumentCaptor.capture());
 
         PatientRequest actualRecord = envelopeEventArgumentCaptor.getValue();
         assertThat(actualRecord.requestId()).isEqualTo("Request-ID");

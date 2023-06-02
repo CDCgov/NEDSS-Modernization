@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.Application;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.exception.QueryException;
@@ -14,20 +13,12 @@ import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.ElasticsearchPersonMapper;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -45,12 +36,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
 @Transactional
-@Rollback(false)
 public class PatientSearchSteps {
 
     @Autowired
@@ -69,11 +55,6 @@ public class PatientSearchSteps {
     private Direction sortDirection;
     private String sortField;
     private QueryException exception;
-
-    @Before
-    public void clearAuth() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-    }
 
     @Given("there are {int} patients")
     public void there_are_patients(int patientCount) {
@@ -134,7 +115,7 @@ public class PatientSearchSteps {
         var deletedRecord = PersonMother.janeDoe_deleted();
         personRepository.save(deletedRecord);
         elasticsearchPersonRepository
-                .saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(Arrays.asList(deletedRecord)));
+            .saveAll(ElasticsearchPersonMapper.getElasticSearchPersons(Arrays.asList(deletedRecord)));
     }
 
     @When("I search patients by {string} {string}")
@@ -159,7 +140,7 @@ public class PatientSearchSteps {
 
     @When("I search patients by {string} {string} {string} {string} {string} {string}")
     public void i_search_patients_by_multiple_fields(String field, String qualifier, String field2, String qualifier2,
-            String field3, String qualifier3) {
+        String field3, String qualifier3) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         updatePatientDataFilter(filter, field2, qualifier2);
         updatePatientDataFilter(filter, field3, qualifier3);
@@ -175,12 +156,12 @@ public class PatientSearchSteps {
 
     @When("I search for patients sorted by {string} {string} {string} {string}")
     public void i_search_for_ordered_patients(String field, String qualifier, String aSortField,
-            String aSortDirection) {
+        String aSortDirection) {
         PatientFilter filter = getPatientDataFilter(field, qualifier);
         sortDirection = aSortDirection.equalsIgnoreCase("desc") ? Direction.DESC : Direction.ASC;
         sortField = aSortField;
         searchResults = patientController
-                .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
+            .findPatientsByFilter(filter, new GraphQLPage(1000, 0, sortDirection, sortField)).getContent();
     }
 
     @When("I search for a patient by {string} and there is a space at the end")
@@ -282,9 +263,9 @@ public class PatientSearchSteps {
                 filter.setRace(searchPatient.getRaces().get(0).getRaceCategoryCd());
                 break;
             case "identification":
-                var patientId = searchPatient.getEntityIds().get(0);
+                var patientId = searchPatient.identifications().get(0);
                 filter.setIdentification(
-                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
+                    new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "patient id":
                 filter.setId(searchPatient.getLocalId());
@@ -347,9 +328,9 @@ public class PatientSearchSteps {
         }
         switch (field) {
             case "identification":
-                var patientId = searchPatient.getEntityIds().get(0);
+                var patientId = searchPatient.identifications().get(0);
                 filter.setIdentification(
-                        new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
+                    new Identification(patientId.getRootExtensionTxt(), "GA", patientId.getTypeCd()));
                 break;
             case "ssn":
                 filter.setSsn(RandomUtil.randomPartialDataSearchString(searchPatient.getSsn()));

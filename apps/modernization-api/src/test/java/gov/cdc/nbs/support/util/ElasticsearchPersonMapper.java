@@ -48,8 +48,8 @@ public class ElasticsearchPersonMapper {
         race.setRaceCategoryCd(person.getRaceCategoryCd());
 
         var nestedEntityIds = new ArrayList<NestedEntityId>();
-        if (person.getEntityIds() != null && !person.getEntityIds().isEmpty()) {
-            EntityId entityId = person.getEntityIds().get(0);
+        if (!person.identifications().isEmpty()) {
+            EntityId entityId = person.identifications().get(0);
             var nestedEntityId = new NestedEntityId();
             nestedEntityId.setRecordStatusCd(entityId.getRecordStatusCd());
             nestedEntityId.setRootExtensionTxt(entityId.getRootExtensionTxt().replaceAll("\\W", ""));

@@ -1,0 +1,9 @@
+query findAllIdentificationTypes($page: Page){
+    findAllIdentificationTypes(page: $page){
+        content{
+            id
+            code_short_desc_txt
+        }
+        total
+    }
+}
