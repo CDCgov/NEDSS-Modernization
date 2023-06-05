@@ -54,7 +54,5 @@ kafkadef:
     patient: question-group
   topics:
     questionbank:
-      request: questionbank
-      status: questionbank-status
       question-created: question-created
       question-deleted: question-deleted
