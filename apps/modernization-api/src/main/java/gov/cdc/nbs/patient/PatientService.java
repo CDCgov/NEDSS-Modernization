@@ -3,6 +3,9 @@ package gov.cdc.nbs.patient;
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import gov.cdc.nbs.address.City;
+import gov.cdc.nbs.address.Country;
+import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
@@ -11,6 +14,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QPerson;
+import gov.cdc.nbs.entity.srte.CountryCode;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
@@ -28,6 +32,7 @@ import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
+import gov.cdc.nbs.repository.CountryCodeRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
@@ -54,6 +59,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -86,6 +92,7 @@ public class PatientService {
     private final PatientEventRequester requester;
     private final UserService userService;
     private final PatientLocalIdentifierResolver resolver;
+    private final CountryCodeRepository countryCodeRepository;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -501,10 +508,30 @@ public class PatientService {
         return sendPatientEvent(event);
     }
 
-    public PatientEventResponse addPatientAddress(AddressInput input) {
+    public PatientEventResponse addPatientAddress(AddressInput addressInput) {
         var user = SecurityUtil.getUserDetails();
-        var event = AddressInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
+        var patientRequest = AddressInput.toAddRequest(user.getId(), getRequestId(), addressInput);
+        Person person = personRepository.findById(addressInput.getPatientId()).orElseThrow();
+        long newAddressId = person.getId();
+        Optional<CountryCode> countryCode = countryCodeRepository.findById(addressInput.getCountryCode());
+        PatientCommand.AddAddress addAddress = new PatientCommand.AddAddress(
+                addressInput.getPatientId(),
+                newAddressId,
+                addressInput.getStreetAddress1(),
+                addressInput.getStreetAddress2(),
+                new City(addressInput.getCity()),
+                addressInput.getStateCode(),
+                addressInput.getZip(),
+                new County(addressInput.getCountyCode()),
+                new Country(countryCode.orElseThrow().getId()),
+                addressInput.getCensusTract(),
+                user.getId(),
+                Instant.now()
+        );
+
+        person.add(addAddress);
+        entityManager.persist(person);
+        return sendPatientEvent(patientRequest);
     }
 
     public PatientEventResponse updatePatientAddress(AddressInput input) {
