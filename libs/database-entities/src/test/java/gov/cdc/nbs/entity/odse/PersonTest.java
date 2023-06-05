@@ -338,7 +338,7 @@ class PersonTest {
                 new PatientCommand.Delete(
                     117L,
                     131L,
-                    Instant.parse("2020-03-03T10:15:30.00Z")
+                    Instant.now()
                 ),
                 finder
             )
