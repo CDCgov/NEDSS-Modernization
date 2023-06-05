@@ -1199,7 +1199,7 @@
                         </properties>
                         <retryCount>10</retryCount>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1 min</schedulingPeriod>
+                        <schedulingPeriod>1 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -1980,9 +1980,10 @@ class JRubyStreamCallback2
     include StreamCallback
     def process(inputStream,outputStream)
       text = IOUtils.toString(inputStream)
-      hash = JSON.parse(text)
-      if hash
-          hash.each do |person_hash|
+      list = JSON.parse(text)
+      if list
+          list = [list] if list.class != Array
+          list.each do |person_hash|
               process_person_row_from_db(person_hash)
           end
       end      
@@ -2002,8 +2003,9 @@ class ProcessCollapseJson
       begin
         session.write(flowFile, jrubyStreamCallback)
         session.transfer(flowFile, ExecuteScript::REL_SUCCESS)
-      rescue
+      rescue Exception =&gt; exception
         session.transfer(flowFile, ExecuteScript::REL_FAILURE)
+    		raise exception.backtrace.to_s
       end
     end    
   end
@@ -2261,6 +2263,7 @@ class JRubyStreamCallback
         list = JSON.parse(text)
         $person_parent_uids = []
         if list
+    		    list = [list] if list.class != Array
             list.each do |person_hash|
                 person_parent_uid = person_hash['person_parent_uid']
                 $person_parent_uids.append(person_parent_uid) if person_parent_uid &amp;&amp; person_parent_uid!=''
@@ -2280,8 +2283,9 @@ class ProcessFiles
       begin
         session.write(flowFile, jrubyStreamCallback)
         session.transfer(flowFile, ExecuteScript::REL_SUCCESS)
-      rescue
+      rescue Exception =&gt; exception
         session.transfer(flowFile, ExecuteScript::REL_FAILURE)
+    		raise exception.backtrace.to_s
       end
     else
       session.transfer(flowFile, ExecuteScript::REL_FAILURE)
@@ -2775,5 +2779,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/19/2023 06:43:00 UTC</timestamp>
+    <timestamp>06/05/2023 05:07:28 UTC</timestamp>
 </template>
