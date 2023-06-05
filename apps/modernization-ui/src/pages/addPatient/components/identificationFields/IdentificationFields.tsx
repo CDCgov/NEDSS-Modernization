@@ -56,22 +56,38 @@ export const IdentificationFields = ({
                     </Grid>
                     <Grid row>
                         <Grid col={6}>
-                            <Controller
-                                control={control}
-                                name={`identification[${index}].assigningAuthority`}
-                                render={({ field: { onChange } }) => (
-                                    <SelectInput
-                                        options={[
-                                            { name: 'CA', value: 'CA' },
-                                            { name: 'LA', value: 'LA' },
-                                            { name: 'AL', value: 'AL' }
-                                        ]}
-                                        onChange={onChange}
-                                        htmlFor={`identification[${index}].assigningAuthority`}
-                                        label="Assigning authority "
-                                    />
-                                )}
-                            />
+                            <SearchCriteriaContext.Consumer>
+                                {({ searchCriteria }) => {
+                                    console.log('searchCriteria.auth:', searchCriteria.authorities);
+                                    return (
+                                        <Controller
+                                            control={control}
+                                            name={`identification[${index}].assigningAuthority`}
+                                            render={({ field: { onChange, value } }) => (
+                                                <SelectInput
+                                                    onChange={onChange}
+                                                    defaultValue={value}
+                                                    name={`identification[${index}].assigningAuthority`}
+                                                    htmlFor={`identification[${index}].assigningAuthority`}
+                                                    label="Assigning authority"
+                                                    options={
+                                                        searchCriteria.countries
+                                                            ? Object.values(searchCriteria.authorities).map(
+                                                                  (country) => {
+                                                                      return {
+                                                                          name: country?.code_short_desc_txt || '',
+                                                                          value: country?.id || ''
+                                                                      };
+                                                                  }
+                                                              )
+                                                            : []
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    );
+                                }}
+                            </SearchCriteriaContext.Consumer>
                         </Grid>
                     </Grid>
                     <Grid row>

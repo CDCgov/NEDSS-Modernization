@@ -258,8 +258,8 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                                         htmlFor={'bState'}
                                         options={searchCriteria.states.map((state) => {
                                             return {
-                                                value: state.id!,
-                                                name: state.codeDescTxt!
+                                                value: state?.id!,
+                                                name: state?.codeDescTxt!
                                             };
                                         })}
                                     />

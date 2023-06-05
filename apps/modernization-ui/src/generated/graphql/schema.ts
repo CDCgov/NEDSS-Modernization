@@ -2262,7 +2262,7 @@ export type StateCode = {
   stateNm?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
   statusTime?: Maybe<Scalars['DateTime']>;
-};
+} | null;
 
 export type StateCountyCodeValue = {
   __typename?: 'StateCountyCodeValue';

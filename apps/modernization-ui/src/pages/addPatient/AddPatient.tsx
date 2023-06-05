@@ -36,6 +36,7 @@ export default function AddPatient() {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
     const [submitData, setSubmitData] = useState<any>();
+
     const [handleSavePatient] = useCreatePatientMutation();
 
     const modalRef = useRef<ModalRef>(null);
@@ -97,7 +98,7 @@ export default function AddPatient() {
     }, [isValid]);
 
     const submit = (data: any) => {
-        console.log('data:', format(new Date(data?.asOf), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`));
+        console.log('data:', data);
         handleSavePatient({
             variables: {
                 patient: {
@@ -111,7 +112,25 @@ export default function AddPatient() {
                             suffix: data?.suffix,
                             use: NameUseCd.L
                         }
-                    ]
+                    ],
+                    dateOfBirth: data?.dob,
+                    birthGender: data?.birthSex,
+                    currentGender: data?.gender,
+                    deceased: data?.deceased,
+                    deceasedTime: format(new Date(data?.dod), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`),
+                    maritalStatus: data?.maritalStatus,
+                    stateHIVCase: data?.hivId,
+                    addresses: [
+                        {
+                            streetAddress1: data?.mailingAddress1,
+                            streetAddress2: data?.mailingAddress2,
+                            state: data?.state,
+                            zip: data?.zip,
+                            censusTract: data?.censusTract,
+                            country: data?.country
+                        }
+                    ],
+                    ethnicity: data?.ethnicity
                 }
             }
         }).then((re) => {
@@ -153,9 +172,16 @@ export default function AddPatient() {
                     <Grid col={3} className="bg-white border-right border-base-light">
                         <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
                     </Grid>
-                    <Grid col={9} className="margin-left-auto">
+                    <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
                         <Form onSubmit={handleSubmit(submit)} className="width-full max-width-full">
-                            <Grid row className="page-title-bar bg-white">
+                            <Grid
+                                row
+                                className="page-title-bar bg-white"
+                                style={{
+                                    position: 'sticky',
+                                    top: 0,
+                                    zIndex: 1
+                                }}>
                                 <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                                     New patient
                                     <div className="button-group">
@@ -250,6 +276,7 @@ export default function AddPatient() {
                                         <AddressFields
                                             id={'section-Address'}
                                             title="Address"
+                                            control={control}
                                             addressFields={addressFields}
                                             updateCallback={setAddressFields}
                                         />
@@ -263,7 +290,7 @@ export default function AddPatient() {
                                             title="Telephone"
                                             errors={errors}
                                         />
-                                        <EthnicityFields id={'section-Ethnicity'} title="Ethnicity" />
+                                        <EthnicityFields control={control} id={'section-Ethnicity'} title="Ethnicity" />
                                         <RaceFields id={'section-Race'} title={'Race'} />
                                         <IdentificationFields
                                             fields={fields}

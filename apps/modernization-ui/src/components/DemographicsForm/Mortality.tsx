@@ -99,8 +99,8 @@ export const MortalityForm = ({ setMortalityForm }: any) => {
                                         htmlFor={'state'}
                                         options={searchCriteria.states.map((state) => {
                                             return {
-                                                value: state.id!,
-                                                name: state.codeDescTxt!
+                                                value: state?.id!,
+                                                name: state?.codeDescTxt!
                                             };
                                         })}
                                     />

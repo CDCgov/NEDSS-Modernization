@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     ConditionCode,
     FindAllConditionCodesQuery,
@@ -26,7 +26,29 @@ import {
     FindAllPatientIdentificationTypesQuery,
     StateCode,
     useFindAllStateCodesLazyQuery,
-    FindAllStateCodesQuery
+    FindAllStateCodesQuery,
+    useFindAllStateCountyCodeValuesLazyQuery,
+    FindAllStateCountyCodeValuesQuery,
+    StateCountyCodeValue,
+    useFindAllCountryCodesLazyQuery,
+    CountryCode,
+    FindAllCountryCodesQuery,
+    useFindAllAssigningAuthoritiesLazyQuery,
+    FindAllAssigningAuthoritiesQuery,
+    AssigningAuthor,
+    useFindAllNameTypesLazyQuery,
+    FindAllNameTypesQuery,
+    NameType,
+    useFindAllNamePrefixesLazyQuery,
+    NamePrefix,
+    FindAllNamePrefixesQuery,
+    useFindAllDegreesLazyQuery,
+    FindAllDegreesQuery,
+    Degree,
+    AddressType,
+    AddressUse,
+    FindAllAddressTypesQuery,
+    useFindAllAddressTypesLazyQuery
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
@@ -40,6 +62,14 @@ export interface SearchCriteria {
     races: Race[];
     identificationTypes: IdentificationType[];
     states: StateCode[];
+    counties: StateCountyCodeValue[];
+    countries: CountryCode[] | null;
+    authorities: AssigningAuthor[];
+    nameTypes?: NameType[];
+    prefixes?: NamePrefix[];
+    degree?: Degree[];
+    addressType?: AddressType[];
+    addressUse?: AddressUse[];
 }
 
 const initialState: SearchCriteria = {
@@ -51,7 +81,15 @@ const initialState: SearchCriteria = {
     ethnicities: [],
     races: [],
     identificationTypes: [],
-    states: []
+    states: [],
+    counties: [],
+    countries: [],
+    authorities: [],
+    nameTypes: [],
+    prefixes: [],
+    degree: [],
+    addressType: [],
+    addressUse: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -74,6 +112,20 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
     const [getStates] = useFindAllStateCodesLazyQuery({ onCompleted: setStates });
+    const [getAllState] = useFindAllStateCodesLazyQuery({ onCompleted: setAllState });
+    const [getAllStateCounty] = useFindAllStateCountyCodeValuesLazyQuery({ onCompleted: setCounty });
+    const [getCountries1] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
+    const [getCountries2] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
+    const [getCountries3] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
+    const [getCountries4] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
+    const [getCountries5] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
+    const [getAuthorities] = useFindAllAssigningAuthoritiesLazyQuery({ onCompleted: setAuthorities });
+
+    const [getNameTypes] = useFindAllNameTypesLazyQuery({ onCompleted: setNameTypes });
+    const [getPrefix] = useFindAllNamePrefixesLazyQuery({ onCompleted: setPrefix });
+    const [getDegree] = useFindAllDegreesLazyQuery({ onCompleted: setDegree });
+
+    const [getAddressType] = useFindAllAddressTypesLazyQuery({ onCompleted: setAddressType });
     // on init, load search data from API
     useEffect(() => {
         if (state.isLoggedIn) {
@@ -86,6 +138,18 @@ export const SearchCriteriaProvider = (props: any) => {
             getRaces();
             getIdentificationTypes();
             getStates();
+            getAllState({ variables: { page: { pageNumber: 1, pageSize: 50 } } });
+            getAllStateCounty();
+            getCountries1({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
+            getCountries2({ variables: { page: { pageNumber: 1, pageSize: 50 } } });
+            getCountries3({ variables: { page: { pageNumber: 2, pageSize: 50 } } });
+            getCountries4({ variables: { page: { pageNumber: 3, pageSize: 50 } } });
+            getCountries5({ variables: { page: { pageNumber: 4, pageSize: 50 } } });
+            getAuthorities({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
+            getNameTypes();
+            getPrefix();
+            getDegree({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
+            getAddressType({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
         }
     }, [state.isLoggedIn]);
 
@@ -194,17 +258,159 @@ export const SearchCriteriaProvider = (props: any) => {
         }
     }
 
-    function setStates(results: FindAllStateCodesQuery): void {
+    function setCounty(results: FindAllStateCountyCodeValuesQuery): void {
+        if (results.findAllStateCountyCodeValues.content) {
+            const counties: StateCountyCodeValue[] = [];
+            results.findAllStateCountyCodeValues.content.forEach((i) => i && counties.push(i));
+            counties.sort((a, b) => {
+                if (a?.code_desc_txt && b?.code_desc_txt) {
+                    return a.code_desc_txt.localeCompare(b.code_desc_txt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, counties });
+        }
+    }
+
+    const [stateList, setStateList] = useState<FindAllStateCodesQuery['findAllStateCodes']>();
+    const [stateListAll, setStateListAll] = useState<FindAllStateCodesQuery['findAllStateCodes']>();
+
+    const [countryList1, setCountryList1] = useState<FindAllCountryCodesQuery['findAllCountryCodes']>([]);
+
+    const getAllStates = (results: FindAllStateCodesQuery) => {
         if (results.findAllStateCodes) {
             const states: StateCode[] = [];
             results.findAllStateCodes.forEach((i) => i && states.push(i));
             states.sort((a, b) => {
-                if (a.codeDescTxt && b.codeDescTxt) {
+                if (a?.codeDescTxt && b?.codeDescTxt) {
+                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            return states;
+        }
+    };
+
+    const getAllCountries = (results: FindAllCountryCodesQuery): CountryCode[] => {
+        if (results.findAllCountryCodes) {
+            const countries: CountryCode[] = [];
+            results.findAllCountryCodes.forEach((i) => i && countries.push(i));
+            countries.sort((a, b) => {
+                if (a?.codeDescTxt && b?.codeDescTxt) {
+                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            return countries;
+        } else {
+            return [];
+        }
+    };
+
+    function setCountry1(results: FindAllCountryCodesQuery): void {
+        setCountryList1([...countryList1, ...getAllCountries(results)]);
+    }
+
+    function setStates(results: FindAllStateCodesQuery): void {
+        setStateList(getAllStates(results));
+    }
+
+    function setAllState(results: FindAllStateCodesQuery): void {
+        setStateListAll(getAllStates(results));
+    }
+
+    useEffect(() => {
+        if (stateList && stateListAll) {
+            const states = [...stateList, ...stateListAll];
+            states.sort((a, b) => {
+                if (a?.codeDescTxt && b?.codeDescTxt) {
                     return a.codeDescTxt.localeCompare(b.codeDescTxt);
                 }
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, states });
+        }
+    }, [stateList, stateListAll]);
+
+    useEffect(() => {
+        if (countryList1) {
+            countryList1.sort((a, b) => {
+                if (a?.codeDescTxt && b?.codeDescTxt) {
+                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, countries: countryList1 as CountryCode[] });
+        }
+    }, [countryList1]);
+
+    function setAuthorities(results: FindAllAssigningAuthoritiesQuery): void {
+        if (results.findAllAssigningAuthorities) {
+            const authorities: AssigningAuthor[] = [];
+            results.findAllAssigningAuthorities.content.forEach((i) => i && authorities.push(i));
+            authorities.sort((a, b) => {
+                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
+                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, authorities });
+        }
+    }
+
+    function setNameTypes(results: FindAllNameTypesQuery): void {
+        if (results.findAllNameTypes) {
+            const nameTypes: NameType[] = [];
+            results.findAllNameTypes.content.forEach((i) => i && nameTypes.push(i));
+            nameTypes.sort((a, b) => {
+                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
+                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, nameTypes });
+        }
+    }
+
+    function setPrefix(results: FindAllNamePrefixesQuery): void {
+        if (results.findAllNamePrefixes) {
+            const prefixes: NamePrefix[] = [];
+            results.findAllNamePrefixes.content.forEach((i) => i && prefixes.push(i));
+            prefixes.sort((a, b) => {
+                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
+                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, prefixes });
+        }
+    }
+
+    function setDegree(results: FindAllDegreesQuery): void {
+        if (results.findAllDegrees) {
+            const degree: Degree[] = [];
+            results.findAllDegrees.content.forEach((i) => i && degree.push(i));
+            degree.sort((a, b) => {
+                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
+                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, degree });
+        }
+    }
+
+    function setAddressType(results: FindAllAddressTypesQuery): void {
+        if (results.findAllAddressTypes) {
+            const addressType: AddressType[] = [];
+            results.findAllAddressTypes.content.forEach((i) => i && addressType.push(i));
+            addressType.sort((a, b) => {
+                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
+                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, addressType });
         }
     }
 

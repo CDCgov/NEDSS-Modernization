@@ -94,8 +94,8 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                             label="Issued state"
                                             options={searchCriteria.states.map((state) => {
                                                 return {
-                                                    value: state.id!,
-                                                    name: state.codeDescTxt!
+                                                    value: state?.id!,
+                                                    name: state?.codeDescTxt!
                                                 };
                                             })}
                                         />
