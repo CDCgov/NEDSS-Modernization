@@ -200,11 +200,13 @@ public class PersonMother {
                 id,
                 now));
 
-        person.delete(new PatientCommand.Delete(
+        person.delete(
+            new PatientCommand.Delete(
                 id,
                 id,
                 now
-            )
+            ),
+            patient -> 0
         );
 
         return person;

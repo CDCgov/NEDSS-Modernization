@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient;
 
-public class PatientException extends Exception {
+public class PatientException extends RuntimeException {
 
     private final long patient;
 

@@ -18,6 +18,7 @@ class PatientDeleteController {
 
     private final Clock clock;
     private final PatientDeleter deleter;
+
     private final PatientSearchIndexer indexer;
 
     PatientDeleteController(
@@ -40,8 +41,10 @@ class PatientDeleteController {
 
         try {
 
-            deleter.delete(context, patient);
+            this.deleter.delete(context, patient);
+
             this.indexer.index(patient);
+
             return new PatientDeleteResult.PatientDeleteSuccessful(patient);
 
         } catch (PatientException exception) {

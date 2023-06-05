@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.delete;
+package gov.cdc.nbs.patient;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.enums.RecordStatus;
@@ -6,17 +6,18 @@ import gov.cdc.nbs.entity.odse.QPerson;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PatientIsDeletableResolver {
+class QueryDSLPatientAssociationCountFinder implements PatientAssociationCountFinder {
 
     private final JPAQueryFactory factory;
     private final QPerson revision;
 
-    public PatientIsDeletableResolver(final JPAQueryFactory factory) {
+    QueryDSLPatientAssociationCountFinder(final JPAQueryFactory factory) {
         this.factory = factory;
-        this.revision = new QPerson("revision");
+        this.revision = QPerson.person;
     }
 
-    public boolean canDelete(final long patient) {
+    @Override
+    public long count(long patient) {
         Long revisions = this.factory.select(this.revision.count())
             .from(this.revision)
             .where(
@@ -25,7 +26,6 @@ public class PatientIsDeletableResolver {
                 this.revision.id.ne(patient)
             ).fetchOne();
 
-        return revisions == null || revisions == 0;
-
+        return revisions == null ? 0 : revisions;
     }
 }
