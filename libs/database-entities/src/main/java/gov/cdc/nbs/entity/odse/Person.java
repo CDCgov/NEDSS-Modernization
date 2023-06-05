@@ -10,6 +10,7 @@ import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
@@ -17,6 +18,7 @@ import org.hibernate.annotations.ColumnTransformer;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,6 +31,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,26 +55,18 @@ public class Person {
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity nbsEntity;
 
-    @OneToMany(
-        mappedBy = "personUid",
-        fetch = FetchType.EAGER,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true)
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE,
+        CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonName> names;
 
-    @OneToMany(
-        mappedBy = "personUid", fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE,
+        CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonRace> races;
 
     @Column(name = "add_reason_cd", length = 20)
@@ -146,9 +141,6 @@ public class Person {
 
     @Column(name = "education_level_desc_txt", length = 100)
     private String educationLevelDescTxt;
-
-    @Column(name = "ethnic_group_ind", length = 20)
-    private String ethnicGroupInd;
 
     @Column(name = "last_chg_reason_cd", length = 20)
     private String lastChgReasonCd;
@@ -350,9 +342,6 @@ public class Person {
     @Column(name = "as_of_date_admin")
     private Instant asOfDateAdmin;
 
-    @Column(name = "as_of_date_ethnicity")
-    private Instant asOfDateEthnicity;
-
     @Column(name = "as_of_date_general")
     private Instant asOfDateGeneral;
 
@@ -390,11 +379,11 @@ public class Person {
     @Column(name = "ehars_id", length = 20)
     private String eharsId;
 
-    @Column(name = "ethnic_unk_reason_cd", length = 20)
-    private String ethnicUnkReasonCd;
-
     @Column(name = "sex_unk_reason_cd", length = 20)
     private String sexUnkReasonCd;
+
+    @Embedded
+    private PatientEthnicity ethnicity;
 
     protected Person() {
 
@@ -404,13 +393,15 @@ public class Person {
         this.id = identifier;
         this.localId = localId;
         this.nbsEntity = new NBSEntity(identifier, "PSN");
+        this.ethnicity = new PatientEthnicity();
 
+        this.personParentUid = this;
         this.versionCtrlNbr = 1;
         this.cd = "PAT";
         this.electronicInd = 'N';
         this.edxInd = "Y";
-        this.personParentUid = this;
         this.statusCd = 'A';
+        this.recordStatusCd = RecordStatus.ACTIVE;
     }
 
     public Person(final PatientCommand.AddPatient patient) {
@@ -420,7 +411,7 @@ public class Person {
         this.nbsEntity = new NBSEntity(patient);
 
         if (patient.dateOfBirth() != null) {
-            this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant();
+            this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneOffset.UTC).toInstant();
             this.birthTimeCalc = this.birthTime;
         }
 
@@ -431,7 +422,6 @@ public class Person {
         this.deceasedTime = patient.deceasedTime();
 
         this.maritalStatusCd = patient.maritalStatus();
-        this.ethnicGroupInd = patient.ethnicityCode();
 
         this.description = patient.comments();
         this.eharsId = patient.stateHIVCase();
@@ -439,11 +429,12 @@ public class Person {
         this.asOfDateGeneral = patient.asOf();
         this.asOfDateSex = patient.asOf();
         this.asOfDateAdmin = patient.asOf();
-        this.asOfDateEthnicity = patient.asOf();
         this.asOfDateMorbidity = patient.asOf();
 
+        this.ethnicity = new PatientEthnicity(patient);
+
         this.statusTime = patient.requestedOn();
-        this.recordStatusCd = RecordStatus.ACTIVE;
+
         this.recordStatusTime = patient.requestedOn();
 
         this.addTime = patient.requestedOn();
@@ -451,7 +442,6 @@ public class Person {
 
         this.lastChgTime = patient.requestedOn();
         this.lastChgUserId = patient.requester();
-
 
     }
 
@@ -504,8 +494,6 @@ public class Person {
     public EntityId add(final PatientCommand.AddIdentification added) {
         return this.nbsEntity.add(added);
     }
-
-
 
     public PersonRace add(final PatientCommand.AddRace added) {
         Collection<PersonRace> existing = ensureRaces();
@@ -672,12 +660,11 @@ public class Person {
 
     public void delete(
         final PatientCommand.Delete delete,
-        final PatientAssociationCountFinder finder
-        ) throws PatientHasAssociatedEventsException {
+        final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
 
         long associations = finder.count(this.id);
 
-        if(associations > 0) {
+        if (associations > 0) {
             throw new PatientHasAssociatedEventsException(this.id);
         }
 
@@ -739,12 +726,9 @@ public class Person {
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateEthnicityInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setEthnicGroupInd(info.ethnicityCode());
-        this.setEthnicUnkReasonCd(info.ethnicUnkReasonCd());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+    public void update(final PatientCommand.UpdateEthnicityInfo info) {
+        this.ethnicity.update(info);
+        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
         changed(info);
     }
 

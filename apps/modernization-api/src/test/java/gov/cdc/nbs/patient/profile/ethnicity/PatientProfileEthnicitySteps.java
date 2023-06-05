@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile.ethnicity;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -33,8 +34,9 @@ public class PatientProfileEthnicitySteps {
         PatientInput expected = this.input.active();
 
         assertThat(actual)
-            .returns(expected.getAsOf(), Person::getAsOfDateEthnicity)
-            .returns(expected.getEthnicity(), Person::getEthnicGroupInd);
+            .extracting(Person::getEthnicity)
+            .returns(expected.getAsOf(), PatientEthnicity::asOf)
+            .returns(expected.getEthnicity(), PatientEthnicity::ethnicGroup);
 
 
     }

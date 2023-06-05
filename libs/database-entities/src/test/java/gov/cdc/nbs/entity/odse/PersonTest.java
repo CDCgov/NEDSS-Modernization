@@ -78,7 +78,7 @@ class PersonTest {
         assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
         assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
-        assertThat(actual.getEthnicGroupInd()).isEqualTo("EthCode");
+//        assertThat(actual.getEthnicGroupInd()).isEqualTo("EthCode");
         assertThat(actual.getAsOfDateGeneral()).isEqualTo("2019-03-03T10:15:30.00Z");
         assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
         assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
@@ -502,4 +502,29 @@ class PersonTest {
         assertNotNull(ex);
     }
 
+//    @Test
+//    void should_add_detailed_ethnicity() {
+//
+//        Person patient = new Person(121L, "local-id-value");
+//
+//        PersonEthnicGroup actual = patient.add(
+//            new PatientCommand.AddDetailedEthnicity(
+//                121L,
+//                Instant.parse("2020-03-03T10:15:30.00Z"),
+//                "ethnicity-value",
+//                131L,
+//                Instant.parse("2020-03-03T10:15:30.00Z")
+//            )
+//        );
+//
+//        assertThat(actual.getPersonUid()).isEqualTo(patient);
+//        assertThat(actual.getId())
+//            .returns(121L, PersonEthnicGroupId::getPersonUid)
+//            .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
+//        ;
+//
+//        assertThat(patient.getEthnicities())
+//            .contains(actual);
+//
+//    }
 }

@@ -1,16 +1,23 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.time.Instant;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -24,26 +31,8 @@ public class PersonEthnicGroup {
     @JoinColumn(name = "person_uid", nullable = false)
     private Person personUid;
 
-    @Column(name = "add_reason_cd", length = 20)
-    private String addReasonCd;
-
-    @Column(name = "add_time")
-    private Instant addTime;
-
-    @Column(name = "add_user_id")
-    private Long addUserId;
-
     @Column(name = "ethnic_group_desc_txt", length = 100)
     private String ethnicGroupDescTxt;
-
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
-
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
 
     @Column(name = "record_status_cd", length = 20)
     private String recordStatusCd;
@@ -53,5 +42,29 @@ public class PersonEthnicGroup {
 
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
+
+    @Embedded
+    private Audit audit;
+
+    protected PersonEthnicGroup() {
+
+    }
+
+    public PersonEthnicGroup(
+        final Person person,
+        final PatientCommand.AddDetailedEthnicity added
+    ) {
+        this.id = new PersonEthnicGroupId(
+            person.getId(),
+            added.ethnicity()
+        );
+
+        this.personUid = person;
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = added.requestedOn();
+
+        this.audit = new Audit(added.requester(), added.requestedOn());
+    }
 
 }
