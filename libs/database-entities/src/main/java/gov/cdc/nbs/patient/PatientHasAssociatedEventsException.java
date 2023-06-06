@@ -1,6 +1,4 @@
-package gov.cdc.nbs.patient.delete;
-
-import gov.cdc.nbs.patient.PatientException;
+package gov.cdc.nbs.patient;
 
 public class PatientHasAssociatedEventsException extends PatientException {
 

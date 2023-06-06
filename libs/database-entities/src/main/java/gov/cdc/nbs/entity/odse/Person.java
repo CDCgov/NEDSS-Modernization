@@ -6,8 +6,10 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
+import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
@@ -668,7 +670,17 @@ public class Person {
         changed(info);
     }
 
-    public void delete(final PatientCommand.Delete delete) {
+    public void delete(
+        final PatientCommand.Delete delete,
+        final PatientAssociationCountFinder finder
+        ) throws PatientHasAssociatedEventsException {
+
+        long associations = finder.count(this.id);
+
+        if(associations > 0) {
+            throw new PatientHasAssociatedEventsException(this.id);
+        }
+
         this.recordStatusCd = RecordStatus.LOG_DEL;
         this.recordStatusTime = delete.requestedOn();
         this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
