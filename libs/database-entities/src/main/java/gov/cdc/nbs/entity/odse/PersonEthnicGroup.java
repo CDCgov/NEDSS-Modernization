@@ -67,4 +67,10 @@ public class PersonEthnicGroup {
         this.audit = new Audit(added.requester(), added.requestedOn());
     }
 
+    @Override
+    public String toString() {
+        return "PersonEthnicGroup{" +
+            "id=" + id +
+            '}';
+    }
 }

@@ -1,34 +1,19 @@
 package gov.cdc.nbs.message.patient.input;
 
-import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.event.UpdateEthnicityData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class EthnicityInput {
-    private long patientId;
+    private long patient;
     private Instant asOf;
-    private String ethnicityCode;
-    private String ethnicUnkReasonCd;
+    private String ethnicGroup;
+    private String unknownReason;
+    private List<String> detailed = new ArrayList<>();
 
-    public static PatientRequest toRequest(
-            final long userId,
-            final String requestId,
-            final EthnicityInput input) {
-        return new PatientRequest.UpdateEthnicity(
-                requestId,
-                input.getPatientId(),
-                userId,
-                new UpdateEthnicityData(
-                        input.getPatientId(),
-                        requestId,
-                        userId,
-                        input.getAsOf(),
-                        input.getEthnicityCode(),
-                        input.getEthnicUnkReasonCd()));
-    }
 }

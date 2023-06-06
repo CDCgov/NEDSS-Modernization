@@ -7,6 +7,7 @@ import gov.cdc.nbs.message.enums.Gender;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -48,4 +49,15 @@ public sealed interface PatientEvent {
         Instant deletedOn
     ) implements PatientEvent {
     }
+
+    record EthnicityChanged(
+        long patient,
+        String localId,
+        Instant asOf,
+        String ethnicGroup,
+        String unknownReason,
+        List<String> detailed,
+        long changedBy,
+        Instant changedOn
+    ){}
 }

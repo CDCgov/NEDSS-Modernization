@@ -183,7 +183,7 @@ public sealed interface PatientCommand {
     record UpdateEthnicityInfo(
         long person,
         Instant asOf,
-        String ethnicity,
+        String ethnicGroup,
         String unknownReason,
 
         long requester,
@@ -194,7 +194,6 @@ public sealed interface PatientCommand {
 
     record AddDetailedEthnicity(
         long person,
-        Instant asOf,
         String ethnicity,
         long requester,
         Instant requestedOn
@@ -203,7 +202,6 @@ public sealed interface PatientCommand {
 
     record RemoveDetailedEthnicity(
         long person,
-        Instant asOf,
         String ethnicity,
         long requester,
         Instant requestedOn

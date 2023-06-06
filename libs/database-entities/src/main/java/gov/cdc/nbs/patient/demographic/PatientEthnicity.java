@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Embeddable
 public class PatientEthnicity {
@@ -40,8 +41,11 @@ public class PatientEthnicity {
     }
 
     public PatientEthnicity(final PatientCommand.AddPatient patient) {
-        this.asOfDateEthnicity = patient.asOf();
         this.ethnicGroupInd = patient.ethnicityCode();
+
+        if (this.ethnicGroupInd != null) {
+            this.asOfDateEthnicity = patient.asOf();
+        }
     }
 
     public Instant asOf() {
@@ -57,27 +61,28 @@ public class PatientEthnicity {
     }
 
     public List<PersonEthnicGroup> ethnicities() {
-        return ethnicities;
+        return ethnicities == null ? List.of() : List.copyOf(ethnicities);
     }
 
     public void update(final PatientCommand.UpdateEthnicityInfo info) {
-        this.ethnicGroupInd = info.ethnicity();
+        this.asOfDateEthnicity = info.asOf();
+        this.ethnicGroupInd = info.ethnicGroup();
         this.ethnicUnkReasonCd = info.unknownReason();
     }
 
     public PersonEthnicGroup add(
         final Person patient,
-        final PatientCommand.AddDetailedEthnicity added
+        final PatientCommand.AddDetailedEthnicity add
     ) {
 
-        PersonEthnicGroup ethnicity = new PersonEthnicGroup(
+        PersonEthnicGroup added = new PersonEthnicGroup(
             patient,
-            added
+            add
         );
 
-        ensureEthnicities().add(ethnicity);
+        ensureEthnicities().add(added);
 
-        return ethnicity;
+        return added;
     }
 
     private List<PersonEthnicGroup> ensureEthnicities() {
@@ -87,4 +92,7 @@ public class PatientEthnicity {
         return this.ethnicities;
     }
 
+    public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
+        this.ethnicities.removeIf(detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
+    }
 }

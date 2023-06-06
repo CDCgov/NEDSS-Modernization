@@ -584,33 +584,22 @@ public class Person {
         this.setPrimLangCd(info.primaryLanguageCode());
         this.setSpeaksEnglishCd(info.speaksEnglishCode());
         this.setEharsId(info.eharsId());
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
 
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
     public void update(PatientCommand.UpdateAdministrativeInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
         this.setDescription(info.description());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
     public void update(PatientCommand.AddName info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
         this.add(info);
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
     public void update(PatientCommand.UpdateNameInfo info) {
         this.setAsOfDateGeneral(info.asOf());
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
 
         Collection<PersonName> existing = ensureNames();
         PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
@@ -623,18 +612,14 @@ public class Person {
             p.setNmUseCd(info.type());
         });
 
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
     public void update(PatientCommand.DeleteNameInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
         PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
         List<PersonName> arraylist = new ArrayList<>(this.names);
         arraylist.removeIf(item -> (item.getId().equals(identifier)));
         this.names = arraylist;
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
@@ -654,7 +639,6 @@ public class Person {
         this.setAdditionalGenderCd(info.additionalGender());
         this.setPreferredGenderCd(info.transGenderInfo());
 
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
@@ -670,12 +654,13 @@ public class Person {
 
         this.recordStatusCd = RecordStatus.LOG_DEL;
         this.recordStatusTime = delete.requestedOn();
-        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
 
         changed(delete);
     }
 
     private void changed(final PatientCommand command) {
+        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
+
         this.lastChgUserId = command.requester();
         this.lastChgTime = command.requestedOn();
     }
@@ -703,51 +688,55 @@ public class Person {
     }
 
     public void update(PatientCommand.AddIdentification info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
         this.add(info);
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
     public void update(PatientCommand.UpdateIdentification info) {
         this.nbsEntity.update(info);
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
     public void delete(PatientCommand.DeleteIdentification info) {
         this.nbsEntity.delete(info);
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
     public void update(final PatientCommand.UpdateEthnicityInfo info) {
         this.ethnicity.update(info);
-        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
+
         changed(info);
     }
 
+    public PersonEthnicGroup add(final PatientCommand.AddDetailedEthnicity add) {
+        PersonEthnicGroup ethnicGroup = this.ethnicity.add(this, add);
+
+        changed(add);
+
+        return ethnicGroup;
+    }
+
+    public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
+        this.ethnicity.remove(remove);
+
+        changed(remove);
+    }
+
     public void update(PatientCommand.UpdateRaceInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
         this.setRaceCd(info.raceCd());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
     public boolean delete(PatientCommand.DeleteRaceInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
+
         List<PersonRace> arraylist = new ArrayList<>(this.races);
         boolean isDeleted = arraylist.removeIf(
             item -> (item.getPersonUid().getId() == info.person() && item.getRaceCd().equals(info.raceCd())));
         this.races = arraylist;
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
         return isDeleted;
     }
