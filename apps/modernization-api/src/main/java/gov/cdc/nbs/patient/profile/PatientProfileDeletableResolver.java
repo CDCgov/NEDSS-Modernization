@@ -1,21 +1,21 @@
 package gov.cdc.nbs.patient.profile;
 
-import gov.cdc.nbs.patient.delete.PatientIsDeletableResolver;
+import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
 class PatientProfileDeletableResolver {
 
-    private final PatientIsDeletableResolver resolver;
+    private final PatientAssociationCountFinder finder;
 
-    PatientProfileDeletableResolver(final PatientIsDeletableResolver resolver) {
-        this.resolver = resolver;
+    PatientProfileDeletableResolver(final PatientAssociationCountFinder finder) {
+        this.finder = finder;
     }
 
     @SchemaMapping("deletable")
     boolean resolve(final PatientProfile profile) {
-        return resolver.canDelete(profile.id());
+        return finder.count(profile.id()) == 0;
     }
 
 }

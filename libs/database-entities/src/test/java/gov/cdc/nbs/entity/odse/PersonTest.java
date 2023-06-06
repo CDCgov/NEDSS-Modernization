@@ -8,9 +8,11 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
+import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +21,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PersonTest {
 
@@ -134,7 +140,7 @@ class PersonTest {
                 .returns("L", PersonName::getNmUseCd)
                 .extracting(PersonName::getId)
                 .returns(117L, PersonNameId::getPersonUid)
-                .returns((short)1, PersonNameId::getPersonNameSeq)
+                .returns((short) 1, PersonNameId::getPersonNameSeq)
         );
     }
 
@@ -179,7 +185,7 @@ class PersonTest {
                 .returns("L", PersonName::getNmUseCd)
                 .extracting(PersonName::getId)
                 .returns(117L, PersonNameId::getPersonUid)
-                .returns((short)1, PersonNameId::getPersonNameSeq),
+                .returns((short) 1, PersonNameId::getPersonNameSeq),
             actual_alias -> assertThat(actual_alias)
                 .returns("Second", PersonName::getFirstNm)
                 .returns("SecondMiddle", PersonName::getMiddleNm)
@@ -188,7 +194,7 @@ class PersonTest {
                 .returns("AL", PersonName::getNmUseCd)
                 .extracting(PersonName::getId)
                 .returns(117L, PersonNameId::getPersonUid)
-                .returns((short)2, PersonNameId::getPersonNameSeq)
+                .returns((short) 2, PersonNameId::getPersonNameSeq)
         );
 
     }
@@ -295,14 +301,21 @@ class PersonTest {
     }
 
     @Test
-    void should_set_deleted_fields() {
+    void should_delete_patient_without_associations() {
+
+        PatientAssociationCountFinder finder = mock(PatientAssociationCountFinder.class);
+
+        when(finder.count(anyLong())).thenReturn(0L);
+
         Person actual = new Person(117L, "local-id-value");
 
-        actual.delete(new PatientCommand.Delete(
+        actual.delete(
+            new PatientCommand.Delete(
                 117L,
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
-            )
+            ),
+            finder
         );
 
         assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.LOG_DEL);
@@ -310,6 +323,28 @@ class PersonTest {
         assertThat(actual.getVersionCtrlNbr()).isEqualTo((short) 2);
         assertThat(actual.getLastChgUserId()).isEqualTo((short) 131L);
         assertThat(actual.getLastChgTime()).isEqualTo("2020-03-03T10:15:30.00Z");
+    }
+
+    @Test
+    void should_not_allow_deletion_of_patient_with_associations() {
+        PatientAssociationCountFinder finder = mock(PatientAssociationCountFinder.class);
+
+        when(finder.count(anyLong())).thenReturn(1L);
+
+        Person actual = new Person(117L, "local-id-value");
+
+        assertThatThrownBy(() ->
+            actual.delete(
+                new PatientCommand.Delete(
+                    117L,
+                    131L,
+                    Instant.now()
+                ),
+                finder
+            )
+        ).isInstanceOf(PatientHasAssociatedEventsException.class)
+            .asInstanceOf(InstanceOfAssertFactories.type(PatientHasAssociatedEventsException.class))
+            .returns(117L, PatientHasAssociatedEventsException::patient);
     }
 
     @Test
