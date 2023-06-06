@@ -14,10 +14,13 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import javax.persistence.EntityManager;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 public class PatientProfileEthnicitySteps {
@@ -89,5 +92,13 @@ public class PatientProfileEthnicitySteps {
             .returns(updates.getEthnicGroup(), PatientEthnicity::ethnicGroup)
             .returns(updates.getUnknownReason(), PatientEthnicity::unknownReason)
             ;
+    }
+
+    @Then("I am unable to change a patient's ethnicity")
+    public void i_am_unable_to_change_a_patient_ethnicity() {
+        EthnicityInput changes = new EthnicityInput();
+
+        assertThatThrownBy(() -> controller.update(changes))
+            .isInstanceOf(AccessDeniedException.class);
     }
 }

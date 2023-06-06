@@ -1,26 +1,32 @@
 package gov.cdc.nbs.patient.profile.ethnicity;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
+import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.demographic.PatientEthnicity;
+import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @Transactional
-public class PatientEthnicityService {
+public class PatientEthnicityUpdater {
 
     private final EntityManager entityManager;
+    private final PatientEventEmitter emitter;
 
-    PatientEthnicityService(final EntityManager entityManager) {
+    PatientEthnicityUpdater(
+        final EntityManager entityManager,
+        final PatientEventEmitter emitter
+    ) {
         this.entityManager = entityManager;
+        this.emitter = emitter;
     }
 
 
@@ -61,6 +67,8 @@ public class PatientEthnicityService {
             .map(detail -> asRemove(context, input.getPatient(), detail))
             .forEach(patient::remove);
 
+
+        this.emitter.emit(asChanged(patient));
     }
 
     private PatientCommand.AddDetailedEthnicity asAdded(
@@ -92,4 +100,25 @@ public class PatientEthnicityService {
     private Person managed(final long patient) {
         return this.entityManager.find(Person.class, patient);
     }
+
+    private PatientEvent asChanged(final Person patient) {
+        PatientEthnicity ethnicity = patient.getEthnicity();
+
+        List<String> detailed = ethnicity.ethnicities()
+            .stream()
+            .map(group -> group.getId().getEthnicGroupCd())
+            .toList();
+
+        return new PatientEvent.EthnicityChanged(
+          patient.getId(),
+            patient.getLocalId(),
+            ethnicity.asOf(),
+            ethnicity.ethnicGroup(),
+            ethnicity.unknownReason(),
+            detailed,
+            patient.getLastChgUserId(),
+            patient.getLastChgTime()
+        );
+    }
+
 }

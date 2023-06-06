@@ -4,6 +4,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class PatientEthnicityServiceTest {
+class PatientEthnicityUpdaterTest {
 
     @Test
     void should_change_patient_ethnicity() {
@@ -30,6 +31,8 @@ class PatientEthnicityServiceTest {
 
         when(entityManager.find(eq(Person.class), anyLong())).thenReturn(patient);
 
+        PatientEventEmitter emitter = mock(PatientEventEmitter.class);
+
         RequestContext context = new RequestContext(131L, Instant.parse("2020-03-03T10:15:30.00Z"));
 
         EthnicityInput changes = new EthnicityInput();
@@ -39,7 +42,7 @@ class PatientEthnicityServiceTest {
         changes.setUnknownReason("unknown-reason-value");
 
 
-        PatientEthnicityService service = new PatientEthnicityService(entityManager);
+        PatientEthnicityUpdater service = new PatientEthnicityUpdater(entityManager, emitter);
 
         service.update(context, changes);
 
@@ -68,6 +71,8 @@ class PatientEthnicityServiceTest {
 
         when(entityManager.find(eq(Person.class), anyLong())).thenReturn(patient);
 
+        PatientEventEmitter emitter = mock(PatientEventEmitter.class);
+
         RequestContext context = new RequestContext(131L, Instant.parse("2020-03-03T10:15:30.00Z"));
 
         EthnicityInput changes = new EthnicityInput();
@@ -75,7 +80,7 @@ class PatientEthnicityServiceTest {
 
         changes.setDetailed(List.of("ethnicity-detail"));
 
-        PatientEthnicityService service = new PatientEthnicityService(entityManager);
+        PatientEthnicityUpdater service = new PatientEthnicityUpdater(entityManager, emitter);
 
         service.update(context, changes);
 
@@ -120,13 +125,15 @@ class PatientEthnicityServiceTest {
 
         when(entityManager.find(eq(Person.class), anyLong())).thenReturn(patient);
 
+        PatientEventEmitter emitter = mock(PatientEventEmitter.class);
+
         RequestContext context = new RequestContext(131L, Instant.parse("2020-03-03T10:15:30.00Z"));
 
         EthnicityInput changes = new EthnicityInput();
         changes.setPatient(121L);
         changes.setDetailed(List.of("another-ethnicity-detail"));
 
-        PatientEthnicityService service = new PatientEthnicityService(entityManager);
+        PatientEthnicityUpdater service = new PatientEthnicityUpdater(entityManager, emitter);
 
         service.update(context, changes);
 

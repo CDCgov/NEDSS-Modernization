@@ -11,7 +11,8 @@ import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(PatientEvent.Deleted.class)
+    @JsonSubTypes.Type(PatientEvent.Deleted.class),
+    @JsonSubTypes.Type(PatientEvent.EthnicityChanged.class)
 })
 public sealed interface PatientEvent {
 
@@ -50,6 +51,7 @@ public sealed interface PatientEvent {
     ) implements PatientEvent {
     }
 
+
     record EthnicityChanged(
         long patient,
         String localId,
@@ -59,5 +61,6 @@ public sealed interface PatientEvent {
         List<String> detailed,
         long changedBy,
         Instant changedOn
-    ){}
+    ) implements PatientEvent {
+    }
 }
