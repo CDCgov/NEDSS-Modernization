@@ -1,18 +1,14 @@
 package gov.cdc.nbs;
 
 import gov.cdc.nbs.controller.CodeValueGeneralController;
-import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.DropDownValuesController;
 import gov.cdc.nbs.patient.KeyValuePair;
 import gov.cdc.nbs.patient.KeyValuePairResults;
-import gov.cdc.nbs.repository.NaicsIndustryCodeRepository;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -21,15 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PatientDataEntryDropDownSteps {
 
-    @Mock
-    private NaicsIndustryCodeRepository naicsIndustryCodeRepository;
-    private final DropDownValuesController dropDownValuesController = new DropDownValuesController(naicsIndustryCodeRepository);
-    private KeyValuePairResults actualKeyValuePairResults;
-
+    @Autowired
+    private DropDownValuesController dropDownValuesController;
     @Autowired
     private CodeValueGeneralController codeValueGeneralController;
+    private KeyValuePairResults actualKeyValuePairResults;
+
     private GraphQLPage page = new GraphQLPage(100, 0);
-    ;
 
     @When("I want to retrieve {string}")
     public void iWantToRetrieve(String fieldName) {
@@ -38,51 +32,47 @@ public class PatientDataEntryDropDownSteps {
             case "Gender" -> actualKeyValuePairResults = dropDownValuesController.findGenders();
             case "Yes/No/Unknown" -> actualKeyValuePairResults = dropDownValuesController.findYesNoUnk();
             case "Name Type" -> {
-                Page<CodeValueGeneral> allNameTypes = codeValueGeneralController.findAllNameTypes(page);
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllNameTypes(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
                 actualKeyValuePairResults = KeyValuePairResults.builder()
-                        .total(allNameTypes.getNumberOfElements())
-                        .content(allNameTypes.map(codeValueGeneral ->
-                                        KeyValuePair.builder()
-                                                .key(codeValueGeneral.getId().getCode())
-                                                .value(codeValueGeneral.getCodeShortDescTxt())
-                                                .build())
-                                .toList())
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
                         .build();
             }
             case "Name Prefix" -> {
-                Page<CodeValueGeneral> allNamePrefixes = codeValueGeneralController.findAllNamePrefixes(page);
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllNamePrefixes(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
                 actualKeyValuePairResults = KeyValuePairResults.builder()
-                        .total(allNamePrefixes.getNumberOfElements())
-                        .content(allNamePrefixes.map(codeValueGeneral ->
-                                        KeyValuePair.builder()
-                                                .key(codeValueGeneral.getId().getCode())
-                                                .value(codeValueGeneral.getCodeShortDescTxt())
-                                                .build())
-                                .toList())
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
                         .build();
             }
             case "Degree" -> {
-                Page<CodeValueGeneral> allDegrees = codeValueGeneralController.findAllDegrees(page);
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllDegrees(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
                 actualKeyValuePairResults = KeyValuePairResults.builder()
-                        .total(allDegrees.getNumberOfElements())
-                        .content(allDegrees.map(codeValueGeneral ->
-                                        KeyValuePair.builder()
-                                                .key(codeValueGeneral.getId().getCode())
-                                                .value(codeValueGeneral.getCodeShortDescTxt())
-                                                .build())
-                                .toList())
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
                         .build();
             }
-            case "Address Type" -> {
-                Page<CodeValueGeneral> allAddressTypes = codeValueGeneralController.findAllAddressTypes(page);
+            case "Address Type" ->  {
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllAddressTypes(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
                 actualKeyValuePairResults = KeyValuePairResults.builder()
-                        .total(allAddressTypes.getNumberOfElements())
-                        .content(allAddressTypes.map(codeValueGeneral ->
-                                        KeyValuePair.builder()
-                                                .key(codeValueGeneral.getId().getCode())
-                                                .value(codeValueGeneral.getCodeShortDescTxt())
-                                                .build())
-                                .toList())
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
                         .build();
             }
         }
