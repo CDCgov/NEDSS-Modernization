@@ -134,18 +134,31 @@ export const MortalityForm = ({ setMortalityForm }: any) => {
                     Country of death:
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="country"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'country'}
-                                options={[{ name: 'county', value: 'options' }]}
+                    <SearchCriteriaContext.Consumer>
+                        {({ searchCriteria }) => (
+                            <Controller
+                                control={control}
+                                name="country"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'country'}
+                                        options={
+                                            searchCriteria.countries
+                                                ? searchCriteria.countries.map((country) => {
+                                                      return {
+                                                          value: country?.id!,
+                                                          name: country?.codeDescTxt!
+                                                      };
+                                                  })
+                                                : []
+                                        }
+                                    />
+                                )}
                             />
                         )}
-                    />
+                    </SearchCriteriaContext.Consumer>
                 </Grid>
             </Grid>
             <div className="border-top border-base-lighter padding-2 margin-left-auto">

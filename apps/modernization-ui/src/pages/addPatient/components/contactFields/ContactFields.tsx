@@ -137,7 +137,7 @@ export default function ContactFields({
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                name={`emailAddresses_${index}`}
+                                name={`emailAddresses[${index}].email`}
                                 rules={{
                                     pattern: {
                                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
@@ -151,12 +151,12 @@ export default function ContactFields({
                                         type="text"
                                         label="Email"
                                         defaultValue={value}
-                                        htmlFor={`emailAddresses_${index}`}
-                                        id={`emailAddresses_${index}`}
+                                        htmlFor={`emailAddresses[${index}].email`}
+                                        id={`emailAddresses[${index}].email`}
                                         error={
                                             errors &&
-                                            errors[`emailAddresses_${index}`] &&
-                                            errors[`emailAddresses_${index}`].message
+                                            errors[`emailAddresses[${index}].email`] &&
+                                            errors[`emailAddresses[${index}].email`].message
                                         }
                                     />
                                 )}

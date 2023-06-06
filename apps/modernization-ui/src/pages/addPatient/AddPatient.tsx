@@ -51,7 +51,7 @@ export default function AddPatient() {
     type formDefaultValueType = { [key: string]: [{ [key: string]: any }] };
 
     const defaultValues: formDefaultValueType = {
-        identification: [{ identificationType: null, assigningAuthority: null, identificationNumber: '' }],
+        identification: [{ type: null, authority: null, value: '' }],
         phoneNumbers: [{ cellPhone: null }],
         emailAddresses: [{ email: null }]
     };
@@ -62,7 +62,8 @@ export default function AddPatient() {
     const {
         handleSubmit,
         control,
-        formState: { errors, isValid }
+        formState: { errors, isValid },
+        setValue
     } = methods;
     const { fields, append } = useFieldArray({
         control,
@@ -98,7 +99,9 @@ export default function AddPatient() {
     }, [isValid]);
 
     const submit = (data: any) => {
-        console.log('data:', data);
+        if (data?.race) {
+            setValue('race', data?.race);
+        }
         handleSavePatient({
             variables: {
                 patient: {
@@ -130,7 +133,10 @@ export default function AddPatient() {
                             country: data?.country
                         }
                     ],
-                    ethnicity: data?.ethnicity
+                    ethnicity: data?.ethnicity,
+                    races: data?.race,
+                    identifications: data?.identification,
+                    emailAddresses: data?.emailAddresses.map((it: any) => it.email)
                 }
             }
         }).then((re) => {
@@ -291,7 +297,7 @@ export default function AddPatient() {
                                             errors={errors}
                                         />
                                         <EthnicityFields control={control} id={'section-Ethnicity'} title="Ethnicity" />
-                                        <RaceFields id={'section-Race'} title={'Race'} />
+                                        <RaceFields control={control} id={'section-Race'} title={'Race'} />
                                         <IdentificationFields
                                             fields={fields}
                                             append={append}
