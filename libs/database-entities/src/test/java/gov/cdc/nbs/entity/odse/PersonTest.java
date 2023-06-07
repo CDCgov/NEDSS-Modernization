@@ -341,12 +341,14 @@ class PersonTest {
 
         Person actual = new Person(117L, "local-id-value");
 
+        Instant deletedOn = Instant.parse("2020-03-03T10:15:30.00Z");
+
         assertThatThrownBy(() ->
             actual.delete(
                 new PatientCommand.Delete(
                     117L,
                     131L,
-                    Instant.now()
+                    deletedOn
                 ),
                 finder
             )
