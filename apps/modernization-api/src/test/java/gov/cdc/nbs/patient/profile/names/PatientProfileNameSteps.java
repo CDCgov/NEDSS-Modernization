@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.names;
 import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.PatientAssertions;
+import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -38,7 +38,7 @@ public class PatientProfileNameSteps {
 
         if (!actual.getNames().isEmpty()) {
             assertThat(actual.getNames())
-                .satisfiesExactly(PatientAssertions.containsNames(this.input.active().getNames()));
+                .satisfiesExactly(PatientCreateAssertions.containsNames(this.input.active().getNames()));
         }
     }
 }

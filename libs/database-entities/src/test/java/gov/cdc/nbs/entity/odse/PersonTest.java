@@ -3,6 +3,9 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
+import gov.cdc.nbs.audit.Added;
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -111,7 +114,9 @@ class PersonTest {
                 "race-code-value",
                 "race-category-value",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getRaces()).satisfiesExactly(
             actual_race -> assertThat(actual_race)
@@ -225,7 +230,9 @@ class PersonTest {
                 new Country("country-code", "country-description"),
                 "Census Tract",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
             .satisfiesExactly(
@@ -261,7 +268,9 @@ class PersonTest {
                 5333L,
                 "AnEmail@email.com",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
             .satisfiesExactly(
@@ -292,7 +301,9 @@ class PersonTest {
                 "CP",
                 "MC",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
             .satisfiesExactly(
@@ -648,6 +659,51 @@ class PersonTest {
                     .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
             );
 
+    }
+
+    @Test
+    void should_add_identity_with_sequence_one() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                117L,
+                "identification-value",
+                "authority-value",
+                "identification-type",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.identifications()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getAudit)
+                        .satisfies(
+                            added -> assertThat(added)
+                                .extracting(Audit::getAdded)
+                                .returns(131L, Added::getAddUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::getAddTime)
+                        )
+                        .satisfies(
+                        changed -> assertThat(changed)
+                            .extracting(Audit::getChanged)
+                            .returns(131L, Changed::getLastChgUserId)
+                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::getLastChgTime)
+                    )
+                )
+                .returns("identification-type", EntityId::getTypeCd)
+                .returns("authority-value", EntityId::getAssigningAuthorityCd)
+                .returns("identification-value", EntityId::getRootExtensionTxt)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getId)
+                        .returns((short)1, EntityIdId::getEntityIdSeq)
+                )
+
+        );
     }
 
 }

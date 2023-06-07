@@ -7,6 +7,7 @@ Feature: Patient create
     And I am adding a new patient
     When I submit the patient
     Then the patient is created
+    And the patient create event is emitted
 
   Scenario: I can create a patient with birth
     Given I am logged into NBS
@@ -109,3 +110,4 @@ Feature: Patient create
     And I am adding a new patient
     When I submit the patient
     Then I am not allowed to create a patient
+    And a patient event is not emitted
