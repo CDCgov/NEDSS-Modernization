@@ -1,12 +1,14 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -14,15 +16,11 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_question_hist")
-public class WaQuestionHist {
+@Table(name = "WA_question", catalog = "NBS_ODSE")
+public class WaQuestion {
     @Id
-    @Column(name = "wa_question_hist_uid", nullable = false)
+    @Column(name = "wa_question_uid", nullable = false)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wa_question_uid", nullable = false)
-    private WaQuestion waQuestionUid;
 
     @Column(name = "code_set_group_id")
     private Long codeSetGroupId;
