@@ -15,7 +15,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import gov.cdc.nbs.questionbank.container.EmbeddedNbsDatabase;
-import gov.cdc.nbs.questionbank.questionnaire.QuestionnaireRepository;
+import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
 import io.cucumber.spring.CucumberContextConfiguration;
 
 @Suite
@@ -32,13 +32,11 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @SpringBootTest
 @ActiveProfiles("test")
 class CucumberTests {
-
     @Autowired
-    private QuestionnaireRepository repository;
+    RequestProperties properties;
 
     @Test
-    void contextLoads() {
-        assertNotNull(repository);
+    void should_autowire() {
+        assertNotNull(properties);
     }
-
 }
