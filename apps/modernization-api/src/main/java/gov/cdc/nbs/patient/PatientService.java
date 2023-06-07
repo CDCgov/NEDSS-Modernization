@@ -519,6 +519,24 @@ public class PatientService {
         return sendPatientEvent(event);
     }
 
+    public PatientEventResponse addPatientRace(RaceInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = RaceInput.toAddRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse updatePatientRace(RaceInput input) {
+        var user = SecurityUtil.getUserDetails();
+        var event = RaceInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        return sendPatientEvent(event);
+    }
+
+    public PatientEventResponse deletePatientRace(Long patientId, String raceCd) {
+        var user = SecurityUtil.getUserDetails();
+        var event = new PatientRequest.DeleteRace(getRequestId(), patientId, raceCd, user.getId());
+        return sendPatientEvent(event);
+    }
+
     public PatientEventResponse addPatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);

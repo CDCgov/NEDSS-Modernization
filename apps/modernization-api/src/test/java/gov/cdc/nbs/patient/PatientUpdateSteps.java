@@ -17,9 +17,9 @@ import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
+import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
-import gov.cdc.nbs.patient.update.PatientUpdateController;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
@@ -46,9 +46,6 @@ public class PatientUpdateSteps {
     private PatientController patientController;
 
     @Autowired
-    private PatientUpdateController patientUpdateController;
-
-    @Autowired
     private KafkaTestConsumer consumer;
 
     @Autowired
@@ -69,47 +66,43 @@ public class PatientUpdateSteps {
             switch (updateType) {
                 case "general info" -> {
                     input = PersonUtil.convertToGeneralInput(PersonMother.generateRandomPerson(123L));
-                    response = patientUpdateController.updatePatientGeneralInfo((GeneralInfoInput) input);
+                    response = patientController.updatePatientGeneralInfo((GeneralInfoInput) input);
                 }
                 case "sex and birth" -> {
                     input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(123L));
-                    response = patientUpdateController.updatePatientSexBirth((SexAndBirthInput) input);
+                    response = patientController.updatePatientSexBirth((SexAndBirthInput) input);
                 }
                 case "mortality" -> {
                     input = createMortalityInput(123L);
-                    response = patientUpdateController.updateMortality((MortalityInput) input);
+                    response = patientController.updateMortality((MortalityInput) input);
                 }
                 case "administrative" -> {
                     input = createAdministrativeInput(123L);
-                    response = patientUpdateController.updateAdministrative((AdministrativeInput) input);
+                    response = patientController.updateAdministrative((AdministrativeInput) input);
                 }
                 case "name" -> {
                     input = createNameInput(123L);
-                    response = patientUpdateController.updatePatientName((NameInput) input);
+                    response = patientController.updatePatientName((NameInput) input);
                 }
                 case "address" -> {
                     input = createAddressInput(123L);
-                    response = patientUpdateController.updatePatientAddress((AddressInput) input);
+                    response = patientController.updatePatientAddress((AddressInput) input);
                 }
                 case "email" -> {
                     input = createEmailInput(123L);
-                    response = patientUpdateController.updatePatientEmail((EmailInput) input);
+                    response = patientController.updatePatientEmail((EmailInput) input);
                 }
                 case "identification" -> {
                     input = createIdentificationInput(123L);
-                    response = patientUpdateController.updatePatientIdentification((IdentificationInput) input);
+                    response = patientController.updatePatientIdentification((IdentificationInput) input);
                 }
                 case "phone" -> {
                     input = createPhoneInput(123L);
-                    response = patientUpdateController.updatePatientPhone((PhoneInput) input);
+                    response = patientController.updatePatientPhone((PhoneInput) input);
                 }
                 case "race" -> {
                     input = createRaceInput(123L);
-                    response = patientUpdateController.updatePatientRace((RaceInput) input);
-                }
-                case "ethnicity" -> {
-                    input = createEthnicityInput(123L);
-                    response = patientUpdateController.updateEthnicity((EthnicityInput) input);
+                    response = patientController.updatePatientRace((RaceInput) input);
                 }
             }
         } catch (AccessDeniedException e) {
@@ -171,6 +164,14 @@ public class PatientUpdateSteps {
         var input = new AdministrativeInput();
         input.setPatientId(patient);
         input.setDescription("Description 1");
+        return input;
+    }
+
+    private RaceInput createRaceInput(final long patient) {
+        var input = new RaceInput();
+        input.setPatientId(patient);
+        input.setRaceCd("r1");
+        input.setRaceCategoryCd("r2");
         return input;
     }
 

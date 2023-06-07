@@ -32,6 +32,7 @@ Feature: Patient Demographics Update
       | email          |
       | identification |
       | phone          |
+      | race           |
 
   @patient_update_permissions
   Scenario Outline: I cant send update requests without the proper permissions
@@ -56,6 +57,9 @@ Feature: Patient Demographics Update
       | address        | FIND-PATIENT,EDIT-PATIENT |
       | address        | FIND-PATIENT,VIEW-PATIENT |
       | address        | EDIT-PATIENT,VIEW-PATIENT |
+      | race           | FIND-PATIENT,EDIT-PATIENT |
+      | race           | FIND-PATIENT,VIEW-PATIENT |
+      | race           | EDIT-PATIENT,VIEW-PATIENT |
       | mortality      | FIND-PATIENT,EDIT-PATIENT |
       | mortality      | FIND-PATIENT,VIEW-PATIENT |
       | mortality      | EDIT-PATIENT,VIEW-PATIENT |
