@@ -1,11 +1,11 @@
-package gov.cdc.nbs.questionbank.valueset.repository;
+package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.valueset.ValueSetRequest;
+import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

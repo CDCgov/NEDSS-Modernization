@@ -10,10 +10,19 @@ type ValueSet {
   codeSet: String!
 }
 
-
 input ValueSetData {
   code: String!
   description: String
   name: String!
   codeSet: String!
+  values: [Value]
+}
+
+input Value {
+ code: String!
+ display: String!
+ value: String!
+ displayOrder: Int! 
+ comment: String
+
 }
