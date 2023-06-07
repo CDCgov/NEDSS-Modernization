@@ -64,8 +64,8 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                                 searchCriteria.nameTypes
                                                     ? Object.values(searchCriteria.nameTypes).map((type) => {
                                                           return {
-                                                              name: formatInterfaceString(type.code_short_desc_txt),
-                                                              value: type?.id
+                                                              name: formatInterfaceString(type.codeShortDescTxt),
+                                                              value: type?.id?.code
                                                           };
                                                       })
                                                     : []
@@ -95,8 +95,8 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                                 searchCriteria.prefixes
                                                     ? Object.values(searchCriteria.prefixes).map((type) => {
                                                           return {
-                                                              name: formatInterfaceString(type.code_short_desc_txt),
-                                                              value: type?.id
+                                                              name: formatInterfaceString(type.codeShortDescTxt),
+                                                              value: type?.id?.code
                                                           };
                                                       })
                                                     : []
@@ -143,8 +143,8 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                                 searchCriteria.degree
                                                     ? Object.values(searchCriteria.degree).map((type) => {
                                                           return {
-                                                              name: formatInterfaceString(type.code_short_desc_txt),
-                                                              value: type?.id
+                                                              name: formatInterfaceString(type.codeShortDescTxt),
+                                                              value: type?.id?.code
                                                           };
                                                       })
                                                     : []

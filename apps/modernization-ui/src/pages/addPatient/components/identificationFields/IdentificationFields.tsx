@@ -79,12 +79,12 @@ export const IdentificationFields = ({
                                                     htmlFor={`identification[${index}].authority`}
                                                     label="Assigning authority"
                                                     options={
-                                                        searchCriteria.countries
+                                                        searchCriteria.authorities
                                                             ? Object.values(searchCriteria.authorities).map(
                                                                   (country) => {
                                                                       return {
-                                                                          name: country?.code_short_desc_txt || '',
-                                                                          value: country?.id || ''
+                                                                          name: country?.codeShortDescTxt || '',
+                                                                          value: country?.id?.code || ''
                                                                       };
                                                                   }
                                                               )
