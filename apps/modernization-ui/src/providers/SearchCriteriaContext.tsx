@@ -349,8 +349,8 @@ export const SearchCriteriaProvider = (props: any) => {
             const authorities: AssigningAuthor[] = [];
             results.findAllAssigningAuthorities.content.forEach((i) => i && authorities.push(i));
             authorities.sort((a, b) => {
-                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
-                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
                 }
                 return 0;
             });
@@ -363,8 +363,8 @@ export const SearchCriteriaProvider = (props: any) => {
             const nameTypes: NameType[] = [];
             results.findAllNameTypes.content.forEach((i) => i && nameTypes.push(i));
             nameTypes.sort((a, b) => {
-                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
-                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
                 }
                 return 0;
             });
@@ -377,8 +377,8 @@ export const SearchCriteriaProvider = (props: any) => {
             const prefixes: NamePrefix[] = [];
             results.findAllNamePrefixes.content.forEach((i) => i && prefixes.push(i));
             prefixes.sort((a, b) => {
-                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
-                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
                 }
                 return 0;
             });
@@ -391,8 +391,8 @@ export const SearchCriteriaProvider = (props: any) => {
             const degree: Degree[] = [];
             results.findAllDegrees.content.forEach((i) => i && degree.push(i));
             degree.sort((a, b) => {
-                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
-                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
                 }
                 return 0;
             });
@@ -405,8 +405,8 @@ export const SearchCriteriaProvider = (props: any) => {
             const addressType: AddressType[] = [];
             results.findAllAddressTypes.content.forEach((i) => i && addressType.push(i));
             addressType.sort((a, b) => {
-                if (a?.code_short_desc_txt && b?.code_short_desc_txt) {
-                    return a.code_short_desc_txt.localeCompare(b.code_short_desc_txt);
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
                 }
                 return 0;
             });

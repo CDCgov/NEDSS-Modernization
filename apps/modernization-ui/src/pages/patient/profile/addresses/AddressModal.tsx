@@ -60,8 +60,8 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                                 searchCriteria?.addressType
                                                     ? searchCriteria.addressType.map((address) => {
                                                           return {
-                                                              value: address?.code_short_desc_txt!,
-                                                              name: address?.id!
+                                                              value: address?.codeShortDescTxt!,
+                                                              name: address?.id?.code!
                                                           };
                                                       })
                                                     : []
