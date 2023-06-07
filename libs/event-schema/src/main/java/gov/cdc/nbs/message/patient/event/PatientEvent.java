@@ -9,7 +9,6 @@ import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-    @JsonSubTypes.Type(PatientEvent.Created.class),
     @JsonSubTypes.Type(PatientEvent.Deleted.class),
     @JsonSubTypes.Type(PatientEvent.EthnicityChanged.class),
     @JsonSubTypes.Type(PatientEvent.RaceAdded.class),
