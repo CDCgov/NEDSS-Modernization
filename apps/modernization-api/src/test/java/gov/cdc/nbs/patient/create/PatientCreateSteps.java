@@ -17,8 +17,6 @@ import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -83,10 +81,7 @@ public class PatientCreateSteps {
     @Then("the patient is created")
     public void the_patient_is_created() {
 
-
-        Optional<Person> created = repository.findById(this.patients.one().id());
-
-        Person actual = created.orElseThrow();
+        Person actual = patient.active();
 
         assertThat(actual)
             .returns(activeUser.active().id(), Person::getAddUserId)

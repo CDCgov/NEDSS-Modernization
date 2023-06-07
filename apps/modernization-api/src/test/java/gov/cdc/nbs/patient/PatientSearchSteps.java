@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.OptionalLong;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -190,9 +191,10 @@ public class PatientSearchSteps {
 
     @Then("I find the patient")
     public void i_find_the_patient() {
-        assertNotNull(searchPatient);
-        assertTrue(searchResults.size() > 0);
-        assertTrue(searchResults.contains(searchPatient));
+        assertThat(searchPatient).isNotNull();
+
+        assertThat(searchResults).contains(searchPatient);
+
     }
 
     @Then("I find only the expected patient")
@@ -311,7 +313,7 @@ public class PatientSearchSteps {
                 filter.setZip(zipLocator.getZipCd());
                 break;
             case "ethnicity":
-                filter.setEthnicity(searchPatient.getEthnicGroupInd());
+                filter.setEthnicity(searchPatient.getEthnicity().ethnicGroup());
                 break;
             case "record status":
                 filter.setRecordStatus(Arrays.asList(searchPatient.getRecordStatusCd()));

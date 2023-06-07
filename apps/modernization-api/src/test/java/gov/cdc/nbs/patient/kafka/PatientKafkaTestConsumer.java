@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Component
+@Slf4j
 public class PatientKafkaTestConsumer {
 
     public record Message(String key, PatientEvent event) {
@@ -39,8 +41,12 @@ public class PatientKafkaTestConsumer {
             PatientEvent event = mapper.readValue((String) consumerRecord.value(), PatientEvent.class);
 
             this.received.add(new Message(key, event));
-        } catch (IOException ignored) {
+        } catch (IOException exception) {
 
+            log.error(
+                String.format("An error occurred when receiving %s", consumerRecord.value()),
+                exception
+            );
         }
 
     }

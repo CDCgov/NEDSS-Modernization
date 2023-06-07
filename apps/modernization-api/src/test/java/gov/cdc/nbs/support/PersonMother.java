@@ -46,22 +46,38 @@ public class PersonMother {
         final String middleName = faker.name().firstName();
         final String lastName = faker.name().lastName();
 
-        Person person = new Person(id, local);
+        Person person = new Person(
+            new PatientCommand.AddPatient(
+                id,
+                local,
+                RandomUtil.dateInPast(),
+                RandomUtil.getRandomFromArray(Gender.values()),
+                RandomUtil.getRandomFromArray(Gender.values()),
+                RandomUtil.getRandomFromArray(Deceased.values()),
+                null,
+                null,
+                RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST),
+                now,
+                "Test Patient Created by PersonMother",
+                null,
+                CREATED_BY_ID,
+                now
+            )
+        );
+
         person.setCd("PAT");
         person.setRecordStatusCd(RecordStatus.ACTIVE);
         person.setFirstNm(firstName);
         person.setMiddleNm(middleName);
         person.setLastNm(lastName);
         person.setSsn(RandomUtil.getRandomSsn());
-        person.setBirthTime(RandomUtil.getRandomDateInPast());
-        person.setBirthGenderCd(RandomUtil.getRandomFromArray(Gender.values()));
-        person.setDeceasedIndCd(RandomUtil.getRandomFromArray(Deceased.values()));
-        person.setCurrSexCd(RandomUtil.getRandomFromArray(Gender.values()));
+
+
         person.setBirthCityCd(RandomUtil.getRandomString());
         person.setBirthStateCd(RandomUtil.getRandomStateCode());
         person.setBirthCntryCd("United States");
         person.setAgeReportedTime(RandomUtil.getRandomDateInPast());
-        person.setAsOfDateGeneral(RandomUtil.getRandomDateInPast());
+
         // Identification
         person.add(
             new PatientCommand.AddIdentification(
@@ -86,8 +102,6 @@ public class PersonMother {
                 id,
                 now));
 
-        // ethnic group
-        person.setEthnicGroupInd(RandomUtil.getRandomFromArray(EthnicityMother.ETHNICITY_LIST));
 
         // race
         person.add(
@@ -188,8 +202,6 @@ public class PersonMother {
                 now
             )
         );
-
-        person.setEthnicGroupInd(EthnicityMother.HISPANIC_OR_LATINO_CODE);
 
         // race
         person.add(

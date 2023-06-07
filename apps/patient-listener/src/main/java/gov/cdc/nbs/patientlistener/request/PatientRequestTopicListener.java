@@ -50,9 +50,6 @@ public class PatientRequestTopicListener {
             } else if (request instanceof PatientRequest.DeleteName delete) {
                 updateHandler.handlePatientNameDelete(delete.requestId(), delete.patientId(), delete.personNameSeq(),
                     delete.userId());
-            } else if (request instanceof PatientRequest.UpdateEthnicity update) {
-                updateHandler.handlePatientEthnicityUpdate(update.data());
-
             } else if (request instanceof PatientRequest.AddRace update) {
                 updateHandler.handlePatientRaceAdd(update.data());
             } else if (request instanceof PatientRequest.UpdateRace update) {

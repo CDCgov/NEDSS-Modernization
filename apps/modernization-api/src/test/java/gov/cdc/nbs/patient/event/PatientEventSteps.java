@@ -54,4 +54,25 @@ public class PatientEventSteps {
 
     }
 
+    @Then("the patient ethnicity changed event is emitted")
+    public void the_patient_ethnicity_changed_event_is_emitted() {
+
+        PatientIdentifier patient = patients.one();
+        ActiveUser user = activeUser.active();
+
+        consumer.satisfies(
+            actual -> assertThat(actual).satisfiesExactly(
+                actual_event -> assertThat(actual_event)
+                    .returns(patient.local(), PatientKafkaTestConsumer.Message::key)
+                    .extracting(PatientKafkaTestConsumer.Message::event)
+                    .asInstanceOf(type(PatientEvent.EthnicityChanged.class))
+                    .returns(patient.id(), PatientEvent::patient)
+                    .returns(patient.local(), PatientEvent::localId)
+                    .returns(user.id(), PatientEvent.EthnicityChanged::changedBy)
+            )
+        );
+
+
+    }
+
 }

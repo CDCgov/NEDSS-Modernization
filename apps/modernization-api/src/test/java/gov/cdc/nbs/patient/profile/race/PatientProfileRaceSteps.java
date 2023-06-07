@@ -4,10 +4,12 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientAssertions;
+import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.TestAvailable;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -22,16 +24,24 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientProfileRaceSteps {
 
     @Autowired
+    PatientMother mother;
+
+    @Autowired
     TestActive<PatientInput> input;
 
     @Autowired
     TestPatient patient;
 
     @Autowired
-    TestPatients patients;
+    TestAvailable<PatientIdentifier> patients;
 
     @Autowired
     PatientRaceResolver resolver;
+
+    @Given("the patient has a race")
+    public void the_patient_has_a_race() {
+        mother.withRace(patients.one());
+    }
 
     @Given("the new patient's race is entered")
     public void the_new_patient_race_is_entered() {
@@ -53,7 +63,7 @@ public class PatientProfileRaceSteps {
 
     @Then("the profile has associated races")
     public void the_profile_has_associated_races() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
 
@@ -63,9 +73,9 @@ public class PatientProfileRaceSteps {
         assertThat(actual).isNotEmpty();
     }
 
-    @Then("the profile has associated no races")
+    @Then("the profile has no associated races")
     public void the_profile_has_no_associated_races() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
 
@@ -77,7 +87,7 @@ public class PatientProfileRaceSteps {
 
     @Then("the profile races are not accessible")
     public void the_profile_race_is_not_accessible() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);

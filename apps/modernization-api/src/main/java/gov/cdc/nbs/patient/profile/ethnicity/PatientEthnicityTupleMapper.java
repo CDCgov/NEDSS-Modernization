@@ -50,7 +50,7 @@ class PatientEthnicityTupleMapper {
                 "An ethnicity version is required"
             );
 
-        Instant asOf = tuple.get(this.tables.patient().asOfDateEthnicity);
+        Instant asOf = tuple.get(this.tables.patient().ethnicity.asOfDateEthnicity);
 
         PatientEthnicity.EthnicGroup ethnicGroup = mapEthnicGroup(tuple);
 

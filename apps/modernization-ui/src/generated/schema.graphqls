@@ -1185,7 +1185,7 @@ type Mutation {
     addPatientPhone(input: PhoneInput!): PatientEventResponse!
     addPatientRace(input: RaceInput!): PatientEventResponse!
     updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
-    updateEthnicity(input: EthnicityInput!): PatientEventResponse!
+    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     updatePatientAddress(input: AddressInput!): PatientEventResponse!
     updatePatientEmail(input: EmailInput!): PatientEventResponse!
     updatePatientIdentification(
@@ -1462,10 +1462,15 @@ input EmailInput {
 }
 
 input EthnicityInput {
-    patientId: ID!
+    patient: Int!
     asOf: DateTime
-    ethnicityCode: String!
-    ethnicUnkReasonCd: String
+    ethnicGroup: String!
+    unknownReason: String
+    detailed: [String]
+}
+
+type PatientEthnicityChangeResult {
+    patient: Int!
 }
 
 input IdentificationInput {
