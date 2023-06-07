@@ -61,6 +61,7 @@ public class DropDownValuesController {
                 .build();
     }
 
+    @QueryMapping
     public NaicsIndustryCodeResults findAllNaicsIndustryCodes() {
         List<NaicsIndustryCode> naicsIndustryCodeRepositoryAll = naicsIndustryCodeRepository.findAll();
         return NaicsIndustryCodeResults.builder()
