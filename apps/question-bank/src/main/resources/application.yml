@@ -11,17 +11,6 @@ nbs:
     max-page-size: 50
 
 spring:
-  graphql:
-    path: /graphql
-    graphiql:
-      enabled: true
-      path: /graphiql
-  flyway:
-    enabled: true
-    schemas: dbo
-    url: ${spring.datasource.url}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
   jpa:
     properties:
       hibernate:
@@ -33,7 +22,7 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=question_bank;encrypt=true;trustServerCertificate=true;
+    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa
     password: fake.fake.fake.1234
   kafka:
@@ -46,14 +35,12 @@ spring:
       auto-offset-reset: earliest
 
 kafka:
-    enabled: true
+    enabled: false
 
 kafkadef:
   groups:
     patient: question-group
   topics:
     questionbank:
-      request: questionbank
-      status: questionbank-status
       question-created: question-created
-      deletestatus: deletequestion-status
+      question-deleted: question-deleted
