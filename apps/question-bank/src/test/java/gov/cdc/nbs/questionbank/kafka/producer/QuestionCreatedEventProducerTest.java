@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.kafka.producer;
 
+import static org.junit.Assert.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +24,7 @@ class QuestionCreatedEventProducerTest {
 
     @Test
     void should_set_correct_data_for_question() {
-
+        assertNotNull(producer);
     }
 
 }

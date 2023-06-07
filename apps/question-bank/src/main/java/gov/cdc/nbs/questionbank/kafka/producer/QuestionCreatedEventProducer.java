@@ -7,17 +7,17 @@ import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 
 @Component
 public class QuestionCreatedEventProducer {
-    private final String statusTopic;
+    private final String topic;
     private final KafkaTemplate<String, QuestionCreatedEvent> template;
 
     public QuestionCreatedEventProducer(
             final KafkaTemplate<String, QuestionCreatedEvent> template,
             final RequestProperties properties) {
         this.template = template;
-        this.statusTopic = properties.questionCreated();
+        this.topic = properties.questionCreated();
     }
 
     public void send(final QuestionCreatedEvent status) {
-        template.send(statusTopic, status);
+        template.send(topic, status);
     }
 }
