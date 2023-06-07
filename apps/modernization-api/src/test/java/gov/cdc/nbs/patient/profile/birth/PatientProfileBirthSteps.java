@@ -15,7 +15,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,13 +53,13 @@ public class PatientProfileBirthSteps {
             .returns(expected.getBirthGender(), Person::getBirthGenderCd)
         ;
 
-        if(expected.getDateOfBirth() != null) {
+        if (expected.getDateOfBirth() != null) {
             Instant expected_birth_time = expected.getDateOfBirth()
-                .atStartOfDay(ZoneId.systemDefault())
+                .atStartOfDay(ZoneOffset.UTC)
                 .toInstant();
 
             assertThat(actual.getBirthTime()).isEqualTo(expected_birth_time);
-        }else {
+        } else {
             assertThat(actual.getBirthTime()).isNull();
         }
     }

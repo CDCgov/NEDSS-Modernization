@@ -9,26 +9,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = RequestProperties.class)
 class RequestPropertiesTest {
 
-    @Value("${kafkadef.topics.questionbank.request}")
-    private String request;
+    @Value("${kafkadef.topics.questionbank.question-created}")
+    private String questionCreated;
 
-    @Value("${kafkadef.topics.questionbank.status}")
-    private String status;
+    @Value("${kafkadef.topics.questionbank.question-deleted}")
+    private String questionDeleted;
 
     @Autowired
     private RequestProperties properties;
 
     @Test
     void should_have_config_properties() {
-        assertEquals(status, properties.status());
-        assertEquals(request, properties.request());
+        assertEquals(questionCreated, properties.questionCreated());
+        assertEquals(questionDeleted, properties.questionDeleted());
     }
 
     @Test
     void should_have_proper_defaults() {
         RequestProperties newProps = new RequestProperties();
-        assertEquals("questionbank-status", newProps.status());
-        assertEquals("questionbank", newProps.request());
         assertEquals("question-created", newProps.questionCreated());
+        assertEquals("question-deleted", newProps.questionDeleted());
     }
 }

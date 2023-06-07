@@ -1,8 +1,11 @@
 query findAllPhoneAndEmailUse($page: Page){
     findAllPhoneAndEmailUse(page: $page){
         content{
-            id
-            code_short_desc_txt
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
         }
         total
     }

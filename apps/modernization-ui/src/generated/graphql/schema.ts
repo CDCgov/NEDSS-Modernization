@@ -42,8 +42,8 @@ export type AddressInput = {
 
 export type AddressType = {
   __typename?: 'AddressType';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type AddressTypeResults = {
@@ -54,8 +54,8 @@ export type AddressTypeResults = {
 
 export type AddressUse = {
   __typename?: 'AddressUse';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type AddressUseResults = {
@@ -71,8 +71,8 @@ export type AdministrativeInput = {
 
 export type AssigningAuthor = {
   __typename?: 'AssigningAuthor';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type AssigningAuthorResults = {
@@ -102,6 +102,12 @@ export enum CaseStatus {
 export type CaseStatuses = {
   includeUnassigned: Scalars['Boolean'];
   statusList: Array<CaseStatus>;
+};
+
+export type CodeValueGeneralId = {
+  __typename?: 'CodeValueGeneralId';
+  code: Scalars['String'];
+  codeSetNm: Scalars['String'];
 };
 
 export type ConditionCode = {
@@ -156,8 +162,8 @@ export enum Deceased {
 
 export type Degree = {
   __typename?: 'Degree';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type DegreeResults = {
@@ -190,9 +196,10 @@ export type EthnicityId = {
 
 export type EthnicityInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
-  ethnicUnkReasonCd?: InputMaybe<Scalars['String']>;
-  ethnicityCode: Scalars['String'];
-  patientId: Scalars['ID'];
+  detailed?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  ethnicGroup: Scalars['String'];
+  patient: Scalars['Int'];
+  unknownReason?: InputMaybe<Scalars['String']>;
 };
 
 export type EthnicityResults = {
@@ -258,8 +265,8 @@ export type IdentificationTypeId = {
 
 export type IdentificationTypes = {
   __typename?: 'IdentificationTypes';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type IdentificationTypesResults = {
@@ -608,7 +615,7 @@ export type Mutation = {
   deletePatientPhone: PatientEventResponse;
   deletePatientRace: PatientEventResponse;
   updateAdministrative: PatientEventResponse;
-  updateEthnicity: PatientEventResponse;
+  updateEthnicity: PatientEthnicityChangeResult;
   updateMortality: PatientEventResponse;
   updatePatientAddress: PatientEventResponse;
   updatePatientEmail: PatientEventResponse;
@@ -795,8 +802,8 @@ export type NameInput = {
 
 export type NamePrefix = {
   __typename?: 'NamePrefix';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type NamePrefixResults = {
@@ -807,8 +814,8 @@ export type NamePrefixResults = {
 
 export type NameType = {
   __typename?: 'NameType';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type NameTypeResults = {
@@ -1162,6 +1169,11 @@ export type PatientEthnicity = {
   patient: Scalars['Int'];
   unknownReason?: Maybe<PatientCodedValue>;
   version: Scalars['Int'];
+};
+
+export type PatientEthnicityChangeResult = {
+  __typename?: 'PatientEthnicityChangeResult';
+  patient: Scalars['Int'];
 };
 
 export type PatientEventResponse = {
@@ -1732,8 +1744,8 @@ export type PersonResults = {
 
 export type PhoneAndEmailType = {
   __typename?: 'PhoneAndEmailType';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type PhoneAndEmailTypeResults = {
@@ -1744,8 +1756,8 @@ export type PhoneAndEmailTypeResults = {
 
 export type PhoneAndEmailUse = {
   __typename?: 'PhoneAndEmailUse';
-  code_short_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  codeShortDescTxt: Scalars['String'];
+  id: CodeValueGeneralId;
 };
 
 export type PhoneAndEmailUseResults = {
@@ -2267,7 +2279,7 @@ export type StateCode = {
 export type StateCountyCodeValue = {
   __typename?: 'StateCountyCodeValue';
   code_desc_txt: Scalars['String'];
-  id: Scalars['ID'];
+  id: CodeValueGeneralId;
   state_cd: Scalars['String'];
 };
 
@@ -2452,7 +2464,7 @@ export type UpdateEthnicityMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEthnicityChangeResult', patient: number } };
 
 export type UpdateMortalityMutationVariables = Exact<{
   input: MortalityInput;
@@ -2522,21 +2534,21 @@ export type FindAllAddressTypesQueryVariables = Exact<{
 }>;
 
 
-export type FindAllAddressTypesQuery = { __typename?: 'Query', findAllAddressTypes: { __typename?: 'AddressTypeResults', total: number, content: Array<{ __typename?: 'AddressType', id: string, code_short_desc_txt: string }> } };
+export type FindAllAddressTypesQuery = { __typename?: 'Query', findAllAddressTypes: { __typename?: 'AddressTypeResults', total: number, content: Array<{ __typename?: 'AddressType', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllAddressUsesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllAddressUsesQuery = { __typename?: 'Query', findAllAddressUses: { __typename?: 'AddressUseResults', total: number, content: Array<{ __typename?: 'AddressUse', id: string, code_short_desc_txt: string }> } };
+export type FindAllAddressUsesQuery = { __typename?: 'Query', findAllAddressUses: { __typename?: 'AddressUseResults', total: number, content: Array<{ __typename?: 'AddressUse', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllAssigningAuthoritiesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllAssigningAuthoritiesQuery = { __typename?: 'Query', findAllAssigningAuthorities: { __typename?: 'AssigningAuthorResults', total: number, content: Array<{ __typename?: 'AssigningAuthor', id: string, code_short_desc_txt: string }> } };
+export type FindAllAssigningAuthoritiesQuery = { __typename?: 'Query', findAllAssigningAuthorities: { __typename?: 'AssigningAuthorResults', total: number, content: Array<{ __typename?: 'AssigningAuthor', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllConditionCodesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2565,7 +2577,7 @@ export type FindAllDegreesQueryVariables = Exact<{
 }>;
 
 
-export type FindAllDegreesQuery = { __typename?: 'Query', findAllDegrees: { __typename?: 'DegreeResults', total: number, content: Array<{ __typename?: 'Degree', id: string, code_short_desc_txt: string }> } };
+export type FindAllDegreesQuery = { __typename?: 'Query', findAllDegrees: { __typename?: 'DegreeResults', total: number, content: Array<{ __typename?: 'Degree', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllEthnicityValuesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2579,7 +2591,7 @@ export type FindAllIdentificationTypesQueryVariables = Exact<{
 }>;
 
 
-export type FindAllIdentificationTypesQuery = { __typename?: 'Query', findAllIdentificationTypes: { __typename?: 'IdentificationTypesResults', total: number, content: Array<{ __typename?: 'IdentificationTypes', id: string, code_short_desc_txt: string }> } };
+export type FindAllIdentificationTypesQuery = { __typename?: 'Query', findAllIdentificationTypes: { __typename?: 'IdentificationTypesResults', total: number, content: Array<{ __typename?: 'IdentificationTypes', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllJurisdictionsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2598,14 +2610,14 @@ export type FindAllNamePrefixesQueryVariables = Exact<{
 }>;
 
 
-export type FindAllNamePrefixesQuery = { __typename?: 'Query', findAllNamePrefixes: { __typename?: 'NamePrefixResults', total: number, content: Array<{ __typename?: 'NamePrefix', id: string, code_short_desc_txt: string }> } };
+export type FindAllNamePrefixesQuery = { __typename?: 'Query', findAllNamePrefixes: { __typename?: 'NamePrefixResults', total: number, content: Array<{ __typename?: 'NamePrefix', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllNameTypesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllNameTypesQuery = { __typename?: 'Query', findAllNameTypes: { __typename?: 'NameTypeResults', total: number, content: Array<{ __typename?: 'NameType', id: string, code_short_desc_txt: string }> } };
+export type FindAllNameTypesQuery = { __typename?: 'Query', findAllNameTypes: { __typename?: 'NameTypeResults', total: number, content: Array<{ __typename?: 'NameType', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllOrganizationsQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2640,14 +2652,14 @@ export type FindAllPhoneAndEmailTypeQueryVariables = Exact<{
 }>;
 
 
-export type FindAllPhoneAndEmailTypeQuery = { __typename?: 'Query', findAllPhoneAndEmailType: { __typename?: 'PhoneAndEmailTypeResults', total: number, content: Array<{ __typename?: 'PhoneAndEmailType', id: string, code_short_desc_txt: string }> } };
+export type FindAllPhoneAndEmailTypeQuery = { __typename?: 'Query', findAllPhoneAndEmailType: { __typename?: 'PhoneAndEmailTypeResults', total: number, content: Array<{ __typename?: 'PhoneAndEmailType', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllPhoneAndEmailUseQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllPhoneAndEmailUseQuery = { __typename?: 'Query', findAllPhoneAndEmailUse: { __typename?: 'PhoneAndEmailUseResults', total: number, content: Array<{ __typename?: 'PhoneAndEmailUse', id: string, code_short_desc_txt: string }> } };
+export type FindAllPhoneAndEmailUseQuery = { __typename?: 'Query', findAllPhoneAndEmailUse: { __typename?: 'PhoneAndEmailUseResults', total: number, content: Array<{ __typename?: 'PhoneAndEmailUse', codeShortDescTxt: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllPlacesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2682,7 +2694,7 @@ export type FindAllStateCountyCodeValuesQueryVariables = Exact<{
 }>;
 
 
-export type FindAllStateCountyCodeValuesQuery = { __typename?: 'Query', findAllStateCountyCodeValues: { __typename?: 'StateCountyCodeValueResults', total: number, content: Array<{ __typename?: 'StateCountyCodeValue', id: string, code_desc_txt: string, state_cd: string }> } };
+export type FindAllStateCountyCodeValuesQuery = { __typename?: 'Query', findAllStateCountyCodeValues: { __typename?: 'StateCountyCodeValueResults', total: number, content: Array<{ __typename?: 'StateCountyCodeValue', code_desc_txt: string, state_cd: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
 
 export type FindAllUsersQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -3413,8 +3425,7 @@ export type UpdateAdministrativeMutationOptions = Apollo.BaseMutationOptions<Upd
 export const UpdateEthnicityDocument = gql`
     mutation updateEthnicity($input: EthnicityInput!) {
   updateEthnicity(input: $input) {
-    requestId
-    patientId
+    patient
   }
 }
     `;
@@ -3754,8 +3765,11 @@ export const FindAllAddressTypesDocument = gql`
     query findAllAddressTypes($page: Page) {
   findAllAddressTypes(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -3793,8 +3807,11 @@ export const FindAllAddressUsesDocument = gql`
     query findAllAddressUses($page: Page) {
   findAllAddressUses(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -3832,8 +3849,11 @@ export const FindAllAssigningAuthoritiesDocument = gql`
     query findAllAssigningAuthorities($page: Page) {
   findAllAssigningAuthorities(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -3999,8 +4019,11 @@ export const FindAllDegreesDocument = gql`
     query findAllDegrees($page: Page) {
   findAllDegrees(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -4079,8 +4102,11 @@ export const FindAllIdentificationTypesDocument = gql`
     query findAllIdentificationTypes($page: Page) {
   findAllIdentificationTypes(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -4226,8 +4252,11 @@ export const FindAllNamePrefixesDocument = gql`
     query findAllNamePrefixes($page: Page) {
   findAllNamePrefixes(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -4265,8 +4294,11 @@ export const FindAllNameTypesDocument = gql`
     query findAllNameTypes($page: Page) {
   findAllNameTypes(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -4653,8 +4685,11 @@ export const FindAllPhoneAndEmailTypeDocument = gql`
     query findAllPhoneAndEmailType($page: Page) {
   findAllPhoneAndEmailType(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -4692,8 +4727,11 @@ export const FindAllPhoneAndEmailUseDocument = gql`
     query findAllPhoneAndEmailUse($page: Page) {
   findAllPhoneAndEmailUse(page: $page) {
     content {
-      id
-      code_short_desc_txt
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
     }
     total
   }
@@ -4933,7 +4971,10 @@ export const FindAllStateCountyCodeValuesDocument = gql`
     query findAllStateCountyCodeValues($page: Page) {
   findAllStateCountyCodeValues(page: $page) {
     content {
-      id
+      id {
+        codeSetNm
+        code
+      }
       code_desc_txt
       state_cd
     }

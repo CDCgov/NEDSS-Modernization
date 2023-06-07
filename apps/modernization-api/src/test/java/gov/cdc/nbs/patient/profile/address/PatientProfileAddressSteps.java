@@ -6,10 +6,12 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientAssertions;
+import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
-import gov.cdc.nbs.patient.TestPatients;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.support.TestActive;
+import gov.cdc.nbs.support.TestAvailable;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -29,7 +31,10 @@ public class PatientProfileAddressSteps {
     private final Faker faker = new Faker(new Locale("en-us"));
 
     @Autowired
-    TestPatients patients;
+    PatientMother mother;
+
+    @Autowired
+    TestAvailable<PatientIdentifier> patients;
 
     @Autowired
     PatientAddressResolver resolver;
@@ -39,6 +44,11 @@ public class PatientProfileAddressSteps {
 
     @Autowired
     TestPatient patient;
+
+    @Given("the patient has an address")
+    public void the_patient_has_an_address() {
+        mother.withAddress(patients.one());
+    }
 
     @Given("the new patient's address is entered")
     public void the_new_patient_address_is_entered() {
@@ -78,7 +88,7 @@ public class PatientProfileAddressSteps {
 
     @Then("the profile has associated addresses")
     public void the_profile_has_associated_addresses() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
 
@@ -88,9 +98,9 @@ public class PatientProfileAddressSteps {
         assertThat(actual).isNotEmpty();
     }
 
-    @Then("the profile has associated no addresses")
+    @Then("the profile has no associated addresses")
     public void the_profile_has_no_associated_addresses() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
 
@@ -102,7 +112,7 @@ public class PatientProfileAddressSteps {
 
     @Then("the profile addresses are not accessible")
     public void the_profile_address_is_not_accessible() {
-        long patient = this.patients.one();
+        long patient = this.patients.one().id();
 
 
         PatientProfile profile = new PatientProfile(patient, "local", (short) 1);

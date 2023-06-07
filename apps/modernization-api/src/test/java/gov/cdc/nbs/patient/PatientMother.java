@@ -1,20 +1,27 @@
 package gov.cdc.nbs.patient;
 
+import com.github.javafaker.Faker;
+import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
-import gov.cdc.nbs.support.PersonMother;
+import gov.cdc.nbs.support.IdentificationMother;
+import gov.cdc.nbs.support.RaceMother;
 import gov.cdc.nbs.support.TestAvailable;
+import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Locale;
 
 @Component
 public class PatientMother {
 
+    private final Faker faker;
     private final MotherSettings settings;
     private final TestUniqueIdGenerator idGenerator;
     private final PatientLocalIdentifierGenerator localIdentifierGenerator;
@@ -40,6 +47,7 @@ public class PatientMother {
         this.entityManager = entityManager;
         this.identifiers = patients;
         this.cleaner = cleaner;
+        this.faker = new Faker(new Locale("en-us"));
     }
 
     void reset() {
@@ -49,9 +57,10 @@ public class PatientMother {
 
     public Person create() {
 
+        long identifier = idGenerator.next();
         String local = localIdentifierGenerator.generate();
 
-        Person patient = PersonMother.generateRandomPerson(idGenerator.next(), local);
+        Person patient = new Person(identifier, local);
 
         this.entityManager.persist(patient);
 
@@ -61,8 +70,13 @@ public class PatientMother {
         return patient;
     }
 
+    private Person managed(final PatientIdentifier identifier) {
+        return this.entityManager.find(Person.class, identifier.id());
+    }
+
+    @Transactional
     public PatientIdentifier revise(final PatientIdentifier identifier) {
-        Person parent = this.entityManager.find(Person.class, identifier.id());
+        Person parent = managed(identifier);
 
         long id = idGenerator.next();
 
@@ -78,5 +92,60 @@ public class PatientMother {
         this.entityManager.persist(revision);
 
         return new PatientIdentifier(id, identifier.shortId(), identifier.local());
+    }
+
+    @Transactional
+    public void withAddress(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        String city = faker.address().city();
+
+        patient.add(
+            new PatientCommand.AddAddress(
+                patient.getId(),
+                idGenerator.next(),
+                faker.address().streetAddress(),
+                null,
+                new City(city),
+                RandomUtil.getRandomStateCode(),
+                faker.address().zipCode(),
+                null,
+                RandomUtil.country(),
+                null,
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    @Transactional
+    public void withIdentification(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                identifier.id(),
+                RandomUtil.getRandomNumericString(8),
+                "GA",
+                RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    @Transactional
+    public void withRace(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddRace(
+                identifier.id(),
+                RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
     }
 }

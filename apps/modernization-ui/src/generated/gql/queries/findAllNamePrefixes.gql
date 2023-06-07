@@ -1,8 +1,11 @@
 query findAllNamePrefixes($page: Page){
     findAllNamePrefixes(page: $page){
         content{
-            id
-            code_short_desc_txt
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
         }
         total
     }

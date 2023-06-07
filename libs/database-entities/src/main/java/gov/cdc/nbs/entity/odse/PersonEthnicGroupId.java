@@ -1,17 +1,16 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.io.Serializable;
-import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
-import org.hibernate.Hibernate;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class PersonEthnicGroupId implements Serializable {
+    @Serial
     private static final long serialVersionUID = 6131564727043939572L;
     @Column(name = "person_uid", nullable = false)
     private Long personUid;
@@ -34,7 +34,7 @@ public class PersonEthnicGroupId implements Serializable {
             return false;
         PersonEthnicGroupId entity = (PersonEthnicGroupId) o;
         return Objects.equals(this.personUid, entity.personUid) &&
-                Objects.equals(this.ethnicGroupCd, entity.ethnicGroupCd);
+            Objects.equals(this.ethnicGroupCd, entity.ethnicGroupCd);
     }
 
     @Override
