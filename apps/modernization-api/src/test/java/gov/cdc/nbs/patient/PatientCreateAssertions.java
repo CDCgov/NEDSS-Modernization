@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PatientAssertions {
+public class PatientCreateAssertions {
 
     public static Consumer<PersonName> containsNames(final Collection<PatientInput.Name> names) {
         return names.stream()
@@ -133,6 +133,6 @@ public class PatientAssertions {
             ;
     }
 
-    private PatientAssertions() {
+    private PatientCreateAssertions() {
     }
 }
