@@ -16,7 +16,7 @@ class QuestionCreatedEventProducerTest {
     private KafkaTemplate<String, QuestionCreatedEvent> template;
 
     @Spy
-    private RequestProperties properties = new RequestProperties(null, null, "test-created-topic");
+    private RequestProperties properties = new RequestProperties();
 
     @InjectMocks
     private QuestionCreatedEventProducer producer;
