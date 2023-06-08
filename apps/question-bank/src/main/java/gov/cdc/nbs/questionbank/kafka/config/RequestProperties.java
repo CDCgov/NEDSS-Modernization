@@ -4,21 +4,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "kafkadef.topics.questionbank")
 public record RequestProperties(
-        String request,
-        String status,
-        String questionCreated) {
+        String questionCreated,
+        String questionDeleted) {
 
-    private static final String DEFAULT_REQUEST = "questionbank";
-    private static final String DEFAULT_STATUS = "questionbank-status";
     private static final String DEFAULT_CREATED = "question-created";
+    private static final String DEFAULT_DELETED = "question-deleted";
 
     public RequestProperties() {
-        this(DEFAULT_REQUEST, DEFAULT_STATUS, DEFAULT_CREATED);
+        this(DEFAULT_CREATED, DEFAULT_DELETED);
     }
 
-    public RequestProperties(String request, String status, String questionCreated) {
-        this.request = request == null ? DEFAULT_REQUEST : request;
-        this.status = status == null ? request + DEFAULT_STATUS : status;
-        this.questionCreated = questionCreated == null ? request + DEFAULT_CREATED : questionCreated;
+    public RequestProperties(String questionCreated, String questionDeleted) {
+        this.questionCreated = questionCreated == null ? DEFAULT_CREATED : questionCreated;
+        this.questionDeleted = questionDeleted == null ? DEFAULT_DELETED : questionDeleted;
     }
 }

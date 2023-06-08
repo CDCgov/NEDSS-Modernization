@@ -1,16 +1,22 @@
 package gov.cdc.nbs.message.enums;
 
 public enum Deceased {
-    Y("Yes"),
-    N("No"),
-    UNK("Unknown"),
+    Y("Y", "Yes"),
+    N("N", "No"),
+    UNK("UNK", "Unknown"),
 
-    FALSE("false") // this value may be bad data in the db restore
+    FALSE("false", "false") // this value may be bad data in the db restore
     ;
+    private final String value;
     private final String display;
 
-    Deceased(final String display) {
+    Deceased(String value, final String display) {
+        this.value = value;
         this.display = display;
+    }
+
+    public String value() {
+        return value;
     }
 
     public String display() {
