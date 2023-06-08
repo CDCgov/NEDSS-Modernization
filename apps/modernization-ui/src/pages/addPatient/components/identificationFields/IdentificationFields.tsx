@@ -35,23 +35,17 @@ export const IdentificationFields = ({
                                         control={control}
                                         name={`identification[${index}].type`}
                                         render={({ field: { onChange } }) => {
-                                            console.log(
-                                                'control?.[index]?.type:',
-                                                control._formValues['identification']
-                                            );
                                             return (
                                                 <SelectInput
                                                     defaultValue={
                                                         control._formValues['identification']?.[index]?.type || ''
                                                     }
-                                                    options={Object.values(searchCriteria.identificationTypes).map(
-                                                        (type) => {
-                                                            return {
-                                                                name: formatInterfaceString(type.codeDescTxt),
-                                                                value: type.id.code
-                                                            };
-                                                        }
-                                                    )}
+                                                    options={searchCriteria.identificationTypes.map((type) => {
+                                                        return {
+                                                            name: formatInterfaceString(type.codeDescTxt),
+                                                            value: type.id.code
+                                                        };
+                                                    })}
                                                     onChange={onChange}
                                                     htmlFor={`identification[${index}].type`}
                                                     label="ID type"

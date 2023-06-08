@@ -4,6 +4,11 @@ import { Controller } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useState } from 'react';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import {
+    CountyCode,
+    FindAllCountyCodesForStateQuery,
+    useFindAllCountyCodesForStateLazyQuery
+} from 'generated/graphql/schema';
 
 export interface InputAddressFields {
     streetAddress1: string;
@@ -30,9 +35,26 @@ export default function AddressFields({
 }) {
     const [isTractValid, setIsTractValid] = useState(true);
 
+    const [counties, setCounties] = useState<CountyCode[]>([]);
+    const setCounty = (results: FindAllCountyCodesForStateQuery) => {
+        if (results?.findAllCountyCodesForState) {
+            const counties: CountyCode[] = [];
+            results.findAllCountyCodesForState.forEach((i) => i && counties.push(i));
+            counties.sort((a, b) => {
+                if (a?.codeDescTxt && b?.codeDescTxt) {
+                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setCounties(counties);
+        }
+    };
+    const [getAllStateCounty] = useFindAllCountyCodesForStateLazyQuery({ onCompleted: setCounty });
+
     function updateTractValidity() {
         setIsTractValid((document.getElementById('census-tract') as HTMLInputElement).validity.valid);
     }
+
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -82,7 +104,17 @@ export default function AddressFields({
                                         name="state"
                                         render={({ field: { onChange, value } }) => (
                                             <SelectInput
-                                                onChange={onChange}
+                                                onChange={(e: any) => {
+                                                    if (e.target.value) {
+                                                        getAllStateCounty({
+                                                            variables: {
+                                                                stateCode: e.target.value,
+                                                                page: { pageNumber: 0, pageSize: 50 }
+                                                            }
+                                                        });
+                                                    }
+                                                    onChange(e);
+                                                }}
                                                 defaultValue={value}
                                                 name="state"
                                                 htmlFor={'state'}
@@ -90,7 +122,7 @@ export default function AddressFields({
                                                 options={Object.values(searchCriteria.states).map((state) => {
                                                     return {
                                                         name: state?.codeDescTxt || '',
-                                                        value: state?.stateNm || ''
+                                                        value: state?.id || ''
                                                     };
                                                 })}
                                             />
@@ -115,31 +147,25 @@ export default function AddressFields({
                 </Grid>
                 <Grid row>
                     <Grid col={6}>
-                        <SearchCriteriaContext.Consumer>
-                            {({ searchCriteria }) => {
-                                return (
-                                    <Controller
-                                        control={control}
-                                        name="county"
-                                        render={({ field: { onChange, value } }) => (
-                                            <SelectInput
-                                                onChange={onChange}
-                                                defaultValue={value}
-                                                name="county"
-                                                htmlFor={'county'}
-                                                label="County"
-                                                options={Object.values(searchCriteria.counties).map((state) => {
-                                                    return {
-                                                        name: state?.code_desc_txt || '',
-                                                        value: state?.state_cd || ''
-                                                    };
-                                                })}
-                                            />
-                                        )}
-                                    />
-                                );
-                            }}
-                        </SearchCriteriaContext.Consumer>
+                        <Controller
+                            control={control}
+                            name="county"
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    name="county"
+                                    htmlFor={'county'}
+                                    label="County"
+                                    options={counties.map((state) => {
+                                        return {
+                                            name: state?.codeDescTxt || '',
+                                            value: state?.id || ''
+                                        };
+                                    })}
+                                />
+                            )}
+                        />
                     </Grid>
                 </Grid>
                 <Grid row>
