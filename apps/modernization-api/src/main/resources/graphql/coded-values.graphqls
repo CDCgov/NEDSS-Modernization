@@ -28,17 +28,6 @@ type NaicsIndustryCode {
     sourceConceptId: String
 }
 
-type StateCountyCodeValueResults {
-    content: [StateCountyCodeValue!]!
-    total: Int!
-}
-
-type StateCountyCodeValue {
-    id: CodeValueGeneralId!
-    code_desc_txt: String!
-    state_cd: String!
-}
-
 type AssigningAuthorResults {
     content: [AssigningAuthor!]!
     total: Int!
@@ -139,6 +128,28 @@ type KeyValuePair {
     value: String!
 }
 
+type StateCountyCodeValue {
+    id: ID!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
+    excludedTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: Int
+    parentIsCd: Int
+    statusCd: Int
+    statusTime: DateTime
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+
+}
 extend type Query {
     findNameSuffixes(page: Page): KeyValuePairResults!
     findAllNameTypes(page: Page): NameTypeResults!
@@ -150,6 +161,6 @@ extend type Query {
     findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
+    findAllStateCountyCodeValues(page: Page): [StateCountyCodeValue!]!
     findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
 }

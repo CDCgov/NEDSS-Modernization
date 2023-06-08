@@ -1,5 +1,8 @@
 package gov.cdc.nbs.controller;
 
+import gov.cdc.nbs.entity.srte.StateCountyCodeValue;
+import gov.cdc.nbs.patient.StateCountyCodeValueResults;
+import gov.cdc.nbs.repository.StateCountyCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,6 +29,9 @@ public class CodeValueGeneralController {
 
     @Autowired
     private CodeValueGeneralRepository codeValueGeneralRepository;
+
+    @Autowired
+    private StateCountyCodeRepository stateCountyCodeRepository;
 
     public Page<CodeValueGeneral> findCodeValueGeneralByCodeSetName(@Argument String codeSetName,
             @Argument GraphQLPage page) {
@@ -100,4 +106,8 @@ public class CodeValueGeneralController {
         return codeValueGeneralRepository.findAllByCodeSetName("EI_AUTH_PAT", toPageable(page, maxPageSize));
     }
 
+    @QueryMapping
+    public Page<StateCountyCodeValue> findAllStateCountyCodeValues(String stateCode, @Argument GraphQLPage page) {
+       return stateCountyCodeRepository.findAllByParentIsCd(stateCode, toPageable(page, maxPageSize));
+    }
 }

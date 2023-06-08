@@ -1,6 +1,7 @@
 package gov.cdc.nbs;
 
 import gov.cdc.nbs.controller.CodeValueGeneralController;
+import gov.cdc.nbs.entity.srte.StateCountyCodeValue;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.DropDownValuesController;
 import gov.cdc.nbs.patient.KeyValuePair;
@@ -8,11 +9,14 @@ import gov.cdc.nbs.patient.KeyValuePairResults;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PatientDataEntryDropDownSteps {
@@ -23,7 +27,8 @@ public class PatientDataEntryDropDownSteps {
     private CodeValueGeneralController codeValueGeneralController;
     private KeyValuePairResults actualKeyValuePairResults;
 
-    private GraphQLPage page = new GraphQLPage(100, 0);
+    private GraphQLPage page = new GraphQLPage(600, 0);
+    private Page<StateCountyCodeValue> actualStateCountyCodeValues;
 
     @When("I want to retrieve {string}")
     public void iWantToRetrieve(String fieldName) {
@@ -96,4 +101,19 @@ public class PatientDataEntryDropDownSteps {
                         expectedKeyValue.getKey(),
                         expectedKeyValue.getValue(), actualKeyValuePairResults.getContent())));
     }
+
+    @When("I want to retrieve counties from state {string}")
+    public void iWantToRetrieveCountiesFromState(String stateCode) {
+        if (stateCode.equals("Alabama")) {
+            actualStateCountyCodeValues = codeValueGeneralController.findAllStateCountyCodeValues("01", page);
+        } else {
+            Assertions.fail("Unknown state code: " + stateCode);
+        }
+    }
+
+    @Then("I get these counties:")
+    public void iGetTheseCounties(DataTable expectedDataTable) {
+        assertEquals(expectedDataTable.asLists().size(),actualStateCountyCodeValues.getContent().size()) ;
+    }
+
 }
