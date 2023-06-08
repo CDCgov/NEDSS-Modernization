@@ -141,23 +141,7 @@ public class PatientController {
         return patientService.deletePatientAddress(patientId, personSeqNum);
     }
 
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientRace(@Argument RaceInput input) {
-        return patientService.addPatientRace(input);
-    }
 
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientRace(@Argument RaceInput input) {
-        return patientService.updatePatientRace(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientRace(@Argument Long patientId, @Argument String raceCd) {
-        return patientService.deletePatientRace(patientId, raceCd);
-    }
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)

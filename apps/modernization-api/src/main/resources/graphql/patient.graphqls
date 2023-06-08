@@ -41,9 +41,7 @@ type Mutation {
     addPatientIdentification(input: IdentificationInput!): PatientEventResponse!
     addPatientName(input: NameInput!): PatientEventResponse!
     addPatientPhone(input: PhoneInput!): PatientEventResponse!
-    addPatientRace(input: RaceInput!): PatientEventResponse!
     updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
-    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     updatePatientAddress(input: AddressInput!): PatientEventResponse!
     updatePatientEmail(input: EmailInput!): PatientEventResponse!
     updatePatientIdentification(
@@ -51,7 +49,6 @@ type Mutation {
     ): PatientEventResponse!
     updatePatientName(input: NameInput!): PatientEventResponse!
     updatePatientPhone(input: PhoneInput!): PatientEventResponse!
-    updatePatientRace(input: RaceInput!): PatientEventResponse!
     deletePatientAddress(
         patientId: Int!
         personSeqNum: Int!
@@ -63,7 +60,10 @@ type Mutation {
     ): PatientEventResponse!
     deletePatientName(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
     deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientRace(patientId: Int!, raceCd: String!): PatientEventResponse!
+    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
+    addPatientRace(input: RaceInput!): PatientRaceChangeResult!
+    updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
+    deletePatientRace(patientId: Int!, raceCd: String!): PatientRaceChangeResult!
 }
 
 type PatientCreatedResponse {
@@ -328,6 +328,10 @@ input EthnicityInput {
 }
 
 type PatientEthnicityChangeResult {
+    patient: Int!
+}
+
+type PatientRaceChangeResult {
     patient: Int!
 }
 

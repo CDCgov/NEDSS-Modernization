@@ -17,7 +17,6 @@ import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
@@ -100,10 +99,7 @@ public class PatientUpdateSteps {
                     input = createPhoneInput(123L);
                     response = patientController.updatePatientPhone((PhoneInput) input);
                 }
-                case "race" -> {
-                    input = createRaceInput(123L);
-                    response = patientController.updatePatientRace((RaceInput) input);
-                }
+
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
@@ -164,14 +160,6 @@ public class PatientUpdateSteps {
         var input = new AdministrativeInput();
         input.setPatientId(patient);
         input.setDescription("Description 1");
-        return input;
-    }
-
-    private RaceInput createRaceInput(final long patient) {
-        var input = new RaceInput();
-        input.setPatientId(patient);
-        input.setRaceCd("r1");
-        input.setRaceCategoryCd("r2");
         return input;
     }
 

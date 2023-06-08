@@ -24,7 +24,6 @@ import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
@@ -517,24 +516,6 @@ public class PatientService {
     public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
         var user = SecurityUtil.getUserDetails();
         var event = new PatientRequest.DeleteAddress(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse addPatientRace(RaceInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = RaceInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientRace(RaceInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = RaceInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientRace(Long patientId, String raceCd) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteRace(getRequestId(), patientId, raceCd, user.getId());
         return sendPatientEvent(event);
     }
 
