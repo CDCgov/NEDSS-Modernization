@@ -11,7 +11,10 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(PatientEvent.Created.class),
     @JsonSubTypes.Type(PatientEvent.Deleted.class),
-    @JsonSubTypes.Type(PatientEvent.EthnicityChanged.class)
+    @JsonSubTypes.Type(PatientEvent.EthnicityChanged.class),
+    @JsonSubTypes.Type(PatientEvent.RaceAdded.class),
+    @JsonSubTypes.Type(PatientEvent.RaceChanged.class),
+    @JsonSubTypes.Type(PatientEvent.RaceDeleted.class)
 })
 public sealed interface PatientEvent {
 
@@ -95,5 +98,36 @@ public sealed interface PatientEvent {
         long changedBy,
         Instant changedOn
     ) implements PatientEvent {
+    }
+
+    record RaceAdded(
+        long patient,
+        String localId,
+        Instant asOf,
+        String category,
+        List<String> detailed,
+        long addedBy,
+        Instant addedOn
+    ) implements PatientEvent {
+    }
+
+    record RaceChanged(
+        long patient,
+        String localId,
+        Instant asOf,
+        String category,
+        List<String> detailed,
+        long changedBy,
+        Instant changedOn
+    ) implements PatientEvent {
+    }
+
+    record RaceDeleted (
+        long patient,
+        String localId,
+        long changedBy,
+        Instant changedOn
+    ) implements PatientEvent {
+
     }
 }

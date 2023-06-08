@@ -4,13 +4,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class RaceInput {
-    private long patientId;
+    private long patient;
     private Instant asOf;
-    private String raceCd;
-    private String raceCategoryCd;
+    private String category;
+    private List<String> detailed = new ArrayList<>();
 
 }
