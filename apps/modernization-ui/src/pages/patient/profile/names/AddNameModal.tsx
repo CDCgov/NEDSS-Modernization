@@ -16,6 +16,7 @@ import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { formatInterfaceString } from 'utils/util';
+import { Suffix } from 'generated/graphql/schema';
 
 type AddCommentModalProps = {
     modalRef: any;
@@ -114,12 +115,17 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     flexBox
-                                    defaultValue={value}
                                     onChange={onChange}
+                                    defaultValue={value}
                                     name="suffix"
                                     htmlFor={'suffix'}
                                     label="Suffix"
-                                    options={[]}
+                                    options={Object.values(Suffix).map((suffix) => {
+                                        return {
+                                            name: suffix,
+                                            value: suffix
+                                        };
+                                    })}
                                 />
                             )}
                         />

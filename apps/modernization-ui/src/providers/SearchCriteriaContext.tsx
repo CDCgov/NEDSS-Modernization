@@ -27,8 +27,6 @@ import {
     StateCode,
     useFindAllStateCodesLazyQuery,
     FindAllStateCodesQuery,
-    useFindAllStateCountyCodeValuesLazyQuery,
-    FindAllStateCountyCodeValuesQuery,
     StateCountyCodeValue,
     useFindAllCountryCodesLazyQuery,
     CountryCode,
@@ -48,7 +46,18 @@ import {
     AddressType,
     AddressUse,
     FindAllAddressTypesQuery,
-    useFindAllAddressTypesLazyQuery
+    useFindAllAddressTypesLazyQuery,
+    useFindAllAddressUsesLazyQuery,
+    FindAllAddressUsesQuery,
+    PhoneAndEmailUse,
+    PhoneAndEmailType,
+    useFindAllPhoneAndEmailTypeLazyQuery,
+    useFindAllPhoneAndEmailUseLazyQuery,
+    FindAllPhoneAndEmailTypeQuery,
+    FindAllPhoneAndEmailUseQuery,
+    useFindAllIdentificationTypesLazyQuery,
+    FindAllIdentificationTypesQuery,
+    IdentificationTypes
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
 
@@ -70,6 +79,9 @@ export interface SearchCriteria {
     degree?: Degree[];
     addressType?: AddressType[];
     addressUse?: AddressUse[];
+    phoneType?: PhoneAndEmailType[];
+    phoneUse?: PhoneAndEmailUse[];
+    identificationType?: IdentificationTypes[];
 }
 
 const initialState: SearchCriteria = {
@@ -89,7 +101,10 @@ const initialState: SearchCriteria = {
     prefixes: [],
     degree: [],
     addressType: [],
-    addressUse: []
+    addressUse: [],
+    phoneType: [],
+    phoneUse: [],
+    identificationType: []
 };
 
 export const SearchCriteriaContext = React.createContext<{
@@ -113,7 +128,6 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
     const [getStates] = useFindAllStateCodesLazyQuery({ onCompleted: setStates });
     const [getAllState] = useFindAllStateCodesLazyQuery({ onCompleted: setAllState });
-    const [getAllStateCounty] = useFindAllStateCountyCodeValuesLazyQuery({ onCompleted: setCounty });
     const [getCountries1] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
     const [getCountries2] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
     const [getCountries3] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
@@ -126,6 +140,12 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getDegree] = useFindAllDegreesLazyQuery({ onCompleted: setDegree });
 
     const [getAddressType] = useFindAllAddressTypesLazyQuery({ onCompleted: setAddressType });
+    const [getAddressUse] = useFindAllAddressUsesLazyQuery({ onCompleted: setAddressUse });
+
+    const [getPhoneEmailType] = useFindAllPhoneAndEmailTypeLazyQuery({ onCompleted: setPhoneEmailType });
+    const [getPhoneEmailUse] = useFindAllPhoneAndEmailUseLazyQuery({ onCompleted: setPhoneEmailUse });
+
+    const [getIdentificationType] = useFindAllIdentificationTypesLazyQuery({ onCompleted: setIdentificationType });
     // on init, load search data from API
     useEffect(() => {
         if (state.isLoggedIn) {
@@ -139,7 +159,6 @@ export const SearchCriteriaProvider = (props: any) => {
             getIdentificationTypes();
             getStates();
             getAllState({ variables: { page: { pageNumber: 1, pageSize: 50 } } });
-            getAllStateCounty();
             getCountries1({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
             getCountries2({ variables: { page: { pageNumber: 1, pageSize: 50 } } });
             getCountries3({ variables: { page: { pageNumber: 2, pageSize: 50 } } });
@@ -150,6 +169,10 @@ export const SearchCriteriaProvider = (props: any) => {
             getPrefix();
             getDegree({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
             getAddressType({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
+            getAddressUse();
+            getPhoneEmailType();
+            getPhoneEmailUse();
+            getIdentificationType();
         }
     }, [state.isLoggedIn]);
 
@@ -255,20 +278,6 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, jurisdictions });
-        }
-    }
-
-    function setCounty(results: FindAllStateCountyCodeValuesQuery): void {
-        if (results.findAllStateCountyCodeValues.content) {
-            const counties: StateCountyCodeValue[] = [];
-            results.findAllStateCountyCodeValues.content.forEach((i) => i && counties.push(i));
-            counties.sort((a, b) => {
-                if (a?.code_desc_txt && b?.code_desc_txt) {
-                    return a.code_desc_txt.localeCompare(b.code_desc_txt);
-                }
-                return 0;
-            });
-            setSearchCriteria({ ...searchCriteria, counties });
         }
     }
 
@@ -411,6 +420,62 @@ export const SearchCriteriaProvider = (props: any) => {
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, addressType });
+        }
+    }
+
+    function setAddressUse(results: FindAllAddressUsesQuery): void {
+        if (results.findAllAddressUses) {
+            const addressUse: AddressUse[] = [];
+            results.findAllAddressUses.content.forEach((i) => i && addressUse.push(i));
+            addressUse.sort((a, b) => {
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, addressUse });
+        }
+    }
+
+    function setPhoneEmailType(results: FindAllPhoneAndEmailTypeQuery): void {
+        if (results.findAllPhoneAndEmailType) {
+            const phoneType: PhoneAndEmailType[] = [];
+            results.findAllPhoneAndEmailType.content.forEach((i) => i && phoneType.push(i));
+            phoneType.sort((a, b) => {
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, phoneType });
+        }
+    }
+
+    function setPhoneEmailUse(results: FindAllPhoneAndEmailUseQuery): void {
+        if (results.findAllPhoneAndEmailUse) {
+            const phoneUse: PhoneAndEmailUse[] = [];
+            results.findAllPhoneAndEmailUse.content.forEach((i) => i && phoneUse.push(i));
+            phoneUse.sort((a, b) => {
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, phoneUse });
+        }
+    }
+
+    function setIdentificationType(results: FindAllIdentificationTypesQuery): void {
+        if (results.findAllIdentificationTypes) {
+            const identificationType: IdentificationTypes[] = [];
+            results.findAllIdentificationTypes.content.forEach((i) => i && identificationType.push(i));
+            identificationType.sort((a, b) => {
+                if (a?.codeShortDescTxt && b?.codeShortDescTxt) {
+                    return a.codeShortDescTxt.localeCompare(b.codeShortDescTxt);
+                }
+                return 0;
+            });
+            setSearchCriteria({ ...searchCriteria, identificationType });
         }
     }
 
