@@ -741,6 +741,17 @@ public class PatientService {
     public PatientEventResponse updatePatientRace(RaceInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = RaceInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+            person.update(new PatientCommand.UpdateRaceInfo(
+                    person.getId(),
+                    input.getRaceCd(),
+                    input.getRaceCategoryCd(),
+                    input.getAsOf(),
+                    user.getId(),
+                    Instant.now()
+            )) ;
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
