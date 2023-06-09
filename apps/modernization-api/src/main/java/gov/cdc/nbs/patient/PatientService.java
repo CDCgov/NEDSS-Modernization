@@ -33,6 +33,7 @@ import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.repository.CountryCodeRepository;
+import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
@@ -45,6 +46,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort.Direction;
@@ -55,6 +57,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
@@ -78,13 +81,22 @@ public class PatientService {
 
     @PersistenceContext
     private final EntityManager entityManager;
+    @Autowired
     private final PersonRepository personRepository;
+    @Autowired
     private final CriteriaBuilderFactory criteriaBuilderFactory;
+    @Autowired
     private final ElasticsearchOperations operations;
+    @Autowired
     private final PatientEventRequester requester;
+    @Autowired
     private final UserService userService;
+    @Autowired
     private final PatientLocalIdentifierResolver resolver;
+    @Autowired
     private final CountryCodeRepository countryCodeRepository;
+    @Autowired
+    private EntityLocatorParticipationRepository entityLocatorParticipationRepository;
 
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
@@ -543,11 +555,13 @@ public class PatientService {
         return sendPatientEvent(updateSexAndBirthEvent);
     }
 
+    @Transactional
     public PatientEventResponse updateMortality(MortalityInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
+
         personRepository.findById(input.getPatientId()).map(person -> {
-            person.update(new PatientCommand.UpdateMortalityLocator(
+            PatientCommand.UpdateMortalityLocator updateMortalityLocator = new PatientCommand.UpdateMortalityLocator(
                     person.getId(),
                     Instant.now(),
                     input.getDeceased(),
@@ -558,7 +572,12 @@ public class PatientService {
                     input.getCountryOfDeath(),
                     user.getId(),
                     Instant.now()
-            ));
+            );
+            person.update(updateMortalityLocator);
+            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId()).map(locator -> {
+                locator.updateMortalityLocator(updateMortalityLocator);
+                return entityLocatorParticipationRepository.save(locator);
+            });
             return personRepository.save(person);
         });
         return sendPatientEvent(updateMortalityEvent);
