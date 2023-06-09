@@ -8,18 +8,17 @@ import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
+import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
+import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
-import gov.cdc.nbs.message.patient.input.RaceInput;
-import gov.cdc.nbs.message.patient.input.EthnicityInput;
-import gov.cdc.nbs.message.patient.input.AddressInput;
-import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
+import gov.cdc.nbs.message.patient.input.RaceInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
@@ -29,11 +28,8 @@ import gov.cdc.nbs.support.util.UserUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
@@ -44,9 +40,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles("test")
 public class PatientUpdateSteps {
+
     @Autowired
     private PatientController patientController;
 
@@ -109,10 +104,6 @@ public class PatientUpdateSteps {
                     input = createRaceInput(123L);
                     response = patientController.updatePatientRace((RaceInput) input);
                 }
-                case "ethnicity" -> {
-                    input = createEthnicityInput(123L);
-                    response = patientController.updateEthnicity((EthnicityInput) input);
-                }
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
@@ -121,7 +112,7 @@ public class PatientUpdateSteps {
 
     @Then("the {string} update request is posted to kafka")
     public void the_general_info_update_request_is_posted_to_kafka(String updateType)
-            throws InterruptedException, JsonProcessingException {
+        throws InterruptedException, JsonProcessingException {
         assertNull(accessDeniedException);
         assertNotNull(response);
         boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
@@ -173,14 +164,6 @@ public class PatientUpdateSteps {
         var input = new AdministrativeInput();
         input.setPatientId(patient);
         input.setDescription("Description 1");
-        return input;
-    }
-
-    private EthnicityInput createEthnicityInput(final long patient) {
-        var input = new EthnicityInput();
-        input.setPatientId(patient);
-        input.setEthnicityCode("e1");
-        input.setEthnicUnkReasonCd("e2");
         return input;
     }
 
@@ -269,7 +252,7 @@ public class PatientUpdateSteps {
             assertEquals(sexAndBirthInput.getSexUnknown(), data.sexUnknown());
             assertEquals(sexAndBirthInput.getCurrentAge(), data.currentAge());
             assertEquals(sexAndBirthInput.getAgeReportedTime().getEpochSecond(),
-                    data.ageReportedTime().getEpochSecond());
+                data.ageReportedTime().getEpochSecond());
         }
     }
 
@@ -317,4 +300,5 @@ public class PatientUpdateSteps {
             assertEquals(mortalityInput.getCountryOfDeath(), data.countryOfDeath());
         }
     }
+
 }

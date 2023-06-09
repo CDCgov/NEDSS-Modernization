@@ -4,3 +4,6 @@ spring:
 testing:
   database:
     image: cdc-sandbox-test-db 
+
+kafka:
+  enabled: true

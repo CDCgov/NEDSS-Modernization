@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
@@ -110,6 +111,6 @@ public class RandomUtil {
 
     public static LocalDate dateInPast() {
         Instant past = getRandomDateInPast();
-        return LocalDate.ofInstant(past, ZoneId.systemDefault());
+        return LocalDate.ofInstant(past, ZoneOffset.UTC);
     }
 }

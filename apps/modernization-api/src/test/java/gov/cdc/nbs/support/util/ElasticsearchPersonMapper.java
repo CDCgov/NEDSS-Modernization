@@ -85,7 +85,7 @@ public class ElasticsearchPersonMapper {
                 .address(asNestedAddresses(person))
                 .entityId(nestedEntityIds)
                 .recordStatusCd(person.getRecordStatusCd())
-                .ethnicGroupInd(person.getEthnicGroupInd())
+                .ethnicGroupInd(person.getEthnicity().ethnicGroup())
                 .birthTime((Instant) instantConverter.read(person.getBirthTime()))
                 .race(asRaces(person.getRaces()))
                 .deceasedIndCd(person.getDeceasedIndCd())

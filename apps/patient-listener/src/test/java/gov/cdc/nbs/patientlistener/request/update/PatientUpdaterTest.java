@@ -30,7 +30,6 @@ import gov.cdc.nbs.message.patient.event.DeleteRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
-import gov.cdc.nbs.message.patient.event.UpdateEthnicityData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
@@ -447,36 +446,6 @@ class PatientUpdaterTest {
     }
 
     @Test
-    void should_update_ethnicity_info() {
-        var data = getEthnicityData();
-        var person = new Person(123L, "localId");
-        person.setVersionCtrlNbr((short) 2);
-        patientUpdater.update(person, data);
-
-        verify(personRepository).save(personCaptor.capture());
-        var savedPerson = personCaptor.getValue();
-
-        var now = Instant.now();
-
-        assertEquals(data.ethnicityGroupInd(), savedPerson.getEthnicGroupInd());
-        assertEquals(data.ethnicUnkReasonCd(), savedPerson.getEthnicUnkReasonCd());
-
-        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
-        assertEquals(Short.valueOf((short) 3), savedPerson.getVersionCtrlNbr());
-        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
-        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
-    }
-
-    private UpdateEthnicityData getEthnicityData() {
-        return new UpdateEthnicityData(123L,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "ethnicityCode",
-                "ethnicUnkReasonCd");
-    }
-
-    @Test
     void should_add_address_info() {
         var data = getAddAddressData();
         var person = new Person(123L, "localId");
@@ -849,7 +818,7 @@ class PatientUpdaterTest {
 
         var data = new DeleteIdentificationData(
                 123L,
-                (short) 0,
+                (short) 1,
                 "RequestId",
                 321L,
                 Instant.now());

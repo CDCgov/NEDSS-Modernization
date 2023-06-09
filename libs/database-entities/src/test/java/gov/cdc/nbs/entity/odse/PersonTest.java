@@ -3,6 +3,9 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
+import gov.cdc.nbs.audit.Added;
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -13,12 +16,14 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -50,7 +55,8 @@ class PersonTest {
             "comments",
             "HIV-Case",
             131L,
-            Instant.parse("2020-03-03T10:15:30.00Z"));
+            Instant.parse("2020-03-03T10:15:30.00Z")
+        );
 
         Person actual = new Person(request);
 
@@ -73,18 +79,23 @@ class PersonTest {
         assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.ACTIVE);
         assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
 
-        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneId.systemDefault())).isEqualTo("2000-09-03");
+        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneOffset.UTC)).isEqualTo("2000-09-03");
         assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
         assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
         assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
         assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
-        assertThat(actual.getEthnicGroupInd()).isEqualTo("EthCode");
+
         assertThat(actual.getAsOfDateGeneral()).isEqualTo("2019-03-03T10:15:30.00Z");
         assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
         assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
         assertThat(actual.getDescription()).isEqualTo("comments");
 
         assertThat(actual.getEharsId()).isEqualTo("HIV-Case");
+
+        assertThat(actual)
+            .extracting(Person::getEthnicity)
+            .returns("EthCode", PatientEthnicity::ethnicGroup)
+                .returns(Instant.parse("2019-03-03T10:15:30.00Z"), PatientEthnicity::asOf);
 
         assertThat(actual.getPersonParentUid())
             .as("Master Patient Record set itself as parent")
@@ -103,7 +114,9 @@ class PersonTest {
                 "race-code-value",
                 "race-category-value",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getRaces()).satisfiesExactly(
             actual_race -> assertThat(actual_race)
@@ -217,7 +230,9 @@ class PersonTest {
                 new Country("country-code", "country-description"),
                 "Census Tract",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
             .satisfiesExactly(
@@ -253,7 +268,9 @@ class PersonTest {
                 5333L,
                 "AnEmail@email.com",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
             .satisfiesExactly(
@@ -284,7 +301,9 @@ class PersonTest {
                 "CP",
                 "MC",
                 131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")));
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
 
         assertThat(actual.getNbsEntity().getEntityLocatorParticipations())
             .satisfiesExactly(
@@ -333,12 +352,14 @@ class PersonTest {
 
         Person actual = new Person(117L, "local-id-value");
 
+        Instant deletedOn = Instant.parse("2020-03-03T10:15:30.00Z");
+
         assertThatThrownBy(() ->
             actual.delete(
                 new PatientCommand.Delete(
                     117L,
                     131L,
-                    Instant.now()
+                    deletedOn
                 ),
                 finder
             )
@@ -500,6 +521,189 @@ class PersonTest {
             ex = e;
         }
         assertNotNull(ex);
+    }
+
+    @Test
+    void should_change_ethnicity() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.update(
+            new PatientCommand.UpdateEthnicityInfo(
+                121L,
+                Instant.parse("2012-03-03T10:15:30.00Z"),
+                "ethnic-group-value",
+                "unknown-reason-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient)
+            .returns(131L, Person::getLastChgUserId)
+            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            .extracting(Person::getEthnicity)
+            .returns(Instant.parse("2012-03-03T10:15:30.00Z"), PatientEthnicity::asOf)
+            .returns("ethnic-group-value", PatientEthnicity::ethnicGroup)
+            .returns("unknown-reason-value", PatientEthnicity::unknownReason);
+    }
+
+    @Test
+    void should_add_detailed_ethnicity() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        PersonEthnicGroup actual = patient.add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "ethnicity-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(actual.getPersonUid()).isEqualTo(patient);
+        assertThat(actual.getId())
+            .returns(121L, PersonEthnicGroupId::getPersonUid)
+            .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
+        ;
+
+        assertThat(patient.getEthnicity().ethnicities())
+            .satisfiesExactlyInAnyOrder(
+                actual_detail -> assertThat(actual_detail)
+                    .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                    .extracting(PersonEthnicGroup::getId)
+                    .returns(121L, PersonEthnicGroupId::getPersonUid)
+                    .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
+            );
+
+    }
+
+    @Test
+    void should_add_another_detailed_ethnicity() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "ethnicity-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "next-ethnicity-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.getEthnicity().ethnicities())
+            .satisfiesExactlyInAnyOrder(
+                actual -> assertThat(actual)
+                    .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                    .extracting(PersonEthnicGroup::getId)
+                    .returns(121L, PersonEthnicGroupId::getPersonUid)
+                    .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd),
+                actual -> assertThat(actual)
+                    .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                    .extracting(PersonEthnicGroup::getId)
+                    .returns(121L, PersonEthnicGroupId::getPersonUid)
+                    .returns("next-ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
+            );
+
+    }
+
+    @Test
+    void should_remove_detailed_ethnicity() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "ethnicity-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddDetailedEthnicity(
+                121L,
+                "next-ethnicity-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.remove(
+            new PatientCommand.RemoveDetailedEthnicity(
+                121L,
+                "next-ethnicity-value",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.getEthnicity().ethnicities())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
+                    .extracting(PersonEthnicGroup::getId)
+                    .returns(121L, PersonEthnicGroupId::getPersonUid)
+                    .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
+            );
+
+    }
+
+    @Test
+    void should_add_identity_with_sequence_one() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                117L,
+                "identification-value",
+                "authority-value",
+                "identification-type",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.identifications()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getAudit)
+                        .satisfies(
+                            added -> assertThat(added)
+                                .extracting(Audit::getAdded)
+                                .returns(131L, Added::getAddUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::getAddTime)
+                        )
+                        .satisfies(
+                        changed -> assertThat(changed)
+                            .extracting(Audit::getChanged)
+                            .returns(131L, Changed::getLastChgUserId)
+                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::getLastChgTime)
+                    )
+                )
+                .returns("identification-type", EntityId::getTypeCd)
+                .returns("authority-value", EntityId::getAssigningAuthorityCd)
+                .returns("identification-value", EntityId::getRootExtensionTxt)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getId)
+                        .returns((short)1, EntityIdId::getEntityIdSeq)
+                )
+
+        );
     }
 
 }

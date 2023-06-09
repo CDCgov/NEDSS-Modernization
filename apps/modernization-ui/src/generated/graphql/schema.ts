@@ -196,9 +196,10 @@ export type EthnicityId = {
 
 export type EthnicityInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
-  ethnicUnkReasonCd?: InputMaybe<Scalars['String']>;
-  ethnicityCode: Scalars['String'];
-  patientId: Scalars['ID'];
+  detailed?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  ethnicGroup: Scalars['String'];
+  patient: Scalars['Int'];
+  unknownReason?: InputMaybe<Scalars['String']>;
 };
 
 export type EthnicityResults = {
@@ -614,7 +615,7 @@ export type Mutation = {
   deletePatientPhone: PatientEventResponse;
   deletePatientRace: PatientEventResponse;
   updateAdministrative: PatientEventResponse;
-  updateEthnicity: PatientEventResponse;
+  updateEthnicity: PatientEthnicityChangeResult;
   updateMortality: PatientEventResponse;
   updatePatientAddress: PatientEventResponse;
   updatePatientEmail: PatientEventResponse;
@@ -1168,6 +1169,11 @@ export type PatientEthnicity = {
   patient: Scalars['Int'];
   unknownReason?: Maybe<PatientCodedValue>;
   version: Scalars['Int'];
+};
+
+export type PatientEthnicityChangeResult = {
+  __typename?: 'PatientEthnicityChangeResult';
+  patient: Scalars['Int'];
 };
 
 export type PatientEventResponse = {
@@ -2458,7 +2464,7 @@ export type UpdateEthnicityMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEthnicityChangeResult', patient: number } };
 
 export type UpdateMortalityMutationVariables = Exact<{
   input: MortalityInput;
@@ -3419,8 +3425,7 @@ export type UpdateAdministrativeMutationOptions = Apollo.BaseMutationOptions<Upd
 export const UpdateEthnicityDocument = gql`
     mutation updateEthnicity($input: EthnicityInput!) {
   updateEthnicity(input: $input) {
-    requestId
-    patientId
+    patient
   }
 }
     `;

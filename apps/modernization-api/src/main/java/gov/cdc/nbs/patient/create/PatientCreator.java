@@ -21,15 +21,18 @@ public class PatientCreator {
     private final PatientIdentifierGenerator patientIdentifierGenerator;
     private final IdGeneratorService idGeneratorService;
     private final EntityManager entityManager;
+    private final PatientCreatedEmitter emitter;
 
     PatientCreator(
         final PatientIdentifierGenerator patientIdentifierGenerator,
         final IdGeneratorService idGenerator,
-        final EntityManager entityManager
+        final EntityManager entityManager,
+        final PatientCreatedEmitter emitter
     ) {
         this.patientIdentifierGenerator = patientIdentifierGenerator;
         this.idGeneratorService = idGenerator;
         this.entityManager = entityManager;
+        this.emitter = emitter;
     }
 
     @Transactional
@@ -63,6 +66,8 @@ public class PatientCreator {
             .forEach(person::add);
 
         this.entityManager.persist(person);
+
+        this.emitter.created(person);
 
         return identifier;
     }
@@ -195,4 +200,5 @@ public class PatientCreator {
         var generatedId = idGeneratorService.getNextValidId(IdGeneratorService.EntityType.NBS);
         return generatedId.getId();
     }
+
 }

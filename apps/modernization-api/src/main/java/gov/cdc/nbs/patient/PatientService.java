@@ -19,7 +19,6 @@ import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.EmailInput;
-import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
@@ -537,12 +536,6 @@ public class PatientService {
         var user = SecurityUtil.getUserDetails();
         var event = new PatientRequest.DeleteRace(getRequestId(), patientId, raceCd, user.getId());
         return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updateEthnicity(EthnicityInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateEthnicityEvent = EthnicityInput.toRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(updateEthnicityEvent);
     }
 
     public PatientEventResponse addPatientPhone(PhoneInput input) {
