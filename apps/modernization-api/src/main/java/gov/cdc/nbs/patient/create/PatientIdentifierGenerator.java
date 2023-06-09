@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.patient.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import org.springframework.stereotype.Component;

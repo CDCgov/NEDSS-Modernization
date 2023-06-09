@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

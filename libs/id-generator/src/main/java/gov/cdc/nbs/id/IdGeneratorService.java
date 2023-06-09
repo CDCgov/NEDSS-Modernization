@@ -1,12 +1,9 @@
-package gov.cdc.nbs.patient;
+package gov.cdc.nbs.id;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.entity.odse.LocalUidGenerator;
-import gov.cdc.nbs.exception.IdGenerationException;
-import gov.cdc.nbs.repository.LocalUidGeneratorRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,6 +57,10 @@ public class IdGeneratorService {
         private Long id;
         private String prefix;
         private String suffix;
+
+        public String toLocalId() {
+            return prefix + id.toString() + suffix;
+        }
     }
 
 
