@@ -641,6 +641,17 @@ public class PatientService {
     public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+            person.update(new PatientCommand.AddIdentification(
+                    person.getId(),
+                    input.getIdentificationNumber(),
+                    input.getAssigningAuthority(),
+                    input.getIdentificationType(),
+                    user.getId(),
+                    Instant.now()
+            ));
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
