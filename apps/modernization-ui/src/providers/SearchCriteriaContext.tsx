@@ -127,7 +127,6 @@ export const SearchCriteriaProvider = (props: any) => {
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
     const [getStates] = useFindAllStateCodesLazyQuery({ onCompleted: setStates });
-    const [getAllState] = useFindAllStateCodesLazyQuery({ onCompleted: setAllState });
     const [getCountries1] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
     const [getCountries2] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
     const [getCountries3] = useFindAllCountryCodesLazyQuery({ onCompleted: setCountry1 });
@@ -158,7 +157,6 @@ export const SearchCriteriaProvider = (props: any) => {
             getRaces();
             getIdentificationTypes();
             getStates();
-            getAllState({ variables: { page: { pageNumber: 1, pageSize: 50 } } });
             getCountries1({ variables: { page: { pageNumber: 0, pageSize: 50 } } });
             getCountries2({ variables: { page: { pageNumber: 1, pageSize: 50 } } });
             getCountries3({ variables: { page: { pageNumber: 2, pageSize: 50 } } });
@@ -281,24 +279,7 @@ export const SearchCriteriaProvider = (props: any) => {
         }
     }
 
-    const [stateList, setStateList] = useState<FindAllStateCodesQuery['findAllStateCodes']>();
-    const [stateListAll, setStateListAll] = useState<FindAllStateCodesQuery['findAllStateCodes']>();
-
     const [countryList1, setCountryList1] = useState<FindAllCountryCodesQuery['findAllCountryCodes']>([]);
-
-    const getAllStates = (results: FindAllStateCodesQuery) => {
-        if (results.findAllStateCodes) {
-            const states: StateCode[] = [];
-            results.findAllStateCodes.forEach((i) => i && states.push(i));
-            states.sort((a, b) => {
-                if (a?.codeDescTxt && b?.codeDescTxt) {
-                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
-                }
-                return 0;
-            });
-            return states;
-        }
-    };
 
     const getAllCountries = (results: FindAllCountryCodesQuery): CountryCode[] => {
         if (results.findAllCountryCodes) {
@@ -321,25 +302,18 @@ export const SearchCriteriaProvider = (props: any) => {
     }
 
     function setStates(results: FindAllStateCodesQuery): void {
-        setStateList(getAllStates(results));
-    }
-
-    function setAllState(results: FindAllStateCodesQuery): void {
-        setStateListAll(getAllStates(results));
-    }
-
-    useEffect(() => {
-        if (stateList && stateListAll) {
-            const states = [...stateList, ...stateListAll];
+        if (results.findAllStateCodes) {
+            const states: StateCode[] = [];
+            results.findAllStateCodes.forEach((i) => i && states.push(i));
             states.sort((a, b) => {
-                if (a?.codeDescTxt && b?.codeDescTxt) {
+                if (a.codeDescTxt && b.codeDescTxt) {
                     return a.codeDescTxt.localeCompare(b.codeDescTxt);
                 }
                 return 0;
             });
             setSearchCriteria({ ...searchCriteria, states });
         }
-    }, [stateList, stateListAll]);
+    }
 
     useEffect(() => {
         if (countryList1) {

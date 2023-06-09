@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.entity.srte.NaicsIndustryCode;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.message.enums.Suffix;
@@ -61,12 +60,4 @@ public class DropDownValuesController {
                 .build();
     }
 
-    @QueryMapping
-    public NaicsIndustryCodeResults findAllNaicsIndustryCodes() {
-        List<NaicsIndustryCode> naicsIndustryCodeRepositoryAll = naicsIndustryCodeRepository.findAll();
-        return NaicsIndustryCodeResults.builder()
-                .total(naicsIndustryCodeRepositoryAll.size())
-                .content(naicsIndustryCodeRepositoryAll)
-                .build();
-    }
 }

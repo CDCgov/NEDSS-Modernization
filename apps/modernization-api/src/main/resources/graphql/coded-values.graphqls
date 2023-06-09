@@ -1,31 +1,6 @@
-type NaicsIndustryCodeResults {
-    content: [NaicsIndustryCode!]!
-    total: Int!
-}
-
 type CodeValueGeneralId {
     codeSetNm: String!
     code: String!
-}
-
-type NaicsIndustryCode {
-    id: ID!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: DateTime
-    effectiveToTime: DateTime
-    keyInfoTxt: String
-    indentLevelNbr: Int
-    isModifiableInd: String
-    parentIsCd: String
-    statusCd: String
-    statusTime: String
-    codeSetNm: String
-    seqNum: Int
-    nbsUid: Int
-    sourceConceptId: String
 }
 
 type StateCountyCodeValueResults {
@@ -139,6 +114,17 @@ type KeyValuePair {
     value: String!
 }
 
+type CodedValue {
+    value: String!
+    name: String!
+}
+
+type GroupedCodedValue {
+    value: String!
+    name: String!
+    group: String!
+}
+
 extend type Query {
     findNameSuffixes(page: Page): KeyValuePairResults!
     findAllNameTypes(page: Page): NameTypeResults!
@@ -151,5 +137,19 @@ extend type Query {
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
     findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
-    findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
+    maritalStatuses: [CodedValue!]!
+    primaryOccupations: [CodedValue!]!
+    educationLevels: [CodedValue!]!
+    primaryLanguages: [CodedValue!]!
+    raceCategories: [CodedValue!]!
+    detailedRaces(category: String): [GroupedCodedValue!]!
+    ethnicGroups: [CodedValue!]!
+    ethnicityUnknownReasons: [CodedValue!]!
+    detailedEthnicities: [CodedValue!]!
+    genders: [CodedValue!]!
+    genderUnknownReasons: [CodedValue!]!
+    preferredGenders: [CodedValue!]!
+    countries: [CodedValue!]!
+    states: [CodedValue!]!
+    counties(state: String): [GroupedCodedValue!]!
 }

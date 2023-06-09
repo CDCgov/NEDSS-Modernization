@@ -2,12 +2,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { formatInterfaceString } from '../../utils/util';
-import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
+import { usePatientEthnicityCodedValues } from 'pages/patient/profile/ethnicity';
 
 export const EthnicityForm = ({ setEthnicityForm }: any) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
+
+    const coded = usePatientEthnicityCodedValues();
 
     const onSubmit = () => {
         setEthnicityForm();
@@ -39,29 +40,20 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                     Ethnicity:
                 </Grid>
                 <Grid col={6}>
-                    <SearchCriteriaContext.Consumer>
-                        {({ searchCriteria }) => (
-                            <Controller
-                                control={control}
+                    <Controller
+                        control={control}
+                        name="ethnicity"
+                        render={({ field: { onChange, value } }) => (
+                            <SelectInput
+                                dataTestid="ethnicity"
                                 name="ethnicity"
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        dataTestid="ethnicity"
-                                        name="ethnicity"
-                                        defaultValue={value}
-                                        onChange={onChange}
-                                        htmlFor={'ethnicity'}
-                                        options={Object.values(searchCriteria.ethnicities).map((ethnicity) => {
-                                            return {
-                                                name: formatInterfaceString(ethnicity.codeDescTxt),
-                                                value: ethnicity.id.code
-                                            };
-                                        })}
-                                    />
-                                )}
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'ethnicity'}
+                                options={coded.ethnicGroups}
                             />
                         )}
-                    </SearchCriteriaContext.Consumer>
+                    />
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
@@ -73,7 +65,12 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                         control={control}
                         name="spanish"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'spanish'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'spanish'}
+                                options={coded.detailedEthnicities}
+                            />
                         )}
                     />
                 </Grid>
@@ -87,7 +84,12 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                         control={control}
                         name="reason"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'reason'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'reason'}
+                                options={coded.ethnicityUnknownReasons}
+                            />
                         )}
                     />
                 </Grid>

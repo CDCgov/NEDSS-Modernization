@@ -3,12 +3,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { Gender } from '../../generated/graphql/schema';
-import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { usePatientSexBirthCodedValues } from 'pages/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 
 export const SexBirthForm = ({ setSexBirthForm }: any) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
+
+    const coded = usePatientSexBirthCodedValues();
 
     const onSubmit = () => {
         setSexBirthForm();
@@ -84,11 +86,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                                 onChange={onChange}
                                 name="gender"
                                 htmlFor={'gender'}
-                                options={[
-                                    { name: 'Male', value: Gender.M },
-                                    { name: 'Female', value: Gender.F },
-                                    { name: 'Other', value: Gender.U }
-                                ]}
+                                options={coded.genders}
                             />
                         )}
                     />
@@ -108,7 +106,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                                 onChange={onChange}
                                 name="gender"
                                 htmlFor={'gender'}
-                                options={[]}
+                                options={coded.genderUnknownReasons}
                             />
                         )}
                     />
@@ -128,7 +126,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                                 onChange={onChange}
                                 name="gender"
                                 htmlFor={'gender'}
-                                options={[]}
+                                options={coded.preferredGenders}
                             />
                         )}
                     />
@@ -169,11 +167,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                                 onChange={onChange}
                                 name="birthGender"
                                 htmlFor={'birthGender'}
-                                options={[
-                                    { name: 'Male', value: Gender.M },
-                                    { name: 'Female', value: Gender.F },
-                                    { name: 'Other', value: Gender.U }
-                                ]}
+                                options={coded.genders}
                             />
                         )}
                     />
@@ -193,7 +187,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                                 onChange={onChange}
                                 name="mBirth"
                                 htmlFor={'mBirth'}
-                                options={[]}
+                                options={coded.multipleBirth}
                             />
                         )}
                     />
