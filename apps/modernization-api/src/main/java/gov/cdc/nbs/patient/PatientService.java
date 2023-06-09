@@ -624,7 +624,7 @@ public class PatientService {
     public PatientEventResponse addPatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        personRepository.findById(input.getPatientId()).map(person -> {
             person.add(new PatientCommand.AddIdentification(
                     person.getId(),
                     input.getIdentificationNumber(),
@@ -641,7 +641,7 @@ public class PatientService {
     public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.AddIdentification(
                     person.getId(),
                     input.getIdentificationNumber(),
@@ -664,32 +664,54 @@ public class PatientService {
     public PatientEventResponse addPatientAddress(AddressInput addressInput) {
         var user = SecurityUtil.getUserDetails();
         var patientRequest = AddressInput.toAddRequest(user.getId(), getRequestId(), addressInput);
-        Person person = personRepository.findById(addressInput.getPatientId()).orElseThrow();
-        long newAddressId = person.getId();
-        Optional<CountryCode> countryCode = countryCodeRepository.findById(addressInput.getCountryCode());
-        PatientCommand.AddAddress addAddress = new PatientCommand.AddAddress(
-                addressInput.getPatientId(),
-                newAddressId,
-                addressInput.getStreetAddress1(),
-                addressInput.getStreetAddress2(),
-                new City(addressInput.getCity()),
-                addressInput.getStateCode(),
-                addressInput.getZip(),
-                new County(addressInput.getCountyCode()),
-                new Country(countryCode.orElseThrow().getId()),
-                addressInput.getCensusTract(),
-                user.getId(),
-                Instant.now()
-        );
+        personRepository.findById(addressInput.getPatientId()).map(person -> {
+            long newAddressId = person.getId();
+            Optional<CountryCode> countryCode = countryCodeRepository.findById(addressInput.getCountryCode());
+            PatientCommand.AddAddress addAddress = new PatientCommand.AddAddress(
+                    addressInput.getPatientId(),
+                    newAddressId,
+                    addressInput.getStreetAddress1(),
+                    addressInput.getStreetAddress2(),
+                    new City(addressInput.getCity()),
+                    addressInput.getStateCode(),
+                    addressInput.getZip(),
+                    new County(addressInput.getCountyCode()),
+                    new Country(countryCode.orElseThrow().getId()),
+                    addressInput.getCensusTract(),
+                    user.getId(),
+                    Instant.now()
+            );
+            person.add(addAddress);
+            return personRepository.save(person);
+        });
 
-        person.add(addAddress);
-        entityManager.persist(person);
+
         return sendPatientEvent(patientRequest);
     }
 
     public PatientEventResponse updatePatientAddress(AddressInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            long newAddressId = person.getId();
+            Optional<CountryCode> countryCode = countryCodeRepository.findById(input.getCountryCode());
+            PatientCommand.UpdateAddress updateAddress = new PatientCommand.UpdateAddress(
+                    input.getPatientId(),
+                    newAddressId,
+                    input.getStreetAddress1(),
+                    input.getStreetAddress2(),
+                    new City(input.getCity()),
+                    input.getStateCode(),
+                    input.getZip(),
+                    new County(input.getCountyCode()),
+                    new Country(countryCode.orElseThrow().getId()),
+                    input.getCensusTract(),
+                    user.getId(),
+                    Instant.now()
+            );
+            person.update(updateAddress);
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
