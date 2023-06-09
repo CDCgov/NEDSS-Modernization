@@ -807,12 +807,32 @@ public class PatientService {
     public PatientEventResponse addPatientEmail(EmailInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = EmailInput.toAddRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+            person.add(new PatientCommand.AddEmailAddress(
+                    person.getId(),
+                    input.getId(),
+                    input.getEmailAddress(),
+                    user.getId(),
+                    Instant.now()
+            )) ;
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
     public PatientEventResponse updatePatientEmail(EmailInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = EmailInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+            person.update(new PatientCommand.UpdateEmailAddress(
+                    person.getId(),
+                    input.getId(),
+                    input.getEmailAddress(),
+                    user.getId(),
+                    Instant.now()
+            )) ;
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
