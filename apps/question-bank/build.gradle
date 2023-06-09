@@ -82,13 +82,13 @@ dependencies {
     // auth
     implementation project(':authentication')
 
-    // legacy entities
-    implementation project(':database-entities')
+    // id generation
+    implementation project(':id-generator')
 
 }
 
 compileJava.mustRunAfter(":authentication:build")
-compileJava.mustRunAfter(":database-entities:build")
+compileJava.mustRunAfter(":id-generator:build")
 
 compileJava {
     options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'

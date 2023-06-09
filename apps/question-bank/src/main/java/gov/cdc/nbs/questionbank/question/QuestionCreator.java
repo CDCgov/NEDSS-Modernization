@@ -1,9 +1,118 @@
 package gov.cdc.nbs.questionbank.question;
 
+import java.time.Instant;
 import org.springframework.stereotype.Component;
+import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService.EntityType;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
+import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 
 @Component
 class QuestionCreator {
 
+    private final IdGeneratorService idGenerator;
+    private final WaQuestionRepository repository;
+    private final CodeValueGeneralRepository codeValueGeneralRepository;
+
+    public QuestionCreator(
+            IdGeneratorService idGenerator,
+            WaQuestionRepository repository,
+            CodeValueGeneralRepository codeValueGeneralRepository) {
+        this.idGenerator = idGenerator;
+        this.repository = repository;
+        this.codeValueGeneralRepository = codeValueGeneralRepository;
+    }
+
+    public long create(Long userId, CreateQuestionRequest.Text request) {
+        WaQuestion question = new TextQuestion(asAdd(userId, request));
+        question = repository.save(question);
+        return question.getId();
+    }
+
+    QuestionCommand.AddTextQuestion asAdd(Long userId, CreateQuestionRequest.Text request) {
+        QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
+
+        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo());
+
+        return new QuestionCommand.AddTextQuestion(
+                request.mask(),
+                request.fieldLength(),
+                request.defaultValue(),
+                request.codeSet(),
+                getLocalId(request),
+                request.uniqueName(),
+                request.subgroup(),
+                request.description(),
+                request.label(),
+                request.tooltip(),
+                request.displayControl(),
+                request.adminComments(),
+                getQuestionOid(request),
+                dataMartData,
+                messagingData,
+                userId,
+                Instant.now());
+    }
+
+    QuestionCommand.ReportingData asReportingData(CreateQuestionRequest.ReportingInfo dataMartInfo) {
+        return new QuestionCommand.ReportingData(
+                dataMartInfo.reportLabel(),
+                dataMartInfo.defaultRdbTableName(),
+                dataMartInfo.rdbColumnName(),
+                dataMartInfo.dataMartColumnName());
+    }
+
+    QuestionCommand.MessagingData asMessagingData(CreateQuestionRequest.MessagingInfo messagingInfo) {
+        return new QuestionCommand.MessagingData(
+                messagingInfo.includedInMessage(),
+                messagingInfo.messageVariableId(),
+                messagingInfo.labelInMessage(),
+                messagingInfo.codeSystem(),
+                messagingInfo.requiredInMessage(),
+                messagingInfo.hl7DataType());
+    }
+
+
+    /**
+     * If the request is of 'LOCAL' type, generate the next available Id from the database. Else, return the specified
+     * request.uniqueId
+     * 
+     * @param request
+     * @return
+     */
+    String getLocalId(CreateQuestionRequest request) {
+        if (request.codeSet().equals("LOCAL")) {
+            return idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF).toLocalId();
+        } else {
+            return request.uniqueId().trim();
+        }
+    }
+
+
+    QuestionOid getQuestionOid(CreateQuestionRequest.Text request) {
+        if (request.messagingInfo().includedInMessage()) {
+            return codeValueGeneralRepository.findByCode(
+                    request.messagingInfo().codeSystem())
+                    .stream()
+                    .map(cvg -> new QuestionOid(
+                            cvg.getCodeDescTxt(),
+                            cvg.getCodeShortDescTxt()))
+                    .findFirst()
+                    .orElseThrow(() -> new QuestionCreateException(
+                            "Failed to find 'CODE_SYSTEM' for code: " + request.messagingInfo().codeSystem()));
+        } else {
+            return switch (request.codeSet()) {
+                case "PHIN" -> new QuestionOid("2.16.840.1.114222.4.5.232", "PHIN Questions");
+                case "LOCAL" -> new QuestionOid("L", "Local");
+                default -> null;
+            };
+        }
+    }
 
 }
