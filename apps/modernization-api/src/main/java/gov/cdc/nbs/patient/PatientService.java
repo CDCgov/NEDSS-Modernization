@@ -724,6 +724,17 @@ public class PatientService {
     public PatientEventResponse addPatientRace(RaceInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = RaceInput.toAddRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+           person.add(new PatientCommand.AddRace(
+                   person.getId(),
+                   input.getAsOf(),
+                   input.getRaceCd(),
+                   input.getRaceCategoryCd(),
+                   user.getId(),
+                   Instant.now()
+           )) ;
+           return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
