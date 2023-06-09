@@ -46,11 +46,7 @@ import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -60,16 +56,12 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 @RequiredArgsConstructor
@@ -94,24 +86,25 @@ public class PatientService {
     private final PatientLocalIdentifierResolver resolver;
     private final CountryCodeRepository countryCodeRepository;
 
+
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
         if (sort == null) {
             // if no sort provided, default sort by lastNm then Id
             return query.orderBy(person.lastNm.asc().nullsLast())
-                .orderBy(person.id.desc().nullsLast());
+                    .orderBy(person.id.desc().nullsLast());
         }
         var sorts = sort.stream().filter(Objects::nonNull).map(s -> {
             switch (s.getProperty()) {
                 case "lastNm":
                     return s.getDirection() == Direction.ASC ? person.lastNm.asc().nullsLast()
-                        : person.lastNm.desc().nullsLast();
+                            : person.lastNm.desc().nullsLast();
                 case "birthTime":
                     return s.getDirection() == Direction.ASC ? person.birthTime.asc().nullsLast()
-                        : person.birthTime.desc().nullsLast();
+                            : person.birthTime.desc().nullsLast();
                 case "addTime":
                     return s.getDirection() == Direction.ASC ? person.addTime.asc().nullsLast()
-                        : person.addTime.desc().nullsLast();
+                            : person.addTime.desc().nullsLast();
                 default:
                     throw new QueryException("Invalid sort value: " + s.getProperty());
             }
@@ -131,12 +124,12 @@ public class PatientService {
         var person = QPerson.person;
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
         var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-            .select(person)
-            .from(person);
+                .select(person)
+                .from(person);
         query = applySort(query, pageable.getSort());
 
         var results = query.fetchPage((int) pageable.getOffset(),
-            pageable.getPageSize());
+                pageable.getPageSize());
         return new PageImpl<>(results, pageable, results.getMaxResults());
     }
 
@@ -170,20 +163,20 @@ public class PatientService {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
 
             firstNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.FIRST_NM,
-                filter.getFirstName().trim()).boost(FIRST_NAME_PRIMARY_BOOST));
+                    filter.getFirstName().trim()).boost(FIRST_NAME_PRIMARY_BOOST));
 
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                QueryBuilders.queryStringQuery(
-                        addWildcards(filter.getFirstName()))
-                    .defaultField("name.firstNm")
-                    .defaultOperator(Operator.AND),
-                ScoreMode.Avg).boost(FIRST_NAME_NON_PRIMARY_BOOST));
+                    QueryBuilders.queryStringQuery(
+                                    addWildcards(filter.getFirstName()))
+                            .defaultField("name.firstNm")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg).boost(FIRST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
             String firstNmSndx = soundex.encode(filter.getFirstName().trim());
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
-                ScoreMode.Avg).boost(FIRST_NAME_SOUNDEX_BOOST));
+                    QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
+                    ScoreMode.Avg).boost(FIRST_NAME_SOUNDEX_BOOST));
 
             builder.must(firstNameBuilder);
         }
@@ -192,20 +185,20 @@ public class PatientService {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
 
             lastNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.LAST_NM_KEYWORD,
-                filter.getLastName().trim()).boost(LAST_NAME_PRIMARY_BOOST));
+                    filter.getLastName().trim()).boost(LAST_NAME_PRIMARY_BOOST));
 
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                QueryBuilders.queryStringQuery(
-                        addWildcards(filter.getLastName()))
-                    .defaultField("name.lastNm")
-                    .defaultOperator(Operator.AND),
-                ScoreMode.Avg).boost(LAST_NAME_NON_PRIMARY_BOOST));
+                    QueryBuilders.queryStringQuery(
+                                    addWildcards(filter.getLastName()))
+                            .defaultField("name.lastNm")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg).boost(LAST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
             String lastNmSndx = soundex.encode(filter.getLastName().trim());
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
-                ScoreMode.Avg).boost(LAST_NAME_SOUNDEX_BOOST));
+                    QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
+                    ScoreMode.Avg).boost(LAST_NAME_SOUNDEX_BOOST));
 
             builder.must(lastNameBuilder);
         }
@@ -214,9 +207,9 @@ public class PatientService {
             String allDigitSsn = filter.getSsn().replaceAll("\\D", "");
             if (!allDigitSsn.isEmpty()) {
                 builder.must(QueryBuilders.queryStringQuery(
-                        addWildcards(allDigitSsn))
-                    .defaultField(ElasticsearchPerson.SSN_FIELD)
-                    .defaultOperator(Operator.AND));
+                                addWildcards(allDigitSsn))
+                        .defaultField(ElasticsearchPerson.SSN_FIELD)
+                        .defaultOperator(Operator.AND));
             }
         }
 
@@ -224,29 +217,29 @@ public class PatientService {
             String allDigitPhoneNumber = filter.getPhoneNumber().replaceAll("\\D", "");
             if (!allDigitPhoneNumber.isEmpty()) {
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                    QueryBuilders.queryStringQuery(
-                            addWildcards(allDigitPhoneNumber))
-                        .defaultField("phone.telephoneNbr")
-                        .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                        QueryBuilders.queryStringQuery(
+                                        addWildcards(allDigitPhoneNumber))
+                                .defaultField("phone.telephoneNbr")
+                                .defaultOperator(Operator.AND),
+                        ScoreMode.Avg));
             }
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
-                QueryBuilders.queryStringQuery(filter.getEmail())
-                    .defaultField("email.emailAddress")
-                    .defaultOperator(Operator.AND),
-                ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getEmail())
+                            .defaultField("email.emailAddress")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                    .queryStringQuery(
-                        addWildcards(filter.getAddress()))
-                    .defaultField("address.streetAddr1")
-                    .defaultOperator(Operator.AND),
-                ScoreMode.Avg));
+                            .queryStringQuery(
+                                    addWildcards(filter.getAddress()))
+                            .defaultField("address.streetAddr1")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
@@ -259,58 +252,58 @@ public class PatientService {
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                QueryBuilders.queryStringQuery(
-                        addWildcards(filter.getCity()))
-                    .defaultField("address.city")
-                    .defaultOperator(Operator.AND),
-                ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(
+                                    addWildcards(filter.getCity()))
+                            .defaultField("address.city")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                QueryBuilders.matchQuery("address.zip", filter.getZip()),
-                ScoreMode.Avg));
+                    QueryBuilders.matchQuery("address.zip", filter.getZip()),
+                    ScoreMode.Avg));
         }
 
         if (filter.getState() != null && !filter.getState().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
+                    QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
         }
 
         if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
+                    QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
         }
 
         if (filter.getEthnicity() != null) {
             builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.ETHNIC_GROUP_IND,
-                filter.getEthnicity()));
+                    filter.getEthnicity()));
         }
 
         if (filter.getRace() != null) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.RACE_FIELD,
-                QueryBuilders.queryStringQuery(filter.getRace())
-                    .defaultField("race.raceCategoryCd")
-                    .defaultOperator(Operator.AND),
-                ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getRace())
+                            .defaultField("race.raceCategoryCd")
+                            .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
         }
 
         if (filter.getIdentification() != null) {
             String allAlphanumericIdentificationNumber = filter.getIdentification().getIdentificationNumber()
-                .replaceAll("\\W", "");
+                    .replaceAll("\\W", "");
             if (!allAlphanumericIdentificationNumber.isEmpty()) {
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                    QueryBuilders.queryStringQuery(
-                            addWildcards(allAlphanumericIdentificationNumber))
-                        .defaultField("entity_id.rootExtensionTxt")
-                        .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                        QueryBuilders.queryStringQuery(
+                                        addWildcards(allAlphanumericIdentificationNumber))
+                                .defaultField("entity_id.rootExtensionTxt")
+                                .defaultOperator(Operator.AND),
+                        ScoreMode.Avg));
 
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
-                        .defaultField("entity_id.typeCd")
-                        .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                        QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
+                                .defaultField("entity_id.typeCd")
+                                .defaultOperator(Operator.AND),
+                        ScoreMode.Avg));
             }
         }
 
@@ -329,20 +322,20 @@ public class PatientService {
         }
 
         var query = new NativeSearchQueryBuilder()
-            .withQuery(builder)
-            .withSorts(buildPatientSort(pageable))
-            .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
-            .build();
+                .withQuery(builder)
+                .withSorts(buildPatientSort(pageable))
+                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+                .build();
 
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
-            ElasticsearchPerson.class);
+                ElasticsearchPerson.class);
 
         ids = elasticsearchPersonSearchHits
-            .stream()
-            .map(h -> h.getContent())
-            .filter(Objects::nonNull)
-            .map(ElasticsearchPerson::getPersonUid)
-            .toList();
+                .stream()
+                .map(h -> h.getContent())
+                .filter(Objects::nonNull)
+                .map(ElasticsearchPerson::getPersonUid)
+                .toList();
         var persons = personRepository.findAllById(ids);
         persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
         return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
@@ -356,10 +349,10 @@ public class PatientService {
         var person = QPerson.person;
         var labEvent = QLabEvent.labEvent;
         var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-            .select(person)
-            .from(person)
-            .join(labEvent).on(labEvent.personUid.eq(person.id))
-            .join(organization).on(labEvent.organizationUid.eq(organization.id));
+                .select(person)
+                .from(person)
+                .join(labEvent).on(labEvent.personUid.eq(person.id))
+                .join(organization).on(labEvent.organizationUid.eq(organization.id));
 
         query = addParameter(query, organization.id::eq, filter.getId());
         query = addParameter(query, organization.displayNm::likeIgnoreCase, filter.getDisplayNm());
@@ -377,7 +370,7 @@ public class PatientService {
     // checks to see if the filter provided is null, if not add the filter to the
     // 'query.where' based on the expression supplied
     private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
-        Function<I, BooleanExpression> expression, I filter) {
+                                                 Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
             if (filter instanceof String s && s.trim().length() == 0) {
                 return query;
@@ -402,8 +395,8 @@ public class PatientService {
             // If user lacks permission, remove these from the search criteria
             if (!userService.isAuthorized(currentUser, FINDINACTIVE + "-" + PATIENT)) {
                 recordStatus = recordStatus.stream()
-                    .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
-                    .toList();
+                        .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
+                        .toList();
             }
 
         }
@@ -419,36 +412,155 @@ public class PatientService {
     public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            boolean modified = false;
+            if (!isEmpty(input.getMaritalStatus())) {
+                person.setMaritalStatusCd(input.getMaritalStatus());
+                modified = true;
+            }
+            if (!isEmpty(input.getMothersMaidenName())) {
+                person.setMothersMaidenNm((input.getMothersMaidenName()));
+                modified = true;
+            }
+            if (input.getAdultsInHouseNumber() != null) {
+                person.setAdultsInHouseNbr(input.getAdultsInHouseNumber());
+                modified = true;
+            }
+            if (input.getChildrenInHouseNumber() != null) {
+                person.setChildrenInHouseNbr(input.getChildrenInHouseNumber());
+                modified = true;
+            }
+            if (!isEmpty(input.getOccupationCode())) {
+                person.setOccupationCd(input.getOccupationCode());
+                modified = true;
+            }
+            if (!isEmpty(input.getEducationLevelCode())) {
+                person.setEducationLevelCd(input.getEducationLevelCode());
+                modified = true;
+            }
+            if (!isEmpty(input.getPrimaryLanguageCode())) {
+                person.setPrimLangCd(input.getPrimaryLanguageCode());
+                modified = true;
+            }
+            if (!isEmpty(input.getSpeaksEnglishCode())) {
+                person.setSpeaksEnglishCd(input.getSpeaksEnglishCode());
+                modified = true;
+            }
+            if (!isEmpty(input.getEharsId())) {
+                person.setEharsId(input.getEharsId());
+                modified = true;
+            }
+            if (modified) {
+                person.setAsOfDateGeneral(input.getAsOf());
+            }
+            return personRepository.save(person);
+        });
+
         return sendPatientEvent(updateGeneralInfoEvent);
     }
 
     public PatientEventResponse addPatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            PatientCommand.AddName addName = new PatientCommand.AddName(
+                    input.getPatientId(),
+                    input.getFirstName(),
+                    input.getMiddleName(),
+                    input.getLastName(),
+                    input.getSuffix(),
+                    PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
+                    user.getId(),
+                    Instant.now()
+            );
+            person.add(addName);
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
     public PatientEventResponse updatePatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            PatientCommand.AddName addName = new PatientCommand.AddName(
+                    input.getPatientId(),
+                    input.getFirstName(),
+                    input.getMiddleName(),
+                    input.getLastName(),
+                    input.getSuffix(),
+                    PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
+                    user.getId(),
+                    Instant.now()
+            );
+            person.update(addName);
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            person.update(new PatientCommand.UpdateAdministrativeInfo(
+                    person.getId(),
+                    Instant.now(),
+                    input.getDescription(),
+                    user.getId(),
+                    Instant.now()
+            ));
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
     public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateSexAndBirthEvent = SexAndBirthInput.toRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            person.update(new PatientCommand.UpdateSexAndBirthInfo(
+                    person.getId(),
+                    input.getAsOf(),
+                    input.getDateOfBirth(),
+                    input.getBirthGender(),
+                    input.getCurrentGender(),
+                    input.getAdditionalGender(),
+                    input.getTransGenderInfo(),
+                    input.getBirthCity(),
+                    input.getBirthCntry(),
+                    input.getBirthState(),
+                    input.getBirthOrderNbr(),
+                    input.getMultipleBirth(),
+                    input.getSexUnknown(),
+                    input.getCurrentAge(),
+                    input.getAgeReportedTime(),
+                    user.getId(),
+                    Instant.now()
+            ));
+            return personRepository.save(person);
+        });
         return sendPatientEvent(updateSexAndBirthEvent);
     }
 
     public PatientEventResponse updateMortality(MortalityInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map(person -> {
+            person.update(new PatientCommand.UpdateMortalityLocator(
+                    person.getId(),
+                    Instant.now(),
+                    input.getDeceased(),
+                    input.getDeceasedTime(),
+                    input.getCityOfDeath(),
+                    input.getStateOfDeath(),
+                    input.getCountyOfDeath(),
+                    input.getCountryOfDeath(),
+                    user.getId(),
+                    Instant.now()
+            ));
+            return personRepository.save(person);
+        });
         return sendPatientEvent(updateMortalityEvent);
     }
 
@@ -473,11 +585,11 @@ public class PatientService {
                     break;
                 case "lastNm":
                     sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD)
-                        .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                            .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 case "birthTime":
                     sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME)
-                        .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                            .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
