@@ -49,6 +49,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
@@ -551,8 +552,9 @@ public class PatientService {
     public PatientEventResponse updateMortality(MortalityInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
+
         personRepository.findById(input.getPatientId()).map(person -> {
-            person.update(new PatientCommand.UpdateMortalityLocator(
+            PatientCommand.UpdateMortalityLocator updateMortalityLocator = new PatientCommand.UpdateMortalityLocator(
                     person.getId(),
                     Instant.now(),
                     input.getDeceased(),
