@@ -154,6 +154,7 @@ class PersonTest {
     }
 
     @Test
+    @SuppressWarnings("squid:S5961")
     void should_add_race_with_details() {
 
         Person patient = new Person(117L, "local-id-value");
