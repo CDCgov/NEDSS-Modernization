@@ -161,6 +161,6 @@ extend type Query {
     findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(page: Page): [StateCountyCodeValue!]!
+    findAllStateCountyCodeValues(stateCode: String, page: Page): [StateCountyCodeValue!]!
     findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
 }
