@@ -12,7 +12,7 @@ import GeneralInformation from './components/generalInformation/generalInformati
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
 import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
-import { NameUseCd, PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
+import { NameUseCd, NewPatientPhoneNumber, PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
@@ -81,9 +81,34 @@ export default function AddPatient() {
     }, [isValid]);
 
     const submit = (data: any) => {
+        const phoneNumbers: NewPatientPhoneNumber[] = [];
         data?.emailAddresses?.map((item: any, index: number) => {
             item.email = data?.[`emailAddresses_${index}`];
         });
+        data?.phoneNumbers?.map((item: any, index: number) => {
+            item.cellPhone = data?.[`emailAddresses_${index}`];
+            if (item.cellPhone) {
+                phoneNumbers.push({
+                    number: data?.[`cellPhone_${index}`],
+                    type: 'CP',
+                    use: 'MC'
+                });
+            }
+        });
+        if (data?.homePhone) {
+            phoneNumbers.push({
+                number: data?.homePhone,
+                type: 'PH',
+                use: 'H'
+            });
+        }
+        if (data?.workPhone) {
+            phoneNumbers.push({
+                number: data?.workPhone,
+                type: 'PH',
+                use: 'WP'
+            });
+        }
         if (data?.race) {
             setValue('race', data?.race);
         }
@@ -117,7 +142,8 @@ export default function AddPatient() {
             ethnicity: data?.ethnicity,
             races: data?.race,
             identifications: data?.identification,
-            emailAddresses: data?.emailAddresses.map((it: any) => it.email)
+            emailAddresses: data?.emailAddresses.map((it: any) => it.email),
+            phoneNumbers
         };
         if (!isEmpty(addressObj)) {
             payload.addresses = [addressObj];
