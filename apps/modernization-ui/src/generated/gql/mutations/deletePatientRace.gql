@@ -1,6 +1,5 @@
-mutation deletePatientRace($patientId: Int!, $raceCd: String!){
-    deletePatientRace(patientId: $patientId, raceCd: $raceCd){
-        requestId
-        patientId
+mutation deletePatientRace($input: DeletePatientRace!){
+    deletePatientRace(input: $input){
+        patient
     }
 }
