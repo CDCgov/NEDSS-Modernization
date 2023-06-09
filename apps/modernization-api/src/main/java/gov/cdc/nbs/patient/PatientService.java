@@ -764,12 +764,37 @@ public class PatientService {
     public PatientEventResponse addPatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+            person.add(new PatientCommand.AddPhoneNumber(
+                    person.getId(),
+                    input.getId(),
+                    input.getNumber(),
+                    input.getExtension(),
+                    input.getPhoneType().type(),
+                    input.getPhoneType().use(),
+                    user.getId(),
+                    Instant.now()
+            )) ;
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
     public PatientEventResponse updatePatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toUpdateRequest(user.getId(), getRequestId(), input);
+        personRepository.findById(input.getPatientId()).map( person -> {
+            person.update(new PatientCommand.UpdatePhoneNumber(
+                    person.getId(),
+                    input.getId(),
+                    input.getNumber(),
+                    input.getExtension(),
+                    input.getPhoneType(),
+                    user.getId(),
+                    Instant.now()
+            )) ;
+            return personRepository.save(person);
+        });
         return sendPatientEvent(event);
     }
 
