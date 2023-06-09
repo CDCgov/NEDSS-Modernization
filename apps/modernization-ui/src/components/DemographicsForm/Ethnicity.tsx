@@ -80,7 +80,7 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
-                    Reason unknowm:
+                    Reason unknown:
                 </Grid>
                 <Grid col={6}>
                     <Controller
