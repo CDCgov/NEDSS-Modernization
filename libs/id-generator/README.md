@@ -1,6 +1,6 @@
 # Id-Generator
 
-Library that includes entity model and repository to support entity Id generation.
+Library that includes the models and repository necessary to support entity Id generation. Many database entities in NBS utilize the `Local_UID_generator` table to track their Ids. This library simplifies retrieving valid Ids from this table.
 
 ## About
 
@@ -21,3 +21,12 @@ compileJava.mustRunAfter(":id-generator:build")
 ```
 
 In addition ensure that the project is on the classpath of the importing project.
+
+There is a convienience annotation can help with this.
+
+```java
+@EnableNBSIdGenerator
+public class Application {
+    ...
+}
+```
