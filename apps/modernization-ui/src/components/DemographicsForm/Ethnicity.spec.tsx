@@ -1,6 +1,19 @@
 import { fireEvent, render } from '@testing-library/react';
-import { SearchCriteriaContext } from '../../providers/SearchCriteriaContext';
 import { EthnicityForm } from './Ethnicity';
+
+const values = {
+    ethnicGroups: [
+        { value: 'ethnicity-1', name: 'Ethnicity 1' },
+        { value: 'ethnicity-2', name: 'Ethnicity 2' }
+    ],
+    ethnicityUnknownReasons: [{ value: 'unknown-reason', name: 'Unknown Reason' }],
+    detailedEthnicities: [{ value: 'detailed-ethnicity-1', name: 'Detailed Ethnicity 1', group: 'ethnicity-1' }]
+};
+
+jest.mock('pages/patient/profile/ethnicity', () => ({
+    ...jest.requireActual('pages/patient/profile/ethnicity'),
+    usePatientEthnicityCodedValues: () => values
+}));
 
 describe('EthnicityForm', () => {
     it('Should renders table component', async () => {
@@ -12,29 +25,8 @@ describe('EthnicityForm', () => {
 
     it('should submit the form with the selected values', async () => {
         const setEthnicityForm = jest.fn();
-        const searchCriteria = {
-            ethnicities: [
-                { id: { code: 'ETH1' }, codeDescTxt: 'Ethnicity 1' },
-                { id: { code: 'ETH2' }, codeDescTxt: 'Ethnicity 2' }
-            ],
-            programAreas: [],
-            conditions: [],
-            jurisdictions: [],
-            userResults: [],
-            outbreaks: [],
-            races: [],
-            identificationTypes: [],
-            states: [],
-            counties: [],
-            countries: [],
-            authorities: []
-        };
 
-        const { getByText, getByTestId } = render(
-            <SearchCriteriaContext.Provider value={{ searchCriteria }}>
-                <EthnicityForm setEthnicityForm={setEthnicityForm} />
-            </SearchCriteriaContext.Provider>
-        );
+        const { getByText, getByTestId } = render(<EthnicityForm setEthnicityForm={setEthnicityForm} />);
 
         const datepicker = getByTestId('date-picker-internal-input');
         fireEvent.change(datepicker, { target: { value: '2022-01-01' } });
