@@ -1,6 +1,5 @@
 package gov.cdc.nbs.codes;
 
-import gov.cdc.nbs.patient.KeyValuePair;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 

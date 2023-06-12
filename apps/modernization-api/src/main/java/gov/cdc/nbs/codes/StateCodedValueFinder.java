@@ -2,7 +2,6 @@ package gov.cdc.nbs.codes;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.srte.QCountryCode;
 import gov.cdc.nbs.entity.srte.QStateCode;
 import org.springframework.stereotype.Component;
 
