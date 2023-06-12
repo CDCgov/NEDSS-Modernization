@@ -166,13 +166,13 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                 </Grid>
                                 <Grid col={6}>
                                     <Checkbox
-                                        id={'record-status-superceded'}
+                                        id={'record-status-Superseded'}
                                         onChange={(v) =>
-                                            handleRecordStatusChange(RecordStatus.Superceded, v.target.checked)
+                                            handleRecordStatusChange(RecordStatus.Superseded, v.target.checked)
                                         }
                                         name={'name'}
-                                        label={'Superceded'}
-                                        checked={selectedRecordStatus.includes(RecordStatus.Superceded)}
+                                        label={'Superseded'}
+                                        checked={selectedRecordStatus.includes(RecordStatus.Superseded)}
                                     />
                                 </Grid>
                             </Grid>

@@ -56,7 +56,7 @@ describe('PatientSearch component tests', () => {
     it('should set record status checkboxes from incoming data', () => {
         const sampleSearchFunction = (data: PersonFilter) => {};
         const sampleClearFunction = () => {};
-        let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
+        let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superseded] };
         const { container, getByLabelText } = render(
             <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
         );
@@ -73,13 +73,13 @@ describe('PatientSearch component tests', () => {
             // Verify all 3 record status returned
             expect(data.recordStatus).toMatchObject([
                 RecordStatus.LogDel,
-                RecordStatus.Superceded,
+                RecordStatus.Superseded,
                 RecordStatus.Active
             ]);
         };
         const sampleClearFunction = () => {};
-        // Load page with Deleted and Superceded checked
-        let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
+        // Load page with Deleted and Superseded checked
+        let sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superseded] };
         const { container, getByLabelText } = render(
             <PatientSearch handleSubmission={sampleSearchFunction} data={sampleData} clearAll={sampleClearFunction} />
         );
