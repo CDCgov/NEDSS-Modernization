@@ -91,6 +91,7 @@ export default function AddPatient() {
     }, [isValid]);
 
     const submit = (data: any) => {
+        setSuccessSubmit(true);
         const phoneNumbers: NewPatientPhoneNumber[] = [];
         data?.emailAddresses?.map((item: any, index: number) => {
             item.email = data?.[`emailAddresses_${index}`];
@@ -174,7 +175,6 @@ export default function AddPatient() {
                 navigate(`/add-patient/patient-added?shortId=${re?.data?.createPatient.shortId}&name=${name}`);
             }
         });
-        setSuccessSubmit(true);
     };
 
     useEffect(() => {
@@ -233,6 +233,11 @@ export default function AddPatient() {
                                             type={'button'}>
                                             Save and add new lab report
                                         </Button>
+                                        {!isValid && (
+                                            <Button className="padding-x-3 add-patient-button" type={'submit'}>
+                                                Save changes
+                                            </Button>
+                                        )}
 
                                         {isValid && (
                                             <span>
