@@ -140,7 +140,7 @@ export default function AddPatient() {
                     first: data?.firstName,
                     middle: data?.middleName,
                     suffix: data?.suffix,
-                    use: data?.type || NameUseCd.L
+                    use: NameUseCd.L
                 }
             ],
             dateOfBirth: data?.dob,
