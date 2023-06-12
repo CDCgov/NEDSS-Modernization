@@ -263,8 +263,8 @@ public abstract class WaQuestion {
     private void validateAlphaNumericAndUnderscoreOnly(String s) {
         if (!s.matches("^[a-zA-Z0-9_]*$")) {
             throw new IllegalArgumentException(
-                    "Invalid characters specified for rdbTableNm. Only alphanumeric and underscore characters are supported. Value: "
-                            + rdbTableNm);
+                    "Invalid characters specified for WaQuestion field. Only alphanumeric and underscore characters are supported. Supplied value: "
+                            + s);
         }
     }
 
