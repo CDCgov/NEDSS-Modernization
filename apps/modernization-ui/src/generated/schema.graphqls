@@ -1183,9 +1183,7 @@ type Mutation {
     addPatientIdentification(input: IdentificationInput!): PatientEventResponse!
     addPatientName(input: NameInput!): PatientEventResponse!
     addPatientPhone(input: PhoneInput!): PatientEventResponse!
-    addPatientRace(input: RaceInput!): PatientEventResponse!
     updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
-    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     updatePatientAddress(input: AddressInput!): PatientEventResponse!
     updatePatientEmail(input: EmailInput!): PatientEventResponse!
     updatePatientIdentification(
@@ -1193,7 +1191,6 @@ type Mutation {
     ): PatientEventResponse!
     updatePatientName(input: NameInput!): PatientEventResponse!
     updatePatientPhone(input: PhoneInput!): PatientEventResponse!
-    updatePatientRace(input: RaceInput!): PatientEventResponse!
     deletePatientAddress(
         patientId: Int!
         personSeqNum: Int!
@@ -1205,7 +1202,10 @@ type Mutation {
     ): PatientEventResponse!
     deletePatientName(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
     deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientRace(patientId: Int!, raceCd: String!): PatientEventResponse!
+    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
+    addPatientRace(input: RaceInput!): PatientRaceChangeResult!
+    updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
+    deletePatientRace(input: DeletePatientRace!): PatientRaceChangeResult!
 }
 
 type PatientCreatedResponse {
@@ -1473,6 +1473,22 @@ type PatientEthnicityChangeResult {
     patient: Int!
 }
 
+input RaceInput {
+    patient: ID!
+    asOf: DateTime
+    category: String!
+    detailed: [String]
+}
+
+input DeletePatientRace {
+    patient: Int!
+    category: String!
+}
+
+type PatientRaceChangeResult {
+    patient: Int!
+}
+
 input IdentificationInput {
     patientId: ID!
     id: Int
@@ -1497,13 +1513,6 @@ input PhoneInput {
     number: String
     extension: String
     phoneType: PhoneType!
-}
-
-input RaceInput {
-    patientId: ID!
-    asOf: DateTime
-    raceCd: String!
-    raceCategoryCd: String!
 }
 
 input MortalityInput {

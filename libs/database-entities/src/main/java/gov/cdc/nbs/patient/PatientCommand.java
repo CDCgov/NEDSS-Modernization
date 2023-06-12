@@ -10,6 +10,7 @@ import gov.cdc.nbs.message.patient.input.PatientInput;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 public sealed interface PatientCommand {
 
@@ -53,19 +54,65 @@ public sealed interface PatientCommand {
     record AddRace(
         long person,
         Instant asOf,
-        String code,
         String category,
+        List<String> detailed,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
 
         public AddRace(
             long person,
-            String code,
+            Instant asOf,
             String category,
             long requester,
-            Instant requestedOn) {
-            this(person, Instant.now(), code, category, requester, requestedOn);
+            Instant requestedOn
+        ) {
+            this(person, asOf, category, List.of(), requester, requestedOn);
         }
+
+    }
+
+
+    record AddRaceCategory(
+        long person,
+        Instant asOf,
+        String category,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+
+    }
+
+
+    record AddDetailedRace(
+        long person,
+        Instant asOf,
+        String category,
+        String race,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+
+    }
+
+
+    record UpdateRaceInfo(
+        long person,
+        Instant asOf,
+        String category,
+        List<String> detailed,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+    }
+
+
+    record DeleteRaceInfo(
+        long person,
+        String category,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -200,6 +247,7 @@ public sealed interface PatientCommand {
     ) implements PatientCommand {
     }
 
+
     record RemoveDetailedEthnicity(
         long person,
         String ethnicity,
@@ -207,6 +255,7 @@ public sealed interface PatientCommand {
         Instant requestedOn
     ) implements PatientCommand {
     }
+
 
     record DeleteMortalityLocator(
         long person,
@@ -303,24 +352,6 @@ public sealed interface PatientCommand {
         long person,
         Instant asOf,
         short personNameSeq,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-    }
-
-
-    record UpdateRaceInfo(
-        long person,
-        String raceCd,
-        String raceCategoryCd,
-        Instant asOf,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-    }
-
-
-    record DeleteRaceInfo(
-        long person,
-        String raceCd,
         long requester,
         Instant requestedOn) implements PatientCommand {
     }
