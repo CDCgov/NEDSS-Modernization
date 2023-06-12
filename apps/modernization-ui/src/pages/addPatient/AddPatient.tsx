@@ -1,11 +1,22 @@
 /* eslint-disable no-unreachable */
-import { Button, Form, Grid, Icon } from '@trussworks/react-uswds';
+import {
+    Button,
+    ButtonGroup,
+    Form,
+    Grid,
+    Icon,
+    Modal,
+    ModalFooter,
+    ModalHeading,
+    ModalRef,
+    ModalToggleButton
+} from '@trussworks/react-uswds';
 import './AddPatient.scss';
 import NameFields from './components/nameFields/NameFields';
 import AddressFields, { InputAddressFields } from './components/addressFields/AddressFields';
 import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields from './components/ethnicityFields/EthnicityFields';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ACTIVE_TAB, LeftBar } from './components/LeftBar/LeftBar';
 import RaceFields from './components/Race/RaceFields';
 import GeneralInformation from './components/generalInformation/generalInformation';
@@ -22,6 +33,7 @@ export default function AddPatient() {
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
 
     const [handleSavePatient] = useCreatePatientMutation();
+    const modalRef = useRef<ModalRef>(null);
 
     function isEmpty(obj: any) {
         for (const key in obj) {
@@ -210,20 +222,17 @@ export default function AddPatient() {
                                     <div className="button-group">
                                         <Button
                                             disabled={disabled}
-                                            className="padding-x-3 add-patient-button hide-button"
+                                            className="padding-x-3 margin-y-0 add-patient-button"
                                             type={'button'}>
                                             Save and add new lab report
                                         </Button>
-                                        <Button className="padding-x-3 add-patient-button" type={'submit'}>
-                                            Save changes
-                                        </Button>
 
-                                        {/* {isValid && (
+                                        {isValid && (
                                             <span>
                                                 <ModalToggleButton
                                                     modalRef={modalRef}
                                                     opener
-                                                    className="delete-btn display-inline-flex">
+                                                    className="delete-btn add-patient margin-y-0 display-inline-flex">
                                                     Save changes
                                                 </ModalToggleButton>
                                                 <Modal
@@ -264,7 +273,7 @@ export default function AddPatient() {
                                                     </ModalFooter>
                                                 </Modal>
                                             </span>
-                                        )} */}
+                                        )}
                                     </div>
                                 </div>
                             </Grid>
