@@ -121,6 +121,19 @@ class WaQuestionTest {
         assertEquals('O', question.getQuestionRequiredNnd().charValue());
     }
 
+    @Test
+    void should_set_messaging_data_true() {
+        WaQuestion question = emptyQuestion();
+        question.setMessagingData(new MessagingData(
+                false,
+                null,
+                null,
+                null,
+                true,
+                null));
+        assertEquals('R', question.getQuestionRequiredNnd().charValue());
+    }
+
     private void validateMessageFields(WaQuestion question, QuestionCommand.MessagingData data) {
         assertEquals(data.includedInMessage() ? 'T' : 'F', question.getNndMsgInd().charValue());
         assertEquals(data.messageVariableId(), question.getQuestionIdentifierNnd());
