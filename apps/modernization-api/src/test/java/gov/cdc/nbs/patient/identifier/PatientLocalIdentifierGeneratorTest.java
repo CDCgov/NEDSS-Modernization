@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.identifier;
 
-import gov.cdc.nbs.patient.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

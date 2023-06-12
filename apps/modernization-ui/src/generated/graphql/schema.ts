@@ -178,6 +178,11 @@ export type DegreeResults = {
   total: Scalars['Int'];
 };
 
+export type DeletePatientRace = {
+  category: Scalars['String'];
+  patient: Scalars['Int'];
+};
+
 export type EmailInput = {
   emailAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
@@ -618,7 +623,7 @@ export type Mutation = {
   addPatientIdentification: PatientEventResponse;
   addPatientName: PatientEventResponse;
   addPatientPhone: PatientEventResponse;
-  addPatientRace: PatientEventResponse;
+  addPatientRace: PatientRaceChangeResult;
   createPatient: PatientCreatedResponse;
   deletePatient: PatientDeleteResult;
   deletePatientAddress: PatientEventResponse;
@@ -626,7 +631,7 @@ export type Mutation = {
   deletePatientIdentification: PatientEventResponse;
   deletePatientName: PatientEventResponse;
   deletePatientPhone: PatientEventResponse;
-  deletePatientRace: PatientEventResponse;
+  deletePatientRace: PatientRaceChangeResult;
   updateAdministrative: PatientEventResponse;
   updateEthnicity: PatientEthnicityChangeResult;
   updateMortality: PatientEventResponse;
@@ -636,7 +641,7 @@ export type Mutation = {
   updatePatientIdentification: PatientEventResponse;
   updatePatientName: PatientEventResponse;
   updatePatientPhone: PatientEventResponse;
-  updatePatientRace: PatientEventResponse;
+  updatePatientRace: PatientRaceChangeResult;
   updatePatientSexBirth: PatientEventResponse;
 };
 
@@ -712,8 +717,7 @@ export type MutationDeletePatientPhoneArgs = {
 
 
 export type MutationDeletePatientRaceArgs = {
-  patientId: Scalars['Int'];
-  raceCd: Scalars['String'];
+  input: DeletePatientRace;
 };
 
 
@@ -1424,6 +1428,11 @@ export type PatientRace = {
   id: Scalars['ID'];
   patient: Scalars['Int'];
   version: Scalars['Int'];
+};
+
+export type PatientRaceChangeResult = {
+  __typename?: 'PatientRaceChangeResult';
+  patient: Scalars['Int'];
 };
 
 export type PatientRaceResults = {
@@ -2209,9 +2218,9 @@ export type RaceId = {
 
 export type RaceInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
-  patientId: Scalars['ID'];
-  raceCategoryCd: Scalars['String'];
-  raceCd: Scalars['String'];
+  category: Scalars['String'];
+  detailed?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  patient: Scalars['ID'];
 };
 
 export type RaceResults = {
@@ -2398,7 +2407,7 @@ export type AddPatientRaceMutationVariables = Exact<{
 }>;
 
 
-export type AddPatientRaceMutation = { __typename?: 'Mutation', addPatientRace: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type AddPatientRaceMutation = { __typename?: 'Mutation', addPatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
 
 export type CreatePatientMutationVariables = Exact<{
   patient: PersonInput;
@@ -2455,12 +2464,11 @@ export type DeletePatientPhoneMutationVariables = Exact<{
 export type DeletePatientPhoneMutation = { __typename?: 'Mutation', deletePatientPhone: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
 export type DeletePatientRaceMutationVariables = Exact<{
-  patientId: Scalars['Int'];
-  raceCd: Scalars['String'];
+  input: DeletePatientRace;
 }>;
 
 
-export type DeletePatientRaceMutation = { __typename?: 'Mutation', deletePatientRace: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type DeletePatientRaceMutation = { __typename?: 'Mutation', deletePatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
 
 export type UpdateAdministrativeMutationVariables = Exact<{
   input: AdministrativeInput;
@@ -2530,7 +2538,7 @@ export type UpdatePatientRaceMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePatientRaceMutation = { __typename?: 'Mutation', updatePatientRace: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
+export type UpdatePatientRaceMutation = { __typename?: 'Mutation', updatePatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
 
 export type UpdatePatientSexBirthMutationVariables = Exact<{
   input: UpdateSexAndBirthInput;
@@ -3157,8 +3165,7 @@ export type AddPatientPhoneMutationOptions = Apollo.BaseMutationOptions<AddPatie
 export const AddPatientRaceDocument = gql`
     mutation addPatientRace($input: RaceInput!) {
   addPatientRace(input: $input) {
-    requestId
-    patientId
+    patient
   }
 }
     `;
@@ -3438,10 +3445,9 @@ export type DeletePatientPhoneMutationHookResult = ReturnType<typeof useDeletePa
 export type DeletePatientPhoneMutationResult = Apollo.MutationResult<DeletePatientPhoneMutation>;
 export type DeletePatientPhoneMutationOptions = Apollo.BaseMutationOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>;
 export const DeletePatientRaceDocument = gql`
-    mutation deletePatientRace($patientId: Int!, $raceCd: String!) {
-  deletePatientRace(patientId: $patientId, raceCd: $raceCd) {
-    requestId
-    patientId
+    mutation deletePatientRace($input: DeletePatientRace!) {
+  deletePatientRace(input: $input) {
+    patient
   }
 }
     `;
@@ -3460,8 +3466,7 @@ export type DeletePatientRaceMutationFn = Apollo.MutationFunction<DeletePatientR
  * @example
  * const [deletePatientRaceMutation, { data, loading, error }] = useDeletePatientRaceMutation({
  *   variables: {
- *      patientId: // value for 'patientId'
- *      raceCd: // value for 'raceCd'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -3780,8 +3785,7 @@ export type UpdatePatientPhoneMutationOptions = Apollo.BaseMutationOptions<Updat
 export const UpdatePatientRaceDocument = gql`
     mutation updatePatientRace($input: RaceInput!) {
   updatePatientRace(input: $input) {
-    requestId
-    patientId
+    patient
   }
 }
     `;

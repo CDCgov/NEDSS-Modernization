@@ -107,10 +107,12 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddRace(
                 id,
-                RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
                 id,
-                now));
+                now
+            )
+        );
 
         // Tele locator entry
         person.add(
@@ -207,10 +209,12 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddRace(
                 id,
-                RaceMother.WHITE_CODE,
+                RandomUtil.getRandomDateInPast(),
                 RaceMother.WHITE_CODE,
                 id,
-                now));
+                now
+            )
+        );
 
         person.delete(
             new PatientCommand.Delete(

@@ -2,6 +2,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { SelectInput } from '../FormInputs/SelectInput';
+import { BaseSyntheticEvent, useState } from 'react';
 import { usePatientEthnicityCodedValues } from 'pages/patient/profile/ethnicity';
 
 export const EthnicityForm = ({ setEthnicityForm }: any) => {
@@ -12,6 +13,13 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
 
     const onSubmit = () => {
         setEthnicityForm();
+    };
+
+    const [selectedEthinicity, setSelectedEthinicity] = useState<'2135-2' | '2186-5' | 'UNK' | 'NOT-TO-ANS' | ''>('');
+
+    const handleOnChange = (fn?: (...event: any[]) => void) => (changed: BaseSyntheticEvent) => {
+        setSelectedEthinicity(changed?.currentTarget?.value);
+        fn && fn(changed);
     };
 
     return (
@@ -48,7 +56,7 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                                 dataTestid="ethnicity"
                                 name="ethnicity"
                                 defaultValue={value}
-                                onChange={onChange}
+                                onChange={handleOnChange(onChange)}
                                 htmlFor={'ethnicity'}
                                 options={coded.ethnicGroups}
                             />
@@ -56,25 +64,27 @@ export const EthnicityForm = ({ setEthnicityForm }: any) => {
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    Spanish origin:
+            {selectedEthinicity === '2135-2' && (
+                <Grid row className="flex-justify flex-align-center padding-2">
+                    <Grid col={6} className="margin-top-1">
+                        Spanish origin:
+                    </Grid>
+                    <Grid col={6}>
+                        <Controller
+                            control={control}
+                            name="spanish"
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    htmlFor={'spanish'}
+                                    options={coded.detailedEthnicities}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="spanish"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'spanish'}
-                                options={coded.detailedEthnicities}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
+            )}
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
                     Reason unknown:
