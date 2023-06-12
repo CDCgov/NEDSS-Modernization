@@ -94,11 +94,13 @@ public class RandomUtil {
         return data.substring(0, new Random().nextInt(len - 1) + 1);
     }
 
+    @SafeVarargs
     public static <T> T oneFrom(T...values) {
         var index = RANDOM.nextInt(values.length);
         return values[index];
     }
 
+    @SafeVarargs
     public static <T> Collection<T> multiFrom(T...values) {
         var size = RANDOM.nextInt(values.length);
         Set<T> randomized = new HashSet<>(size);

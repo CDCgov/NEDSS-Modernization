@@ -4,9 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @DiscriminatorValue(TextQuestion.TEXT_QUESION_TYPE)
 public class TextQuestion extends WaQuestion {

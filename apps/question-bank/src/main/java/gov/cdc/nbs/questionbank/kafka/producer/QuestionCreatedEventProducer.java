@@ -16,6 +16,7 @@ public sealed interface QuestionCreatedEventProducer {
 
         @Override
         public void send(final QuestionCreatedEvent status) {
+            // If kafka is disabled, do nothing on 'send'
         }
 
     }

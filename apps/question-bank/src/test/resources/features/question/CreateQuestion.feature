@@ -18,4 +18,3 @@ Feature: Create question
         Given I am a user without permissions
         When I send a create text question request
         Then a not authorized exception is thrown
-

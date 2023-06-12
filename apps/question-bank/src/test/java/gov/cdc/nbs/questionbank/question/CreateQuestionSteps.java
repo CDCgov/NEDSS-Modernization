@@ -1,10 +1,12 @@
 package gov.cdc.nbs.questionbank.question;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
@@ -65,6 +67,11 @@ public class CreateQuestionSteps {
     @Then("the text question is created")
     public void the_text_question_is_created() {
         assertNotNull(response);
+        TextQuestion question = (TextQuestion) questionRepository.findById(response.questionId()).orElseThrow();
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(request.defaultValue(), question.getDefaultValue());
+        assertEquals(request.mask(), question.getMask());
+        assertEquals(request.fieldLength(), question.getFieldSize());
     }
 
     @Then("a not authorized exception is thrown")
