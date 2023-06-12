@@ -2,10 +2,13 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.time.Instant;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -15,6 +18,8 @@ import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
+import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
+import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -34,6 +39,9 @@ class QuestionCreatorTest {
 
     @Mock
     private CodeValueGeneralRepository codeValueGeneralRepository;
+
+    @Mock
+    private QuestionCreatedEventProducer.EnabledProducer producer;
 
     @InjectMocks
     private QuestionCreator creator;
@@ -185,5 +193,29 @@ class QuestionCreatorTest {
 
         // then the id of the new question is returned
         assertEquals(tq.getId(), id);
+    }
+
+    @Test
+    void should_post_created_event() {
+        // given the database will return an entity with an Id and add time
+        Instant now = Instant.now();
+        TextQuestion tq = new TextQuestion();
+        tq.setId(999L);
+        tq.setAddTime(now);
+        when(repository.save(Mockito.any())).thenReturn(tq);
+
+        // given a create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+
+        // when a question is created
+        Long id = creator.create(123L, request);
+
+        // then a question created event is sent
+        ArgumentCaptor<QuestionCreatedEvent> eventCaptor = ArgumentCaptor.forClass(QuestionCreatedEvent.class);
+        verify(producer).send(eventCaptor.capture());
+        QuestionCreatedEvent event = eventCaptor.getValue();
+        assertEquals(id.longValue(), event.id());
+        assertEquals(123L, event.createdBy());
+        assertEquals(now, event.createdAt());
     }
 }

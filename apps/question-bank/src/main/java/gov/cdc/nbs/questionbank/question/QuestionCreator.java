@@ -7,6 +7,8 @@ import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
+import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
@@ -19,20 +21,28 @@ class QuestionCreator {
     private final IdGeneratorService idGenerator;
     private final WaQuestionRepository repository;
     private final CodeValueGeneralRepository codeValueGeneralRepository;
+    private final QuestionCreatedEventProducer eventProducer;
 
     public QuestionCreator(
             IdGeneratorService idGenerator,
             WaQuestionRepository repository,
-            CodeValueGeneralRepository codeValueGeneralRepository) {
+            CodeValueGeneralRepository codeValueGeneralRepository,
+            QuestionCreatedEventProducer eventProducer) {
         this.idGenerator = idGenerator;
         this.repository = repository;
         this.codeValueGeneralRepository = codeValueGeneralRepository;
+        this.eventProducer = eventProducer;
     }
 
     public long create(Long userId, CreateQuestionRequest.Text request) {
         WaQuestion question = new TextQuestion(asAdd(userId, request));
         question = repository.save(question);
+        sendCreateEvent(question.getId(), userId, question.getAddTime());
         return question.getId();
+    }
+
+    private void sendCreateEvent(Long id, Long user, Instant createTime) {
+        eventProducer.send(new QuestionCreatedEvent(id, user, createTime));
     }
 
     QuestionCommand.AddTextQuestion asAdd(Long userId, CreateQuestionRequest.Text request) {

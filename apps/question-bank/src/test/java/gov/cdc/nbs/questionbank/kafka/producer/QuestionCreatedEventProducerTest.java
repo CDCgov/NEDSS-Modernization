@@ -20,7 +20,7 @@ class QuestionCreatedEventProducerTest {
     private RequestProperties properties = new RequestProperties();
 
     @InjectMocks
-    private QuestionCreatedEventProducer producer;
+    private QuestionCreatedEventProducer.EnabledProducer producer;
 
     @Test
     void should_set_correct_data_for_question() {
