@@ -1,13 +1,11 @@
 import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
 import { useNavigate } from 'react-router-dom';
 
-export const SuccessForm = ({ data, setSuccessSubmit }: any) => {
+export const SuccessForm = ({ data, setSuccessSubmit, patientId }: any) => {
     const navigate = useNavigate();
 
     function handleViewPatient(): void {
-        // TODO: Hard coded to this profile for now. Once new patient creation is ready, we can pass that id instead.
-        // At the time of this code, patient creation is not ready.
-        navigate('/patient-profile/63000');
+        navigate(`/patient-profile/${patientId}`);
     }
     return (
         <Grid row>
