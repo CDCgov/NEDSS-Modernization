@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -141,7 +142,7 @@ public class PatientMother {
         patient.add(
             new PatientCommand.AddRace(
                 identifier.id(),
-                RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
                 this.settings.createdBy(),
                 this.settings.createdOn()

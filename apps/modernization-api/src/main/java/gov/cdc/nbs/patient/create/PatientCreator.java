@@ -5,7 +5,7 @@ import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -121,7 +121,6 @@ public class PatientCreator {
         return new PatientCommand.AddRace(
             identifier.id(),
             asOf,
-            race,
             race,
             context.requestedBy(),
             context.requestedAt()

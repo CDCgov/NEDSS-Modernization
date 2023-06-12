@@ -25,6 +25,8 @@ include ':event-schema'
 project(':event-schema').projectDir = new File('libs/event-schema')
 include ':authentication'
 project(':authentication').projectDir = new File('libs/authentication')
+include ':id-generator'
+project(':id-generator').projectDir = new File('libs/id-generator')
 
 include ':coverage-report'
 

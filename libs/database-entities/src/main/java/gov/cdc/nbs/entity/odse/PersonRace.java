@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 @AllArgsConstructor
 @Getter
@@ -16,6 +18,18 @@ import java.time.Instant;
 @Table(name = "Person_race")
 @IdClass(PersonRaceId.class)
 public class PersonRace {
+
+    public static Predicate<PersonRace> inCategory(final String category) {
+        return test -> Objects.equals(test.getRaceCategoryCd(), category);
+    }
+
+    public static Predicate<PersonRace> identifiedBy(final String race) {
+        return test -> Objects.equals(test.getRaceCd(), race);
+    }
+
+    public static Predicate<PersonRace> isDetail() {
+        return test -> !Objects.equals(test.getRaceCategoryCd(), test.getRaceCd());
+    }
 
     @Id
     @Column(name = "race_cd", nullable = false, length = 20)
@@ -47,24 +61,55 @@ public class PersonRace {
     @Embedded
     private Audit audit;
 
-    public PersonRace() {
+    PersonRace() {
 
     }
 
     public PersonRace(
             final Person person,
-            final PatientCommand.AddRace added
+            final PatientCommand.AddRaceCategory added
     ) {
         this.personUid = person;
         this.asOfDate = added.asOf();
         this.raceCategoryCd = added.category();
-        this.raceCd = added.code();
+        this.raceCd = added.category();
 
         this.recordStatusCd = "ACTIVE";
         this.recordStatusTime = added.requestedOn();
 
         this.audit = new Audit(added.requester(), added.requestedOn());
 
+    }
 
+    public PersonRace(
+        final Person person,
+        final PatientCommand.AddDetailedRace added
+    ) {
+        this.personUid = person;
+        this.asOfDate = added.asOf();
+        this.raceCategoryCd = added.category();
+        this.raceCd = added.race();
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = added.requestedOn();
+
+        this.audit = new Audit(added.requester(), added.requestedOn());
+
+    }
+
+    public PersonRace update(final PatientCommand.UpdateRaceInfo changed) {
+        this.asOfDate = changed.asOf();
+
+        this.audit.changed(changed.requester(), changed.requestedOn());
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonRace{" +
+            "raceCd='" + raceCd + '\'' +
+            ", raceCategoryCd='" + raceCategoryCd + '\'' +
+            ", asOfDate=" + asOfDate +
+            '}';
     }
 }

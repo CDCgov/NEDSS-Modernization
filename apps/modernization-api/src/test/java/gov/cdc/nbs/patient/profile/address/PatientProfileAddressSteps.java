@@ -53,20 +53,16 @@ public class PatientProfileAddressSteps {
     @Given("the new patient's address is entered")
     public void the_new_patient_address_is_entered() {
 
-        String state = faker.address().stateAbbr();
-        String zipcode = faker.address().zipCodeByState(state);
-
         PatientInput.PostalAddress address = new PatientInput.PostalAddress(
             faker.address().streetAddress(),
-            faker.address().secondaryAddress(),
+            null,
             faker.address().city(),
-            state,
-            faker.address().countyByZipCode(zipcode),
+            RandomUtil.getRandomStateCode(),
+            RandomUtil.getRandomString(),
             RandomUtil.country().code(),
-            zipcode,
+            RandomUtil.getRandomNumericString(15),
             null
         );
-
 
         this.input.active().getAddresses().add(address);
     }

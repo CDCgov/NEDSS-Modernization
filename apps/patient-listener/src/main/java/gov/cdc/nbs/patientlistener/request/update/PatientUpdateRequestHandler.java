@@ -3,13 +3,11 @@ package gov.cdc.nbs.patientlistener.request.update;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.AddNameData;
-import gov.cdc.nbs.message.patient.event.AddRaceData;
 import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
-import gov.cdc.nbs.message.patient.event.DeleteRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
@@ -18,7 +16,6 @@ import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
-import gov.cdc.nbs.message.patient.event.UpdateRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
 import gov.cdc.nbs.patientlistener.request.PatientRequestStatusProducer;
@@ -203,64 +200,6 @@ public class PatientUpdateRequestHandler {
     private void updateElasticsearchPatient(final Person person) {
         var esPerson = PersonConverter.toElasticsearchPerson(person);
         elasticsearchPersonRepository.save(esPerson);
-    }
-
-    /**
-     * Sets the Person's Race info to the specified values.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientRaceAdd(final AddRaceData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated Race info",
-            data.patientId());
-    }
-
-    /**
-     * Sets the Person's Race info to the specified values.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientRaceUpdate(final UpdateRaceData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated Race info",
-            data.patientId());
-    }
-
-    /**
-     * Delete a person Race.
-     */
-    @Transactional
-    public void handlePatientRaceDelete(final String requestId, final long patientId, String raceCd,
-        final long userId) {
-        if (!userService.isAuthorized(userId, VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(requestId);
-        }
-        var person = findPerson(patientId, requestId);
-        patientUpdater.update(person, new DeleteRaceData(patientId, requestId, userId, null, raceCd));
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            requestId,
-            "Successfully deleted patient Race",
-            userId);
     }
 
     /**

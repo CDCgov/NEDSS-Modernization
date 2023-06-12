@@ -171,7 +171,6 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddRace(
                 117L,
                 Instant.parse("2022-05-12T11:15:17Z"),
-                "race-code-value",
                 "race-category-value",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")

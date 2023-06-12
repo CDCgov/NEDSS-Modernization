@@ -1,6 +1,6 @@
-package gov.cdc.nbs.exception;
+package gov.cdc.nbs.id;
 
-import gov.cdc.nbs.patient.IdGeneratorService.EntityType;
+import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 
 public class IdGenerationException extends RuntimeException {
     public IdGenerationException(EntityType type) {

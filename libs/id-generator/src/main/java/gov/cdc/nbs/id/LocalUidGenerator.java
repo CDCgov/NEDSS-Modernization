@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Builder
-@Table(name = "Local_UID_generator")
+@Table(name = "Local_UID_generator", catalog = "NBS_ODSE")
 public class LocalUidGenerator {
     @Id
     @Column(name = "class_name_cd", nullable = false, length = 50)

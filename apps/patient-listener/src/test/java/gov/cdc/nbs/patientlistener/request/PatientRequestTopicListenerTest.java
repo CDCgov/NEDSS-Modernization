@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patientlistener.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -24,10 +24,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class PatientRequestTopicListenerTest {
+
     @Spy
     ObjectMapper mapper =
         new ObjectMapper()
-            .setSerializationInclusion(Include.NON_NULL)
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
             .registerModule(EventSchemaJacksonModuleFactory.create());
 
     @Mock
