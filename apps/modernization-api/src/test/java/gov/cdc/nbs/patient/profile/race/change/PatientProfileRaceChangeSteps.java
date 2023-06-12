@@ -70,13 +70,20 @@ public class PatientProfileRaceChangeSteps {
     }
 
     @When("a patient's race is changed")
+    @Transactional
     public void a_patient_race_is_changed() {
         PatientIdentifier patient = patients.one();
+
+        PersonRace existing = this.entityManager.find(Person.class, patients.one().id())
+            .getRaces()
+            .stream()
+            .findFirst()
+            .orElseThrow();
 
         input = new RaceInput();
         input.setPatient(patient.id());
         input.setAsOf(RandomUtil.getRandomDateInPast());
-        input.setCategory(RandomUtil.getRandomFromArray(RaceMother.RACE_LIST));
+        input.setCategory(existing.getRaceCategoryCd());
 
         controller.update(input);
     }
