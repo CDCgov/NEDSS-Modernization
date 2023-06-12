@@ -514,6 +514,24 @@ export enum LaboratoryReportStatus {
   Unprocessed = 'UNPROCESSED'
 }
 
+export type Language = {
+  __typename?: 'Language';
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  id: LanguageId;
+};
+
+export type LanguageId = {
+  __typename?: 'LanguageId';
+  code: Scalars['String'];
+  codeSetNm: Scalars['String'];
+};
+
+export type LanguageResults = {
+  __typename?: 'LanguageResults';
+  content: Array<Maybe<Language>>;
+  total: Scalars['Int'];
+};
+
 export type LocalCodedResults = {
   __typename?: 'LocalCodedResults';
   content: Array<Maybe<LabResult>>;
@@ -942,6 +960,24 @@ export type Observation = {
   ovcAltDescTxt?: Maybe<Scalars['String']>;
   ovcCode?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
+};
+
+export type Occupation = {
+  __typename?: 'Occupation';
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  id: OccupationId;
+};
+
+export type OccupationId = {
+  __typename?: 'OccupationId';
+  code: Scalars['String'];
+  codeSetNm: Scalars['String'];
+};
+
+export type OccupationResults = {
+  __typename?: 'OccupationResults';
+  content: Array<Maybe<Occupation>>;
+  total: Scalars['Int'];
 };
 
 export enum Operator {
@@ -1881,8 +1917,10 @@ export type Query = {
   findAllCountyCodesForState: Array<Maybe<CountyCode>>;
   findAllDegrees: DegreeResults;
   findAllEthnicityValues: EthnicityResults;
+  findAllHighestLevelOfEducation: EducationResults;
   findAllIdentificationTypes: IdentificationTypesResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
+  findAllMaritalStatus: MaritalStatusResults;
   findAllNaicsIndustryCodes: NaicsIndustryCodeResults;
   findAllNamePrefixes: NamePrefixResults;
   findAllNameTypes: NameTypeResults;
@@ -1893,6 +1931,8 @@ export type Query = {
   findAllPhoneAndEmailType: PhoneAndEmailTypeResults;
   findAllPhoneAndEmailUse: PhoneAndEmailUseResults;
   findAllPlaces: Array<Maybe<Place>>;
+  findAllPrimaryLanguages: LanguageResults;
+  findAllPrimaryOccupations: OccupationResults;
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllRaceValues: RaceResults;
   findAllStateCodes: Array<Maybe<StateCode>>;
@@ -1966,12 +2006,22 @@ export type QueryFindAllEthnicityValuesArgs = {
 };
 
 
+export type QueryFindAllHighestLevelOfEducationArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
 export type QueryFindAllIdentificationTypesArgs = {
   page?: InputMaybe<Page>;
 };
 
 
 export type QueryFindAllJurisdictionsArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllMaritalStatusArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -2017,6 +2067,16 @@ export type QueryFindAllPhoneAndEmailUseArgs = {
 
 
 export type QueryFindAllPlacesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllPrimaryLanguagesArgs = {
+  page?: InputMaybe<Page>;
+};
+
+
+export type QueryFindAllPrimaryOccupationsArgs = {
   page?: InputMaybe<Page>;
 };
 
@@ -2343,6 +2403,42 @@ export enum UserType {
   Internal = 'INTERNAL'
 }
 
+export type Education = {
+  __typename?: 'education';
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  id: EducationId;
+};
+
+export type EducationId = {
+  __typename?: 'educationId';
+  code: Scalars['String'];
+  codeSetNm: Scalars['String'];
+};
+
+export type EducationResults = {
+  __typename?: 'educationResults';
+  content: Array<Maybe<Education>>;
+  total: Scalars['Int'];
+};
+
+export type MaritalStatus = {
+  __typename?: 'maritalStatus';
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  id: MaritalStatusId;
+};
+
+export type MaritalStatusId = {
+  __typename?: 'maritalStatusId';
+  code: Scalars['String'];
+  codeSetNm: Scalars['String'];
+};
+
+export type MaritalStatusResults = {
+  __typename?: 'maritalStatusResults';
+  content: Array<Maybe<MaritalStatus>>;
+  total: Scalars['Int'];
+};
+
 export type PersonParentUid = {
   __typename?: 'personParentUid';
   id?: Maybe<Scalars['ID']>;
@@ -2586,6 +2682,13 @@ export type FindAllEthnicityValuesQueryVariables = Exact<{
 
 export type FindAllEthnicityValuesQuery = { __typename?: 'Query', findAllEthnicityValues: { __typename?: 'EthnicityResults', total: number, content: Array<{ __typename?: 'Ethnicity', codeDescTxt: string, id: { __typename?: 'EthnicityId', code: string } } | null> } };
 
+export type FindAllHighestLevelOfEducationQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllHighestLevelOfEducationQuery = { __typename?: 'Query', findAllHighestLevelOfEducation: { __typename?: 'educationResults', total: number, content: Array<{ __typename?: 'education', codeShortDescTxt?: string | null, id: { __typename?: 'educationId', codeSetNm: string, code: string } } | null> } };
+
 export type FindAllIdentificationTypesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
@@ -2599,6 +2702,13 @@ export type FindAllJurisdictionsQueryVariables = Exact<{
 
 
 export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
+
+export type FindAllMaritalStatusQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllMaritalStatusQuery = { __typename?: 'Query', findAllMaritalStatus: { __typename?: 'maritalStatusResults', total: number, content: Array<{ __typename?: 'maritalStatus', codeShortDescTxt?: string | null, id: { __typename?: 'maritalStatusId', codeSetNm: string, code: string } } | null> } };
 
 export type FindAllNaicsIndustryCodesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2667,6 +2777,20 @@ export type FindAllPlacesQueryVariables = Exact<{
 
 
 export type FindAllPlacesQuery = { __typename?: 'Query', findAllPlaces: Array<{ __typename?: 'Place', id?: string | null, addReasonCd?: string | null, addTime?: any | null, addUserId?: number | null, cd?: string | null, cdDescTxt?: string | null, description?: string | null, durationAmt?: string | null, durationUnitCd?: string | null, fromTime?: any | null, lastChgReasonCd?: string | null, lastChgTime?: any | null, lastChgUserId?: number | null, localId?: string | null, nm?: string | null, recordStatusCd?: string | null, recordStatusTime?: any | null, statusCd?: string | null, statusTime?: any | null, toTime?: any | null, userAffiliationTxt?: string | null, streetAddr1?: string | null, streetAddr2?: string | null, cityCd?: string | null, cityDescTxt?: string | null, stateCd?: string | null, zipCd?: string | null, cntyCd?: string | null, cntryCd?: string | null, phoneNbr?: string | null, phoneCntryCd?: string | null, versionCtrlNbr?: number | null } | null> };
+
+export type FindAllPrimaryLanguagesQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllPrimaryLanguagesQuery = { __typename?: 'Query', findAllPrimaryLanguages: { __typename?: 'LanguageResults', total: number, content: Array<{ __typename?: 'Language', codeShortDescTxt?: string | null, id: { __typename?: 'LanguageId', codeSetNm: string, code: string } } | null> } };
+
+export type FindAllPrimaryOccupationsQueryVariables = Exact<{
+  page?: InputMaybe<Page>;
+}>;
+
+
+export type FindAllPrimaryOccupationsQuery = { __typename?: 'Query', findAllPrimaryOccupations: { __typename?: 'OccupationResults', total: number, content: Array<{ __typename?: 'Occupation', codeShortDescTxt?: string | null, id: { __typename?: 'OccupationId', codeSetNm: string, code: string } } | null> } };
 
 export type FindAllProgramAreasQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -4098,6 +4222,48 @@ export function useFindAllEthnicityValuesLazyQuery(baseOptions?: Apollo.LazyQuer
 export type FindAllEthnicityValuesQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesQuery>;
 export type FindAllEthnicityValuesLazyQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesLazyQuery>;
 export type FindAllEthnicityValuesQueryResult = Apollo.QueryResult<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>;
+export const FindAllHighestLevelOfEducationDocument = gql`
+    query findAllHighestLevelOfEducation($page: Page) {
+  findAllHighestLevelOfEducation(page: $page) {
+    content {
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllHighestLevelOfEducationQuery__
+ *
+ * To run a query within a React component, call `useFindAllHighestLevelOfEducationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllHighestLevelOfEducationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllHighestLevelOfEducationQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllHighestLevelOfEducationQuery(baseOptions?: Apollo.QueryHookOptions<FindAllHighestLevelOfEducationQuery, FindAllHighestLevelOfEducationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllHighestLevelOfEducationQuery, FindAllHighestLevelOfEducationQueryVariables>(FindAllHighestLevelOfEducationDocument, options);
+      }
+export function useFindAllHighestLevelOfEducationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllHighestLevelOfEducationQuery, FindAllHighestLevelOfEducationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllHighestLevelOfEducationQuery, FindAllHighestLevelOfEducationQueryVariables>(FindAllHighestLevelOfEducationDocument, options);
+        }
+export type FindAllHighestLevelOfEducationQueryHookResult = ReturnType<typeof useFindAllHighestLevelOfEducationQuery>;
+export type FindAllHighestLevelOfEducationLazyQueryHookResult = ReturnType<typeof useFindAllHighestLevelOfEducationLazyQuery>;
+export type FindAllHighestLevelOfEducationQueryResult = Apollo.QueryResult<FindAllHighestLevelOfEducationQuery, FindAllHighestLevelOfEducationQueryVariables>;
 export const FindAllIdentificationTypesDocument = gql`
     query findAllIdentificationTypes($page: Page) {
   findAllIdentificationTypes(page: $page) {
@@ -4195,6 +4361,48 @@ export function useFindAllJurisdictionsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJurisdictionsQuery>;
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
+export const FindAllMaritalStatusDocument = gql`
+    query findAllMaritalStatus($page: Page) {
+  findAllMaritalStatus(page: $page) {
+    content {
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllMaritalStatusQuery__
+ *
+ * To run a query within a React component, call `useFindAllMaritalStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllMaritalStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllMaritalStatusQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllMaritalStatusQuery(baseOptions?: Apollo.QueryHookOptions<FindAllMaritalStatusQuery, FindAllMaritalStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllMaritalStatusQuery, FindAllMaritalStatusQueryVariables>(FindAllMaritalStatusDocument, options);
+      }
+export function useFindAllMaritalStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllMaritalStatusQuery, FindAllMaritalStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllMaritalStatusQuery, FindAllMaritalStatusQueryVariables>(FindAllMaritalStatusDocument, options);
+        }
+export type FindAllMaritalStatusQueryHookResult = ReturnType<typeof useFindAllMaritalStatusQuery>;
+export type FindAllMaritalStatusLazyQueryHookResult = ReturnType<typeof useFindAllMaritalStatusLazyQuery>;
+export type FindAllMaritalStatusQueryResult = Apollo.QueryResult<FindAllMaritalStatusQuery, FindAllMaritalStatusQueryVariables>;
 export const FindAllNaicsIndustryCodesDocument = gql`
     query findAllNaicsIndustryCodes {
   findAllNaicsIndustryCodes {
@@ -4831,6 +5039,90 @@ export function useFindAllPlacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type FindAllPlacesQueryHookResult = ReturnType<typeof useFindAllPlacesQuery>;
 export type FindAllPlacesLazyQueryHookResult = ReturnType<typeof useFindAllPlacesLazyQuery>;
 export type FindAllPlacesQueryResult = Apollo.QueryResult<FindAllPlacesQuery, FindAllPlacesQueryVariables>;
+export const FindAllPrimaryLanguagesDocument = gql`
+    query findAllPrimaryLanguages($page: Page) {
+  findAllPrimaryLanguages(page: $page) {
+    content {
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllPrimaryLanguagesQuery__
+ *
+ * To run a query within a React component, call `useFindAllPrimaryLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllPrimaryLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllPrimaryLanguagesQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllPrimaryLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllPrimaryLanguagesQuery, FindAllPrimaryLanguagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllPrimaryLanguagesQuery, FindAllPrimaryLanguagesQueryVariables>(FindAllPrimaryLanguagesDocument, options);
+      }
+export function useFindAllPrimaryLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllPrimaryLanguagesQuery, FindAllPrimaryLanguagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllPrimaryLanguagesQuery, FindAllPrimaryLanguagesQueryVariables>(FindAllPrimaryLanguagesDocument, options);
+        }
+export type FindAllPrimaryLanguagesQueryHookResult = ReturnType<typeof useFindAllPrimaryLanguagesQuery>;
+export type FindAllPrimaryLanguagesLazyQueryHookResult = ReturnType<typeof useFindAllPrimaryLanguagesLazyQuery>;
+export type FindAllPrimaryLanguagesQueryResult = Apollo.QueryResult<FindAllPrimaryLanguagesQuery, FindAllPrimaryLanguagesQueryVariables>;
+export const FindAllPrimaryOccupationsDocument = gql`
+    query findAllPrimaryOccupations($page: Page) {
+  findAllPrimaryOccupations(page: $page) {
+    content {
+      id {
+        codeSetNm
+        code
+      }
+      codeShortDescTxt
+    }
+    total
+  }
+}
+    `;
+
+/**
+ * __useFindAllPrimaryOccupationsQuery__
+ *
+ * To run a query within a React component, call `useFindAllPrimaryOccupationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllPrimaryOccupationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllPrimaryOccupationsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useFindAllPrimaryOccupationsQuery(baseOptions?: Apollo.QueryHookOptions<FindAllPrimaryOccupationsQuery, FindAllPrimaryOccupationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllPrimaryOccupationsQuery, FindAllPrimaryOccupationsQueryVariables>(FindAllPrimaryOccupationsDocument, options);
+      }
+export function useFindAllPrimaryOccupationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllPrimaryOccupationsQuery, FindAllPrimaryOccupationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllPrimaryOccupationsQuery, FindAllPrimaryOccupationsQueryVariables>(FindAllPrimaryOccupationsDocument, options);
+        }
+export type FindAllPrimaryOccupationsQueryHookResult = ReturnType<typeof useFindAllPrimaryOccupationsQuery>;
+export type FindAllPrimaryOccupationsLazyQueryHookResult = ReturnType<typeof useFindAllPrimaryOccupationsLazyQuery>;
+export type FindAllPrimaryOccupationsQueryResult = Apollo.QueryResult<FindAllPrimaryOccupationsQuery, FindAllPrimaryOccupationsQueryVariables>;
 export const FindAllProgramAreasDocument = gql`
     query findAllProgramAreas($page: Page) {
   findAllProgramAreas(page: $page) {

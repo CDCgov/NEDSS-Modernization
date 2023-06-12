@@ -20,6 +20,10 @@ public class CodeValueGeneralController {
     private static final String ETHNICITY_CODE_SET_NM = "PHVS_ETHNICITYGROUP_CDC_UNK";
     private static final String OUTBREAK_CODE_SET_NM = "OUTBREAK_NM";
     private static final String PATIENT_IDENTIFICATION_TYPES = "EI_TYPE_PAT";
+    private static final String MARITAL_STATUS_CODE_SET_NM = "P_MARITAL";
+    private static final String HIGHEST_LEVEL_OF_EDUCATION_CODE_SET_NM = "P_EDUC_LVL";
+    private static final String PRIMARY_LANGUAGE_CODE_SET_NM = "LANGUAGE";
+    private static final String PRIMARY_OCCUPATION_CODE_SET_NM = "PHVS_OCCUPATION_CDC_CENSUS2010";
 
     @Value("${nbs.max-page-size: 50}")
     private Integer maxPageSize;
@@ -53,6 +57,30 @@ public class CodeValueGeneralController {
     @QueryMapping()
     public Page<CodeValueGeneral> findAllOutbreaks(@Argument GraphQLPage page) {
         return codeValueGeneralRepository.findAllByCodeSetName(OUTBREAK_CODE_SET_NM,
+                toPageable(page, maxPageSize));
+    }
+
+    @QueryMapping()
+    public Page<CodeValueGeneral> findAllMaritalStatus(@Argument GraphQLPage page) {
+        return codeValueGeneralRepository.findAllByCodeSetName(MARITAL_STATUS_CODE_SET_NM,
+                toPageable(page, maxPageSize));
+    }
+
+    @QueryMapping()
+    public Page<CodeValueGeneral> findAllHighestLevelOfEducation(@Argument GraphQLPage page) {
+        return codeValueGeneralRepository.findAllByCodeSetName(HIGHEST_LEVEL_OF_EDUCATION_CODE_SET_NM,
+                toPageable(page, maxPageSize));
+    }
+
+    @QueryMapping()
+    public Page<CodeValueGeneral> findAllPrimaryLanguages(@Argument GraphQLPage page) {
+        return codeValueGeneralRepository.findAllByCodeSetName(PRIMARY_LANGUAGE_CODE_SET_NM,
+                toPageable(page, maxPageSize));
+    }
+
+    @QueryMapping()
+    public Page<CodeValueGeneral> findAllPrimaryOccupations(@Argument GraphQLPage page) {
+        return codeValueGeneralRepository.findAllByCodeSetName(PRIMARY_OCCUPATION_CODE_SET_NM,
                 toPageable(page, maxPageSize));
     }
 

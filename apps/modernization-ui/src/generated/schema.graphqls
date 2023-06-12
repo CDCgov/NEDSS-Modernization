@@ -197,6 +197,24 @@ type CountyCode {
     codeShortDescTxt: String
 }
 extend type Query {
+    findAllHighestLevelOfEducation(page: Page): educationResults!
+}
+
+type educationResults {
+    content: [education]!
+    total: Int!
+}
+
+type education {
+    id: educationId!
+    codeShortDescTxt: String
+}
+
+type educationId {
+    codeSetNm: String!
+    code: String!
+}
+extend type Query {
     findAllEthnicityValues(page: Page): EthnicityResults!
 }
 
@@ -602,6 +620,24 @@ type LabTestId {
     laboratoryId: String
 }
 extend type Query {
+    findAllPrimaryLanguages(page: Page): LanguageResults!
+}
+
+type LanguageResults {
+    content: [Language]!
+    total: Int!
+}
+
+type Language {
+    id: LanguageId!
+    codeShortDescTxt: String
+}
+
+type LanguageId {
+    codeSetNm: String!
+    code: String!
+}
+extend type Query {
     findLoincLabTest(searchText: String!, page: Page): LoincLabTestResults!
 }
 
@@ -617,6 +653,42 @@ type LoincCode {
     systemCd: String
     property: String
     relatedClassCd: String
+}
+extend type Query {
+    findAllMaritalStatus(page: Page): maritalStatusResults!
+}
+
+type maritalStatusResults {
+    content: [maritalStatus]!
+    total: Int!
+}
+
+type maritalStatus {
+    id: maritalStatusId!
+    codeShortDescTxt: String
+}
+
+type maritalStatusId {
+    codeSetNm: String!
+    code: String!
+}
+extend type Query {
+    findAllPrimaryOccupations(page: Page): OccupationResults!
+}
+
+type OccupationResults {
+    content: [Occupation]!
+    total: Int!
+}
+
+type Occupation {
+    id: OccupationId!
+    codeShortDescTxt: String
+}
+
+type OccupationId {
+    codeSetNm: String!
+    code: String!
 }
 extend type Query {
   findOrganizationById(id: ID!): Organization

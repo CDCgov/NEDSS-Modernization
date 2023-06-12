@@ -1,0 +1,18 @@
+extend type Query {
+    findAllPrimaryLanguages(page: Page): LanguageResults!
+}
+
+type LanguageResults {
+    content: [Language]!
+    total: Int!
+}
+
+type Language {
+    id: LanguageId!
+    codeShortDescTxt: String
+}
+
+type LanguageId {
+    codeSetNm: String!
+    code: String!
+}

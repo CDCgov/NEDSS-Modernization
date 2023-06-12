@@ -75,6 +75,50 @@ public class PatientDataEntryDropDownSteps {
                         .total(keyValuePairs.size())
                         .build();
             }
+            case "Marital Status" ->  {
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllMaritalStatus(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
+                actualKeyValuePairResults = KeyValuePairResults.builder()
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
+                        .build();
+            }
+            case "Primary Occupation" ->  {
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllPrimaryOccupations(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
+                actualKeyValuePairResults = KeyValuePairResults.builder()
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
+                        .build();
+            }
+            case "Highest Level Of Education" ->  {
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllHighestLevelOfEducation(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
+                actualKeyValuePairResults = KeyValuePairResults.builder()
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
+                        .build();
+            }
+            case "Primary Language" ->  {
+                List<KeyValuePair> keyValuePairs = codeValueGeneralController.findAllPrimaryLanguages(page).getContent().stream().map(codeValueGeneral -> KeyValuePair.builder()
+                                .key(codeValueGeneral.getId().getCode())
+                                .value(codeValueGeneral.getCodeShortDescTxt())
+                                .build())
+                        .toList();
+                actualKeyValuePairResults = KeyValuePairResults.builder()
+                        .content(keyValuePairs)
+                        .total(keyValuePairs.size())
+                        .build();
+            }
         }
     }
 

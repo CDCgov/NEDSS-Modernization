@@ -1,0 +1,12 @@
+query findAllMaritalStatus($page: Page){
+    findAllMaritalStatus(page: $page){
+        content{
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
+        }
+        total
+    }
+}

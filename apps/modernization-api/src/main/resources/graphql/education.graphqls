@@ -1,0 +1,18 @@
+extend type Query {
+    findAllHighestLevelOfEducation(page: Page): educationResults!
+}
+
+type educationResults {
+    content: [education]!
+    total: Int!
+}
+
+type education {
+    id: educationId!
+    codeShortDescTxt: String
+}
+
+type educationId {
+    codeSetNm: String!
+    code: String!
+}

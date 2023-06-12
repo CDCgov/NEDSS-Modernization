@@ -1,0 +1,18 @@
+extend type Query {
+    findAllPrimaryOccupations(page: Page): OccupationResults!
+}
+
+type OccupationResults {
+    content: [Occupation]!
+    total: Int!
+}
+
+type Occupation {
+    id: OccupationId!
+    codeShortDescTxt: String
+}
+
+type OccupationId {
+    codeSetNm: String!
+    code: String!
+}

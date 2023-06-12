@@ -1,0 +1,12 @@
+query findAllPrimaryOccupations($page: Page){
+    findAllPrimaryOccupations(page: $page){
+        content{
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
+        }
+        total
+    }
+}

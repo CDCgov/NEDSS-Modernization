@@ -1,0 +1,12 @@
+query findAllPrimaryLanguages($page: Page){
+    findAllPrimaryLanguages(page: $page){
+        content{
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
+        }
+        total
+    }
+}

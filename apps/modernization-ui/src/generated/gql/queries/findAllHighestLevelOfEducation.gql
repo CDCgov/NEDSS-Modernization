@@ -1,0 +1,12 @@
+query findAllHighestLevelOfEducation($page: Page){
+    findAllHighestLevelOfEducation(page: $page){
+        content{
+            id{
+                codeSetNm
+                code
+            }
+            codeShortDescTxt
+        }
+        total
+    }
+}
