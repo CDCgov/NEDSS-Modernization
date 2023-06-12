@@ -389,21 +389,21 @@ public class PatientService {
         if (recordStatus == null || recordStatus.isEmpty()) {
             throw new QueryException("At least one RecordStatus is required");
         }
-        // If LOG_DEL or SUPERSEDED are specified, user must have FINDINACTIVE-PATIENT
+        // If LOG_DEL or SUPERCEDED are specified, user must have FINDINACTIVE-PATIENT
         // authority
-        if (recordStatus.contains(RecordStatus.SUPERSEDED) || recordStatus.contains(RecordStatus.LOG_DEL)) {
+        if (recordStatus.contains(RecordStatus.SUPERCEDED) || recordStatus.contains(RecordStatus.LOG_DEL)) {
             var currentUser = SecurityUtil.getUserDetails();
             // If user lacks permission, remove these from the search criteria
             if (!userService.isAuthorized(currentUser, FINDINACTIVE + "-" + PATIENT)) {
                 recordStatus = recordStatus.stream()
-                    .filter(s -> !s.equals(RecordStatus.SUPERSEDED) && !s.equals(RecordStatus.LOG_DEL))
+                    .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
                     .toList();
             }
 
         }
 
         if (recordStatus.isEmpty()) {
-            // User selected either SUPERSEDED or LOG_DEL and lacks the permission.
+            // User selected either SUPERCEDED or LOG_DEL and lacks the permission.
             throw new QueryException("User does not have permission to search by the specified RecordStatus");
         }
         var recordStatusStrings = recordStatus.stream().map(RecordStatus::toString).toList();

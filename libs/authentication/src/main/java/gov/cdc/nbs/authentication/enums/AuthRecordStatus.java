@@ -4,5 +4,5 @@ public enum AuthRecordStatus {
     ACTIVE,
     INACTIVE,
     LOG_DEL,
-    SUPERSEDED
+    SUPERCEDED
 }
