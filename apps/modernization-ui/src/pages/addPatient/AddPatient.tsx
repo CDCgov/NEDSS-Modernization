@@ -36,6 +36,7 @@ export default function AddPatient() {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
     const [submitData, setSubmitData] = useState<any>();
+    const [newPatientId, setNewPatientId] = useState<any>();
     const [handleSavePatient] = useCreatePatientMutation();
 
     const modalRef = useRef<ModalRef>(null);
@@ -115,10 +116,10 @@ export default function AddPatient() {
                 }
             }
         }).then((re) => {
-            console.log('re:', re);
+            setNewPatientId(re.data?.createPatient.shortId);
+            setSubmitData(data);
+            setSuccessSubmit(true);
         });
-        setSubmitData(data);
-        setSuccessSubmit(true);
     };
 
     useEffect(() => {
@@ -301,7 +302,9 @@ export default function AddPatient() {
                     </Grid>
                 </Grid>
             )}
-            {successSubmit && <SuccessForm setSuccessSubmit={setSuccessSubmit} data={submitData} />}
+            {successSubmit && newPatientId && (
+                <SuccessForm setSuccessSubmit={setSuccessSubmit} data={submitData} patientId={newPatientId} />
+            )}
         </>
     );
 }
