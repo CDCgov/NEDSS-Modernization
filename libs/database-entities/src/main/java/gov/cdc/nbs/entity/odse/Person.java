@@ -646,6 +646,11 @@ public class Person {
         changed(info);
     }
 
+    public void update(PatientCommand.UpdateMortalityLocator info) {
+        this.setDeceasedIndCd(info.deceased());
+        this.setDeceasedTime(info.deceasedTime());
+        changed(info);
+    }
     public void delete(
         final PatientCommand.Delete delete,
         final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
