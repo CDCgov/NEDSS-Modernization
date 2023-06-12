@@ -199,7 +199,7 @@ public abstract class WaQuestion {
 
     public abstract String getDataType();
 
-    public WaQuestion(QuestionCommand command) {
+    protected WaQuestion(QuestionCommand command) {
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
         setQuestionIdentifier(command.localId());
         setQuestionOid(command.questionOid().oid());
@@ -261,7 +261,7 @@ public abstract class WaQuestion {
      * @param s
      */
     private void validateAlphaNumericAndUnderscoreOnly(String s) {
-        if (!s.matches("^[a-zA-Z0-9_]*$")) {
+        if (!s.matches("^[\\w]*$")) {
             throw new IllegalArgumentException(
                     "Invalid characters specified for WaQuestion field. Only alphanumeric and underscore characters are supported. Supplied value: "
                             + s);

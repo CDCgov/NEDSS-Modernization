@@ -16,7 +16,6 @@ public sealed interface QuestionCreatedEventProducer {
 
         @Override
         public void send(final QuestionCreatedEvent status) {
-            return;
         }
 
     }
