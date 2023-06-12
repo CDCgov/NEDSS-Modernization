@@ -10,14 +10,12 @@ import gov.cdc.nbs.message.patient.event.AddEmailData;
 import gov.cdc.nbs.message.patient.event.AddIdentificationData;
 import gov.cdc.nbs.message.patient.event.AddNameData;
 import gov.cdc.nbs.message.patient.event.AddPhoneData;
-import gov.cdc.nbs.message.patient.event.AddRaceData;
 import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
-import gov.cdc.nbs.message.patient.event.DeleteRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
@@ -26,7 +24,6 @@ import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
-import gov.cdc.nbs.message.patient.event.UpdateRaceData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
@@ -116,21 +113,6 @@ public class PatientUpdater {
 
     public Person update(final Person person, final DeleteAddressData data) {
         person.delete(asDeleteAddressInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final AddRaceData data) {
-        person.add(asAddRaceInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final UpdateRaceData data) {
-        person.update(asUpdateRaceInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final DeleteRaceData data) {
-        person.delete(asDeleteRaceInfo(data));
         return personRepository.save(person);
     }
 
@@ -420,33 +402,6 @@ public class PatientUpdater {
         return new PatientCommand.DeleteMortalityLocator(
             data.patientId(),
             data.id(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.AddRace asAddRaceInfo(AddRaceData data) {
-        return new PatientCommand.AddRace(
-            data.patientId(),
-            data.raceCd(),
-            data.raceCategoryCd(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.UpdateRaceInfo asUpdateRaceInfo(UpdateRaceData data) {
-        return new PatientCommand.UpdateRaceInfo(
-            data.patientId(),
-            data.raceCd(),
-            data.raceCategoryCd(),
-            data.asOf(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.DeleteRaceInfo asDeleteRaceInfo(DeleteRaceData data) {
-        return new PatientCommand.DeleteRaceInfo(
-            data.patientId(),
-            data.raceCd(),
             data.updatedBy(),
             Instant.now());
     }

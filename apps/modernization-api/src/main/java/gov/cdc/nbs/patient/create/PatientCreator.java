@@ -122,7 +122,6 @@ public class PatientCreator {
             identifier.id(),
             asOf,
             race,
-            race,
             context.requestedBy(),
             context.requestedAt()
         );
