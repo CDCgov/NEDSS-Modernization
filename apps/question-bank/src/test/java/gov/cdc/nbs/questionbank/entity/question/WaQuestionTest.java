@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,21 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
 
 class WaQuestionTest {
+
+    @Test
+    void rdb_column_name_should_allow_null() {
+        // given a null rdb column name
+        String rdbColumnName = null;
+
+        // then setting the rdbColumnName
+        WaQuestion question = emptyQuestion();
+        question.setRdbColumnNm("NOT_NULL");
+        assertEquals("NOT_NULL", question.getRdbColumnNm());
+        question.setRdbColumnNm(rdbColumnName);
+
+        // sets a null value
+        assertNull(question.getRdbColumnNm());
+    }
 
     @Test
     void rdb_column_name_should_only_allow_alphanumeric_or_underscore() {
@@ -90,6 +106,19 @@ class WaQuestionTest {
         validateMessageFields(question, command.messagingData());
         validateReportingFields(question, command.reportingData());
         validateAuditFields(question, command);
+    }
+
+    @Test
+    void should_set_messaging_data_false() {
+        WaQuestion question = emptyQuestion();
+        question.setMessagingData(new MessagingData(
+                false,
+                null,
+                null,
+                null,
+                false,
+                null));
+        assertEquals('O', question.getQuestionRequiredNnd().charValue());
     }
 
     private void validateMessageFields(WaQuestion question, QuestionCommand.MessagingData data) {
