@@ -68,7 +68,7 @@ public class NBSEntity {
     public EntityId add(final PatientCommand.AddIdentification added) {
 
         Collection<EntityId> existing = ensureEntityIds();
-        EntityIdId identifier = new EntityIdId(this.id, (short) existing.size());
+        EntityIdId identifier = new EntityIdId(this.id, (short) (existing.size() + 1));
 
         EntityId entityId = new EntityId(
             this,

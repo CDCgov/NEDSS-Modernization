@@ -818,7 +818,7 @@ class PatientUpdaterTest {
 
         var data = new DeleteIdentificationData(
                 123L,
-                (short) 0,
+                (short) 1,
                 "RequestId",
                 321L,
                 Instant.now());

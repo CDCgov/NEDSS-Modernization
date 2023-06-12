@@ -491,6 +491,10 @@ public class Person {
         return this.names;
     }
 
+    public List<PersonName> getNames() {
+        return this.names == null ? List.of() : List.copyOf(this.names);
+    }
+
     public EntityId add(final PatientCommand.AddIdentification added) {
         return this.nbsEntity.add(added);
     }
@@ -511,6 +515,10 @@ public class Person {
             this.races = new ArrayList<>();
         }
         return this.races;
+    }
+
+    public List<PersonRace> getRaces() {
+        return this.races == null ? List.of() : List.copyOf(this.races);
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {

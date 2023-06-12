@@ -11,7 +11,6 @@ class PatientIdentifierAttributesTupleMapper {
         }
     }
 
-
     private final Tables tables;
 
     PatientIdentifierAttributesTupleMapper(final Tables tables) {
