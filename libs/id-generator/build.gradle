@@ -1,0 +1,52 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'jvm-test-suite'
+
+    alias libs.plugins.springBoot apply false
+    alias libs.plugins.springDependencies
+}
+
+group = 'gov.cdc'
+version = '1.0.0-SNAPSHOT'
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation libs.bundles.testing
+            }
+        }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+
+dependencies {
+
+    // Spring
+    implementation libs.bundles.jpa
+    annotationProcessor libs.springBoot.jpa
+
+    implementation libs.bundles.elasticsearch
+
+    // lombok
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    // querydsl
+    implementation libs.bundles.queryDSL
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+
+}
+
+compileJava {
+    options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'
+}

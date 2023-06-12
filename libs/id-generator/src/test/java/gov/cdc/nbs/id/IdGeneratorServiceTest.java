@@ -1,4 +1,4 @@
-package gov.cdc.nbs.service;
+package gov.cdc.nbs.id;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,15 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ActiveProfiles;
+import gov.cdc.nbs.id.IdGeneratorService.EntityType;
+import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 
-import gov.cdc.nbs.entity.odse.LocalUidGenerator;
-import gov.cdc.nbs.patient.IdGeneratorService;
-import gov.cdc.nbs.patient.IdGeneratorService.EntityType;
-import gov.cdc.nbs.patient.IdGeneratorService.GeneratedId;
-import gov.cdc.nbs.repository.LocalUidGeneratorRepository;
 
-@ActiveProfiles("test")
 class IdGeneratorServiceTest {
 
     @Mock
