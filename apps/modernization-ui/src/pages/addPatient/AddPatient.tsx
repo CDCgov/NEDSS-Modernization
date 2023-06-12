@@ -74,8 +74,6 @@ export default function AddPatient() {
             country: ''
         });
 
-    // const [asOfDate, setAsOfDate]: [string, (asOfDate: string) => void] = useState(new Date().toISOString());
-
     useEffect(() => {
         setDisabled(!isValid);
     }, [isValid]);
@@ -141,23 +139,27 @@ export default function AddPatient() {
             stateHIVCase: data?.hivId,
             ethnicity: data?.ethnicity,
             races: data?.race,
-            identifications: data?.identification,
-            emailAddresses: data?.emailAddresses.map((it: any) => it.email),
             phoneNumbers
         };
+        data?.identifications && (payload.identifications = data?.identifications);
+        if (!data?.emailAddresses || data?.emailAddresses?.length === 0) {
+            payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
+        }
         if (!isEmpty(addressObj)) {
             payload.addresses = [addressObj];
         }
         data?.dod && (payload.deceasedTime = format(new Date(data?.dod), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`));
+        const name =
+            data?.lastName || data?.firstName
+                ? `${data?.lastName || ''}${(data?.lastName && ', ') || ''}${data?.firstName || ''}`
+                : 'Patient';
         handleSavePatient({
             variables: {
                 patient: payload
             }
         }).then((re) => {
             if (re.data) {
-                navigate(
-                    `/add-patient/patient-added?shortId=${re?.data?.createPatient.shortId}&name=${data?.lastName}, ${data?.firstName}`
-                );
+                navigate(`/add-patient/patient-added?shortId=${re?.data?.createPatient.shortId}&name=${name}`);
             }
         });
         setSuccessSubmit(true);
@@ -191,7 +193,12 @@ export default function AddPatient() {
     return (
         <>
             {!successSubmit && (
-                <Grid row>
+                <Grid
+                    row
+                    style={{
+                        height: 'calc(100vh - 82px)',
+                        overflow: 'hidden'
+                    }}>
                     <Grid col={3} className="bg-white border-right border-base-light">
                         <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
                     </Grid>
@@ -269,8 +276,8 @@ export default function AddPatient() {
                                 </div>
                             </Grid>
                             <div className="content">
-                                <Grid row className="padding-3">
-                                    <Grid col={9}>
+                                <Grid row className="padding-3" style={{ height: '100%', overflow: 'hidden' }}>
+                                    <Grid col={9} style={{ height: 'calc(100vh - 160px)', overflow: 'auto' }}>
                                         {!isValid && successSubmit && (
                                             <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
                                                 <Icon.Error className="font-sans-2xl margin-x-2" />
@@ -321,7 +328,7 @@ export default function AddPatient() {
                                         />
                                     </Grid>
 
-                                    <Grid col={3}>
+                                    <Grid col={3} style={{ alignSelf: 'flex-start' }}>
                                         <main className="content-container">
                                             <aside className="content-sidebar">
                                                 <nav className="content-navigation">
