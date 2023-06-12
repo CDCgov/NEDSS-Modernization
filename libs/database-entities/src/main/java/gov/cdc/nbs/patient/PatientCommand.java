@@ -257,22 +257,6 @@ public sealed interface PatientCommand {
     }
 
 
-    record AddDetailedEthnicity(
-        long person,
-        String ethnicity,
-        long requester,
-        Instant requestedOn
-    ) implements PatientCommand {
-    }
-
-    record RemoveDetailedEthnicity(
-        long person,
-        String ethnicity,
-        long requester,
-        Instant requestedOn
-    ) implements PatientCommand {
-    }
-
     record DeleteMortalityLocator(
         long person,
         long id,
