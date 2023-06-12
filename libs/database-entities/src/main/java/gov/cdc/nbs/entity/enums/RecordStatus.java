@@ -4,5 +4,5 @@ public enum RecordStatus {
     ACTIVE,
     INACTIVE,
     LOG_DEL,
-    SUPERCEDED
+    SUPERSEDED
 }
