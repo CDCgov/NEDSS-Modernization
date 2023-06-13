@@ -15,6 +15,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Input } from '../../../../components/FormInputs/Input';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 type AddCommentModalProps = {
     modalRef: Ref<ModalRef> | undefined;
@@ -43,38 +44,62 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="type"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="type"
-                                    htmlFor={'type'}
-                                    label="Type"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'type'}
+                                            label="Type"
+                                            options={
+                                                searchCriteria?.phoneType
+                                                    ? searchCriteria.phoneType.map((phone) => {
+                                                          return {
+                                                              name: phone?.codeShortDescTxt!,
+                                                              value: phone?.id?.code!
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="use"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="use"
-                                    htmlFor={'use'}
-                                    label="Use"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'use'}
+                                            label="Use"
+                                            options={
+                                                searchCriteria?.phoneUse
+                                                    ? searchCriteria.phoneUse.map((phone) => {
+                                                          return {
+                                                              name: phone?.codeShortDescTxt!,
+                                                              value: phone?.id?.code!
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller

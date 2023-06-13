@@ -1,0 +1,37 @@
+package gov.cdc.nbs.codes;
+
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.entity.srte.QCountryCode;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+@Component
+class CountryCodedValueFinder {
+
+    private final JPAQueryFactory factory;
+    private final QCountryCode values;
+
+    CountryCodedValueFinder(final JPAQueryFactory factory) {
+        this.factory = factory;
+        this.values = QCountryCode.countryCode;
+    }
+
+    Collection<CodedValue> all() {
+        return this.factory.select(
+                values.id,
+                values.codeDescTxt
+            ).from(values)
+            .fetch()
+            .stream()
+            .map(this::map)
+            .toList();
+    }
+
+    private CodedValue map(final Tuple tuple) {
+        String value = tuple.get(values.id);
+        String name = StandardNameFormatter.formatted(tuple.get(values.codeDescTxt));
+        return new CodedValue(value, name);
+    }
+}

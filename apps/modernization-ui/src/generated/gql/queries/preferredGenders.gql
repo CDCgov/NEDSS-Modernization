@@ -1,0 +1,6 @@
+query preferredGenders{
+    preferredGenders{
+        value
+        name
+    }
+}

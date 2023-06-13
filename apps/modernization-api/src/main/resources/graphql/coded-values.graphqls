@@ -1,11 +1,17 @@
-type NaicsIndustryCodeResults {
-    content: [NaicsIndustryCode!]!
-    total: Int!
-}
-
 type CodeValueGeneralId {
     codeSetNm: String!
     code: String!
+}
+
+type StateCountyCodeValueResults {
+    content: [StateCountyCodeValue!]!
+    total: Int!
+}
+
+type StateCountyCodeValue {
+    id: CodeValueGeneralId!
+    code_desc_txt: String!
+    state_cd: String!
 }
 
 type NaicsIndustryCode {
@@ -26,17 +32,6 @@ type NaicsIndustryCode {
     seqNum: Int
     nbsUid: Int
     sourceConceptId: String
-}
-
-type StateCountyCodeValueResults {
-    content: [StateCountyCodeValue!]!
-    total: Int!
-}
-
-type StateCountyCodeValue {
-    id: CodeValueGeneralId!
-    code_desc_txt: String!
-    state_cd: String!
 }
 
 type AssigningAuthorResults {
@@ -139,6 +134,39 @@ type KeyValuePair {
     value: String!
 }
 
+type CodedValue {
+    value: String!
+    name: String!
+}
+
+type GroupedCodedValue {
+    value: String!
+    name: String!
+    group: String!
+}
+
+type StateCountyCodeValue {
+    id: ID!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
+    excludedTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: Int
+    parentIsCd: Int
+    statusCd: Int
+    statusTime: DateTime
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+
+}
 extend type Query {
     findNameSuffixes(page: Page): KeyValuePairResults!
     findAllNameTypes(page: Page): NameTypeResults!
@@ -150,6 +178,20 @@ extend type Query {
     findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
-    findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
+    findAllStateCountyCodeValues(stateCode: String, page: Page): [StateCountyCodeValue!]!
+    maritalStatuses: [CodedValue!]!
+    primaryOccupations: [CodedValue!]!
+    educationLevels: [CodedValue!]!
+    primaryLanguages: [CodedValue!]!
+    raceCategories: [CodedValue!]!
+    detailedRaces(category: String): [GroupedCodedValue!]!
+    ethnicGroups: [CodedValue!]!
+    ethnicityUnknownReasons: [CodedValue!]!
+    detailedEthnicities: [CodedValue!]!
+    genders: [CodedValue!]!
+    genderUnknownReasons: [CodedValue!]!
+    preferredGenders: [CodedValue!]!
+    countries: [CodedValue!]!
+    states: [CodedValue!]!
+    counties(state: String): [GroupedCodedValue!]!
 }
