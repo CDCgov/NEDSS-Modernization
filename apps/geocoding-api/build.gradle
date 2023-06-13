@@ -20,35 +20,15 @@ jar {
 }
 
 dependencies {
-    implementation project(':database-entities')
-    implementation project(':event-schema')
     implementation project(':authentication')
-    implementation project(':id-generator')
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
-
-    // core
-    implementation libs.bundles.jpa
-    annotationProcessor libs.springBoot.jpa
 
     implementation libs.bundles.security
     implementation libs.springBoot.web
 
     // graphql
     implementation libs.springBoot.graphql
-    // database
-    implementation libs.mssql.jdbc
-
-    // querydsl
-    implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
-
-    // blazebit for querydsl paging
-    implementation libs.bundles.blaze.persistence.queryDSL
-    implementation libs.bundles.jackson
-
-    // elasticsearch
-    implementation libs.bundles.elasticsearch
 
     // swagger
     implementation "io.springfox:springfox-boot-starter:3.0.0"
@@ -57,15 +37,7 @@ dependencies {
     compileOnly libs.lombok
     annotationProcessor libs.lombok
 
-    // itext pdf generation
-    implementation "com.itextpdf:itextpdf:5.5.13.3"
-
-    implementation "commons-codec:commons-codec:1.15"
-
     implementation libs.bundles.jackson
-
-    // Kafka
-    implementation libs.spring.kafka
 
     testImplementation libs.bundles.cucumber
 
@@ -81,8 +53,6 @@ dependencies {
 
     testImplementation libs.awaitility
 
-    //  Required for testing multipart form-data from Classic NBS
-    testImplementation "commons-fileupload:commons-fileupload:1.5"
 }
 
 configurations {
