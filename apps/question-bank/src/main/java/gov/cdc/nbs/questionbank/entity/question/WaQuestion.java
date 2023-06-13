@@ -202,8 +202,10 @@ public abstract class WaQuestion {
     protected WaQuestion(QuestionCommand command) {
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
         setQuestionIdentifier(command.localId());
-        setQuestionOid(command.questionOid().oid());
-        setQuestionOidSystemTxt(command.questionOid().system());
+        if (command.questionOid() != null) {
+            setQuestionOid(command.questionOid().oid());
+            setQuestionOidSystemTxt(command.questionOid().system());
+        }
         setQuestionLabel(command.label());
         setQuestionToolTip(command.tooltip());
         setQuestionNm(command.uniqueName());
@@ -230,7 +232,7 @@ public abstract class WaQuestion {
     }
 
     public void setReportingData(QuestionCommand.ReportingData reportingData) {
-        setRdbColumnNm(reportingData.rdbColumnName());
+        setRdbColumnNm(reportingData.defaultRdbTableName() + "_" + reportingData.rdbColumnName());
         setGroupNm("GROUP_INV");
         setRptAdminColumnNm(reportingData.reportLabel());
         setRdbTableNm(reportingData.defaultRdbTableName());
@@ -263,8 +265,9 @@ public abstract class WaQuestion {
     private void validateAlphaNumericAndUnderscoreOnly(String s) {
         if (!s.matches("^[\\w]*$")) {
             throw new IllegalArgumentException(
-                    "Invalid characters specified for WaQuestion field. Only alphanumeric and underscore characters are supported. Supplied value: "
-                            + s);
+                    "Invalid characters specified for WaQuestion field. " +
+                            " Only alphanumeric and underscore characters are supported for RDB Column Name, and Data Mart Column Name."
+                            + " Supplied value: " + s);
         }
     }
 

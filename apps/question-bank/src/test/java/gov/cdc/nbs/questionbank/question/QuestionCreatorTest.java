@@ -2,9 +2,11 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +24,7 @@ import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
+import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
@@ -217,5 +220,22 @@ class QuestionCreatorTest {
         assertEquals(id.longValue(), event.id());
         assertEquals(123L, event.createdBy());
         assertEquals(now, event.createdAt());
+    }
+
+    @Test
+    void should_throw_exception_because_not_unique() {
+        // given a conflicting question
+        when(repository.findAllByUniqueFields(
+            Mockito.anyString(), 
+            Mockito.anyString(),
+            Mockito.anyString(),
+            Mockito.anyString()))
+            .thenReturn(Collections.singletonList(new TextQuestion()));
+
+        // given a create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+
+         // when a question is created then an exception is thrown
+        assertThrows(QuestionCreateException.class, () -> creator.create(123L, request));
     }
 }

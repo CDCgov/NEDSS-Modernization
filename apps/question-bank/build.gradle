@@ -61,6 +61,9 @@ dependencies {
 
     implementation libs.bundles.security
 
+    // swagger
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+
     // querydsl
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })

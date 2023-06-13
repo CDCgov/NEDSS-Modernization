@@ -22,6 +22,29 @@ public class QuestionRequestMother {
         return textRequest("PHIN", includeInMessage);
     }
 
+    public static CreateQuestionRequest.Text custom(
+            String uniqueName,
+            String identifier,
+            String dataMartColumnName,
+            String rdbTableName,
+            String rdbColumnName) {
+        return new CreateQuestionRequest.Text(
+                "PHIN",
+                identifier,
+                uniqueName,
+                "Test Subgroup",
+                "Test description",
+                "Test label",
+                "Test tooltip",
+                1111L,
+                reportingInfo("custom label", rdbTableName, rdbColumnName, dataMartColumnName),
+                messagingInfo(false),
+                "Test admin comments",
+                "Mask",
+                "50",
+                "Test default");
+    }
+
     private static CreateQuestionRequest.Text textRequest(String codeSet, boolean includedInMessage) {
         return new CreateQuestionRequest.Text(
                 codeSet,
@@ -51,10 +74,19 @@ public class QuestionRequestMother {
     }
 
     public static ReportingInfo reportingInfo() {
-        return new ReportingInfo(
+        return reportingInfo(
                 "default label",
-                "default rdb table name",
+                "RDB_TABLE_NAME",
                 "RDB_COLUMN_NAME",
                 "DATA_MART_COLUMN_NAME");
+    }
+
+    public static ReportingInfo reportingInfo(String reportLabel, String rdbTableName, String rdbColumnName,
+            String dataMartColumnName) {
+        return new ReportingInfo(
+                reportLabel,
+                rdbTableName,
+                rdbColumnName,
+                dataMartColumnName);
     }
 }

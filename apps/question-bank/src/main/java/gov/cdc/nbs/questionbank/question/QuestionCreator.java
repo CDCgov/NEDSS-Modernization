@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.time.Instant;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
@@ -36,9 +37,31 @@ class QuestionCreator {
 
     public long create(Long userId, CreateQuestionRequest.Text request) {
         WaQuestion question = new TextQuestion(asAdd(userId, request));
+        verifyUnique(question);
         question = repository.save(question);
         sendCreateEvent(question.getId(), userId, question.getAddTime());
         return question.getId();
+    }
+
+    /**
+     * Verifies the new question will not conflict with any existing questions.
+     * 
+     * The following fields must be unique but are not defined as unique in the databse:
+     * 
+     * questionNm, questionIdentifier, userDefinedColmnNm, rdbColumnNm
+     * 
+     * @param question
+     */
+    void verifyUnique(WaQuestion question) {
+        List<WaQuestion> conflicts = repository.findAllByUniqueFields(
+                question.getQuestionNm(),
+                question.getQuestionIdentifier(),
+                question.getUserDefinedColumnNm(),
+                question.getRdbColumnNm());
+        if (!conflicts.isEmpty()) {
+            throw new QuestionCreateException(
+                    "One of the following fields was not unique: questionNm, questionIdentifier, userDefinedColmnNm, rdbColumnNm");
+        }
     }
 
     private void sendCreateEvent(Long id, Long user, Instant createTime) {
