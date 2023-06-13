@@ -1,6 +1,8 @@
 package gov.cdc.nbs.codes;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.srte.QStateCountyCodeValue;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,7 @@ class CountyCodedValueFinder {
                 values.parentIsCd
             ).from(values)
             .where(values.parentIsCd.eq(category))
+            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
             .fetch()
             .stream()
             .map(this::map)

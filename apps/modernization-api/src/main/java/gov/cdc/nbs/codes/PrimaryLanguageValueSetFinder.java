@@ -1,6 +1,8 @@
 package gov.cdc.nbs.codes;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.srte.QLanguageCode;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,7 @@ class PrimaryLanguageValueSetFinder {
                 values.id,
                 values.codeShortDescTxt
             ).from(values)
+            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
             .fetch()
             .stream()
             .map(this::map)
