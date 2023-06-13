@@ -1,0 +1,35 @@
+@import '../../../settings.scss';
+
+.navigation {
+    width: 100%;
+    position: absolute;
+    height: 58px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.4rem 1.5rem 0;
+    background-color: $color-white;
+    align-items: baseline;
+    .navigation__heading {
+        width: auto;
+        h1 {
+            margin: 0;
+        }
+    }
+    .navigation__menu {
+        display: flex;
+        flex-direction: row;
+        gap: 70px;
+        margin-top: 0rem;
+        .navigation__button {
+            height: 3.2rem;
+            p {
+                color: $color-base-dark;
+                font-weight: 300;
+            }
+            &.active {
+                border-bottom: 4px solid $color-primary;
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+@import '../../settings.scss';
+
+.page-builder {
+    .page-builder__content {
+        background-color: $color-bg-base-lightest;
+        height: calc(100vh - 58px);
+    }
+}

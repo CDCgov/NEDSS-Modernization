@@ -1,0 +1,25 @@
+@import '../../../settings.scss';
+
+.manage-pages {
+    position: relative;
+    .manage-pages__container {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 54px;
+    }
+    .manage-pages__table {
+        background-color: $color-white;
+        margin: 1.5rem;
+        border-radius: 3px;
+        border: 1px solid $color-bg-base-lightest;
+        thead th {
+            &:nth-of-type(2) {
+                width: 150px;
+            }
+            &:nth-of-type(4) {
+                width: 150px;
+            }
+        }
+    }
+}
