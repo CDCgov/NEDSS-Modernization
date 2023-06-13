@@ -14,6 +14,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Input } from '../../../../components/FormInputs/Input';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { formatInterfaceString } from 'utils/util';
+import { Suffix } from 'generated/graphql/schema';
 
 type AddCommentModalProps = {
     modalRef: any;
@@ -44,38 +47,66 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="type"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="type"
-                                    htmlFor={'type'}
-                                    label="Type"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            dataTestid="type"
+                                            name="type"
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'type'}
+                                            label="Type"
+                                            options={
+                                                searchCriteria.nameTypes
+                                                    ? Object.values(searchCriteria.nameTypes).map((type) => {
+                                                          return {
+                                                              name: formatInterfaceString(type.codeShortDescTxt),
+                                                              value: type?.id?.code
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="prefex"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    name="prefex"
-                                    htmlFor={'prefex'}
-                                    label="Prefex"
-                                    options={[]}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
+                                    name="prefix"
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            dataTestid="prefix"
+                                            name="prefix"
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'prefix'}
+                                            label="Prefix"
+                                            options={
+                                                searchCriteria.prefixes
+                                                    ? Object.values(searchCriteria.prefixes).map((type) => {
+                                                          return {
+                                                              name: formatInterfaceString(type.codeShortDescTxt),
+                                                              value: type?.id?.code
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
@@ -84,32 +115,51 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     flexBox
-                                    defaultValue={value}
                                     onChange={onChange}
+                                    defaultValue={value}
                                     name="suffix"
                                     htmlFor={'suffix'}
                                     label="Suffix"
-                                    options={[]}
+                                    options={Object.values(Suffix).map((suffix) => {
+                                        return {
+                                            name: suffix,
+                                            value: suffix
+                                        };
+                                    })}
                                 />
                             )}
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="degree"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="degree"
-                                    htmlFor={'degree'}
-                                    label="Degree"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            dataTestid="degree"
+                                            name="degree"
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'degree'}
+                                            label="Degree"
+                                            options={
+                                                searchCriteria.degree
+                                                    ? Object.values(searchCriteria.degree).map((type) => {
+                                                          return {
+                                                              name: formatInterfaceString(type.codeShortDescTxt),
+                                                              value: type?.id?.code
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller

@@ -1,0 +1,6 @@
+query maritalStatuses{
+    maritalStatuses{
+        value
+        name
+    }
+}

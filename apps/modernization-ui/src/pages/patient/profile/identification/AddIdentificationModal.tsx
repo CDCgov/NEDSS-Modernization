@@ -45,21 +45,33 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="type"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="type"
-                                    htmlFor={'type'}
-                                    label="Type"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'type'}
+                                            label="Type"
+                                            options={
+                                                searchCriteria?.identificationType
+                                                    ? searchCriteria.identificationType.map((identification) => {
+                                                          return {
+                                                              name: identification?.codeShortDescTxt!,
+                                                              value: identification?.id?.code!
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
@@ -94,8 +106,8 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                             label="Issued state"
                                             options={searchCriteria.states.map((state) => {
                                                 return {
-                                                    value: state.id!,
-                                                    name: state.codeDescTxt!
+                                                    value: state?.id!,
+                                                    name: state?.codeDescTxt!
                                                 };
                                             })}
                                         />

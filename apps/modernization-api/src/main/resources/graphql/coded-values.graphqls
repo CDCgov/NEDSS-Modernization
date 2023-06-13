@@ -1,11 +1,17 @@
-type NaicsIndustryCodeResults {
-    content: [NaicsIndustryCode!]!
-    total: Int!
-}
-
 type CodeValueGeneralId {
     codeSetNm: String!
     code: String!
+}
+
+type StateCountyCodeValueResults {
+    content: [StateCountyCodeValue!]!
+    total: Int!
+}
+
+type StateCountyCodeValue {
+    id: CodeValueGeneralId!
+    code_desc_txt: String!
+    state_cd: String!
 }
 
 type NaicsIndustryCode {
@@ -128,6 +134,17 @@ type KeyValuePair {
     value: String!
 }
 
+type CodedValue {
+    value: String!
+    name: String!
+}
+
+type GroupedCodedValue {
+    value: String!
+    name: String!
+    group: String!
+}
+
 type StateCountyCodeValue {
     id: ID!
     assigningAuthorityCd: String
@@ -162,5 +179,19 @@ extend type Query {
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
     findAllStateCountyCodeValues(stateCode: String, page: Page): [StateCountyCodeValue!]!
-    findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
+    maritalStatuses: [CodedValue!]!
+    primaryOccupations: [CodedValue!]!
+    educationLevels: [CodedValue!]!
+    primaryLanguages: [CodedValue!]!
+    raceCategories: [CodedValue!]!
+    detailedRaces(category: String): [GroupedCodedValue!]!
+    ethnicGroups: [CodedValue!]!
+    ethnicityUnknownReasons: [CodedValue!]!
+    detailedEthnicities: [CodedValue!]!
+    genders: [CodedValue!]!
+    genderUnknownReasons: [CodedValue!]!
+    preferredGenders: [CodedValue!]!
+    countries: [CodedValue!]!
+    states: [CodedValue!]!
+    counties(state: String): [GroupedCodedValue!]!
 }

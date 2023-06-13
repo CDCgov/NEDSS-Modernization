@@ -110,6 +110,12 @@ export type CodeValueGeneralId = {
   codeSetNm: Scalars['String'];
 };
 
+export type CodedValue = {
+  __typename?: 'CodedValue';
+  name: Scalars['String'];
+  value: Scalars['String'];
+};
+
 export type ConditionCode = {
   __typename?: 'ConditionCode';
   conditionDescTxt?: Maybe<Scalars['String']>;
@@ -241,6 +247,13 @@ export type GeneralInfoInput = {
   patientId: Scalars['ID'];
   primaryLanguageCode?: InputMaybe<Scalars['String']>;
   speaksEnglishCode?: InputMaybe<Scalars['String']>;
+};
+
+export type GroupedCodedValue = {
+  __typename?: 'GroupedCodedValue';
+  group: Scalars['String'];
+  name: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type IdentificationCriteria = {
@@ -765,33 +778,6 @@ export type MutationUpdatePatientSexBirthArgs = {
 export type NbsEntity = {
   __typename?: 'NBSEntity';
   entityLocatorParticipations?: Maybe<Array<Maybe<LocatorParticipations>>>;
-};
-
-export type NaicsIndustryCode = {
-  __typename?: 'NaicsIndustryCode';
-  assigningAuthorityCd?: Maybe<Scalars['String']>;
-  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
-  codeDescTxt?: Maybe<Scalars['String']>;
-  codeSetNm?: Maybe<Scalars['String']>;
-  codeShortDescTxt?: Maybe<Scalars['String']>;
-  effectiveFromTime?: Maybe<Scalars['DateTime']>;
-  effectiveToTime?: Maybe<Scalars['DateTime']>;
-  id: Scalars['ID'];
-  indentLevelNbr?: Maybe<Scalars['Int']>;
-  isModifiableInd?: Maybe<Scalars['String']>;
-  keyInfoTxt?: Maybe<Scalars['String']>;
-  nbsUid?: Maybe<Scalars['Int']>;
-  parentIsCd?: Maybe<Scalars['String']>;
-  seqNum?: Maybe<Scalars['Int']>;
-  sourceConceptId?: Maybe<Scalars['String']>;
-  statusCd?: Maybe<Scalars['String']>;
-  statusTime?: Maybe<Scalars['String']>;
-};
-
-export type NaicsIndustryCodeResults = {
-  __typename?: 'NaicsIndustryCodeResults';
-  content: Array<NaicsIndustryCode>;
-  total: Scalars['Int'];
 };
 
 export type NameInput = {
@@ -1882,6 +1868,13 @@ export enum ProviderType {
 
 export type Query = {
   __typename?: 'Query';
+  counties: Array<GroupedCodedValue>;
+  countries: Array<CodedValue>;
+  detailedEthnicities: Array<CodedValue>;
+  detailedRaces: Array<GroupedCodedValue>;
+  educationLevels: Array<CodedValue>;
+  ethnicGroups: Array<CodedValue>;
+  ethnicityUnknownReasons: Array<CodedValue>;
   findAllAddressTypes: AddressTypeResults;
   findAllAddressUses: AddressUseResults;
   findAllAssigningAuthorities: AssigningAuthorResults;
@@ -1892,7 +1885,6 @@ export type Query = {
   findAllEthnicityValues: EthnicityResults;
   findAllIdentificationTypes: IdentificationTypesResults;
   findAllJurisdictions: Array<Maybe<Jurisdiction>>;
-  findAllNaicsIndustryCodes: NaicsIndustryCodeResults;
   findAllNamePrefixes: NamePrefixResults;
   findAllNameTypes: NameTypeResults;
   findAllOrganizations: OrganizationResults;
@@ -1931,6 +1923,24 @@ export type Query = {
   findSnomedCodedResults: SnomedCodedResults;
   findTreatmentsForPatient?: Maybe<PatientTreatmentResults>;
   findVaccinationsForPatient?: Maybe<PatientVaccinationResults>;
+  genderUnknownReasons: Array<CodedValue>;
+  genders: Array<CodedValue>;
+  maritalStatuses: Array<CodedValue>;
+  preferredGenders: Array<CodedValue>;
+  primaryLanguages: Array<CodedValue>;
+  primaryOccupations: Array<CodedValue>;
+  raceCategories: Array<CodedValue>;
+  states: Array<CodedValue>;
+};
+
+
+export type QueryCountiesArgs = {
+  state?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryDetailedRacesArgs = {
+  category?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -2537,6 +2547,45 @@ export type UpdatePatientSexBirthMutationVariables = Exact<{
 
 export type UpdatePatientSexBirthMutation = { __typename?: 'Mutation', updatePatientSexBirth: { __typename?: 'PatientEventResponse', requestId: string, patientId: string } };
 
+export type CountiesQueryVariables = Exact<{
+  state?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CountiesQuery = { __typename?: 'Query', counties: Array<{ __typename?: 'GroupedCodedValue', value: string, name: string, group: string }> };
+
+export type CountriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type DetailedEthnicitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DetailedEthnicitiesQuery = { __typename?: 'Query', detailedEthnicities: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type DetailedRacesQueryVariables = Exact<{
+  category?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type DetailedRacesQuery = { __typename?: 'Query', detailedRaces: Array<{ __typename?: 'GroupedCodedValue', value: string, name: string, group: string }> };
+
+export type EducationLevelsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EducationLevelsQuery = { __typename?: 'Query', educationLevels: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type EthnicGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EthnicGroupsQuery = { __typename?: 'Query', ethnicGroups: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type EthnicityUnknownReasonsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EthnicityUnknownReasonsQuery = { __typename?: 'Query', ethnicityUnknownReasons: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
 export type FindAllAddressTypesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
 }>;
@@ -2607,11 +2656,6 @@ export type FindAllJurisdictionsQueryVariables = Exact<{
 
 
 export type FindAllJurisdictionsQuery = { __typename?: 'Query', findAllJurisdictions: Array<{ __typename?: 'Jurisdiction', id: string, typeCd: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, stateDomainCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, codeSeqNum?: number | null, nbsUid?: string | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null, exportInd?: string | null } | null> };
-
-export type FindAllNaicsIndustryCodesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type FindAllNaicsIndustryCodesQuery = { __typename?: 'Query', findAllNaicsIndustryCodes: { __typename?: 'NaicsIndustryCodeResults', total: number, content: Array<{ __typename?: 'NaicsIndustryCode', id: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, keyInfoTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: string | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null }> } };
 
 export type FindAllNamePrefixesQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2906,6 +2950,46 @@ export type FindVaccinationsForPatientQueryVariables = Exact<{
 
 
 export type FindVaccinationsForPatientQuery = { __typename?: 'Query', findVaccinationsForPatient?: { __typename?: 'PatientVaccinationResults', total: number, number: number, content: Array<{ __typename?: 'PatientVaccination', vaccination: string, createdOn: any, provider?: string | null, administeredOn?: any | null, administered: string, event: string, associatedWith?: { __typename?: 'PatientVaccinationInvestigation', id: string, local: string, condition: string } | null } | null> } | null };
+
+export type GenderUnknownReasonsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GenderUnknownReasonsQuery = { __typename?: 'Query', genderUnknownReasons: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type GendersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GendersQuery = { __typename?: 'Query', genders: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type MaritalStatusesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MaritalStatusesQuery = { __typename?: 'Query', maritalStatuses: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type PreferredGendersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PreferredGendersQuery = { __typename?: 'Query', preferredGenders: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type PrimaryLanguagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PrimaryLanguagesQuery = { __typename?: 'Query', primaryLanguages: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type PrimaryOccupationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PrimaryOccupationsQuery = { __typename?: 'Query', primaryOccupations: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type RaceCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RaceCategoriesQuery = { __typename?: 'Query', raceCategories: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type StatesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StatesQuery = { __typename?: 'Query', states: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
 
 
 export const AddPatientAddressDocument = gql`
@@ -3765,6 +3849,255 @@ export function useUpdatePatientSexBirthMutation(baseOptions?: Apollo.MutationHo
 export type UpdatePatientSexBirthMutationHookResult = ReturnType<typeof useUpdatePatientSexBirthMutation>;
 export type UpdatePatientSexBirthMutationResult = Apollo.MutationResult<UpdatePatientSexBirthMutation>;
 export type UpdatePatientSexBirthMutationOptions = Apollo.BaseMutationOptions<UpdatePatientSexBirthMutation, UpdatePatientSexBirthMutationVariables>;
+export const CountiesDocument = gql`
+    query counties($state: String) {
+  counties(state: $state) {
+    value
+    name
+    group
+  }
+}
+    `;
+
+/**
+ * __useCountiesQuery__
+ *
+ * To run a query within a React component, call `useCountiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountiesQuery({
+ *   variables: {
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useCountiesQuery(baseOptions?: Apollo.QueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
+      }
+export function useCountiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
+        }
+export type CountiesQueryHookResult = ReturnType<typeof useCountiesQuery>;
+export type CountiesLazyQueryHookResult = ReturnType<typeof useCountiesLazyQuery>;
+export type CountiesQueryResult = Apollo.QueryResult<CountiesQuery, CountiesQueryVariables>;
+export const CountriesDocument = gql`
+    query countries {
+  countries {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useCountriesQuery__
+ *
+ * To run a query within a React component, call `useCountriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCountriesQuery(baseOptions?: Apollo.QueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
+      }
+export function useCountriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
+        }
+export type CountriesQueryHookResult = ReturnType<typeof useCountriesQuery>;
+export type CountriesLazyQueryHookResult = ReturnType<typeof useCountriesLazyQuery>;
+export type CountriesQueryResult = Apollo.QueryResult<CountriesQuery, CountriesQueryVariables>;
+export const DetailedEthnicitiesDocument = gql`
+    query detailedEthnicities {
+  detailedEthnicities {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useDetailedEthnicitiesQuery__
+ *
+ * To run a query within a React component, call `useDetailedEthnicitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDetailedEthnicitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDetailedEthnicitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDetailedEthnicitiesQuery(baseOptions?: Apollo.QueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
+      }
+export function useDetailedEthnicitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
+        }
+export type DetailedEthnicitiesQueryHookResult = ReturnType<typeof useDetailedEthnicitiesQuery>;
+export type DetailedEthnicitiesLazyQueryHookResult = ReturnType<typeof useDetailedEthnicitiesLazyQuery>;
+export type DetailedEthnicitiesQueryResult = Apollo.QueryResult<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>;
+export const DetailedRacesDocument = gql`
+    query detailedRaces($category: String) {
+  detailedRaces(category: $category) {
+    value
+    name
+    group
+  }
+}
+    `;
+
+/**
+ * __useDetailedRacesQuery__
+ *
+ * To run a query within a React component, call `useDetailedRacesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDetailedRacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDetailedRacesQuery({
+ *   variables: {
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useDetailedRacesQuery(baseOptions?: Apollo.QueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
+      }
+export function useDetailedRacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
+        }
+export type DetailedRacesQueryHookResult = ReturnType<typeof useDetailedRacesQuery>;
+export type DetailedRacesLazyQueryHookResult = ReturnType<typeof useDetailedRacesLazyQuery>;
+export type DetailedRacesQueryResult = Apollo.QueryResult<DetailedRacesQuery, DetailedRacesQueryVariables>;
+export const EducationLevelsDocument = gql`
+    query educationLevels {
+  educationLevels {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useEducationLevelsQuery__
+ *
+ * To run a query within a React component, call `useEducationLevelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEducationLevelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEducationLevelsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEducationLevelsQuery(baseOptions?: Apollo.QueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
+      }
+export function useEducationLevelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
+        }
+export type EducationLevelsQueryHookResult = ReturnType<typeof useEducationLevelsQuery>;
+export type EducationLevelsLazyQueryHookResult = ReturnType<typeof useEducationLevelsLazyQuery>;
+export type EducationLevelsQueryResult = Apollo.QueryResult<EducationLevelsQuery, EducationLevelsQueryVariables>;
+export const EthnicGroupsDocument = gql`
+    query ethnicGroups {
+  ethnicGroups {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useEthnicGroupsQuery__
+ *
+ * To run a query within a React component, call `useEthnicGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEthnicGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEthnicGroupsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEthnicGroupsQuery(baseOptions?: Apollo.QueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
+      }
+export function useEthnicGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
+        }
+export type EthnicGroupsQueryHookResult = ReturnType<typeof useEthnicGroupsQuery>;
+export type EthnicGroupsLazyQueryHookResult = ReturnType<typeof useEthnicGroupsLazyQuery>;
+export type EthnicGroupsQueryResult = Apollo.QueryResult<EthnicGroupsQuery, EthnicGroupsQueryVariables>;
+export const EthnicityUnknownReasonsDocument = gql`
+    query ethnicityUnknownReasons {
+  ethnicityUnknownReasons {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useEthnicityUnknownReasonsQuery__
+ *
+ * To run a query within a React component, call `useEthnicityUnknownReasonsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEthnicityUnknownReasonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEthnicityUnknownReasonsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEthnicityUnknownReasonsQuery(baseOptions?: Apollo.QueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
+      }
+export function useEthnicityUnknownReasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
+        }
+export type EthnicityUnknownReasonsQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsQuery>;
+export type EthnicityUnknownReasonsLazyQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsLazyQuery>;
+export type EthnicityUnknownReasonsQueryResult = Apollo.QueryResult<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>;
 export const FindAllAddressTypesDocument = gql`
     query findAllAddressTypes($page: Page) {
   findAllAddressTypes(page: $page) {
@@ -4199,59 +4532,6 @@ export function useFindAllJurisdictionsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJurisdictionsQuery>;
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsQueryResult = Apollo.QueryResult<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>;
-export const FindAllNaicsIndustryCodesDocument = gql`
-    query findAllNaicsIndustryCodes {
-  findAllNaicsIndustryCodes {
-    content {
-      id
-      assigningAuthorityCd
-      assigningAuthorityDescTxt
-      codeDescTxt
-      codeShortDescTxt
-      effectiveFromTime
-      effectiveToTime
-      keyInfoTxt
-      indentLevelNbr
-      isModifiableInd
-      parentIsCd
-      statusCd
-      statusTime
-      codeSetNm
-      seqNum
-      nbsUid
-      sourceConceptId
-    }
-    total
-  }
-}
-    `;
-
-/**
- * __useFindAllNaicsIndustryCodesQuery__
- *
- * To run a query within a React component, call `useFindAllNaicsIndustryCodesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllNaicsIndustryCodesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindAllNaicsIndustryCodesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useFindAllNaicsIndustryCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllNaicsIndustryCodesQuery, FindAllNaicsIndustryCodesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllNaicsIndustryCodesQuery, FindAllNaicsIndustryCodesQueryVariables>(FindAllNaicsIndustryCodesDocument, options);
-      }
-export function useFindAllNaicsIndustryCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllNaicsIndustryCodesQuery, FindAllNaicsIndustryCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllNaicsIndustryCodesQuery, FindAllNaicsIndustryCodesQueryVariables>(FindAllNaicsIndustryCodesDocument, options);
-        }
-export type FindAllNaicsIndustryCodesQueryHookResult = ReturnType<typeof useFindAllNaicsIndustryCodesQuery>;
-export type FindAllNaicsIndustryCodesLazyQueryHookResult = ReturnType<typeof useFindAllNaicsIndustryCodesLazyQuery>;
-export type FindAllNaicsIndustryCodesQueryResult = Apollo.QueryResult<FindAllNaicsIndustryCodesQuery, FindAllNaicsIndustryCodesQueryVariables>;
 export const FindAllNamePrefixesDocument = gql`
     query findAllNamePrefixes($page: Page) {
   findAllNamePrefixes(page: $page) {
@@ -7291,3 +7571,283 @@ export function useFindVaccinationsForPatientLazyQuery(baseOptions?: Apollo.Lazy
 export type FindVaccinationsForPatientQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientQuery>;
 export type FindVaccinationsForPatientLazyQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientLazyQuery>;
 export type FindVaccinationsForPatientQueryResult = Apollo.QueryResult<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>;
+export const GenderUnknownReasonsDocument = gql`
+    query genderUnknownReasons {
+  genderUnknownReasons {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useGenderUnknownReasonsQuery__
+ *
+ * To run a query within a React component, call `useGenderUnknownReasonsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGenderUnknownReasonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGenderUnknownReasonsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGenderUnknownReasonsQuery(baseOptions?: Apollo.QueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
+      }
+export function useGenderUnknownReasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
+        }
+export type GenderUnknownReasonsQueryHookResult = ReturnType<typeof useGenderUnknownReasonsQuery>;
+export type GenderUnknownReasonsLazyQueryHookResult = ReturnType<typeof useGenderUnknownReasonsLazyQuery>;
+export type GenderUnknownReasonsQueryResult = Apollo.QueryResult<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>;
+export const GendersDocument = gql`
+    query genders {
+  genders {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useGendersQuery__
+ *
+ * To run a query within a React component, call `useGendersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGendersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGendersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGendersQuery(baseOptions?: Apollo.QueryHookOptions<GendersQuery, GendersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
+      }
+export function useGendersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GendersQuery, GendersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
+        }
+export type GendersQueryHookResult = ReturnType<typeof useGendersQuery>;
+export type GendersLazyQueryHookResult = ReturnType<typeof useGendersLazyQuery>;
+export type GendersQueryResult = Apollo.QueryResult<GendersQuery, GendersQueryVariables>;
+export const MaritalStatusesDocument = gql`
+    query maritalStatuses {
+  maritalStatuses {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useMaritalStatusesQuery__
+ *
+ * To run a query within a React component, call `useMaritalStatusesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMaritalStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMaritalStatusesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMaritalStatusesQuery(baseOptions?: Apollo.QueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
+      }
+export function useMaritalStatusesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
+        }
+export type MaritalStatusesQueryHookResult = ReturnType<typeof useMaritalStatusesQuery>;
+export type MaritalStatusesLazyQueryHookResult = ReturnType<typeof useMaritalStatusesLazyQuery>;
+export type MaritalStatusesQueryResult = Apollo.QueryResult<MaritalStatusesQuery, MaritalStatusesQueryVariables>;
+export const PreferredGendersDocument = gql`
+    query preferredGenders {
+  preferredGenders {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __usePreferredGendersQuery__
+ *
+ * To run a query within a React component, call `usePreferredGendersQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePreferredGendersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePreferredGendersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePreferredGendersQuery(baseOptions?: Apollo.QueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
+      }
+export function usePreferredGendersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
+        }
+export type PreferredGendersQueryHookResult = ReturnType<typeof usePreferredGendersQuery>;
+export type PreferredGendersLazyQueryHookResult = ReturnType<typeof usePreferredGendersLazyQuery>;
+export type PreferredGendersQueryResult = Apollo.QueryResult<PreferredGendersQuery, PreferredGendersQueryVariables>;
+export const PrimaryLanguagesDocument = gql`
+    query primaryLanguages {
+  primaryLanguages {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __usePrimaryLanguagesQuery__
+ *
+ * To run a query within a React component, call `usePrimaryLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePrimaryLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePrimaryLanguagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePrimaryLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
+      }
+export function usePrimaryLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
+        }
+export type PrimaryLanguagesQueryHookResult = ReturnType<typeof usePrimaryLanguagesQuery>;
+export type PrimaryLanguagesLazyQueryHookResult = ReturnType<typeof usePrimaryLanguagesLazyQuery>;
+export type PrimaryLanguagesQueryResult = Apollo.QueryResult<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>;
+export const PrimaryOccupationsDocument = gql`
+    query primaryOccupations {
+  primaryOccupations {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __usePrimaryOccupationsQuery__
+ *
+ * To run a query within a React component, call `usePrimaryOccupationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePrimaryOccupationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePrimaryOccupationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePrimaryOccupationsQuery(baseOptions?: Apollo.QueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
+      }
+export function usePrimaryOccupationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
+        }
+export type PrimaryOccupationsQueryHookResult = ReturnType<typeof usePrimaryOccupationsQuery>;
+export type PrimaryOccupationsLazyQueryHookResult = ReturnType<typeof usePrimaryOccupationsLazyQuery>;
+export type PrimaryOccupationsQueryResult = Apollo.QueryResult<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>;
+export const RaceCategoriesDocument = gql`
+    query raceCategories {
+  raceCategories {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useRaceCategoriesQuery__
+ *
+ * To run a query within a React component, call `useRaceCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRaceCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRaceCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRaceCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
+      }
+export function useRaceCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
+        }
+export type RaceCategoriesQueryHookResult = ReturnType<typeof useRaceCategoriesQuery>;
+export type RaceCategoriesLazyQueryHookResult = ReturnType<typeof useRaceCategoriesLazyQuery>;
+export type RaceCategoriesQueryResult = Apollo.QueryResult<RaceCategoriesQuery, RaceCategoriesQueryVariables>;
+export const StatesDocument = gql`
+    query states {
+  states {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useStatesQuery__
+ *
+ * To run a query within a React component, call `useStatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStatesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStatesQuery(baseOptions?: Apollo.QueryHookOptions<StatesQuery, StatesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
+      }
+export function useStatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StatesQuery, StatesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
+        }
+export type StatesQueryHookResult = ReturnType<typeof useStatesQuery>;
+export type StatesLazyQueryHookResult = ReturnType<typeof useStatesLazyQuery>;
+export type StatesQueryResult = Apollo.QueryResult<StatesQuery, StatesQueryVariables>;

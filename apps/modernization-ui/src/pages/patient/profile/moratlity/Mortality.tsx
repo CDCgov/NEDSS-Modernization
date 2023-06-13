@@ -12,7 +12,6 @@ type PatientLabReportTableProps = {
 export const Mortality = ({ patient }: PatientLabReportTableProps) => {
     const [generalTableData, setGeneralTableData] = useState<any>();
     const handleComplete = (data: FindPatientProfileQuery) => {
-        console.log('data:', data);
         setGeneralTableData([
             {
                 title: 'As of:',
@@ -33,7 +32,6 @@ export const Mortality = ({ patient }: PatientLabReportTableProps) => {
     };
 
     const [getProfile, { data }] = useFindPatientProfileMortality({ onCompleted: handleComplete });
-    console.log('generalTableData:', generalTableData);
 
     useEffect(() => {
         if (patient) {

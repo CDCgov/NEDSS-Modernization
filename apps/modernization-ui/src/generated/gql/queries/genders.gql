@@ -1,0 +1,6 @@
+query genders{
+    genders{
+        value
+        name
+    }
+}
