@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://us-street.api.smartystreets.com/street-address?auth-id=02f5b868-b819-0333-6da9-b2220a435a2a&auth-token=nN6E3P3Qdj1b0WZGJhu8&license=us-core-cloud&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA&candidates=10",
+					"raw": "https://us-street.api.smartystreets.com/street-address?auth-id=AUTH_ID_GOES_HERE&auth-token=AUTH_TOKEN8&license=us-core-cloud&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA&candidates=10",
 					"protocol": "https",
 					"host": [
 						"us-street",
