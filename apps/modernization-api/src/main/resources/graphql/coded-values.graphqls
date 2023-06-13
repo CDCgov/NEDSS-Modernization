@@ -8,12 +8,6 @@ type StateCountyCodeValueResults {
     total: Int!
 }
 
-type StateCountyCodeValue {
-    id: CodeValueGeneralId!
-    code_desc_txt: String!
-    state_cd: String!
-}
-
 type NaicsIndustryCode {
     id: ID!
     assigningAuthorityCd: String
