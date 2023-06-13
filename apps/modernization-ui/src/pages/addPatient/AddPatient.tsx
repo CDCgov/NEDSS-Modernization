@@ -227,12 +227,6 @@ export default function AddPatient() {
                                 <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                                     New patient
                                     <div className="button-group">
-                                        <Button
-                                            disabled={disabled}
-                                            className="padding-x-3 margin-y-0 add-patient-button"
-                                            type={'button'}>
-                                            Save and add new lab report
-                                        </Button>
                                         {!isValid && (
                                             <Button className="padding-x-3 add-patient-button" type={'submit'}>
                                                 Save changes

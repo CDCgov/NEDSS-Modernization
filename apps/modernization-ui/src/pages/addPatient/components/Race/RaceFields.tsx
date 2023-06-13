@@ -20,7 +20,6 @@ export default function EthnicityFields({ id, title, control }: { id?: string; t
                                 control={control}
                                 name="race"
                                 render={({ field: { onChange, value } }) => {
-                                    console.log('value:', value);
                                     return (
                                         <SearchCriteriaContext.Consumer>
                                             {({ searchCriteria }) =>
@@ -31,27 +30,23 @@ export default function EthnicityFields({ id, title, control }: { id?: string; t
                                                             if (!value || value?.length === 0) {
                                                                 if (e.target.checked) {
                                                                     tempArr.push(e.target.value);
-                                                                    console.log('true:', tempArr);
                                                                     onChange(tempArr);
                                                                 } else {
                                                                     const index = tempArr.indexOf(e.target.value);
                                                                     if (index > -1) {
                                                                         tempArr.splice(index, 1);
                                                                     }
-                                                                    console.log('false:', tempArr);
                                                                     onChange(tempArr);
                                                                 }
                                                             } else {
                                                                 if (e.target.checked) {
                                                                     value.push(e.target.value);
-                                                                    console.log('true:', value);
                                                                     onChange(value);
                                                                 } else {
                                                                     const index = value.indexOf(e.target.value);
                                                                     if (index > -1) {
                                                                         value.splice(index, 1);
                                                                     }
-                                                                    console.log('false:', value);
                                                                     onChange(value);
                                                                 }
                                                             }
