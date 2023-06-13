@@ -40,7 +40,7 @@ export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
         if (patient) {
             getProfile({
                 variables: {
-                    shortId: +patient
+                    patient: patient
                 }
             });
         }

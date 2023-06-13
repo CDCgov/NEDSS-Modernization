@@ -320,15 +320,15 @@ input EmailInput {
 }
 
 input EthnicityInput {
-    patient: Int!
-    asOf: DateTime
-    ethnicGroup: String!
+    patient: String!
+    asOf: DateTime!
+    ethnicGroup: String
     unknownReason: String
     detailed: [String]
 }
 
 type PatientEthnicityChangeResult {
-    patient: Int!
+    patient: String!
 }
 
 input RaceInput {

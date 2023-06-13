@@ -206,10 +206,10 @@ export type EthnicityId = {
 };
 
 export type EthnicityInput = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
+  asOf: Scalars['DateTime'];
   detailed?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicGroup: Scalars['String'];
-  patient: Scalars['Int'];
+  ethnicGroup?: InputMaybe<Scalars['String']>;
+  patient: Scalars['String'];
   unknownReason?: InputMaybe<Scalars['String']>;
 };
 
@@ -780,6 +780,27 @@ export type NbsEntity = {
   entityLocatorParticipations?: Maybe<Array<Maybe<LocatorParticipations>>>;
 };
 
+export type NaicsIndustryCode = {
+  __typename?: 'NaicsIndustryCode';
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['String']>;
+  keyInfoTxt?: Maybe<Scalars['String']>;
+  nbsUid?: Maybe<Scalars['Int']>;
+  parentIsCd?: Maybe<Scalars['String']>;
+  seqNum?: Maybe<Scalars['Int']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
+  statusTime?: Maybe<Scalars['String']>;
+};
+
 export type NameInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
@@ -1163,7 +1184,7 @@ export type PatientEthnicity = {
 
 export type PatientEthnicityChangeResult = {
   __typename?: 'PatientEthnicityChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['String'];
 };
 
 export type PatientEventResponse = {
@@ -1897,7 +1918,7 @@ export type Query = {
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllRaceValues: RaceResults;
   findAllStateCodes: Array<Maybe<StateCode>>;
-  findAllStateCountyCodeValues: StateCountyCodeValueResults;
+  findAllStateCountyCodeValues: Array<StateCountyCodeValue>;
   findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
   findDocumentsForPatient?: Maybe<PatientDocumentResults>;
@@ -2057,6 +2078,7 @@ export type QueryFindAllStateCodesArgs = {
 
 export type QueryFindAllStateCountyCodeValuesArgs = {
   page?: InputMaybe<Page>;
+  stateCode?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -2297,9 +2319,25 @@ export type StateCode = {
 
 export type StateCountyCodeValue = {
   __typename?: 'StateCountyCodeValue';
-  code_desc_txt: Scalars['String'];
-  id: CodeValueGeneralId;
-  state_cd: Scalars['String'];
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  codeSystemCd?: Maybe<Scalars['String']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
+  excludedTxt?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['Int']>;
+  nbsUid?: Maybe<Scalars['Int']>;
+  parentIsCd?: Maybe<Scalars['Int']>;
+  seqNum?: Maybe<Scalars['Int']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['Int']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type StateCountyCodeValueResults = {
@@ -2482,7 +2520,7 @@ export type UpdateEthnicityMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEthnicityChangeResult', patient: number } };
+export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEthnicityChangeResult', patient: string } };
 
 export type UpdateMortalityMutationVariables = Exact<{
   input: MortalityInput;
@@ -2742,11 +2780,12 @@ export type FindAllStateCodesQueryVariables = Exact<{
 export type FindAllStateCodesQuery = { __typename?: 'Query', findAllStateCodes: Array<{ __typename?: 'StateCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, stateNm?: string | null, codeDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, keyInfoTxt?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
 
 export type FindAllStateCountyCodeValuesQueryVariables = Exact<{
+  stateCode?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllStateCountyCodeValuesQuery = { __typename?: 'Query', findAllStateCountyCodeValues: { __typename?: 'StateCountyCodeValueResults', total: number, content: Array<{ __typename?: 'StateCountyCodeValue', code_desc_txt: string, state_cd: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
+export type FindAllStateCountyCodeValuesQuery = { __typename?: 'Query', findAllStateCountyCodeValues: Array<{ __typename?: 'StateCountyCodeValue', id: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: number | null, parentIsCd?: number | null, statusCd?: number | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null }> };
 
 export type FindAllUsersQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -5252,17 +5291,27 @@ export type FindAllStateCodesQueryHookResult = ReturnType<typeof useFindAllState
 export type FindAllStateCodesLazyQueryHookResult = ReturnType<typeof useFindAllStateCodesLazyQuery>;
 export type FindAllStateCodesQueryResult = Apollo.QueryResult<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>;
 export const FindAllStateCountyCodeValuesDocument = gql`
-    query findAllStateCountyCodeValues($page: Page) {
-  findAllStateCountyCodeValues(page: $page) {
-    content {
-      id {
-        codeSetNm
-        code
-      }
-      code_desc_txt
-      state_cd
-    }
-    total
+    query findAllStateCountyCodeValues($stateCode: String, $page: Page) {
+  findAllStateCountyCodeValues(stateCode: $stateCode, page: $page) {
+    id
+    assigningAuthorityCd
+    assigningAuthorityDescTxt
+    codeDescTxt
+    codeShortDescTxt
+    effectiveFromTime
+    effectiveToTime
+    excludedTxt
+    indentLevelNbr
+    isModifiableInd
+    parentIsCd
+    statusCd
+    statusTime
+    codeSetNm
+    seqNum
+    nbsUid
+    sourceConceptId
+    codeSystemCd
+    codeSystemDescTxt
   }
 }
     `;
@@ -5279,6 +5328,7 @@ export const FindAllStateCountyCodeValuesDocument = gql`
  * @example
  * const { data, loading, error } = useFindAllStateCountyCodeValuesQuery({
  *   variables: {
+ *      stateCode: // value for 'stateCode'
  *      page: // value for 'page'
  *   },
  * });

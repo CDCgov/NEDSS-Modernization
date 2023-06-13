@@ -55,7 +55,7 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
         if (patient) {
             getProfile({
                 variables: {
-                    shortId: +patient,
+                    patient: patient,
                     page5: {
                         pageNumber: currentPage - 1,
                         pageSize: TOTAL_TABLE_DATA
