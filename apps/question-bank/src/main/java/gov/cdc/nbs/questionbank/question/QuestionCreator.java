@@ -13,6 +13,7 @@ import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 
@@ -23,16 +24,19 @@ class QuestionCreator {
     private final WaQuestionRepository repository;
     private final CodeValueGeneralRepository codeValueGeneralRepository;
     private final QuestionCreatedEventProducer eventProducer;
+    private final NbsConfigurationRepository configRepository;
 
     public QuestionCreator(
             IdGeneratorService idGenerator,
             WaQuestionRepository repository,
             CodeValueGeneralRepository codeValueGeneralRepository,
-            QuestionCreatedEventProducer eventProducer) {
+            QuestionCreatedEventProducer eventProducer,
+            NbsConfigurationRepository configRepository) {
         this.idGenerator = idGenerator;
         this.repository = repository;
         this.codeValueGeneralRepository = codeValueGeneralRepository;
         this.eventProducer = eventProducer;
+        this.configRepository = configRepository;
     }
 
     public long create(Long userId, CreateQuestionRequest.Text request) {
@@ -121,10 +125,20 @@ class QuestionCreator {
      */
     String getLocalId(CreateQuestionRequest request) {
         if (request.codeSet().equals("LOCAL")) {
-            return idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF).toLocalId();
+            // Question Ids are a combination of the 
+            // `NBS_ODSE.NBS_configuration NBS_CLASS_CODE config value + the next valid Id 
+            // Ex. GA13004
+            String nbsClassCode = getNbsClassCode();
+            return nbsClassCode + idGenerator.getNextValidId(EntityType.NBS_QUESTION_ID_LDF).getId();
         } else {
             return request.uniqueId().trim();
         }
+    }
+
+    String getNbsClassCode() {
+        return configRepository.findById("NBS_CLASS_CODE")
+                .orElseThrow(() -> new QuestionCreateException("Failed to lookup NBS_CLASS_CODE"))
+                .getConfigValue();
     }
 
 
