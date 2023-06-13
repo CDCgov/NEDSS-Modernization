@@ -145,7 +145,7 @@ class WaQuestionTest {
     }
 
     private void validateReportingFields(WaQuestion question, QuestionCommand.ReportingData data) {
-        assertEquals(data.defaultRdbTableName() + "_" + data.rdbColumnName(), question.getRdbColumnNm());
+        assertEquals(data.rdbColumnName(), question.getRdbColumnNm());
         assertEquals("GROUP_INV", question.getGroupNm());
         assertEquals(data.reportLabel(), question.getRptAdminColumnNm());
         assertEquals(data.defaultRdbTableName(), question.getRdbTableNm());

@@ -232,7 +232,7 @@ public abstract class WaQuestion {
     }
 
     public void setReportingData(QuestionCommand.ReportingData reportingData) {
-        setRdbColumnNm(reportingData.defaultRdbTableName() + "_" + reportingData.rdbColumnName());
+        setRdbColumnNm(reportingData.rdbColumnName());
         setGroupNm("GROUP_INV");
         setRptAdminColumnNm(reportingData.reportLabel());
         setRdbTableNm(reportingData.defaultRdbTableName());

@@ -71,7 +71,7 @@ class QuestionCreator {
     QuestionCommand.AddTextQuestion asAdd(Long userId, CreateQuestionRequest.Text request) {
         QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
 
-        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo());
+        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo(), request.subgroup());
 
         return new QuestionCommand.AddTextQuestion(
                 request.mask(),
@@ -93,11 +93,11 @@ class QuestionCreator {
                 Instant.now());
     }
 
-    QuestionCommand.ReportingData asReportingData(CreateQuestionRequest.ReportingInfo dataMartInfo) {
+    QuestionCommand.ReportingData asReportingData(CreateQuestionRequest.ReportingInfo dataMartInfo, String subgroup) {
         return new QuestionCommand.ReportingData(
                 dataMartInfo.reportLabel(),
                 dataMartInfo.defaultRdbTableName(),
-                dataMartInfo.rdbColumnName(),
+                subgroup + "_" + dataMartInfo.rdbColumnName(), // Legacy appends the subgroup to the beginning of the rdbColumnName
                 dataMartInfo.dataMartColumnName());
     }
 

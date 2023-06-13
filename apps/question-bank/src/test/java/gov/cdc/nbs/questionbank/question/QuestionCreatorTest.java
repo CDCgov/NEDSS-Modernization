@@ -142,14 +142,15 @@ class QuestionCreatorTest {
     void should_convert_reporting() {
         // given reporting info
         ReportingInfo info = QuestionRequestMother.reportingInfo();
+        CreateQuestionRequest request = QuestionRequestMother.localTextRequest();
 
         // when i convert to reporting data
-        QuestionCommand.ReportingData data = creator.asReportingData(info);
+        QuestionCommand.ReportingData data = creator.asReportingData(info, request.subgroup());
 
         // then the fields are set properly
         assertEquals(info.reportLabel(), data.reportLabel());
         assertEquals(info.defaultRdbTableName(), data.defaultRdbTableName());
-        assertEquals(info.rdbColumnName(), data.rdbColumnName());
+        assertEquals(request.subgroup() + "_" + info.rdbColumnName(), data.rdbColumnName());
         assertEquals(info.dataMartColumnName(), data.dataMartColumnName());
     }
 
