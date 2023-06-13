@@ -19,12 +19,14 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
@@ -46,6 +48,9 @@ class QuestionCreatorTest {
     @Mock
     private QuestionCreatedEventProducer.EnabledProducer producer;
 
+    @Mock
+    private NbsConfigurationRepository configRepository;
+
     @InjectMocks
     private QuestionCreator creator;
 
@@ -53,6 +58,10 @@ class QuestionCreatorTest {
     void should_return_proper_local_id() {
         // given the idGenerator will return a generated Id
         when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX","SUFFIX"));
+        // and the configRepository will return a NBS_CLASS_CODE
+        NbsConfiguration configEntry = new NbsConfiguration();
+        configEntry.setConfigValue("GA");
+        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.of(configEntry));
 
         // given a "LOCAL" create question request
         CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
@@ -61,7 +70,7 @@ class QuestionCreatorTest {
         String localId = creator.getLocalId(request);
 
         // then I am returned the datbaases next available Id
-        assertEquals("PREFIX1000SUFFIX", localId);
+        assertEquals(configEntry.getConfigValue() + "1000", localId);
     }
 
     @Test
