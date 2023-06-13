@@ -1,12 +1,12 @@
 [versions]
-springBoot = "2.7.8"
+springBoot = "3.1.0"
 assertj = "3.24.2"
 jackson = "2.14.2"
 queryDSL = "5.0.0"
 blaze-persistence = "1.6.8"
 testcontainers = "1.17.6"
 cucumber = "7.8.0"
-
+jakarta = "3.1.0"
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-inline = { module = "org.mockito:mockito-inline", version = "4.11.0" }
@@ -27,9 +27,10 @@ queryDSL-apt = { module = "com.querydsl:querydsl-apt", version.ref = "queryDSL" 
 queryDSL-jpa = { module = "com.querydsl:querydsl-jpa", version.ref = "queryDSL" }
 lombok = { module = "org.projectlombok:lombok" }
 mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version = "10.2.1.jre17" }
-blaze-persistence-core = { module = "com.blazebit:blaze-persistence-core-impl", version.ref = "blaze-persistence" }
+blaze-persistence-core-api = { module = "com.blazebit:blaze-persistence-core-api-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-core = { module = "com.blazebit:blaze-persistence-core-impl-jakarta", version.ref = "blaze-persistence" }
 blaze-persistence-queryDSL = { module = "com.blazebit:blaze-persistence-integration-querydsl-expressions", version.ref = "blaze-persistence" }
-blaze-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-5.6", version.ref = "blaze-persistence" }
+blaze-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-6.0", version.ref = "blaze-persistence" }
 java-jwt = { module = "com.auth0:java-jwt", version = "4.2.0" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
@@ -43,6 +44,8 @@ cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform
 junit = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-suite" }
 awaitility = {module = "org.awaitility:awaitility"}
+jakarta-persistence = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.1.0" }
+jakarta-servlet = { module = "jakarta.servlet:jakarta.servlet-api", version = "6.0.0" }
 
 [bundles]
 security = ["java-jwt", "spring-security"]
@@ -52,10 +55,12 @@ elasticsearch = ["spring-elasticsearch"]
 kafka = ["spring-kafka"]
 testing = ["assertj-core", "mockito-inline"]
 queryDSL = ["queryDSL-apt", "queryDSL-jpa"]
+jakarta = ["jakarta-persistence"]
 blaze-persistence-queryDSL = [
     "blaze-persistence-core",
     "blaze-persistence-queryDSL",
     "blaze-persistence-hibernate",
+    "blaze-persistence-core-api",
 ]
 testcontainers = ["testcontainers", "testcontainers-junit"]
 testcontainers-elasticsearch = [

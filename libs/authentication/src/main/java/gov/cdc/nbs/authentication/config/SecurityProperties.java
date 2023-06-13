@@ -8,8 +8,7 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@ConstructorBinding
-@ConfigurationProperties(prefix = "nbs.security")
+
 @Getter
 @RequiredArgsConstructor
 public class SecurityProperties {
