@@ -1,11 +1,14 @@
 import { Button, ButtonGroup, Grid, Icon } from '@trussworks/react-uswds';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-export const SuccessForm = ({ data, setSuccessSubmit, patientId }: any) => {
+export const AddedPatient = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     function handleViewPatient(): void {
-        navigate(`/patient-profile/${patientId}`);
+        // TODO: Hard coded to this profile for now. Once new patient creation is ready, we can pass that id instead.
+        // At the time of this code, patient creation is not ready.
+        navigate(`/patient-profile/${searchParams.get('shortId')}`);
     }
     return (
         <Grid row>
@@ -16,13 +19,13 @@ export const SuccessForm = ({ data, setSuccessSubmit, patientId }: any) => {
                     <Grid col={12} className="text-center">
                         <Icon.CheckCircle style={{ fontSize: '100px', color: '#00A91C' }} />
                         <p style={{ fontSize: '32px', fontWeight: '700' }} className="margin-y-2">
-                            You have successfully added “{data?.['first-name']}, {data?.['last-name']}”
+                            You have successfully added “{searchParams.get('name')}”
                         </p>
                         <ButtonGroup className="flex-justify-center margin-top-3">
                             <Button type="button" onClick={handleViewPatient}>
                                 View patient
                             </Button>
-                            <Button onClick={() => setSuccessSubmit(false)} type="button" outline>
+                            <Button onClick={() => navigate('/add-patient')} type="button" outline>
                                 Add another patient
                             </Button>
                         </ButtonGroup>

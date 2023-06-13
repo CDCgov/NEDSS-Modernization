@@ -666,11 +666,7 @@ export const AdvancedSearch = () => {
                     Search
                     <div className="button-group">
                         <Button
-                            disabled={
-                                (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                (!patientData?.content || patientData?.content?.length === 0)
-                            }
+                            disabled={!lastSearchType}
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>

@@ -20,35 +20,38 @@ export const IdentificationFields = ({
     append: any;
 }) => {
     const handleAddAnotherId = () => {
-        append({ identificationType: null, assigningAuthority: null, identificationNumber: null });
+        append({ type: null, authority: null, value: null });
     };
 
     return (
         <FormCard id={id} title={title}>
             {fields.map((item: any, index: number) => (
-                <Grid col={12} className="padding-x-3" key={item.id}>
+                <Grid col={12} className="padding-x-3 padding-bottom-2" key={item.id}>
                     <Grid row>
                         <SearchCriteriaContext.Consumer>
                             {({ searchCriteria }) => (
                                 <Grid col={6}>
                                     <Controller
                                         control={control}
-                                        name={`identification[${index}].identificationType`}
-                                        render={({ field: { onChange } }) => (
-                                            <SelectInput
-                                                options={Object.values(searchCriteria.identificationTypes).map(
-                                                    (type) => {
+                                        name={`identification[${index}].type`}
+                                        render={({ field: { onChange } }) => {
+                                            return (
+                                                <SelectInput
+                                                    defaultValue={
+                                                        control._formValues['identification']?.[index]?.type || ''
+                                                    }
+                                                    options={searchCriteria.identificationTypes.map((type) => {
                                                         return {
                                                             name: formatInterfaceString(type.codeDescTxt),
                                                             value: type.id.code
                                                         };
-                                                    }
-                                                )}
-                                                onChange={onChange}
-                                                htmlFor={`identification[${index}].identificationType`}
-                                                label="ID type"
-                                            />
-                                        )}
+                                                    })}
+                                                    onChange={onChange}
+                                                    htmlFor={`identification[${index}].type`}
+                                                    label="ID type"
+                                                />
+                                            );
+                                        }}
                                     />
                                 </Grid>
                             )}
@@ -56,36 +59,51 @@ export const IdentificationFields = ({
                     </Grid>
                     <Grid row>
                         <Grid col={6}>
-                            <Controller
-                                control={control}
-                                name={`identification[${index}].assigningAuthority`}
-                                render={({ field: { onChange } }) => (
-                                    <SelectInput
-                                        options={[
-                                            { name: 'CA', value: 'CA' },
-                                            { name: 'LA', value: 'LA' },
-                                            { name: 'AL', value: 'AL' }
-                                        ]}
-                                        onChange={onChange}
-                                        htmlFor={`identification[${index}].assigningAuthority`}
-                                        label="Assigning authority "
-                                    />
-                                )}
-                            />
+                            <SearchCriteriaContext.Consumer>
+                                {({ searchCriteria }) => {
+                                    return (
+                                        <Controller
+                                            control={control}
+                                            name={`identification[${index}].authority`}
+                                            render={({ field: { onChange, value } }) => (
+                                                <SelectInput
+                                                    onChange={onChange}
+                                                    defaultValue={value}
+                                                    name={`identification[${index}].authority`}
+                                                    htmlFor={`identification[${index}].authority`}
+                                                    label="Assigning authority"
+                                                    options={
+                                                        searchCriteria.authorities
+                                                            ? Object.values(searchCriteria.authorities).map(
+                                                                  (country) => {
+                                                                      return {
+                                                                          name: country?.codeShortDescTxt || '',
+                                                                          value: country?.id?.code || ''
+                                                                      };
+                                                                  }
+                                                              )
+                                                            : []
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    );
+                                }}
+                            </SearchCriteriaContext.Consumer>
                         </Grid>
                     </Grid>
                     <Grid row>
                         <Grid col={6}>
                             <Controller
                                 control={control}
-                                name={`identification[${index}].identificationNumber`}
+                                name={`identification[${index}].value`}
                                 render={({ field: { onChange, value } }) => (
                                     <Input
                                         defaultValue={value}
                                         onChange={onChange}
                                         type="text"
                                         label="ID value"
-                                        htmlFor={`identification[${index}].identificationNumber`}
+                                        htmlFor={`identification[${index}].value`}
                                     />
                                 )}
                             />

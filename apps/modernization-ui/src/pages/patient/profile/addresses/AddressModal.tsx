@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { Ref, useState } from 'react';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
 import {
     Button,
@@ -16,6 +16,11 @@ import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInp
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import {
+    CountyCode,
+    FindAllCountyCodesForStateQuery,
+    useFindAllCountyCodesForStateLazyQuery
+} from 'generated/graphql/schema';
 
 type AddCommentModalProps = {
     modalRef: Ref<ModalRef> | undefined;
@@ -23,6 +28,22 @@ type AddCommentModalProps = {
 };
 
 const ModalBody = ({ control, onSubmit, modalRef }: any) => {
+    const [counties, setCounties] = useState<CountyCode[]>([]);
+    const setCounty = (results: FindAllCountyCodesForStateQuery) => {
+        if (results?.findAllCountyCodesForState) {
+            const counties: CountyCode[] = [];
+            results.findAllCountyCodesForState.forEach((i) => i && counties.push(i));
+            counties.sort((a, b) => {
+                if (a?.codeDescTxt && b?.codeDescTxt) {
+                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
+                }
+                return 0;
+            });
+            setCounties(counties);
+        }
+    };
+    const [getAllStateCounty] = useFindAllCountyCodesForStateLazyQuery({ onCompleted: setCounty });
+
     return (
         <Form onSubmit={onSubmit} className="width-full maxw-full modal-form">
             <div className="modal-body">
@@ -44,38 +65,62 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="type"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="type"
-                                    htmlFor={'type'}
-                                    label="Type"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'type'}
+                                            label="Type"
+                                            options={
+                                                searchCriteria?.addressType
+                                                    ? searchCriteria.addressType.map((address) => {
+                                                          return {
+                                                              name: address?.codeShortDescTxt!,
+                                                              value: address?.id?.code!
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="use"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => (
+                                <Controller
+                                    control={control}
                                     name="use"
-                                    htmlFor={'use'}
-                                    label="Use"
-                                    options={[]}
+                                    render={({ field: { onChange, value } }) => (
+                                        <SelectInput
+                                            flexBox
+                                            defaultValue={value}
+                                            onChange={onChange}
+                                            htmlFor={'use'}
+                                            label="Use"
+                                            options={
+                                                searchCriteria?.addressUse
+                                                    ? searchCriteria.addressUse.map((address) => {
+                                                          return {
+                                                              name: address?.codeShortDescTxt!,
+                                                              value: address?.id?.code!
+                                                          };
+                                                      })
+                                                    : []
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
-                        />
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
@@ -140,13 +185,23 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                         <SelectInput
                                             flexBox
                                             defaultValue={value}
-                                            onChange={onChange}
+                                            onChange={(e: any) => {
+                                                if (e.target.value) {
+                                                    getAllStateCounty({
+                                                        variables: {
+                                                            stateCode: e.target.value,
+                                                            page: { pageNumber: 0, pageSize: 50 }
+                                                        }
+                                                    });
+                                                }
+                                                onChange(e);
+                                            }}
                                             htmlFor={'state'}
                                             label="State"
                                             options={searchCriteria.states.map((state) => {
                                                 return {
-                                                    value: state.id!,
-                                                    name: state.codeDescTxt!
+                                                    value: state?.id!,
+                                                    name: state?.codeDescTxt!
                                                 };
                                             })}
                                         />
@@ -179,30 +234,52 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     flexBox
-                                    defaultValue={value}
                                     onChange={onChange}
+                                    defaultValue={value}
+                                    name="county"
                                     htmlFor={'county'}
                                     label="County"
-                                    options={[]}
+                                    options={counties.map((state) => {
+                                        return {
+                                            name: state?.codeDescTxt || '',
+                                            value: state?.id || ''
+                                        };
+                                    })}
                                 />
                             )}
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="country"
-                            render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    flexBox
-                                    defaultValue={value}
-                                    onChange={onChange}
-                                    htmlFor={'country'}
-                                    label="Country"
-                                    options={[]}
-                                />
-                            )}
-                        />
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => {
+                                return (
+                                    <Controller
+                                        control={control}
+                                        name="country"
+                                        render={({ field: { onChange, value } }) => (
+                                            <SelectInput
+                                                flexBox
+                                                onChange={onChange}
+                                                defaultValue={value}
+                                                name="country"
+                                                htmlFor={'country'}
+                                                label="Country"
+                                                options={
+                                                    searchCriteria.countries
+                                                        ? Object.values(searchCriteria.countries).map((country) => {
+                                                              return {
+                                                                  name: country?.codeDescTxt || '',
+                                                                  value: country?.id || ''
+                                                              };
+                                                          })
+                                                        : []
+                                                }
+                                            />
+                                        )}
+                                    />
+                                );
+                            }}
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller

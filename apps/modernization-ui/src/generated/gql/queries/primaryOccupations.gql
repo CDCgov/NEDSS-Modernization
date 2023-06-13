@@ -1,0 +1,6 @@
+query primaryOccupations{
+    primaryOccupations{
+        value
+        name
+    }
+}
