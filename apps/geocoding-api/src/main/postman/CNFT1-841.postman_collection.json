@@ -26,11 +26,11 @@
 					"query": [
 						{
 							"key": "auth-id",
-							"value": "02f5b868-b819-0333-6da9-b2220a435a2a"
+							"value": "AUTH_ID_GOES_HERE"
 						},
 						{
 							"key": "auth-token",
-							"value": "nN6E3P3Qdj1b0WZGJhu8"
+							"value": "AUTH_TOKEN_GOES_HERE"
 						},
 						{
 							"key": "license",
