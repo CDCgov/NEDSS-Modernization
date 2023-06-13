@@ -14,6 +14,26 @@ type StateCountyCodeValue {
     state_cd: String!
 }
 
+type NaicsIndustryCode {
+    id: ID!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
+    keyInfoTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: String
+    parentIsCd: String
+    statusCd: String
+    statusTime: String
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+}
+
 type AssigningAuthorResults {
     content: [AssigningAuthor!]!
     total: Int!
@@ -125,6 +145,28 @@ type GroupedCodedValue {
     group: String!
 }
 
+type StateCountyCodeValue {
+    id: ID!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
+    excludedTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: Int
+    parentIsCd: Int
+    statusCd: Int
+    statusTime: DateTime
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+
+}
 extend type Query {
     findNameSuffixes(page: Page): KeyValuePairResults!
     findAllNameTypes(page: Page): NameTypeResults!
@@ -136,7 +178,7 @@ extend type Query {
     findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
+    findAllStateCountyCodeValues(stateCode: String, page: Page): [StateCountyCodeValue!]!
     maritalStatuses: [CodedValue!]!
     primaryOccupations: [CodedValue!]!
     educationLevels: [CodedValue!]!
