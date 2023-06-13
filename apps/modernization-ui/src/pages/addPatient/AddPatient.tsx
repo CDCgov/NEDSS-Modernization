@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 import {
     Button,
     ButtonGroup,
@@ -29,7 +28,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function AddPatient() {
     const navigate = useNavigate();
-    const [disabled, setDisabled] = useState<boolean>(true);
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
 
     const [handleSavePatient] = useCreatePatientMutation();
@@ -85,10 +83,6 @@ export default function AddPatient() {
             censusTract: '',
             country: ''
         });
-
-    useEffect(() => {
-        setDisabled(!isValid);
-    }, [isValid]);
 
     const submit = (data: any) => {
         setSuccessSubmit(true);
