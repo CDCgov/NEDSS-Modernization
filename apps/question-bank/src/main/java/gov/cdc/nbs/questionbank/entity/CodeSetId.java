@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.srte;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class CodesetId implements Serializable {
+public class CodeSetId implements Serializable {
     private static final long serialVersionUID = 3612746303723060159L;
     @Column(name = "class_cd", nullable = false, length = 30)
     private String classCd;
@@ -30,7 +30,7 @@ public class CodesetId implements Serializable {
             return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
             return false;
-        CodesetId entity = (CodesetId) o;
+        CodeSetId entity = (CodeSetId) o;
         return Objects.equals(this.codeSetNm, entity.codeSetNm) &&
                 Objects.equals(this.classCd, entity.classCd);
     }

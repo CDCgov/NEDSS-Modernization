@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.srte;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Codeset_Group_Metadata")
-public class CodesetGroupMetadatum {
+public class CodeSetGroupMetaDatum {
     @Id
     @Column(name = "code_set_group_id", nullable = false)
     private Long id;
@@ -39,6 +40,6 @@ public class CodesetGroupMetadatum {
     private Character phinStdValInd;
 
     @OneToMany(mappedBy = "codeSetGroup")
-    private Set<Codeset> codesets = new LinkedHashSet<>();
+    private Set<CodeSet> codesets = new LinkedHashSet<>();
 
 }
