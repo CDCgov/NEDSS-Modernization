@@ -1,13 +1,23 @@
-query findAllStateCountyCodeValues($page: Page){
-    findAllStateCountyCodeValues(page: $page){
-        content{
-            id{
-                codeSetNm
-                code
-            }
-            code_desc_txt
-            state_cd
-        }
-        total
+query findAllStateCountyCodeValues($stateCode: String, $page: Page){
+    findAllStateCountyCodeValues(stateCode: $stateCode, page: $page){
+        id
+        assigningAuthorityCd
+        assigningAuthorityDescTxt
+        codeDescTxt
+        codeShortDescTxt
+        effectiveFromTime
+        effectiveToTime
+        excludedTxt
+        indentLevelNbr
+        isModifiableInd
+        parentIsCd
+        statusCd
+        statusTime
+        codeSetNm
+        seqNum
+        nbsUid
+        sourceConceptId
+        codeSystemCd
+        codeSystemDescTxt
     }
 }

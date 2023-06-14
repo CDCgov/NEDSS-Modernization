@@ -1,16 +1,19 @@
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DatePickerInput } from '../FormInputs/DatePickerInput';
 import { Input } from '../FormInputs/Input';
 import { SelectInput } from '../FormInputs/SelectInput';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { useCountyCodedValues } from 'location';
 import { usePatientSexBirthCodedValues } from 'pages/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 
 export const SexBirthForm = ({ setSexBirthForm }: any) => {
-    const methods = useForm();
-    const { handleSubmit, control } = methods;
+    const { handleSubmit, control } = useForm();
+
+    const selectedState = useWatch({ control, name: 'bState' });
 
     const coded = usePatientSexBirthCodedValues();
+
+    const byState = useCountyCodedValues(selectedState);
 
     const onSubmit = () => {
         setSexBirthForm();
@@ -240,27 +243,18 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                     Birth state:
                 </Grid>
                 <Grid col={6}>
-                    <SearchCriteriaContext.Consumer>
-                        {({ searchCriteria }) => (
-                            <Controller
-                                control={control}
-                                name="bState"
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        defaultValue={value}
-                                        onChange={onChange}
-                                        htmlFor={'bState'}
-                                        options={searchCriteria.states.map((state) => {
-                                            return {
-                                                value: state?.id!,
-                                                name: state?.codeDescTxt!
-                                            };
-                                        })}
-                                    />
-                                )}
+                    <Controller
+                        control={control}
+                        name="bState"
+                        render={({ field: { onChange, value } }) => (
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'bState'}
+                                options={coded.states}
                             />
                         )}
-                    </SearchCriteriaContext.Consumer>
+                    />
                 </Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
@@ -272,7 +266,12 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                         control={control}
                         name="bCounty"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'bCounty'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'bCounty'}
+                                options={byState.counties}
+                            />
                         )}
                     />
                 </Grid>
@@ -286,7 +285,12 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                         control={control}
                         name="bCountry"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'bCountry'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'bCountry'}
+                                options={coded.countries}
+                            />
                         )}
                     />
                 </Grid>

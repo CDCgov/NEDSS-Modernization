@@ -206,10 +206,10 @@ export type EthnicityId = {
 };
 
 export type EthnicityInput = {
-  asOf?: InputMaybe<Scalars['DateTime']>;
-  detailed?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ethnicGroup: Scalars['String'];
-  patient: Scalars['Int'];
+  asOf: Scalars['DateTime'];
+  detailed?: InputMaybe<Array<Scalars['String']>>;
+  ethnicGroup?: InputMaybe<Scalars['String']>;
+  patient: Scalars['String'];
   unknownReason?: InputMaybe<Scalars['String']>;
 };
 
@@ -780,6 +780,27 @@ export type NbsEntity = {
   entityLocatorParticipations?: Maybe<Array<Maybe<LocatorParticipations>>>;
 };
 
+export type NaicsIndustryCode = {
+  __typename?: 'NaicsIndustryCode';
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID'];
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['String']>;
+  keyInfoTxt?: Maybe<Scalars['String']>;
+  nbsUid?: Maybe<Scalars['Int']>;
+  parentIsCd?: Maybe<Scalars['String']>;
+  seqNum?: Maybe<Scalars['Int']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['String']>;
+  statusTime?: Maybe<Scalars['String']>;
+};
+
 export type NameInput = {
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
@@ -1054,7 +1075,7 @@ export type PatientAddress = {
 
 export type PatientAddressResults = {
   __typename?: 'PatientAddressResults';
-  content: Array<Maybe<PatientAddress>>;
+  content: Array<PatientAddress>;
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
@@ -1071,7 +1092,7 @@ export type PatientAdministrative = {
 
 export type PatientAdministrativeResults = {
   __typename?: 'PatientAdministrativeResults';
-  content: Array<Maybe<PatientAdministrative>>;
+  content: Array<PatientAdministrative>;
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
@@ -1153,7 +1174,7 @@ export type PatientDocumentResults = {
 export type PatientEthnicity = {
   __typename?: 'PatientEthnicity';
   asOf: Scalars['DateTime'];
-  detailed: Array<Maybe<PatientCodedValue>>;
+  detailed: Array<PatientCodedValue>;
   ethnicGroup: PatientCodedValue;
   id: Scalars['ID'];
   patient: Scalars['Int'];
@@ -1163,7 +1184,7 @@ export type PatientEthnicity = {
 
 export type PatientEthnicityChangeResult = {
   __typename?: 'PatientEthnicityChangeResult';
-  patient: Scalars['Int'];
+  patient: Scalars['String'];
 };
 
 export type PatientEventResponse = {
@@ -1215,7 +1236,7 @@ export type PatientIdentification = {
 
 export type PatientIdentificationResults = {
   __typename?: 'PatientIdentificationResults';
-  content: Array<Maybe<PatientIdentification>>;
+  content: Array<PatientIdentification>;
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
@@ -1327,7 +1348,7 @@ export type PatientName = {
 
 export type PatientNameResults = {
   __typename?: 'PatientNameResults';
-  content: Array<Maybe<PatientName>>;
+  content: Array<PatientName>;
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
@@ -1358,7 +1379,7 @@ export type PatientPhone = {
 
 export type PatientPhoneResults = {
   __typename?: 'PatientPhoneResults';
-  content: Array<Maybe<PatientPhone>>;
+  content: Array<PatientPhone>;
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
@@ -1424,7 +1445,7 @@ export type PatientRace = {
   __typename?: 'PatientRace';
   asOf: Scalars['DateTime'];
   category: PatientCodedValue;
-  detailed?: Maybe<Array<Maybe<PatientCodedValue>>>;
+  detailed?: Maybe<Array<PatientCodedValue>>;
   id: Scalars['ID'];
   patient: Scalars['Int'];
   version: Scalars['Int'];
@@ -1437,7 +1458,7 @@ export type PatientRaceChangeResult = {
 
 export type PatientRaceResults = {
   __typename?: 'PatientRaceResults';
-  content: Array<Maybe<PatientRace>>;
+  content: Array<PatientRace>;
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
@@ -1448,11 +1469,11 @@ export type PatientSummary = {
   address?: Maybe<PatientSummaryAddress>;
   age?: Maybe<Scalars['Int']>;
   birthday?: Maybe<Scalars['Date']>;
-  email?: Maybe<Array<Maybe<PatientSummaryEmail>>>;
+  email?: Maybe<Array<PatientSummaryEmail>>;
   ethnicity?: Maybe<Scalars['String']>;
   gender?: Maybe<Scalars['String']>;
   legalName?: Maybe<PatientLegalName>;
-  phone?: Maybe<Array<Maybe<PatientSummaryPhone>>>;
+  phone?: Maybe<Array<PatientSummaryPhone>>;
   race?: Maybe<Scalars['String']>;
 };
 
@@ -1677,7 +1698,7 @@ export type PersonIdentification = {
 };
 
 export type PersonInput = {
-  addresses?: InputMaybe<Array<InputMaybe<NewPatientAddress>>>;
+  addresses?: InputMaybe<Array<NewPatientAddress>>;
   asOf?: InputMaybe<Scalars['DateTime']>;
   birthGender?: InputMaybe<Gender>;
   comments?: InputMaybe<Scalars['String']>;
@@ -1687,10 +1708,10 @@ export type PersonInput = {
   deceasedTime?: InputMaybe<Scalars['DateTime']>;
   emailAddresses?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   ethnicity?: InputMaybe<Scalars['String']>;
-  identifications?: InputMaybe<Array<InputMaybe<NewPatientIdentification>>>;
+  identifications?: InputMaybe<Array<NewPatientIdentification>>;
   maritalStatus?: InputMaybe<Scalars['String']>;
   names?: InputMaybe<Array<InputMaybe<NewPatientName>>>;
-  phoneNumbers?: InputMaybe<Array<InputMaybe<NewPatientPhoneNumber>>>;
+  phoneNumbers?: InputMaybe<Array<NewPatientPhoneNumber>>;
   races?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   stateHIVCase?: InputMaybe<Scalars['String']>;
 };
@@ -1897,7 +1918,7 @@ export type Query = {
   findAllProgramAreas: Array<Maybe<ProgramAreaCode>>;
   findAllRaceValues: RaceResults;
   findAllStateCodes: Array<Maybe<StateCode>>;
-  findAllStateCountyCodeValues: StateCountyCodeValueResults;
+  findAllStateCountyCodeValues: Array<StateCountyCodeValue>;
   findAllUsers: UserResults;
   findContactsNamedByPatient?: Maybe<ContactsNamedByPatientResults>;
   findDocumentsForPatient?: Maybe<PatientDocumentResults>;
@@ -2057,6 +2078,7 @@ export type QueryFindAllStateCodesArgs = {
 
 export type QueryFindAllStateCountyCodeValuesArgs = {
   page?: InputMaybe<Page>;
+  stateCode?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -2219,7 +2241,7 @@ export type RaceId = {
 export type RaceInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
   category: Scalars['String'];
-  detailed?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  detailed?: InputMaybe<Array<Scalars['String']>>;
   patient: Scalars['ID'];
 };
 
@@ -2297,9 +2319,25 @@ export type StateCode = {
 
 export type StateCountyCodeValue = {
   __typename?: 'StateCountyCodeValue';
-  code_desc_txt: Scalars['String'];
-  id: CodeValueGeneralId;
-  state_cd: Scalars['String'];
+  assigningAuthorityCd?: Maybe<Scalars['String']>;
+  assigningAuthorityDescTxt?: Maybe<Scalars['String']>;
+  codeDescTxt?: Maybe<Scalars['String']>;
+  codeSetNm?: Maybe<Scalars['String']>;
+  codeShortDescTxt?: Maybe<Scalars['String']>;
+  codeSystemCd?: Maybe<Scalars['String']>;
+  codeSystemDescTxt?: Maybe<Scalars['String']>;
+  effectiveFromTime?: Maybe<Scalars['DateTime']>;
+  effectiveToTime?: Maybe<Scalars['DateTime']>;
+  excludedTxt?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  indentLevelNbr?: Maybe<Scalars['Int']>;
+  isModifiableInd?: Maybe<Scalars['Int']>;
+  nbsUid?: Maybe<Scalars['Int']>;
+  parentIsCd?: Maybe<Scalars['Int']>;
+  seqNum?: Maybe<Scalars['Int']>;
+  sourceConceptId?: Maybe<Scalars['String']>;
+  statusCd?: Maybe<Scalars['Int']>;
+  statusTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type StateCountyCodeValueResults = {
@@ -2482,7 +2520,7 @@ export type UpdateEthnicityMutationVariables = Exact<{
 }>;
 
 
-export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEthnicityChangeResult', patient: number } };
+export type UpdateEthnicityMutation = { __typename?: 'Mutation', updateEthnicity: { __typename?: 'PatientEthnicityChangeResult', patient: string } };
 
 export type UpdateMortalityMutationVariables = Exact<{
   input: MortalityInput;
@@ -2742,11 +2780,12 @@ export type FindAllStateCodesQueryVariables = Exact<{
 export type FindAllStateCodesQuery = { __typename?: 'Query', findAllStateCodes: Array<{ __typename?: 'StateCode', id?: string | null, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, stateNm?: string | null, codeDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: string | null, keyInfoTxt?: string | null, parentIsCd?: string | null, statusCd?: string | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null } | null> };
 
 export type FindAllStateCountyCodeValuesQueryVariables = Exact<{
+  stateCode?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Page>;
 }>;
 
 
-export type FindAllStateCountyCodeValuesQuery = { __typename?: 'Query', findAllStateCountyCodeValues: { __typename?: 'StateCountyCodeValueResults', total: number, content: Array<{ __typename?: 'StateCountyCodeValue', code_desc_txt: string, state_cd: string, id: { __typename?: 'CodeValueGeneralId', codeSetNm: string, code: string } }> } };
+export type FindAllStateCountyCodeValuesQuery = { __typename?: 'Query', findAllStateCountyCodeValues: Array<{ __typename?: 'StateCountyCodeValue', id: string, assigningAuthorityCd?: string | null, assigningAuthorityDescTxt?: string | null, codeDescTxt?: string | null, codeShortDescTxt?: string | null, effectiveFromTime?: any | null, effectiveToTime?: any | null, excludedTxt?: string | null, indentLevelNbr?: number | null, isModifiableInd?: number | null, parentIsCd?: number | null, statusCd?: number | null, statusTime?: any | null, codeSetNm?: string | null, seqNum?: number | null, nbsUid?: number | null, sourceConceptId?: string | null, codeSystemCd?: string | null, codeSystemDescTxt?: string | null }> };
 
 export type FindAllUsersQueryVariables = Exact<{
   page?: InputMaybe<Page>;
@@ -2894,7 +2933,7 @@ export type FindPatientProfileQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId?: number | null, version: number, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null } | null> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null } | null> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: string, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null } | null> } | null, addresses?: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null } | null> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: string, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed?: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> | null } | null> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string } | null> } | null } | null };
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId?: number | null, version: number, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: string, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> } | null, addresses?: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: string, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed?: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> | null }> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -5252,17 +5291,27 @@ export type FindAllStateCodesQueryHookResult = ReturnType<typeof useFindAllState
 export type FindAllStateCodesLazyQueryHookResult = ReturnType<typeof useFindAllStateCodesLazyQuery>;
 export type FindAllStateCodesQueryResult = Apollo.QueryResult<FindAllStateCodesQuery, FindAllStateCodesQueryVariables>;
 export const FindAllStateCountyCodeValuesDocument = gql`
-    query findAllStateCountyCodeValues($page: Page) {
-  findAllStateCountyCodeValues(page: $page) {
-    content {
-      id {
-        codeSetNm
-        code
-      }
-      code_desc_txt
-      state_cd
-    }
-    total
+    query findAllStateCountyCodeValues($stateCode: String, $page: Page) {
+  findAllStateCountyCodeValues(stateCode: $stateCode, page: $page) {
+    id
+    assigningAuthorityCd
+    assigningAuthorityDescTxt
+    codeDescTxt
+    codeShortDescTxt
+    effectiveFromTime
+    effectiveToTime
+    excludedTxt
+    indentLevelNbr
+    isModifiableInd
+    parentIsCd
+    statusCd
+    statusTime
+    codeSetNm
+    seqNum
+    nbsUid
+    sourceConceptId
+    codeSystemCd
+    codeSystemDescTxt
   }
 }
     `;
@@ -5279,6 +5328,7 @@ export const FindAllStateCountyCodeValuesDocument = gql`
  * @example
  * const { data, loading, error } = useFindAllStateCountyCodeValuesQuery({
  *   variables: {
+ *      stateCode: // value for 'stateCode'
  *      page: // value for 'page'
  *   },
  * });

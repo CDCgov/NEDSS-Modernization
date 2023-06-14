@@ -1,5 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
-import { EthnicityForm } from './Ethnicity';
+import { EthnicityForm } from './EthnicityForm';
 
 const values = {
     ethnicGroups: [
@@ -20,19 +20,20 @@ describe('EthnicityForm', () => {
         const { container } = render(<EthnicityForm />);
 
         const tableHeader = container.getElementsByClassName('label-text');
-        expect(tableHeader[0].innerHTML).toBe('As of:');
+        expect(tableHeader[0]).toHaveTextContent('As of:');
     });
 
     it('should submit the form with the selected values', async () => {
         const setEthnicityForm = jest.fn();
 
-        const { getByText, getByTestId } = render(<EthnicityForm setEthnicityForm={setEthnicityForm} />);
+        const { getByText, getByLabelText } = render(<EthnicityForm onChanged={setEthnicityForm} />);
 
-        const datepicker = getByTestId('date-picker-internal-input');
+        const datepicker = getByLabelText(/As of/);
         fireEvent.change(datepicker, { target: { value: '2022-01-01' } });
 
         // Select an ethnicity
-        const ethnicitySelect = getByTestId('ethnicity');
+        const ethnicitySelect = getByLabelText(/Ethnicity/);
+
         fireEvent.change(ethnicitySelect, { target: { value: 'ETH1' } });
 
         const saveButton = getByText('Save');
