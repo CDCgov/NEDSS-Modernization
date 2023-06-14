@@ -6,16 +6,19 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestion;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddDateQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.Date;
 
 @Component
 class QuestionCreator {
@@ -47,6 +50,14 @@ class QuestionCreator {
         return question.getId();
     }
 
+    public long create(Long userId, CreateQuestionRequest.Date request) {
+        WaQuestion question = new DateQuestion(asAdd(userId, request));
+        verifyUnique(question);
+        question = repository.save(question);
+        sendCreateEvent(question.getId(), userId, question.getAddTime());
+        return question.getId();
+    }
+
     /**
      * Verifies the new question will not conflict with any existing questions.
      * 
@@ -70,6 +81,29 @@ class QuestionCreator {
 
     private void sendCreateEvent(Long id, Long user, Instant createTime) {
         eventProducer.send(new QuestionCreatedEvent(id, user, createTime));
+    }
+
+    private AddDateQuestion asAdd(Long userId, Date request) {
+        QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
+
+        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo(), request.subgroup());
+        return new QuestionCommand.AddDateQuestion(
+                request.mask(),
+                request.allowFutureDates(),
+                request.codeSet(),
+                getLocalId(request),
+                request.uniqueName(),
+                request.subgroup(),
+                request.description(),
+                request.label(),
+                request.tooltip(),
+                request.displayControl(),
+                request.adminComments(),
+                getQuestionOid(request),
+                dataMartData,
+                messagingData,
+                userId,
+                Instant.now());
     }
 
     QuestionCommand.AddTextQuestion asAdd(Long userId, CreateQuestionRequest.Text request) {
@@ -142,7 +176,7 @@ class QuestionCreator {
     }
 
 
-    QuestionOid getQuestionOid(CreateQuestionRequest.Text request) {
+    QuestionOid getQuestionOid(CreateQuestionRequest request) {
         if (request.messagingInfo().includedInMessage()) {
             return codeValueGeneralRepository.findByCode(
                     request.messagingInfo().codeSystem())
