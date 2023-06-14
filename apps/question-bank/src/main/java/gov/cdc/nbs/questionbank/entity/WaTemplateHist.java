@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,11 +14,14 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_template")
-public class WaTemplate {
+@Table(name = "WA_template_hist", catalog = "NBS_ODSE")
+public class WaTemplateHist {
     @Id
-    @Column(name = "wa_template_uid", nullable = false)
+    @Column(name = "wa_template_hist_uid", nullable = false)
     private Long id;
+
+    @Column(name = "wa_template_uid", nullable = false)
+    private Long waTemplateUid;
 
     @Column(name = "template_type", nullable = false, length = 50)
     private String templateType;

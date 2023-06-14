@@ -1,7 +1,6 @@
 package gov.cdc.nbs.controller;
 
 import gov.cdc.nbs.entity.srte.StateCountyCodeValue;
-import gov.cdc.nbs.patient.StateCountyCodeValueResults;
 import gov.cdc.nbs.repository.StateCountyCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

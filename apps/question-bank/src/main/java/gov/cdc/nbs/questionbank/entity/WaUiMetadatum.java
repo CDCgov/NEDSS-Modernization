@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +14,15 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_UI_metadata_hist")
-public class WaUiMetadataHist {
+@Table(name = "WA_UI_metadata", catalog = "NBS_ODSE")
+public class WaUiMetadatum {
     @Id
-    @Column(name = "wa_ui_metadata_hist_uid", nullable = false)
+    @Column(name = "wa_ui_metadata_uid", nullable = false)
     private Long id;
 
-    @Column(name = "wa_ui_metadata_uid", nullable = false)
-    private Long waUiMetadataUid;
-
-    @Column(name = "wa_template_uid", nullable = false)
-    private Long waTemplateUid;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "wa_template_uid", nullable = false)
+    private WaTemplate waTemplateUid;
 
     @Column(name = "nbs_ui_component_uid", nullable = false)
     private Long nbsUiComponentUid;
@@ -77,6 +75,9 @@ public class WaUiMetadataHist {
     @Column(name = "admin_comment", length = 2000)
     private String adminComment;
 
+    @Column(name = "version_ctrl_nbr", nullable = false)
+    private Integer versionCtrlNbr;
+
     @Column(name = "field_size", length = 10)
     private String fieldSize;
 
@@ -85,10 +86,6 @@ public class WaUiMetadataHist {
 
     @Column(name = "local_id", length = 50)
     private String localId;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wa_template_hist_uid", nullable = false)
-    private WaTemplateHist waTemplateHistUid;
 
     @Column(name = "code_set_group_id")
     private Long codeSetGroupId;

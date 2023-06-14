@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_RDB_metadata_hist")
+@Table(name = "WA_RDB_metadata_hist", catalog = "NBS_ODSE")
 public class WaRdbMetadataHist {
     @Id
     @Column(name = "wa_rdb_metadata_hist_uid", nullable = false)

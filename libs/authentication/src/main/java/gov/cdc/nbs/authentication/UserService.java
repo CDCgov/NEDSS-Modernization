@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
     private NbsUserDetails buildUserDetails(AuthUser authUser, String token) {
         return NbsUserDetails
                 .builder()
-                .id(authUser.getId())
+                .id(authUser.getNedssEntryId())
                 .firstName(authUser.getUserFirstNm())
                 .lastName(authUser.getUserLastNm())
                 .isMasterSecurityAdmin(authUser.getMasterSecAdminInd().equals('T'))
