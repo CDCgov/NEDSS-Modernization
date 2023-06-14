@@ -33,7 +33,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 @ActiveProfiles("test")
 class CucumberTests {
     @Autowired
-    RequestProperties properties;
+    private RequestProperties properties;
 
     @Test
     void should_autowire() {

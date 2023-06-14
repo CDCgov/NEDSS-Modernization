@@ -33,10 +33,14 @@ public class WebSecurityConfig {
     // https://docs.spring.io/spring-security/reference/features/exploits/csrf.html#csrf-protection-ssa
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .csrf()
+                .disable()
                 .addFilterBefore(jwtFilter, RequestHeaderAuthenticationFilter.class)
                 .build();
     }

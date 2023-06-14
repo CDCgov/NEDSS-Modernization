@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_question_hist")
+@Table(name = "WA_question_hist", catalog = "NBS_ODSE")
 public class WaQuestionHist {
     @Id
     @Column(name = "wa_question_hist_uid", nullable = false)

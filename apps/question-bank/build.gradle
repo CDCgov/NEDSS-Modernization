@@ -61,6 +61,9 @@ dependencies {
 
     implementation libs.bundles.security
 
+    // swagger
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+
     // querydsl
     implementation libs.bundles.queryDSL
     annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
@@ -82,13 +85,13 @@ dependencies {
     // auth
     implementation project(':authentication')
 
-    // legacy entities
-    implementation project(':database-entities')
+    // id generation
+    implementation project(':id-generator')
 
 }
 
 compileJava.mustRunAfter(":authentication:build")
-compileJava.mustRunAfter(":database-entities:build")
+compileJava.mustRunAfter(":id-generator:build")
 
 compileJava {
     options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'

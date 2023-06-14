@@ -17,6 +17,8 @@ include ':patient-listener'
 project(':patient-listener').projectDir = new File('apps/patient-listener')
 include ':question-bank'
 project(':question-bank').projectDir = new File('apps/question-bank')
+include ':geocoding-api'
+project(':geocoding-api').projectDir = new File('apps/geocoding-api')
 
 // libs
 include ':database-entities'

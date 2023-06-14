@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,15 +14,17 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_NND_metadata")
-public class WaNndMetadatum {
+@Table(name = "WA_NND_metadata_hist", catalog = "NBS_ODSE")
+public class WaNndMetadataHist {
     @Id
-    @Column(name = "wa_nnd_metadata_uid", nullable = false)
+    @Column(name = "wa_nnd_metadata_hist_uid", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wa_template_uid", nullable = false)
-    private WaTemplate waTemplateUid;
+    @Column(name = "wa_nnd_metadata_uid", nullable = false)
+    private Long waNndMetadataUid;
+
+    @Column(name = "wa_template_uid", nullable = false)
+    private Long waTemplateUid;
 
     @Column(name = "question_identifier_nnd", length = 50)
     private String questionIdentifierNnd;
@@ -88,8 +90,11 @@ public class WaNndMetadatum {
     private String localId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
-    private WaUiMetadatum waUiMetadataUid;
+    @JoinColumn(name = "wa_template_hist_uid", nullable = false)
+    private WaTemplateHist waTemplateHistUid;
+
+    @Column(name = "wa_ui_metadata_uid", nullable = false)
+    private Long waUiMetadataUid;
 
     @Column(name = "question_map", length = 2000)
     private String questionMap;

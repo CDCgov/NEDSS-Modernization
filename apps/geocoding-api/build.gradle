@@ -1,0 +1,99 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'jacoco'
+    alias libs.plugins.springBoot
+    alias libs.plugins.springDependencies
+}
+group = 'gov.cdc'
+version = '1.0.0-SNAPSHOT'
+
+bootJar {
+    manifest {
+        attributes 'API-Version': archiveVersion
+    }
+}
+
+jar {
+    //  packages the application and spring into one jar
+    enabled = false
+}
+
+dependencies {
+    implementation project(':authentication')
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+
+    implementation libs.bundles.security
+    implementation libs.springBoot.web
+
+    // graphql
+    implementation libs.springBoot.graphql
+
+    // swagger
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+
+    // lombok
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.bundles.jackson
+
+    testImplementation libs.bundles.cucumber
+
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+
+    testImplementation libs.bundles.testing
+    testImplementation libs.spring.test
+    testImplementation libs.spring.security.test
+    testImplementation libs.bundles.testcontainers.elasticsearch
+    testImplementation libs.bundles.javafaker
+    testImplementation libs.spring.kafka.test
+
+    testImplementation libs.awaitility
+
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+test {
+    //  Cucumber only supports the JUnit Platform
+    useJUnitPlatform()
+    // always re-run tests
+    test.outputs.upToDateWhen { false }
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+    // support Github actions overriding the configured database image
+    if (System.getProperty("testing.database.image") != null) {
+        systemProperty "testing.database.image", System.getProperty("testing.database.image")
+    }
+}
+
+tasks.withType(JavaExec).configureEach {
+
+    debugOptions {
+        enabled = true
+        server = true
+        suspend = false
+        port = java.util.Optional.ofNullable(findProperty('debug.port'))
+                .map(Object::toString)
+                .map(Integer::parseInt)
+                .orElse(5005)
+    }
+}
+
+processResources {
+    from("../modernization-ui/build") {
+        into "static"
+    }
+}
+
+compileJava.mustRunAfter(":modernization-ui:build")
+compileJava.mustRunAfter(":database-entities:build")
+compileJava.mustRunAfter(":event-schema:build")
+compileJava.mustRunAfter(":authentication:build")
+compileJava.mustRunAfter(":id-generator:build")

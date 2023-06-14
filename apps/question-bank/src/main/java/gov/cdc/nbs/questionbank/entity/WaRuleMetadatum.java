@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.odse;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "WA_rule_metadata")
+@Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
 public class WaRuleMetadatum {
     @Id
     @Column(name = "wa_rule_metadata_uid", nullable = false)
