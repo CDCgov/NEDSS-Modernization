@@ -415,8 +415,6 @@ public class PatientService {
     }
 
     @SuppressWarnings("squid:S3776")
-    // ignore high cognitive complexity as the method is simply going through the
-    // passed in parameters, checking if null, and appending to the query
     public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
