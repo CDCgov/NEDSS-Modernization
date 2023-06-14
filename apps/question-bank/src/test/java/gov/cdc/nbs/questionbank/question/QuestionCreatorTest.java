@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -247,5 +248,47 @@ class QuestionCreatorTest {
 
          // when a question is created then an exception is thrown
         assertThrows(QuestionCreateException.class, () -> creator.create(123L, request));
+    }
+
+    @Test
+    void should_throw_exception_failed_to_find_code_system() {
+        // given a request with an invalid code_system
+        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
+        when(codeValueGeneralRepository.findByCode(request.messagingInfo().codeSystem())).thenReturn(Optional.empty());
+
+        // when retrieving the question oid 
+        // then an exception is thrown
+        assertThrows(QuestionCreateException.class, () -> creator.getQuestionOid(request));
+    }
+
+    @Test
+    void should_return_null_oid() {
+        // given a non PHIN or LOCAL codeSet
+        CreateQuestionRequest.Text request = new CreateQuestionRequest.Text(
+                "NOT_PHIN_OR_LOCAL",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                new MessagingInfo(
+                        false,
+                        null,
+                        null,
+                        null,
+                        false,
+                        null),
+                null,
+                null,
+                null,
+                null);
+        // when retrieving the question oid
+        QuestionOid oid = creator.getQuestionOid(request);
+
+        // then null is returned
+        assertNull(oid);
     }
 }

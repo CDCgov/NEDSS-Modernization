@@ -14,7 +14,7 @@ public class QuestionExceptionHandler {
         return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    private static record ExceptionMessage(String message) {
+    static record ExceptionMessage(String message) {
 
     }
 
