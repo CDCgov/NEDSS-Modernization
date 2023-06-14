@@ -85,7 +85,7 @@ export const Ethnicity = ({ patient }: Props) => {
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
             <EditableCard title="Ethnicity" data={tableData} editing={editing} onEdit={() => isEditing(true)}>
-                <EthnicityForm entry={entry} onChanged={onUpdate} />
+                <EthnicityForm entry={entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
             </EditableCard>
         </Grid>
     );
