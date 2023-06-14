@@ -575,10 +575,12 @@ public class PatientService {
                 Instant.now()
             );
             person.update(updateMortalityLocator);
-            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId()).map(locator -> {
-                locator.updateMortalityLocator(updateMortalityLocator);
-                return entityLocatorParticipationRepository.save(locator);
-            });
+            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId())
+                .ifPresent(locator -> {
+                        locator.updateMortalityLocator(updateMortalityLocator);
+                        entityLocatorParticipationRepository.save(locator);
+                    }
+                );
             personRepository.save(person);
             return sendPatientEvent(updateMortalityEvent);
         }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
