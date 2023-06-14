@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.OptionalLong;
 import java.util.stream.Collectors;
+import org.apache.commons.codec.language.Soundex;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
@@ -204,15 +205,19 @@ public class PatientSearchSteps {
     public void I_find_only_the_expected_patient(String field) {
         assertNotNull(searchPatient);
         // Verify all results match search criteria
+        Soundex soundex = new Soundex();
+        String searchSoundex = soundex.encode(searchText.trim());
         switch (field) {
-            case "first name":
+            case "first name":                
                 searchResults.forEach(r -> {
-                    assertTrue(r.getFirstNm().contains(searchText.trim()));
+                    assertTrue(r.getFirstNm().contains(searchText.trim())
+                            || soundex.encode(r.getFirstNm()).contains(searchSoundex));
                 });
                 break;
             case "last name":
                 searchResults.forEach(r -> {
-                    assertTrue(r.getLastNm().contains(searchText.trim()));
+                    assertTrue(r.getLastNm().contains(searchText.trim())
+                     || soundex.encode(r.getLastNm()).contains(searchSoundex));
                 });
                 break;
             case "address":
