@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//import gov.cdc.nbs.authentication.UserDetailsProvider;
 import lombok.RequiredArgsConstructor;
 
 
@@ -16,13 +15,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ValueSetController {
 	
-	 //private final UserDetailsProvider userDetailsProvider;
 	 private final ValueSetCreator valueSetCreator;
 	 
 	 @PostMapping
 	 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	 public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody  ValueSetRequest request) {
-		 //long userId = userDetailsProvider.getCurrentUserDetails().getId();
 		 CreateValueSetResponse response = valueSetCreator.createValueSet(request);
 		 return new ResponseEntity<>(response,null,response.getStatus());
 		 

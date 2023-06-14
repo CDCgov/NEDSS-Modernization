@@ -1,22 +1,21 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-import java.util.Optional;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeSet;
-import gov.cdc.nbs.questionbank.exception.QueryException;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
+
 @Service
 @RequiredArgsConstructor
 public class ValueSetCreator {
@@ -26,20 +25,17 @@ public class ValueSetCreator {
 	private CodesetGroupMetadatumRepository codeSetGrpMetaRepository; // Value Set Grp Meta
 
 	public CreateValueSetResponse createValueSet(ValueSetRequest request) {
-		// Optional<ValueSet> result = Optional.empty();
 		CreateValueSetResponse response = new CreateValueSetResponse();
 		String codeSetName = request.getValueSetNm();
 		String codeShrtDescTxt = request.getCodeSetDescTxt();
 
 		if (checkValueSetNameExists(codeSetName)) {
 
-			// throw new QueryException(Constants.VALUE_SET_NAME_EXISTS);
 			response.setMessage(ValueSetConstants.VALUE_SET_NAME_EXISTS);
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			return response;
 		}
 		if (checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetName)) {
-			// throw new QueryException(Constants.CODE_SET_GRP_TEXT_NAME_EXISTS);
 			response.setMessage(ValueSetConstants.VALUE_SET_NAME_EXISTS);
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			return response;
@@ -76,18 +72,13 @@ public class ValueSetCreator {
 	}
 
 	private boolean checkValueSetNameExists(String codeSetNm) {
-		if (codeSetNm != null && valueSetRepository.checkValueSetName(codeSetNm) > 0) {
-			return true;
-		}
-		return false;
+		return (codeSetNm != null && valueSetRepository.checkValueSetName(codeSetNm) > 0) ? true : false;
+
 	}
 
 	private boolean checkCodeSetGrpMetaDatEntry(String codeShrtDescTxt, String codeSetNm) {
-		if (codeShrtDescTxt != null && codeSetNm != null
-				&& codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetNm) > 0) {
-			return true;
-		}
-		return false;
+		return (codeShrtDescTxt != null && codeSetNm != null
+				&& codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetNm) > 0) ? true : false;
 	}
 
 	private long getCodeSetGroupID() {

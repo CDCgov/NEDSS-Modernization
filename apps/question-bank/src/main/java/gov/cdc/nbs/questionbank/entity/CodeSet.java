@@ -1,13 +1,11 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-import gov.cdc.nbs.questionbank.valueset.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 
 import java.time.Instant;

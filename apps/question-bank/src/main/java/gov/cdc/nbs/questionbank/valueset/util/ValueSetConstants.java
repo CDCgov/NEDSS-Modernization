@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.valueset.util;
 
 public class ValueSetConstants {
+	
+private ValueSetConstants() {}
 
 public static final String VALUE_SET_NAME_EXISTS = "This Value Set Name Already Exists";
 
