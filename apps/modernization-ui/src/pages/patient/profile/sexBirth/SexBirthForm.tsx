@@ -1,12 +1,36 @@
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
-import { Controller, useForm, useWatch } from 'react-hook-form';
-import { DatePickerInput } from '../FormInputs/DatePickerInput';
-import { Input } from '../FormInputs/Input';
-import { SelectInput } from '../FormInputs/SelectInput';
+import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { useCountyCodedValues } from 'location';
 import { usePatientSexBirthCodedValues } from 'pages/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { InputMaybe, Scalars } from 'generated/graphql/schema';
 
-export const SexBirthForm = ({ setSexBirthForm }: any) => {
+type Props = {
+    entry?: SexAndEntry | null;
+    onChanged?: (updated: SexAndEntry) => void;
+    onCancel?: () => void;
+};
+
+export type SexAndEntry = {
+    additionalGender?: InputMaybe<Scalars['String']>;
+    ageReportedTime?: InputMaybe<Scalars['DateTime']>;
+    asOf?: InputMaybe<Scalars['DateTime']>;
+    birthCity?: InputMaybe<Scalars['String']>;
+    birthCntry?: InputMaybe<Scalars['String']>;
+    birthGender?: string | null;
+    birthOrderNbr?: InputMaybe<Scalars['Int']>;
+    birthState?: InputMaybe<Scalars['String']>;
+    currentAge?: number | null;
+    currentGender?: string | null;
+    dateOfBirth?: InputMaybe<Scalars['Date']>;
+    multipleBirth?: InputMaybe<Scalars['String']>;
+    sexUnknown?: InputMaybe<Scalars['String']>;
+    transGenderInfo?: InputMaybe<Scalars['String']>;
+};
+
+export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
     const { handleSubmit, control } = useForm();
 
     const selectedState = useWatch({ control, name: 'bState' });
@@ -15,8 +39,22 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
 
     const byState = useCountyCodedValues(selectedState);
 
-    const onSubmit = () => {
-        setSexBirthForm();
+    const onSubmit = (entered: FieldValues) => {
+        onChanged({
+            asOf: entered?.asOf,
+            dateOfBirth: entered?.dateOfBirth,
+            currentAge: entered?.age,
+            currentGender: entered?.gender,
+            sexUnknown: entered?.sexUnknown,
+            transGenderInfo: entered?.transGenderInfo,
+            additionalGender: entered?.addGender,
+            birthGender: entered?.birthGender,
+            multipleBirth: entered?.multipleBirth,
+            birthOrderNbr: entered?.birthOrderNbr,
+            birthCity: entered?.bCity,
+            birthCntry: entered?.bCountry,
+            birthState: entered?.bState
+        });
     };
 
     return (
@@ -28,14 +66,10 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="nameAsOf"
+                        name="asOf"
+                        defaultValue={entry?.asOf}
                         render={({ field: { onChange, value } }) => (
-                            <DatePickerInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="nameAsOf"
-                                htmlFor={'nameAsOf'}
-                            />
+                            <DatePickerInput defaultValue={value} onChange={onChange} name="asOf" htmlFor={'asOf'} />
                         )}
                     />
                 </Grid>
@@ -47,9 +81,15 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="dob"
+                        name="dateOfBirth"
+                        defaultValue={entry?.dateOfBirth}
                         render={({ field: { onChange, value } }) => (
-                            <DatePickerInput defaultValue={value} onChange={onChange} name="dob" htmlFor={'dob'} />
+                            <DatePickerInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                name="dateOfBirth"
+                                htmlFor={'dateOfBirth'}
+                            />
                         )}
                     />
                 </Grid>
@@ -62,6 +102,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                     <Controller
                         control={control}
                         name="age"
+                        defaultValue={entry?.currentAge}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="No data"
@@ -83,6 +124,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                     <Controller
                         control={control}
                         name="gender"
+                        defaultValue={entry?.currentGender}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
@@ -102,13 +144,14 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="gender"
+                        name="sexUnknown"
+                        defaultValue={entry?.sexUnknown}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="gender"
-                                htmlFor={'gender'}
+                                name="sexUnknown"
+                                htmlFor={'sexUnknown'}
                                 options={coded.genderUnknownReasons}
                             />
                         )}
@@ -122,13 +165,14 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="gender"
+                        defaultValue={entry?.transGenderInfo}
+                        name="transGenderInfo"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="gender"
-                                htmlFor={'gender'}
+                                name="transGenderInfo"
+                                htmlFor={'transGenderInfo'}
                                 options={coded.preferredGenders}
                             />
                         )}
@@ -142,6 +186,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
+                        defaultValue={entry?.additionalGender}
                         name="addGender"
                         render={({ field: { onChange, value } }) => (
                             <Input
@@ -163,6 +208,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
+                        defaultValue={entry?.birthGender}
                         name="birthGender"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
@@ -183,13 +229,14 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="mBirth"
+                        name="multipleBirth"
+                        defaultValue={entry?.multipleBirth}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="mBirth"
-                                htmlFor={'mBirth'}
+                                name="multipleBirth"
+                                htmlFor={'multipleBirth'}
                                 options={coded.multipleBirth}
                             />
                         )}
@@ -203,15 +250,16 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="bOrder"
+                        defaultValue={entry?.birthOrderNbr}
+                        name="birthOrderNbr"
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="No data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
-                                htmlFor="bOrder"
-                                id="bOrder"
+                                htmlFor="birthOrderNbr"
+                                id="birthOrderNbr"
                             />
                         )}
                     />
@@ -225,6 +273,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                     <Controller
                         control={control}
                         name="bCity"
+                        defaultValue={entry?.birthCity}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="No data"
@@ -245,6 +294,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
+                        defaultValue={entry?.birthState}
                         name="bState"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
@@ -283,6 +333,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
                 <Grid col={6}>
                     <Controller
                         control={control}
+                        defaultValue={entry?.birthCntry}
                         name="bCountry"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
@@ -297,7 +348,7 @@ export const SexBirthForm = ({ setSexBirthForm }: any) => {
             </Grid>
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
-                    <Button type="button" className="margin-top-0" outline onClick={setSexBirthForm}>
+                    <Button type="button" className="margin-top-0" outline onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button
