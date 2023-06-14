@@ -30,7 +30,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @AutoConfigureMockMvc
 @Rollback(false)
 @Testcontainers
-public class RunCucumberTest {
+class RunCucumberTest {
 
     @Autowired
     private ApplicationContext context;
