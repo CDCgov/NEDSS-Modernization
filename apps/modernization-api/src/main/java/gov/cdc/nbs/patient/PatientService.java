@@ -586,7 +586,7 @@ public class PatientService {
     }
 
     private PatientEventResponse sendPatientEvent(PatientRequest request) {
-        return new PatientEventResponse(request.requestId(), request.patientId());
+        return new PatientEventResponse(request.patientId());
     }
 
     private String addWildcards(String searchString) {
