@@ -414,6 +414,9 @@ public class PatientService {
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
+    @SuppressWarnings("squid:S3776")
+    // ignore high cognitive complexity as the method is simply going through the
+    // passed in parameters, checking if null, and appending to the query
     public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
@@ -460,7 +463,7 @@ public class PatientService {
             }
             personRepository.save(person);
             return sendPatientEvent(updateGeneralInfoEvent);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse addPatientName(NameInput input) {
@@ -480,7 +483,7 @@ public class PatientService {
             person.add(addName);
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updatePatientName(NameInput input) {
@@ -500,7 +503,7 @@ public class PatientService {
             person.update(addName);
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -517,7 +520,7 @@ public class PatientService {
             ));
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -546,7 +549,7 @@ public class PatientService {
             ));
             personRepository.save(person);
             return sendPatientEvent(updateSexAndBirthEvent);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     @Transactional
@@ -574,7 +577,7 @@ public class PatientService {
             });
             personRepository.save(person);
             return sendPatientEvent(updateMortalityEvent);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -630,7 +633,7 @@ public class PatientService {
             ));
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
@@ -647,7 +650,7 @@ public class PatientService {
             ));
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -680,7 +683,7 @@ public class PatientService {
             person.add(addAddress);
             personRepository.save(person);
             return sendPatientEvent(patientRequest);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(addressInput.getPatientId()));
     }
 
     public PatientEventResponse updatePatientAddress(AddressInput input) {
@@ -706,7 +709,7 @@ public class PatientService {
             person.update(updateAddress);
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -732,7 +735,7 @@ public class PatientService {
             )) ;
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -751,7 +754,7 @@ public class PatientService {
             )) ;
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -774,7 +777,7 @@ public class PatientService {
             )) ;
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
@@ -791,7 +794,7 @@ public class PatientService {
             )) ;
             personRepository.save(person);
             return sendPatientEvent(event);
-        }).orElse(null);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
         
     }
 
