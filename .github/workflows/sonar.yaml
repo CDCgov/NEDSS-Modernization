@@ -3,11 +3,6 @@
 name: "Sonar Scanner"
 
 on:
-  push:
-    paths:
-      - "apps/**"
-      - "libs/**"
-      - ".github/workflows/sonar.yaml"
   pull_request:
     paths:
       - "apps/**"
