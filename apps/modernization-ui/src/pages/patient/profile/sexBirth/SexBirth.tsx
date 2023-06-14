@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { FindPatientProfileQuery, useUpdatePatientSexBirthMutation } from 'generated/graphql/schema';
 import { useFindPatientProfileBirth } from './useFindPatientProfileBirth';
-import { internalizeDate } from 'date';
+import { internalizeDate, externalizeDate, externalizeDateTime } from 'date';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeId } from '../coded';
 import { SexAndEntry, SexBirthForm } from './SexBirthForm';
@@ -51,7 +51,6 @@ const asEntry = (sexAndBirth?: FindPatientProfileQuery['findPatientProfile'] | n
     ...initialEntry,
     asOf: internalizeDate(sexAndBirth?.birth?.asOf),
     additionalGender: sexAndBirth?.gender?.additional,
-    ageReportedTime: sexAndBirth?.birth?.age,
     birthCity: sexAndBirth?.birth?.city,
     birthCntry: maybeId(sexAndBirth?.birth?.country),
     birthGender: maybeId(sexAndBirth?.gender?.current),
@@ -99,7 +98,9 @@ export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
             variables: {
                 input: {
                     ...updated,
-                    patient: patient
+                    dateOfBirth: externalizeDate(updated?.dateOfBirth),
+                    asOf: externalizeDateTime(updated?.asOf),
+                    patientId: patient
                 }
             }
         }).then(handleUpdate);

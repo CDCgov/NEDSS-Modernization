@@ -15,7 +15,6 @@ type Props = {
 
 export type SexAndEntry = {
     additionalGender?: InputMaybe<Scalars['String']>;
-    ageReportedTime?: InputMaybe<Scalars['DateTime']>;
     asOf?: InputMaybe<Scalars['DateTime']>;
     birthCity?: InputMaybe<Scalars['String']>;
     birthCntry?: InputMaybe<Scalars['String']>;
