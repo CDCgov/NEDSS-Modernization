@@ -4,6 +4,9 @@ name: "Sonar Scanner"
 
 on:
   push:
+    paths:
+      - "apps/**"
+      - "libs/**"
     branches:
       - main
   pull_request:
