@@ -270,10 +270,10 @@ input PersonInput {
     deceased: Deceased
     deceasedTime: DateTime
     maritalStatus: String
-    addresses: [NewPatientAddress]
-    phoneNumbers: [NewPatientPhoneNumber]
+    addresses: [NewPatientAddress!]
+    phoneNumbers: [NewPatientPhoneNumber!]
     emailAddresses: [String]
-    identifications: [NewPatientIdentification]
+    identifications: [NewPatientIdentification!]
     ethnicity: String
     races: [String]
     asOf: DateTime
@@ -324,7 +324,7 @@ input EthnicityInput {
     asOf: DateTime!
     ethnicGroup: String
     unknownReason: String
-    detailed: [String]
+    detailed: [String!]
 }
 
 type PatientEthnicityChangeResult {
@@ -335,7 +335,7 @@ input RaceInput {
     patient: ID!
     asOf: DateTime
     category: String!
-    detailed: [String]
+    detailed: [String!]
 }
 
 input DeletePatientRace {

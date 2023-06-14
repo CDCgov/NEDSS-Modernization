@@ -906,8 +906,8 @@ type PatientSummary {
     gender: String
     ethnicity: String
     race: String
-    phone: [PatientSummaryPhone]
-    email: [PatientSummaryEmail]
+    phone: [PatientSummaryPhone!]
+    email: [PatientSummaryEmail!]
     address: PatientSummaryAddress
 }
 
@@ -928,7 +928,7 @@ type PatientAdministrative {
 }
 
 type PatientAdministrativeResults {
-    content: [PatientAdministrative]!
+    content: [PatientAdministrative!]!
     total: Int!
     number: Int!
     size: Int!
@@ -951,7 +951,7 @@ type PatientName {
 }
 
 type PatientNameResults {
-    content: [PatientName]!
+    content: [PatientName!]!
     total: Int!
     number: Int!
     size: Int!
@@ -976,7 +976,7 @@ type PatientAddress {
 }
 
 type PatientAddressResults {
-    content: [PatientAddress]!
+    content: [PatientAddress!]!
     total: Int!
     number: Int!
     size: Int!
@@ -998,7 +998,7 @@ type PatientPhone {
 }
 
 type PatientPhoneResults {
-    content: [PatientPhone]!
+    content: [PatientPhone!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1042,7 +1042,7 @@ type PatientIdentification {
 }
 
 type PatientIdentificationResults {
-    content: [PatientIdentification]!
+    content: [PatientIdentification!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1084,7 +1084,7 @@ type PatientEthnicity {
     asOf: DateTime!
     ethnicGroup: PatientCodedValue!
     unknownReason: PatientCodedValue
-    detailed: [PatientCodedValue]!
+    detailed: [PatientCodedValue!]!
 }
 
 type PatientRace {
@@ -1093,11 +1093,11 @@ type PatientRace {
     version: Int!
     asOf: DateTime!
     category: PatientCodedValue!
-    detailed: [PatientCodedValue]
+    detailed: [PatientCodedValue!]
 }
 
 type PatientRaceResults {
-    content: [PatientRace]!
+    content: [PatientRace!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1448,10 +1448,10 @@ input PersonInput {
     deceased: Deceased
     deceasedTime: DateTime
     maritalStatus: String
-    addresses: [NewPatientAddress]
-    phoneNumbers: [NewPatientPhoneNumber]
+    addresses: [NewPatientAddress!]
+    phoneNumbers: [NewPatientPhoneNumber!]
     emailAddresses: [String]
-    identifications: [NewPatientIdentification]
+    identifications: [NewPatientIdentification!]
     ethnicity: String
     races: [String]
     asOf: DateTime
@@ -1502,7 +1502,7 @@ input EthnicityInput {
     asOf: DateTime!
     ethnicGroup: String
     unknownReason: String
-    detailed: [String]
+    detailed: [String!]
 }
 
 type PatientEthnicityChangeResult {
@@ -1513,7 +1513,7 @@ input RaceInput {
     patient: ID!
     asOf: DateTime
     category: String!
-    detailed: [String]
+    detailed: [String!]
 }
 
 input DeletePatientRace {
