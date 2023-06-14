@@ -1,19 +1,13 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.repository.NaicsIndustryCodeRepository;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class DropDownValuesControllerTest {
 
-    @Mock
-    private NaicsIndustryCodeRepository naicsIndustryCodeRepository;
-    private final DropDownValuesController classUnderTest = new DropDownValuesController(naicsIndustryCodeRepository);
+    private final DropDownValuesController classUnderTest = new DropDownValuesController();
 
     @Test
     void findNameSuffixes() {

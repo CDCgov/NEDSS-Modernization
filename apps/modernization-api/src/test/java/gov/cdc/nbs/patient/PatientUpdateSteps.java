@@ -19,6 +19,7 @@ import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
@@ -29,7 +30,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Transactional
 public class PatientUpdateSteps {
 
     @Autowired
@@ -49,6 +51,9 @@ public class PatientUpdateSteps {
 
     @Autowired
     private ObjectMapper mapper;
+
+    @Autowired
+    private TestPatientIdentifier patients;
 
     @Before
     public void resetConsumer() {
@@ -61,42 +66,43 @@ public class PatientUpdateSteps {
 
     @When("I send a {string} update request")
     public void i_send_a_update_general_info_patient_request(final String updateType) {
+        PatientIdentifier patient = patients.one();
         try {
             switch (updateType) {
                 case "general info" -> {
-                    input = PersonUtil.convertToGeneralInput(PersonMother.generateRandomPerson(123L));
+                    input = PersonUtil.convertToGeneralInput(PersonMother.generateRandomPerson(patient.id()));
                     response = patientController.updatePatientGeneralInfo((GeneralInfoInput) input);
                 }
                 case "sex and birth" -> {
-                    input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(123L));
+                    input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(patient.id()));
                     response = patientController.updatePatientSexBirth((SexAndBirthInput) input);
                 }
                 case "mortality" -> {
-                    input = createMortalityInput(123L);
+                    input = createMortalityInput(patient.id());
                     response = patientController.updateMortality((MortalityInput) input);
                 }
                 case "administrative" -> {
-                    input = createAdministrativeInput(123L);
+                    input = createAdministrativeInput(patient.id());
                     response = patientController.updateAdministrative((AdministrativeInput) input);
                 }
                 case "name" -> {
-                    input = createNameInput(123L);
+                    input = createNameInput(patient.id());
                     response = patientController.updatePatientName((NameInput) input);
                 }
                 case "address" -> {
-                    input = createAddressInput(123L);
+                    input = createAddressInput(patient.id());
                     response = patientController.updatePatientAddress((AddressInput) input);
                 }
                 case "email" -> {
-                    input = createEmailInput(123L);
+                    input = createEmailInput(patient.id());
                     response = patientController.updatePatientEmail((EmailInput) input);
                 }
                 case "identification" -> {
-                    input = createIdentificationInput(123L);
+                    input = createIdentificationInput(patient.id());
                     response = patientController.updatePatientIdentification((IdentificationInput) input);
                 }
                 case "phone" -> {
-                    input = createPhoneInput(123L);
+                    input = createPhoneInput(patient.id());
                     response = patientController.updatePatientPhone((PhoneInput) input);
                 }
 
@@ -183,7 +189,7 @@ public class PatientUpdateSteps {
         input.setCity("City");
         input.setStateCode("State");
         input.setCountyCode("County");
-        input.setCountryCode("Country");
+        input.setCountryCode("840");
         input.setZip("Zip");
         input.setCensusTract("Census Tract");
         return input;

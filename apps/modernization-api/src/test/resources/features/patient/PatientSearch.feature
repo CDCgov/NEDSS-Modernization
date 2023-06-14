@@ -100,7 +100,7 @@ Feature: Patient search
   @patient_search_with_trailing_space
   Scenario: When search criteria ends with a space, only the expected patients are returned
     When I search for a patient by "<field>" and there is a space at the end
-    Then I find only the expected patient
+    Then I find only the expected patient when searching by "<field>"
 
     Examples:
       | field      |

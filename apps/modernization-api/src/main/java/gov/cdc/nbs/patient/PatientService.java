@@ -414,10 +414,11 @@ public class PatientService {
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
+    @SuppressWarnings("squid:S3776")
     public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             boolean modified = false;
             if (!isEmpty(input.getMaritalStatus())) {
                 person.setMaritalStatusCd(input.getMaritalStatus());
@@ -458,16 +459,15 @@ public class PatientService {
             if (modified) {
                 person.setAsOfDateGeneral(input.getAsOf());
             }
-            return personRepository.save(person);
-        });
-
-        return sendPatientEvent(updateGeneralInfoEvent);
+            personRepository.save(person);
+            return sendPatientEvent(updateGeneralInfoEvent);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse addPatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             PatientCommand.AddName addName = new PatientCommand.AddName(
                     input.getPatientId(),
                     input.getFirstName(),
@@ -479,15 +479,15 @@ public class PatientService {
                     Instant.now()
             );
             person.add(addName);
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updatePatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             PatientCommand.AddName addName = new PatientCommand.AddName(
                     input.getPatientId(),
                     input.getFirstName(),
@@ -499,15 +499,16 @@ public class PatientService {
                     Instant.now()
             );
             person.update(addName);
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.UpdateAdministrativeInfo(
                     person.getId(),
                     Instant.now(),
@@ -515,15 +516,16 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateSexAndBirthEvent = SexAndBirthInput.toRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.UpdateSexAndBirthInfo(
                     person.getId(),
                     input.getAsOf(),
@@ -543,9 +545,9 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(updateSexAndBirthEvent);
+            personRepository.save(person);
+            return sendPatientEvent(updateSexAndBirthEvent);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     @Transactional
@@ -553,7 +555,7 @@ public class PatientService {
         var user = SecurityUtil.getUserDetails();
         var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
 
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             PatientCommand.UpdateMortalityLocator updateMortalityLocator = new PatientCommand.UpdateMortalityLocator(
                     person.getId(),
                     Instant.now(),
@@ -571,9 +573,10 @@ public class PatientService {
                 locator.updateMortalityLocator(updateMortalityLocator);
                 return entityLocatorParticipationRepository.save(locator);
             });
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(updateMortalityEvent);
+            personRepository.save(person);
+            return sendPatientEvent(updateMortalityEvent);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     private PatientEventResponse sendPatientEvent(PatientRequest request) {
@@ -617,7 +620,7 @@ public class PatientService {
     public PatientEventResponse addPatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.add(new PatientCommand.AddIdentification(
                     person.getId(),
                     input.getIdentificationNumber(),
@@ -626,15 +629,15 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.AddIdentification(
                     person.getId(),
                     input.getIdentificationNumber(),
@@ -643,9 +646,10 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
@@ -657,7 +661,7 @@ public class PatientService {
     public PatientEventResponse addPatientAddress(AddressInput addressInput) {
         var user = SecurityUtil.getUserDetails();
         var patientRequest = AddressInput.toAddRequest(user.getId(), getRequestId(), addressInput);
-        personRepository.findById(addressInput.getPatientId()).map(person -> {
+        return personRepository.findById(addressInput.getPatientId()).map(person -> {
             long newAddressId = person.getId();
             Optional<CountryCode> countryCode = countryCodeRepository.findById(addressInput.getCountryCode());
             PatientCommand.AddAddress addAddress = new PatientCommand.AddAddress(
@@ -675,17 +679,15 @@ public class PatientService {
                     Instant.now()
             );
             person.add(addAddress);
-            return personRepository.save(person);
-        });
-
-
-        return sendPatientEvent(patientRequest);
+            personRepository.save(person);
+            return sendPatientEvent(patientRequest);
+        }).orElseThrow(() -> new PatientNotFoundException(addressInput.getPatientId()));
     }
 
     public PatientEventResponse updatePatientAddress(AddressInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             long newAddressId = person.getId();
             Optional<CountryCode> countryCode = countryCodeRepository.findById(input.getCountryCode());
             PatientCommand.UpdateAddress updateAddress = new PatientCommand.UpdateAddress(
@@ -703,9 +705,10 @@ public class PatientService {
                     Instant.now()
             );
             person.update(updateAddress);
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
@@ -717,7 +720,7 @@ public class PatientService {
     public PatientEventResponse addPatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map( person -> {
             person.add(new PatientCommand.AddPhoneNumber(
                     person.getId(),
                     input.getId(),
@@ -728,15 +731,16 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse updatePatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map( person -> {
             person.update(new PatientCommand.UpdatePhoneNumber(
                     person.getId(),
                     input.getId(),
@@ -746,9 +750,10 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse deletePatientPhone(Long patientId, long id) {
@@ -760,7 +765,7 @@ public class PatientService {
     public PatientEventResponse addPatientEmail(EmailInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = EmailInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map( person -> {
             person.add(new PatientCommand.AddEmailAddress(
                     person.getId(),
                     input.getId(),
@@ -768,15 +773,16 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse updatePatientEmail(EmailInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = EmailInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map( person -> {
             person.update(new PatientCommand.UpdateEmailAddress(
                     person.getId(),
                     input.getId(),
@@ -784,9 +790,10 @@ public class PatientService {
                     user.getId(),
                     Instant.now()
             )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+        
     }
 
     public PatientEventResponse deletePatientEmail(Long patientId, long id) {
