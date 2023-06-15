@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -45,12 +46,15 @@ public class NumericQuestionEntity extends WaQuestion {
     public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
         super(command);
 
-        this.mask = command.mask();
-        this.fieldSize = command.fieldLength();
+        this.mask = requireNonNull(command.mask(), "Mask must not be null");
+        this.fieldSize = requireNonNull(command.fieldLength(), "Field Length must not be null");
         this.defaultValue = command.defaultValue();
         this.minValue = command.minValue();
         this.maxValue = command.maxValue();
         this.unitTypeCd = command.unitTypeCd();
+        if (unitTypeCd != null) {
+            requireNonNull(command.unitValue(), "If specifying UnitType, UnitValue must not be null");
+        }
         this.unitValue = command.unitValue();
 
         // Audit

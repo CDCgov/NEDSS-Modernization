@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -34,8 +35,8 @@ public class TextQuestionEntity extends WaQuestion {
         super(command);
 
         this.defaultValue = command.defaultValue();
-        this.mask = command.mask();
-        this.fieldSize = command.fieldLength();
+        this.mask = requireNonNull(command.mask(), "Mask must not be null");
+        this.fieldSize = requireNonNull(command.fieldLength(), "Field length must not be null");
 
         // Audit
         created(command);

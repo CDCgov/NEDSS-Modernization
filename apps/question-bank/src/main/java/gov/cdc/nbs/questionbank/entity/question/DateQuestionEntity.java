@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ public class DateQuestionEntity extends WaQuestion {
     public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
         super(command);
 
-        this.mask = command.mask();
+        this.mask = requireNonNull(command.mask(), "Mask must not be null");
         this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
 
         // Audit
