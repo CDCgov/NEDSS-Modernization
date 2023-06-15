@@ -20,7 +20,7 @@ Feature: Patient Demographics Update
   Scenario Outline: I can send a patient update requests
     Given I have the authorities: "FIND-PATIENT,EDIT-PATIENT,VIEW-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     When I send a "<updateType>" update request
-    Then the "<updateType>" update request is posted to kafka
+    Then the request has a response
 
     Examples:
       | updateType     |

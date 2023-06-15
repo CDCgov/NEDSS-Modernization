@@ -22,6 +22,23 @@ public class QuestionRequestMother {
         return textRequest("PHIN", includeInMessage);
     }
 
+    public static CreateQuestionRequest.Date dateRequest() {
+        return new CreateQuestionRequest.Date(
+                "PHIN",
+                "Test unique Id",
+                "TEST UNIQUE NAME",
+                "Test_Subgroup",
+                "Test description",
+                "Test label",
+                "Test tooltip",
+                1008L,
+                reportingInfo(),
+                messagingInfo(false),
+                "Test admin comments",
+                "Mask",
+                false);
+    }
+
     public static CreateQuestionRequest.Text custom(
             String uniqueName,
             String identifier,

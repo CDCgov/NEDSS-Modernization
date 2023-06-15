@@ -1211,33 +1211,33 @@ union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
 type Mutation {
     createPatient(patient: PersonInput!): PatientCreatedResponse!
     deletePatient(patient: ID!): PatientDeleteResult!
-    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientEventResponse!
-    updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
-    updateMortality(input: MortalityInput!): PatientEventResponse!
-    addPatientAddress(input: AddressInput!): PatientEventResponse!
-    addPatientEmail(input: EmailInput!): PatientEventResponse!
-    addPatientIdentification(input: IdentificationInput!): PatientEventResponse!
-    addPatientName(input: NameInput!): PatientEventResponse!
-    addPatientPhone(input: PhoneInput!): PatientEventResponse!
-    updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
-    updatePatientAddress(input: AddressInput!): PatientEventResponse!
-    updatePatientEmail(input: EmailInput!): PatientEventResponse!
+    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientUpdateResponse!
+    updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
+    updateMortality(input: MortalityInput!): PatientUpdateResponse!
+    addPatientAddress(input: AddressInput!): PatientUpdateResponse!
+    addPatientEmail(input: EmailInput!): PatientUpdateResponse!
+    addPatientIdentification(input: IdentificationInput!): PatientUpdateResponse!
+    addPatientName(input: NameInput!): PatientUpdateResponse!
+    addPatientPhone(input: PhoneInput!): PatientUpdateResponse!
+    updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
+    updatePatientAddress(input: AddressInput!): PatientUpdateResponse!
+    updatePatientEmail(input: EmailInput!): PatientUpdateResponse!
     updatePatientIdentification(
         input: IdentificationInput!
-    ): PatientEventResponse!
-    updatePatientName(input: NameInput!): PatientEventResponse!
-    updatePatientPhone(input: PhoneInput!): PatientEventResponse!
+    ): PatientUpdateResponse!
+    updatePatientName(input: NameInput!): PatientUpdateResponse!
+    updatePatientPhone(input: PhoneInput!): PatientUpdateResponse!
     deletePatientAddress(
         patientId: Int!
         personSeqNum: Int!
-    ): PatientEventResponse!
-    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    ): PatientUpdateResponse!
+    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     deletePatientIdentification(
         patientId: Int!
         entitySeqNum: Int!
-    ): PatientEventResponse!
-    deletePatientName(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
+    ): PatientUpdateResponse!
+    deletePatientName(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
+    deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceChangeResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
@@ -1249,8 +1249,7 @@ type PatientCreatedResponse {
     shortId: Int!
 }
 
-type PatientEventResponse {
-    requestId: String!
+type PatientUpdateResponse {
     patientId: ID!
 }
 

@@ -56,6 +56,34 @@ public sealed interface QuestionCommand {
             Instant requestedOn) implements QuestionCommand {
     }
 
+    public record AddDateQuestion(
+            // Date specific fields
+            String mask,
+            boolean allowFutureDates,
+
+            // General Question fields
+            String codeSet,
+            String localId,
+            String uniqueName,
+            String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            String adminComments,
+            QuestionOid questionOid,
+
+            // Data Mart info
+            ReportingData reportingData,
+
+            // Messaging Info
+            MessagingData messagingData,
+
+            // Audit info
+            long userId,
+            Instant requestedOn) implements QuestionCommand {
+    }
+
     record ReportingData(
             String reportLabel,
             String defaultRdbTableName,
