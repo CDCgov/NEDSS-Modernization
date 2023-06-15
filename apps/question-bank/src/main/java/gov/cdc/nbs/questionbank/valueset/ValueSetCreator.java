@@ -1,7 +1,5 @@
 package gov.cdc.nbs.questionbank.valueset;
 
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +11,6 @@ import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 import lombok.RequiredArgsConstructor;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +32,7 @@ public class ValueSetCreator {
 			return response;
 		}
 		if (checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetName)) {
-			response.setMessage(ValueSetConstants.VALUE_SET_NAME_EXISTS);
+			response.setMessage(ValueSetConstants.CODE_SET_GRP_TEXT_NAME_EXISTS);
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			return response;
 		}
@@ -46,7 +42,6 @@ public class ValueSetCreator {
 			codeSetGrpMetaRepository.save(request.getCodeSetGroup());
 			// Add ValueSet
 			CodeSet valueSet = new CodeSet(asAdd(request));
-			valueSet.getCodeSetGroup().setId(getCodeSetGroupID());
 			CodeSet resultCodeSet = valueSetRepository.save(valueSet);
 			// Add any accompanying Value Concepts
 			for (ValueSetRequest.CreateCodedValue valueConcept : request.getValues()) {
@@ -71,17 +66,17 @@ public class ValueSetCreator {
 
 	}
 
-	private boolean checkValueSetNameExists(String codeSetNm) {
-		return (codeSetNm != null && valueSetRepository.checkValueSetName(codeSetNm) > 0) ? true : false;
+	public boolean checkValueSetNameExists(String codeSetNm) {
+		return (codeSetNm != null && valueSetRepository.checkValueSetName(codeSetNm) > 0);
 
 	}
 
-	private boolean checkCodeSetGrpMetaDatEntry(String codeShrtDescTxt, String codeSetNm) {
+	public boolean checkCodeSetGrpMetaDatEntry(String codeShrtDescTxt, String codeSetNm) {
 		return (codeShrtDescTxt != null && codeSetNm != null
-				&& codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetNm) > 0) ? true : false;
+				&& codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(codeShrtDescTxt, codeSetNm) > 0);
 	}
 
-	private long getCodeSetGroupID() {
+	public long getCodeSetGroupID() {
 		long maxGroupID = valueSetRepository.getCodeSetGroupCeilID();
 		if (maxGroupID > 0) {
 			maxGroupID = valueSetRepository.getCodeSetGroupMaxID() + 10;
@@ -91,7 +86,7 @@ public class ValueSetCreator {
 		return maxGroupID;
 	}
 
-	private ValueSetCommand.AddValueSet asAdd(final ValueSetRequest request) {
+	public ValueSetCommand.AddValueSet asAdd(final ValueSetRequest request) {
 		return new ValueSetCommand.AddValueSet(request.getAssigningAuthorityCd(),
 				request.getAssigningAuthorityDescTxt(), request.getCodeSetDescTxt(), request.getEffectiveFromTime(),
 				request.getEffectiveToTime(), request.getIsModifiableInd(), request.getNbsUid(),
