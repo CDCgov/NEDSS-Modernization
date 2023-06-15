@@ -1,52 +1,18 @@
 package gov.cdc.nbs.message.patient.input;
 
-import gov.cdc.nbs.message.patient.event.AddRaceData;
-import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.event.UpdateRaceData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class RaceInput {
-    private long patientId;
+    private long patient;
     private Instant asOf;
-    private String raceCd;
-    private String raceCategoryCd;
+    private String category;
+    private List<String> detailed = new ArrayList<>();
 
-    public static PatientRequest toAddRequest(
-            final long userId,
-            final String requestId,
-            final RaceInput input) {
-        return new PatientRequest.AddRace(
-                requestId,
-                input.getPatientId(),
-                userId,
-                new AddRaceData(
-                        input.getPatientId(),
-                        requestId,
-                        userId,
-                        input.getAsOf(),
-                        input.getRaceCd(),
-                        input.getRaceCategoryCd()));
-    }
-
-    public static PatientRequest toUpdateRequest(
-            final long userId,
-            final String requestId,
-            final RaceInput input) {
-        return new PatientRequest.UpdateRace(
-                requestId,
-                input.getPatientId(),
-                userId,
-                new UpdateRaceData(
-                        input.getPatientId(),
-                        requestId,
-                        userId,
-                        input.getAsOf(),
-                        input.getRaceCd(),
-                        input.getRaceCategoryCd()));
-    }
 }

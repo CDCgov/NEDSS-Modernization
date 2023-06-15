@@ -1,0 +1,6 @@
+query ethnicityUnknownReasons{
+    ethnicityUnknownReasons{
+        value
+        name
+    }
+}

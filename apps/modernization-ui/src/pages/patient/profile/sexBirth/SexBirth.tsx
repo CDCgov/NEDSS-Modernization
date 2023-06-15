@@ -1,59 +1,116 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { FindPatientProfileQuery, PatientBirth } from 'generated/graphql/schema';
-import { HorizontalTable } from 'components/Table/HorizontalTable';
-import { format } from 'date-fns';
+import { FindPatientProfileQuery, useUpdatePatientSexBirthMutation } from 'generated/graphql/schema';
 import { useFindPatientProfileBirth } from './useFindPatientProfileBirth';
+import { internalizeDate, externalizeDate, externalizeDateTime } from 'date';
+import { Data, EditableCard } from 'components/EditableCard';
+import { maybeDescription, maybeId } from '../coded';
+import { SexAndEntry, SexBirthForm } from './SexBirthForm';
 
 type PatientLabReportTableProps = {
     patient: string | undefined;
 };
 
+const initialEntry = {
+    additionalGender: '',
+    ageReportedTime: null,
+    asOf: null,
+    birthCity: '',
+    birthCntry: '',
+    birthGender: null,
+    birthOrderNbr: null,
+    birthState: '',
+    currentAge: null,
+    currentGender: null,
+    dateOfBirth: null,
+    multipleBirth: '',
+    sexUnknown: '',
+    transGenderInfo: ''
+};
+
+const asView = (sexAndBirth?: FindPatientProfileQuery['findPatientProfile'] | null): Data[] => [
+    {
+        title: 'As of:',
+        text: internalizeDate(sexAndBirth?.birth?.asOf) || ''
+    },
+    { title: 'Current age:', text: sexAndBirth?.birth?.age?.toString() || '' },
+    { title: 'Current sex:', text: sexAndBirth?.gender?.current?.description || '' },
+    { title: 'Unknown reason:', text: maybeDescription(sexAndBirth?.gender?.unknownReason) || '' },
+    { title: 'Transgender information:', text: maybeDescription(sexAndBirth?.gender?.preferred) || '' },
+    { title: 'Additional gender:', text: sexAndBirth?.gender?.additional || '' },
+    { title: 'Birth sex:', text: maybeDescription(sexAndBirth?.gender?.birth) || '' },
+    { title: 'Multiple birth:', text: maybeDescription(sexAndBirth?.birth?.multipleBirth) || '' },
+    { title: 'Birth order:', text: sexAndBirth?.birth?.birthOrder?.toString() || '' },
+    { title: 'Birth city:', text: sexAndBirth?.birth?.city || '' },
+    { title: 'Birth state:', text: maybeDescription(sexAndBirth?.birth?.state) || '' },
+    { title: 'Birth county:', text: maybeDescription(sexAndBirth?.birth?.county) || '' },
+    { title: 'Birth country:', text: maybeDescription(sexAndBirth?.birth?.country) || '' }
+];
+
+const asEntry = (sexAndBirth?: FindPatientProfileQuery['findPatientProfile'] | null): SexAndEntry => ({
+    ...initialEntry,
+    asOf: internalizeDate(sexAndBirth?.birth?.asOf),
+    additionalGender: sexAndBirth?.gender?.additional,
+    birthCity: sexAndBirth?.birth?.city,
+    birthCntry: maybeId(sexAndBirth?.birth?.country),
+    birthGender: maybeId(sexAndBirth?.gender?.current),
+    birthOrderNbr: sexAndBirth?.birth?.birthOrder,
+    birthState: maybeId(sexAndBirth?.birth?.state),
+    currentAge: sexAndBirth?.birth?.age,
+    currentGender: maybeId(sexAndBirth?.gender?.current),
+    dateOfBirth: internalizeDate(sexAndBirth?.birth?.bornOn),
+    multipleBirth: maybeId(sexAndBirth?.birth?.multipleBirth),
+    sexUnknown: maybeId(sexAndBirth?.gender?.unknownReason),
+    transGenderInfo: maybeId(sexAndBirth?.gender?.preferred)
+});
+
 export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
-    const [generalTableData, setGeneralTableData] = useState<any>();
+    const [editing, isEditing] = useState<boolean>(false);
+    const [tableData, setData] = useState<Data[]>([]);
+    const [entry, setEntry] = useState<SexAndEntry>(initialEntry);
+
     const handleComplete = (data: FindPatientProfileQuery) => {
-        setGeneralTableData([
-            {
-                title: 'As of:',
-                text: data?.findPatientProfile?.birth
-                    ? format(new Date(data?.findPatientProfile?.birth?.asOf), 'MM/dd/yyyy')
-                    : ''
-            },
-            { title: 'Current age:', text: data?.findPatientProfile?.birth?.age || '' },
-            { title: 'Current sex:', text: data?.findPatientProfile?.gender?.current?.description || '' },
-            { title: 'Unknown reason:', text: data?.findPatientProfile?.gender?.unknownReason?.description || '' },
-            { title: 'Transgender information:', text: data?.findPatientProfile?.gender?.preferred?.description || '' },
-            { title: 'Additional gender:', text: data?.findPatientProfile?.gender?.additional || '' },
-            { title: 'Birth sex:', text: data?.findPatientProfile?.gender?.birth?.description || '' },
-            { title: 'Multiple birth:', text: data?.findPatientProfile?.birth?.multipleBirth?.description || '' },
-            { title: 'Birth order:', text: data?.findPatientProfile?.birth?.birthOrder || '' },
-            { title: 'Birth city:', text: data?.findPatientProfile?.birth?.city || '' },
-            { title: 'Birth state:', text: data?.findPatientProfile?.birth?.state?.description || '' },
-            { title: 'Birth county:', text: data?.findPatientProfile?.birth?.county?.description || '' },
-            { title: 'Birth country:', text: data?.findPatientProfile?.birth?.country?.description || '' }
-        ]);
+        setData(asView(data.findPatientProfile));
+        setEntry(asEntry(data.findPatientProfile));
     };
 
-    const [getProfile, { data }] = useFindPatientProfileBirth({ onCompleted: handleComplete });
+    const handleUpdate = () => {
+        refetch();
+        isEditing(false);
+    };
+
+    const [getProfile, { refetch }] = useFindPatientProfileBirth({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
             getProfile({
                 variables: {
-                    shortId: +patient
+                    patient: patient
                 }
             });
         }
     }, [patient]);
 
+    const [update] = useUpdatePatientSexBirthMutation();
+
+    const onUpdate = (updated: any) => {
+        update({
+            variables: {
+                input: {
+                    ...updated,
+                    dateOfBirth: externalizeDate(updated?.dateOfBirth),
+                    asOf: externalizeDateTime(updated?.asOf),
+                    patientId: patient
+                }
+            }
+        }).then(handleUpdate);
+    };
+
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <HorizontalTable
-                data={data?.findPatientProfile?.birth as PatientBirth}
-                type="sex"
-                tableHeader="Sex & birth"
-                tableData={generalTableData}
-            />
+            <EditableCard title="Sex & Birth" data={tableData} editing={editing} onEdit={() => isEditing(true)}>
+                <SexBirthForm entry={entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
+            </EditableCard>
         </Grid>
     );
 };

@@ -7,6 +7,7 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
+import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -54,6 +55,7 @@ export const AppRoutes = () => {
                             <Route path="/patient-profile/:id" element={<PatientProfile />} />
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                             <Route path="/add-patient" element={<AddPatient />} />
+                            <Route path="/add-patient/patient-added" element={<AddedPatient />} />
                             <Route path="*" element={<Navigate to="/advanced-search" />} />
                             <Route path="/" element={<Navigate to="/advanced-search" />} />
                         </>

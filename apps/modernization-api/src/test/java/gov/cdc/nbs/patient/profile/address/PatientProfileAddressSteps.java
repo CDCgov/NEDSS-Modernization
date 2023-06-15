@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.PatientAssertions;
+import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -53,20 +53,16 @@ public class PatientProfileAddressSteps {
     @Given("the new patient's address is entered")
     public void the_new_patient_address_is_entered() {
 
-        String state = faker.address().stateAbbr();
-        String zipcode = faker.address().zipCodeByState(state);
-
         PatientInput.PostalAddress address = new PatientInput.PostalAddress(
             faker.address().streetAddress(),
-            faker.address().secondaryAddress(),
+            null,
             faker.address().city(),
-            state,
-            faker.address().countyByZipCode(zipcode),
+            RandomUtil.getRandomStateCode(),
+            RandomUtil.getRandomString(),
             RandomUtil.country().code(),
-            zipcode,
+            RandomUtil.getRandomNumericString(15),
             null
         );
-
 
         this.input.active().getAddresses().add(address);
     }
@@ -81,7 +77,7 @@ public class PatientProfileAddressSteps {
         if (!addresses.isEmpty()) {
 
             assertThat(addresses)
-                .satisfiesExactlyInAnyOrder(PatientAssertions.containsAddresses(input.active().getAddresses()));
+                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsAddresses(input.active().getAddresses()));
         }
 
     }

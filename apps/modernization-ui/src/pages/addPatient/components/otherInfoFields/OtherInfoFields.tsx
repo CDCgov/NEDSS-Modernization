@@ -5,8 +5,10 @@ import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInp
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Gender } from '../../../../generated/graphql/schema';
 import { Input } from '../../../../components/FormInputs/Input';
+import { useState } from 'react';
 
 export default function OtherInfoFields({ id, title, control }: { id?: string; title?: string; control: any }) {
+    const [isDead, setIsDead] = useState<any>();
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -79,7 +81,10 @@ export default function OtherInfoFields({ id, title, control }: { id?: string; t
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
                                     defaultValue={value}
-                                    onChange={onChange}
+                                    onChange={(e: any) => {
+                                        setIsDead(e.target.value);
+                                        onChange(e);
+                                    }}
                                     name="deceased"
                                     htmlFor={'deceased'}
                                     label="Is this patient deceased?"
@@ -104,6 +109,7 @@ export default function OtherInfoFields({ id, title, control }: { id?: string; t
                                     name="dod"
                                     htmlFor={'dod'}
                                     label="Date of death"
+                                    disabled={isDead !== 'Y'}
                                 />
                             )}
                         />

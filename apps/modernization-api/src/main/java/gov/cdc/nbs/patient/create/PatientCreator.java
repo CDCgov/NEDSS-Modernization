@@ -5,7 +5,7 @@ import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -21,15 +21,18 @@ public class PatientCreator {
     private final PatientIdentifierGenerator patientIdentifierGenerator;
     private final IdGeneratorService idGeneratorService;
     private final EntityManager entityManager;
+    private final PatientCreatedEmitter emitter;
 
     PatientCreator(
         final PatientIdentifierGenerator patientIdentifierGenerator,
         final IdGeneratorService idGenerator,
-        final EntityManager entityManager
+        final EntityManager entityManager,
+        final PatientCreatedEmitter emitter
     ) {
         this.patientIdentifierGenerator = patientIdentifierGenerator;
         this.idGeneratorService = idGenerator;
         this.entityManager = entityManager;
+        this.emitter = emitter;
     }
 
     @Transactional
@@ -63,6 +66,8 @@ public class PatientCreator {
             .forEach(person::add);
 
         this.entityManager.persist(person);
+
+        this.emitter.created(person);
 
         return identifier;
     }
@@ -116,7 +121,6 @@ public class PatientCreator {
         return new PatientCommand.AddRace(
             identifier.id(),
             asOf,
-            race,
             race,
             context.requestedBy(),
             context.requestedAt()
@@ -195,4 +199,5 @@ public class PatientCreator {
         var generatedId = idGeneratorService.getNextValidId(IdGeneratorService.EntityType.NBS);
         return generatedId.getId();
     }
+
 }

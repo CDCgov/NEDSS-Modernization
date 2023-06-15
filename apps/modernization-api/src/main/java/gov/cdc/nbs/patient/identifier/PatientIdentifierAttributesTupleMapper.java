@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.identifier;
 
 import com.querydsl.core.Tuple;
-import gov.cdc.nbs.entity.odse.QLocalUidGenerator;
+import gov.cdc.nbs.id.QLocalUidGenerator;
 
 class PatientIdentifierAttributesTupleMapper {
 
@@ -10,7 +10,6 @@ class PatientIdentifierAttributesTupleMapper {
             this(QLocalUidGenerator.localUidGenerator);
         }
     }
-
 
     private final Tables tables;
 
@@ -22,8 +21,7 @@ class PatientIdentifierAttributesTupleMapper {
         String prefix = tuple.get(tables.localUniqueIdentifier().uidPrefixCd);
         String suffix = tuple.get(tables.localUniqueIdentifier().uidSuffixCd);
         return new PatientIdentifierAttributes(
-            prefix,
-            suffix
-        );
+                prefix,
+                suffix);
     }
 }

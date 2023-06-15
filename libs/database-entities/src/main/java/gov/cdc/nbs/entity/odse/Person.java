@@ -11,6 +11,7 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
+import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
@@ -61,13 +62,6 @@ public class Person {
         CascadeType.REMOVE
     }, orphanRemoval = true)
     private List<PersonName> names;
-
-    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REMOVE
-    }, orphanRemoval = true)
-    private List<PersonRace> races;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
@@ -385,6 +379,9 @@ public class Person {
     @Embedded
     private PatientEthnicity ethnicity;
 
+    @Embedded
+    private PatientRaceDemographic race;
+
     protected Person() {
 
     }
@@ -394,6 +391,7 @@ public class Person {
         this.localId = localId;
         this.nbsEntity = new NBSEntity(identifier, "PSN");
         this.ethnicity = new PatientEthnicity();
+        this.race = new PatientRaceDemographic();
 
         this.personParentUid = this;
         this.versionCtrlNbr = 1;
@@ -491,26 +489,32 @@ public class Person {
         return this.names;
     }
 
+    public List<PersonName> getNames() {
+        return this.names == null ? List.of() : List.copyOf(this.names);
+    }
+
     public EntityId add(final PatientCommand.AddIdentification added) {
         return this.nbsEntity.add(added);
     }
 
-    public PersonRace add(final PatientCommand.AddRace added) {
-        Collection<PersonRace> existing = ensureRaces();
-
-        PersonRace personRace = new PersonRace(this, added);
-
-        existing.add(personRace);
-
-        return personRace;
-
+    public void add(final PatientCommand.AddRace added) {
+        this.race.add(this, added);
+        changed(added);
     }
 
-    private Collection<PersonRace> ensureRaces() {
-        if (this.races == null) {
-            this.races = new ArrayList<>();
-        }
-        return this.races;
+    public void update(final PatientCommand.UpdateRaceInfo changes) {
+        this.race.update(this, changes);
+        changed(changes);
+    }
+
+    public void delete(final PatientCommand.DeleteRaceInfo info) {
+        this.race.delete(info);
+        changed(info);
+    }
+
+
+    public List<PersonRace> getRaces() {
+        return this.race.races();
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
@@ -642,6 +646,11 @@ public class Person {
         changed(info);
     }
 
+    public void update(PatientCommand.UpdateMortalityLocator info) {
+        this.setDeceasedIndCd(info.deceased());
+        this.setDeceasedTime(info.deceasedTime());
+        changed(info);
+    }
     public void delete(
         final PatientCommand.Delete delete,
         final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
@@ -725,19 +734,4 @@ public class Person {
         changed(remove);
     }
 
-    public void update(PatientCommand.UpdateRaceInfo info) {
-        this.setRaceCd(info.raceCd());
-
-        changed(info);
-    }
-
-    public boolean delete(PatientCommand.DeleteRaceInfo info) {
-
-        List<PersonRace> arraylist = new ArrayList<>(this.races);
-        boolean isDeleted = arraylist.removeIf(
-            item -> (item.getPersonUid().getId() == info.person() && item.getRaceCd().equals(info.raceCd())));
-        this.races = arraylist;
-        changed(info);
-        return isDeleted;
-    }
 }

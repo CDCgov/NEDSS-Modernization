@@ -11,8 +11,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class RandomUtil {
     private static final Random RANDOM = new Random();
@@ -89,6 +92,24 @@ public class RandomUtil {
             return data;
         }
         return data.substring(0, new Random().nextInt(len - 1) + 1);
+    }
+
+    @SafeVarargs
+    public static <T> T oneFrom(T...values) {
+        var index = RANDOM.nextInt(values.length);
+        return values[index];
+    }
+
+    @SafeVarargs
+    public static <T> Collection<T> multiFrom(T...values) {
+        var size = RANDOM.nextInt(values.length);
+        Set<T> randomized = new HashSet<>(size);
+
+        for (int index = 0; index < size; index++) {
+            randomized.add(values[index]);
+        }
+
+        return randomized;
     }
 
     public static Deceased deceased() {

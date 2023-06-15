@@ -1,67 +1,92 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { FindPatientProfileQuery, PatientEthnicity } from 'generated/graphql/schema';
-import { HorizontalTable } from 'components/Table/HorizontalTable';
-import { format } from 'date-fns';
+import { FindPatientProfileQuery, PatientEthnicity, useUpdateEthnicityMutation } from 'generated/graphql/schema';
+import { externalizeDateTime, internalizeDate } from 'date';
 import { useFindPatientProfileEthnicity } from './useFindPatientProfileMortality';
+import { Data, EditableCard } from 'components/EditableCard';
+import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
+import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+type Props = {
+    patient: string;
 };
 
-export const Ethnicity = ({ patient }: PatientLabReportTableProps) => {
-    const [generalTableData, setGeneralTableData] = useState<any>();
-    const handleComplete = (data: FindPatientProfileQuery) => {
-        setGeneralTableData([
-            {
-                title: 'As of:',
-                text: data?.findPatientProfile?.ethnicity
-                    ? format(new Date(data?.findPatientProfile?.ethnicity?.asOf), 'MM/dd/yyyy')
-                    : ''
-            },
-            { title: 'Ethnicity::', text: data?.findPatientProfile?.ethnicity?.ethnicGroup?.description || '' },
-            {
-                title: 'Spanish origin:',
-                text:
-                    data?.findPatientProfile?.ethnicity?.detailed &&
-                    data?.findPatientProfile?.ethnicity?.detailed?.length > 0
-                        ? data?.findPatientProfile?.ethnicity?.detailed.map((detail, index: number) => (
-                              <span key={detail?.id}>
-                                  {detail?.description}{' '}
-                                  {data?.findPatientProfile?.ethnicity?.detailed &&
-                                      data?.findPatientProfile?.ethnicity?.detailed?.length - 1 !== index &&
-                                      '|'}{' '}
-                              </span>
-                          ))
-                        : ''
-            },
-            {
-                title: 'Reasons unknown:',
-                text: data?.findPatientProfile?.ethnicity?.unknownReason?.description || ''
-            }
-        ]);
+const initialEntry = {
+    asOf: null,
+    ethnicGroup: null,
+    unknownReason: null,
+    detailed: []
+};
+
+const asView = (ethnicity?: PatientEthnicity | null): Data[] => [
+    {
+        title: 'As of:',
+        text: internalizeDate(ethnicity?.asOf) || ''
+    },
+    { title: 'Ethnicity:', text: maybeDescription(ethnicity?.ethnicGroup) || '' },
+    {
+        title: 'Spanish origin:',
+        text: maybeDescriptions(ethnicity?.detailed).join(' | ')
+    },
+    {
+        title: 'Reasons unknown:',
+        text: ethnicity?.unknownReason?.description || ''
+    }
+];
+
+const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
+    ...initialEntry,
+    asOf: internalizeDate(ethnicity?.asOf),
+    ethnicGroup: maybeId(ethnicity?.ethnicGroup),
+    unknownReason: maybeId(ethnicity?.unknownReason),
+    detailed: maybeIds(ethnicity?.detailed)
+});
+export const Ethnicity = ({ patient }: Props) => {
+    const [tableData, setData] = useState<Data[]>([]);
+    const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
+    const [editing, isEditing] = useState<boolean>(false);
+
+    const handleComplete = (result: FindPatientProfileQuery) => {
+        setData(asView(result.findPatientProfile?.ethnicity));
+        setEntry(asEntry(result.findPatientProfile?.ethnicity));
     };
 
-    const [getProfile, { data }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });
+    const handleUpdate = () => {
+        refetch();
+        isEditing(false);
+    };
+
+    const [fetchProfile, { refetch }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
-            getProfile({
+            fetchProfile({
                 variables: {
-                    shortId: +patient
+                    patient: patient
                 }
             });
         }
     }, [patient]);
 
+    const [update] = useUpdateEthnicityMutation();
+
+    const onUpdate = (updated: EthnicityEntry) => {
+        update({
+            variables: {
+                input: {
+                    ...updated,
+                    patient: patient,
+                    asOf: externalizeDateTime(updated.asOf)
+                }
+            }
+        }).then(handleUpdate);
+    };
+
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <HorizontalTable
-                data={data?.findPatientProfile?.ethnicity as PatientEthnicity}
-                type="ethnicity"
-                tableHeader="Ethnicity"
-                tableData={generalTableData}
-            />
+            <EditableCard title="Ethnicity" data={tableData} editing={editing} onEdit={() => isEditing(true)}>
+                <EthnicityForm entry={entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
+            </EditableCard>
         </Grid>
     );
 };

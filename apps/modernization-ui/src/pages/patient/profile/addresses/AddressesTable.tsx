@@ -61,7 +61,7 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
         if (patient) {
             getProfile({
                 variables: {
-                    shortId: +patient,
+                    patient: patient,
                     page2: {
                         pageNumber: currentPage - 1,
                         pageSize: TOTAL_TABLE_DATA
@@ -161,7 +161,10 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[1].sort !== 'all' && 'sort-td'}`}>
                             {name?.type ? (
-                                <span>{name?.type.description}</span>
+                                <span>
+                                    {name?.type.description}
+                                    {name.use?.description ? `/${name.use?.description}` : ''}
+                                </span>
                             ) : (
                                 <span className="no-data">No data</span>
                             )}

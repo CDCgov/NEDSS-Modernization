@@ -14,7 +14,6 @@ import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import lombok.AllArgsConstructor;
@@ -141,23 +140,7 @@ public class PatientController {
         return patientService.deletePatientAddress(patientId, personSeqNum);
     }
 
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientRace(@Argument RaceInput input) {
-        return patientService.addPatientRace(input);
-    }
 
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientRace(@Argument RaceInput input) {
-        return patientService.updatePatientRace(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientRace(@Argument Long patientId, @Argument String raceCd) {
-        return patientService.deletePatientRace(patientId, raceCd);
-    }
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)

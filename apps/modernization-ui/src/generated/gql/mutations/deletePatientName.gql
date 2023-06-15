@@ -1,6 +1,5 @@
 mutation deletePatientName($patientId: Int!, $personSeqNum: Int!){
     deletePatientName(patientId: $patientId, personSeqNum: $personSeqNum){
-        requestId
         patientId
     }
 }

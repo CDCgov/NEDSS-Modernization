@@ -1,6 +1,5 @@
 mutation addPatientEmail($input: EmailInput!){
     addPatientEmail(input: $input){
-        requestId
         patientId
     }
 }

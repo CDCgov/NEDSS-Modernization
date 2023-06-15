@@ -30,4 +30,11 @@ class RequestPropertiesTest {
         assertEquals("question-created", newProps.questionCreated());
         assertEquals("question-deleted", newProps.questionDeleted());
     }
+
+    @Test
+    void should_use_passed_null_props() {
+        RequestProperties newProps = new RequestProperties(null, null);
+        assertEquals("question-created", newProps.questionCreated());
+        assertEquals("question-deleted", newProps.questionDeleted());
+    }
 }

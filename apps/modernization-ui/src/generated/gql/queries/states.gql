@@ -1,0 +1,6 @@
+query states{
+    states{
+        value
+        name
+    }
+}

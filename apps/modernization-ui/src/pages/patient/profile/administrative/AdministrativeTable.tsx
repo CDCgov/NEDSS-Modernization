@@ -57,7 +57,7 @@ export const AdministrativeTable = ({ patient }: PatientLabReportTableProps) => 
         if (patient) {
             getProfile({
                 variables: {
-                    shortId: +patient,
+                    patient: patient,
                     page1: {
                         pageNumber: currentPage - 1,
                         pageSize: TOTAL_TABLE_DATA
