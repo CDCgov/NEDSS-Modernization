@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import gov.cdc.nbs.questionbank.entity.question.DateQuestion;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -68,6 +69,10 @@ public class CreateQuestionSteps {
                 case "date":
                     request = QuestionRequestMother.dateRequest();
                     response = controller.createDateQuestion((CreateQuestionRequest.Date) request);
+                    break;
+                case "numeric":
+                    request = QuestionRequestMother.numericRequest();
+                    response = controller.createNumericQuestion((CreateQuestionRequest.Numeric) request);
                     break;
                 default:
                     throw new NotYetImplementedException();
@@ -136,6 +141,9 @@ public class CreateQuestionSteps {
             case "date":
                 validateDateQuestion();
                 break;
+            case "numeric":
+                validateNumericQuestion();
+                break;
             default:
                 throw new NotYetImplementedException();
         }
@@ -143,7 +151,8 @@ public class CreateQuestionSteps {
 
     private void validateTextQuestion() {
         assertNotNull(response);
-        TextQuestion question = (TextQuestion) questionRepository.findById(response.questionId()).orElseThrow();
+        TextQuestionEntity question =
+                (TextQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
         CreateQuestionRequest.Text textRequest = (CreateQuestionRequest.Text) request;
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(textRequest.defaultValue(), question.getDefaultValue());
@@ -153,11 +162,27 @@ public class CreateQuestionSteps {
 
     private void validateDateQuestion() {
         assertNotNull(response);
-        DateQuestion question = (DateQuestion) questionRepository.findById(response.questionId()).orElseThrow();
+        DateQuestionEntity question =
+                (DateQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
         CreateQuestionRequest.Date dateRequest = (CreateQuestionRequest.Date) request;
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(dateRequest.mask(), question.getMask());
         assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
+    }
+
+    private void validateNumericQuestion() {
+        assertNotNull(response);
+        NumericQuestionEntity question =
+                (NumericQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Numeric numericRequest = (CreateQuestionRequest.Numeric) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(numericRequest.mask(), question.getMask());
+        assertEquals(numericRequest.fieldLength(), question.getFieldSize());
+        assertEquals(numericRequest.defaultValue(), question.getDefaultValue());
+        assertEquals(numericRequest.minValue(), question.getMinValue());
+        assertEquals(numericRequest.maxValue(), question.getMaxValue());
+        assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
+        assertEquals(numericRequest.unitValue(), question.getUnitValue());
     }
 
     @Then("a not authorized exception is thrown")

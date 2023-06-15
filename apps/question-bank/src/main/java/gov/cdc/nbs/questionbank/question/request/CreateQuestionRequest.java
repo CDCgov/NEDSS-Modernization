@@ -63,6 +63,32 @@ public sealed interface CreateQuestionRequest {
 
     }
 
+    record Numeric(
+            // General question fields
+            String codeSet,
+            String uniqueId,
+            String uniqueName,
+            String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            ReportingInfo dataMartInfo,
+            MessagingInfo messagingInfo,
+            String adminComments,
+
+            // Numeric specific fields
+            String mask,
+            String fieldLength,
+            String defaultValue,
+            Long minValue,
+            Long maxValue,
+            UnitType unitTypeCd,
+            String unitValue // Id of Value set, or literal value
+    ) implements CreateQuestionRequest {
+
+    }
+
     public record ReportingInfo(
             String reportLabel,
             String defaultRdbTableName,
@@ -77,5 +103,10 @@ public sealed interface CreateQuestionRequest {
             String codeSystem,
             boolean requiredInMessage,
             String hl7DataType) {
+    }
+
+    public enum UnitType {
+        CODED,
+        LITERAL
     }
 }

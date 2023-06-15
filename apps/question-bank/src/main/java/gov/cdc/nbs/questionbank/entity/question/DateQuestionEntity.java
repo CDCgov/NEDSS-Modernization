@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,8 +13,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(DateQuestion.DATE_QUESION_TYPE)
-public class DateQuestion extends WaQuestion {
+@DiscriminatorValue(DateQuestionEntity.DATE_QUESION_TYPE)
+public class DateQuestionEntity extends WaQuestion {
     static final String DATE_QUESION_TYPE = "DATE";
 
     @Column(name = "mask", length = 50)
@@ -24,13 +25,13 @@ public class DateQuestion extends WaQuestion {
 
     @Override
     public String getDataType() {
-        return DateQuestion.DATE_QUESION_TYPE;
+        return DateQuestionEntity.DATE_QUESION_TYPE;
     }
 
-    public DateQuestion(QuestionCommand.AddDateQuestion command) {
+    public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
         super(command);
 
-        this.mask = command.mask();
+        this.mask = requireNonNull(command.mask(), "Mask must not be null");
         this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
 
         // Audit

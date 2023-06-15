@@ -117,6 +117,42 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create Numeric Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/numeric",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"numeric"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
