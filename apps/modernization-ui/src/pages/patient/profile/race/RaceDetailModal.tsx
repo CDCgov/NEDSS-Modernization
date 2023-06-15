@@ -2,7 +2,7 @@ import { Grid, ModalRef } from '@trussworks/react-uswds';
 import { RefObject } from 'react';
 
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import { PatientRace } from './Race';
+import { PatientRace } from './PatientRace';
 import { internalizeDate } from 'date';
 import { maybeDescription, maybeDescriptions } from 'pages/patient/profile/coded';
 

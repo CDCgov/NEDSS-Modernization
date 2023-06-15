@@ -14,7 +14,7 @@ import { Direction, sortByNestedProperty, withDirection } from 'sorting/Sort';
 import { externalizeDateTime, internalizeDate } from 'date';
 import { ConfirmationModal } from 'confirmation';
 import { maybeId, maybeIds } from 'pages/patient/profile/coded';
-import { PatientRace } from './Race';
+import { PatientRace } from './PatientRace';
 import { useFindPatientProfileRace } from './useFindPatientProfileRace';
 import { RaceEntryModal } from './RaceEntryModal';
 import { RaceDetailModal } from './RaceDetailModal';
