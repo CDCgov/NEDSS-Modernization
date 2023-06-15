@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
 
 public class QuestionRequestMother {
@@ -37,6 +38,28 @@ public class QuestionRequestMother {
                 "Test admin comments",
                 "Mask",
                 false);
+    }
+
+    public static CreateQuestionRequest.Numeric numericRequest() {
+        return new CreateQuestionRequest.Numeric(
+                "PHIN",
+                "Test unique Id",
+                "TEST UNIQUE NAME",
+                "Test_Subgroup",
+                "Test description",
+                "Test label",
+                "Test tooltip",
+                1008L,
+                reportingInfo(),
+                messagingInfo(false),
+                "Test admin comments",
+                "NUM",
+                "3",
+                "1",
+                0L,
+                100L,
+                UnitType.LITERAL,
+                "Some literal value");
     }
 
     public static CreateQuestionRequest.Text custom(

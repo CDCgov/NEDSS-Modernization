@@ -32,7 +32,8 @@ tasks.named("test") { testTask ->
                 "in ${TimeCategory.minus(new Date(result.endTime), new Date(result.startTime))}" +
                 "\n" +
                 "Report file: ${testTask.reports.html.entryPoint}" + "\n" +
-                "Cucumber report: ${project.projectDir}/build/reports/tests/test/cucumber-report.html"
+                "Cucumber report: ${project.projectDir}/build/reports/tests/test/cucumber-report.html" + "\n" +
+                "Jacoco report: ${project.projectDir}/build/reports/jacoco/test/html/index.html"
 
 
         // Add reports in `testsResults`, keep failed suites at the end

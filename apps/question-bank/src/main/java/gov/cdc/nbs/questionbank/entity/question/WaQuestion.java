@@ -158,23 +158,11 @@ public abstract class WaQuestion {
         this.userDefinedColumnNm = formatAndValidateReportingField(userDefinedColumnNm);
     }
 
-    @Column(name = "min_value")
-    private Long minValue;
-
-    @Column(name = "max_value")
-    private Long maxValue;
-
     @Column(name = "standard_nnd_ind_cd")
     private Character standardNndIndCd;
 
     @Column(name = "legacy_question_identifier", length = 50)
     private String legacyQuestionIdentifier;
-
-    @Column(name = "unit_type_cd", length = 20)
-    private String unitTypeCd;
-
-    @Column(name = "unit_value", length = 50)
-    private String unitValue;
 
     @Column(name = "other_value_ind_cd")
     private Character otherValueIndCd;

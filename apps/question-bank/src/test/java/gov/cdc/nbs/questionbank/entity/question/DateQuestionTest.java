@@ -10,7 +10,7 @@ class DateQuestionTest {
 
     @Test
     void should_have_date_type() {
-        DateQuestion q = new DateQuestion();
+        DateQuestionEntity q = new DateQuestionEntity();
         assertEquals("DATE", q.getDataType());
     }
 
@@ -18,7 +18,7 @@ class DateQuestionTest {
     void should_set_future_date_to_F() {
         QuestionCommand.AddDateQuestion command = addCommand("mask", false);
 
-        DateQuestion q = new DateQuestion(command);
+        DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('F', q.getFutureDateIndCd().charValue());
         assertEquals("mask", q.getMask());
     }
@@ -27,7 +27,7 @@ class DateQuestionTest {
     void should_set_future_date_to_T() {
         QuestionCommand.AddDateQuestion command = addCommand("mask1", true);
 
-        DateQuestion q = new DateQuestion(command);
+        DateQuestionEntity q = new DateQuestionEntity(command);
         assertEquals('T', q.getFutureDateIndCd().charValue());
         assertEquals("mask1", q.getMask());
     }

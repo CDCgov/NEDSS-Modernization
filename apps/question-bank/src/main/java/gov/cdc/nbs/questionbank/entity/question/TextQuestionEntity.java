@@ -12,26 +12,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(DateQuestion.DATE_QUESION_TYPE)
-public class DateQuestion extends WaQuestion {
-    static final String DATE_QUESION_TYPE = "DATE";
+@DiscriminatorValue(TextQuestionEntity.TEXT_QUESION_TYPE)
+public class TextQuestionEntity extends WaQuestion {
+    static final String TEXT_QUESION_TYPE = "TEXT";
 
     @Column(name = "mask", length = 50)
     private String mask;
 
-    @Column(name = "future_date_ind_cd")
-    private Character futureDateIndCd;
+    @Column(name = "field_size", length = 10)
+    private String fieldSize;
+
+    @Column(name = "default_value", length = 300)
+    private String defaultValue;
 
     @Override
     public String getDataType() {
-        return DateQuestion.DATE_QUESION_TYPE;
+        return TextQuestionEntity.TEXT_QUESION_TYPE;
     }
 
-    public DateQuestion(QuestionCommand.AddDateQuestion command) {
+    public TextQuestionEntity(QuestionCommand.AddTextQuestion command) {
         super(command);
 
+        this.defaultValue = command.defaultValue();
         this.mask = command.mask();
-        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
+        this.fieldSize = command.fieldLength();
 
         // Audit
         created(command);

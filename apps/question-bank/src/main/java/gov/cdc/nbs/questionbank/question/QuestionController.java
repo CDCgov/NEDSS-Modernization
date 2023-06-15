@@ -45,4 +45,14 @@ public class QuestionController {
         return new CreateQuestionResponse(questionId);
     }
 
+    @PostMapping("numeric")
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public CreateQuestionResponse createNumericQuestion(@RequestBody CreateQuestionRequest.Numeric request) {
+        log.debug("Received create date question request");
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        long questionId = creator.create(userId, request);
+        log.debug("Successfully created date question with Id: {}", questionId);
+        return new CreateQuestionResponse(questionId);
+    }
+
 }

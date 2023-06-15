@@ -12,9 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(TextQuestion.TEXT_QUESION_TYPE)
-public class TextQuestion extends WaQuestion {
-    static final String TEXT_QUESION_TYPE = "TEXT";
+@DiscriminatorValue(NumericQuestionEntity.NUMERIC_QUESION_TYPE)
+public class NumericQuestionEntity extends WaQuestion {
+    static final String NUMERIC_QUESION_TYPE = "NUMERIC";
 
     @Column(name = "mask", length = 50)
     private String mask;
@@ -25,17 +25,33 @@ public class TextQuestion extends WaQuestion {
     @Column(name = "default_value", length = 300)
     private String defaultValue;
 
+    @Column(name = "min_value")
+    private Long minValue;
+
+    @Column(name = "max_value")
+    private Long maxValue;
+
+    @Column(name = "unit_type_cd", length = 20)
+    private String unitTypeCd;
+
+    @Column(name = "unit_value", length = 50)
+    private String unitValue;
+
     @Override
     public String getDataType() {
-        return TextQuestion.TEXT_QUESION_TYPE;
+        return NumericQuestionEntity.NUMERIC_QUESION_TYPE;
     }
 
-    public TextQuestion(QuestionCommand.AddTextQuestion command) {
+    public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
         super(command);
 
-        this.defaultValue = command.defaultValue();
         this.mask = command.mask();
         this.fieldSize = command.fieldLength();
+        this.defaultValue = command.defaultValue();
+        this.minValue = command.minValue();
+        this.maxValue = command.maxValue();
+        this.unitTypeCd = command.unitTypeCd();
+        this.unitValue = command.unitValue();
 
         // Audit
         created(command);

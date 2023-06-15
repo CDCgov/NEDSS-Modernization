@@ -83,7 +83,7 @@ class WaQuestionTest {
     @Test
     void should_initialize_correct_values() {
         AddTextQuestion command = createCommand();
-        WaQuestion question = new TextQuestion(command);
+        WaQuestion question = new TextQuestionEntity(command);
 
         assertEquals("NBS_CASE_ANSWER.ANSWER_TXT", question.getDataLocation());
         assertEquals(command.localId(), question.getQuestionIdentifier());
