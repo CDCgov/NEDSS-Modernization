@@ -6,6 +6,7 @@ import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
 import { useCountyCodedValues } from 'location';
 import { Deceased, InputMaybe, Scalars } from 'generated/graphql/schema';
 import { usePatientSexBirthCodedValues } from '../sexBirth/usePatientSexBirthCodedValues';
+import { useState } from 'react';
 
 type Props = {
     entry?: MortalityEntry | null;
@@ -31,6 +32,7 @@ export const MortalityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
     const coded = usePatientSexBirthCodedValues();
 
     const byState = useCountyCodedValues(selectedState);
+    const [isDead, setIsDead] = useState<any>();
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
@@ -73,7 +75,10 @@ export const MortalityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
-                                onChange={onChange}
+                                onChange={(e: any) => {
+                                    onChange(e);
+                                    setIsDead(e.target.value);
+                                }}
                                 htmlFor={'deceased'}
                                 options={Object.values(Deceased).map((deceased) => {
                                     return {
@@ -101,7 +106,13 @@ export const MortalityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         name="dod"
                         defaultValue={entry?.deceasedTime}
                         render={({ field: { onChange, value } }) => (
-                            <DatePickerInput defaultValue={value} onChange={onChange} name="dod" htmlFor={'dod'} />
+                            <DatePickerInput
+                                disabled={isDead !== 'Y'}
+                                defaultValue={value}
+                                onChange={onChange}
+                                name="dod"
+                                htmlFor={'dod'}
+                            />
                         )}
                     />
                 </Grid>
