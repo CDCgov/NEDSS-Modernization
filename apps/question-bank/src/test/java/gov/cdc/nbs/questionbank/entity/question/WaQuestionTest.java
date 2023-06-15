@@ -112,12 +112,12 @@ class WaQuestionTest {
     void should_set_messaging_data_false() {
         WaQuestion question = emptyQuestion();
         question.setMessagingData(new MessagingData(
+                true,
+                "variableId",
+                "label",
+                "codeSystem",
                 false,
-                null,
-                null,
-                null,
-                false,
-                null));
+                "hl7 type"));
         assertEquals('O', question.getQuestionRequiredNnd().charValue());
     }
 
@@ -125,12 +125,12 @@ class WaQuestionTest {
     void should_set_messaging_data_true() {
         WaQuestion question = emptyQuestion();
         question.setMessagingData(new MessagingData(
-                false,
-                null,
-                null,
-                null,
                 true,
-                null));
+                "variableId",
+                "label",
+                "codeSystem",
+                true,
+                "hl7 type"));
         assertEquals('R', question.getQuestionRequiredNnd().charValue());
     }
 
