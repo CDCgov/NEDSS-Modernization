@@ -3,10 +3,12 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestion;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
@@ -29,7 +31,7 @@ public class CreateQuestionSteps {
     @Autowired
     private WaQuestionRepository questionRepository;
 
-    private CreateQuestionRequest.Text request;
+    private CreateQuestionRequest request;
 
     private CreateQuestionResponse response;
 
@@ -55,11 +57,21 @@ public class CreateQuestionSteps {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    @When("I send a create text question request")
-    public void I_send_a_create_text_question_request() {
-        request = QuestionRequestMother.localTextRequest();
+    @When("I send a create {string} question request")
+    public void i_send_a_create_question_request(String questionType) {
         try {
-            response = controller.createTextQuestion(request);
+            switch (questionType) {
+                case "text":
+                    request = QuestionRequestMother.localTextRequest();
+                    response = controller.createTextQuestion((CreateQuestionRequest.Text) request);
+                    break;
+                case "date":
+                    request = QuestionRequestMother.dateRequest();
+                    response = controller.createDateQuestion((CreateQuestionRequest.Date) request);
+                    break;
+                default:
+                    throw new NotYetImplementedException();
+            }
         } catch (AccessDeniedException e) {
             exception = e;
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -115,14 +127,37 @@ public class CreateQuestionSteps {
         }
     }
 
-    @Then("the text question is created")
-    public void the_text_question_is_created() {
+    @Then("the {string} question is created")
+    public void the_question_is_created(String questionType) {
+        switch (questionType) {
+            case "text":
+                validateTextQuestion();
+                break;
+            case "date":
+                validateDateQuestion();
+                break;
+            default:
+                throw new NotYetImplementedException();
+        }
+    }
+
+    private void validateTextQuestion() {
         assertNotNull(response);
         TextQuestion question = (TextQuestion) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Text textRequest = (CreateQuestionRequest.Text) request;
         assertEquals(question.getId().longValue(), response.questionId());
-        assertEquals(request.defaultValue(), question.getDefaultValue());
-        assertEquals(request.mask(), question.getMask());
-        assertEquals(request.fieldLength(), question.getFieldSize());
+        assertEquals(textRequest.defaultValue(), question.getDefaultValue());
+        assertEquals(textRequest.mask(), question.getMask());
+        assertEquals(textRequest.fieldLength(), question.getFieldSize());
+    }
+
+    private void validateDateQuestion() {
+        assertNotNull(response);
+        DateQuestion question = (DateQuestion) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Date dateRequest = (CreateQuestionRequest.Date) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(dateRequest.mask(), question.getMask());
+        assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
     }
 
     @Then("a not authorized exception is thrown")
