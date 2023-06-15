@@ -4,7 +4,7 @@ Feature: Create question
     Background: question setup
         Given No questions exist
 
-    Scenario: I can create a text question
+    Scenario: I can create a question
         Given I am an admin user
         When I send a create "<question type>" question request
         Then the "<question type>" question is created
