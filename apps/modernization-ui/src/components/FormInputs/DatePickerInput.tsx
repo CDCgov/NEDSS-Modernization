@@ -14,6 +14,7 @@ type DatePickerProps = {
     defaultValue?: string;
     errorMessage?: string;
     flexBox?: boolean;
+    disabled?: boolean;
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/[0-9]{4}$/;
@@ -35,7 +36,8 @@ export const DatePickerInput = ({
     onChange,
     className,
     defaultValue,
-    flexBox
+    flexBox,
+    disabled = false
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
     const validDefaultValue = !emptyDefaultValue && matches(defaultValue);
@@ -64,6 +66,7 @@ export const DatePickerInput = ({
                     onBlur={checkValidity}
                     onChange={handleOnChange(onChange)}
                     className={className}
+                    disabled={disabled}
                     name={name}
                 />
             )}
@@ -74,6 +77,7 @@ export const DatePickerInput = ({
                     onChange={handleOnChange(onChange)}
                     className={className}
                     name={name}
+                    disabled={disabled}
                     defaultValue={intialDefault}
                 />
             )}
@@ -89,6 +93,7 @@ export const DatePickerInput = ({
                         onBlur={checkValidity}
                         onChange={handleOnChange(onChange)}
                         className={className}
+                        disabled={disabled}
                         name={name}
                     />
                 )}
@@ -99,6 +104,7 @@ export const DatePickerInput = ({
                         onChange={handleOnChange(onChange)}
                         className={className}
                         name={name}
+                        disabled={disabled}
                         defaultValue={intialDefault}
                     />
                 )}
