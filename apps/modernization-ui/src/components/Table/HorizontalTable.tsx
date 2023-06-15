@@ -3,7 +3,6 @@ import { ReactNode, useState } from 'react';
 import './style.scss';
 import { MortalityForm } from '../DemographicsForm/Mortality';
 import { GeneralPatientInformation } from '../DemographicsForm/GenearalPatientData';
-import { SexBirthForm } from '../DemographicsForm/SexBirth';
 import { PatientBirth, PatientGeneral, PatientMortality } from 'generated/graphql/schema';
 
 export type TableProps = {
@@ -50,9 +49,6 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type, data }:
             )}
             {entry === 'general' && (
                 <GeneralPatientInformation data={data as PatientGeneral} setGeneralForm={() => setEntry(undefined)} />
-            )}
-            {entry === 'sex' && (
-                <SexBirthForm data={data as PatientBirth} setSexBirthForm={() => setEntry(undefined)} />
             )}
         </div>
     );
