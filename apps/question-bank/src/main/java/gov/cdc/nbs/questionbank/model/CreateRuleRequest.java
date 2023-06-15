@@ -11,5 +11,5 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CreateRuleRequest {
     private RuleDescriptionDto ruleDescription;
-    private RuleDetailsDTO ruleDetails;
+    private RuleDetailsDto ruleDetails;
 }

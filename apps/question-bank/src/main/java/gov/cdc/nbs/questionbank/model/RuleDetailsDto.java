@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RuleDetailsDTO {
+public class RuleDetailsDto {
 
     private String source;
     private String anySourceValue;
