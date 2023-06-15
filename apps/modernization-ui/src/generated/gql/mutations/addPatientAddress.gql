@@ -1,6 +1,5 @@
 mutation addPatientAddress($input: AddressInput!){
     addPatientAddress(input: $input){
-        requestId
         patientId
     }
 }
