@@ -16,12 +16,12 @@ public class GeneralCodedValueResolver {
 
     @QueryMapping
     public Collection<CodedValue> maritalStatuses() {
-        return finder.all("P_MARITAL");
+        return finder.all("P_MARITAL", CodedValues.withStandardizedName());
     }
 
     @QueryMapping
     public Collection<CodedValue> educationLevels() {
-        return finder.all("P_EDUC_LVL");
+        return finder.all("P_EDUC_LVL", CodedValues.withStandardizedName());
     }
 
     @QueryMapping
@@ -31,7 +31,7 @@ public class GeneralCodedValueResolver {
 
     @QueryMapping
     public Collection<CodedValue> ethnicGroups() {
-        return finder.all("PHVS_ETHNICITYGROUP_CDC_UNK");
+        return finder.all("PHVS_ETHNICITYGROUP_CDC_UNK", CodedValues.withStandardizedName());
     }
 
     @QueryMapping
@@ -41,12 +41,12 @@ public class GeneralCodedValueResolver {
 
     @QueryMapping
     public Collection<CodedValue> ethnicityUnknownReasons() {
-        return finder.all("P_ETHN_UNK_REASON");
+        return finder.all("P_ETHN_UNK_REASON", CodedValues.withStandardizedName());
     }
 
     @QueryMapping
     public Collection<CodedValue> genderUnknownReasons() {
-        return finder.all("SEX_UNK_REASON");
+        return finder.all("SEX_UNK_REASON", CodedValues.withStandardizedName());
     }
 
     @QueryMapping
