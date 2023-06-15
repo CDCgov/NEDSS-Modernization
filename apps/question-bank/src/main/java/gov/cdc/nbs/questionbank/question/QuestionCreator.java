@@ -18,7 +18,6 @@ import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.Date;
 
 @Component
 class QuestionCreator {
@@ -83,7 +82,7 @@ class QuestionCreator {
         eventProducer.send(new QuestionCreatedEvent(id, user, createTime));
     }
 
-    private AddDateQuestion asAdd(Long userId, Date request) {
+    private AddDateQuestion asAdd(Long userId, CreateQuestionRequest.Date request) {
         QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
 
         QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo(), request.subgroup());
