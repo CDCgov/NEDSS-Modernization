@@ -4,5 +4,5 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
 public interface BusinessRuleService {
 
-   String createBusinessRule(CreateRuleRequest createRuleRequest);
+   Long createBusinessRule(CreateRuleRequest createRuleRequest);
 }
