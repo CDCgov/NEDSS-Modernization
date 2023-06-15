@@ -331,7 +331,7 @@ type PatientEthnicityChangeResult {
 }
 
 input RaceInput {
-    patient: ID!
+    patient: Int!
     asOf: DateTime
     category: String!
     detailed: [String!]
