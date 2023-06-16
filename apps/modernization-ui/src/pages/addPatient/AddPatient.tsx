@@ -328,7 +328,6 @@ export default function AddPatient() {
                                             id={'section-Identification'}
                                             title="Identification"
                                         />
-                                        <div className={'bottom-padding'} />
                                     </Grid>
 
                                     <Grid col={3} style={{ alignSelf: 'flex-start' }}>
