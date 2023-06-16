@@ -103,8 +103,9 @@ class QuestionCreator {
     }
 
     void verifyValueSetExists(Long valueSet) {
-        codesetRepository.findOneByCodeSetGroupId(valueSet)
-                .orElseThrow(() -> new CreateQuestionException("Unable to find ValueSet with id: " + valueSet));
+        if (codesetRepository.findOneByCodeSetGroupId(valueSet).isEmpty()) {
+            throw new CreateQuestionException("Unable to find ValueSet with id: " + valueSet);
+        }
     }
 
     private void sendCreateEvent(Long id, Long user, Instant createTime) {
