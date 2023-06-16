@@ -10,7 +10,6 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
@@ -634,6 +633,257 @@ class PersonTest {
     }
 
     @Test
+    void should_add_name() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddName(
+                117L,
+                Instant.parse("2023-05-15T10:00:00Z"),
+                "prefix",
+                "First",
+                "Middle",
+                "Second-Middle",
+                "Last",
+                "Second-Last",
+                "JR",
+                "Degree",
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30Z")
+            )
+        );
+
+        assertThat(patient.getNames()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+                .returns("prefix", PersonName::getNmPrefix)
+                .returns("First", PersonName::getFirstNm)
+                .returns("Second-Middle", PersonName::getMiddleNm2)
+                .returns("Middle", PersonName::getMiddleNm)
+                .returns("Last", PersonName::getLastNm)
+                .returns("Second-Last", PersonName::getLastNm2)
+                .returns(Suffix.JR, PersonName::getNmSuffix)
+                .returns("Degree", PersonName::getNmDegree)
+                .returns("L", PersonName::getNmUseCd)
+                .satisfies(
+                    name -> assertThat(name)
+                        .describedAs("expected name identifier starts at sequence 1")
+                        .extracting(PersonName::getId)
+                        .returns(117L, PersonNameId::getPersonUid)
+                        .returns((short) 1, PersonNameId::getPersonNameSeq)
+                )
+                .satisfies(
+                    added -> assertThat(added.getAudit())
+                        .describedAs("expected name audit state")
+                        .satisfies(
+                            audit -> assertThat(audit.getAdded())
+                                .returns(131L, Added::getAddUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::getAddTime)
+                        )
+                        .satisfies(
+                            audit -> assertThat(audit.getChanged())
+                                .returns(131L, Changed::getLastChgUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::getLastChgTime)
+                        )
+                )
+
+
+        );
+    }
+
+    @Test
+    void should_add_another_name() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddName(
+                117L,
+                "First",
+                "Middle",
+                "Last",
+                "JR",
+                "L",
+                171L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddName(
+                117L,
+                Instant.parse("2023-05-15T10:00:00Z"),
+                "Another-Prefix",
+                "Another-First",
+                "Another-Middle",
+                "Another-Second-Middle",
+                "Another-Last",
+                "Another-Second-Last",
+                "SR",
+                "Another-Degree",
+                "A",
+                131L,
+                Instant.parse("2021-02-03T04:05:06Z")
+            )
+        );
+
+        assertThat(patient.getNames()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .extracting(PersonName::getId)
+                .returns(117L, PersonNameId::getPersonUid)
+                .returns((short) 1, PersonNameId::getPersonNameSeq),
+            actual -> assertThat(actual)
+                .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+                .returns("Another-Prefix", PersonName::getNmPrefix)
+                .returns("Another-First", PersonName::getFirstNm)
+                .returns("Another-Second-Middle", PersonName::getMiddleNm2)
+                .returns("Another-Middle", PersonName::getMiddleNm)
+                .returns("Another-Last", PersonName::getLastNm)
+                .returns("Another-Second-Last", PersonName::getLastNm2)
+                .returns(Suffix.SR, PersonName::getNmSuffix)
+                .returns("Another-Degree", PersonName::getNmDegree)
+                .returns("A", PersonName::getNmUseCd)
+                .satisfies(
+                    name -> assertThat(name)
+                        .describedAs("expected name identifier starts at sequence 2")
+                        .extracting(PersonName::getId)
+                        .returns(117L, PersonNameId::getPersonUid)
+                        .returns((short) 2, PersonNameId::getPersonNameSeq)
+                )
+                .satisfies(
+                    added -> assertThat(added.getAudit())
+                        .describedAs("expected name audit state")
+                        .satisfies(
+                            audit -> assertThat(audit.getAdded())
+                                .returns(131L, Added::getAddUserId)
+                                .returns(Instant.parse("2021-02-03T04:05:06Z"), Added::getAddTime)
+                        )
+                        .satisfies(
+                            audit -> assertThat(audit.getChanged())
+                                .returns(131L, Changed::getLastChgUserId)
+                                .returns(Instant.parse("2021-02-03T04:05:06Z"), Changed::getLastChgTime)
+                        )
+                )
+
+
+        );
+    }
+
+    @Test
+    void should_update_existing_name() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddName(
+                117L,
+                "First",
+                "Middle",
+                "Last",
+                "JR",
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.update(
+            new PatientCommand.UpdateNameInfo(
+                117L,
+                (short) 1,
+                Instant.parse("2023-05-15T10:00:00Z"),
+                "prefix",
+                "First",
+                "Middle",
+                "Second-Middle",
+                "Last",
+                "Second-Last",
+                "JR",
+                "Degree",
+                "L",
+                171L,
+                Instant.parse("2021-04-05T06:07:08Z")
+            )
+        );
+
+        assertThat(patient.getNames()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
+                .returns("prefix", PersonName::getNmPrefix)
+                .returns("First", PersonName::getFirstNm)
+                .returns("Second-Middle", PersonName::getMiddleNm2)
+                .returns("Middle", PersonName::getMiddleNm)
+                .returns("Last", PersonName::getLastNm)
+                .returns("Second-Last", PersonName::getLastNm2)
+                .returns(Suffix.JR, PersonName::getNmSuffix)
+                .returns("Degree", PersonName::getNmDegree)
+                .returns("L", PersonName::getNmUseCd)
+                .satisfies(
+                    name -> assertThat(name)
+                        .describedAs("expected name identifier starts at sequence 1")
+                        .extracting(PersonName::getId)
+                        .returns(117L, PersonNameId::getPersonUid)
+                        .returns((short) 1, PersonNameId::getPersonNameSeq)
+                )
+                .satisfies(
+                    added -> assertThat(added.getAudit())
+                        .describedAs("expected name audit state")
+                        .satisfies(
+                            audit -> assertThat(audit.getChanged())
+                                .returns(171L, Changed::getLastChgUserId)
+                                .returns(Instant.parse("2021-04-05T06:07:08Z"), Changed::getLastChgTime)
+                        )
+                )
+        );
+    }
+
+    @Test
+    void should_remove_existing_name() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddName(
+                117L,
+                "First",
+                "Middle",
+                "Last",
+                "JR",
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddName(
+                117L,
+                "Other-First",
+                "Other-Middle",
+                "Other-Last",
+                null,
+                "L",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.delete(
+            new PatientCommand.DeleteNameInfo(
+                117L,
+                (short) 2,
+                171L,
+                Instant.parse("2021-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.getNames()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .extracting(PersonName::getId)
+                .returns(117L, PersonNameId::getPersonUid)
+                .returns((short) 1, PersonNameId::getPersonNameSeq)
+        );
+    }
+
+    @Test
     void should_start_name_sequence_at_one() {
         Person actual = new Person(117L, "local-id-value");
 
@@ -643,8 +893,8 @@ class PersonTest {
                 "First",
                 "Middle",
                 "Last",
-                Suffix.JR,
-                PatientInput.NameUseCd.L,
+                "JR",
+                "L",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
             )
@@ -674,19 +924,19 @@ class PersonTest {
                 "First",
                 "Middle",
                 "Last",
-                Suffix.JR,
-                PatientInput.NameUseCd.L,
+                "JR",
+                "L",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")));
 
         actual.add(
             new PatientCommand.AddName(
                 117L,
-                "Second",
-                "SecondMiddle",
-                "SecondLast",
-                Suffix.SR,
-                PatientInput.NameUseCd.AL,
+                "Other",
+                "OtherMiddle",
+                "OtherLast",
+                "SR",
+                "AL",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")));
 
@@ -706,9 +956,9 @@ class PersonTest {
                 .returns(117L, PersonNameId::getPersonUid)
                 .returns((short) 1, PersonNameId::getPersonNameSeq),
             actual_alias -> assertThat(actual_alias)
-                .returns("Second", PersonName::getFirstNm)
-                .returns("SecondMiddle", PersonName::getMiddleNm)
-                .returns("SecondLast", PersonName::getLastNm)
+                .returns("Other", PersonName::getFirstNm)
+                .returns("OtherMiddle", PersonName::getMiddleNm)
+                .returns("OtherLast", PersonName::getLastNm)
                 .returns(Suffix.SR, PersonName::getNmSuffix)
                 .returns("AL", PersonName::getNmUseCd)
                 .extracting(PersonName::getId)
@@ -860,10 +1110,10 @@ class PersonTest {
 
         Instant deletedOn = Instant.parse("2020-03-03T10:15:30.00Z");
         var deleteCommand = new PatientCommand.Delete(
-                    117L,
-                    131L,
-                    deletedOn
-                );
+            117L,
+            131L,
+            deletedOn
+        );
 
         assertThatThrownBy(() ->
             actual.delete(
