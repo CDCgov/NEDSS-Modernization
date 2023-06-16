@@ -8,7 +8,12 @@ import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
 
 public interface CodesetGroupMetadatumRepository extends JpaRepository <CodeSetGroupMetaDatum, Long> {
 	
-	@Query("SELECT count(*) FROM nbs_srte..Codeset_Group_Metadata metadata,nbs_srte..CodeSet codeSet WHERE metadata.code_set_short_desc_txt =:codeSetShrtDescText AND codeSet.CLASS_CD = 'code_value_general' AND metadata.code_set_nm =:codeSetNm")
+	@Query("SELECT count(*) FROM CodeSetGroupMetaDatum metadata, CodeSet codeSet WHERE metadata.codeSetShortDescTxt =:codeSetShrtDescText AND codeSet.id.classCd = 'code_value_general' AND metadata.codeSetNm =:codeSetNm")
 	long  checkCodeSetGrpMetaDatEntry (@Param("codeSetShrtDescText")String codeSetShrtDescText,  @Param("codeSetNm")String codeSetNm);
+	
+	
+	 @Query("SELECT MAX(id) FROM CodeSetGroupMetaDatum")
+	 long getCodeSetGroupMaxID();
+	 
 
 }

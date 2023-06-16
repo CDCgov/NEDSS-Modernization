@@ -182,7 +182,7 @@ class ValueSetCreatorTest {
 	@Test
 	void getCodeSetGroupIDNonDefaultTest() {
 		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(1l);
-		when(valueSetRepository.getCodeSetGroupMaxID()).thenReturn(99950l);
+		when(codeSetGrpMetaRepository.getCodeSetGroupMaxID()).thenReturn(99950l);
 		long result =valueSetCreator.getCodeSetGroupID();
 		assertEquals(99950l + 10, result);
 

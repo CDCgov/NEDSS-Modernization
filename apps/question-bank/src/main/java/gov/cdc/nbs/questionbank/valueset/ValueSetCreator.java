@@ -79,7 +79,7 @@ public class ValueSetCreator {
 	public long getCodeSetGroupID() {
 		long maxGroupID = valueSetRepository.getCodeSetGroupCeilID();
 		if (maxGroupID > 0) {
-			maxGroupID = valueSetRepository.getCodeSetGroupMaxID() + 10;
+			maxGroupID = codeSetGrpMetaRepository.getCodeSetGroupMaxID() + 10;
 		} else {
 			maxGroupID = 9910;
 		}
