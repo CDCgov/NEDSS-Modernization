@@ -83,6 +83,42 @@
 			"response": []
 		},
 		{
+			"name": "Create Coded Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"adminComments\": \"Coded administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"CODED_DATA_MART_COL\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"CODED_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Coded report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Coded Question\",\n  \"displayControl\": 1007,\n  \"label\": \"Sample coded question label\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Coded question label in message\",\n    \"messageVariableId\": \"Coded MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample coded question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample coded question\",\n  \"valueSet\": 4150\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/coded",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"coded"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create Date Question",
 			"request": {
 				"method": "POST",
