@@ -26,8 +26,6 @@ import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
@@ -468,47 +466,6 @@ public class PatientService {
             personRepository.save(person);
             return sendPatientEvent(updateGeneralInfoEvent);
         }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
-    public PatientEventResponse addPatientName(NameInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            PatientCommand.AddName addName = new PatientCommand.AddName(
-                input.getPatientId(),
-                input.getFirstName(),
-                input.getMiddleName(),
-                input.getLastName(),
-                input.getSuffix(),
-                PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
-                user.getId(),
-                Instant.now()
-            );
-            person.add(addName);
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
-    public PatientEventResponse updatePatientName(NameInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            PatientCommand.AddName addName = new PatientCommand.AddName(
-                input.getPatientId(),
-                input.getFirstName(),
-                input.getMiddleName(),
-                input.getLastName(),
-                input.getSuffix(),
-                PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
-                user.getId(),
-                Instant.now()
-            );
-            person.update(addName);
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
     }
 
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {

@@ -100,13 +100,15 @@ public class PatientCreator {
         final PatientIdentifier identifier,
         final PatientInput.Name name
     ) {
+        String suffix = name.getSuffix() == null ? null : name.getSuffix().value();
+        String type = name.getUse() == null ? null : name.getUse().name();
         return new PatientCommand.AddName(
             identifier.id(),
             name.getFirst(),
             name.getMiddle(),
             name.getLast(),
-            name.getSuffix(),
-            name.getUse(),
+            suffix,
+            type,
             context.requestedBy(),
             context.requestedAt()
         );

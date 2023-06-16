@@ -463,13 +463,14 @@ public class Person {
         Collection<PersonName> existing = ensureNames();
 
         if (existing.isEmpty()) {
+
             this.firstNm = added.first();
             this.middleNm = added.middle();
             this.lastNm = added.last();
-            this.nmSuffix = added.suffix();
+            this.nmSuffix = Suffix.resolve(added.suffix());
         }
 
-        PersonNameId identifier = new PersonNameId(this.id, (short) (existing.size() + 1));
+        PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
         PersonName personName = new PersonName(
             identifier,
@@ -480,6 +481,24 @@ public class Person {
         existing.add(personName);
 
         return personName;
+    }
+
+
+    public void update(final PatientCommand.UpdateNameInfo info) {
+        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> name.update(info));
+
+        changed(info);
+    }
+
+    public void delete(final PatientCommand.DeleteNameInfo info) {
+        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+        ensureNames().removeIf(name -> Objects.equals(name.getId(), identifier));
+        changed(info);
     }
 
     private Collection<PersonName> ensureNames() {
@@ -597,36 +616,6 @@ public class Person {
         changed(info);
     }
 
-    public void update(PatientCommand.AddName info) {
-        this.add(info);
-        changed(info);
-    }
-
-    public void update(PatientCommand.UpdateNameInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-
-        Collection<PersonName> existing = ensureNames();
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-
-        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
-            p.setFirstNm(info.first());
-            p.setMiddleNm(info.middle());
-            p.setLastNm(info.last());
-            p.setNmSuffix(info.suffix());
-            p.setNmUseCd(info.type());
-        });
-
-        changed(info);
-    }
-
-    public void update(PatientCommand.DeleteNameInfo info) {
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-        List<PersonName> arraylist = new ArrayList<>(this.names);
-        arraylist.removeIf(item -> (item.getId().equals(identifier)));
-        this.names = arraylist;
-        changed(info);
-    }
-
     public void update(PatientCommand.UpdateSexAndBirthInfo info) {
         this.setBirthGenderCd(info.birthGender());
         this.setCurrSexCd(info.currentGender());
@@ -651,6 +640,7 @@ public class Person {
         this.setDeceasedTime(info.deceasedTime());
         changed(info);
     }
+
     public void delete(
         final PatientCommand.Delete delete,
         final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
