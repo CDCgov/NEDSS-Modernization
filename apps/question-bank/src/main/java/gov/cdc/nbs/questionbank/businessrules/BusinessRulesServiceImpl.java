@@ -24,10 +24,14 @@ public class BusinessRulesServiceImpl implements BusinessRuleService{
     public Long createBusinessRule(CreateRuleRequest createRuleRequest){
 
        WaRuleMetadata ruleMetadata = new WaRuleMetadata();
-
+       String sourceValue= (createRuleRequest.getRuleDetails().getAnySourceValue()!=null) ? createRuleRequest.getRuleDetails().getAnySourceValue():createRuleRequest.getRuleDetails().getSourceValue();
        ruleMetadata.setRuleCd(createRuleRequest.getRuleDescription().getRuleFunction());
        ruleMetadata.setRuleDescText(createRuleRequest.getRuleDescription().getRuleDescription());
        ruleMetadata.setLogic(createRuleRequest.getRuleDetails().getComparator());
+       ruleMetadata.setTargetType(createRuleRequest.getRuleDetails().getTargetType());
+       ruleMetadata.setTargetQuestionIdentifier(createRuleRequest.getRuleDetails().getTargetValue());
+       ruleMetadata.setSourceValues(sourceValue);
+       ruleMetadata.setSourceQuestionIdentifier(createRuleRequest.getRuleDetails().getSource());
        waRuleMetaDataRepository.save(ruleMetadata);
        sendRuleEvent(createRuleRequest);
        return ruleMetadata.getWaTemplateUid();
