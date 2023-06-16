@@ -19,7 +19,6 @@ import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
-import gov.cdc.nbs.questionbank.support.ValueSetMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,15 +28,10 @@ public class CreateQuestionSteps {
     private UserMother userMother;
 
     @Autowired
-    private ValueSetMother valueSetMother;
-
-    @Autowired
     private QuestionController controller;
 
     @Autowired
     private WaQuestionRepository questionRepository;
-
-    private long valueSetId;
 
     private CreateQuestionRequest request;
 
@@ -48,11 +42,6 @@ public class CreateQuestionSteps {
     @Given("No questions exist")
     public void no_questions_exist() {
         questionRepository.deleteAll();
-    }
-
-    @Given("A ValueSet exists")
-    public void value_set_exists() {
-        valueSetId = valueSetMother.emptyCodeset().getCodeSetGroup().getId();
     }
 
     @Given("I am an admin user")
@@ -87,7 +76,7 @@ public class CreateQuestionSteps {
                     response = controller.createNumericQuestion((CreateQuestionRequest.Numeric) request);
                     break;
                 case "coded":
-                    request = QuestionRequestMother.codedRequest(valueSetId);
+                    request = QuestionRequestMother.codedRequest(4150L); // Yes, No, Unknown Value set in test db
                     response = controller.createCodedQuestion((CreateQuestionRequest.Coded) request);
                     break;
                 default:
@@ -212,7 +201,7 @@ public class CreateQuestionSteps {
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
         assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
-
+        assertEquals('F', question.getOtherValueIndCd().charValue());
     }
 
     @Then("a not authorized exception is thrown")

@@ -33,6 +33,7 @@ public class CodedQuestionEntity extends WaQuestion {
 
         this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet must not be null");
         this.defaultValue = command.defaultValue();
+        setOtherValueIndCd('F');
 
         // Audit
         created(command);
