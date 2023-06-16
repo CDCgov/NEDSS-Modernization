@@ -62,7 +62,7 @@ public class QuestionRequestMother {
                 "Some literal value");
     }
 
-    public static CreateQuestionRequest.Coded codedRequest() {
+    public static CreateQuestionRequest.Coded codedRequest(long valueSet) {
         return new CreateQuestionRequest.Coded(
                 "PHIN",
                 "Test unique Id",
@@ -75,8 +75,8 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(true),
                 "Test admin comments",
-                13L,
-                "");
+                valueSet,
+                null);
     }
 
     public static CreateQuestionRequest.Text custom(

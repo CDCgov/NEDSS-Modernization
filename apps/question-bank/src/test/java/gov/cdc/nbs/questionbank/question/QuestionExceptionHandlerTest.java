@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import gov.cdc.nbs.questionbank.question.QuestionExceptionHandler.ExceptionMessage;
-import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 
 class QuestionExceptionHandlerTest {
 
@@ -14,7 +14,7 @@ class QuestionExceptionHandlerTest {
     @Test
     void should_pass_message_for_question_create_exceptions() {
         // given a questionCreateException
-        QuestionCreateException exception = new QuestionCreateException("Exception message");
+        CreateQuestionException exception = new CreateQuestionException("Exception message");
 
         // when the exception handler returns a response
         ResponseEntity<ExceptionMessage> responseEntity =

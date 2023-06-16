@@ -20,13 +20,15 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
-import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
@@ -51,6 +53,9 @@ class QuestionCreatorTest {
 
     @Mock
     private NbsConfigurationRepository configRepository;
+
+    @Mock
+    private CodesetRepository codesetRepository;
 
     @InjectMocks
     private QuestionCreator creator;
@@ -249,7 +254,7 @@ class QuestionCreatorTest {
         CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
 
          // when a question is created then an exception is thrown
-        assertThrows(QuestionCreateException.class, () -> creator.create(123L, request));
+        assertThrows(CreateQuestionException.class, () -> creator.create(123L, request));
     }
 
     @Test
@@ -260,7 +265,7 @@ class QuestionCreatorTest {
 
         // when retrieving the question oid 
         // then an exception is thrown
-        assertThrows(QuestionCreateException.class, () -> creator.getQuestionOid(request));
+        assertThrows(CreateQuestionException.class, () -> creator.getQuestionOid(request));
     }
 
     @Test
@@ -292,5 +297,24 @@ class QuestionCreatorTest {
 
         // then null is returned
         assertNull(oid);
+    }
+
+    @Test
+    void should_verify_valueset_exists() {
+        // given a value set that exists
+        Codeset mockCodeset = Mockito.mock(Codeset.class);
+        when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.of(mockCodeset));
+
+        // when querying for the value set then no exception is thrown
+        creator.verifyValueSetExists(123L);
+    }
+
+    @Test
+    void should_throw_exception_if_valueset_not_exists() {
+        // given a value set that does not
+        when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.empty());
+
+        // when querying for the value set then an exception is thrown
+        assertThrows(CreateQuestionException.class, ()-> creator.verifyValueSetExists(123L));
     }
 }

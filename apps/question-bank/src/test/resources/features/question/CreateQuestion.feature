@@ -3,6 +3,7 @@ Feature: Create question
 
     Background: question setup
         Given No questions exist
+        Given A ValueSet exists
 
     Scenario: I can create a question
         Given I am an admin user

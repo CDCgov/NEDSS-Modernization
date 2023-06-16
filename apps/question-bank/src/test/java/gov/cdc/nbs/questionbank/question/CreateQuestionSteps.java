@@ -13,12 +13,13 @@ import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
+import gov.cdc.nbs.questionbank.support.ValueSetMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -28,10 +29,15 @@ public class CreateQuestionSteps {
     private UserMother userMother;
 
     @Autowired
+    private ValueSetMother valueSetMother;
+
+    @Autowired
     private QuestionController controller;
 
     @Autowired
     private WaQuestionRepository questionRepository;
+
+    private long valueSetId;
 
     private CreateQuestionRequest request;
 
@@ -42,6 +48,11 @@ public class CreateQuestionSteps {
     @Given("No questions exist")
     public void no_questions_exist() {
         questionRepository.deleteAll();
+    }
+
+    @Given("A ValueSet exists")
+    public void value_set_exists() {
+        valueSetId = valueSetMother.emptyCodeset().getCodeSetGroup().getId();
     }
 
     @Given("I am an admin user")
@@ -76,7 +87,7 @@ public class CreateQuestionSteps {
                     response = controller.createNumericQuestion((CreateQuestionRequest.Numeric) request);
                     break;
                 case "coded":
-                    request = QuestionRequestMother.codedRequest();
+                    request = QuestionRequestMother.codedRequest(valueSetId);
                     response = controller.createCodedQuestion((CreateQuestionRequest.Coded) request);
                     break;
                 default:
@@ -132,7 +143,7 @@ public class CreateQuestionSteps {
         }
         try {
             controller.createTextQuestion(request);
-        } catch (QuestionCreateException e) {
+        } catch (CreateQuestionException e) {
             exception = e;
         }
     }
@@ -215,7 +226,7 @@ public class CreateQuestionSteps {
     @Then("a question creation exception is thrown")
     public void an_exception_is_thrown() {
         assertNotNull(exception);
-        assertTrue(exception instanceof QuestionCreateException);
+        assertTrue(exception instanceof CreateQuestionException);
     }
 
 }
