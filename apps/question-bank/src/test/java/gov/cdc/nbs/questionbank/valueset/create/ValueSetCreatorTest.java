@@ -27,7 +27,7 @@ import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 
-public class ValueSetCreatorTest {
+class ValueSetCreatorTest {
 
 	@Mock
 	ValueSetRepository valueSetRepository;
@@ -59,11 +59,12 @@ public class ValueSetCreatorTest {
 		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0l);
 		when(codeSetGrpMetaRepository.save(Mockito.any())).thenReturn(codeSetGrpRequest);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
-		assertEquals(response.getBody().getAddTime(), requestCodeSet.getAddTime());
-		assertEquals(response.getBody().getAddUserId(), requestCodeSet.getAddUserId());
-		assertEquals(response.getBody().getValueSetNm(), requestCodeSet.getValueSetNm());
-		assertEquals(response.getStatus(), HttpStatus.CREATED);
-		assertEquals(response.getMessage(), ValueSetConstants.SUCCESS_MESSAGE);
+		
+		assertEquals(requestCodeSet.getAddTime(),response.getBody().getAddTime());
+		assertEquals(requestCodeSet.getAddUserId(),response.getBody().getAddUserId() );
+		assertEquals(requestCodeSet.getValueSetNm(),response.getBody().getValueSetNm());
+		assertEquals(HttpStatus.CREATED, response.getStatus());
+		assertEquals(ValueSetConstants.SUCCESS_MESSAGE,response.getMessage());
 
 	}
 
@@ -84,11 +85,12 @@ public class ValueSetCreatorTest {
 		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0l);
 		when(codeSetGrpMetaRepository.save(Mockito.any())).thenReturn(codeSetGrpRequest);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
-		assertEquals(response.getBody().getAddTime(), requestCodeSet.getAddTime());
-		assertEquals(response.getBody().getAddUserId(), requestCodeSet.getAddUserId());
-		assertEquals(response.getBody().getValueSetNm(), requestCodeSet.getValueSetNm());
-		assertEquals(response.getStatus(), HttpStatus.CREATED);
-		assertEquals(response.getMessage(), ValueSetConstants.SUCCESS_MESSAGE);
+		
+		assertEquals(requestCodeSet.getAddTime(),response.getBody().getAddTime());
+		assertEquals(requestCodeSet.getAddUserId(),response.getBody().getAddUserId());
+		assertEquals(requestCodeSet.getValueSetNm(),response.getBody().getValueSetNm());
+		assertEquals(HttpStatus.CREATED,response.getStatus());
+		assertEquals(ValueSetConstants.SUCCESS_MESSAGE,response.getMessage());
 
 	}
 
@@ -96,12 +98,12 @@ public class ValueSetCreatorTest {
 	void createValueSetNameExistsTest() {
 		ValueSetRequest request = new ValueSetRequest();
 		request.setValueSetNm("codeSetNm");
-		request.setCodeSetDescTxt("codeDescTxt");
+		request.setCodeSetDescTxt("codeDescTxt");	
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(1l);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
-		assertEquals(response.getBody(), null);
-		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST);
-		assertEquals(response.getMessage(), ValueSetConstants.VALUE_SET_NAME_EXISTS);
+		assertEquals(null,response.getBody());
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
+		assertEquals(ValueSetConstants.VALUE_SET_NAME_EXISTS,response.getMessage());
 
 	}
 
@@ -114,9 +116,9 @@ public class ValueSetCreatorTest {
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(1l);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
-		assertEquals(response.getBody(), null);
-		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST);
-		assertEquals(response.getMessage(), ValueSetConstants.CODE_SET_GRP_TEXT_NAME_EXISTS);
+		assertEquals(null,response.getBody());
+		assertEquals(HttpStatus.BAD_REQUEST,response.getStatus());
+		assertEquals(ValueSetConstants.CODE_SET_GRP_TEXT_NAME_EXISTS,response.getMessage());
 
 	}
 
@@ -126,14 +128,16 @@ public class ValueSetCreatorTest {
 		ValueSetRequest request = new ValueSetRequest();
 		request.setValueSetNm("codeSetNm");
 		request.setCodeSetDescTxt("codeDescTxt");
+		CodeSetGroupMetaDatum codeSetGrpRequest = new CodeSetGroupMetaDatum();
+		request.setCodeSetGroup(codeSetGrpRequest);
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(0l);
 		when(codeSetGrpMetaRepository.save(Mockito.any())).thenThrow(new IllegalArgumentException(message));
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
-		assertEquals(response.getBody(), null);
-		assertEquals(response.getStatus(), HttpStatus.INTERNAL_SERVER_ERROR);
-		assertEquals(response.getMessage(), message);
+		assertEquals(null, response.getBody());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,response.getStatus());
+		assertEquals(message,response.getMessage());
 
 	}
 
@@ -170,7 +174,7 @@ public class ValueSetCreatorTest {
 	void getCodeSetGroupIDTest() {
 		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0l);
 		long result =valueSetCreator.getCodeSetGroupID();
-		assertEquals(result, 9910l);
+		assertEquals(9910l,result);
 
 
 	}
@@ -180,7 +184,7 @@ public class ValueSetCreatorTest {
 		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(1l);
 		when(valueSetRepository.getCodeSetGroupMaxID()).thenReturn(99950l);
 		long result =valueSetCreator.getCodeSetGroupID();
-		assertEquals(result, 99950l + 10);
+		assertEquals(99950l + 10, result);
 
 
 	}
@@ -206,7 +210,7 @@ public class ValueSetCreatorTest {
 		valueConcept.setConceptStatusTime(Instant.now());
 		valueConcept.setCodeSystemVersionNbr("codeSystemVersionNbr");
 		valueConcept.setConceptOrderNbr(Integer.valueOf(10));
-		valueConcept.setEffectiveToTime(Instant.now().plus(Period.ofYears(1)));
+		valueConcept.setEffectiveToTime(Instant.now().plusSeconds(500));
 		valueConcept.setIsModifiableInd(Character.valueOf('Y'));
 		valueConcept.setNbsUid(10);
 		valueConcept.setAdminComments("adminComments");
@@ -225,7 +229,7 @@ public class ValueSetCreatorTest {
 		request.setAssigningAuthorityDescTxt("assigningDescTx");
 		request.setCodeSetDescTxt("codeSetDescTxt");
 		request.setEffectiveFromTime(Instant.now());
-		request.setEffectiveToTime(Instant.now().plus(Period.ofYears(1)));
+		request.setEffectiveToTime(Instant.now().plusSeconds(500));
 		request.setIsModifiableInd(Character.valueOf('Y'));
 		request.setNbsUid(10);
 		request.setSourceVersionTxt("sourceVersionTxt");
