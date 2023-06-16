@@ -24,6 +24,7 @@ public sealed interface CreateQuestionRequest {
     String adminComments();
 
     record Text(
+            // General question fields
             String codeSet,
             String uniqueId,
             String uniqueName,
@@ -35,9 +36,57 @@ public sealed interface CreateQuestionRequest {
             ReportingInfo dataMartInfo,
             MessagingInfo messagingInfo,
             String adminComments,
+
+            // Text specific fields
             String mask,
             String fieldLength,
             String defaultValue) implements CreateQuestionRequest {
+    }
+
+    record Date(
+            // General question fields
+            String codeSet,
+            String uniqueId,
+            String uniqueName,
+            String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            ReportingInfo dataMartInfo,
+            MessagingInfo messagingInfo,
+            String adminComments,
+
+            // Date specific fields
+            String mask,
+            boolean allowFutureDates) implements CreateQuestionRequest {
+
+    }
+
+    record Numeric(
+            // General question fields
+            String codeSet,
+            String uniqueId,
+            String uniqueName,
+            String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            ReportingInfo dataMartInfo,
+            MessagingInfo messagingInfo,
+            String adminComments,
+
+            // Numeric specific fields
+            String mask,
+            String fieldLength,
+            String defaultValue,
+            Long minValue,
+            Long maxValue,
+            UnitType unitTypeCd,
+            String unitValue // Id of Value set, or literal value
+    ) implements CreateQuestionRequest {
+
     }
 
     public record ReportingInfo(
@@ -54,5 +103,10 @@ public sealed interface CreateQuestionRequest {
             String codeSystem,
             boolean requiredInMessage,
             String hl7DataType) {
+    }
+
+    public enum UnitType {
+        CODED,
+        LITERAL
     }
 }

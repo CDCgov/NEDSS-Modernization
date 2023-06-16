@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,30 +13,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(TextQuestion.TEXT_QUESION_TYPE)
-public class TextQuestion extends WaQuestion {
-    static final String TEXT_QUESION_TYPE = "TEXT";
+@DiscriminatorValue(DateQuestionEntity.DATE_QUESION_TYPE)
+public class DateQuestionEntity extends WaQuestion {
+    static final String DATE_QUESION_TYPE = "DATE";
 
     @Column(name = "mask", length = 50)
     private String mask;
 
-    @Column(name = "field_size", length = 10)
-    private String fieldSize;
-
-    @Column(name = "default_value", length = 300)
-    private String defaultValue;
+    @Column(name = "future_date_ind_cd")
+    private Character futureDateIndCd;
 
     @Override
     public String getDataType() {
-        return TextQuestion.TEXT_QUESION_TYPE;
+        return DateQuestionEntity.DATE_QUESION_TYPE;
     }
 
-    public TextQuestion(QuestionCommand.AddTextQuestion command) {
+    public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
         super(command);
 
-        this.defaultValue = command.defaultValue();
-        this.mask = command.mask();
-        this.fieldSize = command.fieldLength();
+        this.mask = requireNonNull(command.mask(), "Mask must not be null");
+        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
 
         // Audit
         created(command);

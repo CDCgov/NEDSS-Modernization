@@ -1,41 +1,34 @@
 package gov.cdc.nbs.codes;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.function.UnaryOperator;
 
 @Component
 class GeneralCodedValueFinder {
 
-    private final JPAQueryFactory factory;
-    private final QCodeValueGeneral values;
+    private final GeneralCodedValueQuery query;
+    private final GeneralCodedValueTupleMapper mapper;
 
     GeneralCodedValueFinder(final JPAQueryFactory factory) {
-        this.factory = factory;
-        this.values = QCodeValueGeneral.codeValueGeneral;
+        QCodeValueGeneral values = QCodeValueGeneral.codeValueGeneral;
+        this.query = new GeneralCodedValueQuery(factory, values);
+        this.mapper = new GeneralCodedValueTupleMapper(values);
     }
 
     Collection<CodedValue> all(final String set) {
-        return this.factory.select(
-                values.id.code,
-                values.codeShortDescTxt
-            ).from(values)
-            .where(values.id.codeSetNm.eq(set))
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
-            .fetch()
-            .stream()
-            .map(this::map)
+        return this.query.all(set)
+            .map(this.mapper::map)
             .toList();
     }
 
-    private CodedValue map(final Tuple tuple) {
-        String value = tuple.get(values.id.code);
-        String name = StandardNameFormatter.formatted(tuple.get(values.codeShortDescTxt));
-        return new CodedValue(value, name);
+    Collection<CodedValue> all(final String set, final UnaryOperator<CodedValue> transformer) {
+        return this.query.all(set)
+            .map(transformer.compose(this.mapper::map))
+            .toList();
     }
+
 }

@@ -21,7 +21,7 @@ import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
@@ -195,7 +195,7 @@ class QuestionCreatorTest {
     @Test
     void should_save_to_db() {
         // given the database will return an entity with an Id
-        TextQuestion tq = new TextQuestion();
+        TextQuestionEntity tq = new TextQuestionEntity();
         tq.setId(999L);
         when(repository.save(Mockito.any())).thenReturn(tq);
 
@@ -213,7 +213,7 @@ class QuestionCreatorTest {
     void should_post_created_event() {
         // given the database will return an entity with an Id and add time
         Instant now = Instant.now();
-        TextQuestion tq = new TextQuestion();
+        TextQuestionEntity tq = new TextQuestionEntity();
         tq.setId(999L);
         tq.setAddTime(now);
         when(repository.save(Mockito.any())).thenReturn(tq);
@@ -241,7 +241,7 @@ class QuestionCreatorTest {
             Mockito.anyString(),
             Mockito.anyString(),
             Mockito.anyString()))
-            .thenReturn(Collections.singletonList(new TextQuestion()));
+            .thenReturn(Collections.singletonList(new TextQuestionEntity()));
 
         // given a create question request
         CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);

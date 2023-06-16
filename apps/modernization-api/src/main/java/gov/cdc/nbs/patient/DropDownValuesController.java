@@ -1,21 +1,17 @@
 package gov.cdc.nbs.patient;
 
+import java.util.Arrays;
+import java.util.List;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.repository.NaicsIndustryCodeRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.stereotype.Controller;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
 public class DropDownValuesController {
-
-    private final NaicsIndustryCodeRepository naicsIndustryCodeRepository;
 
 
     @QueryMapping

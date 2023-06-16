@@ -211,11 +211,11 @@ type PatientEthnicity {
 
 type PatientRace {
     patient: Int!
-    id: ID!
+    id: Int!
     version: Int!
     asOf: DateTime!
     category: PatientCodedValue!
-    detailed: [PatientCodedValue!]
+    detailed: [PatientCodedValue!]!
 }
 
 type PatientRaceResults {
