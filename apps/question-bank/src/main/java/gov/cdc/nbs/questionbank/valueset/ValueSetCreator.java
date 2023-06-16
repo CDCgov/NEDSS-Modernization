@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,8 @@ import gov.cdc.nbs.questionbank.entity.CodeSet;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
+import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +20,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ValueSetCreator {
 
+	@Autowired
 	private ValueSetRepository valueSetRepository; // Value Set Repo
+	
 	private CodeValueGeneralRepository codeValueRepository; // ValueSet Concept Repo
+	
+	@Autowired
 	private CodesetGroupMetadatumRepository codeSetGrpMetaRepository; // Value Set Grp Meta
 
 	public CreateValueSetResponse createValueSet(ValueSetRequest request) {

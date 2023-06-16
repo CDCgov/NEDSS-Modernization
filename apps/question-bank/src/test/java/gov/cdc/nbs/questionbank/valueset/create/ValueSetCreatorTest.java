@@ -19,11 +19,11 @@ import org.springframework.http.HttpStatus;
 
 import gov.cdc.nbs.questionbank.entity.CodeSet;
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
-import gov.cdc.nbs.questionbank.valueset.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.ValueSetCreator;
-import gov.cdc.nbs.questionbank.valueset.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
+import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 

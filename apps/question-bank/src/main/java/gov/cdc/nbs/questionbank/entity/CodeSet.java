@@ -1,19 +1,27 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+import gov.cdc.nbs.entity.srte.CodeValueGeneral;
+import gov.cdc.nbs.entity.srte.CodeValueGeneralId;
+import gov.cdc.nbs.entity.srte.CodeValueGeneral.CodeValueGeneralBuilder;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 
 import java.time.Instant;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Builder
+@Table(catalog = "NBS_SRTE", name = "codeset")
 public class CodeSet {
 	@EmbeddedId
 	private CodeSetId id;
