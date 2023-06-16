@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.EntityType;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
@@ -67,6 +68,14 @@ class QuestionCreator {
         return question.getId();
     }
 
+    public long create(Long userId, CreateQuestionRequest.Coded request) {
+        WaQuestion question = new CodedQuestionEntity(asAdd(userId, request));
+        verifyUnique(question);
+        question = repository.save(question);
+        sendCreateEvent(question.getId(), userId, question.getAddTime());
+        return question.getId();
+    }
+
     /**
      * Verifies the new question will not conflict with any existing questions.
      * 
@@ -93,9 +102,6 @@ class QuestionCreator {
     }
 
     private AddNumericQuestion asAdd(Long userId, CreateQuestionRequest.Numeric request) {
-        QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
-
-        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo(), request.subgroup());
         return new QuestionCommand.AddNumericQuestion(
                 request.mask(),
                 request.fieldLength(),
@@ -104,54 +110,49 @@ class QuestionCreator {
                 request.maxValue(),
                 request.unitTypeCd().toString(),
                 request.unitValue(),
-                request.codeSet(),
-                getLocalId(request),
-                request.uniqueName(),
-                request.subgroup(),
-                request.description(),
-                request.label(),
-                request.tooltip(),
-                request.displayControl(),
-                request.adminComments(),
-                getQuestionOid(request),
-                dataMartData,
-                messagingData,
+                asQuestionData(request),
+                asReportingData(request.dataMartInfo(), request.subgroup()),
+                asMessagingData(request.messagingInfo()),
                 userId,
                 Instant.now());
     }
 
     private AddDateQuestion asAdd(Long userId, CreateQuestionRequest.Date request) {
-        QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
-
-        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo(), request.subgroup());
         return new QuestionCommand.AddDateQuestion(
                 request.mask(),
                 request.allowFutureDates(),
-                request.codeSet(),
-                getLocalId(request),
-                request.uniqueName(),
-                request.subgroup(),
-                request.description(),
-                request.label(),
-                request.tooltip(),
-                request.displayControl(),
-                request.adminComments(),
-                getQuestionOid(request),
-                dataMartData,
-                messagingData,
+                asQuestionData(request),
+                asReportingData(request.dataMartInfo(), request.subgroup()),
+                asMessagingData(request.messagingInfo()),
                 userId,
                 Instant.now());
     }
 
     QuestionCommand.AddTextQuestion asAdd(Long userId, CreateQuestionRequest.Text request) {
-        QuestionCommand.MessagingData messagingData = asMessagingData(request.messagingInfo());
-
-        QuestionCommand.ReportingData dataMartData = asReportingData(request.dataMartInfo(), request.subgroup());
-
         return new QuestionCommand.AddTextQuestion(
                 request.mask(),
                 request.fieldLength(),
                 request.defaultValue(),
+                asQuestionData(request),
+                asReportingData(request.dataMartInfo(), request.subgroup()),
+                asMessagingData(request.messagingInfo()),
+                userId,
+                Instant.now());
+    }
+
+    QuestionCommand.AddCodedQuestion asAdd(Long userId, CreateQuestionRequest.Coded request) {
+        return new QuestionCommand.AddCodedQuestion(
+                request.valueSet(),
+                request.defaultValue(),
+                asQuestionData(request),
+                asReportingData(request.dataMartInfo(), request.subgroup()),
+                asMessagingData(request.messagingInfo()),
+                userId,
+                Instant.now());
+    }
+
+    QuestionCommand.QuestionData asQuestionData(CreateQuestionRequest request) {
+        return new QuestionCommand.QuestionData(
                 request.codeSet(),
                 getLocalId(request),
                 request.uniqueName(),
@@ -161,11 +162,7 @@ class QuestionCreator {
                 request.tooltip(),
                 request.displayControl(),
                 request.adminComments(),
-                getQuestionOid(request),
-                dataMartData,
-                messagingData,
-                userId,
-                Instant.now());
+                getQuestionOid(request));
     }
 
     QuestionCommand.ReportingData asReportingData(CreateQuestionRequest.ReportingInfo dataMartInfo, String subgroup) {

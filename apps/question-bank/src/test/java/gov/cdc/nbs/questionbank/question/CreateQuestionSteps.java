@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
@@ -73,6 +74,10 @@ public class CreateQuestionSteps {
                 case "numeric":
                     request = QuestionRequestMother.numericRequest();
                     response = controller.createNumericQuestion((CreateQuestionRequest.Numeric) request);
+                    break;
+                case "coded":
+                    request = QuestionRequestMother.codedRequest();
+                    response = controller.createCodedQuestion((CreateQuestionRequest.Coded) request);
                     break;
                 default:
                     throw new NotYetImplementedException();
@@ -144,6 +149,9 @@ public class CreateQuestionSteps {
             case "numeric":
                 validateNumericQuestion();
                 break;
+            case "coded":
+                validateCodedQuestion();
+                break;
             default:
                 throw new NotYetImplementedException();
         }
@@ -183,6 +191,17 @@ public class CreateQuestionSteps {
         assertEquals(numericRequest.maxValue(), question.getMaxValue());
         assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
         assertEquals(numericRequest.unitValue(), question.getUnitValue());
+    }
+
+    private void validateCodedQuestion() {
+        assertNotNull(response);
+        CodedQuestionEntity question =
+                (CodedQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Coded codedRequest = (CreateQuestionRequest.Coded) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
+        assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
+
     }
 
     @Then("a not authorized exception is thrown")

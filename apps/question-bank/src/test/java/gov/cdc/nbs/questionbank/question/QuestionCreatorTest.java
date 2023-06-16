@@ -176,18 +176,20 @@ class QuestionCreatorTest {
         assertEquals(request.mask(), command.mask());
         assertEquals(request.fieldLength(), command.fieldLength());
         assertEquals(request.defaultValue(), command.defaultValue());
-        assertEquals(request.codeSet(), command.codeSet());
-        assertEquals(request.uniqueId(), command.localId());
-        assertEquals(request.uniqueName(), command.uniqueName());
-        assertEquals(request.subgroup(), command.subgroup());
-        assertEquals(request.description(), command.description());
-        assertEquals(request.label(), command.label());
-        assertEquals(request.tooltip(), command.tooltip());
-        assertEquals(request.displayControl(), command.displayControl());
-        assertEquals(request.adminComments(), command.adminComments());
+
         assertEquals(123L, command.userId());
 
-        assertNotNull(command.questionOid());
+        QuestionCommand.QuestionData questionData = command.questionData();
+        assertNotNull(questionData.questionOid());
+        assertEquals(request.codeSet(), questionData.codeSet());
+        assertEquals(request.uniqueId(), questionData.localId());
+        assertEquals(request.uniqueName(), questionData.uniqueName());
+        assertEquals(request.subgroup(), questionData.subgroup());
+        assertEquals(request.description(), questionData.description());
+        assertEquals(request.label(), questionData.label());
+        assertEquals(request.tooltip(), questionData.tooltip());
+        assertEquals(request.displayControl(), questionData.displayControl());
+        assertEquals(request.adminComments(), questionData.adminComments());
         assertNotNull(command.reportingData());
         assertNotNull(command.messagingData());
     }

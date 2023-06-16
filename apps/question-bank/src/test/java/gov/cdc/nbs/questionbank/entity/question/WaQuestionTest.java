@@ -85,23 +85,25 @@ class WaQuestionTest {
         AddTextQuestion command = createCommand();
         WaQuestion question = new TextQuestionEntity(command);
 
-        assertEquals("NBS_CASE_ANSWER.ANSWER_TXT", question.getDataLocation());
-        assertEquals(command.localId(), question.getQuestionIdentifier());
-        assertEquals(command.questionOid().oid(), question.getQuestionOid());
-        assertEquals(command.questionOid().system(), question.getQuestionOidSystemTxt());
-        assertEquals(command.label(), question.getQuestionLabel());
-        assertEquals(command.tooltip(), question.getQuestionToolTip());
-        assertEquals(command.uniqueName(), question.getQuestionNm());
-        assertEquals(command.subgroup(), question.getSubGroupNm());
-        assertEquals(command.description(), question.getDescTxt());
-        assertEquals(command.displayControl(), question.getNbsUiComponentUid());
         assertEquals('F', question.getStandardQuestionIndCd().charValue());
         assertEquals("USER", question.getEntryMethod());
-        assertEquals(command.codeSet(), question.getQuestionType());
-        assertEquals(command.adminComments(), question.getAdminComment());
         assertEquals('F', question.getStandardQuestionIndCd().charValue());
         assertEquals("2", question.getOrderGroupId());
         assertEquals('F', question.getFutureDateIndCd().charValue());
+
+        QuestionCommand.QuestionData questionData = command.questionData();
+        assertEquals("NBS_CASE_ANSWER.ANSWER_TXT", question.getDataLocation());
+        assertEquals(questionData.localId(), question.getQuestionIdentifier());
+        assertEquals(questionData.questionOid().oid(), question.getQuestionOid());
+        assertEquals(questionData.questionOid().system(), question.getQuestionOidSystemTxt());
+        assertEquals(questionData.label(), question.getQuestionLabel());
+        assertEquals(questionData.tooltip(), question.getQuestionToolTip());
+        assertEquals(questionData.uniqueName(), question.getQuestionNm());
+        assertEquals(questionData.subgroup(), question.getSubGroupNm());
+        assertEquals(questionData.description(), question.getDescTxt());
+        assertEquals(questionData.displayControl(), question.getNbsUiComponentUid());
+        assertEquals(questionData.codeSet(), question.getQuestionType());
+        assertEquals(questionData.adminComments(), question.getAdminComment());
 
         validateMessageFields(question, command.messagingData());
         validateReportingFields(question, command.reportingData());
@@ -167,16 +169,17 @@ class WaQuestionTest {
                 "Mask",
                 "25",
                 "default value",
-                "code set",
-                "local id",
-                "unique name",
-                "subgroup",
-                "description",
-                "label",
-                "tooltip",
-                12L,
-                "admin comments",
-                questionOid(),
+                new QuestionCommand.QuestionData(
+                        "code set",
+                        "local id",
+                        "unique name",
+                        "subgroup",
+                        "description",
+                        "label",
+                        "tooltip",
+                        12L,
+                        "admin comments",
+                        questionOid()),
                 reportingData(),
                 messagingData(),
                 9999000L,
