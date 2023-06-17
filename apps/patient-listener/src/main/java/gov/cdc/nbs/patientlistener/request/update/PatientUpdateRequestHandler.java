@@ -143,63 +143,6 @@ public class PatientUpdateRequestHandler {
     }
 
     /**
-     * Add a person Address.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientAddressAdd(final UpdateAddressData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully add a patient Address",
-            data.patientId());
-    }
-
-    /**
-     * Update a person Address.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientAddressUpdate(final UpdateAddressData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated patient Address",
-            data.patientId());
-    }
-
-    /**
-     * Delete a person Address.
-     */
-    @Transactional
-    public void handlePatientAddressDelete(final String requestId, final long patientId, long id, final long userId) {
-        if (!userService.isAuthorized(userId, VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(requestId);
-        }
-        var person = findPerson(patientId, requestId);
-        patientUpdater.update(person, new DeleteAddressData(patientId, id, requestId, userId, null));
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            requestId,
-            "Successfully deleted patient Address",
-            userId);
-    }
-
-    /**
      * Add a person Email.
      *
      * @param data

@@ -98,15 +98,13 @@ public class PatientMother {
     public void withAddress(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
-        String city = faker.address().city();
-
         patient.add(
             new PatientCommand.AddAddress(
                 patient.getId(),
                 idGenerator.next(),
                 faker.address().streetAddress(),
                 null,
-                new City(city),
+                faker.address().city(),
                 RandomUtil.getRandomStateCode(),
                 faker.address().zipCode(),
                 null,

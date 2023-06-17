@@ -4,11 +4,9 @@ import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
-import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
@@ -328,147 +326,6 @@ class PatientUpdateRequestHandlerTest {
 
         try {
             updateHandler.handlePatientAdministrativeUpdate(data);
-        } catch (UserNotAuthorizedException e) {
-            ex = e;
-        }
-
-        // verify exception thrown, save requests are not called
-        assertNotNull(ex);
-        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
-        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-    }
-
-    @Test
-    void testAddAddressSuccess() {
-        var data = getAddressData();
-
-        // set valid mock returns
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Person(123L, "localId")));
-        when(patientUpdater.update(Mockito.any(), eq(data))).thenAnswer(i -> i.getArguments()[0]);
-
-        // call handle update gen info
-        updateHandler.handlePatientAddressAdd(data);
-
-        // verify save requests called, success status sent
-        verify(patientUpdater, times(1)).update(Mockito.any(), eq(data));
-        verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
-        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(123L));
-    }
-
-    @Test
-    void testAddressAddUnauthorized() {
-        var data = getAddressData();
-
-        // set unauthorized mock
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
-
-        UserNotAuthorizedException ex = null;
-
-        try {
-            updateHandler.handlePatientAddressAdd(data);
-        } catch (UserNotAuthorizedException e) {
-            ex = e;
-        }
-
-        // verify exception thrown, save requests are not called
-        assertNotNull(ex);
-        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
-        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-    }
-
-    @Test
-    void testUpdateAddressSuccess() {
-        var data = getAddressData();
-
-        // set valid mock returns
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Person(123L, "localId")));
-        when(patientUpdater.update(Mockito.any(), eq(data))).thenAnswer(i -> i.getArguments()[0]);
-
-        // call handle update gen info
-        updateHandler.handlePatientAddressUpdate(data);
-
-        // verify save requests called, success status sent
-        verify(patientUpdater, times(1)).update(Mockito.any(), eq(data));
-        verify(elasticsearchPersonRepository, times(1)).save(Mockito.any());
-        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(123L));
-    }
-
-    private UpdateAddressData getAddressData() {
-        return new UpdateAddressData(123L,
-                321L,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "SA1",
-                "SA2",
-                "City",
-                "State",
-                "County",
-                "Country",
-                "Zip",
-                "Census Tract");
-    }
-
-    @Test
-    void testAddressUpdateUnauthorized() {
-        var data = getAddressData();
-
-        // set unauthorized mock
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
-
-        UserNotAuthorizedException ex = null;
-
-        try {
-            updateHandler.handlePatientAddressUpdate(data);
-        } catch (UserNotAuthorizedException e) {
-            ex = e;
-        }
-
-        // verify exception thrown, save requests are not called
-        assertNotNull(ex);
-        verify(patientUpdater, times(0)).update(Mockito.any(), eq(data));
-        verify(elasticsearchPersonRepository, times(0)).save(Mockito.any());
-    }
-
-    @Test
-    void testDeleteAddressSuccess() {
-        var data = getDeleteAddressData();
-
-        // set valid mock returns
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        when(personRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(new Person(123L, "localId")));
-        when(patientUpdater.update(Mockito.any(), eq(data))).thenAnswer(i -> i.getArguments()[0]);
-
-        // call handle update gen info
-        updateHandler.handlePatientAddressDelete(data.requestId(), data.patientId(), data.id(),
-                data.updatedBy());
-
-        // verify save requests called, success status sent
-        verify(statusProducer, times(1)).successful(eq("RequestId"), Mockito.anyString(), eq(321L));
-    }
-
-    private DeleteAddressData getDeleteAddressData() {
-        return new DeleteAddressData(123L,
-                (short) 1,
-                "RequestId",
-                321L,
-                Instant.now());
-    }
-
-    @Test
-    void testAddressDeleteUnauthorized() {
-        var data = getDeleteAddressData();
-
-        // set unauthorized mock
-        when(userService.isAuthorized(eq(321L), Mockito.anyString(), Mockito.anyString())).thenReturn(false);
-
-        UserNotAuthorizedException ex = null;
-
-        try {
-            updateHandler.handlePatientAddressDelete(data.requestId(), data.patientId(), data.id(),
-                    data.updatedBy());
         } catch (UserNotAuthorizedException e) {
             ex = e;
         }

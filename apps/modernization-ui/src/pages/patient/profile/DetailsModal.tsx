@@ -23,8 +23,8 @@ type Props = {
 
 const noData = <span className="no-data">No data</span>;
 
-const renderField = (detail: Detail) => (
-    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
+const renderField = (detail: Detail, index: number) => (
+    <Grid key={index} col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
         <Grid row>
             <Grid col={6}>{detail.name}:</Grid>
             <Grid col={6}>{maybeRender(detail.value)}</Grid>
