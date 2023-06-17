@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.srte;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +13,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
+@Table(name = "Codeset", catalog = "NBS_SRTE")
 public class Codeset {
     @EmbeddedId
     private CodesetId id;
@@ -50,7 +51,11 @@ public class Codeset {
     @Column(name = "status_to_time")
     private Instant statusToTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+    })
     @JoinColumn(name = "code_set_group_id")
     private CodesetGroupMetadatum codeSetGroup;
 

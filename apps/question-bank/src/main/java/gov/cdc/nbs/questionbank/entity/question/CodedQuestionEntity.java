@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,30 +13,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@DiscriminatorValue(TextQuestion.TEXT_QUESION_TYPE)
-public class TextQuestion extends WaQuestion {
-    static final String TEXT_QUESION_TYPE = "TEXT";
+@DiscriminatorValue(CodedQuestionEntity.CODED_QUESTION_TYPE)
+public class CodedQuestionEntity extends WaQuestion {
+    static final String CODED_QUESTION_TYPE = "CODED";
 
-    @Column(name = "mask", length = 50)
-    private String mask;
-
-    @Column(name = "field_size", length = 10)
-    private String fieldSize;
+    @Column(name = "code_set_group_id")
+    private Long codeSetGroupId;
 
     @Column(name = "default_value", length = 300)
     private String defaultValue;
 
     @Override
     public String getDataType() {
-        return TextQuestion.TEXT_QUESION_TYPE;
+        return CodedQuestionEntity.CODED_QUESTION_TYPE;
     }
 
-    public TextQuestion(QuestionCommand.AddTextQuestion command) {
+    public CodedQuestionEntity(QuestionCommand.AddCodedQuestion command) {
         super(command);
 
+        this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet must not be null");
         this.defaultValue = command.defaultValue();
-        this.mask = command.mask();
-        this.fieldSize = command.fieldLength();
+        setOtherValueIndCd('F');
 
         // Audit
         created(command);

@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientEventResponse {
-    private String requestId;
     private Long patientId;
 }

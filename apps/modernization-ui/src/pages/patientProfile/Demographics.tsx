@@ -6,7 +6,7 @@ import { IdentificationsTable } from 'pages/patient/profile/identification';
 import { RacesTable } from 'pages/patient/profile/race';
 import { AdministrativeTable } from 'pages/patient/profile/administrative';
 import { GeneralPatient } from 'pages/patient/profile/generalInfo';
-import { Mortality } from 'pages/patient/profile/moratlity';
+import { Mortality } from 'pages/patient/profile/mortality';
 import { Ethnicity } from 'pages/patient/profile/ethnicity';
 import { SexBirth } from 'pages/patient/profile/sexBirth';
 

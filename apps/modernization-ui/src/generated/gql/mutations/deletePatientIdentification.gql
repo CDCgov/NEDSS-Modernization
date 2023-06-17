@@ -1,6 +1,5 @@
 mutation deletePatientIdentification($patientId: Int!, $entitySeqNum: Int!){
     deletePatientIdentification(patientId: $patientId, entitySeqNum: $entitySeqNum){
-        requestId
         patientId
     }
 }
