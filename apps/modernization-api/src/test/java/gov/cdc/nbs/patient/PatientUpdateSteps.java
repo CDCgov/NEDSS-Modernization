@@ -1,13 +1,7 @@
 package gov.cdc.nbs.patient;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
-import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
-import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.EmailInput;
@@ -20,45 +14,28 @@ import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.service.KafkaTestConsumer;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
 import gov.cdc.nbs.support.util.RandomUtil;
-import gov.cdc.nbs.support.util.UserUtil;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.time.Instant;
+
 import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
 public class PatientUpdateSteps {
 
     @Autowired
-    private PatientController patientController;
+    PatientController patientController;
 
     @Autowired
-    private KafkaTestConsumer consumer;
-
-    @Autowired
-    private ObjectMapper mapper;
-
-    @Autowired
-    private TestPatientIdentifier patients;
-
-    @Before
-    public void resetConsumer() {
-        consumer.resetLatch();
-    }
+    TestPatientIdentifier patients;
 
     private PatientEventResponse response;
     private AccessDeniedException accessDeniedException;
@@ -112,35 +89,10 @@ public class PatientUpdateSteps {
         }
     }
 
-    @Then("the {string} update request is posted to kafka")
-    public void the_general_info_update_request_is_posted_to_kafka(String updateType)
-        throws InterruptedException, JsonProcessingException {
+    @Then("the request has a response")
+    public void the_general_info_update_request_is_posted_to_kafka() {
         assertNull(accessDeniedException);
         assertNotNull(response);
-        boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
-
-        assertTrue(messageConsumed);
-
-        var key = consumer.getKey();
-        assertEquals(response.getRequestId(), key);
-
-        var payload = mapper.readValue((String) consumer.getPayload(), PatientRequest.class);
-
-        assertEquals(response.getRequestId(), payload.requestId());
-        assertEquals(response.getPatientId(), payload.patientId());
-        assertEquals(UserUtil.getCurrentUserId(), payload.userId());
-
-        switch (updateType) {
-            case "general info" -> {
-                validateGeneralInfo(payload);
-            }
-            case "sex and birth" -> {
-                validateSexAndBirthInfo(payload);
-            }
-            case "mortality" -> {
-                validateMortalityInfo(payload);
-            }
-        }
     }
 
     @Then("I get an access denied exception for patient update")
@@ -221,78 +173,6 @@ public class PatientUpdateSteps {
         input.setExtension("123");
         input.setPhoneType(PhoneType.CELL);
         return input;
-    }
-
-    private void validateSexAndBirthInfo(final PatientRequest request) {
-
-        assertThat(request).isInstanceOf(PatientRequest.UpdateSexAndBirth.class);
-
-        if (request instanceof PatientRequest.UpdateSexAndBirth update) {
-
-            UpdateSexAndBirthData data = update.data();
-            var sexAndBirthInput = (SexAndBirthInput) input;
-            assertEquals(sexAndBirthInput.getAsOf().getEpochSecond(), data.asOf().getEpochSecond());
-            assertEquals(sexAndBirthInput.getPatientId(), data.patientId());
-            assertEquals(sexAndBirthInput.getDateOfBirth(), data.dateOfBirth());
-            assertEquals(sexAndBirthInput.getBirthGender(), data.birthGender());
-            assertEquals(sexAndBirthInput.getCurrentGender(), data.currentGender());
-            assertEquals(sexAndBirthInput.getAdditionalGender(), data.additionalGender());
-            assertEquals(sexAndBirthInput.getTransGenderInfo(), data.transGenderInfo());
-            assertEquals(sexAndBirthInput.getBirthCity(), data.birthCity());
-            assertEquals(sexAndBirthInput.getBirthCntry(), data.birthCntry());
-            assertEquals(sexAndBirthInput.getBirthState(), data.birthState());
-            assertEquals(sexAndBirthInput.getBirthOrderNbr(), data.birthOrderNbr());
-            assertEquals(sexAndBirthInput.getMultipleBirth(), data.multipleBirth());
-            assertEquals(sexAndBirthInput.getSexUnknown(), data.sexUnknown());
-            assertEquals(sexAndBirthInput.getCurrentAge(), data.currentAge());
-            assertEquals(sexAndBirthInput.getAgeReportedTime().getEpochSecond(),
-                data.ageReportedTime().getEpochSecond());
-        }
-    }
-
-    private void validateGeneralInfo(final PatientRequest request) {
-
-        assertThat(request).isInstanceOf(PatientRequest.UpdateGeneralInfo.class);
-
-        if (request instanceof PatientRequest.UpdateGeneralInfo update) {
-
-            UpdateGeneralInfoData data = update.data();
-
-            var generalInfoInput = (GeneralInfoInput) input;
-            assertEquals(generalInfoInput.getPatientId(), data.patientId());
-            assertEquals(response.getRequestId(), data.requestId());
-            assertEquals(UserUtil.getCurrentUserId(), data.updatedBy());
-            assertEquals(generalInfoInput.getAsOf().getEpochSecond(), data.asOf().getEpochSecond());
-            assertEquals(generalInfoInput.getMaritalStatus(), data.maritalStatus());
-            assertEquals(generalInfoInput.getMothersMaidenName(), data.mothersMaidenName());
-            assertEquals(generalInfoInput.getAdultsInHouseNumber(), data.adultsInHouseNumber());
-            assertEquals(generalInfoInput.getChildrenInHouseNumber(), data.childrenInHouseNumber());
-            assertEquals(generalInfoInput.getOccupationCode(), data.occupationCode());
-            assertEquals(generalInfoInput.getEducationLevelCode(), data.educationLevelCode());
-            assertEquals(generalInfoInput.getPrimaryLanguageCode(), data.primaryLanguageCode());
-            assertEquals(generalInfoInput.getSpeaksEnglishCode(), data.speaksEnglishCode());
-            assertEquals(generalInfoInput.getEharsId(), data.eharsId());
-        }
-    }
-
-    private void validateMortalityInfo(final PatientRequest request) {
-
-        assertThat(request).isInstanceOf(PatientRequest.UpdateMortality.class);
-
-        if (request instanceof PatientRequest.UpdateMortality update) {
-
-            UpdateMortalityData data = update.data();
-
-            var mortalityInput = (MortalityInput) input;
-            assertEquals(mortalityInput.getPatientId(), data.patientId());
-            assertEquals(mortalityInput.getAsOf().getEpochSecond(), data.asOf().getEpochSecond());
-            assertEquals(mortalityInput.getDeceased(), data.deceased());
-            assertEquals(mortalityInput.getDeceasedTime().getEpochSecond(), data.deceasedTime().getEpochSecond());
-            assertEquals(mortalityInput.getCityOfDeath(), data.cityOfDeath());
-            assertEquals(mortalityInput.getStateOfDeath(), data.stateOfDeath());
-            assertEquals(mortalityInput.getCountyOfDeath(), data.countyOfDeath());
-            assertEquals(mortalityInput.getCountryOfDeath(), data.countryOfDeath());
-        }
     }
 
 }

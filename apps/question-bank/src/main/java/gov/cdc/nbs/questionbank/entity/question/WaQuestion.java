@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
+import static gov.cdc.nbs.questionbank.question.util.QuestionUtil.requireNonNull;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -29,9 +30,6 @@ public abstract class WaQuestion {
     @Column(name = "wa_question_uid", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "code_set_group_id")
-    private Long codeSetGroupId;
 
     @Column(name = "data_cd", length = 50)
     private String dataCd;
@@ -158,23 +156,11 @@ public abstract class WaQuestion {
         this.userDefinedColumnNm = formatAndValidateReportingField(userDefinedColumnNm);
     }
 
-    @Column(name = "min_value")
-    private Long minValue;
-
-    @Column(name = "max_value")
-    private Long maxValue;
-
     @Column(name = "standard_nnd_ind_cd")
     private Character standardNndIndCd;
 
     @Column(name = "legacy_question_identifier", length = 50)
     private String legacyQuestionIdentifier;
-
-    @Column(name = "unit_type_cd", length = 20)
-    private String unitTypeCd;
-
-    @Column(name = "unit_value", length = 50)
-    private String unitValue;
 
     @Column(name = "other_value_ind_cd")
     private Character otherValueIndCd;
@@ -200,43 +186,49 @@ public abstract class WaQuestion {
     public abstract String getDataType();
 
     protected WaQuestion(QuestionCommand command) {
+        // Defaults
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
-        setQuestionIdentifier(command.localId());
-        if (command.questionOid() != null) {
-            setQuestionOid(command.questionOid().oid());
-            setQuestionOidSystemTxt(command.questionOid().system());
-        }
-        setQuestionLabel(command.label());
-        setQuestionToolTip(command.tooltip());
-        setQuestionNm(command.uniqueName());
-        setSubGroupNm(command.subgroup());
-        setDescTxt(command.description());
-        setNbsUiComponentUid(command.displayControl());
         setStandardQuestionIndCd('F');
         setEntryMethod("USER");
-        setQuestionType(command.codeSet());
-        setAdminComment(command.adminComments());
         setStandardQuestionIndCd('F');
         setOrderGroupId("2");
         setFutureDateIndCd('F');
+
+        QuestionCommand.QuestionData data = command.questionData();
+        if (data.questionOid() != null) {
+            setQuestionOid(data.questionOid().oid());
+            setQuestionOidSystemTxt(data.questionOid().system());
+        }
+        setQuestionIdentifier(requireNonNull(data.localId(), "LocalId must not be null"));
+        setQuestionLabel(requireNonNull(data.label(), "Label must not be null"));
+        setQuestionToolTip(requireNonNull(data.tooltip(), "Tooltip must not be null"));
+        setQuestionNm(requireNonNull(data.uniqueName(), "UniqueName must not be null"));
+        setSubGroupNm(requireNonNull(data.subgroup(), "Subgroup must not be null"));
+        setDescTxt(requireNonNull(data.description(), "Description must not be null"));
+        setNbsUiComponentUid(requireNonNull(data.displayControl(), "DisplayControl must not be null"));
+        setQuestionType(requireNonNull(data.codeSet(), "CodeSet must not be null"));
+        setAdminComment(data.adminComments());
     }
 
-    public void setMessagingData(QuestionCommand.MessagingData messagingData) {
-        setNndMsgInd(messagingData.includedInMessage() ? 'T' : 'F');
-        setQuestionIdentifierNnd(messagingData.messageVariableId());
-        setQuestionLabelNnd(messagingData.labelInMessage());
-        setStandardNndIndCd('F');
-        setQuestionRequiredNnd(messagingData.requiredInMessage() ? 'R' : 'O');
-        setQuestionDataTypeNnd(messagingData.hl7DataType());
-        setHl7SegmentField("OBX-3.0");
+    public void setMessagingData(QuestionCommand.MessagingData data) {
+        setNndMsgInd(data.includedInMessage() ? 'T' : 'F');
+        if (data.includedInMessage()) {
+            setQuestionIdentifierNnd(
+                    requireNonNull(data.messageVariableId(), "Message Variable Id must not be null"));
+            setQuestionLabelNnd(requireNonNull(data.labelInMessage(), "LabelInMessage must not be null"));
+            setStandardNndIndCd('F');
+            setQuestionRequiredNnd(data.requiredInMessage() ? 'R' : 'O');
+            setQuestionDataTypeNnd(requireNonNull(data.hl7DataType(), "HL7 data type must not be null"));
+            setHl7SegmentField("OBX-3.0");
+        }
     }
 
-    public void setReportingData(QuestionCommand.ReportingData reportingData) {
-        setRdbColumnNm(reportingData.rdbColumnName());
+    public void setReportingData(QuestionCommand.ReportingData data) {
+        setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name must not be null"));
         setGroupNm("GROUP_INV");
-        setRptAdminColumnNm(reportingData.reportLabel());
-        setRdbTableNm(reportingData.defaultRdbTableName());
-        setUserDefinedColumnNm(reportingData.dataMartColumnName());
+        setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label must not be null"));
+        setRdbTableNm(requireNonNull(data.defaultRdbTableName(), "Default RDB Table Name must not be null"));
+        setUserDefinedColumnNm(data.dataMartColumnName());
     }
 
     public void created(QuestionCommand command) {

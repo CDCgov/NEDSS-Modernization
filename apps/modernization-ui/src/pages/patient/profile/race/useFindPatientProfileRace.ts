@@ -11,6 +11,7 @@ export const Query = gql`
             version
             races(page: $page5) {
                 content {
+                    patient
                     version
                     asOf
                     category {

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.entity.srte;
+package gov.cdc.nbs.questionbank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class CodesetGroupMetadatum {
     @Column(name = "phin_std_val_ind")
     private Character phinStdValInd;
 
-    @OneToMany(mappedBy = "codeSetGroup")
+    @OneToMany(mappedBy = "codeSetGroup", fetch = FetchType.LAZY)
     private Set<Codeset> codesets = new LinkedHashSet<>();
 
 }
