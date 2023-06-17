@@ -17,13 +17,14 @@ public class ConditionCreator {
         CreateConditionResponse response = new CreateConditionResponse();
 
 
-       try {
-            request.setConditionCode().setId(ConditionCodeId id);
-            //unfinished condition code
-        } catch (Exception e) {
-            response.setMessage(e.getMessage());
-            response.setStatus(HttpStatus.HTTP_INTERNAL_SERVER_ERROR);
-        }
+    //    try {
+    //         request.setConditionCode().setId(ConditionCodeId id);
+    //         //unfinished condition code
+    //     } catch (Exception e) {
+    //         response.setMessage(e.getMessage());
+    //         response.setStatus(HttpStatus.HTTP_INTERNAL_SERVER_ERROR);
+    //     }
+
     }
     
 }
