@@ -1,15 +1,28 @@
 package gov.cdc.nbs.questionbank.model;
 
-import lombok.Getter;
-import lombok.Setter;
+public sealed interface CreateRuleRequest {
+   String ruleFunction();
+   String ruleDescription();
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+   String anySourceValue();
+   String comparator();
 
-@Getter
-@Setter
-@XmlAccessorType(XmlAccessType.FIELD)
-public class CreateRuleRequest {
-    private RuleDescriptionDto ruleDescription;
-    private RuleDetailsDto ruleDetails;
+   String source();
+   String sourceValue();
+   String targetType();
+
+   String targetValue();
+
+    record ruleRequest(
+            String ruleFunction,
+            String ruleDescription,
+            String source,
+            String anySourceValue,
+            String comparator,
+            String sourceValue,
+            String targetType,
+            String targetValue) implements CreateRuleRequest{ }
+
+
 }
+
