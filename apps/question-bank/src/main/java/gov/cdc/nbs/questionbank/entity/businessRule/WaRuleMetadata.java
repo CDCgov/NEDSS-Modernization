@@ -1,11 +1,11 @@
 package gov.cdc.nbs.questionbank.entity.businessRule;
 
+import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -77,4 +77,16 @@ public class WaRuleMetadata {
 
     @Column(name = "target_type", length = 50)
     private String targetType;
+
+    protected WaRuleMetadata(CreateRuleRequest ruleRequest){
+        String sourceValue= (ruleRequest.anySourceValue()!=null) ? ruleRequest.anySourceValue():ruleRequest.anySourceValue();
+        setRuleDescText(ruleRequest.ruleDescription());
+        setSourceValues(sourceValue);
+        setTargetType(ruleRequest.targetType());
+        setRuleCd(ruleRequest.ruleDescription());
+        setLogic(ruleRequest.comparator());
+        setTargetQuestionIdentifier(ruleRequest.targetValue());
+        setSourceQuestionIdentifier(ruleRequest.source());
+
+    }
 }

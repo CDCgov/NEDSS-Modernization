@@ -7,23 +7,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
-public class BusinessRuleController {
+public class PageRuleController {
 
     @Autowired
-    private BusinessRuleService businessRuleService;
+    private PageRuleService pageRuleService;
 
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @RequestMapping(method = RequestMethod.POST, value = "/createBusinessRule", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/createPageRule", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest createRuleRequest){
+    public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest.ruleRequest request){
         log.info("Request for Business Rule Creation");
-        long templateUid=  businessRuleService.createBusinessRule(createRuleRequest);
+        long templateUid=  pageRuleService.createPageRule(request);
         log.debug("Successfully added business rule with Id: {}", templateUid);
         return new CreateRuleResponse(templateUid);
     }
