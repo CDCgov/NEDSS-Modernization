@@ -13,6 +13,7 @@ Feature: Create question
             | text          |
             | date          |
             | numeric       |
+            | coded         |
 
     Scenario: I cannot create a question without logging in
         Given I am not logged in
@@ -23,6 +24,7 @@ Feature: Create question
             | text          |
             | date          |
             | numeric       |
+            | coded         |
 
     Scenario: I cannot create a question without permissions
         Given I am a user without permissions
@@ -33,6 +35,7 @@ Feature: Create question
             | text          |
             | date          |
             | numeric       |
+            | coded         |
 
     Scenario: I cannot create a question with non unique fields
         Given I am an admin user

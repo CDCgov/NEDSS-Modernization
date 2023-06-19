@@ -62,6 +62,23 @@ public class QuestionRequestMother {
                 "Some literal value");
     }
 
+    public static CreateQuestionRequest.Coded codedRequest(long valueSet) {
+        return new CreateQuestionRequest.Coded(
+                "PHIN",
+                "Test unique Id",
+                "TEST UNIQUE NAME",
+                "Test_Subgroup",
+                "Test description",
+                "Test label",
+                "Test tooltip",
+                1008L,
+                reportingInfo(),
+                messagingInfo(true),
+                "Test admin comments",
+                valueSet,
+                null);
+    }
+
     public static CreateQuestionRequest.Text custom(
             String uniqueName,
             String identifier,

@@ -1,7 +1,6 @@
 import { Button, Grid, Icon } from '@trussworks/react-uswds';
 import { ReactNode, useState } from 'react';
 import './style.scss';
-import { GeneralPatientInformation } from '../DemographicsForm/GenearalPatientData';
 import { PatientBirth, PatientGeneral, PatientMortality } from 'generated/graphql/schema';
 
 export type TableProps = {
@@ -12,7 +11,7 @@ export type TableProps = {
     data?: PatientGeneral | PatientMortality | PatientBirth;
 };
 
-export const HorizontalTable = ({ tableHeader, buttons, tableData, type, data }: TableProps) => {
+export const HorizontalTable = ({ tableHeader, buttons, tableData, type }: TableProps) => {
     const [entry, setEntry] = useState<TableProps['type']>(undefined);
     buttons = (
         <Button type="button" className="grid-row" onClick={() => setEntry(type)}>
@@ -42,10 +41,6 @@ export const HorizontalTable = ({ tableHeader, buttons, tableData, type, data }:
                         </Grid>
                     ))}
             </div>
-
-            {entry === 'general' && (
-                <GeneralPatientInformation data={data as PatientGeneral} setGeneralForm={() => setEntry(undefined)} />
-            )}
         </div>
     );
 };

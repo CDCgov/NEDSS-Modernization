@@ -88,6 +88,25 @@ public sealed interface CreateQuestionRequest {
     ) implements CreateQuestionRequest {
 
     }
+    record Coded(
+            // General question fields
+            String codeSet,
+            String uniqueId,
+            String uniqueName,
+            String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            ReportingInfo dataMartInfo,
+            MessagingInfo messagingInfo,
+            String adminComments,
+
+            // Coded specific fields
+            Long valueSet,
+            String defaultValue) implements CreateQuestionRequest {
+
+    }
 
     public record ReportingInfo(
             String reportLabel,
