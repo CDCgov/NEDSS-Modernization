@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.businessrules;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
-public interface BusinessRuleService {
+public interface PageRuleService {
 
-   Long createBusinessRule(CreateRuleRequest createRuleRequest);
+   Long createPageRule(CreateRuleRequest.ruleRequest request);
 }
