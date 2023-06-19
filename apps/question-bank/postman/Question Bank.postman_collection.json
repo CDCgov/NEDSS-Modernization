@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "642caf83-8d31-4600-b76a-558c598aa842",
+		"name": "Question Bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27971066"
+	},
+	"item": [
+		{
+			"name": "nnd_batch_to_cdc Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"postman.setEnvironmentVariable(\"token\", response.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"nnd_batch_to_cdc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Text Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"adminComments\": \"Administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Question\",\n  \"displayControl\": 1008,\n  \"fieldLength\": \"50\",\n  \"label\": \"Sample question label\",\n  \"mask\": \"TXT\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Label in message\",\n    \"messageVariableId\": \"MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample question\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/text",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"text"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Date Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"adminComments\": \"Date Question administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATE_DATA_MART_COLUMN\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"DATE_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Date report label\"\n  },\n  \"description\": \"Test Date Question\",\n  \"displayControl\": 1008,\n  \"label\": \"Sample date question label\",\n  \"mask\": \"DATE\",\n  \"allowFutureDates\": false,\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Date label in message\",\n    \"messageVariableId\": \"Date MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample date question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample date question\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/date",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"date"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Numeric Question",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/numeric",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"numeric"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

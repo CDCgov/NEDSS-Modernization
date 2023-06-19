@@ -20,7 +20,16 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.input.*;
+import gov.cdc.nbs.message.patient.input.AddressInput;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
+import gov.cdc.nbs.message.patient.input.EmailInput;
+import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
+import gov.cdc.nbs.message.patient.input.IdentificationInput;
+import gov.cdc.nbs.message.patient.input.MortalityInput;
+import gov.cdc.nbs.message.patient.input.NameInput;
+import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.PhoneInput;
+import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
@@ -38,9 +47,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -51,7 +63,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
@@ -73,43 +90,32 @@ public class PatientService {
 
     @PersistenceContext
     private final EntityManager entityManager;
-    @Autowired
     private final PersonRepository personRepository;
-    @Autowired
     private final CriteriaBuilderFactory criteriaBuilderFactory;
-    @Autowired
     private final ElasticsearchOperations operations;
-    @Autowired
-    private final PatientEventRequester requester;
-    @Autowired
     private final UserService userService;
-    @Autowired
     private final PatientLocalIdentifierResolver resolver;
-    @Autowired
     private final CountryCodeRepository countryCodeRepository;
-    @Autowired
-    private EntityLocatorParticipationRepository entityLocatorParticipationRepository;
-
-
+    private final EntityLocatorParticipationRepository entityLocatorParticipationRepository;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
         if (sort == null) {
             // if no sort provided, default sort by lastNm then Id
             return query.orderBy(person.lastNm.asc().nullsLast())
-                    .orderBy(person.id.desc().nullsLast());
+                .orderBy(person.id.desc().nullsLast());
         }
         var sorts = sort.stream().filter(Objects::nonNull).map(s -> {
             switch (s.getProperty()) {
                 case "lastNm":
                     return s.getDirection() == Direction.ASC ? person.lastNm.asc().nullsLast()
-                            : person.lastNm.desc().nullsLast();
+                        : person.lastNm.desc().nullsLast();
                 case "birthTime":
                     return s.getDirection() == Direction.ASC ? person.birthTime.asc().nullsLast()
-                            : person.birthTime.desc().nullsLast();
+                        : person.birthTime.desc().nullsLast();
                 case "addTime":
                     return s.getDirection() == Direction.ASC ? person.addTime.asc().nullsLast()
-                            : person.addTime.desc().nullsLast();
+                        : person.addTime.desc().nullsLast();
                 default:
                     throw new QueryException("Invalid sort value: " + s.getProperty());
             }
@@ -129,12 +135,12 @@ public class PatientService {
         var person = QPerson.person;
         var pageable = GraphQLPage.toPageable(page, maxPageSize);
         var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-                .select(person)
-                .from(person);
+            .select(person)
+            .from(person);
         query = applySort(query, pageable.getSort());
 
         var results = query.fetchPage((int) pageable.getOffset(),
-                pageable.getPageSize());
+            pageable.getPageSize());
         return new PageImpl<>(results, pageable, results.getMaxResults());
     }
 
@@ -168,20 +174,20 @@ public class PatientService {
             BoolQueryBuilder firstNameBuilder = QueryBuilders.boolQuery();
 
             firstNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.FIRST_NM,
-                    filter.getFirstName().trim()).boost(FIRST_NAME_PRIMARY_BOOST));
+                filter.getFirstName().trim()).boost(FIRST_NAME_PRIMARY_BOOST));
 
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(
-                                    addWildcards(filter.getFirstName()))
-                            .defaultField("name.firstNm")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg).boost(FIRST_NAME_NON_PRIMARY_BOOST));
+                QueryBuilders.queryStringQuery(
+                        addWildcards(filter.getFirstName()))
+                    .defaultField("name.firstNm")
+                    .defaultOperator(Operator.AND),
+                ScoreMode.Avg).boost(FIRST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
             String firstNmSndx = soundex.encode(filter.getFirstName().trim());
             firstNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
-                    ScoreMode.Avg).boost(FIRST_NAME_SOUNDEX_BOOST));
+                QueryBuilders.queryStringQuery(firstNmSndx).defaultField("name.firstNmSndx"),
+                ScoreMode.Avg).boost(FIRST_NAME_SOUNDEX_BOOST));
 
             builder.must(firstNameBuilder);
         }
@@ -190,20 +196,20 @@ public class PatientService {
             BoolQueryBuilder lastNameBuilder = QueryBuilders.boolQuery();
 
             lastNameBuilder.should(QueryBuilders.matchQuery(ElasticsearchPerson.LAST_NM_KEYWORD,
-                    filter.getLastName().trim()).boost(LAST_NAME_PRIMARY_BOOST));
+                filter.getLastName().trim()).boost(LAST_NAME_PRIMARY_BOOST));
 
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(
-                                    addWildcards(filter.getLastName()))
-                            .defaultField("name.lastNm")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg).boost(LAST_NAME_NON_PRIMARY_BOOST));
+                QueryBuilders.queryStringQuery(
+                        addWildcards(filter.getLastName()))
+                    .defaultField("name.lastNm")
+                    .defaultOperator(Operator.AND),
+                ScoreMode.Avg).boost(LAST_NAME_NON_PRIMARY_BOOST));
 
             Soundex soundex = new Soundex();
             String lastNmSndx = soundex.encode(filter.getLastName().trim());
             lastNameBuilder.should(QueryBuilders.nestedQuery(ElasticsearchPerson.NAME_FIELD,
-                    QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
-                    ScoreMode.Avg).boost(LAST_NAME_SOUNDEX_BOOST));
+                QueryBuilders.queryStringQuery(lastNmSndx).defaultField("name.lastNmSndx"),
+                ScoreMode.Avg).boost(LAST_NAME_SOUNDEX_BOOST));
 
             builder.must(lastNameBuilder);
         }
@@ -212,9 +218,9 @@ public class PatientService {
             String allDigitSsn = filter.getSsn().replaceAll("\\D", "");
             if (!allDigitSsn.isEmpty()) {
                 builder.must(QueryBuilders.queryStringQuery(
-                                addWildcards(allDigitSsn))
-                        .defaultField(ElasticsearchPerson.SSN_FIELD)
-                        .defaultOperator(Operator.AND));
+                        addWildcards(allDigitSsn))
+                    .defaultField(ElasticsearchPerson.SSN_FIELD)
+                    .defaultOperator(Operator.AND));
             }
         }
 
@@ -222,29 +228,29 @@ public class PatientService {
             String allDigitPhoneNumber = filter.getPhoneNumber().replaceAll("\\D", "");
             if (!allDigitPhoneNumber.isEmpty()) {
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.PHONE_FIELD,
-                        QueryBuilders.queryStringQuery(
-                                        addWildcards(allDigitPhoneNumber))
-                                .defaultField("phone.telephoneNbr")
-                                .defaultOperator(Operator.AND),
-                        ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(allDigitPhoneNumber))
+                        .defaultField("phone.telephoneNbr")
+                        .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
             }
         }
 
         if (filter.getEmail() != null && !filter.getEmail().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.EMAIL_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getEmail())
-                            .defaultField("email.emailAddress")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                QueryBuilders.queryStringQuery(filter.getEmail())
+                    .defaultField("email.emailAddress")
+                    .defaultOperator(Operator.AND),
+                ScoreMode.Avg));
         }
 
         if (filter.getAddress() != null && !filter.getAddress().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD, QueryBuilders
-                            .queryStringQuery(
-                                    addWildcards(filter.getAddress()))
-                            .defaultField("address.streetAddr1")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                    .queryStringQuery(
+                        addWildcards(filter.getAddress()))
+                    .defaultField("address.streetAddr1")
+                    .defaultOperator(Operator.AND),
+                ScoreMode.Avg));
         }
 
         if (filter.getGender() != null) {
@@ -257,58 +263,58 @@ public class PatientService {
 
         if (filter.getCity() != null && !filter.getCity().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                    QueryBuilders.queryStringQuery(
-                                    addWildcards(filter.getCity()))
-                            .defaultField("address.city")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                QueryBuilders.queryStringQuery(
+                        addWildcards(filter.getCity()))
+                    .defaultField("address.city")
+                    .defaultOperator(Operator.AND),
+                ScoreMode.Avg));
         }
 
         if (filter.getZip() != null && !filter.getZip().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                    QueryBuilders.matchQuery("address.zip", filter.getZip()),
-                    ScoreMode.Avg));
+                QueryBuilders.matchQuery("address.zip", filter.getZip()),
+                ScoreMode.Avg));
         }
 
         if (filter.getState() != null && !filter.getState().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                    QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
+                QueryBuilders.matchQuery("address.state", filter.getState()), ScoreMode.Avg));
         }
 
         if (filter.getCountry() != null && !filter.getCountry().isEmpty()) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ADDRESS_FIELD,
-                    QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
+                QueryBuilders.matchQuery("address.cntryCd", filter.getCountry()), ScoreMode.Avg));
         }
 
         if (filter.getEthnicity() != null) {
             builder.must(QueryBuilders.matchQuery(ElasticsearchPerson.ETHNIC_GROUP_IND,
-                    filter.getEthnicity()));
+                filter.getEthnicity()));
         }
 
         if (filter.getRace() != null) {
             builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.RACE_FIELD,
-                    QueryBuilders.queryStringQuery(filter.getRace())
-                            .defaultField("race.raceCategoryCd")
-                            .defaultOperator(Operator.AND),
-                    ScoreMode.Avg));
+                QueryBuilders.queryStringQuery(filter.getRace())
+                    .defaultField("race.raceCategoryCd")
+                    .defaultOperator(Operator.AND),
+                ScoreMode.Avg));
         }
 
         if (filter.getIdentification() != null) {
             String allAlphanumericIdentificationNumber = filter.getIdentification().getIdentificationNumber()
-                    .replaceAll("\\W", "");
+                .replaceAll("\\W", "");
             if (!allAlphanumericIdentificationNumber.isEmpty()) {
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                        QueryBuilders.queryStringQuery(
-                                        addWildcards(allAlphanumericIdentificationNumber))
-                                .defaultField("entity_id.rootExtensionTxt")
-                                .defaultOperator(Operator.AND),
-                        ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(
+                            addWildcards(allAlphanumericIdentificationNumber))
+                        .defaultField("entity_id.rootExtensionTxt")
+                        .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
 
                 builder.must(QueryBuilders.nestedQuery(ElasticsearchPerson.ENTITY_ID_FIELD,
-                        QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
-                                .defaultField("entity_id.typeCd")
-                                .defaultOperator(Operator.AND),
-                        ScoreMode.Avg));
+                    QueryBuilders.queryStringQuery(filter.getIdentification().getIdentificationType())
+                        .defaultField("entity_id.typeCd")
+                        .defaultOperator(Operator.AND),
+                    ScoreMode.Avg));
             }
         }
 
@@ -327,20 +333,20 @@ public class PatientService {
         }
 
         var query = new NativeSearchQueryBuilder()
-                .withQuery(builder)
-                .withSorts(buildPatientSort(pageable))
-                .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
-                .build();
+            .withQuery(builder)
+            .withSorts(buildPatientSort(pageable))
+            .withPageable(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))
+            .build();
 
         SearchHits<ElasticsearchPerson> elasticsearchPersonSearchHits = operations.search(query,
-                ElasticsearchPerson.class);
+            ElasticsearchPerson.class);
 
         ids = elasticsearchPersonSearchHits
-                .stream()
-                .map(h -> h.getContent())
-                .filter(Objects::nonNull)
-                .map(ElasticsearchPerson::getPersonUid)
-                .toList();
+            .stream()
+            .map(h -> h.getContent())
+            .filter(Objects::nonNull)
+            .map(ElasticsearchPerson::getPersonUid)
+            .toList();
         var persons = personRepository.findAllById(ids);
         persons.sort(Ordering.explicit(ids).onResultOf(Person::getId));
         return new PageImpl<>(persons, pageable, elasticsearchPersonSearchHits.getTotalHits());
@@ -354,10 +360,10 @@ public class PatientService {
         var person = QPerson.person;
         var labEvent = QLabEvent.labEvent;
         var query = new BlazeJPAQuery<Person>(entityManager, criteriaBuilderFactory)
-                .select(person)
-                .from(person)
-                .join(labEvent).on(labEvent.personUid.eq(person.id))
-                .join(organization).on(labEvent.organizationUid.eq(organization.id));
+            .select(person)
+            .from(person)
+            .join(labEvent).on(labEvent.personUid.eq(person.id))
+            .join(organization).on(labEvent.organizationUid.eq(organization.id));
 
         query = addParameter(query, organization.id::eq, filter.getId());
         query = addParameter(query, organization.displayNm::likeIgnoreCase, filter.getDisplayNm());
@@ -375,7 +381,7 @@ public class PatientService {
     // checks to see if the filter provided is null, if not add the filter to the
     // 'query.where' based on the expression supplied
     private <T, I> BlazeJPAQuery<T> addParameter(BlazeJPAQuery<T> query,
-                                                 Function<I, BooleanExpression> expression, I filter) {
+        Function<I, BooleanExpression> expression, I filter) {
         if (filter != null) {
             if (filter instanceof String s && s.trim().length() == 0) {
                 return query;
@@ -400,8 +406,8 @@ public class PatientService {
             // If user lacks permission, remove these from the search criteria
             if (!userService.isAuthorized(currentUser, FINDINACTIVE + "-" + PATIENT)) {
                 recordStatus = recordStatus.stream()
-                        .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
-                        .toList();
+                    .filter(s -> !s.equals(RecordStatus.SUPERCEDED) && !s.equals(RecordStatus.LOG_DEL))
+                    .toList();
             }
 
         }
@@ -414,10 +420,11 @@ public class PatientService {
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
+    @SuppressWarnings("squid:S3776")
     public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             boolean modified = false;
             if (!isEmpty(input.getMaritalStatus())) {
                 person.setMaritalStatusCd(input.getMaritalStatus());
@@ -458,94 +465,95 @@ public class PatientService {
             if (modified) {
                 person.setAsOfDateGeneral(input.getAsOf());
             }
-            return personRepository.save(person);
-        });
-
-        return sendPatientEvent(updateGeneralInfoEvent);
+            personRepository.save(person);
+            return sendPatientEvent(updateGeneralInfoEvent);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse addPatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             PatientCommand.AddName addName = new PatientCommand.AddName(
-                    input.getPatientId(),
-                    input.getFirstName(),
-                    input.getMiddleName(),
-                    input.getLastName(),
-                    input.getSuffix(),
-                    PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
-                    user.getId(),
-                    Instant.now()
+                input.getPatientId(),
+                input.getFirstName(),
+                input.getMiddleName(),
+                input.getLastName(),
+                input.getSuffix(),
+                PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
+                user.getId(),
+                Instant.now()
             );
             person.add(addName);
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updatePatientName(NameInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             PatientCommand.AddName addName = new PatientCommand.AddName(
-                    input.getPatientId(),
-                    input.getFirstName(),
-                    input.getMiddleName(),
-                    input.getLastName(),
-                    input.getSuffix(),
-                    PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
-                    user.getId(),
-                    Instant.now()
+                input.getPatientId(),
+                input.getFirstName(),
+                input.getMiddleName(),
+                input.getLastName(),
+                input.getSuffix(),
+                PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
+                user.getId(),
+                Instant.now()
             );
             person.update(addName);
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.UpdateAdministrativeInfo(
-                    person.getId(),
-                    Instant.now(),
-                    input.getDescription(),
-                    user.getId(),
-                    Instant.now()
+                person.getId(),
+                Instant.now(),
+                input.getDescription(),
+                user.getId(),
+                Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
         var user = SecurityUtil.getUserDetails();
         var updateSexAndBirthEvent = SexAndBirthInput.toRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.UpdateSexAndBirthInfo(
-                    person.getId(),
-                    input.getAsOf(),
-                    input.getDateOfBirth(),
-                    input.getBirthGender(),
-                    input.getCurrentGender(),
-                    input.getAdditionalGender(),
-                    input.getTransGenderInfo(),
-                    input.getBirthCity(),
-                    input.getBirthCntry(),
-                    input.getBirthState(),
-                    input.getBirthOrderNbr(),
-                    input.getMultipleBirth(),
-                    input.getSexUnknown(),
-                    input.getCurrentAge(),
-                    input.getAgeReportedTime(),
-                    user.getId(),
-                    Instant.now()
+                person.getId(),
+                input.getAsOf(),
+                input.getDateOfBirth(),
+                input.getBirthGender(),
+                input.getCurrentGender(),
+                input.getAdditionalGender(),
+                input.getTransGenderInfo(),
+                input.getBirthCity(),
+                input.getBirthCntry(),
+                input.getBirthState(),
+                input.getBirthOrderNbr(),
+                input.getMultipleBirth(),
+                input.getSexUnknown(),
+                input.getCurrentAge(),
+                input.getAgeReportedTime(),
+                user.getId(),
+                Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(updateSexAndBirthEvent);
+            personRepository.save(person);
+            return sendPatientEvent(updateSexAndBirthEvent);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     @Transactional
@@ -553,31 +561,34 @@ public class PatientService {
         var user = SecurityUtil.getUserDetails();
         var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
 
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             PatientCommand.UpdateMortalityLocator updateMortalityLocator = new PatientCommand.UpdateMortalityLocator(
-                    person.getId(),
-                    Instant.now(),
-                    input.getDeceased(),
-                    input.getDeceasedTime(),
-                    input.getCityOfDeath(),
-                    input.getStateOfDeath(),
-                    input.getCountyOfDeath(),
-                    input.getCountryOfDeath(),
-                    user.getId(),
-                    Instant.now()
+                person.getId(),
+                Instant.now(),
+                input.getDeceased(),
+                input.getDeceasedTime(),
+                input.getCityOfDeath(),
+                input.getStateOfDeath(),
+                input.getCountyOfDeath(),
+                input.getCountryOfDeath(),
+                user.getId(),
+                Instant.now()
             );
             person.update(updateMortalityLocator);
-            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId()).map(locator -> {
-                locator.updateMortalityLocator(updateMortalityLocator);
-                return entityLocatorParticipationRepository.save(locator);
-            });
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(updateMortalityEvent);
+            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId())
+                .ifPresent(locator -> {
+                        locator.updateMortalityLocator(updateMortalityLocator);
+                        entityLocatorParticipationRepository.save(locator);
+                    }
+                );
+            personRepository.save(person);
+            return sendPatientEvent(updateMortalityEvent);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     private PatientEventResponse sendPatientEvent(PatientRequest request) {
-        return this.requester.request(request);
+        return new PatientEventResponse(request.patientId());
     }
 
     private String addWildcards(String searchString) {
@@ -597,11 +608,11 @@ public class PatientService {
                     break;
                 case "lastNm":
                     sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.LAST_NM_KEYWORD)
-                            .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                        .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 case "birthTime":
                     sorts.add(SortBuilders.fieldSort(ElasticsearchPerson.BIRTH_TIME)
-                            .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
+                        .order(sort.getDirection() == Direction.DESC ? SortOrder.DESC : SortOrder.ASC));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
@@ -617,35 +628,36 @@ public class PatientService {
     public PatientEventResponse addPatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.add(new PatientCommand.AddIdentification(
-                    person.getId(),
-                    input.getIdentificationNumber(),
-                    input.getAssigningAuthority(),
-                    input.getIdentificationType(),
-                    user.getId(),
-                    Instant.now()
+                person.getId(),
+                input.getIdentificationNumber(),
+                input.getAssigningAuthority(),
+                input.getIdentificationType(),
+                user.getId(),
+                Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.AddIdentification(
-                    person.getId(),
-                    input.getIdentificationNumber(),
-                    input.getAssigningAuthority(),
-                    input.getIdentificationType(),
-                    user.getId(),
-                    Instant.now()
+                person.getId(),
+                input.getIdentificationNumber(),
+                input.getAssigningAuthority(),
+                input.getIdentificationType(),
+                user.getId(),
+                Instant.now()
             ));
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
@@ -657,55 +669,54 @@ public class PatientService {
     public PatientEventResponse addPatientAddress(AddressInput addressInput) {
         var user = SecurityUtil.getUserDetails();
         var patientRequest = AddressInput.toAddRequest(user.getId(), getRequestId(), addressInput);
-        personRepository.findById(addressInput.getPatientId()).map(person -> {
+        return personRepository.findById(addressInput.getPatientId()).map(person -> {
             long newAddressId = person.getId();
             Optional<CountryCode> countryCode = countryCodeRepository.findById(addressInput.getCountryCode());
             PatientCommand.AddAddress addAddress = new PatientCommand.AddAddress(
-                    addressInput.getPatientId(),
-                    newAddressId,
-                    addressInput.getStreetAddress1(),
-                    addressInput.getStreetAddress2(),
-                    new City(addressInput.getCity()),
-                    addressInput.getStateCode(),
-                    addressInput.getZip(),
-                    new County(addressInput.getCountyCode()),
-                    new Country(countryCode.orElseThrow().getId()),
-                    addressInput.getCensusTract(),
-                    user.getId(),
-                    Instant.now()
+                addressInput.getPatientId(),
+                newAddressId,
+                addressInput.getStreetAddress1(),
+                addressInput.getStreetAddress2(),
+                new City(addressInput.getCity()),
+                addressInput.getStateCode(),
+                addressInput.getZip(),
+                new County(addressInput.getCountyCode()),
+                new Country(countryCode.orElseThrow().getId()),
+                addressInput.getCensusTract(),
+                user.getId(),
+                Instant.now()
             );
             person.add(addAddress);
-            return personRepository.save(person);
-        });
-
-
-        return sendPatientEvent(patientRequest);
+            personRepository.save(person);
+            return sendPatientEvent(patientRequest);
+        }).orElseThrow(() -> new PatientNotFoundException(addressInput.getPatientId()));
     }
 
     public PatientEventResponse updatePatientAddress(AddressInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map(person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             long newAddressId = person.getId();
             Optional<CountryCode> countryCode = countryCodeRepository.findById(input.getCountryCode());
             PatientCommand.UpdateAddress updateAddress = new PatientCommand.UpdateAddress(
-                    input.getPatientId(),
-                    newAddressId,
-                    input.getStreetAddress1(),
-                    input.getStreetAddress2(),
-                    new City(input.getCity()),
-                    input.getStateCode(),
-                    input.getZip(),
-                    new County(input.getCountyCode()),
-                    new Country(countryCode.orElseThrow().getId()),
-                    input.getCensusTract(),
-                    user.getId(),
-                    Instant.now()
+                input.getPatientId(),
+                newAddressId,
+                input.getStreetAddress1(),
+                input.getStreetAddress2(),
+                new City(input.getCity()),
+                input.getStateCode(),
+                input.getZip(),
+                new County(input.getCountyCode()),
+                new Country(countryCode.orElseThrow().getId()),
+                input.getCensusTract(),
+                user.getId(),
+                Instant.now()
             );
             person.update(updateAddress);
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
@@ -717,38 +728,40 @@ public class PatientService {
     public PatientEventResponse addPatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.add(new PatientCommand.AddPhoneNumber(
-                    person.getId(),
-                    input.getId(),
-                    input.getNumber(),
-                    input.getExtension(),
-                    input.getPhoneType().type(),
-                    input.getPhoneType().use(),
-                    user.getId(),
-                    Instant.now()
-            )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+                person.getId(),
+                input.getId(),
+                input.getNumber(),
+                input.getExtension(),
+                input.getPhoneType().type(),
+                input.getPhoneType().use(),
+                user.getId(),
+                Instant.now()
+            ));
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse updatePatientPhone(PhoneInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = PhoneInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.UpdatePhoneNumber(
-                    person.getId(),
-                    input.getId(),
-                    input.getNumber(),
-                    input.getExtension(),
-                    input.getPhoneType(),
-                    user.getId(),
-                    Instant.now()
-            )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+                person.getId(),
+                input.getId(),
+                input.getNumber(),
+                input.getExtension(),
+                input.getPhoneType(),
+                user.getId(),
+                Instant.now()
+            ));
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse deletePatientPhone(Long patientId, long id) {
@@ -760,33 +773,35 @@ public class PatientService {
     public PatientEventResponse addPatientEmail(EmailInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = EmailInput.toAddRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.add(new PatientCommand.AddEmailAddress(
-                    person.getId(),
-                    input.getId(),
-                    input.getEmailAddress(),
-                    user.getId(),
-                    Instant.now()
-            )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+                person.getId(),
+                input.getId(),
+                input.getEmailAddress(),
+                user.getId(),
+                Instant.now()
+            ));
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse updatePatientEmail(EmailInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = EmailInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        personRepository.findById(input.getPatientId()).map( person -> {
+        return personRepository.findById(input.getPatientId()).map(person -> {
             person.update(new PatientCommand.UpdateEmailAddress(
-                    person.getId(),
-                    input.getId(),
-                    input.getEmailAddress(),
-                    user.getId(),
-                    Instant.now()
-            )) ;
-            return personRepository.save(person);
-        });
-        return sendPatientEvent(event);
+                person.getId(),
+                input.getId(),
+                input.getEmailAddress(),
+                user.getId(),
+                Instant.now()
+            ));
+            personRepository.save(person);
+            return sendPatientEvent(event);
+        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
+
     }
 
     public PatientEventResponse deletePatientEmail(Long patientId, long id) {

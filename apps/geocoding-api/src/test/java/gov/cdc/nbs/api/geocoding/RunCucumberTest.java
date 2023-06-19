@@ -1,12 +1,16 @@
 package gov.cdc.nbs.api.geocoding;
 
 import io.cucumber.spring.CucumberContextConfiguration;
+import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -26,6 +30,13 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @AutoConfigureMockMvc
 @Rollback(false)
 @Testcontainers
-public class RunCucumberTest {
+class RunCucumberTest {
 
+    @Autowired
+    private ApplicationContext context;
+
+    @Test
+    void context_loads() {
+        assertNotNull(context);
+    }
 }
