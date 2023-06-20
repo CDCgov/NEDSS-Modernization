@@ -976,7 +976,7 @@ class PersonTest {
                 4861L,
                 "SA1",
                 "SA2",
-                 "city-description",
+                "city-description",
                 "State",
                 "Zip",
                 "county-code",
@@ -1193,7 +1193,7 @@ class PersonTest {
 
 
     @Test
-    void should_add_email_address() {
+    void should_add_minimal_email_address() {
 
         Person actual = new Person(117L, "local-id-value");
 
@@ -1223,7 +1223,7 @@ class PersonTest {
     }
 
     @Test
-    void should_add_cell_phone_number() {
+    void should_add_minimal_phone_number() {
 
         Person actual = new Person(117L, "local-id-value");
 
@@ -1231,10 +1231,10 @@ class PersonTest {
             new PatientCommand.AddPhoneNumber(
                 117L,
                 5347L,
-                "Phone Number",
-                "Extension",
                 "CP",
                 "MC",
+                "Phone Number",
+                "Extension",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
             )
@@ -1253,6 +1253,175 @@ class PersonTest {
                     .returns("Extension", TeleLocator::getExtensionTxt));
 
     }
+
+    @Test
+    void should_add_phone() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                117L,
+                5347L,
+                "type-value",
+                "use-value",
+                Instant.parse("2023-11-27T22:53:07Z"),
+                "country-code",
+                "number",
+                "extension",
+                "email",
+                "url",
+                "comment",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .isInstanceOf(TeleEntityLocatorParticipation.class)
+                    .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                    .returns(5347L, p -> p.getId().getLocatorUid())
+                    .returns("type-value", EntityLocatorParticipation::getCd)
+                    .returns("use-value", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2023-11-27T22:53:07Z"), EntityLocatorParticipation::getAsOfDate)
+                    .returns(131L, EntityLocatorParticipation::getAddUserId)
+                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
+                    .returns(131L, EntityLocatorParticipation::getLastChgUserId)
+                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getLastChgTime)
+                    .returns("comment", EntityLocatorParticipation::getLocatorDescTxt)
+                    .extracting(TeleEntityLocatorParticipation::getLocator)
+                    .returns(5347L, TeleLocator::getId)
+                    .returns("country-code", TeleLocator::getCntryCd)
+                    .returns("number", TeleLocator::getPhoneNbrTxt)
+                    .returns("extension", TeleLocator::getExtensionTxt)
+                    .returns("email", TeleLocator::getEmailAddress)
+                    .returns("url", TeleLocator::getUrlAddress)
+            );
+    }
+
+    @Test
+    void should_update_existing_phone() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                117L,
+                5347L,
+                "type-value",
+                "use-value",
+                Instant.parse("2023-11-27T22:53:07Z"),
+                "country-code",
+                "number",
+                "extension",
+                "email",
+                "url",
+                "comment",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.update(
+            new PatientCommand.UpdatePhone(
+                117L,
+                5347L,
+                "updated-type-value",
+                "updated-use-value",
+                Instant.parse("2023-11-27T22:53:07Z"),
+                "updated-country-code",
+                "updated-number",
+                "updated-extension",
+                "updated-email",
+                "updated-url",
+                "updated-comment",
+                171L,
+                Instant.parse("2023-07-01T13:17:00Z")
+            )
+        );
+
+        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .isInstanceOf(TeleEntityLocatorParticipation.class)
+                    .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                    .returns(5347L, p -> p.getId().getLocatorUid())
+                    .returns("updated-type-value", EntityLocatorParticipation::getCd)
+                    .returns("updated-use-value", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2023-11-27T22:53:07Z"), EntityLocatorParticipation::getAsOfDate)
+                    .returns(131L, EntityLocatorParticipation::getAddUserId)
+                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
+                    .returns(171L, EntityLocatorParticipation::getLastChgUserId)
+                    .returns(Instant.parse("2023-07-01T13:17:00Z"), EntityLocatorParticipation::getLastChgTime)
+                    .returns("updated-comment", EntityLocatorParticipation::getLocatorDescTxt)
+                    .extracting(TeleEntityLocatorParticipation::getLocator)
+                    .returns(5347L, TeleLocator::getId)
+                    .returns("updated-country-code", TeleLocator::getCntryCd)
+                    .returns("updated-number", TeleLocator::getPhoneNbrTxt)
+                    .returns("updated-extension", TeleLocator::getExtensionTxt)
+                    .returns("updated-email", TeleLocator::getEmailAddress)
+                    .returns("updated-url", TeleLocator::getUrlAddress)
+            );
+    }
+
+    @Test
+    void should_delete_existing_phone() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                117L,
+                5347L,
+                "type-value",
+                "use-value",
+                Instant.parse("2023-11-27T22:53:07Z"),
+                "country-code",
+                "number",
+                "extension",
+                "email",
+                "url",
+                "comment",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                117L,
+                1567L,
+                "type-value",
+                "use-value",
+                Instant.parse("2023-11-27T22:53:07Z"),
+                "country-code",
+                "number",
+                "extension",
+                "email",
+                "url",
+                "comment",
+                171L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.delete(
+            new PatientCommand.DeletePhone(
+                117L,
+                1567L,
+                293L,
+                Instant.parse("2023-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .isInstanceOf(TeleEntityLocatorParticipation.class)
+                    .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
+                    .returns(5347L, p -> p.getId().getLocatorUid())
+            );
+    }
+
 
     @Test
     void should_delete_patient_without_associations() {

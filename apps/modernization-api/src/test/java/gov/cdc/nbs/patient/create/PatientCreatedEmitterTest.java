@@ -280,10 +280,10 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddPhoneNumber(
                 117L,
                 5347L,
-                "Phone Number",
-                "Extension",
                 "CP",
                 "MC",
+                "Phone Number",
+                "Extension",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
             )
