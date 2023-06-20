@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
@@ -79,11 +80,12 @@ public class QuestionController {
 
     @PatchMapping("{id}/status")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public void setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
+    public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
         log.debug("Received update question status request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        updater.setStatus(userId, id, request.status());
+        Question question = updater.setStatus(userId, id, request.status());
         log.debug("Successfully updated question status");
+        return question;
     }
 
 }

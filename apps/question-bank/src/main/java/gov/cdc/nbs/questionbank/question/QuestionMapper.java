@@ -57,7 +57,7 @@ public class QuestionMapper {
         return new DateQuestion(
                 q.getId(),
                 q.getMask(),
-                q.getFutureDateIndCd().equals('T') ? true : false,
+                toBoolean(q.getFutureDateIndCd(), 'T'),
                 q.getQuestionType(),
                 q.getQuestionIdentifier(),
                 q.getQuestionNm(),
@@ -120,11 +120,11 @@ public class QuestionMapper {
 
     private MessagingInfo getMessagingInfo(WaQuestion question) {
         return new MessagingInfo(
-                question.getNndMsgInd().equals('T') ? true : false,
+                toBoolean(question.getNndMsgInd(), 'T'),
                 question.getQuestionIdentifierNnd(),
                 question.getQuestionLabelNnd(),
                 question.getQuestionOid(),
-                question.getQuestionRequiredNnd().equals('R') ? true : false,
+                toBoolean(question.getQuestionRequiredNnd(), 'R'),
                 question.getQuestionDataTypeNnd());
     }
 
@@ -134,6 +134,15 @@ public class QuestionMapper {
                 question.getRdbTableNm(),
                 question.getRdbColumnNm(),
                 question.getUserDefinedColumnNm());
+    }
+
+    private boolean toBoolean(Character character, Character trueValue) {
+        if (character == null) {
+            return false;
+        } else {
+            return character.equals(trueValue);
+        }
+
     }
 
 }
