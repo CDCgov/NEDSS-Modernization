@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Codeset_Group_Metadata")
-public class CodeSetGroupMetaDatum {
+public class CodeSetGroupMetadatum {
     @Id
     @Column(name = "code_set_group_id", nullable = false)
     private Long id;
@@ -39,7 +39,5 @@ public class CodeSetGroupMetaDatum {
     @Column(name = "phin_std_val_ind")
     private Character phinStdValInd;
 
-    @OneToMany(mappedBy = "codeSetGroup")
-    private Set<CodeSet> codesets = new LinkedHashSet<>();
-
+    private Set<Codeset> codesets = new LinkedHashSet<>();
 }

@@ -31,9 +31,6 @@ public abstract class WaQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code_set_group_id")
-    private Long codeSetGroupId;
-
     @Column(name = "data_cd", length = 50)
     private String dataCd;
 
@@ -189,25 +186,28 @@ public abstract class WaQuestion {
     public abstract String getDataType();
 
     protected WaQuestion(QuestionCommand command) {
+        // Defaults
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
-        setQuestionIdentifier(requireNonNull(command.localId(), "LocalId must not be null"));
-        if (command.questionOid() != null) {
-            setQuestionOid(command.questionOid().oid());
-            setQuestionOidSystemTxt(command.questionOid().system());
-        }
-        setQuestionLabel(command.label());
-        setQuestionToolTip(requireNonNull(command.tooltip(), "Tooltip must not be null"));
-        setQuestionNm(requireNonNull(command.uniqueName(), "UniqueName must not be null"));
-        setSubGroupNm(requireNonNull(command.subgroup(), "Subgroup must not be null"));
-        setDescTxt(requireNonNull(command.description(), "Description must not be null"));
-        setNbsUiComponentUid(requireNonNull(command.displayControl(), "DisplayControl must not be null"));
         setStandardQuestionIndCd('F');
         setEntryMethod("USER");
-        setQuestionType(requireNonNull(command.codeSet(), "CodeSet must not be null"));
-        setAdminComment(command.adminComments());
         setStandardQuestionIndCd('F');
         setOrderGroupId("2");
         setFutureDateIndCd('F');
+
+        QuestionCommand.QuestionData data = command.questionData();
+        if (data.questionOid() != null) {
+            setQuestionOid(data.questionOid().oid());
+            setQuestionOidSystemTxt(data.questionOid().system());
+        }
+        setQuestionIdentifier(requireNonNull(data.localId(), "LocalId must not be null"));
+        setQuestionLabel(requireNonNull(data.label(), "Label must not be null"));
+        setQuestionToolTip(requireNonNull(data.tooltip(), "Tooltip must not be null"));
+        setQuestionNm(requireNonNull(data.uniqueName(), "UniqueName must not be null"));
+        setSubGroupNm(requireNonNull(data.subgroup(), "Subgroup must not be null"));
+        setDescTxt(requireNonNull(data.description(), "Description must not be null"));
+        setNbsUiComponentUid(requireNonNull(data.displayControl(), "DisplayControl must not be null"));
+        setQuestionType(requireNonNull(data.codeSet(), "CodeSet must not be null"));
+        setAdminComment(data.adminComments());
     }
 
     public void setMessagingData(QuestionCommand.MessagingData data) {
