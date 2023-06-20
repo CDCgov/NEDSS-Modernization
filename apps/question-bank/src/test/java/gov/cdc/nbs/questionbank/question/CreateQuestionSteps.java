@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
@@ -74,6 +75,10 @@ public class CreateQuestionSteps {
                     request = QuestionRequestMother.numericRequest();
                     response = controller.createNumericQuestion((CreateQuestionRequest.Numeric) request);
                     break;
+                case "coded":
+                    request = QuestionRequestMother.codedRequest(4150L); // Yes, No, Unknown Value set in test db
+                    response = controller.createCodedQuestion((CreateQuestionRequest.Coded) request);
+                    break;
                 default:
                     throw new NotYetImplementedException();
             }
@@ -127,7 +132,7 @@ public class CreateQuestionSteps {
         }
         try {
             controller.createTextQuestion(request);
-        } catch (QuestionCreateException e) {
+        } catch (CreateQuestionException e) {
             exception = e;
         }
     }
@@ -143,6 +148,9 @@ public class CreateQuestionSteps {
                 break;
             case "numeric":
                 validateNumericQuestion();
+                break;
+            case "coded":
+                validateCodedQuestion();
                 break;
             default:
                 throw new NotYetImplementedException();
@@ -185,6 +193,17 @@ public class CreateQuestionSteps {
         assertEquals(numericRequest.unitValue(), question.getUnitValue());
     }
 
+    private void validateCodedQuestion() {
+        assertNotNull(response);
+        CodedQuestionEntity question =
+                (CodedQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Coded codedRequest = (CreateQuestionRequest.Coded) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
+        assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
+        assertEquals('F', question.getOtherValueIndCd().charValue());
+    }
+
     @Then("a not authorized exception is thrown")
     public void a_not_authorized_exception_is_thrown() {
         assertNotNull(exception);
@@ -196,7 +215,7 @@ public class CreateQuestionSteps {
     @Then("a question creation exception is thrown")
     public void an_exception_is_thrown() {
         assertNotNull(exception);
-        assertTrue(exception instanceof QuestionCreateException);
+        assertTrue(exception instanceof CreateQuestionException);
     }
 
 }
