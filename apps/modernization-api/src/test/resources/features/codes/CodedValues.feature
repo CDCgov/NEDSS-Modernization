@@ -29,6 +29,8 @@ Feature: Value Sets for common data inputs are retrievable
       | "Address Use"                         |
       | "Phone Type"                          |
       | "Phone Use"                           |
+      | "Identification Type"                 |
+      | "Assigning Authority"
       | "Country"                             |
       | "State"                               |
 

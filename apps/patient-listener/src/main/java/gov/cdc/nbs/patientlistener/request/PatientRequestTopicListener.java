@@ -43,14 +43,6 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientSexAndBirthUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateAdministrative update) {
                 updateHandler.handlePatientAdministrativeUpdate(update.data());
-            } else if (request instanceof PatientRequest.AddIdentification update) {
-                updateHandler.handlePatientIdentificationAdd(update.data());
-            } else if (request instanceof PatientRequest.UpdateIdentification update) {
-                updateHandler.handlePatientIdentificationUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeleteIdentification delete) {
-                updateHandler.handlePatientIdentificationDelete(delete.requestId(), delete.patientId(), delete.id(),
-                    delete.userId());
-
             }  else {
                 receivedInvalidRequest(key, request);
             }

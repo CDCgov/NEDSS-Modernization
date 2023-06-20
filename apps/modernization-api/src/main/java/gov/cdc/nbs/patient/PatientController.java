@@ -8,7 +8,6 @@ import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
@@ -86,24 +85,6 @@ public class PatientController {
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
     public PatientEventResponse updateMortality(@Argument MortalityInput input) {
         return patientService.updateMortality(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientIdentification(@Argument IdentificationInput input) {
-        return patientService.addPatientIdentification(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientIdentification(@Argument IdentificationInput input) {
-        return patientService.updatePatientIdentification(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientIdentification(@Argument Long patientId, @Argument Short entitySeqNum) {
-        return patientService.deletePatientIdentification(patientId, entitySeqNum);
     }
 
 }
