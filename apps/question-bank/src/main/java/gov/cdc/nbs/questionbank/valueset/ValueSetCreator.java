@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
-import gov.cdc.nbs.questionbank.valueset.repository.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
@@ -30,7 +30,7 @@ public class ValueSetCreator {
 	@Autowired
 	private CodesetGroupMetadatumRepository codeSetGrpMetaRepository; // Value Set Grp Meta
 
-	public CreateValueSetResponse createValueSet(ValueSetRequest request) {
+	public CreateValueSetResponse createValueSet(ValueSetRequest request, long userId) {
 		CreateValueSetResponse response = new CreateValueSetResponse();
 		String codeSetName = request.getValueSetNm();
 		String codeShrtDescTxt = request.getCodeSetDescTxt();
@@ -55,12 +55,11 @@ public class ValueSetCreator {
 			codeGrp.setCodeSetNm(request.getValueSetNm());
 			codeGrp.setLdfPicklistIndCd(request.getLdfPicklistIndCd());
 			// Add ValueSet
-			Codeset valueSet = new Codeset(asAdd(request));
+			Codeset valueSet = new Codeset(asAdd(request,userId));
 			CodesetId id = new CodesetId();
 			id.setClassCd(ValueSetConstants.CREATE_CLASS_CD);
 			id.setCodeSetNm(codeSetName);
-			valueSet.setId(id);			
-			valueSet.setCodeSetGroup(codeGrp);
+			valueSet.setId(id);
 			// save changes
 			Codeset resultCodeSet = valueSetRepository.save(valueSet);
 			codeSetGrpMetaRepository.save(codeGrp);
@@ -68,15 +67,14 @@ public class ValueSetCreator {
 			
 			if(request.getValues() != null) {
 			for (ValueSetRequest.CreateCodedValue valueConcept : request.getValues()) {
-				codeValueRepository.save(createValueConcept(valueConcept));
+				codeValueRepository.save(createValueConcept(valueConcept,userId));
 
 			}
 			}
-			CreateValueSetResponse.ValueSetCreateShort body = new CreateValueSetResponse.ValueSetCreateShort();
-			body.setId(resultCodeSet.getId());
-			body.setAddTime(resultCodeSet.getAddTime());
-			body.setAddUserId(resultCodeSet.getAddUserId());
-			body.setValueSetNm(resultCodeSet.getValueSetNm());
+			CreateValueSetResponse.ValueSetCreateShort body = new CreateValueSetResponse.ValueSetCreateShort(
+					resultCodeSet.getId(), resultCodeSet.getAddTime(), resultCodeSet.getAddUserId(),
+					resultCodeSet.getValueSetNm());
+
 			response.setBody(body);
 			response.setMessage(ValueSetConstants.SUCCESS_MESSAGE);
 			response.setStatus(HttpStatus.CREATED);
@@ -84,7 +82,7 @@ public class ValueSetCreator {
 		} catch (Exception e) {
 			response.setMessage(e.getMessage());
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-
+			e.printStackTrace();
 		}
 		return response;
 
@@ -110,7 +108,7 @@ public class ValueSetCreator {
 		return maxGroupID;
 	}
 
-	public ValueSetCommand.AddValueSet asAdd(final ValueSetRequest request) {
+	public ValueSetCommand.AddValueSet asAdd(final ValueSetRequest request, long userId) {
 		return new ValueSetCommand.AddValueSet(
 				request.getAssigningAuthorityCd(),
 				request.getAssigningAuthorityDescTxt(), 
@@ -134,11 +132,11 @@ public class ValueSetCreator {
 				request.getValueSetStatusTime(),
 				request.getParentIsCd(), 
 				request.getAddTime(), 
-				request.getAddUserId());
+				userId);
 
 	}
 
-	private CodeValueGeneral createValueConcept(final ValueSetRequest.CreateCodedValue valueConcept) {
+	private CodeValueGeneral createValueConcept(final ValueSetRequest.CreateCodedValue valueConcept, long userId) {
 		CodeValueGeneral codeValueGen = new CodeValueGeneral();
 		codeValueGen.setCodeDescTxt(valueConcept.getCodeDescTxt());
 		codeValueGen.setCodeShortDescTxt(valueConcept.getCodeShortDescTxt());
@@ -165,7 +163,7 @@ public class ValueSetCreator {
 		codeValueGen.setConceptOrderNbr(valueConcept.getConceptOrderNbr());
 		codeValueGen.setAdminComments(valueConcept.getAdminComments());
 		codeValueGen.setAddTime(valueConcept.getAddTime());
-		codeValueGen.setAddUserId(valueConcept.getAddUserId());
+		codeValueGen.setAddUserId(userId);
 
 		return codeValueGen;
 	}

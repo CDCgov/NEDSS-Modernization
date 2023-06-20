@@ -39,5 +39,6 @@ public class CodeSetGroupMetadatum {
     @Column(name = "phin_std_val_ind")
     private Character phinStdValInd;
 
+    @OneToMany(mappedBy = "codeSetGroup")
     private Set<Codeset> codesets = new LinkedHashSet<>();
 }

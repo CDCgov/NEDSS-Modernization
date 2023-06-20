@@ -19,16 +19,13 @@ public class CreateValueSetResponse {
 
 	 
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public static class ValueSetCreateShort {
-	 private CodesetId id;
-	 private Instant addTime;
-	 private Long addUserId;
-	 private String valueSetNm;
-	
-}
+
+public record ValueSetCreateShort (
+	 CodesetId id,
+	 Instant addTime,
+	 Long addUserId,
+	 String valueSetNm
+) {}
 
 
 }
