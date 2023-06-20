@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.kafka.producer;
 
 import gov.cdc.nbs.questionbank.kafka.config.RequestProperties;
-import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
