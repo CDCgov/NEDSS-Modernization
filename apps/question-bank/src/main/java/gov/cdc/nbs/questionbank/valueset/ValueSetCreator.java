@@ -82,7 +82,6 @@ public class ValueSetCreator {
 		} catch (Exception e) {
 			response.setMessage(e.getMessage());
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-			e.printStackTrace();
 		}
 		return response;
 
