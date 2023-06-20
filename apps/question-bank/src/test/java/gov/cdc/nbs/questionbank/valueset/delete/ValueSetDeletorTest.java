@@ -15,7 +15,7 @@ import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.response.DeleteValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 
-public class ValueSetDeletorTest {
+ class ValueSetDeletorTest {
 	@Mock
 	ValueSetRepository valueSetRepository;
 
@@ -27,7 +27,7 @@ public class ValueSetDeletorTest {
 	}
 
 	@Test
-	public void deleteValueSetTest() {
+	void deleteValueSetTest() {
 		String codeSetNm = "testCodeSetNm";
 		when(valueSetRepository.inActivateValueSet(Mockito.anyString())).thenReturn(1);
 		DeleteValueSetResponse response = valueSetDeletor.deleteValueSet(codeSetNm);
@@ -38,7 +38,7 @@ public class ValueSetDeletorTest {
 	}
 
 	@Test
-	public void deleteValueSetUpdateFailureTest() {
+	void deleteValueSetUpdateFailureTest() {
 		String codeSetNm = "testCodeSetNm";
 		when(valueSetRepository.inActivateValueSet(Mockito.anyString())).thenReturn(0);
 		DeleteValueSetResponse response = valueSetDeletor.deleteValueSet(codeSetNm);
@@ -49,14 +49,14 @@ public class ValueSetDeletorTest {
 	}
 
 	@Test
-	public void deleteValueSetNullParamTest() {
+	void deleteValueSetNullParamTest() {
 		DeleteValueSetResponse response = valueSetDeletor.deleteValueSet(null);
 		assertEquals(ValueSetConstants.EMPTY_CODE_SET_NM, response.getMessage());
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
 	}
 
 	@Test
-	public void deleteValueSetExceptionTest() {
+	void deleteValueSetExceptionTest() {
 		final String message = "Illegal argument provided";
 		when(valueSetRepository.inActivateValueSet(Mockito.anyString()))
 				.thenThrow(new IllegalArgumentException(message));
