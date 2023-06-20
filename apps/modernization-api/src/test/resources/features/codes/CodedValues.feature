@@ -30,7 +30,7 @@ Feature: Value Sets for common data inputs are retrievable
       | "Phone Type"                          |
       | "Phone Use"                           |
       | "Identification Type"                 |
-      | "Assigning Authority"
+      | "Assigning Authority"                 |
       | "Country"                             |
       | "State"                               |
 
