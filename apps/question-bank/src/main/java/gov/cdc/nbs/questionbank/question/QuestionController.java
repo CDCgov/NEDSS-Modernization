@@ -1,12 +1,15 @@
 package gov.cdc.nbs.questionbank.question;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,12 +20,15 @@ public class QuestionController {
 
     private final QuestionCreator creator;
     private final UserDetailsProvider userDetailsProvider;
+    private final QuestionUpdater updater;
 
     public QuestionController(
             QuestionCreator creator,
-            UserDetailsProvider userDetailsProvider) {
+            UserDetailsProvider userDetailsProvider,
+            QuestionUpdater deleter) {
         this.creator = creator;
         this.userDetailsProvider = userDetailsProvider;
+        this.updater = deleter;
     }
 
     @PostMapping("text")
@@ -63,6 +69,15 @@ public class QuestionController {
         long questionId = creator.create(userId, request);
         log.debug("Successfully created coded question with Id: {}", questionId);
         return new CreateQuestionResponse(questionId);
+    }
+
+    @PatchMapping("{id}/status")
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public void setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
+        log.debug("Received update question status request");
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        updater.setStatus(userId, id, request.status());
+        log.debug("Successfully updated question status");
     }
 
 }

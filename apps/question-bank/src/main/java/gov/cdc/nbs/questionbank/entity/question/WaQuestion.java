@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -185,7 +186,7 @@ public abstract class WaQuestion {
 
     public abstract String getDataType();
 
-    protected WaQuestion(QuestionCommand command) {
+    protected WaQuestion(CreateQuestionCommand command) {
         // Defaults
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
         setStandardQuestionIndCd('F');
@@ -239,6 +240,13 @@ public abstract class WaQuestion {
         setVersionCtrlNbr(1);
         setRecordStatusCd("Active");
         setRecordStatusTime(command.requestedOn());
+    }
+
+    public void statusChange(QuestionCommand.SetStatus command) {
+        setRecordStatusCd(command.active() ? "Active" : "Inactive");
+        setRecordStatusTime(command.requestedOn());
+        setLastChgUserId(command.userId());
+        setLastChgTime(command.requestedOn());
     }
 
     private String formatAndValidateReportingField(String s) {
