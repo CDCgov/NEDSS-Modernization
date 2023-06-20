@@ -73,4 +73,14 @@ public class GeneralCodedValueResolver {
     public Collection<CodedValue> degrees() {
         return finder.all("P_NM_DEG");
     }
+
+    @QueryMapping
+    public Collection<CodedValue> addressTypes() {
+        return finder.all("EL_TYPE_PST_PAT", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> addressUses() {
+        return finder.all("EL_USE_PST_PAT", CodedValues.withStandardizedName());
+    }
 }

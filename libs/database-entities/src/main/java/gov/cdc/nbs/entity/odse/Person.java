@@ -480,6 +480,7 @@ public class Person {
 
         existing.add(personName);
 
+        changed(added);
         return personName;
     }
 
@@ -537,7 +538,19 @@ public class Person {
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
-        return this.nbsEntity.add(address);
+        EntityLocatorParticipation added = this.nbsEntity.add(address);
+        changed(address);
+        return added;
+    }
+
+    public void update(final PatientCommand.UpdateAddress address) {
+        this.nbsEntity.update(address);
+        changed(address);
+    }
+
+    public void delete(final PatientCommand.DeleteAddress address) {
+        this.nbsEntity.delete(address);
+        changed(address);
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
@@ -568,10 +581,6 @@ public class Person {
         return this.nbsEntity.add(mortality);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateAddress address) {
-        return this.nbsEntity.update(address);
-    }
-
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
         return this.nbsEntity.update(phoneNumber);
     }
@@ -584,9 +593,7 @@ public class Person {
         return this.nbsEntity.delete(mortality);
     }
 
-    public boolean delete(final PatientCommand.DeleteAddress address) {
-        return this.nbsEntity.delete(address);
-    }
+
 
     public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
         return this.nbsEntity.delete(phoneNumber);

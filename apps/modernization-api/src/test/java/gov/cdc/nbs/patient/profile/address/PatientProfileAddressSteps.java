@@ -59,7 +59,7 @@ public class PatientProfileAddressSteps {
             faker.address().city(),
             RandomUtil.getRandomStateCode(),
             RandomUtil.getRandomString(),
-            RandomUtil.country().code(),
+            RandomUtil.country(),
             RandomUtil.getRandomNumericString(15),
             null
         );

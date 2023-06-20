@@ -28,7 +28,6 @@ Feature: Patient Demographics Update
       | sex and birth  |
       | mortality      |
       | administrative |
-      | address        |
       | email          |
       | identification |
       | phone          |
@@ -50,9 +49,6 @@ Feature: Patient Demographics Update
       | administrative | FIND-PATIENT,EDIT-PATIENT |
       | administrative | FIND-PATIENT,VIEW-PATIENT |
       | administrative | EDIT-PATIENT,VIEW-PATIENT |
-      | address        | FIND-PATIENT,EDIT-PATIENT |
-      | address        | FIND-PATIENT,VIEW-PATIENT |
-      | address        | EDIT-PATIENT,VIEW-PATIENT |
       | mortality      | FIND-PATIENT,EDIT-PATIENT |
       | mortality      | FIND-PATIENT,VIEW-PATIENT |
       | mortality      | EDIT-PATIENT,VIEW-PATIENT |

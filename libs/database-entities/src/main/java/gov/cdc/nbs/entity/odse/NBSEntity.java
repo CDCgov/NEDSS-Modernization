@@ -115,8 +115,7 @@ public class NBSEntity {
         return this.entityLocatorParticipations;
     }
 
-    public EntityLocatorParticipation add(
-        final PatientCommand.AddAddress address) {
+    public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
 
         List<EntityLocatorParticipation> locators = ensureLocators();
 
@@ -125,39 +124,25 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
             this,
             identifier,
-            address);
+            address
+        );
 
         locators.add(participation);
 
         return participation;
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateAddress address) {
-
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        Optional<EntityLocatorParticipation> elp = existing.stream()
-            .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
-        if (elp.isPresent()) {
-            PostalLocator pl = ((PostalEntityLocatorParticipation) elp.get()).getLocator();
-            pl.setStreetAddr1(address.address1());
-            pl.setStreetAddr2(address.address2());
-            pl.setCensusTract(address.censusTract());
-            pl.setCityCd(address.city().code());
-            pl.setCntryCd(address.country().code());
-            pl.setStateCd(address.state());
-            pl.setZipCd(address.zip());
-        }
-        return elp;
+    public void update(final PatientCommand.UpdateAddress changes) {
+        this.ensureLocators().stream()
+            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .map(PostalEntityLocatorParticipation.class::cast)
+            .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), changes.id()))
+            .findFirst()
+            .ifPresent(existing -> existing.update(changes));
     }
 
-    public boolean delete(
-        final PatientCommand.DeleteAddress address) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, address.id());
-        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
-        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        this.entityLocatorParticipations = elps;
-        return isDeleted;
+    public void delete(final PatientCommand.DeleteAddress remove) {
+        ensureLocators().removeIf(existing -> Objects.equals(existing.getId().getLocatorUid(), remove.id()));
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
