@@ -60,6 +60,32 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
         this.locator = new TeleLocator(emailAddress);
     }
 
+    public TeleEntityLocatorParticipation(
+        final NBSEntity nbs,
+        final EntityLocatorParticipationId identifier,
+        final PatientCommand.AddPhone phone
+    ) {
+        super(phone, nbs, identifier);
+
+        this.cd = phone.type();
+        this.useCd = phone.use();
+        this.asOfDate = phone.asOf();
+        this.locatorDescTxt = phone.comment();
+
+        this.locator = new TeleLocator(phone);
+    }
+
+    public void update(final PatientCommand.UpdatePhone phone) {
+        this.cd = phone.type();
+        this.useCd = phone.use();
+        this.asOfDate = phone.asOf();
+        this.locatorDescTxt = phone.comment();
+
+        this.locator.update(phone);
+
+        changed(phone);
+    }
+
     @Override
     public TeleLocator getLocator() {
         return locator;

@@ -83,4 +83,14 @@ public class GeneralCodedValueResolver {
     public Collection<CodedValue> addressUses() {
         return finder.all("EL_USE_PST_PAT", CodedValues.withStandardizedName());
     }
+
+    @QueryMapping
+    public Collection<CodedValue> phoneTypes() {
+        return finder.all("EL_TYPE_TELE_PAT", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> phoneUses() {
+        return finder.all("EL_USE_TELE_PAT", CodedValues.withStandardizedName());
+    }
 }

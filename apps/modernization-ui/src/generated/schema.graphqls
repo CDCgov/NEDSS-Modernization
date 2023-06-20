@@ -194,6 +194,8 @@ extend type Query {
     degrees: [CodedValue!]!
     addressUses: [CodedValue!]!
     addressTypes: [CodedValue!]!
+    phoneUses: [CodedValue!]!
+    phoneTypes: [CodedValue!]!
 }
 extend type Query {
     findAllConditionCodes(page: Page): [ConditionCode]!
@@ -1220,21 +1222,16 @@ type Mutation {
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientUpdateResponse!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
     updateMortality(input: MortalityInput!): PatientUpdateResponse!
-    addPatientEmail(input: EmailInput!): PatientUpdateResponse!
     addPatientIdentification(input: IdentificationInput!): PatientUpdateResponse!
-    addPatientPhone(input: PhoneInput!): PatientUpdateResponse!
     updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
-    updatePatientEmail(input: EmailInput!): PatientUpdateResponse!
     updatePatientIdentification(
     input: IdentificationInput!
     ): PatientUpdateResponse!
-    updatePatientPhone(input: PhoneInput!): PatientUpdateResponse!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     deletePatientIdentification(
     patientId: Int!
     entitySeqNum: Int!
     ): PatientUpdateResponse!
-    deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceChangeResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
@@ -1245,6 +1242,9 @@ type Mutation {
     addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
     updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
     deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
+    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
+    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
+    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
 }
 
 type PatientCreatedResponse {
@@ -1480,12 +1480,6 @@ input AdministrativeInput {
     description: String
 }
 
-input EmailInput {
-    patientId: ID!
-    id: Int
-    emailAddress: String
-}
-
 input EthnicityInput {
     patient: String!
     asOf: DateTime!
@@ -1596,20 +1590,49 @@ type PatientAddressChangeResult {
     id: Int!
 }
 
+input NewPatientPhoneInput {
+    patient: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    countryCode: String
+    number: String
+    extension: String
+    email:String
+    url:String
+    comment: String
+}
+
+input UpdatePatientPhoneInput {
+    patient: Int!
+    id: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    countryCode: String
+    number: String
+    extension: String
+    email:String
+    url:String
+    comment: String
+}
+
+input DeletePatientPhoneInput {
+    patient: Int!
+    id: Int!
+}
+
+type PatientPhoneChangeResult {
+    patient: Int!
+    id: Int!
+}
+
 input IdentificationInput {
     patientId: ID!
     id: Int
     identificationNumber: String!
     identificationType: String!
     assigningAuthority: String
-}
-
-input PhoneInput {
-    patientId: ID!
-    id: Int
-    number: String
-    extension: String
-    phoneType: PhoneType!
 }
 
 input MortalityInput {

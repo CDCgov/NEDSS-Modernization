@@ -7,11 +7,9 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import lombok.AllArgsConstructor;
@@ -106,42 +104,6 @@ public class PatientController {
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
     public PatientEventResponse deletePatientIdentification(@Argument Long patientId, @Argument Short entitySeqNum) {
         return patientService.deletePatientIdentification(patientId, entitySeqNum);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientEmail(@Argument EmailInput input) {
-        return patientService.addPatientEmail(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientEmail(@Argument EmailInput input) {
-        return patientService.updatePatientEmail(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientEmail(@Argument Long patientId, @Argument Short personSeqNum) {
-        return patientService.deletePatientEmail(patientId, personSeqNum);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientPhone(@Argument PhoneInput input) {
-        return patientService.addPatientPhone(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientPhone(@Argument PhoneInput input) {
-        return patientService.updatePatientPhone(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientPhone(@Argument Long patientId, @Argument Short personSeqNum) {
-        return patientService.deletePatientPhone(patientId, personSeqNum);
     }
 
 }
