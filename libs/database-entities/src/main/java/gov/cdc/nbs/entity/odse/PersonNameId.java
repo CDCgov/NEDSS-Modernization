@@ -1,22 +1,26 @@
 package gov.cdc.nbs.entity.odse;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 @Embeddable
 public class PersonNameId implements Serializable {
+
+    public static PersonNameId from(final long patient, int sequence) {
+        return new PersonNameId(patient, (short)sequence);
+    }
+
+
+    @Serial
     private static final long serialVersionUID = -6533992946080388101L;
     @Column(name = "person_uid", nullable = false)
     private Long personUid;
@@ -24,20 +28,27 @@ public class PersonNameId implements Serializable {
     @Column(name = "person_name_seq", nullable = false)
     private Short personNameSeq;
 
+    public PersonNameId() {
+    }
+
+    public PersonNameId(long personUid, short personNameSeq) {
+        this.personUid = personUid;
+        this.personNameSeq = personNameSeq;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+        if (o == null || getClass() != o.getClass())
             return false;
-        PersonNameId entity = (PersonNameId) o;
-        return Objects.equals(this.personUid, entity.personUid) &&
-                Objects.equals(this.personNameSeq, entity.personNameSeq);
+        PersonNameId that = (PersonNameId) o;
+        return Objects.equals(personUid, that.personUid) && Objects.equals(personNameSeq,
+            that.personNameSeq);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(personUid, personNameSeq);
     }
-
 }

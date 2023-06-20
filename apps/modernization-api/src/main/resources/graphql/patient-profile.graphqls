@@ -57,7 +57,7 @@ type PatientAdministrativeResults {
 }
 
 type PatientName {
-    patient: ID!
+    patient: Int!
     version: Int!
     asOf: DateTime!
     sequence: Int!

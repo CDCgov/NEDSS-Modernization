@@ -9,6 +9,10 @@ public enum Suffix {
     SR("SR", "Sr."),
     V("V", "V / The Fifth");
 
+    public static Suffix resolve(final String value) {
+        return value == null ? null : Suffix.valueOf(value);
+    }
+
     private final String value;
     private final String display;
 

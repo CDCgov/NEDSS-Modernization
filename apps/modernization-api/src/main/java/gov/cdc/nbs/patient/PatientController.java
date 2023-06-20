@@ -12,7 +12,6 @@ import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
@@ -72,18 +71,6 @@ public class PatientController {
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
     public PatientEventResponse updatePatientGeneralInfo(@Argument GeneralInfoInput input) {
         return patientService.updatePatientGeneralInfo(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientName(@Argument NameInput input) {
-        return patientService.addPatientName(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientName(@Argument NameInput input) {
-        return patientService.updatePatientName(input);
     }
 
     @MutationMapping()

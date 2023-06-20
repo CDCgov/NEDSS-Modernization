@@ -6,9 +6,7 @@ import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.junit.jupiter.api.Test;
@@ -115,8 +113,8 @@ class PatientCreatedEmitterTest {
                 "First",
                 "Middle",
                 "Last",
-                Suffix.JR,
-                PatientInput.NameUseCd.L,
+                "JR",
+                "L",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
             )

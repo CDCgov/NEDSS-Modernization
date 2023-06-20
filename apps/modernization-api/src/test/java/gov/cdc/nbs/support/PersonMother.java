@@ -8,7 +8,6 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
@@ -98,7 +97,7 @@ public class PersonMother {
                 middleName,
                 lastName,
                 null,
-                PatientInput.NameUseCd.L,
+                "L",
                 id,
                 now));
 
@@ -169,7 +168,7 @@ public class PersonMother {
                 "S",
                 "Doe",
                 null,
-                PatientInput.NameUseCd.L,
+                "L",
                 CREATED_BY_ID,
                 now));
 

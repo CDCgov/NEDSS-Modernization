@@ -40,6 +40,22 @@ Feature: Value Sets for common data inputs are retrievable
     When I want to retrieve the "Primary Occupation" value set
     Then a value set is returned
 
+  Scenario: I can retrieve Name Types
+    When I want to retrieve the "Name Type" value set
+    Then a value set is returned
+
+  Scenario: I can retrieve Primary Name Prefixes
+    When I want to retrieve the "Name Prefix" value set
+    Then a value set is returned
+
+  Scenario: I can retrieve Name Suffixes
+    When I want to retrieve the "Name Suffix" value set
+    Then a value set is returned
+
+  Scenario: I can retrieve Degrees
+    When I want to retrieve the "Degree" value set
+    Then a value set is returned
+
   Scenario: I can retrieve Primary Languages
     When I want to retrieve the "Primary Language" value set
     Then a value set is returned
