@@ -53,6 +53,24 @@ public class TeleLocator extends Locator {
         this.emailAddress = emailAddress.email();
     }
 
+    public TeleLocator(final PatientCommand.AddPhone phone) {
+        super(phone);
+        this.id = phone.id();
+        this.cntryCd = phone.countryCode();
+        this.phoneNbrTxt = phone.number();
+        this.extensionTxt = phone.extension();
+        this.emailAddress = phone.email();
+        this.urlAddress = phone.url();
+    }
+
+    public void update(final PatientCommand.UpdatePhone phone) {
+        this.cntryCd = phone.countryCode();
+        this.phoneNbrTxt = phone.number();
+        this.extensionTxt = phone.extension();
+        this.emailAddress = phone.email();
+        this.urlAddress = phone.url();
+    }
+
     @Override
     public String toString() {
         return "TeleLocator{" +

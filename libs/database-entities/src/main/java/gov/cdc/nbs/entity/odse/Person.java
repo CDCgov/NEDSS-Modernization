@@ -557,6 +557,9 @@ public class Person {
         return this.nbsEntity.addresses();
     }
 
+    public Collection<TeleEntityLocatorParticipation> phones() {
+        return this.nbsEntity.phones();
+    }
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.nbsEntity.phoneNumbers();
     }
@@ -575,6 +578,18 @@ public class Person {
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
         return this.nbsEntity.add(emailAddress);
+    }
+
+    public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
+        return this.nbsEntity.add(phone);
+    }
+
+    public void update(final PatientCommand.UpdatePhone phone) {
+        this.nbsEntity.update(phone);
+    }
+
+    public void delete(final PatientCommand.DeletePhone phone) {
+        this.nbsEntity.delete(phone);
     }
 
     public EntityLocatorParticipation add(AddMortalityLocator mortality) {

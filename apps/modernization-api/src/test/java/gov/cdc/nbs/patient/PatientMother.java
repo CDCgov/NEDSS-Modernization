@@ -169,4 +169,27 @@ public class PatientMother {
             )
         );
     }
+
+    @Transactional
+    public void withPhone(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                identifier.id(),
+                idGenerator.next(),
+                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
+                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP","TMP"),
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.getRandomString(),
+                faker.phoneNumber().cellPhone(),
+                faker.phoneNumber().extension(),
+                faker.internet().emailAddress(),
+                faker.internet().url(),
+                RandomUtil.getRandomString(),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
 }

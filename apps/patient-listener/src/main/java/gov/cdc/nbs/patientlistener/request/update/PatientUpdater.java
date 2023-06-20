@@ -3,19 +3,13 @@ package gov.cdc.nbs.patientlistener.request.update;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.id.IdGeneratorService;
-import gov.cdc.nbs.message.patient.event.AddEmailData;
 import gov.cdc.nbs.message.patient.event.AddIdentificationData;
-import gov.cdc.nbs.message.patient.event.AddPhoneData;
-import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
-import gov.cdc.nbs.message.patient.event.DeletePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
-import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
-import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -44,36 +38,6 @@ public class PatientUpdater {
 
     public Person update(final Person person, final UpdateAdministrativeData data) {
         person.update(asUpdateAdministrativeInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final AddPhoneData data) {
-        person.add(asAddPhoneInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final UpdatePhoneData data) {
-        person.update(asUpdatePhoneInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final DeletePhoneData data) {
-        person.delete(asDeletePhoneInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final AddEmailData data) {
-        person.add(asAddEmailInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final UpdateEmailData data) {
-        person.update(asUpdateEmailInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final DeleteEmailData data) {
-        person.delete(asDeleteEmailInfo(data));
         return personRepository.save(person);
     }
 
@@ -197,32 +161,6 @@ public class PatientUpdater {
             Instant.now());
     }
 
-    private PatientCommand.AddEmailAddress asAddEmailInfo(AddEmailData data) {
-        return new PatientCommand.AddEmailAddress(
-            data.patientId(),
-            data.id(),
-            data.emailAddress(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.UpdateEmailAddress asUpdateEmailInfo(UpdateEmailData data) {
-        return new PatientCommand.UpdateEmailAddress(
-            data.patientId(),
-            data.id(),
-            data.emailAddress(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.DeleteEmailAddress asDeleteEmailInfo(DeleteEmailData data) {
-        return new PatientCommand.DeleteEmailAddress(
-            data.patientId(),
-            data.id(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
     private PatientCommand.AddIdentification asAddIdentificationInfo(AddIdentificationData data) {
         return new PatientCommand.AddIdentification(
             data.patientId(),
@@ -246,38 +184,6 @@ public class PatientUpdater {
 
     private PatientCommand.DeleteIdentification asDeleteIdentificationInfo(DeleteIdentificationData data) {
         return new PatientCommand.DeleteIdentification(
-            data.patientId(),
-            data.id(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.AddPhoneNumber asAddPhoneInfo(final AddPhoneData data) {
-        return new PatientCommand.AddPhoneNumber(
-            data.patientId(),
-            data.patientId(),
-            data.number(),
-            data.extension(),
-            data.phoneType().type(),
-            data.phoneType().use(),
-            data.updatedBy(),
-            Instant.now()
-        );
-    }
-
-    private PatientCommand.UpdatePhoneNumber asUpdatePhoneInfo(UpdatePhoneData data) {
-        return new PatientCommand.UpdatePhoneNumber(
-            data.patientId(),
-            data.id(),
-            data.number(),
-            data.extension(),
-            data.phoneType(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.DeletePhoneNumber asDeletePhoneInfo(DeletePhoneData data) {
-        return new PatientCommand.DeletePhoneNumber(
             data.patientId(),
             data.id(),
             data.updatedBy(),

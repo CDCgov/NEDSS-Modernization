@@ -156,10 +156,10 @@ public class PatientCreator {
         return new PatientCommand.AddPhoneNumber(
             identifier.id(),
             generateNbsId(),
-            phoneNumber.getNumber(),
-            phoneNumber.getExtension(),
             phoneNumber.getType(),
             phoneNumber.getUse(),
+            phoneNumber.getNumber(),
+            phoneNumber.getExtension(),
             context.requestedBy(),
             context.requestedAt()
         );
