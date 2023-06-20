@@ -73,7 +73,8 @@ public class NBSEntity {
         EntityId entityId = new EntityId(
             this,
             identifier,
-            added);
+            added
+        );
         existing.add(entityId);
 
         return entityId;
@@ -89,7 +90,7 @@ public class NBSEntity {
     public void update(final PatientCommand.UpdateIdentification info) {
 
         Collection<EntityId> existing = ensureEntityIds();
-        EntityIdId identifier = new EntityIdId(info.person(), info.id());
+        EntityIdId identifier = new EntityIdId(info.person(), (short)info.id());
 
         existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst()
             .ifPresent(identification -> identification.update(info));
@@ -97,10 +98,7 @@ public class NBSEntity {
     }
 
     public void delete(final PatientCommand.DeleteIdentification info) {
-        EntityIdId identifier = new EntityIdId(info.person(), info.id());
-        List<EntityId> arraylist = new ArrayList<>(this.entityIds);
-        arraylist.removeIf(item -> (item.getId().equals(identifier)));
-        this.entityIds = arraylist;
+        ensureEntityIds().removeIf(existing -> Objects.equals(existing.getId().getEntityIdSeq(), (short)info.id()));
     }
 
     public List<EntityId> getEntityIds() {

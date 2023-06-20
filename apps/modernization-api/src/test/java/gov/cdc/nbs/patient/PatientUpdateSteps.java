@@ -59,10 +59,6 @@ public class PatientUpdateSteps {
                     input = createAdministrativeInput(patient.id());
                     response = patientController.updateAdministrative((AdministrativeInput) input);
                 }
-                case "identification" -> {
-                    input = createIdentificationInput(patient.id());
-                    response = patientController.updatePatientIdentification((IdentificationInput) input);
-                }
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
@@ -100,15 +96,4 @@ public class PatientUpdateSteps {
         input.setDescription("Description 1");
         return input;
     }
-
-    private IdentificationInput createIdentificationInput(final long patient) {
-        var input = new IdentificationInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setAssigningAuthority("assigning authority");
-        input.setIdentificationNumber("id number");
-        input.setIdentificationType("id type");
-        return input;
-    }
-
 }

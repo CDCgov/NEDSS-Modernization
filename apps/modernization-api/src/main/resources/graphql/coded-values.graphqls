@@ -196,4 +196,6 @@ extend type Query {
     addressTypes: [CodedValue!]!
     phoneUses: [CodedValue!]!
     phoneTypes: [CodedValue!]!
+    identificationTypes: [CodedValue!]!
+    assigningAuthorities: [CodedValue!]!
 }

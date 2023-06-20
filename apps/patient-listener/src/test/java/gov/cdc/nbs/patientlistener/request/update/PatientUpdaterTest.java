@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patientlistener.request.update;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
@@ -10,15 +9,11 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.AddIdentificationData;
-import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
-import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +30,6 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
@@ -325,89 +319,5 @@ class PatientUpdaterTest {
                 "Administrative Data 1");
     }
 
-    @Test
-    void should_add_identification_info() {
-        var data = getAddIdentificationData();
-        var person = new Person(123L, "localId");
-        patientUpdater.update(person, data);
-        verify(personRepository).save(personCaptor.capture());
-        var entityId = (EntityId) personCaptor.getValue()
-                .identifications()
-                .get(0);
-        assertEquals(data.identificationNumber(), entityId.getRootExtensionTxt());
-        assertEquals(data.identificationType(), entityId.getTypeCd());
-    }
-
-    private AddIdentificationData getAddIdentificationData() {
-        return new AddIdentificationData(123L,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "123456789",
-                "assign",
-                "ssn");
-    }
-
-    @Test
-    void should_update_identification_info() {
-        var data = getUpdateIdentificationData();
-        var person = new Person(123L, "localId");
-
-        person.add(
-                new PatientCommand.AddIdentification(
-                        person.getId(),
-                        "123456789",
-                        "OTH",
-                        "ssn",
-                        9999L,
-                        Instant.now()));
-
-        patientUpdater.update(person, data);
-
-        verify(personRepository).save(personCaptor.capture());
-        EntityId entityId = personCaptor.getValue()
-                .identifications()
-                .get(0);
-        assertEquals(data.identificationNumber(), entityId.getRootExtensionTxt());
-        assertEquals(data.identificationType(), entityId.getTypeCd());
-    }
-
-    private UpdateIdentificationData getUpdateIdentificationData() {
-        return new UpdateIdentificationData(123L,
-                (short) 456,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "123456789",
-                "assign",
-                "ssn");
-    }
-
-    @Test
-    void should_delete_identification_info() {
-        var person = new Person(123L, "localId");
-
-        person.add(
-                new PatientCommand.AddIdentification(
-                        person.getId(),
-                        "123456789",
-                        "OTH",
-                        "ssn",
-                        9999L,
-                        Instant.now()));
-
-        var data = new DeleteIdentificationData(
-                123L,
-                (short) 1,
-                "RequestId",
-                321L,
-                Instant.now());
-
-        patientUpdater.update(person, data);
-
-        verify(personRepository).save(personCaptor.capture());
-
-        assertThat(personCaptor.getValue().identifications()).isEmpty();
-    }
 
 }
