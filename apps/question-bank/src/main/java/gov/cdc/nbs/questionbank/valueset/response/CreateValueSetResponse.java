@@ -4,8 +4,7 @@ import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 
-import gov.cdc.nbs.questionbank.entity.CodeSetId;
-import lombok.AllArgsConstructor;
+import gov.cdc.nbs.questionbank.entity.CodesetId;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,16 +18,13 @@ public class CreateValueSetResponse {
 
 	 
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public static class ValueSetCreateShort {
-	 private CodeSetId id;
-	 private Instant addTime;
-	 private Long addUserId;
-	 private String valueSetNm;
-	
-}
+
+public record ValueSetCreateShort (
+	 CodesetId id,
+	 Instant addTime,
+	 Long addUserId,
+	 String valueSetNm
+) {}
 
 
 }

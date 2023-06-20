@@ -2,7 +2,9 @@ package gov.cdc.nbs.questionbank.valueset.command;
 
 import java.time.Instant;
 
-import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
+import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
+
+
 
 public sealed interface ValueSetCommand {
 	
@@ -18,7 +20,7 @@ public sealed interface ValueSetCommand {
 	String sourceDomainNm,
 	String statusCd,
 	Instant statusToTime,
-	CodeSetGroupMetaDatum codeSetGroup,
+	CodeSetGroupMetadatum codeSetGroup,
 	String adminComments,
 	String valueSetNm,
 	Character ldfPicklistIndCd,

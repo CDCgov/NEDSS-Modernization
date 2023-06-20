@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.DeleteValueSetResponse;
@@ -18,17 +19,23 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/valueset/")
 @RequiredArgsConstructor
 public class ValueSetController {
+	
+	 private final ValueSetCreator valueSetCreator;
+	 
+	 private final UserDetailsProvider userDetailsProvider;
 
-	private final ValueSetCreator valueSetCreator;
-	private final ValueSetDeletor valueSetDeletor;
-
-	@PostMapping
-	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-	public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetRequest request) {
-		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
-		return new ResponseEntity<>(response, null, response.getStatus());
-
-	}
+	 private final ValueSetDeletor valueSetDeletor;
+	 
+	 @PostMapping
+	 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+	 public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody  ValueSetRequest request) {
+		 Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+		 CreateValueSetResponse response = valueSetCreator.createValueSet(request,userId);
+		 return new ResponseEntity<>(response,null,response.getStatus());
+		 
+		 
+	 }
+	 
 
 	@DeleteMapping("/{codeSetNm}")
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
@@ -36,5 +43,5 @@ public class ValueSetController {
 		DeleteValueSetResponse response = valueSetDeletor.deleteValueSet(codeSetNm);
 		return new ResponseEntity<>(response, null, response.getStatus());
 	}
-
+	 
 }

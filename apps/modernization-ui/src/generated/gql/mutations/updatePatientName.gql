@@ -1,5 +1,6 @@
-mutation updatePatientName($input: NameInput!){
+mutation updatePatientName($input: UpdatePatientNameInput!){
     updatePatientName(input: $input){
-        patientId
+        patient
+        sequence
     }
 }

@@ -1,0 +1,6 @@
+query phoneUses{
+    phoneUses{
+        value
+        name
+    }
+}

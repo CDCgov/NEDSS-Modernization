@@ -6,23 +6,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.cdc.nbs.questionbank.entity.CodeSet;
-import gov.cdc.nbs.questionbank.entity.CodeSetId;
+import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.CodesetId;
 
-public interface ValueSetRepository extends JpaRepository <CodeSet,CodeSetId> {
+
+public interface ValueSetRepository extends JpaRepository <Codeset,CodesetId> {
 	
 	
- @Query("SELECT count(*) FROM CodeSet WHERE codeSetGroup.codeSetNm =:name AND id.classCd = 'code_value_general'")
+ @Query("SELECT count(*) FROM Codeset WHERE codeSetGroup.codeSetNm =:name AND id.classCd = 'code_value_general'")
  long  checkValueSetName(@Param("name")String name);
  
  
- @Query("SELECT count(codeSetGroup.id) FROM CodeSet WHERE codeSetGroup.id > 99900")
+ @Query("SELECT count(codeSetGroup.id) FROM Codeset WHERE codeSetGroup.id > 99900")
  int getCodeSetGroupCeilID();
- 
- 
+
  @Modifying
  @Transactional
- @Query("UPDATE CodeSet SET statusCd='I' WHERE  id.codeSetNm =:codeSetNm")
+ @Query("UPDATE Codeset SET statusCd='I' WHERE  id.codeSetNm =:codeSetNm")
  int inActivateValueSet(@Param("codeSetNm") String codeSetNm);
  
 

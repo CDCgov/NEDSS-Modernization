@@ -1,43 +1,78 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { FindPatientProfileQuery, PatientGeneral } from 'generated/graphql/schema';
-import { HorizontalTable } from 'components/Table/HorizontalTable';
-import { format } from 'date-fns';
+import { FindPatientProfileQuery, PatientGeneral, useUpdatePatientGeneralInfoMutation } from 'generated/graphql/schema';
 import { useFindPatientProfileGeneral } from './useFindPatientProfileGeneral';
+import { externalizeDateTime, internalizeDate } from 'date';
+import { maybeDescription, maybeId } from '../coded';
+import { Data, EditableCard } from 'components/EditableCard';
+import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
 
 type PatientLabReportTableProps = {
     patient: string | undefined;
 };
 
+const initialEntry = {
+    asOf: null,
+    maritalStatus: '',
+    maternalMaidenName: null,
+    adultsInHouse: '',
+    childrenInHouse: null,
+    occupation: null,
+    educationLevel: null,
+    primaryLanguage: null,
+    speaksEnglish: null,
+    stateHIVCase: null
+};
+
+const asView = (general?: PatientGeneral | null): Data[] => [
+    { title: 'As of:', text: internalizeDate(general?.asOf) || '' },
+    { title: 'Marital status:', text: maybeDescription(general?.maritalStatus) || '' },
+    { title: 'Mother’s maiden name:', text: general?.maternalMaidenName || '' },
+    { title: 'Number of adults in residence:', text: general?.adultsInHouse?.toString() || '' },
+    {
+        title: 'Number of children in residence:',
+        text: general?.childrenInHouse?.toString() || ''
+    },
+    { title: 'Primary occupation:', text: maybeDescription(general?.occupation) || '' },
+    {
+        title: 'Highest level of education:',
+        text: maybeDescription(general?.educationLevel) || ''
+    },
+    { title: 'Primary language:', text: maybeDescription(general?.primaryLanguage) || '' },
+    { title: 'Speaks english:', text: maybeDescription(general?.speaksEnglish) || '' },
+    { title: 'State HIV case ID:', text: general?.stateHIVCase || '' }
+];
+
+const asEntry = (mortality?: PatientGeneral | null): GeneralInformationEntry => ({
+    ...initialEntry,
+    asOf: internalizeDate(mortality?.asOf),
+    maritalStatus: maybeId(mortality?.maritalStatus),
+    maternalMaidenName: mortality?.maternalMaidenName,
+    adultsInHouse: mortality?.adultsInHouse?.toString(),
+    childrenInHouse: mortality?.childrenInHouse?.toString(),
+    occupation: maybeId(mortality?.occupation),
+    educationLevel: maybeId(mortality?.educationLevel),
+    primaryLanguage: maybeId(mortality?.primaryLanguage),
+    speaksEnglish: maybeId(mortality?.speaksEnglish),
+    stateHIVCase: mortality?.stateHIVCase
+});
+
 export const GeneralPatient = ({ patient }: PatientLabReportTableProps) => {
-    const [generalTableData, setGeneralTableData] = useState<any>();
+    const [editing, isEditing] = useState<boolean>(false);
+    const [tableData, setData] = useState<Data[]>([]);
+    const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
+
     const handleComplete = (data: FindPatientProfileQuery) => {
-        setGeneralTableData([
-            {
-                title: 'As of:',
-                text: data?.findPatientProfile?.general
-                    ? format(new Date(data?.findPatientProfile?.general?.asOf), 'MM/dd/yyyy')
-                    : ''
-            },
-            { title: 'Marital status:', text: data?.findPatientProfile?.general?.maritalStatus?.description || '' },
-            { title: 'Mother’s maiden name:', text: data?.findPatientProfile?.general?.maternalMaidenName || '' },
-            { title: 'Number of adults in residence:', text: data?.findPatientProfile?.general?.adultsInHouse || '' },
-            {
-                title: 'Number of children in residence:',
-                text: data?.findPatientProfile?.general?.childrenInHouse || ''
-            },
-            { title: 'Primary occupation:', text: data?.findPatientProfile?.general?.occupation?.description || '' },
-            {
-                title: 'Highest level of education:',
-                text: data?.findPatientProfile?.general?.educationLevel?.description || ''
-            },
-            { title: 'Primary language:', text: data?.findPatientProfile?.general?.primaryLanguage?.description || '' },
-            { title: 'Speaks english:', text: data?.findPatientProfile?.general?.speaksEnglish?.description || '' },
-            { title: 'State HIV case ID:', text: data?.findPatientProfile?.general?.stateHIVCase || '' }
-        ]);
+        setData(asView(data.findPatientProfile?.general));
+        setEntry(asEntry(data.findPatientProfile?.general));
     };
 
-    const [getProfile, { data }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });
+    const handleUpdate = () => {
+        refetch();
+        isEditing(false);
+    };
+
+    const [getProfile, { refetch }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -49,14 +84,29 @@ export const GeneralPatient = ({ patient }: PatientLabReportTableProps) => {
         }
     }, [patient]);
 
+    const [update] = useUpdatePatientGeneralInfoMutation();
+
+    const onUpdate = (updated: any) => {
+        update({
+            variables: {
+                input: {
+                    ...updated,
+                    asOf: externalizeDateTime(updated.asOf),
+                    patientId: patient
+                }
+            }
+        }).then(handleUpdate);
+    };
+
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <HorizontalTable
-                data={data?.findPatientProfile?.general as PatientGeneral}
-                type="general"
-                tableHeader="General Patient Information"
-                tableData={generalTableData}
-            />
+            <EditableCard
+                title="General Patient Information"
+                data={tableData}
+                editing={editing}
+                onEdit={() => isEditing(true)}>
+                <GeneralPatientInformationForm entry={entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
+            </EditableCard>
         </Grid>
     );
 };

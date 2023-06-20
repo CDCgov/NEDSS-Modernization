@@ -2,7 +2,8 @@ package gov.cdc.nbs.questionbank.valueset.request;
 
 import java.time.Instant;
 import java.util.List;
-import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
+
+import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class ValueSetRequest {
 	private String sourceDomainNm;
 	private String statusCd;
 	private Instant statusToTime;
-	private CodeSetGroupMetaDatum codeSetGroup;
+	private CodeSetGroupMetadatum codeSetGroup;
 	private String adminComments;
 	private String valueSetNm;
 	private Character ldfPicklistIndCd;

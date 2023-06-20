@@ -1,5 +1,0 @@
-mutation updatePatientEmail($input: EmailInput!){
-    updatePatientEmail(input: $input){
-        patientId
-    }
-}
