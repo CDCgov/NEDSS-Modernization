@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.entity.businessRule;
+package gov.cdc.nbs.questionbank.entity.pagerule;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import lombok.Getter;
@@ -79,7 +79,7 @@ public class WaRuleMetadata {
     private String targetType;
 
     protected WaRuleMetadata(CreateRuleRequest ruleRequest){
-        String sourceValue= (ruleRequest.anySourceValue()!=null) ? ruleRequest.anySourceValue():ruleRequest.anySourceValue();
+        String sourceValue= (ruleRequest.anySourceValue()!=null) ? ruleRequest.anySourceValue():ruleRequest.sourceValue();
         setRuleDescText(ruleRequest.ruleDescription());
         setSourceValues(sourceValue);
         setTargetType(ruleRequest.targetType());

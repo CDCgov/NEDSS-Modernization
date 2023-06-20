@@ -1,7 +1,7 @@
-package gov.cdc.nbs.questionbank.businessrules;
+package gov.cdc.nbs.questionbank.pagerules;
 
 
-import gov.cdc.nbs.questionbank.businessrules.response.CreateRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/")
 public class PageRuleController {
 
     @Autowired
     private PageRuleService pageRuleService;
 
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @RequestMapping(method = RequestMethod.POST, value = "/createPageRule", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("rule")
     @ResponseBody
     public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest.ruleRequest request){
         log.info("Request for Business Rule Creation");
-        long templateUid=  pageRuleService.createPageRule(request);
-        log.debug("Successfully added business rule with Id: {}", templateUid);
-        return new CreateRuleResponse(templateUid);
+        long ruleId=  pageRuleService.createPageRule(request);
+        log.debug("Successfully added business rule with Id: {}", ruleId);
+        return new CreateRuleResponse(ruleId);
     }
 }

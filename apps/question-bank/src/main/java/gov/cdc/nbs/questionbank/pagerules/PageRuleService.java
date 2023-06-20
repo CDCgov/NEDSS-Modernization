@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.businessrules;
+package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
