@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -187,12 +186,13 @@ public sealed interface PatientCommand {
     record AddPhoneNumber(
         long person,
         long id,
-        String number,
-        String extension,
         String type,
         String use,
+        String number,
+        String extension,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -201,9 +201,11 @@ public sealed interface PatientCommand {
         long id,
         String number,
         String extension,
-        PatientInput.PhoneType type,
+        String type,
+        String use,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -211,7 +213,8 @@ public sealed interface PatientCommand {
         long person,
         long id,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -240,6 +243,50 @@ public sealed interface PatientCommand {
         Instant requestedOn) implements PatientCommand {
     }
 
+    record AddPhone (
+        long person,
+        long id,
+        String type,
+        String use,
+        Instant asOf,
+        String countryCode,
+        String number,
+        String extension,
+        String email,
+        String url,
+        String comment,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+
+    }
+
+    record UpdatePhone (
+        long person,
+        long id,
+        String type,
+        String use,
+        Instant asOf,
+        String countryCode,
+        String number,
+        String extension,
+        String email,
+        String url,
+        String comment,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+
+    }
+
+    record DeletePhone (
+        long person,
+        long id,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+
+    }
 
     record UpdateMortalityLocator(
         long person,
@@ -365,30 +412,46 @@ public sealed interface PatientCommand {
 
     record AddIdentification(
         long person,
+        Instant asOf,
         String identificationNumber,
         String assigningAuthority,
         String identificationType,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
+
+        public AddIdentification(
+            long person,
+            String identificationNumber,
+            String assigningAuthority,
+            String identificationType,
+            long requester,
+            Instant requestedOn
+        ) {
+            this(person, null, identificationNumber, assigningAuthority, identificationType, requester, requestedOn);
+        }
     }
 
 
     record UpdateIdentification(
         long person,
-        short id,
+        int id,
+        Instant asOf,
         String identificationNumber,
         String assigningAuthority,
         String identificationType,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
     record DeleteIdentification(
         long person,
-        short id,
+        int id,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -396,7 +459,8 @@ public sealed interface PatientCommand {
         long parent,
         long person,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -416,7 +480,7 @@ public sealed interface PatientCommand {
         Instant requestedOn
     ) implements PatientCommand {
 
-        public AddName (
+        public AddName(
             long person,
             String first,
             String middle,

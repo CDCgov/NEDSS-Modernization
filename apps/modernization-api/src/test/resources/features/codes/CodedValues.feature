@@ -27,6 +27,10 @@ Feature: Value Sets for common data inputs are retrievable
       | "Gender"                              |
       | "Address Type"                        |
       | "Address Use"                         |
+      | "Phone Type"                          |
+      | "Phone Use"                           |
+      | "Identification Type"                 |
+      | "Assigning Authority"                 |
       | "Country"                             |
       | "State"                               |
 

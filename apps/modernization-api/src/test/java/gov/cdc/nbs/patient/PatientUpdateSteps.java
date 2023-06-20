@@ -59,19 +59,6 @@ public class PatientUpdateSteps {
                     input = createAdministrativeInput(patient.id());
                     response = patientController.updateAdministrative((AdministrativeInput) input);
                 }
-                case "email" -> {
-                    input = createEmailInput(patient.id());
-                    response = patientController.updatePatientEmail((EmailInput) input);
-                }
-                case "identification" -> {
-                    input = createIdentificationInput(patient.id());
-                    response = patientController.updatePatientIdentification((IdentificationInput) input);
-                }
-                case "phone" -> {
-                    input = createPhoneInput(patient.id());
-                    response = patientController.updatePatientPhone((PhoneInput) input);
-                }
-
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
@@ -109,33 +96,4 @@ public class PatientUpdateSteps {
         input.setDescription("Description 1");
         return input;
     }
-
-    private EmailInput createEmailInput(final long patient) {
-        var input = new EmailInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setEmailAddress("First Email");
-        return input;
-    }
-
-    private IdentificationInput createIdentificationInput(final long patient) {
-        var input = new IdentificationInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setAssigningAuthority("assigning authority");
-        input.setIdentificationNumber("id number");
-        input.setIdentificationType("id type");
-        return input;
-    }
-
-    private PhoneInput createPhoneInput(final long patient) {
-        var input = new PhoneInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setNumber("3145551212");
-        input.setExtension("123");
-        input.setPhoneType(PhoneType.CELL);
-        return input;
-    }
-
 }

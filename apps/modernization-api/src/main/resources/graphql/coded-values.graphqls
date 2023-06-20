@@ -194,4 +194,8 @@ extend type Query {
     degrees: [CodedValue!]!
     addressUses: [CodedValue!]!
     addressTypes: [CodedValue!]!
+    phoneUses: [CodedValue!]!
+    phoneTypes: [CodedValue!]!
+    identificationTypes: [CodedValue!]!
+    assigningAuthorities: [CodedValue!]!
 }
