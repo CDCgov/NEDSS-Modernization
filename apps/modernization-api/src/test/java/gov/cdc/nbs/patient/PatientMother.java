@@ -148,4 +148,27 @@ public class PatientMother {
             )
         );
     }
+
+    @Transactional
+    public void withName(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddName(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                null,
+                faker.name().firstName(),
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.name().lastName(),
+                faker.name().lastName(),
+                null,
+                null,
+                "L",
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
 }

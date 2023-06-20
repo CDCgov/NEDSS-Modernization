@@ -12,13 +12,11 @@ import {
 } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { SortableTable } from 'components/Table/SortableTable';
-import { AddNameModal } from 'pages/patient/profile/names/AddNameModal';
-import { DetailsNameModal } from 'pages/patient/profile/names/DetailsNameModal';
 import { Actions } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Address } from './addresses';
 import { FindPatientProfileQuery, PatientAddress } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, sortByDate, sortByNestedProperty, withDirection } from 'sorting/Sort';
+import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
 import { useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
 import { AddAddressModal } from 'pages/patient/profile/addresses/AddressModal';
 import { DetailsAddressModal } from 'pages/patient/profile/addresses/DetailsAddressModal';
