@@ -5,7 +5,6 @@ import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 
 import java.time.Instant;
@@ -35,19 +34,6 @@ public sealed interface PatientCommand {
         String stateHIVCase,
         long requester,
         Instant requestedOn) implements PatientCommand {
-    }
-
-
-    record AddName(
-        long person,
-        String first,
-        String middle,
-        String last,
-        Suffix suffix,
-        PatientInput.NameUseCd type,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-
     }
 
 
@@ -306,19 +292,6 @@ public sealed interface PatientCommand {
     }
 
 
-    record UpdateNameInfo(
-        long person,
-        Instant asOf,
-        short personNameSeq,
-        String first,
-        String middle,
-        String last,
-        Suffix suffix,
-        String type,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-    }
-
 
     record UpdateSexAndBirthInfo(
         long person,
@@ -343,15 +316,6 @@ public sealed interface PatientCommand {
 
     record Delete(
         long person,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-    }
-
-
-    record DeleteNameInfo(
-        long person,
-        Instant asOf,
-        short personNameSeq,
         long requester,
         Instant requestedOn) implements PatientCommand {
     }
@@ -391,5 +355,79 @@ public sealed interface PatientCommand {
         long person,
         long requester,
         Instant requestedOn) implements PatientCommand {
+    }
+
+
+    record AddName(
+        long person,
+        Instant asOf,
+        String prefix,
+        String first,
+        String middle,
+        String secondMiddle,
+        String last,
+        String secondLast,
+        String suffix,
+        String degree,
+        String type,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+
+        public AddName (
+            long person,
+            String first,
+            String middle,
+            String last,
+            String suffix,
+            String type,
+            long requester,
+            Instant requestedOn
+        ) {
+            this(
+                person,
+                null,
+                null,
+                first,
+                middle,
+                null,
+                last,
+                null,
+                suffix,
+                null,
+                type,
+                requester,
+                requestedOn
+            );
+        }
+
+    }
+
+
+    record UpdateNameInfo(
+        long person,
+        int sequence,
+        Instant asOf,
+        String prefix,
+        String first,
+        String middle,
+        String secondMiddle,
+        String last,
+        String secondLast,
+        String suffix,
+        String degree,
+        String type,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
+    }
+
+
+    record DeleteNameInfo(
+        long person,
+        int sequence,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 }

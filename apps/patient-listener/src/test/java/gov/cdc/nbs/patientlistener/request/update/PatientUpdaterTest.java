@@ -4,25 +4,22 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.entity.odse.PersonName;
-import gov.cdc.nbs.entity.odse.PersonNameId;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
+import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.AddAddressData;
 import gov.cdc.nbs.message.patient.event.AddEmailData;
 import gov.cdc.nbs.message.patient.event.AddIdentificationData;
-import gov.cdc.nbs.message.patient.event.AddNameData;
 import gov.cdc.nbs.message.patient.event.AddPhoneData;
 import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
-import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
@@ -30,13 +27,9 @@ import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
-import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.message.patient.input.PatientInput.NameUseCd;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
-import gov.cdc.nbs.id.IdGeneratorService;
-import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -344,101 +337,6 @@ class PatientUpdaterTest {
                 "Administrative Data 1");
     }
 
-    @Test
-    void should_add_name_info() {
-        var data = getAddNameData();
-        var person = new Person(123L, "localId");
-        patientUpdater.update(person, data);
-        verify(personRepository).save(personCaptor.capture());
-        PersonName personName = (PersonName) personCaptor.getValue()
-                .getNames()
-                .get(0);
-        assertEquals(data.first(), personName.getFirstNm());
-        assertEquals(data.middle(), personName.getMiddleNm());
-        assertEquals(data.last(), personName.getLastNm());
-        assertEquals(data.suffix(), personName.getNmSuffix());
-        assertEquals(data.type().toString(), personName.getNmUseCd());
-    }
-
-    private AddNameData getAddNameData() {
-        return new AddNameData(123L,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "First Name",
-                "Middle Name",
-                "Last Name",
-                Suffix.III,
-                NameUseCd.L);
-    }
-
-    @Test
-    void should_update_name_info() {
-        var data = getUpdateNameData();
-        var person = new Person(123L, "localId");
-        // Create new name
-        var pn = new PersonName();
-        pn.setId(new PersonNameId(person.getId(), (short) 1));
-        pn.setFirstNm("XXX");
-        pn.setLastNm("XXX");
-        pn.setMiddleNm("XXX");
-        pn.setNmSuffix(Suffix.ESQ);
-
-        person.setNames(Collections.singletonList(pn));
-
-        patientUpdater.update(person, data);
-
-        verify(personRepository).save(personCaptor.capture());
-        PersonName personName = (PersonName) personCaptor.getValue()
-                .getNames()
-                .get(0);
-
-        assertEquals(data.first(), personName.getFirstNm());
-        assertEquals(data.middle(), personName.getMiddleNm());
-        assertEquals(data.last(), personName.getLastNm());
-        assertEquals(data.suffix(), personName.getNmSuffix());
-        assertEquals(data.type(), personName.getNmUseCd().toString());
-    }
-
-    private UpdateNameData getUpdateNameData() {
-        return new UpdateNameData(123L,
-                (short) 1,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "First Name",
-                "Middle Name",
-                "Last Name",
-                Suffix.III,
-                NameUseCd.L.toString());
-    }
-
-    @Test
-    void should_delete_name_info() {
-        var data = getDeleteNameData();
-        var person = new Person(123L, "localId");
-        // Create new name
-        var pn = new PersonName();
-        pn.setId(new PersonNameId(person.getId(), (short) 1));
-        pn.setFirstNm("XXX");
-        pn.setLastNm("XXX");
-        pn.setMiddleNm("XXX");
-        pn.setNmSuffix(Suffix.ESQ);
-        person.setNames(Collections.singletonList(pn));
-
-        patientUpdater.update(person, data);
-
-        verify(personRepository).save(personCaptor.capture());
-        assertEquals(0, personCaptor.getValue().getNames().size());
-    }
-
-    private DeleteNameData getDeleteNameData() {
-        return new DeleteNameData(123L,
-                (short) 1,
-                "RequestId",
-                321L,
-                Instant.now());
-    }
 
     @Test
     void should_add_address_info() {
