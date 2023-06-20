@@ -36,21 +36,15 @@ type Mutation {
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientUpdateResponse!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
     updateMortality(input: MortalityInput!): PatientUpdateResponse!
-    addPatientAddress(input: AddressInput!): PatientUpdateResponse!
     addPatientEmail(input: EmailInput!): PatientUpdateResponse!
     addPatientIdentification(input: IdentificationInput!): PatientUpdateResponse!
     addPatientPhone(input: PhoneInput!): PatientUpdateResponse!
     updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
-    updatePatientAddress(input: AddressInput!): PatientUpdateResponse!
     updatePatientEmail(input: EmailInput!): PatientUpdateResponse!
     updatePatientIdentification(
     input: IdentificationInput!
     ): PatientUpdateResponse!
     updatePatientPhone(input: PhoneInput!): PatientUpdateResponse!
-    deletePatientAddress(
-    patientId: Int!
-    personSeqNum: Int!
-    ): PatientUpdateResponse!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     deletePatientIdentification(
     patientId: Int!
@@ -63,7 +57,10 @@ type Mutation {
     deletePatientRace(input: DeletePatientRace!): PatientRaceChangeResult!
     addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
     updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
-    deletePatientName(input: DeletePatientNameInput): PatientNameChangeResult!
+    deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
+    addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
+    updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
+    deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
 }
 
 type PatientCreatedResponse {
@@ -294,19 +291,6 @@ input GeneralInfoInput {
     eharsId: String
 }
 
-input AddressInput {
-    patientId: ID!
-    id: Int
-    streetAddress1: String
-    streetAddress2: String
-    city: String
-    stateCode: String
-    countyCode: String
-    countryCode: String
-    zip: String
-    censusTract: String
-}
-
 input AdministrativeInput {
     patientId: ID!
     description: String
@@ -383,6 +367,49 @@ input DeletePatientNameInput {
 type PatientNameChangeResult {
     patient: Int!
     sequence: Int!
+}
+
+input NewPatientAddressInput {
+    patient: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    address1: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
+    county: String
+    censusTract: String
+    country: String
+    comment: String
+}
+
+input UpdatePatientAddressInput {
+    patient: Int!
+    id: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    address1: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
+    county: String
+    censusTract: String
+    country: String
+    comment: String
+}
+
+input DeletePatientAddressInput {
+    patient: Int!
+    id: Int!
+}
+
+type PatientAddressChangeResult {
+    patient: Int!
+    id: Int!
 }
 
 input IdentificationInput {

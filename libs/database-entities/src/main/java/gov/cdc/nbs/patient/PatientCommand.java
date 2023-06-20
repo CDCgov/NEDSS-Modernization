@@ -1,8 +1,5 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -105,32 +102,77 @@ public sealed interface PatientCommand {
     record AddAddress(
         long person,
         long id,
+        Instant asOf,
+        String type,
+        String use,
         String address1,
         String address2,
-        City city,
+        String city,
         String state,
         String zip,
-        County county,
-        Country country,
+        String county,
+        String country,
         String censusTract,
+        String comments,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
+
+        public AddAddress(
+            long person,
+            long id,
+            String address1,
+            String address2,
+            String city,
+            String state,
+            String zip,
+            String county,
+            String country,
+            String censusTract,
+            long requester,
+            Instant requestedOn
+        ) {
+            this(
+                person,
+                id,
+                requestedOn,
+                "H",
+                "H",
+                address1,
+                address2,
+                city,
+                state,
+                zip,
+                county,
+                country,
+                censusTract,
+                null,
+                requester,
+                requestedOn
+            );
+        }
+
     }
 
 
     record UpdateAddress(
         long person,
         long id,
+        Instant asOf,
+        String type,
+        String use,
         String address1,
         String address2,
-        City city,
+        String city,
         String state,
         String zip,
-        County county,
-        Country country,
+        String county,
+        String country,
         String censusTract,
+        String comments,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 

@@ -1,8 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.audit.Added;
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Changed;
@@ -969,7 +966,7 @@ class PersonTest {
     }
 
     @Test
-    void should_add_postal_address() {
+    void should_add_minimal_postal_address() {
 
         Person actual = new Person(117L, "local-id-value");
 
@@ -979,11 +976,11 @@ class PersonTest {
                 4861L,
                 "SA1",
                 "SA2",
-                new City("city-code", "city-description"),
+                 "city-description",
                 "State",
                 "Zip",
-                new County("county-code", "county-description"),
-                new Country("country-code", "country-description"),
+                "county-code",
+                "country-code",
                 "Census Tract",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
@@ -1004,14 +1001,196 @@ class PersonTest {
                     .returns("city-description", PostalLocator::getCityDescTxt)
                     .returns("State", PostalLocator::getStateCd)
                     .returns("county-code", PostalLocator::getCntyCd)
-                    .returns("county-description", PostalLocator::getCntyDescTxt)
                     .returns("Zip", PostalLocator::getZipCd)
                     .returns("country-code", PostalLocator::getCntryCd)
-                    .returns("country-description", PostalLocator::getCntryDescTxt)
 
             );
 
     }
+
+    @Test
+    void should_add_postal_address() {
+
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddAddress(
+                117L,
+                4861L,
+                Instant.parse("2021-07-07T03:35:13Z"),
+                "type-value",
+                "use-value",
+                "SA1",
+                "SA2",
+                "city-description",
+                "State",
+                "Zip",
+                "county-code",
+                "country-code",
+                "Census Tract",
+                "Comments",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .isInstanceOf(PostalEntityLocatorParticipation.class)
+                    .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
+                    .returns(4861L, p -> p.getId().getLocatorUid())
+                    .returns("type-value", EntityLocatorParticipation::getCd)
+                    .returns("use-value", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
+                    .returns(131L, EntityLocatorParticipation::getAddUserId)
+                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
+                    .returns(131L, EntityLocatorParticipation::getLastChgUserId)
+                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getLastChgTime)
+                    .returns("Comments", EntityLocatorParticipation::getLocatorDescTxt)
+                    .extracting(PostalEntityLocatorParticipation::getLocator)
+                    .returns(4861L, PostalLocator::getId)
+                    .returns("SA1", PostalLocator::getStreetAddr1)
+                    .returns("SA2", PostalLocator::getStreetAddr2)
+                    .returns("city-description", PostalLocator::getCityDescTxt)
+                    .returns("State", PostalLocator::getStateCd)
+                    .returns("county-code", PostalLocator::getCntyCd)
+                    .returns("Zip", PostalLocator::getZipCd)
+                    .returns("country-code", PostalLocator::getCntryCd)
+                    .returns("Census Tract", PostalLocator::getCensusTract)
+            );
+
+    }
+
+    @Test
+    void should_update_existing_postal_address() {
+
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddAddress(
+                117L,
+                4861L,
+                "SA1",
+                "SA2",
+                "city-description",
+                "State",
+                "Zip",
+                "county-code",
+                "country-code",
+                "Census Tract",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.update(
+            new PatientCommand.UpdateAddress(
+                117L,
+                4861L,
+                Instant.parse("2021-07-07T03:35:13Z"),
+                "type-value",
+                "use-value",
+                "SA1",
+                "SA2",
+                "city-description",
+                "State",
+                "Zip",
+                "county-code",
+                "country-code",
+                "Census Tract",
+                "Comments",
+                171L,
+                Instant.parse("2020-03-04T00:00:00Z")
+            )
+        );
+
+        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .isInstanceOf(PostalEntityLocatorParticipation.class)
+                    .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
+                    .returns(4861L, p -> p.getId().getLocatorUid())
+                    .returns("type-value", EntityLocatorParticipation::getCd)
+                    .returns("use-value", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
+                    .returns(131L, EntityLocatorParticipation::getAddUserId)
+                    .returns(Instant.parse("2020-03-03T10:15:30.00Z"), EntityLocatorParticipation::getAddTime)
+                    .returns(171L, EntityLocatorParticipation::getLastChgUserId)
+                    .returns(Instant.parse("2020-03-04T00:00:00Z"), EntityLocatorParticipation::getLastChgTime)
+                    .returns("Comments", EntityLocatorParticipation::getLocatorDescTxt)
+                    .extracting(PostalEntityLocatorParticipation::getLocator)
+                    .returns(4861L, PostalLocator::getId)
+                    .returns("SA1", PostalLocator::getStreetAddr1)
+                    .returns("SA2", PostalLocator::getStreetAddr2)
+                    .returns("city-description", PostalLocator::getCityDescTxt)
+                    .returns("State", PostalLocator::getStateCd)
+                    .returns("county-code", PostalLocator::getCntyCd)
+                    .returns("Zip", PostalLocator::getZipCd)
+                    .returns("country-code", PostalLocator::getCntryCd)
+                    .returns("Census Tract", PostalLocator::getCensusTract)
+            );
+
+    }
+
+    @Test
+    void should_delete_existing_postal_address() {
+
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddAddress(
+                117L,
+                4861L,
+                "SA1",
+                "SA2",
+                "city-description",
+                "State",
+                "Zip",
+                "county-code",
+                "country-code",
+                "Census Tract",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddAddress(
+                117L,
+                5331L,
+                "Other-SA1",
+                "Other-SA2",
+                "Other-city",
+                "Other-State",
+                "Other-Zip",
+                "Other-county-code",
+                "Other-country-code",
+                null,
+                171L,
+                Instant.parse("2020-03-04T08:45:23Z")
+            )
+        );
+
+        patient.delete(
+            new PatientCommand.DeleteAddress(
+                117L,
+                5331L,
+                191L,
+                Instant.parse("2021-05-24T11:01:17Z")
+            )
+        );
+
+        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+            .satisfiesExactly(
+                actual -> assertThat(actual)
+                    .isInstanceOf(PostalEntityLocatorParticipation.class)
+                    .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
+                    .returns(4861L, p -> p.getId().getLocatorUid())
+            );
+
+    }
+
 
     @Test
     void should_add_email_address() {

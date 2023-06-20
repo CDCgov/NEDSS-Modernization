@@ -6,7 +6,6 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
@@ -108,26 +107,6 @@ public class PatientController {
     public PatientEventResponse deletePatientIdentification(@Argument Long patientId, @Argument Short entitySeqNum) {
         return patientService.deletePatientIdentification(patientId, entitySeqNum);
     }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse addPatientAddress(@Argument AddressInput input) {
-        return patientService.addPatientAddress(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientAddress(@Argument AddressInput input) {
-        return patientService.updatePatientAddress(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse deletePatientAddress(@Argument Long patientId, @Argument Short personSeqNum) {
-        return patientService.deletePatientAddress(patientId, personSeqNum);
-    }
-
-
 
     @MutationMapping()
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)

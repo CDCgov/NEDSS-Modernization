@@ -27,19 +27,6 @@ export type ActId = {
   typeCd?: Maybe<Scalars['String']>;
 };
 
-export type AddressInput = {
-  censusTract?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
-  countryCode?: InputMaybe<Scalars['String']>;
-  countyCode?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
-  patientId: Scalars['ID'];
-  stateCode?: InputMaybe<Scalars['String']>;
-  streetAddress1?: InputMaybe<Scalars['String']>;
-  streetAddress2?: InputMaybe<Scalars['String']>;
-  zip?: InputMaybe<Scalars['String']>;
-};
-
 export type AddressType = {
   __typename?: 'AddressType';
   codeShortDescTxt: Scalars['String'];
@@ -176,6 +163,11 @@ export type DegreeResults = {
   __typename?: 'DegreeResults';
   content: Array<Degree>;
   total: Scalars['Int'];
+};
+
+export type DeletePatientAddressInput = {
+  id: Scalars['Int'];
+  patient: Scalars['Int'];
 };
 
 export type DeletePatientNameInput = {
@@ -623,7 +615,7 @@ export type MortalityInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addPatientAddress: PatientUpdateResponse;
+  addPatientAddress: PatientAddressChangeResult;
   addPatientEmail: PatientUpdateResponse;
   addPatientIdentification: PatientUpdateResponse;
   addPatientName: PatientNameChangeResult;
@@ -631,7 +623,7 @@ export type Mutation = {
   addPatientRace: PatientRaceChangeResult;
   createPatient: PatientCreatedResponse;
   deletePatient: PatientDeleteResult;
-  deletePatientAddress: PatientUpdateResponse;
+  deletePatientAddress: PatientAddressChangeResult;
   deletePatientEmail: PatientUpdateResponse;
   deletePatientIdentification: PatientUpdateResponse;
   deletePatientName: PatientNameChangeResult;
@@ -640,7 +632,7 @@ export type Mutation = {
   updateAdministrative: PatientUpdateResponse;
   updateEthnicity: PatientEthnicityChangeResult;
   updateMortality: PatientUpdateResponse;
-  updatePatientAddress: PatientUpdateResponse;
+  updatePatientAddress: PatientAddressChangeResult;
   updatePatientEmail: PatientUpdateResponse;
   updatePatientGeneralInfo: PatientUpdateResponse;
   updatePatientIdentification: PatientUpdateResponse;
@@ -652,7 +644,7 @@ export type Mutation = {
 
 
 export type MutationAddPatientAddressArgs = {
-  input: AddressInput;
+  input: NewPatientAddressInput;
 };
 
 
@@ -692,8 +684,7 @@ export type MutationDeletePatientArgs = {
 
 
 export type MutationDeletePatientAddressArgs = {
-  patientId: Scalars['Int'];
-  personSeqNum: Scalars['Int'];
+  input?: InputMaybe<DeletePatientAddressInput>;
 };
 
 
@@ -710,7 +701,7 @@ export type MutationDeletePatientIdentificationArgs = {
 
 
 export type MutationDeletePatientNameArgs = {
-  input?: InputMaybe<DeletePatientNameInput>;
+  input: DeletePatientNameInput;
 };
 
 
@@ -741,7 +732,7 @@ export type MutationUpdateMortalityArgs = {
 
 
 export type MutationUpdatePatientAddressArgs = {
-  input: AddressInput;
+  input: UpdatePatientAddressInput;
 };
 
 
@@ -896,6 +887,22 @@ export type NewPatientAddress = {
   streetAddress1?: InputMaybe<Scalars['String']>;
   streetAddress2?: InputMaybe<Scalars['String']>;
   zip?: InputMaybe<Scalars['String']>;
+};
+
+export type NewPatientAddressInput = {
+  address1?: InputMaybe<Scalars['String']>;
+  address2?: InputMaybe<Scalars['String']>;
+  asOf: Scalars['DateTime'];
+  censusTract?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  comment?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  county?: InputMaybe<Scalars['String']>;
+  patient: Scalars['Int'];
+  state?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
+  use: Scalars['String'];
+  zipcode?: InputMaybe<Scalars['String']>;
 };
 
 export type NewPatientIdentification = {
@@ -1075,10 +1082,16 @@ export type PatientAddress = {
   id: Scalars['ID'];
   patient: Scalars['Int'];
   state?: Maybe<PatientCodedValue>;
-  type?: Maybe<PatientCodedValue>;
-  use?: Maybe<PatientCodedValue>;
+  type: PatientCodedValue;
+  use: PatientCodedValue;
   version: Scalars['Int'];
   zipcode?: Maybe<Scalars['String']>;
+};
+
+export type PatientAddressChangeResult = {
+  __typename?: 'PatientAddressChangeResult';
+  id: Scalars['Int'];
+  patient: Scalars['Int'];
 };
 
 export type PatientAddressResults = {
@@ -1395,7 +1408,7 @@ export type PatientPhoneResults = {
 
 export type PatientProfile = {
   __typename?: 'PatientProfile';
-  addresses?: Maybe<PatientAddressResults>;
+  addresses: PatientAddressResults;
   administrative?: Maybe<PatientAdministrativeResults>;
   birth?: Maybe<PatientBirth>;
   deletable: Scalars['Boolean'];
@@ -1902,6 +1915,8 @@ export enum ProviderType {
 
 export type Query = {
   __typename?: 'Query';
+  addressTypes: Array<CodedValue>;
+  addressUses: Array<CodedValue>;
   counties: Array<GroupedCodedValue>;
   countries: Array<CodedValue>;
   degrees: Array<CodedValue>;
@@ -2379,6 +2394,23 @@ export type TracedCondition = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type UpdatePatientAddressInput = {
+  address1?: InputMaybe<Scalars['String']>;
+  address2?: InputMaybe<Scalars['String']>;
+  asOf: Scalars['DateTime'];
+  censusTract?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  comment?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  county?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  patient: Scalars['Int'];
+  state?: InputMaybe<Scalars['String']>;
+  type: Scalars['String'];
+  use: Scalars['String'];
+  zipcode?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdatePatientNameInput = {
   asOf?: InputMaybe<Scalars['DateTime']>;
   degree?: InputMaybe<Scalars['String']>;
@@ -2438,11 +2470,11 @@ export type PersonParentUid = {
 };
 
 export type AddPatientAddressMutationVariables = Exact<{
-  input: AddressInput;
+  input: NewPatientAddressInput;
 }>;
 
 
-export type AddPatientAddressMutation = { __typename?: 'Mutation', addPatientAddress: { __typename?: 'PatientUpdateResponse', patientId: string } };
+export type AddPatientAddressMutation = { __typename?: 'Mutation', addPatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
 
 export type AddPatientEmailMutationVariables = Exact<{
   input: EmailInput;
@@ -2494,12 +2526,11 @@ export type DeletePatientMutationVariables = Exact<{
 export type DeletePatientMutation = { __typename?: 'Mutation', deletePatient: { __typename: 'PatientDeleteFailed', patient: number, reason: string } | { __typename: 'PatientDeleteSuccessful', patient: number } };
 
 export type DeletePatientAddressMutationVariables = Exact<{
-  patientId: Scalars['Int'];
-  personSeqNum: Scalars['Int'];
+  input?: InputMaybe<DeletePatientAddressInput>;
 }>;
 
 
-export type DeletePatientAddressMutation = { __typename?: 'Mutation', deletePatientAddress: { __typename?: 'PatientUpdateResponse', patientId: string } };
+export type DeletePatientAddressMutation = { __typename?: 'Mutation', deletePatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
 
 export type DeletePatientEmailMutationVariables = Exact<{
   patientId: Scalars['Int'];
@@ -2518,7 +2549,7 @@ export type DeletePatientIdentificationMutationVariables = Exact<{
 export type DeletePatientIdentificationMutation = { __typename?: 'Mutation', deletePatientIdentification: { __typename?: 'PatientUpdateResponse', patientId: string } };
 
 export type DeletePatientNameMutationVariables = Exact<{
-  input?: InputMaybe<DeletePatientNameInput>;
+  input: DeletePatientNameInput;
 }>;
 
 
@@ -2561,11 +2592,11 @@ export type UpdateMortalityMutationVariables = Exact<{
 export type UpdateMortalityMutation = { __typename?: 'Mutation', updateMortality: { __typename?: 'PatientUpdateResponse', patientId: string } };
 
 export type UpdatePatientAddressMutationVariables = Exact<{
-  input: AddressInput;
+  input: UpdatePatientAddressInput;
 }>;
 
 
-export type UpdatePatientAddressMutation = { __typename?: 'Mutation', updatePatientAddress: { __typename?: 'PatientUpdateResponse', patientId: string } };
+export type UpdatePatientAddressMutation = { __typename?: 'Mutation', updatePatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
 
 export type UpdatePatientEmailMutationVariables = Exact<{
   input: EmailInput;
@@ -2615,6 +2646,16 @@ export type UpdatePatientSexBirthMutationVariables = Exact<{
 
 
 export type UpdatePatientSexBirthMutation = { __typename?: 'Mutation', updatePatientSexBirth: { __typename?: 'PatientUpdateResponse', patientId: string } };
+
+export type AddressTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AddressTypesQuery = { __typename?: 'Query', addressTypes: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+
+export type AddressUsesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AddressUsesQuery = { __typename?: 'Query', addressUses: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
 
 export type CountiesQueryVariables = Exact<{
   state?: InputMaybe<Scalars['String']>;
@@ -2969,7 +3010,7 @@ export type FindPatientProfileQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId?: number | null, version: number, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> } | null, addresses?: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> }> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> } | null } | null };
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId?: number | null, version: number, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> } | null, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientCodedValue', id: string, description: string }, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> }, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> }> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
@@ -3083,9 +3124,10 @@ export type SuffixesQuery = { __typename?: 'Query', suffixes: Array<{ __typename
 
 
 export const AddPatientAddressDocument = gql`
-    mutation addPatientAddress($input: AddressInput!) {
+    mutation addPatientAddress($input: NewPatientAddressInput!) {
   addPatientAddress(input: $input) {
-    patientId
+    patient
+    id
   }
 }
     `;
@@ -3356,9 +3398,10 @@ export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatient
 export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
 export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
 export const DeletePatientAddressDocument = gql`
-    mutation deletePatientAddress($patientId: Int!, $personSeqNum: Int!) {
-  deletePatientAddress(patientId: $patientId, personSeqNum: $personSeqNum) {
-    patientId
+    mutation deletePatientAddress($input: DeletePatientAddressInput) {
+  deletePatientAddress(input: $input) {
+    patient
+    id
   }
 }
     `;
@@ -3377,8 +3420,7 @@ export type DeletePatientAddressMutationFn = Apollo.MutationFunction<DeletePatie
  * @example
  * const [deletePatientAddressMutation, { data, loading, error }] = useDeletePatientAddressMutation({
  *   variables: {
- *      patientId: // value for 'patientId'
- *      personSeqNum: // value for 'personSeqNum'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -3458,7 +3500,7 @@ export type DeletePatientIdentificationMutationHookResult = ReturnType<typeof us
 export type DeletePatientIdentificationMutationResult = Apollo.MutationResult<DeletePatientIdentificationMutation>;
 export type DeletePatientIdentificationMutationOptions = Apollo.BaseMutationOptions<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>;
 export const DeletePatientNameDocument = gql`
-    mutation deletePatientName($input: DeletePatientNameInput) {
+    mutation deletePatientName($input: DeletePatientNameInput!) {
   deletePatientName(input: $input) {
     patient
     sequence
@@ -3658,9 +3700,10 @@ export type UpdateMortalityMutationHookResult = ReturnType<typeof useUpdateMorta
 export type UpdateMortalityMutationResult = Apollo.MutationResult<UpdateMortalityMutation>;
 export type UpdateMortalityMutationOptions = Apollo.BaseMutationOptions<UpdateMortalityMutation, UpdateMortalityMutationVariables>;
 export const UpdatePatientAddressDocument = gql`
-    mutation updatePatientAddress($input: AddressInput!) {
+    mutation updatePatientAddress($input: UpdatePatientAddressInput!) {
   updatePatientAddress(input: $input) {
-    patientId
+    patient
+    id
   }
 }
     `;
@@ -3922,6 +3965,76 @@ export function useUpdatePatientSexBirthMutation(baseOptions?: Apollo.MutationHo
 export type UpdatePatientSexBirthMutationHookResult = ReturnType<typeof useUpdatePatientSexBirthMutation>;
 export type UpdatePatientSexBirthMutationResult = Apollo.MutationResult<UpdatePatientSexBirthMutation>;
 export type UpdatePatientSexBirthMutationOptions = Apollo.BaseMutationOptions<UpdatePatientSexBirthMutation, UpdatePatientSexBirthMutationVariables>;
+export const AddressTypesDocument = gql`
+    query addressTypes {
+  addressTypes {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useAddressTypesQuery__
+ *
+ * To run a query within a React component, call `useAddressTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAddressTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAddressTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAddressTypesQuery(baseOptions?: Apollo.QueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
+      }
+export function useAddressTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
+        }
+export type AddressTypesQueryHookResult = ReturnType<typeof useAddressTypesQuery>;
+export type AddressTypesLazyQueryHookResult = ReturnType<typeof useAddressTypesLazyQuery>;
+export type AddressTypesQueryResult = Apollo.QueryResult<AddressTypesQuery, AddressTypesQueryVariables>;
+export const AddressUsesDocument = gql`
+    query addressUses {
+  addressUses {
+    value
+    name
+  }
+}
+    `;
+
+/**
+ * __useAddressUsesQuery__
+ *
+ * To run a query within a React component, call `useAddressUsesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAddressUsesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAddressUsesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAddressUsesQuery(baseOptions?: Apollo.QueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
+      }
+export function useAddressUsesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
+        }
+export type AddressUsesQueryHookResult = ReturnType<typeof useAddressUsesQuery>;
+export type AddressUsesLazyQueryHookResult = ReturnType<typeof useAddressUsesLazyQuery>;
+export type AddressUsesQueryResult = Apollo.QueryResult<AddressUsesQuery, AddressUsesQueryVariables>;
 export const CountiesDocument = gql`
     query counties($state: String) {
   counties(state: $state) {
