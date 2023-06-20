@@ -1,11 +1,13 @@
 package gov.cdc.nbs.questionbank.question;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
@@ -25,13 +27,14 @@ public class QuestionController {
     public QuestionController(
             QuestionCreator creator,
             UserDetailsProvider userDetailsProvider,
-            QuestionUpdater deleter) {
+            QuestionUpdater updater) {
         this.creator = creator;
         this.userDetailsProvider = userDetailsProvider;
-        this.updater = deleter;
+        this.updater = updater;
     }
 
     @PostMapping("text")
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public CreateQuestionResponse createTextQuestion(@RequestBody CreateQuestionRequest.Text request) {
         log.debug("Received create text question request");
@@ -42,6 +45,7 @@ public class QuestionController {
     }
 
     @PostMapping("date")
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public CreateQuestionResponse createDateQuestion(@RequestBody CreateQuestionRequest.Date request) {
         log.debug("Received create date question request");
@@ -52,6 +56,7 @@ public class QuestionController {
     }
 
     @PostMapping("numeric")
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public CreateQuestionResponse createNumericQuestion(@RequestBody CreateQuestionRequest.Numeric request) {
         log.debug("Received create date question request");
@@ -62,6 +67,7 @@ public class QuestionController {
     }
 
     @PostMapping("coded")
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public CreateQuestionResponse createCodedQuestion(@RequestBody CreateQuestionRequest.Coded request) {
         log.debug("Received create coded question request");
