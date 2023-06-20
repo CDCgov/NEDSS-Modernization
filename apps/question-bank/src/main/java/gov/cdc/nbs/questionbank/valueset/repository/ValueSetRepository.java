@@ -14,8 +14,8 @@ public interface ValueSetRepository extends JpaRepository <CodeSet,CodeSetId> {
  long  checkValueSetName(@Param("name")String name);
  
  
- @Query("SELECT codeSetGroup.id FROM CodeSet WHERE codeSetGroup.id > 99900")
- long getCodeSetGroupCeilID();
+ @Query("SELECT count(codeSetGroup.id) FROM CodeSet WHERE codeSetGroup.id > 99900")
+ int getCodeSetGroupCeilID();
  
 
 }
