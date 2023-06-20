@@ -2,11 +2,9 @@ package gov.cdc.nbs.patientlistener.request.update;
 
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
-import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
