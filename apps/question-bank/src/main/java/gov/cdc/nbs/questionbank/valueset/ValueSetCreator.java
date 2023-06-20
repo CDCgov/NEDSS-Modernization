@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.entity.srte.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeSet;
+import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
+import gov.cdc.nbs.questionbank.entity.CodeSetId;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
@@ -46,15 +48,29 @@ public class ValueSetCreator {
 		}
 		try {
 			// Add CodeSet Group MetaData
-			request.getCodeSetGroup().setId(getCodeSetGroupID());
-			codeSetGrpMetaRepository.save(request.getCodeSetGroup());
+			long codeSetGroupID = getCodeSetGroupID();
+			CodeSetGroupMetaDatum codeGrp = new CodeSetGroupMetaDatum();
+			codeGrp.setId(codeSetGroupID);
+			codeGrp.setCodeSetDescTxt(request.getCodeSetDescTxt());
+			codeGrp.setCodeSetNm(request.getValueSetNm());
+			codeGrp.setLdfPicklistIndCd(request.getLdfPicklistIndCd());
 			// Add ValueSet
 			CodeSet valueSet = new CodeSet(asAdd(request));
+			CodeSetId id = new CodeSetId();
+			id.setClassCd(ValueSetConstants.CREATE_CLASS_CD);
+			id.setCodeSetNm(codeSetName);
+			valueSet.setId(id);			
+			valueSet.setCodeSetGroup(codeGrp);
+			// save changes
 			CodeSet resultCodeSet = valueSetRepository.save(valueSet);
+			codeSetGrpMetaRepository.save(codeGrp);
 			// Add any accompanying Value Concepts
+			
+			if(request.getValues() != null) {
 			for (ValueSetRequest.CreateCodedValue valueConcept : request.getValues()) {
 				codeValueRepository.save(createValueConcept(valueConcept));
 
+			}
 			}
 			CreateValueSetResponse.ValueSetCreateShort body = new CreateValueSetResponse.ValueSetCreateShort();
 			body.setId(resultCodeSet.getId());
@@ -95,14 +111,30 @@ public class ValueSetCreator {
 	}
 
 	public ValueSetCommand.AddValueSet asAdd(final ValueSetRequest request) {
-		return new ValueSetCommand.AddValueSet(request.getAssigningAuthorityCd(),
-				request.getAssigningAuthorityDescTxt(), request.getCodeSetDescTxt(), request.getEffectiveFromTime(),
-				request.getEffectiveToTime(), request.getIsModifiableInd(), request.getNbsUid(),
-				request.getSourceVersionTxt(), request.getSourceDomainNm(), request.getStatusCd(),
-				request.getStatusToTime(), request.getCodeSetGroup(), request.getAdminComments(),
-				request.getValueSetNm(), request.getLdfPicklistIndCd(), request.getValueSetCode(),
-				request.getValueSetTypeCd(), request.getValueSetOid(), request.getValueSetStatusCd(),
-				request.getValueSetStatusTime(), request.getParentIsCd(), request.getAddTime(), request.getAddUserId());
+		return new ValueSetCommand.AddValueSet(
+				request.getAssigningAuthorityCd(),
+				request.getAssigningAuthorityDescTxt(), 
+				request.getCodeSetDescTxt(), 
+				request.getEffectiveFromTime(),
+				request.getEffectiveToTime(), 
+				request.getIsModifiableInd(), 
+				request.getNbsUid(),
+				request.getSourceVersionTxt(), 
+				request.getSourceDomainNm(), 
+				request.getStatusCd(),
+				request.getStatusToTime(), 
+				request.getCodeSetGroup(), 
+				request.getAdminComments(),
+				request.getValueSetNm(), 
+				request.getLdfPicklistIndCd(), 
+				request.getValueSetCode(),
+				request.getValueSetTypeCd(), 
+				request.getValueSetOid(), 
+				request.getValueSetStatusCd(),
+				request.getValueSetStatusTime(),
+				request.getParentIsCd(), 
+				request.getAddTime(), 
+				request.getAddUserId());
 
 	}
 

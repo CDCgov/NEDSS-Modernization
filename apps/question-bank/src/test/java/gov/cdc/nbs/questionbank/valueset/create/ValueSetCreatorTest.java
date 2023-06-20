@@ -56,7 +56,7 @@ class ValueSetCreatorTest {
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(0l);
-		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0l);
+		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0);
 		when(codeSetGrpMetaRepository.save(Mockito.any())).thenReturn(codeSetGrpRequest);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
 		
@@ -82,7 +82,7 @@ class ValueSetCreatorTest {
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
 				.thenReturn(0l);
-		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0l);
+		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0);
 		when(codeSetGrpMetaRepository.save(Mockito.any())).thenReturn(codeSetGrpRequest);
 		CreateValueSetResponse response = valueSetCreator.createValueSet(request);
 		
@@ -172,7 +172,7 @@ class ValueSetCreatorTest {
 
 	@Test
 	void getCodeSetGroupIDTest() {
-		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0l);
+		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(0);
 		long result =valueSetCreator.getCodeSetGroupID();
 		assertEquals(9910l,result);
 
@@ -181,7 +181,7 @@ class ValueSetCreatorTest {
 
 	@Test
 	void getCodeSetGroupIDNonDefaultTest() {
-		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(1l);
+		when(valueSetRepository.getCodeSetGroupCeilID()).thenReturn(1);
 		when(codeSetGrpMetaRepository.getCodeSetGroupMaxID()).thenReturn(99950l);
 		long result =valueSetCreator.getCodeSetGroupID();
 		assertEquals(99950l + 10, result);
