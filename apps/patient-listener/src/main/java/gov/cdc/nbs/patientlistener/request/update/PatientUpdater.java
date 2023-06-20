@@ -1,31 +1,22 @@
 package gov.cdc.nbs.patientlistener.request.update;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
-import gov.cdc.nbs.message.patient.event.AddAddressData;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.message.patient.event.AddEmailData;
 import gov.cdc.nbs.message.patient.event.AddIdentificationData;
-import gov.cdc.nbs.message.patient.event.AddNameData;
 import gov.cdc.nbs.message.patient.event.AddPhoneData;
-import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
-import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
-import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
-import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
-import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.repository.PersonRepository;
 import org.springframework.stereotype.Component;
@@ -56,21 +47,6 @@ public class PatientUpdater {
         return personRepository.save(person);
     }
 
-    public Person update(final Person person, final AddNameData data) {
-        person.update(asAddNameInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final UpdateNameData data) {
-        person.update(asUpdateNameInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final DeleteNameData data) {
-        person.update(asDeleteNameInfo(data));
-        return personRepository.save(person);
-    }
-
     public Person update(final Person person, final AddPhoneData data) {
         person.add(asAddPhoneInfo(data));
         return personRepository.save(person);
@@ -98,21 +74,6 @@ public class PatientUpdater {
 
     public Person update(final Person person, final DeleteEmailData data) {
         person.delete(asDeleteEmailInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final AddAddressData data) {
-        person.add(asAddAddressInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final UpdateAddressData data) {
-        person.update(asUpdateAddressInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final DeleteAddressData data) {
-        person.delete(asDeleteAddressInfo(data));
         return personRepository.save(person);
     }
 
@@ -215,41 +176,6 @@ public class PatientUpdater {
             Instant.now());
     }
 
-    private PatientCommand.AddName asAddNameInfo(AddNameData data) {
-        return new PatientCommand.AddName(
-            data.patientId(),
-            data.first(),
-            data.middle(),
-            data.last(),
-            data.suffix(),
-            data.type(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.UpdateNameInfo asUpdateNameInfo(UpdateNameData data) {
-        return new PatientCommand.UpdateNameInfo(
-            data.patientId(),
-            data.asOf(),
-            data.personNameSeq(),
-            data.first(),
-            data.middle(),
-            data.last(),
-            data.suffix(),
-            data.type(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.DeleteNameInfo asDeleteNameInfo(DeleteNameData data) {
-        return new PatientCommand.DeleteNameInfo(
-            data.patientId(),
-            data.asOf(),
-            data.personNameSeq(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
     private PatientCommand.UpdateSexAndBirthInfo asUpdateSexAndBirthInfo(UpdateSexAndBirthData data) {
         return new PatientCommand.UpdateSexAndBirthInfo(
             data.patientId(),
@@ -267,46 +193,6 @@ public class PatientUpdater {
             data.sexUnknown(),
             data.currentAge(),
             data.ageReportedTime(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.AddAddress asAddAddressInfo(AddAddressData data) {
-        return new PatientCommand.AddAddress(
-            data.patientId(),
-            data.id(),
-            data.streetAddress1(),
-            data.streetAddress2(),
-            new City(data.city()),
-            data.stateCode(),
-            data.zip(),
-            new County(data.countyCode()),
-            new Country(data.countryCode()),
-            data.censusTract(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.UpdateAddress asUpdateAddressInfo(UpdateAddressData data) {
-        return new PatientCommand.UpdateAddress(
-            data.patientId(),
-            data.id(),
-            data.streetAddress1(),
-            data.streetAddress2(),
-            new City(data.city()),
-            data.stateCode(),
-            data.zip(),
-            new County(data.countyCode()),
-            new Country(data.countryCode()),
-            data.censusTract(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.DeleteAddress asDeleteAddressInfo(DeleteAddressData data) {
-        return new PatientCommand.DeleteAddress(
-            data.patientId(),
-            data.id(),
             data.updatedBy(),
             Instant.now());
     }

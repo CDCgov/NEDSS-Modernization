@@ -2,19 +2,14 @@ package gov.cdc.nbs.patientlistener.request.update;
 
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.patient.event.AddNameData;
-import gov.cdc.nbs.message.patient.event.DeleteAddressData;
 import gov.cdc.nbs.message.patient.event.DeleteEmailData;
 import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
-import gov.cdc.nbs.message.patient.event.DeleteNameData;
 import gov.cdc.nbs.message.patient.event.DeletePhoneData;
-import gov.cdc.nbs.message.patient.event.UpdateAddressData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateEmailData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
-import gov.cdc.nbs.message.patient.event.UpdateNameData;
 import gov.cdc.nbs.message.patient.event.UpdatePhoneData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
@@ -131,63 +126,6 @@ public class PatientUpdateRequestHandler {
             data.patientId());
     }
 
-    /**
-     * Add a person name.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientNameAdd(final AddNameData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully add a patient name",
-            data.patientId());
-    }
-
-    /**
-     * Update a person name.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientNameUpdate(final UpdateNameData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated patient name",
-            data.patientId());
-    }
-
-    /**
-     * Delete a person name.
-     */
-    @Transactional
-    public void handlePatientNameDelete(final String requestId, final long patientId, short personNameSeq,
-        final long userId) {
-        if (!userService.isAuthorized(userId, VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(requestId);
-        }
-        var person = findPerson(patientId, requestId);
-        patientUpdater.update(person, new DeleteNameData(patientId, personNameSeq, requestId, userId, null));
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            requestId,
-            "Successfully deleted patient name",
-            userId);
-    }
 
     private Person findPerson(final long patientId, final String requestId) {
         var optional = personRepository.findById(patientId);
@@ -200,63 +138,6 @@ public class PatientUpdateRequestHandler {
     private void updateElasticsearchPatient(final Person person) {
         var esPerson = PersonConverter.toElasticsearchPerson(person);
         elasticsearchPersonRepository.save(esPerson);
-    }
-
-    /**
-     * Add a person Address.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientAddressAdd(final UpdateAddressData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully add a patient Address",
-            data.patientId());
-    }
-
-    /**
-     * Update a person Address.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientAddressUpdate(final UpdateAddressData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated patient Address",
-            data.patientId());
-    }
-
-    /**
-     * Delete a person Address.
-     */
-    @Transactional
-    public void handlePatientAddressDelete(final String requestId, final long patientId, long id, final long userId) {
-        if (!userService.isAuthorized(userId, VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(requestId);
-        }
-        var person = findPerson(patientId, requestId);
-        patientUpdater.update(person, new DeleteAddressData(patientId, id, requestId, userId, null));
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            requestId,
-            "Successfully deleted patient Address",
-            userId);
     }
 
     /**

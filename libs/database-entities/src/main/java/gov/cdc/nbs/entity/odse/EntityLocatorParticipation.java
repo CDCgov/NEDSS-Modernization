@@ -70,7 +70,7 @@ public abstract class EntityLocatorParticipation {
     private Long lastChgUserId;
 
     @Column(name = "locator_desc_txt", length = 2000)
-    private String locatorDescTxt;
+    protected String locatorDescTxt;
 
     @Column(name = "record_status_cd", length = 20)
     private String recordStatusCd;
@@ -100,7 +100,7 @@ public abstract class EntityLocatorParticipation {
     private Short versionCtrlNbr;
 
     @Column(name = "as_of_date")
-    private Instant asOfDate;
+    protected Instant asOfDate;
 
     protected EntityLocatorParticipation() {
     }
@@ -125,12 +125,15 @@ public abstract class EntityLocatorParticipation {
         this.statusCd = 'A';
         this.statusTime = command.requestedOn();
 
-        this.asOfDate = command.requestedOn();
-
         this.versionCtrlNbr = 1;
     }
 
     public abstract Locator getLocator();
 
     public abstract String getClassCd();
+
+    protected void changed(final PatientCommand command) {
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.requester();
+    }
 }

@@ -3,9 +3,6 @@ package gov.cdc.nbs.patient;
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
@@ -14,20 +11,16 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.QLabEvent;
 import gov.cdc.nbs.entity.odse.QOrganization;
 import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.entity.srte.CountryCode;
 import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
@@ -470,47 +463,6 @@ public class PatientService {
         }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
-    public PatientEventResponse addPatientName(NameInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            PatientCommand.AddName addName = new PatientCommand.AddName(
-                input.getPatientId(),
-                input.getFirstName(),
-                input.getMiddleName(),
-                input.getLastName(),
-                input.getSuffix(),
-                PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
-                user.getId(),
-                Instant.now()
-            );
-            person.add(addName);
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
-    public PatientEventResponse updatePatientName(NameInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            PatientCommand.AddName addName = new PatientCommand.AddName(
-                input.getPatientId(),
-                input.getFirstName(),
-                input.getMiddleName(),
-                input.getLastName(),
-                input.getSuffix(),
-                PatientInput.NameUseCd.valueOf(input.getNameUseCd()),
-                user.getId(),
-                Instant.now()
-            );
-            person.update(addName);
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
-    }
-
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
@@ -663,65 +615,6 @@ public class PatientService {
     public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
         var user = SecurityUtil.getUserDetails();
         var event = new PatientRequest.DeleteIdentification(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse addPatientAddress(AddressInput addressInput) {
-        var user = SecurityUtil.getUserDetails();
-        var patientRequest = AddressInput.toAddRequest(user.getId(), getRequestId(), addressInput);
-        return personRepository.findById(addressInput.getPatientId()).map(person -> {
-            long newAddressId = person.getId();
-            Optional<CountryCode> countryCode = countryCodeRepository.findById(addressInput.getCountryCode());
-            PatientCommand.AddAddress addAddress = new PatientCommand.AddAddress(
-                addressInput.getPatientId(),
-                newAddressId,
-                addressInput.getStreetAddress1(),
-                addressInput.getStreetAddress2(),
-                new City(addressInput.getCity()),
-                addressInput.getStateCode(),
-                addressInput.getZip(),
-                new County(addressInput.getCountyCode()),
-                new Country(countryCode.orElseThrow().getId()),
-                addressInput.getCensusTract(),
-                user.getId(),
-                Instant.now()
-            );
-            person.add(addAddress);
-            personRepository.save(person);
-            return sendPatientEvent(patientRequest);
-        }).orElseThrow(() -> new PatientNotFoundException(addressInput.getPatientId()));
-    }
-
-    public PatientEventResponse updatePatientAddress(AddressInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            long newAddressId = person.getId();
-            Optional<CountryCode> countryCode = countryCodeRepository.findById(input.getCountryCode());
-            PatientCommand.UpdateAddress updateAddress = new PatientCommand.UpdateAddress(
-                input.getPatientId(),
-                newAddressId,
-                input.getStreetAddress1(),
-                input.getStreetAddress2(),
-                new City(input.getCity()),
-                input.getStateCode(),
-                input.getZip(),
-                new County(input.getCountyCode()),
-                new Country(countryCode.orElseThrow().getId()),
-                input.getCensusTract(),
-                user.getId(),
-                Instant.now()
-            );
-            person.update(updateAddress);
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
-    }
-
-    public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteAddress(getRequestId(), patientId, id, user.getId());
         return sendPatientEvent(event);
     }
 

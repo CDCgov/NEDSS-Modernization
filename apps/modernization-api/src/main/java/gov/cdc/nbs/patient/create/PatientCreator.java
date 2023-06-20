@@ -1,11 +1,8 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -100,13 +97,15 @@ public class PatientCreator {
         final PatientIdentifier identifier,
         final PatientInput.Name name
     ) {
+        String suffix = name.getSuffix() == null ? null : name.getSuffix().value();
+        String type = name.getUse() == null ? null : name.getUse().name();
         return new PatientCommand.AddName(
             identifier.id(),
             name.getFirst(),
             name.getMiddle(),
             name.getLast(),
-            name.getSuffix(),
-            name.getUse(),
+            suffix,
+            type,
             context.requestedBy(),
             context.requestedAt()
         );
@@ -137,11 +136,11 @@ public class PatientCreator {
             generateNbsId(),
             address.getStreetAddress1(),
             address.getStreetAddress2(),
-            new City(address.getCity()),
+            address.getCity(),
             address.getState(),
             address.getZip(),
-            new County(address.getCounty()),
-            new Country(address.getCountry()),
+            address.getCounty(),
+            address.getCountry(),
             address.getCensusTract(),
             context.requestedBy(),
             context.requestedAt()

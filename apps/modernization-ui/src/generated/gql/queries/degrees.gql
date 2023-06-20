@@ -1,0 +1,6 @@
+query degrees{
+    degrees{
+        value
+        name
+    }
+}

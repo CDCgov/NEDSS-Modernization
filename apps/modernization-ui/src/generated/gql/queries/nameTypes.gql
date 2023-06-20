@@ -1,0 +1,6 @@
+query nameTypes{
+    nameTypes{
+        value
+        name
+    }
+}

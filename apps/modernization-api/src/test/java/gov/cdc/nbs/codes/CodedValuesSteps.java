@@ -59,6 +59,12 @@ public class CodedValuesSteps {
             case "Transgender (preferred gender)" -> this.codedValues = generalResolver.preferredGenders();
             case "Primary Occupation" -> this.codedValues = this.occupationResolver.primaryOccupations();
             case "Primary Language" -> this.codedValues = this.languageResolver.primaryLanguages();
+            case "Name Type" -> this.codedValues = generalResolver.nameTypes();
+            case "Name Prefix" -> this.codedValues = generalResolver.prefixes();
+            case "Name Suffix" -> this.codedValues = generalResolver.suffixes();
+            case "Degree" -> this.codedValues = generalResolver.degrees();
+            case "Address Type" -> this.codedValues = generalResolver.addressTypes();
+            case "Address Use" -> this.codedValues = generalResolver.addressUses();
             case "Gender" -> this.codedValues = this.genderResolver.genders();
             case "Country" -> this.codedValues = this.countryResolver.countries();
             case "State" -> this.codedValues = this.stateResolver.states();
