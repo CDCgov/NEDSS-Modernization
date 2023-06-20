@@ -36,16 +36,8 @@ type Mutation {
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientUpdateResponse!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
     updateMortality(input: MortalityInput!): PatientUpdateResponse!
-    addPatientIdentification(input: IdentificationInput!): PatientUpdateResponse!
     updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
-    updatePatientIdentification(
-    input: IdentificationInput!
-    ): PatientUpdateResponse!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
-    deletePatientIdentification(
-    patientId: Int!
-    entitySeqNum: Int!
-    ): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceChangeResult!
     updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
@@ -59,6 +51,9 @@ type Mutation {
     addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
     updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
     deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
+    addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
+    updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
+    deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
 }
 
 type PatientCreatedResponse {
@@ -441,12 +436,31 @@ type PatientPhoneChangeResult {
     id: Int!
 }
 
-input IdentificationInput {
-    patientId: ID!
-    id: Int
-    identificationNumber: String!
-    identificationType: String!
-    assigningAuthority: String
+input NewPatientIdentificationInput {
+    patient: Int!
+    asOf: DateTime!
+    type: String!
+    authority: String
+    value: String!
+}
+
+input UpdatePatientIdentificationInput {
+    patient: Int!
+    sequence: Int!
+    asOf: DateTime!
+    type: String!
+    authority: String
+    value: String!
+}
+
+input DeletePatientIdentificationInput {
+    patient: Int!
+    sequence: Int!
+}
+
+type PatientIdentificationChangeResult {
+    patient: Int!
+    sequence: Int!
 }
 
 input MortalityInput {

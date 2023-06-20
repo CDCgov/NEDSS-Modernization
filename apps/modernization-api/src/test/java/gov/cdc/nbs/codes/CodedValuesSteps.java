@@ -67,6 +67,8 @@ public class CodedValuesSteps {
             case "Address Use" -> this.codedValues = generalResolver.addressUses();
             case "Phone Type" -> this.codedValues = generalResolver.phoneTypes();
             case "Phone Use" -> this.codedValues = generalResolver.phoneUses();
+            case "Identification Type" -> this.codedValues = generalResolver.identificationTypes();
+            case "Assigning Authority" -> this.codedValues = generalResolver.assigningAuthorities();
             case "Gender" -> this.codedValues = this.genderResolver.genders();
             case "Country" -> this.codedValues = this.countryResolver.countries();
             case "State" -> this.codedValues = this.stateResolver.states();

@@ -98,6 +98,7 @@ public class EntityId {
         this.nbsEntityUid = nbs;
         this.id = identifier;
 
+        this.asOfDate = added.asOf();
         this.typeCd = added.identificationType();
         this.assigningAuthorityCd = added.assigningAuthority();
         this.rootExtensionTxt = added.identificationNumber();
@@ -112,10 +113,11 @@ public class EntityId {
     }
 
     public void update(final PatientCommand.UpdateIdentification info) {
+        this.asOfDate = info.asOf();
         this.assigningAuthorityCd = info.assigningAuthority();
         this.rootExtensionTxt = info.identificationNumber();
         this.typeCd = info.identificationType();
 
-        this.audit.changed(info.requester(), info.requestedOn(), "Identification Updated");
+        this.audit.changed(info.requester(), info.requestedOn());
     }
 }

@@ -412,30 +412,46 @@ public sealed interface PatientCommand {
 
     record AddIdentification(
         long person,
+        Instant asOf,
         String identificationNumber,
         String assigningAuthority,
         String identificationType,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
+
+        public AddIdentification(
+            long person,
+            String identificationNumber,
+            String assigningAuthority,
+            String identificationType,
+            long requester,
+            Instant requestedOn
+        ) {
+            this(person, null, identificationNumber, assigningAuthority, identificationType, requester, requestedOn);
+        }
     }
 
 
     record UpdateIdentification(
         long person,
-        short id,
+        int id,
+        Instant asOf,
         String identificationNumber,
         String assigningAuthority,
         String identificationType,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
     record DeleteIdentification(
         long person,
-        short id,
+        int id,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -443,7 +459,8 @@ public sealed interface PatientCommand {
         long parent,
         long person,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 

@@ -18,7 +18,6 @@ import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
@@ -573,47 +572,6 @@ public class PatientService {
 
     private String getRequestId() {
         return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
-    }
-
-    public PatientEventResponse addPatientIdentification(IdentificationInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            person.add(new PatientCommand.AddIdentification(
-                person.getId(),
-                input.getIdentificationNumber(),
-                input.getAssigningAuthority(),
-                input.getIdentificationType(),
-                user.getId(),
-                Instant.now()
-            ));
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
-    public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            person.update(new PatientCommand.AddIdentification(
-                person.getId(),
-                input.getIdentificationNumber(),
-                input.getAssigningAuthority(),
-                input.getIdentificationType(),
-                user.getId(),
-                Instant.now()
-            ));
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
-    }
-
-    public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteIdentification(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
     }
 
 }

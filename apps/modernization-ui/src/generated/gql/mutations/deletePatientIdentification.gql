@@ -1,5 +1,6 @@
-mutation deletePatientIdentification($patientId: Int!, $entitySeqNum: Int!){
-    deletePatientIdentification(patientId: $patientId, entitySeqNum: $entitySeqNum){
-        patientId
+mutation deletePatientIdentification($input: DeletePatientIdentificationInput){
+    deletePatientIdentification(input: $input){
+        patient
+        sequence
     }
 }

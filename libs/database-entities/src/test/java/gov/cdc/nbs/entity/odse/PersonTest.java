@@ -1767,7 +1767,7 @@ class PersonTest {
     }
 
     @Test
-    void should_add_identity_with_sequence_one() {
+    void should_add_minimal_identity_with_sequence_one() {
         Person patient = new Person(117L, "local-id-value");
 
         patient.add(
@@ -1806,6 +1806,156 @@ class PersonTest {
                     identification -> assertThat(identification)
                         .extracting(EntityId::getId)
                         .returns((short) 1, EntityIdId::getEntityIdSeq)
+                )
+
+        );
+    }
+
+    @Test
+    void should_add_identity_with_sequence_one() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                117L,
+                Instant.parse("1999-09-09T11:59:13Z"),
+                "identification-value",
+                "authority-value",
+                "identification-type",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient.identifications()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getAudit)
+                        .satisfies(
+                            added -> assertThat(added)
+                                .extracting(Audit::getAdded)
+                                .returns(131L, Added::getAddUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::getAddTime)
+                        )
+                        .satisfies(
+                            changed -> assertThat(changed)
+                                .extracting(Audit::getChanged)
+                                .returns(131L, Changed::getLastChgUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::getLastChgTime)
+                        )
+                )
+                .returns("identification-type", EntityId::getTypeCd)
+                .returns(Instant.parse("1999-09-09T11:59:13Z"), EntityId::getAsOfDate)
+                .returns("authority-value", EntityId::getAssigningAuthorityCd)
+                .returns("identification-value", EntityId::getRootExtensionTxt)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getId)
+                        .returns((short) 1, EntityIdId::getEntityIdSeq)
+                )
+
+        );
+    }
+
+    @Test
+    void should_update_existing_identity() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                117L,
+                Instant.parse("1999-09-09T11:59:13Z"),
+                "identification-value",
+                "authority-value",
+                "identification-type",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.update(
+            new PatientCommand.UpdateIdentification(
+                    117L,
+                    1,
+                    Instant.parse("2001-05-19T11:59:00Z"),
+                    "updated-identification-value",
+                    "updated-authority-value",
+                    "updated-identification-type",
+                    171L,
+                    Instant.parse("2020-03-13T13:15:30Z")
+            )
+        );
+
+        assertThat(patient.identifications()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getAudit)
+                        .satisfies(
+                            added -> assertThat(added)
+                                .extracting(Audit::getAdded)
+                                .returns(131L, Added::getAddUserId)
+                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::getAddTime)
+                        )
+                        .satisfies(
+                            changed -> assertThat(changed)
+                                .extracting(Audit::getChanged)
+                                .returns(171L, Changed::getLastChgUserId)
+                                .returns(Instant.parse("2020-03-13T13:15:30Z"), Changed::getLastChgTime)
+                        )
+                )
+                .returns("updated-identification-type", EntityId::getTypeCd)
+                .returns(Instant.parse("2001-05-19T11:59:00Z"), EntityId::getAsOfDate)
+                .returns("updated-authority-value", EntityId::getAssigningAuthorityCd)
+                .returns("updated-identification-value", EntityId::getRootExtensionTxt)
+
+        );
+    }
+
+    @Test
+    void should_delete_existing_identity() {
+        Person patient = new Person(117L, "local-id-value");
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                117L,
+                Instant.parse("1999-09-09T11:59:13Z"),
+                "identification-value",
+                "authority-value",
+                "identification-type",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.add(
+            new PatientCommand.AddIdentification(
+                117L,
+                Instant.parse("2001-05-19T11:59:00Z"),
+                "other-identification-value",
+                "other-authority-value",
+                "other-identification-type",
+                131L,
+                Instant.parse("2020-03-03T10:15:30.00Z")
+            )
+        );
+
+        patient.delete(
+            new PatientCommand.DeleteIdentification(
+                117,
+                1,
+                171L,
+                Instant.parse("2020-03-13T13:15:30Z")
+            )
+        );
+
+        assertThat(patient.identifications()).satisfiesExactly(
+            actual -> assertThat(actual)
+                .satisfies(
+                    identification -> assertThat(identification)
+                        .extracting(EntityId::getId)
+                        .returns((short) 2, EntityIdId::getEntityIdSeq)
                 )
 
         );

@@ -2,10 +2,8 @@ package gov.cdc.nbs.patientlistener.request.update;
 
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
-import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
@@ -134,64 +132,6 @@ public class PatientUpdateRequestHandler {
     private void updateElasticsearchPatient(final Person person) {
         var esPerson = PersonConverter.toElasticsearchPerson(person);
         elasticsearchPersonRepository.save(esPerson);
-    }
-
-    /**
-     * Add a person Phone.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientIdentificationAdd(final UpdateIdentificationData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully add a patient Identification",
-            data.patientId());
-    }
-
-    /**
-     * Update a person Identification.
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientIdentificationUpdate(final UpdateIdentificationData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated patient Identification",
-            data.patientId());
-    }
-
-    /**
-     * Delete a person Identification.
-     */
-    @Transactional
-    public void handlePatientIdentificationDelete(final String requestId, final long patientId, short id,
-        final long userId) {
-        if (!userService.isAuthorized(userId, VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(requestId);
-        }
-        var person = findPerson(patientId, requestId);
-        patientUpdater.update(person, new DeleteIdentificationData(patientId, id, requestId, userId, null));
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            requestId,
-            "Successfully deleted patient Identification",
-            userId);
     }
 
 }

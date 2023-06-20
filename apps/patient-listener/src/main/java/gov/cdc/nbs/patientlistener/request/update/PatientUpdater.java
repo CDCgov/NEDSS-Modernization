@@ -3,12 +3,9 @@ package gov.cdc.nbs.patientlistener.request.update;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.id.IdGeneratorService;
-import gov.cdc.nbs.message.patient.event.AddIdentificationData;
-import gov.cdc.nbs.message.patient.event.DeleteIdentificationData;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
 import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
-import gov.cdc.nbs.message.patient.event.UpdateIdentificationData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patient.PatientCommand;
@@ -38,21 +35,6 @@ public class PatientUpdater {
 
     public Person update(final Person person, final UpdateAdministrativeData data) {
         person.update(asUpdateAdministrativeInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final AddIdentificationData data) {
-        person.add(asAddIdentificationInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final UpdateIdentificationData data) {
-        person.update(asUpdateIdentificationInfo(data));
-        return personRepository.save(person);
-    }
-
-    public Person update(final Person person, final DeleteIdentificationData data) {
-        person.delete(asDeleteIdentificationInfo(data));
         return personRepository.save(person);
     }
 
@@ -157,35 +139,6 @@ public class PatientUpdater {
             data.sexUnknown(),
             data.currentAge(),
             data.ageReportedTime(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.AddIdentification asAddIdentificationInfo(AddIdentificationData data) {
-        return new PatientCommand.AddIdentification(
-            data.patientId(),
-            data.identificationNumber(),
-            data.assigningAuthority(),
-            data.identificationType(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.UpdateIdentification asUpdateIdentificationInfo(UpdateIdentificationData data) {
-        return new PatientCommand.UpdateIdentification(
-            data.patientId(),
-            data.id(),
-            data.identificationNumber(),
-            data.assigningAuthority(),
-            data.identificationType(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.DeleteIdentification asDeleteIdentificationInfo(DeleteIdentificationData data) {
-        return new PatientCommand.DeleteIdentification(
-            data.patientId(),
-            data.id(),
             data.updatedBy(),
             Instant.now());
     }
