@@ -1131,7 +1131,7 @@
                             </entry>
                             <entry>
 <key>db-fetch-db-type</key>
-<value>Generic</value>
+<value>MS SQL 2012+</value>
                             </entry>
                             <entry>
 <key>Table Name</key>
@@ -1139,19 +1139,33 @@
                             </entry>
                             <entry>
 <key>Columns to Return</key>
-<value>person_parent_uid</value>
+<value>person_parent_uid,last_chg_time</value>
                             </entry>
                             <entry>
 <key>db-fetch-where-clause</key>
-<value>person_parent_uid is not null</value>
                             </entry>
                             <entry>
 <key>db-fetch-sql-query</key>
-<value>select distinct person_parent_uid from Person</value>
+<value>select person_parent_uid, max(last_chg_time) last_chg_time from (
+  select person_parent_uid,last_chg_time from person where person_uid=person_parent_uid
+  union
+  select person_uid person_parent_uid,last_chg_time from person_name where last_chg_time is not null and person_uid in (select person_parent_uid from person)
+  union
+  select person_uid person_parent_uid,last_chg_time from person_race where last_chg_time is not null and person_uid in (select person_parent_uid from person)
+  union
+  select entity_uid person_parent_uid,last_chg_time from entity_id where last_chg_time is not null and entity_uid in (select person_parent_uid from person)
+  union
+  select entity_uid person_parent_uid,last_chg_time from Entity_locator_participation where last_chg_time is not null and entity_uid in (select person_parent_uid from person)
+  union
+  select elp.entity_uid person_parent_uid,tl.last_chg_time  from Entity_locator_participation elp join tele_locator tl on tl.tele_locator_uid=elp.locator_uid where tl.last_chg_time is not null and elp.entity_uid in (select person_parent_uid from person)
+  union
+  select elp.entity_uid person_parent_uid,pl.last_chg_time  from Entity_locator_participation elp join postal_locator pl on pl.postal_locator_uid=elp.locator_uid where pl.last_chg_time is not null and elp.entity_uid in (select person_parent_uid from person)
+) tmptbl
+group by person_parent_uid</value>
                             </entry>
                             <entry>
 <key>Maximum-value Columns</key>
-<value>person_parent_uid</value>
+<value>last_chg_time</value>
                             </entry>
                             <entry>
 <key>initial-load-strategy</key>
@@ -2779,5 +2793,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/05/2023 05:07:28 UTC</timestamp>
+    <timestamp>06/16/2023 06:30:52 UTC</timestamp>
 </template>
