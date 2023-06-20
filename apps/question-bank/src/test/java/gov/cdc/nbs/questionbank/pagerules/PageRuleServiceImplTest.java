@@ -48,7 +48,7 @@ public class PageRuleServiceImplTest {
 
         Long id = pageRuleServiceImpl.createPageRule(ruleRequest);
 
-        Mockito.verify(waRuleMetaDataRepository,Mockito.times(1));
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
 
     }
 
