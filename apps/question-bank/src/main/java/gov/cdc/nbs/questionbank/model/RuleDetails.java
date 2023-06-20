@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.model;
 
 
-import gov.cdc.nbs.questionbank.entity.businessRule.WaRuleMetadata;
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
