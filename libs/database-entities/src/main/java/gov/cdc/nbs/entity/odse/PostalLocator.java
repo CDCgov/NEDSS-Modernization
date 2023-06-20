@@ -1,8 +1,5 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientCommand.UpdateMortalityLocator;
@@ -93,11 +90,11 @@ public class PostalLocator extends Locator {
         this.id = address.id();
         this.streetAddr1 = address.address1();
         this.streetAddr2 = address.address2();
-        applyCity(address.city());
+        this.cityDescTxt = address.city();
         this.stateCd = address.state();
         this.zipCd = address.zip();
-        applyCounty(address.county());
-        applyCountry(address.country());
+        this.cntyCd = address.county();
+        this.cntryCd = address.country();
         this.censusTract = address.censusTract();
     }
 
@@ -111,6 +108,17 @@ public class PostalLocator extends Locator {
         this.stateCd = add.stateOfDeath();
     }
 
+    public void update(final PatientCommand.UpdateAddress update) {
+        this.streetAddr1 = update.address1();
+        this.streetAddr2 = update.address2();
+        this.cityDescTxt = update.city();
+        this.stateCd = update.state();
+        this.zipCd = update.zip();
+        this.cntyCd = update.county();
+        this.cntryCd = update.country();
+        this.censusTract = update.censusTract();
+    }
+
     public void update(UpdateMortalityLocator update) {
         this.setCityDescTxt(update.cityOfDeath());
         this.setStateCd(update.stateOfDeath());
@@ -120,30 +128,10 @@ public class PostalLocator extends Locator {
         this.setLastChgUserId(update.requester());
     }
 
-    private void applyCity(final City city) {
-        if (city != null) {
-            this.cityDescTxt = city.description();
-        }
-    }
-
-    private void applyCounty(final County county) {
-        if (county != null) {
-            this.cntyCd = county.code();
-            this.cntyDescTxt = county.description();
-        }
-    }
-
-    private void applyCountry(final Country county) {
-        if (county != null) {
-            this.cntryCd = county.code();
-            this.cntryDescTxt = county.description();
-        }
-    }
-
     @Override
     public String toString() {
         return "PostalLocator{" +
-                "id=" + id +
-                '}';
+            "id=" + id +
+            '}';
     }
 }

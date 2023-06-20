@@ -84,8 +84,8 @@ type PatientAddress {
     id: ID!
     version: Int!
     asOf: DateTime!
-    type: PatientCodedValue
-    use: PatientCodedValue
+    type: PatientCodedValue!
+    use: PatientCodedValue!
     address1: String
     address2: String
     city: String
@@ -234,7 +234,7 @@ type PatientProfile {
     summary(asOf: DateTime): PatientSummary
     names(page: Page): PatientNameResults
     administrative(page: Page): PatientAdministrativeResults
-    addresses(page: Page): PatientAddressResults
+    addresses(page: Page): PatientAddressResults!
     phones(page: Page): PatientPhoneResults
     identification(page: Page): PatientIdentificationResults
     races(page: Page): PatientRaceResults

@@ -43,14 +43,6 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientSexAndBirthUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateAdministrative update) {
                 updateHandler.handlePatientAdministrativeUpdate(update.data());
-            } else if (request instanceof PatientRequest.AddAddress update) {
-                updateHandler.handlePatientAddressAdd(update.data());
-            } else if (request instanceof PatientRequest.UpdateAddress update) {
-                updateHandler.handlePatientAddressUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeleteAddress delete) {
-                updateHandler.handlePatientAddressDelete(delete.requestId(), delete.patientId(), delete.id(),
-                    delete.userId());
-
             } else if (request instanceof PatientRequest.AddEmail update) {
                 updateHandler.handlePatientEmailAdd(update.data());
             } else if (request instanceof PatientRequest.UpdateEmail update) {

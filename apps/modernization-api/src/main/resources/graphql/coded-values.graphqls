@@ -192,4 +192,6 @@ extend type Query {
     prefixes: [CodedValue!]!
     suffixes: [CodedValue!]!
     degrees: [CodedValue!]!
+    addressUses: [CodedValue!]!
+    addressTypes: [CodedValue!]!
 }

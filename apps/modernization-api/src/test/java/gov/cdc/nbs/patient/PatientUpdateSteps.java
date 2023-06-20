@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
@@ -60,10 +59,6 @@ public class PatientUpdateSteps {
                     input = createAdministrativeInput(patient.id());
                     response = patientController.updateAdministrative((AdministrativeInput) input);
                 }
-                case "address" -> {
-                    input = createAddressInput(patient.id());
-                    response = patientController.updatePatientAddress((AddressInput) input);
-                }
                 case "email" -> {
                     input = createEmailInput(patient.id());
                     response = patientController.updatePatientEmail((EmailInput) input);
@@ -112,20 +107,6 @@ public class PatientUpdateSteps {
         var input = new AdministrativeInput();
         input.setPatientId(patient);
         input.setDescription("Description 1");
-        return input;
-    }
-
-    private AddressInput createAddressInput(final long patient) {
-        var input = new AddressInput();
-        input.setPatientId(patient);
-        input.setStreetAddress1("SA1");
-        input.setStreetAddress2("SA2");
-        input.setCity("City");
-        input.setStateCode("State");
-        input.setCountyCode("County");
-        input.setCountryCode("840");
-        input.setZip("Zip");
-        input.setCensusTract("Census Tract");
         return input;
     }
 

@@ -1,8 +1,5 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
@@ -71,7 +68,7 @@ class PatientCreatedEmitterTest {
             .returns("HIV-Case", PatientEvent.Created::stateHIVCase)
             .returns(131L, PatientEvent.Created::createdBy)
             .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientEvent.Created::createdOn)
-            ;
+        ;
 
         assertThat(actual.names()).isEmpty();
         assertThat(actual.races()).isEmpty();
@@ -219,11 +216,11 @@ class PatientCreatedEmitterTest {
                 4861L,
                 "SA1",
                 "SA2",
-                new City("city-code", "city-description"),
+                "city-description",
                 "State",
                 "Zip",
-                new County("county-code", "county-description"),
-                new Country("country-code", "country-description"),
+                "county-code",
+                "country-code",
                 "Census Tract",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")

@@ -15,13 +15,13 @@ import { orNull } from 'utils/orNull';
 import { SortableTable } from 'components/Table/SortableTable';
 import { Actions as ActionState } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
-import { useTableActionState } from 'pages/patient/profile/TableActionState';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
 import { EntryModal } from 'pages/patient/profile/EntryModal';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
 import { NameEntry } from './NameEntry';
+import { useTableActionState, tableActionStateAdapter } from 'table-action';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -86,8 +86,7 @@ export const NamesTable = ({ patient }: Props) => {
 
     const initial = resolveInitialEntry(patient);
 
-    const { action, reset, prepareForAdd, selectForDetail, selectForEdit, selectForDelete } =
-        useTableActionState<PatientName>();
+    const { selected, actions } = useTableActionState<PatientName>();
 
     const modal = useRef<ModalRef>(null);
 
@@ -118,8 +117,8 @@ export const NamesTable = ({ patient }: Props) => {
     }, [currentPage]);
 
     useEffect(() => {
-        modal.current?.toggleModal(undefined, action !== undefined);
-    }, [action]);
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
 
     const onAdded = (entry: NameEntry) => {
         if (entry.type) {
@@ -141,12 +140,12 @@ export const NamesTable = ({ patient }: Props) => {
                 }
             })
                 .then(() => refetch())
-                .then(reset);
+                .then(actions.reset);
         }
     };
 
     const onChanged = (entry: NameEntry) => {
-        if (entry.type && entry.sequence) {
+        if (entry.type && entry.sequence !== null) {
             update({
                 variables: {
                     input: {
@@ -166,22 +165,22 @@ export const NamesTable = ({ patient }: Props) => {
                 }
             })
                 .then(() => refetch())
-                .then(reset);
+                .then(actions.reset);
         }
     };
 
     const onDeleted = () => {
-        if (action?.type == 'delete') {
+        if (selected?.type == 'delete') {
             remove({
                 variables: {
                     input: {
-                        patient: action.selected.patient,
-                        sequence: action.selected.sequence
+                        patient: selected.item.patient,
+                        sequence: selected.item.sequence
                     }
                 }
             })
                 .then(() => refetch())
-                .then(reset);
+                .then(actions.reset);
         }
     };
 
@@ -232,7 +231,7 @@ export const NamesTable = ({ patient }: Props) => {
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button type="button" onClick={prepareForAdd} className="display-inline-flex">
+                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add name
                         </Button>
@@ -301,15 +300,7 @@ export const NamesTable = ({ patient }: Props) => {
                                     <ActionState
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                selectForEdit(name);
-                                            }
-                                            if (type === 'delete') {
-                                                selectForDelete(name);
-                                            }
-                                            if (type === 'details') {
-                                                selectForDetail(name);
-                                            }
+                                            tableActionStateAdapter(actions, name)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -323,38 +314,38 @@ export const NamesTable = ({ patient }: Props) => {
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
             />
-            {action?.type === 'add' && (
+            {selected?.type === 'add' && (
                 <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Name">
-                    <NameEntryForm action={'Add'} entry={initial} onCancel={reset} onChange={onAdded} />
+                    <NameEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
-            {action?.type === 'update' && (
+            {selected?.type === 'update' && (
                 <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Name">
                     <NameEntryForm
                         action={'Edit'}
-                        entry={asEntry(action.selected)}
-                        onCancel={reset}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
                         onChange={onChanged}
                     />
                 </EntryModal>
             )}
-            {action?.type === 'delete' && (
+            {selected?.type === 'delete' && (
                 <ConfirmationModal
                     modal={modal}
                     title="Delete name"
                     message="Are you sure you want to delete this name record?"
                     confirmText="Yes, delete"
                     onConfirm={onDeleted}
-                    onCancel={reset}
+                    onCancel={actions.reset}
                 />
             )}
 
-            {action?.type === 'detail' && (
+            {selected?.type === 'detail' && (
                 <DetailsModal
                     title={'View details - Name'}
                     modal={modal}
-                    details={asDetail(action.selected)}
-                    onClose={reset}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
                 />
             )}
         </>
