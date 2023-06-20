@@ -5,17 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import gov.cdc.nbs.entity.srte.CodeValueGeneral;
-import gov.cdc.nbs.questionbank.entity.CodeSet;
-import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
-import gov.cdc.nbs.questionbank.entity.CodeSetId;
+import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
+import gov.cdc.nbs.questionbank.valueset.repository.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
-import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -49,20 +49,20 @@ public class ValueSetCreator {
 		try {
 			// Add CodeSet Group MetaData
 			long codeSetGroupID = getCodeSetGroupID();
-			CodeSetGroupMetaDatum codeGrp = new CodeSetGroupMetaDatum();
+			CodeSetGroupMetadatum codeGrp = new  CodeSetGroupMetadatum();
 			codeGrp.setId(codeSetGroupID);
 			codeGrp.setCodeSetDescTxt(request.getCodeSetDescTxt());
 			codeGrp.setCodeSetNm(request.getValueSetNm());
 			codeGrp.setLdfPicklistIndCd(request.getLdfPicklistIndCd());
 			// Add ValueSet
-			CodeSet valueSet = new CodeSet(asAdd(request));
-			CodeSetId id = new CodeSetId();
+			Codeset valueSet = new Codeset(asAdd(request));
+			CodesetId id = new CodesetId();
 			id.setClassCd(ValueSetConstants.CREATE_CLASS_CD);
 			id.setCodeSetNm(codeSetName);
 			valueSet.setId(id);			
 			valueSet.setCodeSetGroup(codeGrp);
 			// save changes
-			CodeSet resultCodeSet = valueSetRepository.save(valueSet);
+			Codeset resultCodeSet = valueSetRepository.save(valueSet);
 			codeSetGrpMetaRepository.save(codeGrp);
 			// Add any accompanying Value Concepts
 			

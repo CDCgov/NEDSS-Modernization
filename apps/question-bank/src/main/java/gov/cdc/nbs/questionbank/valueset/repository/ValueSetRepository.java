@@ -4,10 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import gov.cdc.nbs.questionbank.entity.CodeSet;
-import gov.cdc.nbs.questionbank.entity.CodeSetId;
+import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.CodesetId;
 
-public interface ValueSetRepository extends JpaRepository <CodeSet,CodeSetId> {
+
+public interface ValueSetRepository extends JpaRepository <Codeset,CodesetId> {
 	
 	
  @Query("SELECT count(*) FROM CodeSet WHERE codeSetGroup.codeSetNm =:name AND id.classCd = 'code_value_general'")

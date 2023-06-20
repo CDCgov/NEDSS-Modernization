@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
-import java.time.Period;
 import java.util.ArrayList;
 
 import org.apache.kafka.common.Uuid;
@@ -17,15 +16,15 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
-import gov.cdc.nbs.questionbank.entity.CodeSet;
-import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetaDatum;
+import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
+import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.valueset.ValueSetCreator;
+import gov.cdc.nbs.questionbank.valueset.repository.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.CodesetGroupMetadatumRepository;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
-import gov.cdc.nbs.repository.CodeValueGeneralRepository;
 
 class ValueSetCreatorTest {
 
@@ -48,8 +47,8 @@ class ValueSetCreatorTest {
 	@Test
 	void createValueSetTest() {
 		ValueSetRequest request = getValueSetRequest();
-		CodeSet requestCodeSet = new CodeSet(valueSetCreator.asAdd(request));
-		CodeSetGroupMetaDatum codeSetGrpRequest = new CodeSetGroupMetaDatum();
+		Codeset requestCodeSet = new Codeset(valueSetCreator.asAdd(request));
+		CodeSetGroupMetadatum codeSetGrpRequest = new CodeSetGroupMetadatum();
 		request.setCodeSetGroup(codeSetGrpRequest);
 
 		when(valueSetRepository.save(Mockito.any())).thenReturn(requestCodeSet);
@@ -71,8 +70,8 @@ class ValueSetCreatorTest {
 	@Test
 	void createValueSetWithConceptTest() {
 		ValueSetRequest request = getValueSetRequest();
-		CodeSet requestCodeSet = new CodeSet(valueSetCreator.asAdd(request));
-		CodeSetGroupMetaDatum codeSetGrpRequest = new CodeSetGroupMetaDatum();
+		Codeset requestCodeSet = new Codeset(valueSetCreator.asAdd(request));
+		CodeSetGroupMetadatum codeSetGrpRequest = new CodeSetGroupMetadatum();
 		request.setCodeSetGroup(codeSetGrpRequest);
 
 		ValueSetRequest.CreateCodedValue valueConcept = getCodedValue();
@@ -128,7 +127,7 @@ class ValueSetCreatorTest {
 		ValueSetRequest request = new ValueSetRequest();
 		request.setValueSetNm("codeSetNm");
 		request.setCodeSetDescTxt("codeDescTxt");
-		CodeSetGroupMetaDatum codeSetGrpRequest = new CodeSetGroupMetaDatum();
+		CodeSetGroupMetadatum codeSetGrpRequest = new CodeSetGroupMetadatum();
 		request.setCodeSetGroup(codeSetGrpRequest);
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
 		when(codeSetGrpMetaRepository.checkCodeSetGrpMetaDatEntry(Mockito.anyString(), Mockito.anyString()))
@@ -236,7 +235,7 @@ class ValueSetCreatorTest {
 		request.setSourceDomainNm("SourceDomainNm");
 		request.setStatusCd("statusCd");
 		request.setStatusToTime(Instant.now());
-		request.setCodeSetGroup(new CodeSetGroupMetaDatum());
+		request.setCodeSetGroup(new CodeSetGroupMetadatum());
 		request.setAdminComments("adminComments");
 		request.setValueSetNm("valueSetNm");
 		request.setLdfPicklistIndCd(Character.valueOf('L'));

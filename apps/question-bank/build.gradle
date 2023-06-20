@@ -88,12 +88,9 @@ dependencies {
     // id generation
     implementation project(':id-generator')
     
-    
-    implementation project(':database-entities')
 
 }
 
-compileJava.mustRunAfter(":database-entities:build")
 compileJava.mustRunAfter(":authentication:build")
 compileJava.mustRunAfter(":id-generator:build")
 

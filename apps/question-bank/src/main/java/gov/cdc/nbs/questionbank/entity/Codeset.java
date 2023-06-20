@@ -8,9 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import gov.cdc.nbs.entity.srte.CodeValueGeneral;
-import gov.cdc.nbs.entity.srte.CodeValueGeneralId;
-import gov.cdc.nbs.entity.srte.CodeValueGeneral.CodeValueGeneralBuilder;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 
 import java.time.Instant;
@@ -22,9 +19,9 @@ import java.time.Instant;
 @Entity
 @Builder
 @Table(catalog = "NBS_SRTE", name = "codeset")
-public class CodeSet {
+public class Codeset {
 	@EmbeddedId
-	private CodeSetId id;
+	private CodesetId id;
 
 	@Column(name = "assigning_authority_cd", length = 199)
 	private String assigningAuthorityCd;
@@ -61,7 +58,7 @@ public class CodeSet {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "code_set_group_id")
-	private CodeSetGroupMetaDatum codeSetGroup;
+	private CodeSetGroupMetadatum codeSetGroup;
 
 	@Column(name = "admin_comments", length = 2000)
 	private String adminComments;
@@ -96,7 +93,7 @@ public class CodeSet {
 	@Column(name = "add_user_id")
 	private Long addUserId;
 
-	public CodeSet(final ValueSetCommand.AddValueSet  request) {
+	public Codeset(final ValueSetCommand.AddValueSet  request) {
 		this.assigningAuthorityCd = request.assigningAuthorityCd();
 		this.assigningAuthorityDescTxt = request.assigningAuthorityDescTxt();
 		this.codeSetDescTxt = request.codeSetDescTxt();
