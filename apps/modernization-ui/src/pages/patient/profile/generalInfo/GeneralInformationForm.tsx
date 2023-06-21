@@ -1,10 +1,10 @@
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import { InputMaybe, Scalars } from 'generated/graphql/schema';
 import { usePatientGeneralCodedValues } from 'pages/patient/profile/generalInfo/usePatientGeneralCodedValues';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
+import { orNull, maybeNumber } from 'utils';
 
 type Props = {
     entry?: GeneralInformationEntry | null;
@@ -13,33 +13,33 @@ type Props = {
 };
 
 export type GeneralInformationEntry = {
-    asOf?: InputMaybe<Scalars['DateTime']>;
-    maritalStatus?: string | null;
-    maternalMaidenName?: string | null;
-    adultsInHouse?: string | null;
-    childrenInHouse?: string | null;
-    occupation?: string | null;
-    educationLevel?: string | null;
-    primaryLanguage?: string | null;
-    speaksEnglish?: string | null;
-    stateHIVCase?: string | null;
+    asOf: string | null;
+    maritalStatus: string | null;
+    maternalMaidenName: string | null;
+    adultsInHouse: number | null;
+    childrenInHouse: number | null;
+    occupation: string | null;
+    educationLevel: string | null;
+    primaryLanguage: string | null;
+    speaksEnglish: string | null;
+    stateHIVCase: string | null;
 };
 
 export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
-    const { handleSubmit, control } = useForm();
+    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
-            asOf: entered?.nameAsOf,
-            maritalStatus: entered?.maritalStatus,
-            maternalMaidenName: entered?.motherName,
-            adultsInHouse: entered?.adults,
-            childrenInHouse: entered?.children,
-            occupation: entered?.occupation,
-            educationLevel: entered?.education,
-            primaryLanguage: entered?.prmLang,
-            speaksEnglish: entered?.speakEng,
-            stateHIVCase: entered?.hiv
+            asOf: entered?.asOf,
+            maritalStatus: orNull(entered?.maritalStatus),
+            maternalMaidenName: entered?.maternalMaidenName,
+            adultsInHouse: maybeNumber(entered?.adultsInHouse),
+            childrenInHouse: maybeNumber(entered?.childrenInHouse),
+            occupation: orNull(entered?.occupation),
+            educationLevel: orNull(entered?.educationLevel),
+            primaryLanguage: orNull(entered?.primaryLanguage),
+            speaksEnglish: orNull(entered?.speaksEnglish),
+            stateHIVCase: entered?.stateHIVCase
         });
     };
 
@@ -54,14 +54,17 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="nameAsOf"
+                        name="asOf"
                         defaultValue={entry?.asOf}
-                        render={({ field: { onChange, value } }) => (
+                        rules={{ required: { value: true, message: 'As of date is requried.' } }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <DatePickerInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="nameAsOf"
-                                htmlFor={'nameAsOf'}
+                                onBlur={onBlur}
+                                name="asOf"
+                                htmlFor={'asOf'}
+                                errorMessage={error?.message}
                             />
                         )}
                     />
@@ -94,7 +97,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="motherName"
+                        name="maternalMaidenName"
                         defaultValue={entry?.maternalMaidenName}
                         render={({ field: { onChange, value } }) => (
                             <Input
@@ -102,8 +105,8 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
-                                htmlFor="motherName"
-                                id="motherName"
+                                htmlFor="maternalMaidenName"
+                                id="maternalMaidenName"
                             />
                         )}
                     />
@@ -116,16 +119,19 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="adults"
+                        name="adultsInHouse"
                         defaultValue={entry?.adultsInHouse}
-                        render={({ field: { onChange, value } }) => (
+                        rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
                                 placeholder="No data"
+                                onBlur={onBlur}
                                 onChange={onChange}
-                                type="text"
+                                type="number"
                                 defaultValue={value}
-                                htmlFor="adults"
-                                id="adults"
+                                htmlFor="adultsInHouse"
+                                id="adultsInHouse"
+                                error={error?.message}
                             />
                         )}
                     />
@@ -139,15 +145,18 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Controller
                         control={control}
                         defaultValue={entry?.childrenInHouse}
-                        name="children"
-                        render={({ field: { onChange, value } }) => (
+                        name="childrenInHouse"
+                        rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
                                 placeholder="No data"
+                                onBlur={onBlur}
                                 onChange={onChange}
-                                type="text"
+                                type="number"
                                 defaultValue={value}
-                                htmlFor="children"
-                                id="children"
+                                htmlFor="childrenInHouse"
+                                id="childrenInHouse"
+                                error={error?.message}
                             />
                         )}
                     />
@@ -180,13 +189,13 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="education"
+                        name="educationLevel"
                         defaultValue={entry?.educationLevel}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                htmlFor={'education'}
+                                htmlFor={'educationLevel'}
                                 options={coded.educationLevels}
                             />
                         )}
@@ -201,12 +210,12 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Controller
                         control={control}
                         defaultValue={entry?.primaryLanguage}
-                        name="prmLang"
+                        name="primaryLanguage"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                htmlFor={'prmLang'}
+                                htmlFor={'primaryLanguage'}
                                 options={coded.primaryLanguages}
                             />
                         )}
@@ -221,12 +230,12 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     <Controller
                         defaultValue={entry?.speaksEnglish}
                         control={control}
-                        name="speakEng"
+                        name="speaksEnglish"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                htmlFor={'speakEng'}
+                                htmlFor={'speaksEnglish'}
                                 options={coded.speaksEnglish}
                             />
                         )}
@@ -240,7 +249,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="hiv"
+                        name="stateHIVCase"
                         defaultValue={entry?.stateHIVCase}
                         render={({ field: { onChange, value } }) => (
                             <Input
@@ -248,8 +257,8 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
-                                htmlFor="hiv"
-                                id="hiv"
+                                htmlFor="stateHIVCase"
+                                id="stateHIVCase"
                             />
                         )}
                     />

@@ -17,7 +17,6 @@ import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
@@ -63,7 +62,6 @@ import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 @RequiredArgsConstructor
@@ -408,56 +406,6 @@ public class PatientService {
         }
         var recordStatusStrings = recordStatus.stream().map(RecordStatus::toString).toList();
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
-    }
-
-    @SuppressWarnings("squid:S3776")
-    public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            boolean modified = false;
-            if (!isEmpty(input.getMaritalStatus())) {
-                person.setMaritalStatusCd(input.getMaritalStatus());
-                modified = true;
-            }
-            if (!isEmpty(input.getMothersMaidenName())) {
-                person.setMothersMaidenNm((input.getMothersMaidenName()));
-                modified = true;
-            }
-            if (input.getAdultsInHouseNumber() != null) {
-                person.setAdultsInHouseNbr(input.getAdultsInHouseNumber());
-                modified = true;
-            }
-            if (input.getChildrenInHouseNumber() != null) {
-                person.setChildrenInHouseNbr(input.getChildrenInHouseNumber());
-                modified = true;
-            }
-            if (!isEmpty(input.getOccupationCode())) {
-                person.setOccupationCd(input.getOccupationCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getEducationLevelCode())) {
-                person.setEducationLevelCd(input.getEducationLevelCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getPrimaryLanguageCode())) {
-                person.setPrimLangCd(input.getPrimaryLanguageCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getSpeaksEnglishCode())) {
-                person.setSpeaksEnglishCd(input.getSpeaksEnglishCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getEharsId())) {
-                person.setEharsId(input.getEharsId());
-                modified = true;
-            }
-            if (modified) {
-                person.setAsOfDateGeneral(input.getAsOf());
-            }
-            personRepository.save(person);
-            return sendPatientEvent(updateGeneralInfoEvent);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {

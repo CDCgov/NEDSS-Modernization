@@ -100,6 +100,15 @@ public class RandomUtil {
     }
 
     @SafeVarargs
+    public static <T> T maybeOneFrom(T...values) {
+        int flip = RANDOM.nextInt(2);
+
+        return (flip == 0)
+            ? oneFrom(values)
+            : null;
+    }
+
+    @SafeVarargs
     public static <T> Collection<T> multiFrom(T...values) {
         var size = RANDOM.nextInt(values.length);
         Set<T> randomized = new HashSet<>(size);

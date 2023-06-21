@@ -16,7 +16,7 @@ type InputProps = {
     placeholder?: string;
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search' | undefined;
     flexBox?: boolean;
-};
+} & JSX.IntrinsicElements['input'];
 
 export const Input = ({
     name,
