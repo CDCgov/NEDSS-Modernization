@@ -18,5 +18,4 @@ export type IdentificationEntry = {
     value?: Maybe<Scalars['String']>;
     state: string | null;
     sequence?: Scalars['Int'];
-    comment: string | null;
 };
