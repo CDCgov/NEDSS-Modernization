@@ -5,7 +5,6 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patient.PatientCommand;
@@ -87,23 +86,6 @@ public class PatientUpdater {
             data.stateOfDeath(),
             data.countyOfDeath(),
             data.countryOfDeath(),
-            data.updatedBy(),
-            Instant.now());
-    }
-
-    private PatientCommand.UpdateGeneralInfo asUpdateGeneralInfo(UpdateGeneralInfoData data) {
-        return new PatientCommand.UpdateGeneralInfo(
-            data.patientId(),
-            data.asOf(),
-            data.maritalStatus(),
-            data.mothersMaidenName(),
-            data.adultsInHouseNumber(),
-            data.childrenInHouseNumber(),
-            data.occupationCode(),
-            data.educationLevelCode(),
-            data.primaryLanguageCode(),
-            data.speaksEnglishCode(),
-            data.eharsId(),
             data.updatedBy(),
             Instant.now());
     }
