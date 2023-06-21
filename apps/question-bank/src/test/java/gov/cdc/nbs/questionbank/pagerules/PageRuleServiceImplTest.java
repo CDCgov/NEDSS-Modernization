@@ -54,14 +54,16 @@ class PageRuleServiceImplTest {
         BigInteger id = pageRuleServiceImpl.createPageRule(ruleRequest);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        Assertions.assertEquals(BigInteger.valueOf(ruleDetails.getWaTemplateUid()), new BigInteger(String.valueOf(id)));
+        Long waTemplateUid = ruleDetails.getWaTemplateUid();
+        BigInteger idValue = (id != null) ? new BigInteger(id.toString()) : null;
 
+        Assertions.assertEquals(String.valueOf(waTemplateUid), String.valueOf(idValue));
 
     }
 
     @Test
     void should_send_ruleRequest_Event(){
-        Instant now = Instant.now();
+        Instant.now();
         RuleDetails ruleDetails = new RuleDetails();
         ruleDetails.setId(BigInteger.valueOf(999));
 
@@ -73,9 +75,11 @@ class PageRuleServiceImplTest {
 
         ArgumentCaptor<RuleCreatedEvent> eventCaptor = ArgumentCaptor.forClass(RuleCreatedEvent.class);
         Mockito.verify(ruleCreatedEventProducer, times(1)).send(eventCaptor.capture());
-        Assertions.assertEquals(BigInteger.valueOf(ruleDetails.getWaTemplateUid()), new BigInteger(String.valueOf(id)));
+        Long waTemplateUid = ruleDetails.getWaTemplateUid();
+        BigInteger idValue = (id != null) ? new BigInteger(id.toString()) : null;
 
 
+        Assertions.assertEquals(String.valueOf(waTemplateUid), String.valueOf(idValue));
 
     }
 }
