@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(catalog = "NBS_SRTE", name = "Codeset_Group_Metadata")
-public class CodesetGroupMetadatum {
+public class CodeSetGroupMetadatum {
     @Id
     @Column(name = "code_set_group_id", nullable = false)
     private Long id;
@@ -38,7 +39,6 @@ public class CodesetGroupMetadatum {
     @Column(name = "phin_std_val_ind")
     private Character phinStdValInd;
 
-    @OneToMany(mappedBy = "codeSetGroup", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "codeSetGroup")
     private Set<Codeset> codesets = new LinkedHashSet<>();
-
 }
