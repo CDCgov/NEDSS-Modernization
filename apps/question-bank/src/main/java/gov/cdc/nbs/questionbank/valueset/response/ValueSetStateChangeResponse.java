@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DeleteValueSetResponse {
+public class ValueSetStateChangeResponse {
 	private String codeSetNm;
 	private String statusCd;
 	private String message;

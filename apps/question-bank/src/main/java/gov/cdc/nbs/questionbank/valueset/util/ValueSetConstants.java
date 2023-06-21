@@ -14,8 +14,10 @@ public static final String SUCCESS_MESSAGE =  "Successfully created Value Set";
 
 public static final String CREATE_CLASS_CD= "code_value_general";
 
-// delete value set messages
+//  value set state manager messages
 public static final String EMPTY_CODE_SET_NM = "Provided CodeSetNm cannot be null";
 public static final String DELETE_SUCCESS_MESSAGE= "ValueSet made inactive.";
 public static final String DELETE_FAILURE_MESSAGE= "Was not able to inactivate valueset";
+public static final String ACTIVATE_SUCCESS_MESSAGE= "ValueSet made active.";
+public static final String ACTIVATE_FAILURE_MESSAGE= "Was not able to activate valueset";
 }

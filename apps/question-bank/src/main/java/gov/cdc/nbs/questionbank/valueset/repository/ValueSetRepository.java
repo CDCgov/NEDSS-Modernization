@@ -25,5 +25,11 @@ public interface ValueSetRepository extends JpaRepository <Codeset,CodesetId> {
  @Query("UPDATE Codeset SET statusCd='I' WHERE  id.codeSetNm =:codeSetNm")
  int inActivateValueSet(@Param("codeSetNm") String codeSetNm);
  
+ 
+ @Modifying
+ @Transactional
+ @Query("UPDATE Codeset SET statusCd='A' WHERE  id.codeSetNm =:codeSetNm")
+ int activateValueSet(@Param("codeSetNm") String codeSetNm);
+ 
 
 }
