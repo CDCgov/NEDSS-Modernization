@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
@@ -28,6 +29,9 @@ public class CreateQuestionSteps {
     private UserMother userMother;
 
     @Autowired
+    private ExceptionHolder exceptionHolder;
+
+    @Autowired
     private QuestionController controller;
 
     @Autowired
@@ -37,7 +41,6 @@ public class CreateQuestionSteps {
 
     private CreateQuestionResponse response;
 
-    private Exception exception;
 
     @Given("No questions exist")
     public void no_questions_exist() {
@@ -83,9 +86,9 @@ public class CreateQuestionSteps {
                     throw new NotYetImplementedException();
             }
         } catch (AccessDeniedException e) {
-            exception = e;
+            exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
-            exception = e;
+            exceptionHolder.setException(e);
         }
     }
 
@@ -133,7 +136,7 @@ public class CreateQuestionSteps {
         try {
             controller.createTextQuestion(request);
         } catch (CreateQuestionException e) {
-            exception = e;
+            exceptionHolder.setException(e);
         }
     }
 
@@ -204,18 +207,22 @@ public class CreateQuestionSteps {
         assertEquals('F', question.getOtherValueIndCd().charValue());
     }
 
-    @Then("a not authorized exception is thrown")
+    @Then("a no credentials found exception is thrown")
     public void a_not_authorized_exception_is_thrown() {
-        assertNotNull(exception);
-        assertTrue(
-                exception instanceof AuthenticationCredentialsNotFoundException
-                        || exception instanceof AccessDeniedException);
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
+    }
+
+    @Then("an accessdenied exception is thrown")
+    public void a_access_denied_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
     }
 
     @Then("a question creation exception is thrown")
     public void an_exception_is_thrown() {
-        assertNotNull(exception);
-        assertTrue(exception instanceof CreateQuestionException);
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof CreateQuestionException);
     }
 
 }

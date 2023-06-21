@@ -3,9 +3,12 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,6 +18,9 @@ public class SetQuestionStatusSteps {
 
     @Autowired
     private QuestionController controller;
+
+    @Autowired
+    private ExceptionHolder exceptionHolder;
 
     @Autowired
     private WaQuestionRepository repository;
@@ -32,8 +38,14 @@ public class SetQuestionStatusSteps {
     @When("I update a question's status to {string}")
     public void I_update_a_questions_status(String status) {
         WaQuestion question = questionMother.one();
-        controller.setQuestionStatus(question.getId(),
-                new QuestionStatusRequest("Active".equals(status) ? true : false));
+        try {
+            controller.setQuestionStatus(question.getId(),
+                    new QuestionStatusRequest("Active".equals(status) ? true : false));
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
     }
 
     @Then("the question's status is set to {string}")
