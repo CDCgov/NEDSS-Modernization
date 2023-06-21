@@ -51,7 +51,7 @@ export const Demographics = ({ id }: DemographicProps) => {
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
-                        {id && <Ethnicity patient={id} />}
+                        <Ethnicity patient={id} />
                         <SexBirth patient={id} />
                     </Grid>
                 </Grid>

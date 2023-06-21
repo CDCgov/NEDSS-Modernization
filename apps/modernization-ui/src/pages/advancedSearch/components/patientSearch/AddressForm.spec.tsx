@@ -17,7 +17,10 @@ describe('AddressForm component tests', () => {
         const { result } = renderHook(() => useForm());
         const { container } = render(<AddressForm control={result.current.control} errors={null} />);
         const options = container.getElementsByTagName('option');
-        for (let i = 0; i < options.length; i++) {
+
+        expect(options[0]).toHaveTextContent('- Select -');
+
+        for (let i = 1; i < options.length; i++) {
             expect(options[i].value).toBe(options[i].textContent);
         }
     });

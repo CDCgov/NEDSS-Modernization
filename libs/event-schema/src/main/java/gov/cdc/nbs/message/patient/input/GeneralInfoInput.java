@@ -1,7 +1,5 @@
 package gov.cdc.nbs.message.patient.input;
 
-import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,30 +20,4 @@ public class GeneralInfoInput {
     private String speaksEnglishCode;
     private String eharsId;
 
-    public static PatientRequest toRequest(
-        final long userId,
-        final String requestId,
-        final GeneralInfoInput input
-    ) {
-        return new PatientRequest.UpdateGeneralInfo(
-                requestId,
-                input.getPatientId(),
-                userId,
-                new UpdateGeneralInfoData(
-                        input.getPatientId(),
-                        requestId,
-                        userId,
-                        input.getAsOf(),
-                        input.getMaritalStatus(),
-                        input.getMothersMaidenName(),
-                        input.getAdultsInHouseNumber(),
-                        input.getChildrenInHouseNumber(),
-                        input.getOccupationCode(),
-                        input.getEducationLevelCode(),
-                        input.getPrimaryLanguageCode(),
-                        input.getSpeaksEnglishCode(),
-                        input.getEharsId()
-                )
-        );
-    }
 }

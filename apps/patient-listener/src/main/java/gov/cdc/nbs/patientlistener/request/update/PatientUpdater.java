@@ -28,11 +28,6 @@ public class PatientUpdater {
         this.personRepository = personRepository;
     }
 
-    public Person update(final Person person, final UpdateGeneralInfoData data) {
-        person.update(asUpdateGeneralInfo(data));
-        return personRepository.save(person);
-    }
-
     public Person update(final Person person, final UpdateAdministrativeData data) {
         person.update(asUpdateAdministrativeInfo(data));
         return personRepository.save(person);

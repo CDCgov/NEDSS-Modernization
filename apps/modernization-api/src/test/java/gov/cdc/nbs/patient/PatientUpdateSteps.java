@@ -43,10 +43,6 @@ public class PatientUpdateSteps {
         PatientIdentifier patient = patients.one();
         try {
             switch (updateType) {
-                case "general info" -> {
-                    input = PersonUtil.convertToGeneralInput(PersonMother.generateRandomPerson(patient.id()));
-                    response = patientController.updatePatientGeneralInfo((GeneralInfoInput) input);
-                }
                 case "sex and birth" -> {
                     input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(patient.id()));
                     response = patientController.updatePatientSexBirth((SexAndBirthInput) input);
