@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +23,9 @@ class QuestionUpdaterTest {
 
     @Mock
     private WaQuestionRepository repository;
+
+    @Mock
+    private WaQuestionHistRepository histRepository;
 
     @Spy
     private QuestionMapper questionMapper = new QuestionMapper();
@@ -43,6 +47,22 @@ class QuestionUpdaterTest {
         WaQuestion question = captor.getValue();
         assertNotNull(question);
         assertEquals("Inactive", question.getRecordStatusCd());
+    }
+
+    @Test
+    void should_increment_version() {
+        // given an active question and a working repository
+        when(repository.findById(321L)).thenReturn(Optional.of(emptyQuestion()));
+        ArgumentCaptor<WaQuestion> captor = ArgumentCaptor.forClass(WaQuestion.class);
+        when(repository.save(captor.capture())).thenAnswer(q -> q.getArgument(0));
+
+        // when a set status to inactive request is processed
+        updater.setStatus(9L, 321L, false);
+
+        // then the question should have incremented version control number
+        WaQuestion question = captor.getValue();
+        assertNotNull(question);
+        assertEquals(2, question.getVersionCtrlNbr().intValue());
     }
 
     @Test
@@ -72,6 +92,7 @@ class QuestionUpdaterTest {
     private WaQuestion emptyQuestion() {
         TextQuestionEntity q = new TextQuestionEntity();
         q.setId(321L);
+        q.setVersionCtrlNbr(1);
         return q;
     }
 

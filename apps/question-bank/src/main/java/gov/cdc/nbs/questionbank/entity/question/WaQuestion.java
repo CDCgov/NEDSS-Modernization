@@ -247,6 +247,7 @@ public abstract class WaQuestion {
         setRecordStatusTime(command.requestedOn());
         setLastChgUserId(command.userId());
         setLastChgTime(command.requestedOn());
+        setVersionCtrlNbr(this.getVersionCtrlNbr() + 1);
     }
 
     private String formatAndValidateReportingField(String s) {
