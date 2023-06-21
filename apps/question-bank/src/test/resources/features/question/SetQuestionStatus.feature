@@ -9,6 +9,7 @@ Feature: Update Question Status
         And A text question exists
         When I update a question's status to "<status>"
         Then the question's status is set to "<status>"
+        And a question history is created
 
         Examples:
             | status   |
