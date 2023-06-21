@@ -43,45 +43,7 @@ public class PatientRequestTopicListener {
                 updateHandler.handlePatientSexAndBirthUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateAdministrative update) {
                 updateHandler.handlePatientAdministrativeUpdate(update.data());
-            } else if (request instanceof PatientRequest.AddName update) {
-                updateHandler.handlePatientNameUpdate(update.data());
-            } else if (request instanceof PatientRequest.UpdateName update) {
-                updateHandler.handlePatientNameUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeleteName delete) {
-                updateHandler.handlePatientNameDelete(delete.requestId(), delete.patientId(), delete.personNameSeq(),
-                    delete.userId());
-            } else if (request instanceof PatientRequest.AddAddress update) {
-                updateHandler.handlePatientAddressAdd(update.data());
-            } else if (request instanceof PatientRequest.UpdateAddress update) {
-                updateHandler.handlePatientAddressUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeleteAddress delete) {
-                updateHandler.handlePatientAddressDelete(delete.requestId(), delete.patientId(), delete.id(),
-                    delete.userId());
-
-            } else if (request instanceof PatientRequest.AddEmail update) {
-                updateHandler.handlePatientEmailAdd(update.data());
-            } else if (request instanceof PatientRequest.UpdateEmail update) {
-                updateHandler.handlePatientEmailUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeleteEmail delete) {
-                updateHandler.handlePatientEmailDelete(delete.requestId(), delete.patientId(), delete.id(),
-                    delete.userId());
-
-            } else if (request instanceof PatientRequest.AddIdentification update) {
-                updateHandler.handlePatientIdentificationAdd(update.data());
-            } else if (request instanceof PatientRequest.UpdateIdentification update) {
-                updateHandler.handlePatientIdentificationUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeleteIdentification delete) {
-                updateHandler.handlePatientIdentificationDelete(delete.requestId(), delete.patientId(), delete.id(),
-                    delete.userId());
-
-            } else if (request instanceof PatientRequest.AddPhone update) {
-                updateHandler.handlePatientPhoneAdd(update.data());
-            } else if (request instanceof PatientRequest.UpdatePhone update) {
-                updateHandler.handlePatientPhoneUpdate(update.data());
-            } else if (request instanceof PatientRequest.DeletePhone delete) {
-                updateHandler.handlePatientPhoneDelete(delete.requestId(), delete.patientId(), delete.id(),
-                    delete.userId());
-            } else {
+            }  else {
                 receivedInvalidRequest(key, request);
             }
 

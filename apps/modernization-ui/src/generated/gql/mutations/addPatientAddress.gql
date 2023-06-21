@@ -1,5 +1,6 @@
-mutation addPatientAddress($input: AddressInput!){
+mutation addPatientAddress($input: NewPatientAddressInput!){
     addPatientAddress(input: $input){
-        patientId
+        patient
+        id
     }
 }

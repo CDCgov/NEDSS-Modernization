@@ -1,14 +1,11 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.message.enums.Deceased;
-import gov.cdc.nbs.message.enums.Suffix;
-import gov.cdc.nbs.message.patient.input.AddressInput;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.EmailInput;
 import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
 import gov.cdc.nbs.message.patient.input.IdentificationInput;
 import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
 import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
 import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
@@ -62,27 +59,6 @@ public class PatientUpdateSteps {
                     input = createAdministrativeInput(patient.id());
                     response = patientController.updateAdministrative((AdministrativeInput) input);
                 }
-                case "name" -> {
-                    input = createNameInput(patient.id());
-                    response = patientController.updatePatientName((NameInput) input);
-                }
-                case "address" -> {
-                    input = createAddressInput(patient.id());
-                    response = patientController.updatePatientAddress((AddressInput) input);
-                }
-                case "email" -> {
-                    input = createEmailInput(patient.id());
-                    response = patientController.updatePatientEmail((EmailInput) input);
-                }
-                case "identification" -> {
-                    input = createIdentificationInput(patient.id());
-                    response = patientController.updatePatientIdentification((IdentificationInput) input);
-                }
-                case "phone" -> {
-                    input = createPhoneInput(patient.id());
-                    response = patientController.updatePatientPhone((PhoneInput) input);
-                }
-
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
@@ -120,59 +96,4 @@ public class PatientUpdateSteps {
         input.setDescription("Description 1");
         return input;
     }
-
-    private NameInput createNameInput(final long patient) {
-        var input = new NameInput();
-        input.setPatientId(patient);
-        input.setPersonNameSeq((short) 1);
-        input.setFirstName("First Name");
-        input.setLastName("Last Name");
-        input.setMiddleName("Middle Name");
-        input.setNameUseCd("L");
-        input.setSuffix(Suffix.III);
-        return input;
-    }
-
-    private AddressInput createAddressInput(final long patient) {
-        var input = new AddressInput();
-        input.setPatientId(patient);
-        input.setStreetAddress1("SA1");
-        input.setStreetAddress2("SA2");
-        input.setCity("City");
-        input.setStateCode("State");
-        input.setCountyCode("County");
-        input.setCountryCode("840");
-        input.setZip("Zip");
-        input.setCensusTract("Census Tract");
-        return input;
-    }
-
-    private EmailInput createEmailInput(final long patient) {
-        var input = new EmailInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setEmailAddress("First Email");
-        return input;
-    }
-
-    private IdentificationInput createIdentificationInput(final long patient) {
-        var input = new IdentificationInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setAssigningAuthority("assigning authority");
-        input.setIdentificationNumber("id number");
-        input.setIdentificationType("id type");
-        return input;
-    }
-
-    private PhoneInput createPhoneInput(final long patient) {
-        var input = new PhoneInput();
-        input.setPatientId(patient);
-        input.setId((short) 1);
-        input.setNumber("3145551212");
-        input.setExtension("123");
-        input.setPhoneType(PhoneType.CELL);
-        return input;
-    }
-
 }

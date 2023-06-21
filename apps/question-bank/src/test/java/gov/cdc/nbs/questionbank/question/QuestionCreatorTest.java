@@ -20,13 +20,15 @@ import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
-import gov.cdc.nbs.questionbank.entity.question.TextQuestion;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
-import gov.cdc.nbs.questionbank.question.exception.QuestionCreateException;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
@@ -51,6 +53,9 @@ class QuestionCreatorTest {
 
     @Mock
     private NbsConfigurationRepository configRepository;
+
+    @Mock
+    private CodesetRepository codesetRepository;
 
     @InjectMocks
     private QuestionCreator creator;
@@ -176,18 +181,20 @@ class QuestionCreatorTest {
         assertEquals(request.mask(), command.mask());
         assertEquals(request.fieldLength(), command.fieldLength());
         assertEquals(request.defaultValue(), command.defaultValue());
-        assertEquals(request.codeSet(), command.codeSet());
-        assertEquals(request.uniqueId(), command.localId());
-        assertEquals(request.uniqueName(), command.uniqueName());
-        assertEquals(request.subgroup(), command.subgroup());
-        assertEquals(request.description(), command.description());
-        assertEquals(request.label(), command.label());
-        assertEquals(request.tooltip(), command.tooltip());
-        assertEquals(request.displayControl(), command.displayControl());
-        assertEquals(request.adminComments(), command.adminComments());
+
         assertEquals(123L, command.userId());
 
-        assertNotNull(command.questionOid());
+        QuestionCommand.QuestionData questionData = command.questionData();
+        assertNotNull(questionData.questionOid());
+        assertEquals(request.codeSet(), questionData.codeSet());
+        assertEquals(request.uniqueId(), questionData.localId());
+        assertEquals(request.uniqueName(), questionData.uniqueName());
+        assertEquals(request.subgroup(), questionData.subgroup());
+        assertEquals(request.description(), questionData.description());
+        assertEquals(request.label(), questionData.label());
+        assertEquals(request.tooltip(), questionData.tooltip());
+        assertEquals(request.displayControl(), questionData.displayControl());
+        assertEquals(request.adminComments(), questionData.adminComments());
         assertNotNull(command.reportingData());
         assertNotNull(command.messagingData());
     }
@@ -195,7 +202,7 @@ class QuestionCreatorTest {
     @Test
     void should_save_to_db() {
         // given the database will return an entity with an Id
-        TextQuestion tq = new TextQuestion();
+        TextQuestionEntity tq = new TextQuestionEntity();
         tq.setId(999L);
         when(repository.save(Mockito.any())).thenReturn(tq);
 
@@ -213,7 +220,7 @@ class QuestionCreatorTest {
     void should_post_created_event() {
         // given the database will return an entity with an Id and add time
         Instant now = Instant.now();
-        TextQuestion tq = new TextQuestion();
+        TextQuestionEntity tq = new TextQuestionEntity();
         tq.setId(999L);
         tq.setAddTime(now);
         when(repository.save(Mockito.any())).thenReturn(tq);
@@ -241,13 +248,13 @@ class QuestionCreatorTest {
             Mockito.anyString(),
             Mockito.anyString(),
             Mockito.anyString()))
-            .thenReturn(Collections.singletonList(new TextQuestion()));
+            .thenReturn(Collections.singletonList(new TextQuestionEntity()));
 
         // given a create question request
         CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
 
          // when a question is created then an exception is thrown
-        assertThrows(QuestionCreateException.class, () -> creator.create(123L, request));
+        assertThrows(CreateQuestionException.class, () -> creator.create(123L, request));
     }
 
     @Test
@@ -258,7 +265,7 @@ class QuestionCreatorTest {
 
         // when retrieving the question oid 
         // then an exception is thrown
-        assertThrows(QuestionCreateException.class, () -> creator.getQuestionOid(request));
+        assertThrows(CreateQuestionException.class, () -> creator.getQuestionOid(request));
     }
 
     @Test
@@ -290,5 +297,24 @@ class QuestionCreatorTest {
 
         // then null is returned
         assertNull(oid);
+    }
+
+    @Test
+    void should_verify_valueset_exists() {
+        // given a value set that exists
+        Codeset mockCodeset = Mockito.mock(Codeset.class);
+        when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.of(mockCodeset));
+
+        // when querying for the value set then no exception is thrown
+        creator.verifyValueSetExists(123L);
+    }
+
+    @Test
+    void should_throw_exception_if_valueset_not_exists() {
+        // given a value set that does not
+        when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.empty());
+
+        // when querying for the value set then an exception is thrown
+        assertThrows(CreateQuestionException.class, ()-> creator.verifyValueSetExists(123L));
     }
 }

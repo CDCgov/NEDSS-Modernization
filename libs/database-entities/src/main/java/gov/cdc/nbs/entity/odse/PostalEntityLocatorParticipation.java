@@ -18,43 +18,59 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
 
     @MapsId("locatorUid")
     @OneToOne(
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-                    CascadeType.REMOVE
-            },
-            optional = false)
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        },
+        optional = false)
     @JoinColumn(
-            referencedColumnName = "postal_locator_uid",
-            name = "locator_uid",
-            updatable = false,
-            insertable = false)
+        referencedColumnName = "postal_locator_uid",
+        name = "locator_uid",
+        updatable = false,
+        insertable = false)
     private PostalLocator locator;
 
-    public PostalEntityLocatorParticipation() {}
+    public PostalEntityLocatorParticipation() {
+    }
 
     public PostalEntityLocatorParticipation(
-            final NBSEntity nbs,
-            final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddAddress address) {
+        final NBSEntity nbs,
+        final EntityLocatorParticipationId identifier,
+        final PatientCommand.AddAddress address
+    ) {
 
         super(address, nbs, identifier);
 
-        this.cd = "H";
-        this.useCd = "H";
+        this.cd = address.type();
+        this.useCd = address.use();
+        this.asOfDate = address.asOf();
+        this.locatorDescTxt = address.comments();
 
         this.locator = new PostalLocator(address);
     }
 
-    public PostalEntityLocatorParticipation(final NBSEntity nbsEntity,
-            final EntityLocatorParticipationId identifier,
-            final PatientCommand.AddMortalityLocator add) {
+    public PostalEntityLocatorParticipation(
+        final NBSEntity nbsEntity,
+        final EntityLocatorParticipationId identifier,
+        final PatientCommand.AddMortalityLocator add
+    ) {
         super(add, nbsEntity, identifier);
         this.setAsOfDate(add.asOf());
         this.cd = "U";
         this.useCd = "DTH";
         this.locator = new PostalLocator(add);
+    }
+
+    public void update(final PatientCommand.UpdateAddress update) {
+        this.asOfDate = update.asOf();
+        this.cd = update.type();
+        this.useCd = update.use();
+        this.locatorDescTxt = update.comments();
+        this.locator.update(update);
+
+        changed(update);
     }
 
     public void updateMortalityLocator(PatientCommand.UpdateMortalityLocator update) {
@@ -82,9 +98,9 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     @Override
     public String toString() {
         return "PostalEntityLocatorParticipation{" +
-                "locator=" + locator +
-                ", cd='" + cd + '\'' +
-                ", use='" + useCd + '\'' +
-                '}';
+            "locator=" + locator +
+            ", cd='" + cd + '\'' +
+            ", use='" + useCd + '\'' +
+            '}';
     }
 }
