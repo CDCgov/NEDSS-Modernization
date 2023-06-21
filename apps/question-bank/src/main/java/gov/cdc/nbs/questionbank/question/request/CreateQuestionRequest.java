@@ -1,17 +1,5 @@
 package gov.cdc.nbs.questionbank.question.request;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-
-@JsonTypeInfo(use = Id.DEDUCTION)
-@JsonSubTypes({
-        @Type(CreateQuestionRequest.Text.class),
-        @Type(CreateQuestionRequest.Date.class),
-        @Type(CreateQuestionRequest.Numeric.class),
-        @Type(CreateQuestionRequest.Coded.class)
-})
 public sealed interface CreateQuestionRequest {
     String codeSet();
 

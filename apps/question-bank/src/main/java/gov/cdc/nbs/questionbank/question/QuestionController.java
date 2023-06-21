@@ -83,7 +83,7 @@ public class QuestionController {
     public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
         log.debug("Received update question status request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        Question question = updater.setStatus(userId, id, request.status());
+        Question question = updater.setStatus(userId, id, request.active());
         log.debug("Successfully updated question status");
         return question;
     }

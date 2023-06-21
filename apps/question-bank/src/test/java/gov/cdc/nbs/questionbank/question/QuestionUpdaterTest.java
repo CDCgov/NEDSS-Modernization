@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,6 +59,14 @@ class QuestionUpdaterTest {
         WaQuestion question = captor.getValue();
         assertNotNull(question);
         assertEquals("Active", question.getRecordStatusCd());
+    }
+
+    @Test
+    void should_throw_not_found() {
+        // given no question exists for id
+
+        // when a set status request is processed, then a QuestionNotFoundException should be thrown
+        assertThrows(QuestionNotFoundException.class, () -> updater.setStatus(1L, 222L, false));
     }
 
     private WaQuestion emptyQuestion() {
