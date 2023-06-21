@@ -4,6 +4,7 @@ import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.QuestionType;
 
 public class QuestionRequestMother {
 
@@ -36,11 +37,16 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.DATE,
                 "Mask",
                 false);
     }
 
     public static CreateQuestionRequest.Numeric numericRequest() {
+        return numericRequest(UnitType.LITERAL, "Some literal value");
+    }
+
+    public static CreateQuestionRequest.Numeric numericRequest(UnitType unitType, String unitValue) {
         return new CreateQuestionRequest.Numeric(
                 "PHIN",
                 "Test unique Id",
@@ -53,13 +59,14 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.NUMERIC,
                 "NUM",
                 "3",
                 "1",
                 0L,
                 100L,
-                UnitType.LITERAL,
-                "Some literal value");
+                unitType,
+                unitValue);
     }
 
     public static CreateQuestionRequest.Coded codedRequest(long valueSet) {
@@ -75,6 +82,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(true),
                 "Test admin comments",
+                QuestionType.CODED,
                 valueSet,
                 null);
     }
@@ -97,6 +105,7 @@ public class QuestionRequestMother {
                 reportingInfo("custom label", rdbTableName, rdbColumnName, dataMartColumnName),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.TEXT,
                 "Mask",
                 "50",
                 "Test default");
@@ -115,6 +124,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(includedInMessage),
                 "Test admin comments",
+                QuestionType.TEXT,
                 "Mask",
                 "50",
                 "Test default");
