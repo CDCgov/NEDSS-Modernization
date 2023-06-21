@@ -189,7 +189,7 @@
 		{
 			"name": "Update Status",
 			"request": {
-				"method": "PATCH",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Authorization",
@@ -207,7 +207,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/1038500/status",
+					"raw": "localhost:8095/api/v1/questions/1038509/status",
 					"host": [
 						"localhost"
 					],
@@ -216,7 +216,7 @@
 						"api",
 						"v1",
 						"questions",
-						"1038500",
+						"1038509",
 						"status"
 					]
 				}
