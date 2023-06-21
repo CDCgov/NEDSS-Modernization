@@ -24,7 +24,6 @@ Feature: Patient Demographics Update
 
     Examples:
       | updateType     |
-      | general info   |
       | sex and birth  |
       | mortality      |
       | administrative |
@@ -37,9 +36,6 @@ Feature: Patient Demographics Update
 
     Examples:
       | updateType     | authorities               |
-      | general info   | FIND-PATIENT,EDIT-PATIENT |
-      | general info   | FIND-PATIENT,VIEW-PATIENT |
-      | general info   | EDIT-PATIENT,VIEW-PATIENT |
       | sex and birth  | FIND-PATIENT,EDIT-PATIENT |
       | sex and birth  | FIND-PATIENT,VIEW-PATIENT |
       | sex and birth  | EDIT-PATIENT,VIEW-PATIENT |

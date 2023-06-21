@@ -237,17 +237,17 @@ export enum Gender {
 }
 
 export type GeneralInfoInput = {
-  adultsInHouseNumber?: InputMaybe<Scalars['Int']>;
-  asOf?: InputMaybe<Scalars['DateTime']>;
-  childrenInHouseNumber?: InputMaybe<Scalars['Int']>;
-  educationLevelCode?: InputMaybe<Scalars['String']>;
-  eharsId?: InputMaybe<Scalars['String']>;
+  adultsInHouse?: InputMaybe<Scalars['Int']>;
+  asOf: Scalars['DateTime'];
+  childrenInHouse?: InputMaybe<Scalars['Int']>;
+  educationLevel?: InputMaybe<Scalars['String']>;
   maritalStatus?: InputMaybe<Scalars['String']>;
-  mothersMaidenName?: InputMaybe<Scalars['String']>;
-  occupationCode?: InputMaybe<Scalars['String']>;
-  patientId: Scalars['ID'];
-  primaryLanguageCode?: InputMaybe<Scalars['String']>;
-  speaksEnglishCode?: InputMaybe<Scalars['String']>;
+  maternalMaidenName?: InputMaybe<Scalars['String']>;
+  occupation?: InputMaybe<Scalars['String']>;
+  patient: Scalars['Int'];
+  primaryLanguage?: InputMaybe<Scalars['String']>;
+  speaksEnglish?: InputMaybe<Scalars['String']>;
+  stateHIVCase?: InputMaybe<Scalars['String']>;
 };
 
 export type GroupedCodedValue = {
@@ -628,7 +628,7 @@ export type Mutation = {
   updateEthnicity: PatientEthnicityChangeResult;
   updateMortality: PatientUpdateResponse;
   updatePatientAddress: PatientAddressChangeResult;
-  updatePatientGeneralInfo: PatientUpdateResponse;
+  updatePatientGeneralInfo: PatientGeneralChangeResult;
   updatePatientIdentification: PatientIdentificationChangeResult;
   updatePatientName: PatientNameChangeResult;
   updatePatientPhone: PatientPhoneChangeResult;
@@ -1239,6 +1239,11 @@ export type PatientGeneral = {
   speaksEnglish?: Maybe<PatientCodedValue>;
   stateHIVCase?: Maybe<Scalars['String']>;
   version: Scalars['Int'];
+};
+
+export type PatientGeneralChangeResult = {
+  __typename?: 'PatientGeneralChangeResult';
+  patient: Scalars['Int'];
 };
 
 export type PatientIdentification = {
@@ -2628,7 +2633,7 @@ export type UpdatePatientGeneralInfoMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePatientGeneralInfoMutation = { __typename?: 'Mutation', updatePatientGeneralInfo: { __typename?: 'PatientUpdateResponse', patientId: string } };
+export type UpdatePatientGeneralInfoMutation = { __typename?: 'Mutation', updatePatientGeneralInfo: { __typename?: 'PatientGeneralChangeResult', patient: number } };
 
 export type UpdatePatientIdentificationMutationVariables = Exact<{
   input: UpdatePatientIdentificationInput;
@@ -3743,7 +3748,7 @@ export type UpdatePatientAddressMutationOptions = Apollo.BaseMutationOptions<Upd
 export const UpdatePatientGeneralInfoDocument = gql`
     mutation updatePatientGeneralInfo($input: GeneralInfoInput!) {
   updatePatientGeneralInfo(input: $input) {
-    patientId
+    patient
   }
 }
     `;

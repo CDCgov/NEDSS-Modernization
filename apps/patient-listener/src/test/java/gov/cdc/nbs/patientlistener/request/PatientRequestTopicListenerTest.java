@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;
@@ -35,39 +34,6 @@ class PatientRequestTopicListenerTest {
     private PatientUpdateRequestHandler updateHandler;
     @InjectMocks
     private PatientRequestTopicListener consumer;
-
-    @Test
-    void testReceivingUpdateGenInfoRequest() {
-
-        String message = """
-            {
-               "type": "PatientRequest$UpdateGeneralInfo",
-               "requestId": "requestId",
-               "patientId": 1234,
-               "userId": 123,
-               "data": {
-                 "patientId":419,
-                 "updatedBy":547,
-                 "adultsInHouseNumber":661,
-                 "childrenInHouseNumber":811
-               }
-             }
-             """;
-        consumer.onMessage(message, "requestId");
-
-        ArgumentCaptor<UpdateGeneralInfoData> captor = ArgumentCaptor.forClass(UpdateGeneralInfoData.class);
-
-        verify(updateHandler, times(1)).handlePatientGeneralInfoUpdate(captor.capture());
-        verifyNoMoreInteractions(updateHandler);
-
-        UpdateGeneralInfoData actual = captor.getValue();
-
-        assertThat(actual.patientId()).isEqualTo(419L);
-        assertThat(actual.updatedBy()).isEqualTo(547L);
-        assertThat(actual.adultsInHouseNumber()).isEqualTo((short) 661);
-        assertThat(actual.childrenInHouseNumber()).isEqualTo((short) 811);
-
-    }
 
     @Test
     void testReceivingUpdateMortRequest() {

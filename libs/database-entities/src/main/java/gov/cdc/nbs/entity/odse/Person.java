@@ -618,17 +618,17 @@ public class Person {
         return this.nbsEntity.delete(emailAddress);
     }
 
-    public void update(PatientCommand.UpdateGeneralInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-        this.setMaritalStatusCd(info.maritalStatus());
-        this.setMothersMaidenNm(info.mothersMaidenName());
-        this.setAdultsInHouseNbr(info.adultsInHouseNumber());
-        this.setChildrenInHouseNbr(info.childrenInHouseNumber());
-        this.setOccupationCd(info.occupationCode());
-        this.setEducationLevelCd(info.educationLevelCode());
-        this.setPrimLangCd(info.primaryLanguageCode());
-        this.setSpeaksEnglishCd(info.speaksEnglishCode());
-        this.setEharsId(info.eharsId());
+    public void update(final PatientCommand.UpdateGeneralInfo info) {
+        this.asOfDateGeneral = info.asOf();
+        this.maritalStatusCd = info.maritalStatus();
+        this.mothersMaidenNm = info.mothersMaidenName();
+        this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
+        this.childrenInHouseNbr = info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
+        this.occupationCd = info.occupationCode();
+        this.educationLevelCd = info.educationLevelCode();
+        this.primLangCd = info.primaryLanguageCode();
+        this.speaksEnglishCd = info.speaksEnglishCode();
+        this.eharsId = info.eharsId();
 
         changed(info);
     }
