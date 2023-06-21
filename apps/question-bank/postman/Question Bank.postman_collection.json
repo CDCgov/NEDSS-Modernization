@@ -59,7 +59,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"adminComments\": \"Administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Question\",\n  \"displayControl\": 1008,\n  \"fieldLength\": \"50\",\n  \"label\": \"Sample question label\",\n  \"mask\": \"TXT\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Label in message\",\n    \"messageVariableId\": \"MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample question\"\n}",
+					"raw": "{\n  \"type\": \"TEXT\",\n  \"adminComments\": \"Administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Question\",\n  \"displayControl\": 1008,\n  \"fieldLength\": \"50\",\n  \"label\": \"Sample question label\",\n  \"mask\": \"TXT\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Label in message\",\n    \"messageVariableId\": \"MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample question\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -67,7 +67,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/text",
+					"raw": "localhost:8095/api/v1/questions",
 					"host": [
 						"localhost"
 					],
@@ -75,8 +75,7 @@
 					"path": [
 						"api",
 						"v1",
-						"questions",
-						"text"
+						"questions"
 					]
 				}
 			},
@@ -95,7 +94,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"adminComments\": \"Coded administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"CODED_DATA_MART_COL\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"CODED_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Coded report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Coded Question\",\n  \"displayControl\": 1007,\n  \"label\": \"Sample coded question label\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Coded question label in message\",\n    \"messageVariableId\": \"Coded MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample coded question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample coded question\",\n  \"valueSet\": 4150\n}",
+					"raw": "{\n  \"type\": \"CODED\",\n  \"adminComments\": \"Coded administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"CODED_DATA_MART_COL\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"CODED_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Coded report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Coded Question\",\n  \"displayControl\": 1007,\n  \"label\": \"Sample coded question label\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Coded question label in message\",\n    \"messageVariableId\": \"Coded MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample coded question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample coded question\",\n  \"valueSet\": 4150\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -103,7 +102,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/coded",
+					"raw": "localhost:8095/api/v1/questions",
 					"host": [
 						"localhost"
 					],
@@ -111,8 +110,7 @@
 					"path": [
 						"api",
 						"v1",
-						"questions",
-						"coded"
+						"questions"
 					]
 				}
 			},
@@ -131,7 +129,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"adminComments\": \"Date Question administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATE_DATA_MART_COLUMN\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"DATE_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Date report label\"\n  },\n  \"description\": \"Test Date Question\",\n  \"displayControl\": 1008,\n  \"label\": \"Sample date question label\",\n  \"mask\": \"DATE\",\n  \"allowFutureDates\": false,\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Date label in message\",\n    \"messageVariableId\": \"Date MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample date question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample date question\"\n}",
+					"raw": "{\n  \"type\": \"DATE\",\n  \"adminComments\": \"Date Question administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATE_DATA_MART_COLUMN\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"DATE_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Date report label\"\n  },\n  \"description\": \"Test Date Question\",\n  \"displayControl\": 1008,\n  \"label\": \"Sample date question label\",\n  \"mask\": \"DATE\",\n  \"allowFutureDates\": false,\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Date label in message\",\n    \"messageVariableId\": \"Date MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample date question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample date question\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -139,7 +137,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/date",
+					"raw": "localhost:8095/api/v1/questions",
 					"host": [
 						"localhost"
 					],
@@ -147,8 +145,7 @@
 					"path": [
 						"api",
 						"v1",
-						"questions",
-						"date"
+						"questions"
 					]
 				}
 			},
@@ -167,7 +164,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
+					"raw": "{\n  \"type\": \"NUMERIC\",\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -175,7 +172,42 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/numeric",
+					"raw": "localhost:8095/api/v1/questions",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"active\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/1038500/status",
 					"host": [
 						"localhost"
 					],
@@ -184,7 +216,8 @@
 						"api",
 						"v1",
 						"questions",
-						"numeric"
+						"1038500",
+						"status"
 					]
 				}
 			},
