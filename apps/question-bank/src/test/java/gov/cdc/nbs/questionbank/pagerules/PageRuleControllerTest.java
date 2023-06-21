@@ -29,7 +29,9 @@ public class PageRuleControllerTest {
 
         CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
 
-        Assert.assertEquals(999L, ruleResponse.ruleId());
+        Assert.assertEquals(BigInteger.valueOf(999L), ruleResponse.ruleId());
+
+
 
     }
 }

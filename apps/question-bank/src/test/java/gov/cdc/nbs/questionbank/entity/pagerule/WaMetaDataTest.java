@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class WaMetaDataTest {
+class WaMetaDataTest {
 
     @Test
-    public void should_initialize_correct_values(){
+    void should_initialize_correct_values(){
         RuleCommand.AddTextRule command=  createCommand();
         WaRuleMetadata ruleMetadata= new RuleDetails(command);
         RuleCommand.RuleData ruleData=  command.ruleData();

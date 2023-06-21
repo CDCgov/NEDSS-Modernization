@@ -13,7 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import static org.junit.Assert.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-public class RuleCreatedEventProducerTest {
+class RuleCreatedEventProducerTest {
 
     @Mock
     private KafkaTemplate<String, QuestionCreatedEvent> template;
