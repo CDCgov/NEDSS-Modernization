@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigInteger;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageRuleControllerTest {
 
@@ -23,11 +25,11 @@ public class PageRuleControllerTest {
     public void shouldReturnCreateRuleResponse(){
 
         CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        Mockito.when(pageRuleService.createPageRule(ruleRequest)).thenReturn(19L);
+        Mockito.when(pageRuleService.createPageRule(ruleRequest)).thenReturn(BigInteger.valueOf(999L));
 
         CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
 
-        Assert.assertEquals(19L, ruleResponse.ruleId());
+        Assert.assertEquals(999L, ruleResponse.ruleId());
 
     }
 }

@@ -1,11 +1,13 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.command.RuleCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -15,11 +17,11 @@ import java.time.Instant;
 @Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "data_type", discriminatorType = DiscriminatorType.STRING)
-public class WaRuleMetadata {
+public abstract class WaRuleMetadata {
     @Id
     @Column(name = "wa_rule_metadata_uid", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private BigInteger id;
 
     @Column(name = "wa_template_uid", length = 19)
     private Long waTemplateUid;
@@ -78,15 +80,17 @@ public class WaRuleMetadata {
     @Column(name = "target_type", length = 50)
     private String targetType;
 
-    protected WaRuleMetadata(CreateRuleRequest ruleRequest){
-        String sourceValue= (ruleRequest.anySourceValue()!=null) ? ruleRequest.anySourceValue():ruleRequest.sourceValue();
-        setRuleDescText(ruleRequest.ruleDescription());
+    public abstract String getDataType();
+    protected WaRuleMetadata(RuleCommand command ){
+        RuleCommand.RuleData ruleData = command.ruleData();
+        String sourceValue= (ruleData.anySourceValue()!=null) ? ruleData.anySourceValue():ruleData.sourceValue();
+        setRuleDescText(ruleData.ruleDescription());
         setSourceValues(sourceValue);
-        setTargetType(ruleRequest.targetType());
-        setRuleCd(ruleRequest.ruleDescription());
-        setLogic(ruleRequest.comparator());
-        setTargetQuestionIdentifier(ruleRequest.targetValue());
-        setSourceQuestionIdentifier(ruleRequest.source());
+        setTargetType(ruleData.targetType());
+        setRuleCd(ruleData.ruleDescription());
+        setLogic(ruleData.comparator());
+        setTargetQuestionIdentifier(ruleData.targetValue());
+        setSourceQuestionIdentifier(ruleData.source());
 
     }
 }

@@ -1,4 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules.response;
 
-public record CreateRuleResponse(long ruleId) {
+import java.math.BigInteger;
+
+public record CreateRuleResponse(BigInteger ruleId) {
 }

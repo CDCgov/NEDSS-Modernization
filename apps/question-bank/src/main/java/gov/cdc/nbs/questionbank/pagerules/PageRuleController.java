@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/")
@@ -22,7 +24,7 @@ public class PageRuleController {
     @ResponseBody
     public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest.ruleRequest request){
         log.info("Request for Business Rule Creation");
-        long ruleId=  pageRuleService.createPageRule(request);
+        BigInteger ruleId=  pageRuleService.createPageRule(request);
         log.debug("Successfully added business rule with Id: {}", ruleId);
         return new CreateRuleResponse(ruleId);
     }

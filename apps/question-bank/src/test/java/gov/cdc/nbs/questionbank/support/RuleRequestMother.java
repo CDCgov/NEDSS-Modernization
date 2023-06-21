@@ -14,10 +14,13 @@ public class RuleRequestMother {
                 "TestRuleFunction",
                 "TestDescription",
                 "testSource",
-                "",
+                null,
                 "=>",
                 "testSourceValue",
                 "testTargetType",
-                "testtargetValue");
+                "testTargetValue",
+                "Mask",
+                "50",
+                "Test default");
     }
 }

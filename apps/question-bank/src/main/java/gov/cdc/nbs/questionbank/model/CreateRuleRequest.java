@@ -21,7 +21,11 @@ public sealed interface CreateRuleRequest {
             String comparator,
             String sourceValue,
             String targetType,
-            String targetValue) implements CreateRuleRequest{ }
+            String targetValue,
+            //Text specific fields
+            String mask,
+            String fieldLength,
+            String defaultValue) implements CreateRuleRequest{ }
 
 
 }
