@@ -30,4 +30,10 @@ export type Administrative = {
     version: number;
     asOf: any;
     comment?: string | null;
-} | null;
+};
+
+export type AdministrativeEntry = {
+    patient: number;
+    asOf: string | null;
+    comment: string | null;
+};

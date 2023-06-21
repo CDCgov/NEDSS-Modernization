@@ -56,7 +56,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                         control={control}
                         name="asOf"
                         defaultValue={entry?.asOf}
-                        rules={{ required: { value: true, message: 'As of date is requried.' } }}
+                        rules={{ required: { value: true, message: 'As of date is required.' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <DatePickerInput
                                 defaultValue={value}
