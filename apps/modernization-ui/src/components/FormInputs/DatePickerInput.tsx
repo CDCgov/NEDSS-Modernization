@@ -1,4 +1,4 @@
-import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
+import { DatePicker, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import React, { useState } from 'react';
 
@@ -40,6 +40,7 @@ export const DatePickerInput = ({
     className,
     defaultValue,
     flexBox,
+    errorMessage,
     disabled = false
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
@@ -63,6 +64,7 @@ export const DatePickerInput = ({
     return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
+            <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
             {error && <small className="text-red">{'Not a valid date'}</small>}
             {!intialDefault && (
                 <DatePicker
@@ -112,6 +114,9 @@ export const DatePickerInput = ({
                         defaultValue={intialDefault}
                     />
                 )}
+            </Grid>
+            <Grid col={12}>
+                <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
             </Grid>
         </Grid>
     );
