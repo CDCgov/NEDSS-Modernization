@@ -22,7 +22,6 @@ import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
-import gov.cdc.nbs.repository.CountryCodeRepository;
 import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
@@ -83,7 +82,6 @@ public class PatientService {
     private final ElasticsearchOperations operations;
     private final UserService userService;
     private final PatientLocalIdentifierResolver resolver;
-    private final CountryCodeRepository countryCodeRepository;
     private final EntityLocatorParticipationRepository entityLocatorParticipationRepository;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {

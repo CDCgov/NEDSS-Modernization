@@ -39,7 +39,7 @@ public class QuestionController {
         this.finder = finder;
     }
 
-    @PostMapping("/search/{searchString}")
+    @PostMapping("/search")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<Question> findQuestions(@RequestBody FindQuestionRequest request) {
         log.debug("Received find question request");
