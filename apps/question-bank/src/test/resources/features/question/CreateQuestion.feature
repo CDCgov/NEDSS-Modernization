@@ -18,7 +18,7 @@ Feature: Create question
     Scenario: I cannot create a question without logging in
         Given I am not logged in
         When I send a create "<question type>" question request
-        Then a not authorized exception is thrown
+        Then a no credentials found exception is thrown
         Examples:
             | question type |
             | text          |
@@ -29,7 +29,7 @@ Feature: Create question
     Scenario: I cannot create a question without permissions
         Given I am a user without permissions
         When I send a create "<question type>" question request
-        Then a not authorized exception is thrown
+        Then an accessdenied exception is thrown
         Examples:
             | question type |
             | text          |

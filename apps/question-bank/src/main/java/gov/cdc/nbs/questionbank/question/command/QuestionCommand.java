@@ -7,7 +7,9 @@ public sealed interface QuestionCommand {
 
     Instant requestedOn();
 
-    QuestionData questionData();
+    public sealed interface CreateQuestionCommand extends QuestionCommand {
+        QuestionData questionData();
+    }
 
     public record AddTextQuestion(
             // Text specific fields
@@ -26,7 +28,7 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
 
     public record AddDateQuestion(
@@ -45,7 +47,7 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
 
     public record AddNumericQuestion(
@@ -69,7 +71,7 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
 
     public record AddCodedQuestion(
@@ -88,9 +90,8 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
-
     record QuestionData(
             String codeSet,
             String localId,
@@ -126,5 +127,11 @@ public sealed interface QuestionCommand {
     }
 
 
+
+    public record SetStatus(
+            boolean active,
+            long userId,
+            Instant requestedOn) implements QuestionCommand {
+    }
 
 }

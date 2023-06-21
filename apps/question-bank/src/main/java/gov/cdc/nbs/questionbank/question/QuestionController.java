@@ -1,68 +1,58 @@
 package gov.cdc.nbs.questionbank.question;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/questions/")
+@RequestMapping("/api/v1/questions")
 public class QuestionController {
 
     private final QuestionCreator creator;
     private final UserDetailsProvider userDetailsProvider;
+    private final QuestionUpdater updater;
 
     public QuestionController(
             QuestionCreator creator,
-            UserDetailsProvider userDetailsProvider) {
+            UserDetailsProvider userDetailsProvider,
+            QuestionUpdater updater) {
         this.creator = creator;
         this.userDetailsProvider = userDetailsProvider;
+        this.updater = updater;
     }
 
-    @PostMapping("text")
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createTextQuestion(@RequestBody CreateQuestionRequest.Text request) {
-        log.debug("Received create text question request");
+    public CreateQuestionResponse createQuestion(@RequestBody CreateQuestionRequest request) {
+        log.debug("Received create question request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         long questionId = creator.create(userId, request);
-        log.debug("Successfully created text question with Id: {}", questionId);
+        log.debug("Successfully created question with Id: {}", questionId);
         return new CreateQuestionResponse(questionId);
     }
 
-    @PostMapping("date")
+    @PutMapping("{id}/status")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createDateQuestion(@RequestBody CreateQuestionRequest.Date request) {
-        log.debug("Received create date question request");
+    public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
+        log.debug("Received update question status request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created date question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
-    }
-
-    @PostMapping("numeric")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createNumericQuestion(@RequestBody CreateQuestionRequest.Numeric request) {
-        log.debug("Received create date question request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created date question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
-    }
-
-    @PostMapping("coded")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createCodedQuestion(@RequestBody CreateQuestionRequest.Coded request) {
-        log.debug("Received create coded question request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created coded question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
+        Question question = updater.setStatus(userId, id, request.active());
+        log.debug("Successfully updated question status");
+        return question;
     }
 
 }
