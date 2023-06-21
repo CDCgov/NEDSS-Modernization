@@ -27,16 +27,14 @@ const asEntry = (identification: Identification): IdentificationEntry => ({
     type: maybeId(identification.type),
     value: identification.value,
     state: maybeId(identification?.authority),
-    sequence: identification?.sequence,
-    comment: ''
+    sequence: identification?.sequence
 });
 
 const asDetail = (data: Identification): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
     { name: 'Type', value: maybeDescription(data.type) },
     { name: 'Authority', value: maybeDescription(data.authority) },
-    { name: 'Value', value: data.value },
-    { name: 'Additional comments', value: '' }
+    { name: 'Value', value: data.value }
 ];
 
 const resolveInitialEntry = (patient: string): IdentificationEntry => ({
@@ -44,8 +42,7 @@ const resolveInitialEntry = (patient: string): IdentificationEntry => ({
     asOf: null,
     type: null,
     value: null,
-    state: null,
-    comment: null
+    state: null
 });
 
 type Props = {

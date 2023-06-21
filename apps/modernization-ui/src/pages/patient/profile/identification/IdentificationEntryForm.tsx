@@ -23,8 +23,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
             asOf: entered.asOf,
             type: entered?.type,
             value: entered?.id,
-            state: entered?.state,
-            comment: entered?.additionalComments
+            state: entered?.state
         };
         entry.sequence && (obj.sequence = entry.sequence);
         onChange(obj);
@@ -134,27 +133,6 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                                 />
                             )}
                         </SearchCriteriaContext.Consumer>
-                    </Grid>
-                    <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <Controller
-                            control={control}
-                            name="additionalComments"
-                            defaultValue={entry?.comment}
-                            render={({ field: { onChange } }) => (
-                                <Grid row>
-                                    <Grid col={6} className="flex-align-self-center">
-                                        <Label htmlFor={'additionalComments'}>Additional comments:</Label>
-                                    </Grid>
-                                    <Grid col={6}>
-                                        <Textarea
-                                            onChange={onChange}
-                                            name="additionalComments"
-                                            id={'additionalComments'}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            )}
-                        />
                     </Grid>
                 </Grid>
             </div>
