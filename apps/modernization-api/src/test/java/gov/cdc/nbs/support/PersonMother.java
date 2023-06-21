@@ -1,14 +1,10 @@
 package gov.cdc.nbs.support;
 
 import com.github.javafaker.Faker;
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
@@ -98,7 +94,7 @@ public class PersonMother {
                 middleName,
                 lastName,
                 null,
-                PatientInput.NameUseCd.L,
+                "L",
                 id,
                 now));
 
@@ -128,8 +124,6 @@ public class PersonMother {
             )
         );
 
-        String city = faker.address().city();
-
         // Postal locator entry
         person.add(
             new PatientCommand.AddAddress(
@@ -137,14 +131,16 @@ public class PersonMother {
                 id + 80000L,
                 faker.address().streetAddress(),
                 null,
-                new City(city),
+                faker.address().city(),
                 RandomUtil.getRandomStateCode(),
                 faker.address().zipCode(),
                 null,
                 RandomUtil.country(),
                 null,
                 CREATED_BY_ID,
-                now));
+                now
+            )
+        );
 
         return person;
     }
@@ -169,7 +165,7 @@ public class PersonMother {
                 "S",
                 "Doe",
                 null,
-                PatientInput.NameUseCd.L,
+                "L",
                 CREATED_BY_ID,
                 now));
 
@@ -194,11 +190,11 @@ public class PersonMother {
                 id + 80000L,
                 "123 Main St",
                 null,
-                new City("Atlanta"),
+                "Atlanta",
                 StateCodeUtil.stateCodeMap.get("Georgia"),
                 "30301",
-                new County("13089"),
-                new Country("840", "United States"),
+                "13089",
+                "840",
                 null,
                 CREATED_BY_ID,
                 now

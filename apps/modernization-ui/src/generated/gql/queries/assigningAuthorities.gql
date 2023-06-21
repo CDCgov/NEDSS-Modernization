@@ -1,0 +1,6 @@
+query assigningAuthorities{
+    assigningAuthorities{
+        value
+        name
+    }
+}

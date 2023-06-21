@@ -463,13 +463,14 @@ public class Person {
         Collection<PersonName> existing = ensureNames();
 
         if (existing.isEmpty()) {
+
             this.firstNm = added.first();
             this.middleNm = added.middle();
             this.lastNm = added.last();
-            this.nmSuffix = added.suffix();
+            this.nmSuffix = Suffix.resolve(added.suffix());
         }
 
-        PersonNameId identifier = new PersonNameId(this.id, (short) (existing.size() + 1));
+        PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
         PersonName personName = new PersonName(
             identifier,
@@ -479,7 +480,26 @@ public class Person {
 
         existing.add(personName);
 
+        changed(added);
         return personName;
+    }
+
+
+    public void update(final PatientCommand.UpdateNameInfo info) {
+        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> name.update(info));
+
+        changed(info);
+    }
+
+    public void delete(final PatientCommand.DeleteNameInfo info) {
+        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+        ensureNames().removeIf(name -> Objects.equals(name.getId(), identifier));
+        changed(info);
     }
 
     private Collection<PersonName> ensureNames() {
@@ -518,13 +538,28 @@ public class Person {
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
-        return this.nbsEntity.add(address);
+        EntityLocatorParticipation added = this.nbsEntity.add(address);
+        changed(address);
+        return added;
+    }
+
+    public void update(final PatientCommand.UpdateAddress address) {
+        this.nbsEntity.update(address);
+        changed(address);
+    }
+
+    public void delete(final PatientCommand.DeleteAddress address) {
+        this.nbsEntity.delete(address);
+        changed(address);
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
         return this.nbsEntity.addresses();
     }
 
+    public Collection<TeleEntityLocatorParticipation> phones() {
+        return this.nbsEntity.phones();
+    }
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.nbsEntity.phoneNumbers();
     }
@@ -545,12 +580,20 @@ public class Person {
         return this.nbsEntity.add(emailAddress);
     }
 
-    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
-        return this.nbsEntity.add(mortality);
+    public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
+        return this.nbsEntity.add(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateAddress address) {
-        return this.nbsEntity.update(address);
+    public void update(final PatientCommand.UpdatePhone phone) {
+        this.nbsEntity.update(phone);
+    }
+
+    public void delete(final PatientCommand.DeletePhone phone) {
+        this.nbsEntity.delete(phone);
+    }
+
+    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
+        return this.nbsEntity.add(mortality);
     }
 
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
@@ -565,9 +608,7 @@ public class Person {
         return this.nbsEntity.delete(mortality);
     }
 
-    public boolean delete(final PatientCommand.DeleteAddress address) {
-        return this.nbsEntity.delete(address);
-    }
+
 
     public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
         return this.nbsEntity.delete(phoneNumber);
@@ -577,53 +618,23 @@ public class Person {
         return this.nbsEntity.delete(emailAddress);
     }
 
-    public void update(PatientCommand.UpdateGeneralInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-        this.setMaritalStatusCd(info.maritalStatus());
-        this.setMothersMaidenNm(info.mothersMaidenName());
-        this.setAdultsInHouseNbr(info.adultsInHouseNumber());
-        this.setChildrenInHouseNbr(info.childrenInHouseNumber());
-        this.setOccupationCd(info.occupationCode());
-        this.setEducationLevelCd(info.educationLevelCode());
-        this.setPrimLangCd(info.primaryLanguageCode());
-        this.setSpeaksEnglishCd(info.speaksEnglishCode());
-        this.setEharsId(info.eharsId());
+    public void update(final PatientCommand.UpdateGeneralInfo info) {
+        this.asOfDateGeneral = info.asOf();
+        this.maritalStatusCd = info.maritalStatus();
+        this.mothersMaidenNm = info.mothersMaidenName();
+        this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
+        this.childrenInHouseNbr = info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
+        this.occupationCd = info.occupationCode();
+        this.educationLevelCd = info.educationLevelCode();
+        this.primLangCd = info.primaryLanguageCode();
+        this.speaksEnglishCd = info.speaksEnglishCode();
+        this.eharsId = info.eharsId();
 
         changed(info);
     }
 
     public void update(PatientCommand.UpdateAdministrativeInfo info) {
         this.setDescription(info.description());
-        changed(info);
-    }
-
-    public void update(PatientCommand.AddName info) {
-        this.add(info);
-        changed(info);
-    }
-
-    public void update(PatientCommand.UpdateNameInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-
-        Collection<PersonName> existing = ensureNames();
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-
-        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
-            p.setFirstNm(info.first());
-            p.setMiddleNm(info.middle());
-            p.setLastNm(info.last());
-            p.setNmSuffix(info.suffix());
-            p.setNmUseCd(info.type());
-        });
-
-        changed(info);
-    }
-
-    public void update(PatientCommand.DeleteNameInfo info) {
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-        List<PersonName> arraylist = new ArrayList<>(this.names);
-        arraylist.removeIf(item -> (item.getId().equals(identifier)));
-        this.names = arraylist;
         changed(info);
     }
 
@@ -651,6 +662,7 @@ public class Person {
         this.setDeceasedTime(info.deceasedTime());
         changed(info);
     }
+
     public void delete(
         final PatientCommand.Delete delete,
         final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {

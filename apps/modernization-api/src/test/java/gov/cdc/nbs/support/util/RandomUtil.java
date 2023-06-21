@@ -1,6 +1,5 @@
 package gov.cdc.nbs.support.util;
 
-import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import org.slf4j.Logger;
@@ -101,6 +100,15 @@ public class RandomUtil {
     }
 
     @SafeVarargs
+    public static <T> T maybeOneFrom(T...values) {
+        int flip = RANDOM.nextInt(2);
+
+        return (flip == 0)
+            ? oneFrom(values)
+            : null;
+    }
+
+    @SafeVarargs
     public static <T> Collection<T> multiFrom(T...values) {
         var size = RANDOM.nextInt(values.length);
         Set<T> randomized = new HashSet<>(size);
@@ -120,12 +128,13 @@ public class RandomUtil {
         return getRandomFromArray(Gender.values());
     }
 
-    public static Country country() {
+    public static String country() {
         int limit = CountryCodeUtil.countryCodeMap.size();
         int index = RANDOM.nextInt(limit);
 
-        return CountryCodeUtil.countryCodeMap.entrySet().stream().skip(index)
-            .map(e -> new Country(e.getValue(), e.getKey()))
+        return CountryCodeUtil.countryCodeMap.values()
+            .stream()
+            .skip(index)
             .findFirst()
             .orElse(null);
     }

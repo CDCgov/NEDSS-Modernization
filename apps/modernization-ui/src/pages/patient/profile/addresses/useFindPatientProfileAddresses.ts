@@ -1,21 +1,22 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-import { FindPatientProfileQuery, FindPatientProfileQueryVariables } from 'generated/graphql/schema';
+import { Page, PatientAddressResults } from 'generated/graphql/schema';
 
 export const Query = gql`
-    query findPatientProfile($page2: Page, $patient: ID, $shortId: Int) {
-        findPatientProfile(patient: $patient, shortId: $shortId) {
+    query findPatientProfile($page: Page, $patient: ID!) {
+        findPatientProfile(patient: $patient) {
             id
-            local
-            shortId
-            version
-            addresses(page: $page2) {
+            addresses(page: $page) {
                 content {
                     patient
                     id
                     version
                     asOf
                     type {
+                        id
+                        description
+                    }
+                    use {
                         id
                         description
                     }
@@ -46,9 +47,25 @@ export const Query = gql`
     }
 `;
 
+type PatientProfileAddressesVariables = {
+    patient: string;
+    page?: Page;
+};
+
+type PatientProfileAddressesResult = {
+    __typename?: 'Query';
+    findPatientProfile?: {
+        __typename?: 'PatientProfile';
+        id: string;
+        addresses: PatientAddressResults;
+    };
+};
+
 export function useFindPatientProfileAddresses(
-    baseOptions?: Apollo.QueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>
+    baseOptions?: Apollo.QueryHookOptions<PatientProfileAddressesResult, PatientProfileAddressesVariables>
 ) {
     const options = { ...baseOptions };
-    return Apollo.useLazyQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(Query, options);
+    return Apollo.useLazyQuery<PatientProfileAddressesResult, PatientProfileAddressesVariables>(Query, options);
 }
+
+export type { PatientProfileAddressesVariables, PatientProfileAddressesResult };

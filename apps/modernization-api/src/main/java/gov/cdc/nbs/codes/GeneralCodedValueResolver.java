@@ -53,4 +53,54 @@ public class GeneralCodedValueResolver {
     public Collection<CodedValue> preferredGenders() {
         return finder.all("NBS_STD_GENDER_PARPT");
     }
+
+    @QueryMapping
+    public Collection<CodedValue> nameTypes() {
+        return finder.all("P_NM_USE", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> prefixes() {
+        return finder.all("P_NM_PFX");
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> suffixes() {
+        return finder.all("P_NM_SFX");
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> degrees() {
+        return finder.all("P_NM_DEG");
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> addressTypes() {
+        return finder.all("EL_TYPE_PST_PAT", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> addressUses() {
+        return finder.all("EL_USE_PST_PAT", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> phoneTypes() {
+        return finder.all("EL_TYPE_TELE_PAT", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> phoneUses() {
+        return finder.all("EL_USE_TELE_PAT", CodedValues.withStandardizedName());
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> identificationTypes() {
+        return finder.all("EI_TYPE_PAT");
+    }
+
+    @QueryMapping
+    public Collection<CodedValue> assigningAuthorities() {
+        return finder.all("EI_AUTH_PAT");
+    }
 }
