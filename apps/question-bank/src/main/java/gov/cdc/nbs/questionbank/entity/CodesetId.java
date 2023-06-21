@@ -17,7 +17,9 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class CodesetId implements Serializable {
 
-    @Column(name = "class_cd", nullable = false, length = 30)
+    private static final long serialVersionUID = 1L;
+
+	@Column(name = "class_cd", nullable = false, length = 30)
     private String classCd;
 
     @Column(name = "code_set_nm", nullable = false, length = 256)

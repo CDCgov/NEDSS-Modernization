@@ -3,6 +3,7 @@ import './DatePickerInput.scss';
 import React, { useState } from 'react';
 
 type OnChange = (val?: string) => void;
+type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
     id?: string;
@@ -10,6 +11,7 @@ type DatePickerProps = {
     name?: string;
     htmlFor?: string;
     onChange?: OnChange;
+    onBlur?: OnBlur;
     className?: string;
     defaultValue?: string;
     errorMessage?: string;
@@ -34,6 +36,7 @@ export const DatePickerInput = ({
     label,
     htmlFor = '',
     onChange,
+    onBlur,
     className,
     defaultValue,
     flexBox,
@@ -49,6 +52,7 @@ export const DatePickerInput = ({
         const currentVal = (event.target as HTMLInputElement).value;
         const valid = isValid(currentVal);
         setError(!valid);
+        onBlur && onBlur(event);
     };
 
     const handleOnChange = (fn?: OnChange) => (changed?: string) => {
