@@ -1,4 +1,4 @@
-import { Dropdown, Grid, Label } from '@trussworks/react-uswds';
+import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 
 type SelectProps = {
     name?: string;
@@ -11,6 +11,7 @@ type SelectProps = {
     isMulti?: boolean;
     dataTestid?: string;
     flexBox?: boolean;
+    error?: string;
 };
 
 export const SelectInput = ({
@@ -24,6 +25,7 @@ export const SelectInput = ({
     isMulti,
     dataTestid,
     flexBox,
+    error,
     ...props
 }: SelectProps) => {
     const DropDown = () => {
@@ -53,7 +55,14 @@ export const SelectInput = ({
         <>
             {flexBox ? (
                 <Grid row>
-                    <Grid col={6}>{label && <Label htmlFor={htmlFor || ''}>{label}</Label>}</Grid>
+                    <Grid col={6}>
+                        {label && (
+                            <>
+                                <Label htmlFor={htmlFor || ''}>{label}</Label>
+                                <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
+                            </>
+                        )}
+                    </Grid>
                     <Grid col={6}>
                         {defaultValue && <DropDown />}
                         {!defaultValue && <DropDown />}
