@@ -1221,7 +1221,7 @@ union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
 type Mutation {
     createPatient(patient: PersonInput!): PatientCreatedResponse!
     deletePatient(patient: ID!): PatientDeleteResult!
-    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientUpdateResponse!
+    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
     updateMortality(input: MortalityInput!): PatientUpdateResponse!
     updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
@@ -1459,17 +1459,21 @@ input PersonInput {
 }
 
 input GeneralInfoInput {
-    patientId: ID!
-    asOf: DateTime
+    patient: Int!
+    asOf: DateTime!
     maritalStatus: String
-    mothersMaidenName: String
-    adultsInHouseNumber: Int
-    childrenInHouseNumber: Int
-    occupationCode: String
-    educationLevelCode: String
-    primaryLanguageCode: String
-    speaksEnglishCode: String
-    eharsId: String
+    maternalMaidenName: String
+    adultsInHouse: Int
+    childrenInHouse: Int
+    occupation: String
+    educationLevel: String
+    primaryLanguage: String
+    speaksEnglish: String
+    stateHIVCase: String
+}
+
+type PatientGeneralChangeResult {
+    patient: Int!
 }
 
 input AdministrativeInput {

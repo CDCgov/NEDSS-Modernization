@@ -11,7 +11,7 @@ describe('SearchCriteria component tests', () => {
         const investigationStatus = container.querySelectorAll('select[name="investigationStatus"] option');
 
         expect(investigationStatus).toHaveLength(3);
-        expect(investigationStatus[0]).toHaveValue('- Select -');
+        expect(investigationStatus[0]).toHaveTextContent('- Select -');
 
         expect(investigationStatus[1]).toHaveTextContent('Closed');
         expect(investigationStatus[1]).toHaveValue('CLOSED');
@@ -27,7 +27,7 @@ describe('SearchCriteria component tests', () => {
         const outBreakNames = container.querySelectorAll('select[name="outbreakNames"] option');
 
         expect(outBreakNames).toHaveLength(1);
-        expect(outBreakNames[0]).toHaveValue('- Select -');
+        expect(outBreakNames[0]).toHaveTextContent('- Select -');
     });
 
     it('should render the expected labels', () => {

@@ -11,7 +11,6 @@ import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.message.patient.event.DeleteMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -51,49 +50,6 @@ class PatientUpdaterTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void should_update_general_info() {
-        var data = getGeneralInfoData();
-        var person = new Person(123L, "localId");
-        patientUpdater.update(person, data);
-
-        verify(personRepository).save(personCaptor.capture());
-        var savedPerson = personCaptor.getValue();
-
-        var now = Instant.now();
-
-        assertEquals(data.asOf().getEpochSecond(), savedPerson.getAsOfDateGeneral().getEpochSecond());
-        assertEquals(data.maritalStatus(), savedPerson.getMaritalStatusCd());
-        assertEquals(data.mothersMaidenName(), savedPerson.getMothersMaidenNm());
-        assertEquals(data.adultsInHouseNumber(), savedPerson.getAdultsInHouseNbr());
-        assertEquals(data.childrenInHouseNumber(), savedPerson.getChildrenInHouseNbr());
-        assertEquals(data.occupationCode(), savedPerson.getOccupationCd());
-        assertEquals(data.educationLevelCode(), savedPerson.getEducationLevelCd());
-        assertEquals(data.primaryLanguageCode(), savedPerson.getPrimLangCd());
-        assertEquals(data.speaksEnglishCode(), savedPerson.getSpeaksEnglishCd());
-        assertEquals(data.eharsId(), savedPerson.getEharsId());
-        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
-        assertEquals(Short.valueOf((short) 2), savedPerson.getVersionCtrlNbr());
-        assertEquals(Long.valueOf(data.updatedBy()), savedPerson.getLastChgUserId());
-        assertTrue(savedPerson.getLastChgTime().until(now, ChronoUnit.SECONDS) < 5);
-    }
-
-    private UpdateGeneralInfoData getGeneralInfoData() {
-        return new UpdateGeneralInfoData(123L,
-                "RequestId",
-                321L,
-                Instant.now(),
-                "marital status",
-                "mothers maiden name",
-                (short) 1,
-                (short) 2,
-                "occupation code",
-                "education level",
-                "prim language",
-                "speaks english",
-                "eharsId");
     }
 
     @Test
