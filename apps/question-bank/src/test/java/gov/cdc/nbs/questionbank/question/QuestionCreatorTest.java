@@ -319,4 +319,13 @@ class QuestionCreatorTest {
         // when querying for the value set then an exception is thrown
         assertThrows(CreateQuestionException.class, ()-> creator.verifyValueSetExists(123L));
     }
+
+    @Test
+    void should_throw_exception_if_class_code_values_not_found() {
+        // given NBS_CLASS_CODE value set does not exist
+        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.empty());
+
+        // when retrieving the codes, an exception is thrown
+        assertThrows(CreateQuestionException.class,() ->creator.getNbsClassCode());
+    }
 }
