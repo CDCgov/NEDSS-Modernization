@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Grid, ModalFooter } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
