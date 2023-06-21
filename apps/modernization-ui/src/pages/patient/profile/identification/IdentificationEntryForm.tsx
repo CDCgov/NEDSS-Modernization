@@ -14,7 +14,7 @@ type EntryProps = {
 };
 
 export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const methods = useForm();
+    const methods = useForm({ mode: 'onBlur' });
     const { handleSubmit, control } = methods;
 
     const onSubmit = (entered: FieldValues) => {
@@ -39,14 +39,17 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                             control={control}
                             name="asOf"
                             defaultValue={entry?.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
+                                    onBlur={onBlur}
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -58,7 +61,8 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                                     control={control}
                                     name="type"
                                     defaultValue={entry?.type}
-                                    render={({ field: { onChange, value } }) => (
+                                    rules={{ required: { value: true, message: 'Type is required.' } }}
+                                    render={({ field: { onChange, value }, fieldState: { error } }) => (
                                         <SelectInput
                                             flexBox
                                             defaultValue={value}
@@ -75,6 +79,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                                                       })
                                                     : []
                                             }
+                                            error={error?.message}
                                         />
                                     )}
                                 />
