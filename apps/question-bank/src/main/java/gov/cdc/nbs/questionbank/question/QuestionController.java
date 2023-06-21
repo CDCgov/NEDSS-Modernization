@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +26,29 @@ public class QuestionController {
     private final QuestionCreator creator;
     private final UserDetailsProvider userDetailsProvider;
     private final QuestionUpdater updater;
+    private final QuestionFinder finder;
 
     public QuestionController(
             QuestionCreator creator,
             UserDetailsProvider userDetailsProvider,
-            QuestionUpdater updater) {
+            QuestionUpdater updater,
+            QuestionFinder finder) {
         this.creator = creator;
         this.userDetailsProvider = userDetailsProvider;
         this.updater = updater;
+        this.finder = finder;
     }
 
-    @PostMapping("")
+    @PostMapping("/search/{searchString}")
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public Page<Question> findQuestions(@RequestBody FindQuestionRequest request) {
+        log.debug("Received find question request");
+        Page<Question> results = finder.find(request);
+        log.debug("Found {} questions", results.getTotalElements());
+        return results;
+    }
+
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public CreateQuestionResponse createQuestion(@RequestBody CreateQuestionRequest request) {

@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.question.repository;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,8 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
             @Param("questionIdentifier") String questionIdentifier,
             @Param("userDefinedColumnNm") String userDefinedColumnNm,
             @Param("rdbColumnNm") String rdbColumnNm);
+
+    @Query("Select q from WaQuestion q WHERE q.questionNm LIKE :search OR q.questionIdentifier LIKE :search")
+    public Page<WaQuestion> findAllByNameOrIdentifier(String search, Pageable pageable);
+
 }
