@@ -1,37 +1,44 @@
-import { useState } from 'react';
-import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import {
-    Button,
-    ButtonGroup,
-    Form,
-    Grid,
-    Label,
-    ModalFooter,
-    ModalToggleButton,
-    Textarea
-} from '@trussworks/react-uswds';
-import { Controller, useForm } from 'react-hook-form';
+import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { SelectInput } from '../../../../components/FormInputs/SelectInput';
 import { Input } from '../../../../components/FormInputs/Input';
 import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { IdentificationEntry } from './identification';
 
-type ModalProps = {
-    modalRef: any;
-    handleSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string) => void;
-    modalHead?: string;
+type EntryProps = {
+    action: string;
+    entry: IdentificationEntry;
+    onChange: (updated: IdentificationEntry) => void;
+    onCancel: () => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ModalBody = ({ control, onSubmit, modalRef }: any) => {
+export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
+    const methods = useForm();
+    const { handleSubmit, control } = methods;
+
+    const onSubmit = (entered: FieldValues) => {
+        const obj: IdentificationEntry = {
+            patient: entry.patient,
+            asOf: entered.asOf,
+            type: entered?.type,
+            value: entered?.id,
+            state: entered?.state,
+            comment: entered?.additionalComments
+        };
+        entry.sequence && (obj.sequence = entry.sequence);
+        onChange(obj);
+    };
+
     return (
-        <Form onSubmit={onSubmit} className="width-full maxw-full modal-form">
+        <div onSubmit={onSubmit} className="width-full maxw-full modal-form">
             <div className="modal-body">
                 <Grid row>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="asOf"
+                            defaultValue={entry?.asOf}
                             render={({ field: { onChange, value } }) => (
                                 <DatePickerInput
                                     flexBox
@@ -50,6 +57,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                 <Controller
                                     control={control}
                                     name="type"
+                                    defaultValue={entry?.type}
                                     render={({ field: { onChange, value } }) => (
                                         <SelectInput
                                             flexBox
@@ -77,6 +85,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         <Controller
                             control={control}
                             name="id"
+                            defaultValue={entry?.value}
                             render={({ field: { onChange, value } }) => (
                                 <Input
                                     flexBox
@@ -97,6 +106,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                 <Controller
                                     control={control}
                                     name="state"
+                                    defaultValue={entry?.state}
                                     render={({ field: { onChange, value } }) => (
                                         <SelectInput
                                             flexBox
@@ -104,12 +114,16 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                                             onChange={onChange}
                                             htmlFor={'state'}
                                             label="Issued state"
-                                            options={searchCriteria.states.map((state) => {
-                                                return {
-                                                    value: state?.id!,
-                                                    name: state?.codeDescTxt!
-                                                };
-                                            })}
+                                            options={
+                                                searchCriteria?.states
+                                                    ? searchCriteria.states.map((states) => {
+                                                          return {
+                                                              name: states?.codeDescTxt!,
+                                                              value: states?.stateNm!
+                                                          };
+                                                      })
+                                                    : []
+                                            }
                                         />
                                     )}
                                 />
@@ -120,6 +134,7 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
                         <Controller
                             control={control}
                             name="additionalComments"
+                            defaultValue={entry?.comment}
                             render={({ field: { onChange } }) => (
                                 <Grid row>
                                     <Grid col={6} className="flex-align-self-center">
@@ -140,43 +155,18 @@ const ModalBody = ({ control, onSubmit, modalRef }: any) => {
             </div>
 
             <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto margin-0">
-                <ButtonGroup>
-                    <ModalToggleButton type="button" className="margin-top-0" outline modalRef={modalRef} closer>
-                        Go back
-                    </ModalToggleButton>
-                    <Button type="submit" className="padding-105 text-center margin-top-0">
-                        Add
+                <ButtonGroup className="flex-justify-end">
+                    <Button type="button" className="margin-top-0" data-testid="cancel-btn" outline onClick={onCancel}>
+                        Go Back
+                    </Button>
+                    <Button
+                        onClick={handleSubmit(onSubmit)}
+                        type="submit"
+                        className="padding-105 text-center margin-top-0">
+                        {action}
                     </Button>
                 </ButtonGroup>
             </ModalFooter>
-        </Form>
-    );
-};
-
-export const AddIdentificationModal = ({ modalRef, handleSubmission, modalHead }: ModalProps) => {
-    const methods = useForm();
-    const { handleSubmit, control } = methods;
-
-    const [submitted, setSubmitted] = useState<boolean>(false);
-
-    const onSubmit = (data: any) => {
-        modalRef.current?.toggleModal();
-        handleSubmission?.('success', `${data?.last}, ${data?.first}`);
-        setSubmitted(true);
-    };
-
-    return (
-        <ModalComponent
-            modalRef={modalRef}
-            modalHeading={modalHead || 'Add - Identification'}
-            modalBody={
-                <ModalBody
-                    submitted={submitted}
-                    control={control}
-                    onSubmit={handleSubmit(onSubmit)}
-                    modalRef={modalRef}
-                />
-            }
-        />
+        </div>
     );
 };

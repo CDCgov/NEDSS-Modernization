@@ -1,12 +1,22 @@
-import { Maybe, PatientCodedValue } from 'generated/graphql/schema';
+import { Maybe, PatientCodedValue, Scalars } from 'generated/graphql/schema';
 
 export type Identification = {
     __typename?: 'PatientIdentification';
+    asOf: Scalars['DateTime'];
+    authority?: Maybe<PatientCodedValue>;
+    patient: Scalars['Int'];
+    sequence: Scalars['Int'];
+    type?: PatientCodedValue;
+    value?: Maybe<Scalars['String']>;
+    version: Scalars['Int'];
+};
+
+export type IdentificationEntry = {
     patient: number;
-    sequence: number;
-    version: number;
-    asOf: any;
-    value?: string | null;
-    authority?: { __typename?: 'PatientCodedValue'; id: string; description: string } | null;
-    type?: Maybe<PatientCodedValue>;
-} | null;
+    asOf: string | null;
+    type: Maybe<Scalars['String']>;
+    value?: Maybe<Scalars['String']>;
+    state: string | null;
+    sequence?: Scalars['Int'];
+    comment: string | null;
+};

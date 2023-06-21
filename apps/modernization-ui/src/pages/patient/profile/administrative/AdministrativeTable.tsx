@@ -1,57 +1,74 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { SortableTable } from 'components/Table/SortableTable';
-import { Actions } from 'components/Table/Actions';
+import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { FindPatientProfileQuery } from 'generated/graphql/schema';
+import {
+    FindPatientProfileQuery,
+    PatientAdministrative,
+    useUpdateAdministrativeMutation
+} from 'generated/graphql/schema';
 import { Direction, sortByAlpha, withDirection } from 'sorting/Sort';
-import { Administrative } from './administrative';
+import { Administrative, AdministrativeEntry } from './administrative';
 import { useFindPatientProfileAdministrative } from './useFindPatientProfileAdministrative';
-import { AddCommentModal } from 'pages/patient/profile/administrative/AddCommentModal';
+import { internalizeDate } from 'date';
+import { Detail, DetailsModal } from '../DetailsModal';
+import { tableActionStateAdapter, useTableActionState } from 'table-action';
+import { EntryModal } from '../EntryModal';
+import { AdministrativeForm } from './AdminstrativeForm';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
+    patient: +addministrative.patient,
+    asOf: internalizeDate(addministrative?.asOf),
+    comment: addministrative.comment || ''
+});
+
+const asDetail = (data: PatientAdministrative): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Additional comments', value: data.comment }
+];
+
+const resolveInitialEntry = (patient: string): AdministrativeEntry => ({
+    patient: +patient,
+    asOf: null,
+    comment: null
+});
+
+type Props = {
+    patient: string;
 };
 
-export const AdministrativeTable = ({ patient }: PatientLabReportTableProps) => {
+export const AdministrativeTable = ({ patient }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'General comment', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
     ]);
+
+    const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const addModalRef = useRef<ModalRef>(null);
-    const detailsModalRef = useRef<ModalRef>(null);
-    const deleteModalRef = useRef<ModalRef>(null);
+    const initial = resolveInitialEntry(patient);
 
-    const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [details, setDetails] = useState<any>(undefined);
     const [isActions, setIsActions] = useState<any>(null);
-    const [administratives, setAdministratives] = useState<Administrative[]>([]);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+
+    const [administratives, setAdministratives] = useState<PatientAdministrative[]>([]);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
-        if (
-            data?.findPatientProfile?.administrative?.content &&
-            data?.findPatientProfile?.administrative?.content?.length > 0
-        ) {
-            setAdministratives(data?.findPatientProfile?.administrative?.content);
-        }
+        setTotal(data?.findPatientProfile?.administrative?.total ?? 0);
+        setAdministratives(data?.findPatientProfile?.administrative?.content || []);
     };
 
-    const [getProfile, { data }] = useFindPatientProfileAdministrative({ onCompleted: handleComplete });
+    const [getProfile, { refetch }] = useFindPatientProfileAdministrative({ onCompleted: handleComplete });
+    const [update] = useUpdateAdministrativeMutation();
+
+    const { selected, actions } = useTableActionState<PatientAdministrative>();
+    const modal = useRef<ModalRef>(null);
+
+    useEffect(() => {
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
 
     useEffect(() => {
         if (patient) {
@@ -65,7 +82,37 @@ export const AdministrativeTable = ({ patient }: PatientLabReportTableProps) => 
                 }
             });
         }
-    }, [patient, currentPage]);
+    }, [currentPage]);
+
+    const onAdded = (entry: AdministrativeEntry) => {
+        if (entry.comment) {
+            update({
+                variables: {
+                    input: {
+                        patientId: entry.patient.toString(),
+                        description: entry.comment
+                    }
+                }
+            })
+                .then(() => refetch())
+                .then(actions.reset);
+        }
+    };
+
+    const onChanged = (entry: AdministrativeEntry) => {
+        if (entry.comment) {
+            update({
+                variables: {
+                    input: {
+                        patientId: entry.patient.toString(),
+                        description: entry.comment
+                    }
+                }
+            })
+                .then(() => refetch())
+                .then(actions.reset);
+        }
+    };
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -95,36 +142,19 @@ export const AdministrativeTable = ({ patient }: PatientLabReportTableProps) => 
                 break;
         }
     };
-
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
-
     return (
         <>
             <SortableTable
                 isPagination={true}
                 buttons={
-                    <div className="grid-row">
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                addModalRef.current?.toggleModal();
-                                setDetails(null);
-                                setIsEditModal(false);
-                            }}
-                            className="display-inline-flex">
-                            <Icon.Add className="margin-right-05" />
-                            Add comment
-                        </Button>
-                        <AddCommentModal
-                            modalHead={isEditModal ? 'Edit - Comment' : 'Add - Comment'}
-                            modalRef={addModalRef}
-                        />
-                        {/* <DetailsRaceModal data={details} modalRef={detailsModalRef} /> */}
-                    </div>
+                    administratives?.length < 1 && (
+                        <div className="grid-row">
+                            <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
+                                <Icon.Add className="margin-right-05" />
+                                Add comment
+                            </Button>
+                        </div>
+                    )
                 }
                 tableHeader={'Administrative'}
                 tableHead={tableHead}
@@ -154,24 +184,11 @@ export const AdministrativeTable = ({ patient }: PatientLabReportTableProps) => 
                                     onClick={() => setIsActions(isActions === index ? null : index)}>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
-
                                 {isActions === index && (
-                                    <Actions
+                                    <ActionState
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                setIsEditModal(true);
-                                                addModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'delete') {
-                                                setIsDeleteModal(true);
-                                                setDetails(administrative);
-                                                deleteModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'details') {
-                                                setDetails(administrative);
-                                                detailsModalRef.current?.toggleModal();
-                                            }
+                                            tableActionStateAdapter(actions, administrative)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -180,39 +197,36 @@ export const AdministrativeTable = ({ patient }: PatientLabReportTableProps) => 
                         </td>
                     </tr>
                 ))}
-                totalResults={data?.findPatientProfile?.administrative?.total}
+                totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
             />
-            {isDeleteModal && (
-                <Modal
-                    forceAction
-                    ref={deleteModalRef}
-                    id="example-modal-1"
-                    aria-labelledby="modal-1-heading"
-                    className="padding-0"
-                    aria-describedby="modal-1-description">
-                    <ModalHeading
-                        id="modal-1-heading"
-                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                        Delete name
-                    </ModalHeading>
-                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                        <p id="modal-1-description">Are you sure you want to delete this document?</p>
-                    </div>
-                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                        <ButtonGroup>
-                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
-                                Cancel
-                            </Button>
-                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
-                                Yes, delete
-                            </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </Modal>
+
+            {selected?.type === 'add' && (
+                <EntryModal modal={modal} id="add-patient-identification-modal" title="Add - Identification">
+                    <AdministrativeForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                </EntryModal>
+            )}
+
+            {selected?.type === 'update' && (
+                <EntryModal modal={modal} id="edit-patient-identification-modal" title="Edit - Comment">
+                    <AdministrativeForm
+                        action={'Edit'}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
+                        onChange={onChanged}
+                    />
+                </EntryModal>
+            )}
+
+            {selected?.type === 'detail' && (
+                <DetailsModal
+                    title={'View details - Administrative'}
+                    modal={modal}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
+                />
             )}
         </>
     );
