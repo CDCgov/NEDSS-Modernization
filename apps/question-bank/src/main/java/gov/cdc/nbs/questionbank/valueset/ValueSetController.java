@@ -46,6 +46,7 @@ public class ValueSetController {
 	}
 	
 	@PatchMapping("/{codeSetNm}")
+	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public ResponseEntity<ValueSetStateChangeResponse> activateValueSet(@PathVariable String codeSetNm) {
 		ValueSetStateChangeResponse response = valueSetStateManager.activateValueSet(codeSetNm);
 		return new ResponseEntity<>(response, null, response.getStatus());

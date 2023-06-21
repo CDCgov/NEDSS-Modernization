@@ -35,9 +35,7 @@ public class PatientRequestTopicListener {
             var request = mapper.readValue(message, PatientRequest.class);
             log.debug("Successfully parsed message to PatientEvent. RequestId: {}", request.requestId());
 
-            if (request instanceof PatientRequest.UpdateGeneralInfo update) {
-                updateHandler.handlePatientGeneralInfoUpdate(update.data());
-            } else if (request instanceof PatientRequest.UpdateMortality update) {
+            if (request instanceof PatientRequest.UpdateMortality update) {
                 updateHandler.handlePatientMortalityUpdate(update.data());
             } else if (request instanceof PatientRequest.UpdateSexAndBirth update) {
                 updateHandler.handlePatientSexAndBirthUpdate(update.data());

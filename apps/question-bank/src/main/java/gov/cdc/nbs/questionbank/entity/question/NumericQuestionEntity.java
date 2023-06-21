@@ -33,10 +33,10 @@ public class NumericQuestionEntity extends WaQuestion {
     private Long maxValue;
 
     @Column(name = "unit_type_cd", length = 20)
-    private String unitTypeCd;
+    private String unitTypeCd; // Either Coded, Literal or null
 
     @Column(name = "unit_value", length = 50)
-    private String unitValue;
+    private String unitValue; // If unitTypeCd == Coded, Id of Value set. Else literal value or null
 
     @Override
     public String getDataType() {

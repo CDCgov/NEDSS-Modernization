@@ -48,6 +48,20 @@ class QuestionCreator {
         this.codesetRepository = codesetRepository;
     }
 
+    public long create(Long userId, CreateQuestionRequest request) {
+        if (request instanceof CreateQuestionRequest.Text t) {
+            return this.create(userId, t);
+        } else if (request instanceof CreateQuestionRequest.Date d) {
+            return this.create(userId, d);
+        } else if (request instanceof CreateQuestionRequest.Numeric n) {
+            return this.create(userId, n);
+        } else if (request instanceof CreateQuestionRequest.Coded c) {
+            return this.create(userId, c);
+        } else {
+            throw new CreateQuestionException("Failed to determine question type");
+        }
+    }
+
     public long create(Long userId, CreateQuestionRequest.Text request) {
         WaQuestion question = new TextQuestionEntity(asAdd(userId, request));
         verifyUnique(question);

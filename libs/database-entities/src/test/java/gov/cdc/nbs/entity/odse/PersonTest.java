@@ -1481,8 +1481,8 @@ class PersonTest {
             Instant.parse("2010-03-03T10:15:30.00Z"),
             "marital status",
             "mothers maiden name",
-            (short) 1,
-            (short) 2,
+            1,
+             2,
             "occupation code",
             "education level",
             "prim language",
@@ -1493,21 +1493,20 @@ class PersonTest {
 
         actual.update(command);
 
-        assertEquals(command.asOf().getEpochSecond(), actual.getAsOfDateGeneral().getEpochSecond());
-        assertEquals(command.maritalStatus(), actual.getMaritalStatusCd());
-        assertEquals(command.mothersMaidenName(), actual.getMothersMaidenNm());
-        assertEquals(command.adultsInHouseNumber(), actual.getAdultsInHouseNbr());
-        assertEquals(command.childrenInHouseNumber(), actual.getChildrenInHouseNbr());
-        assertEquals(command.occupationCode(), actual.getOccupationCd());
-        assertEquals(command.educationLevelCode(), actual.getEducationLevelCd());
-        assertEquals(command.primaryLanguageCode(), actual.getPrimLangCd());
-        assertEquals(command.speaksEnglishCode(), actual.getSpeaksEnglishCd());
-        assertEquals(command.eharsId(), actual.getEharsId());
-        assertThat(actual.getAsOfDateGeneral()).isEqualTo("2010-03-03T10:15:30.00Z");
-        assertThat(actual.getLastChgTime()).isEqualTo("2019-03-03T10:15:30.00Z");
-        assertEquals(Long.valueOf(command.requester()), actual.getLastChgUserId());
-        assertEquals(Short.valueOf((short) 2), actual.getVersionCtrlNbr());
-        assertEquals(Long.valueOf(command.requester()), actual.getLastChgUserId());
+        assertThat(actual)
+            .returns(Instant.parse("2010-03-03T10:15:30.00Z"), Person::getAsOfDateGeneral)
+            .returns("marital status", Person::getMaritalStatusCd)
+            .returns("mothers maiden name", Person::getMothersMaidenNm)
+            .returns((short)1, Person::getAdultsInHouseNbr)
+            .returns((short)2, Person::getChildrenInHouseNbr)
+            .returns("occupation code", Person::getOccupationCd)
+            .returns("education level", Person::getEducationLevelCd)
+            .returns("prim language", Person::getPrimLangCd)
+            .returns("speaks english", Person::getSpeaksEnglishCd)
+            .returns("eharsId", Person::getEharsId)
+            .returns(12L, Person::getLastChgUserId)
+            .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+        ;
     }
 
     @Test

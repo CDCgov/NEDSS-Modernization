@@ -3,7 +3,6 @@ package gov.cdc.nbs.patientlistener.request.update;
 import gov.cdc.nbs.authentication.UserService;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.event.UpdateAdministrativeData;
-import gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData;
 import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.PatientNotFoundException;
@@ -37,27 +36,6 @@ public class PatientUpdateRequestHandler {
 
     private static final String VIEW_PATIENT = "VIEW-PATIENT";
     private static final String EDIT_PATIENT = "EDIT-PATIENT";
-
-    /**
-     * Sets the Person's general info to the specified values. See
-     * {@link gov.cdc.nbs.message.patient.event.UpdateGeneralInfoData} for a list of general info fields
-     *
-     * @param data
-     */
-    @Transactional
-    public void handlePatientGeneralInfoUpdate(final UpdateGeneralInfoData data) {
-        if (!userService.isAuthorized(data.updatedBy(), VIEW_PATIENT, EDIT_PATIENT)) {
-            throw new UserNotAuthorizedException(data.requestId());
-        }
-
-        var person = findPerson(data.patientId(), data.requestId());
-        person = patientUpdater.update(person, data);
-        updateElasticsearchPatient(person);
-        statusProducer.successful(
-            data.requestId(),
-            "Successfully updated patient",
-            data.patientId());
-    }
 
     /**
      * Sets the Person's mortality info to the specified values. See
