@@ -4,6 +4,7 @@ import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.QuestionType;
 
 public class QuestionRequestMother {
 
@@ -36,6 +37,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.DATE,
                 "Mask",
                 false);
     }
@@ -57,6 +59,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.NUMERIC,
                 "NUM",
                 "3",
                 "1",
@@ -79,6 +82,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(true),
                 "Test admin comments",
+                QuestionType.CODED,
                 valueSet,
                 null);
     }
@@ -101,6 +105,7 @@ public class QuestionRequestMother {
                 reportingInfo("custom label", rdbTableName, rdbColumnName, dataMartColumnName),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.TEXT,
                 "Mask",
                 "50",
                 "Test default");
@@ -119,6 +124,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(includedInMessage),
                 "Test admin comments",
+                QuestionType.TEXT,
                 "Mask",
                 "50",
                 "Test default");

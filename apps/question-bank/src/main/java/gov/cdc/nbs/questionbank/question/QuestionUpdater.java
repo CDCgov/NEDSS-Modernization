@@ -41,12 +41,12 @@ public class QuestionUpdater {
     public Question setStatus(final Long userId, final Long questionId, final boolean active) {
         return repository.findById(questionId).map(q -> {
             createHistoryEvent(q);
-            q.statusChange(asSetStatus(userId, questionId, active));
+            q.statusChange(asSetStatus(userId, active));
             return questionMapper.toQuestion(repository.save(q));
         }).orElseThrow(() -> new QuestionNotFoundException("Failed to find question with id: " + questionId));
     }
 
-    private QuestionCommand.SetStatus asSetStatus(long userId, long questionId, boolean active) {
+    private QuestionCommand.SetStatus asSetStatus(long userId, boolean active) {
         return new QuestionCommand.SetStatus(active, userId, Instant.now());
     }
 

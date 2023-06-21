@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/questions/")
+@RequestMapping("/api/v1/questions")
 public class QuestionController {
 
     private final QuestionCreator creator;
@@ -34,47 +34,14 @@ public class QuestionController {
         this.updater = updater;
     }
 
-    @PostMapping("text")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createTextQuestion(@RequestBody CreateQuestionRequest.Text request) {
-        log.debug("Received create text question request");
+    public CreateQuestionResponse createQuestion(@RequestBody CreateQuestionRequest request) {
+        log.debug("Received create question request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         long questionId = creator.create(userId, request);
-        log.debug("Successfully created text question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
-    }
-
-    @PostMapping("date")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createDateQuestion(@RequestBody CreateQuestionRequest.Date request) {
-        log.debug("Received create date question request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created date question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
-    }
-
-    @PostMapping("numeric")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createNumericQuestion(@RequestBody CreateQuestionRequest.Numeric request) {
-        log.debug("Received create date question request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created date question with Id: {}", questionId);
-        return new CreateQuestionResponse(questionId);
-    }
-
-    @PostMapping("coded")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public CreateQuestionResponse createCodedQuestion(@RequestBody CreateQuestionRequest.Coded request) {
-        log.debug("Received create coded question request");
-        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        long questionId = creator.create(userId, request);
-        log.debug("Successfully created coded question with Id: {}", questionId);
+        log.debug("Successfully created question with Id: {}", questionId);
         return new CreateQuestionResponse(questionId);
     }
 

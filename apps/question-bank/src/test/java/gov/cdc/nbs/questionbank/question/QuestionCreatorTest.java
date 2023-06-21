@@ -33,6 +33,7 @@ import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -289,6 +290,7 @@ class QuestionCreatorTest {
                         false,
                         null),
                 null,
+                QuestionType.TEXT,
                 null,
                 null,
                 null);
