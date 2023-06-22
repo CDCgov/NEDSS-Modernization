@@ -8,8 +8,8 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import lombok.Getter;
@@ -560,6 +560,7 @@ public class Person {
     public Collection<TeleEntityLocatorParticipation> phones() {
         return this.nbsEntity.phones();
     }
+
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.nbsEntity.phoneNumbers();
     }
@@ -592,10 +593,6 @@ public class Person {
         this.nbsEntity.delete(phone);
     }
 
-    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
-        return this.nbsEntity.add(mortality);
-    }
-
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
         return this.nbsEntity.update(phoneNumber);
     }
@@ -603,12 +600,6 @@ public class Person {
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         return this.nbsEntity.update(emailAddress);
     }
-
-    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
-        return this.nbsEntity.delete(mortality);
-    }
-
-
 
     public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
         return this.nbsEntity.delete(phoneNumber);
@@ -623,7 +614,8 @@ public class Person {
         this.maritalStatusCd = info.maritalStatus();
         this.mothersMaidenNm = info.mothersMaidenName();
         this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
-        this.childrenInHouseNbr = info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
+        this.childrenInHouseNbr =
+            info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
         this.occupationCd = info.occupationCode();
         this.educationLevelCd = info.educationLevelCode();
         this.primLangCd = info.primaryLanguageCode();
@@ -657,9 +649,22 @@ public class Person {
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateMortalityLocator info) {
-        this.setDeceasedIndCd(info.deceased());
-        this.setDeceasedTime(info.deceasedTime());
+    public void update(
+        final PatientCommand.UpdateMortality info,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        this.asOfDateMorbidity = info.asOf();
+        this.deceasedIndCd = Deceased.resolve(info.deceased());
+
+        if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
+            this.deceasedTime = info.deceasedOn() == null
+                ? null :
+                info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
+        } else {
+            this.deceasedTime = null;
+        }
+        this.nbsEntity.update(info, identifierGenerator);
+
         changed(info);
     }
 

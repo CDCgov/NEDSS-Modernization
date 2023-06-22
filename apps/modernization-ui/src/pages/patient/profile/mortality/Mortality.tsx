@@ -1,55 +1,59 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { FindPatientProfileQuery, PatientMortality, useUpdateMortalityMutation } from 'generated/graphql/schema';
+import { FindPatientProfileQuery, PatientMortality, useUpdatePatientMortalityMutation } from 'generated/graphql/schema';
 import { useFindPatientProfileMortality } from './useFindPatientProfileMortality';
 import { Data, EditableCard } from 'components/EditableCard';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { externalizeDate, externalizeDateTime, internalizeDate } from 'date';
 import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
-
-type PatientLabReportTableProps = {
-    patient: string | undefined;
-};
+import { orNull } from 'utils';
 
 const initialEntry = {
     asOf: null,
-    deceased: '',
+    deceased: null,
     deceasedOn: null,
-    city: '',
+    city: null,
     state: null,
     county: null,
     country: null
 };
 
 const asView = (mortality?: PatientMortality | null): Data[] => [
-    { title: 'As of:', text: internalizeDate(mortality?.asOf) || '' },
-    { title: 'Is the patient deceased:', text: maybeDescription(mortality?.deceased) || '' },
-    { title: 'Date of death:', text: internalizeDate(mortality?.deceasedOn) || '' },
-    { title: 'City of death:', text: mortality?.city || '' },
-    { title: 'State of death:', text: maybeDescription(mortality?.state) || '' },
-    { title: 'County of death:', text: maybeDescription(mortality?.county) || '' },
-    { title: 'Country of death:', text: maybeDescription(mortality?.country) || '' }
+    { title: 'As of:', text: internalizeDate(mortality?.asOf) },
+    { title: 'Is the patient deceased:', text: maybeDescription(mortality?.deceased) },
+    { title: 'Date of death:', text: internalizeDate(mortality?.deceasedOn) },
+    { title: 'City of death:', text: mortality?.city },
+    { title: 'State of death:', text: maybeDescription(mortality?.state) },
+    { title: 'County of death:', text: maybeDescription(mortality?.county) },
+    { title: 'Country of death:', text: maybeDescription(mortality?.country) }
 ];
 
-const asEntry = (mortality?: PatientMortality | null): MortalityEntry => ({
-    ...initialEntry,
+const asEntry = (mortality: PatientMortality): MortalityEntry => ({
     asOf: internalizeDate(mortality?.asOf),
     deceased: maybeId(mortality?.deceased),
-    deceasedTime: internalizeDate(mortality?.deceasedOn),
-    cityOfDeath: mortality?.city,
-    stateOfDeath: maybeId(mortality?.state),
-    countyOfDeath: maybeId(mortality?.county),
-    countryOfDeath: maybeId(mortality?.country)
+    deceasedOn: internalizeDate(mortality?.deceasedOn),
+    city: orNull(mortality?.city),
+    state: maybeId(mortality?.state),
+    county: maybeId(mortality?.county),
+    country: maybeId(mortality?.country)
 });
 
-export const Mortality = ({ patient }: PatientLabReportTableProps) => {
+type Props = {
+    patient: string;
+};
+
+export const Mortality = ({ patient }: Props) => {
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
-        setData(asView(data.findPatientProfile?.mortality));
-        setEntry(asEntry(data.findPatientProfile?.mortality));
+        const current = data.findPatientProfile?.mortality;
+        setData(asView(current));
+
+        const entry = current ? asEntry(current) : { ...initialEntry };
+
+        setEntry(entry);
     };
 
     const handleUpdate = () => {
@@ -57,11 +61,11 @@ export const Mortality = ({ patient }: PatientLabReportTableProps) => {
         isEditing(false);
     };
 
-    const [getProfile, { refetch }] = useFindPatientProfileMortality({ onCompleted: handleComplete });
+    const [fetch, { refetch }] = useFindPatientProfileMortality({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
-            getProfile({
+            fetch({
                 variables: {
                     patient: patient
                 }
@@ -69,16 +73,16 @@ export const Mortality = ({ patient }: PatientLabReportTableProps) => {
         }
     }, [patient]);
 
-    const [update] = useUpdateMortalityMutation();
+    const [update] = useUpdatePatientMortalityMutation();
 
-    const onUpdate = (updated: any) => {
+    const onUpdate = (updated: MortalityEntry) => {
         update({
             variables: {
                 input: {
                     ...updated,
+                    patient: +patient,
                     asOf: externalizeDateTime(updated.asOf),
-                    deceasedTime: externalizeDateTime(updated.deceasedTime),
-                    patientId: patient
+                    deceasedOn: externalizeDate(updated.deceasedOn)
                 }
             }
         }).then(handleUpdate);
