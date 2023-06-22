@@ -11,7 +11,7 @@ import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
-import gov.cdc.nbs.questionbank.support.ExceptionHolder;
+import gov.cdc.nbs.questionbank.question.util.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -37,7 +37,6 @@ public class SetQuestionStatusSteps {
 
     @Given("A text question exists")
     public void a_question_exists() {
-        questionMother.clean();
         questionMother.textQuestion();
     }
 

@@ -102,7 +102,7 @@ class QuestionMapperTest {
         assertEquals(entity.getRecordStatusCd(), q.status());
         assertEquals(entity.getSubGroupNm(), q.subgroup());
         assertEquals(entity.getDescTxt(), q.description());
-        assertEquals(entity.getDataType(), q.dataType());
+        assertEquals(entity.getDataType(), q.type());
         assertEquals(entity.getQuestionLabel(), q.label());
         assertEquals(entity.getQuestionToolTip(), q.tooltip());
         assertEquals(entity.getNbsUiComponentUid(), q.displayControl());
