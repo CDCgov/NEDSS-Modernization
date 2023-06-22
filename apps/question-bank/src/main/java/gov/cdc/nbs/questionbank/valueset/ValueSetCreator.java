@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class ValueSetCreator {
 
 	public CreateValueSetResponse createValueSet(ValueSetRequest request, long userId) {
 		CreateValueSetResponse response = new CreateValueSetResponse();
-		String codeSetName = request.getValueSetNm();
+		String codeSetName = request.getValueSetNm().toUpperCase();
 		String codeShrtDescTxt = request.getCodeSetDescTxt();
 
 		if (checkValueSetNameExists(codeSetName)) {
@@ -61,8 +63,9 @@ public class ValueSetCreator {
 			id.setCodeSetNm(codeSetName);
 			valueSet.setId(id);
 			// save changes
+			CodeSetGroupMetadatum savedGroup = codeSetGrpMetaRepository.save(codeGrp);
+			valueSet.setCodeSetGroup(savedGroup);
 			Codeset resultCodeSet = valueSetRepository.save(valueSet);
-			codeSetGrpMetaRepository.save(codeGrp);
 			// Add any accompanying Value Concepts
 			
 			if(request.getValues() != null) {
@@ -112,7 +115,7 @@ public class ValueSetCreator {
 				request.getAssigningAuthorityCd(),
 				request.getAssigningAuthorityDescTxt(), 
 				request.getCodeSetDescTxt(), 
-				request.getEffectiveFromTime(),
+				request.getEffectiveFromTime() != null ? request.getEffectiveFromTime() : Instant.now() ,
 				request.getEffectiveToTime(), 
 				request.getIsModifiableInd(), 
 				request.getNbsUid(),
@@ -122,7 +125,7 @@ public class ValueSetCreator {
 				request.getStatusToTime(), 
 				request.getCodeSetGroup(), 
 				request.getAdminComments(),
-				request.getValueSetNm(), 
+				request.getValueSetNm().toUpperCase(), 
 				request.getLdfPicklistIndCd(), 
 				request.getValueSetCode(),
 				request.getValueSetTypeCd(), 
@@ -130,7 +133,7 @@ public class ValueSetCreator {
 				request.getValueSetStatusCd(),
 				request.getValueSetStatusTime(),
 				request.getParentIsCd(), 
-				request.getAddTime(), 
+				Instant.now(), 
 				userId);
 
 	}
