@@ -52,15 +52,16 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public PostalEntityLocatorParticipation(
-        final NBSEntity nbsEntity,
+        final NBSEntity nbs,
         final EntityLocatorParticipationId identifier,
-        final PatientCommand.AddMortalityLocator add
+        final PatientCommand.UpdateMortality mortality
     ) {
-        super(add, nbsEntity, identifier);
-        this.setAsOfDate(add.asOf());
+        super(mortality, nbs, identifier);
         this.cd = "U";
         this.useCd = "DTH";
-        this.locator = new PostalLocator(add);
+        this.asOfDate = mortality.asOf();
+
+        this.locator = new PostalLocator(identifier.getLocatorUid(), mortality);
     }
 
     public void update(final PatientCommand.UpdateAddress update) {
@@ -73,12 +74,10 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
         changed(update);
     }
 
-    public void updateMortalityLocator(PatientCommand.UpdateMortalityLocator update) {
-        this.locator.update(update);
-        this.setLastChgTime(update.requestedOn());
-        this.setLastChgUserId(update.requester());
-        this.setAsOfDate(update.asOf());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+    public void update(final PatientCommand.UpdateMortality mortality) {
+        this.asOfDate = mortality.asOf();
+        this.locator.update(mortality);
+        changed(mortality);
     }
 
     @Override

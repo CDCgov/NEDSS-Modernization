@@ -35,7 +35,7 @@ type Mutation {
     deletePatient(patient: ID!): PatientDeleteResult!
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
-    updateMortality(input: MortalityInput!): PatientUpdateResponse!
+    updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
     updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
@@ -288,6 +288,21 @@ type PatientGeneralChangeResult {
     patient: Int!
 }
 
+input MortalityInput {
+    patient: Int!
+    asOf: DateTime!
+    deceased: String
+    deceasedOn: Date
+    city: String
+    state: String
+    county: String
+    country: String
+}
+
+type PatientMortalityChangeResult {
+    patient: Int!
+}
+
 input AdministrativeInput {
     patientId: ID!
     description: String
@@ -465,17 +480,6 @@ input DeletePatientIdentificationInput {
 type PatientIdentificationChangeResult {
     patient: Int!
     sequence: Int!
-}
-
-input MortalityInput {
-    patientId: ID!
-    asOf: DateTime
-    deceased: Deceased
-    deceasedTime: DateTime
-    cityOfDeath: String
-    stateOfDeath: String
-    countyOfDeath: String
-    countryOfDeath: String
 }
 
 input UpdateSexAndBirthInput {

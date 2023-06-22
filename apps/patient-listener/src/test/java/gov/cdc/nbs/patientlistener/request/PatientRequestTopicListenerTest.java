@@ -2,9 +2,7 @@ package gov.cdc.nbs.patientlistener.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.event.UpdateMortalityData;
 import gov.cdc.nbs.message.patient.event.UpdateSexAndBirthData;
 import gov.cdc.nbs.patientlistener.request.update.PatientUpdateRequestHandler;
 import gov.cdc.nbs.time.json.EventSchemaJacksonModuleFactory;
@@ -34,40 +32,6 @@ class PatientRequestTopicListenerTest {
     private PatientUpdateRequestHandler updateHandler;
     @InjectMocks
     private PatientRequestTopicListener consumer;
-
-    @Test
-    void testReceivingUpdateMortRequest() {
-        String message = """
-            {
-               "type": "PatientRequest$UpdateMortality",
-               "requestId": "requestId",
-               "patientId": 1234,
-               "userId": 123,
-               "data": {
-                 "patientId":419,
-                 "updatedBy":547,
-                 "asOf": "2023-03-16T19:17:07Z",
-                 "deceased": "Y",
-                 "deceasedTime": "2023-03-17T23:57:11Z"
-               }
-             }
-             """;
-        consumer.onMessage(message, "requestId");
-
-        ArgumentCaptor<UpdateMortalityData> captor = ArgumentCaptor.forClass(UpdateMortalityData.class);
-
-        verify(updateHandler, times(1)).handlePatientMortalityUpdate(captor.capture());
-
-        verifyNoMoreInteractions(updateHandler);
-
-        UpdateMortalityData actual = captor.getValue();
-
-        assertThat(actual.patientId()).isEqualTo(419L);
-        assertThat(actual.updatedBy()).isEqualTo(547L);
-        assertThat(actual.asOf()).isEqualTo("2023-03-16T19:17:07Z");
-        assertThat(actual.deceased()).isEqualTo(Deceased.Y);
-        assertThat(actual.deceasedTime()).isEqualTo("2023-03-17T23:57:11Z");
-    }
 
     @Test
     void testReceivingUpdateSexRequest() {

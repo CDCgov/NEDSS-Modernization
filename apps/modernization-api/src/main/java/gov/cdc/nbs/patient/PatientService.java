@@ -17,13 +17,10 @@ import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
-import gov.cdc.nbs.repository.CountryCodeRepository;
-import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
@@ -50,7 +47,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,8 +79,6 @@ public class PatientService {
     private final ElasticsearchOperations operations;
     private final UserService userService;
     private final PatientLocalIdentifierResolver resolver;
-    private final CountryCodeRepository countryCodeRepository;
-    private final EntityLocatorParticipationRepository entityLocatorParticipationRepository;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -451,37 +445,6 @@ public class PatientService {
             personRepository.save(person);
             return sendPatientEvent(updateSexAndBirthEvent);
         }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
-    @Transactional
-    public PatientEventResponse updateMortality(MortalityInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
-
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            PatientCommand.UpdateMortalityLocator updateMortalityLocator = new PatientCommand.UpdateMortalityLocator(
-                person.getId(),
-                Instant.now(),
-                input.getDeceased(),
-                input.getDeceasedTime(),
-                input.getCityOfDeath(),
-                input.getStateOfDeath(),
-                input.getCountyOfDeath(),
-                input.getCountryOfDeath(),
-                user.getId(),
-                Instant.now()
-            );
-            person.update(updateMortalityLocator);
-            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId())
-                .ifPresent(locator -> {
-                        locator.updateMortalityLocator(updateMortalityLocator);
-                        entityLocatorParticipationRepository.save(locator);
-                    }
-                );
-            personRepository.save(person);
-            return sendPatientEvent(updateMortalityEvent);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
     }
 
     private PatientEventResponse sendPatientEvent(PatientRequest request) {
