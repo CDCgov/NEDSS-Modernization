@@ -288,17 +288,18 @@ public sealed interface PatientCommand {
 
     }
 
-    record UpdateMortalityLocator(
+    record UpdateMortality(
         long person,
         Instant asOf,
-        Deceased deceased,
-        Instant deceasedTime,
-        String cityOfDeath,
-        String stateOfDeath,
-        String countyOfDeath,
-        String countryOfDeath,
+        String deceased,
+        LocalDate deceasedOn,
+        String city,
+        String state,
+        String county,
+        String country,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -331,30 +332,6 @@ public sealed interface PatientCommand {
     ) implements PatientCommand {
     }
 
-
-    record DeleteMortalityLocator(
-        long person,
-        long id,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-    }
-
-
-    record AddMortalityLocator(
-        long person,
-        long id,
-        Instant asOf,
-        Deceased deceased,
-        Instant deceasedTime,
-        String cityOfDeath,
-        String stateOfDeath,
-        String countyOfDeath,
-        String countryOfDeath,
-        long requester,
-        Instant requestedOn) implements PatientCommand {
-    }
-
-
     record UpdateAdministrativeInfo(
         long person,
         Instant asOf,
@@ -369,8 +346,8 @@ public sealed interface PatientCommand {
         Instant asOf,
         String maritalStatus,
         String mothersMaidenName,
-        Short adultsInHouseNumber,
-        Short childrenInHouseNumber,
+        Integer adultsInHouseNumber,
+        Integer childrenInHouseNumber,
         String occupationCode,
         String educationLevelCode,
         String primaryLanguageCode,

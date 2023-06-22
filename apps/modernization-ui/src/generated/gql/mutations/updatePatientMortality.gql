@@ -1,0 +1,5 @@
+mutation updatePatientMortality($input: MortalityInput!){
+    updatePatientMortality(input: $input){
+        patient
+    }
+}

@@ -17,14 +17,10 @@ import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.MortalityInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
-import gov.cdc.nbs.repository.CountryCodeRepository;
-import gov.cdc.nbs.repository.EntityLocatorParticipationRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import graphql.com.google.common.collect.Ordering;
@@ -51,7 +47,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +58,6 @@ import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
 import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 @RequiredArgsConstructor
@@ -85,8 +79,6 @@ public class PatientService {
     private final ElasticsearchOperations operations;
     private final UserService userService;
     private final PatientLocalIdentifierResolver resolver;
-    private final CountryCodeRepository countryCodeRepository;
-    private final EntityLocatorParticipationRepository entityLocatorParticipationRepository;
 
     private <T> BlazeJPAQuery<T> applySort(BlazeJPAQuery<T> query, Sort sort) {
         var person = QPerson.person;
@@ -410,56 +402,6 @@ public class PatientService {
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
-    @SuppressWarnings("squid:S3776")
-    public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            boolean modified = false;
-            if (!isEmpty(input.getMaritalStatus())) {
-                person.setMaritalStatusCd(input.getMaritalStatus());
-                modified = true;
-            }
-            if (!isEmpty(input.getMothersMaidenName())) {
-                person.setMothersMaidenNm((input.getMothersMaidenName()));
-                modified = true;
-            }
-            if (input.getAdultsInHouseNumber() != null) {
-                person.setAdultsInHouseNbr(input.getAdultsInHouseNumber());
-                modified = true;
-            }
-            if (input.getChildrenInHouseNumber() != null) {
-                person.setChildrenInHouseNbr(input.getChildrenInHouseNumber());
-                modified = true;
-            }
-            if (!isEmpty(input.getOccupationCode())) {
-                person.setOccupationCd(input.getOccupationCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getEducationLevelCode())) {
-                person.setEducationLevelCd(input.getEducationLevelCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getPrimaryLanguageCode())) {
-                person.setPrimLangCd(input.getPrimaryLanguageCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getSpeaksEnglishCode())) {
-                person.setSpeaksEnglishCd(input.getSpeaksEnglishCode());
-                modified = true;
-            }
-            if (!isEmpty(input.getEharsId())) {
-                person.setEharsId(input.getEharsId());
-                modified = true;
-            }
-            if (modified) {
-                person.setAsOfDateGeneral(input.getAsOf());
-            }
-            personRepository.save(person);
-            return sendPatientEvent(updateGeneralInfoEvent);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
     public PatientEventResponse updateAdministrative(AdministrativeInput input) {
         var user = SecurityUtil.getUserDetails();
         var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
@@ -503,37 +445,6 @@ public class PatientService {
             personRepository.save(person);
             return sendPatientEvent(updateSexAndBirthEvent);
         }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-    }
-
-    @Transactional
-    public PatientEventResponse updateMortality(MortalityInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
-
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            PatientCommand.UpdateMortalityLocator updateMortalityLocator = new PatientCommand.UpdateMortalityLocator(
-                person.getId(),
-                Instant.now(),
-                input.getDeceased(),
-                input.getDeceasedTime(),
-                input.getCityOfDeath(),
-                input.getStateOfDeath(),
-                input.getCountyOfDeath(),
-                input.getCountryOfDeath(),
-                user.getId(),
-                Instant.now()
-            );
-            person.update(updateMortalityLocator);
-            entityLocatorParticipationRepository.findMortalityLocatorParticipation(person.getId())
-                .ifPresent(locator -> {
-                        locator.updateMortalityLocator(updateMortalityLocator);
-                        entityLocatorParticipationRepository.save(locator);
-                    }
-                );
-            personRepository.save(person);
-            return sendPatientEvent(updateMortalityEvent);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
     }
 
     private PatientEventResponse sendPatientEvent(PatientRequest request) {

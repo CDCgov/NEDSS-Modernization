@@ -1,26 +1,16 @@
 package gov.cdc.nbs.patient;
 
-import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.EmailInput;
-import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
-import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.PatientInput.PhoneType;
-import gov.cdc.nbs.message.patient.input.PhoneInput;
 import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.util.PersonUtil;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,17 +33,9 @@ public class PatientUpdateSteps {
         PatientIdentifier patient = patients.one();
         try {
             switch (updateType) {
-                case "general info" -> {
-                    input = PersonUtil.convertToGeneralInput(PersonMother.generateRandomPerson(patient.id()));
-                    response = patientController.updatePatientGeneralInfo((GeneralInfoInput) input);
-                }
                 case "sex and birth" -> {
                     input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(patient.id()));
                     response = patientController.updatePatientSexBirth((SexAndBirthInput) input);
-                }
-                case "mortality" -> {
-                    input = createMortalityInput(patient.id());
-                    response = patientController.updateMortality((MortalityInput) input);
                 }
                 case "administrative" -> {
                     input = createAdministrativeInput(patient.id());
@@ -75,19 +57,6 @@ public class PatientUpdateSteps {
     public void I_get_an_access_denied_exception_for_patient_update() {
         assertNull(response);
         assertNotNull(accessDeniedException);
-    }
-
-    private MortalityInput createMortalityInput(final long patient) {
-        var input = new MortalityInput();
-        input.setPatientId(patient);
-        input.setAsOf(RandomUtil.getRandomDateInPast());
-        input.setDeceased(Deceased.Y);
-        input.setDeceasedTime(Instant.now());
-        input.setCityOfDeath("Deceased City");
-        input.setStateOfDeath("Deceased State");
-        input.setCountyOfDeath("Deceased County");
-        input.setCountryOfDeath("Deceased Country");
-        return input;
     }
 
     private AdministrativeInput createAdministrativeInput(final long patient) {

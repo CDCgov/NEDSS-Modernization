@@ -1,8 +1,9 @@
-import { DatePicker, Grid, Label } from '@trussworks/react-uswds';
+import { DatePicker, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 import './DatePickerInput.scss';
 import React, { useState } from 'react';
 
 type OnChange = (val?: string) => void;
+type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
     id?: string;
@@ -10,6 +11,7 @@ type DatePickerProps = {
     name?: string;
     htmlFor?: string;
     onChange?: OnChange;
+    onBlur?: OnBlur;
     className?: string;
     defaultValue?: string;
     errorMessage?: string;
@@ -34,9 +36,11 @@ export const DatePickerInput = ({
     label,
     htmlFor = '',
     onChange,
+    onBlur,
     className,
     defaultValue,
     flexBox,
+    errorMessage,
     disabled = false
 }: DatePickerProps) => {
     const emptyDefaultValue = !defaultValue || defaultValue.length === 0;
@@ -49,6 +53,7 @@ export const DatePickerInput = ({
         const currentVal = (event.target as HTMLInputElement).value;
         const valid = isValid(currentVal);
         setError(!valid);
+        onBlur && onBlur(event);
     };
 
     const handleOnChange = (fn?: OnChange) => (changed?: string) => {
@@ -59,6 +64,7 @@ export const DatePickerInput = ({
     return !flexBox ? (
         <div className={`date-picker-input ${error === true ? 'error' : ''}`}>
             {label && <Label htmlFor={htmlFor}>{label}</Label>}
+            <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
             {error && <small className="text-red">{'Not a valid date'}</small>}
             {!intialDefault && (
                 <DatePicker
@@ -108,6 +114,9 @@ export const DatePickerInput = ({
                         defaultValue={intialDefault}
                     />
                 )}
+            </Grid>
+            <Grid col={12}>
+                <ErrorMessage id={`${error}-message`}>{errorMessage}</ErrorMessage>
             </Grid>
         </Grid>
     );

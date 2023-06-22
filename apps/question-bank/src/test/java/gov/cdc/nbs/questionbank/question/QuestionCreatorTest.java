@@ -33,6 +33,7 @@ import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -289,6 +290,7 @@ class QuestionCreatorTest {
                         false,
                         null),
                 null,
+                QuestionType.TEXT,
                 null,
                 null,
                 null);
@@ -316,5 +318,14 @@ class QuestionCreatorTest {
 
         // when querying for the value set then an exception is thrown
         assertThrows(CreateQuestionException.class, ()-> creator.verifyValueSetExists(123L));
+    }
+
+    @Test
+    void should_throw_exception_if_class_code_values_not_found() {
+        // given NBS_CLASS_CODE value set does not exist
+        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.empty());
+
+        // when retrieving the codes, an exception is thrown
+        assertThrows(CreateQuestionException.class,() ->creator.getNbsClassCode());
     }
 }
