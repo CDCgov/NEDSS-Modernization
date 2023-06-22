@@ -1,26 +1,27 @@
 package gov.cdc.nbs.questionbank.pagerules.command;
 
+import java.util.List;
+
 public sealed interface RuleCommand {
     RuleData ruleData();
 
     public record AddTextRule(
-            String mask,
-            String fieldLength,
-            String defaultValue,
-
             RuleData ruleData
     ) implements RuleCommand{}
 
     public record RuleData(
             String ruleFunction,
             String ruleDescription,
+
             String source,
-            String anySourceValue,
-            String comparator,
+            String sourceIdentifier,
             String sourceValue,
+
+            boolean anySourceValue,
+            String comparator,
             String targetType,
-            String targetValue
-    ){}
+            List<String> targetValue
+    ) {}
 
 
 }

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PageRuleServiceImpl implements PageRuleService {
@@ -36,25 +38,24 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     RuleCommand.AddTextRule asAdd(CreateRuleRequest.ruleRequest request){
-
         return new RuleCommand.AddTextRule(
-                request.mask(),
-                request.fieldLength(),
-                request.defaultValue(),
                 ruleData(request)
         );
     }
 
     RuleCommand.RuleData ruleData(CreateRuleRequest createRuleRequest){
+        List<String> targetValuesList= createRuleRequest.targetValue();
+
         return new RuleCommand.RuleData(
                 createRuleRequest.ruleFunction(),
                 createRuleRequest.ruleDescription(),
                 createRuleRequest.source(),
+                createRuleRequest.sourceIdentifier(),
+                createRuleRequest.sourceValue(),
                 createRuleRequest.anySourceValue(),
                 createRuleRequest.comparator(),
-                createRuleRequest.sourceValue(),
                 createRuleRequest.targetType(),
-                createRuleRequest.targetValue()
+                targetValuesList
         );
     }
 }
