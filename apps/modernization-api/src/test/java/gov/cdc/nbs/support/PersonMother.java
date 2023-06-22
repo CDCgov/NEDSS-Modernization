@@ -90,6 +90,7 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddName(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 firstName,
                 middleName,
                 lastName,
@@ -161,6 +162,7 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddName(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 "Jane",
                 "S",
                 "Doe",

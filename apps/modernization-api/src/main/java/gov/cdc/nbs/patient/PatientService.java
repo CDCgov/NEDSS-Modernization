@@ -17,7 +17,6 @@ import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.event.PatientRequest;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.message.util.Constants;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
@@ -417,34 +416,6 @@ public class PatientService {
             return sendPatientEvent(event);
         }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
 
-    }
-
-    public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateSexAndBirthEvent = SexAndBirthInput.toRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            person.update(new PatientCommand.UpdateSexAndBirthInfo(
-                person.getId(),
-                input.getAsOf(),
-                input.getDateOfBirth(),
-                input.getBirthGender(),
-                input.getCurrentGender(),
-                input.getAdditionalGender(),
-                input.getTransGenderInfo(),
-                input.getBirthCity(),
-                input.getBirthCntry(),
-                input.getBirthState(),
-                input.getBirthOrderNbr(),
-                input.getMultipleBirth(),
-                input.getSexUnknown(),
-                input.getCurrentAge(),
-                input.getAgeReportedTime(),
-                user.getId(),
-                Instant.now()
-            ));
-            personRepository.save(person);
-            return sendPatientEvent(updateSexAndBirthEvent);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
     }
 
     private PatientEventResponse sendPatientEvent(PatientRequest request) {

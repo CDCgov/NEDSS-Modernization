@@ -1,11 +1,8 @@
 package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.support.PersonMother;
-import gov.cdc.nbs.support.util.PersonUtil;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +29,9 @@ public class PatientUpdateSteps {
     public void i_send_a_update_general_info_patient_request(final String updateType) {
         PatientIdentifier patient = patients.one();
         try {
-            switch (updateType) {
-                case "sex and birth" -> {
-                    input = PersonUtil.convertToSexAndBirthInput(PersonMother.generateRandomPerson(patient.id()));
-                    response = patientController.updatePatientSexBirth((SexAndBirthInput) input);
-                }
-                case "administrative" -> {
-                    input = createAdministrativeInput(patient.id());
-                    response = patientController.updateAdministrative((AdministrativeInput) input);
-                }
+            if (updateType.equals("administrative")) {
+                input = createAdministrativeInput(patient.id());
+                response = patientController.updateAdministrative((AdministrativeInput) input);
             }
         } catch (AccessDeniedException e) {
             accessDeniedException = e;
