@@ -207,7 +207,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/1038509/status",
+					"raw": "localhost:8095/api/v1/questions/1038510/status",
 					"host": [
 						"localhost"
 					],
@@ -216,8 +216,44 @@
 						"api",
 						"v1",
 						"questions",
-						"1038509",
+						"1038510",
 						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"pageData\": {\n    \"direction\": \"ASC\",\n    \"page\": 0,\n    \"pageSize\": 10,\n    \"sort\": \"id\"\n  },\n  \"search\": \"GA1404\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"search"
 					]
 				}
 			},
