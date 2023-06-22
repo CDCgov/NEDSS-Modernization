@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 export type Data = {
     title?: string;
-    text?: string;
+    text?: string | null | undefined;
 };
 
 export type Props = {

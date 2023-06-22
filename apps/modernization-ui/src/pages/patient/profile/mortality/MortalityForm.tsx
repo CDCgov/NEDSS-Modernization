@@ -3,46 +3,45 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
-import { useCountyCodedValues } from 'location';
-import { Deceased, InputMaybe, Scalars } from 'generated/graphql/schema';
-import { usePatientSexBirthCodedValues } from '../sexBirth/usePatientSexBirthCodedValues';
-import { useState } from 'react';
+import { useCountyCodedValues, useLocationCodedValues } from 'location';
+import { Indicator, indicators } from 'coded';
+import { orNull } from 'utils';
 
 type Props = {
-    entry?: MortalityEntry | null;
-    onChanged?: (updated: MortalityEntry) => void;
-    onCancel?: () => void;
+    entry: MortalityEntry;
+    onChanged: (updated: MortalityEntry) => void;
+    onCancel: () => void;
 };
 
 export type MortalityEntry = {
-    asOf?: InputMaybe<Scalars['DateTime']>;
-    deceased?: string | null;
-    deceasedTime?: string | null;
-    cityOfDeath?: string | null;
-    stateOfDeath?: string | null;
-    countyOfDeath?: string | null;
-    countryOfDeath?: string | null;
+    asOf: string | null;
+    deceased: string | null;
+    deceasedOn: string | null;
+    city: string | null;
+    state: string | null;
+    county: string | null;
+    country: string | null;
 };
 
-export const MortalityForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
+export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
     const { handleSubmit, control } = useForm();
 
-    const selectedState = useWatch({ control, name: 'state' });
+    const selectedState = useWatch({ control, name: 'state', defaultValue: entry.state });
+    const selectedDeceased = useWatch({ control, name: 'deceased', defaultValue: entry.deceased });
 
-    const coded = usePatientSexBirthCodedValues();
+    const coded = useLocationCodedValues();
 
     const byState = useCountyCodedValues(selectedState);
-    const [isDead, setIsDead] = useState<any>();
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
-            asOf: entered?.asOf,
-            deceased: entered?.deceased,
-            deceasedTime: entered?.dod,
-            cityOfDeath: entered?.city,
-            stateOfDeath: entered?.state,
-            countyOfDeath: entered?.county,
-            countryOfDeath: entered?.country
+            asOf: entered.asOf,
+            deceased: entered.deceased,
+            deceasedOn: entered.deceasedOn,
+            city: entered.city,
+            state: orNull(entered.state),
+            county: orNull(entered.county),
+            country: orNull(entered.country)
         });
     };
 
@@ -56,9 +55,17 @@ export const MortalityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                     <Controller
                         control={control}
                         name="asOf"
-                        defaultValue={entry?.asOf}
-                        render={({ field: { onChange, value } }) => (
-                            <DatePickerInput defaultValue={value} onChange={onChange} name="asOf" htmlFor={'asOf'} />
+                        defaultValue={entry.asOf}
+                        rules={{ required: { value: true, message: 'As of date is requried.' } }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                name="asOf"
+                                htmlFor={'asOf'}
+                                errorMessage={error?.message}
+                            />
                         )}
                     />
                 </Grid>
@@ -70,128 +77,124 @@ export const MortalityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.deceased}
+                        defaultValue={entry.deceased}
                         name="deceased"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
-                                onChange={(e: any) => {
-                                    onChange(e);
-                                    setIsDead(e.target.value);
-                                }}
+                                onChange={onChange}
                                 htmlFor={'deceased'}
-                                options={Object.values(Deceased).map((deceased) => {
-                                    return {
-                                        name:
-                                            deceased === Deceased.N
-                                                ? 'No'
-                                                : deceased === Deceased.Y
-                                                ? 'Yes'
-                                                : 'Unknown',
-                                        value: deceased || ''
-                                    };
-                                })}
+                                options={indicators}
                             />
                         )}
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    Date of death:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="dod"
-                        defaultValue={entry?.deceasedTime}
-                        render={({ field: { onChange, value } }) => (
-                            <DatePickerInput
-                                disabled={isDead !== 'Y'}
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="dod"
-                                htmlFor={'dod'}
+            {selectedDeceased && selectedDeceased === Indicator.Yes && (
+                <>
+                    <Grid row className="flex-justify flex-align-center padding-2">
+                        <Grid col={6} className="margin-top-1">
+                            Date of death:
+                        </Grid>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                name="deceasedOn"
+                                defaultValue={entry?.deceasedOn}
+                                render={({ field: { onChange, value } }) => (
+                                    <DatePickerInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        name="deceasedOn"
+                                        htmlFor={'deceasedOn'}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    City of death:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="city"
-                        defaultValue={entry?.cityOfDeath}
-                        render={({ field: { onChange, value } }) => (
-                            <Input onChange={onChange} type="text" defaultValue={value} htmlFor="city" id="city" />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    State of death:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry?.stateOfDeath}
-                        name="state"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'state'}
-                                options={coded.states}
+                        </Grid>
+                    </Grid>
+                    <Grid row className="flex-justify flex-align-center padding-2">
+                        <Grid col={6} className="margin-top-1">
+                            City of death:
+                        </Grid>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                name="city"
+                                defaultValue={entry.city}
+                                render={({ field: { onChange, value } }) => (
+                                    <Input
+                                        onChange={onChange}
+                                        type="text"
+                                        defaultValue={value}
+                                        htmlFor="city"
+                                        id="city"
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    County of death:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="county"
-                        defaultValue={entry?.countyOfDeath}
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'county'}
-                                options={byState.counties}
+                        </Grid>
+                    </Grid>
+                    <Grid row className="flex-justify flex-align-center padding-2">
+                        <Grid col={6} className="margin-top-1">
+                            State of death:
+                        </Grid>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                defaultValue={entry.state}
+                                name="state"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'state'}
+                                        options={coded.states}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                </Grid>
-            </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2">
-                <Grid col={6} className="margin-top-1">
-                    Country of death:
-                </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry?.countryOfDeath}
-                        name="country"
-                        render={({ field: { onChange, value } }) => (
-                            <SelectInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                htmlFor={'country'}
-                                options={coded.countries}
+                        </Grid>
+                    </Grid>
+                    <Grid row className="flex-justify flex-align-center padding-2">
+                        <Grid col={6} className="margin-top-1">
+                            County of death:
+                        </Grid>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                name="county"
+                                defaultValue={entry.county}
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'county'}
+                                        options={byState.counties}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                </Grid>
-            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid row className="flex-justify flex-align-center padding-2">
+                        <Grid col={6} className="margin-top-1">
+                            Country of death:
+                        </Grid>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                defaultValue={entry.country}
+                                name="country"
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        htmlFor={'country'}
+                                        options={coded.countries}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                </>
+            )}
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
                     <Button type="button" className="margin-top-0" outline onClick={onCancel}>
