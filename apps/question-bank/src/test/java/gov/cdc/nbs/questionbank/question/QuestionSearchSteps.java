@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
@@ -35,11 +36,22 @@ public class QuestionSearchSteps {
         questionMother.dateQuestion();
     }
 
+    @Given("I get all questions")
+    public void i_get_all_questions() {
+        try {
+            Page<Question> results = controller.findAllQuestions(PageRequest.ofSize(20));
+            searchHolder.setQuestionResults(results);
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
+    }
 
     @Given("I search for questions")
     public void i_search_for_questions() {
         try {
-            Page<Question> results = controller.findQuestions(new FindQuestionRequest("", null));
+            Page<Question> results = controller.findQuestions(new FindQuestionRequest(""), PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -77,7 +89,7 @@ public class QuestionSearchSteps {
                 throw new IllegalArgumentException("Invalid search type specified");
         }
         try {
-            Page<Question> results = controller.findQuestions(new FindQuestionRequest(search, null));
+            Page<Question> results = controller.findQuestions(new FindQuestionRequest(search), PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
             searchHolder.setSearchQuestion(searchQuestion);
         } catch (AccessDeniedException e) {
