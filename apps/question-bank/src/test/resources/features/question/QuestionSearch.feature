@@ -21,6 +21,7 @@ Feature: Question search
             | name     |
             | id       |
             | local id |
+            | label    |
 
     Scenario: I cannot search without being logged in
         Given I am not logged in

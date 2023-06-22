@@ -70,6 +70,9 @@ public class QuestionSearchSteps {
             case "local id":
                 search = searchQuestion.getQuestionIdentifier();
                 break;
+            case "label":
+                search = searchQuestion.getQuestionLabel();
+                break;
             default:
                 throw new IllegalArgumentException("Invalid search type specified");
         }
