@@ -39,6 +39,7 @@ Feature: Create question
 
     Scenario: I cannot create a question with non unique fields
         Given I am an admin user
+        And No questions exist
         When I send a create "text" question request
         Then the "text" question is created
         When I send a create question request with duplicate "<field>"

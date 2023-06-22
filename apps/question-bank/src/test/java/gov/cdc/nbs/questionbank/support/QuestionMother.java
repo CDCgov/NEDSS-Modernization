@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
@@ -22,13 +23,20 @@ public class QuestionMother {
 
     public void clean() {
         histRepository.deleteAll();
-        questionRepository.deleteAll(allQuestions);
+        questionRepository.deleteAll(findAllTestQuestions());
         allQuestions.clear();
     }
 
     public WaQuestion textQuestion() {
-        return allQuestions.stream().filter(q -> q instanceof TextQuestionEntity).findFirst()
+        return allQuestions.stream()
+                .filter(q -> q instanceof TextQuestionEntity).findFirst()
                 .orElseGet(this::createTextQuestion);
+    }
+
+    public WaQuestion dateQuestion() {
+        return allQuestions.stream()
+                .filter(q -> q instanceof DateQuestionEntity).findFirst()
+                .orElseGet(this::createDateQuestion);
     }
 
     public WaQuestion one() {
@@ -41,6 +49,17 @@ public class QuestionMother {
         q = questionRepository.save(q);
         allQuestions.add(q);
         return q;
+    }
+
+    private WaQuestion createDateQuestion() {
+        WaQuestion q = QuestionEntityMother.dateQuestion();
+        q = questionRepository.save(q);
+        allQuestions.add(q);
+        return q;
+    }
+
+    private List<WaQuestion> findAllTestQuestions() {
+        return questionRepository.findAllByNameOrIdentifier("test", -1L, null).getContent();
     }
 }
 

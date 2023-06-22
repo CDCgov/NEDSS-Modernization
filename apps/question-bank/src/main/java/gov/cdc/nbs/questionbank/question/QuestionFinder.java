@@ -27,15 +27,29 @@ public class QuestionFinder {
 
     public Page<Question> find(FindQuestionRequest request) {
         Pageable pageable = toPageable(request.pageData());
-        Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifier(request.search(), pageable);
+        Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifier(
+                request.search(),
+                tryConvert(request.search()),
+                pageable);
         List<Question> questions = page.get().map(questionMapper::toQuestion).toList();
         return new PageImpl<>(questions, pageable, page.getTotalElements());
     }
 
-    private Pageable toPageable(PageData pageData) {
+    Long tryConvert(String search) {
+        try {
+            return Long.valueOf(search);
+        } catch (NumberFormatException e) {
+            return -1L;
+        }
+    }
+
+    Pageable toPageable(PageData pageData) {
+        if (pageData == null) {
+            return PageRequest.ofSize(25);
+        }
         return PageRequest.of(
                 pageData.page(),
-                pageData.pageSize() > 50 ? 50 : pageData.pageSize(),
+                pageData.pageSize() > 25 ? 25 : pageData.pageSize(),
                 pageData.direction(),
                 pageData.sort());
     }
