@@ -7,6 +7,11 @@ public enum Deceased {
 
     FALSE("false", "false") // this value may be bad data in the db restore
     ;
+
+    public static  Deceased resolve(final String value) {
+        return value == null ? null : Deceased.valueOf(value);
+    }
+
     private final String value;
     private final String display;
 

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.support;
+package gov.cdc.nbs.questionbank.question.util;
 
 import org.springframework.stereotype.Component;
 import lombok.Getter;

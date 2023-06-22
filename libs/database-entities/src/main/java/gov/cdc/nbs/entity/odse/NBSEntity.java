@@ -1,7 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import lombok.Getter;
 
 import javax.persistence.CascadeType;
@@ -65,6 +65,46 @@ public class NBSEntity {
         this(patient.person(), "PSN");
     }
 
+    public void update(
+        final PatientCommand.UpdateMortality info,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+
+        PostalEntityLocatorParticipation found = maybeMortalityLocator()
+            .orElseGet(() -> createMortalityLocator(info, identifierGenerator));
+
+        found.update(info);
+    }
+
+    private Optional<PostalEntityLocatorParticipation> maybeMortalityLocator() {
+        return this.ensureLocators()
+            .stream()
+            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .map(PostalEntityLocatorParticipation.class::cast)
+            .filter(participation -> Objects.equals("DTH", participation.getUseCd()))
+            .findFirst();
+    }
+
+    private PostalEntityLocatorParticipation createMortalityLocator(
+        final PatientCommand.UpdateMortality info,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(
+            this.id,
+            identifierGenerator.generate()
+        );
+
+        PostalEntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
+            this,
+            identifier,
+            info
+        );
+
+        ensureLocators().add(participation);
+
+        return participation;
+    }
+
     public EntityId add(final PatientCommand.AddIdentification added) {
 
         Collection<EntityId> existing = ensureEntityIds();
@@ -90,7 +130,7 @@ public class NBSEntity {
     public void update(final PatientCommand.UpdateIdentification info) {
 
         Collection<EntityId> existing = ensureEntityIds();
-        EntityIdId identifier = new EntityIdId(info.person(), (short)info.id());
+        EntityIdId identifier = new EntityIdId(info.person(), (short) info.id());
 
         existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst()
             .ifPresent(identification -> identification.update(info));
@@ -98,7 +138,7 @@ public class NBSEntity {
     }
 
     public void delete(final PatientCommand.DeleteIdentification info) {
-        ensureEntityIds().removeIf(existing -> Objects.equals(existing.getId().getEntityIdSeq(), (short)info.id()));
+        ensureEntityIds().removeIf(existing -> Objects.equals(existing.getId().getEntityIdSeq(), (short) info.id()));
     }
 
     public List<EntityId> getEntityIds() {
@@ -247,37 +287,6 @@ public class NBSEntity {
         boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
         this.entityLocatorParticipations = elps;
         return isDeleted;
-    }
-
-    public EntityLocatorParticipation add(final AddMortalityLocator mortality) {
-        List<EntityLocatorParticipation> locators = ensureLocators();
-        if (locators.stream().anyMatch(l -> l.getUseCd().equals("DTH"))) {
-            // a mortality locator already exists, do not allow adding another
-            throw new UnsupportedOperationException("Unable to add more than one mortality locator");
-        }
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
-
-        EntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
-            this,
-            identifier,
-            mortality);
-
-        locators.add(participation);
-
-        return participation;
-    }
-
-    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, mortality.id());
-        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
-        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        this.entityLocatorParticipations = elps;
-        return isDeleted;
-    }
-
-    public void setEntityLocatorParticipations(
-        List<EntityLocatorParticipation> entityLocatorParticipations) {
-        this.entityLocatorParticipations = entityLocatorParticipations;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
