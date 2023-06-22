@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.question;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,15 +15,17 @@ import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest.PageData;
 
 @Component
 public class QuestionFinder {
-
+    private final Integer maxPageSize;
     private final WaQuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
 
     public QuestionFinder(
             final WaQuestionRepository questionRepository,
-            final QuestionMapper questionMapper) {
+            final QuestionMapper questionMapper,
+            @Value("${nbs.max-page-size: 25}") Integer maxPageSize) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
+        this.maxPageSize = maxPageSize;
     }
 
     public Page<Question> find(FindQuestionRequest request) {
@@ -49,7 +52,7 @@ public class QuestionFinder {
         }
         return PageRequest.of(
                 pageData.page(),
-                pageData.pageSize() > 25 ? 25 : pageData.pageSize(),
+                pageData.pageSize() > maxPageSize ? maxPageSize : pageData.pageSize(),
                 pageData.direction(),
                 pageData.sort());
     }
