@@ -66,6 +66,45 @@ public class NBSEntity {
     }
 
     public void update(
+        final PatientCommand.UpdateBirth birth,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        PostalEntityLocatorParticipation found = maybeBirthLocator()
+            .orElseGet(() -> createBirthLocator(birth, identifierGenerator));
+
+        found.update(birth);
+    }
+
+    private Optional<PostalEntityLocatorParticipation> maybeBirthLocator() {
+        return this.ensureLocators()
+            .stream()
+            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .map(PostalEntityLocatorParticipation.class::cast)
+            .filter(participation -> Objects.equals("BIR", participation.getUseCd()))
+            .findFirst();
+    }
+
+    private PostalEntityLocatorParticipation createBirthLocator(
+        final PatientCommand.UpdateBirth changes,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(
+            this.id,
+            identifierGenerator.generate()
+        );
+
+        PostalEntityLocatorParticipation participation = new PostalEntityLocatorParticipation(
+            this,
+            identifier,
+            changes
+        );
+
+        ensureLocators().add(participation);
+
+        return participation;
+    }
+
+    public void update(
         final PatientCommand.UpdateMortality info,
         final AddressIdentifierGenerator identifierGenerator
     ) {

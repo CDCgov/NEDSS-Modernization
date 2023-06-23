@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
 import { AdministrativeEntry } from './administrative';
@@ -31,14 +31,17 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                             control={control}
                             name="administrativeDate"
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="administrativeDate"
                                     htmlFor={'administrativeDate'}
                                     label="Administrative as of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -48,7 +51,8 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                             control={control}
                             defaultValue={entry?.comment}
                             name="additionalComments"
-                            render={({ field: { onChange } }) => (
+                            rules={{ required: { value: true, message: 'Comment is required.' } }}
+                            render={({ field: { onChange }, fieldState: { error } }) => (
                                 <Grid row>
                                     <Grid col={6} className="flex-align-self-center">
                                         <Label htmlFor={'additionalComments'}>Additional comments:</Label>
@@ -61,6 +65,11 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                                             id={'additionalComments'}
                                         />
                                     </Grid>
+                                    {error && (
+                                        <Grid col={12}>
+                                            <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>
+                                        </Grid>
+                                    )}
                                 </Grid>
                             )}
                         />

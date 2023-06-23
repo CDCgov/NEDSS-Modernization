@@ -2,6 +2,7 @@ package gov.cdc.nbs.support.util;
 
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Indicator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,6 +127,14 @@ public class RandomUtil {
 
     public static Gender gender() {
         return getRandomFromArray(Gender.values());
+    }
+
+    public static String maybeGender() {
+        return maybeOneFrom(Gender.U.value(), Gender.F.value(), Gender.M.value());
+    }
+
+    public static String mabyeIndicator() {
+        return maybeOneFrom(Indicator.NO.getId(), Indicator.YES.getId(), Indicator.UNKNOWN.getId());
     }
 
     public static String country() {

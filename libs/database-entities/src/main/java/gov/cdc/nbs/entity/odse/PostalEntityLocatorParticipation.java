@@ -54,6 +54,19 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     public PostalEntityLocatorParticipation(
         final NBSEntity nbs,
         final EntityLocatorParticipationId identifier,
+        final PatientCommand.UpdateBirth birth
+    ) {
+        super(birth, nbs, identifier);
+        this.cd = "F";
+        this.useCd = "BIR";
+        this.asOfDate = birth.asOf();
+
+        this.locator = new PostalLocator(identifier.getLocatorUid(), birth);
+    }
+
+    public PostalEntityLocatorParticipation(
+        final NBSEntity nbs,
+        final EntityLocatorParticipationId identifier,
         final PatientCommand.UpdateMortality mortality
     ) {
         super(mortality, nbs, identifier);
@@ -72,6 +85,12 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
         this.locator.update(update);
 
         changed(update);
+    }
+
+    public void update(final PatientCommand.UpdateBirth birth) {
+        this.asOfDate = birth.asOf();
+        this.locator.update(birth);
+        changed(birth);
     }
 
     public void update(final PatientCommand.UpdateMortality mortality) {

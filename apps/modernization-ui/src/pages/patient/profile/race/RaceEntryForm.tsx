@@ -13,7 +13,8 @@ type EntryProps = {
 };
 
 export const RaceEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const { handleSubmit, control } = useForm();
+    const methods = useForm({ mode: 'onBlur' });
+    const { handleSubmit, control } = methods;
 
     const categories = useRaceCodedValues();
 
@@ -38,16 +39,18 @@ export const RaceEntryForm = ({ action, entry, onChange, onCancel }: EntryProps)
                         <Controller
                             control={control}
                             name="asOf"
-                            rules={{ required: true }}
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
+                                    onBlur={onBlur}
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -56,16 +59,18 @@ export const RaceEntryForm = ({ action, entry, onChange, onCancel }: EntryProps)
                         <Controller
                             control={control}
                             name="category"
-                            rules={{ required: true }}
+                            rules={{ required: { value: true, message: 'Race is required.' } }}
                             defaultValue={entry.category}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
+                                    onBlur={onBlur}
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
                                     htmlFor={'category'}
                                     label="Race"
                                     options={categories}
+                                    error={error?.message}
                                 />
                             )}
                         />

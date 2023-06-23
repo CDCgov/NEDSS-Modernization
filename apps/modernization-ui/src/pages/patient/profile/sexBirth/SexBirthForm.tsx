@@ -5,34 +5,52 @@ import { usePatientSexBirthCodedValues } from 'pages/patient/profile/sexBirth/us
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { InputMaybe, Scalars } from 'generated/graphql/schema';
+import { maybeNumber, orNull } from 'utils';
+import { calculateAge, externalizeDate, externalizeDateTime } from 'date';
+import { useMemo } from 'react';
+
+const UNKNOWN_GENDER = 'U';
+
+type BirthEntry = {
+    bornOn: string | null;
+    gender: string | null;
+    multipleBirth: string | null;
+    birthOrder: number | null;
+    city: string | null;
+    state: string | null;
+    county: string | null;
+    country: string | null;
+};
+
+type GenderEntry = {
+    current: string | null;
+    unknownReason: string | null;
+    preferred: string | null;
+    additional: string | null;
+};
+
+export type BirthAndGenderEntry = {
+    asOf: string | null;
+    birth: BirthEntry;
+    gender: GenderEntry;
+};
 
 type Props = {
-    entry?: SexAndEntry | null;
-    onChanged?: (updated: SexAndEntry) => void;
-    onCancel?: () => void;
+    entry: BirthAndGenderEntry;
+    onChanged: (updated: BirthAndGenderEntry) => void;
+    onCancel: () => void;
 };
 
-export type SexAndEntry = {
-    additionalGender?: InputMaybe<Scalars['String']>;
-    asOf?: InputMaybe<Scalars['DateTime']>;
-    birthCity?: InputMaybe<Scalars['String']>;
-    birthCntry?: InputMaybe<Scalars['String']>;
-    birthGender?: string | null;
-    birthOrderNbr?: InputMaybe<Scalars['Int']>;
-    birthState?: InputMaybe<Scalars['String']>;
-    currentAge?: number | null;
-    currentGender?: string | null;
-    dateOfBirth?: InputMaybe<Scalars['Date']>;
-    multipleBirth?: InputMaybe<Scalars['String']>;
-    sexUnknown?: InputMaybe<Scalars['String']>;
-    transGenderInfo?: InputMaybe<Scalars['String']>;
-};
+export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
+    const { handleSubmit, control } = useForm({ mode: 'onBlur' });
 
-export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
-    const { handleSubmit, control } = useForm();
+    const currentBirthday = useWatch({ control, name: 'bornOn', defaultValue: entry.birth.bornOn });
 
-    const selectedState = useWatch({ control, name: 'bState' });
+    const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
+
+    const selectedCurrentGender = useWatch({ control, name: 'currentGender', defaultValue: entry.gender.current });
+
+    const selectedState = useWatch({ control, name: 'state', defaultValue: entry.birth.state });
 
     const coded = usePatientSexBirthCodedValues();
 
@@ -40,19 +58,23 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
-            asOf: entered?.asOf,
-            dateOfBirth: entered?.dateOfBirth,
-            currentAge: entered?.age,
-            currentGender: entered?.gender,
-            sexUnknown: entered?.sexUnknown,
-            transGenderInfo: entered?.transGenderInfo,
-            additionalGender: entered?.addGender,
-            birthGender: entered?.birthGender,
-            multipleBirth: entered?.multipleBirth,
-            birthOrderNbr: entered?.birthOrderNbr,
-            birthCity: entered?.bCity,
-            birthCntry: entered?.bCountry,
-            birthState: entered?.bState
+            asOf: externalizeDateTime(entered.asOf),
+            birth: {
+                bornOn: externalizeDate(entered.bornOn),
+                gender: orNull(entered.birthGender),
+                multipleBirth: orNull(entered.multipleBirth),
+                birthOrder: maybeNumber(entered.birthOrder),
+                city: entered.city,
+                state: orNull(entered.state),
+                county: orNull(entered.county),
+                country: orNull(entered.country)
+            },
+            gender: {
+                current: orNull(entered.currentGender),
+                unknownReason: orNull(entered.unknownGenderReason),
+                preferred: orNull(entered.preferredGender),
+                additional: entered.additionalGender
+            }
         });
     };
 
@@ -66,9 +88,17 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                     <Controller
                         control={control}
                         name="asOf"
-                        defaultValue={entry?.asOf}
-                        render={({ field: { onChange, value } }) => (
-                            <DatePickerInput defaultValue={value} onChange={onChange} name="asOf" htmlFor={'asOf'} />
+                        defaultValue={entry.asOf}
+                        rules={{ required: { value: true, message: 'As of date is required.' } }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                name="asOf"
+                                htmlFor={'asOf'}
+                                errorMessage={error?.message}
+                            />
                         )}
                     />
                 </Grid>
@@ -80,14 +110,14 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="dateOfBirth"
-                        defaultValue={entry?.dateOfBirth}
+                        name="bornOn"
+                        defaultValue={entry.birth.bornOn}
                         render={({ field: { onChange, value } }) => (
                             <DatePickerInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="dateOfBirth"
-                                htmlFor={'dateOfBirth'}
+                                name="bornOn"
+                                htmlFor={'bornOn'}
                             />
                         )}
                     />
@@ -97,23 +127,7 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6} className="margin-top-1">
                     Current age:
                 </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="age"
-                        defaultValue={entry?.currentAge}
-                        render={({ field: { onChange, value } }) => (
-                            <Input
-                                placeholder="No data"
-                                onChange={onChange}
-                                type="text"
-                                defaultValue={value}
-                                htmlFor="age"
-                                id="age"
-                            />
-                        )}
-                    />
-                </Grid>
+                <Grid col={6}>{age}</Grid>
             </Grid>
             <Grid row className="flex-justify flex-align-center padding-2">
                 <Grid col={6} className="margin-top-1">
@@ -122,14 +136,14 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="gender"
-                        defaultValue={entry?.currentGender}
+                        name="currentGender"
+                        defaultValue={entry.gender.current}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="gender"
-                                htmlFor={'gender'}
+                                name="currentGender"
+                                htmlFor={'currentGender'}
                                 options={coded.genders}
                             />
                         )}
@@ -143,14 +157,15 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="sexUnknown"
-                        defaultValue={entry?.sexUnknown}
+                        name="unknownGenderReason"
+                        defaultValue={entry.gender.unknownReason}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
+                                disabled={selectedCurrentGender !== UNKNOWN_GENDER}
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="sexUnknown"
-                                htmlFor={'sexUnknown'}
+                                name="unknownGenderReason"
+                                htmlFor={'unknownGenderReason'}
                                 options={coded.genderUnknownReasons}
                             />
                         )}
@@ -164,14 +179,14 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.transGenderInfo}
-                        name="transGenderInfo"
+                        defaultValue={entry.gender.preferred}
+                        name="preferredGender"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                name="transGenderInfo"
-                                htmlFor={'transGenderInfo'}
+                                name="preferredGender"
+                                htmlFor={'preferredGender'}
                                 options={coded.preferredGenders}
                             />
                         )}
@@ -185,16 +200,16 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.additionalGender}
-                        name="addGender"
+                        defaultValue={entry.gender.additional}
+                        name="additionalGender"
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="No data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
-                                htmlFor="addGender"
-                                id="addGender"
+                                htmlFor="additionalGender"
+                                id="additionalGender"
                             />
                         )}
                     />
@@ -207,7 +222,7 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.birthGender}
+                        defaultValue={entry.birth.gender}
                         name="birthGender"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
@@ -229,7 +244,7 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                     <Controller
                         control={control}
                         name="multipleBirth"
-                        defaultValue={entry?.multipleBirth}
+                        defaultValue={entry.birth.multipleBirth}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
@@ -249,16 +264,19 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.birthOrderNbr}
-                        name="birthOrderNbr"
-                        render={({ field: { onChange, value } }) => (
+                        defaultValue={entry.birth.birthOrder}
+                        name="birthOrder"
+                        rules={{ min: { value: 0, message: 'Must be a positive number' } }}
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
                                 placeholder="No data"
                                 onChange={onChange}
-                                type="text"
+                                onBlur={onBlur}
+                                type="number"
                                 defaultValue={value}
-                                htmlFor="birthOrderNbr"
-                                id="birthOrderNbr"
+                                htmlFor="birthOrder"
+                                id="birthOrder"
+                                error={error?.message}
                             />
                         )}
                     />
@@ -271,16 +289,16 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="bCity"
-                        defaultValue={entry?.birthCity}
+                        name="city"
+                        defaultValue={entry.birth.city}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="No data"
                                 onChange={onChange}
                                 type="text"
                                 defaultValue={value}
-                                htmlFor="bCity"
-                                id="bCity"
+                                htmlFor="city"
+                                id="city"
                             />
                         )}
                     />
@@ -293,13 +311,13 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.birthState}
-                        name="bState"
+                        defaultValue={entry.birth.state}
+                        name="state"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                htmlFor={'bState'}
+                                htmlFor={'state'}
                                 options={coded.states}
                             />
                         )}
@@ -313,12 +331,13 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        name="bCounty"
+                        name="county"
+                        defaultValue={entry.birth.county}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                htmlFor={'bCounty'}
+                                htmlFor={'county'}
                                 options={byState.counties}
                             />
                         )}
@@ -332,13 +351,13 @@ export const SexBirthForm = ({ entry, onChanged = () => {}, onCancel = () => {} 
                 <Grid col={6}>
                     <Controller
                         control={control}
-                        defaultValue={entry?.birthCntry}
-                        name="bCountry"
+                        defaultValue={entry.birth.country}
+                        name="country"
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 defaultValue={value}
                                 onChange={onChange}
-                                htmlFor={'bCountry'}
+                                htmlFor={'country'}
                                 options={coded.countries}
                             />
                         )}

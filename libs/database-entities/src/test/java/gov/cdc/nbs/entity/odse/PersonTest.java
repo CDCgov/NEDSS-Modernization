@@ -6,10 +6,10 @@ import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
@@ -19,13 +19,11 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -695,6 +693,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -772,6 +771,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -839,6 +839,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -852,6 +853,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "Other-First",
                 "Other-Middle",
                 "Other-Last",
@@ -880,12 +882,13 @@ class PersonTest {
     }
 
     @Test
-    void should_start_name_sequence_at_one() {
+    void should_add_minimal_name_at_sequence_one() {
         Person actual = new Person(117L, "local-id-value");
 
         actual.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -898,6 +901,7 @@ class PersonTest {
 
         assertThat(actual.getNames()).satisfiesExactly(
             actual_primary -> assertThat(actual_primary)
+                .returns(Instant.parse("2021-05-15T10:00:00Z"), PersonName::getAsOfDate)
                 .returns("First", PersonName::getFirstNm)
                 .returns("Middle", PersonName::getMiddleNm)
                 .returns("Last", PersonName::getLastNm)
@@ -917,6 +921,7 @@ class PersonTest {
         actual.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -928,6 +933,7 @@ class PersonTest {
         actual.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "Other",
                 "OtherMiddle",
                 "OtherLast",
@@ -1481,7 +1487,7 @@ class PersonTest {
             "marital status",
             "mothers maiden name",
             1,
-             2,
+            2,
             "occupation code",
             "education level",
             "prim language",
@@ -1496,8 +1502,8 @@ class PersonTest {
             .returns(Instant.parse("2010-03-03T10:15:30.00Z"), Person::getAsOfDateGeneral)
             .returns("marital status", Person::getMaritalStatusCd)
             .returns("mothers maiden name", Person::getMothersMaidenNm)
-            .returns((short)1, Person::getAdultsInHouseNbr)
-            .returns((short)2, Person::getChildrenInHouseNbr)
+            .returns((short) 1, Person::getAdultsInHouseNbr)
+            .returns((short) 2, Person::getChildrenInHouseNbr)
             .returns("occupation code", Person::getOccupationCd)
             .returns("education level", Person::getEducationLevelCd)
             .returns("prim language", Person::getPrimLangCd)
@@ -1508,52 +1514,6 @@ class PersonTest {
         ;
     }
 
-    @Test
-    void should_set_birth_and_sex_fields() {
-        final String asOf = "2012-03-03T10:15:30.00Z";
-        final String dob = "2012-03-03";
-        final String ageReportedTime = "1990-04-05T10:15:30.00Z";
-        final String requestedOn = "2020-04-05T10:15:30.00Z";
-        Person actual = new Person(121L, "local-id-value");
-        PatientCommand.UpdateSexAndBirthInfo command = new UpdateSexAndBirthInfo(
-            123L,
-            Instant.parse(asOf),
-            LocalDate.parse(dob),
-            Gender.F,
-            Gender.M,
-            "additional gender info",
-            "trans info",
-            "birth city",
-            "birth Cntry",
-            "birth state",
-            (short) 1,
-            "multiple birth",
-            "sex unknown",
-            "current age",
-            Instant.parse(ageReportedTime),
-            321L,
-            Instant.parse(requestedOn));
-
-        actual.update(command);
-
-        assertEquals(command.birthGender(), actual.getBirthGenderCd());
-        assertEquals(command.currentGender(), actual.getCurrSexCd());
-        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneId.systemDefault())).isEqualTo(dob);
-        assertThat(actual.getAsOfDateSex()).isEqualTo(asOf);
-        assertEquals(command.currentAge(), actual.getAgeReported());
-        assertThat(actual.getAgeReportedTime()).isEqualTo(ageReportedTime);
-        assertEquals(command.birthCity(), actual.getBirthCityCd());
-        assertEquals(command.birthCntry(), actual.getBirthCntryCd());
-        assertEquals(command.birthState(), actual.getBirthStateCd());
-        assertEquals(command.birthOrderNbr(), actual.getBirthOrderNbr());
-        assertEquals(command.multipleBirth(), actual.getMultipleBirthInd());
-        assertEquals(command.sexUnknown(), actual.getSexUnkReasonCd());
-        assertEquals(command.additionalGender(), actual.getAdditionalGenderCd());
-        assertEquals(command.transGenderInfo(), actual.getPreferredGenderCd());
-        assertEquals((short) 2, actual.getVersionCtrlNbr());
-        assertThat(actual.getLastChgTime()).isEqualTo(requestedOn);
-    }
-    
     @Test
     void should_change_ethnicity() {
 
@@ -1802,14 +1762,14 @@ class PersonTest {
 
         patient.update(
             new PatientCommand.UpdateIdentification(
-                    117L,
-                    1,
-                    Instant.parse("2001-05-19T11:59:00Z"),
-                    "updated-identification-value",
-                    "updated-authority-value",
-                    "updated-identification-type",
-                    171L,
-                    Instant.parse("2020-03-13T13:15:30Z")
+                117L,
+                1,
+                Instant.parse("2001-05-19T11:59:00Z"),
+                "updated-identification-value",
+                "updated-authority-value",
+                "updated-identification-type",
+                171L,
+                Instant.parse("2020-03-13T13:15:30Z")
             )
         );
 
@@ -2151,4 +2111,119 @@ class PersonTest {
         ;
     }
 
+    @Test
+    void should_update_patient_gender() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.update(
+            new PatientCommand.UpdateGender(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                Gender.U.value(),
+                "gender-unknown-reason",
+                "gender-preferred",
+                "gender-additional",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
+            .returns(Gender.U, Person::getCurrSexCd)
+            .returns("gender-unknown-reason", Person::getSexUnkReasonCd)
+            .returns("gender-preferred", Person::getPreferredGenderCd)
+            .returns("gender-additional", Person::getAdditionalGenderCd)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+        ;
+
+    }
+
+    @Test
+    void should_update_patient_birth() {
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateBirth(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(1949, 10, 15),
+                Gender.U.value(),
+                Indicator.NO.getId(),
+                17,
+                null,
+                null,
+                null,
+                null,
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
+            .returns(Instant.parse("1949-10-15T00:00:00Z"), Person::getBirthTime)
+            .returns(Gender.U, Person::getBirthGenderCd)
+            .returns((short) 17, Person::getBirthOrderNbr)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+        ;
+    }
+
+    @Test
+    void should_update_patient_birth_with_location() {
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateBirth(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                null,
+                null,
+                null,
+                null,
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .satisfies(
+                actual -> assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address -> assertThat(address)
+                            .returns("F", PostalEntityLocatorParticipation::getCd)
+                            .returns("BIR", PostalEntityLocatorParticipation::getUseCd)
+                            .extracting(PostalEntityLocatorParticipation::getLocator)
+                            .returns("city", PostalLocator::getCityDescTxt)
+                            .returns("state", PostalLocator::getStateCd)
+                            .returns("county", PostalLocator::getCntyCd)
+                            .returns("country", PostalLocator::getCntryCd)
+                    )
+            )
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+        ;
+    }
 }

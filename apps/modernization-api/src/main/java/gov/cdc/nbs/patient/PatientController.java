@@ -7,7 +7,6 @@ import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
 import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
 import gov.cdc.nbs.model.PatientEventResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -64,12 +63,6 @@ public class PatientController {
     @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
     public PatientEventResponse updateAdministrative(@Argument AdministrativeInput input) {
         return patientService.updateAdministrative(input);
-    }
-
-    @MutationMapping()
-    @PreAuthorize(FIND_AND_EDIT_AND_VIEW)
-    public PatientEventResponse updatePatientSexBirth(@Argument SexAndBirthInput input) {
-        return patientService.updatePatientSexBirth(input);
     }
 
 }

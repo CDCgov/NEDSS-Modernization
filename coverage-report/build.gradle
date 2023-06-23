@@ -18,7 +18,6 @@ dependencies {
     jacocoAggregation project(':authentication')
 
     jacocoAggregation project(':modernization-api')
-    jacocoAggregation project(':patient-listener')
     jacocoAggregation project(':question-bank')
 }
 

@@ -186,6 +186,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                                 </Button>
                                 {isActions === index && (
                                     <ActionState
+                                        notDeletable
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
                                             tableActionStateAdapter(actions, administrative)(type);

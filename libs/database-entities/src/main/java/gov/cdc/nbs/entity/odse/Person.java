@@ -31,7 +31,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -408,10 +408,7 @@ public class Person {
 
         this.nbsEntity = new NBSEntity(patient);
 
-        if (patient.dateOfBirth() != null) {
-            this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneOffset.UTC).toInstant();
-            this.birthTimeCalc = this.birthTime;
-        }
+        resolveDateOfBirth(patient.dateOfBirth());
 
         this.birthGenderCd = patient.birthGender();
         this.currSexCd = patient.currentGender();
@@ -441,6 +438,15 @@ public class Person {
         this.lastChgTime = patient.requestedOn();
         this.lastChgUserId = patient.requester();
 
+    }
+
+    private void resolveDateOfBirth(final LocalDate dateOfBirth) {
+        if (dateOfBirth != null) {
+            this.birthTime = dateOfBirth.atStartOfDay(ZoneOffset.UTC).toInstant();
+        } else {
+            this.birthTime = null;
+        }
+        this.birthTimeCalc = this.birthTime;
     }
 
     public Person revise(final PatientCommand.Revise revise) {
@@ -630,23 +636,30 @@ public class Person {
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateSexAndBirthInfo info) {
-        this.setBirthGenderCd(info.birthGender());
-        this.setCurrSexCd(info.currentGender());
-        this.setBirthTime(info.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        this.setAsOfDateSex(info.asOf());
-        this.setAgeReported(info.currentAge());
-        this.setAgeReportedTime(info.ageReportedTime());
-        this.setBirthCityCd(info.birthCity());
-        this.setBirthCntryCd(info.birthCntry());
-        this.setBirthStateCd(info.birthState());
-        this.setBirthOrderNbr(info.birthOrderNbr());
-        this.setMultipleBirthInd(info.multipleBirth());
-        this.setSexUnkReasonCd(info.sexUnknown());
-        this.setAdditionalGenderCd(info.additionalGender());
-        this.setPreferredGenderCd(info.transGenderInfo());
+    public void update(
+        final PatientCommand.UpdateBirth birth,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        this.asOfDateSex = birth.asOf();
+        resolveDateOfBirth(birth.bornOn());
+        this.birthGenderCd = Gender.resolve(birth.gender());
+        this.multipleBirthInd = birth.multipleBirth();
+        this.birthOrderNbr = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
 
-        changed(info);
+        this.nbsEntity.update(birth, identifierGenerator);
+
+        changed(birth);
+    }
+
+    public void update(final PatientCommand.UpdateGender changes) {
+
+        this.asOfDateSex = changes.asOf();
+        this.currSexCd = Gender.resolve(changes.current());
+        this.sexUnkReasonCd = changes.unknownReason();
+        this.preferredGenderCd = changes.preferred();
+        this.additionalGenderCd = changes.additional();
+
+        changed(changes);
     }
 
     public void update(
