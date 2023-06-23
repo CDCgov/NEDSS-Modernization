@@ -32,10 +32,11 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                             name="administrativeDate"
                             defaultValue={entry.asOf}
                             rules={{ required: { value: true, message: 'As of date is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="administrativeDate"
                                     htmlFor={'administrativeDate'}

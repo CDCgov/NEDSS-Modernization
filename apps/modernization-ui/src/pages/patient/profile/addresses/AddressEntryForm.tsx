@@ -40,10 +40,11 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             name="asOf"
                             rules={{ required: { value: true, message: 'As of date is required.' } }}
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
