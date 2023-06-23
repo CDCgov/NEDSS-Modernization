@@ -13,6 +13,11 @@ http:
     modernization-nbs-api:
       service: modernization-api
       rule: "PathPrefix(`/nbs/api`)"
+    address-api:
+      service: cdc-address-api
+      rule: "PathPrefix(`/nbs/address`)"
+      middlewares:
+        - "addressStripprefix"
     # Base /nbs forward
     nbsForward:
       service: nbs
@@ -95,6 +100,10 @@ http:
       service: nbs
       rule: "Path(`/images/nedssLogo.jpg`)"
   middlewares:
+    addressStripprefix:
+      stripPrefix:
+        prefixes:
+          - "/nbs/address"
     simpleSearchRewritepath:
       replacePath:
         path: /nbs/redirect/simpleSearch
@@ -133,3 +142,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://wildfly:7001/"
+    cdc-address-api:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "CDC-ADDRESS-API_SERVER" | default "cdc-address-api" }}:{{ env "CDC-ADDRESS-API_PORT" | default "8080" }}/'
