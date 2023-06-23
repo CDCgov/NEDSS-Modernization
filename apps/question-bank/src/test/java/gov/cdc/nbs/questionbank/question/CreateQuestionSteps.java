@@ -17,7 +17,8 @@ import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
-import gov.cdc.nbs.questionbank.support.ExceptionHolder;
+import gov.cdc.nbs.questionbank.question.util.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
@@ -27,6 +28,9 @@ import io.cucumber.java.en.When;
 public class CreateQuestionSteps {
     @Autowired
     private UserMother userMother;
+
+    @Autowired
+    private QuestionMother questionMother;
 
     @Autowired
     private ExceptionHolder exceptionHolder;
@@ -44,7 +48,7 @@ public class CreateQuestionSteps {
 
     @Given("No questions exist")
     public void no_questions_exist() {
-        questionRepository.deleteAll();
+        questionMother.clean();
     }
 
     @Given("I am an admin user")
@@ -98,14 +102,14 @@ public class CreateQuestionSteps {
             case "question name":
                 request = QuestionRequestMother.custom(
                         existing.getQuestionNm(),
-                        "someIdentifier",
+                        "testsomeIdentifier",
                         "test_custom_col_name",
                         "CUSTOM_RDB_TABLE_NAME",
                         "custom_rdb_col_name");
                 break;
             case "question identifier":
                 request = QuestionRequestMother.custom(
-                        "custom question nm",
+                        "test custom question nm",
                         existing.getQuestionIdentifier(),
                         "test_custom_col_name",
                         "CUSTOM_RDB_TABLE_NAME",
@@ -113,8 +117,8 @@ public class CreateQuestionSteps {
                 break;
             case "data mart column name":
                 request = QuestionRequestMother.custom(
-                        "custom question nm",
-                        "someIdentifier",
+                        "testcustom question nm",
+                        "testsomeIdentifier",
                         existing.getUserDefinedColumnNm(),
                         "CUSTOM_RDB_TABLE_NAME",
                         "custom_rdb_col_name");
@@ -122,7 +126,7 @@ public class CreateQuestionSteps {
             case "rdb column name":
                 request = QuestionRequestMother.custom(
                         existing.getQuestionNm(),
-                        "someIdentifier",
+                        "testsomeIdentifier",
                         "test_custom_col_name",
                         "CUSTOM_RDB_TABLE_NAME",
                         existing.getRdbColumnNm().replace(existing.getRdbTableNm() + "_", ""));
