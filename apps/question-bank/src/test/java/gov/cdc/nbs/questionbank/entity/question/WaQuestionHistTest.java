@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.entity.question;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import org.junit.jupiter.api.Test;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
@@ -47,6 +48,9 @@ class WaQuestionHistTest {
             public String getDataType() {
                 return "Test";
             }
+
+            @Override
+            public void update(Update command) {}
         };
 
         assertThrows(UpdateQuestionException.class, () -> new WaQuestionHist(question));

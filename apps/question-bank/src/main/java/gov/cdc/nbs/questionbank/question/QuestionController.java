@@ -18,7 +18,9 @@ import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.QuestionStatusRequest;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
+import gov.cdc.nbs.questionbank.question.response.GetQuestionResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -71,6 +73,25 @@ public class QuestionController {
         long questionId = creator.create(userId, request);
         log.debug("Successfully created question with Id: {}", questionId);
         return new CreateQuestionResponse(questionId);
+    }
+
+    @PostMapping("{id}")
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public Question updateQuestion(@PathVariable("id") Long id, @RequestBody UpdateQuestionRequest request) {
+        log.debug("Received update question request");
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        Question question = updater.update(userId, id, request);
+        log.debug("Completed update question request");
+        return question;
+    }
+
+    @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    public GetQuestionResponse getQuestion(@PathVariable("id") Long id) {
+        log.debug("Receive get question request");
+        GetQuestionResponse question = finder.find(id);
+        log.debug("Found question");
+        return question;
     }
 
     @PutMapping("{id}/status")

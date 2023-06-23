@@ -5,11 +5,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
 
 @Component
 @Transactional
@@ -18,14 +21,20 @@ public class QuestionUpdater {
     private final WaQuestionHistRepository histRepository;
     private final WaQuestionRepository repository;
     private final QuestionMapper questionMapper;
+    private final WaUiMetadatumRepository uiMetadatumRepository;
+    private final QuestionManagementUtil managementUtil;
 
     public QuestionUpdater(
             WaQuestionHistRepository histRepository,
             WaQuestionRepository repository,
-            QuestionMapper questionMapper) {
+            QuestionMapper questionMapper,
+            WaUiMetadatumRepository uiMetadatumRepository,
+            QuestionManagementUtil managementUtil) {
         this.histRepository = histRepository;
         this.repository = repository;
         this.questionMapper = questionMapper;
+        this.uiMetadatumRepository = uiMetadatumRepository;
+        this.managementUtil = managementUtil;
     }
 
     /**
@@ -53,6 +62,95 @@ public class QuestionUpdater {
     private void createHistoryEvent(WaQuestion question) {
         WaQuestionHist history = new WaQuestionHist(question);
         histRepository.save(history);
+    }
+
+    public Question update(Long userId, Long id, UpdateQuestionRequest request) {
+        return repository.findById(id).map(q -> {
+            createHistoryEvent(q);
+            return questionMapper.toQuestion(updateQuestion(q, userId, request));
+        }).orElseThrow(() -> new QuestionNotFoundException(id));
+    }
+
+    private boolean checkInUse(String identifier) {
+        return uiMetadatumRepository.findOneByQuestionIdentifier(identifier).isPresent();
+    }
+
+    private WaQuestion updateQuestion(WaQuestion question, Long userId, UpdateQuestionRequest request) {
+        boolean questionInUse = checkInUse(question.getQuestionIdentifier());
+        // If the new question type doesn't match the existing type, update it first
+        if (!questionInUse && !question.getDataType().equals(request.type().toString())) {
+            question = setDataType(question, request.type());
+        }
+        question.update(asUpdate(userId, request, questionInUse, question));
+        return repository.save(question);
+    }
+
+    /**
+     * Updates the data type of a question. This must occur as a separate query due to single table inheritance
+     * 
+     * @param question
+     * @param type
+     * @return
+     */
+    private WaQuestion setDataType(WaQuestion question, QuestionType type) {
+        repository.setDataType(type.toString(), question.getId());
+        return repository.findById(question.getId()).orElseThrow(() -> new QuestionNotFoundException(question.getId()));
+    }
+
+    private QuestionCommand.Update asUpdate(
+            Long userId,
+            UpdateQuestionRequest request,
+            boolean isInUse,
+            WaQuestion question) {
+        return new QuestionCommand.Update(
+                isInUse,
+                asQuestionData(request, question, isInUse),
+                request.defaultValue(),
+                request.mask(),
+                request.fieldLength(),
+                request.allowFutureDates(),
+                request.minValue(),
+                request.maxValue(),
+                request.valueSet(),
+                request.unitType(),
+                request.unitValue(),
+                asReportingData(request, question.getSubGroupNm()),
+                asMessagingData(request),
+                userId,
+                Instant.now());
+    }
+
+    QuestionCommand.QuestionData asQuestionData(UpdateQuestionRequest request, WaQuestion question,
+            boolean questionIsInUse) {
+        return new QuestionCommand.QuestionData(
+                question.getQuestionType(),
+                question.getLocalId(),
+                request.uniqueName(),
+                question.getSubGroupNm(),
+                request.description(),
+                request.label(),
+                request.tooltip(),
+                request.displayControl(),
+                request.adminComments(),
+                managementUtil.getQuestionOid(questionIsInUse, request.codeSystem(), question.getQuestionType()));
+    }
+
+    QuestionCommand.ReportingData asReportingData(UpdateQuestionRequest request, String subgroup) {
+        return new QuestionCommand.ReportingData(
+                request.defaultLabelInReport(),
+                null, // never editable
+                subgroup + "_" + request.rdbColumnName(),
+                request.datamartColumnName());
+    }
+
+    QuestionCommand.MessagingData asMessagingData(UpdateQuestionRequest request) {
+        return new QuestionCommand.MessagingData(
+                request.requiredInMessage(),
+                request.messageVariableId(),
+                request.labelInMessage(),
+                request.codeSystem(),
+                request.requiredInMessage(),
+                request.hl7DataType());
     }
 
 }

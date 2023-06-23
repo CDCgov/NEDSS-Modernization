@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @DiscriminatorValue(NumericQuestionEntity.NUMERIC_QUESION_TYPE)
 public class NumericQuestionEntity extends WaQuestion {
@@ -20,23 +18,51 @@ public class NumericQuestionEntity extends WaQuestion {
     @Column(name = "mask", length = 50)
     private String mask;
 
+    public void setMask(String mask) {
+        this.mask = requireNonNull(mask, "Mask must not be null");
+    }
+
     @Column(name = "field_size", length = 10)
     private String fieldSize;
+
+    public void setFieldSize(String fieldSize) {
+        this.fieldSize = requireNonNull(fieldSize, "Field Length must not be null");
+    }
 
     @Column(name = "default_value", length = 300)
     private String defaultValue;
 
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
     @Column(name = "min_value")
     private Long minValue;
+
+    public void setMinValue(Long minValue) {
+        this.minValue = minValue;
+    }
 
     @Column(name = "max_value")
     private Long maxValue;
 
+    public void setMaxValue(Long maxValue) {
+        this.maxValue = maxValue;
+    }
+
     @Column(name = "unit_type_cd", length = 20)
     private String unitTypeCd; // Either Coded, Literal or null
 
+    public void setUnitTypeCd(String unitTypeCd) {
+        this.unitTypeCd = unitTypeCd;
+    }
+
     @Column(name = "unit_value", length = 50)
     private String unitValue; // If unitTypeCd == Coded, Id of Value set. Else literal value or null
+
+    public void setUnitValue(String unitValue) {
+        this.unitValue = unitValue;
+    }
 
     @Override
     public String getDataType() {
@@ -46,25 +72,58 @@ public class NumericQuestionEntity extends WaQuestion {
     public NumericQuestionEntity(QuestionCommand.AddNumericQuestion command) {
         super(command);
 
-        this.mask = requireNonNull(command.mask(), "Mask must not be null");
-        this.fieldSize = requireNonNull(command.fieldLength(), "Field Length must not be null");
-        this.defaultValue = command.defaultValue();
-        this.minValue = command.minValue();
-        this.maxValue = command.maxValue();
-        this.unitTypeCd = command.unitTypeCd();
+        setMask(command.mask());
+        setFieldSize(command.fieldLength());
+        setDefaultValue(command.defaultValue());
+        setMinValue(command.minValue());
+        setMaxValue(command.maxValue());
+        setUnitTypeCd(command.unitTypeCd());
         if (unitTypeCd != null) {
             requireNonNull(command.unitValue(), "If specifying UnitType, UnitValue must not be null");
         }
-        this.unitValue = command.unitValue();
+        setUnitValue(command.unitValue());
 
         // Audit
         created(command);
 
         // Reporting
-        setReportingData(command.reportingData());
+        setReportingData(command);
 
         // Messaging
         setMessagingData(command.messagingData());
+    }
+
+    @Override
+    public void update(QuestionCommand.Update command) {
+        // General question fields
+        setQuestionNm(command);
+        setDescTxt(command.questionData().description());
+        setQuestionLabel(command.questionData().label());
+        setQuestionToolTip(command.questionData().tooltip());
+        setNbsUiComponentUid(command.questionData().displayControl());
+        setAdminComment(command.questionData().adminComments());
+
+        // Numeric fields
+        setMask(command.mask());
+        setFieldSize(command.fieldLength());
+        setDefaultValue(command.defaultValue());
+        setMinValue(command.minValue());
+        setMaxValue(command.maxValue());
+        setUnitTypeCd(command.unitType().toString());
+        if (unitTypeCd != null) {
+            requireNonNull(command.unitValue(), "If specifying UnitType, UnitValue must not be null");
+        }
+        setUnitValue(command.unitValue());
+
+
+        // Reporting
+        setReportingData(command);
+
+        // Messaging
+        setMessagingData(command.messagingData());
+
+        // Audit
+        changed(command);
     }
 
 }

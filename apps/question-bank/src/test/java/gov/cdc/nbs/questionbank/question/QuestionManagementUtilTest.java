@@ -1,0 +1,103 @@
+package gov.cdc.nbs.questionbank.question;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
+import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
+
+@ExtendWith(MockitoExtension.class)
+class QuestionManagementUtilTest {
+
+    @Mock
+    private CodeValueGeneralRepository codeValueGeneralRepository;
+
+    @InjectMocks
+    private QuestionManagementUtil questionManagementUtil;
+
+
+    @Test
+    void should_return_oid_for_included_request() {
+        // given the codeValueGeneralRepository will return code system info
+        CodeValueGeneral cvg = new CodeValueGeneral();
+        cvg.setCodeDescTxt("2.16.840.1.113883.12.78");
+        cvg.setCodeShortDescTxt("Abnormal flags (HL7)");
+        when(codeValueGeneralRepository.findByCode(Mockito.anyString())).thenReturn(Optional.of(cvg));
+
+        // when I generate the question oid
+        QuestionOid oid = questionManagementUtil.getQuestionOid(true, "", "");
+
+        // then I am returned the proper code system info
+        assertEquals(cvg.getCodeDescTxt(), oid.oid());
+        assertEquals(cvg.getCodeShortDescTxt(), oid.system());
+    }
+
+    @Test
+    void should_return_oid_for_not_included_local_request() {
+        // given a request with messaging not included
+        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest(false);
+
+        // when I generate the question oid
+        QuestionOid oid = questionManagementUtil.getQuestionOid(
+                false,
+                request.messagingInfo().codeSystem(),
+                request.codeSet());
+
+        // then I am returned the proper code system info
+        assertEquals("L", oid.oid());
+        assertEquals("Local", oid.system());
+    }
+
+    @Test
+    void should_return_oid_for_not_included_phin_request() {
+        // given a request with messaging not included
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+
+        // when I generate the question oid
+        QuestionOid oid = questionManagementUtil.getQuestionOid(
+                false,
+                request.messagingInfo().codeSystem(),
+                request.codeSet());
+
+        // then I am returned the proper code system info
+        assertEquals("2.16.840.1.114222.4.5.232", oid.oid());
+        assertEquals("PHIN Questions", oid.system());
+    }
+
+    @Test
+    void should_throw_exception_failed_to_find_code_system() {
+        // given a request with an invalid code_system
+        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
+        when(codeValueGeneralRepository.findByCode(request.messagingInfo().codeSystem())).thenReturn(Optional.empty());
+
+        // when retrieving the question oid 
+        // then an exception is thrown
+        assertThrows(UpdateQuestionException.class,
+                () -> questionManagementUtil.getQuestionOid(
+                        true,
+                        request.messagingInfo().codeSystem(),
+                        request.codeSet()));
+    }
+
+    @Test
+    void should_return_null_oid() {
+        // given a non PHIN or LOCAL codeSet
+        // when retrieving the question oid
+        QuestionOid oid = questionManagementUtil.getQuestionOid(false, "", "NOT_PHIN_OR_LOCAL");
+
+        // then null is returned
+        assertNull(oid);
+    }
+}

@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.question.command;
 
 import java.time.Instant;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 
 public sealed interface QuestionCommand {
     long userId();
@@ -9,6 +10,31 @@ public sealed interface QuestionCommand {
 
     public sealed interface CreateQuestionCommand extends QuestionCommand {
         QuestionData questionData();
+
+        ReportingData reportingData();
+
+        MessagingData messagingData();
+    }
+
+    public record Update(
+            boolean questionInUse,
+            QuestionData questionData,
+
+            String defaultValue,
+            String mask,
+            String fieldLength,
+            boolean allowFutureDates,
+            Long minValue,
+            Long maxValue,
+            Long valueSet,
+            UnitType unitType,
+            String unitValue,
+
+            ReportingData reportingData,
+            MessagingData messagingData,
+            long userId,
+            Instant requestedOn)
+            implements QuestionCommand {
     }
 
     public record AddTextQuestion(

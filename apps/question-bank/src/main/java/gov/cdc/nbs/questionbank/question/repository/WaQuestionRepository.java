@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
@@ -22,4 +23,8 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
             @Param("search") String search,
             @Param("searchId") Long id,
             Pageable pageable);
+
+    @Modifying
+    @Query("Update WaQuestion SET dataType =:type WHERE id=:id")
+    public void setDataType(@Param("type") String type, @Param("id") Long id);
 }
