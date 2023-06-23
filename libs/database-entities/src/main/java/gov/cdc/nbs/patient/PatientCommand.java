@@ -340,9 +340,10 @@ public sealed interface PatientCommand {
     record UpdateAdministrativeInfo(
         long person,
         Instant asOf,
-        String description,
+        String comment,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 

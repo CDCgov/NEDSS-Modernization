@@ -52,8 +52,9 @@ export type AddressUseResults = {
 };
 
 export type AdministrativeInput = {
-  description?: InputMaybe<Scalars['String']>;
-  patientId: Scalars['ID'];
+  asOf?: InputMaybe<Scalars['DateTime']>;
+  comment?: InputMaybe<Scalars['String']>;
+  patient: Scalars['Int'];
 };
 
 export type AssigningAuthor = {
@@ -624,9 +625,9 @@ export type Mutation = {
   deletePatientName: PatientNameChangeResult;
   deletePatientPhone: PatientPhoneChangeResult;
   deletePatientRace: PatientRaceChangeResult;
-  updateAdministrative: PatientUpdateResponse;
   updateEthnicity: PatientEthnicityChangeResult;
   updatePatientAddress: PatientAddressChangeResult;
+  updatePatientAdministrative: PatientAdministrativeChangeResult;
   updatePatientBirthAndGender: PatientBirthAndGenderChangeResult;
   updatePatientGeneralInfo: PatientGeneralChangeResult;
   updatePatientIdentification: PatientIdentificationChangeResult;
@@ -703,11 +704,6 @@ export type MutationDeletePatientRaceArgs = {
 };
 
 
-export type MutationUpdateAdministrativeArgs = {
-  input: AdministrativeInput;
-};
-
-
 export type MutationUpdateEthnicityArgs = {
   input: EthnicityInput;
 };
@@ -715,6 +711,11 @@ export type MutationUpdateEthnicityArgs = {
 
 export type MutationUpdatePatientAddressArgs = {
   input: UpdatePatientAddressInput;
+};
+
+
+export type MutationUpdatePatientAdministrativeArgs = {
+  input: AdministrativeInput;
 };
 
 
@@ -1112,6 +1113,11 @@ export type PatientAdministrative = {
   id: Scalars['ID'];
   patient: Scalars['ID'];
   version: Scalars['Int'];
+};
+
+export type PatientAdministrativeChangeResult = {
+  __typename?: 'PatientAdministrativeChangeResult';
+  patient: Scalars['Int'];
 };
 
 export type PatientAdministrativeResults = {
@@ -2617,13 +2623,6 @@ export type DeletePatientRaceMutationVariables = Exact<{
 
 export type DeletePatientRaceMutation = { __typename?: 'Mutation', deletePatientRace: { __typename?: 'PatientRaceChangeResult', patient: number } };
 
-export type UpdateAdministrativeMutationVariables = Exact<{
-  input: AdministrativeInput;
-}>;
-
-
-export type UpdateAdministrativeMutation = { __typename?: 'Mutation', updateAdministrative: { __typename?: 'PatientUpdateResponse', patientId: string } };
-
 export type UpdateEthnicityMutationVariables = Exact<{
   input: EthnicityInput;
 }>;
@@ -2637,6 +2636,13 @@ export type UpdatePatientAddressMutationVariables = Exact<{
 
 
 export type UpdatePatientAddressMutation = { __typename?: 'Mutation', updatePatientAddress: { __typename?: 'PatientAddressChangeResult', patient: number, id: number } };
+
+export type UpdatePatientAdministrativeMutationVariables = Exact<{
+  input: AdministrativeInput;
+}>;
+
+
+export type UpdatePatientAdministrativeMutation = { __typename?: 'Mutation', updatePatientAdministrative: { __typename?: 'PatientAdministrativeChangeResult', patient: number } };
 
 export type UpdatePatientBirthAndGenderMutationVariables = Exact<{
   input: UpdateBirthAndGenderInput;
@@ -3629,39 +3635,6 @@ export function useDeletePatientRaceMutation(baseOptions?: Apollo.MutationHookOp
 export type DeletePatientRaceMutationHookResult = ReturnType<typeof useDeletePatientRaceMutation>;
 export type DeletePatientRaceMutationResult = Apollo.MutationResult<DeletePatientRaceMutation>;
 export type DeletePatientRaceMutationOptions = Apollo.BaseMutationOptions<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>;
-export const UpdateAdministrativeDocument = gql`
-    mutation updateAdministrative($input: AdministrativeInput!) {
-  updateAdministrative(input: $input) {
-    patientId
-  }
-}
-    `;
-export type UpdateAdministrativeMutationFn = Apollo.MutationFunction<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>;
-
-/**
- * __useUpdateAdministrativeMutation__
- *
- * To run a mutation, you first call `useUpdateAdministrativeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateAdministrativeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateAdministrativeMutation, { data, loading, error }] = useUpdateAdministrativeMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateAdministrativeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>(UpdateAdministrativeDocument, options);
-      }
-export type UpdateAdministrativeMutationHookResult = ReturnType<typeof useUpdateAdministrativeMutation>;
-export type UpdateAdministrativeMutationResult = Apollo.MutationResult<UpdateAdministrativeMutation>;
-export type UpdateAdministrativeMutationOptions = Apollo.BaseMutationOptions<UpdateAdministrativeMutation, UpdateAdministrativeMutationVariables>;
 export const UpdateEthnicityDocument = gql`
     mutation updateEthnicity($input: EthnicityInput!) {
   updateEthnicity(input: $input) {
@@ -3729,6 +3702,39 @@ export function useUpdatePatientAddressMutation(baseOptions?: Apollo.MutationHoo
 export type UpdatePatientAddressMutationHookResult = ReturnType<typeof useUpdatePatientAddressMutation>;
 export type UpdatePatientAddressMutationResult = Apollo.MutationResult<UpdatePatientAddressMutation>;
 export type UpdatePatientAddressMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>;
+export const UpdatePatientAdministrativeDocument = gql`
+    mutation updatePatientAdministrative($input: AdministrativeInput!) {
+  updatePatientAdministrative(input: $input) {
+    patient
+  }
+}
+    `;
+export type UpdatePatientAdministrativeMutationFn = Apollo.MutationFunction<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>;
+
+/**
+ * __useUpdatePatientAdministrativeMutation__
+ *
+ * To run a mutation, you first call `useUpdatePatientAdministrativeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePatientAdministrativeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePatientAdministrativeMutation, { data, loading, error }] = useUpdatePatientAdministrativeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePatientAdministrativeMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>(UpdatePatientAdministrativeDocument, options);
+      }
+export type UpdatePatientAdministrativeMutationHookResult = ReturnType<typeof useUpdatePatientAdministrativeMutation>;
+export type UpdatePatientAdministrativeMutationResult = Apollo.MutationResult<UpdatePatientAdministrativeMutation>;
+export type UpdatePatientAdministrativeMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>;
 export const UpdatePatientBirthAndGenderDocument = gql`
     mutation updatePatientBirthAndGender($input: UpdateBirthAndGenderInput!) {
   updatePatientBirthAndGender(input: $input) {
