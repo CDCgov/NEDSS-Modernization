@@ -1,4 +1,5 @@
 import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
+import React from 'react';
 
 type SelectProps = {
     name?: string;
@@ -12,6 +13,7 @@ type SelectProps = {
     dataTestid?: string;
     flexBox?: boolean;
     error?: string;
+    onBlur?: any;
 };
 
 export const SelectInput = ({
@@ -26,11 +28,13 @@ export const SelectInput = ({
     dataTestid,
     flexBox,
     error,
+    onBlur,
     ...props
 }: SelectProps) => {
     const DropDown = () => {
         return (
             <Dropdown
+                onBlur={onBlur}
                 data-testid={dataTestid || 'dropdown'}
                 multiple={isMulti}
                 defaultValue={defaultValue}

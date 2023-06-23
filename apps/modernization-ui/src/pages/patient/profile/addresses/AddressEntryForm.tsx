@@ -38,16 +38,18 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         <Controller
                             control={control}
                             name="asOf"
-                            rules={{ required: true }}
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -56,9 +58,9 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         <Controller
                             control={control}
                             name="type"
-                            rules={{ required: true }}
                             defaultValue={entry.type}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Type is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -66,6 +68,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                     htmlFor={'type'}
                                     label="Type"
                                     options={coded.types}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -74,9 +77,9 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         <Controller
                             control={control}
                             name="use"
-                            rules={{ required: true }}
                             defaultValue={entry.type}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Use is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -84,6 +87,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                     htmlFor={'use'}
                                     label="Use"
                                     options={coded.uses}
+                                    error={error?.message}
                                 />
                             )}
                         />
