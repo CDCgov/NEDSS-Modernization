@@ -2,19 +2,14 @@ import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 import React from 'react';
 
 type SelectProps = {
-    name?: string;
     htmlFor?: string;
     label?: string;
-    id?: string;
     options: { name: string; value: string }[];
-    onChange?: any;
-    defaultValue?: string;
     isMulti?: boolean;
     dataTestid?: string;
     flexBox?: boolean;
     error?: string;
-    onBlur?: any;
-};
+} & JSX.IntrinsicElements['select'];
 
 export const SelectInput = ({
     name,
