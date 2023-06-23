@@ -72,7 +72,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="use"
                             defaultValue={entry.use}
-                            rules={{ required: { value: true, message: 'Use field is required.' } }}
+                            rules={{ required: { value: true, message: 'Use is required.' } }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox

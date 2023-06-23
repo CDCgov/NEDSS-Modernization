@@ -77,7 +77,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             control={control}
                             name="use"
                             defaultValue={entry.type}
-                            rules={{ required: { value: true, message: 'Use field is required.' } }}
+                            rules={{ required: { value: true, message: 'Use is required.' } }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
