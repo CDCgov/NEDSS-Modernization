@@ -328,6 +328,7 @@ export default function AddPatient() {
                                             id={'section-Identification'}
                                             title="Identification"
                                         />
+                                        <div style={{ height: `calc(20%)` }} />
                                     </Grid>
 
                                     <Grid col={3} style={{ alignSelf: 'flex-start' }}>

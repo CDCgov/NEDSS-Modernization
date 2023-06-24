@@ -207,7 +207,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/1038509/status",
+					"raw": "localhost:8095/api/v1/questions/1038510/status",
 					"host": [
 						"localhost"
 					],
@@ -216,8 +216,110 @@
 						"api",
 						"v1",
 						"questions",
-						"1038509",
+						"1038510",
 						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"search\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/search?page=0&size=25&sort=id,ASC",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"search"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "25"
+						},
+						{
+							"key": "sort",
+							"value": "id,ASC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"search\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions?page=0&size=25&sort=id,ASC",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "25"
+						},
+						{
+							"key": "sort",
+							"value": "id,ASC"
+						}
 					]
 				}
 			},

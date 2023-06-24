@@ -6,27 +6,24 @@ import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Indicator;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
-import gov.cdc.nbs.patient.PatientCommand.UpdateSexAndBirthInfo;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.Month;
 import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -696,6 +693,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -773,6 +771,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -840,6 +839,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -853,6 +853,7 @@ class PersonTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "Other-First",
                 "Other-Middle",
                 "Other-Last",
@@ -881,12 +882,13 @@ class PersonTest {
     }
 
     @Test
-    void should_start_name_sequence_at_one() {
+    void should_add_minimal_name_at_sequence_one() {
         Person actual = new Person(117L, "local-id-value");
 
         actual.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -899,6 +901,7 @@ class PersonTest {
 
         assertThat(actual.getNames()).satisfiesExactly(
             actual_primary -> assertThat(actual_primary)
+                .returns(Instant.parse("2021-05-15T10:00:00Z"), PersonName::getAsOfDate)
                 .returns("First", PersonName::getFirstNm)
                 .returns("Middle", PersonName::getMiddleNm)
                 .returns("Last", PersonName::getLastNm)
@@ -918,6 +921,7 @@ class PersonTest {
         actual.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
@@ -929,6 +933,7 @@ class PersonTest {
         actual.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "Other",
                 "OtherMiddle",
                 "OtherLast",
@@ -1482,7 +1487,7 @@ class PersonTest {
             "marital status",
             "mothers maiden name",
             1,
-             2,
+            2,
             "occupation code",
             "education level",
             "prim language",
@@ -1497,8 +1502,8 @@ class PersonTest {
             .returns(Instant.parse("2010-03-03T10:15:30.00Z"), Person::getAsOfDateGeneral)
             .returns("marital status", Person::getMaritalStatusCd)
             .returns("mothers maiden name", Person::getMothersMaidenNm)
-            .returns((short)1, Person::getAdultsInHouseNbr)
-            .returns((short)2, Person::getChildrenInHouseNbr)
+            .returns((short) 1, Person::getAdultsInHouseNbr)
+            .returns((short) 2, Person::getChildrenInHouseNbr)
             .returns("occupation code", Person::getOccupationCd)
             .returns("education level", Person::getEducationLevelCd)
             .returns("prim language", Person::getPrimLangCd)
@@ -1507,124 +1512,6 @@ class PersonTest {
             .returns(12L, Person::getLastChgUserId)
             .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
         ;
-    }
-
-    @Test
-    void should_set_birth_and_sex_fields() {
-        final String asOf = "2012-03-03T10:15:30.00Z";
-        final String dob = "2012-03-03";
-        final String ageReportedTime = "1990-04-05T10:15:30.00Z";
-        final String requestedOn = "2020-04-05T10:15:30.00Z";
-        Person actual = new Person(121L, "local-id-value");
-        PatientCommand.UpdateSexAndBirthInfo command = new UpdateSexAndBirthInfo(
-            123L,
-            Instant.parse(asOf),
-            LocalDate.parse(dob),
-            Gender.F,
-            Gender.M,
-            "additional gender info",
-            "trans info",
-            "birth city",
-            "birth Cntry",
-            "birth state",
-            (short) 1,
-            "multiple birth",
-            "sex unknown",
-            "current age",
-            Instant.parse(ageReportedTime),
-            321L,
-            Instant.parse(requestedOn));
-
-        actual.update(command);
-
-        assertEquals(command.birthGender(), actual.getBirthGenderCd());
-        assertEquals(command.currentGender(), actual.getCurrSexCd());
-        assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneId.systemDefault())).isEqualTo(dob);
-        assertThat(actual.getAsOfDateSex()).isEqualTo(asOf);
-        assertEquals(command.currentAge(), actual.getAgeReported());
-        assertThat(actual.getAgeReportedTime()).isEqualTo(ageReportedTime);
-        assertEquals(command.birthCity(), actual.getBirthCityCd());
-        assertEquals(command.birthCntry(), actual.getBirthCntryCd());
-        assertEquals(command.birthState(), actual.getBirthStateCd());
-        assertEquals(command.birthOrderNbr(), actual.getBirthOrderNbr());
-        assertEquals(command.multipleBirth(), actual.getMultipleBirthInd());
-        assertEquals(command.sexUnknown(), actual.getSexUnkReasonCd());
-        assertEquals(command.additionalGender(), actual.getAdditionalGenderCd());
-        assertEquals(command.transGenderInfo(), actual.getPreferredGenderCd());
-        assertEquals((short) 2, actual.getVersionCtrlNbr());
-        assertThat(actual.getLastChgTime()).isEqualTo(requestedOn);
-    }
-
-    @Test
-    void should_add_mortality_fields() {
-        final String asOf = "2012-03-03T10:15:30.00Z";
-        final String deceasedTime = "2012-03-03T10:15:30.00Z";
-        final String requestedOn = "2020-04-05T10:15:30.00Z";
-        Person actual = new Person(121L, "local-id-value");
-        PatientCommand.AddMortalityLocator command = new AddMortalityLocator(
-            121L,
-            987L,
-            Instant.parse(asOf),
-            Deceased.FALSE,
-            Instant.parse(deceasedTime),
-            "city of death",
-            "state of death",
-            "county of death",
-            "country of death",
-            456L,
-            Instant.parse(requestedOn));
-
-        actual.add(command);
-        var participation = actual.getNbsEntity().getEntityLocatorParticipations().get(0);
-        // validate entityLocatorParticipation
-        assertEquals(Long.valueOf(121L), participation.getId().getEntityUid());
-        assertEquals(Long.valueOf(987L), participation.getId().getLocatorUid());
-        assertThat(participation.getLastChgTime()).isEqualTo(requestedOn);
-        assertThat(participation.getAddTime()).isEqualTo(requestedOn);
-        assertEquals(Long.valueOf(456L), participation.getAddUserId());
-        assertEquals(Long.valueOf(456L), participation.getLastChgUserId());
-        assertThat(participation.getAsOfDate()).isEqualTo(asOf);
-        assertEquals(Short.valueOf((short) 1), participation.getVersionCtrlNbr());
-
-        // validate locator
-        var locator = (PostalLocator) participation.getLocator();
-        assertEquals(Long.valueOf(987L), locator.getId());
-        assertEquals(command.cityOfDeath(), locator.getCityDescTxt());
-        assertEquals(command.countryOfDeath(), locator.getCntryCd());
-        assertEquals(command.countyOfDeath(), locator.getCntyCd());
-        assertEquals(command.stateOfDeath(), locator.getStateCd());
-        assertThat(locator.getLastChgTime()).isEqualTo(requestedOn);
-        assertEquals(Long.valueOf(command.requester()), locator.getLastChgUserId());
-    }
-
-    @Test
-    void should_not_allow_two_mortality_locators() {
-        final String asOf = "2012-03-03T10:15:30.00Z";
-        final String deceasedTime = "2012-03-03T10:15:30.00Z";
-        final String requestedOn = "2020-04-05T10:15:30.00Z";
-        Person actual = new Person(121L, "local-id-value");
-        PatientCommand.AddMortalityLocator command = new AddMortalityLocator(
-            121L,
-            987L,
-            Instant.parse(asOf),
-            Deceased.FALSE,
-            Instant.parse(deceasedTime),
-            "city of death",
-            "state of death",
-            "county of death",
-            "country of death",
-            456L,
-            Instant.parse(requestedOn));
-        actual.add(command);
-        UnsupportedOperationException ex = null;
-        try {
-            actual.add(command);
-            // should not reach this assertion
-            assertTrue(false);
-        } catch (UnsupportedOperationException e) {
-            ex = e;
-        }
-        assertNotNull(ex);
     }
 
     @Test
@@ -1875,14 +1762,14 @@ class PersonTest {
 
         patient.update(
             new PatientCommand.UpdateIdentification(
-                    117L,
-                    1,
-                    Instant.parse("2001-05-19T11:59:00Z"),
-                    "updated-identification-value",
-                    "updated-authority-value",
-                    "updated-identification-type",
-                    171L,
-                    Instant.parse("2020-03-13T13:15:30Z")
+                117L,
+                1,
+                Instant.parse("2001-05-19T11:59:00Z"),
+                "updated-identification-value",
+                "updated-authority-value",
+                "updated-identification-type",
+                171L,
+                Instant.parse("2020-03-13T13:15:30Z")
             )
         );
 
@@ -1960,4 +1847,383 @@ class PersonTest {
         );
     }
 
+    @Test
+    void should_update_patient_mortality_when_patient_is_deceased() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "Y",
+                LocalDate.of(1987, Month.NOVEMBER, 17),
+                null,
+                null,
+                null,
+                null,
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateMorbidity)
+            .returns(Deceased.Y, Person::getDeceasedIndCd)
+            .returns(Instant.parse("1987-11-17T00:00:00Z"), Person::getDeceasedTime)
+            .returns(131L, Person::getLastChgUserId)
+            .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime);
+    }
+
+    @Test
+    void should_update_patient_mortality_with_new_mortality_location_when_patient_is_deceased() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "Y",
+                LocalDate.of(1987, Month.NOVEMBER, 17),
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+            .satisfies(
+                actual -> assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address -> assertThat(address)
+                            .returns("U", PostalEntityLocatorParticipation::getCd)
+                            .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
+                            .extracting(PostalEntityLocatorParticipation::getLocator)
+                            .returns("city", PostalLocator::getCityDescTxt)
+                            .returns("state", PostalLocator::getStateCd)
+                            .returns("county", PostalLocator::getCntyCd)
+                            .returns("country", PostalLocator::getCntryCd)
+                    )
+            )
+        ;
+    }
+
+    @Test
+    void should_clear_patient_mortality_when_patient_is_not_deceased() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "Y",
+                LocalDate.of(1987, Month.NOVEMBER, 17),
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "N",
+                LocalDate.of(1987, Month.NOVEMBER, 17),
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateMorbidity)
+            .returns(Deceased.N, Person::getDeceasedIndCd)
+            .returns(null, Person::getDeceasedTime)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+            .satisfies(
+                actual -> assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address -> assertThat(address)
+                            .returns("U", PostalEntityLocatorParticipation::getCd)
+                            .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
+                            .extracting(PostalEntityLocatorParticipation::getLocator)
+                            .returns(null, PostalLocator::getCityDescTxt)
+                            .returns(null, PostalLocator::getStateCd)
+                            .returns(null, PostalLocator::getCntyCd)
+                            .returns(null, PostalLocator::getCntryCd)
+                    )
+            )
+        ;
+    }
+
+    @Test
+    void should_clear_patient_mortality_when_patient_is_not_known_to_be_deceased() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "Y",
+                LocalDate.of(1987, Month.NOVEMBER, 17),
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "UNK",
+                LocalDate.of(1987, Month.NOVEMBER, 17),
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateMorbidity)
+            .returns(Deceased.UNK, Person::getDeceasedIndCd)
+            .returns(null, Person::getDeceasedTime)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+            .satisfies(
+                actual -> assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address -> assertThat(address)
+                            .returns("U", PostalEntityLocatorParticipation::getCd)
+                            .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
+                            .extracting(PostalEntityLocatorParticipation::getLocator)
+                            .returns(null, PostalLocator::getCityDescTxt)
+                            .returns(null, PostalLocator::getStateCd)
+                            .returns(null, PostalLocator::getCntyCd)
+                            .returns(null, PostalLocator::getCntryCd)
+                    )
+            )
+        ;
+    }
+
+    @Test
+    void should_update_patient_mortality_with_changed_mortality_location_when_patient_is_deceased() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "Y",
+                null,
+                "city",
+                null,
+                null,
+                null,
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        patient.update(
+            new PatientCommand.UpdateMortality(
+                121L,
+                Instant.parse("2023-06-21T03:21:00Z"),
+                "Y",
+                LocalDate.of(1986, Month.NOVEMBER, 16),
+                "changed",
+                null,
+                null,
+                null,
+                171L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-21T03:21:00Z"), Person::getAsOfDateMorbidity)
+            .returns(Instant.parse("1986-11-16T00:00:00Z"), Person::getDeceasedTime)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(171L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+            .satisfies(
+                actual -> assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address -> assertThat(address)
+                            .returns("U", PostalEntityLocatorParticipation::getCd)
+                            .returns("DTH", PostalEntityLocatorParticipation::getUseCd)
+                            .extracting(PostalEntityLocatorParticipation::getLocator)
+                            .returns("changed", PostalLocator::getCityDescTxt)
+                    )
+            )
+        ;
+    }
+
+    @Test
+    void should_update_patient_gender() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.update(
+            new PatientCommand.UpdateGender(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                Gender.U.value(),
+                "gender-unknown-reason",
+                "gender-preferred",
+                "gender-additional",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
+            .returns(Gender.U, Person::getCurrSexCd)
+            .returns("gender-unknown-reason", Person::getSexUnkReasonCd)
+            .returns("gender-preferred", Person::getPreferredGenderCd)
+            .returns("gender-additional", Person::getAdditionalGenderCd)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+        ;
+
+    }
+
+    @Test
+    void should_update_patient_birth() {
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateBirth(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                LocalDate.of(1949, 10, 15),
+                Gender.U.value(),
+                Indicator.NO.getId(),
+                17,
+                null,
+                null,
+                null,
+                null,
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
+            .returns(Instant.parse("1949-10-15T00:00:00Z"), Person::getBirthTime)
+            .returns(Gender.U, Person::getBirthGenderCd)
+            .returns((short) 17, Person::getBirthOrderNbr)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+        ;
+    }
+
+    @Test
+    void should_update_patient_birth_with_location() {
+        Person patient = new Person(121L, "local-id-value");
+
+        AddressIdentifierGenerator generator = () -> 1157L;
+
+        patient.update(
+            new PatientCommand.UpdateBirth(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                null,
+                null,
+                null,
+                null,
+                "city",
+                "state",
+                "county",
+                "country",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            ),
+            generator
+        );
+
+        assertThat(patient)
+            .satisfies(
+                actual -> assertThat(actual.addresses())
+                    .satisfiesExactly(
+                        address -> assertThat(address)
+                            .returns("F", PostalEntityLocatorParticipation::getCd)
+                            .returns("BIR", PostalEntityLocatorParticipation::getUseCd)
+                            .extracting(PostalEntityLocatorParticipation::getLocator)
+                            .returns("city", PostalLocator::getCityDescTxt)
+                            .returns("state", PostalLocator::getStateCd)
+                            .returns("county", PostalLocator::getCntyCd)
+                            .returns("country", PostalLocator::getCntryCd)
+                    )
+            )
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            )
+        ;
+    }
 }
