@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.repository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -32,8 +33,8 @@ public interface ValueSetRepository extends JpaRepository <Codeset,CodesetId> {
  @Query("UPDATE Codeset SET statusCd='A' WHERE  id.codeSetNm =:codeSetNm")
  int activateValueSet(@Param("codeSetNm") String codeSetNm);
  
- @Query("SELECT * from Codeset WHERE id.codeSetNm LIKE %:codeSetNm% OR valueSetNm LIKE %:valueSetNm% OR valueSetNm LIKE %:valueSetCode% ")
- Page<Codeset> findByCodeSetNmOrValueSetNmorValueSetCode(@Param("codeSetNm") String codeSetNm, @Param("valueSetNm") String valueSetNm , @Param("valueSetCode") String valueSetCode);
+ @Query("SELECT v from Codeset v WHERE v.id.codeSetNm LIKE %:codeSetNm% OR v.valueSetNm LIKE %:valueSetNm% OR v.valueSetNm LIKE %:valueSetCode% ")
+ Page<Codeset> findByCodeSetNmOrValueSetNmorValueSetCode(@Param("codeSetNm") String codeSetNm, @Param("valueSetNm") String valueSetNm , @Param("valueSetCode") String valueSetCode,Pageable pageable);
  
 
 }

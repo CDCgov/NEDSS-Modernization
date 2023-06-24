@@ -66,7 +66,7 @@ public class ValueSetReaderTest {
 		Pageable pageable = PageRequest.of(0, max);
 		Page<Codeset> codePage = getCodeSetPage(max, pageable);
 		when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCode(Mockito.anyString(), Mockito.anyString(),
-				Mockito.anyString())).thenReturn(codePage);
+				Mockito.anyString(),Mockito.any())).thenReturn(codePage);
 		Page<GetValueSet> result = valueSetReader.searchValueSearch(search, pageable);
 		assertNotNull(result);
 		assertEquals(max, result.getTotalElements());
