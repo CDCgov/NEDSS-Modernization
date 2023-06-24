@@ -63,16 +63,14 @@ public class ValueSetController {
 	@GetMapping
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public Page<ValueSetCommand.GetValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable)  {
-		Page<ValueSetCommand.GetValueSet> result = valueSetReador.findAllValueSets(pageable);
-		return result;
+		return valueSetReador.findAllValueSets(pageable);
 		
 	}
 	
 	@PostMapping("/search")
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public Page<ValueSetCommand.GetValueSet> searchValueSearch(@RequestBody ValueSetSearchRequest search, @PageableDefault(size = 25) Pageable pageable)  {
-		Page<ValueSetCommand.GetValueSet> result = valueSetReador.searchValueSearch(search,pageable);
-		return result;
+		return valueSetReador.searchValueSearch(search,pageable);
 		
 	}
 	

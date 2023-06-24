@@ -35,7 +35,7 @@ public class ValueSetReaderTest {
 	@InjectMocks
 	ValueSetReader valueSetReader;
 
-	public ValueSetReaderTest() {
+    ValueSetReaderTest() {
 		MockitoAnnotations.openMocks(this);
 	}
 

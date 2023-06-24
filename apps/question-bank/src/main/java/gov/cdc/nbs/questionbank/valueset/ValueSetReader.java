@@ -36,7 +36,7 @@ public class ValueSetReader {
 	}
 
 	public List<ValueSetCommand.GetValueSet> toReadValueSet(Page<Codeset> rawResults) {
-		List<ValueSetCommand.GetValueSet> results = new ArrayList<ValueSetCommand.GetValueSet>();
+		List<ValueSetCommand.GetValueSet> results = new ArrayList<>();
 
 		for (Codeset codeSet : rawResults.getContent()) {
 
