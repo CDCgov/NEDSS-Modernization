@@ -3,11 +3,11 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.model.RuleDetails;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
+import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -16,11 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-
-import java.math.BigInteger;
-import java.time.Instant;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,8 +29,7 @@ class PageRuleServiceImplTest {
 
     @Mock
     private RuleCreatedEventProducer.EnabledProducer ruleCreatedEventProducer;
-
-    @org.junit.jupiter.api.BeforeEach()
+    @BeforeEach
     void setup(){
         Mockito.reset(waRuleMetaDataRepository);
         Mockito.reset(ruleCreatedEventProducer);
@@ -43,43 +38,25 @@ class PageRuleServiceImplTest {
     @Test
     void should_save_ruleRequest_details_to_DB(){
 
-        RuleDetails ruleDetails = new RuleDetails();
-        ruleDetails.setId(BigInteger.valueOf(12345678));
-
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.ruleRequest();
-
-        Mockito.when(waRuleMetaDataRepository.save(Mockito.any())).thenReturn(ruleDetails);
-
-
-        BigInteger id = pageRuleServiceImpl.createPageRule(ruleRequest);
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
 
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        Long waTemplateUid = ruleDetails.getWaTemplateUid();
-        BigInteger idValue = (id != null) ? new BigInteger(id.toString()) : null;
+        assertEquals("Rule Created Successfully",ruleResponse.message());
 
-        Assertions.assertEquals(String.valueOf(waTemplateUid), String.valueOf(idValue));
+
 
     }
 
     @Test
     void should_send_ruleRequest_Event(){
-        Instant.now();
-        RuleDetails ruleDetails = new RuleDetails();
-        ruleDetails.setId(BigInteger.valueOf(999));
-
-        when(waRuleMetaDataRepository.save(Mockito.any())).thenReturn(ruleDetails);
-
+        Long userId= 99L ;
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.ruleRequest();
-
-        BigInteger id = pageRuleServiceImpl.createPageRule(ruleRequest);
-
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
         ArgumentCaptor<RuleCreatedEvent> eventCaptor = ArgumentCaptor.forClass(RuleCreatedEvent.class);
         Mockito.verify(ruleCreatedEventProducer, times(1)).send(eventCaptor.capture());
-        Long waTemplateUid = ruleDetails.getWaTemplateUid();
-        BigInteger idValue = (id != null) ? new BigInteger(id.toString()) : null;
-
-
-        Assertions.assertEquals(String.valueOf(waTemplateUid), String.valueOf(idValue));
+        assertEquals("Rule Created Successfully",ruleResponse.message());
 
     }
 }

@@ -1,9 +1,10 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -11,7 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.math.BigInteger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageRuleControllerTest {
@@ -21,15 +23,18 @@ public class PageRuleControllerTest {
     @Mock
     private PageRuleService pageRuleService;
 
+    @Mock
+    private UserDetailsProvider userDetailsProvider;
+
     @Test
     public void shouldReturnCreateRuleResponse(){
 
         CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        Mockito.when(pageRuleService.createPageRule(ruleRequest)).thenReturn(BigInteger.valueOf(999L));
-
+        NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest)).thenReturn(new CreateRuleResponse(999L,"Rule Created Successfully"));
+        Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
         CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
-
-        Assert.assertEquals(BigInteger.valueOf(999L), ruleResponse.ruleId());
+        assertEquals(999L,ruleResponse.ruleId());
 
 
 

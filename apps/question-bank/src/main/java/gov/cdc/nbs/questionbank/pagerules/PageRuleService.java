@@ -1,11 +1,9 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-
-import java.math.BigInteger;
-
+import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 
 public interface PageRuleService {
 
-   BigInteger createPageRule(CreateRuleRequest.ruleRequest request);
+   CreateRuleResponse createPageRule(Long userId,CreateRuleRequest.ruleRequest request);
 }

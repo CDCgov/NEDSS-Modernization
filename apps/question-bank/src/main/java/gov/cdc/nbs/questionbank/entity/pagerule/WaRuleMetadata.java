@@ -1,29 +1,22 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
-import gov.cdc.nbs.questionbank.pagerules.command.RuleCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "WA_rule_metadata", catalog = "NBS_ODSE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class WaRuleMetadata {
+public class WaRuleMetadata {
     @Id
     @Column(name = "wa_rule_metadata_uid", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @Column(name = "wa_template_uid", length = 19)
     private Long waTemplateUid;
@@ -81,19 +74,5 @@ public abstract class WaRuleMetadata {
 
     @Column(name = "target_type", length = 50)
     private String targetType;
-
-    protected WaRuleMetadata(RuleCommand command){
-        RuleCommand.RuleData ruleData = command.ruleData();
-        List<String> targetValuesList= ruleData.targetValue();
-        String sourceTargetQuestionIdentifiers= String.join(",",targetValuesList);
-        setRuleDescText(ruleData.ruleDescription());
-        setTargetType(ruleData.targetType());
-        setRuleCd(ruleData.ruleFunction());
-        setLogic(ruleData.comparator());
-        setTargetQuestionIdentifier(sourceTargetQuestionIdentifiers);
-        setSourceQuestionIdentifier(ruleData.sourceIdentifier());
-        setSourceValues(ruleData.sourceValue());
-
-    }
 
 }
