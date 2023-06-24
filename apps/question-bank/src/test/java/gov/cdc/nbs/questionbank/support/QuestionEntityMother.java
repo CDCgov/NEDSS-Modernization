@@ -16,7 +16,7 @@ public class QuestionEntityMother {
         Instant now = Instant.now();
         TextQuestionEntity q = new TextQuestionEntity();
         q.setId(1L);
-        q.setQuestionIdentifier("GA9900001");
+        q.setQuestionIdentifier("TEST9900001");
         q.setAdminComment("Text question admin comments");
         q.setQuestionType("LOCAL");
         q.setDescTxt("Text question description");
@@ -57,7 +57,7 @@ public class QuestionEntityMother {
         Instant now = Instant.now();
         DateQuestionEntity q = new DateQuestionEntity();
         q.setId(2L);
-        q.setQuestionIdentifier("GA9900002");
+        q.setQuestionIdentifier("TEST9900002");
         q.setAdminComment("Date question admin comments");
         q.setQuestionType("LOCAL");
         q.setDescTxt("Date question description");
@@ -99,7 +99,7 @@ public class QuestionEntityMother {
         Instant now = Instant.now();
         NumericQuestionEntity q = new NumericQuestionEntity();
         q.setId(3L);
-        q.setQuestionIdentifier("GA9900003");
+        q.setQuestionIdentifier("TEST9900003");
         q.setAdminComment("Numeric question admin comments");
         q.setQuestionType("LOCAL");
         q.setDescTxt("Numeric question description");
@@ -146,7 +146,7 @@ public class QuestionEntityMother {
         Instant now = Instant.now();
         CodedQuestionEntity q = new CodedQuestionEntity();
         q.setId(4L);
-        q.setQuestionIdentifier("GA9900004");
+        q.setQuestionIdentifier("TEST9900004");
         q.setAdminComment("Coded question admin comments");
         q.setQuestionType("LOCAL");
         q.setDescTxt("Coded question description");

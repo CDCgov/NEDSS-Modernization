@@ -39,7 +39,7 @@ public class PatientCreator {
         Person person = new Person(asAdd(context, identifier, input));
 
         input.getNames().stream()
-            .map(name -> asName(context, identifier, name))
+            .map(name -> asName(context, identifier, input.getAsOf(), name))
             .forEach(person::add);
 
         input.getRaces().stream()
@@ -95,12 +95,14 @@ public class PatientCreator {
     private PatientCommand.AddName asName(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.Name name
     ) {
         String suffix = name.getSuffix() == null ? null : name.getSuffix().value();
         String type = name.getUse() == null ? null : name.getUse().name();
         return new PatientCommand.AddName(
             identifier.id(),
+            asOf,
             name.getFirst(),
             name.getMiddle(),
             name.getLast(),

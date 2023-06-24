@@ -8,8 +8,18 @@ services:
       - NBS_DATASOURCE_SERVER=nbs-mssql
       - NBS_ELASTICSEARCH_SERVER=elasticsearch
       - NBS_WILDFLY_SERVER=wildfly:7001
+    depends_on:
+      - cdc-address-api
     networks:
       - nbs
+
+
+  cdc-address-api:
+    image: ghcr.io/cdcgov/phdi/ingestion:latest
+    container_name: cdc-address-api
+    networks:
+      - nbs
+
 networks:
   nbs:
     name: nbs

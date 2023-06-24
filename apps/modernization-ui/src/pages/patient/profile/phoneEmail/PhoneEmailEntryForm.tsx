@@ -33,16 +33,18 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         <Controller
                             control={control}
                             name="asOf"
-                            rules={{ required: true }}
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -51,9 +53,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         <Controller
                             control={control}
                             name="type"
-                            rules={{ required: true }}
                             defaultValue={entry.type}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Type is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -61,6 +63,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     htmlFor={'type'}
                                     label="Type"
                                     options={coded.types}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -69,9 +72,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         <Controller
                             control={control}
                             name="use"
-                            rules={{ required: true }}
                             defaultValue={entry.use}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Use is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -79,6 +82,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     htmlFor={'use'}
                                     label="Use"
                                     options={coded.uses}
+                                    error={error?.message}
                                 />
                             )}
                         />

@@ -15,7 +15,7 @@ public sealed interface Question {
 
     String description();
 
-    String dataType();
+    String type();
 
     String label();
 
@@ -43,7 +43,7 @@ public sealed interface Question {
             String status,
             String subgroup,
             String description,
-            String dataType,
+            String type,
             String label,
             String tooltip,
             Long displayControl,
@@ -65,7 +65,7 @@ public sealed interface Question {
             String status,
             String subgroup,
             String description,
-            String dataType,
+            String type,
             String label,
             String tooltip,
             Long displayControl,
@@ -92,7 +92,7 @@ public sealed interface Question {
             String status,
             String subgroup,
             String description,
-            String dataType,
+            String type,
             String label,
             String tooltip,
             Long displayControl,
@@ -114,7 +114,7 @@ public sealed interface Question {
             String status,
             String subgroup,
             String description,
-            String dataType,
+            String type,
             String label,
             String tooltip,
             Long displayControl,

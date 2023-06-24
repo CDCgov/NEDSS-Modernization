@@ -1,11 +1,13 @@
 import { Button, ButtonGroup, Grid, Label, Textarea } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form';
+import { externalizeDateTime } from 'date';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { usePatientAddressCodedValues } from './usePatientAddressCodedValues';
 import { useCountyCodedValues, useLocationCodedValues } from 'location';
 import { AddressEntry } from './AddressEntry';
+import { orNull } from 'utils';
 
 type EntryProps = {
     action: string;
@@ -26,7 +28,18 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
     const onSubmit = (entered: FieldValues) => {
         onChange({
             ...entry,
-            ...entered
+            asOf: externalizeDateTime(entered.asOf),
+            use: orNull(entered.use),
+            type: orNull(entered.type),
+            address1: entered.address1,
+            address2: entered.address2,
+            city: entered.city,
+            state: orNull(entered.state),
+            zipcode: entered.zipcode,
+            county: orNull(entered.county),
+            censusTract: entered.censusTract,
+            country: orNull(entered.country),
+            comment: entered.comment
         });
     };
 
@@ -38,16 +51,18 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         <Controller
                             control={control}
                             name="asOf"
-                            rules={{ required: true }}
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -56,9 +71,9 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         <Controller
                             control={control}
                             name="type"
-                            rules={{ required: true }}
                             defaultValue={entry.type}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Type is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -66,6 +81,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                     htmlFor={'type'}
                                     label="Type"
                                     options={coded.types}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -74,9 +90,9 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         <Controller
                             control={control}
                             name="use"
-                            rules={{ required: true }}
-                            defaultValue={entry.type}
-                            render={({ field: { onChange, value } }) => (
+                            defaultValue={entry.use}
+                            rules={{ required: { value: true, message: 'Use is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -84,6 +100,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                     htmlFor={'use'}
                                     label="Use"
                                     options={coded.uses}
+                                    error={error?.message}
                                 />
                             )}
                         />

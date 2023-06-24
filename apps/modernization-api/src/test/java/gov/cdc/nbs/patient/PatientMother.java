@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient;
 
 import com.github.javafaker.Faker;
-import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;

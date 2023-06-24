@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import org.hibernate.annotations.Where;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
 import lombok.Getter;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Where(clause = "data_type in ('DATE', 'TEXT', 'NUMERIC', 'CODED')")
 @Table(name = "WA_question", catalog = "NBS_ODSE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "data_type", discriminatorType = DiscriminatorType.STRING)
