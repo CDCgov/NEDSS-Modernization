@@ -50,15 +50,13 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest.ruleRequest request){
         TargetValueHelper targetValueHelper= checkRuleCD(request);
-        List<String> targetIdentifiers= targetValueHelper.identifiers();
-        String identifiers= String.join(",",targetIdentifiers);
         WaRuleMetadata ruleMetadata =new WaRuleMetadata();
         ruleMetadata.setRuleCd(request.ruleFunction());
         ruleMetadata.setRuleDescText(request.ruleDescription());
         ruleMetadata.setSourceValues(request.sourceValue());
         ruleMetadata.setLogic(request.comparator());
-        ruleMetadata.setSourceQuestionIdentifier(request.sourceIdentifier());
-        ruleMetadata.setTargetQuestionIdentifier(identifiers);
+        ruleMetadata.setSourceQuestionIdentifier(targetValueHelper.sourceIdentifier());
+        ruleMetadata.setTargetQuestionIdentifier(targetValueHelper.targetIdentifiers());
         ruleMetadata.setTargetType(request.targetType());
         ruleMetadata.setAddTime(Instant.now());
         ruleMetadata.setAddUserId(userId);
@@ -66,10 +64,10 @@ public class PageRuleServiceImpl implements PageRuleService {
         ruleMetadata.setRecordStatusCd("ACTIVE");
         ruleMetadata.setLastChgUserId(userId);
         ruleMetadata.setRecordStatusTime(Instant.now());
-        ruleMetadata.setErrormsgText("");
+        ruleMetadata.setErrormsgText(targetValueHelper.errorMsgText());
         ruleMetadata.setJsFunction("Test JS Name");
         ruleMetadata.setJsFunctionName("Test");
-        ruleMetadata.setWaTemplateUid(1000272L);
+        ruleMetadata.setWaTemplateUid(request.templateUid());
         ruleMetadata.setRuleExpression(targetValueHelper.ruleExpression());
 
         return ruleMetadata;
@@ -77,19 +75,35 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     private TargetValueHelper checkRuleCD(CreateRuleRequest.ruleRequest request){
         String ruleExpression= null;
+        String source= request.source();
         List<String> targetList = request.targetValue();
         List<String> identifiers= new ArrayList<>();
         List<String> targetTextValues= new ArrayList<>();
+        String errorMessageText= null;
+        List<String> errorMessageList= new ArrayList<>();
+
+        //sourceIdentifier
+        String sourceIdentifier = source.substring(source.indexOf("(")+1, source.indexOf(")"));
+        String sourceText= source.substring(0,source.indexOf("(")).trim();
+
+        //target values and Error Message text
         for(String targetValue: targetList){
             String identifier= targetValue.substring(targetValue.indexOf("(")+1, targetValue.indexOf(")"));
+            String targetText= targetValue.substring(0,targetValue.indexOf("(")).trim();
+            targetTextValues.add(targetText);
             identifiers.add(identifier);
         }
         String targetIdentifierValues= String.join(",",identifiers);
         if(Objects.equals(request.ruleFunction(), DATE_COMPARE)){
-          ruleExpression = request.sourceIdentifier().concat(" ")
+          ruleExpression = sourceIdentifier.concat(" ")
                     .concat(request.comparator()).concat(" ").concat("^ DT")
                     .concat(" ").concat("( "+ targetIdentifierValues +" )");
+          for(String targetText: targetTextValues){
+              String errMsg= sourceText.concat(" ").concat("must be").concat(" ").concat(request.comparator()).concat(" ").concat(targetText);
+              errorMessageList.add(errMsg);
+          }
+          errorMessageText= String.join(",",errorMessageList);
         }
-       return new TargetValueHelper(identifiers,targetTextValues,ruleExpression);
+       return new TargetValueHelper(targetIdentifierValues,targetTextValues,ruleExpression,errorMessageText,sourceIdentifier,sourceText);
     }
 }

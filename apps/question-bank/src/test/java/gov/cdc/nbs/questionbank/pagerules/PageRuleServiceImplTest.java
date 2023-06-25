@@ -59,4 +59,17 @@ class PageRuleServiceImplTest {
         assertEquals("Rule Created Successfully",ruleResponse.message());
 
     }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForDateCompare(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.dateCompareRuleRequest();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
 }

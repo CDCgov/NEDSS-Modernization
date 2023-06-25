@@ -18,7 +18,7 @@ public class WaRuleMetadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "wa_template_uid", length = 19)
+    @Column(name = "wa_template_uid", length = 19, nullable = false)
     private Long waTemplateUid;
 
     @Column(name = "rule_cd", length = 50)
