@@ -184,7 +184,10 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             control={control}
                             name="zipcode"
                             defaultValue={entry.zipcode}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{
+                                pattern: { value: /^\d{5}(?:[-\s]\d{4})?$/, message: 'Invalid zip code' }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
@@ -194,6 +197,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                     name="zipcode"
                                     htmlFor="zipcode"
                                     id="zipcode"
+                                    error={error?.message}
                                 />
                             )}
                         />
