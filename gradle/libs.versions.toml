@@ -6,6 +6,7 @@ queryDSL = "5.0.0"
 blaze-persistence = "1.6.8"
 testcontainers = "1.17.6"
 cucumber = "7.8.0"
+validation = "2.1.0.Final"
 
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
@@ -43,6 +44,7 @@ cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform
 junit = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-suite" }
 awaitility = {module = "org.awaitility:awaitility"}
+validation-api = {module = "javax.validation:validation-api", version.ref = "validation"}
 
 [bundles]
 security = ["java-jwt", "spring-security"]
