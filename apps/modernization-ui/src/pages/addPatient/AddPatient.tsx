@@ -31,9 +31,16 @@ import {
 } from 'generated/graphql/schema';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { useAddPatientCodedValues } from './useAddPatientCodedValues';
+import { useCountyCodedValues, useLocationCodedValues } from 'location';
 
 export default function AddPatient() {
     const navigate = useNavigate();
+
+    const locations = useLocationCodedValues();
+
+    const coded = useAddPatientCodedValues();
+
     const [successSubmit, setSuccessSubmit] = useState<boolean>(false);
 
     const [handleSavePatient] = useCreatePatientMutation();
@@ -54,15 +61,15 @@ export default function AddPatient() {
         emailAddresses: [{ email: null }]
     };
 
-    const methods = useForm({
-        defaultValues: defaultValues
-    });
     const {
         handleSubmit,
         control,
         formState: { errors, isValid },
         setValue
-    } = methods;
+    } = useForm({
+        defaultValues: defaultValues
+    });
+
     const { fields, append } = useFieldArray({
         control,
         name: 'identification'
@@ -78,17 +85,16 @@ export default function AddPatient() {
         name: 'emailAddresses'
     });
 
-    const [addressFields, setAddressFields]: [InputAddressFields, (inputNameFields: InputAddressFields) => void] =
-        useState({
-            streetAddress1: '',
-            streetAddress2: '',
-            city: '',
-            state: '',
-            zip: '',
-            county: '',
-            censusTract: '',
-            country: ''
-        });
+    const [addressFields, setAddressFields] = useState<InputAddressFields>({
+        streetAddress1: '',
+        streetAddress2: '',
+        city: '',
+        state: '',
+        zip: '',
+        county: '',
+        censusTract: '',
+        country: ''
+    });
 
     const submit = (data: any) => {
         setSuccessSubmit(true);
@@ -208,6 +214,8 @@ export default function AddPatient() {
 
         // noinspection JSCheckFunctionSignatures
         sections.forEach((section) => observer.observe(section));
+
+        return () => observer.disconnect();
     }, []);
 
     return (
@@ -310,11 +318,21 @@ export default function AddPatient() {
                                             id={'section-General_information'}
                                         />
 
-                                        <NameFields id={'section-Name'} title="Name information" control={control} />
+                                        <NameFields
+                                            id={'section-Name'}
+                                            title="Name information"
+                                            control={control}
+                                            coded={{ suffixes: coded.suffixes }}
+                                        />
                                         <OtherInfoFields
                                             control={control}
                                             id={'section-Other'}
                                             title="Other information"
+                                            coded={{
+                                                deceased: coded.deceased,
+                                                genders: coded.genders,
+                                                maritalStatuses: coded.maritalStatuses
+                                            }}
                                         />
                                         <AddressFields
                                             id={'section-Address'}
@@ -340,14 +358,30 @@ export default function AddPatient() {
                                             title="Telephone"
                                             errors={errors}
                                         />
-                                        <EthnicityFields control={control} id={'section-Ethnicity'} title="Ethnicity" />
-                                        <RaceFields control={control} id={'section-Race'} title={'Race'} />
+                                        <EthnicityFields
+                                            control={control}
+                                            id={'section-Ethnicity'}
+                                            title="Ethnicity"
+                                            coded={{
+                                                ethnicGroups: coded.ethnicGroups
+                                            }}
+                                        />
+                                        <RaceFields
+                                            control={control}
+                                            id={'section-Race'}
+                                            title={'Race'}
+                                            coded={{ raceCategories: coded.raceCategories }}
+                                        />
                                         <IdentificationFields
                                             fields={fields}
                                             append={append}
                                             control={control}
                                             id={'section-Identification'}
                                             title="Identification"
+                                            coded={{
+                                                identificationTypes: coded.identificationTypes,
+                                                assigningAuthorities: coded.assigningAuthorities
+                                            }}
                                         />
                                         <div style={{ height: `calc(20%)` }} />
                                     </Grid>

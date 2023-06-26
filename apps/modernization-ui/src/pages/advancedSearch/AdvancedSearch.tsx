@@ -831,8 +831,8 @@ export const AdvancedSearch = () => {
                                             {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                         </strong>{' '}
                                         Results for
-                                        {resultsChip.map((re, index) => {
-                                            return (
+                                        {resultsChip.map(
+                                            (re, index) =>
                                                 re.value && (
                                                     <Chip
                                                         key={index}
@@ -841,8 +841,7 @@ export const AdvancedSearch = () => {
                                                         handleClose={handleChipClose}
                                                     />
                                                 )
-                                            );
-                                        })}
+                                        )}
                                     </div>
                                 )}
                             </SearchCriteriaContext.Consumer>
