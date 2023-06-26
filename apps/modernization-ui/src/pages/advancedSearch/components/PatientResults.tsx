@@ -115,9 +115,9 @@ export const PatientResults = ({ data, totalResults, handlePagination, currentPa
             (item: any) =>
                 item.classCd === 'PST' &&
                 address.push(
-                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${item.locator.stateCd ?? ''} ${
+                    `${item.locator.streetAddr1 ?? ''} ${item.locator.cityCd ?? ''} ${item.locator.stateCode.stateNm ?? ''} ${
                         item.locator.zipCd ?? ''
-                    } ${item.locator.cntryCd ?? ''}`
+                    } ${item.locator.countryCode.codeShortDescTxt ?? ''}`
                 )
         );
         return <OrderedData data={address} type="ADDRESS" />;
