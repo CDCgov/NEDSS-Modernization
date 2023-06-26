@@ -16,8 +16,7 @@ class StateCodeResolver {
 
     @SchemaMapping("stateCode")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    Optional<StateCode> resolve(final PostalLocator locator)
-     {
+    Optional<StateCode> resolve(final PostalLocator locator) {
         return stateCodeRepository.findById(locator.getStateCd());
     }
 }

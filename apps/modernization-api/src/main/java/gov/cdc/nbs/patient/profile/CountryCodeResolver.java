@@ -16,8 +16,7 @@ class CountryCodeResolver {
 
     @SchemaMapping("countryCode")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    Optional<CountryCode> resolve(final PostalLocator locator)
-     {
+    Optional<CountryCode> resolve(final PostalLocator locator) {
         return countryCodeRepository.findById(locator.getCntryCd());
     }
 }
