@@ -17,9 +17,9 @@ public class PhinVadsClient {
     @Value("${valueset.byidurl}")
     private String valuesetByIDUrl;
 
-    public PhinvadsValueSetByIDData getValueSetByOID(String OID) throws  ResponseStatusException{
+    public PhinvadsValueSetByIDData getValueSetByOID(String oid) throws  ResponseStatusException{
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<PhinvadsValueSetByIDData> clientResp = restTemplate.getForEntity(valuesetByIDUrl + OID,
+        ResponseEntity<PhinvadsValueSetByIDData> clientResp = restTemplate.getForEntity(valuesetByIDUrl + oid,
                 PhinvadsValueSetByIDData.class);
         if (clientResp.getStatusCode() == HttpStatus.NOT_FOUND) {
             log.info("Phinvads api calling status", clientResp.getBody().getDescription());

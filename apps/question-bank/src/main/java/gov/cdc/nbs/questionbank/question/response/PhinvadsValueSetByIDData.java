@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.question.response;
 
 import gov.cdc.nbs.questionbank.question.model.Compose;
 import gov.cdc.nbs.questionbank.question.model.Contact;
-import gov.cdc.nbs.questionbank.question.model.Identifier;
 import gov.cdc.nbs.questionbank.question.model.Text;
 import lombok.*;
 

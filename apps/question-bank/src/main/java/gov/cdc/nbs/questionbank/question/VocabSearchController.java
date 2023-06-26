@@ -24,12 +24,12 @@ public class VocabSearchController {
     VocabSearchService vocabSearchService;
 
     @GetMapping("/oid/{oid}")
-    ResponseEntity<ValueSetByOIDResponse> fetchValueSetInfoByOID(@PathVariable("oid") @NonNull String OID) {
+    ResponseEntity<ValueSetByOIDResponse> fetchValueSetInfoByOID(@PathVariable("oid") @NonNull String oid) {
         ValueSetByOIDResponse response = null;
         Status status = null;
 
         try {
-            ValueSetByOIDResults data = vocabSearchService.fetchValueSetInfoByOID(OID);
+            ValueSetByOIDResults data = vocabSearchService.fetchValueSetInfoByOID(oid);
             status = Status.builder().code("200").type("SUCCESS").message("OID_DATA_FOUND")
                     .description("Fetch Valueset data by OID successfully").build();
             response = ValueSetByOIDResponse.builder().data(data).status(status).build();

@@ -17,9 +17,9 @@ public class VocabSearchService {
     @Autowired
     PhinVadsClient phinVadsClient;
 
-    public ValueSetByOIDResults fetchValueSetInfoByOID(String OID) {
+    public ValueSetByOIDResults fetchValueSetInfoByOID(String oid) {
         ValueSetByOIDResults res = null;
-            PhinvadsValueSetByIDData result = phinVadsClient.getValueSetByOID(OID);
+            PhinvadsValueSetByIDData result = phinVadsClient.getValueSetByOID(oid);
             if (null != result) {
                 List<ValueSetConcept> conceptList = new ArrayList<>();
                 Include include = result.getCompose().getInclude().get(1);
