@@ -14,18 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 public class PhinVadsClient {
 
-    @Value("${valueset.url}")
-    private String valueSetUrl;
-
     @Value("${valueset.byidurl}")
     private String valuesetByIDUrl;
-
-//    public ValueSetApiResponse getValueSet() {
-//        RestTemplate restTemplate = new RestTemplate();
-//        ValueSetApiResponse res = restTemplate.getForObject(valueSetUrl, ValueSetApiResponse.class);
-//        log.info("Success response from Phin Vads API");
-//        return res;
-//    }
 
     public PhinvadsValueSetByIDData getValueSetByOID(String OID) throws  ResponseStatusException{
         RestTemplate restTemplate = new RestTemplate();
