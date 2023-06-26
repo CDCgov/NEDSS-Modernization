@@ -873,11 +873,12 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNames()).satisfiesExactly(
+        assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
             actual -> assertThat(actual)
                 .extracting(PersonName::getId)
                 .returns(117L, PersonNameId::getPersonUid)
                 .returns((short) 1, PersonNameId::getPersonNameSeq)
+
         );
     }
 
