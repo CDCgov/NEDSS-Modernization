@@ -176,12 +176,16 @@ public class NBSEntity {
 
     }
 
-    public void delete(final PatientCommand.DeleteIdentification info) {
-        ensureEntityIds().removeIf(existing -> Objects.equals(existing.getId().getEntityIdSeq(), (short) info.id()));
+    public void delete(final PatientCommand.DeleteIdentification deleted) {
+        Collection<EntityId> existing = ensureEntityIds();
+        EntityIdId identifier = new EntityIdId(deleted.person(), (short) deleted.id());
+
+        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst()
+            .ifPresent(identification -> identification.delete(deleted));
     }
 
     public List<EntityId> getEntityIds() {
-        return this.entityIds == null ? List.of() : List.copyOf(this.entityIds);
+        return this.entityIds == null ? List.of() : this.entityIds.stream().filter(EntityId.active()).toList();
     }
 
     private List<EntityLocatorParticipation> ensureLocators() {
