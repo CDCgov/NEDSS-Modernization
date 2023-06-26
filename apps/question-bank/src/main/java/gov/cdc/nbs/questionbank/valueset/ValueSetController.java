@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
