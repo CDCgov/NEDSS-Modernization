@@ -78,3 +78,9 @@ Feature: Patient Profile
     And the patient is named as a contact
     When a profile is requested by patient identifier
     Then the patient can not be deleted
+
+  Scenario: I can not delete a patient that is already deleted
+    Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And the patient has been deleted
+    When a profile is requested by patient identifier
+    Then the patient can not be deleted
