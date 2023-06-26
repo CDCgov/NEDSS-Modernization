@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile;
 
+import gov.cdc.nbs.entity.odse.Locator;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,12 @@ class StateCodeResolver {
     @Autowired
     private StateCodeRepository stateCodeRepository;
 
-    @SchemaMapping("stateCode")
+    @SchemaMapping(typeName = "Locator", field = "stateCode")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    Optional<StateCode> resolve(final PostalLocator locator) {
-        return stateCodeRepository.findById(locator.getStateCd());
+    Optional<StateCode> resolve(final Locator locator) {
+        if (!(locator instanceof PostalLocator)) {
+            return null;
+        }
+        return stateCodeRepository.findById(((PostalLocator) locator).getStateCd());
     }
 }
