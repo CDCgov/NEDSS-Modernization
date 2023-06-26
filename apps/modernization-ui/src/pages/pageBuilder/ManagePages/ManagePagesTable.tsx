@@ -30,15 +30,12 @@ const asTableBody = (page: Pages): TableBody => ({
 
 const asTableBodies = (pages: Pages[]): TableBody[] => pages?.map(asTableBody) || [];
 export const ManagePagesTable = ({ pages }: Props) => {
-    console.log('PAGES', pages);
     const [bodies, setBodies] = useState<TableBody[]>([]);
     const [criteria] = useState<SortCriteria>({});
-    console.log('BODIESSSS', bodies);
 
     useEffect(() => {
         if (pages) {
             // const sorted = sort(pages, criteria);
-            console.log('ASTABLEBODY', asTableBodies(pages));
             setBodies(asTableBodies(pages));
         }
     }, [pages, criteria]);
