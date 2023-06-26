@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ManagePagesTable } from './ManagePagesTable';
 import './ManagePages.scss';
-import { PageBuilderContext } from 'providers/PageBuilderContext';
+import { PageBuilderContext } from 'apps/page-builder/context/PageBuilderContext';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 
 export const ManagePages = () => {
