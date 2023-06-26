@@ -1187,11 +1187,9 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+        assertThat(patient.addresses())
             .satisfiesExactly(
                 actual -> assertThat(actual)
-                    .isInstanceOf(PostalEntityLocatorParticipation.class)
-                    .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
                     .returns(4861L, p -> p.getId().getLocatorUid())
             );
 

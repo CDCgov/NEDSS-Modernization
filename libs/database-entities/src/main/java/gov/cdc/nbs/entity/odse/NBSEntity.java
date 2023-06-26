@@ -218,13 +218,18 @@ public class NBSEntity {
             .ifPresent(existing -> existing.update(changes));
     }
 
-    public void delete(final PatientCommand.DeleteAddress remove) {
-        ensureLocators().removeIf(existing -> Objects.equals(existing.getId().getLocatorUid(), remove.id()));
+    public void delete(final PatientCommand.DeleteAddress deleted) {
+        this.ensureLocators().stream()
+            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .map(PostalEntityLocatorParticipation.class::cast)
+            .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), deleted.id()))
+            .findFirst()
+            .ifPresent(existing -> existing.delete(deleted));
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
         return this.ensureLocators().stream()
-            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .filter(EntityLocatorParticipation.active().and(PostalEntityLocatorParticipation.class::isInstance))
             .map(PostalEntityLocatorParticipation.class::cast)
             .toList();
     }
