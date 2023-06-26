@@ -19,6 +19,7 @@ import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -62,14 +63,14 @@ public class ValueSetController {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-	public Page<ValueSetCommand.GetValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable)  {
+	public Page<ValueSet.GetValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable)  {
 		return valueSetReador.findAllValueSets(pageable);
 		
 	}
 	
 	@PostMapping("/search")
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-	public Page<ValueSetCommand.GetValueSet> searchValueSearch(@RequestBody ValueSetSearchRequest search, @PageableDefault(size = 25) Pageable pageable)  {
+	public Page<ValueSet.GetValueSet> searchValueSearch(@RequestBody ValueSetSearchRequest search, @PageableDefault(size = 25) Pageable pageable)  {
 		return valueSetReador.searchValueSearch(search,pageable);
 		
 	}

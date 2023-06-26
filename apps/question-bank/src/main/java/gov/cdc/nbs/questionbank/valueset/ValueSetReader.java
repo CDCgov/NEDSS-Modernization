@@ -13,6 +13,7 @@ import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 
 @Service
 public class ValueSetReader {
@@ -20,27 +21,27 @@ public class ValueSetReader {
 	@Autowired
 	private ValueSetRepository valueSetRepository;
 
-	public Page<ValueSetCommand.GetValueSet> findAllValueSets(Pageable pageable) {
+	public Page<ValueSet.GetValueSet> findAllValueSets(Pageable pageable) {
 		Page<Codeset> rawResults = valueSetRepository.findAll(pageable);
-		List<ValueSetCommand.GetValueSet> formatResults = toReadValueSet(rawResults);
+		List<ValueSet.GetValueSet> formatResults = toReadValueSet(rawResults);
 		return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
 
 	}
 
-	public Page<ValueSetCommand.GetValueSet> searchValueSearch(ValueSetSearchRequest search, Pageable pageable) {
+	public Page<ValueSet.GetValueSet> searchValueSearch(ValueSetSearchRequest search, Pageable pageable) {
 		Page<Codeset> rawResults = valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCode(search.getCodeSetName(),
 				search.getValueSetNm(), search.getValueSetCode(),pageable);
-		List<ValueSetCommand.GetValueSet> formatResults = toReadValueSet(rawResults);
+		List<ValueSet.GetValueSet> formatResults = toReadValueSet(rawResults);
 		return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
 
 	}
 
-	public List<ValueSetCommand.GetValueSet> toReadValueSet(Page<Codeset> rawResults) {
-		List<ValueSetCommand.GetValueSet> results = new ArrayList<>();
+	public List<ValueSet.GetValueSet> toReadValueSet(Page<Codeset> rawResults) {
+		List<ValueSet.GetValueSet> results = new ArrayList<>();
 
 		for (Codeset codeSet : rawResults.getContent()) {
 
-			results.add(new ValueSetCommand.GetValueSet(codeSet.getId().getClassCd(), codeSet.getId().getCodeSetNm(),
+			results.add(new ValueSet.GetValueSet(codeSet.getId().getClassCd(), codeSet.getId().getCodeSetNm(),
 					codeSet.getAssigningAuthorityCd(), codeSet.getAssigningAuthorityDescTxt(),
 					codeSet.getCodeSetDescTxt(), codeSet.getEffectiveFromTime(), codeSet.getEffectiveToTime(),
 					codeSet.getIsModifiableInd(), codeSet.getNbsUid(), codeSet.getSourceVersionTxt(),
