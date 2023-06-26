@@ -19,6 +19,7 @@ import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
+import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,8 @@ public class ValueSetController {
 	 private final ValueSetStateManager valueSetStateManager;
 	 
 	 private final ValueSetReader valueSetReador;
+	 
+	 private final ValueSetUpdater valueSetUpdater;
 	 
 	 @PostMapping
 	 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
@@ -73,6 +76,16 @@ public class ValueSetController {
 		return valueSetReador.searchValueSearch(search,pageable);
 		
 	}
+	
+	 @PostMapping("/{codeSetNm}")
+	 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+	 public ResponseEntity<UpdatedValueSetResponse> updateValueSet(@PathVariable String codeSetNm, @RequestBody  ValueSetRequest request) {
+		 Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+		 UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(codeSetNm,request,userId);
+		 return new ResponseEntity<>(response,null,response.getStatus());
+		 
+		 
+	 }
 	
 	
 	
