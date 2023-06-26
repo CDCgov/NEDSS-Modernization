@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TeleEntityLocatorParticipationTest {
 
     @Test
-    void should_inactivate_existing_phone_number() {
+    void should_inactivate_existing_phone() {
 
         Person patient = new Person(117L, "local-id-value");
 
