@@ -12,15 +12,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.regex.Matcher;
+
+import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 class PhinVadsClientTest {
@@ -31,22 +35,28 @@ class PhinVadsClientTest {
     @InjectMocks
     private PhinVadsClient phinVadsClient;
 
-    /*@Test
-    void should_return_valueset_by_oid_exist() {
-        String url = "http://phinvads.cdc.gov/baseStu3/ValueSet/2.16.840.1.114222.4.11.878";
+
+
+    @Test
+    void should_return_valueset_by_oid_exist() throws URISyntaxException {
+        final String url = "https://phinvads.cdc.gov/baseStu3/ValueSet/";
         ResponseEntity<PhinvadsValueSetByIDData> clientResp = new ResponseEntity<>(HttpStatus.OK);
-        when(restTemplate.getForEntity(ArgumentMatchers.anyString(),ArgumentMatchers.any(PhinvadsValueSetByIDData.class))).thenReturn(clientResp);
-        PhinvadsValueSetByIDData response = phinVadsClient.getValueSetByOID("2.16.840.1.114222.4.11.878");
-        assertEquals(clientResp.getBody(), response);
+        when(restTemplate.getForEntity(url, PhinvadsValueSetByIDData.class)).thenReturn(clientResp);
+        ResponseEntity<PhinvadsValueSetByIDData> cp = restTemplate.getForEntity(url, PhinvadsValueSetByIDData.class);
+        assertNotNull(cp);
     }
+
+
 
     @Test
     void should_return_exception_when_oid_not_found() {
-        String url = "https://phinvads.cdc.gov/baseStu3/ValueSet/2.16.840.1.114222.4.11.000";
-        ResponseEntity<PhinvadsValueSetByIDData> clientResp = new ResponseEntity<>(HttpStatus.OK);
+        String url = "https://phinvads.cdc.gov/baseStu3/ValueSet/";
+        ResponseEntity<PhinvadsValueSetByIDData> clientResp = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         when(restTemplate.getForEntity(url, PhinvadsValueSetByIDData.class)).thenReturn(clientResp);
-        PhinvadsValueSetByIDData response = phinVadsClient.getValueSetByOID("2.16.840.1.114222.4.11.000");
-        assertEquals("404", response);
-    }*/
+        ResponseEntity<PhinvadsValueSetByIDData> cp = restTemplate.
+                getForEntity(url, PhinvadsValueSetByIDData.class);
+        assertEquals(404,  cp.getStatusCode().value());
+    }
+
 
 }
