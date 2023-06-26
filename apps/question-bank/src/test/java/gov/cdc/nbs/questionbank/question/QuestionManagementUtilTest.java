@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,9 +15,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,8 +30,42 @@ class QuestionManagementUtilTest {
     @Mock
     private CodeValueGeneralRepository codeValueGeneralRepository;
 
+    @Mock
+    private WaQuestionRepository questionRepository;
+
     @InjectMocks
     private QuestionManagementUtil questionManagementUtil;
+
+    @Test
+    void should_throw_unique_exception() {
+        TextQuestionEntity entity = QuestionEntityMother.textQuestion();
+        // given the question is not unique
+        when(questionRepository.findAllByUniqueFields(
+                entity.getQuestionNm(),
+                entity.getQuestionIdentifier(),
+                entity.getUserDefinedColumnNm(),
+                entity.getRdbColumnNm()))
+                        .thenReturn(Collections.singletonList(new TextQuestionEntity()));
+
+        // when i check if a question is unique then an exception is thrown
+        assertThrows(UniqueQuestionException.class,
+                () -> questionManagementUtil.verifyUnique(entity));
+    }
+
+    @Test
+    void should_not_throw_unique_exception() {
+        TextQuestionEntity entity = QuestionEntityMother.textQuestion();
+        // given the question is not unique
+        when(questionRepository.findAllByUniqueFields(
+                entity.getQuestionNm(),
+                entity.getQuestionIdentifier(),
+                entity.getUserDefinedColumnNm(),
+                entity.getRdbColumnNm()))
+                        .thenReturn(new ArrayList<>());
+
+        // when i check if a question is unique then no exception is thrown
+        questionManagementUtil.verifyUnique(entity);
+    }
 
 
     @Test

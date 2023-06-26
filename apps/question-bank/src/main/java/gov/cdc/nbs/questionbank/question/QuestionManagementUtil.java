@@ -22,7 +22,7 @@ public class QuestionManagementUtil {
         this.questionRepository = questionRepository;
     }
 
-    QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, String codeSet) {
+    public QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, String codeSet) {
         if (includedInMessage) {
             return codeValueGeneralRepository.findByCode(
                     codeSystem)
@@ -51,7 +51,7 @@ public class QuestionManagementUtil {
      * 
      * @param question
      */
-    void verifyUnique(WaQuestion question) {
+    public void verifyUnique(WaQuestion question) {
         List<WaQuestion> conflicts = questionRepository.findAllByUniqueFields(
                 question.getQuestionNm(),
                 question.getQuestionIdentifier(),

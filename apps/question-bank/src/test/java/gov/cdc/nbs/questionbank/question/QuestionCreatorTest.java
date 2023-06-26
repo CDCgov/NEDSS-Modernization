@@ -6,7 +6,6 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +24,7 @@ import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
 import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -53,6 +53,9 @@ class QuestionCreatorTest {
 
     @Mock
     private CodesetRepository codesetRepository;
+
+    @Mock
+    private QuestionManagementUtil managementUtil;
 
     @InjectMocks
     private QuestionCreator creator;
@@ -127,6 +130,10 @@ class QuestionCreatorTest {
         // given a create question request
         CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
 
+        // and a valid oid
+        when(managementUtil.getQuestionOid(false, "ABNORMAL_FLAGS_HL7", "PHIN"))
+                .thenReturn(new QuestionOid("test", "test"));
+
         // when i convert to an Add command
         QuestionCommand.AddTextQuestion command = creator.asAdd(123L, request);
 
@@ -191,23 +198,6 @@ class QuestionCreatorTest {
         assertEquals(id.longValue(), event.id());
         assertEquals(123L, event.createdBy());
         assertEquals(now, event.createdAt());
-    }
-
-    @Test
-    void should_throw_exception_because_not_unique() {
-        // given a conflicting question
-        when(repository.findAllByUniqueFields(
-            Mockito.anyString(), 
-            Mockito.anyString(),
-            Mockito.anyString(),
-            Mockito.anyString()))
-            .thenReturn(Collections.singletonList(new TextQuestionEntity()));
-
-        // given a create question request
-        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
-
-         // when a question is created then an exception is thrown
-        assertThrows(CreateQuestionException.class, () -> creator.create(123L, request));
     }
 
     @Test

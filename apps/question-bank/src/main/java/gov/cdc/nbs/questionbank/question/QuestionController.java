@@ -75,7 +75,7 @@ public class QuestionController {
         return new CreateQuestionResponse(questionId);
     }
 
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Question updateQuestion(@PathVariable("id") Long id, @RequestBody UpdateQuestionRequest request) {
         log.debug("Received update question request");
