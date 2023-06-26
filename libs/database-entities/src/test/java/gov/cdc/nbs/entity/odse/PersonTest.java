@@ -1417,7 +1417,7 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+        assertThat(patient.phones())
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .isInstanceOf(TeleEntityLocatorParticipation.class)

@@ -236,13 +236,14 @@ public class NBSEntity {
 
     public Collection<TeleEntityLocatorParticipation> phones() {
         return this.ensureLocators().stream()
+            .filter(EntityLocatorParticipation.active())
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
 
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.ensureLocators().stream()
-            .filter(this::isPhoneNumber)
+            .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
@@ -351,14 +352,19 @@ public class NBSEntity {
 
     public void update(final PatientCommand.UpdatePhone phone) {
         this.ensureLocators().stream()
-            .filter(TeleEntityLocatorParticipation.class::isInstance)
+            .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
             .map(TeleEntityLocatorParticipation.class::cast)
             .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.id()))
             .findFirst()
             .ifPresent(existing -> existing.update(phone));
     }
 
-    public void delete(final PatientCommand.DeletePhone phone) {
-        this.ensureLocators().removeIf(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.id()));
+    public void delete(final PatientCommand.DeletePhone deleted) {
+        this.ensureLocators().stream()
+            .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
+            .map(TeleEntityLocatorParticipation.class::cast)
+            .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), deleted.id()))
+            .findFirst()
+            .ifPresent(existing -> existing.delete(deleted));
     }
 }

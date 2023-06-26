@@ -31,8 +31,8 @@ import java.util.function.Predicate;
 @DiscriminatorColumn(name = "class_cd", discriminatorType = DiscriminatorType.STRING)
 public abstract class EntityLocatorParticipation {
 
-    public static Predicate<? super EntityLocatorParticipation> active() {
-        return input -> Objects.equals(input.recordStatusCd, RecordStatus.ACTIVE.name());
+    public static <V extends EntityLocatorParticipation> Predicate<V> active() {
+        return input -> Objects.equals(input.getRecordStatusCd(), RecordStatus.ACTIVE.name());
     }
 
     @EmbeddedId
