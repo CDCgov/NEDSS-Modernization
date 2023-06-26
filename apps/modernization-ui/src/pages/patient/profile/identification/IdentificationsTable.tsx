@@ -14,7 +14,7 @@ import {
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
 import { useFindPatientProfileIdentifications } from './useFindPatientProfileIdentifications';
 import { maybeDescription, maybeId } from '../coded';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { EntryModal } from '../EntryModal';
 import { IdentificationEntryForm } from './IdentificationEntryForm';
@@ -100,10 +100,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
         add({
             variables: {
                 input: {
-                    asOf: externalizeDateTime(entry?.asOf),
                     patient: entry.patient,
-                    value: entry.value?.toString() || '',
-                    type: entry?.type?.toString() || '',
+                    asOf: entry.asOf,
+                    value: entry.value || '',
+                    type: entry.type || '',
                     authority: entry.state
                 }
             }
@@ -117,12 +117,12 @@ export const IdentificationsTable = ({ patient }: Props) => {
             update({
                 variables: {
                     input: {
-                        asOf: externalizeDateTime(entry?.asOf),
                         patient: entry.patient,
-                        value: entry.value?.toString() || '',
-                        type: entry?.type?.toString() || '',
-                        authority: entry.state,
-                        sequence: entry.sequence
+                        sequence: entry.sequence,
+                        asOf: entry.asOf,
+                        value: entry.value || '',
+                        type: entry.type || '',
+                        authority: entry.state
                     }
                 }
             })
