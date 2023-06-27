@@ -47,3 +47,18 @@ Feature: Question search
         Given I am a user without permissions
         When I search for questions
         Then an accessdenied exception is thrown
+
+    Scenario: I can search for a specific question
+        Given I am an admin user
+        When I get a question
+        Then the question is returned
+
+    Scenario: I cannot search for a specific question without being logged in
+        Given I am not logged in
+        When I get a question
+        Then a no credentials found exception is thrown
+
+    Scenario: I cannot search for a specific question without proper permissions
+        Given I am a user without permissions
+        When I get a question
+        Then an accessdenied exception is thrown

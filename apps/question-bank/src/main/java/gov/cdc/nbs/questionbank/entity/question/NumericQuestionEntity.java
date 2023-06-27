@@ -95,13 +95,8 @@ public class NumericQuestionEntity extends WaQuestion {
 
     @Override
     public void update(QuestionCommand.Update command) {
-        // General question fields
-        setQuestionNm(command);
-        setDescTxt(command.questionData().description());
-        setQuestionLabel(command.questionData().label());
-        setQuestionToolTip(command.questionData().tooltip());
-        setNbsUiComponentUid(command.questionData().displayControl());
-        setAdminComment(command.questionData().adminComments());
+        // Update general fields
+        update(command.questionData());
 
         // Numeric fields
         setMask(command.mask());
@@ -109,8 +104,8 @@ public class NumericQuestionEntity extends WaQuestion {
         setDefaultValue(command.defaultValue());
         setMinValue(command.minValue());
         setMaxValue(command.maxValue());
-        setUnitTypeCd(command.unitType().toString());
-        if (unitTypeCd != null) {
+        if (command.unitType() != null) {
+            setUnitTypeCd(command.unitType().toString());
             requireNonNull(command.unitValue(), "If specifying UnitType, UnitValue must not be null");
         }
         setUnitValue(command.unitValue());

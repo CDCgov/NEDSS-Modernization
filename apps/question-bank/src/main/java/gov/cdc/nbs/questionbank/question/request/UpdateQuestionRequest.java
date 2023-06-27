@@ -45,10 +45,4 @@ public record UpdateQuestionRequest(
         boolean requiredInMessage,
         String hl7DataType) {
 
-    public enum QuestionType {
-        TEXT,
-        NUMERIC,
-        DATE,
-        CODED
-    }
 }

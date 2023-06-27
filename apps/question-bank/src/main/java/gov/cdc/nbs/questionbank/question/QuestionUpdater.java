@@ -11,8 +11,8 @@ import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
-import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest.QuestionType;
 
 @Component
 @Transactional
@@ -72,7 +72,7 @@ public class QuestionUpdater {
     }
 
     private boolean checkInUse(String identifier) {
-        return uiMetadatumRepository.findOneByQuestionIdentifier(identifier).isPresent();
+        return !uiMetadatumRepository.findAllByQuestionIdentifier(identifier).isEmpty();
     }
 
     private WaQuestion updateQuestion(WaQuestion question, Long userId, UpdateQuestionRequest request) {
@@ -97,14 +97,13 @@ public class QuestionUpdater {
         return repository.findById(question.getId()).orElseThrow(() -> new QuestionNotFoundException(question.getId()));
     }
 
-    private QuestionCommand.Update asUpdate(
+    QuestionCommand.Update asUpdate(
             Long userId,
             UpdateQuestionRequest request,
             boolean isInUse,
             WaQuestion question) {
         return new QuestionCommand.Update(
-                isInUse,
-                asQuestionData(request, question, isInUse),
+                asQuestionData(request, isInUse, question.getQuestionType()),
                 request.defaultValue(),
                 request.mask(),
                 request.fieldLength(),
@@ -120,19 +119,20 @@ public class QuestionUpdater {
                 Instant.now());
     }
 
-    QuestionCommand.QuestionData asQuestionData(UpdateQuestionRequest request, WaQuestion question,
-            boolean questionIsInUse) {
-        return new QuestionCommand.QuestionData(
-                question.getQuestionType(),
-                question.getLocalId(),
+    QuestionCommand.UpdatableQuestionData asQuestionData(UpdateQuestionRequest request, boolean isInUse,
+            String questionType) {
+        return new QuestionCommand.UpdatableQuestionData(
+                isInUse,
                 request.uniqueName(),
-                question.getSubGroupNm(),
                 request.description(),
                 request.label(),
                 request.tooltip(),
                 request.displayControl(),
                 request.adminComments(),
-                managementUtil.getQuestionOid(questionIsInUse, request.codeSystem(), question.getQuestionType()));
+                managementUtil.getQuestionOid(
+                        request.includedInMessage(),
+                        request.codeSystem(),
+                        questionType));
     }
 
     QuestionCommand.ReportingData asReportingData(UpdateQuestionRequest request, String subgroup) {
@@ -145,7 +145,7 @@ public class QuestionUpdater {
 
     QuestionCommand.MessagingData asMessagingData(UpdateQuestionRequest request) {
         return new QuestionCommand.MessagingData(
-                request.requiredInMessage(),
+                request.includedInMessage(),
                 request.messageVariableId(),
                 request.labelInMessage(),
                 request.codeSystem(),

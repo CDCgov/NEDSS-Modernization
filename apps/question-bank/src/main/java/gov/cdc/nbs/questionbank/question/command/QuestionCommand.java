@@ -17,8 +17,7 @@ public sealed interface QuestionCommand {
     }
 
     public record Update(
-            boolean questionInUse,
-            QuestionData questionData,
+            UpdatableQuestionData questionData,
 
             String defaultValue,
             String mask,
@@ -123,6 +122,17 @@ public sealed interface QuestionCommand {
             String localId,
             String uniqueName,
             String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            String adminComments,
+            QuestionOid questionOid) {
+    }
+
+    record UpdatableQuestionData(
+            boolean questionInUse,
+            String uniqueName,
             String description,
             String label,
             String tooltip,

@@ -111,9 +111,9 @@ public abstract class WaQuestion {
         this.questionNm = requireNonNull(questionName, "Question Name must not be null");
     }
 
-    public void setQuestionNm(QuestionCommand.Update command) {
+    public void setQuestionNm(QuestionCommand.UpdatableQuestionData command) {
         if (!command.questionInUse() && getQuestionType().equals("LOCAL")) {
-            setQuestionNm(command.questionData().uniqueName());
+            setQuestionNm(command.uniqueName());
         }
     }
 
@@ -296,7 +296,7 @@ public abstract class WaQuestion {
     public void setReportingData(QuestionCommand.Update command) {
         var data = command.reportingData();
         // Can only update rdb column name if the question is not in use
-        if (!command.questionInUse()) {
+        if (!command.questionData().questionInUse()) {
             setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name must not be null"));
         }
         setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label must not be null"));
@@ -311,6 +311,15 @@ public abstract class WaQuestion {
         setVersionCtrlNbr(1);
         setRecordStatusCd("Active");
         setRecordStatusTime(command.requestedOn());
+    }
+
+    public void update(QuestionCommand.UpdatableQuestionData command) {
+        setQuestionNm(command);
+        setDescTxt(command.description());
+        setQuestionLabel(command.label());
+        setQuestionToolTip(command.tooltip());
+        setNbsUiComponentUid(command.displayControl());
+        setAdminComment(command.adminComments());
     }
 
     public void statusChange(QuestionCommand.SetStatus command) {

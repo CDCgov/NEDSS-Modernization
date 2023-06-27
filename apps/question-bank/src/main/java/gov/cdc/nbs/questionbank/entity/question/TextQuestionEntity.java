@@ -60,13 +60,7 @@ public class TextQuestionEntity extends WaQuestion {
 
     @Override
     public void update(QuestionCommand.Update command) {
-        // General question fields
-        setQuestionNm(command);
-        setDescTxt(command.questionData().description());
-        setQuestionLabel(command.questionData().label());
-        setQuestionToolTip(command.questionData().tooltip());
-        setNbsUiComponentUid(command.questionData().displayControl());
-        setAdminComment(command.questionData().adminComments());
+        update(command.questionData());
 
         // Text specific fields
         setDefaultValue(command.defaultValue());

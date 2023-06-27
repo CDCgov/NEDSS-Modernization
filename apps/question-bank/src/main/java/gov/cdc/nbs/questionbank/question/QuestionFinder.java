@@ -52,7 +52,7 @@ public class QuestionFinder {
     }
 
     public boolean checkQuestionInUse(String identifier) {
-        return uiMetadataRepository.findOneByQuestionIdentifier(identifier).isPresent();
+        return !uiMetadataRepository.findAllByQuestionIdentifier(identifier).isEmpty();
     }
 
     Long tryConvert(String search) {
