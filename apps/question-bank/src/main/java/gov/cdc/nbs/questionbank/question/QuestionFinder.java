@@ -37,7 +37,7 @@ public class QuestionFinder {
         return new PageImpl<>(questions, pageable, page.getTotalElements());
     }
 
-    Long tryConvert(String search) {
+    private Long tryConvert(String search) {
         try {
             return Long.valueOf(search);
         } catch (NumberFormatException e) {
