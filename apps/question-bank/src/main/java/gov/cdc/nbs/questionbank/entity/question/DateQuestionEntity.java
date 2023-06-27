@@ -22,9 +22,6 @@ public class DateQuestionEntity extends WaQuestion {
         this.mask = requireNonNull(mask, "Mask must not be null");
     }
 
-    @Column(name = "future_date_ind_cd")
-    private Character futureDateIndCd;
-
     public void setFutureDateIndCd(boolean allowFutureDates) {
         this.setFutureDateIndCd(allowFutureDates ? 'T' : 'F');
     }
