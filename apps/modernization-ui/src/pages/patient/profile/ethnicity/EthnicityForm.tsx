@@ -3,14 +3,17 @@ import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { usePatientEthnicityCodedValues } from 'pages/patient/profile/ethnicity';
+import { MultiSelectInput } from 'components/selection/multi';
+import { orNull } from 'utils';
+import { externalizeDateTime } from 'date';
 
 const UNKNOWN = 'UNK';
 const HISPANIC = '2135-2';
 
 type Props = {
-    entry?: EthnicityEntry | null;
-    onChanged?: (updated: EthnicityEntry) => void;
-    onCancel?: () => void;
+    entry: EthnicityEntry;
+    onChanged: (updated: EthnicityEntry) => void;
+    onCancel: () => void;
 };
 
 export type EthnicityEntry = {
@@ -21,18 +24,22 @@ export type EthnicityEntry = {
 };
 
 export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
-    const { handleSubmit, control } = useForm();
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm();
 
     const coded = usePatientEthnicityCodedValues();
 
-    const selectedEthinicity = useWatch({ control, name: 'ethnicGroup', defaultValue: entry?.ethnicGroup });
+    const selectedEthinicity = useWatch({ control, name: 'ethnicGroup', defaultValue: entry.ethnicGroup });
 
     const onSubmit = (entered: FieldValues) => {
         onChanged({
-            asOf: entered.asOf,
-            ethnicGroup: entered.ethnicGroup,
-            unknownReason: entered.unknownReason,
-            detailed: entered.detailed ? [entered.detailed] : []
+            asOf: externalizeDateTime(entered.asOf),
+            ethnicGroup: orNull(entered.ethnicGroup),
+            unknownReason: orNull(entered.unknownReason),
+            detailed: entered.detailed ? entered.detailed : []
         });
     };
 
@@ -68,7 +75,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                     <Controller
                         control={control}
                         name="ethnicGroup"
-                        defaultValue={entry?.ethnicGroup}
+                        defaultValue={entry.ethnicGroup}
                         render={({ field: { onChange, value } }) => (
                             <SelectInput
                                 id="ethnicGroup"
@@ -89,11 +96,13 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         <Controller
                             control={control}
                             name="detailed"
+                            shouldUnregister
+                            defaultValue={entry.detailed}
                             render={({ field: { onChange, value } }) => (
-                                <SelectInput
-                                    defaultValue={value}
+                                <MultiSelectInput
+                                    value={value}
                                     onChange={onChange}
-                                    htmlFor={'detailed'}
+                                    // htmlFor={'detailed'}
                                     options={coded.detailedEthnicities}
                                 />
                             )}
@@ -110,6 +119,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         <Controller
                             control={control}
                             name="unknownReason"
+                            shouldUnregister
                             defaultValue={entry?.unknownReason}
                             render={({ field: { onChange, value } }) => (
                                 <SelectInput
@@ -129,6 +139,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         Cancel
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">
