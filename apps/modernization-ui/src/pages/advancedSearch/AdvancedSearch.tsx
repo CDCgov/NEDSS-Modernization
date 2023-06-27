@@ -221,11 +221,11 @@ export const AdvancedSearch = () => {
                             name = 'dob';
                             break;
                     }
-                        chips.push({
-                            name: name,
-                            value: re[1]
-                        });
-                    }
+                    chips.push({
+                        name: name,
+                        value: re[1]
+                    });
+                }
                 if (re[0] === 'identification') {
                     chips.push(
                         {
@@ -748,12 +748,19 @@ export const AdvancedSearch = () => {
                                                     <Chip
                                                         key={index}
                                                         name={re.name}
-                                                        value={re.name == 'state' ? searchCriteria.states.find((element) => { return element.id === re.value; })?.stateNm! : re.value}
+                                                        value={
+                                                            re.name == 'state'
+                                                                ? searchCriteria.states.find((element) => {
+                                                                      return element.id === re.value;
+                                                                  })?.codeDescTxt!
+                                                                : re.value
+                                                        }
                                                         handleClose={handleChipClose}
                                                     />
                                                 )
                                         )}
-                                    </div>)}
+                                    </div>
+                                )}
                             </SearchCriteriaContext.Consumer>
                         ) : (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
