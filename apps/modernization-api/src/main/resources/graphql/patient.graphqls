@@ -616,6 +616,8 @@ type Locator {
     geocodeMatchInd: String
     withinCityLimitsInd: String
     censusTract: String
+    stateCode: StateCode
+    countryCode: CountryCode
 }
 
 type LocatorParticipations {

@@ -37,6 +37,7 @@ import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { Icon } from '@trussworks/react-uswds';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -730,27 +731,37 @@ export const AdvancedSearch = () => {
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {submitted && !isError() ? (
-                            <div
-                                className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
-                                style={{ maxWidth: '55%' }}>
-                                <strong className="margin-right-1">
-                                    {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
-                                    {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
-                                    {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
-                                </strong>{' '}
-                                Results for
-                                {resultsChip.map(
-                                    (re, index) =>
-                                        re.value && (
-                                            <Chip
-                                                key={index}
-                                                name={re.name}
-                                                value={re.value}
-                                                handleClose={handleChipClose}
-                                            />
-                                        )
+                            <SearchCriteriaContext.Consumer>
+                                {({ searchCriteria }) => (
+                                    <div
+                                        className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                        style={{ maxWidth: '55%' }}>
+                                        <strong className="margin-right-1">
+                                            {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                            {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
+                                            {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
+                                        </strong>{' '}
+                                        Results for
+                                        {resultsChip.map(
+                                            (re, index) =>
+                                                re.value && (
+                                                    <Chip
+                                                        key={index}
+                                                        name={re.name}
+                                                        value={
+                                                            re.name == 'state'
+                                                                ? searchCriteria.states.find((element) => {
+                                                                      return element.id === re.value;
+                                                                  })?.codeDescTxt!
+                                                                : re.value
+                                                        }
+                                                        handleClose={handleChipClose}
+                                                    />
+                                                )
+                                        )}
+                                    </div>
                                 )}
-                            </div>
+                            </SearchCriteriaContext.Consumer>
                         ) : (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
                         )}
