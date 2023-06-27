@@ -39,6 +39,14 @@ class VocabSearchControllerTest {
     }
 
     @Test
+    void should_return_exception_when_internal_fails() {
+        ValueSetByOIDResults valueSetByOIDResponse = new ValueSetByOIDResults();
+        when(vocabSearchService.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000")).thenThrow(NullPointerException.class);
+        ResponseEntity<ValueSetByOIDResponse> response = vocabSearchController.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000");
+        assertEquals("500", response.getBody().getStatus().getCode());
+    }
+
+    @Test
     void test_expected_exception() {
         ValueSetByOIDResults valueSetByOIDResponse = new ValueSetByOIDResults();
         when(vocabSearchService.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000")).thenReturn(null);

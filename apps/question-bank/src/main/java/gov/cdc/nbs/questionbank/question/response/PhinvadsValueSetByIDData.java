@@ -22,7 +22,7 @@ public class PhinvadsValueSetByIDData {
     private String id;
     private Text text;
     private String url;
-    private List<Identifier> identiifier;
+    private List<Identifier> identifier;
     private String version;
     private String name;
     private String title;

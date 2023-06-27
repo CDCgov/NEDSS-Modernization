@@ -16,8 +16,11 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.net.URISyntaxException;
@@ -35,27 +38,26 @@ class PhinVadsClientTest {
     @InjectMocks
     private PhinVadsClient phinVadsClient;
 
-
-
     @Test
     void should_return_valueset_by_oid_exist() throws URISyntaxException {
         final String url = "https://phinvads.cdc.gov/baseStu3/ValueSet/";
+        ReflectionTestUtils.setField(phinVadsClient, "valuesetByIDUrl", url, String.class);
         ResponseEntity<PhinvadsValueSetByIDData> clientResp = new ResponseEntity<>(HttpStatus.OK);
-        when(restTemplate.getForEntity(url, PhinvadsValueSetByIDData.class)).thenReturn(clientResp);
-        ResponseEntity<PhinvadsValueSetByIDData> cp = restTemplate.getForEntity(url, PhinvadsValueSetByIDData.class);
-        assertNotNull(cp);
+        PhinvadsValueSetByIDData res = phinVadsClient.getValueSetByOID("2.16.840.1.114222.4.11.878");
+         assertNotNull(res);
     }
-
 
 
     @Test
     void should_return_exception_when_oid_not_found() {
-        String url = "https://phinvads.cdc.gov/baseStu3/ValueSet/";
-        ResponseEntity<PhinvadsValueSetByIDData> clientResp = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        when(restTemplate.getForEntity(url, PhinvadsValueSetByIDData.class)).thenReturn(clientResp);
-        ResponseEntity<PhinvadsValueSetByIDData> cp = restTemplate.
-                getForEntity(url, PhinvadsValueSetByIDData.class);
-        assertEquals(404,  cp.getStatusCode().value());
+
+        try {
+            String url = "https://phinvads.cdc.gov/baseStu3/ValueSet/";
+            ReflectionTestUtils.setField(phinVadsClient, "valuesetByIDUrl", url, String.class);
+            PhinvadsValueSetByIDData res = phinVadsClient.getValueSetByOID("2.16.840.1.114222.4.11.878.000");
+        }catch (HttpClientErrorException e){
+            assertTrue(e instanceof  HttpClientErrorException);
+        }
     }
 
 

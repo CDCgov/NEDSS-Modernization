@@ -40,7 +40,7 @@ public class VocabSearchController {
             response = ValueSetByOIDResponse.builder().status(status).build();
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            status = Status.builder().code("400").type("FAILURE").message("INTERNAL_SERVER_ERROR")
+            status = Status.builder().code("500").type("FAILURE").message("INTERNAL_SERVER_ERROR")
                     .description(e.getLocalizedMessage()).build();
             response = ValueSetByOIDResponse.builder().status(status).build();
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
