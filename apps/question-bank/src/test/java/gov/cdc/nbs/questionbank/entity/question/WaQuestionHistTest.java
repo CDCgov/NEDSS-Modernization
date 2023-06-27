@@ -33,6 +33,8 @@ class WaQuestionHistTest {
     }
 
     @Test
+    // Allow more than 25 assertions
+    @SuppressWarnings("squid:S5961")
     void should_set_coded_fields() {
         CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
         WaQuestionHist hist = new WaQuestionHist(question);
