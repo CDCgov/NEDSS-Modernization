@@ -8,7 +8,7 @@ import {
     useUpdatePatientAddressMutation
 } from 'generated/graphql/schema';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
 import { SortableTable } from 'components/Table/SortableTable';
@@ -24,7 +24,7 @@ import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } fr
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
-    { name: 'Type', value: maybeDescription(data.use) },
+    { name: 'Type', value: maybeDescription(data.type) },
     { name: 'Use', value: maybeDescription(data.use) },
     { name: 'Street address 1', value: data.address1 },
     { name: 'Street address 2', value: data.address2 },
@@ -131,7 +131,7 @@ export const AddressesTable = ({ patient }: Props) => {
                 variables: {
                     input: {
                         patient: entry.patient,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: entry.asOf,
                         use: entry.use,
                         type: entry.type,
                         address1: entry.address1,
@@ -159,7 +159,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     input: {
                         patient: updated.patient,
                         id: +updated.id,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: entry.asOf,
                         use: entry.use,
                         type: entry.type,
                         address1: entry.address1,

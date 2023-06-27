@@ -3,6 +3,7 @@ import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patient/profile';
 import AddPatient from '../pages/addPatient/AddPatient';
+import { ManagePages } from 'apps/page-builder/pages/ManagePages/ManagePages';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
@@ -56,6 +57,7 @@ export const AppRoutes = () => {
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
+                            <Route path="/page-builder/manage-pages" element={<ManagePages />} />
                             <Route path="*" element={<Navigate to="/advanced-search" />} />
                             <Route path="/" element={<Navigate to="/advanced-search" />} />
                         </>

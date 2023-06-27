@@ -34,9 +34,9 @@ type Mutation {
     createPatient(patient: PersonInput!): PatientCreatedResponse!
     deletePatient(patient: ID!): PatientDeleteResult!
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
-    updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientUpdateResponse!
+    updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
     updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
+    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceChangeResult!
@@ -304,9 +304,15 @@ type PatientMortalityChangeResult {
 }
 
 input AdministrativeInput {
-    patientId: ID!
-    description: String
+    patient: Int!
+    asOf: DateTime
+    comment: String
 }
+
+type PatientAdministrativeChangeResult {
+    patient: Int!
+}
+
 
 input EthnicityInput {
     patient: String!
@@ -482,22 +488,33 @@ type PatientIdentificationChangeResult {
     sequence: Int!
 }
 
-input UpdateSexAndBirthInput {
-    patientId: ID!
-    asOf: DateTime
-    dateOfBirth: Date
-    birthGender: Gender
-    currentGender: Gender
-    additionalGender: String
-    transGenderInfo: String
-    birthCity: String
-    birthCntry: String
-    birthState: String
-    birthOrderNbr: Int
+input UpdateBirthAndGenderInput {
+    patient: ID!
+    asOf: DateTime!
+    birth: UpdateBirthInput
+    gender: UpdateGenderInput
+}
+
+input UpdateBirthInput {
+    bornOn: Date
+    gender:String
     multipleBirth: String
-    sexUnknown: String
-    currentAge: String
-    ageReportedTime: DateTime
+    birthOrder: Int
+    city: String
+    state: String
+    county: String
+    country: String
+}
+
+input UpdateGenderInput {
+    current: String
+    unknownReason: String
+    preferred: String
+    additional: String
+}
+
+type PatientBirthAndGenderChangeResult {
+    patient: Int!
 }
 
 enum NameUseCd {

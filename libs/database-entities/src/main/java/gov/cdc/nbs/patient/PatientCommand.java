@@ -243,7 +243,8 @@ public sealed interface PatientCommand {
         Instant requestedOn) implements PatientCommand {
     }
 
-    record AddPhone (
+
+    record AddPhone(
         long person,
         long id,
         String type,
@@ -261,7 +262,8 @@ public sealed interface PatientCommand {
 
     }
 
-    record UpdatePhone (
+
+    record UpdatePhone(
         long person,
         long id,
         String type,
@@ -279,7 +281,8 @@ public sealed interface PatientCommand {
 
     }
 
-    record DeletePhone (
+
+    record DeletePhone(
         long person,
         long id,
         long requester,
@@ -287,6 +290,7 @@ public sealed interface PatientCommand {
     ) implements PatientCommand {
 
     }
+
 
     record UpdateMortality(
         long person,
@@ -332,12 +336,14 @@ public sealed interface PatientCommand {
     ) implements PatientCommand {
     }
 
+
     record UpdateAdministrativeInfo(
         long person,
         Instant asOf,
-        String description,
+        String comment,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -358,25 +364,33 @@ public sealed interface PatientCommand {
     }
 
 
-
-    record UpdateSexAndBirthInfo(
+    record UpdateBirth(
         long person,
         Instant asOf,
-        LocalDate dateOfBirth,
-        Gender birthGender,
-        Gender currentGender,
-        String additionalGender,
-        String transGenderInfo,
-        String birthCity,
-        String birthCntry,
-        String birthState,
-        Short birthOrderNbr,
+        LocalDate bornOn,
+        String gender,
         String multipleBirth,
-        String sexUnknown,
-        String currentAge,
-        Instant ageReportedTime,
+        Integer birthOrder,
+        String city,
+        String state,
+        String county,
+        String country,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
+    }
+
+
+    record UpdateGender(
+        long person,
+        Instant asOf,
+        String current,
+        String unknownReason,
+        String preferred,
+        String additional,
+        long requester,
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -459,6 +473,7 @@ public sealed interface PatientCommand {
 
         public AddName(
             long person,
+            Instant asOf,
             String first,
             String middle,
             String last,
@@ -469,7 +484,7 @@ public sealed interface PatientCommand {
         ) {
             this(
                 person,
-                null,
+                asOf,
                 null,
                 first,
                 middle,

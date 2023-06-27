@@ -5,6 +5,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { usePatientPhoneCodedValues } from './usePatientPhoneCodedValues';
 import { PhoneEmailEntry } from './PhoneEmailEntry';
+import { validatePhoneNumber } from 'validation/phone';
 
 type EntryProps = {
     action: string;
@@ -33,16 +34,18 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         <Controller
                             control={control}
                             name="asOf"
-                            rules={{ required: true }}
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     name="asOf"
                                     htmlFor={'asOf'}
                                     label="As of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -51,9 +54,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         <Controller
                             control={control}
                             name="type"
-                            rules={{ required: true }}
                             defaultValue={entry.type}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Type is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -61,6 +64,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     htmlFor={'type'}
                                     label="Type"
                                     options={coded.types}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -69,9 +73,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         <Controller
                             control={control}
                             name="use"
-                            rules={{ required: true }}
                             defaultValue={entry.use}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'Use is required.' } }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
@@ -79,6 +83,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     htmlFor={'use'}
                                     label="Use"
                                     options={coded.uses}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -107,7 +112,12 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="number"
                             defaultValue={entry.number}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{
+                                validate: {
+                                    properNumber: (value) => validatePhoneNumber(value)
+                                }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
@@ -117,6 +127,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     name="number"
                                     htmlFor="number"
                                     id="number"
+                                    error={error && 'Invalid phone number'}
                                 />
                             )}
                         />
@@ -126,7 +137,12 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="extension"
                             defaultValue={entry.extension}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{
+                                validate: {
+                                    properNumber: (value) => validatePhoneNumber(value)
+                                }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
@@ -136,6 +152,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     name="extension"
                                     htmlFor="extension"
                                     id="extension"
+                                    error={error && 'Invalid extension'}
                                 />
                             )}
                         />
@@ -145,7 +162,13 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="email"
                             defaultValue={entry.email}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{
+                                pattern: {
+                                    value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                                    message: 'Invalid email'
+                                }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
@@ -155,6 +178,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     name="email"
                                     htmlFor="email"
                                     id="email"
+                                    error={error && 'Invalid email address'}
                                 />
                             )}
                         />

@@ -100,11 +100,27 @@ public class PostalLocator extends Locator {
 
     PostalLocator(
         final long identifier,
+        final PatientCommand.UpdateBirth birth
+    ) {
+        super(birth);
+
+        this.id = identifier;
+    }
+
+    PostalLocator(
+        final long identifier,
         final PatientCommand.UpdateMortality mortality
     ) {
         super(mortality);
 
         this.id = identifier;
+    }
+
+    public void update(final PatientCommand.UpdateBirth birth) {
+        this.cityDescTxt = birth.city();
+        this.stateCd = birth.state();
+        this.cntyCd = birth.county();
+        this.cntryCd = birth.country();
     }
 
     public void update(final PatientCommand.UpdateMortality mortality) {

@@ -124,7 +124,8 @@ export default function AddPatient() {
             county: data?.county,
             zip: data?.zip,
             censusTract: data?.censusTract,
-            country: data?.country
+            country: data?.country,
+            city: data?.city
         };
         const payload: PersonInput = {
             asOf: format(new Date(data?.asOf), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`),

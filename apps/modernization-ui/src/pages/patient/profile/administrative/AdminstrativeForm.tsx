@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea } from '@trussworks/react-uswds';
+import { Button, ButtonGroup, Grid, Label, ModalFooter, Textarea, ErrorMessage } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
 import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
-import { AdministrativeEntry } from './administrative';
+import { AdministrativeEntry } from './AdminstrativeEntry';
 
 type EntryProps = {
     action: string;
@@ -11,14 +11,16 @@ type EntryProps = {
 };
 
 export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const methods = useForm();
-    const { handleSubmit, control } = methods;
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const onSubmit = (entered: FieldValues) => {
         onChange({
-            patient: entry.patient,
-            asOf: entry.asOf,
-            comment: entered?.additionalComments
+            asOf: entered.asOf,
+            comment: entered.comment
         });
     };
 
@@ -29,16 +31,19 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
-                            name="administrativeDate"
+                            name="asOf"
                             defaultValue={entry.asOf}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{ required: { value: true, message: 'As of date is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
-                                    name="administrativeDate"
-                                    htmlFor={'administrativeDate'}
+                                    name="asOf"
+                                    htmlFor={'asOf'}
                                     label="Administrative as of"
+                                    errorMessage={error?.message}
                                 />
                             )}
                         />
@@ -46,21 +51,24 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
-                            defaultValue={entry?.comment}
-                            name="additionalComments"
-                            render={({ field: { onChange } }) => (
-                                <Grid row>
-                                    <Grid col={6} className="flex-align-self-center">
-                                        <Label htmlFor={'additionalComments'}>Additional comments:</Label>
+                            defaultValue={entry.comment}
+                            name="comment"
+                            rules={{ required: { value: true, message: 'Comments are required.' } }}
+                            render={({ field: { onBlur, onChange }, fieldState: { error } }) => (
+                                <Grid>
+                                    <Grid className="flex-align-self-center">
+                                        <Label htmlFor={'comment'}>Additional comments:</Label>
                                     </Grid>
-                                    <Grid col={6}>
+                                    <Grid>
                                         <Textarea
-                                            defaultValue={entry?.comment || ''}
+                                            defaultValue={entry.comment ?? undefined}
+                                            onBlur={onBlur}
                                             onChange={onChange}
-                                            name="additionalComments"
-                                            id={'additionalComments'}
+                                            name="comment"
+                                            id={'comment'}
                                         />
                                     </Grid>
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                                 </Grid>
                             )}
                         />
@@ -74,6 +82,7 @@ export const AdministrativeForm = ({ action, entry, onChange, onCancel }: EntryP
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">

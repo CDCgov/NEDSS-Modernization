@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Button } from '@trussworks/react-uswds';
 
-export const Actions = ({ handleAction, handleOutsideClick }: any) => {
+export const Actions = ({ handleAction, handleOutsideClick, notDeletable }: any) => {
     const actionRef: any = useRef(null);
 
     useEffect(() => {
@@ -34,13 +34,15 @@ export const Actions = ({ handleAction, handleOutsideClick }: any) => {
                 className="text-base-dark display-block padding-1 border-bottom border-base-lighter text-no-underline width-full">
                 Edit
             </Button>
-            <Button
-                onClick={() => handleAction('delete')}
-                unstyled
-                type="button"
-                className="text-base-dark display-block padding-1 border-bottom border-base-lighter text-no-underline width-full">
-                Delete
-            </Button>
+            {!notDeletable && (
+                <Button
+                    onClick={() => handleAction('delete')}
+                    unstyled
+                    type="button"
+                    className="text-base-dark display-block padding-1 border-bottom border-base-lighter text-no-underline width-full">
+                    Delete
+                </Button>
+            )}
         </div>
     );
 };
