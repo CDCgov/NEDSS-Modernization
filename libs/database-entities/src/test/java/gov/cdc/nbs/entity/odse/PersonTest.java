@@ -873,11 +873,12 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNames()).satisfiesExactly(
+        assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
             actual -> assertThat(actual)
                 .extracting(PersonName::getId)
                 .returns(117L, PersonNameId::getPersonUid)
                 .returns((short) 1, PersonNameId::getPersonNameSeq)
+
         );
     }
 
@@ -1186,11 +1187,9 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+        assertThat(patient.addresses())
             .satisfiesExactly(
                 actual -> assertThat(actual)
-                    .isInstanceOf(PostalEntityLocatorParticipation.class)
-                    .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
                     .returns(4861L, p -> p.getId().getLocatorUid())
             );
 
@@ -1418,7 +1417,7 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+        assertThat(patient.phones())
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .isInstanceOf(TeleEntityLocatorParticipation.class)

@@ -17,11 +17,9 @@ ReactDOM.render(
                 <SearchCriteriaProvider>
                     <BrowserRouter>
                         {/* <TopBanner /> */}
-                        <div style={{ padding: '5px' }}>
-                            <NavBar />
-                            <div className="route-content">
-                                <AppRoutes />
-                            </div>
+                        <NavBar />
+                        <div className="route-content">
+                            <AppRoutes />
                         </div>
                     </BrowserRouter>
                 </SearchCriteriaProvider>
