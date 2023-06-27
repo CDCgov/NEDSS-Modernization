@@ -108,6 +108,8 @@ class QuestionUpdaterTest {
     }
 
     @Test
+    // Allow more than 25 assertions
+    @SuppressWarnings("squid:S5961")
     void should_convert_to_update() {
         // given an update request
         UpdateQuestionRequest request = QuestionRequestMother.update();

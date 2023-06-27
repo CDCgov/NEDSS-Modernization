@@ -25,10 +25,6 @@ public class DateQuestionEntity extends WaQuestion {
     @Column(name = "future_date_ind_cd")
     private Character futureDateIndCd;
 
-    public void setFutureDateIndCd(Character allowFutureDates) {
-        this.futureDateIndCd = allowFutureDates;
-    }
-
     public void setFutureDateIndCd(boolean allowFutureDates) {
         this.setFutureDateIndCd(allowFutureDates ? 'T' : 'F');
     }

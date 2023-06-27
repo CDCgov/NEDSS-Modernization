@@ -124,11 +124,13 @@ class QuestionManagementUtilTest {
 
         // when retrieving the question oid 
         // then an exception is thrown
+        String codeSystem = request.messagingInfo().codeSystem();
+        String codeSet = request.codeSet();
         assertThrows(UpdateQuestionException.class,
                 () -> questionManagementUtil.getQuestionOid(
                         true,
-                        request.messagingInfo().codeSystem(),
-                        request.codeSet()));
+                        codeSystem,
+                        codeSet));
     }
 
     @Test
