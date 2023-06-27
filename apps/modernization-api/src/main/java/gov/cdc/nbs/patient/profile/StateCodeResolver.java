@@ -19,7 +19,7 @@ class StateCodeResolver {
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     Optional<StateCode> resolve(final Locator locator) {
         if (!(locator instanceof PostalLocator)) {
-            return null;
+            return Optional.empty();
         }
         return stateCodeRepository.findById(((PostalLocator) locator).getStateCd());
     }

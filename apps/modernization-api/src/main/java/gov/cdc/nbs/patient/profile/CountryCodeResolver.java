@@ -19,7 +19,7 @@ class CountryCodeResolver {
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     Optional<CountryCode> resolve(final Locator locator) {
         if (!(locator instanceof PostalLocator)) {
-            return null;
+            return Optional.empty();
         }
         return countryCodeRepository.findById(((PostalLocator) locator).getCntryCd());
     }
