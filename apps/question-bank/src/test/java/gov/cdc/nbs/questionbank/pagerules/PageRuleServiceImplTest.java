@@ -72,4 +72,109 @@ class PageRuleServiceImplTest {
         assertEquals("Rule Created Successfully",ruleResponse.message());
 
     }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForDisable(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.DisableRuleRequest();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.DisableRuleTestDataAnySourceIsTrue();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleTestDataAnySourceIsTrue();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForEnable(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleRequest();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForHide(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleRequest();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleTestDataAnySourceIsTrue();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestDataAnySourceIsTrue();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIf(){
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
 }
+

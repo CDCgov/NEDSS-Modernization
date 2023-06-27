@@ -23,6 +23,14 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     private static final String DATE_COMPARE= "Date Compare";
 
+    private static final String DISABLE= "Disable";
+    private static final String ENABLE= "Enable";
+    private static final String REQUIRE_IF= "Require If";
+    private static final String HIDE= "Hide";
+    private static final String MUST_BE= "must be";
+
+    private static final String ANY_SOURCE_VALUE= "( Any Source Value )";
+
     public PageRuleServiceImpl(WaRuleMetaDataRepository waRuleMetaDataRepository, RuleCreatedEventProducer ruleCreatedEventProducer) {
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
         this.ruleCreatedEventProducer= ruleCreatedEventProducer;
@@ -53,7 +61,7 @@ public class PageRuleServiceImpl implements PageRuleService {
         WaRuleMetadata ruleMetadata =new WaRuleMetadata();
         ruleMetadata.setRuleCd(request.ruleFunction());
         ruleMetadata.setRuleDescText(request.ruleDescription());
-        ruleMetadata.setSourceValues(request.sourceValue());
+        ruleMetadata.setSourceValues(targetValueHelper.sourceValues());
         ruleMetadata.setLogic(request.comparator());
         ruleMetadata.setSourceQuestionIdentifier(targetValueHelper.sourceIdentifier());
         ruleMetadata.setTargetQuestionIdentifier(targetValueHelper.targetIdentifiers());
@@ -75,35 +83,102 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     private TargetValueHelper checkRuleCD(CreateRuleRequest.ruleRequest request){
         String ruleExpression= null;
-        String source= request.source();
-        List<String> targetList = request.targetValue();
-        List<String> identifiers= new ArrayList<>();
-        List<String> targetTextValues= new ArrayList<>();
+        String sourceText= request.sourceText();
+        String sourceIdentifier= request.sourceIdentifier();
+        List<String> targetTextList = request.targetValueText();
+        List<String> targetValueIdentifierList= request.targetValueIdentifier();
         String errorMessageText= null;
         List<String> errorMessageList= new ArrayList<>();
-
-        //sourceIdentifier
-        String sourceIdentifier = source.substring(source.indexOf("(")+1, source.indexOf(")"));
-        String sourceText= source.substring(0,source.indexOf("(")).trim();
-
-        //target values and Error Message text
-        for(String targetValue: targetList){
-            String identifier= targetValue.substring(targetValue.indexOf("(")+1, targetValue.indexOf(")"));
-            String targetText= targetValue.substring(0,targetValue.indexOf("(")).trim();
-            targetTextValues.add(targetText);
-            identifiers.add(identifier);
+        List<CreateRuleRequest.sourceValues> sourceValueList= request.sourceValue();
+        String sourceIds = null;
+        String sourceValueText= null;
+        String commonErrMsgForAnySource= sourceText.concat(" ").concat(" ").concat(MUST_BE).concat(" ").concat(ANY_SOURCE_VALUE).concat(" ");
+        if(request.sourceValue()!= null){
+            for(CreateRuleRequest.sourceValues sourceValues: sourceValueList){
+                sourceIds= String.join(",",sourceValues.sourceValueId());
+                sourceValueText= String.join(",",sourceValues.sourceValueText());
+            }
         }
-        String targetIdentifierValues= String.join(",",identifiers);
+        //target values and Error Message text
+        String targetIdentifier= String.join(",",targetValueIdentifierList);
+        String commonRuleExpressionForAnySource= sourceIdentifier.concat(" ").concat("( )").concat(" ");
+        String commonRuleExpForSourceValue=sourceIdentifier.concat(" ").concat("(" + sourceIds + ")").concat(" ");
+        //Date Compare
         if(Objects.equals(request.ruleFunction(), DATE_COMPARE)){
           ruleExpression = sourceIdentifier.concat(" ")
                     .concat(request.comparator()).concat(" ").concat("^ DT")
-                    .concat(" ").concat("( "+ targetIdentifierValues +" )");
-          for(String targetText: targetTextValues){
-              String errMsg= sourceText.concat(" ").concat("must be").concat(" ").concat(request.comparator()).concat(" ").concat(targetText);
+                    .concat(" ").concat("( "+ targetIdentifier +" )");
+          for(String targetText: targetTextList){
+              String errMsg= sourceText.concat(" ").concat(MUST_BE).concat(" ").concat(request.comparator()).concat(" ").concat(targetText);
               errorMessageList.add(errMsg);
           }
           errorMessageText= String.join(",",errorMessageList);
         }
-       return new TargetValueHelper(targetIdentifierValues,targetTextValues,ruleExpression,errorMessageText,sourceIdentifier,sourceText);
+        //Disable
+        if(Objects.equals(request.ruleFunction(),DISABLE)){
+            if(request.anySourceValue() && Objects.equals(request.comparator(), "=")){
+                ruleExpression= commonRuleExpressionForAnySource.concat("^ D").concat(" ").concat("( "+ targetIdentifier +" )");
+                for(String targetText: targetTextList){
+                    String errMsg= commonErrMsgForAnySource.concat(targetText);
+                    errorMessageList.add(errMsg);
+                }
+            }else {
+                ruleExpression = commonRuleExpForSourceValue.concat(request.comparator()).concat(" ").concat("^ D").concat(" ").concat("(" + targetIdentifier + ")");
+                for(String targetText: targetTextList){
+                    String errMsg= sourceText.concat(" ").concat(request.comparator()).concat(" ").concat(MUST_BE).concat(" ").concat("(" +sourceValueText+ ")").concat(" ").concat(targetText);
+                    errorMessageList.add(errMsg);
+                }
+            }
+            errorMessageText= String.join(",",errorMessageList);
+        }
+        if(Objects.equals(request.ruleFunction(),ENABLE)){
+            if(request.anySourceValue() && Objects.equals(request.comparator(), "=")){
+                ruleExpression= commonRuleExpressionForAnySource.concat("^ E").concat(" ").concat("( "+ targetIdentifier +" )");
+                for(String targetText: targetTextList){
+                    String errMsg= commonErrMsgForAnySource.concat(targetText);
+                    errorMessageList.add(errMsg);
+                }
+            }else {
+                ruleExpression = commonRuleExpForSourceValue.concat(request.comparator()).concat(" ").concat("^ E").concat(" ").concat("(" + targetIdentifier + ")");
+                for(String targetText: targetTextList){
+                    String errMsg= sourceText.concat(" ").concat(request.comparator()).concat(" ").concat(MUST_BE).concat(" ").concat("(" +sourceValueText+ ")").concat(" ").concat(targetText);
+                    errorMessageList.add(errMsg);
+                }
+            }
+            errorMessageText= String.join(",",errorMessageList);
+        }
+        if(Objects.equals(request.ruleFunction(),HIDE)){
+            if(request.anySourceValue() && Objects.equals(request.comparator(), "=")){
+                ruleExpression= commonRuleExpressionForAnySource.concat("^ H").concat(" ").concat("( "+ targetIdentifier +" )");
+                for(String targetText: targetTextList){
+                    String errMsg= commonErrMsgForAnySource.concat(targetText);
+                    errorMessageList.add(errMsg);
+                }
+            }else {
+                ruleExpression = commonRuleExpForSourceValue.concat(request.comparator()).concat(" ").concat("^ H").concat(" ").concat("(" + targetIdentifier + ")");
+                for(String targetText: targetTextList){
+                    String errMsg= sourceText.concat(" ").concat(request.comparator()).concat(" ").concat(MUST_BE).concat(" ").concat("(" +sourceValueText+ ")").concat(" ").concat(targetText);
+                    errorMessageList.add(errMsg);
+                }
+            }
+            errorMessageText= String.join(",",errorMessageList);
+        }
+        if(Objects.equals(request.ruleFunction(),REQUIRE_IF)){
+            if(request.anySourceValue() && Objects.equals(request.comparator(), "=")){
+                ruleExpression= commonRuleExpressionForAnySource.concat("^ R").concat(" ").concat("( "+ targetIdentifier +" )");
+                for(String targetText: targetTextList){
+                    String errMsg= sourceText.concat(" ").concat(" ").concat(" ").concat(ANY_SOURCE_VALUE).concat(" ").concat(targetText).concat(" ").concat("is required");
+                    errorMessageList.add(errMsg);
+                }
+            }else {
+                ruleExpression = commonRuleExpForSourceValue.concat(request.comparator()).concat(" ").concat("^ R").concat(" ").concat("(" + targetIdentifier + ")");
+                for(String targetText: targetTextList){
+                    String errMsg= sourceText.concat(" ").concat(request.comparator()).concat(" ").concat("(" +sourceValueText+ ")").concat(" ").concat(targetText).concat(" ").concat("is required");
+                    errorMessageList.add(errMsg);
+                }
+            }
+            errorMessageText= String.join(",",errorMessageList);
+        }
+       return new TargetValueHelper(targetIdentifier,ruleExpression,errorMessageText,sourceIdentifier,sourceText,sourceValueText);
     }
 }
