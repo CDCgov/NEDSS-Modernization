@@ -638,8 +638,10 @@ public class Person {
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateAdministrativeInfo info) {
-        this.setDescription(info.description());
+    public void update(final PatientCommand.UpdateAdministrativeInfo info) {
+        this.asOfDateAdmin = info.asOf();
+        this.description = info.comment();
+
         changed(info);
     }
 

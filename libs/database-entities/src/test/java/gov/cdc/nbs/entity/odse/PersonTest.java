@@ -2225,4 +2225,29 @@ class PersonTest {
             )
         ;
     }
+
+    @Test
+    void should_update_patient_administrative() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.update(
+            new PatientCommand.UpdateAdministrativeInfo(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "comments",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateAdmin)
+            .returns("comments", Person::getDescription)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            );
+    }
 }
