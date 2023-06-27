@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Slf4j
 @RestController
 @RequestMapping("search")
@@ -27,24 +30,36 @@ public class VocabSearchController {
     ResponseEntity<ValueSetByOIDResponse> fetchValueSetInfoByOID(@PathVariable("oid") @NonNull String oid) {
         ValueSetByOIDResponse response = null;
         Status status = null;
-
-        try {
-            ValueSetByOIDResults data = vocabSearchService.fetchValueSetInfoByOID(oid);
-            status = Status.builder().code("200").type("SUCCESS").message("OID_DATA_FOUND")
-                    .description("Fetch Valueset data by OID successfully").build();
-            response = ValueSetByOIDResponse.builder().data(data).status(status).build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (ResponseStatusException rse) {
-            status = Status.builder().code("404").type("FAILURE").message("OID_NOT_FOUND")
-                    .description(rse.getLocalizedMessage()).build();
-            response = ValueSetByOIDResponse.builder().status(status).build();
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            status = Status.builder().code("500").type("FAILURE").message("INTERNAL_SERVER_ERROR")
-                    .description(e.getLocalizedMessage()).build();
-            response = ValueSetByOIDResponse.builder().status(status).build();
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        if(isValidInput(oid)) {
+            try {
+                ValueSetByOIDResults data = vocabSearchService.fetchValueSetInfoByOID(oid);
+                status = Status.builder().code("200").type("SUCCESS").message("OID_DATA_FOUND")
+                        .description("Fetch Valueset data by OID successfully").build();
+                response = ValueSetByOIDResponse.builder().data(data).status(status).build();
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } catch (ResponseStatusException rse) {
+                status = Status.builder().code("404").type("FAILURE").message("OID_NOT_FOUND")
+                        .description(rse.getLocalizedMessage()).build();
+                response = ValueSetByOIDResponse.builder().status(status).build();
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                status = Status.builder().code("500").type("FAILURE").message("INTERNAL_SERVER_ERROR")
+                        .description(e.getLocalizedMessage()).build();
+                response = ValueSetByOIDResponse.builder().status(status).build();
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+        status = Status.builder().code("400").type("FAILURE").message("INVALID_INPUT")
+                .description("Invalid input").build();
+        response = ValueSetByOIDResponse.builder().status(status).build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
+    private boolean isValidInput(String oid){
+        oid = oid.replace(".", "");
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(oid);
+        return matcher.matches();
     }
 
 

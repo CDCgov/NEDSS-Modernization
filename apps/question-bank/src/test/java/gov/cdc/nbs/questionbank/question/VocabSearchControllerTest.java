@@ -50,11 +50,19 @@ class VocabSearchControllerTest {
     void test_expected_exception() {
         ValueSetByOIDResults valueSetByOIDResponse = new ValueSetByOIDResults();
         when(vocabSearchService.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000")).thenReturn(null);
-        Exception exception =assertThrows(RuntimeException.class, ()-> {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
             vocabSearchController.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000").getBody().getData().getValueSetCode();
-                });
-        assertTrue(exception instanceof  NullPointerException);
+        });
+        assertTrue(exception instanceof NullPointerException);
+    }
 
+    @Test
+    void test_expected_for_invalid_pattern_oid() {
+        try {
+            vocabSearchController.fetchValueSetInfoByOID("OID");
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException);
+        }
     }
 
 }
