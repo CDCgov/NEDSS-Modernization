@@ -51,4 +51,12 @@ public class PersonNameId implements Serializable {
     public int hashCode() {
         return Objects.hash(personUid, personNameSeq);
     }
+
+    @Override
+    public String toString() {
+        return "PersonNameId{" +
+            "personUid=" + personUid +
+            ", personNameSeq=" + personNameSeq +
+            '}';
+    }
 }

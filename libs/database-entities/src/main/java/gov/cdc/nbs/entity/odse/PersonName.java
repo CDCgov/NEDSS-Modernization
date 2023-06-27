@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
@@ -17,11 +18,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 @Getter
 @Entity
 @Table(name = "Person_name")
 public class PersonName {
+
+    public static Predicate<PersonName> active() {
+        return input -> Objects.equals(input.recordStatusCd, RecordStatus.ACTIVE.name());
+    }
+
     @EmbeddedId
     private PersonNameId id;
 
@@ -152,4 +160,17 @@ public class PersonName {
         this.audit.changed(info.requester(), info.requestedOn());
     }
 
+    public void delete(final  PatientCommand.DeleteNameInfo deleted) {
+        this.recordStatusCd = RecordStatus.INACTIVE.name();
+        this.recordStatusTime = deleted.requestedOn();
+        this.audit.changed(deleted.requester(), deleted.requestedOn());
+    }
+
+    @Override
+    public String toString() {
+        return "PersonName{" +
+            "id=" + id +
+            ", recordStatusCd='" + recordStatusCd + '\'' +
+            '}';
+    }
 }

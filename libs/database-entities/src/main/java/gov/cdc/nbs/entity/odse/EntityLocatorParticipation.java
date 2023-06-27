@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 @AllArgsConstructor
 @Getter
@@ -27,6 +30,10 @@ import java.time.Instant;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "class_cd", discriminatorType = DiscriminatorType.STRING)
 public abstract class EntityLocatorParticipation {
+
+    public static <V extends EntityLocatorParticipation> Predicate<V> active() {
+        return input -> Objects.equals(input.getRecordStatusCd(), RecordStatus.ACTIVE.name());
+    }
 
     @EmbeddedId
     private EntityLocatorParticipationId id;
@@ -135,5 +142,10 @@ public abstract class EntityLocatorParticipation {
     protected void changed(final PatientCommand command) {
         this.lastChgTime = command.requestedOn();
         this.lastChgUserId = command.requester();
+    }
+
+    protected void changeStatus(final RecordStatus status, final Instant when) {
+        this.recordStatusCd = status.name();
+        this.recordStatusTime = when;
     }
 }
