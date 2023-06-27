@@ -23,11 +23,12 @@ import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand.GetValueSet;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSet.GetValueSet;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 
-public class ValueSetReaderTest {
+class ValueSetReaderTest {
 
 	@Mock
 	ValueSetRepository valueSetRepository;
@@ -46,7 +47,7 @@ public class ValueSetReaderTest {
 		Pageable pageable = PageRequest.of(0, max);
 		Page<Codeset> codePage = getCodeSetPage(max, pageable);
 		when(valueSetRepository.findAll(pageable)).thenReturn(codePage);
-		Page<GetValueSet> result = valueSetReader.findAllValueSets(pageable);
+		Page<ValueSet.GetValueSet> result = valueSetReader.findAllValueSets(pageable);
 		assertNotNull(result);
 		assertEquals(max, result.getTotalElements());
 
@@ -67,7 +68,7 @@ public class ValueSetReaderTest {
 		Page<Codeset> codePage = getCodeSetPage(max, pageable);
 		when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCode(Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString(),Mockito.any())).thenReturn(codePage);
-		Page<GetValueSet> result = valueSetReader.searchValueSearch(search, pageable);
+		Page<ValueSet.GetValueSet> result = valueSetReader.searchValueSearch(search, pageable);
 		assertNotNull(result);
 		assertEquals(max, result.getTotalElements());
 
