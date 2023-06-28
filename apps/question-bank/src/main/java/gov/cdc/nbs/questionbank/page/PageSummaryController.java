@@ -15,17 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/pages")
-public class PageController {
+public class PageSummaryController {
 
     private final PageSummaryFinder finder;
 
-    public PageController(PageSummaryFinder finder) {
+    public PageSummaryController(PageSummaryFinder finder) {
         this.finder = finder;
     }
 
 
     @GetMapping
-    public Page<PageSummary> getAllPageSummary(@PageableDefault(size = 25) Pageable pageable) {
+    public Page<PageSummary> getAllPageSummary(
+            @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
         log.debug("Received find all page summary request");
         var results = finder.find(pageable);
         log.debug("Returning page summaries");
@@ -35,7 +36,7 @@ public class PageController {
     @PostMapping
     public Page<PageSummary> pageSummarySearch(
             @RequestBody PageSummaryRequest request,
-            @PageableDefault(size = 25) Pageable pageable) {
+            @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
         log.debug("Received get page summary request");
         var results = finder.find(request, pageable);
         log.debug("Returning page summaries");

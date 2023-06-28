@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -54,7 +55,7 @@ public class PageSummaryFinder {
                 .orderBy(getSort(pageable))
                 .fetchPage((int) pageable.getOffset(), pageable.getPageSize());
 
-        return fetchPageSummary(pageIds, pageable, pageIds.getMaxResults());
+        return fetchPageSummary(pageIds, pageable, (int) pageIds.getTotalSize());
     }
 
     public Page<PageSummary> find(PageSummaryRequest request, Pageable pageable) {
@@ -83,7 +84,7 @@ public class PageSummaryFinder {
      */
     private Page<PageSummary> fetchPageSummary(List<Long> ids, Pageable pageable, int totalSize) {
         // get the summaries based on supplied Ids
-        var results = factory.select(
+        Map<Long, PageSummary> results = factory.select(
                 waTemplate.id,
                 waTemplate.templateType,
                 waTemplate.templateNm,
