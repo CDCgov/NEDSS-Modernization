@@ -274,7 +274,7 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     private RuleExpressionHelper unHideFunction(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, TargetValuesHelper targetValuesHelper){
-        String ruleExpression= null;
+        String ruleExpression;
         List<String> errorMessageList= new ArrayList<>();
         String sourceIdentifier= sourceValuesHelper.sourceIdentifiers();
         String sourceText= sourceValuesHelper.sourceText();
