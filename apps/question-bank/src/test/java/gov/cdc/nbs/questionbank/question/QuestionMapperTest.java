@@ -10,6 +10,7 @@ import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
@@ -86,6 +87,9 @@ class QuestionMapperTest {
             public String getDataType() {
                 return "Test";
             }
+
+            @Override
+            public void update(Update command) {}
 
         };
 

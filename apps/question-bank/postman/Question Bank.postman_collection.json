@@ -199,7 +199,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"active\": false\n}",
+					"raw": "{\n    \"active\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -207,7 +207,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions/1038510/status",
+					"raw": "localhost:8095/api/v1/questions/1018495/status",
 					"host": [
 						"localhost"
 					],
@@ -216,7 +216,7 @@
 						"api",
 						"v1",
 						"questions",
-						"1038510",
+						"1018495",
 						"status"
 					]
 				}
@@ -236,7 +236,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"search\": \"\"\n}",
+					"raw": "{\n  \"search\": \"GA11003\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -274,7 +274,7 @@
 			"response": []
 		},
 		{
-			"name": "Search Copy",
+			"name": "Find all",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -297,7 +297,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8095/api/v1/questions?page=0&size=25&sort=id,ASC",
+					"raw": "localhost:8095/api/v1/questions?page=1&size=25&sort=id,ASC",
 					"host": [
 						"localhost"
 					],
@@ -310,7 +310,7 @@
 					"query": [
 						{
 							"key": "page",
-							"value": "0"
+							"value": "1"
 						},
 						{
 							"key": "size",
@@ -320,6 +320,81 @@
 							"key": "sort",
 							"value": "id,ASC"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Question",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/1006288",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"1006288"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Question",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"TEXT\",\n    \"uniqueName\": \"updatedUniqueName\",\n\n    \"description\": \"updatedDesc\",\n    \"label\": \"updatedLabel\",\n    \"tooltip\": \"updatedTooltip sample\",\n    \"displayControl\": 0,\n    \"adminComments\": \"updated comment\",\n    \n    \"mask\": \"TXT_EMAIL\",\n    \"defaultValue\": \"updated@default.com\",\n    \"fieldLength\": \"22\",\n\n    \"defaultLabelInReport\": \"string\",\n    \"rdbColumnName\": \"string\",\n    \"datamartColumnName\": \"string\",    \n    \n    \"includedInMessage\": true,\n    \"messageVariableId\": \"update_msg_var\",\n    \"labelInMessage\": \"update label\",\n    \"codeSystem\": \"PH_ACCEPTAPPLICATION\",\n    \"requiredInMessage\": true,\n    \"hl7DataType\": \"string\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8095/api/v1/questions/1038515",
+					"host": [
+						"localhost"
+					],
+					"port": "8095",
+					"path": [
+						"api",
+						"v1",
+						"questions",
+						"1038515"
 					]
 				}
 			},

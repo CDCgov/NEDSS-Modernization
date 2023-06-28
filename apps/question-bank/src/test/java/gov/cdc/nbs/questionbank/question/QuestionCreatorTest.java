@@ -2,12 +2,10 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
-import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
@@ -33,7 +30,6 @@ import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.QuestionType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
@@ -57,6 +53,9 @@ class QuestionCreatorTest {
 
     @Mock
     private CodesetRepository codesetRepository;
+
+    @Mock
+    private QuestionManagementUtil managementUtil;
 
     @InjectMocks
     private QuestionCreator creator;
@@ -92,50 +91,6 @@ class QuestionCreatorTest {
         assertEquals(request.uniqueId(), localId);
     }
 
-    @Test
-    void should_return_oid_for_included_request() {
-        // given the codeValueGeneralRepository will return code system info
-        CodeValueGeneral cvg = new CodeValueGeneral();
-        cvg.setCodeDescTxt("2.16.840.1.113883.12.78");
-        cvg.setCodeShortDescTxt("Abnormal flags (HL7)");
-        when(codeValueGeneralRepository.findByCode(Mockito.anyString())).thenReturn(Optional.of(cvg));
-
-        // given a request with messaging included
-        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest();
-
-        // when I generate the question oid
-        QuestionOid oid = creator.getQuestionOid(request);
-
-        // then I am returned the proper code system info
-        assertEquals(cvg.getCodeDescTxt(), oid.oid());
-        assertEquals(cvg.getCodeShortDescTxt(), oid.system());
-    }
-
-    @Test
-    void should_return_oid_for_not_included_local_request() {
-        // given a request with messaging not included
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest(false);
-
-        // when I generate the question oid
-        QuestionOid oid = creator.getQuestionOid(request);
-
-        // then I am returned the proper code system info
-        assertEquals("L", oid.oid());
-        assertEquals("Local", oid.system());
-    }
-
-    @Test
-    void should_return_oid_for_not_included_phin_request() {
-        // given a request with messaging not included
-        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
-
-        // when I generate the question oid
-        QuestionOid oid = creator.getQuestionOid(request);
-
-        // then I am returned the proper code system info
-        assertEquals("2.16.840.1.114222.4.5.232", oid.oid());
-        assertEquals("PHIN Questions", oid.system());
-    }
 
     @Test
     void should_convert_messaging() {
@@ -174,6 +129,10 @@ class QuestionCreatorTest {
     void should_convert_request() {
         // given a create question request
         CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+
+        // and a valid oid
+        when(managementUtil.getQuestionOid(false, "ABNORMAL_FLAGS_HL7", "PHIN"))
+                .thenReturn(new QuestionOid("test", "test"));
 
         // when i convert to an Add command
         QuestionCommand.AddTextQuestion command = creator.asAdd(123L, request);
@@ -239,66 +198,6 @@ class QuestionCreatorTest {
         assertEquals(id.longValue(), event.id());
         assertEquals(123L, event.createdBy());
         assertEquals(now, event.createdAt());
-    }
-
-    @Test
-    void should_throw_exception_because_not_unique() {
-        // given a conflicting question
-        when(repository.findAllByUniqueFields(
-            Mockito.anyString(), 
-            Mockito.anyString(),
-            Mockito.anyString(),
-            Mockito.anyString()))
-            .thenReturn(Collections.singletonList(new TextQuestionEntity()));
-
-        // given a create question request
-        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
-
-         // when a question is created then an exception is thrown
-        assertThrows(CreateQuestionException.class, () -> creator.create(123L, request));
-    }
-
-    @Test
-    void should_throw_exception_failed_to_find_code_system() {
-        // given a request with an invalid code_system
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
-        when(codeValueGeneralRepository.findByCode(request.messagingInfo().codeSystem())).thenReturn(Optional.empty());
-
-        // when retrieving the question oid 
-        // then an exception is thrown
-        assertThrows(CreateQuestionException.class, () -> creator.getQuestionOid(request));
-    }
-
-    @Test
-    void should_return_null_oid() {
-        // given a non PHIN or LOCAL codeSet
-        CreateQuestionRequest.Text request = new CreateQuestionRequest.Text(
-                "NOT_PHIN_OR_LOCAL",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new MessagingInfo(
-                        false,
-                        null,
-                        null,
-                        null,
-                        false,
-                        null),
-                null,
-                QuestionType.TEXT,
-                null,
-                null,
-                null);
-        // when retrieving the question oid
-        QuestionOid oid = creator.getQuestionOid(request);
-
-        // then null is returned
-        assertNull(oid);
     }
 
     @Test

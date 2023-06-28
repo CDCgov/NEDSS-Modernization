@@ -1,10 +1,11 @@
 package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
-import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.QuestionType;
 
 public class QuestionRequestMother {
 
@@ -156,4 +157,38 @@ public class QuestionRequestMother {
                 rdbColumnName,
                 dataMartColumnName);
     }
+
+    public static UpdateQuestionRequest update(QuestionType type) {
+        return new UpdateQuestionRequest(
+                "updated unique name",
+                "updated description",
+                type,
+                "updated label",
+                "updated tooltip",
+                123L,
+                "updated admin comments",
+                "updated default value",
+                "TXT_SSN",
+                "12",
+                false,
+                -1L,
+                70L,
+                UnitType.LITERAL,
+                "some literalValue",
+                333L,
+                "updated report label",
+                "UP_DMART_COL",
+                "UP_RDB_COL_NM",
+                true,
+                "Updated msg var id",
+                "updated msg label",
+                "PH_ACCEPTAPPLICATION",
+                false,
+                "CWE");
+    }
+
+    public static UpdateQuestionRequest update() {
+        return update(QuestionType.TEXT);
+    }
+
 }

@@ -236,7 +236,7 @@ public class WaQuestionHist {
         this.entryMethod = entity.getEntryMethod();
         this.questionType = entity.getQuestionType();
         this.adminComment = entity.getAdminComment();
-        this.rdbTableNm = entity.getRdbColumnNm();
+        this.rdbTableNm = entity.getRdbTableNm();
         this.userDefinedColumnNm = entity.getUserDefinedColumnNm();
         this.standardNndIndCd = entity.getStandardNndIndCd();
         this.legacyQuestionIdentifier = entity.getLegacyQuestionIdentifier();
