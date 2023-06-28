@@ -100,9 +100,9 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                             defaultValue={entry.detailed}
                             render={({ field: { onChange, value } }) => (
                                 <MultiSelectInput
+                                    id="detailed"
                                     value={value}
                                     onChange={onChange}
-                                    // htmlFor={'detailed'}
                                     options={coded.detailedEthnicities}
                                 />
                             )}

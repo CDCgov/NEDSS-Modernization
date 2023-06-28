@@ -16,7 +16,7 @@ import { useFindPatientProfileIdentifications } from './useFindPatientProfileIde
 import { maybeDescription, maybeId } from '../coded';
 import { internalizeDate } from 'date';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
-import { EntryModal } from '../EntryModal';
+import { EntryModal } from '../entry/EntryModal';
 import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
