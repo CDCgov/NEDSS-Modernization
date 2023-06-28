@@ -4,6 +4,7 @@ import { Pages, Headers } from './Pages';
 import { SortCriteria } from './ManagePagesSorter';
 import { Direction } from 'sorting';
 import { sort } from './ManagePagesSorter';
+import { usePage } from 'page';
 
 type Props = {
     pages?: Pages[];
@@ -34,6 +35,7 @@ const asTableBodies = (pages: Pages[]): TableBody[] => pages?.map(asTableBody) |
 export const ManagePagesTable = ({ pages }: Props) => {
     const [bodies, setBodies] = useState<TableBody[]>([]);
     const [criteria, setCriteria] = useState<SortCriteria>({});
+    const { page, request } = usePage();
 
     useEffect(() => {
         if (pages && !criteria) {
@@ -53,11 +55,11 @@ export const ManagePagesTable = ({ pages }: Props) => {
             tableHeader="Page Library"
             tableHead={tableHead}
             tableBody={bodies}
-            // isPagination={true}
-            // pageSize={page.pageSize}
+            isPagination={true}
+            pageSize={page.pageSize}
             totalResults={pages?.length}
-            // currentPage={page.current}
-            // handleNext={request}
+            currentPage={page.current}
+            handleNext={request}
             sortData={handleSort}
         />
     );
