@@ -1,7 +1,9 @@
 import { TableComponent, TableBody } from 'components/Table/Table';
 import { useState, useEffect } from 'react';
-import { Pages } from './Pages';
-import { SortCriteria } from 'pages/patient/profile/document/PatientDocumentSorter';
+import { Pages, Headers } from './Pages';
+import { SortCriteria } from './ManagePagesSorter';
+import { Direction } from 'sorting';
+import { sort } from './ManagePagesSorter';
 
 type Props = {
     pages?: Pages[];
@@ -9,11 +11,11 @@ type Props = {
 };
 
 const tableHead = [
-    { name: 'Page name', sortable: true, sort: 'all' },
-    { name: 'Event type', sortable: true, sort: 'all' },
-    { name: 'Related conditions', sortable: true, sort: 'all' },
-    { name: 'Status', sortable: true, sort: 'all' },
-    { name: 'Last Updated by', sortable: true, sort: 'all' }
+    { name: Headers.PageName, sortable: true },
+    { name: Headers.EventType, sortable: true },
+    { name: Headers.RelatedConditions, sortable: true },
+    { name: Headers.Status, sortable: true },
+    { name: Headers.LastUpdatedBy, sortable: true }
 ];
 
 const asTableBody = (page: Pages): TableBody => ({
@@ -31,18 +33,20 @@ const asTableBody = (page: Pages): TableBody => ({
 const asTableBodies = (pages: Pages[]): TableBody[] => pages?.map(asTableBody) || [];
 export const ManagePagesTable = ({ pages }: Props) => {
     const [bodies, setBodies] = useState<TableBody[]>([]);
-    const [criteria] = useState<SortCriteria>({});
+    const [criteria, setCriteria] = useState<SortCriteria>({});
 
     useEffect(() => {
-        if (pages) {
-            // const sorted = sort(pages, criteria);
+        if (pages && !criteria) {
             setBodies(asTableBodies(pages));
+        } else if (pages && criteria) {
+            const sorted = sort(pages, criteria);
+            setBodies(asTableBodies(sorted));
         }
     }, [pages, criteria]);
 
-    // const handleSort = (name: string, direction: string): void => {
-    //     setCriteria({ name: name as Headers, type: direction as Direction });
-    // };
+    const handleSort = (name: string, direction: string): void => {
+        setCriteria({ name: name as Headers, type: direction as Direction });
+    };
 
     return (
         <TableComponent
@@ -54,7 +58,7 @@ export const ManagePagesTable = ({ pages }: Props) => {
             totalResults={pages?.length}
             // currentPage={page.current}
             // handleNext={request}
-            // sortData={handleSort}
+            sortData={handleSort}
         />
     );
 };
