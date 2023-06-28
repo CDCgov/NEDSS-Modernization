@@ -44,7 +44,6 @@ cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform
 junit = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-suite" }
 awaitility = {module = "org.awaitility:awaitility"}
-validation-api = {module = "javax.validation:validation-api", version.ref = "validation"}
 
 [bundles]
 security = ["java-jwt", "spring-security"]

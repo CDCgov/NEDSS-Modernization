@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @RestController
-@RequestMapping("search")
+@RequestMapping("/api/v1/phin")
 public class VocabSearchController {
 
     @Autowired
