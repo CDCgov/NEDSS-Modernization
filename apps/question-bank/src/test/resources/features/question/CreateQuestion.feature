@@ -43,7 +43,7 @@ Feature: Create question
         When I send a create "text" question request
         Then the "text" question is created
         When I send a create question request with duplicate "<field>"
-        Then a question creation exception is thrown
+        Then a unique question exception is thrown
         Examples:
             | field                 |
             | question name         |

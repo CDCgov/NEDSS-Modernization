@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @DiscriminatorValue(CodedQuestionEntity.CODED_QUESTION_TYPE)
 public class CodedQuestionEntity extends WaQuestion {
@@ -20,8 +18,16 @@ public class CodedQuestionEntity extends WaQuestion {
     @Column(name = "code_set_group_id")
     private Long codeSetGroupId;
 
+    public void setCodeSetGroupId(Long valueSet) {
+        this.codeSetGroupId = requireNonNull(valueSet, "ValueSet must not be null");
+    }
+
     @Column(name = "default_value", length = 300)
     private String defaultValue;
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
     @Override
     public String getDataType() {
@@ -31,18 +37,38 @@ public class CodedQuestionEntity extends WaQuestion {
     public CodedQuestionEntity(QuestionCommand.AddCodedQuestion command) {
         super(command);
 
-        this.codeSetGroupId = requireNonNull(command.valueSet(), "ValueSet must not be null");
-        this.defaultValue = command.defaultValue();
+        setCodeSetGroupId(command.valueSet());
+        setDefaultValue(command.defaultValue());
         setOtherValueIndCd('F');
 
         // Audit
         created(command);
 
         // Reporting
-        setReportingData(command.reportingData());
+        setReportingData(command);
 
         // Messaging
         setMessagingData(command.messagingData());
+    }
+
+    @Override
+    public void update(QuestionCommand.Update command) {
+        // Update general fields
+        update(command.questionData());
+
+        // Coded fields
+        setCodeSetGroupId(command.valueSet());
+        setDefaultValue(command.defaultValue());
+
+
+        // Reporting
+        setReportingData(command);
+
+        // Messaging
+        setMessagingData(command.messagingData());
+
+        // Audit
+        changed(command);
     }
 
 }

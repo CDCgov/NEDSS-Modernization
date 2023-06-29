@@ -1,4 +1,4 @@
-import { Direction, sortByAlphanumeric, sortByDate, withDirection, descending, Comparator } from 'sorting';
+import { Direction, sortByAlphanumeric, withDirection, ascending, Comparator } from 'sorting';
 import { Headers, Pages } from './Pages';
 
 export type SortCriteria = {
@@ -12,11 +12,11 @@ export const sort = (contacts: Pages[], { name, type }: SortCriteria): Pages[] =
 const resolveComparator = (name?: Headers): Comparator<Pages> => {
     switch (name) {
         case Headers.PageName:
-            return sortByDate('pageName');
+            return sortByAlphanumeric('pageName');
         case Headers.EventType:
             return sortByAlphanumeric('eventType');
         case Headers.RelatedConditions:
-            return sortByDate('relatedConditions');
+            return sortByAlphanumeric('relatedConditions');
         case Headers.Status:
             return sortByAlphanumeric('status');
         case Headers.LastUpdatedBy:
@@ -26,4 +26,4 @@ const resolveComparator = (name?: Headers): Comparator<Pages> => {
     }
 };
 
-const defaultSort = descending(sortByAlphanumeric('pageName'));
+const defaultSort = ascending(sortByAlphanumeric('pageName'));

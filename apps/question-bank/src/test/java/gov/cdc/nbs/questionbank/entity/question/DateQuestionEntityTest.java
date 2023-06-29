@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
+import gov.cdc.nbs.questionbank.support.QuestionCommandMother;
 
-class DateQuestionTest {
+class DateQuestionEntityTest {
 
     @Test
     void should_have_date_type() {
@@ -61,5 +62,19 @@ class DateQuestionTest {
                         null),
                 0,
                 null);
+    }
+
+    @Test
+    void should_do_update() {
+        var command = QuestionCommandMother.update();
+        DateQuestionEntity q = new DateQuestionEntity();
+        q.setQuestionType("LOCAL");
+        q.setVersionCtrlNbr(1);
+
+        q.update(command);
+
+        assertEquals(command.mask(), q.getMask());
+        assertEquals(command.allowFutureDates() ? 'T' : 'F', q.getFutureDateIndCd().charValue());
+
     }
 }

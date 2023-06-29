@@ -14,6 +14,7 @@ import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
@@ -136,7 +137,7 @@ public class CreateQuestionSteps {
         }
         try {
             controller.createQuestion(request);
-        } catch (CreateQuestionException e) {
+        } catch (UniqueQuestionException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -224,6 +225,12 @@ public class CreateQuestionSteps {
     public void an_exception_is_thrown() {
         assertNotNull(exceptionHolder.getException());
         assertTrue(exceptionHolder.getException() instanceof CreateQuestionException);
+    }
+
+    @Then("a unique question exception is thrown")
+    public void an_unique_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof UniqueQuestionException);
     }
 
 }

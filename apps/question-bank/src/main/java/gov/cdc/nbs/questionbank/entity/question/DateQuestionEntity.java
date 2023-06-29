@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @DiscriminatorValue(DateQuestionEntity.DATE_QUESION_TYPE)
 public class DateQuestionEntity extends WaQuestion {
@@ -20,8 +18,13 @@ public class DateQuestionEntity extends WaQuestion {
     @Column(name = "mask", length = 50)
     private String mask;
 
-    @Column(name = "future_date_ind_cd")
-    private Character futureDateIndCd;
+    public void setMask(String mask) {
+        this.mask = requireNonNull(mask, "Mask must not be null");
+    }
+
+    public void setFutureDateIndCd(boolean allowFutureDates) {
+        this.setFutureDateIndCd(allowFutureDates ? 'T' : 'F');
+    }
 
     @Override
     public String getDataType() {
@@ -31,17 +34,36 @@ public class DateQuestionEntity extends WaQuestion {
     public DateQuestionEntity(QuestionCommand.AddDateQuestion command) {
         super(command);
 
-        this.mask = requireNonNull(command.mask(), "Mask must not be null");
-        this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
+        setMask(command.mask());
+        setFutureDateIndCd(command.allowFutureDates());
 
         // Audit
         created(command);
 
         // Reporting
-        setReportingData(command.reportingData());
+        setReportingData(command);
 
         // Messaging
         setMessagingData(command.messagingData());
+    }
+
+    @Override
+    public void update(QuestionCommand.Update command) {
+        // Update general fields
+        update(command.questionData());
+
+        // Date fields
+        setMask(command.mask());
+        setFutureDateIndCd(command.allowFutureDates());
+
+        // Reporting
+        setReportingData(command);
+
+        // Messaging
+        setMessagingData(command.messagingData());
+
+        // Audit
+        changed(command);
     }
 
 }

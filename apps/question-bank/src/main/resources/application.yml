@@ -45,3 +45,6 @@ kafkadef:
     questionbank:
       question-created: question-created
       question-deleted: question-deleted
+
+valueset:
+  byidurl: https://phinvads.cdc.gov/baseStu3/ValueSet/
