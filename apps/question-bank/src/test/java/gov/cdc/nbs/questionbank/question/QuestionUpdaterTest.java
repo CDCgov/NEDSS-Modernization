@@ -23,6 +23,7 @@ import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
+import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.QuestionType;
@@ -107,6 +108,19 @@ class QuestionUpdaterTest {
         assertThrows(QuestionNotFoundException.class, () -> updater.setStatus(1L, 222L, false));
     }
 
+
+    @Test
+    void should_not_allow_update_inactive() {
+        // given an update request
+        UpdateQuestionRequest request = QuestionRequestMother.update(QuestionType.DATE);
+
+        // and an existing question
+        when(repository.findById(Mockito.anyLong())).thenReturn(Optional.of(inactiveQuestion()));
+
+        // when i send an update then an exception is thrown
+        assertThrows(UpdateQuestionException.class, () -> updater.update(1L, 2L, request));
+    }
+
     @Test
     // Allow more than 25 assertions
     @SuppressWarnings("squid:S5961")
@@ -163,6 +177,15 @@ class QuestionUpdaterTest {
     private WaQuestion emptyQuestion() {
         TextQuestionEntity q = new TextQuestionEntity();
         q.setId(321L);
+        q.setRecordStatusCd(WaQuestion.ACTIVE);
+        q.setVersionCtrlNbr(1);
+        return q;
+    }
+
+    private WaQuestion inactiveQuestion() {
+        TextQuestionEntity q = new TextQuestionEntity();
+        q.setId(321L);
+        q.setRecordStatusCd(WaQuestion.INACTIVE);
         q.setVersionCtrlNbr(1);
         return q;
     }
