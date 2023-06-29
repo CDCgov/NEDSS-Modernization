@@ -28,7 +28,7 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
         handleSubmit,
         control,
         formState: { isValid }
-    } = useForm();
+    } = useForm({ mode: 'onBlur' });
 
     const coded = usePatientEthnicityCodedValues();
 
@@ -53,15 +53,17 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                     <Controller
                         control={control}
                         name="asOf"
-                        rules={{ required: true }}
+                        rules={{ required: { value: true, message: 'As of date is required.' } }}
                         defaultValue={entry?.asOf}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <DatePickerInput
                                 id="asOf"
                                 defaultValue={value}
+                                onBlur={onBlur}
                                 onChange={onChange}
                                 name="asOf"
                                 htmlFor={'asOf'}
+                                errorMessage={error?.message}
                             />
                         )}
                     />

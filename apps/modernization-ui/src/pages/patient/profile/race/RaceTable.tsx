@@ -242,12 +242,12 @@ export const RacesTable = ({ patient }: Props) => {
                 sortDirectionData={handleSort}
             />
             {selected?.type === 'add' && (
-                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Name">
+                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Race" overflow>
                     <RaceEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
                 </EntryModal>
             )}
             {selected?.type === 'update' && (
-                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Name">
+                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Race" overflow>
                     <RaceEntryForm
                         action={'Edit'}
                         entry={asEntry(selected.item)}
