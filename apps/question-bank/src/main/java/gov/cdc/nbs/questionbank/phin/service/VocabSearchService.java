@@ -35,7 +35,7 @@ public class VocabSearchService {
             }
             res = ValueSetByOIDResults.builder().valueSetType("PHIN").valueSetCode(result.getName())
                     .valueSetName(result.getTitle()).status(result.getStatus())
-                    .valueSetDesc(result.getDescription().replaceAll("</?.*?>", "")).valueSetConcepts(conceptList)
+                    .valueSetDesc(result.getDescription().replaceAll("</?[^>]*+>", "")).valueSetConcepts(conceptList)
                     .build();
         }
         return res;

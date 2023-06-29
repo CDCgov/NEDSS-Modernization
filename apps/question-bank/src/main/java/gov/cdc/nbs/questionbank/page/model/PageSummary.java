@@ -8,7 +8,7 @@ public record PageSummary(
         long id,
         String eventType,
         String name,
-        String state,
+        String status,
         String messageMappingGuide,
         List<Condition> conditions,
         Instant lastUpdate,
