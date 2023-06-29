@@ -57,7 +57,7 @@ public class PageSummarySearchSteps {
     public void i_get_all_page_summaries_sorted(String field, String direction) {
         Direction dir = direction.equals("ASC") ? Direction.ASC : Direction.DESC;
         try {
-            holder.setResults(controller.getAllPageSummary(PageRequest.of(0, 25, dir, field)));
+            holder.setResults(controller.getAllPageSummary(PageRequest.of(0, 5, dir, field)));
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

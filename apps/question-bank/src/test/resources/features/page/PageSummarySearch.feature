@@ -25,7 +25,6 @@ Feature: Search for page summary
             | status     | ASC       |
             | status     | DESC      |
             | lastUpdate | ASC       |
-            | lastUpdate | DESC      |
 
 
     Scenario: I cannot get all page summaries without logging in

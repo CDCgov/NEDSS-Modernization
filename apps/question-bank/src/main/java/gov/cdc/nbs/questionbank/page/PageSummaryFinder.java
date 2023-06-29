@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.PagedList;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
@@ -28,6 +29,7 @@ import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.question.model.Condition;
 
 @Component
+@Transactional
 public class PageSummaryFinder {
     private final QWaTemplate waTemplate = QWaTemplate.waTemplate;
     private final QAuthUser authUser = QAuthUser.authUser;

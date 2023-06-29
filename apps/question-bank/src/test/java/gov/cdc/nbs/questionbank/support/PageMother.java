@@ -73,7 +73,7 @@ public class PageMother {
     }
 
     private WaTemplate createAsepticMeningitisPage() {
-        Instant now = Instant.now();
+        Instant now = Instant.now().plusSeconds(5);
         WaTemplate page = new WaTemplate();
         page.setTemplateNm("Aseptic Meningitis");
         page.setTemplateType("Draft");

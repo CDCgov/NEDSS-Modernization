@@ -96,7 +96,7 @@ public class WaTemplate {
     @Column(name = "version_note", length = 2000)
     private String versionNote;
 
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.EAGER,
             mappedBy = "waTemplateUid",
             cascade = {
                     CascadeType.MERGE,
