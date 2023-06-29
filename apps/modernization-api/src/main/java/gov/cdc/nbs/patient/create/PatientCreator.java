@@ -57,7 +57,7 @@ public class PatientCreator {
             .forEach(person::add);
 
         input.getEmailAddresses().stream()
-            .map(emailAddress -> asEmailAddress(context, identifier, emailAddress))
+            .map(emailAddress -> asEmailAddress(context, identifier, asOf, emailAddress))
             .forEach(person::add);
 
         input.getIdentifications().stream()
@@ -176,11 +176,13 @@ public class PatientCreator {
     private PatientCommand.AddEmailAddress asEmailAddress(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final String emailAddress
     ) {
         return new PatientCommand.AddEmailAddress(
             identifier.id(),
             generateNbsId(),
+            asOf,
             emailAddress,
             context.requestedBy(),
             context.requestedAt()
