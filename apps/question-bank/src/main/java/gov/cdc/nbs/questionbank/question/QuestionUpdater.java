@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
+import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -66,6 +67,10 @@ public class QuestionUpdater {
 
     public Question update(Long userId, Long id, UpdateQuestionRequest request) {
         return repository.findById(id).map(q -> {
+            // Do not allow update of inactive questions
+            if (q.getRecordStatusCd().equals(WaQuestion.INACTIVE)) {
+                throw new UpdateQuestionException("Unable to update an inactive question");
+            }
             createHistoryEvent(q);
             return questionMapper.toQuestion(updateQuestion(q, userId, request));
         }).orElseThrow(() -> new QuestionNotFoundException(id));

@@ -29,6 +29,9 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "data_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class WaQuestion {
 
+    public static final String ACTIVE = "Active";
+    public static final String INACTIVE = "Inactive";
+
     @Id
     @Column(name = "wa_question_uid", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -309,7 +312,7 @@ public abstract class WaQuestion {
         setLastChgUserId(command.userId());
         setLastChgTime(command.requestedOn());
         setVersionCtrlNbr(1);
-        setRecordStatusCd("Active");
+        setRecordStatusCd(ACTIVE);
         setRecordStatusTime(command.requestedOn());
     }
 
@@ -323,7 +326,7 @@ public abstract class WaQuestion {
     }
 
     public void statusChange(QuestionCommand.SetStatus command) {
-        setRecordStatusCd(command.active() ? "Active" : "Inactive");
+        setRecordStatusCd(command.active() ? ACTIVE : INACTIVE);
         setRecordStatusTime(command.requestedOn());
         changed(command);
     }
