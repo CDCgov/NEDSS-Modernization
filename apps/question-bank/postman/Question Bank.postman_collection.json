@@ -7,6 +7,459 @@
 	},
 	"item": [
 		{
+			"name": "Questions",
+			"item": [
+				{
+					"name": "Create Text Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"TEXT\",\n  \"adminComments\": \"Administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Question\",\n  \"displayControl\": 1008,\n  \"fieldLength\": \"50\",\n  \"label\": \"Sample question label\",\n  \"mask\": \"TXT\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Label in message\",\n    \"messageVariableId\": \"MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample question\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Coded Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"CODED\",\n  \"adminComments\": \"Coded administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"CODED_DATA_MART_COL\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"CODED_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Coded report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Coded Question\",\n  \"displayControl\": 1007,\n  \"label\": \"Sample coded question label\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Coded question label in message\",\n    \"messageVariableId\": \"Coded MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample coded question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample coded question\",\n  \"valueSet\": 4150\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Date Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"DATE\",\n  \"adminComments\": \"Date Question administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATE_DATA_MART_COLUMN\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"DATE_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Date report label\"\n  },\n  \"description\": \"Test Date Question\",\n  \"displayControl\": 1008,\n  \"label\": \"Sample date question label\",\n  \"mask\": \"DATE\",\n  \"allowFutureDates\": false,\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Date label in message\",\n    \"messageVariableId\": \"Date MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample date question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample date question\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Numeric Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"NUMERIC\",\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions/1018495/status",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions",
+								"1018495",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\": \"sample\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions/search?page=0&size=25&sort=id,ASC",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions",
+								"search"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "25"
+								},
+								{
+									"key": "sort",
+									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"search\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions?page=1&size=25&sort=id,ASC",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "25"
+								},
+								{
+									"key": "sort",
+									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Question",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions/1006288",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions",
+								"1006288"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Question",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"TEXT\",\n    \"uniqueName\": \"updatedUniqueName\",\n\n    \"description\": \"updatedDesc\",\n    \"label\": \"updatedLabel\",\n    \"tooltip\": \"updatedTooltip sample\",\n    \"displayControl\": 0,\n    \"adminComments\": \"updated comment\",\n    \n    \"mask\": \"TXT_EMAIL\",\n    \"defaultValue\": \"updated@default.com\",\n    \"fieldLength\": \"22\",\n\n    \"defaultLabelInReport\": \"updated report label\",\n    \"rdbColumnName\": \"UP_RDB_COL_NM\",\n    \"datamartColumnName\": \"UP_DM_COL_NM\",    \n    \n    \"includedInMessage\": true,\n    \"messageVariableId\": \"update_msg_var\",\n    \"labelInMessage\": \"update label\",\n    \"codeSystem\": \"PH_ACCEPTAPPLICATION\",\n    \"requiredInMessage\": true,\n    \"hl7DataType\": \"CWE\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/questions/1018499",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"questions",
+								"1018499"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "Get All Page Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8095/api/v1/pages?pages=0&size=25&sort=id,ASC",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"pages"
+							],
+							"query": [
+								{
+									"key": "pages",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "25"
+								},
+								{
+									"key": "sort",
+									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search page summary",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"search\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/api/v1/pages?pages=0&size=10&sort=id,ASC",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"api",
+								"v1",
+								"pages"
+							],
+							"query": [
+								{
+									"key": "pages",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "nnd_batch_to_cdc Login",
 			"event": [
 				{
@@ -41,360 +494,6 @@
 					"port": "8080",
 					"path": [
 						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Text Question",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"type\": \"TEXT\",\n  \"adminComments\": \"Administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Question\",\n  \"displayControl\": 1008,\n  \"fieldLength\": \"50\",\n  \"label\": \"Sample question label\",\n  \"mask\": \"TXT\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Label in message\",\n    \"messageVariableId\": \"MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample question\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Coded Question",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"type\": \"CODED\",\n  \"adminComments\": \"Coded administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"CODED_DATA_MART_COL\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"CODED_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Coded report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Coded Question\",\n  \"displayControl\": 1007,\n  \"label\": \"Sample coded question label\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Coded question label in message\",\n    \"messageVariableId\": \"Coded MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample coded question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample coded question\",\n  \"valueSet\": 4150\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Date Question",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"type\": \"DATE\",\n  \"adminComments\": \"Date Question administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATE_DATA_MART_COLUMN\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"DATE_RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Date report label\"\n  },\n  \"description\": \"Test Date Question\",\n  \"displayControl\": 1008,\n  \"label\": \"Sample date question label\",\n  \"mask\": \"DATE\",\n  \"allowFutureDates\": false,\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Date label in message\",\n    \"messageVariableId\": \"Date MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample date question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample date question\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Numeric Question",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"type\": \"NUMERIC\",\n    \"adminComments\": \"Numeric Question administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"NUM_DATA_MART_COLUMN\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"NUM_RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Numeric report label\"\n    },\n    \"description\": \"Test Numeric Question\",\n    \"displayControl\": 1008,\n    \"label\": \"Sample Numeric question label\",\n    \"allowFutureDates\": false,\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Numeric label in message\",\n        \"messageVariableId\": \"Numeric MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample numeric question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample Numeric question\",\n    \"mask\": \"NUM\",\n    \"fieldLength\": \"3\",\n    \"defaultValue\": \"1\",\n    \"minValue\": 0,\n    \"maxValue\": 100,\n    \"unitTypeCd\": \"LITERAL\",\n    \"unitValue\": \"some literal value\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Status",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"active\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions/1018495/status",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions",
-						"1018495",
-						"status"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Search",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"search\": \"GA11003\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions/search?page=0&size=25&sort=id,ASC",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions",
-						"search"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "0"
-						},
-						{
-							"key": "size",
-							"value": "25"
-						},
-						{
-							"key": "sort",
-							"value": "id,ASC"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Find all",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"search\": \"\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions?page=1&size=25&sort=id,ASC",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "25"
-						},
-						{
-							"key": "sort",
-							"value": "id,ASC"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Question",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions/1006288",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions",
-						"1006288"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Question",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"type\": \"TEXT\",\n    \"uniqueName\": \"updatedUniqueName\",\n\n    \"description\": \"updatedDesc\",\n    \"label\": \"updatedLabel\",\n    \"tooltip\": \"updatedTooltip sample\",\n    \"displayControl\": 0,\n    \"adminComments\": \"updated comment\",\n    \n    \"mask\": \"TXT_EMAIL\",\n    \"defaultValue\": \"updated@default.com\",\n    \"fieldLength\": \"22\",\n\n    \"defaultLabelInReport\": \"string\",\n    \"rdbColumnName\": \"string\",\n    \"datamartColumnName\": \"string\",    \n    \n    \"includedInMessage\": true,\n    \"messageVariableId\": \"update_msg_var\",\n    \"labelInMessage\": \"update label\",\n    \"codeSystem\": \"PH_ACCEPTAPPLICATION\",\n    \"requiredInMessage\": true,\n    \"hl7DataType\": \"string\"\n    \n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8095/api/v1/questions/1038515",
-					"host": [
-						"localhost"
-					],
-					"port": "8095",
-					"path": [
-						"api",
-						"v1",
-						"questions",
-						"1038515"
 					]
 				}
 			},

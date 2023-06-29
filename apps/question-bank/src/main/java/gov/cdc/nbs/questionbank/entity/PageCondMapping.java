@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -17,6 +16,7 @@ import java.time.Instant;
 @Table(name = "Page_cond_mapping", catalog = "NBS_ODSE")
 public class PageCondMapping {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "page_cond_mapping_uid", nullable = false)
     private Long id;
 
