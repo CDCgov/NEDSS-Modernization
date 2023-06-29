@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,7 @@ public class PageSummaryController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<PageSummary> getAllPageSummary(
             @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
         log.debug("Received find all page summary request");
@@ -34,6 +36,7 @@ public class PageSummaryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<PageSummary> pageSummarySearch(
             @RequestBody PageSummaryRequest request,
             @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {

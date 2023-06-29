@@ -10,8 +10,8 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
-import gov.cdc.nbs.questionbank.question.util.ExceptionHolder;
 import gov.cdc.nbs.questionbank.question.util.QuestionSearchHolder;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

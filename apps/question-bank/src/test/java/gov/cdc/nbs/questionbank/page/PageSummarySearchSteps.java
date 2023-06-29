@@ -1,0 +1,91 @@
+package gov.cdc.nbs.questionbank.page;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import gov.cdc.nbs.questionbank.page.model.PageSummary;
+import gov.cdc.nbs.questionbank.page.util.PageSummarySearchHolder;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.PageMother;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+public class PageSummarySearchSteps {
+
+    @Autowired
+    private PageSummaryController controller;
+
+    @Autowired
+    private PageMother pageMother;
+
+    @Autowired
+    private PageSummarySearchHolder holder;
+
+    @Autowired
+    private ExceptionHolder exceptionHolder;
+
+    @Given("pages exist")
+    public void pages_exist() {
+        pageMother.brucellosis();
+        pageMother.asepticMeningitis();
+    }
+
+
+    @When("I get all page summaries")
+    public void i_get_all_page_summaries() {
+        try {
+            holder.setResults(controller.getAllPageSummary(PageRequest.ofSize(25)));
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
+    }
+
+    @Then("page summaries are returned")
+    public void page_summaries_are_returned() {
+        assertNotNull(holder.getResults());
+        assertTrue(holder.getResults().getTotalElements() > 0);
+    }
+
+    @When("I get all page summaries and sort by {string} {string}")
+    public void i_get_all_page_summaries_sorted(String field, String direction) {
+        Direction dir = direction.equals("ASC") ? Direction.ASC : Direction.DESC;
+        try {
+            holder.setResults(controller.getAllPageSummary(PageRequest.of(0, 25, dir, field)));
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
+    }
+
+    @Then("page summaries are returned sorted by {string} {string}")
+    public void page_summaries_are_returned_sorted(String field, String direction) {
+        assertNotNull(holder.getResults());
+        assertTrue(holder.getResults().getTotalElements() > 0);
+        boolean correctlySorted = holder.getResults()
+                .stream()
+                .sorted((a, b) -> createComparator(a, b, field, direction))
+                .map(a -> a.id())
+                .toList()
+                .equals(holder.getResults().map(r -> r.id()).toList());
+        assertTrue(correctlySorted);
+    }
+
+    private int createComparator(PageSummary a, PageSummary b, String field, String direction) {
+        return switch (field) {
+            case "id" -> Long.valueOf(a.id()).compareTo(Long.valueOf(b.id())) * (direction.equals("ASC") ? 1 : -1);
+            case "name" -> a.name().compareTo(b.name()) * (direction.equals("ASC") ? 1 : -1);
+            case "eventType" -> a.eventType().compareTo(b.eventType()) * (direction.equals("ASC") ? 1 : -1);
+            case "status" -> a.state().compareTo(b.state()) * (direction.equals("ASC") ? 1 : -1);
+            case "lastUpdate" -> a.lastUpdate().compareTo(b.lastUpdate()) * (direction.equals("ASC") ? 1 : -1);
+            default -> throw new IllegalArgumentException();
+        };
+    }
+}
