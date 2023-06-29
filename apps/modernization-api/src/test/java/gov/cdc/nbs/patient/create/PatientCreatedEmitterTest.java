@@ -343,6 +343,7 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddEmailAddress(
                 117L,
                 5333L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "AnEmail@email.com",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
@@ -361,6 +362,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(5333L, PatientEvent.Created.Email::identifier)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"),PatientEvent.Created.Email::asOf)
                     .returns("NET", PatientEvent.Created.Email::type)
                     .returns("H", PatientEvent.Created.Email::use)
                     .returns("AnEmail@email.com", PatientEvent.Created.Email::address)

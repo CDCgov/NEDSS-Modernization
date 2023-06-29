@@ -71,7 +71,7 @@ public sealed interface PatientEvent {
         }
 
 
-        public record Email(long identifier, String type, String use, String address) {
+        public record Email(long identifier, Instant asOf, String type, String use, String address) {
         }
 
 

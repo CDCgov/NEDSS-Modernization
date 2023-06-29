@@ -149,6 +149,7 @@ class PatientCreatedEmitter {
 
         return new PatientEvent.Created.Email(
             email.getId().getLocatorUid(),
+            email.getAsOfDate(),
             email.getCd(),
             email.getUseCd(),
             locator.getEmailAddress()

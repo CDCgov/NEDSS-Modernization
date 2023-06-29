@@ -58,6 +58,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
         this.cd = "NET";
         this.useCd = "H";
+        this.asOfDate = emailAddress.asOf();
 
         this.locator = new TeleLocator(emailAddress);
     }

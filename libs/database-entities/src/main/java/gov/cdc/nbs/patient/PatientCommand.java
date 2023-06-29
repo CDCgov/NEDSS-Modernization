@@ -198,34 +198,14 @@ public sealed interface PatientCommand {
     }
 
 
-    record UpdatePhoneNumber(
-        long person,
-        long id,
-        String number,
-        String extension,
-        String type,
-        String use,
-        long requester,
-        Instant requestedOn
-    ) implements PatientCommand {
-    }
-
-
-    record DeletePhoneNumber(
-        long person,
-        long id,
-        long requester,
-        Instant requestedOn
-    ) implements PatientCommand {
-    }
-
-
     record AddEmailAddress(
         long person,
         long id,
+        Instant asOf,
         String email,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 

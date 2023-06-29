@@ -1211,6 +1211,7 @@ class PersonTest {
             new PatientCommand.AddEmailAddress(
                 117L,
                 5333L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "AnEmail@email.com",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
@@ -1224,6 +1225,8 @@ class PersonTest {
                     .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                     .returns(5333L, p -> p.getId().getLocatorUid())
                     .returns("NET", EntityLocatorParticipation::getCd)
+                    .returns("H", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"),EntityLocatorParticipation::getAsOfDate)
                     .extracting(TeleEntityLocatorParticipation::getLocator)
                     .returns(5333L, TeleLocator::getId)
                     .returns("AnEmail@email.com", TeleLocator::getEmailAddress)

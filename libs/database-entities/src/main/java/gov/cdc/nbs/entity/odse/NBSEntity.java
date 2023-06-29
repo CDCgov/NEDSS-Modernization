@@ -291,7 +291,8 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            emailAddress);
+            emailAddress
+        );
 
         locators.add(participation);
 
