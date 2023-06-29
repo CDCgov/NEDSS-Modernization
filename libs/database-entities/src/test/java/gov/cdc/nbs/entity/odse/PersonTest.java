@@ -980,6 +980,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:35:13Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -1000,6 +1001,8 @@ class PersonTest {
                     .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
                     .returns(4861L, p -> p.getId().getLocatorUid())
                     .returns("H", EntityLocatorParticipation::getCd)
+                    .returns("H", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
                     .extracting(PostalEntityLocatorParticipation::getLocator)
                     .returns(4861L, PostalLocator::getId)
                     .returns("SA1", PostalLocator::getStreetAddr1)
@@ -1077,6 +1080,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -1148,6 +1152,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -1165,6 +1170,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 5331L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "Other-SA1",
                 "Other-SA2",
                 "Other-city",

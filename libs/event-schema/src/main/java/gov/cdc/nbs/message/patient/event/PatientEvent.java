@@ -54,6 +54,7 @@ public sealed interface PatientEvent {
 
         public record Address(
             long identifier,
+            Instant asOf,
             String streetAddress1,
             String streetAddress2,
             String city,

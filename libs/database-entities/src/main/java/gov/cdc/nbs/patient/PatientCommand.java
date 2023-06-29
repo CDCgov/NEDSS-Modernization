@@ -120,6 +120,7 @@ public sealed interface PatientCommand {
         public AddAddress(
             long person,
             long id,
+            Instant asOf,
             String address1,
             String address2,
             String city,
@@ -134,7 +135,7 @@ public sealed interface PatientCommand {
             this(
                 person,
                 id,
-                requestedOn,
+                asOf,
                 "H",
                 "H",
                 address1,

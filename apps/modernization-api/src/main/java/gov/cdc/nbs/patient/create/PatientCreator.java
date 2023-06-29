@@ -38,16 +38,18 @@ public class PatientCreator {
 
         Person person = new Person(asAdd(context, identifier, input));
 
+        Instant asOf = input.getAsOf();
+
         input.getNames().stream()
-            .map(name -> asName(context, identifier, input.getAsOf(), name))
+            .map(name -> asName(context, identifier, asOf, name))
             .forEach(person::add);
 
         input.getRaces().stream()
-            .map(race -> asRace(context, identifier, input.getAsOf(), race))
+            .map(race -> asRace(context, identifier, asOf, race))
             .forEach(person::add);
 
         input.getAddresses().stream()
-            .map(address -> asAddress(context, identifier, address))
+            .map(address -> asAddress(context, identifier, asOf, address))
             .forEach(person::add);
 
         input.getPhoneNumbers().stream()
@@ -131,11 +133,13 @@ public class PatientCreator {
     private PatientCommand.AddAddress asAddress(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.PostalAddress address
     ) {
         return new PatientCommand.AddAddress(
             identifier.id(),
             generateNbsId(),
+            asOf,
             address.getStreetAddress1(),
             address.getStreetAddress2(),
             address.getCity(),

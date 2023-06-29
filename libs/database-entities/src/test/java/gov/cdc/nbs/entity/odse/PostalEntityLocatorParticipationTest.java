@@ -21,6 +21,7 @@ class PostalEntityLocatorParticipationTest {
             new PatientCommand.AddAddress(
                 117L,
                 5331L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
                 "city-description",
