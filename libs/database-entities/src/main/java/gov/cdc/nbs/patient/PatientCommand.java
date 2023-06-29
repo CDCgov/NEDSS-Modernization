@@ -393,16 +393,6 @@ public sealed interface PatientCommand {
         Instant requestedOn
     ) implements PatientCommand {
 
-        public AddIdentification(
-            long person,
-            String identificationNumber,
-            String assigningAuthority,
-            String identificationType,
-            long requester,
-            Instant requestedOn
-        ) {
-            this(person, null, identificationNumber, assigningAuthority, identificationType, requester, requestedOn);
-        }
     }
 
 

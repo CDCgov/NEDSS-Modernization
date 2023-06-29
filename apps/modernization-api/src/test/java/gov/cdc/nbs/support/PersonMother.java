@@ -78,6 +78,7 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddIdentification(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
                 "GA",
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),

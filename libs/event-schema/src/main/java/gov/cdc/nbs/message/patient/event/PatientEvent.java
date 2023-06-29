@@ -75,7 +75,7 @@ public sealed interface PatientEvent {
         }
 
 
-        public record Identification(int identifier, String type, String authority, String value) {
+        public record Identification(int identifier, Instant asOf, String type, String authority, String value) {
         }
     }
 

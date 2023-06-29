@@ -163,6 +163,7 @@ class PatientCreatedEmitter {
     private PatientEvent.Created.Identification asIdentification(final EntityId identification) {
         return new PatientEvent.Created.Identification(
             identification.getId().getEntityIdSeq(),
+            identification.getAsOfDate(),
             identification.getTypeCd(),
             identification.getAssigningAuthorityCd(),
             identification.getRootExtensionTxt()

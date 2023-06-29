@@ -17,8 +17,10 @@ class PersonEntityIdsResolverTest {
 
         Person patient = new Person(117L, "local");
 
-        patient.add(new PatientCommand.AddIdentification(
+        patient.add(
+            new PatientCommand.AddIdentification(
                 patient.getId(),
+            Instant.parse("2017-05-16T11:13:19Z"),
                 "123456789",
                 "OTH",
                 "ssn",
