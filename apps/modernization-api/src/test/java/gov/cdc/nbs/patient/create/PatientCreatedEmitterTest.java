@@ -283,6 +283,7 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddPhoneNumber(
                 117L,
                 5347L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "CP",
                 "MC",
                 "Phone Number",
@@ -304,6 +305,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(5347L, PatientEvent.Created.Phone::identifier)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Phone::asOf)
                     .returns("CP", PatientEvent.Created.Phone::type)
                     .returns("MC", PatientEvent.Created.Phone::use)
                     .returns("Phone Number", PatientEvent.Created.Phone::number)

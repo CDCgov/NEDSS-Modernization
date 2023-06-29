@@ -1241,6 +1241,7 @@ class PersonTest {
             new PatientCommand.AddPhoneNumber(
                 117L,
                 5347L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "CP",
                 "MC",
                 "Phone Number",
@@ -1256,7 +1257,9 @@ class PersonTest {
                     .isInstanceOf(TeleEntityLocatorParticipation.class)
                     .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                     .returns(5347L, p -> p.getId().getLocatorUid())
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
                     .returns("CP", EntityLocatorParticipation::getCd)
+                    .returns("MC", EntityLocatorParticipation::getUseCd)
                     .extracting(TeleEntityLocatorParticipation::getLocator)
                     .returns(5347L, TeleLocator::getId)
                     .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
