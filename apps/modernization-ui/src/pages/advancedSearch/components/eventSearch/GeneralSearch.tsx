@@ -21,6 +21,7 @@ type GeneralSearchProps = {
 
 export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
+    const [eventDateType, setEventDateType] = useState<string>('');
 
     return (
         <>
@@ -111,6 +112,9 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 control={control}
                 name="eventDateType"
                 label="Event date type"
+                onChangeMethod={(e) => {
+                    setEventDateType(e.target.value);
+                }}
                 options={Object.values(InvestigationEventDateType).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -123,7 +127,13 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 control={control}
                 name="from"
                 render={({ field: { onChange, value } }) => (
-                    <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'from'} label="From" />
+                    <DatePickerInput
+                        disabled={!eventDateType || eventDateType === '-Select-'}
+                        defaultValue={value}
+                        onChange={onChange}
+                        htmlFor={'from'}
+                        label="From"
+                    />
                 )}
             />
 
@@ -131,7 +141,13 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 control={control}
                 name="to"
                 render={({ field: { onChange, value } }) => (
-                    <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'to'} label="To" />
+                    <DatePickerInput
+                        disabled={!eventDateType || eventDateType === '-Select-'}
+                        defaultValue={value}
+                        onChange={onChange}
+                        htmlFor={'to'}
+                        label="To"
+                    />
                 )}
             />
 
