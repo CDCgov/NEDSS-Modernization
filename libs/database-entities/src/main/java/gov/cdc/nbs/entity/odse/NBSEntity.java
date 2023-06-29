@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +28,15 @@ public class NBSEntity {
     @Column(name = "class_cd", nullable = false, length = 10)
     private String classCd;
 
-    @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.subjectEntityUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        },
+        orphanRemoval = true
+    )
     private List<Participation> participations;
 
     @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = {
@@ -45,13 +52,6 @@ public class NBSEntity {
         CascadeType.REMOVE
     }, orphanRemoval = true)
     private List<EntityId> entityIds;
-
-    @OneToOne(mappedBy = "contactNBSEntityUid", fetch = FetchType.LAZY, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REMOVE
-    }, orphanRemoval = true)
-    private CtContact ctContact;
 
     protected NBSEntity() {
     }
