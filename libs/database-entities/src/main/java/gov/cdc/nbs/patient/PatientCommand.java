@@ -187,6 +187,7 @@ public sealed interface PatientCommand {
     record AddPhoneNumber(
         long person,
         long id,
+        Instant asOf,
         String type,
         String use,
         String number,

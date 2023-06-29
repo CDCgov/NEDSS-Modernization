@@ -132,6 +132,7 @@ class PatientCreatedEmitter {
 
         return new PatientEvent.Created.Phone(
             phone.getId().getLocatorUid(),
+            phone.getAsOfDate(),
             phone.getCd(),
             phone.getUseCd(),
             locator.getPhoneNbrTxt(),

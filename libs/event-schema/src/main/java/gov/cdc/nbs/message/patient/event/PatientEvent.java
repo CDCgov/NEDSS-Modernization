@@ -67,7 +67,7 @@ public sealed interface PatientEvent {
         }
 
 
-        public record Phone(long identifier, String type, String use, String number, String extension) {
+        public record Phone(long identifier, Instant asOf, String type, String use, String number, String extension) {
         }
 
 

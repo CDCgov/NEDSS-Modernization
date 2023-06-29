@@ -116,6 +116,7 @@ public class PersonMother {
             new PatientCommand.AddPhoneNumber(
                 id,
                 id + 40000L,
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomPhoneNumber(),
                 null,
                 "PH",
@@ -177,6 +178,7 @@ public class PersonMother {
             new PatientCommand.AddPhoneNumber(
                 id,
                 id + 40000L,
+                RandomUtil.getRandomDateInPast(),
                 "111-222-3333",
                 null,
                 "PH",

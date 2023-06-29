@@ -53,7 +53,7 @@ public class PatientCreator {
             .forEach(person::add);
 
         input.getPhoneNumbers().stream()
-            .map(phoneNumber -> asPhoneNumber(context, identifier, phoneNumber))
+            .map(phoneNumber -> asPhoneNumber(context, identifier, asOf, phoneNumber))
             .forEach(person::add);
 
         input.getEmailAddresses().stream()
@@ -156,12 +156,14 @@ public class PatientCreator {
     private PatientCommand.AddPhoneNumber asPhoneNumber(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.PhoneNumber phoneNumber
     ) {
 
         return new PatientCommand.AddPhoneNumber(
             identifier.id(),
             generateNbsId(),
+            asOf,
             phoneNumber.getType(),
             phoneNumber.getUse(),
             phoneNumber.getNumber(),
