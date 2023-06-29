@@ -15,6 +15,6 @@ public class PageExceptionHandler {
         return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    private record ExceptionMessage(String message) {
+    record ExceptionMessage(String message) {
     }
 }

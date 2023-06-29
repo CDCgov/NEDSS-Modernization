@@ -37,7 +37,7 @@ public class PageSummaryController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    public Page<PageSummary> pageSummarySearch(
+    public Page<PageSummary> search(
             @RequestBody PageSummaryRequest request,
             @PageableDefault(size = 25, sort = "id", page = 0) Pageable pageable) {
         log.debug("Received get page summary request");

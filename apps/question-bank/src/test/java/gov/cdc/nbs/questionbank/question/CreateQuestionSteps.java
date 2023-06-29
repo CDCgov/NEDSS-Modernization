@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
@@ -171,6 +172,7 @@ public class CreateQuestionSteps {
         assertEquals(textRequest.defaultValue(), question.getDefaultValue());
         assertEquals(textRequest.mask(), question.getMask());
         assertEquals(textRequest.fieldLength(), question.getFieldSize());
+        assertEquals(textRequest.type(), QuestionType.TEXT);
     }
 
     private void validateDateQuestion() {
@@ -181,6 +183,7 @@ public class CreateQuestionSteps {
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(dateRequest.mask(), question.getMask());
         assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
+        assertEquals(dateRequest.type(), QuestionType.DATE);
     }
 
     private void validateNumericQuestion() {
@@ -196,6 +199,7 @@ public class CreateQuestionSteps {
         assertEquals(numericRequest.maxValue(), question.getMaxValue());
         assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
         assertEquals(numericRequest.unitValue(), question.getUnitValue());
+        assertEquals(numericRequest.type(), QuestionType.NUMERIC);
     }
 
     private void validateCodedQuestion() {
@@ -207,6 +211,7 @@ public class CreateQuestionSteps {
         assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
         assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
         assertEquals('F', question.getOtherValueIndCd().charValue());
+        assertEquals(codedRequest.type(), QuestionType.CODED);
     }
 
     @Then("a no credentials found exception is thrown")

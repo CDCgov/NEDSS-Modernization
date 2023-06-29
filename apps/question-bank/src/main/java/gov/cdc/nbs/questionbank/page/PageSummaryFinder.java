@@ -116,6 +116,7 @@ public class PageSummaryFinder {
                                 waTemplate.busObjType,
                                 waTemplate.templateNm,
                                 waTemplate.templateType,
+                                waTemplate.nndEntityIdentifier,
                                 GroupBy.list(Projections.constructor(
                                         Condition.class,
                                         conditionCode.id,

@@ -9,6 +9,7 @@ public record PageSummary(
         String eventType,
         String name,
         String state,
+        String messageMappingGuide,
         List<Condition> conditions,
         Instant lastUpdate,
         String lastUpdateB) {

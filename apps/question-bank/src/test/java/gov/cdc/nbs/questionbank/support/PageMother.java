@@ -49,6 +49,7 @@ public class PageMother {
         page.setTemplateNm("brucellosis page");
         page.setTemplateType("Draft");
         page.setBusObjType("INV");
+        page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
 
 
         page.setRecordStatusCd("Active");
@@ -78,6 +79,7 @@ public class PageMother {
         page.setTemplateNm("Aseptic Meningitis");
         page.setTemplateType("Draft");
         page.setBusObjType("INV");
+        page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
 
         page.setRecordStatusCd("Active");
         page.setRecordStatusTime(now);
