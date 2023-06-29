@@ -16,7 +16,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import javax.management.BadAttributeValueExpException;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +38,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void should_save_ruleRequest_details_to_DB(){
+    void should_save_ruleRequest_details_to_DB() throws BadAttributeValueExpException{
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.ruleRequest();
         Long userId= 99L ;
@@ -50,7 +52,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void should_send_ruleRequest_Event(){
+    void should_send_ruleRequest_Event() throws BadAttributeValueExpException{
         Long userId= 99L ;
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.ruleRequest();
         CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
@@ -61,7 +63,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDateCompare(){
+    void shouldGiveRuleExpressionInACorrectFormatForDateCompare() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.dateCompareRuleRequest();
@@ -74,20 +76,19 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDisable(){
+    void shouldGiveRuleExpressionInACorrectFormatForDisable() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.DisableRuleRequest();
         Long userId= 99L ;
         CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
-
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
         assertEquals("Rule Created Successfully",ruleResponse.message());
 
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw(){
+    void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.DisableRuleTestDataAnySourceIsTrue();
@@ -100,7 +101,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue(){
+    void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleTestDataAnySourceIsTrue();
@@ -113,7 +114,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForEnable(){
+    void shouldGiveRuleExpressionInACorrectFormatForEnable() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleRequest();
@@ -126,7 +127,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForHide(){
+    void shouldGiveRuleExpressionInACorrectFormatForHide() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleRequest();
@@ -139,7 +140,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue(){
+    void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleTestDataAnySourceIsTrue();
@@ -152,7 +153,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue(){
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestDataAnySourceIsTrue();
@@ -165,10 +166,45 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIf(){
+    void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws BadAttributeValueExpException{
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.UnhideRuleRequest();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws BadAttributeValueExpException{
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
+        Long userId= 99L ;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully",ruleResponse.message());
+
+    }
+
+    @Test
+    void shouldThrowAnExceptionIfThereIsSomethingWrongInFunctionName(){
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.InvalidRuleRequest();
+        Long userId= 99L ;
+        BadAttributeValueExpException exception= assertThrows(BadAttributeValueExpException.class,()-> pageRuleServiceImpl.createPageRule(userId, ruleRequest));
+
+        assertEquals("BadAttributeValueException: Error in Creating Rule Expression and Error Message Text",exception.toString());
+    }
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideIfAnySourceIsTrue() throws BadAttributeValueExpException{
+
+
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.UnhideRuleRequestIfAnySource();
         Long userId= 99L ;
         CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
 

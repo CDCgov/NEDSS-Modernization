@@ -9,6 +9,8 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 
 import org.springframework.stereotype.Service;
+
+import javax.management.BadAttributeValueExpException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +38,10 @@ public class PageRuleServiceImpl implements PageRuleService {
         this.ruleCreatedEventProducer= ruleCreatedEventProducer;
     }
 
-    public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest.ruleRequest request){
+    public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest.ruleRequest request) throws BadAttributeValueExpException {
         WaRuleMetadata waRuleMetadata= setRuleDataValues(userId,request);
-       try{
-           waRuleMetaDataRepository.save(waRuleMetadata);
-       }catch (Exception exception ){
-           return new CreateRuleResponse(null,exception.getMessage());
-       }
-       try {
-           sendRuleEvent(request);
-       }catch(Exception e){
-           return new CreateRuleResponse(null,e.getMessage());
-       }
+        waRuleMetaDataRepository.save(waRuleMetadata);
+        sendRuleEvent(request);
        return  new CreateRuleResponse(waRuleMetadata.getId(),"Rule Created Successfully");
 
     }
@@ -56,8 +50,10 @@ public class PageRuleServiceImpl implements PageRuleService {
         ruleCreatedEventProducer.send(new RuleCreatedEvent(ruleRequest));
     }
 
-    private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest.ruleRequest request){
-        RuleDataHelper ruleDataHelper = checkRuleCD(request);
+    private WaRuleMetadata setRuleDataValues(Long userId, CreateRuleRequest.ruleRequest request) throws BadAttributeValueExpException{
+
+        RuleDataHelper ruleDataHelper;
+        ruleDataHelper = checkRuleCD(request);
         WaRuleMetadata ruleMetadata =new WaRuleMetadata();
         ruleMetadata.setRuleCd(request.ruleFunction());
         ruleMetadata.setRuleDescText(request.ruleDescription());
@@ -82,7 +78,7 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
 
-    private RuleDataHelper checkRuleCD(CreateRuleRequest.ruleRequest request){
+    private RuleDataHelper checkRuleCD(CreateRuleRequest.ruleRequest request) throws BadAttributeValueExpException {
         SourceValuesHelper sourceValuesHelper = sourceValuesHelper(request);
         String sourceText= sourceValuesHelper.sourceText();
         String sourceValueText= sourceValuesHelper.sourceValueText();
@@ -111,8 +107,12 @@ public class PageRuleServiceImpl implements PageRuleService {
         if(Objects.equals(request.ruleFunction(),UNHIDE)){
             expressionValues= unHideFunction(request,sourceValuesHelper,targetValuesHelper);
         }
-        assert expressionValues != null;
-        return new RuleDataHelper(targetIdentifier,expressionValues.ruleExpression(),expressionValues.errorMessage(),sourceIdentifier,sourceText,sourceValueText);
+        if(expressionValues!=null){
+            return new RuleDataHelper(targetIdentifier,expressionValues.ruleExpression(),expressionValues.errorMessage(),sourceIdentifier,sourceText,sourceValueText);
+        }
+        else{
+            throw new BadAttributeValueExpException("Error in Creating Rule Expression and Error Message Text");
+        }
     }
     private SourceValuesHelper sourceValuesHelper(CreateRuleRequest.ruleRequest request){
         String sourceText= request.sourceText();

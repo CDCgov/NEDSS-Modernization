@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageRuleControllerTest {
@@ -27,16 +28,23 @@ public class PageRuleControllerTest {
     private UserDetailsProvider userDetailsProvider;
 
     @Test
-    public void shouldReturnCreateRuleResponse(){
-
+    public void shouldReturnCreateRuleResponse() throws Exception {
         CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
         NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
         Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest)).thenReturn(new CreateRuleResponse(999L,"Rule Created Successfully"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
         CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
         assertEquals(999L,ruleResponse.ruleId());
-
-
-
     }
+
+    @Test
+    public void shouldReturnErrorCreateRuleResponse() throws Exception {
+        CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
+        NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest)).thenThrow(Exception.class);
+        Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
+        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
+        assertNull(ruleResponse.ruleId());
+    }
+
 }
