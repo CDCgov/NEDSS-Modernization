@@ -215,6 +215,7 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -240,6 +241,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(4861L, PatientEvent.Created.Address::identifier)
+                    .returns(Instant.parse("2021-07-07T03:06:09Z"),PatientEvent.Created.Address::asOf)
                     .returns("SA1", PatientEvent.Created.Address::streetAddress1)
                     .returns("SA2", PatientEvent.Created.Address::streetAddress2)
                     .returns("city-description", PatientEvent.Created.Address::city)

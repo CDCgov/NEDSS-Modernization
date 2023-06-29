@@ -101,6 +101,7 @@ public class PatientMother {
             new PatientCommand.AddAddress(
                 patient.getId(),
                 idGenerator.next(),
+                RandomUtil.getRandomDateInPast(),
                 faker.address().streetAddress(),
                 null,
                 faker.address().city(),

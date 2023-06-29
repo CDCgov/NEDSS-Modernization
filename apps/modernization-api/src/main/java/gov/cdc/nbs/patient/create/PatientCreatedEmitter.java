@@ -111,6 +111,7 @@ class PatientCreatedEmitter {
         PostalLocator locator = address.getLocator();
         return new PatientEvent.Created.Address(
             address.getId().getLocatorUid(),
+            address.getAsOfDate(),
             locator.getStreetAddr1(),
             locator.getStreetAddr2(),
             locator.getCityDescTxt(),

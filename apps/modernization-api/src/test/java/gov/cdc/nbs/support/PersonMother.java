@@ -130,6 +130,7 @@ public class PersonMother {
             new PatientCommand.AddAddress(
                 id,
                 id + 80000L,
+                RandomUtil.getRandomDateInPast(),
                 faker.address().streetAddress(),
                 null,
                 faker.address().city(),
@@ -190,6 +191,7 @@ public class PersonMother {
             new PatientCommand.AddAddress(
                 id,
                 id + 80000L,
+                RandomUtil.getRandomDateInPast(),
                 "123 Main St",
                 null,
                 "Atlanta",
