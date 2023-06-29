@@ -53,9 +53,9 @@ class VocabSearchControllerTest {
     @Test
     void test_expected_exception() {
         when(vocabSearchService.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000")).thenReturn(null);
+        var result =  vocabSearchController.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000").getBody().getData();
         Exception exception = assertThrows(RuntimeException.class, () -> {
-            vocabSearchController.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000").getBody().getData()
-                    .getValueSetCode();
+                    result.getValueSetCode();
         });
         assertTrue(exception instanceof NullPointerException);
     }

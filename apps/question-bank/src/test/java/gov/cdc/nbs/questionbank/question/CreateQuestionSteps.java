@@ -172,7 +172,7 @@ public class CreateQuestionSteps {
         assertEquals(textRequest.defaultValue(), question.getDefaultValue());
         assertEquals(textRequest.mask(), question.getMask());
         assertEquals(textRequest.fieldLength(), question.getFieldSize());
-        assertEquals(textRequest.type(), QuestionType.TEXT);
+        assertEquals(QuestionType.TEXT, textRequest.type());
     }
 
     private void validateDateQuestion() {
@@ -183,7 +183,7 @@ public class CreateQuestionSteps {
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(dateRequest.mask(), question.getMask());
         assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
-        assertEquals(dateRequest.type(), QuestionType.DATE);
+        assertEquals(QuestionType.DATE, dateRequest.type());
     }
 
     private void validateNumericQuestion() {
@@ -199,7 +199,7 @@ public class CreateQuestionSteps {
         assertEquals(numericRequest.maxValue(), question.getMaxValue());
         assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
         assertEquals(numericRequest.unitValue(), question.getUnitValue());
-        assertEquals(numericRequest.type(), QuestionType.NUMERIC);
+        assertEquals(QuestionType.NUMERIC, numericRequest.type());
     }
 
     private void validateCodedQuestion() {
@@ -211,7 +211,7 @@ public class CreateQuestionSteps {
         assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
         assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
         assertEquals('F', question.getOtherValueIndCd().charValue());
-        assertEquals(codedRequest.type(), QuestionType.CODED);
+        assertEquals(QuestionType.CODED, codedRequest.type());
     }
 
     @Then("a no credentials found exception is thrown")

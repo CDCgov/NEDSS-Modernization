@@ -31,10 +31,11 @@ import gov.cdc.nbs.questionbank.question.model.Condition;
 @Component
 @Transactional
 public class PageSummaryFinder {
-    private final QWaTemplate waTemplate = QWaTemplate.waTemplate;
-    private final QAuthUser authUser = QAuthUser.authUser;
-    private final QConditionCode conditionCode = QConditionCode.conditionCode;
-    private final QPageCondMapping conditionMapping = QPageCondMapping.pageCondMapping;
+    private static final QWaTemplate waTemplate = QWaTemplate.waTemplate;
+    private static final QAuthUser authUser = QAuthUser.authUser;
+    private static final QConditionCode conditionCode = QConditionCode.conditionCode;
+    private static final QPageCondMapping conditionMapping = QPageCondMapping.pageCondMapping;
+
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final EntityManager entityManager;
 

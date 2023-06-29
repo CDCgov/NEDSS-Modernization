@@ -63,8 +63,9 @@ class VocabSearchServiceTest {
     @Test
     void test_expected_exception() {
         when(phinVadsClient.getValueSetByOID("2.16.840.1.114222.4.11.000")).thenReturn(null);
-        Exception exception =assertThrows(RuntimeException.class, ()-> {
-            vocabSearchService.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000").getValueSetDesc().replaceAll("</?.*?>", "");
+        var result = vocabSearchService.fetchValueSetInfoByOID("2.16.840.1.114222.4.11.000");
+        Exception exception = assertThrows(RuntimeException.class, ()-> {
+            result.getValueSetDesc();
         });
         assertTrue(exception instanceof  NullPointerException);
 

@@ -19,6 +19,7 @@ import lombok.NonNull;
 @RestController
 @RequestMapping("/api/v1/phin")
 public class VocabSearchController {
+    private static final String FAILURE = "FAILURE";
 
     @Autowired
     VocabSearchService vocabSearchService;
@@ -35,18 +36,18 @@ public class VocabSearchController {
                 response = ValueSetByOIDResponse.builder().data(data).status(status).build();
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } catch (ResponseStatusException rse) {
-                status = Status.builder().code("404").type("FAILURE").message("OID_NOT_FOUND")
+                status = Status.builder().code("404").type(FAILURE).message("OID_NOT_FOUND")
                         .description(rse.getLocalizedMessage()).build();
                 response = ValueSetByOIDResponse.builder().status(status).build();
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             } catch (Exception e) {
-                status = Status.builder().code("500").type("FAILURE").message("INTERNAL_SERVER_ERROR")
+                status = Status.builder().code("500").type(FAILURE).message("INTERNAL_SERVER_ERROR")
                         .description(e.getLocalizedMessage()).build();
                 response = ValueSetByOIDResponse.builder().status(status).build();
                 return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-        status = Status.builder().code("400").type("FAILURE").message("INVALID_INPUT")
+        status = Status.builder().code("400").type(FAILURE).message("INVALID_INPUT")
                 .description("Invalid input").build();
         response = ValueSetByOIDResponse.builder().status(status).build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -54,7 +55,7 @@ public class VocabSearchController {
 
     private boolean isValidInput(String oid) {
         oid = oid.replace(".", "");
-        Pattern pattern = Pattern.compile("[0-9]+");
+        Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(oid);
         return matcher.matches();
     }
