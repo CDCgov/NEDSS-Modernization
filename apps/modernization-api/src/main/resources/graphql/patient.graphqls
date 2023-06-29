@@ -106,7 +106,6 @@ type Person {
     id: ID
     nbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
-    races: [PersonRace]
     names: [PersonName]
     addReasonCd: String
     addTime: DateTime
@@ -578,11 +577,6 @@ type PersonIdentification {
     rootExtensionTxt: String
     assigningAuthorityCd: String
     assigningAuthorityDescTxt: String
-}
-
-type PersonRace {
-    raceCd: String
-    recordStatusCd: String
 }
 
 type PersonName {
