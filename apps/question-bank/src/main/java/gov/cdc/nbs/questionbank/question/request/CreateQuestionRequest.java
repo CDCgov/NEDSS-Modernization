@@ -40,14 +40,6 @@ public sealed interface CreateQuestionRequest {
 
     QuestionType type();
 
-
-    enum QuestionType {
-        TEXT,
-        NUMERIC,
-        DATE,
-        CODED
-    }
-
     record Text(
             // General question fields
             String codeSet,
