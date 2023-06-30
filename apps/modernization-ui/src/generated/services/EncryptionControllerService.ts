@@ -26,7 +26,7 @@ export class EncryptionControllerService {
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/encryption/decrypt',
+            url: '/modernization-api/encryption/decrypt',
             headers: {
                 'Authorization': authorization,
             },
@@ -57,7 +57,7 @@ export class EncryptionControllerService {
     }): CancelablePromise<EncryptionResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/encryption/encrypt',
+            url: '/modernization-api/encryption/encrypt',
             headers: {
                 'Authorization': authorization,
             },

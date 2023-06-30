@@ -8,7 +8,7 @@ export default function ApolloWrapper(props: any) {
     const { state } = useContext(UserContext);
 
     const httpLink = createHttpLink({
-        uri: `${Config.modernizationUrl}/graphql`
+        uri: `${Config.modernizationUrl}/modernization-api/graphql`
     });
     const authMiddleware = setContext((_, { headers }) => {
         let header = {};

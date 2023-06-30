@@ -9,6 +9,8 @@ nbs:
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
 
+server.servlet.context-path: /pageBuilder
+
 spring:
   mvc.pathmatch.matching-strategy: ant_path_matcher # swagger
   data.web.pageable.max-page-size: 25 # max pageable size

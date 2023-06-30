@@ -28,7 +28,7 @@ export class ExportControllerService {
     }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/investigation/export/csv',
+            url: '/modernization-api/investigation/export/csv',
             headers: {
                 'Authorization': authorization,
             },
@@ -59,7 +59,7 @@ export class ExportControllerService {
     }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/investigation/export/pdf',
+            url: '/modernization-api/investigation/export/pdf',
             headers: {
                 'Authorization': authorization,
             },
@@ -90,7 +90,7 @@ export class ExportControllerService {
     }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/labreport/export/csv',
+            url: '/modernization-api/labreport/export/csv',
             headers: {
                 'Authorization': authorization,
             },
@@ -121,7 +121,7 @@ export class ExportControllerService {
     }): CancelablePromise<string | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/labreport/export/pdf',
+            url: '/modernization-api/labreport/export/pdf',
             headers: {
                 'Authorization': authorization,
             },

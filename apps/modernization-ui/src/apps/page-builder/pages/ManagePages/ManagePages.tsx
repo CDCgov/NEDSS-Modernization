@@ -1,13 +1,25 @@
-import { useContext, useState } from 'react';
+/* eslint-disable camelcase */
+import { useContext, useEffect, useState } from 'react';
 import { ManagePagesTableContainer } from './ManagePagesTableContainer';
 import './ManagePages.scss';
-import { PageBuilderContext } from 'apps/page-builder/context/PageBuilderContext';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { PageProvider } from 'page';
+import { PageSummaryControllerService, Page_PageSummary_ } from 'apps/page-builder/generated';
+import { UserContext } from 'user';
 
 export const ManagePages = () => {
-    const { pages } = useContext(PageBuilderContext);
+    const { state } = useContext(UserContext);
     const [pageSize] = useState(10);
+    const [summaryResponse, setSummaryResponse] = useState({} as Page_PageSummary_);
+
+    useEffect(() => {
+        PageSummaryControllerService.searchUsingPost({
+            authorization: `Bearer ${state.getToken()}`,
+            request: { search: '' },
+            page: 0,
+            size: 10
+        }).then((response) => setSummaryResponse(response));
+    }, []);
     return (
         <>
             <PageBuilder page="manage-pages">
@@ -15,7 +27,7 @@ export const ManagePages = () => {
                     <div className="manage-pages__container">
                         <div className="manage-pages__table">
                             <PageProvider pageSize={pageSize}>
-                                <ManagePagesTableContainer pages={pages} />
+                                <ManagePagesTableContainer pages={summaryResponse.content} />
                             </PageProvider>
                         </div>
                     </div>
