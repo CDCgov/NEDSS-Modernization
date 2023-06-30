@@ -275,32 +275,12 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            phoneNumber);
+            phoneNumber
+        );
 
         locators.add(participation);
 
         return participation;
-    }
-
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        Optional<EntityLocatorParticipation> elp = existing.stream()
-            .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
-        if (elp.isPresent()) {
-            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
-            pl.setPhoneNbrTxt(phoneNumber.number());
-            pl.setExtensionTxt(phoneNumber.extension());
-        }
-        return elp;
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
-        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        this.entityLocatorParticipations = elps;
-        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
@@ -311,7 +291,8 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            emailAddress);
+            emailAddress
+        );
 
         locators.add(participation);
 
