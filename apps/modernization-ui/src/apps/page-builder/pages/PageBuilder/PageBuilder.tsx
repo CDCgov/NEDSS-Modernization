@@ -1,4 +1,4 @@
-import { Navigation } from 'apps/page-builder/components/Navigation/Navigation';
+import { Navigation } from '../../components/Navigation/Navigation/Navigation';
 import './PageBuilder.scss';
 
 type Props = {

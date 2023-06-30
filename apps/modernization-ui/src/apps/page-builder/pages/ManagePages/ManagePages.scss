@@ -5,8 +5,35 @@
     .manage-pages__container {
         display: flex;
         flex-direction: row;
-        position: absolute;
-        top: 54px;
+    }
+    .manage-pages__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        button {
+            padding: 9px 16px;
+            height: 40px;
+            p {
+                margin: 0;
+                font-size: 16px;
+            }
+            &:first-of-type {
+                border-radius: 0 4px 4px 0;
+                padding: 9px;
+            }
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+        .input {
+            input {
+                margin: 0;
+                width: 252px;
+            }
+            span {
+                display: none;
+            }
+        }
     }
     .manage-pages__table {
         background-color: $color-white;
