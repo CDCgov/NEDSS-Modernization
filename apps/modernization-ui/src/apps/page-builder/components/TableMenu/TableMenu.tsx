@@ -9,7 +9,7 @@ type Props = {
 
 export const TableMenu = ({ tableType }: Props) => {
     const navigate = useNavigate();
-    const onClick = () => {
+    const addNew = () => {
         navigate(`/page-builder/add-new-${tableType}`);
     };
 
@@ -25,7 +25,7 @@ export const TableMenu = ({ tableType }: Props) => {
             <Button type="button" outline>
                 <Icon.FileDownload size={3} />
             </Button>
-            <Button type="button" onClick={onClick}>
+            <Button type="button" onClick={addNew}>
                 <p>Add new {tableType}</p>
             </Button>
         </div>
