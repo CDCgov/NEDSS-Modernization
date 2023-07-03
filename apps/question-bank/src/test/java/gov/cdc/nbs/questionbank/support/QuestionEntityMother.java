@@ -5,6 +5,7 @@ import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 
 public class QuestionEntityMother {
 
@@ -31,7 +32,7 @@ public class QuestionEntityMother {
         q.setAddTime(now);
         q.setLastChgUserId(1L);
         q.setLastChgTime(now);
-        q.setRecordStatusCd("Active");
+        q.setRecordStatusCd(WaQuestion.ACTIVE);
         q.setRecordStatusTime(now);
         q.setVersionCtrlNbr(1);
 

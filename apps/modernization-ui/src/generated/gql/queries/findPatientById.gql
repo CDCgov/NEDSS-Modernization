@@ -82,10 +82,6 @@ query findPatientById($id: ID!){
             assigningAuthorityCd
             assigningAuthorityDescTxt
         }
-        races{
-            raceCd
-            recordStatusCd
-        }
         names{
             firstNm
             middleNm

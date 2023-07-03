@@ -1,32 +1,38 @@
 import { Button, ButtonGroup, Grid, ModalFooter } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import { DatePickerInput } from '../../../../components/FormInputs/DatePickerInput';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { Input } from '../../../../components/FormInputs/Input';
-import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Input } from 'components/FormInputs/Input';
 import { IdentificationEntry } from './identification';
+import { usePatientIdentificationCodedValues } from './usePatientIdentificationCodedValues';
+import { externalizeDateTime } from 'date';
+import { orNull } from 'utils';
 
-type EntryProps = {
+type Props = {
     action: string;
     entry: IdentificationEntry;
     onChange: (updated: IdentificationEntry) => void;
     onCancel: () => void;
 };
 
-export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const methods = useForm({ mode: 'onBlur' });
-    const { handleSubmit, control } = methods;
+export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: Props) => {
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
+
+    const coded = usePatientIdentificationCodedValues();
 
     const onSubmit = (entered: FieldValues) => {
-        const obj: IdentificationEntry = {
+        onChange({
             patient: entry.patient,
-            asOf: entered.asOf,
-            type: entered?.type,
-            value: entered?.id,
-            state: entered?.state
-        };
-        entry.sequence && (obj.sequence = entry.sequence);
-        onChange(obj);
+            sequence: entry.sequence,
+            asOf: externalizeDateTime(entered.asOf),
+            type: orNull(entered.type),
+            value: orNull(entered.id),
+            state: orNull(entered.state)
+        });
     };
 
     return (
@@ -54,45 +60,35 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <SearchCriteriaContext.Consumer>
-                            {({ searchCriteria }) => (
-                                <Controller
-                                    control={control}
-                                    name="type"
-                                    defaultValue={entry?.type}
-                                    rules={{ required: { value: true, message: 'Type is required.' } }}
-                                    render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                        <SelectInput
-                                            flexBox
-                                            defaultValue={value}
-                                            onChange={onChange}
-                                            htmlFor={'type'}
-                                            label="Type"
-                                            options={
-                                                searchCriteria?.identificationType
-                                                    ? searchCriteria.identificationType.map((identification) => {
-                                                          return {
-                                                              name: identification?.codeShortDescTxt!,
-                                                              value: identification?.id?.code!
-                                                          };
-                                                      })
-                                                    : []
-                                            }
-                                            error={error?.message}
-                                        />
-                                    )}
+                        <Controller
+                            control={control}
+                            name="type"
+                            defaultValue={entry?.type}
+                            rules={{ required: { value: true, message: 'Type is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                                <SelectInput
+                                    flexBox
+                                    defaultValue={value}
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    htmlFor={'type'}
+                                    label="Type"
+                                    options={coded.types}
+                                    error={error?.message}
                                 />
                             )}
-                        </SearchCriteriaContext.Consumer>
+                        />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
                         <Controller
                             control={control}
                             name="id"
-                            defaultValue={entry?.value}
-                            render={({ field: { onChange, value } }) => (
+                            defaultValue={entry.value}
+                            rules={{ required: { value: true, message: 'ID # is required.' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
@@ -100,39 +96,27 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                                     name="id"
                                     htmlFor="id"
                                     id="id"
+                                    error={error?.message}
                                 />
                             )}
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                        <SearchCriteriaContext.Consumer>
-                            {({ searchCriteria }) => (
-                                <Controller
-                                    control={control}
-                                    name="state"
-                                    defaultValue={entry?.state}
-                                    render={({ field: { onChange, value } }) => (
-                                        <SelectInput
-                                            flexBox
-                                            defaultValue={value}
-                                            onChange={onChange}
-                                            htmlFor={'state'}
-                                            label="Issued state"
-                                            options={
-                                                searchCriteria?.states
-                                                    ? searchCriteria.states.map((states) => {
-                                                          return {
-                                                              name: states?.codeDescTxt!,
-                                                              value: states?.stateNm!
-                                                          };
-                                                      })
-                                                    : []
-                                            }
-                                        />
-                                    )}
+                        <Controller
+                            control={control}
+                            name="state"
+                            defaultValue={entry?.state}
+                            render={({ field: { onChange, value } }) => (
+                                <SelectInput
+                                    flexBox
+                                    defaultValue={value}
+                                    onChange={onChange}
+                                    htmlFor={'state'}
+                                    label="Issued state"
+                                    options={coded.authorities}
                                 />
                             )}
-                        </SearchCriteriaContext.Consumer>
+                        />
                     </Grid>
                 </Grid>
             </div>
@@ -143,6 +127,7 @@ export const IdentificationEntryForm = ({ action, entry, onChange, onCancel }: E
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">

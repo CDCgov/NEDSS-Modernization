@@ -1,6 +1,9 @@
 @update_question
 Feature: Update question
 
+    Background: Clean questions
+        Given No questions exist
+
     Scenario: I can update a question
         Given I am an admin user
         And A text question exists

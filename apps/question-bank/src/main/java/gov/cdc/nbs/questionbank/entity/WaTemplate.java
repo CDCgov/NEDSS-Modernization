@@ -1,13 +1,21 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import java.time.Instant;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +25,7 @@ import java.time.Instant;
 @Table(name = "WA_template", catalog = "NBS_ODSE")
 public class WaTemplate {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_template_uid", nullable = false)
     private Long id;
 
@@ -86,5 +95,14 @@ public class WaTemplate {
 
     @Column(name = "version_note", length = 2000)
     private String versionNote;
+
+    @OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "waTemplateUid",
+            cascade = {
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE,
+                    CascadeType.PERSIST
+            })
+    private Set<PageCondMapping> conditionMappings;
 
 }

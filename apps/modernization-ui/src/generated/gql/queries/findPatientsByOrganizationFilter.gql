@@ -83,10 +83,6 @@ query findPatientsByOrganizationFilter($filter: OrganizationFilter!, $page: Sort
                 assigningAuthorityCd
                 assigningAuthorityDescTxt
             }
-            races{
-                raceCd
-                recordStatusCd
-            }
             names{
                 firstNm
                 middleNm
