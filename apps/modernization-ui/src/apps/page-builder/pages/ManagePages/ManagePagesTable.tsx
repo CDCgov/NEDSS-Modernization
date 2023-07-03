@@ -30,27 +30,6 @@ const tableHead = [
     { name: Header.LastUpdatedBy, sortable: true }
 ];
 
-const toEventTypeString = (event: string | undefined): string | undefined => {
-    switch (event) {
-        case 'INV':
-            return 'Investigation';
-        case 'CON':
-            return 'Contact';
-        case 'VAC':
-            return 'Vaccination';
-        case 'IXS':
-            return 'Interview';
-        case 'SUS':
-            return 'Lab Susceptibility';
-        case 'LAB':
-            return 'Lab Report';
-        case 'ISO':
-            return 'Lab Isolate Tracking';
-        default:
-            return event;
-    }
-};
-
 const asTableBody = (page: PageSummary): TableBody => ({
     id: page.name,
     checkbox: false,
@@ -59,7 +38,7 @@ const asTableBody = (page: PageSummary): TableBody => ({
             id: 1,
             title: <div>{page?.name}</div> || null
         },
-        { id: 2, title: <div className="event-text">{toEventTypeString(page?.eventType)}</div> || null },
+        { id: 2, title: <div className="event-text">{page?.eventType?.display}</div> || null },
         {
             id: 3,
             title:

@@ -53,12 +53,15 @@ public class PageSummaryFinder {
 
     public Page<PageSummary> find(Pageable pageable) {
         // get the Id's for the page to be returned
-        BlazeJPAQuery<Tuple> query = findSummaryQuery(new PageSummaryRequest(""));
+        BlazeJPAQuery<Long> query = new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
+                .select(waTemplate.id)
+                .from(waTemplate)
+                .where(waTemplate.templateType.in("Draft", "Published"));
         setOrderBy(query, pageable);
 
-        PagedList<Tuple> results = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
-        List<Long> ids = results.stream().map(t -> t.get(waTemplate.id)).toList();
-        return fetchPageSummary(ids, pageable, (int) results.getTotalSize());
+        PagedList<Long> pageIds = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
+
+        return fetchPageSummary(pageIds, pageable, (int) pageIds.getTotalSize());
     }
 
     public Page<PageSummary> find(PageSummaryRequest request, Pageable pageable) {
@@ -112,7 +115,7 @@ public class PageSummaryFinder {
                         .as(Projections.constructor(
                                 PageSummary.class,
                                 waTemplate.id,
-                                waTemplate.busObjType,
+                                Projections.constructor(PageSummary.EventType.class, waTemplate.busObjType),
                                 waTemplate.templateNm,
                                 waTemplate.templateType,
                                 waTemplate.nndEntityIdentifier,

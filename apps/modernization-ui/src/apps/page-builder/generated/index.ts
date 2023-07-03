@@ -16,6 +16,7 @@ export type { CreateQuestionRequest } from './models/CreateQuestionRequest';
 export type { CreateQuestionResponse } from './models/CreateQuestionResponse';
 export { CreateValueSetResponse } from './models/CreateValueSetResponse';
 export { Date } from './models/Date';
+export type { EventType } from './models/EventType';
 export type { FindQuestionRequest } from './models/FindQuestionRequest';
 export type { GetQuestionResponse } from './models/GetQuestionResponse';
 export type { GetValueSet } from './models/GetValueSet';

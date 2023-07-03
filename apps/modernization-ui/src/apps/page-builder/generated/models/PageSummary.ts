@@ -3,10 +3,11 @@
 /* eslint-disable */
 
 import type { Condition } from './Condition';
+import type { EventType } from './EventType';
 
 export type PageSummary = {
     conditions?: Array<Condition>;
-    eventType?: string;
+    eventType?: EventType;
     id?: number;
     lastUpdate?: string;
     lastUpdateBy?: string;
