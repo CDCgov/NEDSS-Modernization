@@ -5,6 +5,7 @@ import { SortCriteria } from './ManagePagesSorter';
 import { Direction } from 'sorting';
 import { sort } from './ManagePagesSorter';
 import { usePage } from 'page';
+import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
 
 type Props = {
     pages?: Pages[];
@@ -61,6 +62,7 @@ export const ManagePagesTable = ({ pages }: Props) => {
             currentPage={page.current}
             handleNext={request}
             sortData={handleSort}
+            buttons={<TableMenu tableType="page" />}
         />
     );
 };
