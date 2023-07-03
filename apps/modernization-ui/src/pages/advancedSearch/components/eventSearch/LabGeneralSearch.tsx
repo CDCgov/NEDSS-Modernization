@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Control, Controller, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldValues, useWatch } from 'react-hook-form';
 import {
     LaboratoryReportEventDateType,
     LaboratoryEventIdType,
@@ -32,7 +32,7 @@ let processingStatusArr: string[] = [];
 
 export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
-    const [eventDateType, setEventDateType] = useState<string>('');
+    const selectedEventDateType = useWatch({ control, name: 'eventDateType' });
 
     return (
         <>
@@ -110,9 +110,6 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 control={control}
                 name="labeventDateType"
                 label="Event date type"
-                onChangeMethod={(e) => {
-                    setEventDateType(e.target.value);
-                }}
                 options={Object.values(LaboratoryReportEventDateType).map((type) => {
                     return {
                         name: formatInterfaceString(type),
@@ -126,7 +123,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 name="labfrom"
                 render={({ field: { onChange, value } }) => (
                     <DatePickerInput
-                        disabled={!eventDateType || eventDateType === '-Select-'}
+                        disabled={!selectedEventDateType}
                         defaultValue={value}
                         onChange={onChange}
                         htmlFor={'from'}
@@ -140,7 +137,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 name="labto"
                 render={({ field: { onChange, value } }) => (
                     <DatePickerInput
-                        disabled={!eventDateType || eventDateType === '-Select-'}
+                        disabled={!selectedEventDateType}
                         defaultValue={value}
                         onChange={onChange}
                         htmlFor={'to'}
