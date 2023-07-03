@@ -37,7 +37,7 @@ import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { Icon } from '@trussworks/react-uswds';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -653,6 +653,53 @@ export const AdvancedSearch = () => {
         handleSubmit(externalize(data), SEARCH_TYPE.PERSON);
     };
 
+    const getChipValues = (
+        re: {
+            name: string;
+            value: string;
+        },
+        searchCriteria: SearchCriteria
+    ) => {
+        switch (re.name) {
+            case 'state':
+                return searchCriteria.states.find((element) => {
+                    return element.id === re.value;
+                })?.codeDescTxt!;
+            case 'Jurisdictions':
+                return (
+                    searchCriteria.jurisdictions.find((element) => {
+                        return element.id === re.value;
+                    })?.codeDescTxt || ''
+                );
+            case 'Conditions':
+                return (
+                    searchCriteria.conditions.find((element) => {
+                        return element.id === re.value;
+                    })?.conditionDescTxt || ''
+                );
+            case 'Created By':
+                return (
+                    searchCriteria.userResults.find((element) => {
+                        return element.nedssEntryId === re.value;
+                    })?.userLastNm || ''
+                );
+            case 'Last Updated By':
+                return (
+                    searchCriteria.userResults.find((element) => {
+                        return element.nedssEntryId === re.value;
+                    })?.userLastNm || ''
+                );
+            case 'Outbreak Names':
+                return (
+                    searchCriteria.outbreaks.find((element) => {
+                        return element.id.code === re.value;
+                    })?.codeShortDescTxt || ''
+                );
+            default:
+                return re.value;
+        }
+    };
+
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
@@ -742,23 +789,18 @@ export const AdvancedSearch = () => {
                                             {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
                                         </strong>{' '}
                                         Results for
-                                        {resultsChip.map(
-                                            (re, index) =>
+                                        {resultsChip.map((re, index) => {
+                                            return (
                                                 re.value && (
                                                     <Chip
                                                         key={index}
                                                         name={re.name}
-                                                        value={
-                                                            re.name == 'state'
-                                                                ? searchCriteria.states.find((element) => {
-                                                                      return element.id === re.value;
-                                                                  })?.codeDescTxt!
-                                                                : re.value
-                                                        }
+                                                        value={getChipValues(re, searchCriteria)}
                                                         handleClose={handleChipClose}
                                                     />
                                                 )
-                                        )}
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </SearchCriteriaContext.Consumer>
