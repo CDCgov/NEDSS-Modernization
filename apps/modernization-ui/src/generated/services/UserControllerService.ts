@@ -26,7 +26,7 @@ export class UserControllerService {
     }): CancelablePromise<LoginResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/modernization-api/login',
+            url: '/login',
             body: request,
             errors: {
                 401: `Unauthorized`,

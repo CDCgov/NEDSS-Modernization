@@ -12,5 +12,5 @@ public record PageSummary(
         String messageMappingGuide,
         List<Condition> conditions,
         Instant lastUpdate,
-        String lastUpdateB) {
+        String lastUpdateBy) {
 }

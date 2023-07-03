@@ -19,7 +19,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: Config.modernizationUrl,
+    BASE: Config.pageBuilderUrl,
     VERSION: '1.0',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',
@@ -27,6 +27,6 @@ export const OpenAPI: OpenAPIConfig = {
     USERNAME: undefined,
     PASSWORD: undefined,
     HEADERS: undefined,
-    ENCODE_PATH: undefined
+    ENCODE_PATH: undefined,
 };
 import { Config } from 'config';

@@ -31,7 +31,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<Page_GetValueSet_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/pageBuilder/api/v1/valueset/',
+            url: '/page-builder/api/v1/valueset/',
             headers: {
                 'Authorization': authorization,
             },
@@ -66,7 +66,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<CreateValueSetResponse | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/pageBuilder/api/v1/valueset/',
+            url: '/page-builder/api/v1/valueset/',
             headers: {
                 'Authorization': authorization,
             },
@@ -103,7 +103,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<Page_GetValueSet_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/pageBuilder/api/v1/valueset/search',
+            url: '/page-builder/api/v1/valueset/search',
             headers: {
                 'Authorization': authorization,
             },
@@ -138,7 +138,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<ValueSetStateChangeResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/pageBuilder/api/v1/valueset/{codeSetNm}',
+            url: '/page-builder/api/v1/valueset/{codeSetNm}',
             path: {
                 'codeSetNm': codeSetNm,
             },
@@ -169,7 +169,7 @@ export class ValueSetControllerService {
     }): CancelablePromise<ValueSetStateChangeResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/pageBuilder/api/v1/valueset/{codeSetNm}',
+            url: '/page-builder/api/v1/valueset/{codeSetNm}',
             path: {
                 'codeSetNm': codeSetNm,
             },

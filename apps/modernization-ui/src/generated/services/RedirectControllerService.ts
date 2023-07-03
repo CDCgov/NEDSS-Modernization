@@ -19,7 +19,7 @@ export class RedirectControllerService {
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/modernization-api/preparePatientDetails',
+            url: '/preparePatientDetails',
             headers: {
                 'Authorization': authorization,
             },

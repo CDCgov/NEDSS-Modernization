@@ -20,8 +20,6 @@ nbs:
   datasource:
     server: localhost
     port: 1433
-  
-server.servlet.context-path: /modernization-api
 
 logging:
   file.path: ./log/

@@ -9,7 +9,7 @@ nbs:
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
 
-server.servlet.context-path: /pageBuilder
+server.servlet.context-path: /page-builder
 
 spring:
   mvc.pathmatch.matching-strategy: ant_path_matcher # swagger
@@ -50,3 +50,9 @@ kafkadef:
 
 valueset:
   byidurl: https://phinvads.cdc.gov/baseStu3/ValueSet/
+
+logging:
+  file.path: ./log/
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

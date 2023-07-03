@@ -34,7 +34,7 @@ export class QuestionControllerService {
     }): CancelablePromise<Page_Question_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/pageBuilder/api/v1/questions',
+            url: '/page-builder/api/v1/questions',
             headers: {
                 'Authorization': authorization,
             },
@@ -68,7 +68,7 @@ export class QuestionControllerService {
     }): CancelablePromise<CreateQuestionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/pageBuilder/api/v1/questions',
+            url: '/page-builder/api/v1/questions',
             headers: {
                 'Authorization': authorization,
             },
@@ -105,7 +105,7 @@ export class QuestionControllerService {
     }): CancelablePromise<Page_Question_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/pageBuilder/api/v1/questions/search',
+            url: '/page-builder/api/v1/questions/search',
             headers: {
                 'Authorization': authorization,
             },
@@ -140,7 +140,7 @@ export class QuestionControllerService {
     }): CancelablePromise<GetQuestionResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/pageBuilder/api/v1/questions/{id}',
+            url: '/page-builder/api/v1/questions/{id}',
             path: {
                 'id': id,
             },
@@ -178,7 +178,7 @@ export class QuestionControllerService {
     }): CancelablePromise<Question | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/pageBuilder/api/v1/questions/{id}',
+            url: '/page-builder/api/v1/questions/{id}',
             path: {
                 'id': id,
             },
@@ -217,7 +217,7 @@ export class QuestionControllerService {
     }): CancelablePromise<Question | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/pageBuilder/api/v1/questions/{id}/status',
+            url: '/page-builder/api/v1/questions/{id}/status',
             path: {
                 'id': id,
             },

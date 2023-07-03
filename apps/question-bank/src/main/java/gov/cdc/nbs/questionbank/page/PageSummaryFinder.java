@@ -16,6 +16,7 @@ import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.support.QueryBase;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -52,15 +53,12 @@ public class PageSummaryFinder {
 
     public Page<PageSummary> find(Pageable pageable) {
         // get the Id's for the page to be returned
-        BlazeJPAQuery<Long> query = new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
-                .select(waTemplate.id)
-                .from(waTemplate)
-                .where(waTemplate.templateType.in("Draft", "Published"));
+        BlazeJPAQuery<Tuple> query = findSummaryQuery(new PageSummaryRequest(""));
         setOrderBy(query, pageable);
 
-        PagedList<Long> pageIds = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
-
-        return fetchPageSummary(pageIds, pageable, (int) pageIds.getTotalSize());
+        PagedList<Tuple> results = query.fetchPage((int) pageable.getOffset(), pageable.getPageSize());
+        List<Long> ids = results.stream().map(t -> t.get(waTemplate.id)).toList();
+        return fetchPageSummary(ids, pageable, (int) results.getTotalSize());
     }
 
     public Page<PageSummary> find(PageSummaryRequest request, Pageable pageable) {
@@ -127,9 +125,33 @@ public class PageSummaryFinder {
         return new PageImpl<>(new ArrayList<>(results.values()), pageable, totalSize);
     }
 
+    private BlazeJPAQuery<Tuple> findSummaryQuery(PageSummaryRequest request) {
+        String searchString = "%" + request.search() + "%";
+        return new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
+                .select(
+                        waTemplate.id,
+                        waTemplate.templateType,
+                        waTemplate.templateNm,
+                        waTemplate.busObjType,
+                        waTemplate.lastChgTime,
+                        authUser.userFirstNm,
+                        authUser.userLastNm)
+                .distinct()
+                .from(waTemplate)
+                .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
+                .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
+                .leftJoin(conditionCode).on(conditionMapping.conditionCd.eq(conditionCode.id))
+                // do not load legacy, template, or 'Published with Draft' pages
+                // see legacy code PageManagementDAOImpl.java#2485
+                .where(waTemplate.templateType.in("Draft", "Published")
+                        // query template name and condition name
+                        .and(waTemplate.templateNm.like(searchString)
+                                .or(conditionCode.conditionShortNm.like(searchString))));
+    }
+
     /**
      * Adds order by clausees to query. First order by is the user supplied clause, second is the identifier to prevent
-     * non unique sort exception. Supported fields are: id, name, eventType, status, lastUpdate
+     * non unique sort exception. Supported fields are: id, name, eventType, status, lastUpdate, lastUpdatedBy
      * 
      * @param pageable
      * @return
@@ -141,41 +163,20 @@ public class PageSummaryFinder {
             return;
         }
         boolean isAscending = order.getDirection().isAscending();
-        var sort = switch (order.getProperty()) {
+        OrderSpecifier<?> sort = switch (order.getProperty()) {
             case "id" -> isAscending ? waTemplate.id.asc() : waTemplate.id.desc();
-            case "name" -> isAscending ? waTemplate.templateNm.asc() : waTemplate.templateNm.desc();
+            case "name" -> isAscending ? waTemplate.templateNm.asc().nullsFirst() : waTemplate.templateNm.desc();
             case "eventType" -> isAscending ? waTemplate.busObjType.asc() : waTemplate.busObjType.desc();
             case "status" -> isAscending ? waTemplate.templateType.asc() : waTemplate.templateType.desc();
             case "lastUpdate" -> isAscending ? waTemplate.lastChgTime.asc() : waTemplate.lastChgTime.desc();
+            case "lastUpdateBy" -> isAscending ? authUser.userLastNm.asc().nullsFirst() : authUser.userLastNm.desc();
             default -> throw new QueryException(
-                    "Invalid sort specified. Allowed values are: [name, id, eventType , status, lastUpdate]");
+                    "Invalid sort specified. Allowed values are: [name, id, eventType , status, lastUpdate, lastUpdateBy]");
         };
         query.orderBy(sort);
         if (!order.getProperty().equals("id")) {
             query.orderBy(waTemplate.id.desc());
         }
-    }
-
-
-    private BlazeJPAQuery<Tuple> findSummaryQuery(PageSummaryRequest request) {
-        String searchString = "%" + request.search() + "%";
-        return new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
-                .select(
-                        waTemplate.id,
-                        waTemplate.templateType,
-                        waTemplate.templateNm,
-                        waTemplate.busObjType,
-                        waTemplate.lastChgTime)
-                .distinct()
-                .from(waTemplate)
-                .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
-                .leftJoin(conditionCode).on(conditionMapping.conditionCd.eq(conditionCode.id))
-                // do not load legacy, template, or 'Published with Draft' pages
-                // see legacy code PageManagementDAOImpl.java#2485
-                .where(waTemplate.templateType.in("Draft", "Published")
-                        // query template name and condition name
-                        .and(waTemplate.templateNm.like(searchString)
-                                .or(conditionCode.conditionShortNm.like(searchString))));
     }
 
 }

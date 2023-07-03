@@ -9,7 +9,7 @@ export type PageSummary = {
     eventType?: string;
     id?: number;
     lastUpdate?: string;
-    lastUpdateB?: string;
+    lastUpdateBy?: string;
     messageMappingGuide?: string;
     name?: string;
     status?: string;
