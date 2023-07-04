@@ -39,7 +39,7 @@ export const ManagePagesTable = () => {
         tableDetails: [
             {
                 id: 1,
-                title: <div>{page?.name}</div> || null
+                title: <div className="page-name">{page?.name}</div> || null
             },
             { id: 2, title: <div className="event-text">{page?.eventType?.display}</div> || null },
             {
