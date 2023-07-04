@@ -86,7 +86,8 @@ public class PageSummarySearchSteps {
         return switch (field) {
             case "id" -> Long.valueOf(a.id()).compareTo(Long.valueOf(b.id())) * (direction.equals("ASC") ? 1 : -1);
             case "name" -> a.name().compareTo(b.name()) * (direction.equals("ASC") ? 1 : -1);
-            case "eventType" -> a.eventType().compareTo(b.eventType()) * (direction.equals("ASC") ? 1 : -1);
+            case "eventType" -> a.eventType().type().compareTo(b.eventType().type())
+                    * (direction.equals("ASC") ? 1 : -1);
             case "status" -> a.status().compareTo(b.status()) * (direction.equals("ASC") ? 1 : -1);
             case "lastUpdate" -> a.lastUpdate().compareTo(b.lastUpdate()) * (direction.equals("ASC") ? 1 : -1);
             default -> throw new IllegalArgumentException();
