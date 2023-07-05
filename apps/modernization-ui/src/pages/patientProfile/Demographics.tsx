@@ -43,7 +43,7 @@ export const Demographics = ({ id }: DemographicProps) => {
         if (alert) {
             const timeout = setTimeout(() => {
                 setAlert(null);
-            }, 3000);
+            }, 5000);
 
             return () => clearTimeout(timeout);
         }
