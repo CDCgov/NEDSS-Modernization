@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.programarea;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import java.util.List;
@@ -40,5 +41,13 @@ public class ProgramAreaFinderSteps {
         List<ProgramArea> programAreas = programAreaHolder.getProgramAreas();
         assertNotNull(programAreas);
         assertFalse(programAreas.isEmpty());
+
+        // test-db contains STD program area, find and validate
+        ProgramArea std = programAreas.stream().filter(pa -> pa.code().equals("STD")).findFirst().orElseThrow();
+
+        assertEquals("STD", std.code());
+        assertEquals("STD", std.description());
+        assertEquals(15, std.nbsId().intValue());
+        assertEquals("Active", std.status());
     }
 }
