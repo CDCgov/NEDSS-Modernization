@@ -4,6 +4,7 @@ import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patient/profile';
 import AddPatient from '../pages/addPatient/AddPatient';
 import { ManagePages } from 'apps/page-builder/pages/ManagePages/ManagePages';
+import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
@@ -61,6 +62,9 @@ export const AppRoutes = () => {
                             <Route path="/page-builder">
                                 <Route path="manage">
                                     <Route path="pages" element={<ManagePages />} />
+                                </Route>
+                                <Route path="add">
+                                    <Route path="page" element={<AddNewPage />} />
                                 </Route>
                             </Route>
 

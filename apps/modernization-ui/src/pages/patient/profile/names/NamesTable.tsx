@@ -16,7 +16,7 @@ import { SortableTable } from 'components/Table/SortableTable';
 import { Actions as ActionState } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import { EntryModal } from 'pages/patient/profile/EntryModal';
+import EntryModal from 'pages/patient/profile/entry';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';

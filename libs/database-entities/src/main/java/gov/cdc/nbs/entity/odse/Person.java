@@ -606,16 +606,8 @@ public class Person {
         this.nbsEntity.delete(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        return this.nbsEntity.update(phoneNumber);
-    }
-
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         return this.nbsEntity.update(emailAddress);
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        return this.nbsEntity.delete(phoneNumber);
     }
 
     public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {

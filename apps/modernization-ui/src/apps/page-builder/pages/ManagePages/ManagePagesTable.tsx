@@ -6,6 +6,7 @@ import { usePage } from 'page';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
+import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
 
 export enum Column {
     PageName = 'Page name',
@@ -103,6 +104,7 @@ export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
             currentPage={page.current}
             handleNext={request}
             sortData={handleSort}
+            buttons={<TableMenu tableType="page" />}
         />
     );
 };

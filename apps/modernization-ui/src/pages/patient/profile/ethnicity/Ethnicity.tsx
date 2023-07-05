@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { FindPatientProfileQuery, PatientEthnicity, useUpdateEthnicityMutation } from 'generated/graphql/schema';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { useFindPatientProfileEthnicity } from './useFindPatientProfileMortality';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
@@ -75,8 +75,7 @@ export const Ethnicity = ({ patient }: Props) => {
             variables: {
                 input: {
                     ...updated,
-                    patient: patient,
-                    asOf: externalizeDateTime(updated.asOf)
+                    patient: patient
                 }
             }
         }).then(handleUpdate);

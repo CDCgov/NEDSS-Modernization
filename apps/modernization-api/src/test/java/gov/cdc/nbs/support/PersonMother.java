@@ -78,6 +78,7 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddIdentification(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
                 "GA",
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
@@ -116,6 +117,7 @@ public class PersonMother {
             new PatientCommand.AddPhoneNumber(
                 id,
                 id + 40000L,
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomPhoneNumber(),
                 null,
                 "PH",
@@ -130,6 +132,7 @@ public class PersonMother {
             new PatientCommand.AddAddress(
                 id,
                 id + 80000L,
+                RandomUtil.getRandomDateInPast(),
                 faker.address().streetAddress(),
                 null,
                 faker.address().city(),
@@ -176,6 +179,7 @@ public class PersonMother {
             new PatientCommand.AddPhoneNumber(
                 id,
                 id + 40000L,
+                RandomUtil.getRandomDateInPast(),
                 "111-222-3333",
                 null,
                 "PH",
@@ -190,6 +194,7 @@ public class PersonMother {
             new PatientCommand.AddAddress(
                 id,
                 id + 80000L,
+                RandomUtil.getRandomDateInPast(),
                 "123 Main St",
                 null,
                 "Atlanta",
