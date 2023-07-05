@@ -6,6 +6,7 @@ public record Concept(
         String localCode,
         String codesetName,
         String display,
+        String value,
         String conceptCode,
         String messagingConceptName,
         String codeSystem,

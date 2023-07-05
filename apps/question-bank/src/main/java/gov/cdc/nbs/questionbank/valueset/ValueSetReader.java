@@ -92,6 +92,7 @@ public class ValueSetReader {
                 codeValueGeneral.getId().getCode(),
                 codeValueGeneral.getId().getCodeSetNm(),
                 codeValueGeneral.getCodeShortDescTxt(),
+                codeValueGeneral.getCodeDescTxt(),
                 codeValueGeneral.getConceptCode(),
                 codeValueGeneral.getConceptPreferredNm(),
                 codeValueGeneral.getCodeSystemDescTxt(),
