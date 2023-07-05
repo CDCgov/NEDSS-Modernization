@@ -24,6 +24,7 @@ import {
 } from './useFindPatientProfilePhoneAndEmail';
 import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -66,9 +67,10 @@ const resolveInitialEntry = (patient: string): NewPhoneEmailEntry => ({
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const PhoneAndEmailTable = ({ patient }: Props) => {
+export const PhoneAndEmailTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -129,7 +131,10 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({ type: 'Added', table: 'Phone & Email' });
+                })
                 .then(actions.reset);
         }
     };
@@ -149,7 +154,10 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({ type: 'Updated', table: 'Phone & Email' });
+                })
                 .then(actions.reset);
         }
     };
@@ -164,7 +172,13 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({
+                        type: 'Deleted',
+                        table: 'Phone & Email'
+                    });
+                })
                 .then(actions.reset);
         }
     };

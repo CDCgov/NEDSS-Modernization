@@ -17,6 +17,7 @@ import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import EntryModal from 'pages/patient/profile/entry';
 import { AdministrativeForm } from './AdminstrativeForm';
 import { ConfirmationModal } from 'confirmation';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),
@@ -35,9 +36,10 @@ const initial: AdministrativeEntry = {
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const AdministrativeTable = ({ patient }: Props) => {
+export const AdministrativeTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'General comment', sortable: true, sort: 'all' },
@@ -88,7 +90,10 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 }
             }
         })
-            .then(() => refetch())
+            .then(() => {
+                refetch();
+                handleAlert?.({ type: 'Updated', table: 'Comment' });
+            })
             .then(() => actions.reset());
     };
 
