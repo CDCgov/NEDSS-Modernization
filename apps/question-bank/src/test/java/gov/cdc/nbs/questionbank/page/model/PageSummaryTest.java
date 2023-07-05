@@ -43,6 +43,12 @@ class PageSummaryTest {
     }
 
     @Test
+    void should_set_event_type_isolate() {
+        EventType eventType = new EventType("ISO");
+        assertEquals("Lab Isolate Tracking", eventType.display());
+    }
+
+    @Test
     void should_set_event_display() {
         EventType eventType = new EventType("something different");
         assertEquals("something different", eventType.display());
