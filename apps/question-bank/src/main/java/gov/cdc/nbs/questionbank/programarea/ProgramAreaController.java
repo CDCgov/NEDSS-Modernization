@@ -17,7 +17,7 @@ public class ProgramAreaController {
         this.finder = finder;
     }
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public List<ProgramArea> getProgramAreas() {
         return finder.find();
