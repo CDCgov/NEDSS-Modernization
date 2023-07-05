@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import { PageSummary } from 'apps/page-builder/generated';
 
 describe('when rendered', () => {
-    it('should display sentence cased document headers', async () => {
+    it('should display sentence cased headers', async () => {
         const { container } = render(
             <PageProvider>
                 <ManagePagesTable summaries={[]} sortChange={() => {}}></ManagePagesTable>
@@ -25,7 +25,7 @@ describe('when rendered', () => {
     });
 });
 
-describe('when at least one document is available for a patient', () => {
+describe('when at least one summary is available', () => {
     const pageSummary: PageSummary = {
         conditions: [{ id: 'Some condition', name: 'condition display' }],
         eventType: { display: 'Investigation', type: 'INV' },

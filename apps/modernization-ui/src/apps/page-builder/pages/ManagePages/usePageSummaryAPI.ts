@@ -26,7 +26,7 @@ export const usePageSummaryAPI = (search?: string, sort?: string) => {
         if (page.status === Status.Requested) {
             fetchPageSummaries();
         }
-    }, [search, page, sort]);
+    }, [page]);
 
     useEffect(() => {
         firstPage();

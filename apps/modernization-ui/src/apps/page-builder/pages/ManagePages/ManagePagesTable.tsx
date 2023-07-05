@@ -62,7 +62,7 @@ export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
     /*
-     * Converts header and Direction to API compatible sort string such as "id,asc"
+     * Converts header and Direction to API compatible sort string such as "name,asc"
      */
     const toSortString = (name: string, direction: Direction): string | undefined => {
         if (name && direction && direction !== Direction.None) {
