@@ -6,7 +6,6 @@ import { usePage } from 'page';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
-import { usePageSummaryAPI } from './usePageSummaryAPI';
 
 export enum Column {
     PageName = 'Page name',
@@ -26,12 +25,13 @@ const tableColumns = [
     { name: Column.LastUpdatedBy, sortable: true }
 ];
 
-export const ManagePagesTable = () => {
+type Props = {
+    sortChange: (sort?: string) => void;
+    summaries: PageSummary[];
+};
+export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
     const { page, request } = usePage();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [sort, setSort] = useState<string | undefined>();
-    const [searchString] = useState('');
-    const summaries = usePageSummaryAPI(searchString, sort);
 
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
@@ -89,7 +89,7 @@ export const ManagePagesTable = () => {
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {
-        setSort(toSortString(name, direction));
+        sortChange(toSortString(name, direction));
     };
 
     return (

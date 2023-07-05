@@ -1,8 +1,8 @@
 import { PageProvider } from 'page';
+import { useState } from 'react';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
 import './ManagePages.scss';
-import { ManagePagesTable } from './ManagePagesTable';
-import { useState } from 'react';
+import { ManagePagesTableWrapper } from './ManagePagesTableWrapper';
 
 export const ManagePages = () => {
     const [pageSize] = useState(10);
@@ -13,7 +13,7 @@ export const ManagePages = () => {
                     <div className="manage-pages__container">
                         <div className="manage-pages__table">
                             <PageProvider pageSize={pageSize}>
-                                <ManagePagesTable />
+                                <ManagePagesTableWrapper />
                             </PageProvider>
                         </div>
                     </div>
