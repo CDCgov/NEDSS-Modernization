@@ -41,6 +41,12 @@ class PageSummaryTest {
         EventType eventType = new EventType("LAB");
         assertEquals("Lab Report", eventType.display());
     }
+
+    @Test
+    void should_set_event_display() {
+        EventType eventType = new EventType("something different");
+        assertEquals("something different", eventType.display());
+    }
 }
 
 
