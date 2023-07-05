@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.question.model;
+package gov.cdc.nbs.questionbank.phin.model;
 
 import lombok.*;
 
@@ -8,8 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
-public class Identifier {
+public class Telecom {
 
     private String system;
+    private String value;
+
 }
