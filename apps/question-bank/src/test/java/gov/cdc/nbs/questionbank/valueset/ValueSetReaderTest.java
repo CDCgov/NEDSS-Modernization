@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.valueset.read;
+package gov.cdc.nbs.questionbank.valueset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,9 +20,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import gov.cdc.nbs.questionbank.entity.CodeSetGroupMetadatum;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
-import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
+import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
@@ -121,5 +123,32 @@ class ValueSetReaderTest {
         code.setAddUserId(Uuid.randomUuid().getLeastSignificantBits());
 
         return code;
+    }
+
+    @Test
+    void should_map_codeValueGeneral_to_concept() {
+        Instant now = Instant.now();
+        Instant future = now.plusSeconds(500);
+        CodeValueGeneral cvg = new CodeValueGeneral();
+        cvg.setId(new CodeValueGeneralId("codeSetNm", "code"));
+        cvg.setCodeShortDescTxt("codeShortDescTxt");
+        cvg.setConceptCode("conceptCode");
+        cvg.setConceptPreferredNm("conceptPreferredName");
+        cvg.setCodeSystemDescTxt("codeSystemDescTxt");
+        cvg.setConceptStatusCd("Active");
+        cvg.setEffectiveFromTime(now);
+        cvg.setEffectiveToTime(future);
+
+        Concept concept = valueSetReader.toConcept(cvg);
+
+        assertEquals(cvg.getId().getCode(), concept.localCode());
+        assertEquals(cvg.getId().getCodeSetNm(), concept.codesetName());
+        assertEquals(cvg.getCodeShortDescTxt(), concept.display());
+        assertEquals(cvg.getConceptCode(), concept.conceptCode());
+        assertEquals(cvg.getConceptPreferredNm(), concept.messagingConceptName());
+        assertEquals(cvg.getCodeSystemDescTxt(), concept.codeSystem());
+        assertEquals(cvg.getConceptStatusCd(), concept.status());
+        assertEquals(cvg.getEffectiveFromTime(), concept.effectiveFromTime());
+        assertEquals(cvg.getEffectiveToTime(), concept.effectiveToTime());
     }
 }

@@ -87,7 +87,7 @@ public class ValueSetReader {
                 .toList();
     }
 
-    private Concept toConcept(CodeValueGeneral codeValueGeneral) {
+    Concept toConcept(CodeValueGeneral codeValueGeneral) {
         return new Concept(
                 codeValueGeneral.getId().getCode(),
                 codeValueGeneral.getId().getCodeSetNm(),

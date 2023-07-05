@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"TEXT\",\n  \"adminComments\": \"Administrative comments\",\n  \"codeSet\": \"LOCAL\",\n  \"dataMartInfo\": {\n    \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n    \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n    \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n    \"reportLabel\": \"Report label\"\n  },\n  \"defaultValue\": null,\n  \"description\": \"Test Question\",\n  \"displayControl\": 1008,\n  \"fieldLength\": \"50\",\n  \"label\": \"Sample question label\",\n  \"mask\": \"TXT\",\n  \"messagingInfo\": {\n    \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n    \"hl7DataType\": \"CE\",\n    \"includedInMessage\": true,\n    \"labelInMessage\": \"Label in message\",\n    \"messageVariableId\": \"MessageVariableId\",\n    \"requiredInMessage\": true\n  },\n  \"subgroup\": \"ADM\",\n  \"tooltip\": \"Sample question tooltip\",\n  \"uniqueId\": null,\n  \"uniqueName\": \"Sample question\"\n}",
+							"raw": "{\n    \"type\": \"TEXT\",\n    \"adminComments\": \"Administrative comments\",\n    \"codeSet\": \"LOCAL\",\n    \"dataMartInfo\": {\n        \"dataMartColumnName\": \"DATA_MART_COLUMN_NAME\",\n        \"defaultRdbTableName\": \"D_INV_ADMINISTRATIVE\",\n        \"rdbColumnName\": \"RDB_COLUMN_NAME\",\n        \"reportLabel\": \"Report label\"\n    },\n    \"defaultValue\": null,\n    \"description\": \"Test Question\",\n    \"displayControl\": 1008,\n    \"fieldLength\": \"50\",\n    \"label\": \"Sample question label\",\n    \"mask\": \"TXT\",\n    \"messagingInfo\": {\n        \"codeSystem\": \"ABNORMAL_FLAGS_HL7\",\n        \"hl7DataType\": \"CE\",\n        \"includedInMessage\": true,\n        \"labelInMessage\": \"Label in message\",\n        \"messageVariableId\": \"MessageVariableId\",\n        \"requiredInMessage\": true\n    },\n    \"subgroup\": \"ADM\",\n    \"tooltip\": \"Sample question tooltip\",\n    \"uniqueId\": null,\n    \"uniqueName\": \"Sample question\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -30,12 +30,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions",
+							"raw": "localhost:8095/page-builder/api/v1/questions",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions"
@@ -65,12 +66,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions",
+							"raw": "localhost:8095/page-builder/api/v1/questions",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions"
@@ -100,12 +102,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions",
+							"raw": "localhost:8095/page-builder/api/v1/questions",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions"
@@ -135,12 +138,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions",
+							"raw": "localhost:8095/page-builder/api/v1/questions",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions"
@@ -162,7 +166,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"active\": true\n}",
+							"raw": "{\n    \"active\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -170,16 +174,17 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions/1018495/status",
+							"raw": "localhost:8095/page-builder/api/v1/questions/1018500/status",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions",
-								"1018495",
+								"1018500",
 								"status"
 							]
 						}
@@ -207,12 +212,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions/search?page=0&size=25&sort=id,ASC",
+							"raw": "localhost:8095/page-builder/api/v1/questions/search?page=0&size=25&sort=id,ASC",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions",
@@ -260,12 +266,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions?page=1&size=25&sort=id,ASC",
+							"raw": "localhost:8095/page-builder/api/v1/questions?page=1&size=25&sort=id,DESC",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions"
@@ -281,7 +288,7 @@
 								},
 								{
 									"key": "sort",
-									"value": "id,ASC"
+									"value": "id,DESC"
 								}
 							]
 						}
@@ -312,16 +319,17 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions/1006288",
+							"raw": "localhost:8095/page-builder/api/v1/questions/1018500",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions",
-								"1006288"
+								"1018500"
 							]
 						}
 					},
@@ -348,16 +356,17 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/questions/1018499",
+							"raw": "localhost:8095/page-builder/api/v1/questions/1018500",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"questions",
-								"1018499"
+								"1018500"
 							]
 						}
 					},
@@ -380,12 +389,13 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8095/api/v1/pages?pages=0&size=25&sort=id,ASC",
+							"raw": "localhost:8095/page-builder/api/v1/pages?pages=0&size=25&sort=id,ASC",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"pages"
@@ -421,7 +431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"search\": \"\"\n}",
+							"raw": "{\n    \"search\": \"gen\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -429,12 +439,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8095/api/v1/pages?pages=0&size=10&sort=id,ASC",
+							"raw": "localhost:8095/page-builder/api/v1/pages?pages=0&size=10&sort=id,ASC",
 							"host": [
 								"localhost"
 							],
 							"port": "8095",
 							"path": [
+								"page-builder",
 								"api",
 								"v1",
 								"pages"
@@ -452,6 +463,39 @@
 									"key": "sort",
 									"value": "id,ASC"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ValueSet",
+			"item": [
+				{
+					"name": "Find Concepts by CodeSet Name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/valueset/CODE_SYSTEM",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"valueset",
+								"CODE_SYSTEM"
 							]
 						}
 					},
