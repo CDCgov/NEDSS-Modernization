@@ -8,6 +8,9 @@ import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 
+import gov.cdc.nbs.questionbank.pagerules.response.RuleResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.management.BadAttributeValueExpException;
@@ -16,6 +19,8 @@ import java.util.*;
 
 @Service
 public class PageRuleServiceImpl implements PageRuleService {
+
+    private static final Logger LOGGER= LoggerFactory.getLogger(PageRuleServiceImpl.class);
     private final WaRuleMetaDataRepository waRuleMetaDataRepository;
 
     private final RuleCreatedEventProducer ruleCreatedEventProducer;
@@ -30,6 +35,8 @@ public class PageRuleServiceImpl implements PageRuleService {
     private static final String MUST_BE = "must be";
 
     private static final String PARANTHESIS = "');\n";
+    
+    private static final String DOLLARCLOSING= "$j('#";
 
     private static final String ANY_SOURCE_VALUE = "( Any Source Value )";
 
@@ -41,17 +48,58 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     private static final String PG_DISABLE_ELEMENT = "pgDisableElement('";
 
+    private static final String SELECTED=" :selected').each(function(i, selected){";
+
+    private static final String LINESEPERATOR_PARANTHESIS= " });\n";
+    
+
     public PageRuleServiceImpl(WaRuleMetaDataRepository waRuleMetaDataRepository, RuleCreatedEventProducer ruleCreatedEventProducer) {
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
         this.ruleCreatedEventProducer = ruleCreatedEventProducer;
     }
 
+    @Override
     public CreateRuleResponse createPageRule(Long userId, CreateRuleRequest.ruleRequest request) throws BadAttributeValueExpException {
         WaRuleMetadata waRuleMetadata = setRuleDataValues(userId, request);
         waRuleMetaDataRepository.save(waRuleMetadata);
         sendRuleEvent(request);
         return new CreateRuleResponse(waRuleMetadata.getId(), "Rule Created Successfully");
 
+    }
+//
+//    @Override
+//    public RuleResponse getRuleByRuleId(String ruleId){
+//        WaRuleMetadata ruleMetadata= waRuleMetaDataRepository.findByRuleId(ruleId);
+//
+//    }
+//    private RuleResponse buildRuleResponseDTO(WaRuleMetadata ruleMetadata){
+//        if(Objects.equals(ruleMetadata.getRuleCd(), DATE_COMPARE)){
+//
+//        }
+//    }
+//    private RuleResponse buildDateCompareResponse(WaRuleMetadata ruleMetadata){
+//        RuleResponse ruleResponse= new RuleResponse();
+//        ruleResponse.setRuleFunction(ruleMetadata.getRuleCd());
+//        ruleResponse.setRuleDescription(ruleMetadata.getRuleDescText());
+//        ruleResponse.setComparator(ruleMetadata.getLogic());
+//        ruleResponse.setTargetType(ruleMetadata.getTargetType());
+//
+//
+//    }
+//    private ReadRuleResponseHelper buildTargetAndSource(WaRuleMetadata ruleMetadata){
+//        String targetIds= ruleMetadata.getTargetQuestionIdentifier();
+//        String targetId[]= targetIds.split(",");
+//        List<String> targetIdList= Arrays.asList(targetId);
+//        for(String targetIdentifier: targetIdList){
+//            for(String targetText)
+//        }
+//    }
+
+    @Override
+    public CreateRuleResponse deletePageRule(Long ruleId){
+        LOGGER.info("Executing Delete Operation for RuleId :{}",ruleId);
+       waRuleMetaDataRepository.deleteById(ruleId);
+        return new CreateRuleResponse(ruleId,"Rule Successfully Deleted");
     }
 
     private void sendRuleEvent(CreateRuleRequest.ruleRequest ruleRequest) {
@@ -191,7 +239,7 @@ public class PageRuleServiceImpl implements PageRuleService {
             }
         }
         String errorMessageText = String.join(",", errorMessageList);
-        JSFunctionNameHelper jsFunctionNameHelper = jsForEnableDisable(request, sourceValuesHelper, ruleMetadata);
+        JSFunctionNameHelper jsFunctionNameHelper = jsForEnableAndDisable(request, sourceValuesHelper, ruleMetadata);
         return new RuleExpressionHelper(errorMessageText, ruleExpression, new JSFunctionNameHelper(jsFunctionNameHelper.JsFunction(), jsFunctionNameHelper.JsFunctionName()));
     }
 
@@ -222,7 +270,7 @@ public class PageRuleServiceImpl implements PageRuleService {
             }
         }
         String errorMessageText = String.join(",", errorMessageList);
-        JSFunctionNameHelper jsFunctionNameHelper = jsForEnableDisable(request, sourceValuesHelper, ruleMetadata);
+        JSFunctionNameHelper jsFunctionNameHelper = jsForEnableAndDisable(request, sourceValuesHelper, ruleMetadata);
         return new RuleExpressionHelper(errorMessageText, ruleExpression, new JSFunctionNameHelper(jsFunctionNameHelper.JsFunction(), jsFunctionNameHelper.JsFunctionName()));
     }
 
@@ -353,130 +401,106 @@ public class PageRuleServiceImpl implements PageRuleService {
         return new JSFunctionNameHelper(stringBuffer.toString(), jsFunctionName + "()");
     }
 
-    private JSFunctionNameHelper jsForEnableDisable(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, WaRuleMetadata ruleMetadata) {
-        StringBuilder buffer = new StringBuilder();
+    private JSFunctionNameHelper jsForEnableAndDisable(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, WaRuleMetadata ruleMetadata) {
+        StringBuilder builder = new StringBuilder();
         String functionName = "ruleEnDis" + sourceValuesHelper.sourceIdentifiers() + ruleMetadata.getId();
-        buffer.append("function ").append(functionName).append("()\n{");
-        Collection<String> coll = request.targetValueIdentifier();
-        Iterator<String> iter = coll.iterator();
-        String sourceValueIds = sourceValuesHelper.sourceValueIds();
-        List<String> ruleElementDTCollDescription = Arrays.asList(sourceValueIds.split(","));
-        while (iter.hasNext()) {
-            buffer.append("\n var foo = [];\n");
-            buffer.append("$j('#").append(sourceValuesHelper.sourceIdentifiers()).append(" :selected').each(function(i, selected){");
-            buffer.append("\n foo[i] = $j(selected).val();\n");
-            buffer.append(" });\n");
-            if (sourceValuesHelper.sourceIdentifiers() != null) {
-                Collection<String> collSourceValue = Collections.singleton(sourceValuesHelper.sourceValueIds());
-                Iterator<String> iterSourceValue = collSourceValue.iterator();
-                String[] str = new String[collSourceValue.size()];
-                int ii = 0;
+        builder.append("function ").append(functionName).append("()\n{");
+        builder.append("\n var foo = [];\n");
+        builder.append("$j('#").append(request.sourceIdentifier()).append(SELECTED);
+        builder.append("\n foo[i] = $j(selected).val();\n");
+        builder.append(" });\n");
+        StringBuilder firstPart= firstPartForEnDs(request,sourceValuesHelper,builder);
+        builder.append(firstPart);
+        StringBuilder secondPart= thirdPartForEnDs(request,builder);
+        builder.append(secondPart);
+        StringBuilder thirdPart= fourthPartForEnDs(request,builder);
+        builder.append(thirdPart);
+        StringBuilder fourthPart= fifthPartForEnds(request,builder);
+        builder.append(fourthPart);
+        StringBuilder fifthPart= sixthPartForEnds(request,builder);
+        builder.append(fifthPart);
 
-                while (iterSourceValue.hasNext()) {
-                    str[ii++] = iterSourceValue.next();
+        return new JSFunctionNameHelper(builder.toString(),functionName);
+    }
+    private StringBuilder firstPartForEnDs(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper,StringBuilder stringBuilder){
+        String sourceValues = sourceValuesHelper.sourceValueIds();
+        String[] sourceValue= sourceValues.split(",");
+        List<String> sourceValueList= Arrays.asList(sourceValue);
+            if(request.anySourceValue()){
+                stringBuilder.append("if(foo.length>0 && foo[0] != '') {\n"); //anything selected
+            }else{
+                stringBuilder.append("\n if(");
+                for(String sourceId: sourceValueList){
+                   stringBuilder.append("($j.inArray('").append(sourceId).append("',foo) > -1)");
+                    stringBuilder.append(" || ($j.inArray('").append(sourceId).append("'.replace(/^\\s+|\\s+$/g,''),foo) > -1)");//added for the business rule view
+                    stringBuilder.append("||");
                 }
-                if (request.anySourceValue()) {
-                    buffer.append("if(foo.length>0 && foo[0] != '') {\n"); //anything selected
-                } else {
-                    buffer.append("\n if(");
-                    for (int i = 0; i < str.length; i++) {
-                        buffer.append("($j.inArray('").append(str[i]).append("',foo) > -1)");
-                        buffer.append(" || ($j.inArray('").append(ruleElementDTCollDescription.get(i)).append("'.replace(/^\\s+|\\s+$/g,''),foo) > -1)");//added for the business rule view
-                    }
-                    buffer.append("){\n");
-                }
-                Collection<String> targetIdentifier = request.targetValueIdentifier();
-                //For fixing issue where the rule_expresion doesn't contains the comparator = when the source value is Any Source value
-                if (request.comparator().equalsIgnoreCase("") && request.anySourceValue()) {
-                    ruleMetadata.setLogic("=");
-                }
+                stringBuilder.append("){\n");
+            }
+        return stringBuilder;
 
-                Iterator<String> iterator = targetIdentifier.iterator();
-                if ("Question".equalsIgnoreCase(request.targetType())) {
-                    while (iterator.hasNext()) {
-                        String targetQuestionIdentifier = iter.next();
+    }
+    private StringBuilder commonElementPartForEnDs(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder){
+        List<String> targetQuestionIdentifiers= request.targetValueIdentifier();
 
-                        if (request.ruleFunction().equalsIgnoreCase(ENABLE)) {
-                            if ("=".equalsIgnoreCase(request.comparator())) {
-                                buffer.append(PG_ENABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                            } else {
-                                buffer.append(PG_DISABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                            }
-                        } else {
-                            if ("=".equalsIgnoreCase(request.comparator())) {
-                                buffer.append(PG_DISABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                            } else {
-                                buffer.append(PG_ENABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                            }
-                        } //else
-                    } //if
-                }//while
-                buffer.append(" } else { \n");
-                iter = coll.iterator();
-                while (iter.hasNext()) {
-                    String targetQuestionIdentifier = iter.next();
-                    targetQuestionIdentifier = targetQuestionIdentifier.trim();
-
-                    if (request.ruleFunction().equalsIgnoreCase(ENABLE)) {
-                        if ("=".equalsIgnoreCase(request.comparator())) {
-                            buffer.append(PG_DISABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        } else {
-                            buffer.append(PG_ENABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        }
-                    } else {
-                        if ("=".equalsIgnoreCase(request.comparator())) {
-                            buffer.append(PG_ENABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        } else {
-                            buffer.append(PG_DISABLE_ELEMENT).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        }
-                    }
-                } //while
-                buffer.append(" }");
-            } else {
-                while (iter.hasNext()) {
-                    String targetQuestionIdentifier = iter.next();
-                    targetQuestionIdentifier = targetQuestionIdentifier.trim();
-                    if (request.ruleFunction().equalsIgnoreCase(ENABLE)) {
-                        if ("=".equalsIgnoreCase(request.comparator())) {
-                            buffer.append(PG_SUBSECTIONDISABLED).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        } else {
-                            buffer.append(PG_SUBSECTIONENABLED).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        }
-                    }
+        if("Question".equalsIgnoreCase(request.targetType())){
+            for(String targetId: targetQuestionIdentifiers){
+                if(ENABLE.equalsIgnoreCase(request.ruleFunction())&& Objects.equals(request.comparator(), "=")){
+                    stringBuilder.append(PG_ENABLE_ELEMENT).append(targetId).append("');\n");
+                }else{
+                    stringBuilder.append(PG_DISABLE_ELEMENT).append(targetId).append("');\n");
                 }
-                buffer.append(" } else { \n");
-                iter = coll.iterator();
-                while (iter.hasNext()) {
-                    String targetQuestionIdentifier = iter.next();
-                    targetQuestionIdentifier = targetQuestionIdentifier.trim();
-                    if (request.ruleFunction().equalsIgnoreCase(ENABLE)) {
-                        if ("=".equalsIgnoreCase(request.comparator())) {
-                            buffer.append(PG_SUBSECTIONDISABLED).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        } else {
-                            buffer.append(PG_SUBSECTIONENABLED).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        }
-                    } else {
-                        if ("=".equalsIgnoreCase(request.comparator())) {
-                            buffer.append(PG_SUBSECTIONENABLED).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        } else {
-                            buffer.append(PG_SUBSECTIONDISABLED).append(targetQuestionIdentifier).append(PARANTHESIS);
-                        }
-                    }
+                if(!Objects.equals(ENABLE,request.ruleFunction())&&Objects.equals(request.comparator(), "=")){
+                    stringBuilder.append(PG_DISABLE_ELEMENT).append(targetId).append("');\n");
+                }else{
+                    stringBuilder.append(PG_ENABLE_ELEMENT).append(targetId).append("');\n");
                 }
-                buffer.append(" }");
             }
         }
-        buffer.append("   \n}");
-        return new JSFunctionNameHelper(buffer.toString(), functionName + "()");
+        return stringBuilder;
     }
+    private StringBuilder thirdPartForEnDs(CreateRuleRequest.ruleRequest request ,StringBuilder stringBuilder){
+        return commonElementPartForEnDs(request,stringBuilder);
+    }
+    private StringBuilder fourthPartForEnDs(CreateRuleRequest.ruleRequest request ,StringBuilder stringBuilder){
+        return commonElementPartForEnDs(request,stringBuilder);
+    }
+
+    private StringBuilder fifthPartForEnds(CreateRuleRequest.ruleRequest request ,StringBuilder stringBuilder){
+        return partofSubSection(request,stringBuilder);
+    }
+    private StringBuilder sixthPartForEnds(CreateRuleRequest.ruleRequest request ,StringBuilder stringBuilder){
+        return partofSubSection(request,stringBuilder);
+    }
+
+    private StringBuilder partofSubSection(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder){
+        List<String> targetQuestionIdentifiers= request.targetValueIdentifier();
+        if("Subsection".equalsIgnoreCase(request.targetType())){
+            for(String targetId: targetQuestionIdentifiers){
+                if(Objects.equals(request.ruleFunction(),ENABLE) && Objects.equals(request.comparator(), "=") ){
+
+                    stringBuilder.append("pgSubSectionDisabled('").append(targetId).append(PARANTHESIS);
+                } else{
+                    stringBuilder.append("pgSubSectionEnabled('").append(targetId).append(PARANTHESIS);
+                }
+                if(!Objects.equals(request.ruleFunction(), ENABLE) && Objects.equals(request.comparator(), "=")){
+                    stringBuilder.append("pgSubSectionEnabled('").append(targetId).append(PARANTHESIS);
+                } else{
+                    stringBuilder.append("pgSubSectionDisabled('").append(targetId).append(PARANTHESIS);
+                }
+            }
+        }
+        return stringBuilder;
+    }
+
 
     private JSFunctionNameHelper requireIfJsFunction(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, WaRuleMetadata ruleMetadata,TargetValuesHelper targetValuesHelper) {
         String functionName = "ruleRequireIf" + request.sourceIdentifier() + ruleMetadata.getId();
         StringBuilder buffer = new StringBuilder();
         buffer.append("\n var foo = [];\n");
-        buffer.append("$j('#").append(request.sourceIdentifier()).append(" :selected').each(function(i, selected){");
+        buffer.append(DOLLARCLOSING).append(request.sourceIdentifier()).append(SELECTED);
         buffer.append("\n foo[i] = $j(selected).val();\n");
-        buffer.append(" });\n");
+        buffer.append(LINESEPERATOR_PARANTHESIS);
         if (request.sourceIdentifier() != null) {
 
             String sourceIds = sourceValuesHelper.sourceValueIds();
@@ -522,20 +546,20 @@ public class PageRuleServiceImpl implements PageRuleService {
        StringBuilder stringBuilder= new StringBuilder();
        String functionName="ruleHideUnh"+request.sourceIdentifier()+ruleMetadata.getId();
        stringBuilder.append("function ").append(functionName).append("()\n{");
-       stringBuilder.append(ruleLeftAndRightInvestigation(request,stringBuilder,"",ruleMetadata,sourceValueIdsList,sourceValuesHelper));
-       stringBuilder.append(ruleLeftAndRightInvestigation(request,stringBuilder,"_2",ruleMetadata,sourceValueIdsList,sourceValuesHelper));
+       stringBuilder.append(ruleLeftAndRightInvestigation(request,stringBuilder,"",sourceValueIdsList));
+       stringBuilder.append(ruleLeftAndRightInvestigation(request,stringBuilder,"_2",sourceValueIdsList));
        stringBuilder.append("   \n}");
        return new JSFunctionNameHelper(stringBuilder.toString(),functionName);
     }
 
-    private StringBuilder ruleLeftAndRightInvestigation(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix,WaRuleMetadata ruleMetadata,List<String> sourceValueIds, SourceValuesHelper sourceValuesHelper){
+    private StringBuilder ruleLeftAndRightInvestigation(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix,List<String> sourceValueIds){
         String questionIdentifier= request.sourceIdentifier();
         stringBuilder.append("\n var foo").append(suffix).append(" = [];\n");
-        stringBuilder.append("$j('#").append(questionIdentifier).append(" :selected').each(function(i, selected){");
+        stringBuilder.append(DOLLARCLOSING).append(questionIdentifier).append(SELECTED);
         stringBuilder.append("\n foo").append(suffix).append("[i] = $j(selected).val();\n");
 
         stringBuilder.append(" });\n");
-        stringBuilder.append("if(foo").append(suffix).append("=='' && ").append("$j('#").append(questionIdentifier).append("').html()!=null){");//added for the business rule view
+        stringBuilder.append("if(foo").append(suffix).append("=='' && ").append(DOLLARCLOSING).append(questionIdentifier).append("').html()!=null){");//added for the business rule view
         stringBuilder.append("foo").append(suffix).append("[0]=$j('#").append(questionIdentifier).append("').html().replace(/^\\s+|\\s+$/g,'');}");//added for the business rule view
         if(questionIdentifier != null){
             if(request.anySourceValue()){
@@ -551,13 +575,13 @@ public class PageRuleServiceImpl implements PageRuleService {
                 stringBuilder.append("){\n");
             }
         }
-        StringBuilder buildJs= framingJSforUnhideAndHide(request,stringBuilder,suffix,ruleMetadata,sourceValueIds,sourceValuesHelper);
+        StringBuilder buildJs= framingJSforUnhideAndHide(request,stringBuilder,suffix);
         stringBuilder.append(buildJs);
         return stringBuilder;
     }
-    private StringBuilder framingJSforUnhideAndHide(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix,WaRuleMetadata ruleMetadata,List<String> sourceValueIds, SourceValuesHelper sourceValuesHelper){
+    private StringBuilder framingJSforUnhideAndHide(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix){
         StringBuilder secondPart= frameSecondPartForUnhideAndHide(request,stringBuilder,suffix);
-        StringBuilder subSectionPart= PartForSubSection(request,stringBuilder,suffix,sourceValueIds,sourceValuesHelper);
+        StringBuilder subSectionPart= partForSubSection(request,stringBuilder,suffix);
         stringBuilder.append(secondPart);
         stringBuilder.append(subSectionPart);
         return stringBuilder;
@@ -567,18 +591,16 @@ public class PageRuleServiceImpl implements PageRuleService {
         if("Question".equalsIgnoreCase(request.targetType())){
             for(String targetId: targetQuestionIdentifiers){
                 targetId+=suffix;
-                if(Objects.equals(request.ruleFunction(),UNHIDE)){
-                    if(Objects.equals(request.comparator(), "=")){
-                        stringBuilder.append("pgUnhideElement('").append(targetId).append(suffix).append(PARANTHESIS);
-                    }else{
-                        stringBuilder.append("pgHideElement('").append(targetId).append(suffix).append(PARANTHESIS);
-                    }
+                if(Objects.equals(request.ruleFunction(),UNHIDE) && Objects.equals(request.comparator(), "="))
+                {
+                    stringBuilder.append("pgUnhideElement('").append(targetId).append(suffix).append(PARANTHESIS);
                 }else{
-                    if(Objects.equals(request.comparator(), "=")){
-                        stringBuilder.append("pgHideElement('").append(targetId).append(suffix).append(PARANTHESIS);
-                    }else{
-                        stringBuilder.append("pgUnhideElement('").append(targetId).append(suffix).append(PARANTHESIS);
-                    }
+                    stringBuilder.append("pgHideElement('").append(targetId).append(suffix).append(PARANTHESIS);
+                }
+                if(!Objects.equals(request.ruleFunction(), UNHIDE) && Objects.equals(request.comparator(), "=")){
+                    stringBuilder.append("pgHideElement('").append(targetId).append(suffix).append(PARANTHESIS);
+                } else{
+                    stringBuilder.append("pgUnhideElement('").append(targetId).append(suffix).append(PARANTHESIS);
                 }
             }
         }
@@ -597,29 +619,31 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     private StringBuilder frameSubSectionPartForUnhideAndHide(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix ){
+        return  nestedSubSection(request,stringBuilder,suffix);
+    }
+
+    private StringBuilder nestedSubSection(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix){
         List<String> targetQuestionIdentifiers= request.targetValueIdentifier();
         if("Subsection".equalsIgnoreCase(request.targetType())){
             for(String targetId: targetQuestionIdentifiers){
                 targetId+=suffix;
-                if(Objects.equals(request.ruleFunction(),UNHIDE)){
-                    if(Objects.equals(request.comparator(), "=")){
-                        stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
-                    }else{
+                if(Objects.equals(request.ruleFunction(),UNHIDE) && Objects.equals(request.comparator(), "=") ){
+
+                    stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
+                } else{
                         stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
                     }
-                }else{
-                    if(Objects.equals(request.comparator(), "=")){
-                        stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
-                    }else{
-                        stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
-                    }
+                if(!Objects.equals(request.ruleFunction(), UNHIDE) && Objects.equals(request.comparator(), "=")){
+                    stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
+                } else{
+                    stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
                 }
             }
         }
         return stringBuilder;
     }
 
-    private StringBuilder PartForSubSection(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix,List<String> sourceValueIds, SourceValuesHelper sourceValuesHelper){
+    private StringBuilder partForSubSection(CreateRuleRequest.ruleRequest request, StringBuilder stringBuilder, String suffix){
         StringBuilder firstPart= frameSubSectionPartForUnhideAndHide(request,stringBuilder,suffix);
         StringBuilder secondPart= secondPartForSubSection(request,stringBuilder,suffix);
         stringBuilder.append(firstPart).append(" } else { \n");
