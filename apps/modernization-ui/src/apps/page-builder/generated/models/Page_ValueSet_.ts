@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { GetValueSet } from './GetValueSet';
 import type { Pageable } from './Pageable';
 import type { Sort } from './Sort';
+import type { ValueSet } from './ValueSet';
 
-export type Page_GetValueSet_ = {
-    content?: Array<GetValueSet>;
+export type Page_ValueSet_ = {
+    content?: Array<ValueSet>;
     empty?: boolean;
     first?: boolean;
     last?: boolean;

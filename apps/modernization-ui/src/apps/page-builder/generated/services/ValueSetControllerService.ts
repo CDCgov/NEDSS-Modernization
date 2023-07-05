@@ -1,8 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Concept } from '../models/Concept';
 import type { CreateValueSetResponse } from '../models/CreateValueSetResponse';
-import type { Page_GetValueSet_ } from '../models/Page_GetValueSet_';
+import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
 import type { ValueSetRequest } from '../models/ValueSetRequest';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
@@ -15,7 +16,7 @@ export class ValueSetControllerService {
 
     /**
      * findAllValueSets
-     * @returns Page_GetValueSet_ OK
+     * @returns Page_ValueSet_ OK
      * @throws ApiError
      */
     public static findAllValueSetsUsingGet({
@@ -28,7 +29,7 @@ export class ValueSetControllerService {
         page?: number,
         size?: number,
         sort?: string,
-    }): CancelablePromise<Page_GetValueSet_> {
+    }): CancelablePromise<Page_ValueSet_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/valueset/',
@@ -81,7 +82,7 @@ export class ValueSetControllerService {
 
     /**
      * searchValueSearch
-     * @returns Page_GetValueSet_ OK
+     * @returns Page_ValueSet_ OK
      * @returns any Created
      * @throws ApiError
      */
@@ -100,7 +101,7 @@ export class ValueSetControllerService {
         page?: number,
         size?: number,
         sort?: string,
-    }): CancelablePromise<Page_GetValueSet_ | any> {
+    }): CancelablePromise<Page_ValueSet_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/page-builder/api/v1/valueset/search',
@@ -179,6 +180,38 @@ export class ValueSetControllerService {
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+            },
+        });
+    }
+
+    /**
+     * findConceptsByCodeSetName
+     * @returns Concept OK
+     * @throws ApiError
+     */
+    public static findConceptsByCodeSetNameUsingGet({
+        authorization,
+        codeSetNm,
+    }: {
+        authorization: any,
+        /**
+         * codeSetNm
+         */
+        codeSetNm: string,
+    }): CancelablePromise<Array<Concept>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/page-builder/api/v1/valueset/{codeSetNm}/concepts',
+            path: {
+                'codeSetNm': codeSetNm,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }

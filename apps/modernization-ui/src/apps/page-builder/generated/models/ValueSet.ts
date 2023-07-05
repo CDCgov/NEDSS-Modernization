@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type GetValueSet = {
+export type ValueSet = {
     addTime?: string;
     addUserId?: number;
     adminComments?: string;
@@ -11,11 +11,11 @@ export type GetValueSet = {
     classCd?: string;
     codeSetDescTxt?: string;
     codeSetGroupId?: number;
-    codeSetNm?: string;
     effectiveFromTime?: string;
     effectiveToTime?: string;
     isModifiableInd?: string;
     ldfPicklistIndCd?: string;
+    name?: string;
     nbsUid?: number;
     parentIsCd?: number;
     sourceDomainNm?: string;
