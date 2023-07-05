@@ -2,13 +2,16 @@ import { PageProvider } from 'page';
 import { ManagePagesTable } from './ManagePagesTable';
 import { render } from '@testing-library/react';
 import { PageSummary } from 'apps/page-builder/generated';
+import { BrowserRouter } from 'react-router-dom';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { container } = render(
-            <PageProvider>
-                <ManagePagesTable summaries={[]} sortChange={() => {}}></ManagePagesTable>
-            </PageProvider>
+            <BrowserRouter>
+                <PageProvider>
+                    <ManagePagesTable summaries={[]} sortChange={() => {}}></ManagePagesTable>
+                </PageProvider>
+            </BrowserRouter>
         );
 
         const tableHeader = container.getElementsByClassName('table-header');
@@ -40,9 +43,11 @@ describe('when at least one summary is available', () => {
 
     it('should display the page summaries', async () => {
         const { container } = render(
-            <PageProvider>
-                <ManagePagesTable summaries={summaries} sortChange={() => {}}></ManagePagesTable>
-            </PageProvider>
+            <BrowserRouter>
+                <PageProvider>
+                    <ManagePagesTable summaries={summaries} sortChange={() => {}}></ManagePagesTable>
+                </PageProvider>
+            </BrowserRouter>
         );
 
         const tableData = container.getElementsByClassName('table-data');

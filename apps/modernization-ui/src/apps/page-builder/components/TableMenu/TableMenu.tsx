@@ -10,7 +10,7 @@ type Props = {
 export const TableMenu = ({ tableType }: Props) => {
     const navigate = useNavigate();
     const addNew = () => {
-        navigate(`/page-builder/add-new-${tableType}`);
+        navigate(`/page-builder/add/${tableType}`);
     };
 
     return (
