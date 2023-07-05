@@ -58,8 +58,16 @@ export const AppRoutes = () => {
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
-                            <Route path="/page-builder/manage-pages" element={<ManagePages />} />
-                            <Route path="/page-builder/add-new-page" element={<AddNewPage />} />
+
+                            <Route path="/page-builder">
+                                <Route path="manage">
+                                    <Route path="pages" element={<ManagePages />} />
+                                </Route>
+                                <Route path="add">
+                                    <Route path="page" element={<AddNewPage />} />
+                                </Route>
+                            </Route>
+
                             <Route path="*" element={<Navigate to="/advanced-search" />} />
                             <Route path="/" element={<Navigate to="/advanced-search" />} />
                         </>

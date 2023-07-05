@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
 
+    @Value("${server.servlet.context-path:}")
+    private String contextPath;
 
     @Bean
     @SuppressWarnings("squid:S4502")
@@ -33,9 +36,14 @@ public class WebSecurityConfig {
     // https://docs.spring.io/spring-security/reference/features/exploits/csrf.html#csrf-protection-ssa
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeRequests()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**")
+                .antMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v2/api-docs/**")
                 .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

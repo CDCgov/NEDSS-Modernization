@@ -15,17 +15,19 @@ Feature: Search for page summary
         Then page summaries are returned sorted by "<sort-field>" "<direction>"
 
         Examples:
-            | sort-field | direction |
-            | id         | ASC       |
-            | id         | DESC      |
-            | name       | ASC       |
-            | name       | DESC      |
-            | eventType  | ASC       |
-            | eventType  | DESC      |
-            | status     | ASC       |
-            | status     | DESC      |
-            | lastUpdate | ASC       |
-            | lastUpdate | DESC      |
+            | sort-field   | direction |
+            | id           | ASC       |
+            | id           | DESC      |
+            | name         | ASC       |
+            | name         | DESC      |
+            | eventType    | ASC       |
+            | eventType    | DESC      |
+            | status       | ASC       |
+            | status       | DESC      |
+            | lastUpdate   | ASC       |
+            | lastUpdate   | DESC      |
+            | lastUpdateBy | ASC       |
+            | lastUpdateBy | DESC      |
 
     Scenario: An exception is thrown when trying to sort by an unsupported field
         Given I am an admin user
@@ -51,6 +53,26 @@ Feature: Search for page summary
             | search text |
             | brucellosis |
             | meningitis  |
+
+    Scenario: I can sort page summaries when searching
+        Given I am an admin user
+        When I search for summaries by "" and sort by "<sort-field>" "<direction>"
+        Then page summaries are returned sorted by "<sort-field>" "<direction>"
+
+        Examples:
+            | sort-field   | direction |
+            | id           | ASC       |
+            | id           | DESC      |
+            | name         | ASC       |
+            | name         | DESC      |
+            | eventType    | ASC       |
+            | eventType    | DESC      |
+            | status       | ASC       |
+            | status       | DESC      |
+            | lastUpdate   | ASC       |
+            | lastUpdate   | DESC      |
+            | lastUpdateBy | ASC       |
+            | lastUpdateBy | DESC      |
 
     Scenario: I cannot search page summaries without logging in
         Given I am not logged in
