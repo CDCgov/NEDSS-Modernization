@@ -2,6 +2,8 @@ package gov.cdc.nbs.questionbank.valueset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -151,5 +153,12 @@ class ValueSetReaderTest {
         assertEquals(cvg.getConceptStatusCd(), concept.status());
         assertEquals(cvg.getEffectiveFromTime(), concept.effectiveFromTime());
         assertEquals(cvg.getEffectiveToTime(), concept.effectiveToTime());
+    }
+
+    @Test
+    void should_return_empty_list_for_null_concept() {
+        List<Concept> results = valueSetReader.findConceptCodes(null);
+        assertNotNull(results);
+        assertTrue(results.isEmpty());
     }
 }
