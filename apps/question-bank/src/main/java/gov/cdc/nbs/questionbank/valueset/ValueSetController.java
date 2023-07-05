@@ -72,7 +72,7 @@ public class ValueSetController {
         return valueSetReador.searchValueSearch(search, pageable);
     }
 
-    @GetMapping("{codeSetNm}")
+    @GetMapping("{codeSetNm}/concepts")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public List<Concept> findConceptsByCodeSetName(@PathVariable String codeSetNm) {
         return valueSetReador.findConceptCodes(codeSetNm);

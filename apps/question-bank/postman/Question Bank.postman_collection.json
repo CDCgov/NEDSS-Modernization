@@ -485,7 +485,7 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/valueset/CODE_SYSTEM",
+							"raw": "localhost:8095/page-builder/api/v1/valueset/:valueSet/concepts",
 							"host": [
 								"localhost"
 							],
@@ -495,7 +495,22 @@
 								"api",
 								"v1",
 								"valueset",
-								"CODE_SYSTEM"
+								":valueSet",
+								"concepts"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "valueSet",
+									"value": "CODE_SYSTEM",
+									"description": "The code_set_nm of the ValueSet"
+								}
 							]
 						}
 					},
