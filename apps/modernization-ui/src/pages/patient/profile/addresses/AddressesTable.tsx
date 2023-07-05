@@ -21,6 +21,7 @@ import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -72,9 +73,10 @@ const resolveInitialEntry = (patient: string): NewAddressEntry => ({
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const AddressesTable = ({ patient }: Props) => {
+export const AddressesTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -146,7 +148,10 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Added', table: 'Address' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -174,7 +179,10 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({ type: 'Updated', table: 'Address' });
+                })
                 .then(actions.reset);
         }
     };
@@ -189,7 +197,13 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({
+                        type: 'Deleted',
+                        table: 'Address'
+                    });
+                })
                 .then(actions.reset);
         }
     };

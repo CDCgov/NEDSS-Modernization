@@ -20,6 +20,7 @@ import { EntryModal } from '../entry/EntryModal';
 import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -47,9 +48,10 @@ const resolveInitialEntry = (patient: string): IdentificationEntry => ({
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const IdentificationsTable = ({ patient }: Props) => {
+export const IdentificationsTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -108,7 +110,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
                 }
             }
         })
-            .then(() => refetch())
+            .then(() => {
+                handleAlert?.({ type: 'Added', table: 'Identification' });
+                refetch();
+            })
             .then(actions.reset);
     };
 
@@ -126,7 +131,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Updated', table: 'Identification' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -141,7 +149,10 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Deleted', table: 'Identification' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };

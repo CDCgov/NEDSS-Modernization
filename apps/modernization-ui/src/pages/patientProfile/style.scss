@@ -54,10 +54,12 @@
 }
 
 .usa-alert {
+    min-width: 450px;
+    padding: 10px;
     position: fixed;
     top: 15px;
-    animation: mymove 1s;
-    animation-fill-mode: forwards;
+    animation: mymove 0.3s;
+    animation-fill-mode: both;
 }
 
 .advanced-search-alert {
@@ -69,7 +71,7 @@
 
 @keyframes mymove {
     from {
-        right: -250px;
+        right: -450px;
     }
     to {
         right: 15px;
