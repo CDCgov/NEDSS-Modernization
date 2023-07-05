@@ -29,4 +29,4 @@ export const OpenAPI: OpenAPIConfig = {
     HEADERS: undefined,
     ENCODE_PATH: undefined,
 };
-import { Config } from '../../../src/config';
+import { Config } from 'config';

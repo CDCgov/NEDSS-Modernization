@@ -53,7 +53,7 @@ public class QuestionController {
         return results;
     }
 
-    @PostMapping("/search")
+    @PostMapping("search")
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<Question> findQuestions(
             @RequestBody FindQuestionRequest request,

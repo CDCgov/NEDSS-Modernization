@@ -1,11 +1,11 @@
 package gov.cdc.nbs.questionbank.question.response;
 
-import gov.cdc.nbs.questionbank.question.model.Entry;
-import gov.cdc.nbs.questionbank.question.model.Link;
-import gov.cdc.nbs.questionbank.question.model.Meta;
 import lombok.*;
 
 import java.util.List;
+import gov.cdc.nbs.questionbank.phin.model.Entry;
+import gov.cdc.nbs.questionbank.phin.model.Link;
+import gov.cdc.nbs.questionbank.phin.model.Meta;
 
 @Builder
 @Getter

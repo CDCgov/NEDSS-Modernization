@@ -1,6 +1,7 @@
-package gov.cdc.nbs.questionbank.question.model;
+package gov.cdc.nbs.questionbank.phin.model;
 
 import lombok.*;
+
 @Builder
 @Getter
 @Setter
