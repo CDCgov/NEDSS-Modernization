@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -39,7 +39,7 @@ public class SearchForConceptsSteps {
     public void i_find_concepts(String valueSet) {
         List<Concept> concepts = conceptHolder.getConcepts();
         assertFalse(concepts.isEmpty());
-        concepts.forEach(c -> assertTrue(valueSet.equals(c.codesetName())));
+        concepts.forEach(c -> assertEquals(valueSet, c.codesetName()));
     }
 
 }
