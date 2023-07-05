@@ -28,7 +28,7 @@ const pageReducer = (state: Page, action: Action) => {
         case 'reload':
             return { ...state, status: Status.Requested };
         case 'set-page-size':
-            return { ...state, pageSize: action.pageSize, page: 1, status: Status.Requested };
+            return { ...state, pageSize: action.pageSize, current: 1, status: Status.Requested };
     }
 };
 

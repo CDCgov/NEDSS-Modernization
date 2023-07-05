@@ -56,6 +56,7 @@ public class PageSummaryFinder {
         BlazeJPAQuery<Long> query = new BlazeJPAQuery<Tuple>(entityManager, criteriaBuilderFactory)
                 .select(waTemplate.id)
                 .from(waTemplate)
+                .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
                 .where(waTemplate.templateType.in("Draft", "Published"));
         setOrderBy(query, pageable);
 
