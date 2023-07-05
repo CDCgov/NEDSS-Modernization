@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
@@ -81,7 +82,8 @@ public class ValueSetReader {
             return Collections.emptyList();
         }
 
-        return codeValueGeneralRepository.findByIdCodeSetNm(codeSetNm)
+        return codeValueGeneralRepository
+                .findByIdCodeSetNm(codeSetNm, Sort.by(Sort.Direction.ASC, "codeShortDescTxt"))
                 .stream()
                 .map(this::toConcept)
                 .toList();
