@@ -255,7 +255,11 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                     entityType: body.entityType,
                     id: body.id
                 };
-            } else {
+            }
+        }
+
+        if (body.labentityType && body.labentityType !== '- Select -' && body.labid) {
+            if (eventSearchType === SEARCH_TYPE.LAB_REPORT && (filterData as LabReportFilter)) {
                 filterData = filterData as LabReportFilter;
                 filterData.providerSearch = {
                     providerType: body.labentityType,

@@ -29,6 +29,7 @@ export type { Page_ValueSet_ } from './models/Page_ValueSet_';
 export type { Pageable } from './models/Pageable';
 export type { PageSummary } from './models/PageSummary';
 export type { PageSummaryRequest } from './models/PageSummaryRequest';
+export type { ProgramArea } from './models/ProgramArea';
 export type { Question } from './models/Question';
 export type { QuestionStatusRequest } from './models/QuestionStatusRequest';
 export type { ReportingInfo } from './models/ReportingInfo';
@@ -47,6 +48,7 @@ export type { ValueSetSearchRequest } from './models/ValueSetSearchRequest';
 export { ValueSetStateChangeResponse } from './models/ValueSetStateChangeResponse';
 
 export { PageControllerService } from './services/PageControllerService';
+export { ProgramAreaControllerService } from './services/ProgramAreaControllerService';
 export { QuestionControllerService } from './services/QuestionControllerService';
 export { ValueSetControllerService } from './services/ValueSetControllerService';
 export { VocabSearchControllerService } from './services/VocabSearchControllerService';
