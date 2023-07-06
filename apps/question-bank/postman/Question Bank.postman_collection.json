@@ -431,7 +431,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"dataMartName\": \"updatedDataMartName\",\n  \"description\": \"Updated description\",\n  \"messageMappingGuide\": \"Mumps_MMG_V1.0\",\n  \"name\": \"Updated Name\",\n   \"conditions\": [\n    \"10180\"\n  ]\n}",
+							"raw": "{\n  \"dataMartName\": \"updatedDataMartName\",\n  \"description\": \"Updated description\",\n  \"messageMappingGuide\": \"Mumps_MMG_V1.0\",\n  \"name\": \"Updated Name\",\n   \"conditionIds\": [\n    \"10180\"\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
