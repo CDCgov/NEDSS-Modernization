@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/valueset/")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ValueSetController {
 
     private final ValueSetCreator valueSetCreator;
@@ -38,7 +39,6 @@ public class ValueSetController {
     private final ValueSetReader valueSetReador;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         CreateValueSetResponse response = valueSetCreator.createValueSet(request, userId);
@@ -46,34 +46,29 @@ public class ValueSetController {
     }
 
     @DeleteMapping("{codeSetNm}")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public ResponseEntity<ValueSetStateChangeResponse> deleteValueSet(@PathVariable String codeSetNm) {
         ValueSetStateChangeResponse response = valueSetStateManager.deleteValueSet(codeSetNm);
         return new ResponseEntity<>(response, null, response.getStatus());
     }
 
     @PatchMapping("{codeSetNm}")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public ResponseEntity<ValueSetStateChangeResponse> activateValueSet(@PathVariable String codeSetNm) {
         ValueSetStateChangeResponse response = valueSetStateManager.activateValueSet(codeSetNm);
         return new ResponseEntity<>(response, null, response.getStatus());
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<ValueSet> findAllValueSets(@PageableDefault(size = 25) Pageable pageable) {
         return valueSetReador.findAllValueSets(pageable);
     }
 
     @PostMapping("search")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<ValueSet> searchValueSearch(@RequestBody ValueSetSearchRequest search,
             @PageableDefault(size = 25) Pageable pageable) {
         return valueSetReador.searchValueSearch(search, pageable);
     }
 
     @GetMapping("{codeSetNm}/concepts")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public List<Concept> findConceptsByCodeSetName(@PathVariable String codeSetNm) {
         return valueSetReador.findConceptCodes(codeSetNm);
     }

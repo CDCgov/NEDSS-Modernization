@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.page;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,20 +14,19 @@ import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.PagedList;
 import com.blazebit.persistence.querydsl.BlazeJPAQuery;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.support.QueryBase;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
+import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.QPageCondMapping;
 import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import gov.cdc.nbs.questionbank.exception.QueryException;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.page.model.PageSummary;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
-import gov.cdc.nbs.questionbank.question.model.Condition;
 
 @Component
 @Transactional
@@ -36,19 +35,29 @@ public class PageSummaryFinder {
     private static final QAuthUser authUser = QAuthUser.authUser;
     private static final QConditionCode conditionCode = QConditionCode.conditionCode;
     private static final QPageCondMapping conditionMapping = QPageCondMapping.pageCondMapping;
+    private static final QCodeValueGeneral codeValueGeneral = QCodeValueGeneral.codeValueGeneral;
 
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final EntityManager entityManager;
-
+    private final PageSummaryMapper mapper;
     private final JPAQueryFactory factory;
 
     public PageSummaryFinder(
             final JPAQueryFactory factory,
             final EntityManager entityManager,
-            final CriteriaBuilderFactory criteriaBuilderFactory) {
+            final CriteriaBuilderFactory criteriaBuilderFactory,
+            final PageSummaryMapper mapper) {
         this.factory = factory;
         this.entityManager = entityManager;
         this.criteriaBuilderFactory = criteriaBuilderFactory;
+        this.mapper = mapper;
+    }
+
+    public PageSummary find(Long id) {
+        return fetchPageSummary(Collections.singletonList(id), Pageable.ofSize(1), 1)
+                .get()
+                .findFirst()
+                .orElseThrow(() -> new PageNotFoundException("Failed to find page with id: " + id));
     }
 
     public Page<PageSummary> find(Pageable pageable) {
@@ -100,6 +109,9 @@ public class PageSummaryFinder {
                 waTemplate.busObjType,
                 waTemplate.lastChgTime,
                 waTemplate.lastChgUserId,
+                waTemplate.nndEntityIdentifier,
+                waTemplate.publishVersionNbr,
+                codeValueGeneral.codeShortDescTxt,
                 authUser.userFirstNm,
                 authUser.userLastNm,
                 conditionCode.id,
@@ -108,25 +120,12 @@ public class PageSummaryFinder {
                 .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
                 .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
                 .leftJoin(conditionCode).on(conditionMapping.conditionCd.eq(conditionCode.id))
+                .leftJoin(codeValueGeneral).on(waTemplate.nndEntityIdentifier.eq(codeValueGeneral.id.code))
                 .where(waTemplate.id.in(ids));
         setOrderBy(query, pageable);
 
-        Map<Long, PageSummary> results = query.transform(
-                GroupBy.groupBy(waTemplate.id)
-                        .as(Projections.constructor(
-                                PageSummary.class,
-                                waTemplate.id,
-                                Projections.constructor(PageSummary.EventType.class, waTemplate.busObjType),
-                                waTemplate.templateNm,
-                                waTemplate.templateType,
-                                waTemplate.nndEntityIdentifier,
-                                GroupBy.list(Projections.constructor(
-                                        Condition.class,
-                                        conditionCode.id,
-                                        conditionCode.conditionShortNm)),
-                                waTemplate.lastChgTime,
-                                authUser.userFirstNm.concat(" ").concat(authUser.userLastNm))));
-        return new PageImpl<>(new ArrayList<>(results.values()), pageable, totalSize);
+        List<PageSummary> summaries = mapper.map(query.fetch());
+        return new PageImpl<>(new ArrayList<>(summaries), pageable, totalSize);
     }
 
     private BlazeJPAQuery<Tuple> findSummaryQuery(PageSummaryRequest request) {

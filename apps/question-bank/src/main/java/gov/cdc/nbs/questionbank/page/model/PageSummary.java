@@ -9,7 +9,7 @@ public record PageSummary(
         EventType eventType,
         String name,
         String status,
-        String messageMappingGuide,
+        MessageMappingGuide messageMappingGuide,
         List<Condition> conditions,
         Instant lastUpdate,
         String lastUpdateBy) {
@@ -27,6 +27,9 @@ public record PageSummary(
                 default -> type;
             });
         }
+    }
+
+    public record MessageMappingGuide(String id, String display) {
     }
 }
 

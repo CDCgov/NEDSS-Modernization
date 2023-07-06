@@ -20,7 +20,7 @@ import io.cucumber.java.en.When;
 public class PageSummarySearchSteps {
 
     @Autowired
-    private PageSummaryController controller;
+    private PageController controller;
 
     @Autowired
     private PageMother pageMother;

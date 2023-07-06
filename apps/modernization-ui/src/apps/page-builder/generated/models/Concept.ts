@@ -12,5 +12,6 @@ export type Concept = {
     localCode?: string;
     messagingConceptName?: string;
     status?: string;
+    value?: string;
 };
 

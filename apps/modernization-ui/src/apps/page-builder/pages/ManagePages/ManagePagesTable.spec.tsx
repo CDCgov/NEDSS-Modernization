@@ -35,7 +35,7 @@ describe('when at least one summary is available', () => {
         id: 1,
         lastUpdate: '2019-09-25T13:27:16.380Z',
         lastUpdateBy: 'last updateBy',
-        messageMappingGuide: 'Some MMG',
+        messageMappingGuide: { id: 'MMG Id', display: 'MMG display' },
         name: 'test page',
         status: 'Draft'
     };

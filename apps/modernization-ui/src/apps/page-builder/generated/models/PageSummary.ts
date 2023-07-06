@@ -4,6 +4,7 @@
 
 import type { Condition } from './Condition';
 import type { EventType } from './EventType';
+import type { MessageMappingGuide } from './MessageMappingGuide';
 
 export type PageSummary = {
     conditions?: Array<Condition>;
@@ -11,7 +12,7 @@ export type PageSummary = {
     id?: number;
     lastUpdate?: string;
     lastUpdateBy?: string;
-    messageMappingGuide?: string;
+    messageMappingGuide?: MessageMappingGuide;
     name?: string;
     status?: string;
 };
