@@ -33,6 +33,7 @@ export const NameEntryForm = ({ action, entry, onChange, onCancel }: EntryProps)
                         <Controller
                             control={control}
                             name="asOf"
+                            defaultValue={entry?.asOf}
                             rules={{ required: { value: true, message: 'As of date is required.' } }}
                             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <DatePickerInput

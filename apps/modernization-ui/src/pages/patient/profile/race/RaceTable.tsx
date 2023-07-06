@@ -20,6 +20,7 @@ import EntryModal from 'pages/patient/profile/entry';
 import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPatientProfileRace';
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -43,9 +44,10 @@ const resolveInitialEntry = (patient: string): RaceEntry => ({
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const RacesTable = ({ patient }: Props) => {
+export const RacesTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Race', sortable: true, sort: 'all' },
@@ -104,7 +106,10 @@ export const RacesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Added', table: 'Race' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -121,7 +126,10 @@ export const RacesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Updated', table: 'Race' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -136,7 +144,10 @@ export const RacesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Deleted', table: 'Race' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };

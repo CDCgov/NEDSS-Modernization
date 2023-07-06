@@ -147,6 +147,20 @@ Start the reverse proxy configured to route to the local backend by running the 
 MODERNIZATION_API_SERVER=host.docker.internal MODERNIZATION_API_PORT=9080 docker compose up -d reverse-proxy
 ```
 
+### Configuring the Reverse Proxy to use local pagebuilder-api
+
+Start the question-bank applicaiton.
+
+```shell
+./gradlew :question-bank:bootRun'
+```
+
+Start the reverse proxy configured to route to the local backend by running the following command from the `cdc-sandbox` folder
+
+```shell
+PAGEBUILDER_API=host.docker.internal PAGEBUILDER_API_PORT=8095 docker compose up -d reverse-proxy
+```
+
 ### Resetting to Docker only
 
 Start the reverse proxy by running the following command from the `cdc-sandbox` folder

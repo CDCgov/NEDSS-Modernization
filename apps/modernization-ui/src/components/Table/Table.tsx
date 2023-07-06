@@ -30,7 +30,7 @@ export type TableBody = {
     data?: any;
 };
 
-type SortHandler = (name: string, type: string) => void;
+type SortHandler = (name: string, type: Direction) => void;
 
 export type TableContentProps = {
     tableHeader?: string;

@@ -22,6 +22,7 @@ import { useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
 import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -68,9 +69,10 @@ const resolveInitialEntry = (patient: string): NameEntry => ({
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const NamesTable = ({ patient }: Props) => {
+export const NamesTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -139,7 +141,10 @@ export const NamesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({ type: 'Added', table: 'Name', name: `${entry.last ?? ''} ${entry.first ?? ''}` });
+                })
                 .then(actions.reset);
         }
     };
@@ -164,7 +169,10 @@ export const NamesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({ type: 'Updated', table: 'Name', name: `${entry.last ?? ''} ${entry.first ?? ''}` });
+                })
                 .then(actions.reset);
         }
     };
@@ -179,7 +187,14 @@ export const NamesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({
+                        type: 'Deleted',
+                        table: 'Name',
+                        name: `${selected?.item.last ?? ''} ${selected?.item.first ?? ''}`
+                    });
+                })
                 .then(actions.reset);
         }
     };

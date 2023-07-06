@@ -6,11 +6,28 @@ import gov.cdc.nbs.questionbank.question.model.Condition;
 
 public record PageSummary(
         long id,
-        String eventType,
+        EventType eventType,
         String name,
         String status,
         String messageMappingGuide,
         List<Condition> conditions,
         Instant lastUpdate,
-        String lastUpdateB) {
+        String lastUpdateBy) {
+
+    public record EventType(String type, String display) {
+        public EventType(String type) {
+            this(type, switch (type) {
+                case "INV" -> "Investigation";
+                case "CON" -> "Contact";
+                case "VAC" -> "Vaccination";
+                case "IXS" -> "Interview";
+                case "SUS" -> "Lab Susceptibility";
+                case "LAB" -> "Lab Report";
+                case "ISO" -> "Lab Isolate Tracking";
+                default -> type;
+            });
+        }
+    }
 }
+
+
