@@ -145,6 +145,9 @@ class PageUpdaterTest {
     void should_not_add_condition() {
         when(repository.save(Mockito.any())).thenAnswer(a -> a.getArgument(0));
 
+        // given I am logged in
+        when(userDetailsProvider.getCurrentUserDetails()).thenReturn((userDetails()));
+
         // given a page exists with templateType of "Draft" and null publishVersionNbr
         when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
                 .thenReturn(Optional.of(template("Draft", null)));

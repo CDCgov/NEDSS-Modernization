@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.page.PageCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -107,4 +108,33 @@ public class WaTemplate {
             })
     private Set<PageCondMapping> conditionMappings;
 
+
+    public void changed(final PageCommand command) {
+        setLastChgTime(command.requestedOn());
+        setLastChgUserId(command.requester());
+    }
+
+    public void update(final PageCommand.UpdateDetails command) {
+
+        setTemplateNm(command.name());
+        setNndEntityIdentifier(command.messageMappingGuide());
+        setDescTxt(command.description());
+
+        // If the page is just an initial draft allow update of conditions and Data mart name
+        boolean isInitialDraft = getTemplateType().equals("Draft") && getPublishVersionNbr() == null;
+        if (isInitialDraft) {
+            setDatamartNm(command.dataMartName());
+
+            // Remove any conditions not in the conditions list
+            getConditionMappings().removeIf(cm -> !command.conditionIds().contains(cm.getConditionCd()));
+        }
+
+        // add any conditions not currently mapped
+        var existingConditions = getConditionMappings().stream().map(cm -> cm.getConditionCd()).toList();
+        var conditionsToAdd = command.conditionIds().stream().filter(c -> !existingConditions.contains(c)).toList();
+        conditionsToAdd.forEach(
+                conditionCode -> getConditionMappings().add(new PageCondMapping(command, this, conditionCode)));
+
+        changed(command);
+    }
 }
