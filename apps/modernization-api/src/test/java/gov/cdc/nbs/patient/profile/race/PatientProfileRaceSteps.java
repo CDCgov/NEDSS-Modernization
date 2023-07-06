@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.race;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.message.patient.input.PatientInput;
@@ -65,7 +66,7 @@ public class PatientProfileRaceSteps {
     public void the_profile_has_associated_races() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -77,7 +78,7 @@ public class PatientProfileRaceSteps {
     public void the_profile_has_no_associated_races() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -90,7 +91,7 @@ public class PatientProfileRaceSteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 

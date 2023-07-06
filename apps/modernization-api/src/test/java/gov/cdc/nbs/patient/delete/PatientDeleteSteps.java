@@ -4,7 +4,6 @@ import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.repository.LabResultRepository;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.TestAvailable;
 import io.cucumber.java.Before;
@@ -120,10 +119,11 @@ public class PatientDeleteSteps {
 
     @When("the patient has been deleted")
     public void the_patient_has_been_deleted() {
-        Optional<Person> person = repository.findById(patients.one().id());
-        if (person.isPresent()) {
-            person.get().setRecordStatusCd(RecordStatus.LOG_DEL);
-            repository.save(person.get());
+        long identifier = this.patients.one().id();
+        try {
+            this.result = controller.delete(identifier);
+        } catch (AccessDeniedException exception) {
+            this.accessDeniedException = exception;
         }
     }
 }

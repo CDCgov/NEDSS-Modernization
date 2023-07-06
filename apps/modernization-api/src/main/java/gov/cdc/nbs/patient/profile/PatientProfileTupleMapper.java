@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile;
 
 import com.querydsl.core.Tuple;
+
 import gov.cdc.nbs.entity.odse.QPerson;
 
 import java.util.Objects;
@@ -34,11 +35,12 @@ class PatientProfileTupleMapper {
                 tuple.get(this.tables.patient().personParentUid.versionCtrlNbr),
                 "A patient version is required"
             );
+        String recordStatusCd = tuple.get(this.tables.patient().personParentUid.recordStatusCd).toString();
 
         return new PatientProfile(
             identifier,
             local,
-            version
-        );
+            version,
+            recordStatusCd);
     }
 }
