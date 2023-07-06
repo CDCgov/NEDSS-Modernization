@@ -24,7 +24,8 @@ class PatientProfileFinder {
         return this.factory.selectDistinct(
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
-                this.tables.patient().personParentUid.versionCtrlNbr
+                this.tables.patient().personParentUid.versionCtrlNbr,
+                this.tables.patient().personParentUid.recordStatusCd
             )
             .from(this.tables.patient())
             .where(
