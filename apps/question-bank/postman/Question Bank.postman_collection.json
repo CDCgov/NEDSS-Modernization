@@ -519,6 +519,38 @@
 			]
 		},
 		{
+			"name": "Program Areas",
+			"item": [
+				{
+					"name": "List Program Areas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/program-area",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"program-area"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "nnd_batch_to_cdc Login",
 			"event": [
 				{
