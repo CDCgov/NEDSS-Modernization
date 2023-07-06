@@ -41,11 +41,4 @@ public class PageRuleController {
             return new CreateRuleResponse(null, "Error in Creating a Rule");
         }
     }
-
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @DeleteMapping("rule/{ruleId}")
-    @ResponseBody
-    public CreateRuleResponse deleteBusinessRule(@PathVariable Long ruleId){
-       return pageRuleService.deletePageRule(ruleId);
-    }
 }
