@@ -29,7 +29,7 @@ public class PageSummaryMapper {
                         Collectors.groupingBy(PageSummary::id,
                                 LinkedHashMap::new, // preserves ordering
                                 Collectors.collectingAndThen(
-                                        Collectors.reducing((a, b) -> merge(a, b)),
+                                        Collectors.reducing(this::merge),
                                         Optional::get)))
                 .values()
                 .stream()

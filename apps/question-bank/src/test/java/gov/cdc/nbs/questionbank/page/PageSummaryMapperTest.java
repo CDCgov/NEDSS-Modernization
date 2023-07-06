@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
@@ -57,44 +59,21 @@ class PageSummaryMapperTest {
         assertEquals("Lab Isolate Tracking", eventType.name());
     }
 
-    @Test
-    void should_set_status_initial_draft() {
+
+    @ParameterizedTest
+    @CsvSource({
+            "Draft,0,Published with Draft",
+            "Draft,null,Initial Draft",
+            "Published,0,Published",
+    })
+    void should_set_status(String templateType, String versionNbr, String expected) {
         Tuple tuple = Mockito.mock(Tuple.class);
-        when(tuple.get(QWaTemplate.waTemplate.templateType)).thenReturn("Draft");
-        when(tuple.get(QWaTemplate.waTemplate.publishVersionNbr)).thenReturn(null);
+        when(tuple.get(QWaTemplate.waTemplate.templateType)).thenReturn(templateType);
+        Integer version = "null".equals(versionNbr) ? null : Integer.parseInt(versionNbr);
+        when(tuple.get(QWaTemplate.waTemplate.publishVersionNbr)).thenReturn(version);
 
         String status = mapper.getStatus(tuple);
-        assertEquals("Initial Draft", status);
-    }
-
-    @Test
-    void should_set_status_published_with_draft() {
-        Tuple tuple = Mockito.mock(Tuple.class);
-        when(tuple.get(QWaTemplate.waTemplate.templateType)).thenReturn("Draft");
-        when(tuple.get(QWaTemplate.waTemplate.publishVersionNbr)).thenReturn(0);
-
-        String status = mapper.getStatus(tuple);
-        assertEquals("Published with Draft", status);
-    }
-
-    @Test
-    void should_set_status_templateType() {
-        Tuple tuple = Mockito.mock(Tuple.class);
-        when(tuple.get(QWaTemplate.waTemplate.templateType)).thenReturn("Published");
-        when(tuple.get(QWaTemplate.waTemplate.publishVersionNbr)).thenReturn(0);
-
-        String status = mapper.getStatus(tuple);
-        assertEquals("Published", status);
-    }
-
-    @Test
-    void should_set_status() {
-        Tuple tuple = Mockito.mock(Tuple.class);
-        when(tuple.get(QWaTemplate.waTemplate.templateType)).thenReturn("Draft");
-        when(tuple.get(QWaTemplate.waTemplate.publishVersionNbr)).thenReturn(0);
-
-        String status = mapper.getStatus(tuple);
-        assertEquals("Published with Draft", status);
+        assertEquals(expected, status);
     }
 
     @Test
