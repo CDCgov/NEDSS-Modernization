@@ -35,7 +35,11 @@ class PatientProfileTupleMapper {
                 tuple.get(this.tables.patient().personParentUid.versionCtrlNbr),
                 "A patient version is required"
             );
-        String recordStatusCd = tuple.get(this.tables.patient().personParentUid.recordStatusCd).toString();
+        String recordStatusCd =
+            Objects.requireNonNull(
+                tuple.get(this.tables.patient().personParentUid.recordStatusCd),
+                "A patient recordStatusCd is required"
+            ).toString();
 
         return new PatientProfile(
             identifier,
