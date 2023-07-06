@@ -1,7 +1,8 @@
 import ReactSelect, { MultiValue, components } from 'react-select';
 import { FocusEventHandler, useEffect, useMemo, useState } from 'react';
-import './style.scss';
+import './MultiSelectInput.scss';
 import { mapNonNull } from 'utils';
+import { Label } from '@trussworks/react-uswds';
 
 const CheckedOption = (props: any) => {
     return (
@@ -26,17 +27,28 @@ const asSelectable = (selectables: Selectable[]) => (item: string) =>
 type Option = { name: string; value: string };
 
 type MultiSelectInputProps = {
+    label?: string;
     id?: string;
     name?: string;
     options?: Option[];
     value?: string[];
     onChange?: (value: string[]) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
+    required?: boolean;
 };
 
 type Selectable = { value: string; label: string };
 
-export const MultiSelectInput = ({ id, name, options = [], onChange, onBlur, value = [] }: MultiSelectInputProps) => {
+export const MultiSelectInput = ({
+    label,
+    id,
+    name,
+    options = [],
+    onChange,
+    onBlur,
+    value = [],
+    required
+}: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
         () => options.map((item) => ({ value: item.value, label: item.name })),
         [JSON.stringify(options)]
@@ -59,20 +71,23 @@ export const MultiSelectInput = ({ id, name, options = [], onChange, onBlur, val
     };
 
     return (
-        <ReactSelect
-            isMulti={true}
-            id={id}
-            name={name}
-            value={selectedOptions}
-            placeholder="- Select -"
-            classNamePrefix="multi-select"
-            hideSelectedOptions={false}
-            closeMenuOnSelect={false}
-            closeMenuOnScroll={false}
-            onChange={handleOnChange}
-            onBlur={onBlur}
-            options={selectableOptions}
-            components={{ Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
-        />
+        <div className={`multi-select-input ${required ? 'required' : ''}`}>
+            {label && <Label htmlFor={label}>{label}</Label>}
+            <ReactSelect
+                isMulti={true}
+                id={id}
+                name={name}
+                value={selectedOptions}
+                placeholder="- Select -"
+                classNamePrefix="multi-select"
+                hideSelectedOptions={false}
+                closeMenuOnSelect={false}
+                closeMenuOnScroll={false}
+                onChange={handleOnChange}
+                onBlur={onBlur}
+                options={selectableOptions}
+                components={{ Option: CheckedOption, DropdownIndicator: USWDSDropdownIndicator }}
+            />
+        </div>
     );
 };
