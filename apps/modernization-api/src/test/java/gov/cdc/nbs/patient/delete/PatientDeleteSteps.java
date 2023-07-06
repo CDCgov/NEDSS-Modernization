@@ -3,8 +3,10 @@ package gov.cdc.nbs.patient.delete;
 import gov.cdc.nbs.authorization.TestActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.support.PersonMother;
 import gov.cdc.nbs.support.TestAvailable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
@@ -13,6 +15,9 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 
 public class PatientDeleteSteps {
@@ -115,11 +120,12 @@ public class PatientDeleteSteps {
 
     @When("the patient has been deleted")
     public void the_patient_has_been_deleted() {
-        long identifier = this.patients.one().id();
-        try {
-            this.result = controller.delete(identifier);
-        } catch (AccessDeniedException exception) {
-            this.accessDeniedException = exception;
+        PatientIdentifier patientId = this.patients.one();
+        Optional<Person> maybePerson = repository.findById(patientId.id());
+        if (maybePerson.isPresent()) {
+            Person person = maybePerson.get();
+            person.setRecordStatusCd(RecordStatus.LOG_DEL);
+            repository.save(person);
         }
     }
 }
