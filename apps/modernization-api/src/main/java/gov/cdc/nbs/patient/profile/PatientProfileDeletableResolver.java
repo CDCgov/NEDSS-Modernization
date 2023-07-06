@@ -26,7 +26,7 @@ class PatientProfileDeletableResolver {
     @SchemaMapping("deletable")
     boolean resolve(final PatientProfile profile) {
         Optional<Person> person = personRepository.findById(profile.id());
-        boolean personNotDeleted = person.isPresent() ? !person.get().getRecordStatusCd().equals(RecordStatus.LOG_DEL) : true;
-        return personNotDeleted && finder.count(profile.id()) == 0;
+        boolean personDeleted = person.isPresent() ? person.get().getRecordStatusCd().equals(RecordStatus.LOG_DEL) : true;
+        return !personDeleted && finder.count(profile.id()) == 0;
     }
 }
