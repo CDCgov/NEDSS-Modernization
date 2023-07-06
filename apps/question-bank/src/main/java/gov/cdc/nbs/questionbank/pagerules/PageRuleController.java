@@ -41,4 +41,11 @@ public class PageRuleController {
             return new CreateRuleResponse(null, "Error in Creating a Rule");
         }
     }
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    @PostMapping("rule/{ruleId}")
+    @ResponseBody
+    public CreateRuleResponse deletePageRule(@PathVariable Long ruleId){
+      return pageRuleService.deletePageRule(ruleId);
+    }
+
 }

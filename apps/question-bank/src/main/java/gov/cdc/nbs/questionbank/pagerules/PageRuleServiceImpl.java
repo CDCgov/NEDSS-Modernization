@@ -630,4 +630,9 @@ public class PageRuleServiceImpl implements PageRuleService {
     private StringBuilder secondPartForSubSection(CreateRuleRequest.ruleRequest request,StringBuilder stringBuilder,String suffix){
         return frameSubSectionPartForUnhideAndHide(request,stringBuilder,suffix);
     }
+    @Override
+    public CreateRuleResponse deletePageRule(Long ruleId){
+        waRuleMetaDataRepository.deleteById(ruleId);
+        return new CreateRuleResponse(ruleId,"Rule Successfully Deleted");
+    }
 }
