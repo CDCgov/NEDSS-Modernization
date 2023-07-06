@@ -1,7 +1,10 @@
 package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
@@ -22,8 +25,8 @@ class PatientProfileDeletableResolver {
 
     @SchemaMapping("deletable")
     boolean resolve(final PatientProfile profile) {
-        RecordStatus status = personRepository.findById(profile.id()).get().getRecordStatusCd();
-        return !status.equals(RecordStatus.LOG_DEL) && finder.count(profile.id()) == 0;
+        Optional<Person> person = personRepository.findById(profile.id());
+        boolean personNotDeleted = person.isPresent() ? !person.get().getRecordStatusCd().equals(RecordStatus.LOG_DEL) : true;
+        return personNotDeleted && finder.count(profile.id()) == 0;
     }
-
 }
