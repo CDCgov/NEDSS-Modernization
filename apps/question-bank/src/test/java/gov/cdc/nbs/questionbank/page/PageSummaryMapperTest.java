@@ -18,43 +18,43 @@ class PageSummaryMapperTest {
     @Test
     void should_set_event_type_investigation() {
         PageSummary.EventType eventType = mapper.getEventType("INV");
-        assertEquals("Investigation", eventType.display());
+        assertEquals("Investigation", eventType.name());
     }
 
     @Test
     void should_set_event_type_contact() {
         PageSummary.EventType eventType = mapper.getEventType("CON");
-        assertEquals("Contact", eventType.display());
+        assertEquals("Contact", eventType.name());
     }
 
     @Test
     void should_set_event_type_vaccination() {
         PageSummary.EventType eventType = mapper.getEventType("VAC");
-        assertEquals("Vaccination", eventType.display());
+        assertEquals("Vaccination", eventType.name());
     }
 
     @Test
     void should_set_event_type_interview() {
         PageSummary.EventType eventType = mapper.getEventType("IXS");
-        assertEquals("Interview", eventType.display());
+        assertEquals("Interview", eventType.name());
     }
 
     @Test
     void should_set_event_type_lab_susceptibility() {
         PageSummary.EventType eventType = mapper.getEventType("SUS");
-        assertEquals("Lab Susceptibility", eventType.display());
+        assertEquals("Lab Susceptibility", eventType.name());
     }
 
     @Test
     void should_set_event_type_lab() {
         PageSummary.EventType eventType = mapper.getEventType("LAB");
-        assertEquals("Lab Report", eventType.display());
+        assertEquals("Lab Report", eventType.name());
     }
 
     @Test
     void should_set_event_type_isolate() {
         PageSummary.EventType eventType = mapper.getEventType("ISO");
-        assertEquals("Lab Isolate Tracking", eventType.display());
+        assertEquals("Lab Isolate Tracking", eventType.name());
     }
 
     @Test
@@ -100,7 +100,7 @@ class PageSummaryMapperTest {
     @Test
     void should_set_event_display() {
         PageSummary.EventType eventType = mapper.getEventType("something different");
-        assertEquals("something different", eventType.display());
+        assertEquals("something different", eventType.name());
     }
 
     @Test
@@ -127,13 +127,13 @@ class PageSummaryMapperTest {
         when(tuple.get(user.userLastNm)).thenReturn("last");
 
         PageSummary summary = mapper.toPageSummary(tuple);
-        assertEquals("Investigation", summary.eventType().display());
-        assertEquals("INV", summary.eventType().type());
+        assertEquals("Investigation", summary.eventType().name());
+        assertEquals("INV", summary.eventType().value());
         assertEquals("template name", summary.name());
         assertEquals("template description", summary.description());
         assertEquals("Initial Draft", summary.status());
-        assertEquals("mmgId", summary.messageMappingGuide().id());
-        assertEquals("mmg description", summary.messageMappingGuide().display());
+        assertEquals("mmgId", summary.messageMappingGuide().value());
+        assertEquals("mmg description", summary.messageMappingGuide().name());
         assertEquals(now, summary.lastUpdate());
         assertEquals("first last", summary.lastUpdateBy());
     }

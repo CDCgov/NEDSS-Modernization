@@ -15,10 +15,10 @@ public record PageSummary(
         Instant lastUpdate,
         String lastUpdateBy) {
 
-    public record EventType(String type, String display) {
+    public record EventType(String value, String name) {
     }
 
-    public record MessageMappingGuide(String id, String display) {
+    public record MessageMappingGuide(String value, String name) {
     }
 }
 
