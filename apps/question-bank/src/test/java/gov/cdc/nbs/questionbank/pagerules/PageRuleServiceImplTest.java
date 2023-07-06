@@ -139,7 +139,7 @@ class PageRuleServiceImplTest {
 
     }
 
-    @Test
+    @Test()
     void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue() throws BadAttributeValueExpException{
 
 

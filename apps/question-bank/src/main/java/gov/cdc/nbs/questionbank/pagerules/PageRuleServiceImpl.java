@@ -393,8 +393,11 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
     private StringBuilder firstPartForEnDs(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper,StringBuilder stringBuilder){
         String sourceValues = sourceValuesHelper.sourceValueIds();
-        String[] sourceValue= sourceValues.split(",");
-        List<String> sourceValueList= Arrays.asList(sourceValue);
+        if(sourceValues==null){
+            LOGGER.info("Any SourceValue is true for this request");
+            sourceValues=",";
+        }
+        List<String> sourceValueList= Arrays.asList(sourceValues.split(","));
             if(request.anySourceValue()){
                 stringBuilder.append("if(foo.length>0 && foo[0] != '') {\n"); //anything selected
             }else{
@@ -511,6 +514,10 @@ public class PageRuleServiceImpl implements PageRuleService {
 
     private JSFunctionNameHelper jsForHideAndUnhide(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, WaRuleMetadata ruleMetadata){
        String sourceValues= sourceValuesHelper.sourceValueIds();
+       if(sourceValues==null){
+           LOGGER.info("Any SourceValue is true for this request");
+           sourceValues=",";
+       }
        List<String> sourceValueIdsList= Arrays.asList(sourceValues.split(","));
        StringBuilder stringBuilder= new StringBuilder();
        String functionName="ruleHideUnh"+request.sourceIdentifier()+ruleMetadata.getId();

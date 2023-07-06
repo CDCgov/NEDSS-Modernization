@@ -15,14 +15,17 @@ public class RuleRequestMother {
         List<String> targetIdentifiers= new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
+
         List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
         List<String> sourceIds= new ArrayList<>();
         sourceIds.add("Test Id");
         sourceIds.add("Test Id2");
+
         List<String> sourceValueText= new ArrayList<>();
         sourceValueText.add("TestSource1");
         sourceValueText.add("TestSource2");
-
+        CreateRuleRequest.sourceValues sourceValue= new CreateRuleRequest.sourceValues(sourceIds,sourceValueText);
+        sourceValues.add(sourceValue);
         return new CreateRuleRequest.ruleRequest(
                 123456L,
                 "Enable",
