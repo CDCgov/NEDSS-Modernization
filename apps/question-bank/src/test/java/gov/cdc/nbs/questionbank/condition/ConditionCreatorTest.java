@@ -45,6 +45,4 @@ public class ConditionCreatorTest {
 
     }
 
-    //tests need to be fixed after conditioncreator is verified
-    
 }

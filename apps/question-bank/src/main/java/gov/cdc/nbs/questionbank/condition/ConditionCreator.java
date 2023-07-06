@@ -24,7 +24,8 @@ public class ConditionCreator {
             return response;
         }
 
-        //logic in legacy code can be found in PortPageUtil.java
+
+        //logic in legacy code can be found in PortPageUtil.java/ ManageConditionAction.java
 
         if(userId == null) {
             try {
@@ -32,6 +33,15 @@ public class ConditionCreator {
                 ConditionCode id = new ConditionCodeId();
                 id.setConditionCodesetNm(request.getConditionCodesetNm());
                 condition.setId(id);
+                condition.setNndInd("Y");
+                condition.setReportableMorbidityInd("Y");
+                condition.setReportableSummaryInd("N");
+                condition.setContactTracingEnabled("Y");
+                condition.setVaccineModuleEnableInd("N");
+			    condition.setTreatmentModuleEnableInd("Y");
+			    condition.setLabReportModuleEnableInd("N");
+			    condition.setMorbReportModuleEnableInd("Y");
+			    condition.setStatusCd("A");
                 ConditionCode saveCondition = conditionCodeRepository.save(condition);
                 
                 CreateConditionResponse.CreateConditionBody condition = new CreateConditionResponse.CreateConditionBody(
@@ -54,41 +64,41 @@ public class ConditionCreator {
 
     public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId) {
         return new CreateConditionCommand.AddCondition(
-            request.getConditionCd(),
-            request.getConditionCodesetNm(),
-            request.getConditionSeqNum(),
-            request.getAssigningAuthorityCd(),
-            request.getAssigningAuthorityDescTxt(),
-            request.getCodeSystemCd(),
-            request.getCodeSystemDescTxt(),
-            request.getConditionDescTxt(),
-            request.getConditionShortNm(),
-            request.getEffectiveFromTime(),
-            request.getEffectiveToTime(),
-            request.getIndentLevelNbr(),
-            request.getInvestigationFormCd(),
-            request.getIsModifiableInd(),
-            request.getNbsUid(),
-            request.getNndInd(),
-            request.getParentIsCd(),
-            request.getProgAreaCd(),
-            request.getReportableMorbidityInd(),
-            request.getReportableSummaryInd(),
-            request.getStatusCd(),
-            request.getStatusTime(),
-            request.getNndEntityIdentifier(),
-            request.getNndSummaryEntityIdentifier(),
-            request.getSummaryInvestigationFormCd(),
-            request.getContactTracingEnableInd(),
-            request.getVaccineEnableInd(),
-            request.getTreatmentEnableInd(),
-            request.getLabReportEnableInd(),
-            request.getMorbReportEnableInd(),
-            request.getPortReqIndCd(),
-            request.getFamilyCd(),
-            request.getCoinfectionGrpCd(),
-            request.getRhapParseNbsInd(),
-            request.getRhapActionValue(),
+            getConditionCd(request),
+            getConditionCodesetNm(request),
+            getConditionSeqNum(request),
+            getAssigningAuthorityCd(request),
+            getAssigningAuthorityDescTxt(request),
+            getCodeSystemCd(request),
+            getCodeSystemDescTxt(request),
+            getConditionDescTxt(request),
+            getConditionShortNm(request),
+            getEffectiveFromTime(request),
+            getEffectiveToTime(request),
+            getIndentLevelNbr(request),
+            getInvestigationFormCd(request),
+            getIsModifiableInd(request),
+            getNbsUid(request),
+            getNndInd(request),
+            getParentIsCd(request),
+            getProgAreaCd(request),
+            getReportableMorbidityInd(request),
+            getReportableSummaryInd(request),
+            getStatusCd(request),
+            getStatusTime(request),
+            getNndEntityIdentifier(request),
+            getNndSummaryEntityIdentifier(request),
+            getSummaryInvestigationFormCd(request),
+            getContactTracingEnableInd(request),
+            getVaccineEnableInd(request),
+            getTreatmentEnableInd(request),
+            getLabReportEnableInd(request),
+            getMorbReportEnableInd(request),
+            getPortReqIndCd(request),
+            getFamilyCd(request),
+            getCoinfectionGrpCd(request),
+            getRhapParseNbsInd(request),
+            getRhapActionValue(request),
             userId
         );
     }
