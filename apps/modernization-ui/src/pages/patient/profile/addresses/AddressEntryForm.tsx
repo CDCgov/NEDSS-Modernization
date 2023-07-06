@@ -17,7 +17,11 @@ type EntryProps = {
 };
 
 export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const { handleSubmit, control } = useForm();
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const selectedState = useWatch({ control, name: 'state', defaultValue: entry.state });
 
@@ -73,10 +77,11 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             name="type"
                             defaultValue={entry.type}
                             rules={{ required: { value: true, message: 'Type is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     htmlFor={'type'}
                                     label="Type"
@@ -92,10 +97,11 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             name="use"
                             defaultValue={entry.use}
                             rules={{ required: { value: true, message: 'Use is required.' } }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                                 <SelectInput
                                     flexBox
                                     defaultValue={value}
+                                    onBlur={onBlur}
                                     onChange={onChange}
                                     htmlFor={'use'}
                                     label="Use"
@@ -184,7 +190,10 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             control={control}
                             name="zipcode"
                             defaultValue={entry.zipcode}
-                            render={({ field: { onChange, value } }) => (
+                            rules={{
+                                pattern: { value: /^\d{5}(?:[-\s]\d{4})?$/, message: 'Invalid zip code' }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <Input
                                     flexBox
                                     onChange={onChange}
@@ -194,6 +203,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                     name="zipcode"
                                     htmlFor="zipcode"
                                     id="zipcode"
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -281,6 +291,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">

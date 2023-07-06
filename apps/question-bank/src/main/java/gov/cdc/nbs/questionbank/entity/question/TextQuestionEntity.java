@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @DiscriminatorValue(TextQuestionEntity.TEXT_QUESION_TYPE)
 public class TextQuestionEntity extends WaQuestion {
@@ -20,11 +18,23 @@ public class TextQuestionEntity extends WaQuestion {
     @Column(name = "mask", length = 50)
     private String mask;
 
+    public void setMask(String mask) {
+        this.mask = requireNonNull(mask, "Mask must not be null");
+    }
+
     @Column(name = "field_size", length = 10)
     private String fieldSize;
 
+    public void setFieldSize(String fieldSize) {
+        this.fieldSize = requireNonNull(fieldSize, "Field size must not be null");
+    }
+
     @Column(name = "default_value", length = 300)
     private String defaultValue;
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
     @Override
     public String getDataType() {
@@ -34,18 +44,38 @@ public class TextQuestionEntity extends WaQuestion {
     public TextQuestionEntity(QuestionCommand.AddTextQuestion command) {
         super(command);
 
-        this.defaultValue = command.defaultValue();
-        this.mask = requireNonNull(command.mask(), "Mask must not be null");
-        this.fieldSize = requireNonNull(command.fieldLength(), "Field length must not be null");
+        setDefaultValue(command.defaultValue());
+        setMask(command.mask());
+        setFieldSize(command.fieldLength());
 
         // Audit
         created(command);
 
         // Reporting
-        setReportingData(command.reportingData());
+        setReportingData(command);
 
         // Messaging
         setMessagingData(command.messagingData());
+    }
+
+    @Override
+    public void update(QuestionCommand.Update command) {
+        update(command.questionData());
+
+        // Text specific fields
+        setDefaultValue(command.defaultValue());
+        setMask(command.mask());
+        setFieldSize(command.fieldLength());
+
+
+        // Reporting
+        setReportingData(command);
+
+        // Messaging
+        setMessagingData(command.messagingData());
+
+        // Audit
+        changed(command);
     }
 
 }

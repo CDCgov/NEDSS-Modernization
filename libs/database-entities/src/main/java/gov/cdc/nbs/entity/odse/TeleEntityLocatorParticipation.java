@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 
 import javax.persistence.CascadeType;
@@ -44,6 +45,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
         this.cd = phoneNumber.type();
         this.useCd = phoneNumber.use();
+        this.asOfDate = phoneNumber.asOf();
         this.locator = new TeleLocator(phoneNumber);
     }
 
@@ -56,6 +58,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
         this.cd = "NET";
         this.useCd = "H";
+        this.asOfDate = emailAddress.asOf();
 
         this.locator = new TeleLocator(emailAddress);
     }
@@ -84,6 +87,11 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
         this.locator.update(phone);
 
         changed(phone);
+    }
+
+    public void delete(final PatientCommand.DeletePhone deleted) {
+        changeStatus(RecordStatus.INACTIVE, deleted.requestedOn());
+        changed(deleted);
     }
 
     @Override

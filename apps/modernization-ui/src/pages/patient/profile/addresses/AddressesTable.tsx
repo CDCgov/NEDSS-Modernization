@@ -8,7 +8,7 @@ import {
     useUpdatePatientAddressMutation
 } from 'generated/graphql/schema';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { orNull } from 'utils/orNull';
 import { SortableTable } from 'components/Table/SortableTable';
@@ -16,11 +16,12 @@ import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import { EntryModal } from 'pages/patient/profile/EntryModal';
+import EntryModal from 'pages/patient/profile/entry';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -72,9 +73,10 @@ const resolveInitialEntry = (patient: string): NewAddressEntry => ({
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
-export const AddressesTable = ({ patient }: Props) => {
+export const AddressesTable = ({ patient, handleAlert }: Props) => {
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -131,7 +133,7 @@ export const AddressesTable = ({ patient }: Props) => {
                 variables: {
                     input: {
                         patient: entry.patient,
-                        asOf: externalizeDateTime(entry.asOf),
+                        asOf: entry.asOf,
                         use: entry.use,
                         type: entry.type,
                         address1: entry.address1,
@@ -146,7 +148,10 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    handleAlert?.({ type: 'Added', table: 'Address' });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -174,7 +179,10 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({ type: 'Updated', table: 'Address' });
+                })
                 .then(actions.reset);
         }
     };
@@ -189,7 +197,13 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    handleAlert?.({
+                        type: 'Deleted',
+                        table: 'Address'
+                    });
+                })
                 .then(actions.reset);
         }
     };

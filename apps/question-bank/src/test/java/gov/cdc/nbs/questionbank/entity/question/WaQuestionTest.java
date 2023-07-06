@@ -10,6 +10,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddTextQuestion
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.MessagingData;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.ReportingData;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 
 class WaQuestionTest {
 
@@ -77,6 +78,9 @@ class WaQuestionTest {
             public String getDataType() {
                 return "test";
             }
+
+            @Override
+            public void update(Update command) {}
         };
     }
 

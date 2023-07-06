@@ -94,6 +94,26 @@ export default function AddressFields({
                         />
                     </Grid>
                 </Grid>
+                <Grid row>
+                    <Grid col={6}>
+                        <Controller
+                            control={control}
+                            name="city"
+                            render={({ field: { onChange, value } }) => (
+                                <span>
+                                    <Label htmlFor="city">City</Label>
+                                    <TextInput
+                                        id="city"
+                                        name="city"
+                                        type="text"
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                    />
+                                </span>
+                            )}
+                        />
+                    </Grid>
+                </Grid>
                 <Grid row gap={2}>
                     <Grid col={4}>
                         <SearchCriteriaContext.Consumer>

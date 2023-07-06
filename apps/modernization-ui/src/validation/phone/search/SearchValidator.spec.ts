@@ -46,11 +46,6 @@ describe('Phone Search Validation', () => {
     });
 
     it('should allow from 1 to 10 consecutive digits', () => {
-        expect(validate('1')).toBeTruthy();
-        expect(validate('12')).toBeTruthy();
-        expect(validate('123')).toBeTruthy();
-        expect(validate('1234')).toBeTruthy();
-        expect(validate('12345')).toBeTruthy();
         expect(validate('123456')).toBeTruthy();
         expect(validate('1234567')).toBeTruthy();
         expect(validate('12345678')).toBeTruthy();

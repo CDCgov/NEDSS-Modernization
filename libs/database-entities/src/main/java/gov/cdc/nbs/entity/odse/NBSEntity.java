@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +28,15 @@ public class NBSEntity {
     @Column(name = "class_cd", nullable = false, length = 10)
     private String classCd;
 
-    @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.subjectEntityUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        },
+        orphanRemoval = true
+    )
     private List<Participation> participations;
 
     @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = {
@@ -45,13 +52,6 @@ public class NBSEntity {
         CascadeType.REMOVE
     }, orphanRemoval = true)
     private List<EntityId> entityIds;
-
-    @OneToOne(mappedBy = "contactNBSEntityUid", fetch = FetchType.LAZY, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REMOVE
-    }, orphanRemoval = true)
-    private CtContact ctContact;
 
     protected NBSEntity() {
     }
@@ -176,12 +176,16 @@ public class NBSEntity {
 
     }
 
-    public void delete(final PatientCommand.DeleteIdentification info) {
-        ensureEntityIds().removeIf(existing -> Objects.equals(existing.getId().getEntityIdSeq(), (short) info.id()));
+    public void delete(final PatientCommand.DeleteIdentification deleted) {
+        Collection<EntityId> existing = ensureEntityIds();
+        EntityIdId identifier = new EntityIdId(deleted.person(), (short) deleted.id());
+
+        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst()
+            .ifPresent(identification -> identification.delete(deleted));
     }
 
     public List<EntityId> getEntityIds() {
-        return this.entityIds == null ? List.of() : List.copyOf(this.entityIds);
+        return this.entityIds == null ? List.of() : this.entityIds.stream().filter(EntityId.active()).toList();
     }
 
     private List<EntityLocatorParticipation> ensureLocators() {
@@ -218,26 +222,32 @@ public class NBSEntity {
             .ifPresent(existing -> existing.update(changes));
     }
 
-    public void delete(final PatientCommand.DeleteAddress remove) {
-        ensureLocators().removeIf(existing -> Objects.equals(existing.getId().getLocatorUid(), remove.id()));
+    public void delete(final PatientCommand.DeleteAddress deleted) {
+        this.ensureLocators().stream()
+            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .map(PostalEntityLocatorParticipation.class::cast)
+            .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), deleted.id()))
+            .findFirst()
+            .ifPresent(existing -> existing.delete(deleted));
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
         return this.ensureLocators().stream()
-            .filter(PostalEntityLocatorParticipation.class::isInstance)
+            .filter(EntityLocatorParticipation.active().and(PostalEntityLocatorParticipation.class::isInstance))
             .map(PostalEntityLocatorParticipation.class::cast)
             .toList();
     }
 
     public Collection<TeleEntityLocatorParticipation> phones() {
         return this.ensureLocators().stream()
+            .filter(EntityLocatorParticipation.active())
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
 
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
         return this.ensureLocators().stream()
-            .filter(this::isPhoneNumber)
+            .filter(EntityLocatorParticipation.active().and(this::isPhoneNumber))
             .map(TeleEntityLocatorParticipation.class::cast)
             .toList();
     }
@@ -265,32 +275,12 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            phoneNumber);
+            phoneNumber
+        );
 
         locators.add(participation);
 
         return participation;
-    }
-
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        Optional<EntityLocatorParticipation> elp = existing.stream()
-            .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
-        if (elp.isPresent()) {
-            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
-            pl.setPhoneNbrTxt(phoneNumber.number());
-            pl.setExtensionTxt(phoneNumber.extension());
-        }
-        return elp;
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
-        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        this.entityLocatorParticipations = elps;
-        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
@@ -301,7 +291,8 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            emailAddress);
+            emailAddress
+        );
 
         locators.add(participation);
 
@@ -346,14 +337,19 @@ public class NBSEntity {
 
     public void update(final PatientCommand.UpdatePhone phone) {
         this.ensureLocators().stream()
-            .filter(TeleEntityLocatorParticipation.class::isInstance)
+            .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
             .map(TeleEntityLocatorParticipation.class::cast)
             .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.id()))
             .findFirst()
             .ifPresent(existing -> existing.update(phone));
     }
 
-    public void delete(final PatientCommand.DeletePhone phone) {
-        this.ensureLocators().removeIf(existing -> Objects.equals(existing.getId().getLocatorUid(), phone.id()));
+    public void delete(final PatientCommand.DeletePhone deleted) {
+        this.ensureLocators().stream()
+            .filter(EntityLocatorParticipation.active().and(TeleEntityLocatorParticipation.class::isInstance))
+            .map(TeleEntityLocatorParticipation.class::cast)
+            .filter(existing -> Objects.equals(existing.getId().getLocatorUid(), deleted.id()))
+            .findFirst()
+            .ifPresent(existing -> existing.delete(deleted));
     }
 }
