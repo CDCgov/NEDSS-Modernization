@@ -47,7 +47,6 @@ export type { ValueSetSearchRequest } from './models/ValueSetSearchRequest';
 export { ValueSetStateChangeResponse } from './models/ValueSetStateChangeResponse';
 
 export { PageControllerService } from './services/PageControllerService';
-export { PageSummaryControllerService } from './services/PageSummaryControllerService';
 export { QuestionControllerService } from './services/QuestionControllerService';
 export { ValueSetControllerService } from './services/ValueSetControllerService';
 export { VocabSearchControllerService } from './services/VocabSearchControllerService';

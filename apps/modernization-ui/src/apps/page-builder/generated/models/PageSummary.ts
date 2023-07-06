@@ -8,6 +8,7 @@ import type { MessageMappingGuide } from './MessageMappingGuide';
 
 export type PageSummary = {
     conditions?: Array<Condition>;
+    description?: string;
     eventType?: EventType;
     id?: number;
     lastUpdate?: string;
