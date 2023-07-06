@@ -8,6 +8,7 @@ public record PageSummary(
         long id,
         EventType eventType,
         String name,
+        String description,
         String status,
         MessageMappingGuide messageMappingGuide,
         List<Condition> conditions,
@@ -15,18 +16,6 @@ public record PageSummary(
         String lastUpdateBy) {
 
     public record EventType(String type, String display) {
-        public EventType(String type) {
-            this(type, switch (type) {
-                case "INV" -> "Investigation";
-                case "CON" -> "Contact";
-                case "VAC" -> "Vaccination";
-                case "IXS" -> "Interview";
-                case "SUS" -> "Lab Susceptibility";
-                case "LAB" -> "Lab Report";
-                case "ISO" -> "Lab Isolate Tracking";
-                default -> type;
-            });
-        }
     }
 
     public record MessageMappingGuide(String id, String display) {

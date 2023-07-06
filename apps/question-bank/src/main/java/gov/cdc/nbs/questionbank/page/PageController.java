@@ -36,7 +36,9 @@ public class PageController {
     public PageSummary updatePageDetails(
             @PathVariable("id") Long pageId,
             @RequestBody UpdatePageDetailsRequest request) {
+        log.debug("Received update page details request");
         pageUpdater.update(pageId, request);
+        log.debug("Completed update page details request");
         return finder.find(pageId);
     }
 

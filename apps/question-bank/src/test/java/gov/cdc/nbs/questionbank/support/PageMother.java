@@ -25,6 +25,14 @@ public class PageMother {
         allPages.clear();
     }
 
+    public WaTemplate one() {
+        WaTemplate page = allPages.get(0);
+        if (page == null) {
+            throw new IllegalStateException("No pages exist");
+        }
+        return page;
+    }
+
     public WaTemplate brucellosis() {
         return allPages.stream()
                 .filter(t -> t.getConditionMappings()
@@ -50,7 +58,6 @@ public class PageMother {
         page.setTemplateType("Draft");
         page.setBusObjType("INV");
         page.setNndEntityIdentifier("GEN_Case_Map_v2.0");
-
 
         page.setRecordStatusCd("Active");
         page.setRecordStatusTime(now);

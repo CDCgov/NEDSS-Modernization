@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,11 +23,11 @@ public class PageSummaryMapper {
 
 
     public List<PageSummary> map(List<Tuple> tuples) {
-        // convert each entry to a page summary
         return tuples.stream()
-                .map(this::map)
+                .map(this::toPageSummary)
                 .collect(
                         Collectors.groupingBy(PageSummary::id,
+                                LinkedHashMap::new, // preserves ordering
                                 Collectors.collectingAndThen(
                                         Collectors.reducing((a, b) -> merge(a, b)),
                                         Optional::get)))
@@ -48,20 +49,21 @@ public class PageSummaryMapper {
         return left;
     }
 
-    private PageSummary map(Tuple tuple) {
+    PageSummary toPageSummary(Tuple tuple) {
         ArrayList<Condition> conditions = new ArrayList<>();
         conditions.add(new Condition(tuple.get(conditionCode.id), tuple.get(conditionCode.conditionShortNm)));
         return new PageSummary(
                 tuple.get(waTemplate.id),
-                new PageSummary.EventType(tuple.get(waTemplate.busObjType)),
+                getEventType(tuple.get(waTemplate.busObjType)),
                 tuple.get(waTemplate.templateNm),
+                tuple.get(waTemplate.descTxt),
                 getStatus(tuple),
                 new PageSummary.MessageMappingGuide(
                         tuple.get(waTemplate.nndEntityIdentifier),
                         tuple.get(codeValueGeneral.codeShortDescTxt)),
                 conditions,
                 tuple.get(waTemplate.lastChgTime),
-                tuple.get(authUser.userFirstNm.concat(" ").concat(authUser.userLastNm)));
+                getLastUpdatedBy(tuple));
     }
 
 
@@ -74,15 +76,35 @@ public class PageSummaryMapper {
      * @param tuple
      * @return
      */
-    private String getStatus(Tuple tuple) {
+    String getStatus(Tuple tuple) {
         String templateType = tuple.get(waTemplate.templateType);
         Integer publishVersion = tuple.get(waTemplate.publishVersionNbr);
-        if (publishVersion == null && "Draft".equalsIgnoreCase(templateType)) {
-            return "Initial Draft";
-        } else if (publishVersion != null && "Draft".equalsIgnoreCase(templateType)) {
-            return "Published with Draft";
-        } else {
-            return templateType;
+        if ("Draft".equalsIgnoreCase(templateType)) {
+            if (publishVersion == null) {
+                return "Initial Draft";
+            } else {
+                return "Published with Draft";
+            }
         }
+        return templateType;
+    }
+
+    String getLastUpdatedBy(Tuple tuple) {
+        return tuple.get(authUser.userFirstNm) + " " + tuple.get(authUser.userLastNm);
+    }
+
+    PageSummary.EventType getEventType(String type) {
+        String display =
+                switch (type) {
+                    case "INV" -> "Investigation";
+                    case "CON" -> "Contact";
+                    case "VAC" -> "Vaccination";
+                    case "IXS" -> "Interview";
+                    case "SUS" -> "Lab Susceptibility";
+                    case "LAB" -> "Lab Report";
+                    case "ISO" -> "Lab Isolate Tracking";
+                    default -> type;
+                };
+        return new PageSummary.EventType(type, display);
     }
 }

@@ -149,7 +149,8 @@ public class PageSummaryFinder {
                 .where(waTemplate.templateType.in("Draft", "Published")
                         // query template name and condition name
                         .and(waTemplate.templateNm.like(searchString)
-                                .or(conditionCode.conditionShortNm.like(searchString))));
+                                .or(conditionCode.conditionShortNm.like(searchString)
+                                        .or(waTemplate.id.like(searchString)))));
     }
 
     /**

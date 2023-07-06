@@ -7,5 +7,5 @@ public record UpdatePageDetailsRequest(
         String messageMappingGuide,
         String dataMartName,
         String description,
-        Set<String> conditions) {
+        Set<String> conditionIds) {
 }

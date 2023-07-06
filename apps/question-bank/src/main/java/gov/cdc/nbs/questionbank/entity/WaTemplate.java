@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
 import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ public class WaTemplate {
     private String templateType;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "xml_payload", columnDefinition = "TEXT")
     private String xmlPayload;
 
