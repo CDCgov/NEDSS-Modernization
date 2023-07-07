@@ -36,6 +36,9 @@ The steps outlined in this README should get the system up and running quickly f
 3. Database restore files are taken from a point-in-time backup from provided the dev server on date 9-20-2022 and zipped in [db-restore.zip](db/restore/restore.d/db-restore.zip). They contain updates from 6.0.12-GA release and
    should only be used until a proper solution is implemented. The build scripts automatically unzip contents into the correct directory.
    a) If database container is not successful when running, put contents of the db-restore.zip into the path .../NEDSS-Modernization/cdc-sandbox/db/restore/restore.d, make sure to only put the contents of the unzipped folder and not the folder itself.
+   ```
+   $ unzip -j ~/Downloads/db-restore.zip -d {location}/NEDSS-Modernization/cdc-sandbox/db/restore/restore.d
+   ```
 
 ## Build
 
