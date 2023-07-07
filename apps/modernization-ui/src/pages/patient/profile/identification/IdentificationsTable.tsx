@@ -20,7 +20,7 @@ import { EntryModal } from '../entry/EntryModal';
 import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
-import { AlertType } from 'pages/patientProfile/Demographics';
+import { useAlert } from 'alert/useAlert';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -48,10 +48,10 @@ const resolveInitialEntry = (patient: string): IdentificationEntry => ({
 
 type Props = {
     patient: string;
-    handleAlert?: (data: AlertType) => void;
 };
 
-export const IdentificationsTable = ({ patient, handleAlert }: Props) => {
+export const IdentificationsTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -111,7 +111,11 @@ export const IdentificationsTable = ({ patient, handleAlert }: Props) => {
             }
         })
             .then(() => {
-                handleAlert?.({ type: 'Added', table: 'Identification' });
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Added Identification`
+                });
                 refetch();
             })
             .then(actions.reset);
@@ -132,7 +136,11 @@ export const IdentificationsTable = ({ patient, handleAlert }: Props) => {
                 }
             })
                 .then(() => {
-                    handleAlert?.({ type: 'Updated', table: 'Identification' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated Identification`
+                    });
                     refetch();
                 })
                 .then(actions.reset);
@@ -150,7 +158,11 @@ export const IdentificationsTable = ({ patient, handleAlert }: Props) => {
                 }
             })
                 .then(() => {
-                    handleAlert?.({ type: 'Deleted', table: 'Identification' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted Identification`
+                    });
                     refetch();
                 })
                 .then(actions.reset);
