@@ -38,13 +38,10 @@ import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 		original.setCodeSetDescTxt("oldCodeSetDescTxt");
 		when(valueSetRepository.findByCodeSetNm(Mockito.anyString())).thenReturn(Optional.of(original));
 
-		ValueSetUpdateRequest request = new ValueSetUpdateRequest();
-		request.setCodeSetName("codeSetNm");
-		request.setCodeSetDescTxt("codeSetDescTxt");
-		request.setValueSetNm("valueSetNm");
+		ValueSetUpdateRequest request = new ValueSetUpdateRequest("codeSetNm","valueSetNm","codeSetDescTxt");
 		UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(request);
-		assertEquals(request.getValueSetNm(), response.getBody().valueSetNm());
-		assertEquals(request.getCodeSetDescTxt(), response.getBody().codeSetDescTxt());
+		assertEquals(request.valueSetNm(), response.getBody().valueSetNm());
+		assertEquals(request.codeSetDescTxt(), response.getBody().codeSetDescTxt());
 		assertEquals(HttpStatus.OK, response.getStatus());
 		assertEquals(ValueSetConstants.UPDATE_SUCCESS_MESSAGE, response.getMessage());
 
@@ -55,10 +52,7 @@ import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 		final String message = "Could not update ValueSet illegal argument provided";
 		when(valueSetRepository.findByCodeSetNm(Mockito.anyString())).thenReturn(Optional.of(new Codeset()));
 		when(valueSetRepository.save(Mockito.any())).thenThrow(new IllegalArgumentException(message));
-		ValueSetUpdateRequest request = new ValueSetUpdateRequest();
-		request.setCodeSetName("codeSetNm");
-		request.setCodeSetDescTxt("codeSetDescTxt");
-		request.setValueSetNm("valueSetNm");
+		ValueSetUpdateRequest request = new ValueSetUpdateRequest("codeSetNm","valueSetNm","codeSetDescTxt");
 		UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(request);
 		assertEquals(null, response.getBody());
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
@@ -69,17 +63,14 @@ import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 	@Test
 	void updateValueSetNoResultTest() {
 		when(valueSetRepository.findByCodeSetNm(Mockito.anyString())).thenReturn(Optional.empty());
-		ValueSetUpdateRequest request = new ValueSetUpdateRequest();
-		request.setCodeSetName("codeSetNm");
-		request.setCodeSetDescTxt("codeSetDescTxt");
-		request.setValueSetNm("valueSetNm");
+		ValueSetUpdateRequest request = new ValueSetUpdateRequest("codeSetNm","valueSetNm","codeSetDescTxt");
 		UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(request);
 		assertEquals(ValueSetConstants.CODE_SET_NOT_FOUND,response.getMessage());
 	}
 
 	@Test
 	void updateValueSetNoCodeSetNmTest() {
-		ValueSetUpdateRequest request = new ValueSetUpdateRequest();
+		ValueSetUpdateRequest request = new ValueSetUpdateRequest(null,null,null);
 		UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(request);
 		assertEquals(ValueSetConstants.EMPTY_CODE_SET_NM, response.getMessage());
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());

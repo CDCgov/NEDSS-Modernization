@@ -35,10 +35,10 @@ public interface ValueSetRepository extends JpaRepository <Codeset,CodesetId> {
  @Query("UPDATE Codeset SET statusCd='A' WHERE  id.codeSetNm =:codeSetNm")
  int activateValueSet(@Param("codeSetNm") String codeSetNm);
  
- @Query("SELECT v from Codeset v WHERE v.id.codeSetNm LIKE %:codeSetNm% OR v.valueSetNm LIKE %:valueSetNm% OR v.valueSetCode LIKE %:valueSetCode% ")
+ @Query("SELECT v from Codeset v WHERE v.id.codeSetNm LIKE %:codeSetNm% OR v.valueSetNm LIKE %:valueSetNm% OR v.valueSetCode LIKE %:valueSetCode%  AND v.id.classCd = 'code_value_general'")
  Page<Codeset> findByCodeSetNmOrValueSetNmorValueSetCode(@Param("codeSetNm") String codeSetNm, @Param("valueSetNm") String valueSetNm , @Param("valueSetCode") String valueSetCode,Pageable pageable);
  
- @Query("SELECT v from Codeset v WHERE  v.id.codeSetNm =:codeSetNm")
+ @Query("SELECT v from Codeset v WHERE  v.id.codeSetNm =:codeSetNm AND v.id.classCd = 'code_value_general'" )
  Optional<Codeset> findByCodeSetNm(@Param("codeSetNm") String codeSetNm);
  
 

@@ -21,22 +21,22 @@ public class ValueSetUpdater {
 
 	public UpdatedValueSetResponse updateValueSet(ValueSetUpdateRequest update) {
 		UpdatedValueSetResponse response = new UpdatedValueSetResponse();
-		if (update.getCodeSetName() == null) {
+		if (update.codeSetName() == null) {
 			response.setMessage(ValueSetConstants.EMPTY_CODE_SET_NM);
 			response.setStatus(HttpStatus.BAD_REQUEST);
 			return response;
 		}
 		try {
-			Optional<Codeset> codeSet = valueSetRepository.findByCodeSetNm(update.getCodeSetName());
+			Optional<Codeset> codeSet = valueSetRepository.findByCodeSetNm(update.codeSetName());
 			if (codeSet.isPresent()) {
 				Codeset result = codeSet.get();
-				result.setValueSetNm(update.getValueSetNm() != null ? update.getValueSetNm() : result.getValueSetNm());
+				result.setValueSetNm(update.valueSetNm() != null ? update.valueSetNm() : result.getValueSetNm());
 				result.setCodeSetDescTxt(
-						update.getCodeSetDescTxt() != null ? update.getCodeSetDescTxt() : result.getCodeSetDescTxt());
+						update.codeSetDescTxt() != null ? update.codeSetDescTxt() : result.getCodeSetDescTxt());
 				valueSetRepository.save(result);
 				response.setMessage(ValueSetConstants.UPDATE_SUCCESS_MESSAGE);
 				response.setStatus(HttpStatus.OK);
-				ValueSetUpdateShort body = new ValueSetUpdateShort(update.getCodeSetName(), update.getValueSetNm(),update.getCodeSetDescTxt());
+				ValueSetUpdateShort body = new ValueSetUpdateShort(update.codeSetName(), update.valueSetNm(),update.codeSetDescTxt());
 				response.setBody(body);
 
 			} else {

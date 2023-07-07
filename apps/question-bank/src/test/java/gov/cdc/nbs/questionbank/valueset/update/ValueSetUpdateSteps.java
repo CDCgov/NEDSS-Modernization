@@ -43,9 +43,7 @@ public class ValueSetUpdateSteps {
 	public void i_update_a_value_set_that_does_not_exist() {
 
 		try {
-			update = new ValueSetUpdateRequest();
-			update.setValueSetNm("codeSetNm");
-			update.setCodeSetName("codeSetNm");
+			update = new ValueSetUpdateRequest("codeSetNm","codeSetNm",null);
 			ResponseEntity<UpdatedValueSetResponse> result = valueSetController.updateValueSet(update);
 			response = result.getBody();
 		} catch (AccessDeniedException e) {
@@ -70,10 +68,7 @@ public class ValueSetUpdateSteps {
 	@When("I update a value set that exists")
 	public void i_update_a_value_set_that_exists() {
 		try {
-			update = new ValueSetUpdateRequest();
-			update.setCodeSetName(valueSetHolder.getValueSet().getId().getCodeSetNm());
-			update.setValueSetNm("updateCodeSetNm");
-			update.setCodeSetDescTxt("updateCodeSetDesc");
+			update = new ValueSetUpdateRequest(valueSetHolder.getValueSet().getId().getCodeSetNm(),"updateCodeSetNm","updateCodeSetDesc");
 			ResponseEntity<UpdatedValueSetResponse> responseResult = valueSetController.updateValueSet(update);
 			response = responseResult.getBody();
 		} catch (AccessDeniedException e) {
