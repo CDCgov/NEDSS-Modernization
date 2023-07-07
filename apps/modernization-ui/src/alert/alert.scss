@@ -1,0 +1,13 @@
+.usa-alert {
+    min-width: 450px;
+    padding: 10px;
+    position: fixed;
+    z-index: 100;
+    top: 15px;
+    animation: mymove 0.3s;
+    animation-fill-mode: both;
+
+    .usa-alert__heading {
+        text-transform: capitalize;
+    }
+}
