@@ -29,8 +29,8 @@ class ProgramAreaFinderTest {
 
         ProgramArea programArea = finder.toProgramArea(code);
 
-        assertEquals(code.getId(), programArea.code());
-        assertEquals(code.getProgAreaDescTxt(), programArea.description());
+        assertEquals(code.getId(), programArea.value());
+        assertEquals(code.getProgAreaDescTxt(), programArea.display());
         assertEquals(code.getNbsUid(), programArea.nbsId());
         assertEquals("Active", programArea.status());
     }

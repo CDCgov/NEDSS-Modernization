@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type ProgramArea = {
-    code?: string;
-    description?: string;
+    display?: string;
     nbsId?: number;
     status?: string;
+    value?: string;
 };
 
