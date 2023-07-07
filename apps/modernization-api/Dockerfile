@@ -6,11 +6,12 @@ COPY gradlew /usr/src/nbs/gradlew
 COPY build.gradle /usr/src/nbs/build.gradle
 COPY settings.gradle /usr/src/nbs/settings.gradle
 
-# Copy required sources
-COPY apps /usr/src/nbs/apps
-COPY libs /usr/src/nbs/libs
+COPY lombok.config /usr/src/nbs/lombok.config
 
-COPY . /usr/src/nbs
+# Copy required sources
+COPY apps/modernization-ui /usr/src/nbs/apps/modernization-ui
+COPY apps/modernization-api /usr/src/nbs/apps/modernization-api
+COPY libs /usr/src/nbs/libs
 
 # Preparation for the modernization-ui build
 # Install node
