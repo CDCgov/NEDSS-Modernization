@@ -85,7 +85,7 @@ public class ReadValueSetSteps {
 	public void a_value_sets_should_not_be_returned() {
 		Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
 		assertNotNull(results);
-		assertEquals(results.getSize(), 0);
+		assertEquals(0,results.getSize());
 
 	}
 
