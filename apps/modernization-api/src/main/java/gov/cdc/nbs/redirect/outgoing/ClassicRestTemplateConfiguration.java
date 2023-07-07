@@ -17,9 +17,10 @@ class ClassicRestTemplateConfiguration {
         final ClassicPathResolver resolver,
         final ClassicOutgoingRequestInterceptor interceptor
     ) throws MalformedURLException {
+
         return new RestTemplateBuilder()
             .rootUri(resolver.base().toURL().toString())
-            .additionalInterceptors(interceptor)
+            .additionalInterceptors(new ClassicOutgoingLoggingHttpRequestInterceptor(), interceptor)
             .build();
     }
 
