@@ -22,6 +22,7 @@ import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 
 @ExtendWith(MockitoExtension.class)
@@ -168,10 +169,55 @@ class PageUpdaterTest {
         assertEquals("conditionCd", mapping.getConditionCd());
     }
 
+    @Test
+    void should_throw_bad_request_duplicate_name() {
+        // given a page exists with templateType of "Draft" and null publishVersionNbr
+        when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
+                .thenReturn(Optional.of(template("Draft", null)));
+
+        // the datamart name doesn't exist
+        when(repository.existsByDatamartNmAndIdNot("updated datamart", 1L)).thenReturn(false);
+
+        // and a page with the updated name already exists
+        when(repository.existsByTemplateNmAndIdNot("updated name", 1L)).thenReturn(true);
+
+        // when an update request is sent
+        UpdatePageDetailsRequest request = new UpdatePageDetailsRequest(
+                "updated name",
+                "updated mmg",
+                "updated datamart",
+                "updated description",
+                Collections.singleton("conditionCd"));
+        PageUpdateException ex = assertThrows( PageUpdateException.class, () ->updater.update(1L, request));
+        assertEquals("The specified Page Name already exists", ex.getMessage());
+    }
+
+    @Test
+    void should_throw_bad_request_duplicate_data_mart_name() {
+        // given a page exists with templateType of "Draft" and null publishVersionNbr
+        when(repository.findByIdAndTemplateTypeIn(1L, List.of("Draft", "Published")))
+                .thenReturn(Optional.of(template("Draft", null)));
+
+        // and a page with the updated name already exists
+        when(repository.existsByDatamartNmAndIdNot("updated datamart", 1L)).thenReturn(true);
+
+        // when an update request is sent
+        UpdatePageDetailsRequest request = new UpdatePageDetailsRequest(
+                "updated name",
+                "updated mmg",
+                "updated datamart",
+                "updated description",
+                Collections.singleton("conditionCd"));
+        PageUpdateException ex = assertThrows( PageUpdateException.class, () ->updater.update(1L, request));
+        assertEquals("The specified Data Mart Name already exists", ex.getMessage());
+
+    }
+
 
     private WaTemplate template(String templateType, Integer publishVersionNbr) {
         WaTemplate page = new WaTemplate();
         page.setId(1L);
+        page.setBusObjType("INV");
         page.setDatamartNm("original data mart");
         page.setTemplateNm("template name");
         page.setNndEntityIdentifier("original mmg");

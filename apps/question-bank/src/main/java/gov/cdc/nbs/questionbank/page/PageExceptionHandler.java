@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import gov.cdc.nbs.questionbank.exception.QueryException;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 
 @ControllerAdvice
 public class PageExceptionHandler {
 
     @ExceptionHandler({
-            QueryException.class})
+            QueryException.class,
+            PageUpdateException.class})
     public ResponseEntity<ExceptionMessage> handleBadRequestExceptions(Exception e) {
         return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }

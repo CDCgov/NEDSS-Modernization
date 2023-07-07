@@ -8,6 +8,7 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 
 @Component
@@ -33,6 +34,21 @@ public class PageUpdater {
     public WaTemplate update(Long pageId, UpdatePageDetailsRequest request) {
         WaTemplate page = pageRepository.findByIdAndTemplateTypeIn(pageId, List.of("Draft", "Published"))
                 .orElseThrow(() -> new PageNotFoundException("Failed to find page with id: " + pageId));
+
+        // if Investigation and datamart is requested to change
+        if ("INV".equals(page.getBusObjType()) && !request.dataMartName().equals(page.getDatamartNm())) {
+            Boolean duplicateExists = pageRepository.existsByDatamartNmAndIdNot(request.dataMartName(), pageId);
+            if (duplicateExists) {
+                throw new PageUpdateException("The specified Data Mart Name already exists");
+            }
+        }
+
+        if (!request.name().equals(page.getTemplateNm())) {
+            Boolean duplicateName = pageRepository.existsByTemplateNmAndIdNot(request.name(), pageId);
+            if (duplicateName) {
+                throw new PageUpdateException("The specified Page Name already exists");
+            }
+        }
 
         page.update(asUpdate(request));
         return pageRepository.save(page);
