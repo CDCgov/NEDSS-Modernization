@@ -37,7 +37,7 @@ public class PageUpdater {
 
         // if data mart is requested to change, ensure it doesn't conflict with an existing data mart
         if ("INV".equals(page.getBusObjType()) && !request.dataMartName().equals(page.getDatamartNm())) {
-            Boolean duplicateExists = pageRepository.existsByDatamartNmAndIdNot(request.dataMartName(), pageId);
+            boolean duplicateExists = pageRepository.existsByDatamartNmAndIdNot(request.dataMartName(), pageId);
             if (duplicateExists) {
                 throw new PageUpdateException("The specified Data Mart Name already exists");
             }
@@ -45,7 +45,7 @@ public class PageUpdater {
 
         // If page name is requested to change, ensure it doesn't conflict with an existing page
         if (!request.name().equals(page.getTemplateNm())) {
-            Boolean duplicateName = pageRepository.existsByTemplateNmAndIdNot(request.name(), pageId);
+            boolean duplicateName = pageRepository.existsByTemplateNmAndIdNot(request.name(), pageId);
             if (duplicateName) {
                 throw new PageUpdateException("The specified Page Name already exists");
             }
