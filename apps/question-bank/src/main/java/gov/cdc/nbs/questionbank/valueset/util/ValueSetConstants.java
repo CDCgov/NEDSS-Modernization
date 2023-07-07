@@ -20,4 +20,9 @@ public static final String DELETE_SUCCESS_MESSAGE= "ValueSet made inactive.";
 public static final String DELETE_FAILURE_MESSAGE= "Was not able to inactivate valueset";
 public static final String ACTIVATE_SUCCESS_MESSAGE= "ValueSet made active.";
 public static final String ACTIVATE_FAILURE_MESSAGE= "Was not able to activate valueset";
+
+// update value set messages
+public static final String CODE_SET_NOT_FOUND= "A value set not found for given codeSetNm";
+public static final String UPDATE_SUCCESS_MESSAGE= "ValueSet updated.";
+public static final String UPDATE_FAILURE_MESSAGE= "Was not able to update valueset";
 }

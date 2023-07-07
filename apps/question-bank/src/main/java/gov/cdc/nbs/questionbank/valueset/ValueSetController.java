@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
+import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
+import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,8 @@ public class ValueSetController {
 	 private final ValueSetStateManager valueSetStateManager;
 	 
 	 private final ValueSetReader valueSetReador;
+	 
+	 private final ValueSetUpdater valueSetUpdater;
 	 
 	 @PostMapping
 	 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
@@ -70,8 +73,16 @@ public class ValueSetController {
 	
 	@PostMapping("/search")
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-	public Page<ValueSet.GetValueSet> searchValueSearch(@RequestBody ValueSetSearchRequest search, @PageableDefault(size = 25) Pageable pageable)  {
+	public Page<ValueSet.GetValueSet> searchValueSet(@RequestBody ValueSetSearchRequest search, @PageableDefault(size = 25) Pageable pageable)  {
 		return valueSetReador.searchValueSearch(search,pageable);
+		
+	}
+	
+	@PostMapping("/update")
+	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+	public ResponseEntity<UpdatedValueSetResponse> updateValueSet(@RequestBody ValueSetUpdateRequest update)  {
+		UpdatedValueSetResponse response =  valueSetUpdater.updateValueSet(update);
+		return new ResponseEntity<>(response, null, response.getStatus());
 		
 	}
 	

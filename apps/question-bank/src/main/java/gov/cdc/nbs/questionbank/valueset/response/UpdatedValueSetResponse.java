@@ -16,9 +16,9 @@ public class UpdatedValueSetResponse {
 
 
 	public record ValueSetUpdateShort (
-			 CodesetId id,
-			 Long updateUserId,
-			 String valueSetNm
+			 String codeSetNm,
+			 String valueSetNm,
+			 String codeSetDescTxt
 		) {}
 
 }
