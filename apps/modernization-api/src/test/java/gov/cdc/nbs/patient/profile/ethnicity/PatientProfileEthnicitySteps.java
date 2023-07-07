@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,9 +60,9 @@ public class PatientProfileEthnicitySteps {
         PatientInput expected = this.input.active();
 
         assertThat(actual)
-            .extracting(Person::getEthnicity)
-            .returns(expected.getAsOf(), PatientEthnicity::asOf)
-            .returns(expected.getEthnicity(), PatientEthnicity::ethnicGroup);
+                .extracting(Person::getEthnicity)
+                .returns(expected.getAsOf(), PatientEthnicity::asOf)
+                .returns(expected.getEthnicity(), PatientEthnicity::ethnicGroup);
     }
 
     @When("a patient's ethnicity is changed")
@@ -87,11 +87,10 @@ public class PatientProfileEthnicitySteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual)
-            .extracting(Person::getEthnicity)
-            .returns(updates.getAsOf(), PatientEthnicity::asOf)
-            .returns(updates.getEthnicGroup(), PatientEthnicity::ethnicGroup)
-            .returns(updates.getUnknownReason(), PatientEthnicity::unknownReason)
-            ;
+                .extracting(Person::getEthnicity)
+                .returns(updates.getAsOf(), PatientEthnicity::asOf)
+                .returns(updates.getEthnicGroup(), PatientEthnicity::ethnicGroup)
+                .returns(updates.getUnknownReason(), PatientEthnicity::unknownReason);
     }
 
     @Then("I am unable to change a patient's ethnicity")
@@ -99,6 +98,6 @@ public class PatientProfileEthnicitySteps {
         EthnicityInput changes = new EthnicityInput();
 
         assertThatThrownBy(() -> controller.update(changes))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }

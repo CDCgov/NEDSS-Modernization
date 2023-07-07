@@ -18,7 +18,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,19 +59,14 @@ public class SubmitMorbidityReportSteps {
     public void a_morbidity_report_is_submitted_from_classic_nbs() throws Exception {
 
         server.expect(
-                requestTo(classicUrl + "/nbs/AddObservationMorb2.do")
-            )
-            .andExpect(method(HttpMethod.POST))
-            .andExpect(
-                content().multipartDataContains(
-                    Map.of(
-                        "ContextAction", "Submit",
-                        "other-data", "value"
-                    )
-                )
-            )
-            .andRespond(withSuccess())
-        ;
+                requestTo(classicUrl + "/nbs/AddObservationMorb2.do"))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(
+                        content().multipartDataContains(
+                                Map.of(
+                                        "ContextAction", "Submit",
+                                        "other-data", "value")))
+                .andRespond(withSuccess());
 
         long patient = patients.one();
 
@@ -79,19 +74,18 @@ public class SubmitMorbidityReportSteps {
 
 
         activeResponse.active(
-            mvc
-                .perform(
-                    MockMvcRequestBuilders.multipart("/nbs/redirect/patient/report/morbidity/submit")
-                        .part(new MockPart("ContextAction", "Submit".getBytes()))
-                        .part(new MockPart("other-data", "value".getBytes()))
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
-                        .cookie(session.asCookie())
-                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient)))
+                mvc
+                        .perform(
+                                MockMvcRequestBuilders.multipart("/nbs/redirect/patient/report/morbidity/submit")
+                                        .part(new MockPart("ContextAction", "Submit".getBytes()))
+                                        .part(new MockPart("other-data", "value".getBytes()))
+                                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                                        .cookie(session.asCookie())
+                                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient)))
 
-                )
-                .andReturn()
-                .getResponse()
-        );
+                        )
+                        .andReturn()
+                        .getResponse());
     }
 
     @Then("the morbidity report is submitted to Classic NBS")
@@ -101,25 +95,24 @@ public class SubmitMorbidityReportSteps {
 
     @When("a morbidity report is submitted and the user has chosen to also create an investigation")
     public void a_morbidity_report_is_submitted_and_the_user_has_chosen_to_also_create_an_investigation()
-        throws Exception {
+            throws Exception {
         long patient = patients.one();
 
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
 
         activeResponse.active(
-            mvc
-                .perform(
-                    MockMvcRequestBuilders.multipart("/nbs/redirect/patient/report/morbidity/submit")
-                        .part(new MockPart("ContextAction", "SubmitAndCreateInvestigation".getBytes()))
-                        .part(new MockPart("other-data", "value".getBytes()))
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
-                        .cookie(session.asCookie())
-                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient)))
+                mvc
+                        .perform(
+                                MockMvcRequestBuilders.multipart("/nbs/redirect/patient/report/morbidity/submit")
+                                        .part(new MockPart("ContextAction", "SubmitAndCreateInvestigation".getBytes()))
+                                        .part(new MockPart("other-data", "value".getBytes()))
+                                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                                        .cookie(session.asCookie())
+                                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient)))
 
-                ).andReturn()
-                .getResponse()
-        );
+                        ).andReturn()
+                        .getResponse());
     }
 
     @Then("I am redirected to Classic NBS to Create an Investigation from the Morbidity Report")
@@ -128,7 +121,7 @@ public class SubmitMorbidityReportSteps {
         MockHttpServletResponse response = activeResponse.active();
 
         assertThat(response.getRedirectedUrl()).contains(
-            "/nbs/AddObservationMorb2.do?ContextAction=SubmitAndCreateInvestigation");
+                "/nbs/AddObservationMorb2.do?ContextAction=SubmitAndCreateInvestigation");
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.TEMPORARY_REDIRECT.value());
 

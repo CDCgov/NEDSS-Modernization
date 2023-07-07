@@ -4,10 +4,10 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.patient.PatientCommand;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,47 +30,41 @@ public class PatientRaceDemographic {
     }
 
     @OneToMany(
-        mappedBy = "personUid",
-        fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true
-    )
+            mappedBy = "personUid",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
+            },
+            orphanRemoval = true)
     private List<PersonRace> races;
 
 
     public void add(
-        final Person patient,
-        final PatientCommand.AddRace added
-    ) {
+            final Person patient,
+            final PatientCommand.AddRace added) {
         //  Add a PersonRace for the category
         add(
-            patient,
-            new PatientCommand.AddRaceCategory(
-                added.person(),
-                added.asOf(),
-                added.category(),
-                added.requester(),
-                added.requestedOn()
-            )
-        );
+                patient,
+                new PatientCommand.AddRaceCategory(
+                        added.person(),
+                        added.asOf(),
+                        added.category(),
+                        added.requester(),
+                        added.requestedOn()));
 
         //  Add a PersonRace for each detail
         added.detailed().stream()
-            .map(
-                detail -> new PatientCommand.AddDetailedRace(
-                    added.person(),
-                    added.asOf(),
-                    added.category(),
-                    detail,
-                    added.requester(),
-                    added.requestedOn()
-                )
-            )
-            .forEach(detail -> add(patient, detail));
+                .map(
+                        detail -> new PatientCommand.AddDetailedRace(
+                                added.person(),
+                                added.asOf(),
+                                added.category(),
+                                detail,
+                                added.requester(),
+                                added.requestedOn()))
+                .forEach(detail -> add(patient, detail));
     }
 
     private void add(final Person patient, final PatientCommand.AddRaceCategory added) {
@@ -82,46 +76,44 @@ public class PatientRaceDemographic {
     }
 
     public void update(
-        final Person patient,
-        final PatientCommand.UpdateRaceInfo changes
-    ) {
+            final Person patient,
+            final PatientCommand.UpdateRaceInfo changes) {
 
         // change all the races for this category
         Collection<PersonRace> changed = ensureRaces().stream()
-            .filter(inCategory(changes.category()))
-            .map(race -> race.update(changes))
-            .toList();
+                .filter(inCategory(changes.category()))
+                .map(race -> race.update(changes))
+                .toList();
 
         List<String> detailed = changes.detailed();
 
         Collection<String> existingDetails = changed.stream()
-            .filter(isDetail())
-            .map(PersonRace::getRaceCd)
-            .toList();
+                .filter(isDetail())
+                .map(PersonRace::getRaceCd)
+                .toList();
 
         ArrayList<String> added = new ArrayList<>(detailed);
         added.removeAll(existingDetails);
 
         added.stream()
-            .map(
-                detail -> new PatientCommand.AddDetailedRace(
-                    changes.person(),
-                    changes.asOf(),
-                    changes.category(),
-                    detail,
-                    changes.requester(),
-                    changes.requestedOn()
-                )
-            ).forEach(detail -> add(patient, detail));
+                .map(
+                        detail -> new PatientCommand.AddDetailedRace(
+                                changes.person(),
+                                changes.asOf(),
+                                changes.category(),
+                                detail,
+                                changes.requester(),
+                                changes.requestedOn()))
+                .forEach(detail -> add(patient, detail));
 
 
         ArrayList<String> removed = new ArrayList<>(existingDetails);
         removed.removeAll(detailed);
 
         removed.stream()
-            .map(PatientRaceDemographic::identifiedBy)
-            .reduce(Predicate::or)
-            .ifPresent(criteria -> ensureRaces().removeIf(criteria));
+                .map(PatientRaceDemographic::identifiedBy)
+                .reduce(Predicate::or)
+                .ifPresent(criteria -> ensureRaces().removeIf(criteria));
 
     }
 

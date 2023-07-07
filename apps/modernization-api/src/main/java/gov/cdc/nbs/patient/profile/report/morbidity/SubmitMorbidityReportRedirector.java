@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
@@ -29,20 +29,18 @@ class SubmitMorbidityReportRedirector {
     private final ModernizedPatientProfileRedirectResolver resolver;
 
     SubmitMorbidityReportRedirector(
-        @Qualifier("classic") final RestTemplate template,
-        final ModernizedPatientProfileRedirectResolver resolver) {
+            @Qualifier("classic") final RestTemplate template,
+            final ModernizedPatientProfileRedirectResolver resolver) {
         this.template = template;
         this.resolver = resolver;
     }
 
     @PostMapping(
-        path = "/nbs/redirect/patient/report/morbidity/submit",
-        consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-    )
+            path = "/nbs/redirect/patient/report/morbidity/submit",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     ResponseEntity<Void> submitted(
-        final HttpServletRequest request,
-        @RequestParam final MultiValueMap<String, String> data
-    ) {
+            final HttpServletRequest request,
+            @RequestParam final MultiValueMap<String, String> data) {
 
         if (shouldRedirectToClassic(data)) {
             return redirectToClassic();
@@ -55,9 +53,9 @@ class SubmitMorbidityReportRedirector {
 
     private void createMorbidityReport(final MultiValueMap<String, String> data) {
         RequestEntity<MultiValueMap<String, String>> request = RequestEntity
-            .post(LOCATION)
-            .contentType(MediaType.MULTIPART_FORM_DATA)
-            .body(data);
+                .post(LOCATION)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(data);
 
         this.template.exchange(request, Void.class);
     }
@@ -73,12 +71,12 @@ class SubmitMorbidityReportRedirector {
         //  The user chose to Submit the Morbidity Report and then Create an Investigation.  This does not navigate
         //  back to the Patient Profile so the request can be redirected back to classic.
         URI location = UriComponentsBuilder.fromPath("/nbs")
-            .path(LOCATION)
-            .queryParam("ContextAction", SUBMIT_AND_CREATE_INVESTIGATION)
-            .build()
-            .toUri();
+                .path(LOCATION)
+                .queryParam("ContextAction", SUBMIT_AND_CREATE_INVESTIGATION)
+                .build()
+                .toUri();
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
-            .location(location)
-            .build();
+                .location(location)
+                .build();
     }
 }

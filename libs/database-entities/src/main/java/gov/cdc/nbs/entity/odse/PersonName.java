@@ -7,16 +7,16 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -117,10 +117,9 @@ public class PersonName {
     }
 
     public PersonName(
-        final PersonNameId identifier,
-        final Person person,
-        final PatientCommand.AddName added
-    ) {
+            final PersonNameId identifier,
+            final Person person,
+            final PatientCommand.AddName added) {
         this.asOfDate = added.asOf();
 
         this.statusCd = 'A';
@@ -160,7 +159,7 @@ public class PersonName {
         this.audit.changed(info.requester(), info.requestedOn());
     }
 
-    public void delete(final  PatientCommand.DeleteNameInfo deleted) {
+    public void delete(final PatientCommand.DeleteNameInfo deleted) {
         this.recordStatusCd = RecordStatus.INACTIVE.name();
         this.recordStatusTime = deleted.requestedOn();
         this.audit.changed(deleted.requester(), deleted.requestedOn());
@@ -169,8 +168,8 @@ public class PersonName {
     @Override
     public String toString() {
         return "PersonName{" +
-            "id=" + id +
-            ", recordStatusCd='" + recordStatusCd + '\'' +
-            '}';
+                "id=" + id +
+                ", recordStatusCd='" + recordStatusCd + '\'' +
+                '}';
     }
 }

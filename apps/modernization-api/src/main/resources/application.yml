@@ -8,7 +8,6 @@ nbs:
   elasticsearch:
     server: localhost
     port: 9200
-    url: http://${nbs.elasticsearch.server}:${nbs.elasticsearch.port}
   wildfly:
     host: localhost
     server: ${nbs.wildfly.host}:${nbs.wildfly.port}

@@ -16,20 +16,20 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -49,17 +49,17 @@ public class Person {
 
     @MapsId
     @OneToOne(fetch = FetchType.EAGER, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REMOVE
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
     }, optional = false)
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity nbsEntity;
 
     @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REMOVE
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
     }, orphanRemoval = true)
     private List<PersonName> names;
 
@@ -479,10 +479,9 @@ public class Person {
         PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
         PersonName personName = new PersonName(
-            identifier,
-            this,
-            added
-        );
+                identifier,
+                this,
+                added);
 
         existing.add(personName);
 
@@ -495,9 +494,9 @@ public class Person {
         PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
 
         ensureNames().stream()
-            .filter(name -> Objects.equals(name.getId(), identifier))
-            .findFirst()
-            .ifPresent(name -> name.update(info));
+                .filter(name -> Objects.equals(name.getId(), identifier))
+                .findFirst()
+                .ifPresent(name -> name.update(info));
 
         changed(info);
     }
@@ -505,12 +504,12 @@ public class Person {
     public void delete(final PatientCommand.DeleteNameInfo deleted) {
         PersonNameId identifier = PersonNameId.from(deleted.person(), deleted.sequence());
         ensureNames().stream()
-            .filter(name -> Objects.equals(name.getId(), identifier))
-            .findFirst()
-            .ifPresent(name -> delete(deleted, name));
+                .filter(name -> Objects.equals(name.getId(), identifier))
+                .findFirst()
+                .ifPresent(name -> delete(deleted, name));
     }
 
-    private void delete (final PatientCommand.DeleteNameInfo deleted, final PersonName name) {
+    private void delete(final PatientCommand.DeleteNameInfo deleted, final PersonName name) {
         name.delete(deleted);
         changed(deleted);
     }
@@ -620,7 +619,7 @@ public class Person {
         this.mothersMaidenNm = info.mothersMaidenName();
         this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
         this.childrenInHouseNbr =
-            info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
+                info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
         this.occupationCd = info.occupationCode();
         this.educationLevelCd = info.educationLevelCode();
         this.primLangCd = info.primaryLanguageCode();
@@ -638,9 +637,8 @@ public class Person {
     }
 
     public void update(
-        final PatientCommand.UpdateBirth birth,
-        final AddressIdentifierGenerator identifierGenerator
-    ) {
+            final PatientCommand.UpdateBirth birth,
+            final AddressIdentifierGenerator identifierGenerator) {
         this.asOfDateSex = birth.asOf();
         resolveDateOfBirth(birth.bornOn());
         this.birthGenderCd = Gender.resolve(birth.gender());
@@ -664,16 +662,15 @@ public class Person {
     }
 
     public void update(
-        final PatientCommand.UpdateMortality info,
-        final AddressIdentifierGenerator identifierGenerator
-    ) {
+            final PatientCommand.UpdateMortality info,
+            final AddressIdentifierGenerator identifierGenerator) {
         this.asOfDateMorbidity = info.asOf();
         this.deceasedIndCd = Deceased.resolve(info.deceased());
 
         if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
             this.deceasedTime = info.deceasedOn() == null
-                ? null :
-                info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
+                    ? null
+                    : info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
         } else {
             this.deceasedTime = null;
         }
@@ -683,8 +680,8 @@ public class Person {
     }
 
     public void delete(
-        final PatientCommand.Delete delete,
-        final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
+            final PatientCommand.Delete delete,
+            final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
 
         long associations = finder.count(this.id);
 
@@ -723,8 +720,8 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-            "id=" + id +
-            '}';
+                "id=" + id +
+                '}';
     }
 
     public void update(PatientCommand.AddIdentification info) {

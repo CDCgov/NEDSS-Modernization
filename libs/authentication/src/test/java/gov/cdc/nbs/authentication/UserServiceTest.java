@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,9 +46,9 @@ class UserServiceTest {
 
     @Spy
     private SecurityProperties properties = new SecurityProperties(
-        "secret",
-        "test-issuer",
-        10000);
+            "secret",
+            "test-issuer",
+            10000);
 
     @InjectMocks
     private UserService service;
@@ -77,7 +77,7 @@ class UserServiceTest {
         assertEquals(authUser.getMasterSecAdminInd().equals('T'), userDetails.isMasterSecurityAdmin());
         assertEquals(authUser.getProgAreaAdminInd().equals('T'), userDetails.isProgramAreaAdmin());
         assertTrue(authUser.getAdminProgramAreas().stream()
-            .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
+                .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
         assertEquals(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
     }
 
@@ -102,7 +102,7 @@ class UserServiceTest {
         assertEquals(authUser.getMasterSecAdminInd().equals('T'), userDetails.isMasterSecurityAdmin());
         assertEquals(authUser.getProgAreaAdminInd().equals('T'), userDetails.isProgramAreaAdmin());
         assertTrue(authUser.getAdminProgramAreas().stream()
-            .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
+                .allMatch(a -> userDetails.getAdminProgramAreas().contains(a.getProgAreaCd())));
         assertEquals(authUser.getAudit().getRecordStatusCd().equals(AuthRecordStatus.ACTIVE), userDetails.isEnabled());
     }
 

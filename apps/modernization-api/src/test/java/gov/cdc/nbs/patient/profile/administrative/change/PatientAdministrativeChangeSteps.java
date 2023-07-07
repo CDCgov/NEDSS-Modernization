@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,10 +43,9 @@ public class PatientAdministrativeChangeSteps {
         PatientIdentifier patient = this.patients.one();
 
         this.changes = new UpdatePatientAdministrative(
-            patient.id(),
-            RandomUtil.getRandomDateInPast(),
-            faker.lorem().paragraph()
-        );
+                patient.id(),
+                RandomUtil.getRandomDateInPast(),
+                faker.lorem().paragraph());
 
         controller.update(changes);
     }
@@ -60,14 +59,13 @@ public class PatientAdministrativeChangeSteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual)
-            .returns(changes.asOf(), Person::getAsOfDateAdmin)
-            .returns(changes.comment(), Person::getDescription)
-        ;
+                .returns(changes.asOf(), Person::getAsOfDateAdmin)
+                .returns(changes.comment(), Person::getDescription);
     }
 
     @Then("I am unable to change a patient's administrative")
     public void i_am_unable_to_change_a_patient_administrative() {
         assertThatThrownBy(() -> controller.update(changes))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }

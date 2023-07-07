@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 class PatientProfileReturningRedirector {
@@ -20,23 +20,19 @@ class PatientProfileReturningRedirector {
 
     @ApiIgnore
     @PostMapping(
-        value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
-    )
+            value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"})
     ResponseEntity<Void> redirectPatientProfileReturnPOST(
-        final HttpServletRequest request,
-        @PathVariable(required = false) final String tab
-    ) {
+            final HttpServletRequest request,
+            @PathVariable(required = false) final String tab) {
         return resolver.fromReturnPatient(request);
     }
 
     @ApiIgnore
     @GetMapping(
-        value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
-    )
+            value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"})
     ResponseEntity<Void> redirectPatientProfileReturnGet(
-        final HttpServletRequest request,
-        @PathVariable(required = false) final String tab
-    ) {
+            final HttpServletRequest request,
+            @PathVariable(required = false) final String tab) {
         return resolver.fromReturnPatient(request);
     }
 

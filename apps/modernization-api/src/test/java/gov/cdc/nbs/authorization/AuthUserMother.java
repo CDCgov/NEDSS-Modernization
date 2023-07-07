@@ -7,7 +7,7 @@ import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 @Component
@@ -21,12 +21,11 @@ class AuthUserMother {
 
 
     AuthUserMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestActiveUserCleaner cleaner,
-        final TestAuthUsers users
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestActiveUserCleaner cleaner,
+            final TestAuthUsers users) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;

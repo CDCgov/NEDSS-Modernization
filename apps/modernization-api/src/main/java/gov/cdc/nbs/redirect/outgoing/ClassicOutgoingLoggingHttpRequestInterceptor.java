@@ -32,7 +32,7 @@ class ClassicOutgoingLoggingHttpRequestInterceptor implements ClientHttpRequestI
 
             LOG.debug(
                 "{} {}\tResponse: {}",
-                request.getMethodValue(),
+                request.getMethod().name(),
                 path,
                 response.getStatusCode()
             );

@@ -1,50 +1,50 @@
 package gov.cdc.nbs.config;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.elasticsearch.client.RestHighLevelClient;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-
-import lombok.extern.slf4j.Slf4j;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 
 @Configuration
-@Slf4j
-@SuppressWarnings("deprecation")
 public class ElasticSearchConfig {
 
-    @Value("${nbs.elasticsearch.url:http://localhost:9200}")
-    private String elasticSearchUrl;
+    @Value("${nbs.elasticsearch.server:localhost}")
+    private String elasticSearchServer;
 
-    /**
-     * RestHighLevelClient is deprecated but no viable alternatives exist for spring-data-elasticsearch until Spring
-     * Boot 3.0.0 due to Jakarta EE 9 APIs.
-     *
-     * Links: https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#preface.versions
-     * https://github.com/spring-projects/spring-boot/issues/28598
-     *
-     * @throws MalformedURLException
-     */
+    @Value("${nbs.elasticsearch.port:9200}")
+    private Integer elasticSearchPort;
+
     @Bean
-    @SuppressWarnings("squid:S2095") // Sonar false positive - resource should be closed
-    public RestHighLevelClient client() throws MalformedURLException {
-        URL url = new URL(elasticSearchUrl);
-        log.info("Connecting to Elasticsearch with url: " + url);
-        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(url.getHost() + ":" + url.getPort())
-                .build();
-        return RestClients.create(clientConfiguration).rest();
+    public RestClient client() {
+        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", "test321"));
+        HttpHost host = new HttpHost(elasticSearchServer, elasticSearchPort);
+        RestClient restClient = RestClient.builder(host)
+                .setHttpClientConfigCallback(new HttpClientConfigCallback() {
+                    @Override
+                    public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+                        httpClientBuilder.disableAuthCaching();
+                        return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                    }
+                }).build();
+        return restClient;
     }
 
     @Bean
-    public ElasticsearchOperations elasticsearchTemplate() throws MalformedURLException {
-        return new ElasticsearchRestTemplate(client());
+    public ElasticsearchClient elasticsearchTemplate(RestClient client, JacksonJsonpMapper mapper) {
+        ElasticsearchTransport transport = new RestClientTransport(client, mapper);
+        return new ElasticsearchClient(transport);
     }
 
 }

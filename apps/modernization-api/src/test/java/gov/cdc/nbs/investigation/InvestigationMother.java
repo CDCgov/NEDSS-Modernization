@@ -9,7 +9,7 @@ import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 public class InvestigationMother {
@@ -25,12 +25,11 @@ public class InvestigationMother {
     private final TestInvestigationCleaner cleaner;
 
     public InvestigationMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestInvestigations investigations,
-        final TestInvestigationCleaner cleaner
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestInvestigations investigations,
+            final TestInvestigationCleaner cleaner) {
         this.idGenerator = idGenerator;
         this.settings = settings;
         this.entityManager = entityManager;
@@ -53,8 +52,8 @@ public class InvestigationMother {
         investigation.setAddTime(settings.createdOn());
         investigation.setAddUserId(settings.createdBy());
 
-        investigation.setCd("42060");   // other injury
-        investigation.setJurisdictionCd("999999");    // out of system
+        investigation.setCd("42060"); // other injury
+        investigation.setJurisdictionCd("999999"); // out of system
 
         subjectOf(investigation.getAct(), subject);
 

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 @Component
@@ -18,9 +18,8 @@ public class ModernizedPatientProfileRedirectResolver {
     private final PatientIdentifierFinder finder;
 
     public ModernizedPatientProfileRedirectResolver(
-        final IncomingPatientIdentifierResolver resolver,
-        final PatientIdentifierFinder finder
-    ) {
+            final IncomingPatientIdentifierResolver resolver,
+            final PatientIdentifierFinder finder) {
         this.resolver = resolver;
         this.finder = finder;
     }
@@ -34,9 +33,9 @@ public class ModernizedPatientProfileRedirectResolver {
      */
     public ResponseEntity<Void> fromReturnPatient(final HttpServletRequest request) {
         URI location = resolver.fromReturningPatient(request)
-            .flatMap(finder::findById)
-            .map(this::patientProfile)
-            .orElseGet(this::advancedSearch);
+                .flatMap(finder::findById)
+                .map(this::patientProfile)
+                .orElseGet(this::advancedSearch);
 
         return redirectTo(location);
     }
@@ -50,32 +49,32 @@ public class ModernizedPatientProfileRedirectResolver {
      */
     public ResponseEntity<Void> fromPatientParameters(final HttpServletRequest request) {
         URI location = resolver.fromQueryParams(request)
-            .flatMap(finder::findById)
-            .map(this::patientProfile)
-            .orElseGet(this::advancedSearch);
+                .flatMap(finder::findById)
+                .map(this::patientProfile)
+                .orElseGet(this::advancedSearch);
 
         return redirectTo(location);
     }
 
     private URI patientProfile(final PatientIdentifier patient) {
         return UriComponentsBuilder.fromPath("/")
-            .path("patient-profile/{identifier}")
-            .buildAndExpand(patient.shortId())
-            .toUri();
+                .path("patient-profile/{identifier}")
+                .buildAndExpand(patient.shortId())
+                .toUri();
     }
 
     private URI advancedSearch() {
         return UriComponentsBuilder.fromPath("/")
-            .path("advanced-search")
-            .build()
-            .toUri();
+                .path("advanced-search")
+                .build()
+                .toUri();
     }
 
     private ResponseEntity<Void> redirectTo(final URI location) {
         return ResponseEntity.status(HttpStatus.SEE_OTHER)
-            .location(location)
-            .headers(ReturningPatientCookie.empty()::apply)
-            .build();
+                .location(location)
+                .headers(ReturningPatientCookie.empty()::apply)
+                .build();
     }
 
 }

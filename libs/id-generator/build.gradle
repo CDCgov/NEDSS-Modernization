@@ -42,8 +42,8 @@ dependencies {
     annotationProcessor libs.lombok
 
     // querydsl
-    implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
 }
 

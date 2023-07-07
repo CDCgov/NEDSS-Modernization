@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -41,16 +41,14 @@ public class PatientGenderChangeSteps {
         PatientIdentifier patient = this.patients.one();
 
         this.changes = new UpdateBirthAndGender(
-            patient.id(),
-            RandomUtil.getRandomDateInPast(),
-            null,
-            new UpdateBirthAndGender.Gender(
-                RandomUtil.maybeGender(),
-                RandomUtil.getRandomString(),
-                RandomUtil.getRandomString(),
-                RandomUtil.getRandomString()
-            )
-        );
+                patient.id(),
+                RandomUtil.getRandomDateInPast(),
+                null,
+                new UpdateBirthAndGender.Gender(
+                        RandomUtil.maybeGender(),
+                        RandomUtil.getRandomString(),
+                        RandomUtil.getRandomString(),
+                        RandomUtil.getRandomString()));
 
         controller.update(changes);
     }
@@ -64,17 +62,16 @@ public class PatientGenderChangeSteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual)
-            .returns(changes.asOf(), Person::getAsOfDateSex)
-            .returns(Gender.resolve(changes.gender().current()), Person::getCurrSexCd)
-            .returns(changes.gender().unknownReason(), Person::getSexUnkReasonCd)
-            .returns(changes.gender().preferred(), Person::getPreferredGenderCd)
-            .returns(changes.gender().additional(), Person::getAdditionalGenderCd)
-        ;
+                .returns(changes.asOf(), Person::getAsOfDateSex)
+                .returns(Gender.resolve(changes.gender().current()), Person::getCurrSexCd)
+                .returns(changes.gender().unknownReason(), Person::getSexUnkReasonCd)
+                .returns(changes.gender().preferred(), Person::getPreferredGenderCd)
+                .returns(changes.gender().additional(), Person::getAdditionalGenderCd);
     }
 
     @Then("I am unable to change a patient's gender")
     public void i_am_unable_to_change_a_patient_gender() {
         assertThatThrownBy(() -> controller.update(changes))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }

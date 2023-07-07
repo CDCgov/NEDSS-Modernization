@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -88,7 +88,7 @@ public class TreatmentAdministered {
     private Instant statusTime;
 
     public TreatmentAdministered(final Treatment treatment) {
-        short sequence = (short) (treatment.getAdministered().size() + (short)1);
+        short sequence = (short) (treatment.getAdministered().size() + (short) 1);
 
         this.id = new TreatmentAdministeredId(treatment.getId(), sequence);
         this.treatmentUid = treatment;

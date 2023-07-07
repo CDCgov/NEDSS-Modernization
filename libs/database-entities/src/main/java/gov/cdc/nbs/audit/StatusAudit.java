@@ -1,7 +1,7 @@
 package gov.cdc.nbs.audit;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.time.Instant;
 
 @Embeddable
@@ -13,8 +13,7 @@ public class StatusAudit {
     @Column(name = "status_time", nullable = false)
     private Instant statusTime;
 
-    protected StatusAudit() {
-    }
+    protected StatusAudit() {}
 
     public StatusAudit(Character statusCd, Instant statusTime) {
         this.statusCd = statusCd;

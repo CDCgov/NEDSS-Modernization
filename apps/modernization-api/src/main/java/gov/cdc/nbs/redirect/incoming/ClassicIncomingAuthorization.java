@@ -6,7 +6,7 @@ import gov.cdc.nbs.authorization.SessionCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.function.Consumer;
 
 public sealed interface ClassicIncomingAuthorization {

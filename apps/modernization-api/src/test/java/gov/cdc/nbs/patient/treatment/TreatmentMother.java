@@ -11,7 +11,7 @@ import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class TreatmentMother {
@@ -28,12 +28,11 @@ class TreatmentMother {
     private final TestTreatments treatments;
 
     TreatmentMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestTreatmentCleaner cleaner,
-        final TestTreatments treatments
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestTreatmentCleaner cleaner,
+            final TestTreatments treatments) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;
@@ -109,14 +108,12 @@ class TreatmentMother {
     }
 
     private void treatedWithInvestigation(
-        final Treatment treatment,
-        final long investigation
-    ) {
+            final Treatment treatment,
+            final long investigation) {
 
         treatment.getAct().addRelationship(
-            resolve(investigation),
-            TREATMENT_OF_INVESTIGATION
-        );
+                resolve(investigation),
+                TREATMENT_OF_INVESTIGATION);
 
 
     }

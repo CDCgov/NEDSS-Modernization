@@ -9,7 +9,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 
 @Component
@@ -21,11 +21,10 @@ public class PatientCreator {
     private final PatientCreatedEmitter emitter;
 
     PatientCreator(
-        final PatientIdentifierGenerator patientIdentifierGenerator,
-        final IdGeneratorService idGenerator,
-        final EntityManager entityManager,
-        final PatientCreatedEmitter emitter
-    ) {
+            final PatientIdentifierGenerator patientIdentifierGenerator,
+            final IdGeneratorService idGenerator,
+            final EntityManager entityManager,
+            final PatientCreatedEmitter emitter) {
         this.patientIdentifierGenerator = patientIdentifierGenerator;
         this.idGeneratorService = idGenerator;
         this.entityManager = entityManager;
@@ -41,28 +40,28 @@ public class PatientCreator {
         Instant asOf = input.getAsOf();
 
         input.getNames().stream()
-            .map(name -> asName(context, identifier, asOf, name))
-            .forEach(person::add);
+                .map(name -> asName(context, identifier, asOf, name))
+                .forEach(person::add);
 
         input.getRaces().stream()
-            .map(race -> asRace(context, identifier, asOf, race))
-            .forEach(person::add);
+                .map(race -> asRace(context, identifier, asOf, race))
+                .forEach(person::add);
 
         input.getAddresses().stream()
-            .map(address -> asAddress(context, identifier, asOf, address))
-            .forEach(person::add);
+                .map(address -> asAddress(context, identifier, asOf, address))
+                .forEach(person::add);
 
         input.getPhoneNumbers().stream()
-            .map(phoneNumber -> asPhoneNumber(context, identifier, asOf, phoneNumber))
-            .forEach(person::add);
+                .map(phoneNumber -> asPhoneNumber(context, identifier, asOf, phoneNumber))
+                .forEach(person::add);
 
         input.getEmailAddresses().stream()
-            .map(emailAddress -> asEmailAddress(context, identifier, asOf, emailAddress))
-            .forEach(person::add);
+                .map(emailAddress -> asEmailAddress(context, identifier, asOf, emailAddress))
+                .forEach(person::add);
 
         input.getIdentifications().stream()
-            .map(identification -> asIdentification(context, identifier, asOf, identification))
-            .forEach(person::add);
+                .map(identification -> asIdentification(context, identifier, asOf, identification))
+                .forEach(person::add);
 
         this.entityManager.persist(person);
 
@@ -72,138 +71,124 @@ public class PatientCreator {
     }
 
     private PatientCommand.AddPatient asAdd(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final PatientInput request
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final PatientInput request) {
         return new PatientCommand.AddPatient(
-            identifier.id(),
-            identifier.local(),
-            request.getDateOfBirth(),
-            request.getBirthGender(),
-            request.getCurrentGender(),
-            request.getDeceased(),
-            request.getDeceasedTime(),
-            request.getMaritalStatus(),
-            request.getEthnicity(),
-            request.getAsOf(),
-            request.getComments(),
-            request.getStateHIVCase(),
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                identifier.local(),
+                request.getDateOfBirth(),
+                request.getBirthGender(),
+                request.getCurrentGender(),
+                request.getDeceased(),
+                request.getDeceasedTime(),
+                request.getMaritalStatus(),
+                request.getEthnicity(),
+                request.getAsOf(),
+                request.getComments(),
+                request.getStateHIVCase(),
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.AddName asName(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final Instant asOf,
-        final PatientInput.Name name
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final Instant asOf,
+            final PatientInput.Name name) {
         String suffix = name.getSuffix() == null ? null : name.getSuffix().value();
         String type = name.getUse() == null ? null : name.getUse().name();
         return new PatientCommand.AddName(
-            identifier.id(),
-            asOf,
-            name.getFirst(),
-            name.getMiddle(),
-            name.getLast(),
-            suffix,
-            type,
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                asOf,
+                name.getFirst(),
+                name.getMiddle(),
+                name.getLast(),
+                suffix,
+                type,
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.AddRace asRace(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final Instant asOf,
-        final String race
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final Instant asOf,
+            final String race) {
         return new PatientCommand.AddRace(
-            identifier.id(),
-            asOf,
-            race,
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                asOf,
+                race,
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.AddAddress asAddress(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final Instant asOf,
-        final PatientInput.PostalAddress address
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final Instant asOf,
+            final PatientInput.PostalAddress address) {
         return new PatientCommand.AddAddress(
-            identifier.id(),
-            generateNbsId(),
-            asOf,
-            address.getStreetAddress1(),
-            address.getStreetAddress2(),
-            address.getCity(),
-            address.getState(),
-            address.getZip(),
-            address.getCounty(),
-            address.getCountry(),
-            address.getCensusTract(),
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                generateNbsId(),
+                asOf,
+                address.getStreetAddress1(),
+                address.getStreetAddress2(),
+                address.getCity(),
+                address.getState(),
+                address.getZip(),
+                address.getCounty(),
+                address.getCountry(),
+                address.getCensusTract(),
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.AddPhoneNumber asPhoneNumber(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final Instant asOf,
-        final PatientInput.PhoneNumber phoneNumber
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final Instant asOf,
+            final PatientInput.PhoneNumber phoneNumber) {
 
         return new PatientCommand.AddPhoneNumber(
-            identifier.id(),
-            generateNbsId(),
-            asOf,
-            phoneNumber.getType(),
-            phoneNumber.getUse(),
-            phoneNumber.getNumber(),
-            phoneNumber.getExtension(),
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                generateNbsId(),
+                asOf,
+                phoneNumber.getType(),
+                phoneNumber.getUse(),
+                phoneNumber.getNumber(),
+                phoneNumber.getExtension(),
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.AddEmailAddress asEmailAddress(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final Instant asOf,
-        final String emailAddress
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final Instant asOf,
+            final String emailAddress) {
         return new PatientCommand.AddEmailAddress(
-            identifier.id(),
-            generateNbsId(),
-            asOf,
-            emailAddress,
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                generateNbsId(),
+                asOf,
+                emailAddress,
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.AddIdentification asIdentification(
-        final RequestContext context,
-        final PatientIdentifier identifier,
-        final Instant asOf,
-        final PatientInput.Identification identification
-    ) {
+            final RequestContext context,
+            final PatientIdentifier identifier,
+            final Instant asOf,
+            final PatientInput.Identification identification) {
         return new PatientCommand.AddIdentification(
-            identifier.id(),
-            asOf,
-            identification.getValue(),
-            identification.getAuthority(),
-            identification.getType(),
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                identifier.id(),
+                asOf,
+                identification.getValue(),
+                identification.getAuthority(),
+                identification.getType(),
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private Long generateNbsId() {

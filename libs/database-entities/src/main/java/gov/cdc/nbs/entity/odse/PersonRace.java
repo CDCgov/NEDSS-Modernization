@@ -6,15 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -61,8 +61,7 @@ public class PersonRace {
 
     public PersonRace(
             final Person person,
-            final PatientCommand.AddRaceCategory added
-    ) {
+            final PatientCommand.AddRaceCategory added) {
         this.personUid = person;
         this.asOfDate = added.asOf();
         this.raceCategoryCd = added.category();
@@ -76,9 +75,8 @@ public class PersonRace {
     }
 
     public PersonRace(
-        final Person person,
-        final PatientCommand.AddDetailedRace added
-    ) {
+            final Person person,
+            final PatientCommand.AddDetailedRace added) {
         this.personUid = person;
         this.asOfDate = added.asOf();
         this.raceCategoryCd = added.category();
@@ -101,9 +99,9 @@ public class PersonRace {
     @Override
     public String toString() {
         return "PersonRace{" +
-            "raceCd='" + raceCd + '\'' +
-            ", raceCategoryCd='" + raceCategoryCd + '\'' +
-            ", asOfDate=" + asOfDate +
-            '}';
+                "raceCd='" + raceCd + '\'' +
+                ", raceCategoryCd='" + raceCategoryCd + '\'' +
+                ", asOfDate=" + asOfDate +
+                '}';
     }
 }

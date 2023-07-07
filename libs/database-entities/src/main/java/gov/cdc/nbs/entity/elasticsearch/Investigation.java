@@ -5,7 +5,7 @@ import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
 import java.time.Instant;
 import java.util.List;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;

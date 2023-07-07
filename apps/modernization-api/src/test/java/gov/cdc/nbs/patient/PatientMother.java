@@ -14,7 +14,7 @@ import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.Locale;
 
 @Component
@@ -31,14 +31,13 @@ public class PatientMother {
     private final TestPatientCleaner cleaner;
 
     public PatientMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final PatientLocalIdentifierGenerator localIdentifierGenerator,
-        final PatientShortIdentifierResolver resolver,
-        final EntityManager entityManager,
-        final TestAvailable<PatientIdentifier> patients,
-        final TestPatientCleaner cleaner
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final PatientLocalIdentifierGenerator localIdentifierGenerator,
+            final PatientShortIdentifierResolver resolver,
+            final EntityManager entityManager,
+            final TestAvailable<PatientIdentifier> patients,
+            final TestPatientCleaner cleaner) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.localIdentifierGenerator = localIdentifierGenerator;
@@ -80,13 +79,11 @@ public class PatientMother {
         long id = idGenerator.next();
 
         Person revision = parent.revise(
-            new PatientCommand.Revise(
-                identifier.id(),
-                id,
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        );
+                new PatientCommand.Revise(
+                        identifier.id(),
+                        id,
+                        this.settings.createdBy(),
+                        this.settings.createdOn()));
 
         this.entityManager.persist(revision);
 
@@ -98,22 +95,20 @@ public class PatientMother {
         Person patient = managed(identifier);
 
         patient.add(
-            new PatientCommand.AddAddress(
-                patient.getId(),
-                idGenerator.next(),
-                RandomUtil.getRandomDateInPast(),
-                faker.address().streetAddress(),
-                null,
-                faker.address().city(),
-                RandomUtil.getRandomStateCode(),
-                faker.address().zipCode(),
-                null,
-                RandomUtil.country(),
-                null,
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        );
+                new PatientCommand.AddAddress(
+                        patient.getId(),
+                        idGenerator.next(),
+                        RandomUtil.getRandomDateInPast(),
+                        faker.address().streetAddress(),
+                        null,
+                        faker.address().city(),
+                        RandomUtil.getRandomStateCode(),
+                        faker.address().zipCode(),
+                        null,
+                        RandomUtil.country(),
+                        null,
+                        this.settings.createdBy(),
+                        this.settings.createdOn()));
     }
 
     @Transactional
@@ -121,16 +116,14 @@ public class PatientMother {
         Person patient = managed(identifier);
 
         patient.add(
-            new PatientCommand.AddIdentification(
-                identifier.id(),
-                RandomUtil.getRandomDateInPast(),
-                RandomUtil.getRandomNumericString(8),
-                "GA",
-                RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        );
+                new PatientCommand.AddIdentification(
+                        identifier.id(),
+                        RandomUtil.getRandomDateInPast(),
+                        RandomUtil.getRandomNumericString(8),
+                        "GA",
+                        RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
+                        this.settings.createdBy(),
+                        this.settings.createdOn()));
     }
 
     @Transactional
@@ -138,14 +131,12 @@ public class PatientMother {
         Person patient = managed(identifier);
 
         patient.add(
-            new PatientCommand.AddRace(
-                identifier.id(),
-                RandomUtil.getRandomDateInPast(),
-                RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        );
+                new PatientCommand.AddRace(
+                        identifier.id(),
+                        RandomUtil.getRandomDateInPast(),
+                        RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                        this.settings.createdBy(),
+                        this.settings.createdOn()));
     }
 
     @Transactional
@@ -153,22 +144,20 @@ public class PatientMother {
         Person patient = managed(identifier);
 
         patient.add(
-            new PatientCommand.AddName(
-                identifier.id(),
-                RandomUtil.getRandomDateInPast(),
-                null,
-                faker.name().firstName(),
-                faker.name().firstName(),
-                faker.name().lastName(),
-                faker.name().lastName(),
-                faker.name().lastName(),
-                null,
-                null,
-                "L",
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        );
+                new PatientCommand.AddName(
+                        identifier.id(),
+                        RandomUtil.getRandomDateInPast(),
+                        null,
+                        faker.name().firstName(),
+                        faker.name().firstName(),
+                        faker.name().lastName(),
+                        faker.name().lastName(),
+                        faker.name().lastName(),
+                        null,
+                        null,
+                        "L",
+                        this.settings.createdBy(),
+                        this.settings.createdOn()));
     }
 
     @Transactional
@@ -176,21 +165,19 @@ public class PatientMother {
         Person patient = managed(identifier);
 
         patient.add(
-            new PatientCommand.AddPhone(
-                identifier.id(),
-                idGenerator.next(),
-                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
-                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP","TMP"),
-                RandomUtil.getRandomDateInPast(),
-                RandomUtil.getRandomString(),
-                faker.phoneNumber().cellPhone(),
-                faker.phoneNumber().extension(),
-                faker.internet().emailAddress(),
-                faker.internet().url(),
-                RandomUtil.getRandomString(),
-                this.settings.createdBy(),
-                this.settings.createdOn()
-            )
-        );
+                new PatientCommand.AddPhone(
+                        identifier.id(),
+                        idGenerator.next(),
+                        RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
+                        RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
+                        RandomUtil.getRandomDateInPast(),
+                        RandomUtil.getRandomString(),
+                        faker.phoneNumber().cellPhone(),
+                        faker.phoneNumber().extension(),
+                        faker.internet().emailAddress(),
+                        faker.internet().url(),
+                        RandomUtil.getRandomString(),
+                        this.settings.createdBy(),
+                        this.settings.createdOn()));
     }
 }

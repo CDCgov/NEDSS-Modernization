@@ -10,7 +10,7 @@ import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class VaccinationMother {
@@ -25,12 +25,11 @@ class VaccinationMother {
     private final TestVaccinations vaccinations;
 
     VaccinationMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestVaccinationCleaner cleaner,
-        final TestVaccinations vaccinations
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestVaccinationCleaner cleaner,
+            final TestVaccinations vaccinations) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;

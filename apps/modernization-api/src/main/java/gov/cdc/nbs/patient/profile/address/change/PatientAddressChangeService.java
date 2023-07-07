@@ -8,7 +8,7 @@ import gov.cdc.nbs.patient.RequestContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -18,9 +18,8 @@ public class PatientAddressChangeService {
     private final IdGeneratorService idGeneratorService;
 
     public PatientAddressChangeService(
-        final EntityManager entityManager,
-        final IdGeneratorService idGeneratorService
-    ) {
+            final EntityManager entityManager,
+            final IdGeneratorService idGeneratorService) {
         this.entityManager = entityManager;
         this.idGeneratorService = idGeneratorService;
     }
@@ -29,25 +28,23 @@ public class PatientAddressChangeService {
         Person patient = managed(input.patient());
 
         EntityLocatorParticipation added = patient.add(
-            new PatientCommand.AddAddress(
-                input.patient(),
-                generateNbsId(),
-                input.asOf(),
-                input.type(),
-                input.use(),
-                input.address1(),
-                input.address2(),
-                input.city(),
-                input.state(),
-                input.zipcode(),
-                input.county(),
-                input.country(),
-                input.censusTract(),
-                input.comment(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.AddAddress(
+                        input.patient(),
+                        generateNbsId(),
+                        input.asOf(),
+                        input.type(),
+                        input.use(),
+                        input.address1(),
+                        input.address2(),
+                        input.city(),
+                        input.state(),
+                        input.zipcode(),
+                        input.county(),
+                        input.country(),
+                        input.censusTract(),
+                        input.comment(),
+                        context.requestedBy(),
+                        context.requestedAt()));
 
         return new PatientAddressAdded(input.patient(), added.getId().getLocatorUid());
     }
@@ -61,25 +58,23 @@ public class PatientAddressChangeService {
         Person patient = managed(input.patient());
 
         patient.update(
-            new PatientCommand.UpdateAddress(
-                input.patient(),
-                input.id(),
-                input.asOf(),
-                input.type(),
-                input.use(),
-                input.address1(),
-                input.address2(),
-                input.city(),
-                input.state(),
-                input.zipcode(),
-                input.county(),
-                input.country(),
-                input.censusTract(),
-                input.comment(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.UpdateAddress(
+                        input.patient(),
+                        input.id(),
+                        input.asOf(),
+                        input.type(),
+                        input.use(),
+                        input.address1(),
+                        input.address2(),
+                        input.city(),
+                        input.state(),
+                        input.zipcode(),
+                        input.county(),
+                        input.country(),
+                        input.censusTract(),
+                        input.comment(),
+                        context.requestedBy(),
+                        context.requestedAt()));
 
     }
 
@@ -87,13 +82,11 @@ public class PatientAddressChangeService {
         Person patient = managed(input.patient());
 
         patient.delete(
-            new PatientCommand.DeleteAddress(
-                input.patient(),
-                input.id(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.DeleteAddress(
+                        input.patient(),
+                        input.id(),
+                        context.requestedBy(),
+                        context.requestedAt()));
     }
 
     private Person managed(final long patient) {

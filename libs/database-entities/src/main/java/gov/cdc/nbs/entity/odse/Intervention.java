@@ -3,14 +3,14 @@ package gov.cdc.nbs.entity.odse;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import java.time.Instant;
 
 @Getter
@@ -23,13 +23,12 @@ public class Intervention {
 
     @MapsId
     @OneToOne(
-        fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.REMOVE
-        },
-        optional = false
-    )
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.REMOVE
+            },
+            optional = false)
     @JoinColumn(name = "intervention_uid", nullable = false)
     private Act act;
 
@@ -192,8 +191,7 @@ public class Intervention {
     @Column(name = "electronic_ind")
     private Character electronicInd;
 
-    public Intervention() {
-    }
+    public Intervention() {}
 
     public Intervention(final long identifier, final String local) {
         this.id = identifier;

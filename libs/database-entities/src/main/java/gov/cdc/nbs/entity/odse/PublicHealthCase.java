@@ -1,15 +1,15 @@
 package gov.cdc.nbs.entity.odse;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,28 +24,26 @@ public class PublicHealthCase {
 
     @MapsId
     @OneToOne(
-        fetch = FetchType.LAZY,
-        optional = false,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true
-    )
+            fetch = FetchType.LAZY,
+            optional = false,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
+            },
+            orphanRemoval = true)
     @JoinColumn(name = "public_health_case_uid", nullable = false)
     private Act act;
 
     @OneToMany(
-        mappedBy = "subjectEntityPhcUid",
-        fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true
-    )
+            mappedBy = "subjectEntityPhcUid",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
+            },
+            orphanRemoval = true)
     private List<CtContact> subjectContacts;
 
     @Column(name = "activity_duration_amt", length = 20)
@@ -333,7 +331,7 @@ public class PublicHealthCase {
     }
 
     private List<CtContact> ensureSubjectContacts() {
-        if(this.subjectContacts == null) {
+        if (this.subjectContacts == null) {
             this.subjectContacts = new ArrayList<>();
         }
 

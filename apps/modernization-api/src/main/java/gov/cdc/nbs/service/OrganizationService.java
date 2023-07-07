@@ -3,8 +3,8 @@ package gov.cdc.nbs.service;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;

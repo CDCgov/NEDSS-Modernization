@@ -7,7 +7,7 @@ import gov.cdc.nbs.patient.RequestContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -23,22 +23,20 @@ public class PatientNameChangeService {
         Person patient = managed(request.patient());
 
         PersonName added = patient.add(
-            new PatientCommand.AddName(
-                request.patient(),
-                request.asOf(),
-                request.prefix(),
-                request.first(),
-                request.middle(),
-                request.secondMiddle(),
-                request.last(),
-                request.secondLast(),
-                request.suffix(),
-                request.degree(),
-                request.type(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.AddName(
+                        request.patient(),
+                        request.asOf(),
+                        request.prefix(),
+                        request.first(),
+                        request.middle(),
+                        request.secondMiddle(),
+                        request.last(),
+                        request.secondLast(),
+                        request.suffix(),
+                        request.degree(),
+                        request.type(),
+                        context.requestedBy(),
+                        context.requestedAt()));
 
         return new PatientNameAdded(added.getId().getPersonUid(), added.getId().getPersonNameSeq());
     }
@@ -48,36 +46,32 @@ public class PatientNameChangeService {
         Person patient = managed(input.patient());
 
         patient.update(
-            new PatientCommand.UpdateNameInfo(
-                input.patient(),
-                input.sequence(),
-                input.asOf(),
-                input.prefix(),
-                input.first(),
-                input.middle(),
-                input.secondMiddle(),
-                input.last(),
-                input.secondLast(),
-                input.suffix(),
-                input.degree(),
-                input.type(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.UpdateNameInfo(
+                        input.patient(),
+                        input.sequence(),
+                        input.asOf(),
+                        input.prefix(),
+                        input.first(),
+                        input.middle(),
+                        input.secondMiddle(),
+                        input.last(),
+                        input.secondLast(),
+                        input.suffix(),
+                        input.degree(),
+                        input.type(),
+                        context.requestedBy(),
+                        context.requestedAt()));
     }
 
     public void delete(final RequestContext context, final DeletePatientNameInput input) {
         Person patient = managed(input.patient());
 
         patient.delete(
-            new PatientCommand.DeleteNameInfo(
-                input.patient(),
-                input.sequence(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.DeleteNameInfo(
+                        input.patient(),
+                        input.sequence(),
+                        context.requestedBy(),
+                        context.requestedAt()));
     }
 
     private Person managed(final long patient) {

@@ -8,7 +8,7 @@ import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.util.List;
 
@@ -47,20 +47,19 @@ class PatientEthnicityUpdaterTest {
         service.update(context, changes);
 
         ArgumentCaptor<PatientCommand.UpdateEthnicityInfo> captor =
-            ArgumentCaptor.forClass(PatientCommand.UpdateEthnicityInfo.class);
+                ArgumentCaptor.forClass(PatientCommand.UpdateEthnicityInfo.class);
 
         verify(patient).update(captor.capture());
 
         PatientCommand.UpdateEthnicityInfo actual = captor.getValue();
 
         assertThat(actual)
-            .returns(121L, PatientCommand.UpdateEthnicityInfo::person)
-            .returns(Instant.parse("2012-03-03T10:15:30.00Z"), PatientCommand.UpdateEthnicityInfo::asOf)
-            .returns("ethnic-group-value", PatientCommand.UpdateEthnicityInfo::ethnicGroup)
-            .returns("unknown-reason-value", PatientCommand.UpdateEthnicityInfo::unknownReason)
-            .returns(131L, PatientCommand.UpdateEthnicityInfo::requester)
-            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientCommand.UpdateEthnicityInfo::requestedOn)
-        ;
+                .returns(121L, PatientCommand.UpdateEthnicityInfo::person)
+                .returns(Instant.parse("2012-03-03T10:15:30.00Z"), PatientCommand.UpdateEthnicityInfo::asOf)
+                .returns("ethnic-group-value", PatientCommand.UpdateEthnicityInfo::ethnicGroup)
+                .returns("unknown-reason-value", PatientCommand.UpdateEthnicityInfo::unknownReason)
+                .returns(131L, PatientCommand.UpdateEthnicityInfo::requester)
+                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientCommand.UpdateEthnicityInfo::requestedOn);
     }
 
     @Test
@@ -85,18 +84,17 @@ class PatientEthnicityUpdaterTest {
         service.update(context, changes);
 
         ArgumentCaptor<PatientCommand.AddDetailedEthnicity> captor =
-            ArgumentCaptor.forClass(PatientCommand.AddDetailedEthnicity.class);
+                ArgumentCaptor.forClass(PatientCommand.AddDetailedEthnicity.class);
 
         verify(patient).add(captor.capture());
 
         PatientCommand.AddDetailedEthnicity actual = captor.getValue();
 
         assertThat(actual)
-            .returns(121L, PatientCommand.AddDetailedEthnicity::person)
-            .returns("ethnicity-detail", PatientCommand.AddDetailedEthnicity::ethnicity)
-            .returns(131L, PatientCommand.AddDetailedEthnicity::requester)
-            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientCommand.AddDetailedEthnicity::requestedOn)
-        ;
+                .returns(121L, PatientCommand.AddDetailedEthnicity::person)
+                .returns("ethnicity-detail", PatientCommand.AddDetailedEthnicity::ethnicity)
+                .returns(131L, PatientCommand.AddDetailedEthnicity::requester)
+                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientCommand.AddDetailedEthnicity::requestedOn);
     }
 
     @Test
@@ -104,22 +102,18 @@ class PatientEthnicityUpdaterTest {
         Person patient = spy(new Person(121L, "local-id-value"));
 
         patient.add(
-            new PatientCommand.AddDetailedEthnicity(
-                121L,
-                "another-ethnicity-detail",
-                119L,
-                Instant.parse("2022-05-03T15:11:30Z")
-            )
-        );
+                new PatientCommand.AddDetailedEthnicity(
+                        121L,
+                        "another-ethnicity-detail",
+                        119L,
+                        Instant.parse("2022-05-03T15:11:30Z")));
 
         patient.add(
-            new PatientCommand.AddDetailedEthnicity(
-                121L,
-                "ethnicity-detail",
-                119L,
-                Instant.parse("2022-05-03T15:11:30Z")
-            )
-        );
+                new PatientCommand.AddDetailedEthnicity(
+                        121L,
+                        "ethnicity-detail",
+                        119L,
+                        Instant.parse("2022-05-03T15:11:30Z")));
 
         EntityManager entityManager = mock(EntityManager.class);
 
@@ -138,17 +132,16 @@ class PatientEthnicityUpdaterTest {
         service.update(context, changes);
 
         ArgumentCaptor<PatientCommand.RemoveDetailedEthnicity> captor =
-            ArgumentCaptor.forClass(PatientCommand.RemoveDetailedEthnicity.class);
+                ArgumentCaptor.forClass(PatientCommand.RemoveDetailedEthnicity.class);
 
         verify(patient).remove(captor.capture());
 
         PatientCommand.RemoveDetailedEthnicity actual = captor.getValue();
 
         assertThat(actual)
-            .returns(121L, PatientCommand.RemoveDetailedEthnicity::person)
-            .returns("ethnicity-detail", PatientCommand.RemoveDetailedEthnicity::ethnicity)
-            .returns(131L, PatientCommand.RemoveDetailedEthnicity::requester)
-            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientCommand.RemoveDetailedEthnicity::requestedOn)
-        ;
+                .returns(121L, PatientCommand.RemoveDetailedEthnicity::person)
+                .returns("ethnicity-detail", PatientCommand.RemoveDetailedEthnicity::ethnicity)
+                .returns(131L, PatientCommand.RemoveDetailedEthnicity::requester)
+                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientCommand.RemoveDetailedEthnicity::requestedOn);
     }
 }

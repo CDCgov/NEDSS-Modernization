@@ -1,7 +1,7 @@
 package gov.cdc.nbs.audit;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.time.Instant;
 
 @Embeddable
@@ -16,8 +16,7 @@ public class Added {
     @Column(name = "add_user_id")
     private Long addUserId;
 
-    protected Added() {
-    }
+    protected Added() {}
 
     public Added(final long who, final Instant when) {
         this(who, when, "Add");

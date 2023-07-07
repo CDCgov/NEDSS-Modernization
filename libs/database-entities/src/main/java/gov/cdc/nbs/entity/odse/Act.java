@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,14 +55,13 @@ public class Act {
     private List<ActRelationship> targetActRelationships;
 
     @OneToMany(
-        mappedBy = "sourceActUid",
-        fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        }
-    )
+            mappedBy = "sourceActUid",
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REMOVE
+            })
     private List<ActRelationship> actRelationships;
 
     public Act(final long identifier, final String classCd) {
@@ -85,7 +84,7 @@ public class Act {
     }
 
     private List<ActRelationship> ensureRelationships() {
-        if(this.actRelationships == null) {
+        if (this.actRelationships == null) {
             this.actRelationships = new ArrayList<>();
         }
         return this.actRelationships;
@@ -93,10 +92,9 @@ public class Act {
 
     public void addRelationship(final Act target, final String type) {
         ActRelationship relationship = new ActRelationship(
-            this,
-            target,
-            type
-        );
+                this,
+                target,
+                type);
         ensureRelationships().add(relationship);
     }
 }

@@ -7,7 +7,7 @@ import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -17,9 +17,8 @@ public class PatientMortalityChangeService {
     private final AddressIdentifierGenerator generator;
 
     public PatientMortalityChangeService(
-        final EntityManager entityManager,
-        final AddressIdentifierGenerator generator
-    ) {
+            final EntityManager entityManager,
+            final AddressIdentifierGenerator generator) {
         this.entityManager = entityManager;
         this.generator = generator;
     }
@@ -29,20 +28,18 @@ public class PatientMortalityChangeService {
         Person patient = managed(input.patient());
 
         patient.update(
-            new PatientCommand.UpdateMortality(
-                input.patient(),
-                input.asOf(),
-                input.deceased(),
-                input.deceasedOn(),
-                input.city(),
-                input.state(),
-                input.county(),
-                input.country(),
-                context.requestedBy(),
-                context.requestedAt()
-            ),
-            generator
-        );
+                new PatientCommand.UpdateMortality(
+                        input.patient(),
+                        input.asOf(),
+                        input.deceased(),
+                        input.deceasedOn(),
+                        input.city(),
+                        input.state(),
+                        input.county(),
+                        input.country(),
+                        context.requestedBy(),
+                        context.requestedAt()),
+                generator);
     }
 
     private Person managed(final long patient) {

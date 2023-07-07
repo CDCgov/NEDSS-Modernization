@@ -7,8 +7,8 @@ import gov.cdc.nbs.authentication.entity.AuthUser;
 import gov.cdc.nbs.authentication.entity.QAuthUser;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @Component
 class TestActiveUserCleaner {
@@ -27,17 +27,17 @@ class TestActiveUserCleaner {
     @Transactional
     void clean(final long starting) {
         this.factory.select(USER)
-            .from(USER)
-            .where(criteria(starting))
-            .fetch()
-            .forEach(this::remove);
+                .from(USER)
+                .where(criteria(starting))
+                .fetch()
+                .forEach(this::remove);
     }
 
     private BooleanExpression criteria(final long starting) {
         BooleanExpression threshold = USER.nedssEntryId.goe(starting);
         return starting < 0
-            ? threshold.and(USER.id.lt(0))
-            : threshold;
+                ? threshold.and(USER.id.lt(0))
+                : threshold;
     }
 
     private void remove(final AuthUser user) {

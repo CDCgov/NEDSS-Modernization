@@ -41,12 +41,11 @@ dependencies {
     implementation libs.mssql.jdbc
 
     // querydsl
-    implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
     // blazebit for querydsl paging
     implementation libs.bundles.blaze.persistence.queryDSL
-    implementation libs.bundles.jackson
 
     // lombok
     compileOnly libs.lombok

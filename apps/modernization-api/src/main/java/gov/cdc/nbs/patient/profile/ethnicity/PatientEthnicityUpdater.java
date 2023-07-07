@@ -10,7 +10,7 @@ import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +22,8 @@ public class PatientEthnicityUpdater {
     private final PatientEventEmitter emitter;
 
     PatientEthnicityUpdater(
-        final EntityManager entityManager,
-        final PatientEventEmitter emitter
-    ) {
+            final EntityManager entityManager,
+            final PatientEventEmitter emitter) {
         this.entityManager = entityManager;
         this.emitter = emitter;
     }
@@ -35,66 +34,60 @@ public class PatientEthnicityUpdater {
         Person patient = managed(input.getPatient());
 
         patient.update(
-            new PatientCommand.UpdateEthnicityInfo(
-                input.getPatient(),
-                input.getAsOf(),
-                input.getEthnicGroup(),
-                input.getUnknownReason(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.UpdateEthnicityInfo(
+                        input.getPatient(),
+                        input.getAsOf(),
+                        input.getEthnicGroup(),
+                        input.getUnknownReason(),
+                        context.requestedBy(),
+                        context.requestedAt()));
 
         List<String> detailed = input.getDetailed();
 
         List<String> existing = patient.getEthnicity().ethnicities()
-            .stream()
-            .map(group -> group.getId().getEthnicGroupCd())
-            .toList();
+                .stream()
+                .map(group -> group.getId().getEthnicGroupCd())
+                .toList();
 
 
         ArrayList<String> added = new ArrayList<>(detailed);
         added.removeAll(existing);
 
         added.stream()
-            .map(detail -> asAdded(context, input.getPatient(), detail))
-            .forEach(patient::add);
+                .map(detail -> asAdded(context, input.getPatient(), detail))
+                .forEach(patient::add);
 
         ArrayList<String> removed = new ArrayList<>(existing);
         removed.removeAll(detailed);
 
         removed.stream()
-            .map(detail -> asRemove(context, input.getPatient(), detail))
-            .forEach(patient::remove);
+                .map(detail -> asRemove(context, input.getPatient(), detail))
+                .forEach(patient::remove);
 
 
         this.emitter.emit(asChanged(patient));
     }
 
     private PatientCommand.AddDetailedEthnicity asAdded(
-        final RequestContext context,
-        final long patient,
-        final String detailed
-        ) {
+            final RequestContext context,
+            final long patient,
+            final String detailed) {
         return new PatientCommand.AddDetailedEthnicity(
-            patient,
-            detailed,
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                patient,
+                detailed,
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private PatientCommand.RemoveDetailedEthnicity asRemove(
-        final RequestContext context,
-        final long patient,
-        final String detailed
-    ) {
+            final RequestContext context,
+            final long patient,
+            final String detailed) {
         return new PatientCommand.RemoveDetailedEthnicity(
-            patient,
-            detailed,
-            context.requestedBy(),
-            context.requestedAt()
-        );
+                patient,
+                detailed,
+                context.requestedBy(),
+                context.requestedAt());
     }
 
     private Person managed(final long patient) {
@@ -105,20 +98,19 @@ public class PatientEthnicityUpdater {
         PatientEthnicity ethnicity = patient.getEthnicity();
 
         List<String> detailed = ethnicity.ethnicities()
-            .stream()
-            .map(group -> group.getId().getEthnicGroupCd())
-            .toList();
+                .stream()
+                .map(group -> group.getId().getEthnicGroupCd())
+                .toList();
 
         return new PatientEvent.EthnicityChanged(
-          patient.getId(),
-            patient.getLocalId(),
-            ethnicity.asOf(),
-            ethnicity.ethnicGroup(),
-            ethnicity.unknownReason(),
-            detailed,
-            patient.getLastChgUserId(),
-            patient.getLastChgTime()
-        );
+                patient.getId(),
+                patient.getLocalId(),
+                ethnicity.asOf(),
+                ethnicity.ethnicGroup(),
+                ethnicity.unknownReason(),
+                detailed,
+                patient.getLastChgUserId(),
+                patient.getLastChgTime());
     }
 
 }

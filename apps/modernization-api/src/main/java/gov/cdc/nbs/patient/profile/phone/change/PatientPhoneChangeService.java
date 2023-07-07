@@ -8,7 +8,7 @@ import gov.cdc.nbs.patient.RequestContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -18,9 +18,8 @@ public class PatientPhoneChangeService {
     private final IdGeneratorService idGeneratorService;
 
     public PatientPhoneChangeService(
-        final EntityManager entityManager,
-        final IdGeneratorService idGeneratorService
-    ) {
+            final EntityManager entityManager,
+            final IdGeneratorService idGeneratorService) {
         this.entityManager = entityManager;
         this.idGeneratorService = idGeneratorService;
     }
@@ -29,22 +28,20 @@ public class PatientPhoneChangeService {
         Person patient = managed(input.patient());
 
         EntityLocatorParticipation added = patient.add(
-            new PatientCommand.AddPhone(
-                input.patient(),
-                generateNbsId(),
-                input.type(),
-                input.use(),
-                input.asOf(),
-                input.countryCode(),
-                input.number(),
-                input.extension(),
-                input.email(),
-                input.url(),
-                input.comment(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.AddPhone(
+                        input.patient(),
+                        generateNbsId(),
+                        input.type(),
+                        input.use(),
+                        input.asOf(),
+                        input.countryCode(),
+                        input.number(),
+                        input.extension(),
+                        input.email(),
+                        input.url(),
+                        input.comment(),
+                        context.requestedBy(),
+                        context.requestedAt()));
 
         return new PatientPhoneAdded(input.patient(), added.getId().getLocatorUid());
     }
@@ -58,22 +55,20 @@ public class PatientPhoneChangeService {
         Person patient = managed(input.patient());
 
         patient.update(
-            new PatientCommand.UpdatePhone(
-                input.patient(),
-                input.id(),
-                input.type(),
-                input.use(),
-                input.asOf(),
-                input.countryCode(),
-                input.number(),
-                input.extension(),
-                input.email(),
-                input.url(),
-                input.comment(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.UpdatePhone(
+                        input.patient(),
+                        input.id(),
+                        input.type(),
+                        input.use(),
+                        input.asOf(),
+                        input.countryCode(),
+                        input.number(),
+                        input.extension(),
+                        input.email(),
+                        input.url(),
+                        input.comment(),
+                        context.requestedBy(),
+                        context.requestedAt()));
 
     }
 
@@ -81,13 +76,11 @@ public class PatientPhoneChangeService {
         Person patient = managed(input.patient());
 
         patient.delete(
-            new PatientCommand.DeletePhone(
-                input.patient(),
-                input.id(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.DeletePhone(
+                        input.patient(),
+                        input.id(),
+                        context.requestedBy(),
+                        context.requestedAt()));
     }
 
     private Person managed(final long patient) {

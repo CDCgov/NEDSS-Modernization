@@ -3,7 +3,7 @@ springBoot = "3.1.0"
 assertj = "3.24.2"
 jackson = "2.14.2"
 queryDSL = "5.0.0"
-blaze-persistence = "1.6.8"
+blaze-persistence = "1.6.9"
 testcontainers = "1.17.6"
 cucumber = "7.8.0"
 jakarta = "3.1.0"
@@ -18,7 +18,7 @@ springBoot-web = { module = "org.springframework.boot:spring-boot-starter-web", 
 springBoot-graphql = { module = "org.springframework.boot:spring-boot-starter-graphql", version.ref = "springBoot" }
 spring-kafka = { module = "org.springframework.kafka:spring-kafka" }
 spring-kafka-test = { module = "org.springframework.kafka:spring-kafka-test" }
-spring-elasticsearch = { module = "org.springframework.data:spring-data-elasticsearch", version = "4.4.6" }
+spring-elasticsearch = { module = "org.springframework.data:spring-data-elasticsearch", version = "5.1.1" }
 spring-json = { module = "org.springframework.boot:spring-boot-starter-json", version.ref = "springBoot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
@@ -31,8 +31,8 @@ lombok = { module = "org.projectlombok:lombok" }
 mssql-jdbc = { module = "com.microsoft.sqlserver:mssql-jdbc", version = "10.2.1.jre17" }
 blaze-persistence-core-api = { module = "com.blazebit:blaze-persistence-core-api-jakarta", version.ref = "blaze-persistence" }
 blaze-persistence-core = { module = "com.blazebit:blaze-persistence-core-impl-jakarta", version.ref = "blaze-persistence" }
-blaze-persistence-queryDSL = { module = "com.blazebit:blaze-persistence-integration-querydsl-expressions", version.ref = "blaze-persistence" }
-blaze-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-6.0", version.ref = "blaze-persistence" }
+blaze-persistence-queryDSL = { module = "com.blazebit:blaze-persistence-integration-querydsl-expressions-jakarta", version.ref = "blaze-persistence" }
+blaze-persistence-hibernate = { module = "com.blazebit:blaze-persistence-integration-hibernate-6.2", version.ref = "blaze-persistence" }
 java-jwt = { module = "com.auth0:java-jwt", version = "4.2.0" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }

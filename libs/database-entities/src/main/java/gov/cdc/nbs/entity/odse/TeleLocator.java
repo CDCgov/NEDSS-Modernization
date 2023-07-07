@@ -4,10 +4,10 @@ import gov.cdc.nbs.patient.PatientCommand;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Getter
 @Setter
@@ -37,8 +37,7 @@ public class TeleLocator extends Locator {
     @Column(name = "user_affiliation_txt", length = 20)
     private String userAffiliationTxt;
 
-    public TeleLocator() {
-    }
+    public TeleLocator() {}
 
     public TeleLocator(final PatientCommand.AddPhoneNumber phoneNumber) {
         super(phoneNumber);
@@ -74,10 +73,10 @@ public class TeleLocator extends Locator {
     @Override
     public String toString() {
         return "TeleLocator{" +
-            "id=" + id +
-            ", emailAddress='" + emailAddress + '\'' +
-            ", extensionTxt='" + extensionTxt + '\'' +
-            ", phoneNbrTxt='" + phoneNbrTxt + '\'' +
-            '}';
+                "id=" + id +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", extensionTxt='" + extensionTxt + '\'' +
+                ", phoneNbrTxt='" + phoneNbrTxt + '\'' +
+                '}';
     }
 }

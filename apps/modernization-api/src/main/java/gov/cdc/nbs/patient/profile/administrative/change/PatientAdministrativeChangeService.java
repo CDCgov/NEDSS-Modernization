@@ -6,7 +6,7 @@ import gov.cdc.nbs.patient.RequestContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -22,14 +22,12 @@ public class PatientAdministrativeChangeService {
         Person patient = managed(input.patient());
 
         patient.update(
-            new PatientCommand.UpdateAdministrativeInfo(
-                input.patient(),
-                input.asOf(),
-                input.comment(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientCommand.UpdateAdministrativeInfo(
+                        input.patient(),
+                        input.asOf(),
+                        input.comment(),
+                        context.requestedBy(),
+                        context.requestedAt()));
     }
 
     private Person managed(final long patient) {

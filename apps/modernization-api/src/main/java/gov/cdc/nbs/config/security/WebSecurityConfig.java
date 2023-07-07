@@ -2,15 +2,15 @@ package gov.cdc.nbs.config.security;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
     private final ObjectMapper mapper;
@@ -38,19 +38,17 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeRequests()
-                .antMatchers(
+        return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((requests) -> requests.requestMatchers(
                         graphQLEndpoint,
                         "/encryption/*",
                         "/preparePatientDetails")
-                .authenticated()
-                .anyRequest().permitAll()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(this::writeErrorMessage)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
+                        .authenticated()
+                        .anyRequest().permitAll())
+                .sessionManagement(
+                        sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionConfig -> exceptionConfig.authenticationEntryPoint(this::writeErrorMessage))
                 .addFilterBefore(jwtFilter, RequestHeaderAuthenticationFilter.class)
                 .build();
     }

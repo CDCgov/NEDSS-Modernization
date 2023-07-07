@@ -7,7 +7,7 @@ import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -17,9 +17,8 @@ public class PatientBirthAndGenderChangeService {
     private final AddressIdentifierGenerator generator;
 
     public PatientBirthAndGenderChangeService(
-        final EntityManager entityManager,
-        final AddressIdentifierGenerator generator
-    ) {
+            final EntityManager entityManager,
+            final AddressIdentifierGenerator generator) {
         this.entityManager = entityManager;
         this.generator = generator;
     }
@@ -32,39 +31,35 @@ public class PatientBirthAndGenderChangeService {
 
         if (birth != null) {
             patient.update(
-                new PatientCommand.UpdateBirth(
-                    input.patient(),
-                    input.asOf(),
-                    birth.bornOn(),
-                    birth.gender(),
-                    birth.multipleBirth(),
-                    birth.birthOrder(),
-                    birth.city(),
-                    birth.state(),
-                    birth.county(),
-                    birth.country(),
-                    context.requestedBy(),
-                    context.requestedAt()
-                ),
-                generator
-            );
+                    new PatientCommand.UpdateBirth(
+                            input.patient(),
+                            input.asOf(),
+                            birth.bornOn(),
+                            birth.gender(),
+                            birth.multipleBirth(),
+                            birth.birthOrder(),
+                            birth.city(),
+                            birth.state(),
+                            birth.county(),
+                            birth.country(),
+                            context.requestedBy(),
+                            context.requestedAt()),
+                    generator);
         }
 
         UpdateBirthAndGender.Gender gender = input.gender();
 
         if (gender != null) {
             patient.update(
-                new PatientCommand.UpdateGender(
-                    input.patient(),
-                    input.asOf(),
-                    gender.current(),
-                    gender.unknownReason(),
-                    gender.preferred(),
-                    gender.additional(),
-                    context.requestedBy(),
-                    context.requestedAt()
-                )
-            );
+                    new PatientCommand.UpdateGender(
+                            input.patient(),
+                            input.asOf(),
+                            gender.current(),
+                            gender.unknownReason(),
+                            gender.preferred(),
+                            gender.additional(),
+                            context.requestedBy(),
+                            context.requestedAt()));
         }
     }
 

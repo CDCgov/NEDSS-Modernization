@@ -11,7 +11,7 @@ import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 public class PatientDeleter {
@@ -21,10 +21,9 @@ public class PatientDeleter {
     private final PatientEventEmitter emitter;
 
     public PatientDeleter(
-        final EntityManager entityManager,
-        final PatientAssociationCountFinder finder,
-        final PatientEventEmitter emitter
-    ) {
+            final EntityManager entityManager,
+            final PatientAssociationCountFinder finder,
+            final PatientEventEmitter emitter) {
         this.entityManager = entityManager;
         this.finder = finder;
         this.emitter = emitter;
@@ -32,9 +31,8 @@ public class PatientDeleter {
 
     @Transactional
     public void delete(
-        final RequestContext context,
-        final long patient
-    ) throws PatientException {
+            final RequestContext context,
+            final long patient) throws PatientException {
 
         Person found = this.entityManager.find(Person.class, patient);
 
@@ -43,22 +41,18 @@ public class PatientDeleter {
         }
 
         found.delete(
-            new PatientCommand.Delete(
-                patient,
-                context.requestedBy(),
-                context.requestedAt()
-            ),
-            finder
-        );
+                new PatientCommand.Delete(
+                        patient,
+                        context.requestedBy(),
+                        context.requestedAt()),
+                finder);
 
         this.emitter.emit(
-            new PatientEvent.Deleted(
-                found.getId(),
-                found.getLocalId(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                new PatientEvent.Deleted(
+                        found.getId(),
+                        found.getLocalId(),
+                        context.requestedBy(),
+                        context.requestedAt()));
     }
 
 

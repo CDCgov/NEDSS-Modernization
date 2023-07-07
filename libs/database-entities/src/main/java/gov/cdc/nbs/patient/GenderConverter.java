@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 import gov.cdc.nbs.message.enums.Gender;
 
 public class GenderConverter implements AttributeConverter<Gender, String> {

@@ -10,116 +10,115 @@ import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class DocumentMother {
 
-  private static final String DOCUMENT_CLASS = "DOC";
-  private static final String PERSON_CLASS = "PSN";
+    private static final String DOCUMENT_CLASS = "DOC";
+    private static final String PERSON_CLASS = "PSN";
 
-  private final MotherSettings settings;
-  private final TestUniqueIdGenerator idGenerator;
-  private final EntityManager entityManager;
-  private final TestDocumentCleaner cleaner;
+    private final MotherSettings settings;
+    private final TestUniqueIdGenerator idGenerator;
+    private final EntityManager entityManager;
+    private final TestDocumentCleaner cleaner;
 
-  private final TestDocuments documents;
+    private final TestDocuments documents;
 
-  DocumentMother(
-      final MotherSettings settings,
-      final TestUniqueIdGenerator idGenerator,
-      final EntityManager entityManager,
-      final TestDocumentCleaner cleaner,
-      final TestDocuments documents
-  ) {
-    this.settings = settings;
-    this.idGenerator = idGenerator;
-    this.entityManager = entityManager;
-    this.cleaner = cleaner;
-    this.documents = documents;
-  }
+    DocumentMother(
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestDocumentCleaner cleaner,
+            final TestDocuments documents) {
+        this.settings = settings;
+        this.idGenerator = idGenerator;
+        this.entityManager = entityManager;
+        this.cleaner = cleaner;
+        this.documents = documents;
+    }
 
-  void reset() {
-    this.cleaner.clean(this.settings.starting());
-    this.documents.reset();
-  }
+    void reset() {
+        this.cleaner.clean(this.settings.starting());
+        this.documents.reset();
+    }
 
-  /**
-   * Creates a Case Report associated with the given {@code patient}
-   *
-   * @param patient The identifier of the patient.
-   * @return A {@link NbsDocument} representing a Case Report associated with a patient.
-   */
-  NbsDocument caseReport(final long patient) {
-    //  create a document
-    NbsDocument document = new NbsDocument();
-    long identifier = idGenerator.next();
+    /**
+     * Creates a Case Report associated with the given {@code patient}
+     *
+     * @param patient The identifier of the patient.
+     * @return A {@link NbsDocument} representing a Case Report associated with a patient.
+     */
+    NbsDocument caseReport(final long patient) {
+        //  create a document
+        NbsDocument document = new NbsDocument();
+        long identifier = idGenerator.next();
 
-    document.setId(identifier);
-    document.setDocPayload("<?xml version=\"1.0\"?>");
-    document.setDocTypeCd("PHC236");
-    document.setLocalId(idGenerator.nextLocal(DOCUMENT_CLASS));
+        document.setId(identifier);
+        document.setDocPayload("<?xml version=\"1.0\"?>");
+        document.setDocTypeCd("PHC236");
+        document.setLocalId(idGenerator.nextLocal(DOCUMENT_CLASS));
 
-    document.setNbsInterfaceUid(227L);  // not sure what this refers to
+        document.setNbsInterfaceUid(227L); // not sure what this refers to
 
-    document.setSharedInd('F');
-    document.setVersionCtrlNbr((short) 1);
+        document.setSharedInd('F');
+        document.setVersionCtrlNbr((short) 1);
 
-    document.setRecordStatusCd("ACTIVE");
-    document.setRecordStatusTime(settings.createdOn());
-    document.setAddTime(settings.createdOn());
-    document.setAddUserId(settings.createdBy());
+        document.setRecordStatusCd("ACTIVE");
+        document.setRecordStatusTime(settings.createdOn());
+        document.setAddTime(settings.createdOn());
+        document.setAddUserId(settings.createdBy());
 
-    document.setNbsDocumentMetadataUid(metadatum());
+        document.setNbsDocumentMetadataUid(metadatum());
 
-    entityManager.persist(document);
+        entityManager.persist(document);
 
-    subjectOfDocument(patient, identifier);
+        subjectOfDocument(patient, identifier);
 
-    this.documents.available(document.getId());
+        this.documents.available(document.getId());
 
-    return document;
-  }
+        return document;
+    }
 
-  private Participation subjectOfDocument(final long patient, final long document) {
+    private Participation subjectOfDocument(final long patient, final long document) {
 
-    //  create the act
-    Act act = new Act();
-    act.setId(document);
-    act.setClassCd(DOCUMENT_CLASS);
-    act.setMoodCd("EVN");
+        //  create the act
+        Act act = new Act();
+        act.setId(document);
+        act.setClassCd(DOCUMENT_CLASS);
+        act.setMoodCd("EVN");
 
-    // create the participation
-    ParticipationId identifier = new ParticipationId(patient, document, "SubjOfDoc");
+        // create the participation
+        ParticipationId identifier = new ParticipationId(patient, document, "SubjOfDoc");
 
-    Participation participation = new Participation();
-    participation.setId(identifier);
-    participation.setActClassCd(DOCUMENT_CLASS);
-    participation.setSubjectClassCd(PERSON_CLASS);
+        Participation participation = new Participation();
+        participation.setId(identifier);
+        participation.setActClassCd(DOCUMENT_CLASS);
+        participation.setSubjectClassCd(PERSON_CLASS);
 
-    participation.setRecordStatusCd(RecordStatus.ACTIVE);
-    participation.setRecordStatusTime(settings.createdOn());
-    participation.setAddTime(settings.createdOn());
-    participation.setAddUserId(settings.createdBy());
-    participation.setActUid(act);
+        participation.setRecordStatusCd(RecordStatus.ACTIVE);
+        participation.setRecordStatusTime(settings.createdOn());
+        participation.setAddTime(settings.createdOn());
+        participation.setAddUserId(settings.createdBy());
+        participation.setActUid(act);
 
-    act.addParticipation(participation);
+        act.addParticipation(participation);
 
-    entityManager.persist(act);
+        entityManager.persist(act);
 
-    return participation;
-  }
+        return participation;
+    }
 
-  private NbsDocumentMetadatum metadatum() {
-    var ref = entityManager.find(NbsDocumentMetadatum.class,1003L);
-  if (ref == null){
-    var metadatum = new NbsDocumentMetadatum();
-    metadatum.setId(1003L);
-    metadatum.setXmlSchemaLocation("schemaLocation");
-    metadatum.setDocumentViewXsl("docViewXsl");
-    entityManager.persist(metadatum);
-    return metadatum;
-  } 
-  return ref;
-}
+    private NbsDocumentMetadatum metadatum() {
+        var ref = entityManager.find(NbsDocumentMetadatum.class, 1003L);
+        if (ref == null) {
+            var metadatum = new NbsDocumentMetadatum();
+            metadatum.setId(1003L);
+            metadatum.setXmlSchemaLocation("schemaLocation");
+            metadatum.setDocumentViewXsl("docViewXsl");
+            entityManager.persist(metadatum);
+            return metadatum;
+        }
+        return ref;
+    }
 }

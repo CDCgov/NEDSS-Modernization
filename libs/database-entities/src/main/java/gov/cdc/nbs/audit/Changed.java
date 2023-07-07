@@ -1,7 +1,7 @@
 package gov.cdc.nbs.audit;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.time.Instant;
 
 @Embeddable
@@ -16,8 +16,7 @@ public class Changed {
     @Column(name = "last_chg_user_id")
     private Long lastChgUserId;
 
-    protected Changed() {
-    }
+    protected Changed() {}
 
     public Changed(final long who, final Instant when, final String why) {
         this.lastChgUserId = who;

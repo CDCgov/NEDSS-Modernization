@@ -7,72 +7,71 @@ import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class ContactTracingMother {
 
-  private static final String TRACING_CLASS = "CON";
+    private static final String TRACING_CLASS = "CON";
 
-  private final MotherSettings settings;
-  private final TestUniqueIdGenerator idGenerator;
-  private final EntityManager entityManager;
-  private final TestContactTracings tracings;
+    private final MotherSettings settings;
+    private final TestUniqueIdGenerator idGenerator;
+    private final EntityManager entityManager;
+    private final TestContactTracings tracings;
 
-  private final TestContactTracingCleaner cleaner;
+    private final TestContactTracingCleaner cleaner;
 
-  ContactTracingMother(
-      final MotherSettings settings,
-      final TestUniqueIdGenerator idGenerator,
-      final EntityManager entityManager,
-      final TestContactTracings tracings,
-      final TestContactTracingCleaner cleaner
-  ) {
-    this.settings = settings;
-    this.idGenerator = idGenerator;
-    this.entityManager = entityManager;
-    this.tracings = tracings;
-    this.cleaner = cleaner;
-  }
+    ContactTracingMother(
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestContactTracings tracings,
+            final TestContactTracingCleaner cleaner) {
+        this.settings = settings;
+        this.idGenerator = idGenerator;
+        this.entityManager = entityManager;
+        this.tracings = tracings;
+        this.cleaner = cleaner;
+    }
 
-  void reset() {
-    this.cleaner.clean(settings.starting());
-    this.tracings.reset();
-  }
+    void reset() {
+        this.cleaner.clean(settings.starting());
+        this.tracings.reset();
+    }
 
-  void namedByPatient(final long investigation, final long patient, final long named) {
-    CtContact tracing = new CtContact();
-    long identifier = idGenerator.next();
+    void namedByPatient(final long investigation, final long patient, final long named) {
+        CtContact tracing = new CtContact();
+        long identifier = idGenerator.next();
 
-    tracing.setId(identifier);
-    tracing.setLocalId(idGenerator.nextLocal(TRACING_CLASS));
+        tracing.setId(identifier);
+        tracing.setLocalId(idGenerator.nextLocal(TRACING_CLASS));
 
-    tracing.setVersionCtrlNbr((short)1);
-    tracing.setRecordStatusCd("ACTIVE");
-    tracing.setRecordStatusTime(settings.createdOn());
-    tracing.setAddUserId(settings.createdBy());
-    tracing.setAddTime(settings.createdOn());
-    tracing.setLastChgUserId(settings.createdBy());
-    tracing.setLastChgTime(settings.createdOn());
+        tracing.setVersionCtrlNbr((short) 1);
+        tracing.setRecordStatusCd("ACTIVE");
+        tracing.setRecordStatusTime(settings.createdOn());
+        tracing.setAddUserId(settings.createdBy());
+        tracing.setAddTime(settings.createdOn());
+        tracing.setLastChgUserId(settings.createdBy());
+        tracing.setLastChgTime(settings.createdOn());
 
-    PublicHealthCase publicHealthCase = lookupInvestigation(investigation);
+        PublicHealthCase publicHealthCase = lookupInvestigation(investigation);
 
-    tracing.setSubjectEntityPhcUid(publicHealthCase);
-    tracing.setSubjectNBSEntityUid(lookupPatient(patient));
-    tracing.setContactNBSEntityUid(lookupPatient(named));
+        tracing.setSubjectEntityPhcUid(publicHealthCase);
+        tracing.setSubjectNBSEntityUid(lookupPatient(patient));
+        tracing.setContactNBSEntityUid(lookupPatient(named));
 
-    this.entityManager.persist(tracing);
+        this.entityManager.persist(tracing);
 
-    publicHealthCase.addSubjectContact(tracing);
+        publicHealthCase.addSubjectContact(tracing);
 
-    this.tracings.available(identifier);
-  }
+        this.tracings.available(identifier);
+    }
 
-  private PublicHealthCase lookupInvestigation(final long identifier) {
-    return this.entityManager.getReference(PublicHealthCase.class, identifier);
-  }
+    private PublicHealthCase lookupInvestigation(final long identifier) {
+        return this.entityManager.getReference(PublicHealthCase.class, identifier);
+    }
 
-  private NBSEntity lookupPatient(final long identifier) {
-    return this.entityManager.getReference(NBSEntity.class, identifier);
-  }
+    private NBSEntity lookupPatient(final long identifier) {
+        return this.entityManager.getReference(NBSEntity.class, identifier);
+    }
 }

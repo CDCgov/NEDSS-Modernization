@@ -6,18 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -109,14 +109,12 @@ public abstract class EntityLocatorParticipation {
     @Column(name = "as_of_date")
     protected Instant asOfDate;
 
-    protected EntityLocatorParticipation() {
-    }
+    protected EntityLocatorParticipation() {}
 
     protected EntityLocatorParticipation(
             final PatientCommand command,
             final NBSEntity nbs,
-            final EntityLocatorParticipationId identifier
-    ) {
+            final EntityLocatorParticipationId identifier) {
         this.id = identifier;
         this.nbsEntity = nbs;
 

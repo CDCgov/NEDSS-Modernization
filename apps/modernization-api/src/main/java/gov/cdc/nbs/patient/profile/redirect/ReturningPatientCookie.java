@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.redirect;
 
 import org.springframework.http.HttpHeaders;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 
 public record ReturningPatientCookie(String patient) {

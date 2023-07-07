@@ -10,7 +10,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 public class PatientProfileReturningRedirectionSteps {
 
@@ -39,16 +39,13 @@ public class PatientProfileReturningRedirectionSteps {
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
         activeResponse.active(
-            mvc
-                .perform(
-                    MockMvcRequestBuilders.get("/nbs/redirect/patientProfile/return")
-                        .cookie(session.asCookie())
-                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient))
-                        )
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc
+                        .perform(
+                                MockMvcRequestBuilders.get("/nbs/redirect/patientProfile/return")
+                                        .cookie(session.asCookie())
+                                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient))))
+                        .andReturn()
+                        .getResponse());
     }
 
     @When("Returning to a Patient Profile {string} tab")
@@ -59,15 +56,12 @@ public class PatientProfileReturningRedirectionSteps {
         SessionCookie session = activeSession.maybeActive().orElse(new SessionCookie(null));
 
         activeResponse.active(
-            mvc
-                .perform(
-                    MockMvcRequestBuilders.get("/nbs/redirect/patientProfile/" +tab +"/return")
-                        .cookie(session.asCookie())
-                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient))
-                        )
-                )
-                .andReturn()
-                .getResponse()
-        );
+                mvc
+                        .perform(
+                                MockMvcRequestBuilders.get("/nbs/redirect/patientProfile/" + tab + "/return")
+                                        .cookie(session.asCookie())
+                                        .cookie(new Cookie("Returning-Patient", String.valueOf(patient))))
+                        .andReturn()
+                        .getResponse());
     }
 }

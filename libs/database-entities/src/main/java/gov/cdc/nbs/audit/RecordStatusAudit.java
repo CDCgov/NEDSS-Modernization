@@ -1,7 +1,7 @@
 package gov.cdc.nbs.audit;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.time.Instant;
 
 @Embeddable
@@ -15,8 +15,7 @@ public class RecordStatusAudit {
     private Instant recordStatusTime;
 
 
-    protected RecordStatusAudit() {
-    }
+    protected RecordStatusAudit() {}
 
     public RecordStatusAudit(final Instant when) {
         this.recordStatusCd = "ACTIVE";

@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 import gov.cdc.nbs.patient.profile.redirect.ReturningPatientCookie;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Component
@@ -32,8 +32,8 @@ class IncomingPatientIdentifierResolver {
 
     Optional<Long> fromReturningPatient(final HttpServletRequest request) {
         return ReturningPatientCookie.resolve(request.getCookies())
-            .map(ReturningPatientCookie::patient)
-            .flatMap(IncomingPatientIdentifierResolver::maybeLong);
+                .map(ReturningPatientCookie::patient)
+                .flatMap(IncomingPatientIdentifierResolver::maybeLong);
     }
 
 

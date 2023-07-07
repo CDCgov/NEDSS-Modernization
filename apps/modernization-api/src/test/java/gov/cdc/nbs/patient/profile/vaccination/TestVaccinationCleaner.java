@@ -7,7 +7,7 @@ import gov.cdc.nbs.entity.odse.QIntervention;
 import gov.cdc.nbs.patient.ParticipationCleaner;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class TestVaccinationCleaner {
@@ -19,10 +19,9 @@ class TestVaccinationCleaner {
     private final ParticipationCleaner participationCleaner;
 
     TestVaccinationCleaner(
-        final EntityManager entityManager,
-        final JPAQueryFactory factory,
-        final ParticipationCleaner participationCleaner
-    ) {
+            final EntityManager entityManager,
+            final JPAQueryFactory factory,
+            final ParticipationCleaner participationCleaner) {
         this.entityManager = entityManager;
         this.factory = factory;
         this.participationCleaner = participationCleaner;
@@ -30,17 +29,17 @@ class TestVaccinationCleaner {
 
     void clean(final long starting) {
         this.factory.select(TABLE)
-            .from(TABLE)
-            .where(criteria(starting))
-            .fetch()
-            .forEach(this::remove);
+                .from(TABLE)
+                .where(criteria(starting))
+                .fetch()
+                .forEach(this::remove);
     }
 
     private BooleanExpression criteria(final long starting) {
         BooleanExpression threshold = TABLE.id.goe(starting);
         return starting < 0
-            ? threshold.and(TABLE.id.lt(0))
-            : threshold;
+                ? threshold.and(TABLE.id.lt(0))
+                : threshold;
     }
 
     private void remove(final Intervention intervention) {

@@ -6,7 +6,7 @@ import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 public class PatientSearchIndexer {
@@ -15,9 +15,8 @@ public class PatientSearchIndexer {
     private final ElasticsearchPersonRepository repository;
 
     public PatientSearchIndexer(
-        final EntityManager entityManager,
-        final ElasticsearchPersonRepository repository
-    ) {
+            final EntityManager entityManager,
+            final ElasticsearchPersonRepository repository) {
         this.entityManager = entityManager;
         this.repository = repository;
     }

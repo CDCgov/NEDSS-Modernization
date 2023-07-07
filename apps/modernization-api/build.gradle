@@ -42,33 +42,11 @@ dependencies {
     implementation libs.mssql.jdbc
 
     // querydsl
-    implementation libs.bundles.queryDSL
-    //annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
-
-    //implementation "com.querydsl:querydsl-apt:5.0.0:jakarta"
-    implementation "com.querydsl:querydsl-core:5.0.0"
-    implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
-    implementation "jakarta.servlet:jakarta.servlet-api:6.0.0"
-
-    //implementation 'com.querydsl:querydsl-jpa:5.0.0;jakarta'
-    implementation "org.hibernate.orm:hibernate-core:6.1.4"
-    implementation 'org.springframework.boot:spring-boot-starter-jpa:3.1.0'
-    annotationProcessor('org.springframework.boot:spring-boot-starter-jpa:3.1.0')
-
-    annotationProcessor group:'com.querydsl', name:'querydsl-apt', version:'5.0.0', classifier:'jakarta'
-    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
-
-    //annotationProcessor("com.querydsl:querydsl-jpa:5.0.0:jakarta" )
-    //annotationProcessor("jakarta.persistence:jakarta.persistence-api:3.1.0")
-    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-
-    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta" )
-
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
     // blazebit for querydsl paging
     implementation libs.bundles.blaze.persistence.queryDSL
-    implementation libs.bundles.jackson
-
 
     // elasticsearch
     implementation libs.bundles.elasticsearch

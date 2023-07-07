@@ -2,8 +2,8 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.patient.PatientCommand;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import java.time.Instant;
 
 @MappedSuperclass

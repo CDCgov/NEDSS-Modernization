@@ -10,7 +10,7 @@ import gov.cdc.nbs.identity.TestUniqueIdGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class MorbidityReportMother {
@@ -29,12 +29,11 @@ class MorbidityReportMother {
     private final TestMorbidityReports reports;
 
     MorbidityReportMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestMorbidityCleaner cleaner,
-        final TestMorbidityReports reports
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestMorbidityCleaner cleaner,
+            final TestMorbidityReports reports) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;

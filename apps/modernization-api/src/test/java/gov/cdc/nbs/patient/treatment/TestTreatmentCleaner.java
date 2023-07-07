@@ -7,8 +7,8 @@ import gov.cdc.nbs.entity.odse.QTreatment;
 import gov.cdc.nbs.entity.odse.Treatment;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @Component
 class TestTreatmentCleaner {
@@ -25,17 +25,17 @@ class TestTreatmentCleaner {
     @Transactional
     void clean(final long starting) {
         this.factory.select(TREATMENT)
-            .from(TREATMENT)
-            .where(criteria(starting))
-            .fetch()
-            .forEach(this::remove);
+                .from(TREATMENT)
+                .where(criteria(starting))
+                .fetch()
+                .forEach(this::remove);
     }
 
     private BooleanExpression criteria(final long starting) {
         BooleanExpression threshold = TREATMENT.id.goe(starting);
         return starting < 0
-            ? threshold.and(TREATMENT.id.lt(0))
-            : threshold;
+                ? threshold.and(TREATMENT.id.lt(0))
+                : threshold;
     }
 
     private void remove(final Treatment treatment) {

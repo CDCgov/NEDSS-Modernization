@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 class PatientProfileIncomingRedirector {
@@ -18,7 +18,7 @@ class PatientProfileIncomingRedirector {
     }
 
     /**
-     * Receives proxied View Patient Profile requests from Classic NBS.  POST requests from Patient Profile typically
+     * Receives proxied View Patient Profile requests from Classic NBS. POST requests from Patient Profile typically
      * include the patient identifier in tas a query parameter.
      *
      * @param request The {@link HttpServletRequest} from Classic NBS

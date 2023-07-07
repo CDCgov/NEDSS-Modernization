@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @ApiIgnore
 @RestController
@@ -24,20 +24,18 @@ class SubmitLabReportRedirector {
     private final ModernizedPatientProfileRedirectResolver resolver;
 
     SubmitLabReportRedirector(
-        @Qualifier("classic") final RestTemplate template,
-        ModernizedPatientProfileRedirectResolver resolver) {
+            @Qualifier("classic") final RestTemplate template,
+            ModernizedPatientProfileRedirectResolver resolver) {
         this.template = template;
         this.resolver = resolver;
     }
 
     @PostMapping(
-        path = "/nbs/redirect/patient/report/lab/submit",
-        consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
-    )
+            path = "/nbs/redirect/patient/report/lab/submit",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     ResponseEntity<Void> submitted(
-        final HttpServletRequest request,
-        @RequestParam final MultiValueMap<String, String> data
-    ) {
+            final HttpServletRequest request,
+            @RequestParam final MultiValueMap<String, String> data) {
 
         createLabReport(data);
 
@@ -46,9 +44,9 @@ class SubmitLabReportRedirector {
 
     private void createLabReport(final MultiValueMap<String, String> data) {
         RequestEntity<MultiValueMap<String, String>> request = RequestEntity
-            .post(LOCATION)
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(data);
+                .post(LOCATION)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(data);
 
         this.template.exchange(request, Void.class);
     }

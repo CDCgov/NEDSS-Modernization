@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -60,13 +60,11 @@ public class PatientProfileRaceChangeSteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual.getRaces())
-            .anySatisfy(
-                race -> assertThat(race)
-                    .returns(input.getAsOf(), PersonRace::getAsOfDate)
-                    .returns(input.getCategory(), PersonRace::getRaceCategoryCd)
-                    .returns(input.getCategory(), PersonRace::getRaceCd)
-            )
-        ;
+                .anySatisfy(
+                        race -> assertThat(race)
+                                .returns(input.getAsOf(), PersonRace::getAsOfDate)
+                                .returns(input.getCategory(), PersonRace::getRaceCategoryCd)
+                                .returns(input.getCategory(), PersonRace::getRaceCd));
     }
 
     @When("a patient's race is changed")
@@ -75,10 +73,10 @@ public class PatientProfileRaceChangeSteps {
         PatientIdentifier patient = patients.one();
 
         PersonRace existing = this.entityManager.find(Person.class, patients.one().id())
-            .getRaces()
-            .stream()
-            .findFirst()
-            .orElseThrow();
+                .getRaces()
+                .stream()
+                .findFirst()
+                .orElseThrow();
 
         input = new RaceInput();
         input.setPatient(patient.id());
@@ -95,10 +93,10 @@ public class PatientProfileRaceChangeSteps {
         Person patient = this.entityManager.find(Person.class, patients.one().id());
 
         this.delete = patient.getRaces()
-            .stream()
-            .findFirst()
-            .map(race -> new DeletePatientRace(patient.getId(), patient.getRaceCategoryCd()))
-            .orElseThrow();
+                .stream()
+                .findFirst()
+                .map(race -> new DeletePatientRace(patient.getId(), patient.getRaceCategoryCd()))
+                .orElseThrow();
 
         this.controller.delete(this.delete);
     }
@@ -111,23 +109,21 @@ public class PatientProfileRaceChangeSteps {
         Person actual = this.entityManager.find(Person.class, patient.id());
 
         assertThat(actual.getRaces())
-            .noneSatisfy(
-                race -> assertThat(race)
-                    .returns(delete.category(), PersonRace::getRaceCategoryCd)
-                    .returns(delete.category(), PersonRace::getRaceCd)
-            )
-        ;
+                .noneSatisfy(
+                        race -> assertThat(race)
+                                .returns(delete.category(), PersonRace::getRaceCategoryCd)
+                                .returns(delete.category(), PersonRace::getRaceCd));
     }
 
     @Then("I am unable to add a patient's race")
     public void i_am_unable_to_add_a_patient_ethnicity() {
         assertThatThrownBy(() -> controller.add(input))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to change a patient's race")
     public void i_am_unable_to_change_a_patient_ethnicity() {
         assertThatThrownBy(() -> controller.update(input))
-            .isInstanceOf(AccessDeniedException.class);
+                .isInstanceOf(AccessDeniedException.class);
     }
 }

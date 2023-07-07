@@ -5,7 +5,7 @@ import static gov.cdc.nbs.util.Constants.DATE_PATTERN;
 import java.time.Instant;
 import java.util.List;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 import gov.cdc.nbs.patient.search.ElasticsearchGenderConverter;
 import gov.cdc.nbs.patient.search.ElasticsearchSuffixConverter;
 import org.springframework.data.elasticsearch.annotations.Document;
