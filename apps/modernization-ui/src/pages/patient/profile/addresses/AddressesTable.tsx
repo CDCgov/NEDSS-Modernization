@@ -21,7 +21,7 @@ import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
-import { AlertType } from 'pages/patientProfile/Demographics';
+import { useAlert } from 'context/alert/useAlert';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -73,10 +73,10 @@ const resolveInitialEntry = (patient: string): NewAddressEntry => ({
 
 type Props = {
     patient: string;
-    handleAlert?: (data: AlertType) => void;
 };
 
-export const AddressesTable = ({ patient, handleAlert }: Props) => {
+export const AddressesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -149,7 +149,11 @@ export const AddressesTable = ({ patient, handleAlert }: Props) => {
                 }
             })
                 .then(() => {
-                    handleAlert?.({ type: 'Added', table: 'Address' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added address`
+                    });
                     refetch();
                 })
                 .then(actions.reset);
@@ -181,7 +185,11 @@ export const AddressesTable = ({ patient, handleAlert }: Props) => {
             })
                 .then(() => {
                     refetch();
-                    handleAlert?.({ type: 'Updated', table: 'Address' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated address`
+                    });
                 })
                 .then(actions.reset);
         }
@@ -199,9 +207,10 @@ export const AddressesTable = ({ patient, handleAlert }: Props) => {
             })
                 .then(() => {
                     refetch();
-                    handleAlert?.({
-                        type: 'Deleted',
-                        table: 'Address'
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted address`
                     });
                 })
                 .then(actions.reset);

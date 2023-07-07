@@ -6,11 +6,10 @@ import { useFindPatientProfileEthnicity } from './useFindPatientProfileMortality
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
-import { AlertType } from 'pages/patientProfile/Demographics';
+import { useAlert } from 'context/alert/useAlert';
 
 type Props = {
     patient: string;
-    handleAlert?: (data: AlertType) => void;
 };
 
 const initialEntry = {
@@ -43,7 +42,8 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     unknownReason: maybeId(ethnicity?.unknownReason),
     detailed: maybeIds(ethnicity?.detailed)
 });
-export const Ethnicity = ({ patient, handleAlert }: Props) => {
+export const Ethnicity = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
@@ -56,7 +56,11 @@ export const Ethnicity = ({ patient, handleAlert }: Props) => {
     const handleUpdate = () => {
         refetch();
         isEditing(false);
-        handleAlert?.({ type: 'Updated', table: 'Ethnicity' });
+        showAlert({
+            type: 'success',
+            header: 'success',
+            message: `Updated ethnicity`
+        });
     };
 
     const [fetchProfile, { refetch }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });
