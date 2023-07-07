@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset.read;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -84,7 +85,7 @@ public class ReadValueSetSteps {
 	public void a_value_sets_should_not_be_returned() {
 		Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
 		assertNotNull(results);
-		assertTrue(results.getSize() == 0);
+		assertEquals(results.getSize(), 0);
 
 	}
 

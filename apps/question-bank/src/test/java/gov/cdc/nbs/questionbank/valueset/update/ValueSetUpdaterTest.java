@@ -19,7 +19,7 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 
-public class ValueSetUpdaterTest {
+ class ValueSetUpdaterTest {
 
 	@Mock
 	ValueSetRepository valueSetRepository;

@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.valueset.response;
 
 import org.springframework.http.HttpStatus;
 
-import gov.cdc.nbs.questionbank.entity.CodesetId;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
