@@ -12,9 +12,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.management.BadAttributeValueExpException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PageRuleControllerTest {
@@ -37,14 +37,27 @@ public class PageRuleControllerTest {
         assertEquals(999L,ruleResponse.ruleId());
     }
 
+
     @Test
-    public void shouldReturnErrorCreateRuleResponse() throws Exception {
+    public void shouldDeleteRuleId(){
+        Long ruleId= 99L;
+        NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+        Mockito.when(pageRuleService.deletePageRule(99L)).thenReturn(new CreateRuleResponse(ruleId,"Rule Successfully Deleted"));
+        Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
+        CreateRuleResponse ruleResponse= pageRuleController.deletePageRule(ruleId);
+        assertNotNull(ruleResponse);
+    }
+
+    @Test
+    public void shouldUpdateRule() throws BadAttributeValueExpException {
+        Long ruleId= 99L;
+        Long userId= 123L;
         CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
         NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest)).thenThrow(Exception.class);
+        Mockito.when(pageRuleService.updatePageRule(ruleId,ruleRequest,userId)).thenReturn(new CreateRuleResponse(ruleId,"Rule Successfully Updated"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
-        assertNull(ruleResponse.ruleId());
+        CreateRuleResponse ruleResponse= pageRuleController.updatePageRule(ruleId,ruleRequest);
+        assertNotNull(ruleResponse);
     }
 
 }
