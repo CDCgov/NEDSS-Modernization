@@ -43,10 +43,10 @@ public class ProgramAreaFinderSteps {
         assertFalse(programAreas.isEmpty());
 
         // test-db contains STD program area, find and validate
-        ProgramArea std = programAreas.stream().filter(pa -> pa.code().equals("STD")).findFirst().orElseThrow();
+        ProgramArea std = programAreas.stream().filter(pa -> pa.value().equals("STD")).findFirst().orElseThrow();
 
-        assertEquals("STD", std.code());
-        assertEquals("STD", std.description());
+        assertEquals("STD", std.value());
+        assertEquals("STD", std.display());
         assertEquals(15, std.nbsId().intValue());
         assertEquals("Active", std.status());
     }
