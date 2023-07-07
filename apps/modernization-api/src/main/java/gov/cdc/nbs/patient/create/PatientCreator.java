@@ -1,11 +1,8 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -21,15 +18,18 @@ public class PatientCreator {
     private final PatientIdentifierGenerator patientIdentifierGenerator;
     private final IdGeneratorService idGeneratorService;
     private final EntityManager entityManager;
+    private final PatientCreatedEmitter emitter;
 
     PatientCreator(
         final PatientIdentifierGenerator patientIdentifierGenerator,
         final IdGeneratorService idGenerator,
-        final EntityManager entityManager
+        final EntityManager entityManager,
+        final PatientCreatedEmitter emitter
     ) {
         this.patientIdentifierGenerator = patientIdentifierGenerator;
         this.idGeneratorService = idGenerator;
         this.entityManager = entityManager;
+        this.emitter = emitter;
     }
 
     @Transactional
@@ -38,31 +38,35 @@ public class PatientCreator {
 
         Person person = new Person(asAdd(context, identifier, input));
 
+        Instant asOf = input.getAsOf();
+
         input.getNames().stream()
-            .map(name -> asName(context, identifier, name))
+            .map(name -> asName(context, identifier, asOf, name))
             .forEach(person::add);
 
         input.getRaces().stream()
-            .map(race -> asRace(context, identifier, input.getAsOf(), race))
+            .map(race -> asRace(context, identifier, asOf, race))
             .forEach(person::add);
 
         input.getAddresses().stream()
-            .map(address -> asAddress(context, identifier, address))
+            .map(address -> asAddress(context, identifier, asOf, address))
             .forEach(person::add);
 
         input.getPhoneNumbers().stream()
-            .map(phoneNumber -> asPhoneNumber(context, identifier, phoneNumber))
+            .map(phoneNumber -> asPhoneNumber(context, identifier, asOf, phoneNumber))
             .forEach(person::add);
 
         input.getEmailAddresses().stream()
-            .map(emailAddress -> asEmailAddress(context, identifier, emailAddress))
+            .map(emailAddress -> asEmailAddress(context, identifier, asOf, emailAddress))
             .forEach(person::add);
 
         input.getIdentifications().stream()
-            .map(identification -> asIdentification(context, identifier, identification))
+            .map(identification -> asIdentification(context, identifier, asOf, identification))
             .forEach(person::add);
 
         this.entityManager.persist(person);
+
+        this.emitter.created(person);
 
         return identifier;
     }
@@ -93,15 +97,19 @@ public class PatientCreator {
     private PatientCommand.AddName asName(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.Name name
     ) {
+        String suffix = name.getSuffix() == null ? null : name.getSuffix().value();
+        String type = name.getUse() == null ? null : name.getUse().name();
         return new PatientCommand.AddName(
             identifier.id(),
+            asOf,
             name.getFirst(),
             name.getMiddle(),
             name.getLast(),
-            name.getSuffix(),
-            name.getUse(),
+            suffix,
+            type,
             context.requestedBy(),
             context.requestedAt()
         );
@@ -117,7 +125,6 @@ public class PatientCreator {
             identifier.id(),
             asOf,
             race,
-            race,
             context.requestedBy(),
             context.requestedAt()
         );
@@ -126,18 +133,20 @@ public class PatientCreator {
     private PatientCommand.AddAddress asAddress(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.PostalAddress address
     ) {
         return new PatientCommand.AddAddress(
             identifier.id(),
             generateNbsId(),
+            asOf,
             address.getStreetAddress1(),
             address.getStreetAddress2(),
-            new City(address.getCity()),
+            address.getCity(),
             address.getState(),
             address.getZip(),
-            new County(address.getCounty()),
-            new Country(address.getCountry()),
+            address.getCounty(),
+            address.getCountry(),
             address.getCensusTract(),
             context.requestedBy(),
             context.requestedAt()
@@ -147,16 +156,18 @@ public class PatientCreator {
     private PatientCommand.AddPhoneNumber asPhoneNumber(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.PhoneNumber phoneNumber
     ) {
 
         return new PatientCommand.AddPhoneNumber(
             identifier.id(),
             generateNbsId(),
-            phoneNumber.getNumber(),
-            phoneNumber.getExtension(),
+            asOf,
             phoneNumber.getType(),
             phoneNumber.getUse(),
+            phoneNumber.getNumber(),
+            phoneNumber.getExtension(),
             context.requestedBy(),
             context.requestedAt()
         );
@@ -165,11 +176,13 @@ public class PatientCreator {
     private PatientCommand.AddEmailAddress asEmailAddress(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final String emailAddress
     ) {
         return new PatientCommand.AddEmailAddress(
             identifier.id(),
             generateNbsId(),
+            asOf,
             emailAddress,
             context.requestedBy(),
             context.requestedAt()
@@ -179,10 +192,12 @@ public class PatientCreator {
     private PatientCommand.AddIdentification asIdentification(
         final RequestContext context,
         final PatientIdentifier identifier,
+        final Instant asOf,
         final PatientInput.Identification identification
     ) {
         return new PatientCommand.AddIdentification(
             identifier.id(),
+            asOf,
             identification.getValue(),
             identification.getAuthority(),
             identification.getType(),
@@ -195,4 +210,5 @@ public class PatientCreator {
         var generatedId = idGeneratorService.getNextValidId(IdGeneratorService.EntityType.NBS);
         return generatedId.getId();
     }
+
 }

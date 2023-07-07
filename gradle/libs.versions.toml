@@ -7,6 +7,8 @@ blaze-persistence = "1.6.8"
 testcontainers = "1.17.6"
 cucumber = "7.8.0"
 jakarta = "3.1.0"
+validation = "2.1.0.Final"
+
 [libraries]
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 mockito-inline = { module = "org.mockito:mockito-inline", version = "4.11.0" }
@@ -20,7 +22,7 @@ spring-elasticsearch = { module = "org.springframework.data:spring-data-elastics
 spring-json = { module = "org.springframework.boot:spring-boot-starter-json", version.ref = "springBoot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBoot" }
-spring-security-test = {module = 'org.springframework.security:spring-security-test'}
+spring-security-test = { module = 'org.springframework.security:spring-security-test' }
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 queryDSL-apt = { module = "com.querydsl:querydsl-apt", version.ref = "queryDSL" }
@@ -43,7 +45,7 @@ cucumber-junit = { module = "io.cucumber:cucumber-junit", version.ref = "cucumbe
 cucumber-junit-platform-engine = { module = "io.cucumber:cucumber-junit-platform-engine", version.ref = "cucumber" }
 junit = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-suite" }
-awaitility = {module = "org.awaitility:awaitility"}
+awaitility = { module = "org.awaitility:awaitility" }
 jakarta-persistence = { module = "jakarta.persistence:jakarta.persistence-api", version = "3.1.0" }
 jakarta-servlet = { module = "jakarta.servlet:jakarta.servlet-api", version = "6.0.0" }
 

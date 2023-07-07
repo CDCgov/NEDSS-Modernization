@@ -2,75 +2,65 @@ package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import java.time.Instant;
-import java.util.List;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import gov.cdc.nbs.authentication.entity.AuthUser;
-import gov.cdc.nbs.questionbank.entities.AuditInfo;
-import gov.cdc.nbs.questionbank.entities.DateQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.question.repository.DateQuestionRepository;
-import gov.cdc.nbs.questionbank.question.repository.DisplayElementRepository;
-import gov.cdc.nbs.questionbank.question.repository.DropdownQuestionRepository;
-import gov.cdc.nbs.questionbank.question.repository.NumericQuestionRepository;
-import gov.cdc.nbs.questionbank.question.repository.TextQuestionRepository;
-import gov.cdc.nbs.questionbank.questionnaire.model.Questionnaire;
-import gov.cdc.nbs.questionbank.support.QuestionDataMother;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
+import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.QuestionMother;
+import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
-import gov.cdc.nbs.questionbank.support.ValueSetMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class CreateQuestionSteps {
-
     @Autowired
     private UserMother userMother;
 
     @Autowired
-    private ValueSetMother valueSetMother;
+    private QuestionMother questionMother;
 
     @Autowired
-    private CreateQuestionResolver resolver;
+    private ExceptionHolder exceptionHolder;
 
     @Autowired
-    private DisplayElementRepository repository;
+    private QuestionController controller;
 
     @Autowired
-    private TextQuestionRepository textQuestionRepository;
+    private WaQuestionRepository questionRepository;
 
-    @Autowired
-    private DropdownQuestionRepository dropdownQuestionRepository;
+    private CreateQuestionRequest request;
 
-    @Autowired
-    private DateQuestionRepository dateQuestionRepository;
+    private CreateQuestionResponse response;
 
-    @Autowired
-    private NumericQuestionRepository numericQuestionRepository;
-
-    private Long userId;
-
-    private ValueSet valueSet;
-
-    private Questionnaire.Question response;
-
-    private Exception exception;
 
     @Given("No questions exist")
     public void no_questions_exist() {
-        repository.deleteAll();
+        questionMother.clean();
     }
 
-    @Given("A value set exists")
-    public void a_value_set_exists() {
-        valueSet = valueSetMother.yesNoUnknown();
+    @Given("I am an admin user")
+    public void i_am_admin_user() {
+        userMother.adminUser();
+    }
+
+    @Given("I am a user without permissions")
+    public void I_am_user_without_permissions() {
+        userMother.noPermissions();
     }
 
     @Given("I am not logged in")
@@ -78,151 +68,174 @@ public class CreateQuestionSteps {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    @Given("I am an admin user")
-    public void i_am_an_admin_user() {
-        AuthUser adminUser = userMother.adminUser();
-        userId = adminUser.getId();
+    @When("I send a create {string} question request")
+    public void i_send_a_create_question_request(String questionType) {
+        try {
+            switch (questionType) {
+                case "text":
+                    request = QuestionRequestMother.localTextRequest();
+                    break;
+                case "date":
+                    request = QuestionRequestMother.dateRequest();
+                    break;
+                case "numeric":
+                    request = QuestionRequestMother.numericRequest();
+                    break;
+                case "coded":
+                    request = QuestionRequestMother.codedRequest(4150L); // Yes, No, Unknown Value set in test db
+                    break;
+                default:
+                    throw new NotYetImplementedException();
+            }
+            response = controller.createQuestion(request);
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
     }
 
-    @When("I submit a create {string} question request")
-    public void send_create_question(String requestType) {
+    @When("I send a create question request with duplicate {string}")
+    public void create_with_duplicate_field(String field) {
+        WaQuestion existing = questionRepository.findAll().get(0);
+        CreateQuestionRequest.Text request;
+
+        switch (field) {
+            case "question name":
+                request = QuestionRequestMother.custom(
+                        existing.getQuestionNm(),
+                        "testsomeIdentifier",
+                        "test_custom_col_name",
+                        "CUSTOM_RDB_TABLE_NAME",
+                        "custom_rdb_col_name");
+                break;
+            case "question identifier":
+                request = QuestionRequestMother.custom(
+                        "test custom question nm",
+                        existing.getQuestionIdentifier(),
+                        "test_custom_col_name",
+                        "CUSTOM_RDB_TABLE_NAME",
+                        "custom_rdb_col_name");
+                break;
+            case "data mart column name":
+                request = QuestionRequestMother.custom(
+                        "testcustom question nm",
+                        "testsomeIdentifier",
+                        existing.getUserDefinedColumnNm(),
+                        "CUSTOM_RDB_TABLE_NAME",
+                        "custom_rdb_col_name");
+                break;
+            case "rdb column name":
+                request = QuestionRequestMother.custom(
+                        existing.getQuestionNm(),
+                        "testsomeIdentifier",
+                        "test_custom_col_name",
+                        "CUSTOM_RDB_TABLE_NAME",
+                        existing.getRdbColumnNm().replace(existing.getRdbTableNm() + "_", ""));
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
         try {
-            switch (requestType) {
-                case "text": {
-                    response = resolver.createTextQuestion(QuestionDataMother.textQuestionData());
-                    break;
-                }
-                case "numeric": {
-                    response = resolver.createNumericQuestion(QuestionDataMother.numericQuestionData(valueSet.getId()));
-                    break;
-                }
-                case "date": {
-                    response = resolver.createDateQuestion(QuestionDataMother.dateQuestionData());
-                    break;
-                }
-                case "dropdown": {
-                    response = resolver.createDropdownQuestion(
-                            QuestionDataMother.dropdownQuestionData(
-                                    valueSet.getId(),
-                                    valueSet.getValues().get(0).getId()));
-                    break;
-                }
-                default: {
-                    throw new IllegalArgumentException("Unsupported request type : " + requestType);
-                }
-            }
-            assertNotNull(response);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exception = e;
+            controller.createQuestion(request);
+        } catch (UniqueQuestionException e) {
+            exceptionHolder.setException(e);
         }
     }
 
     @Then("the {string} question is created")
-    public void is_created(String requestType) {
-
-        // verify proper entity was created
-        switch (requestType) {
-            case "text": {
+    public void the_question_is_created(String questionType) {
+        switch (questionType) {
+            case "text":
                 validateTextQuestion();
                 break;
-            }
-            case "numeric": {
-                validateNumericQuestion();
-                break;
-            }
-            case "date": {
+            case "date":
                 validateDateQuestion();
                 break;
-            }
-            case "dropdown": {
-                validateDropDownQuestion();
+            case "numeric":
+                validateNumericQuestion();
                 break;
-            }
-            default: {
-                throw new IllegalArgumentException("Unsupported request type : " + requestType);
-            }
+            case "coded":
+                validateCodedQuestion();
+                break;
+            default:
+                throw new NotYetImplementedException();
         }
-
-    }
-
-    @Then("I am not authorized")
-    public void i_am_not_authorized() {
-        assertNotNull(exception);
-        assertNull(response);
     }
 
     private void validateTextQuestion() {
-        List<TextQuestionEntity> results = textQuestionRepository.findAll();
-        assertEquals(1, results.size());
-        var created = results.get(0);
-        var actual = QuestionDataMother.textQuestionData();
-
-        assertEquals(actual.label(), created.getLabel());
-        assertEquals(actual.tooltip(), created.getTooltip());
-        assertEquals(actual.maxLength(), created.getMaxLength());
-        assertEquals(actual.placeholder(), created.getPlaceholder());
-        assertEquals(actual.defaultValue(), created.getDefaultTextValue());
-        assertEquals(actual.codeSet(), created.getCodeSet());
-
-        validateAudit(created.getAudit());
-    }
-
-    private void validateNumericQuestion() {
-        List<NumericQuestionEntity> results = numericQuestionRepository.findAll();
-        assertEquals(1, results.size());
-        var created = results.get(0);
-        var actual = QuestionDataMother.numericQuestionData(valueSet.getId());
-
-        assertEquals(actual.label(), created.getLabel());
-        assertEquals(actual.tooltip(), created.getTooltip());
-        assertEquals(actual.minValue(), created.getMinValue());
-        assertEquals(actual.maxValue(), created.getMaxValue());
-        assertEquals(actual.defaultValue(), created.getDefaultNumericValue());
-        assertEquals(actual.unitValueSet(), created.getUnitsSet().getId());
-        assertEquals(actual.codeSet(), created.getCodeSet());
-
-        validateAudit(created.getAudit());
-    }
-
-    private void validateDropDownQuestion() {
-        List<DropdownQuestionEntity> results = dropdownQuestionRepository.findAll();
-        assertEquals(1, results.size());
-        var created = results.get(0);
-        var actual = QuestionDataMother.dropdownQuestionData(
-                valueSet.getId(),
-                valueSet.getValues().get(0).getId());
-
-        assertEquals(actual.label(), created.getLabel());
-        assertEquals(actual.tooltip(), created.getTooltip());
-        assertEquals(actual.defaultValue(), created.getDefaultAnswer().getId());
-        assertEquals(actual.isMultiSelect(), created.isMultiSelect());
-        assertEquals(actual.valueSet(), created.getValueSet().getId());
-        assertEquals(actual.codeSet(), created.getCodeSet());
-
-        validateAudit(created.getAudit());
+        assertNotNull(response);
+        TextQuestionEntity question =
+                (TextQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Text textRequest = (CreateQuestionRequest.Text) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(textRequest.defaultValue(), question.getDefaultValue());
+        assertEquals(textRequest.mask(), question.getMask());
+        assertEquals(textRequest.fieldLength(), question.getFieldSize());
+        assertEquals(QuestionType.TEXT, textRequest.type());
     }
 
     private void validateDateQuestion() {
-        List<DateQuestionEntity> results = dateQuestionRepository.findAll();
-        assertEquals(1, results.size());
-        var created = results.get(0);
-        var actual = QuestionDataMother.dateQuestionData();
-
-        assertEquals(actual.label(), created.getLabel());
-        assertEquals(actual.tooltip(), created.getTooltip());
-        assertEquals(actual.allowFutureDates(), created.isAllowFuture());
-        assertEquals(actual.codeSet(), created.getCodeSet());
-
-        validateAudit(created.getAudit());
+        assertNotNull(response);
+        DateQuestionEntity question =
+                (DateQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Date dateRequest = (CreateQuestionRequest.Date) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(dateRequest.mask(), question.getMask());
+        assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
+        assertEquals(QuestionType.DATE, dateRequest.type());
     }
 
-    private void validateAudit(AuditInfo auditInfo) {
-        var thirtySecondsAgo = Instant.now().minusSeconds(30).getEpochSecond();
+    private void validateNumericQuestion() {
+        assertNotNull(response);
+        NumericQuestionEntity question =
+                (NumericQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Numeric numericRequest = (CreateQuestionRequest.Numeric) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(numericRequest.mask(), question.getMask());
+        assertEquals(numericRequest.fieldLength(), question.getFieldSize());
+        assertEquals(numericRequest.defaultValue(), question.getDefaultValue());
+        assertEquals(numericRequest.minValue(), question.getMinValue());
+        assertEquals(numericRequest.maxValue(), question.getMaxValue());
+        assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
+        assertEquals(numericRequest.unitValue(), question.getUnitValue());
+        assertEquals(QuestionType.NUMERIC, numericRequest.type());
+    }
 
-        assertEquals(userId, auditInfo.getAddUserId());
-        assertTrue(auditInfo.getAddTime().getEpochSecond() > thirtySecondsAgo);
-        assertEquals(userId, auditInfo.getLastUpdateUserId());
-        assertTrue(auditInfo.getLastUpdate().getEpochSecond() > thirtySecondsAgo);
+    private void validateCodedQuestion() {
+        assertNotNull(response);
+        CodedQuestionEntity question =
+                (CodedQuestionEntity) questionRepository.findById(response.questionId()).orElseThrow();
+        CreateQuestionRequest.Coded codedRequest = (CreateQuestionRequest.Coded) request;
+        assertEquals(question.getId().longValue(), response.questionId());
+        assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
+        assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
+        assertEquals('F', question.getOtherValueIndCd().charValue());
+        assertEquals(QuestionType.CODED, codedRequest.type());
+    }
+
+    @Then("a no credentials found exception is thrown")
+    public void a_not_authorized_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof AuthenticationCredentialsNotFoundException);
+    }
+
+    @Then("an accessdenied exception is thrown")
+    public void a_access_denied_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof AccessDeniedException);
+    }
+
+    @Then("a question creation exception is thrown")
+    public void an_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof CreateQuestionException);
+    }
+
+    @Then("a unique question exception is thrown")
+    public void an_unique_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof UniqueQuestionException);
     }
 
 }

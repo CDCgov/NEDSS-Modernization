@@ -171,7 +171,7 @@ export const PatientSearch = ({ handleSubmission, data, clearAll }: PatientSearc
                                             handleRecordStatusChange(RecordStatus.Superceded, v.target.checked)
                                         }
                                         name={'name'}
-                                        label={'Superceded'}
+                                        label={'Superseded'}
                                         checked={selectedRecordStatus.includes(RecordStatus.Superceded)}
                                     />
                                 </Grid>

@@ -1,0 +1,6 @@
+query raceCategories{
+    raceCategories{
+        value
+        name
+    }
+}

@@ -1,69 +1,168 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
+import {
+    PatientRace,
+    useAddPatientRaceMutation,
+    useDeletePatientRaceMutation,
+    useUpdatePatientRaceMutation
+} from 'generated/graphql/schema';
+import { TOTAL_TABLE_DATA } from 'utils/util';
+import { Direction, sortByNestedProperty, withDirection } from 'sorting';
+import { internalizeDate } from 'date';
+import { ConfirmationModal } from 'confirmation';
+import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { SortableTable } from 'components/Table/SortableTable';
 import { Actions } from 'components/Table/Actions';
-import { TOTAL_TABLE_DATA } from 'utils/util';
-import { FindPatientProfileQuery } from 'generated/graphql/schema';
-import { Direction, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { Race } from './race';
-import { useFindPatientProfileRace } from './useFindPatientProfileRace';
-import { AddRaceModal } from 'pages/patient/profile/race/AddRaceModal';
-import { DetailsRaceModal } from 'pages/patient/profile/race/DetailsRaceModal';
+import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
+import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
+import EntryModal from 'pages/patient/profile/entry';
+import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPatientProfileRace';
+import { RaceEntry } from './RaceEntry';
+import { RaceEntryForm } from './RaceEntryForm';
+import { useAlert } from 'alert/useAlert';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asDetail = (data: PatientRace): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Race', value: maybeDescription(data.category) },
+    { name: 'Detailed race', value: maybeDescriptions(data.detailed).join(' | ') }
+];
+
+const asEntry = (race: PatientRace): RaceEntry => ({
+    patient: race.patient,
+    category: maybeId(race?.category),
+    asOf: internalizeDate(race?.asOf),
+    detailed: maybeIds(race?.detailed)
+});
+
+const resolveInitialEntry = (patient: string): RaceEntry => ({
+    patient: +patient,
+    category: null,
+    asOf: null,
+    detailed: []
+});
+
+type Props = {
+    patient: string;
 };
 
-export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
+export const RacesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Race', sortable: true, sort: 'all' },
         { name: 'Detailed race', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
     ]);
+
+    const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const addModalRef = useRef<ModalRef>(null);
-    const detailsModalRef = useRef<ModalRef>(null);
-    const deleteModalRef = useRef<ModalRef>(null);
+    const initial = resolveInitialEntry(patient);
 
-    const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [details, setDetails] = useState<any>(undefined);
-    const [isActions, setIsActions] = useState<any>(null);
-    const [races, setRaces] = useState<Race[]>([]);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+    const { selected, actions } = useTableActionState<PatientRace>();
 
-    const handleComplete = (data: FindPatientProfileQuery) => {
-        if (data?.findPatientProfile?.races?.content && data?.findPatientProfile?.races?.content?.length > 0) {
-            setRaces(data?.findPatientProfile?.races?.content);
+    const modal = useRef<ModalRef>(null);
+
+    const [isActions, setIsActions] = useState<number | null>(null);
+    const [races, setRaces] = useState<PatientRace[]>([]);
+
+    const handleComplete = (data: PatientProfileRaceResult) => {
+        setTotal(data?.findPatientProfile?.races?.total ?? 0);
+        setRaces(data?.findPatientProfile?.races?.content ?? []);
+    };
+
+    const [fetch, { refetch }] = useFindPatientProfileRace({ onCompleted: handleComplete });
+
+    const [add] = useAddPatientRaceMutation();
+    const [update] = useUpdatePatientRaceMutation();
+    const [remove] = useDeletePatientRaceMutation();
+
+    useEffect(() => {
+        fetch({
+            variables: {
+                patient: patient,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: TOTAL_TABLE_DATA
+                }
+            }
+        });
+    }, [currentPage]);
+
+    useEffect(() => {
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
+
+    const onAdded = (entry: RaceEntry) => {
+        if (entry.category) {
+            add({
+                variables: {
+                    input: {
+                        patient: entry.patient,
+                        asOf: entry.asOf,
+                        category: entry.category,
+                        detailed: entry.detailed
+                    }
+                }
+            })
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added race`
+                    });
+                    refetch();
+                })
+                .then(actions.reset);
         }
     };
 
-    const [getProfile, { data }] = useFindPatientProfileRace({ onCompleted: handleComplete });
-
-    useEffect(() => {
-        if (patient) {
-            getProfile({
+    const onChanged = (entry: RaceEntry) => {
+        if (entry.category) {
+            update({
                 variables: {
-                    shortId: +patient,
-                    page5: {
-                        pageNumber: currentPage - 1,
-                        pageSize: TOTAL_TABLE_DATA
+                    input: {
+                        patient: entry.patient,
+                        asOf: entry.asOf,
+                        category: entry.category,
+                        detailed: entry.detailed
                     }
                 }
-            });
+            })
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated race`
+                    });
+                    refetch();
+                })
+                .then(actions.reset);
         }
-    }, [patient, currentPage]);
+    };
+
+    const onDeleted = () => {
+        if (selected?.type == 'delete') {
+            remove({
+                variables: {
+                    input: {
+                        patient: selected.item.patient,
+                        category: selected.item.category.id
+                    }
+                }
+            })
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted race`
+                    });
+                    refetch();
+                })
+                .then(actions.reset);
+        }
+    };
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -81,7 +180,7 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
         switch (name.toLowerCase()) {
             case 'as of':
                 setRaces(
-                    races?.slice().sort((a: Race, b: Race) => {
+                    races?.slice().sort((a: PatientRace, b: PatientRace) => {
                         const dateA: any = new Date(a?.asOf);
                         const dateB: any = new Date(b?.asOf);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;
@@ -93,7 +192,7 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
                 break;
             case 'detailed race':
                 setRaces(
-                    races?.slice().sort((a: Race, b: Race) => {
+                    races?.slice().sort((a: PatientRace, b: PatientRace) => {
                         const detailedA: any = a?.detailed?.[0]?.description;
                         const detailedB: any = b?.detailed?.[0]?.description;
                         return type === 'asc' ? detailedB - detailedA : detailedA - detailedB;
@@ -103,31 +202,16 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
         }
     };
 
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
-
     return (
         <>
             <SortableTable
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                addModalRef.current?.toggleModal();
-                                setDetails(null);
-                                setIsEditModal(false);
-                            }}
-                            className="display-inline-flex">
+                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add race
                         </Button>
-                        <AddRaceModal modalHead={isEditModal ? 'Edit - Race' : 'Add - Race'} modalRef={addModalRef} />
-                        <DetailsRaceModal data={details} modalRef={detailsModalRef} />
                     </div>
                 }
                 tableHeader={'Races'}
@@ -151,11 +235,7 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
                             )}
                         </td>
                         <td className={`font-sans-md table-data ${tableHead[2].sort !== 'all' && 'sort-td'}`}>
-                            {race?.detailed?.map((detail) => (
-                                <span key={detail?.id}>
-                                    {detail?.description} <br />
-                                </span>
-                            )) || <span className="no-data">No data</span>}
+                            {maybeDescriptions(race.detailed).join(' | ') || <span className="no-data">No data</span>}
                         </td>
                         <td>
                             <div className="table-span">
@@ -170,17 +250,7 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
                                     <Actions
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                setIsEditModal(true);
-                                                addModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'delete') {
-                                                setIsDeleteModal(true);
-                                            }
-                                            if (type === 'details') {
-                                                setDetails(race);
-                                                detailsModalRef.current?.toggleModal();
-                                            }
+                                            tableActionStateAdapter(actions, race)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -189,39 +259,43 @@ export const RacesTable = ({ patient }: PatientLabReportTableProps) => {
                         </td>
                     </tr>
                 ))}
-                totalResults={data?.findPatientProfile?.races?.total}
+                totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
             />
-            {isDeleteModal && (
-                <Modal
-                    forceAction
-                    ref={deleteModalRef}
-                    id="example-modal-1"
-                    aria-labelledby="modal-1-heading"
-                    className="padding-0"
-                    aria-describedby="modal-1-description">
-                    <ModalHeading
-                        id="modal-1-heading"
-                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                        Delete name
-                    </ModalHeading>
-                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                        <p id="modal-1-description">Are you sure you want to delete this race record?</p>
-                    </div>
-                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                        <ButtonGroup>
-                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
-                                Cancel
-                            </Button>
-                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
-                                Yes, delete
-                            </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </Modal>
+            {selected?.type === 'add' && (
+                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Race" overflow>
+                    <RaceEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                </EntryModal>
+            )}
+            {selected?.type === 'update' && (
+                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Race" overflow>
+                    <RaceEntryForm
+                        action={'Edit'}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
+                        onChange={onChanged}
+                    />
+                </EntryModal>
+            )}
+            {selected?.type === 'delete' && (
+                <ConfirmationModal
+                    modal={modal}
+                    title="Delete race"
+                    message="Are you sure you want to delete this name race?"
+                    confirmText="Yes, delete"
+                    onConfirm={onDeleted}
+                    onCancel={actions.reset}
+                />
+            )}
+            {selected?.type === 'detail' && (
+                <DetailsModal
+                    title={'View details - Race'}
+                    modal={modal}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
+                />
             )}
         </>
     );

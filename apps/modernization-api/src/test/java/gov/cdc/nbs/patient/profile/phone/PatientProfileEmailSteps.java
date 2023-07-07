@@ -4,7 +4,7 @@ import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.message.patient.input.PatientInput;
-import gov.cdc.nbs.patient.PatientAssertions;
+import gov.cdc.nbs.patient.PatientCreateAssertions;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.support.TestActive;
 import io.cucumber.java.en.Given;
@@ -41,7 +41,7 @@ public class PatientProfileEmailSteps {
         if(!emails.isEmpty()) {
 
             assertThat(emails)
-                .satisfiesExactlyInAnyOrder(PatientAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
+                .satisfiesExactlyInAnyOrder(PatientCreateAssertions.containsEmailAddresses(input.active().getEmailAddresses()));
 
 
         }

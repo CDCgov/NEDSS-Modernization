@@ -1,21 +1,78 @@
 import { useEffect, useRef, useState } from 'react';
 import format from 'date-fns/format';
-import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
-import { SortableTable } from 'components/Table/SortableTable';
-import { AddNameModal } from 'pages/patient/profile/names/AddNameModal';
-import { DetailsNameModal } from 'pages/patient/profile/names/DetailsNameModal';
-import { Actions } from 'components/Table/Actions';
-import { useFindPatientProfileNames } from '../useFindPatientProfileNames';
-import { TOTAL_TABLE_DATA } from 'utils/util';
-import { Name } from './names';
-import { FindPatientProfileQuery } from 'generated/graphql/schema';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
+import {
+    FindPatientProfileQuery,
+    PatientName,
+    useAddPatientNameMutation,
+    useDeletePatientNameMutation,
+    useUpdatePatientNameMutation
+} from 'generated/graphql/schema';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
+import { externalizeDateTime, internalizeDate } from 'date';
+import { TOTAL_TABLE_DATA } from 'utils/util';
+import { orNull } from 'utils/orNull';
+import { SortableTable } from 'components/Table/SortableTable';
+import { Actions as ActionState } from 'components/Table/Actions';
+import { ConfirmationModal } from 'confirmation';
+import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
+import EntryModal from 'pages/patient/profile/entry';
+import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
+import { useFindPatientProfileNames } from './useFindPatientProfileNames';
+import { NameEntryForm } from './NameEntryForm';
+import { NameEntry } from './NameEntry';
+import { useTableActionState, tableActionStateAdapter } from 'table-action';
+import { useAlert } from 'alert/useAlert';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asDetail = (data: PatientName): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Type', value: maybeDescription(data.use) },
+    { name: 'Prefix', value: maybeDescription(data.prefix) },
+    { name: 'First name', value: data.first },
+    { name: 'Middle name', value: data.middle },
+    { name: 'Second middle name', value: data.secondMiddle },
+    { name: 'Last name', value: data.last },
+    { name: 'Second last name', value: data.secondLast },
+    { name: 'Suffix', value: maybeDescription(data.suffix) },
+    { name: 'Degree', value: maybeDescription(data.degree) }
+];
+
+const asEntry = (name: PatientName): NameEntry => ({
+    patient: name.patient,
+    sequence: name.sequence,
+    asOf: internalizeDate(name.asOf),
+    type: maybeId(name.use),
+    prefix: maybeId(name.prefix),
+    first: orNull(name.first),
+    middle: orNull(name.middle),
+    secondMiddle: orNull(name.secondMiddle),
+    last: orNull(name.last),
+    secondLast: orNull(name.secondLast),
+    suffix: maybeId(name.suffix),
+    degree: maybeId(name.degree)
+});
+
+const resolveInitialEntry = (patient: string): NameEntry => ({
+    patient: +patient,
+    sequence: null,
+    asOf: null,
+    type: null,
+    prefix: null,
+    first: null,
+    middle: null,
+    secondMiddle: null,
+    last: null,
+    secondLast: null,
+    suffix: null,
+    degree: null
+});
+
+type Props = {
+    patient: string;
 };
 
-export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
+export const NamesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -25,40 +82,130 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
         { name: 'Degree', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
     ]);
+
+    const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const addNameModalRef = useRef<ModalRef>(null);
-    const detailsNameModalRef = useRef<ModalRef>(null);
-    const deleteModalRef = useRef<ModalRef>(null);
+    const initial = resolveInitialEntry(patient);
 
-    const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [nameDetails, setNameDetails] = useState<any>(undefined);
-    const [isActions, setIsActions] = useState<any>(null);
-    const [names, setNames] = useState<Name[]>([]);
+    const { selected, actions } = useTableActionState<PatientName>();
 
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+    const modal = useRef<ModalRef>(null);
+
+    const [isActions, setIsActions] = useState<number | null>(null);
+    const [names, setNames] = useState<PatientName[]>([]);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
-        if (data?.findPatientProfile?.names?.content && data?.findPatientProfile?.names?.content?.length > 0) {
-            setNames(data?.findPatientProfile?.names?.content);
+        setTotal(data?.findPatientProfile?.names?.total ?? 0);
+        setNames(data?.findPatientProfile?.names?.content ?? []);
+    };
+
+    const [fetch, { refetch }] = useFindPatientProfileNames({ onCompleted: handleComplete });
+
+    const [add] = useAddPatientNameMutation();
+    const [update] = useUpdatePatientNameMutation();
+    const [remove] = useDeletePatientNameMutation();
+
+    useEffect(() => {
+        fetch({
+            variables: {
+                patient: patient,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: TOTAL_TABLE_DATA
+                }
+            }
+        });
+    }, [currentPage]);
+
+    useEffect(() => {
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
+
+    const onAdded = (entry: NameEntry) => {
+        if (entry.type) {
+            add({
+                variables: {
+                    input: {
+                        patient: entry.patient,
+                        type: entry.type,
+                        asOf: externalizeDateTime(entry.asOf),
+                        prefix: entry.prefix,
+                        first: entry.first,
+                        middle: entry.middle,
+                        secondMiddle: entry.secondMiddle,
+                        last: entry.last,
+                        secondLast: entry.secondLast,
+                        suffix: entry.suffix,
+                        degree: entry.degree
+                    }
+                }
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added name`
+                    });
+                })
+                .then(actions.reset);
         }
     };
 
-    const [getProfile, { data }] = useFindPatientProfileNames({ onCompleted: handleComplete });
-
-    useEffect(() => {
-        if (patient) {
-            getProfile({
+    const onChanged = (entry: NameEntry) => {
+        if (entry.type && entry.sequence !== null) {
+            update({
                 variables: {
-                    shortId: +patient,
-                    page: {
-                        pageNumber: currentPage - 1,
-                        pageSize: TOTAL_TABLE_DATA
+                    input: {
+                        patient: entry.patient,
+                        sequence: entry.sequence,
+                        type: entry.type,
+                        asOf: externalizeDateTime(entry.asOf),
+                        prefix: entry.prefix,
+                        first: entry.first,
+                        middle: entry.middle,
+                        secondMiddle: entry.secondMiddle,
+                        last: entry.last,
+                        secondLast: entry.secondLast,
+                        suffix: entry.suffix,
+                        degree: entry.degree
                     }
                 }
-            });
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated name`
+                    });
+                })
+                .then(actions.reset);
         }
-    }, [patient, currentPage]);
+    };
+
+    const onDeleted = () => {
+        if (selected?.type == 'delete') {
+            remove({
+                variables: {
+                    input: {
+                        patient: selected.item.patient,
+                        sequence: selected.item.sequence
+                    }
+                }
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted name`
+                    });
+                })
+                .then(actions.reset);
+        }
+    };
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -76,7 +223,7 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
         switch (name.toLowerCase()) {
             case 'as of':
                 setNames(
-                    names?.slice().sort((a: Name, b: Name) => {
+                    names?.slice().sort((a: PatientName, b: PatientName) => {
                         const dateA: any = new Date(a?.asOf);
                         const dateB: any = new Date(b?.asOf);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;
@@ -101,34 +248,16 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
         }
     };
 
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
-
     return (
         <>
             <SortableTable
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                addNameModalRef.current?.toggleModal();
-                                setNameDetails(null);
-                                setIsEditModal(false);
-                            }}
-                            className="display-inline-flex">
+                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add name
                         </Button>
-                        <AddNameModal
-                            modalHead={isEditModal ? 'Edit - Name' : 'Add - Name'}
-                            modalRef={addNameModalRef}
-                        />
-                        <DetailsNameModal data={nameDetails} modalRef={detailsNameModalRef} />
                     </div>
                 }
                 tableHeader={'Names'}
@@ -191,21 +320,10 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                                 </Button>
 
                                 {isActions === index && (
-                                    <Actions
+                                    <ActionState
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                setIsEditModal(true);
-                                                addNameModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'delete') {
-                                                setIsDeleteModal(true);
-                                                setNameDetails(name);
-                                            }
-                                            if (type === 'details') {
-                                                setNameDetails(name);
-                                                detailsNameModalRef.current?.toggleModal();
-                                            }
+                                            tableActionStateAdapter(actions, name)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -214,44 +332,44 @@ export const NamesTable = ({ patient }: PatientLabReportTableProps) => {
                         </td>
                     </tr>
                 ))}
-                totalResults={data?.findPatientProfile?.names?.total}
+                totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
             />
-            {isDeleteModal && (
-                <Modal
-                    forceAction
-                    ref={deleteModalRef}
-                    id="example-modal-1"
-                    aria-labelledby="modal-1-heading"
-                    className="padding-0"
-                    aria-describedby="modal-1-description">
-                    <ModalHeading
-                        id="modal-1-heading"
-                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                        Delete name
-                    </ModalHeading>
-                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                        <p id="modal-1-description">
-                            Are you sure you want to delete Name record, {nameDetails?.last}, {nameDetails?.first}?
-                        </p>
-                    </div>
-                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                        <ButtonGroup>
-                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
-                                Cancel
-                            </Button>
-                            <Button
-                                type="button"
-                                className="padding-105 text-center"
-                                onClick={() => setIsDeleteModal(false)}>
-                                Yes, delete
-                            </Button>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </Modal>
+            {selected?.type === 'add' && (
+                <EntryModal modal={modal} id="add-patient-name-modal" title="Add - Name">
+                    <NameEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                </EntryModal>
+            )}
+            {selected?.type === 'update' && (
+                <EntryModal modal={modal} id="edit-patient-name-modal" title="Edit - Name">
+                    <NameEntryForm
+                        action={'Edit'}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
+                        onChange={onChanged}
+                    />
+                </EntryModal>
+            )}
+            {selected?.type === 'delete' && (
+                <ConfirmationModal
+                    modal={modal}
+                    title="Delete name"
+                    message="Are you sure you want to delete this name record?"
+                    confirmText="Yes, delete"
+                    onConfirm={onDeleted}
+                    onCancel={actions.reset}
+                />
+            )}
+
+            {selected?.type === 'detail' && (
+                <DetailsModal
+                    title={'View details - Name'}
+                    modal={modal}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
+                />
             )}
         </>
     );

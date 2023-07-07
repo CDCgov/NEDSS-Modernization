@@ -53,20 +53,16 @@ testing {
     }
 }
 
-dependencies {
-
-    implementation project(':authentication')
-    
+dependencies {    
     // Spring
     implementation libs.springBoot.web
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
 
     implementation libs.bundles.security
-    implementation "org.flywaydb:flyway-sqlserver"
 
-    // graphql
-    implementation libs.springBoot.graphql
+    // swagger
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
 
     // querydsl
     implementation libs.bundles.queryDSL
@@ -85,14 +81,18 @@ dependencies {
     // lombok
     compileOnly libs.lombok
     annotationProcessor libs.lombok
-    
 
     // auth
     implementation project(':authentication')
 
+    // id generation
+    implementation project(':id-generator')
+    
+
 }
 
 compileJava.mustRunAfter(":authentication:build")
+compileJava.mustRunAfter(":id-generator:build")
 
 compileJava {
     options.compilerArgs << '-Aquerydsl.generatedAnnotationClass=com.querydsl.core.annotations.Generated'

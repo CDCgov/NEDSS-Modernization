@@ -1,209 +1,230 @@
 package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.time.Clock;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.util.UUID;
-import javax.persistence.EntityManager;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.entities.AuditInfo;
-import gov.cdc.nbs.questionbank.entities.DateQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.DisplayElementEntity;
-import gov.cdc.nbs.questionbank.entities.DropdownQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.NumericQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.TextQuestionEntity;
-import gov.cdc.nbs.questionbank.entities.ValueEntity;
-import gov.cdc.nbs.questionbank.entities.ValueSet;
-import gov.cdc.nbs.questionbank.entities.enums.CodeSet;
+import gov.cdc.nbs.id.IdGeneratorService;
+import gov.cdc.nbs.id.IdGeneratorService.GeneratedId;
+import gov.cdc.nbs.questionbank.entity.CodeValueGeneralRepository;
+import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.NbsConfiguration;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.repository.CodesetRepository;
+import gov.cdc.nbs.questionbank.kafka.message.question.QuestionCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.QuestionCreatedEventProducer;
-import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateDateQuestion;
-import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateDropdownQuestion;
-import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateNumericQuestion;
-import gov.cdc.nbs.questionbank.question.QuestionRequest.CreateTextQuestion;
-import gov.cdc.nbs.questionbank.question.repository.DisplayElementRepository;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
+import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
+import gov.cdc.nbs.questionbank.question.repository.NbsConfigurationRepository;
+import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionCreatorTest {
 
     @Mock
-    private DisplayElementRepository elementRepository;
+    private IdGeneratorService idGenerator;
 
     @Mock
-    private EntityManager entityManager;
+    private WaQuestionRepository repository;
 
     @Mock
-    private QuestionCreatedEventProducer createEvent;
+    private CodeValueGeneralRepository codeValueGeneralRepository;
 
-    private final Instant expectedTime = Instant.now();
+    @Mock
+    private QuestionCreatedEventProducer.EnabledProducer producer;
 
-    @Spy
-    Clock clock = Clock.fixed(
-            expectedTime,
-            ZoneId.of("UTC"));
+    @Mock
+    private NbsConfigurationRepository configRepository;
+
+    @Mock
+    private CodesetRepository codesetRepository;
+
+    @Mock
+    private QuestionManagementUtil managementUtil;
 
     @InjectMocks
     private QuestionCreator creator;
 
-    private final Long userId = 123L;
-
     @Test
-    void should_create_text_question() {
-        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+    void should_return_proper_local_id() {
+        // given the idGenerator will return a generated Id
+        when(idGenerator.getNextValidId(Mockito.any())).thenReturn(new GeneratedId(1000L, "PREFIX","SUFFIX"));
+        // and the configRepository will return a NBS_CLASS_CODE
+        NbsConfiguration configEntry = new NbsConfiguration();
+        configEntry.setConfigValue("GA");
+        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.of(configEntry));
 
-        // given question data
-        CreateTextQuestion data = textQuestionData();
+        // given a "LOCAL" create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
 
-        // when a create request is received
-        creator.create(data, userId);
+        // when I generate the localId
+        String localId = creator.getLocalId(request);
 
-        // then the question is saved to the database
-        ArgumentCaptor<TextQuestionEntity> captor = ArgumentCaptor.forClass(TextQuestionEntity.class);
-        verify(elementRepository, times(1)).save(captor.capture());
-
-        TextQuestionEntity actual = captor.getValue();
-        assertEquals(data.label(), actual.getLabel());
-        assertEquals(data.tooltip(), actual.getTooltip());
-        assertEquals(data.maxLength(), actual.getMaxLength());
-        assertEquals(data.placeholder(), actual.getPlaceholder());
-        assertEquals(data.defaultValue(), actual.getDefaultTextValue());
-        validateAudit(actual.getAudit());
-
-        // and the create event producer is called
-        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
+        // then I am returned the datbaases next available Id
+        assertEquals(configEntry.getConfigValue() + "1000", localId);
     }
 
     @Test
-    void should_create_numeric_question() {
-        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+    void should_return_proper_phin_id() {
+        // given a "PHIN" create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest();
 
-        // given question data
-        CreateNumericQuestion data = numericQuestionData();
+        // when I generate the localId
+        String localId = creator.getLocalId(request);
 
-        // when a create request is received
-        creator.create(data, userId);
+        // then I am returned the datbaases next available Id
+        assertEquals(request.uniqueId(), localId);
+    }
 
-        // then the question is saved to the database
-        ArgumentCaptor<NumericQuestionEntity> captor = ArgumentCaptor.forClass(NumericQuestionEntity.class);
-        verify(elementRepository, times(1)).save(captor.capture());
 
-        NumericQuestionEntity actual = captor.getValue();
-        assertEquals(data.label(), actual.getLabel());
-        assertEquals(data.tooltip(), actual.getTooltip());
-        assertEquals(data.minValue(), actual.getMinValue());
-        assertEquals(data.maxValue(), actual.getMaxValue());
-        assertEquals(data.defaultValue(), actual.getDefaultNumericValue());
-        validateAudit(actual.getAudit());
+    @Test
+    void should_convert_messaging() {
+        // given messaging info
+        MessagingInfo info = QuestionRequestMother.messagingInfo(true);
 
-        // and the create event producer is called
-        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
+        // when I convert to messaging data
+        QuestionCommand.MessagingData data = creator.asMessagingData(info);
+
+        // Then the fields are set properly
+        assertEquals(info.includedInMessage(), data.includedInMessage());
+        assertEquals(info.messageVariableId(), data.messageVariableId());
+        assertEquals(info.labelInMessage(), data.labelInMessage());
+        assertEquals(info.codeSystem(), data.codeSystem());
+        assertEquals(info.requiredInMessage(), data.requiredInMessage());
+        assertEquals(info.hl7DataType(), data.hl7DataType());
     }
 
     @Test
-    void should_create_dropdown_question() {
-        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+    void should_convert_reporting() {
+        // given reporting info
+        ReportingInfo info = QuestionRequestMother.reportingInfo();
+        CreateQuestionRequest request = QuestionRequestMother.localTextRequest();
 
-        // given question data
-        CreateDropdownQuestion data = dropdownQuestionData();
+        // when i convert to reporting data
+        QuestionCommand.ReportingData data = creator.asReportingData(info, request.subgroup());
 
-        // when a create request is received
-        creator.create(data, userId);
-
-        // then the question is saved to the database
-        ArgumentCaptor<DropdownQuestionEntity> captor = ArgumentCaptor.forClass(DropdownQuestionEntity.class);
-        verify(elementRepository, times(1)).save(captor.capture());
-
-        DropdownQuestionEntity actual = captor.getValue();
-        assertEquals(data.label(), actual.getLabel());
-        assertEquals(data.tooltip(), actual.getTooltip());
-        verify(entityManager, times(1))
-                .getReference(ValueSet.class, data.valueSet());
-        verify(entityManager, times(1))
-                .getReference(ValueEntity.class, data.defaultValue());
-        validateAudit(actual.getAudit());
-
-        // and the create event producer is called
-        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
+        // then the fields are set properly
+        assertEquals(info.reportLabel(), data.reportLabel());
+        assertEquals(info.defaultRdbTableName(), data.defaultRdbTableName());
+        assertEquals(request.subgroup() + "_" + info.rdbColumnName(), data.rdbColumnName());
+        assertEquals(info.dataMartColumnName(), data.dataMartColumnName());
     }
 
     @Test
-    void should_create_date_question() {
-        when(elementRepository.save(Mockito.any())).thenAnswer(i -> i.getArguments()[0]);
+    void should_convert_request() {
+        // given a create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
 
-        // given question data
-        CreateDateQuestion data = dateQuestionData();
+        // and a valid oid
+        when(managementUtil.getQuestionOid(false, "ABNORMAL_FLAGS_HL7", "PHIN"))
+                .thenReturn(new QuestionOid("test", "test"));
 
-        // when a create request is received
-        creator.create(data, userId);
+        // when i convert to an Add command
+        QuestionCommand.AddTextQuestion command = creator.asAdd(123L, request);
 
-        // then the question is saved to the database
-        ArgumentCaptor<DateQuestionEntity> captor = ArgumentCaptor.forClass(DateQuestionEntity.class);
-        verify(elementRepository, times(1)).save(captor.capture());
+        // then the fields are set properly
+        assertEquals(request.mask(), command.mask());
+        assertEquals(request.fieldLength(), command.fieldLength());
+        assertEquals(request.defaultValue(), command.defaultValue());
 
-        DateQuestionEntity actual = captor.getValue();
-        assertEquals(data.label(), actual.getLabel());
-        assertEquals(data.tooltip(), actual.getTooltip());
-        assertEquals(data.allowFutureDates(), actual.isAllowFuture());
-        validateAudit(actual.getAudit());
+        assertEquals(123L, command.userId());
 
-        // and the create event producer is called
-        verify(createEvent, times(1)).send(Mockito.any(DisplayElementEntity.class));
+        QuestionCommand.QuestionData questionData = command.questionData();
+        assertNotNull(questionData.questionOid());
+        assertEquals(request.codeSet(), questionData.codeSet());
+        assertEquals(request.uniqueId(), questionData.localId());
+        assertEquals(request.uniqueName(), questionData.uniqueName());
+        assertEquals(request.subgroup(), questionData.subgroup());
+        assertEquals(request.description(), questionData.description());
+        assertEquals(request.label(), questionData.label());
+        assertEquals(request.tooltip(), questionData.tooltip());
+        assertEquals(request.displayControl(), questionData.displayControl());
+        assertEquals(request.adminComments(), questionData.adminComments());
+        assertNotNull(command.reportingData());
+        assertNotNull(command.messagingData());
     }
 
-    private void validateAudit(AuditInfo auditInfo) {
-        assertEquals(userId, auditInfo.getAddUserId());
-        assertEquals(expectedTime, auditInfo.getAddTime());
-        assertEquals(userId, auditInfo.getLastUpdateUserId());
-        assertEquals(expectedTime, auditInfo.getLastUpdate());
+    @Test
+    void should_save_to_db() {
+        // given the database will return an entity with an Id
+        TextQuestionEntity tq = new TextQuestionEntity();
+        tq.setId(999L);
+        when(repository.save(Mockito.any())).thenReturn(tq);
+
+        // given a create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+
+        // when a question is created
+        Long id = creator.create(123L, request);
+
+        // then the id of the new question is returned
+        assertEquals(tq.getId(), id);
     }
 
-    private CreateTextQuestion textQuestionData() {
-        return new CreateTextQuestion(
-                "test label",
-                "test tooltip",
-                13,
-                "test placeholder",
-                "some default value",
-                CodeSet.LOCAL);
+    @Test
+    void should_post_created_event() {
+        // given the database will return an entity with an Id and add time
+        Instant now = Instant.now();
+        TextQuestionEntity tq = new TextQuestionEntity();
+        tq.setId(999L);
+        tq.setAddTime(now);
+        when(repository.save(Mockito.any())).thenReturn(tq);
+
+        // given a create question request
+        CreateQuestionRequest.Text request = QuestionRequestMother.phinTextRequest(false);
+
+        // when a question is created
+        Long id = creator.create(123L, request);
+
+        // then a question created event is sent
+        ArgumentCaptor<QuestionCreatedEvent> eventCaptor = ArgumentCaptor.forClass(QuestionCreatedEvent.class);
+        verify(producer).send(eventCaptor.capture());
+        QuestionCreatedEvent event = eventCaptor.getValue();
+        assertEquals(id.longValue(), event.id());
+        assertEquals(123L, event.createdBy());
+        assertEquals(now, event.createdAt());
     }
 
-    private CreateDateQuestion dateQuestionData() {
-        return new CreateDateQuestion(
-                "test label",
-                "test tooltip",
-                true,
-                CodeSet.LOCAL);
+    @Test
+    void should_verify_valueset_exists() {
+        // given a value set that exists
+        Codeset mockCodeset = Mockito.mock(Codeset.class);
+        when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.of(mockCodeset));
+
+        // when querying for the value set then no exception is thrown
+        creator.verifyValueSetExists(123L);
     }
 
-    private CreateNumericQuestion numericQuestionData() {
-        return new CreateNumericQuestion(
-                "test label",
-                "test tooltip",
-                -3,
-                543,
-                -2,
-                null,
-                CodeSet.LOCAL);
+    @Test
+    void should_throw_exception_if_valueset_not_exists() {
+        // given a value set that does not
+        when(codesetRepository.findOneByCodeSetGroupId(123L)).thenReturn(Optional.empty());
+
+        // when querying for the value set then an exception is thrown
+        assertThrows(CreateQuestionException.class, ()-> creator.verifyValueSetExists(123L));
     }
 
-    private CreateDropdownQuestion dropdownQuestionData() {
-        return new CreateDropdownQuestion(
-                "test label",
-                "test tooltip",
-                UUID.randomUUID(),
-                UUID.randomUUID(),
-                true,
-                CodeSet.LOCAL);
-    }
+    @Test
+    void should_throw_exception_if_class_code_values_not_found() {
+        // given NBS_CLASS_CODE value set does not exist
+        when(configRepository.findById("NBS_CLASS_CODE")).thenReturn(Optional.empty());
 
+        // when retrieving the codes, an exception is thrown
+        assertThrows(CreateQuestionException.class,() ->creator.getNbsClassCode());
+    }
 }

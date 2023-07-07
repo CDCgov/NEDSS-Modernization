@@ -1,30 +1,52 @@
-@create_question
-Feature: A user with the necessary permissions is able to create a new question
+@question_create
+Feature: Create question
 
-    Background:
+    Background: question setup
         Given No questions exist
-        Given A value set exists
 
     Scenario: I can create a question
         Given I am an admin user
-        When I submit a create "<question type>" question request
+        When I send a create "<question type>" question request
         Then the "<question type>" question is created
-
         Examples:
             | question type |
             | text          |
-            | numeric       |
             | date          |
-            | dropdown      |
+            | numeric       |
+            | coded         |
 
-    Scenario: I cant create a question without permissions
+    Scenario: I cannot create a question without logging in
         Given I am not logged in
-        When I submit a create "<question type>" question request
-        Then I am not authorized
-
+        When I send a create "<question type>" question request
+        Then a no credentials found exception is thrown
         Examples:
             | question type |
             | text          |
-            | numeric       |
             | date          |
-            | dropdown      |
+            | numeric       |
+            | coded         |
+
+    Scenario: I cannot create a question without permissions
+        Given I am a user without permissions
+        When I send a create "<question type>" question request
+        Then an accessdenied exception is thrown
+        Examples:
+            | question type |
+            | text          |
+            | date          |
+            | numeric       |
+            | coded         |
+
+    Scenario: I cannot create a question with non unique fields
+        Given I am an admin user
+        And No questions exist
+        When I send a create "text" question request
+        Then the "text" question is created
+        When I send a create question request with duplicate "<field>"
+        Then a unique question exception is thrown
+        Examples:
+            | field                 |
+            | question name         |
+            | question identifier   |
+            | data mart column name |
+            | rdb column name       |

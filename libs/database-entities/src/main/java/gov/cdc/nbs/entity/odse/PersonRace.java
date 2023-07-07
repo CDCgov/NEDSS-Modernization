@@ -6,7 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -47,24 +55,55 @@ public class PersonRace {
     @Embedded
     private Audit audit;
 
-    public PersonRace() {
+    PersonRace() {
 
     }
 
     public PersonRace(
             final Person person,
-            final PatientCommand.AddRace added
+            final PatientCommand.AddRaceCategory added
     ) {
         this.personUid = person;
         this.asOfDate = added.asOf();
         this.raceCategoryCd = added.category();
-        this.raceCd = added.code();
+        this.raceCd = added.category();
 
         this.recordStatusCd = "ACTIVE";
         this.recordStatusTime = added.requestedOn();
 
         this.audit = new Audit(added.requester(), added.requestedOn());
 
+    }
 
+    public PersonRace(
+        final Person person,
+        final PatientCommand.AddDetailedRace added
+    ) {
+        this.personUid = person;
+        this.asOfDate = added.asOf();
+        this.raceCategoryCd = added.category();
+        this.raceCd = added.race();
+
+        this.recordStatusCd = "ACTIVE";
+        this.recordStatusTime = added.requestedOn();
+
+        this.audit = new Audit(added.requester(), added.requestedOn());
+
+    }
+
+    public PersonRace update(final PatientCommand.UpdateRaceInfo changed) {
+        this.asOfDate = changed.asOf();
+
+        this.audit.changed(changed.requester(), changed.requestedOn());
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonRace{" +
+            "raceCd='" + raceCd + '\'' +
+            ", raceCategoryCd='" + raceCategoryCd + '\'' +
+            ", asOfDate=" + asOfDate +
+            '}';
     }
 }

@@ -1,0 +1,6 @@
+query ethnicGroups{
+    ethnicGroups{
+        value
+        name
+    }
+}

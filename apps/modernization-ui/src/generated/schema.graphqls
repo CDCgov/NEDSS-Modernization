@@ -1,11 +1,11 @@
-type NaicsIndustryCodeResults {
-    content: [NaicsIndustryCode!]!
-    total: Int!
-}
-
 type CodeValueGeneralId {
     codeSetNm: String!
-    code: String!
+    code: ID!
+}
+
+type StateCountyCodeValueResults {
+    content: [StateCountyCodeValue!]!
+    total: Int!
 }
 
 type NaicsIndustryCode {
@@ -26,17 +26,6 @@ type NaicsIndustryCode {
     seqNum: Int
     nbsUid: Int
     sourceConceptId: String
-}
-
-type StateCountyCodeValueResults {
-    content: [StateCountyCodeValue!]!
-    total: Int!
-}
-
-type StateCountyCodeValue {
-    id: CodeValueGeneralId!
-    code_desc_txt: String!
-    state_cd: String!
 }
 
 type AssigningAuthorResults {
@@ -139,6 +128,39 @@ type KeyValuePair {
     value: String!
 }
 
+type CodedValue {
+    value: ID!
+    name: String!
+}
+
+type GroupedCodedValue {
+    value: ID!
+    name: String!
+    group: String!
+}
+
+type StateCountyCodeValue {
+    id: ID!
+    assigningAuthorityCd: String
+    assigningAuthorityDescTxt: String
+    codeDescTxt: String
+    codeShortDescTxt: String
+    effectiveFromTime: DateTime
+    effectiveToTime: DateTime
+    excludedTxt: String
+    indentLevelNbr: Int
+    isModifiableInd: Int
+    parentIsCd: Int
+    statusCd: Int
+    statusTime: DateTime
+    codeSetNm: String
+    seqNum: Int
+    nbsUid: Int
+    sourceConceptId: String
+    codeSystemCd: String
+    codeSystemDescTxt: String
+
+}
 extend type Query {
     findNameSuffixes(page: Page): KeyValuePairResults!
     findAllNameTypes(page: Page): NameTypeResults!
@@ -150,8 +172,32 @@ extend type Query {
     findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
     findAllIdentificationTypes(page: Page): IdentificationTypesResults!
     findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(page: Page): StateCountyCodeValueResults!
-    findAllNaicsIndustryCodes: NaicsIndustryCodeResults!
+    findAllStateCountyCodeValues(stateCode: String, page: Page): [StateCountyCodeValue!]!
+    maritalStatuses: [CodedValue!]!
+    primaryOccupations: [CodedValue!]!
+    educationLevels: [CodedValue!]!
+    primaryLanguages: [CodedValue!]!
+    raceCategories: [CodedValue!]!
+    detailedRaces(category: String): [GroupedCodedValue!]!
+    ethnicGroups: [CodedValue!]!
+    ethnicityUnknownReasons: [CodedValue!]!
+    detailedEthnicities: [CodedValue!]!
+    genders: [CodedValue!]!
+    genderUnknownReasons: [CodedValue!]!
+    preferredGenders: [CodedValue!]!
+    countries: [CodedValue!]!
+    states: [CodedValue!]!
+    counties(state: String): [GroupedCodedValue!]!
+    nameTypes: [CodedValue!]!
+    prefixes: [CodedValue!]!
+    suffixes: [CodedValue!]!
+    degrees: [CodedValue!]!
+    addressUses: [CodedValue!]!
+    addressTypes: [CodedValue!]!
+    phoneUses: [CodedValue!]!
+    phoneTypes: [CodedValue!]!
+    identificationTypes: [CodedValue!]!
+    assigningAuthorities: [CodedValue!]!
 }
 extend type Query {
     findAllConditionCodes(page: Page): [ConditionCode]!
@@ -870,8 +916,8 @@ type PatientSummary {
     gender: String
     ethnicity: String
     race: String
-    phone: [PatientSummaryPhone]
-    email: [PatientSummaryEmail]
+    phone: [PatientSummaryPhone!]
+    email: [PatientSummaryEmail!]
     address: PatientSummaryAddress
 }
 
@@ -892,14 +938,14 @@ type PatientAdministrative {
 }
 
 type PatientAdministrativeResults {
-    content: [PatientAdministrative]!
+    content: [PatientAdministrative!]!
     total: Int!
     number: Int!
     size: Int!
 }
 
 type PatientName {
-    patient: ID!
+    patient: Int!
     version: Int!
     asOf: DateTime!
     sequence: Int!
@@ -915,7 +961,7 @@ type PatientName {
 }
 
 type PatientNameResults {
-    content: [PatientName]!
+    content: [PatientName!]!
     total: Int!
     number: Int!
     size: Int!
@@ -926,8 +972,8 @@ type PatientAddress {
     id: ID!
     version: Int!
     asOf: DateTime!
-    type: PatientCodedValue
-    use: PatientCodedValue
+    type: PatientCodedValue!
+    use: PatientCodedValue!
     address1: String
     address2: String
     city: String
@@ -940,7 +986,7 @@ type PatientAddress {
 }
 
 type PatientAddressResults {
-    content: [PatientAddress]!
+    content: [PatientAddress!]!
     total: Int!
     number: Int!
     size: Int!
@@ -962,7 +1008,7 @@ type PatientPhone {
 }
 
 type PatientPhoneResults {
-    content: [PatientPhone]!
+    content: [PatientPhone!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1006,7 +1052,7 @@ type PatientIdentification {
 }
 
 type PatientIdentificationResults {
-    content: [PatientIdentification]!
+    content: [PatientIdentification!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1048,20 +1094,20 @@ type PatientEthnicity {
     asOf: DateTime!
     ethnicGroup: PatientCodedValue!
     unknownReason: PatientCodedValue
-    detailed: [PatientCodedValue]!
+    detailed: [PatientCodedValue!]!
 }
 
 type PatientRace {
     patient: Int!
-    id: ID!
+    id: Int!
     version: Int!
     asOf: DateTime!
     category: PatientCodedValue!
-    detailed: [PatientCodedValue]
+    detailed: [PatientCodedValue!]!
 }
 
 type PatientRaceResults {
-    content: [PatientRace]!
+    content: [PatientRace!]!
     total: Int!
     number: Int!
     size: Int!
@@ -1072,11 +1118,12 @@ type PatientProfile {
     local: String!
     shortId: Int
     version: Int!
+    recordStatusCd: String!
     deletable: Boolean!
     summary(asOf: DateTime): PatientSummary
     names(page: Page): PatientNameResults
     administrative(page: Page): PatientAdministrativeResults
-    addresses(page: Page): PatientAddressResults
+    addresses(page: Page): PatientAddressResults!
     phones(page: Page): PatientPhoneResults
     identification(page: Page): PatientIdentificationResults
     races(page: Page): PatientRaceResults
@@ -1175,37 +1222,27 @@ union PatientDeleteResult = PatientDeleteSuccessful | PatientDeleteFailed
 type Mutation {
     createPatient(patient: PersonInput!): PatientCreatedResponse!
     deletePatient(patient: ID!): PatientDeleteResult!
-    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientEventResponse!
-    updatePatientSexBirth(input: UpdateSexAndBirthInput!): PatientEventResponse!
-    updateMortality(input: MortalityInput!): PatientEventResponse!
-    addPatientAddress(input: AddressInput!): PatientEventResponse!
-    addPatientEmail(input: EmailInput!): PatientEventResponse!
-    addPatientIdentification(input: IdentificationInput!): PatientEventResponse!
-    addPatientName(input: NameInput!): PatientEventResponse!
-    addPatientPhone(input: PhoneInput!): PatientEventResponse!
-    addPatientRace(input: RaceInput!): PatientEventResponse!
-    updateAdministrative(input: AdministrativeInput!): PatientEventResponse!
-    updateEthnicity(input: EthnicityInput!): PatientEventResponse!
-    updatePatientAddress(input: AddressInput!): PatientEventResponse!
-    updatePatientEmail(input: EmailInput!): PatientEventResponse!
-    updatePatientIdentification(
-        input: IdentificationInput!
-    ): PatientEventResponse!
-    updatePatientName(input: NameInput!): PatientEventResponse!
-    updatePatientPhone(input: PhoneInput!): PatientEventResponse!
-    updatePatientRace(input: RaceInput!): PatientEventResponse!
-    deletePatientAddress(
-        patientId: Int!
-        personSeqNum: Int!
-    ): PatientEventResponse!
-    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientIdentification(
-        patientId: Int!
-        entitySeqNum: Int!
-    ): PatientEventResponse!
-    deletePatientName(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientPhone(patientId: Int!, personSeqNum: Int!): PatientEventResponse!
-    deletePatientRace(patientId: Int!, raceCd: String!): PatientEventResponse!
+    updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
+    updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
+    updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
+    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
+    deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
+    updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
+    addPatientRace(input: RaceInput!): PatientRaceChangeResult!
+    updatePatientRace(input: RaceInput!): PatientRaceChangeResult!
+    deletePatientRace(input: DeletePatientRace!): PatientRaceChangeResult!
+    addPatientName(input: NewPatientNameInput!): PatientNameChangeResult!
+    updatePatientName(input: UpdatePatientNameInput!): PatientNameChangeResult!
+    deletePatientName(input: DeletePatientNameInput!): PatientNameChangeResult!
+    addPatientAddress(input: NewPatientAddressInput!): PatientAddressChangeResult!
+    updatePatientAddress(input: UpdatePatientAddressInput!): PatientAddressChangeResult!
+    deletePatientAddress(input: DeletePatientAddressInput): PatientAddressChangeResult!
+    addPatientPhone(input: NewPatientPhoneInput!): PatientPhoneChangeResult!
+    updatePatientPhone(input: UpdatePatientPhoneInput!): PatientPhoneChangeResult!
+    deletePatientPhone(input: DeletePatientPhoneInput): PatientPhoneChangeResult!
+    addPatientIdentification(input: NewPatientIdentificationInput!): PatientIdentificationChangeResult!
+    updatePatientIdentification(input: UpdatePatientIdentificationInput!): PatientIdentificationChangeResult!
+    deletePatientIdentification(input: DeletePatientIdentificationInput): PatientIdentificationChangeResult!
 }
 
 type PatientCreatedResponse {
@@ -1213,8 +1250,7 @@ type PatientCreatedResponse {
     shortId: Int!
 }
 
-type PatientEventResponse {
-    requestId: String!
+type PatientUpdateResponse {
     patientId: ID!
 }
 
@@ -1259,7 +1295,6 @@ type Person {
     id: ID
     nbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
-    races: [PersonRace]
     names: [PersonName]
     addReasonCd: String
     addTime: DateTime
@@ -1412,10 +1447,10 @@ input PersonInput {
     deceased: Deceased
     deceasedTime: DateTime
     maritalStatus: String
-    addresses: [NewPatientAddress]
-    phoneNumbers: [NewPatientPhoneNumber]
+    addresses: [NewPatientAddress!]
+    phoneNumbers: [NewPatientPhoneNumber!]
     emailAddresses: [String]
-    identifications: [NewPatientIdentification]
+    identifications: [NewPatientIdentification!]
     ethnicity: String
     races: [String]
     asOf: DateTime
@@ -1424,110 +1459,250 @@ input PersonInput {
 }
 
 input GeneralInfoInput {
-    patientId: ID!
-    asOf: DateTime
+    patient: Int!
+    asOf: DateTime!
     maritalStatus: String
-    mothersMaidenName: String
-    adultsInHouseNumber: Int
-    childrenInHouseNumber: Int
-    occupationCode: String
-    educationLevelCode: String
-    primaryLanguageCode: String
-    speaksEnglishCode: String
-    eharsId: String
+    maternalMaidenName: String
+    adultsInHouse: Int
+    childrenInHouse: Int
+    occupation: String
+    educationLevel: String
+    primaryLanguage: String
+    speaksEnglish: String
+    stateHIVCase: String
 }
 
-input AddressInput {
-    patientId: ID!
-    id: Int
-    streetAddress1: String
-    streetAddress2: String
-    city: String
-    stateCode: String
-    countyCode: String
-    countryCode: String
-    zip: String
-    censusTract: String
-}
-
-input AdministrativeInput {
-    patientId: ID!
-    description: String
-}
-
-input EmailInput {
-    patientId: ID!
-    id: Int
-    emailAddress: String
-}
-
-input EthnicityInput {
-    patientId: ID!
-    asOf: DateTime
-    ethnicityCode: String!
-    ethnicUnkReasonCd: String
-}
-
-input IdentificationInput {
-    patientId: ID!
-    id: Int
-    identificationNumber: String!
-    identificationType: String!
-    assigningAuthority: String
-}
-
-input NameInput {
-    patientId: ID!
-    personNameSeq: Int
-    firstName: String
-    middleName: String
-    lastName: String
-    suffix: Suffix
-    nameUseCd: NameUseCd!
-}
-
-input PhoneInput {
-    patientId: ID!
-    id: Int
-    number: String
-    extension: String
-    phoneType: PhoneType!
-}
-
-input RaceInput {
-    patientId: ID!
-    asOf: DateTime
-    raceCd: String!
-    raceCategoryCd: String!
+type PatientGeneralChangeResult {
+    patient: Int!
 }
 
 input MortalityInput {
-    patientId: ID!
-    asOf: DateTime
-    deceased: Deceased
-    deceasedTime: DateTime
-    cityOfDeath: String
-    stateOfDeath: String
-    countyOfDeath: String
-    countryOfDeath: String
+    patient: Int!
+    asOf: DateTime!
+    deceased: String
+    deceasedOn: Date
+    city: String
+    state: String
+    county: String
+    country: String
 }
 
-input UpdateSexAndBirthInput {
-    patientId: ID!
+type PatientMortalityChangeResult {
+    patient: Int!
+}
+
+input AdministrativeInput {
+    patient: Int!
     asOf: DateTime
-    dateOfBirth: Date
-    birthGender: Gender
-    currentGender: Gender
-    additionalGender: String
-    transGenderInfo: String
-    birthCity: String
-    birthCntry: String
-    birthState: String
-    birthOrderNbr: Int
+    comment: String
+}
+
+type PatientAdministrativeChangeResult {
+    patient: Int!
+}
+
+
+input EthnicityInput {
+    patient: String!
+    asOf: DateTime!
+    ethnicGroup: String
+    unknownReason: String
+    detailed: [String!]
+}
+
+type PatientEthnicityChangeResult {
+    patient: String!
+}
+
+input RaceInput {
+    patient: Int!
+    asOf: DateTime
+    category: String!
+    detailed: [String!]
+}
+
+input DeletePatientRace {
+    patient: Int!
+    category: String!
+}
+
+type PatientRaceChangeResult {
+    patient: Int!
+}
+
+input NewPatientNameInput {
+    patient: Int!
+    type: String!
+    asOf: DateTime
+    prefix: String
+    first: String
+    middle: String
+    secondMiddle: String
+    last: String
+    secondLast: String
+    suffix: String
+    degree: String
+}
+
+input UpdatePatientNameInput {
+    patient: Int!
+    sequence: Int!
+    type: String!
+    asOf: DateTime
+    prefix: String
+    first: String
+    middle: String
+    secondMiddle: String
+    last: String
+    secondLast: String
+    suffix: String
+    degree: String
+}
+
+input DeletePatientNameInput {
+    patient: Int!
+    sequence: Int!
+}
+
+type PatientNameChangeResult {
+    patient: Int!
+    sequence: Int!
+}
+
+input NewPatientAddressInput {
+    patient: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    address1: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
+    county: String
+    censusTract: String
+    country: String
+    comment: String
+}
+
+input UpdatePatientAddressInput {
+    patient: Int!
+    id: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    address1: String
+    address2: String
+    city: String
+    state: String
+    zipcode: String
+    county: String
+    censusTract: String
+    country: String
+    comment: String
+}
+
+input DeletePatientAddressInput {
+    patient: Int!
+    id: Int!
+}
+
+type PatientAddressChangeResult {
+    patient: Int!
+    id: Int!
+}
+
+input NewPatientPhoneInput {
+    patient: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    countryCode: String
+    number: String
+    extension: String
+    email:String
+    url:String
+    comment: String
+}
+
+input UpdatePatientPhoneInput {
+    patient: Int!
+    id: Int!
+    asOf: DateTime!
+    type: String!
+    use: String!
+    countryCode: String
+    number: String
+    extension: String
+    email:String
+    url:String
+    comment: String
+}
+
+input DeletePatientPhoneInput {
+    patient: Int!
+    id: Int!
+}
+
+type PatientPhoneChangeResult {
+    patient: Int!
+    id: Int!
+}
+
+input NewPatientIdentificationInput {
+    patient: Int!
+    asOf: DateTime!
+    type: String!
+    authority: String
+    value: String!
+}
+
+input UpdatePatientIdentificationInput {
+    patient: Int!
+    sequence: Int!
+    asOf: DateTime!
+    type: String!
+    authority: String
+    value: String!
+}
+
+input DeletePatientIdentificationInput {
+    patient: Int!
+    sequence: Int!
+}
+
+type PatientIdentificationChangeResult {
+    patient: Int!
+    sequence: Int!
+}
+
+input UpdateBirthAndGenderInput {
+    patient: ID!
+    asOf: DateTime!
+    birth: UpdateBirthInput
+    gender: UpdateGenderInput
+}
+
+input UpdateBirthInput {
+    bornOn: Date
+    gender:String
     multipleBirth: String
-    sexUnknown: String
-    currentAge: String
-    ageReportedTime: DateTime
+    birthOrder: Int
+    city: String
+    state: String
+    county: String
+    country: String
+}
+
+input UpdateGenderInput {
+    current: String
+    unknownReason: String
+    preferred: String
+    additional: String
+}
+
+type PatientBirthAndGenderChangeResult {
+    patient: Int!
 }
 
 enum NameUseCd {
@@ -1593,11 +1768,6 @@ type PersonIdentification {
     assigningAuthorityDescTxt: String
 }
 
-type PersonRace {
-    raceCd: String
-    recordStatusCd: String
-}
-
 type PersonName {
     firstNm: String
     middleNm: String
@@ -1629,6 +1799,8 @@ type Locator {
     geocodeMatchInd: String
     withinCityLimitsInd: String
     censusTract: String
+    stateCode: StateCode
+    countryCode: CountryCode
 }
 
 type LocatorParticipations {

@@ -1,5 +1,24 @@
 package gov.cdc.nbs.patient;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.OptionalLong;
+import java.util.stream.Collectors;
+import org.apache.commons.codec.language.Soundex;
+import org.junit.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.exception.QueryException;
@@ -16,25 +35,6 @@ import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.OptionalLong;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 public class PatientSearchSteps {
@@ -55,6 +55,7 @@ public class PatientSearchSteps {
     private Direction sortDirection;
     private String sortField;
     private QueryException exception;
+    private String searchText;
 
     @Given("there are {int} patients")
     public void there_are_patients(int patientCount) {
@@ -169,18 +170,22 @@ public class PatientSearchSteps {
         PatientFilter filter = new PatientFilter(RecordStatus.ACTIVE);
         switch (field) {
             case "first name":
-                filter.setFirstName(searchPatient.getFirstNm() + " ");
+                searchText = searchPatient.getFirstNm() + " ";
+                filter.setFirstName(searchText);
                 break;
             case "last name":
-                filter.setLastName(searchPatient.getLastNm() + " ");
+                searchText = searchPatient.getLastNm() + " ";
+                filter.setLastName(searchText);
                 break;
             case "address":
                 var addressLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
-                filter.setAddress(addressLocator.getStreetAddr1() + " ");
+                searchText = addressLocator.getStreetAddr1() + " ";
+                filter.setAddress(searchText);
                 break;
             case "city":
                 var cityLocator = PersonUtil.getPostalLocators(searchPatient).get(0);
-                filter.setCity(cityLocator.getCityDescTxt() + " ");
+                searchText = cityLocator.getCityDescTxt() + " ";
+                filter.setCity(searchText);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid value for 'field' input: " + field);
@@ -190,15 +195,40 @@ public class PatientSearchSteps {
 
     @Then("I find the patient")
     public void i_find_the_patient() {
-        assertNotNull(searchPatient);
-        assertTrue(searchResults.size() > 0);
-        assertTrue(searchResults.contains(searchPatient));
+        assertThat(searchPatient).isNotNull();
+
+        assertThat(searchResults).contains(searchPatient);
+
     }
 
-    @Then("I find only the expected patient")
-    public void I_find_only_the_expected_patient() {
+    @Then("I find only the expected patient when searching by {string}")
+    public void I_find_only_the_expected_patient(String field) {
         assertNotNull(searchPatient);
-        assertEquals(1, searchResults.size());
+        // Verify all results match search criteria
+        Soundex soundex = new Soundex();
+        String searchSoundex = soundex.encode(searchText.trim());
+        switch (field) {
+            case "first name":                
+                searchResults.forEach(r -> {
+                    assertTrue(r.getFirstNm().contains(searchText.trim())
+                            || soundex.encode(r.getFirstNm()).contains(searchSoundex));
+                });
+                break;
+            case "last name":
+                searchResults.forEach(r -> {
+                    assertTrue(r.getLastNm().contains(searchText.trim())
+                     || soundex.encode(r.getLastNm()).contains(searchSoundex));
+                });
+                break;
+            case "address":
+                assertEquals(1, searchResults.size());
+                break;
+            case "city":
+                assertEquals(1, searchResults.size());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid value for 'field' input: " + field);
+        }
         assertTrue(searchResults.contains(searchPatient));
     }
 
@@ -311,7 +341,7 @@ public class PatientSearchSteps {
                 filter.setZip(zipLocator.getZipCd());
                 break;
             case "ethnicity":
-                filter.setEthnicity(searchPatient.getEthnicGroupInd());
+                filter.setEthnicity(searchPatient.getEthnicity().ethnicGroup());
                 break;
             case "record status":
                 filter.setRecordStatus(Arrays.asList(searchPatient.getRecordStatusCd()));

@@ -24,7 +24,10 @@ describe('EthnicityForm', () => {
             userResults: [],
             outbreaks: [],
             identificationTypes: [],
-            states: []
+            states: [],
+            counties: [],
+            countries: [],
+            authorities: []
         };
 
         const { getByText, getByTestId } = render(

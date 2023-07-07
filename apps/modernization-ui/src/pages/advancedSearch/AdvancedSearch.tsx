@@ -37,6 +37,7 @@ import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { Icon } from '@trussworks/react-uswds';
+import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -652,6 +653,53 @@ export const AdvancedSearch = () => {
         handleSubmit(externalize(data), SEARCH_TYPE.PERSON);
     };
 
+    const getChipValues = (
+        re: {
+            name: string;
+            value: string;
+        },
+        searchCriteria: SearchCriteria
+    ) => {
+        switch (re.name) {
+            case 'state':
+                return searchCriteria.states.find((element) => {
+                    return element.id === re.value;
+                })?.codeDescTxt!;
+            case 'Jurisdictions':
+                return (
+                    searchCriteria.jurisdictions.find((element) => {
+                        return element.id === re.value;
+                    })?.codeDescTxt || ''
+                );
+            case 'Conditions':
+                return (
+                    searchCriteria.conditions.find((element) => {
+                        return element.id === re.value;
+                    })?.conditionDescTxt || ''
+                );
+            case 'Created By':
+                return (
+                    searchCriteria.userResults.find((element) => {
+                        return element.nedssEntryId === re.value;
+                    })?.userLastNm || ''
+                );
+            case 'Last Updated By':
+                return (
+                    searchCriteria.userResults.find((element) => {
+                        return element.nedssEntryId === re.value;
+                    })?.userLastNm || ''
+                );
+            case 'Outbreak Names':
+                return (
+                    searchCriteria.outbreaks.find((element) => {
+                        return element.id.code === re.value;
+                    })?.codeShortDescTxt || ''
+                );
+            default:
+                return re.value;
+        }
+    };
+
     return (
         <div
             className={`padding-0 search-page-height bg-light advanced-search ${
@@ -666,11 +714,7 @@ export const AdvancedSearch = () => {
                     Search
                     <div className="button-group">
                         <Button
-                            disabled={
-                                (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                (!patientData?.content || patientData?.content?.length === 0)
-                            }
+                            disabled={!lastSearchType}
                             className="padding-x-3 add-patient-button"
                             type={'button'}
                             onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
@@ -734,27 +778,32 @@ export const AdvancedSearch = () => {
                         row
                         className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
                         {submitted && !isError() ? (
-                            <div
-                                className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
-                                style={{ maxWidth: '55%' }}>
-                                <strong className="margin-right-1">
-                                    {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
-                                    {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
-                                    {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
-                                </strong>{' '}
-                                Results for
-                                {resultsChip.map(
-                                    (re, index) =>
-                                        re.value && (
-                                            <Chip
-                                                key={index}
-                                                name={re.name}
-                                                value={re.value}
-                                                handleClose={handleChipClose}
-                                            />
-                                        )
+                            <SearchCriteriaContext.Consumer>
+                                {({ searchCriteria }) => (
+                                    <div
+                                        className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                        style={{ maxWidth: '55%' }}>
+                                        <strong className="margin-right-1">
+                                            {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                            {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
+                                            {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
+                                        </strong>{' '}
+                                        Results for
+                                        {resultsChip.map((re, index) => {
+                                            return (
+                                                re.value && (
+                                                    <Chip
+                                                        key={index}
+                                                        name={re.name}
+                                                        value={getChipValues(re, searchCriteria)}
+                                                        handleClose={handleChipClose}
+                                                    />
+                                                )
+                                            );
+                                        })}
+                                    </div>
                                 )}
-                            </div>
+                            </SearchCriteriaContext.Consumer>
                         ) : (
                             <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
                         )}

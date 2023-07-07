@@ -174,7 +174,7 @@ export const PatientProfile = () => {
                             setAddedItem(message);
                             setAlertType(type);
                         }}
-                        id={id || ''}
+                        id={profile?.patient.id || ''}
                     />
                 )}
 

@@ -1,0 +1,6 @@
+query educationLevels{
+    educationLevels{
+        value
+        name
+    }
+}

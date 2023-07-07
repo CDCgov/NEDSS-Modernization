@@ -1,6 +1,5 @@
 mutation updatePatientGeneralInfo($input: GeneralInfoInput!){
     updatePatientGeneralInfo(input: $input){
-        requestId
-        patientId
+        patient
     }
 }

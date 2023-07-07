@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.birth;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -15,7 +16,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,13 +54,13 @@ public class PatientProfileBirthSteps {
             .returns(expected.getBirthGender(), Person::getBirthGenderCd)
         ;
 
-        if(expected.getDateOfBirth() != null) {
+        if (expected.getDateOfBirth() != null) {
             Instant expected_birth_time = expected.getDateOfBirth()
-                .atStartOfDay(ZoneId.systemDefault())
+                .atStartOfDay(ZoneOffset.UTC)
                 .toInstant();
 
             assertThat(actual.getBirthTime()).isEqualTo(expected_birth_time);
-        }else {
+        } else {
             assertThat(actual.getBirthTime()).isNull();
         }
     }
@@ -68,7 +69,7 @@ public class PatientProfileBirthSteps {
     public void the_profile_has_no_associated_birth() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         Optional<PatientBirth> actual = this.resolver.resolve(profile);
         assertThat(actual).isEmpty();
@@ -79,7 +80,7 @@ public class PatientProfileBirthSteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         assertThatThrownBy(
             () -> this.resolver.resolve(profile)

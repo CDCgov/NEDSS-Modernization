@@ -22,7 +22,7 @@ class PatientEthnicityTupleMapperTest {
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
         when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
-        when(tuple.get(tables.patient().asOfDateEthnicity)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
+        when(tuple.get(tables.patient().ethnicity.asOfDateEthnicity)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
 
         PatientEthnicityTupleMapper mapper = new PatientEthnicityTupleMapper(tables);
 

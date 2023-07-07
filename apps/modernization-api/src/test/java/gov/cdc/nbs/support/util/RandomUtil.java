@@ -1,17 +1,21 @@
 package gov.cdc.nbs.support.util;
 
-import gov.cdc.nbs.address.Country;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.message.enums.Indicator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class RandomUtil {
     private static final Random RANDOM = new Random();
@@ -90,6 +94,33 @@ public class RandomUtil {
         return data.substring(0, new Random().nextInt(len - 1) + 1);
     }
 
+    @SafeVarargs
+    public static <T> T oneFrom(T...values) {
+        var index = RANDOM.nextInt(values.length);
+        return values[index];
+    }
+
+    @SafeVarargs
+    public static <T> T maybeOneFrom(T...values) {
+        int flip = RANDOM.nextInt(2);
+
+        return (flip == 0)
+            ? oneFrom(values)
+            : null;
+    }
+
+    @SafeVarargs
+    public static <T> Collection<T> multiFrom(T...values) {
+        var size = RANDOM.nextInt(values.length);
+        Set<T> randomized = new HashSet<>(size);
+
+        for (int index = 0; index < size; index++) {
+            randomized.add(values[index]);
+        }
+
+        return randomized;
+    }
+
     public static Deceased deceased() {
         return getRandomFromArray(Deceased.values());
     }
@@ -98,18 +129,27 @@ public class RandomUtil {
         return getRandomFromArray(Gender.values());
     }
 
-    public static Country country() {
+    public static String maybeGender() {
+        return maybeOneFrom(Gender.U.value(), Gender.F.value(), Gender.M.value());
+    }
+
+    public static String mabyeIndicator() {
+        return maybeOneFrom(Indicator.NO.getId(), Indicator.YES.getId(), Indicator.UNKNOWN.getId());
+    }
+
+    public static String country() {
         int limit = CountryCodeUtil.countryCodeMap.size();
         int index = RANDOM.nextInt(limit);
 
-        return CountryCodeUtil.countryCodeMap.entrySet().stream().skip(index)
-            .map(e -> new Country(e.getValue(), e.getKey()))
+        return CountryCodeUtil.countryCodeMap.values()
+            .stream()
+            .skip(index)
             .findFirst()
             .orElse(null);
     }
 
     public static LocalDate dateInPast() {
         Instant past = getRandomDateInPast();
-        return LocalDate.ofInstant(past, ZoneId.systemDefault());
+        return LocalDate.ofInstant(past, ZoneOffset.UTC);
     }
 }

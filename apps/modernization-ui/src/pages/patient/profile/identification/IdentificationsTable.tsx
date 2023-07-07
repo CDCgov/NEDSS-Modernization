@@ -1,30 +1,57 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { SortableTable } from 'components/Table/SortableTable';
-import { Actions } from 'components/Table/Actions';
+import { Actions as ActionState } from 'components/Table/Actions';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { Identification } from './identification';
-import { FindPatientProfileQuery } from 'generated/graphql/schema';
+import { Identification, IdentificationEntry } from './identification';
+import {
+    FindPatientProfileQuery,
+    useAddPatientIdentificationMutation,
+    useDeletePatientIdentificationMutation,
+    useUpdatePatientIdentificationMutation
+} from 'generated/graphql/schema';
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
 import { useFindPatientProfileIdentifications } from './useFindPatientProfileIdentifications';
-import { AddIdentificationModal } from 'pages/patient/profile/identification/AddIdentificationModal';
-import { DetailsIdentificationModal } from 'pages/patient/profile/identification/DetailsIdentificationModal';
+import { maybeDescription, maybeId } from '../coded';
+import { internalizeDate } from 'date';
+import { tableActionStateAdapter, useTableActionState } from 'table-action';
+import { EntryModal } from '../entry/EntryModal';
+import { IdentificationEntryForm } from './IdentificationEntryForm';
+import { ConfirmationModal } from 'confirmation';
+import { Detail, DetailsModal } from '../DetailsModal';
+import { useAlert } from 'alert/useAlert';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asEntry = (identification: Identification): IdentificationEntry => ({
+    patient: identification.patient,
+    asOf: internalizeDate(identification?.asOf),
+    type: maybeId(identification.type),
+    value: identification.value,
+    state: maybeId(identification?.authority),
+    sequence: identification?.sequence
+});
+
+const asDetail = (data: Identification): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Type', value: maybeDescription(data.type) },
+    { name: 'Authority', value: maybeDescription(data.authority) },
+    { name: 'Value', value: data.value }
+];
+
+const resolveInitialEntry = (patient: string): IdentificationEntry => ({
+    patient: +patient,
+    asOf: null,
+    type: null,
+    value: null,
+    state: null
+});
+
+type Props = {
+    patient: string;
 };
 
-export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) => {
+export const IdentificationsTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -32,42 +59,115 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
         { name: 'Value', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
     ]);
+
+    const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const addModalRef = useRef<ModalRef>(null);
-    const detailsModalRef = useRef<ModalRef>(null);
-    const deleteModalRef = useRef<ModalRef>(null);
+    const initial = resolveInitialEntry(patient);
 
-    const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [details, setDetails] = useState<any>(undefined);
     const [isActions, setIsActions] = useState<any>(null);
     const [identifications, setIdentifications] = useState<Identification[]>([]);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
 
     const handleComplete = (data: FindPatientProfileQuery) => {
-        if (
-            data?.findPatientProfile?.identification?.content &&
-            data?.findPatientProfile?.identification?.content?.length > 0
-        ) {
-            setIdentifications(data?.findPatientProfile?.identification?.content);
+        setTotal(data?.findPatientProfile?.identification?.total ?? 0);
+        setIdentifications(data?.findPatientProfile?.identification?.content || []);
+    };
+
+    const [getProfile, { refetch }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
+
+    const [add] = useAddPatientIdentificationMutation();
+    const [update] = useUpdatePatientIdentificationMutation();
+    const [remove] = useDeletePatientIdentificationMutation();
+
+    const { selected, actions } = useTableActionState<Identification>();
+    const modal = useRef<ModalRef>(null);
+
+    useEffect(() => {
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
+
+    useEffect(() => {
+        getProfile({
+            variables: {
+                patient: patient.toString(),
+                page4: {
+                    pageNumber: currentPage - 1,
+                    pageSize: TOTAL_TABLE_DATA
+                }
+            }
+        });
+    }, [currentPage]);
+
+    const onAdded = (entry: IdentificationEntry) => {
+        add({
+            variables: {
+                input: {
+                    patient: entry.patient,
+                    asOf: entry.asOf,
+                    value: entry.value || '',
+                    type: entry.type || '',
+                    authority: entry.state
+                }
+            }
+        })
+            .then(() => {
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Added Identification`
+                });
+                refetch();
+            })
+            .then(actions.reset);
+    };
+
+    const onChanged = (entry: IdentificationEntry) => {
+        if (entry.sequence) {
+            update({
+                variables: {
+                    input: {
+                        patient: entry.patient,
+                        sequence: entry.sequence,
+                        asOf: entry.asOf,
+                        value: entry.value || '',
+                        type: entry.type || '',
+                        authority: entry.state
+                    }
+                }
+            })
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated Identification`
+                    });
+                    refetch();
+                })
+                .then(actions.reset);
         }
     };
 
-    const [getProfile, { data }] = useFindPatientProfileIdentifications({ onCompleted: handleComplete });
-
-    useEffect(() => {
-        if (patient) {
-            getProfile({
+    const onDeleted = () => {
+        if (selected?.type == 'delete') {
+            remove({
                 variables: {
-                    shortId: +patient,
-                    page4: {
-                        pageNumber: currentPage - 1,
-                        pageSize: TOTAL_TABLE_DATA
+                    input: {
+                        patient: selected.item.patient,
+                        sequence: selected.item.sequence
                     }
                 }
-            });
+            })
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted Identification`
+                    });
+                    refetch();
+                })
+                .then(actions.reset);
         }
-    }, [patient, currentPage]);
+    };
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -106,34 +206,16 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
         }
     };
 
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
-
     return (
         <>
             <SortableTable
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                addModalRef.current?.toggleModal();
-                                setDetails(null);
-                                setIsEditModal(false);
-                            }}
-                            className="display-inline-flex">
+                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add identification
                         </Button>
-                        <AddIdentificationModal
-                            modalHead={isEditModal ? 'Edit - Identification' : 'Add - Identification'}
-                            modalRef={addModalRef}
-                        />
-                        <DetailsIdentificationModal data={details} modalRef={detailsModalRef} />
                     </div>
                 }
                 tableHeader={'Identifications'}
@@ -179,21 +261,10 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
                                     <Icon.MoreHoriz className="font-sans-lg" />
                                 </Button>
                                 {isActions === index && (
-                                    <Actions
+                                    <ActionState
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                setIsEditModal(true);
-                                                addModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'delete') {
-                                                setIsDeleteModal(true);
-                                                deleteModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'details') {
-                                                setDetails(identification);
-                                                detailsModalRef.current?.toggleModal();
-                                            }
+                                            tableActionStateAdapter(actions, identification)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -202,39 +273,52 @@ export const IdentificationsTable = ({ patient }: PatientLabReportTableProps) =>
                         </td>
                     </tr>
                 ))}
-                totalResults={data?.findPatientProfile?.identification?.total}
+                totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
             />
-            {isDeleteModal && (
-                <Modal
-                    forceAction
-                    ref={deleteModalRef}
-                    id="example-modal-1"
-                    aria-labelledby="modal-1-heading"
-                    className="padding-0"
-                    aria-describedby="modal-1-description">
-                    <ModalHeading
-                        id="modal-1-heading"
-                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                        Delete name
-                    </ModalHeading>
-                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                        <p id="modal-1-description">Are you sure you want to delete this identification record?</p>
-                    </div>
-                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                        <ButtonGroup>
-                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
-                                Cancel
-                            </Button>
-                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
-                                Yes, delete
-                            </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </Modal>
+
+            {selected?.type === 'add' && (
+                <EntryModal modal={modal} id="add-patient-identification-modal" title="Add - Identification">
+                    <IdentificationEntryForm
+                        action={'Add'}
+                        entry={initial}
+                        onCancel={actions.reset}
+                        onChange={onAdded}
+                    />
+                </EntryModal>
+            )}
+
+            {selected?.type === 'update' && (
+                <EntryModal modal={modal} id="edit-patient-identification-modal" title="Edit - Identification">
+                    <IdentificationEntryForm
+                        action={'Edit'}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
+                        onChange={onChanged}
+                    />
+                </EntryModal>
+            )}
+
+            {selected?.type === 'delete' && (
+                <ConfirmationModal
+                    modal={modal}
+                    title="Delete Identification"
+                    message="Are you sure you want to delete this identification record?"
+                    confirmText="Yes, delete"
+                    onConfirm={onDeleted}
+                    onCancel={actions.reset}
+                />
+            )}
+
+            {selected?.type === 'detail' && (
+                <DetailsModal
+                    title={'View details - Identification'}
+                    modal={modal}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
+                />
             )}
         </>
     );

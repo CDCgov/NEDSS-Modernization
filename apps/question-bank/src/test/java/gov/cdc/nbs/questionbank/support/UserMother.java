@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.support;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,37 @@ public class UserMother {
         var admin = userRepository.findByUserId("admin").orElseGet(() -> createAdminUser());
         setSecurityContext(admin);
         return admin;
+    }
+
+    public AuthUser noPermissions() {
+        var user = userRepository.findByUserId("empty").orElseGet(() -> createEmptyUser());
+        setSecurityContext(user);
+        return user;
+    }
+
+    private AuthUser createEmptyUser() {
+        var now = Instant.now();
+        var audit = new AuthAudit();
+        audit.setAddTime(now);
+        audit.setAddUserId(1L);
+        audit.setLastChgTime(now);
+        audit.setLastChgUserId(1L);
+        audit.setRecordStatusCd(AuthRecordStatus.ACTIVE);
+        audit.setRecordStatusTime(now);
+        var user = new AuthUser();
+
+        user.setUserId("empty");
+        user.setUserType("internalUser");
+        user.setUserFirstNm("test");
+        user.setUserLastNm("empty");
+        user.setMasterSecAdminInd('F');
+        user.setProgAreaAdminInd('F');
+        user.setNedssEntryId(2L);
+        user.setAudit(audit);
+        user.setAuthUserRoles(new ArrayList<>());
+        user.setAdminProgramAreas(new ArrayList<>());
+
+        return userRepository.save(user);
     }
 
     private AuthUser createAdminUser() {

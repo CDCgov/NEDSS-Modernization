@@ -1,0 +1,6 @@
+query primaryLanguages{
+    primaryLanguages{
+        value
+        name
+    }
+}

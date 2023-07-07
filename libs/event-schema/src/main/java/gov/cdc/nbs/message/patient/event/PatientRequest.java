@@ -24,11 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(PatientRequest.DeleteEmail.class),
     @JsonSubTypes.Type(PatientRequest.AddPhone.class),
     @JsonSubTypes.Type(PatientRequest.UpdatePhone.class),
-    @JsonSubTypes.Type(PatientRequest.DeletePhone.class),
-    @JsonSubTypes.Type(PatientRequest.AddRace.class),
-    @JsonSubTypes.Type(PatientRequest.UpdateRace.class),
-    @JsonSubTypes.Type(PatientRequest.DeleteRace.class),
-    @JsonSubTypes.Type(PatientRequest.UpdateEthnicity.class),
+    @JsonSubTypes.Type(PatientRequest.DeletePhone.class)
 })
 public sealed interface PatientRequest {
 
@@ -102,14 +98,6 @@ public sealed interface PatientRequest {
         long patientId,
         long userId,
         UpdateSexAndBirthData data) implements PatientRequest {
-    }
-
-
-    record UpdateEthnicity(
-        String requestId,
-        long patientId,
-        long userId,
-        UpdateEthnicityData data) implements PatientRequest {
     }
 
 
@@ -208,27 +196,4 @@ public sealed interface PatientRequest {
         long userId) implements PatientRequest {
     }
 
-
-    record AddRace(
-        String requestId,
-        long patientId,
-        long userId,
-        AddRaceData data) implements PatientRequest {
-    }
-
-
-    record UpdateRace(
-        String requestId,
-        long patientId,
-        long userId,
-        UpdateRaceData data) implements PatientRequest {
-    }
-
-
-    record DeleteRace(
-        String requestId,
-        long patientId,
-        String raceCd,
-        long userId) implements PatientRequest {
-    }
 }

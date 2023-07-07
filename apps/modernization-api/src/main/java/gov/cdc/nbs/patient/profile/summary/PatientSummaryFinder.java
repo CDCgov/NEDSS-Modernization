@@ -121,7 +121,7 @@ class PatientSummaryFinder {
             //
             .leftJoin(this.tables.ethnicity()).on(
                 this.tables.ethnicity().id.codeSetNm.eq(ETHNIC_GROUP_CODE_SET),
-                this.tables.ethnicity().id.code.eq(this.tables.patient().ethnicGroupInd)
+                this.tables.ethnicity().id.code.eq(this.tables.patient().ethnicity.ethnicGroupInd)
             )
             //  Most effective Home Address for the as of
             .leftJoin(this.tables.home()).on(

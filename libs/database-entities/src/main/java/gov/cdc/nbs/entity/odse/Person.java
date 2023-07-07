@@ -8,8 +8,10 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.PatientEthnicity;
+import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
@@ -17,6 +19,7 @@ import org.hibernate.annotations.ColumnTransformer;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,7 +31,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,27 +56,12 @@ public class Person {
     @JoinColumn(name = "person_uid", nullable = false)
     private NBSEntity nbsEntity;
 
-    @OneToMany(
-        mappedBy = "personUid",
-        fetch = FetchType.EAGER,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true)
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.EAGER, cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE,
+        CascadeType.REMOVE
+    }, orphanRemoval = true)
     private List<PersonName> names;
-
-    @OneToMany(
-        mappedBy = "personUid", fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-        },
-        orphanRemoval = true
-    )
-    private List<PersonRace> races;
 
     @Column(name = "add_reason_cd", length = 20)
     private String addReasonCd;
@@ -146,9 +135,6 @@ public class Person {
 
     @Column(name = "education_level_desc_txt", length = 100)
     private String educationLevelDescTxt;
-
-    @Column(name = "ethnic_group_ind", length = 20)
-    private String ethnicGroupInd;
 
     @Column(name = "last_chg_reason_cd", length = 20)
     private String lastChgReasonCd;
@@ -350,9 +336,6 @@ public class Person {
     @Column(name = "as_of_date_admin")
     private Instant asOfDateAdmin;
 
-    @Column(name = "as_of_date_ethnicity")
-    private Instant asOfDateEthnicity;
-
     @Column(name = "as_of_date_general")
     private Instant asOfDateGeneral;
 
@@ -390,11 +373,14 @@ public class Person {
     @Column(name = "ehars_id", length = 20)
     private String eharsId;
 
-    @Column(name = "ethnic_unk_reason_cd", length = 20)
-    private String ethnicUnkReasonCd;
-
     @Column(name = "sex_unk_reason_cd", length = 20)
     private String sexUnkReasonCd;
+
+    @Embedded
+    private PatientEthnicity ethnicity;
+
+    @Embedded
+    private PatientRaceDemographic race;
 
     protected Person() {
 
@@ -404,13 +390,16 @@ public class Person {
         this.id = identifier;
         this.localId = localId;
         this.nbsEntity = new NBSEntity(identifier, "PSN");
+        this.ethnicity = new PatientEthnicity();
+        this.race = new PatientRaceDemographic();
 
+        this.personParentUid = this;
         this.versionCtrlNbr = 1;
         this.cd = "PAT";
         this.electronicInd = 'N';
         this.edxInd = "Y";
-        this.personParentUid = this;
         this.statusCd = 'A';
+        this.recordStatusCd = RecordStatus.ACTIVE;
     }
 
     public Person(final PatientCommand.AddPatient patient) {
@@ -419,10 +408,7 @@ public class Person {
 
         this.nbsEntity = new NBSEntity(patient);
 
-        if (patient.dateOfBirth() != null) {
-            this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant();
-            this.birthTimeCalc = this.birthTime;
-        }
+        resolveDateOfBirth(patient.dateOfBirth());
 
         this.birthGenderCd = patient.birthGender();
         this.currSexCd = patient.currentGender();
@@ -431,7 +417,6 @@ public class Person {
         this.deceasedTime = patient.deceasedTime();
 
         this.maritalStatusCd = patient.maritalStatus();
-        this.ethnicGroupInd = patient.ethnicityCode();
 
         this.description = patient.comments();
         this.eharsId = patient.stateHIVCase();
@@ -439,11 +424,12 @@ public class Person {
         this.asOfDateGeneral = patient.asOf();
         this.asOfDateSex = patient.asOf();
         this.asOfDateAdmin = patient.asOf();
-        this.asOfDateEthnicity = patient.asOf();
         this.asOfDateMorbidity = patient.asOf();
 
+        this.ethnicity = new PatientEthnicity(patient);
+
         this.statusTime = patient.requestedOn();
-        this.recordStatusCd = RecordStatus.ACTIVE;
+
         this.recordStatusTime = patient.requestedOn();
 
         this.addTime = patient.requestedOn();
@@ -452,7 +438,15 @@ public class Person {
         this.lastChgTime = patient.requestedOn();
         this.lastChgUserId = patient.requester();
 
+    }
 
+    private void resolveDateOfBirth(final LocalDate dateOfBirth) {
+        if (dateOfBirth != null) {
+            this.birthTime = dateOfBirth.atStartOfDay(ZoneOffset.UTC).toInstant();
+        } else {
+            this.birthTime = null;
+        }
+        this.birthTimeCalc = this.birthTime;
     }
 
     public Person revise(final PatientCommand.Revise revise) {
@@ -475,13 +469,14 @@ public class Person {
         Collection<PersonName> existing = ensureNames();
 
         if (existing.isEmpty()) {
+
             this.firstNm = added.first();
             this.middleNm = added.middle();
             this.lastNm = added.last();
-            this.nmSuffix = added.suffix();
+            this.nmSuffix = Suffix.resolve(added.suffix());
         }
 
-        PersonNameId identifier = new PersonNameId(this.id, (short) (existing.size() + 1));
+        PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
         PersonName personName = new PersonName(
             identifier,
@@ -491,7 +486,33 @@ public class Person {
 
         existing.add(personName);
 
+        changed(added);
         return personName;
+    }
+
+
+    public void update(final PatientCommand.UpdateNameInfo info) {
+        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> name.update(info));
+
+        changed(info);
+    }
+
+    public void delete(final PatientCommand.DeleteNameInfo deleted) {
+        PersonNameId identifier = PersonNameId.from(deleted.person(), deleted.sequence());
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> delete(deleted, name));
+    }
+
+    private void delete (final PatientCommand.DeleteNameInfo deleted, final PersonName name) {
+        name.delete(deleted);
+        changed(deleted);
     }
 
     private Collection<PersonName> ensureNames() {
@@ -501,36 +522,56 @@ public class Person {
         return this.names;
     }
 
+    public List<PersonName> getNames() {
+        return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
+    }
+
     public EntityId add(final PatientCommand.AddIdentification added) {
         return this.nbsEntity.add(added);
     }
 
-
-
-    public PersonRace add(final PatientCommand.AddRace added) {
-        Collection<PersonRace> existing = ensureRaces();
-
-        PersonRace personRace = new PersonRace(this, added);
-
-        existing.add(personRace);
-
-        return personRace;
-
+    public void add(final PatientCommand.AddRace added) {
+        this.race.add(this, added);
+        changed(added);
     }
 
-    private Collection<PersonRace> ensureRaces() {
-        if (this.races == null) {
-            this.races = new ArrayList<>();
-        }
-        return this.races;
+    public void update(final PatientCommand.UpdateRaceInfo changes) {
+        this.race.update(this, changes);
+        changed(changes);
+    }
+
+    public void delete(final PatientCommand.DeleteRaceInfo info) {
+        this.race.delete(info);
+        changed(info);
+    }
+
+
+    public List<PersonRace> getRaces() {
+        return this.race.races();
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
-        return this.nbsEntity.add(address);
+        EntityLocatorParticipation added = this.nbsEntity.add(address);
+        changed(address);
+        return added;
+    }
+
+    public void update(final PatientCommand.UpdateAddress address) {
+        this.nbsEntity.update(address);
+        changed(address);
+    }
+
+    public void delete(final PatientCommand.DeleteAddress address) {
+        this.nbsEntity.delete(address);
+        changed(address);
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
         return this.nbsEntity.addresses();
+    }
+
+    public Collection<TeleEntityLocatorParticipation> phones() {
+        return this.nbsEntity.phones();
     }
 
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
@@ -553,142 +594,113 @@ public class Person {
         return this.nbsEntity.add(emailAddress);
     }
 
-    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
-        return this.nbsEntity.add(mortality);
+    public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
+        return this.nbsEntity.add(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateAddress address) {
-        return this.nbsEntity.update(address);
+    public void update(final PatientCommand.UpdatePhone phone) {
+        this.nbsEntity.update(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        return this.nbsEntity.update(phoneNumber);
+    public void delete(final PatientCommand.DeletePhone phone) {
+        this.nbsEntity.delete(phone);
     }
 
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         return this.nbsEntity.update(emailAddress);
     }
 
-    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
-        return this.nbsEntity.delete(mortality);
-    }
-
-    public boolean delete(final PatientCommand.DeleteAddress address) {
-        return this.nbsEntity.delete(address);
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        return this.nbsEntity.delete(phoneNumber);
-    }
-
     public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
         return this.nbsEntity.delete(emailAddress);
     }
 
-    public void update(PatientCommand.UpdateGeneralInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-        this.setMaritalStatusCd(info.maritalStatus());
-        this.setMothersMaidenNm(info.mothersMaidenName());
-        this.setAdultsInHouseNbr(info.adultsInHouseNumber());
-        this.setChildrenInHouseNbr(info.childrenInHouseNumber());
-        this.setOccupationCd(info.occupationCode());
-        this.setEducationLevelCd(info.educationLevelCode());
-        this.setPrimLangCd(info.primaryLanguageCode());
-        this.setSpeaksEnglishCd(info.speaksEnglishCode());
-        this.setEharsId(info.eharsId());
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
+    public void update(final PatientCommand.UpdateGeneralInfo info) {
+        this.asOfDateGeneral = info.asOf();
+        this.maritalStatusCd = info.maritalStatus();
+        this.mothersMaidenNm = info.mothersMaidenName();
+        this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
+        this.childrenInHouseNbr =
+            info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
+        this.occupationCd = info.occupationCode();
+        this.educationLevelCd = info.educationLevelCode();
+        this.primLangCd = info.primaryLanguageCode();
+        this.speaksEnglishCd = info.speaksEnglishCode();
+        this.eharsId = info.eharsId();
 
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateAdministrativeInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setDescription(info.description());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+    public void update(final PatientCommand.UpdateAdministrativeInfo info) {
+        this.asOfDateAdmin = info.asOf();
+        this.description = info.comment();
+
         changed(info);
     }
 
-    public void update(PatientCommand.AddName info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.add(info);
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        changed(info);
+    public void update(
+        final PatientCommand.UpdateBirth birth,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        this.asOfDateSex = birth.asOf();
+        resolveDateOfBirth(birth.bornOn());
+        this.birthGenderCd = Gender.resolve(birth.gender());
+        this.multipleBirthInd = birth.multipleBirth();
+        this.birthOrderNbr = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
+
+        this.nbsEntity.update(birth, identifierGenerator);
+
+        changed(birth);
     }
 
-    public void update(PatientCommand.UpdateNameInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
+    public void update(final PatientCommand.UpdateGender changes) {
 
-        Collection<PersonName> existing = ensureNames();
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
+        this.asOfDateSex = changes.asOf();
+        this.currSexCd = Gender.resolve(changes.current());
+        this.sexUnkReasonCd = changes.unknownReason();
+        this.preferredGenderCd = changes.preferred();
+        this.additionalGenderCd = changes.additional();
 
-        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
-            p.setFirstNm(info.first());
-            p.setMiddleNm(info.middle());
-            p.setLastNm(info.last());
-            p.setNmSuffix(info.suffix());
-            p.setNmUseCd(info.type());
-        });
-
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        changed(info);
+        changed(changes);
     }
 
-    public void update(PatientCommand.DeleteNameInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-        List<PersonName> arraylist = new ArrayList<>(this.names);
-        arraylist.removeIf(item -> (item.getId().equals(identifier)));
-        this.names = arraylist;
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        changed(info);
-    }
+    public void update(
+        final PatientCommand.UpdateMortality info,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        this.asOfDateMorbidity = info.asOf();
+        this.deceasedIndCd = Deceased.resolve(info.deceased());
 
-    public void update(PatientCommand.UpdateSexAndBirthInfo info) {
-        this.setBirthGenderCd(info.birthGender());
-        this.setCurrSexCd(info.currentGender());
-        this.setBirthTime(info.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        this.setAsOfDateSex(info.asOf());
-        this.setAgeReported(info.currentAge());
-        this.setAgeReportedTime(info.ageReportedTime());
-        this.setBirthCityCd(info.birthCity());
-        this.setBirthCntryCd(info.birthCntry());
-        this.setBirthStateCd(info.birthState());
-        this.setBirthOrderNbr(info.birthOrderNbr());
-        this.setMultipleBirthInd(info.multipleBirth());
-        this.setSexUnkReasonCd(info.sexUnknown());
-        this.setAdditionalGenderCd(info.additionalGender());
-        this.setPreferredGenderCd(info.transGenderInfo());
+        if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
+            this.deceasedTime = info.deceasedOn() == null
+                ? null :
+                info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
+        } else {
+            this.deceasedTime = null;
+        }
+        this.nbsEntity.update(info, identifierGenerator);
 
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
         changed(info);
     }
 
     public void delete(
         final PatientCommand.Delete delete,
-        final PatientAssociationCountFinder finder
-        ) throws PatientHasAssociatedEventsException {
+        final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {
 
         long associations = finder.count(this.id);
 
-        if(associations > 0) {
+        if (associations > 0) {
             throw new PatientHasAssociatedEventsException(this.id);
         }
 
         this.recordStatusCd = RecordStatus.LOG_DEL;
         this.recordStatusTime = delete.requestedOn();
-        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
 
         changed(delete);
     }
 
     private void changed(final PatientCommand command) {
+        this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
+
         this.lastChgUserId = command.requester();
         this.lastChgTime = command.requestedOn();
     }
@@ -716,55 +728,41 @@ public class Person {
     }
 
     public void update(PatientCommand.AddIdentification info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
         this.add(info);
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
     public void update(PatientCommand.UpdateIdentification info) {
         this.nbsEntity.update(info);
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
     public void delete(PatientCommand.DeleteIdentification info) {
         this.nbsEntity.delete(info);
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateEthnicityInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setEthnicGroupInd(info.ethnicityCode());
-        this.setEthnicUnkReasonCd(info.ethnicUnkReasonCd());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
+    public void update(final PatientCommand.UpdateEthnicityInfo info) {
+        this.ethnicity.update(info);
+
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateRaceInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        this.setRaceCd(info.raceCd());
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        changed(info);
+    public PersonEthnicGroup add(final PatientCommand.AddDetailedEthnicity add) {
+        PersonEthnicGroup ethnicGroup = this.ethnicity.add(this, add);
+
+        changed(add);
+
+        return ethnicGroup;
     }
 
-    public boolean delete(PatientCommand.DeleteRaceInfo info) {
-        this.setLastChgTime(info.requestedOn());
-        this.setLastChgUserId(info.requester());
-        List<PersonRace> arraylist = new ArrayList<>(this.races);
-        boolean isDeleted = arraylist.removeIf(
-            item -> (item.getPersonUid().getId() == info.person() && item.getRaceCd().equals(info.raceCd())));
-        this.races = arraylist;
-        this.setVersionCtrlNbr((short) (getVersionCtrlNbr() + 1));
-        changed(info);
-        return isDeleted;
+    public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
+        this.ethnicity.remove(remove);
+
+        changed(remove);
     }
+
 }

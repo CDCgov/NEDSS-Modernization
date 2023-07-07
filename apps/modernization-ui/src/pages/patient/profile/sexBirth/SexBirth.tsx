@@ -1,59 +1,144 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { FindPatientProfileQuery, PatientBirth } from 'generated/graphql/schema';
-import { HorizontalTable } from 'components/Table/HorizontalTable';
-import { format } from 'date-fns';
-import { useFindPatientProfileBirth } from './useFindPatientProfileBirth';
+import { PatientBirth, PatientGender, useUpdatePatientBirthAndGenderMutation } from 'generated/graphql/schema';
+import { PatientProfileBirthAndGenderResult, useFindPatientProfileBirth } from './useFindPatientProfileBirth';
+import { internalizeDate } from 'date';
+import { Data, EditableCard } from 'components/EditableCard';
+import { maybeDescription, maybeId } from '../coded';
+import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
+import { maybeNumber, orNull } from 'utils';
+import { useAlert } from 'alert/useAlert';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
+    {
+        title: 'As of:',
+        text: internalizeDate(birth?.asOf)
+    },
+    { title: 'Current age:', text: birth?.age?.toString() },
+    { title: 'Current sex:', text: gender?.current?.description },
+    { title: 'Unknown reason:', text: maybeDescription(gender?.unknownReason) },
+    { title: 'Transgender information:', text: maybeDescription(gender?.preferred) },
+    { title: 'Additional gender:', text: gender?.additional },
+    { title: 'Birth sex:', text: maybeDescription(gender?.birth) },
+    { title: 'Multiple birth:', text: maybeDescription(birth?.multipleBirth) },
+    { title: 'Birth order:', text: birth?.birthOrder?.toString() },
+    { title: 'Birth city:', text: birth?.city },
+    { title: 'Birth state:', text: maybeDescription(birth?.state) },
+    { title: 'Birth county:', text: maybeDescription(birth?.county) },
+    { title: 'Birth country:', text: maybeDescription(birth?.country) }
+];
+
+const asEntry = (birth: PatientBirth, gender: PatientGender): BirthAndGenderEntry => ({
+    asOf: internalizeDate(birth.asOf),
+    birth: {
+        bornOn: internalizeDate(birth.bornOn),
+        multipleBirth: maybeId(birth.multipleBirth),
+        birthOrder: maybeNumber(birth.birthOrder),
+        city: orNull(birth.city),
+        state: maybeId(birth.state),
+        county: maybeId(birth.county),
+        country: maybeId(birth.country),
+        gender: maybeId(gender.birth)
+    },
+    gender: {
+        current: maybeId(gender.current),
+        unknownReason: maybeId(gender.unknownReason),
+        additional: orNull(gender.additional),
+        preferred: maybeId(gender.preferred)
+    }
+});
+
+const initialEntry = {
+    asOf: null,
+    birth: {
+        bornOn: null,
+        multipleBirth: null,
+        birthOrder: null,
+        city: null,
+        state: null,
+        county: null,
+        country: null,
+        gender: null
+    },
+    gender: {
+        current: null,
+        unknownReason: null,
+        additional: null,
+        preferred: null
+    }
 };
 
-export const SexBirth = ({ patient }: PatientLabReportTableProps) => {
-    const [generalTableData, setGeneralTableData] = useState<any>();
-    const handleComplete = (data: FindPatientProfileQuery) => {
-        setGeneralTableData([
-            {
-                title: 'As of:',
-                text: data?.findPatientProfile?.birth
-                    ? format(new Date(data?.findPatientProfile?.birth?.asOf), 'MM/dd/yyyy')
-                    : ''
-            },
-            { title: 'Current age:', text: data?.findPatientProfile?.birth?.age || '' },
-            { title: 'Current sex:', text: data?.findPatientProfile?.gender?.current?.description || '' },
-            { title: 'Unknown reason:', text: data?.findPatientProfile?.gender?.unknownReason?.description || '' },
-            { title: 'Transgender information:', text: data?.findPatientProfile?.gender?.preferred?.description || '' },
-            { title: 'Additional gender:', text: data?.findPatientProfile?.gender?.additional || '' },
-            { title: 'Birth sex:', text: data?.findPatientProfile?.gender?.birth?.description || '' },
-            { title: 'Multiple birth:', text: data?.findPatientProfile?.birth?.multipleBirth?.description || '' },
-            { title: 'Birth order:', text: data?.findPatientProfile?.birth?.birthOrder || '' },
-            { title: 'Birth city:', text: data?.findPatientProfile?.birth?.city || '' },
-            { title: 'Birth state:', text: data?.findPatientProfile?.birth?.state?.description || '' },
-            { title: 'Birth county:', text: data?.findPatientProfile?.birth?.county?.description || '' },
-            { title: 'Birth country:', text: data?.findPatientProfile?.birth?.country?.description || '' }
-        ]);
+const initial = {
+    view: asView(),
+    entry: initialEntry
+};
+
+type BirthAndGenderState = {
+    view: Data[];
+    entry: BirthAndGenderEntry;
+};
+
+type Props = {
+    patient: string;
+};
+
+export const SexBirth = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
+    const [editing, isEditing] = useState<boolean>(false);
+
+    const [state, setState] = useState<BirthAndGenderState>(initial);
+
+    const handleComplete = (data: PatientProfileBirthAndGenderResult) => {
+        const profile = data.findPatientProfile;
+
+        if (profile) {
+            const next = {
+                view: asView(profile?.birth, profile?.gender),
+                entry: asEntry(profile?.birth, profile?.gender)
+            };
+            setState(next);
+        } else {
+            setState(initial);
+        }
     };
 
-    const [getProfile, { data }] = useFindPatientProfileBirth({ onCompleted: handleComplete });
+    const [fetch, { refetch }] = useFindPatientProfileBirth({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patient) {
-            getProfile({
-                variables: {
-                    shortId: +patient
-                }
-            });
-        }
+        fetch({
+            variables: {
+                patient: patient
+            }
+        });
     }, [patient]);
+
+    const [update] = useUpdatePatientBirthAndGenderMutation();
+
+    const onUpdate = (updated: BirthAndGenderEntry) => {
+        update({
+            variables: {
+                input: {
+                    patient: patient,
+                    ...updated
+                }
+            }
+        })
+            .then(() => isEditing(false))
+            .then(() => {
+                refetch();
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Updated sex & birth`
+                });
+            });
+    };
 
     return (
         <Grid col={12} className="margin-top-3 margin-bottom-2">
-            <HorizontalTable
-                data={data?.findPatientProfile?.birth as PatientBirth}
-                type="sex"
-                tableHeader="Sex & birth"
-                tableData={generalTableData}
-            />
+            <EditableCard title="Sex & Birth" data={state.view} editing={editing} onEdit={() => isEditing(true)}>
+                <SexBirthForm entry={state.entry} onChanged={onUpdate} onCancel={() => isEditing(false)} />
+            </EditableCard>
         </Grid>
     );
 };

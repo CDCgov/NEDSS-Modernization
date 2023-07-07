@@ -15,20 +15,6 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.input.AddressInput;
-import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.patient.input.EmailInput;
-import gov.cdc.nbs.message.patient.input.EthnicityInput;
-import gov.cdc.nbs.message.patient.input.GeneralInfoInput;
-import gov.cdc.nbs.message.patient.input.IdentificationInput;
-import gov.cdc.nbs.message.patient.input.MortalityInput;
-import gov.cdc.nbs.message.patient.input.NameInput;
-import gov.cdc.nbs.message.patient.input.PhoneInput;
-import gov.cdc.nbs.message.patient.input.RaceInput;
-import gov.cdc.nbs.message.patient.input.SexAndBirthInput;
-import gov.cdc.nbs.message.util.Constants;
-import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
@@ -61,7 +47,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
@@ -85,7 +70,6 @@ public class PatientService {
     private final PersonRepository personRepository;
     private final CriteriaBuilderFactory criteriaBuilderFactory;
     private final ElasticsearchOperations operations;
-    private final PatientEventRequester requester;
     private final UserService userService;
     private final PatientLocalIdentifierResolver resolver;
 
@@ -411,46 +395,6 @@ public class PatientService {
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
-    public PatientEventResponse updatePatientGeneralInfo(GeneralInfoInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateGeneralInfoEvent = GeneralInfoInput.toRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(updateGeneralInfoEvent);
-    }
-
-    public PatientEventResponse addPatientName(NameInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientName(NameInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = NameInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updateAdministrative(AdministrativeInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientSexBirth(SexAndBirthInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateSexAndBirthEvent = SexAndBirthInput.toRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(updateSexAndBirthEvent);
-    }
-
-    public PatientEventResponse updateMortality(MortalityInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateMortalityEvent = MortalityInput.toRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(updateMortalityEvent);
-    }
-
-    private PatientEventResponse sendPatientEvent(PatientRequest request) {
-        return this.requester.request(request);
-    }
-
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
         return searchString.toLowerCase().trim() + "*";
@@ -481,103 +425,4 @@ public class PatientService {
         return sorts;
     }
 
-    private String getRequestId() {
-        return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
-    }
-
-    public PatientEventResponse addPatientIdentification(IdentificationInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = IdentificationInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientIdentification(IdentificationInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = IdentificationInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientIdentification(Long patientId, Short id) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteIdentification(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse addPatientAddress(AddressInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = AddressInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientAddress(AddressInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = AddressInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientAddress(Long patientId, Short id) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteAddress(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse addPatientRace(RaceInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = RaceInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientRace(RaceInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = RaceInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientRace(Long patientId, String raceCd) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteRace(getRequestId(), patientId, raceCd, user.getId());
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updateEthnicity(EthnicityInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var updateEthnicityEvent = EthnicityInput.toRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(updateEthnicityEvent);
-    }
-
-    public PatientEventResponse addPatientPhone(PhoneInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = PhoneInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientPhone(PhoneInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = PhoneInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientPhone(Long patientId, long id) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeletePhone(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse addPatientEmail(EmailInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = EmailInput.toAddRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse updatePatientEmail(EmailInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = EmailInput.toUpdateRequest(user.getId(), getRequestId(), input);
-        return sendPatientEvent(event);
-    }
-
-    public PatientEventResponse deletePatientEmail(Long patientId, long id) {
-        var user = SecurityUtil.getUserDetails();
-        var event = new PatientRequest.DeleteEmail(getRequestId(), patientId, id, user.getId());
-        return sendPatientEvent(event);
-    }
 }

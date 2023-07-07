@@ -36,7 +36,7 @@ class SearchablePatientConverter {
                 .deceasedIndCd(person.getDeceasedIndCd())
                 .deceasedTime(person.getDeceasedTime())
                 .electronicInd(person.getElectronicInd())
-                .ethnicGroupInd(person.getEthnicGroupInd())
+                .ethnicGroupInd(person.getEthnicity().ethnicGroup())
                 .lastChgTime(person.getLastChgTime())
                 .maritalStatusCd(person.getMaritalStatusCd())
                 .recordStatusCd(person.getRecordStatusCd())

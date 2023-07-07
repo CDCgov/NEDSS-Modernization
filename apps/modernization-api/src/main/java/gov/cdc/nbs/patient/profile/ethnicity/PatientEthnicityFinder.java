@@ -35,7 +35,7 @@ class PatientEthnicityFinder {
                 tables.patient().personParentUid.id,
                 tables.patient().id,
                 tables.patient().versionCtrlNbr,
-                tables.patient().asOfDateEthnicity,
+                tables.patient().ethnicity.asOfDateEthnicity,
                 tables.ethnicGroup().id.code,
                 tables.ethnicGroup().codeShortDescTxt,
                 tables.unknownReason().id.code,
@@ -48,15 +48,15 @@ class PatientEthnicityFinder {
                 this.tables.patient().id.eq(patient),
                 this.tables.patient().cd.eq(PATIENT_CODE),
                 this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
-                this.tables.patient().asOfDateEthnicity.isNotNull()
+                this.tables.patient().ethnicity.asOfDateEthnicity.isNotNull()
             )
             .leftJoin(this.tables.ethnicGroup()).on(
                 this.tables.ethnicGroup().id.codeSetNm.eq(ETHNIC_GROUP_CODE_SET),
-                this.tables.ethnicGroup().id.code.eq(this.tables.patient().ethnicGroupInd)
+                this.tables.ethnicGroup().id.code.eq(this.tables.patient().ethnicity.ethnicGroupInd)
             )
             .leftJoin(this.tables.unknownReason()).on(
                 this.tables.unknownReason().id.codeSetNm.eq(UNKNOWN_REASON_CODE_SET),
-                this.tables.unknownReason().id.code.eq(this.tables.patient().ethnicUnkReasonCd)
+                this.tables.unknownReason().id.code.eq(this.tables.patient().ethnicity.ethnicUnkReasonCd)
             )
             .leftJoin(DETAILED).on(
                 DETAILED.id.personUid.eq(this.tables.patient().id)

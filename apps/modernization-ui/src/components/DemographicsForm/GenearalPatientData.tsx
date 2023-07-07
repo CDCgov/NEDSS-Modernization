@@ -6,10 +6,14 @@ import { SelectInput } from '../FormInputs/SelectInput';
 import { useEffect } from 'react';
 import { PatientGeneral } from 'generated/graphql/schema';
 import { format } from 'date-fns';
+import { usePatientGeneralCodedValues } from 'pages/patient/profile/generalInfo/usePatientGeneralCodedValues';
 
 export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneralForm: any; data?: PatientGeneral }) => {
     const methods = useForm();
     const { handleSubmit, control } = methods;
+
+    const coded = usePatientGeneralCodedValues();
+
     useEffect(() => {
         if (data as PatientGeneral) {
             methods.reset({
@@ -22,7 +26,7 @@ export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneral
                 education: data?.educationLevel?.id,
                 prmLang: data?.primaryLanguage?.id,
                 speakEng: data?.speaksEnglish?.id,
-                hiv: ''
+                hiv: data?.stateHIVCase
             });
         }
     }, [data]);
@@ -65,7 +69,7 @@ export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneral
                                 defaultValue={value}
                                 onChange={onChange}
                                 htmlFor={'maritalStatus'}
-                                options={[]}
+                                options={coded.maritalStatuses}
                             />
                         )}
                     />
@@ -143,7 +147,12 @@ export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneral
                         control={control}
                         name="occupation"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'occupation'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'occupation'}
+                                options={coded.primaryOccupations}
+                            />
                         )}
                     />
                 </Grid>
@@ -157,7 +166,12 @@ export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneral
                         control={control}
                         name="education"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'education'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'education'}
+                                options={coded.educationLevels}
+                            />
                         )}
                     />
                 </Grid>
@@ -171,7 +185,12 @@ export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneral
                         control={control}
                         name="prmLang"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'prmLang'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'prmLang'}
+                                options={coded.primaryLanguages}
+                            />
                         )}
                     />
                 </Grid>
@@ -185,7 +204,12 @@ export const GeneralPatientInformation = ({ setGeneralForm, data }: { setGeneral
                         control={control}
                         name="speakEng"
                         render={({ field: { onChange, value } }) => (
-                            <SelectInput defaultValue={value} onChange={onChange} htmlFor={'speakEng'} options={[]} />
+                            <SelectInput
+                                defaultValue={value}
+                                onChange={onChange}
+                                htmlFor={'speakEng'}
+                                options={coded.speaksEnglish}
+                            />
                         )}
                     />
                 </Grid>

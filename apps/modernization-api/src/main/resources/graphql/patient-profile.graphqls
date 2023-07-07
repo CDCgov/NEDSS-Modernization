@@ -28,8 +28,8 @@ type PatientSummary {
     gender: String
     ethnicity: String
     race: String
-    phone: [PatientSummaryPhone]
-    email: [PatientSummaryEmail]
+    phone: [PatientSummaryPhone!]
+    email: [PatientSummaryEmail!]
     address: PatientSummaryAddress
 }
 
@@ -50,14 +50,14 @@ type PatientAdministrative {
 }
 
 type PatientAdministrativeResults {
-    content: [PatientAdministrative]!
+    content: [PatientAdministrative!]!
     total: Int!
     number: Int!
     size: Int!
 }
 
 type PatientName {
-    patient: ID!
+    patient: Int!
     version: Int!
     asOf: DateTime!
     sequence: Int!
@@ -73,7 +73,7 @@ type PatientName {
 }
 
 type PatientNameResults {
-    content: [PatientName]!
+    content: [PatientName!]!
     total: Int!
     number: Int!
     size: Int!
@@ -84,8 +84,8 @@ type PatientAddress {
     id: ID!
     version: Int!
     asOf: DateTime!
-    type: PatientCodedValue
-    use: PatientCodedValue
+    type: PatientCodedValue!
+    use: PatientCodedValue!
     address1: String
     address2: String
     city: String
@@ -98,7 +98,7 @@ type PatientAddress {
 }
 
 type PatientAddressResults {
-    content: [PatientAddress]!
+    content: [PatientAddress!]!
     total: Int!
     number: Int!
     size: Int!
@@ -120,7 +120,7 @@ type PatientPhone {
 }
 
 type PatientPhoneResults {
-    content: [PatientPhone]!
+    content: [PatientPhone!]!
     total: Int!
     number: Int!
     size: Int!
@@ -164,7 +164,7 @@ type PatientIdentification {
 }
 
 type PatientIdentificationResults {
-    content: [PatientIdentification]!
+    content: [PatientIdentification!]!
     total: Int!
     number: Int!
     size: Int!
@@ -206,20 +206,20 @@ type PatientEthnicity {
     asOf: DateTime!
     ethnicGroup: PatientCodedValue!
     unknownReason: PatientCodedValue
-    detailed: [PatientCodedValue]!
+    detailed: [PatientCodedValue!]!
 }
 
 type PatientRace {
     patient: Int!
-    id: ID!
+    id: Int!
     version: Int!
     asOf: DateTime!
     category: PatientCodedValue!
-    detailed: [PatientCodedValue]
+    detailed: [PatientCodedValue!]!
 }
 
 type PatientRaceResults {
-    content: [PatientRace]!
+    content: [PatientRace!]!
     total: Int!
     number: Int!
     size: Int!
@@ -230,11 +230,12 @@ type PatientProfile {
     local: String!
     shortId: Int
     version: Int!
+    recordStatusCd: String!
     deletable: Boolean!
     summary(asOf: DateTime): PatientSummary
     names(page: Page): PatientNameResults
     administrative(page: Page): PatientAdministrativeResults
-    addresses(page: Page): PatientAddressResults
+    addresses(page: Page): PatientAddressResults!
     phones(page: Page): PatientPhoneResults
     identification(page: Page): PatientIdentificationResults
     races(page: Page): PatientRaceResults

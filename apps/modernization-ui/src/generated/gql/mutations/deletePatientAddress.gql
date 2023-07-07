@@ -1,6 +1,6 @@
-mutation deletePatientAddress($patientId: Int!, $personSeqNum: Int!){
-    deletePatientAddress(patientId: $patientId, personSeqNum: $personSeqNum){
-        requestId
-        patientId
+mutation deletePatientAddress($input: DeletePatientAddressInput){
+    deletePatientAddress(input: $input){
+        patient
+        id
     }
 }

@@ -1,14 +1,11 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-import { FindPatientProfileQuery, FindPatientProfileQueryVariables } from 'generated/graphql/schema';
+import { PatientBirth, PatientGender } from 'generated/graphql/schema';
 
 export const Query = gql`
-    query findPatientProfile($patient: ID, $shortId: Int) {
-        findPatientProfile(patient: $patient, shortId: $shortId) {
+    query findPatientProfile($patient: ID!) {
+        findPatientProfile(patient: $patient) {
             id
-            local
-            shortId
-            version
             birth {
                 patient
                 id
@@ -62,9 +59,28 @@ export const Query = gql`
     }
 `;
 
+type PatientProfileBirthAndGenderVariables = {
+    patient: string;
+};
+
+type PatientProfileBirthAndGenderResult = {
+    __typename?: 'Query';
+    findPatientProfile?: {
+        __typename?: 'PatientProfile';
+        id: string;
+        birth: PatientBirth;
+        gender: PatientGender;
+    };
+};
+
 export function useFindPatientProfileBirth(
-    baseOptions?: Apollo.QueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>
+    baseOptions?: Apollo.QueryHookOptions<PatientProfileBirthAndGenderResult, PatientProfileBirthAndGenderVariables>
 ) {
     const options = { ...baseOptions };
-    return Apollo.useLazyQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(Query, options);
+    return Apollo.useLazyQuery<PatientProfileBirthAndGenderResult, PatientProfileBirthAndGenderVariables>(
+        Query,
+        options
+    );
 }
+
+export type { PatientProfileBirthAndGenderVariables, PatientProfileBirthAndGenderResult };

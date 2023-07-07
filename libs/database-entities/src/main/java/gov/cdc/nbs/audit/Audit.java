@@ -27,6 +27,10 @@ public class Audit {
         this.changed = new Changed(who, when);
     }
 
+    public void changed(final long who, final Instant when) {
+        this.changed = new Changed(who, when);
+    }
+
     public void changed(final long who, final Instant when, final String why) {
         this.changed = new Changed(who, when, why);
     }

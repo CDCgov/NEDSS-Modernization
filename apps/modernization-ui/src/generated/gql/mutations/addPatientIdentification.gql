@@ -1,6 +1,6 @@
-mutation addPatientIdentification($input: IdentificationInput!){
+mutation addPatientIdentification($input: NewPatientIdentificationInput!){
     addPatientIdentification(input: $input){
-        requestId
-        patientId
+        patient
+        sequence
     }
 }
