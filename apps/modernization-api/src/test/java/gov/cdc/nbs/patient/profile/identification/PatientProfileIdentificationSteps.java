@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.profile.identification;
 
 import com.github.javafaker.Faker;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -93,7 +95,7 @@ public class PatientProfileIdentificationSteps {
     public void the_profile_has_associated_identifications() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -105,7 +107,7 @@ public class PatientProfileIdentificationSteps {
     public void the_profile_has_no_associated_identifications() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -118,7 +120,7 @@ public class PatientProfileIdentificationSteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
