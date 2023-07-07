@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.profile;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.entity.enums.RecordStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -25,12 +24,12 @@ class PatientProfileFinder {
         return this.factory.selectDistinct(
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
-                this.tables.patient().personParentUid.versionCtrlNbr
+                this.tables.patient().personParentUid.versionCtrlNbr,
+                this.tables.patient().personParentUid.recordStatusCd
             )
             .from(this.tables.patient())
             .where(
                 this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
                 this.tables.patient().id.eq(identifier)
             )
             .fetch()
@@ -44,12 +43,12 @@ class PatientProfileFinder {
         return this.factory.selectDistinct(
                 this.tables.patient().personParentUid.id,
                 this.tables.patient().personParentUid.localId,
-                this.tables.patient().personParentUid.versionCtrlNbr
+                this.tables.patient().personParentUid.versionCtrlNbr,
+                this.tables.patient().personParentUid.recordStatusCd
             )
             .from(this.tables.patient())
             .where(
                 this.tables.patient().cd.eq(PATIENT_CODE),
-                this.tables.patient().recordStatusCd.eq(RecordStatus.ACTIVE),
                 this.tables.patient().localId.eq(local)
             )
             .fetch()
