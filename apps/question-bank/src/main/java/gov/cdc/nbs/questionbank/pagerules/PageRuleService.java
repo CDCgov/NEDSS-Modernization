@@ -11,4 +11,5 @@ public interface PageRuleService {
    CreateRuleResponse createPageRule(Long userId,CreateRuleRequest.ruleRequest request) throws BadAttributeValueExpException;
 
    CreateRuleResponse deletePageRule(Long ruleId);
+   CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest.ruleRequest request, Long userId) throws BadAttributeValueExpException;
 }

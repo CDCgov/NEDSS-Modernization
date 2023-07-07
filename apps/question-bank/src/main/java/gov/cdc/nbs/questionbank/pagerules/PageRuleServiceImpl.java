@@ -635,4 +635,45 @@ public class PageRuleServiceImpl implements PageRuleService {
         waRuleMetaDataRepository.deleteById(ruleId);
         return new CreateRuleResponse(ruleId,"Rule Successfully Deleted");
     }
+
+    @Override
+    public CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest.ruleRequest request,Long userId) throws BadAttributeValueExpException {
+        boolean isPresent= waRuleMetaDataRepository.existsById(ruleId);
+        if(!isPresent){
+            return new CreateRuleResponse(ruleId,"RuleId Not Found");
+        }else{
+
+            WaRuleMetadata waRuleMetadata= waRuleMetaDataRepository.getReferenceById(ruleId);
+            RuleDataHelper ruleDataHelper = checkRuleCD(request,waRuleMetadata);
+            WaRuleMetadata updatedValues= setUpdatedValues(ruleDataHelper, waRuleMetadata, request, userId);
+            waRuleMetaDataRepository.save(updatedValues);
+            return new CreateRuleResponse(updatedValues.getId(),"Rule Successfully Updated");
+        }
+
+    }
+
+    private WaRuleMetadata setUpdatedValues(RuleDataHelper ruleDataHelper, WaRuleMetadata ruleMetadata,CreateRuleRequest.ruleRequest request ,Long userId){
+        ruleMetadata.setRuleCd(request.ruleFunction());
+        ruleMetadata.setLogic(request.comparator());
+        ruleMetadata.setJsFunction(ruleDataHelper.jsFunctionNameHelper().JsFunction());
+        ruleMetadata.setSourceValues(ruleDataHelper.sourceValues());
+        ruleMetadata.setErrormsgText(ruleDataHelper.errorMsgText());
+        ruleMetadata.setSourceQuestionIdentifier(ruleDataHelper.sourceIdentifier());
+        ruleMetadata.setTargetQuestionIdentifier(ruleDataHelper.targetIdentifiers());
+        ruleMetadata.setTargetType(request.targetType());
+        ruleMetadata.setAddTime(Instant.now());
+        ruleMetadata.setAddUserId(userId);
+        ruleMetadata.setLastChgTime(Instant.now());
+        ruleMetadata.setRecordStatusCd("ACTIVE");
+        ruleMetadata.setLastChgUserId(userId);
+        ruleMetadata.setRecordStatusTime(Instant.now());
+        ruleMetadata.setErrormsgText(ruleDataHelper.errorMsgText());
+        ruleMetadata.setJsFunction(ruleDataHelper.jsFunctionNameHelper().JsFunction());
+        ruleMetadata.setJsFunctionName(ruleDataHelper.jsFunctionNameHelper().JsFunctionName());
+        ruleMetadata.setWaTemplateUid(request.templateUid());
+        ruleMetadata.setRuleExpression(ruleDataHelper.ruleExpression());
+        ruleMetadata.setId(ruleMetadata.getId());
+
+        return ruleMetadata;
+    }
 }

@@ -48,4 +48,10 @@ public class PageRuleController {
       return pageRuleService.deletePageRule(ruleId);
     }
 
-}
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    @PutMapping("rule/{ruleId}")
+    @ResponseBody
+    public CreateRuleResponse updatePageRule(@PathVariable Long ruleId, @RequestBody CreateRuleRequest.ruleRequest request ) throws BadAttributeValueExpException {
+        Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+        return pageRuleService.updatePageRule(ruleId,request,userId);
+    }}

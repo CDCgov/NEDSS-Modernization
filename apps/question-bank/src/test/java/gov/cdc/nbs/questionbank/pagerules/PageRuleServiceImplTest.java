@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
@@ -219,6 +220,35 @@ class PageRuleServiceImplTest {
         CreateRuleResponse ruleResponse= pageRuleServiceImpl.deletePageRule(ruleId);
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).deleteById(ruleId);
         assertEquals("Rule Successfully Deleted",ruleResponse.message());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenRuleIdIsNotThere() throws BadAttributeValueExpException {
+        Long ruleId=99L;
+        Long userId=99L;
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        ruleMetadata.setId(99L);
+        ruleMetadata.setRuleCd("Hide");
+        ruleMetadata.setRuleExpression("testRuleExpression");
+        CreateRuleResponse ruleResponse= pageRuleServiceImpl.updatePageRule(ruleId,ruleRequest,userId);
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).existsById(ruleId);
+        assertEquals("RuleId Not Found",ruleResponse.message());
+    }
+    @Test
+    void shouldUpdateRule() throws BadAttributeValueExpException {
+        Long ruleId=99L;
+        Long userId=99L;
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        ruleMetadata.setId(99L);
+        ruleMetadata.setRuleCd("Hide");
+        ruleMetadata.setRuleExpression("testRuleExpression");
+        Mockito.when(waRuleMetaDataRepository.existsById(ruleId)).thenReturn(true);
+        Mockito.when(waRuleMetaDataRepository.getReferenceById(ruleId)).thenReturn(ruleMetadata) ;
+        CreateRuleResponse ruleResponse= pageRuleServiceImpl.updatePageRule(ruleId,ruleRequest,userId);
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).existsById(ruleId);
+        assertEquals("Rule Successfully Updated",ruleResponse.message());
     }
 }
 
