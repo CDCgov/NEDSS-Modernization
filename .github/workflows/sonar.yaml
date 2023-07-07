@@ -86,3 +86,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build jacocoTestReport sonar -Dtesting.database.image=${{ env.accountid }}.dkr.ecr.us-east-1.amazonaws.com/cdc-nbs-modernization/modernization-test-db:1.0.7-SNAPSHOT.f1ef4c0
+
+      - name: Publish Testing Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: testing
+          path: ./**/build/reports

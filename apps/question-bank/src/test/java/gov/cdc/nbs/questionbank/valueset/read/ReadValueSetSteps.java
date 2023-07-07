@@ -10,10 +10,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
 
-import gov.cdc.nbs.questionbank.question.util.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.valueset.ValueSetController;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSet.GetValueSet;
+import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -36,7 +36,7 @@ public class ReadValueSetSteps {
 		try {
 			search = new ValueSetSearchRequest();
 			search.setCodeSetName("codeSetNm");
-			Page<GetValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(20));
+			Page<ValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(20));
 			valueSetSearchHolder.setValueSetResults(results);
 		} catch (AccessDeniedException e) {
 			exceptionHolder.setException(e);
@@ -50,7 +50,7 @@ public class ReadValueSetSteps {
 	public void i_make_a_request_for_a_value_set_that_does_not_exist() {
 		try {
 			search = new ValueSetSearchRequest();
-			Page<GetValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(20));
+			Page<ValueSet> results = valueSetController.searchValueSet(search, PageRequest.ofSize(20));
 			valueSetSearchHolder.setValueSetResults(results);
 		} catch (AccessDeniedException e) {
 			exceptionHolder.setException(e);
@@ -63,7 +63,7 @@ public class ReadValueSetSteps {
 	@Given("I make a request to retrieve all value sets")
 	public void i_make_a_request_to_retrieve_all_value_sets() {
 		try {
-			Page<GetValueSet> results = valueSetController.findAllValueSets(PageRequest.ofSize(20));
+			Page<ValueSet> results = valueSetController.findAllValueSets(PageRequest.ofSize(20));
 			valueSetSearchHolder.setValueSetResults(results);
 		} catch (AccessDeniedException e) {
 			exceptionHolder.setException(e);
@@ -75,14 +75,14 @@ public class ReadValueSetSteps {
 
 	@Then("Value sets should be returned")
 	public void value_sets_should_be_returned() {
-		Page<GetValueSet> results = valueSetSearchHolder.getValueSetResults();
+		Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
 		assertNotNull(results);
 		assertTrue(results.getSize() > 0);
 	}
 
 	@Then("A value sets should not be returned")
 	public void a_value_sets_should_not_be_returned() {
-		Page<GetValueSet> results = valueSetSearchHolder.getValueSetResults();
+		Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
 		assertNotNull(results);
 		assertTrue(results.getSize() == 0);
 
@@ -90,7 +90,7 @@ public class ReadValueSetSteps {
 
 	@Then("A value set should be returned")
 	public void a_value_set_should_be_returned() {
-		Page<GetValueSet> results = valueSetSearchHolder.getValueSetResults();
+		Page<ValueSet> results = valueSetSearchHolder.getValueSetResults();
 		assertNotNull(results);
 		assertTrue(results.getSize() > 0);
 	}

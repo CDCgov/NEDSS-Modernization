@@ -26,7 +26,7 @@ export const PhoneNumberInput = ({
                 {...props}
                 id={id || 'phoneNumber'}
                 onChange={onChange}
-                value={defaultValue ? defaultValue : ''}
+                defaultValue={defaultValue ? defaultValue : ''}
                 name={id || 'phoneNumber'}
                 validationStatus={error ? 'error' : undefined}
                 type="tel"

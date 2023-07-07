@@ -502,10 +502,17 @@ public class Person {
         changed(info);
     }
 
-    public void delete(final PatientCommand.DeleteNameInfo info) {
-        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
-        ensureNames().removeIf(name -> Objects.equals(name.getId(), identifier));
-        changed(info);
+    public void delete(final PatientCommand.DeleteNameInfo deleted) {
+        PersonNameId identifier = PersonNameId.from(deleted.person(), deleted.sequence());
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> delete(deleted, name));
+    }
+
+    private void delete (final PatientCommand.DeleteNameInfo deleted, final PersonName name) {
+        name.delete(deleted);
+        changed(deleted);
     }
 
     private Collection<PersonName> ensureNames() {
@@ -516,7 +523,7 @@ public class Person {
     }
 
     public List<PersonName> getNames() {
-        return this.names == null ? List.of() : List.copyOf(this.names);
+        return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
     }
 
     public EntityId add(final PatientCommand.AddIdentification added) {
@@ -599,16 +606,8 @@ public class Person {
         this.nbsEntity.delete(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        return this.nbsEntity.update(phoneNumber);
-    }
-
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         return this.nbsEntity.update(emailAddress);
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        return this.nbsEntity.delete(phoneNumber);
     }
 
     public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
@@ -631,8 +630,10 @@ public class Person {
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateAdministrativeInfo info) {
-        this.setDescription(info.description());
+    public void update(final PatientCommand.UpdateAdministrativeInfo info) {
+        this.asOfDateAdmin = info.asOf();
+        this.description = info.comment();
+
         changed(info);
     }
 

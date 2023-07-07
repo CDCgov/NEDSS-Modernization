@@ -120,6 +120,7 @@ public sealed interface PatientCommand {
         public AddAddress(
             long person,
             long id,
+            Instant asOf,
             String address1,
             String address2,
             String city,
@@ -134,7 +135,7 @@ public sealed interface PatientCommand {
             this(
                 person,
                 id,
-                requestedOn,
+                asOf,
                 "H",
                 "H",
                 address1,
@@ -186,32 +187,11 @@ public sealed interface PatientCommand {
     record AddPhoneNumber(
         long person,
         long id,
+        Instant asOf,
         String type,
         String use,
         String number,
         String extension,
-        long requester,
-        Instant requestedOn
-    ) implements PatientCommand {
-    }
-
-
-    record UpdatePhoneNumber(
-        long person,
-        long id,
-        String number,
-        String extension,
-        String type,
-        String use,
-        long requester,
-        Instant requestedOn
-    ) implements PatientCommand {
-    }
-
-
-    record DeletePhoneNumber(
-        long person,
-        long id,
         long requester,
         Instant requestedOn
     ) implements PatientCommand {
@@ -221,9 +201,11 @@ public sealed interface PatientCommand {
     record AddEmailAddress(
         long person,
         long id,
+        Instant asOf,
         String email,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -340,9 +322,10 @@ public sealed interface PatientCommand {
     record UpdateAdministrativeInfo(
         long person,
         Instant asOf,
-        String description,
+        String comment,
         long requester,
-        Instant requestedOn) implements PatientCommand {
+        Instant requestedOn
+    ) implements PatientCommand {
     }
 
 
@@ -410,16 +393,6 @@ public sealed interface PatientCommand {
         Instant requestedOn
     ) implements PatientCommand {
 
-        public AddIdentification(
-            long person,
-            String identificationNumber,
-            String assigningAuthority,
-            String identificationType,
-            long requester,
-            Instant requestedOn
-        ) {
-            this(person, null, identificationNumber, assigningAuthority, identificationType, requester, requestedOn);
-        }
     }
 
 

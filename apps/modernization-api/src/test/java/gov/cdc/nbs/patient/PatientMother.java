@@ -101,6 +101,7 @@ public class PatientMother {
             new PatientCommand.AddAddress(
                 patient.getId(),
                 idGenerator.next(),
+                RandomUtil.getRandomDateInPast(),
                 faker.address().streetAddress(),
                 null,
                 faker.address().city(),
@@ -122,6 +123,7 @@ public class PatientMother {
         patient.add(
             new PatientCommand.AddIdentification(
                 identifier.id(),
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
                 "GA",
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),

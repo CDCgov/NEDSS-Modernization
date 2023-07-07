@@ -1224,7 +1224,7 @@ type Mutation {
     updatePatientGeneralInfo(input: GeneralInfoInput!): PatientGeneralChangeResult!
     updatePatientBirthAndGender(input: UpdateBirthAndGenderInput!): PatientBirthAndGenderChangeResult!
     updatePatientMortality(input: MortalityInput!): PatientMortalityChangeResult!
-    updateAdministrative(input: AdministrativeInput!): PatientUpdateResponse!
+    updatePatientAdministrative(input: AdministrativeInput!): PatientAdministrativeChangeResult!
     deletePatientEmail(patientId: Int!, personSeqNum: Int!): PatientUpdateResponse!
     updateEthnicity(input: EthnicityInput!): PatientEthnicityChangeResult!
     addPatientRace(input: RaceInput!): PatientRaceChangeResult!
@@ -1294,7 +1294,6 @@ type Person {
     id: ID
     nbsEntity: NBSEntity!
     entityIds: [PersonIdentification]
-    races: [PersonRace]
     names: [PersonName]
     addReasonCd: String
     addTime: DateTime
@@ -1492,9 +1491,15 @@ type PatientMortalityChangeResult {
 }
 
 input AdministrativeInput {
-    patientId: ID!
-    description: String
+    patient: Int!
+    asOf: DateTime
+    comment: String
 }
+
+type PatientAdministrativeChangeResult {
+    patient: Int!
+}
+
 
 input EthnicityInput {
     patient: String!
@@ -1762,11 +1767,6 @@ type PersonIdentification {
     assigningAuthorityDescTxt: String
 }
 
-type PersonRace {
-    raceCd: String
-    recordStatusCd: String
-}
-
 type PersonName {
     firstNm: String
     middleNm: String
@@ -1798,6 +1798,8 @@ type Locator {
     geocodeMatchInd: String
     withinCityLimitsInd: String
     censusTract: String
+    stateCode: StateCode
+    countryCode: CountryCode
 }
 
 type LocatorParticipations {

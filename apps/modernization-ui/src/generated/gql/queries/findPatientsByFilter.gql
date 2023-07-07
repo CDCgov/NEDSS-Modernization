@@ -29,6 +29,50 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                         geocodeMatchInd
                         withinCityLimitsInd
                         censusTract
+                        stateCode{
+                            id
+                            assigningAuthorityCd
+                            assigningAuthorityDescTxt
+                            stateNm
+                            codeDescTxt
+                            effectiveFromTime
+                            effectiveToTime
+                            excludedTxt
+                            indentLevelNbr
+                            isModifiableInd
+                            keyInfoTxt
+                            parentIsCd
+                            statusCd
+                            statusTime
+                            codeSetNm
+                            seqNum
+                            nbsUid
+                            sourceConceptId
+                            codeSystemCd
+                            codeSystemDescTxt
+                        }
+                        countryCode{
+                            id
+                            assigningAuthorityCd
+                            assigningAuthorityDescTxt
+                            codeDescTxt
+                            codeShortDescTxt
+                            effectiveFromTime
+                            effectiveToTime
+                            excludedTxt
+                            keyInfoTxt
+                            indentLevelNbr
+                            isModifiableInd
+                            parentIsCd
+                            statusCd
+                            statusTime
+                            codeSetNm
+                            seqNum
+                            nbsUid
+                            sourceConceptId
+                            codeSystemCd
+                            codeSystemDescTxt
+                        }
                     }
                 }
             }
@@ -38,10 +82,6 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                 rootExtensionTxt
                 assigningAuthorityCd
                 assigningAuthorityDescTxt
-            }
-            races{
-                raceCd
-                recordStatusCd
             }
             names{
                 firstNm

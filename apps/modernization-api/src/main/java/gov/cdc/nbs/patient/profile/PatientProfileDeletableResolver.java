@@ -15,6 +15,7 @@ class PatientProfileDeletableResolver {
 
     @SchemaMapping("deletable")
     boolean resolve(final PatientProfile profile) {
+        // PatientAssociationCountFinder only returns non deleted person association counts
         return finder.count(profile.id()) == 0;
     }
 

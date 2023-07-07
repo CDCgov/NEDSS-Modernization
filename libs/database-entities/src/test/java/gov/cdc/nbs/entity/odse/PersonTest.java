@@ -873,11 +873,12 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNames()).satisfiesExactly(
+        assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
             actual -> assertThat(actual)
                 .extracting(PersonName::getId)
                 .returns(117L, PersonNameId::getPersonUid)
                 .returns((short) 1, PersonNameId::getPersonNameSeq)
+
         );
     }
 
@@ -979,6 +980,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:35:13Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -999,6 +1001,8 @@ class PersonTest {
                     .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
                     .returns(4861L, p -> p.getId().getLocatorUid())
                     .returns("H", EntityLocatorParticipation::getCd)
+                    .returns("H", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2021-07-07T03:35:13Z"), EntityLocatorParticipation::getAsOfDate)
                     .extracting(PostalEntityLocatorParticipation::getLocator)
                     .returns(4861L, PostalLocator::getId)
                     .returns("SA1", PostalLocator::getStreetAddr1)
@@ -1076,6 +1080,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -1147,6 +1152,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
                 "city-description",
@@ -1164,6 +1170,7 @@ class PersonTest {
             new PatientCommand.AddAddress(
                 117L,
                 5331L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "Other-SA1",
                 "Other-SA2",
                 "Other-city",
@@ -1186,11 +1193,9 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+        assertThat(patient.addresses())
             .satisfiesExactly(
                 actual -> assertThat(actual)
-                    .isInstanceOf(PostalEntityLocatorParticipation.class)
-                    .asInstanceOf(InstanceOfAssertFactories.type(PostalEntityLocatorParticipation.class))
                     .returns(4861L, p -> p.getId().getLocatorUid())
             );
 
@@ -1206,6 +1211,7 @@ class PersonTest {
             new PatientCommand.AddEmailAddress(
                 117L,
                 5333L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "AnEmail@email.com",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
@@ -1219,6 +1225,8 @@ class PersonTest {
                     .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                     .returns(5333L, p -> p.getId().getLocatorUid())
                     .returns("NET", EntityLocatorParticipation::getCd)
+                    .returns("H", EntityLocatorParticipation::getUseCd)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"),EntityLocatorParticipation::getAsOfDate)
                     .extracting(TeleEntityLocatorParticipation::getLocator)
                     .returns(5333L, TeleLocator::getId)
                     .returns("AnEmail@email.com", TeleLocator::getEmailAddress)
@@ -1236,6 +1244,7 @@ class PersonTest {
             new PatientCommand.AddPhoneNumber(
                 117L,
                 5347L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "CP",
                 "MC",
                 "Phone Number",
@@ -1251,7 +1260,9 @@ class PersonTest {
                     .isInstanceOf(TeleEntityLocatorParticipation.class)
                     .asInstanceOf(InstanceOfAssertFactories.type(TeleEntityLocatorParticipation.class))
                     .returns(5347L, p -> p.getId().getLocatorUid())
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
                     .returns("CP", EntityLocatorParticipation::getCd)
+                    .returns("MC", EntityLocatorParticipation::getUseCd)
                     .extracting(TeleEntityLocatorParticipation::getLocator)
                     .returns(5347L, TeleLocator::getId)
                     .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
@@ -1418,7 +1429,7 @@ class PersonTest {
             )
         );
 
-        assertThat(patient.getNbsEntity().getEntityLocatorParticipations())
+        assertThat(patient.phones())
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .isInstanceOf(TeleEntityLocatorParticipation.class)
@@ -1650,51 +1661,6 @@ class PersonTest {
                     .returns("ethnicity-value", PersonEthnicGroupId::getEthnicGroupCd)
             );
 
-    }
-
-    @Test
-    void should_add_minimal_identity_with_sequence_one() {
-        Person patient = new Person(117L, "local-id-value");
-
-        patient.add(
-            new PatientCommand.AddIdentification(
-                117L,
-                "identification-value",
-                "authority-value",
-                "identification-type",
-                131L,
-                Instant.parse("2020-03-03T10:15:30.00Z")
-            )
-        );
-
-        assertThat(patient.identifications()).satisfiesExactly(
-            actual -> assertThat(actual)
-                .satisfies(
-                    identification -> assertThat(identification)
-                        .extracting(EntityId::getAudit)
-                        .satisfies(
-                            added -> assertThat(added)
-                                .extracting(Audit::getAdded)
-                                .returns(131L, Added::getAddUserId)
-                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::getAddTime)
-                        )
-                        .satisfies(
-                            changed -> assertThat(changed)
-                                .extracting(Audit::getChanged)
-                                .returns(131L, Changed::getLastChgUserId)
-                                .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::getLastChgTime)
-                        )
-                )
-                .returns("identification-type", EntityId::getTypeCd)
-                .returns("authority-value", EntityId::getAssigningAuthorityCd)
-                .returns("identification-value", EntityId::getRootExtensionTxt)
-                .satisfies(
-                    identification -> assertThat(identification)
-                        .extracting(EntityId::getId)
-                        .returns((short) 1, EntityIdId::getEntityIdSeq)
-                )
-
-        );
     }
 
     @Test
@@ -2225,5 +2191,30 @@ class PersonTest {
                     .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
             )
         ;
+    }
+
+    @Test
+    void should_update_patient_administrative() {
+
+        Person patient = new Person(121L, "local-id-value");
+
+        patient.update(
+            new PatientCommand.UpdateAdministrativeInfo(
+                121L,
+                Instant.parse("2023-06-01T03:21:00Z"),
+                "comments",
+                131L,
+                Instant.parse("2019-03-03T10:15:30.00Z")
+            )
+        );
+
+        assertThat(patient)
+            .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateAdmin)
+            .returns("comments", Person::getDescription)
+            .satisfies(
+                changed -> assertThat(changed)
+                    .returns(131L, Person::getLastChgUserId)
+                    .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
+            );
     }
 }

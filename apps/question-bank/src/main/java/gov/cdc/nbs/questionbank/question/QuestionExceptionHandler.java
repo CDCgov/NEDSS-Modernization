@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import gov.cdc.nbs.questionbank.question.exception.NullObjectException;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 
@@ -15,7 +16,8 @@ public class QuestionExceptionHandler {
     @ExceptionHandler({
             CreateQuestionException.class,
             UpdateQuestionException.class,
-            NullObjectException.class})
+            NullObjectException.class,
+            UniqueQuestionException.class,})
     public ResponseEntity<ExceptionMessage> handleBadRequestExceptions(Exception e) {
         return new ResponseEntity<>(new ExceptionMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }

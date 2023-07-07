@@ -15,10 +15,6 @@ import gov.cdc.nbs.exception.QueryException;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.filter.OrganizationFilter;
 import gov.cdc.nbs.graphql.filter.PatientFilter;
-import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.message.patient.input.AdministrativeInput;
-import gov.cdc.nbs.message.util.Constants;
-import gov.cdc.nbs.model.PatientEventResponse;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
@@ -46,13 +42,11 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import static gov.cdc.nbs.config.security.SecurityUtil.BusinessObjects.PATIENT;
@@ -401,27 +395,6 @@ public class PatientService {
         builder.must(QueryBuilders.termsQuery(ElasticsearchPerson.RECORD_STATUS_CD, recordStatusStrings));
     }
 
-    public PatientEventResponse updateAdministrative(AdministrativeInput input) {
-        var user = SecurityUtil.getUserDetails();
-        var event = AdministrativeInput.toRequest(user.getId(), getRequestId(), input);
-        return personRepository.findById(input.getPatientId()).map(person -> {
-            person.update(new PatientCommand.UpdateAdministrativeInfo(
-                person.getId(),
-                Instant.now(),
-                input.getDescription(),
-                user.getId(),
-                Instant.now()
-            ));
-            personRepository.save(person);
-            return sendPatientEvent(event);
-        }).orElseThrow(() -> new PatientNotFoundException(input.getPatientId()));
-
-    }
-
-    private PatientEventResponse sendPatientEvent(PatientRequest request) {
-        return new PatientEventResponse(request.patientId());
-    }
-
     private String addWildcards(String searchString) {
         // wildcard does not default to case insensitive searching
         return searchString.toLowerCase().trim() + "*";
@@ -450,10 +423,6 @@ public class PatientService {
             }
         });
         return sorts;
-    }
-
-    private String getRequestId() {
-        return String.format(Constants.APP_ID + "_%s", UUID.randomUUID());
     }
 
 }

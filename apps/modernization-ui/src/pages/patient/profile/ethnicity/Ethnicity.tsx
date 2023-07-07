@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { FindPatientProfileQuery, PatientEthnicity, useUpdateEthnicityMutation } from 'generated/graphql/schema';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { useFindPatientProfileEthnicity } from './useFindPatientProfileMortality';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
+import { AlertType } from 'pages/patientProfile/Demographics';
 
 type Props = {
     patient: string;
+    handleAlert?: (data: AlertType) => void;
 };
 
 const initialEntry = {
@@ -41,7 +43,7 @@ const asEntry = (ethnicity?: PatientEthnicity | null): EthnicityEntry => ({
     unknownReason: maybeId(ethnicity?.unknownReason),
     detailed: maybeIds(ethnicity?.detailed)
 });
-export const Ethnicity = ({ patient }: Props) => {
+export const Ethnicity = ({ patient, handleAlert }: Props) => {
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<EthnicityEntry>(initialEntry);
     const [editing, isEditing] = useState<boolean>(false);
@@ -54,6 +56,7 @@ export const Ethnicity = ({ patient }: Props) => {
     const handleUpdate = () => {
         refetch();
         isEditing(false);
+        handleAlert?.({ type: 'Updated', table: 'Ethnicity' });
     };
 
     const [fetchProfile, { refetch }] = useFindPatientProfileEthnicity({ onCompleted: handleComplete });
@@ -75,8 +78,7 @@ export const Ethnicity = ({ patient }: Props) => {
             variables: {
                 input: {
                     ...updated,
-                    patient: patient,
-                    asOf: externalizeDateTime(updated.asOf)
+                    patient: patient
                 }
             }
         }).then(handleUpdate);

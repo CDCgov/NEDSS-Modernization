@@ -54,6 +54,8 @@ services:
       - MODERNIZATION_UI_PORT=${MODERNIZATION_UI_PORT:-8080}
       - MODERNIZATION_API_SERVER=${MODERNIZATION_API_SERVER:-modernization-api}
       - MODERNIZATION_API_PORT=${MODERNIZATION_API_PORT:-8080}
+      - PAGEBUILDER_API=${PAGEBUILDER_API:-pagebuilder-api}
+      - PAGEBUILDER_API_PORT=${PAGEBUILDER_API_PORT:-8095}
   elasticsearch:
     container_name: elasticsearch
     build: ./elasticsearch

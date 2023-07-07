@@ -4,6 +4,9 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { useDetailedRaceCodedValues, useRaceCodedValues } from 'coded/race';
 import { RaceEntry } from './RaceEntry';
+import { externalizeDateTime } from 'date';
+import { orNull } from 'utils';
+import { MultiSelectInput } from 'components/selection/multi';
 
 type EntryProps = {
     action: string;
@@ -13,21 +16,24 @@ type EntryProps = {
 };
 
 export const RaceEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const methods = useForm({ mode: 'onBlur' });
-    const { handleSubmit, control } = methods;
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const categories = useRaceCodedValues();
 
-    const selectedCategory = useWatch({ control, name: 'category' });
+    const selectedCategory = useWatch({ control, name: 'category', defaultValue: entry.category });
 
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory);
 
     const onSubmit = (entered: FieldValues) => {
         onChange({
             patient: entry.patient,
-            asOf: entered.asOf,
-            category: entered.category,
-            detailed: entered.detailed ? [entered.detailed] : []
+            asOf: externalizeDateTime(entered.asOf),
+            category: orNull(entered.category),
+            detailed: entered.detailed ? entered.detailed : []
         });
     };
 
@@ -76,24 +82,26 @@ export const RaceEntryForm = ({ action, entry, onChange, onCancel }: EntryProps)
                         />
                     </Grid>
                     {detailedRaces.length > 0 && (
-                        <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
-                            <Controller
-                                control={control}
-                                name="detailed"
-                                defaultValue={entry.detailed[0]}
-                                render={({ field: { onChange, value } }) => (
-                                    <SelectInput
-                                        flexBox
-                                        onChange={onChange}
-                                        defaultValue={value}
-                                        label="Detailed race"
-                                        name="detailed"
-                                        htmlFor="detailed"
-                                        id="detailed"
-                                        options={detailedRaces}
-                                    />
-                                )}
-                            />
+                        <Grid row col={12} className="flex-justify flex-align-center padding-2">
+                            <Grid col={6} className="margin-top-1">
+                                Detailed race:
+                            </Grid>
+                            <Grid col={6}>
+                                <Controller
+                                    control={control}
+                                    name="detailed"
+                                    shouldUnregister
+                                    defaultValue={entry.detailed}
+                                    render={({ field: { onChange, value } }) => (
+                                        <MultiSelectInput
+                                            id="detailed"
+                                            value={value}
+                                            onChange={onChange}
+                                            options={detailedRaces}
+                                        />
+                                    )}
+                                />
+                            </Grid>
                         </Grid>
                     )}
                 </Grid>
@@ -104,6 +112,7 @@ export const RaceEntryForm = ({ action, entry, onChange, onCancel }: EntryProps)
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">

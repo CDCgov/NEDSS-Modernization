@@ -14,10 +14,12 @@ import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
+import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
 import gov.cdc.nbs.questionbank.question.response.CreateQuestionResponse;
-import gov.cdc.nbs.questionbank.question.util.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
 import gov.cdc.nbs.questionbank.support.UserMother;
@@ -136,7 +138,7 @@ public class CreateQuestionSteps {
         }
         try {
             controller.createQuestion(request);
-        } catch (CreateQuestionException e) {
+        } catch (UniqueQuestionException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -170,6 +172,7 @@ public class CreateQuestionSteps {
         assertEquals(textRequest.defaultValue(), question.getDefaultValue());
         assertEquals(textRequest.mask(), question.getMask());
         assertEquals(textRequest.fieldLength(), question.getFieldSize());
+        assertEquals(QuestionType.TEXT, textRequest.type());
     }
 
     private void validateDateQuestion() {
@@ -180,6 +183,7 @@ public class CreateQuestionSteps {
         assertEquals(question.getId().longValue(), response.questionId());
         assertEquals(dateRequest.mask(), question.getMask());
         assertEquals(dateRequest.allowFutureDates() ? 'T' : 'F', question.getFutureDateIndCd().charValue());
+        assertEquals(QuestionType.DATE, dateRequest.type());
     }
 
     private void validateNumericQuestion() {
@@ -195,6 +199,7 @@ public class CreateQuestionSteps {
         assertEquals(numericRequest.maxValue(), question.getMaxValue());
         assertEquals(numericRequest.unitTypeCd().toString(), question.getUnitTypeCd());
         assertEquals(numericRequest.unitValue(), question.getUnitValue());
+        assertEquals(QuestionType.NUMERIC, numericRequest.type());
     }
 
     private void validateCodedQuestion() {
@@ -206,6 +211,7 @@ public class CreateQuestionSteps {
         assertEquals(codedRequest.valueSet(), question.getCodeSetGroupId());
         assertEquals(codedRequest.defaultValue(), question.getDefaultValue());
         assertEquals('F', question.getOtherValueIndCd().charValue());
+        assertEquals(QuestionType.CODED, codedRequest.type());
     }
 
     @Then("a no credentials found exception is thrown")
@@ -224,6 +230,12 @@ public class CreateQuestionSteps {
     public void an_exception_is_thrown() {
         assertNotNull(exceptionHolder.getException());
         assertTrue(exceptionHolder.getException() instanceof CreateQuestionException);
+    }
+
+    @Then("a unique question exception is thrown")
+    public void an_unique_exception_is_thrown() {
+        assertNotNull(exceptionHolder.getException());
+        assertTrue(exceptionHolder.getException() instanceof UniqueQuestionException);
     }
 
 }
