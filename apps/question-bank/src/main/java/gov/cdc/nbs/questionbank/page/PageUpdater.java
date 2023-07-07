@@ -35,7 +35,7 @@ public class PageUpdater {
         WaTemplate page = pageRepository.findByIdAndTemplateTypeIn(pageId, List.of("Draft", "Published"))
                 .orElseThrow(() -> new PageNotFoundException("Failed to find page with id: " + pageId));
 
-        // if Investigation and datamart is requested to change
+        // if data mart is requested to change, ensure it doesn't conflict with an existing data mart
         if ("INV".equals(page.getBusObjType()) && !request.dataMartName().equals(page.getDatamartNm())) {
             Boolean duplicateExists = pageRepository.existsByDatamartNmAndIdNot(request.dataMartName(), pageId);
             if (duplicateExists) {
@@ -43,6 +43,7 @@ public class PageUpdater {
             }
         }
 
+        // If page name is requested to change, ensure it doesn't conflict with an existing page
         if (!request.name().equals(page.getTemplateNm())) {
             Boolean duplicateName = pageRepository.existsByTemplateNmAndIdNot(request.name(), pageId);
             if (duplicateName) {
