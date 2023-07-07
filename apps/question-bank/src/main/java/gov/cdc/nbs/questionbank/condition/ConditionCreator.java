@@ -12,8 +12,7 @@ import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 public class ConditionCreator {
     private ConditionCodeRepository conditionCodeRepository;
 
-
-    public CreateConditionResponse createConditionResponse(CreateConditionRequest request, long userId){
+    public CreateConditionResponse createConditionResponse(CreateConditionRequest.Text request, long userId){
         CreateConditionResponse response = new CreateConditionResponse();
 
         //first check if condition exists - if it does don't create it
@@ -62,7 +61,7 @@ public class ConditionCreator {
 
     }
 
-    public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId) {
+    public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest.Text request, long userId) {
         return new CreateConditionCommand.AddCondition(
             getConditionCd(request),
             getConditionCodesetNm(request),
