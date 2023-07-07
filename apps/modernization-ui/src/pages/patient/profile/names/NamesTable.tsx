@@ -22,7 +22,7 @@ import { useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
 import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

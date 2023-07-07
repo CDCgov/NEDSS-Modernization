@@ -24,7 +24,7 @@ import {
 } from './useFindPatientProfilePhoneAndEmail';
 import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

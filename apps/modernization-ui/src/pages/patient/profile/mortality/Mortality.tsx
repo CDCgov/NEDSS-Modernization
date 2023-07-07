@@ -7,7 +7,7 @@ import { externalizeDate, externalizeDateTime, internalizeDate } from 'date';
 import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const initialEntry = {
     asOf: null,

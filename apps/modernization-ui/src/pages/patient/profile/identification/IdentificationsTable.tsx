@@ -20,7 +20,7 @@ import { EntryModal } from '../entry/EntryModal';
 import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,

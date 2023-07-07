@@ -7,7 +7,7 @@ import { maybeDescription, maybeId } from '../coded';
 import { Data, EditableCard } from 'components/EditableCard';
 import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
 import { orNull } from 'utils/orNull';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const initialEntry = {
     asOf: null,

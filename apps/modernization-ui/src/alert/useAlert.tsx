@@ -16,7 +16,7 @@ type AlertProviderProps = {
     children: ReactNode;
 };
 
-export function AlertProvider({ children }: AlertProviderProps) {
+function AlertProvider({ children }: AlertProviderProps) {
     const [alert, setAlert] = useState<AlertProp | null>(null);
     const showAlert = ({ type, header, message }: AlertProp) => {
         setAlert({ type, header, message });
@@ -56,10 +56,12 @@ export function AlertProvider({ children }: AlertProviderProps) {
     );
 }
 
-export function useAlert() {
+function useAlert() {
     const context = useContext(AlertContext);
     if (!context) {
         throw new Error('useAlert must be used within an AlertProvider');
     }
     return context;
 }
+
+export { AlertProvider, useAlert };

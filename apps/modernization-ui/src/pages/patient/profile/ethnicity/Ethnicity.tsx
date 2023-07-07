@@ -6,7 +6,7 @@ import { useFindPatientProfileEthnicity } from './useFindPatientProfileMortality
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeDescriptions, maybeId, maybeIds } from 'pages/patient/profile/coded';
 import { EthnicityForm, EthnicityEntry } from './EthnicityForm';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 type Props = {
     patient: string;

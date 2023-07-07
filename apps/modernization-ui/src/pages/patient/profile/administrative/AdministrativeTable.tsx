@@ -17,7 +17,7 @@ import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import EntryModal from 'pages/patient/profile/entry';
 import { AdministrativeForm } from './AdminstrativeForm';
 import { ConfirmationModal } from 'confirmation';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const asEntry = (addministrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(addministrative?.asOf),

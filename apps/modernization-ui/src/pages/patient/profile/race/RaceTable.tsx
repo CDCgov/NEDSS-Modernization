@@ -20,7 +20,7 @@ import EntryModal from 'pages/patient/profile/entry';
 import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPatientProfileRace';
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
-import { useAlert } from 'context/alert/useAlert';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },

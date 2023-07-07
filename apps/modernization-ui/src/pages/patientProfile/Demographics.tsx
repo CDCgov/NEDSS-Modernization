@@ -9,6 +9,7 @@ import { GeneralPatient } from 'pages/patient/profile/generalInfo';
 import { Mortality } from 'pages/patient/profile/mortality';
 import { Ethnicity } from 'pages/patient/profile/ethnicity';
 import { SexBirth } from 'pages/patient/profile/sexBirth';
+import { AlertProvider } from 'alert';
 
 type DemographicProps = {
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
@@ -33,7 +34,7 @@ export type AlertType = {
 
 export const Demographics = ({ id }: DemographicProps) => {
     return (
-        <>
+        <AlertProvider>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <AdministrativeTable patient={id} />
             </div>
@@ -72,6 +73,6 @@ export const Demographics = ({ id }: DemographicProps) => {
                     </Grid>
                 </Grid>
             </Grid>
-        </>
+        </AlertProvider>
     );
 };
