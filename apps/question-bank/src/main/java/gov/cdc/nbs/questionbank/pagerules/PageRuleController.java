@@ -42,7 +42,7 @@ public class PageRuleController {
         }
     }
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @PostMapping("rule/{ruleId}")
+    @DeleteMapping ("rule/{ruleId}")
     @ResponseBody
     public CreateRuleResponse deletePageRule(@PathVariable Long ruleId){
       return pageRuleService.deletePageRule(ruleId);
