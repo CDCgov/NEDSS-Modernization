@@ -10,6 +10,7 @@ import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
+import { AlertProvider } from 'context/alert/useAlert';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -50,33 +51,35 @@ export const AppRoutes = () => {
         <>
             {loading && <Spinner />}
             <ScrollToTop>
-                <Routes>
-                    {state.isLoggedIn && (
-                        <>
-                            <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
-                            <Route path="/patient-profile/:id" element={<PatientProfile />} />
-                            <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
-                            <Route path="/add-patient" element={<AddPatient />} />
-                            <Route path="/add-patient/patient-added" element={<AddedPatient />} />
+                <AlertProvider>
+                    <Routes>
+                        {state.isLoggedIn && (
+                            <>
+                                <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
+                                <Route path="/patient-profile/:id" element={<PatientProfile />} />
+                                <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
+                                <Route path="/add-patient" element={<AddPatient />} />
+                                <Route path="/add-patient/patient-added" element={<AddedPatient />} />
 
-                            <Route path="/page-builder">
-                                <Route path="manage">
-                                    <Route path="pages" element={<ManagePages />} />
+                                <Route path="/page-builder">
+                                    <Route path="manage">
+                                        <Route path="pages" element={<ManagePages />} />
+                                    </Route>
+                                    <Route path="add">
+                                        <Route path="page" element={<AddNewPage />} />
+                                    </Route>
                                 </Route>
-                                <Route path="add">
-                                    <Route path="page" element={<AddNewPage />} />
-                                </Route>
-                            </Route>
 
-                            <Route path="*" element={<Navigate to="/advanced-search" />} />
-                            <Route path="/" element={<Navigate to="/advanced-search" />} />
-                        </>
-                    )}
-                    {!state.isLoggedIn && !state.isLoginPending && !loading && (
-                        <Route path="*" element={<Navigate to="/login" />} />
-                    )}
-                    <Route path="/login" element={<Login />} />
-                </Routes>
+                                <Route path="*" element={<Navigate to="/advanced-search" />} />
+                                <Route path="/" element={<Navigate to="/advanced-search" />} />
+                            </>
+                        )}
+                        {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                            <Route path="*" element={<Navigate to="/login" />} />
+                        )}
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </AlertProvider>
             </ScrollToTop>
         </>
     );

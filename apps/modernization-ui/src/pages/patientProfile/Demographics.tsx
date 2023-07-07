@@ -1,4 +1,4 @@
-import { Alert, Button, Grid, Icon } from '@trussworks/react-uswds';
+import { Grid } from '@trussworks/react-uswds';
 import { NamesTable } from 'pages/patient/profile/names';
 import { AddressesTable } from 'pages/patient/profile/addresses';
 import { PhoneAndEmailTable } from 'pages/patient/profile/phoneEmail';
@@ -9,7 +9,6 @@ import { GeneralPatient } from 'pages/patient/profile/generalInfo';
 import { Mortality } from 'pages/patient/profile/mortality';
 import { Ethnicity } from 'pages/patient/profile/ethnicity';
 import { SexBirth } from 'pages/patient/profile/sexBirth';
-import { useEffect, useState } from 'react';
 
 type DemographicProps = {
     handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
@@ -33,76 +32,46 @@ export type AlertType = {
 } | null;
 
 export const Demographics = ({ id }: DemographicProps) => {
-    const [alert, setAlert] = useState<AlertType>(null);
-
-    const handleAlert = (data: any) => {
-        setAlert(data);
-    };
-
-    useEffect(() => {
-        if (alert) {
-            const timeout = setTimeout(() => {
-                setAlert(null);
-            }, 5000);
-
-            return () => clearTimeout(timeout);
-        }
-    }, [alert]);
-
     return (
         <>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AdministrativeTable patient={id} handleAlert={handleAlert} />
+                <AdministrativeTable patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <NamesTable patient={id} handleAlert={handleAlert} />
+                <NamesTable patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <AddressesTable patient={id} handleAlert={handleAlert} />
+                <AddressesTable patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PhoneAndEmailTable patient={id} handleAlert={handleAlert} />
+                <PhoneAndEmailTable patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <IdentificationsTable handleAlert={handleAlert} patient={id} />
+                <IdentificationsTable patient={id} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <RacesTable handleAlert={handleAlert} patient={id} />
+                <RacesTable patient={id} />
             </div>
 
             <Grid row gap className="margin-auto">
                 <Grid col={6}>
                     <Grid row>
-                        <GeneralPatient handleAlert={handleAlert} patient={id} />
-                        <Mortality handleAlert={handleAlert} patient={id} />
+                        <GeneralPatient patient={id} />
+                        <Mortality patient={id} />
                     </Grid>
                 </Grid>
                 <Grid col={6}>
                     <Grid row>
-                        <Ethnicity handleAlert={handleAlert} patient={id} />
-                        <SexBirth handleAlert={handleAlert} patient={id} />
+                        <Ethnicity patient={id} />
+                        <SexBirth patient={id} />
                     </Grid>
                 </Grid>
             </Grid>
-
-            {alert && (
-                <Alert
-                    type="success"
-                    heading="Success"
-                    headingLevel="h4"
-                    cta={
-                        <Button type="button" unstyled onClick={() => setAlert(null)}>
-                            <Icon.Close />
-                        </Button>
-                    }>
-                    {alert?.type} {alert?.table} {alert?.name && <strong>{alert?.name}</strong>}
-                </Alert>
-            )}
         </>
     );
 };
