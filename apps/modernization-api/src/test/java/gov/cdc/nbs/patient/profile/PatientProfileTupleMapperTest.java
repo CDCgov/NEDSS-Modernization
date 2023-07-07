@@ -1,6 +1,9 @@
 package gov.cdc.nbs.patient.profile;
 
 import com.querydsl.core.Tuple;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
+
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +23,7 @@ class PatientProfileTupleMapperTest {
         when(tuple.get(table.patient().personParentUid.id)).thenReturn(3167L);
         when(tuple.get(table.patient().personParentUid.localId)).thenReturn("local-id-value");
         when(tuple.get(table.patient().personParentUid.versionCtrlNbr)).thenReturn((short) 89);
+        when(tuple.get(table.patient().personParentUid.recordStatusCd)).thenReturn(RecordStatus.ACTIVE);
 
         PatientProfileTupleMapper mapper = new PatientProfileTupleMapper(table);
 
@@ -28,6 +32,7 @@ class PatientProfileTupleMapperTest {
         assertThat(actual.id()).isEqualTo(3167L);
         assertThat(actual.local()).isEqualTo("local-id-value");
         assertThat(actual.version()).isEqualTo((short) 89);
+        assertThat(actual.recordStatusCd()).isEqualTo(RecordStatus.ACTIVE.toString());
     }
 
     @Test
