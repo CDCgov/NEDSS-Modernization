@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type EventType = {
+export type MessageMappingGuide = {
     name?: string;
     value?: string;
 };

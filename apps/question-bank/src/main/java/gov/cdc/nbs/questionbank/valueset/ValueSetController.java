@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/valueset/")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ValueSetController {
 
 	private final ValueSetStateManager valueSetStateManager;

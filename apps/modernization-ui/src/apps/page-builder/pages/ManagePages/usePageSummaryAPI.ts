@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { PageSummary, PageSummaryControllerService, Page_PageSummary_ } from 'apps/page-builder/generated';
+import { PageSummary, PageControllerService, Page_PageSummary_ } from 'apps/page-builder/generated';
 import { Status, usePage } from 'page';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
@@ -10,7 +10,7 @@ export const usePageSummaryAPI = (search?: string, sort?: string) => {
     const { state } = useContext(UserContext);
 
     const fetchPageSummaries = () => {
-        PageSummaryControllerService.searchUsingPost({
+        PageControllerService.searchUsingPost({
             authorization: `Bearer ${state.getToken()}`,
             request: { search },
             page: page.current - 1,

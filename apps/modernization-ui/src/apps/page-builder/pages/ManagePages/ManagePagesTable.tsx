@@ -42,7 +42,7 @@ export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
                 id: 1,
                 title: <div className="page-name">{page?.name}</div> || null
             },
-            { id: 2, title: <div className="event-text">{page?.eventType?.display}</div> || null },
+            { id: 2, title: <div className="event-text">{page?.eventType?.name}</div> || null },
             {
                 id: 3,
                 title:

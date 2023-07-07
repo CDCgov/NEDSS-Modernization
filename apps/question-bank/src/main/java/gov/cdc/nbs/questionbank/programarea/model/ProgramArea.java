@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.programarea.model;
 
 public record ProgramArea(
-        String code,
-        String description,
+        String value,
+        String display,
         Integer nbsId,
         String status) {
 
