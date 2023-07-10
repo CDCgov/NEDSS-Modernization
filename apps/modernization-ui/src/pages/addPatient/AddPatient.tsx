@@ -308,7 +308,14 @@ export default function AddPatient() {
                                             title="Address"
                                             control={control}
                                             addressFields={addressFields}
-                                            updateCallback={setAddressFields}
+                                            updateCallback={(obj: any) => {
+                                                setAddressFields(obj);
+
+                                                // Since these 2 fields are controlled fields,
+                                                // we need to setValue for it to reflect on the ui
+                                                setValue('city', obj.city);
+                                                setValue('state', obj.state);
+                                            }}
                                         />
                                         <ContactFields
                                             phoneNumberFields={phoneNumberFields}
