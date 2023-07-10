@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ClassicButton } from '../../../../classic';
 import './CreateCondition.scss';
 import { ProgramAreaControllerService, ValueSetControllerService } from '../../generated';
