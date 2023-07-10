@@ -121,7 +121,7 @@ public class ValueSetCreator {
 				request.getNbsUid(),
 				request.getSourceVersionTxt(), 
 				request.getSourceDomainNm(), 
-				request.getStatusCd(),
+				"A",
 				request.getStatusToTime(), 
 				request.getCodeSetGroup(), 
 				request.getAdminComments(),
