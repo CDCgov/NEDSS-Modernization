@@ -16,7 +16,7 @@ import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import { EntryModal } from 'pages/patient/profile/EntryModal';
+import EntryModal from 'pages/patient/profile/entry';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import {
     PatientProfilePhoneEmailResult,
@@ -24,6 +24,7 @@ import {
 } from './useFindPatientProfilePhoneAndEmail';
 import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
 import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientPhone): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -69,6 +70,7 @@ type Props = {
 };
 
 export const PhoneAndEmailTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -129,7 +131,14 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added Phone & Email`
+                    });
+                })
                 .then(actions.reset);
         }
     };
@@ -149,7 +158,14 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated Phone & Email`
+                    });
+                })
                 .then(actions.reset);
         }
     };
@@ -164,7 +180,14 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted Phone & Email`
+                    });
+                })
                 .then(actions.reset);
         }
     };

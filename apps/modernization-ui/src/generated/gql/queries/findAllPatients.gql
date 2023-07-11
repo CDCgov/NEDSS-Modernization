@@ -83,10 +83,6 @@ query findAllPatients($page: SortablePage){
                 assigningAuthorityCd
                 assigningAuthorityDescTxt
             }
-            races{
-                raceCd
-                recordStatusCd
-            }
             names{
                 firstNm
                 middleNm

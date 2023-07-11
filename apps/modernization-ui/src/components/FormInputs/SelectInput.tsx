@@ -1,5 +1,4 @@
 import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
-import React from 'react';
 
 type SelectProps = {
     htmlFor?: string;

@@ -13,6 +13,9 @@ http:
     modernization-nbs-api:
       service: modernization-api
       rule: "PathPrefix(`/nbs/api`)"
+    pagebuilder-api:
+      service: pagebuilder-api
+      rule: "PathPrefix(`/page-builder/api`)"
     address-api:
       service: cdc-address-api
       rule: "PathPrefix(`/nbs/address`)"
@@ -134,6 +137,10 @@ http:
       loadBalancer:
         servers:
           - url: 'http://{{ env "MODERNIZATION_API_SERVER" | default "modernization-api" }}:{{ env "MODERNIZATION_API_PORT" | default "8080" }}/'
+    pagebuilder-api:
+      loadBalancer:
+        servers:
+          - url: 'http://{{ env "PAGEBUILDER_API" | default "pagebuilder-api" }}:{{ env "PAGEBUILDER_API_PORT" | default "8095" }}/'
     modernization:
       loadBalancer:
         servers:

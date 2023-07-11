@@ -4,8 +4,12 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 // import { useNavigate } from 'react-router-dom';
 import {
+    EntryMethod,
+    EventStatus,
     InvestigationFilter,
     LabReportFilter,
+    LaboratoryReportStatus,
+    UserType,
     useFindLocalCodedResultsLazyQuery,
     useFindLocalLabTestLazyQuery
 } from '../../../../generated/graphql/schema';
@@ -53,6 +57,16 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                     defaultValue={eventSearchType}
                     onChangeMethod={(e) => {
                         setEventSearchType(e);
+                        if (e === SEARCH_TYPE.LAB_REPORT) {
+                            methods.reset(
+                                setLabReportFilters({
+                                    entryMethods: [EntryMethod.Electronic],
+                                    enteredBy: [UserType.Internal, UserType.External],
+                                    eventStatus: [EventStatus.New],
+                                    processingStatus: [LaboratoryReportStatus.Unprocessed]
+                                })
+                            );
+                        }
                     }}
                     control={control}
                     name="eventType"
@@ -241,7 +255,11 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                     entityType: body.entityType,
                     id: body.id
                 };
-            } else {
+            }
+        }
+
+        if (body.labentityType && body.labentityType !== '- Select -' && body.labid) {
+            if (eventSearchType === SEARCH_TYPE.LAB_REPORT && (filterData as LabReportFilter)) {
                 filterData = filterData as LabReportFilter;
                 filterData.providerSearch = {
                     providerType: body.labentityType,

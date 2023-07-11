@@ -1,12 +1,10 @@
-import { useContext, useState } from 'react';
-import { ManagePagesTableContainer } from './ManagePagesTableContainer';
-import './ManagePages.scss';
-import { PageBuilderContext } from 'apps/page-builder/context/PageBuilderContext';
-import { PageBuilder } from '../PageBuilder/PageBuilder';
 import { PageProvider } from 'page';
+import { useState } from 'react';
+import { PageBuilder } from '../PageBuilder/PageBuilder';
+import './ManagePages.scss';
+import { ManagePagesTableWrapper } from './ManagePagesTableWrapper';
 
 export const ManagePages = () => {
-    const { pages } = useContext(PageBuilderContext);
     const [pageSize] = useState(10);
     return (
         <>
@@ -15,7 +13,7 @@ export const ManagePages = () => {
                     <div className="manage-pages__container">
                         <div className="manage-pages__table">
                             <PageProvider pageSize={pageSize}>
-                                <ManagePagesTableContainer pages={pages} />
+                                <ManagePagesTableWrapper />
                             </PageProvider>
                         </div>
                     </div>

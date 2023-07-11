@@ -7,6 +7,7 @@ import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeId } from '../coded';
 import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
 import { maybeNumber, orNull } from 'utils';
+import { useAlert } from 'alert/useAlert';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
@@ -82,6 +83,7 @@ type Props = {
 };
 
 export const SexBirth = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
 
     const [state, setState] = useState<BirthAndGenderState>(initial);
@@ -122,7 +124,14 @@ export const SexBirth = ({ patient }: Props) => {
             }
         })
             .then(() => isEditing(false))
-            .then(() => refetch());
+            .then(() => {
+                refetch();
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Updated sex & birth`
+                });
+            });
     };
 
     return (

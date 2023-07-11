@@ -22,6 +22,7 @@ class EntityIdTest {
             identifier,
             new PatientCommand.AddIdentification(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "identification-value",
                 "authority-value",
                 "identification-type",

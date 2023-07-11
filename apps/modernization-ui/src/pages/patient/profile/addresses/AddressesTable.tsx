@@ -16,11 +16,12 @@ import { Actions } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import { EntryModal } from 'pages/patient/profile/EntryModal';
+import EntryModal from 'pages/patient/profile/entry';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
 import { AddressEntryForm } from './AddressEntryForm';
 import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -75,6 +76,7 @@ type Props = {
 };
 
 export const AddressesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -146,7 +148,14 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added address`
+                    });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -174,7 +183,14 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated address`
+                    });
+                })
                 .then(actions.reset);
         }
     };
@@ -189,7 +205,14 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted address`
+                    });
+                })
                 .then(actions.reset);
         }
     };

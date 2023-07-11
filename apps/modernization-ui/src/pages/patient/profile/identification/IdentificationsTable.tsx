@@ -14,12 +14,13 @@ import {
 import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
 import { useFindPatientProfileIdentifications } from './useFindPatientProfileIdentifications';
 import { maybeDescription, maybeId } from '../coded';
-import { externalizeDateTime, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { tableActionStateAdapter, useTableActionState } from 'table-action';
-import { EntryModal } from '../EntryModal';
+import { EntryModal } from '../entry/EntryModal';
 import { IdentificationEntryForm } from './IdentificationEntryForm';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from '../DetailsModal';
+import { useAlert } from 'alert/useAlert';
 
 const asEntry = (identification: Identification): IdentificationEntry => ({
     patient: identification.patient,
@@ -50,6 +51,7 @@ type Props = {
 };
 
 export const IdentificationsTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -100,15 +102,22 @@ export const IdentificationsTable = ({ patient }: Props) => {
         add({
             variables: {
                 input: {
-                    asOf: externalizeDateTime(entry?.asOf),
                     patient: entry.patient,
-                    value: entry.value?.toString() || '',
-                    type: entry?.type?.toString() || '',
+                    asOf: entry.asOf,
+                    value: entry.value || '',
+                    type: entry.type || '',
                     authority: entry.state
                 }
             }
         })
-            .then(() => refetch())
+            .then(() => {
+                showAlert({
+                    type: 'success',
+                    header: 'success',
+                    message: `Added Identification`
+                });
+                refetch();
+            })
             .then(actions.reset);
     };
 
@@ -117,16 +126,23 @@ export const IdentificationsTable = ({ patient }: Props) => {
             update({
                 variables: {
                     input: {
-                        asOf: externalizeDateTime(entry?.asOf),
                         patient: entry.patient,
-                        value: entry.value?.toString() || '',
-                        type: entry?.type?.toString() || '',
-                        authority: entry.state,
-                        sequence: entry.sequence
+                        sequence: entry.sequence,
+                        asOf: entry.asOf,
+                        value: entry.value || '',
+                        type: entry.type || '',
+                        authority: entry.state
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated Identification`
+                    });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };
@@ -141,7 +157,14 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted Identification`
+                    });
+                    refetch();
+                })
                 .then(actions.reset);
         }
     };

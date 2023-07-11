@@ -45,6 +45,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
         this.cd = phoneNumber.type();
         this.useCd = phoneNumber.use();
+        this.asOfDate = phoneNumber.asOf();
         this.locator = new TeleLocator(phoneNumber);
     }
 
@@ -57,6 +58,7 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
         this.cd = "NET";
         this.useCd = "H";
+        this.asOfDate = emailAddress.asOf();
 
         this.locator = new TeleLocator(emailAddress);
     }

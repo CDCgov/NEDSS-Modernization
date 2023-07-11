@@ -7,6 +7,7 @@ import { externalizeDate, externalizeDateTime, internalizeDate } from 'date';
 import { MortalityEntry, MortalityForm } from './MortalityForm';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
+import { useAlert } from 'alert/useAlert';
 
 const initialEntry = {
     asOf: null,
@@ -43,6 +44,7 @@ type Props = {
 };
 
 export const Mortality = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<MortalityEntry>(initialEntry);
@@ -59,6 +61,11 @@ export const Mortality = ({ patient }: Props) => {
     const handleUpdate = () => {
         refetch();
         isEditing(false);
+        showAlert({
+            type: 'success',
+            header: 'success',
+            message: `Updated mortality`
+        });
     };
 
     const [fetch, { refetch }] = useFindPatientProfileMortality({ onCompleted: handleComplete });

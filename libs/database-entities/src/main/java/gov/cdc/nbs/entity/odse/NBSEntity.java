@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +28,15 @@ public class NBSEntity {
     @Column(name = "class_cd", nullable = false, length = 10)
     private String classCd;
 
-    @OneToMany(mappedBy = "id.subjectEntityUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.subjectEntityUid",
+        fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REMOVE
+        },
+        orphanRemoval = true
+    )
     private List<Participation> participations;
 
     @OneToMany(mappedBy = "id.entityUid", fetch = FetchType.EAGER, cascade = {
@@ -45,13 +52,6 @@ public class NBSEntity {
         CascadeType.REMOVE
     }, orphanRemoval = true)
     private List<EntityId> entityIds;
-
-    @OneToOne(mappedBy = "contactNBSEntityUid", fetch = FetchType.LAZY, cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REMOVE
-    }, orphanRemoval = true)
-    private CtContact ctContact;
 
     protected NBSEntity() {
     }
@@ -275,32 +275,12 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            phoneNumber);
+            phoneNumber
+        );
 
         locators.add(participation);
 
         return participation;
-    }
-
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> existing = ensureLocators();
-        Optional<EntityLocatorParticipation> elp = existing.stream()
-            .filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst();
-        if (elp.isPresent()) {
-            TeleLocator pl = ((TeleEntityLocatorParticipation) elp.get()).getLocator();
-            pl.setPhoneNbrTxt(phoneNumber.number());
-            pl.setExtensionTxt(phoneNumber.extension());
-        }
-        return elp;
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        EntityLocatorParticipationId identifier = new EntityLocatorParticipationId(this.id, phoneNumber.id());
-        List<EntityLocatorParticipation> elps = new ArrayList<>(this.entityLocatorParticipations);
-        boolean isDeleted = elps.removeIf(p -> p.getId() != null && p.getId().equals(identifier));
-        this.entityLocatorParticipations = elps;
-        return isDeleted;
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddEmailAddress emailAddress) {
@@ -311,7 +291,8 @@ public class NBSEntity {
         EntityLocatorParticipation participation = new TeleEntityLocatorParticipation(
             this,
             identifier,
-            emailAddress);
+            emailAddress
+        );
 
         locators.add(participation);
 

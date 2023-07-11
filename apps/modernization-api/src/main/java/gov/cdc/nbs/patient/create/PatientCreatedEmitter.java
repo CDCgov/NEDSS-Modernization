@@ -111,6 +111,7 @@ class PatientCreatedEmitter {
         PostalLocator locator = address.getLocator();
         return new PatientEvent.Created.Address(
             address.getId().getLocatorUid(),
+            address.getAsOfDate(),
             locator.getStreetAddr1(),
             locator.getStreetAddr2(),
             locator.getCityDescTxt(),
@@ -131,6 +132,7 @@ class PatientCreatedEmitter {
 
         return new PatientEvent.Created.Phone(
             phone.getId().getLocatorUid(),
+            phone.getAsOfDate(),
             phone.getCd(),
             phone.getUseCd(),
             locator.getPhoneNbrTxt(),
@@ -147,6 +149,7 @@ class PatientCreatedEmitter {
 
         return new PatientEvent.Created.Email(
             email.getId().getLocatorUid(),
+            email.getAsOfDate(),
             email.getCd(),
             email.getUseCd(),
             locator.getEmailAddress()
@@ -160,6 +163,7 @@ class PatientCreatedEmitter {
     private PatientEvent.Created.Identification asIdentification(final EntityId identification) {
         return new PatientEvent.Created.Identification(
             identification.getId().getEntityIdSeq(),
+            identification.getAsOfDate(),
             identification.getTypeCd(),
             identification.getAssigningAuthorityCd(),
             identification.getRootExtensionTxt()

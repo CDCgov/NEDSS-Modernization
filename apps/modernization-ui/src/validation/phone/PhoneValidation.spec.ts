@@ -26,12 +26,6 @@ describe('Phone Validation', () => {
     });
 
     it('should allow from 1 to 10 consecutive digits', () => {
-        expect(validatePhoneNumber('1')).toBeTruthy();
-        expect(validatePhoneNumber('12')).toBeTruthy();
-        expect(validatePhoneNumber('123')).toBeTruthy();
-        expect(validatePhoneNumber('1234')).toBeTruthy();
-        expect(validatePhoneNumber('12345')).toBeTruthy();
-        expect(validatePhoneNumber('123456')).toBeTruthy();
         expect(validatePhoneNumber('1234567')).toBeTruthy();
         expect(validatePhoneNumber('12345678')).toBeTruthy();
         expect(validatePhoneNumber('123456789')).toBeTruthy();

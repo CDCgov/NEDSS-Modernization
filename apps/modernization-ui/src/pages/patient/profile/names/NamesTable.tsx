@@ -16,12 +16,13 @@ import { SortableTable } from 'components/Table/SortableTable';
 import { Actions as ActionState } from 'components/Table/Actions';
 import { ConfirmationModal } from 'confirmation';
 import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
-import { EntryModal } from 'pages/patient/profile/EntryModal';
+import EntryModal from 'pages/patient/profile/entry';
 import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
 import { useFindPatientProfileNames } from './useFindPatientProfileNames';
 import { NameEntryForm } from './NameEntryForm';
 import { NameEntry } from './NameEntry';
 import { useTableActionState, tableActionStateAdapter } from 'table-action';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientName): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -71,6 +72,7 @@ type Props = {
 };
 
 export const NamesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -139,7 +141,14 @@ export const NamesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added name`
+                    });
+                })
                 .then(actions.reset);
         }
     };
@@ -164,7 +173,14 @@ export const NamesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated name`
+                    });
+                })
                 .then(actions.reset);
         }
     };
@@ -179,7 +195,14 @@ export const NamesTable = ({ patient }: Props) => {
                     }
                 }
             })
-                .then(() => refetch())
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted name`
+                    });
+                })
                 .then(actions.reset);
         }
     };
