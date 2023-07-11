@@ -91,7 +91,7 @@ export default function AddPatient() {
             item.email = data?.[`emailAddresses_${index}`];
         });
         data?.phoneNumbers?.map((item: any, index: number) => {
-            item.cellPhone = data?.[`emailAddresses_${index}`];
+            item.cellPhone = data?.[`cellPhone_${index}`];
             if (item.cellPhone) {
                 phoneNumbers.push({
                     number: data?.[`cellPhone_${index}`],
