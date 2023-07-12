@@ -1,4 +1,4 @@
-import { PageProvider } from 'page';
+// import { PageProvider } from 'page';
 import { ManagePagesTable } from './ManagePagesTable';
 import { render } from '@testing-library/react';
 import { PageSummary } from 'apps/page-builder/generated';
@@ -8,9 +8,7 @@ describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { container } = render(
             <BrowserRouter>
-                <PageProvider>
-                    <ManagePagesTable summaries={[]} sortChange={() => {}}></ManagePagesTable>
-                </PageProvider>
+                <ManagePagesTable summaries={[]} currentPage={1} pageSize={10} totalElements={50}></ManagePagesTable>
             </BrowserRouter>
         );
 
@@ -44,9 +42,7 @@ describe('when at least one summary is available', () => {
     it('should display the page summaries', async () => {
         const { container } = render(
             <BrowserRouter>
-                <PageProvider>
-                    <ManagePagesTable summaries={summaries} sortChange={() => {}}></ManagePagesTable>
-                </PageProvider>
+                <ManagePagesTable summaries={summaries} currentPage={1} pageSize={10} totalElements={50}></ManagePagesTable>
             </BrowserRouter>
         );
 
