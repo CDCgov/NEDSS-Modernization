@@ -118,12 +118,12 @@ export default function AddPatient() {
             setValue('race', data?.race);
         }
         const addressObj = {
-            streetAddress1: data?.mailingAddress1,
-            streetAddress2: data?.mailingAddress2,
+            streetAddress1: addressFields?.streetAddress1,
+            streetAddress2: addressFields?.streetAddress2,
             state: data?.state,
             county: data?.county,
-            zip: data?.zip,
-            censusTract: data?.censusTract,
+            zip: addressFields?.zip,
+            censusTract: addressFields?.censusTract,
             country: data?.country,
             city: data?.city
         };
@@ -149,8 +149,8 @@ export default function AddPatient() {
             races: data?.race,
             phoneNumbers
         };
-        data?.identifications && (payload.identifications = data?.identifications);
-        if (!data?.emailAddresses || data?.emailAddresses?.length === 0) {
+        data?.identification && (payload.identifications = data?.identification);
+        if (data?.emailAddresses?.length > 0) {
             payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
         }
         if (!isEmpty(addressObj)) {
