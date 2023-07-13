@@ -1,4 +1,4 @@
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Grid, Radio } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
 import { CodedValue } from 'coded';
@@ -7,9 +7,11 @@ type CodedValues = {
     ethnicGroups: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function EthnicityFields({ id, title, control, coded }: Props) {
+export default function EthnicityFields({ id, title, coded }: Props) {
+    const { control } = useFormContext();
+
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">

@@ -12,7 +12,7 @@ import {
 } from '@trussworks/react-uswds';
 import './AddPatient.scss';
 import NameFields from './components/nameFields/NameFields';
-import AddressFields, { InputAddressFields } from './components/addressFields/AddressFields';
+import AddressFields from './components/addressFields/AddressFields';
 import ContactFields from './components/contactFields/ContactFields';
 import EthnicityFields from './components/ethnicityFields/EthnicityFields';
 import { useEffect, useRef, useState } from 'react';
@@ -20,7 +20,7 @@ import { ACTIVE_TAB, LeftBar } from './components/LeftBar/LeftBar';
 import RaceFields from './components/Race/RaceFields';
 import GeneralInformation from './components/generalInformation/generalInformation';
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
 import {
     NameUseCd,
@@ -33,6 +33,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useAddPatientCodedValues } from './useAddPatientCodedValues';
 import { useCountyCodedValues, useLocationCodedValues } from 'location';
+import { externalizeDateTime } from 'date';
 
 export default function AddPatient() {
     const navigate = useNavigate();
@@ -56,45 +57,20 @@ export default function AddPatient() {
     type formDefaultValueType = { [key: string]: [{ [key: string]: any }] };
 
     const defaultValues: formDefaultValueType = {
-        identification: [{ type: '', authority: '', value: '' }],
+        identification: [{ type: null, authority: null, value: null }],
         phoneNumbers: [{ cellPhone: null }],
         emailAddresses: [{ email: null }]
     };
 
-    const {
-        handleSubmit,
-        control,
-        formState: { errors, isValid },
-        setValue
-    } = useForm({
+    const methods = useForm({
         defaultValues: defaultValues
     });
 
-    const { fields, append } = useFieldArray({
+    const {
+        handleSubmit,
         control,
-        name: 'identification'
-    });
-
-    const { fields: phoneNumberFields, append: phoneNumberAppend } = useFieldArray({
-        control,
-        name: 'phoneNumbers'
-    });
-
-    const { fields: emailFields, append: emailFieldAppend } = useFieldArray({
-        control,
-        name: 'emailAddresses'
-    });
-
-    const [addressFields, setAddressFields] = useState<InputAddressFields>({
-        streetAddress1: '',
-        streetAddress2: '',
-        city: '',
-        state: '',
-        zip: '',
-        county: '',
-        censusTract: '',
-        country: ''
-    });
+        formState: { errors, isValid }
+    } = methods;
 
     const submit = (data: any) => {
         setSuccessSubmit(true);
@@ -126,21 +102,18 @@ export default function AddPatient() {
                 use: 'WP'
             });
         }
-        if (data?.race) {
-            setValue('race', data?.race);
-        }
         const addressObj = {
-            streetAddress1: addressFields?.streetAddress1,
-            streetAddress2: addressFields?.streetAddress2,
+            streetAddress1: data?.streetAddress1,
+            streetAddress2: data?.streetAddress2,
             state: data?.state,
             county: data?.county,
-            zip: addressFields?.zip,
-            censusTract: addressFields?.censusTract,
+            zip: data?.zip,
+            censusTract: data?.censusTract,
             country: data?.country,
             city: data?.city
         };
         const payload: PersonInput = {
-            asOf: format(new Date(data?.asOf), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`),
+            asOf: externalizeDateTime(data.asOf),
             comments: data?.additionalComments,
             names: [
                 {
@@ -176,16 +149,17 @@ export default function AddPatient() {
             payload.addresses = [addressObj];
         }
         data?.dod && (payload.deceasedTime = format(new Date(data?.dod), `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`));
-        const name =
-            data?.lastName || data?.firstName
-                ? `${data?.lastName || ''}${(data?.lastName && ', ') || ''}${data?.firstName || ''}`
-                : 'Patient';
+
         handleSavePatient({
             variables: {
                 patient: payload
             }
         }).then((re) => {
             if (re.data) {
+                const name =
+                    data?.lastName || data?.firstName
+                        ? `${data?.lastName || ''}${(data?.lastName && ', ') || ''}${data?.firstName || ''}`
+                        : 'Patient';
                 navigate(`/add-patient/patient-added?shortId=${re?.data?.createPatient.shortId}&name=${name}`);
             }
         });
@@ -231,185 +205,172 @@ export default function AddPatient() {
                         <LeftBar activeTab={ACTIVE_TAB.PATIENT} />
                     </Grid>
                     <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
-                        <Form onSubmit={handleSubmit(submit)} className="width-full max-width-full">
-                            <Grid
-                                row
-                                className="page-title-bar bg-white"
-                                style={{
-                                    position: 'sticky',
-                                    top: 0,
-                                    zIndex: 1
-                                }}>
-                                <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
-                                    New patient
-                                    <div className="button-group">
-                                        {!isValid && (
-                                            <Button className="padding-x-3 add-patient-button" type={'submit'}>
-                                                Save changes
-                                            </Button>
-                                        )}
-
-                                        {isValid && (
-                                            <span>
-                                                <ModalToggleButton
-                                                    modalRef={modalRef}
-                                                    opener
-                                                    className="delete-btn add-patient margin-y-0 display-inline-flex">
+                        <FormProvider {...methods}>
+                            <Form
+                                onSubmit={handleSubmit(submit)}
+                                className="width-full max-width-full"
+                                autoComplete="off">
+                                <Grid
+                                    row
+                                    className="page-title-bar bg-white"
+                                    style={{
+                                        position: 'sticky',
+                                        top: 0,
+                                        zIndex: 1
+                                    }}>
+                                    <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
+                                        New patient
+                                        <div className="button-group">
+                                            {!isValid && (
+                                                <Button className="padding-x-3 add-patient-button" type={'submit'}>
                                                     Save changes
-                                                </ModalToggleButton>
-                                                <Modal
-                                                    ref={modalRef}
-                                                    id="example-incomplete-form-confirmation-modal"
-                                                    aria-labelledby="incomplete-form-confirmation-modal-heading"
-                                                    className="padding-0"
-                                                    aria-describedby="incomplete-form-confirmation-modal-description">
-                                                    <ModalHeading
-                                                        id="incomplete-form-confirmation-modal-heading"
-                                                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                                                        Missing data
-                                                    </ModalHeading>
-                                                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                                                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                                                        <h3>Are you sure?</h3>
-                                                    </div>
-                                                    <div className="margin-left-3">
-                                                        <p
-                                                            className="margin-left-9 padding-right-2"
-                                                            id="incomplete-form-confirmation-modal-description">
-                                                            You are about to add a new patient with missing data.
-                                                        </p>
-                                                    </div>
-                                                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                                                        <ButtonGroup>
-                                                            <ModalToggleButton outline modalRef={modalRef} closer>
-                                                                Go back
-                                                            </ModalToggleButton>
-                                                            <ModalToggleButton
-                                                                onClick={handleSubmit(submit)}
-                                                                modalRef={modalRef}
-                                                                closer
-                                                                className="padding-105 text-center">
-                                                                Continue anyways
-                                                            </ModalToggleButton>
-                                                        </ButtonGroup>
-                                                    </ModalFooter>
-                                                </Modal>
-                                            </span>
-                                        )}
+                                                </Button>
+                                            )}
+
+                                            {isValid && (
+                                                <span>
+                                                    <ModalToggleButton
+                                                        modalRef={modalRef}
+                                                        opener
+                                                        className="delete-btn add-patient margin-y-0 display-inline-flex">
+                                                        Save changes
+                                                    </ModalToggleButton>
+                                                    <Modal
+                                                        ref={modalRef}
+                                                        id="example-incomplete-form-confirmation-modal"
+                                                        aria-labelledby="incomplete-form-confirmation-modal-heading"
+                                                        className="padding-0"
+                                                        aria-describedby="incomplete-form-confirmation-modal-description">
+                                                        <ModalHeading
+                                                            id="incomplete-form-confirmation-modal-heading"
+                                                            className="border-bottom border-base-lighter font-sans-lg padding-2">
+                                                            Missing data
+                                                        </ModalHeading>
+                                                        <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
+                                                            <Icon.Warning className="font-sans-2xl margin-x-2" />
+                                                            <h3>Are you sure?</h3>
+                                                        </div>
+                                                        <div className="margin-left-3">
+                                                            <p
+                                                                className="margin-left-9 padding-right-2"
+                                                                id="incomplete-form-confirmation-modal-description">
+                                                                You are about to add a new patient with missing data.
+                                                            </p>
+                                                        </div>
+                                                        <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+                                                            <ButtonGroup>
+                                                                <ModalToggleButton outline modalRef={modalRef} closer>
+                                                                    Go back
+                                                                </ModalToggleButton>
+                                                                <ModalToggleButton
+                                                                    onClick={handleSubmit(submit)}
+                                                                    modalRef={modalRef}
+                                                                    closer
+                                                                    className="padding-105 text-center">
+                                                                    Continue anyways
+                                                                </ModalToggleButton>
+                                                            </ButtonGroup>
+                                                        </ModalFooter>
+                                                    </Modal>
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            </Grid>
-                            <div className="content">
-                                <Grid row className="padding-3" style={{ height: '100%', overflow: 'hidden' }}>
-                                    <Grid col={9} style={{ height: 'calc(100vh - 160px)', overflow: 'auto' }}>
-                                        {!isValid && successSubmit && (
-                                            <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
-                                                <Icon.Error className="font-sans-2xl margin-x-2" />
-                                                <p id="form-error">
-                                                    You have some invalid inputs. Please correct the invalid inputs
-                                                    before moving forward.
-                                                </p>
-                                            </div>
-                                        )}
-                                        <GeneralInformation
-                                            errors={errors}
-                                            control={control}
-                                            title="General information"
-                                            id={'section-General_information'}
-                                        />
-
-                                        <NameFields
-                                            id={'section-Name'}
-                                            title="Name information"
-                                            control={control}
-                                            coded={{ suffixes: coded.suffixes }}
-                                        />
-                                        <OtherInfoFields
-                                            control={control}
-                                            id={'section-Other'}
-                                            title="Other information"
-                                            coded={{
-                                                deceased: coded.deceased,
-                                                genders: coded.genders,
-                                                maritalStatuses: coded.maritalStatuses
-                                            }}
-                                        />
-                                        <AddressFields
-                                            id={'section-Address'}
-                                            title="Address"
-                                            control={control}
-                                            addressFields={addressFields}
-                                            updateCallback={(obj: any) => {
-                                                setAddressFields(obj);
-
-                                                // Since these 2 fields are controlled fields,
-                                                // we need to setValue for it to reflect on the ui
-                                                setValue('city', obj.city);
-                                                setValue('state', obj.state);
-                                            }}
-                                        />
-                                        <ContactFields
-                                            phoneNumberFields={phoneNumberFields}
-                                            emailFields={emailFields}
-                                            phoneNumberAppend={phoneNumberAppend}
-                                            emailFieldAppend={emailFieldAppend}
-                                            control={control}
-                                            id={'section-Telephone'}
-                                            title="Telephone"
-                                            errors={errors}
-                                        />
-                                        <EthnicityFields
-                                            control={control}
-                                            id={'section-Ethnicity'}
-                                            title="Ethnicity"
-                                            coded={{
-                                                ethnicGroups: coded.ethnicGroups
-                                            }}
-                                        />
-                                        <RaceFields
-                                            control={control}
-                                            id={'section-Race'}
-                                            title={'Race'}
-                                            coded={{ raceCategories: coded.raceCategories }}
-                                        />
-                                        <IdentificationFields
-                                            fields={fields}
-                                            append={append}
-                                            control={control}
-                                            id={'section-Identification'}
-                                            title="Identification"
-                                            coded={{
-                                                identificationTypes: coded.identificationTypes,
-                                                assigningAuthorities: coded.assigningAuthorities
-                                            }}
-                                        />
-                                        <div style={{ height: `calc(20%)` }} />
-                                    </Grid>
-
-                                    <Grid col={3} style={{ alignSelf: 'flex-start' }}>
-                                        <main className="content-container">
-                                            <aside className="content-sidebar">
-                                                <nav className="content-navigation">
-                                                    <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
-                                                        On this page
-                                                    </h3>
-                                                    <div className="border-left border-base-lighter">
-                                                        <a href="#section-General_information">General information</a>
-                                                        <a href="#section-Name">Name information</a>
-                                                        <a href="#section-Other">Other information</a>
-                                                        <a href="#section-Address">Address</a>
-                                                        <a href="#section-Telephone">Telephone</a>
-                                                        <a href="#section-Ethnicity">Ethnicity</a>
-                                                        <a href="#section-Race">Race</a>
-                                                        <a href="#section-Identification">Identification</a>
-                                                    </div>
-                                                </nav>
-                                            </aside>
-                                        </main>
-                                    </Grid>
                                 </Grid>
-                            </div>
-                        </Form>
+                                <div className="content">
+                                    <Grid row className="padding-3" style={{ height: '100%', overflow: 'hidden' }}>
+                                        <Grid col={9} style={{ height: 'calc(100vh - 160px)', overflow: 'auto' }}>
+                                            {!isValid && successSubmit && (
+                                                <div className="border-error bg-error-lighter margin-bottom-2 padding-right-1 grid-row flex-no-wrap border-left-1 flex-align-center">
+                                                    <Icon.Error className="font-sans-2xl margin-x-2" />
+                                                    <p id="form-error">
+                                                        You have some invalid inputs. Please correct the invalid inputs
+                                                        before moving forward.
+                                                    </p>
+                                                </div>
+                                            )}
+                                            <GeneralInformation
+                                                errors={errors}
+                                                control={control}
+                                                title="General information"
+                                                id={'section-General_information'}
+                                            />
+
+                                            <NameFields
+                                                id={'section-Name'}
+                                                title="Name information"
+                                                control={control}
+                                                coded={{ suffixes: coded.suffixes }}
+                                            />
+                                            <OtherInfoFields
+                                                control={control}
+                                                id={'section-Other'}
+                                                title="Other information"
+                                                coded={{
+                                                    deceased: coded.deceased,
+                                                    genders: coded.genders,
+                                                    maritalStatuses: coded.maritalStatuses
+                                                }}
+                                            />
+                                            <AddressFields
+                                                id={'section-Address'}
+                                                title="Address"
+                                                coded={{
+                                                    ...locations,
+                                                    byState: (state) => useCountyCodedValues(state).counties
+                                                }}
+                                            />
+                                            <ContactFields id={'section-Telephone'} title="Telephone" />
+                                            <EthnicityFields
+                                                id={'section-Ethnicity'}
+                                                title="Ethnicity"
+                                                coded={{
+                                                    ethnicGroups: coded.ethnicGroups
+                                                }}
+                                            />
+                                            <RaceFields
+                                                id={'section-Race'}
+                                                title={'Race'}
+                                                coded={{ raceCategories: coded.raceCategories }}
+                                            />
+                                            <IdentificationFields
+                                                id={'section-Identification'}
+                                                title="Identification"
+                                                coded={{
+                                                    identificationTypes: coded.identificationTypes,
+                                                    assigningAuthorities: coded.assigningAuthorities
+                                                }}
+                                            />
+                                            <div style={{ height: `calc(20%)` }} />
+                                        </Grid>
+
+                                        <Grid col={3} style={{ alignSelf: 'flex-start' }}>
+                                            <main className="content-container">
+                                                <aside className="content-sidebar">
+                                                    <nav className="content-navigation">
+                                                        <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
+                                                            On this page
+                                                        </h3>
+                                                        <div className="border-left border-base-lighter">
+                                                            <a href="#section-General_information">
+                                                                General information
+                                                            </a>
+                                                            <a href="#section-Name">Name information</a>
+                                                            <a href="#section-Other">Other information</a>
+                                                            <a href="#section-Address">Address</a>
+                                                            <a href="#section-Telephone">Telephone</a>
+                                                            <a href="#section-Ethnicity">Ethnicity</a>
+                                                            <a href="#section-Race">Race</a>
+                                                            <a href="#section-Identification">Identification</a>
+                                                        </div>
+                                                    </nav>
+                                                </aside>
+                                            </main>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </Form>
+                        </FormProvider>
                     </Grid>
                 </Grid>
             )}

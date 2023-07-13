@@ -1,4 +1,4 @@
-import { Controller } from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { Button, Grid } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -10,9 +10,16 @@ type CodedValues = {
     assigningAuthorities: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; fields: any; append: any; coded: CodedValues };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export const IdentificationFields = ({ id, title, control, fields, append, coded }: Props) => {
+export const IdentificationFields = ({ id, title, coded }: Props) => {
+    const { control } = useFormContext();
+
+    const { fields, append } = useFieldArray({
+        control,
+        name: 'identification'
+    });
+
     const handleAddAnotherId = () => {
         append({ type: null, authority: null, value: null });
     };

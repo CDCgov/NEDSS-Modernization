@@ -1,5 +1,5 @@
 import { Checkbox, Fieldset, Grid } from '@trussworks/react-uswds';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { CodedValue } from 'coded';
 
@@ -7,9 +7,11 @@ type CodedValues = {
     raceCategories: CodedValue[];
 };
 
-type Props = { id: string; title: string; control: any; coded: CodedValues };
+type Props = { id: string; title: string; coded: CodedValues };
 
-export default function EthnicityFields({ id, title, control, coded }: Props) {
+export default function RaceFields({ id, title, coded }: Props) {
+    const { control } = useFormContext();
+
     const tempArr: any = [];
     return (
         <FormCard title={title} id={id}>
