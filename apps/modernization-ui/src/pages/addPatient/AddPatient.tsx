@@ -149,7 +149,14 @@ export default function AddPatient() {
             races: data?.race,
             phoneNumbers
         };
-        data?.identification?.length > 0 && (payload.identifications = data?.identification);
+
+        const hasIdentificationValues = data?.identification.some((item: any) =>
+            Object.values(item).some((value) => value !== '')
+        );
+
+        if (hasIdentificationValues) {
+            data?.identification?.length > 0 && (payload.identifications = data?.identification);
+        }
         if (data?.emailAddresses?.length > 0) {
             payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
         }
