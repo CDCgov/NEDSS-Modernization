@@ -9,6 +9,7 @@ import {
     FindAllCountyCodesForStateQuery,
     useFindAllCountyCodesForStateLazyQuery
 } from 'generated/graphql/schema';
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 
 export interface InputAddressFields {
     streetAddress1: string;
@@ -20,22 +21,43 @@ export interface InputAddressFields {
     censusTract: string;
     country: string;
 }
-export default function AddressFields({
-    addressFields,
-    updateCallback,
-    id,
-    title,
-    control
-}: {
-    addressFields: InputAddressFields;
-    updateCallback: (inputNameFields: InputAddressFields) => void;
-    id?: string;
-    title?: string;
-    control?: any;
-}) {
+
+interface SmartyAutocompleteFields {
+    street_line: string;
+    secondary: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    entries: number;
+}
+
+interface SmartyResponse {
+    suggestions: SmartyAutocompleteFields[];
+}
+
+export default function AddressFields(
+    this: any,
+    {
+        addressFields,
+        updateCallback,
+        id,
+        title,
+        control
+    }: {
+        addressFields: InputAddressFields;
+        updateCallback: (inputNameFields: InputAddressFields) => void;
+        id?: string;
+        title?: string;
+        control?: any;
+    }
+) {
     const [isTractValid, setIsTractValid] = useState(true);
 
     const [counties, setCounties] = useState<CountyCode[]>([]);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [options, setOptions] = useState<SmartyAutocompleteFields[]>([]);
     const setCounty = (results: FindAllCountyCodesForStateQuery) => {
         if (results?.findAllCountyCodesForState) {
             const counties: CountyCode[] = [];
@@ -55,23 +77,46 @@ export default function AddressFields({
         setIsTractValid((document.getElementById('census-tract') as HTMLInputElement).validity.valid);
     }
 
+    const getOnSearch = (query: string) => {
+        setIsLoading(true);
+        fetch(`https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${query}`, {
+            headers: {
+                referer: 'localhost'
+            }
+        })
+            .then((resp) => resp.json())
+            .then(({ suggestions }: SmartyResponse) => {
+                setOptions(suggestions);
+                setIsLoading(false);
+            });
+    };
+
+    const renderAddressForSelection = (suggestion: SmartyAutocompleteFields) => (
+        <>
+            <span>
+                {suggestion?.street_line}
+                <br />
+                {/*{suggestion.secondary}*/}
+                {/*<br />*/}
+                {/*{suggestion.city}&nbsp;{suggestion.state},&nbsp;{suggestion.zipcode}*/}
+            </span>
+        </>
+    );
+
+    // @ts-ignore
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
                 <Grid row>
                     <Grid col={6}>
                         <Label htmlFor="mailingAddress1">Street address 1</Label>
-                        <TextInput
+                        <AsyncTypeahead
                             id="mailingAddress1"
-                            name="mailingAddress1"
-                            type="text"
-                            defaultValue={addressFields.streetAddress1}
-                            onChange={(v) =>
-                                updateCallback({
-                                    ...addressFields,
-                                    streetAddress1: v.target.value
-                                })
-                            }
+                            isLoading={isLoading}
+                            labelKey="toString"
+                            onSearch={getOnSearch}
+                            options={options}
+                            renderMenuItemChildren={renderAddressForSelection}
                         />
                     </Grid>
                 </Grid>
