@@ -43,7 +43,7 @@ export default function AddPatient() {
     type formDefaultValueType = { [key: string]: [{ [key: string]: any }] };
 
     const defaultValues: formDefaultValueType = {
-        identification: [{ type: null, authority: null, value: '' }],
+        identification: [{ type: '', authority: '', value: '' }],
         phoneNumbers: [{ cellPhone: null }],
         emailAddresses: [{ email: null }]
     };
@@ -149,7 +149,7 @@ export default function AddPatient() {
             races: data?.race,
             phoneNumbers
         };
-        data?.identification && (payload.identifications = data?.identification);
+        data?.identification?.length > 0 && (payload.identifications = data?.identification);
         if (data?.emailAddresses?.length > 0) {
             payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
         }
