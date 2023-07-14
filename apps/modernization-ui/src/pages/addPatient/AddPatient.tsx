@@ -22,7 +22,13 @@ import GeneralInformation from './components/generalInformation/generalInformati
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
 import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
-import { NameUseCd, NewPatientPhoneNumber, PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
+import {
+    NameUseCd,
+    NewPatientPhoneNumber,
+    NewPatientIdentification,
+    PersonInput,
+    useCreatePatientMutation
+} from 'generated/graphql/schema';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
@@ -150,12 +156,12 @@ export default function AddPatient() {
             phoneNumbers
         };
 
-        const hasIdentificationValues = data?.identification.some((item: any) =>
-            Object.values(item).some((value) => value !== '')
+        const hasIdentificationValues = data?.identification.filter((item: NewPatientIdentification) =>
+            Object.values(item).every((value) => value !== '' && value !== null && value !== undefined)
         );
 
-        if (hasIdentificationValues) {
-            data?.identification?.length > 0 && (payload.identifications = data?.identification);
+        if (hasIdentificationValues?.length > 0) {
+            payload.identifications = hasIdentificationValues;
         }
         if (data?.emailAddresses?.length > 0) {
             payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
