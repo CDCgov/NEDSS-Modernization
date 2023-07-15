@@ -1,15 +1,16 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
-
-
-import javax.management.BadAttributeValueExpException;
 
 public interface PageRuleService {
 
-   CreateRuleResponse createPageRule(Long userId,CreateRuleRequest.ruleRequest request) throws BadAttributeValueExpException;
+   CreateRuleResponse createPageRule(Long userId, CreateRuleRequest.ruleRequest request) throws RuleException;
 
    CreateRuleResponse deletePageRule(Long ruleId);
-   CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest.ruleRequest request, Long userId) throws BadAttributeValueExpException;
+   CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest.ruleRequest request, Long userId) throws RuleException;
+
+   ViewRuleResponse.ruleResponse getRuleResponse(Long ruleId);
 }

@@ -1,13 +1,17 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +22,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.management.BadAttributeValueExpException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -39,7 +46,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void should_save_ruleRequest_details_to_DB() throws BadAttributeValueExpException{
+    void should_save_ruleRequest_details_to_DB() throws RuleException {
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.ruleRequest();
         Long userId= 99L ;
@@ -196,9 +203,9 @@ class PageRuleServiceImplTest {
     void shouldThrowAnExceptionIfThereIsSomethingWrongInFunctionName(){
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.InvalidRuleRequest();
         Long userId= 99L ;
-        BadAttributeValueExpException exception= assertThrows(BadAttributeValueExpException.class,()-> pageRuleServiceImpl.createPageRule(userId, ruleRequest));
+        RuleException exception= assertThrows(RuleException.class,()-> pageRuleServiceImpl.createPageRule(userId, ruleRequest));
 
-        assertEquals("BadAttributeValueException: Error in Creating Rule Expression and Error Message Text",exception.toString());
+        assertEquals("gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException: Error in Creating Rule Expression and Error Message Text",exception.toString());
     }
 
     @Test
@@ -250,5 +257,171 @@ class PageRuleServiceImplTest {
         Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).existsById(ruleId);
         assertEquals("Rule Successfully Updated",ruleResponse.message());
     }
-}
 
+    @Test
+    void shouldGiveTheDetailsOfRule(){
+        Long ruleId= 99L;
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        ruleMetadata.setId(99L);
+        ruleMetadata.setRuleCd("Hide");
+        ruleMetadata.setRuleExpression("testRuleExpression");
+        ruleMetadata.setErrormsgText("testErrorMsg");
+        ruleMetadata.setLogic(">=");
+        ruleMetadata.setSourceValues("test123,test345");
+        ruleMetadata.setTargetType("Question");
+        ruleMetadata.setTargetQuestionIdentifier("test456,test789");
+        Mockito.when(waRuleMetaDataRepository.getReferenceById(ruleId)).thenReturn(ruleMetadata);
+        ViewRuleResponse.ruleResponse ruleresponse= pageRuleServiceImpl.getRuleResponse(ruleId);
+        assertNotNull(ruleresponse);
+    }
+    @Test
+    void shouldGiveTheDetailsOfRuleEvenSourceAndTargetValuesAreNull(){
+        Long ruleId= 99L;
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        ruleMetadata.setId(99L);
+        ruleMetadata.setRuleCd("Hide");
+        ruleMetadata.setRuleExpression("testRuleExpression");
+        ruleMetadata.setErrormsgText("testErrorMsg");
+        ruleMetadata.setLogic(">=");
+        ruleMetadata.setSourceValues(null);
+        ruleMetadata.setTargetType("Question");
+        ruleMetadata.setTargetQuestionIdentifier(null);
+        Mockito.when(waRuleMetaDataRepository.getReferenceById(ruleId)).thenReturn(ruleMetadata);
+        ViewRuleResponse.ruleResponse ruleresponse= pageRuleServiceImpl.getRuleResponse(ruleId);
+        assertNotNull(ruleresponse);
+    }
+
+    @Test
+    void shouldCreateJsForDateCompareFunction() throws JsonProcessingException {
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.dateCompareRuleRequest();
+        SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("INV132","INV132","Admission Date (INV132)","INV132");
+        List<String> targetTextList= new ArrayList<>();
+        targetTextList.add("Discharge Date");
+        targetTextList.add("Admission Date");
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        TargetValuesHelper targetValuesHelper= new TargetValuesHelper("INV133",targetTextList);
+        JSFunctionNameHelper jsFunctionNameHelper= pageRuleServiceImpl.jsForDateCompare(ruleRequest,sourceValuesHelper,targetValuesHelper,ruleMetadata);
+        assertNotNull(jsFunctionNameHelper);
+
+        String jsonString ="function ruleDCompINV132null() {\n" +
+                "    var i = 0;\n" +
+                "    var errorElts = new Array(); \n" +
+                "    var errorMsgs = new Array(); \n" +
+                "\n" +
+                " if ((getElementByIdOrByName(\"INV132\").value)==''){ \n" +
+                " return {elements : errorElts, labels : errorMsgs}; }\n" +
+                " var sourceStr =getElementByIdOrByName(\"INV132\").value;\n" +
+                " var srcDate = sourceStr.substring(6,10) + sourceStr.substring(0,2) + sourceStr.substring(3,5);\n" +
+                " var targetElt;\n" +
+                " var targetStr = ''; \n" +
+                " var targetDate = '';\n" +
+                " targetStr =getElementByIdOrByName(\"INV133\") == null ? \"\" :getElementByIdOrByName(\"INV133\").value;\n" +
+                " if (targetStr!=\"\") {\n" +
+                "    targetDate = targetStr.substring(6,10) + targetStr.substring(0,2) + targetStr.substring(3,5);\n" +
+                " if (!(srcDate <= targetDate)) {\n" +
+                " var srcDateEle=getElementByIdOrByName(\"INV132\");\n" +
+                " var targetDateEle=getElementByIdOrByName(\"INV133\");\n" +
+                " var srca2str=buildErrorAnchorLink(srcDateEle,\"Admission Date\");\n" +
+                " var targeta2str=buildErrorAnchorLink(targetDateEle,\"Discharge Date\");\n" +
+                "    errorMsgs[i]=srca2str + \" must be <= \" + targeta2str; \n" +
+                "    colorElementLabelRed(srcDateEle); \n" +
+                "    colorElementLabelRed(targetDateEle); \n" +
+                "errorElts[i++]=getElementByIdOrByName(\"INV133\"); \n" +
+                "}\n" +
+                "  }\n" +
+                " return {elements : errorElts, labels : errorMsgs}\n" +
+                "}";
+
+        Assert.assertEquals(jsonString,jsFunctionNameHelper.JsFunction());
+
+    }
+
+    @Test
+    void shouldCreateJsForHideAndUnhideFunction() throws JsonProcessingException {
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleRequest();
+        SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("INV144","INV144","Age at Onset Units","INV144");
+        List<String> targetTextList= new ArrayList<>();
+        targetTextList.add("Additional Gender");
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        JSFunctionNameHelper jsFunctionNameHelper= pageRuleServiceImpl.jsForHideAndUnhide(ruleRequest,sourceValuesHelper,ruleMetadata);
+        assertNotNull(jsFunctionNameHelper);
+        String jsonString ="function ruleHideUnhINV144null()\n" +
+                "{\n" +
+                " var foo = [];\n" +
+                "$j('#INV144 :selected').each(function(i, selected){\n" +
+                " foo[i] = $j(selected).val();\n" +
+                " });\n" +
+                "if(foo=='' && $j('#INV144').html()!=null){foo[0]=$j('#INV144').html().replace(/^\\s+|\\s+$/g,'');}\n" +
+                " if(($j.inArray('INV144',foo) > -1) || ($j.inArray('INV144'.replace(/^\\s+|\\s+$/g,''),foo) > -1 || indexOfArray(foo,'INV144')==true)){\n" +
+                "pgHideElement('NBS213');\n" +
+                " } else { \n" +
+                "pgUnhideElement('NBS213');\n" +
+                " }\n" +
+                " var foo_2 = [];\n" +
+                "$j('#INV144_2 :selected').each(function(i, selected){\n" +
+                " foo_2[i] = $j(selected).val();\n" +
+                " });\n" +
+                "if(foo_2=='' && $j('#INV144_2').html()!=null){foo_2[0]=$j('#INV144_2').html().replace(/^\\s+|\\s+$/g,'');}\n" +
+                " if(($j.inArray('INV144_2',foo_2) > -1) || ($j.inArray('INV144_2'.replace(/^\\s+|\\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'INV144_2')==true)){\n" +
+                "pgHideElement('NBS213_2');\n" +
+                " } else { \n" +
+                "pgUnhideElement('NBS213_2');\n" +
+                " }   \n" +
+                "}";
+
+        Assert.assertEquals(jsonString, jsFunctionNameHelper.JsFunction());
+    }
+
+    @Test
+    void shouldCreateJsForRequireIfFunction() throws JsonProcessingException {
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
+        SourceValuesHelper sourceValuesHelper= new SourceValuesHelper(null,null,"Relationship with Patient/Other infected Patient?","CON141");
+        List<String> targetTextList= new ArrayList<>();
+        targetTextList.add("Named");
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        TargetValuesHelper targetValuesHelper= new TargetValuesHelper("CON143",targetTextList);
+        JSFunctionNameHelper jsFunctionNameHelper= pageRuleServiceImpl.requireIfJsFunction(ruleRequest,sourceValuesHelper,ruleMetadata,targetValuesHelper);
+        assertNotNull(jsFunctionNameHelper);
+        String jsonString ="function ruleRequireIfCON141null()\n" +
+                "{\n" +
+                " var foo = [];\n" +
+                "$j('#CON141 :selected').each(function(i, selected){\n" +
+                " foo[i] = $j(selected).val();\n" +
+                " });\n" +
+                "if(foo.length>0 && foo[0] != '') {\n" +
+                "pgRequireElement('CON143');\n" +
+                " } else { \n" +
+                "pgRequireNotElement('CON143');\n" +
+                " }   \n" +
+                "}";
+        Assert.assertEquals(jsonString,jsFunctionNameHelper.JsFunction());
+    }
+
+    @Test
+    void shouldCreateJsForEnableAndDisableFunction() throws JsonProcessingException {
+        CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleRequest();
+        SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("Yes","YES","Is the patient pregnant?","INV178");
+        List<String> targetTextList= new ArrayList<>();
+        targetTextList.add("Weeks");
+        WaRuleMetadata ruleMetadata= new WaRuleMetadata();
+        TargetValuesHelper targetValuesHelper= new TargetValuesHelper("NBS128",targetTextList);
+        JSFunctionNameHelper jsFunctionNameHelper= pageRuleServiceImpl.jsForEnableAndDisable(ruleRequest,sourceValuesHelper,ruleMetadata);
+        assertNotNull(jsFunctionNameHelper);
+
+        String jsonString ="function ruleEnDisINV178null()\n" +
+                "{\n" +
+                " var foo = [];\n" +
+                "$j('#INV178 :selected').each(function(i, selected){\n" +
+                " foo[i] = $j(selected).val();\n" +
+                " });\n" +
+                "\n" +
+                " if(($j.inArray('Yes',foo) > -1) || ($j.inArray('Yes'.replace(/^\\s+|\\s+$/g,''),foo) > -1)){\n" +
+                "pgEnableElement('NBS128');\n" +
+                " } else { \n" +
+                "pgDisableElement('NBS128');\n" +
+                " }\n"+
+                "}";
+        Assert.assertEquals(jsonString,jsFunctionNameHelper.JsFunction());
+    }
+
+}

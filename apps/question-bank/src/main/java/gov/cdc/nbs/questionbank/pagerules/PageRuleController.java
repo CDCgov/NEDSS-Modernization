@@ -2,6 +2,8 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.BadAttributeValueExpException;
 
 
 @Slf4j
@@ -37,7 +38,7 @@ public class PageRuleController {
             CreateRuleResponse ruleResponse=  pageRuleService.createPageRule(userId,request);
             log.debug("Successfully added business rule with Id: {}",ruleResponse.ruleId());
             return ruleResponse;
-        }catch(BadAttributeValueExpException e){
+        }catch(RuleException e){
             return new CreateRuleResponse(null, "Error in Creating a Rule");
         }
     }
@@ -51,7 +52,15 @@ public class PageRuleController {
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     @PutMapping("rule/{ruleId}")
     @ResponseBody
-    public CreateRuleResponse updatePageRule(@PathVariable Long ruleId, @RequestBody CreateRuleRequest.ruleRequest request ) throws BadAttributeValueExpException {
+    public CreateRuleResponse updatePageRule(@PathVariable Long ruleId, @RequestBody CreateRuleRequest.ruleRequest request ) throws RuleException {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return pageRuleService.updatePageRule(ruleId,request,userId);
-    }}
+    }
+
+    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
+    @GetMapping("rule/{ruleId}")
+    @ResponseBody
+    public ViewRuleResponse.ruleResponse viewRuleResponse(@PathVariable Long ruleId){
+       return pageRuleService.getRuleResponse(ruleId);
+    }
+}

@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 import org.junit.Test;
@@ -13,6 +14,9 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.management.BadAttributeValueExpException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,6 +61,16 @@ public class PageRuleControllerTest {
         Mockito.when(pageRuleService.updatePageRule(ruleId,ruleRequest,userId)).thenReturn(new CreateRuleResponse(ruleId,"Rule Successfully Updated"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
         CreateRuleResponse ruleResponse= pageRuleController.updatePageRule(ruleId,ruleRequest);
+        assertNotNull(ruleResponse);
+    }
+
+    @Test
+    public void shouldReadRule(){
+        Long ruleId= 99L;
+        List<String> sourceValues= new ArrayList<>();
+        List<String> targetValues= new ArrayList<>();
+        Mockito.when(pageRuleService.getRuleResponse(ruleId)).thenReturn(new ViewRuleResponse.ruleResponse(ruleId,123l,"testFunction","testDesc","TestINV",sourceValues,"=>","TestTargetType","testErrorMsg",targetValues));
+        ViewRuleResponse.ruleResponse ruleResponse= pageRuleController.viewRuleResponse(ruleId);
         assertNotNull(ruleResponse);
     }
 

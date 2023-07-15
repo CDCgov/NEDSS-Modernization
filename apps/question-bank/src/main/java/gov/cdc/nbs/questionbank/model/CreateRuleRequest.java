@@ -33,6 +33,7 @@ public sealed interface CreateRuleRequest {
 
             List<String> targetValueIdentifier
             ) implements CreateRuleRequest{ }
+
     record sourceValues(List<String> sourceValueId, List<String> sourceValueText){}
 
 }
