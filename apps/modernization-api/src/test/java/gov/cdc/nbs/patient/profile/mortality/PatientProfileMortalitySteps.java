@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile.mortality;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -59,7 +60,7 @@ public class PatientProfileMortalitySteps {
     public void the_profile_has_no_associated_mortality() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         Optional<PatientMortality> actual = this.resolver.resolve(profile);
         assertThat(actual).isEmpty();
@@ -70,7 +71,7 @@ public class PatientProfileMortalitySteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         assertThatThrownBy(
             () -> this.resolver.resolve(profile)

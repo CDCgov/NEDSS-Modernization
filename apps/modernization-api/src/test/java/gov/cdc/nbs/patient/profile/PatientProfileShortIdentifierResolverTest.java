@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile;
 
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ class PatientProfileShortIdentifierResolverTest {
         PatientProfileShortIdentifierResolver resolver =
             new PatientProfileShortIdentifierResolver(shortIdentifierResolver);
 
-        PatientProfile profile = new PatientProfile(3911L, "local", (short) 67);
+        PatientProfile profile = new PatientProfile(3911L, "local", (short) 67, RecordStatus.ACTIVE.toString());
 
         OptionalLong actual = resolver.resolve(profile);
 

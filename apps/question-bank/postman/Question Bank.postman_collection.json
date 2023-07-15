@@ -389,7 +389,7 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8095/page-builder/api/v1/pages?pages=0&size=25&sort=id,ASC",
+							"raw": "localhost:8095/page-builder/api/v1/pages?page=0&size=25&sort=id,ASC",
 							"host": [
 								"localhost"
 							],
@@ -402,7 +402,7 @@
 							],
 							"query": [
 								{
-									"key": "pages",
+									"key": "page",
 									"value": "0"
 								},
 								{
@@ -412,6 +412,50 @@
 								{
 									"key": "sort",
 									"value": "id,ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Page Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dataMartName\": \"updatedDataMartName\",\n  \"description\": \"Updated description\",\n  \"messageMappingGuide\": \"Mumps_MMG_V1.0\",\n  \"name\": \"Updated Name\",\n   \"conditionIds\": [\n    \"10180\"\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/pages/:id/details",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"pages",
+								":id",
+								"details"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1000366"
 								}
 							]
 						}
@@ -431,7 +475,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"search\": \"gen\"\n}",
+							"raw": "{\n    \"search\": \"1000366\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -508,9 +552,41 @@
 							"variable": [
 								{
 									"key": "valueSet",
-									"value": "CODE_SYSTEM",
+									"value": "COINFECTION_GROUP",
 									"description": "The code_set_nm of the ValueSet"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Program Areas",
+			"item": [
+				{
+					"name": "List Program Areas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8095/page-builder/api/v1/program-area",
+							"host": [
+								"localhost"
+							],
+							"port": "8095",
+							"path": [
+								"page-builder",
+								"api",
+								"v1",
+								"program-area"
 							]
 						}
 					},

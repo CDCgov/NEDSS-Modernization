@@ -91,7 +91,7 @@ export default function AddPatient() {
             item.email = data?.[`emailAddresses_${index}`];
         });
         data?.phoneNumbers?.map((item: any, index: number) => {
-            item.cellPhone = data?.[`emailAddresses_${index}`];
+            item.cellPhone = data?.[`cellPhone_${index}`];
             if (item.cellPhone) {
                 phoneNumbers.push({
                     number: data?.[`cellPhone_${index}`],
@@ -308,7 +308,14 @@ export default function AddPatient() {
                                             title="Address"
                                             control={control}
                                             addressFields={addressFields}
-                                            updateCallback={setAddressFields}
+                                            updateCallback={(obj: any) => {
+                                                setAddressFields(obj);
+
+                                                // Since these 2 fields are controlled fields,
+                                                // we need to setValue for it to reflect on the ui
+                                                setValue('city', obj.city);
+                                                setValue('state', obj.state);
+                                            }}
                                         />
                                         <ContactFields
                                             phoneNumberFields={phoneNumberFields}

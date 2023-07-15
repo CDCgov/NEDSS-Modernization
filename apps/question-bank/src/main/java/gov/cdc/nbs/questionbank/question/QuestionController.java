@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/questions")
+@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class QuestionController {
 
     private final QuestionCreator creator;
@@ -45,7 +46,6 @@ public class QuestionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<Question> findAllQuestions(@PageableDefault(size = 25) Pageable pageable) {
         log.debug("Received find all question request");
         Page<Question> results = finder.find(pageable);
@@ -54,7 +54,6 @@ public class QuestionController {
     }
 
     @PostMapping("search")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Page<Question> findQuestions(
             @RequestBody FindQuestionRequest request,
             @PageableDefault(size = 25) Pageable pageable) {
@@ -66,7 +65,6 @@ public class QuestionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public CreateQuestionResponse createQuestion(@RequestBody CreateQuestionRequest request) {
         log.debug("Received create question request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
@@ -76,7 +74,6 @@ public class QuestionController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Question updateQuestion(@PathVariable("id") Long id, @RequestBody UpdateQuestionRequest request) {
         log.debug("Received update question request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
@@ -86,7 +83,6 @@ public class QuestionController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public GetQuestionResponse getQuestion(@PathVariable("id") Long id) {
         log.debug("Receive get question request");
         GetQuestionResponse question = finder.find(id);
@@ -95,7 +91,6 @@ public class QuestionController {
     }
 
     @PutMapping("{id}/status")
-    @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
         log.debug("Received update question status request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();

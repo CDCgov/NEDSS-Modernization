@@ -7,7 +7,7 @@ import { maybeDescription, maybeId } from '../coded';
 import { Data, EditableCard } from 'components/EditableCard';
 import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
 import { orNull } from 'utils/orNull';
-import { AlertType } from 'pages/patientProfile/Demographics';
+import { useAlert } from 'alert/useAlert';
 
 const initialEntry = {
     asOf: null,
@@ -56,10 +56,10 @@ const asEntry = (mortality?: PatientGeneral | null): GeneralInformationEntry => 
 
 type Props = {
     patient: string;
-    handleAlert?: (data: AlertType) => void;
 };
 
-export const GeneralPatient = ({ patient, handleAlert }: Props) => {
+export const GeneralPatient = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
@@ -72,7 +72,11 @@ export const GeneralPatient = ({ patient, handleAlert }: Props) => {
     const handleUpdate = () => {
         refetch();
         isEditing(false);
-        handleAlert?.({ type: 'Updated', table: 'General patient information' });
+        showAlert({
+            type: 'success',
+            header: 'success',
+            message: `Updated General patient information`
+        });
     };
 
     const [getProfile, { refetch }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });
