@@ -22,7 +22,13 @@ import GeneralInformation from './components/generalInformation/generalInformati
 import { IdentificationFields } from './components/identificationFields/IdentificationFields';
 import { useFieldArray, useForm } from 'react-hook-form';
 import OtherInfoFields from './components/otherInfoFields/OtherInfoFields';
-import { NameUseCd, NewPatientPhoneNumber, PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
+import {
+    NameUseCd,
+    NewPatientPhoneNumber,
+    NewPatientIdentification,
+    PersonInput,
+    useCreatePatientMutation
+} from 'generated/graphql/schema';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,7 +49,7 @@ export default function AddPatient() {
     type formDefaultValueType = { [key: string]: [{ [key: string]: any }] };
 
     const defaultValues: formDefaultValueType = {
-        identification: [{ type: null, authority: null, value: '' }],
+        identification: [{ type: '', authority: '', value: '' }],
         phoneNumbers: [{ cellPhone: null }],
         emailAddresses: [{ email: null }]
     };
@@ -118,12 +124,12 @@ export default function AddPatient() {
             setValue('race', data?.race);
         }
         const addressObj = {
-            streetAddress1: data?.mailingAddress1,
-            streetAddress2: data?.mailingAddress2,
+            streetAddress1: addressFields?.streetAddress1,
+            streetAddress2: addressFields?.streetAddress2,
             state: data?.state,
             county: data?.county,
-            zip: data?.zip,
-            censusTract: data?.censusTract,
+            zip: addressFields?.zip,
+            censusTract: addressFields?.censusTract,
             country: data?.country,
             city: data?.city
         };
@@ -149,8 +155,15 @@ export default function AddPatient() {
             races: data?.race,
             phoneNumbers
         };
-        data?.identifications && (payload.identifications = data?.identifications);
-        if (!data?.emailAddresses || data?.emailAddresses?.length === 0) {
+
+        const hasIdentificationValues = data?.identification.filter((item: NewPatientIdentification) =>
+            Object.values(item).every((value) => value)
+        );
+
+        if (hasIdentificationValues?.length > 0) {
+            payload.identifications = hasIdentificationValues;
+        }
+        if (data?.emailAddresses?.length > 0) {
             payload.emailAddresses = data?.emailAddresses.map((it: any) => it.email).filter((str: any) => str);
         }
         if (!isEmpty(addressObj)) {
