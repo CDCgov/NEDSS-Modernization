@@ -157,7 +157,7 @@ export default function AddPatient() {
         };
 
         const hasIdentificationValues = data?.identification.filter((item: NewPatientIdentification) =>
-            Object.values(item).every((value) => value !== '' && value !== null && value !== undefined)
+            Object.values(item).every((value) => value)
         );
 
         if (hasIdentificationValues?.length > 0) {
