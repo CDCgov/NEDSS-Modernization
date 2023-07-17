@@ -9,8 +9,8 @@ import { Spinner } from '@cmsgov/design-system';
 
 export const ManagePages = () => {
     const [pages, setPages] = useState(null);
-    const { sortBy, sortDirection, currentPage, pageSize, isLoading, setIsLoading } = useContext(PagesContext);
-    const [searchString] = useState('');
+    const { searchQuery, sortBy, sortDirection, currentPage, pageSize, isLoading, setIsLoading } =
+        useContext(PagesContext);
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [totalElements, setTotalElements] = useState(0);
@@ -18,14 +18,14 @@ export const ManagePages = () => {
     useEffect(() => {
         setIsLoading(true);
         // get Pages
-        fetchPageSummaries(token, searchString, sortBy.toLowerCase() + ',' + sortDirection, currentPage, pageSize).then(
+        fetchPageSummaries(token, searchQuery, sortBy.toLowerCase() + ',' + sortDirection, currentPage, pageSize).then(
             (data: any) => {
                 setPages(data.content);
                 setTotalElements(data.totalElements);
                 setIsLoading(false);
             }
         );
-    }, [searchString, currentPage, pageSize, sortBy, sortDirection]);
+    }, [searchQuery, currentPage, pageSize, sortBy, sortDirection]);
 
     return (
         <>
