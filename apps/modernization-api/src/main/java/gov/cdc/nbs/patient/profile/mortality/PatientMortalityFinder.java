@@ -51,8 +51,7 @@ class PatientMortalityFinder {
                 this.tables.state().id.eq(this.tables.address().stateCd)
             )
             .leftJoin(this.tables.county()).on(
-                this.tables.county().id.codeSetNm.eq(COUNTY_CODE_SET),
-                this.tables.county().id.code.eq(this.tables.address().cntyCd)
+                this.tables.county().id.eq(this.tables.address().cntyCd)
             )
             .leftJoin(this.tables.country()).on(
                 this.tables.country().id.eq(this.tables.address().cntryCd)
