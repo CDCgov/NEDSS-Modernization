@@ -4,6 +4,7 @@ import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Actions } from './Actions';
 import { Direction } from 'sorting';
+import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 
 type SortState = {
     [key: string]: Direction;
@@ -45,6 +46,7 @@ export type TableContentProps = {
     buttons?: React.ReactNode | React.ReactNode[];
     sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
+    rangeSelector?: boolean;
 };
 
 const nextDirection = (direction: Direction) => {
@@ -73,7 +75,8 @@ export const TableComponent = ({
     buttons,
     tableSubHeader,
     handleAction,
-    sortData
+    sortData,
+    rangeSelector = false
 }: TableContentProps) => {
     const initialState: SortState = {};
     tableHead.forEach((header) => (initialState[header.name] = Direction.None));
@@ -244,9 +247,19 @@ export const TableComponent = ({
                 </tbody>
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
-                <p className="margin-0 show-length-text">
-                    Showing {tableBody?.length} of {totalResults}
-                </p>
+                <div className="table__range">
+                    {!rangeSelector ? (
+                        <p className="margin-0 show-length-text">
+                            Showing {tableBody?.length} of {totalResults}
+                        </p>
+                    ) : (
+                        <>
+                            <span>Showing &nbsp;</span>
+                            <RangeToggle />
+                            <span> &nbsp;of {totalResults}</span>
+                        </>
+                    )}
+                </div>
                 {isPagination && totalResults >= pageSize && (
                     <Pagination
                         className="margin-0 pagination"
