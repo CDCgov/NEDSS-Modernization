@@ -23,7 +23,7 @@ const pagesContextDefaultValue: PagesContextData = {
     setCurrentPage: () => {},
     sortBy: 'name',
     setSortBy: () => {},
-    sortDirection: 'desc',
+    sortDirection: 'asc',
     setSortDirection: () => {},
     pageSize: 10,
     setPageSize: () => {},
