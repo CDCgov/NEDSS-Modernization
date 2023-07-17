@@ -55,10 +55,10 @@ import static gov.cdc.nbs.config.security.SecurityUtil.Operations.FINDINACTIVE;
 @Service
 @RequiredArgsConstructor
 public class PatientService {
-    private static final float FIRST_NAME_PRIMARY_BOOST = 2.0f;
+    private static final float FIRST_NAME_PRIMARY_BOOST = 10.0f;
     private static final float FIRST_NAME_NON_PRIMARY_BOOST = 1.0f;
     private static final float FIRST_NAME_SOUNDEX_BOOST = 0.0f;
-    private static final float LAST_NAME_PRIMARY_BOOST = 2.0f;
+    private static final float LAST_NAME_PRIMARY_BOOST = 10.0f;
     private static final float LAST_NAME_NON_PRIMARY_BOOST = 1.0f;
     private static final float LAST_NAME_SOUNDEX_BOOST = 0.0f;
 
