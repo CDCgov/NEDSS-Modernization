@@ -2,39 +2,20 @@ package gov.cdc.nbs.questionbank.model;
 
 import java.util.List;
 
-public sealed interface CreateRuleRequest {
-    Long templateUid();
-   String ruleFunction();
-   String ruleDescription();
-   String sourceText();
+public record CreateRuleRequest(
+        Long templateUid,
+        String ruleFunction,
+        String ruleDescription,
+        String sourceText,
+        String sourceIdentifier,
+        List<SourceValues> sourceValue,
 
-   String sourceIdentifier();
-   List<sourceValues> sourceValue();
-   boolean anySourceValue();
-   String comparator();
-   String targetType();
-   List<String> targetValueText();
+        boolean anySourceValue,
+        String comparator,
+        String targetType,
+        List<String> targetValueText,
 
-   List<String> targetValueIdentifier();
-
-
-    record ruleRequest(
-            Long templateUid,
-            String ruleFunction,
-            String ruleDescription,
-            String sourceText,
-            String sourceIdentifier,
-            List<sourceValues> sourceValue,
-
-            boolean anySourceValue,
-            String comparator,
-            String targetType,
-            List<String> targetValueText,
-
-            List<String> targetValueIdentifier
-            ) implements CreateRuleRequest{ }
-
-    record sourceValues(List<String> sourceValueId, List<String> sourceValueText){}
-
+        List<String> targetValueIdentifier) {
+    public record SourceValues(List<String> sourceValueId, List<String> sourceValueText) {
+    }
 }
-

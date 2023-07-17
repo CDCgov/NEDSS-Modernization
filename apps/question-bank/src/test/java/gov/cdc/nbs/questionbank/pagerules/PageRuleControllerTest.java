@@ -32,44 +32,52 @@ public class PageRuleControllerTest {
 
     @Test
     public void shouldReturnCreateRuleResponse() throws Exception {
-        CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest)).thenReturn(new CreateRuleResponse(999L,"Rule Created Successfully"));
+        CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
+        NbsUserDetails nbsUserDetails =
+                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+        Mockito.when(pageRuleService.createPageRule(nbsUserDetails.getId(), ruleRequest))
+                .thenReturn(new CreateRuleResponse(999L, "Rule Created Successfully"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
         CreateRuleResponse ruleResponse = pageRuleController.createBusinessRule(ruleRequest);
-        assertEquals(999L,ruleResponse.ruleId());
+        assertEquals(999L, ruleResponse.ruleId());
     }
 
 
     @Test
-    public void shouldDeleteRuleId(){
-        Long ruleId= 99L;
-        NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.deletePageRule(99L)).thenReturn(new CreateRuleResponse(ruleId,"Rule Successfully Deleted"));
+    public void shouldDeleteRuleId() {
+        Long ruleId = 99L;
+        NbsUserDetails nbsUserDetails =
+                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+        Mockito.when(pageRuleService.deletePageRule(99L))
+                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Deleted"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse= pageRuleController.deletePageRule(ruleId);
+        CreateRuleResponse ruleResponse = pageRuleController.deletePageRule(ruleId);
         assertNotNull(ruleResponse);
     }
 
     @Test
     public void shouldUpdateRule() throws RuleException {
-        Long ruleId= 99L;
-        Long userId= 123L;
-        CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        NbsUserDetails nbsUserDetails=  NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
-        Mockito.when(pageRuleService.updatePageRule(ruleId,ruleRequest,userId)).thenReturn(new CreateRuleResponse(ruleId,"Rule Successfully Updated"));
+        Long ruleId = 99L;
+        Long userId = 123L;
+        CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
+        NbsUserDetails nbsUserDetails =
+                NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
+        Mockito.when(pageRuleService.updatePageRule(ruleId, ruleRequest, userId))
+                .thenReturn(new CreateRuleResponse(ruleId, "Rule Successfully Updated"));
         Mockito.when(userDetailsProvider.getCurrentUserDetails()).thenReturn(nbsUserDetails);
-        CreateRuleResponse ruleResponse= pageRuleController.updatePageRule(ruleId,ruleRequest);
+        CreateRuleResponse ruleResponse = pageRuleController.updatePageRule(ruleId, ruleRequest);
         assertNotNull(ruleResponse);
     }
 
     @Test
-    public void shouldReadRule(){
-        Long ruleId= 99L;
-        List<String> sourceValues= new ArrayList<>();
-        List<String> targetValues= new ArrayList<>();
-        Mockito.when(pageRuleService.getRuleResponse(ruleId)).thenReturn(new ViewRuleResponse.ruleResponse(ruleId,123l,"testFunction","testDesc","TestINV",sourceValues,"=>","TestTargetType","testErrorMsg",targetValues));
-        ViewRuleResponse.ruleResponse ruleResponse= pageRuleController.viewRuleResponse(ruleId);
+    public void shouldReadRule() {
+        Long ruleId = 99L;
+        List<String> sourceValues = new ArrayList<>();
+        List<String> targetValues = new ArrayList<>();
+        Mockito.when(pageRuleService.getRuleResponse(ruleId))
+                .thenReturn(new ViewRuleResponse(ruleId, 123l, "testFunction", "testDesc", "TestINV",
+                        sourceValues, "=>", "TestTargetType", "testErrorMsg", targetValues));
+        ViewRuleResponse ruleResponse = pageRuleController.viewRuleResponse(ruleId);
         assertNotNull(ruleResponse);
     }
 

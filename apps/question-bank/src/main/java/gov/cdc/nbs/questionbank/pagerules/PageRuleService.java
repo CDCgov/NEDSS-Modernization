@@ -7,10 +7,11 @@ import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 
 public interface PageRuleService {
 
-   CreateRuleResponse createPageRule(Long userId, CreateRuleRequest.ruleRequest request) throws RuleException;
+    CreateRuleResponse createPageRule(Long userId, CreateRuleRequest request) throws RuleException;
 
-   CreateRuleResponse deletePageRule(Long ruleId);
-   CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest.ruleRequest request, Long userId) throws RuleException;
+    CreateRuleResponse deletePageRule(Long ruleId);
 
-   ViewRuleResponse.ruleResponse getRuleResponse(Long ruleId);
+    CreateRuleResponse updatePageRule(Long ruleId, CreateRuleRequest request, Long userId) throws RuleException;
+
+    ViewRuleResponse getRuleResponse(Long ruleId);
 }

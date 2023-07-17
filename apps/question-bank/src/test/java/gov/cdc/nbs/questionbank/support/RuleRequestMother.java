@@ -8,25 +8,25 @@ import java.util.List;
 
 public class RuleRequestMother {
 
-    public static CreateRuleRequest.ruleRequest ruleRequest() {
+    public static CreateRuleRequest ruleRequest() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
 
-        List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
-        List<String> sourceIds= new ArrayList<>();
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        List<String> sourceIds = new ArrayList<>();
         sourceIds.add("Test Id");
         sourceIds.add("Test Id2");
 
-        List<String> sourceValueText= new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
         sourceValueText.add("TestSource1");
         sourceValueText.add("TestSource2");
-        CreateRuleRequest.sourceValues sourceValue= new CreateRuleRequest.sourceValues(sourceIds,sourceValueText);
+        CreateRuleRequest.SourceValues sourceValue = new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
         sourceValues.add(sourceValue);
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Enable",
                 "TestDescription",
@@ -37,248 +37,299 @@ public class RuleRequestMother {
                 ">=",
                 "testTargetValue",
                 targetValuesList,
-                targetIdentifiers
-                );
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest dateCompareRuleRequest() {
+    public static CreateRuleRequest dateCompareRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
-//        targetValuesList.add("Admission Date");
+        //        targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
-//        targetIdentifiers.add("INV132");
+        List<String> targetIdentifiers = new ArrayList<>();
+        //        targetIdentifiers.add("INV132");
         targetIdentifiers.add("INV133");
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Date Compare",
                 "'Admission Date (INV132)' must be <= 'Discharge Date (INV133)'.",
                 "Admission Date",
                 "INV132",
-                null,false,"<=","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                null,
+                false,
+                "<=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.sourceValues testData(){
-        List<String> sourceIds= new ArrayList<>();
+    public static CreateRuleRequest.SourceValues testData() {
+        List<String> sourceIds = new ArrayList<>();
         sourceIds.add("Test Id");
         sourceIds.add("Test Id2");
-        List<String> sourceValueText= new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
         sourceValueText.add("TestSource1");
         sourceValueText.add("TestSource2");
-        return new CreateRuleRequest.sourceValues(sourceIds,sourceValueText);
+        return new CreateRuleRequest.SourceValues(sourceIds, sourceValueText);
     }
-    public static CreateRuleRequest.ruleRequest EnableRuleRequest() {
-        List<String> sourceValueId= new ArrayList<>();
-        List<String> sourceValueText= new ArrayList<>();
+
+    public static CreateRuleRequest EnableRuleRequest() {
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
         sourceValueId.add("Y");
         sourceValueText.add("Yes");
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Weeks");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("NBS128");
-        List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
-        CreateRuleRequest.sourceValues sourceDetails= new CreateRuleRequest.sourceValues(sourceValueId,sourceValueText);
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
         sourceValues.add(sourceDetails);
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Enable",
                 "If the Patient Pregnant(INV178) is Yes, enable Weeks (NBS128)",
                 "Is the patient pregnant?",
                 "INV178",
-                sourceValues,false,"=","QUESTION",targetValuesList,targetIdentifiers
-        );
+                sourceValues,
+                false,
+                "=",
+                "QUESTION",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest DisableRuleRequest() {
+    public static CreateRuleRequest DisableRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
-        CreateRuleRequest.sourceValues sourceDetails= testData();
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        CreateRuleRequest.SourceValues sourceDetails = testData();
         sourceValues.add(sourceDetails);
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Disable",
                 "Disable",
                 "test",
                 "INV123",
-                sourceValues,false,"<>","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                sourceValues,
+                false,
+                "<>",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
-    public static CreateRuleRequest.ruleRequest HideRuleRequest() {
-        List<String> sourceValueId= new ArrayList<>();
-        List<String> sourceValueText= new ArrayList<>();
+
+    public static CreateRuleRequest HideRuleRequest() {
+        List<String> sourceValueId = new ArrayList<>();
+        List<String> sourceValueText = new ArrayList<>();
         sourceValueId.add("D");
         sourceValueText.add("Days");
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Additional Gender");
-//        targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        //        targetValuesList.add("Discharge Date");
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("NBS213");
-//        targetIdentifiers.add("test234");
-        List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
-        CreateRuleRequest.sourceValues sourceDetails= new CreateRuleRequest.sourceValues(sourceValueId,sourceValueText);
+        //        targetIdentifiers.add("test234");
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        CreateRuleRequest.SourceValues sourceDetails =
+                new CreateRuleRequest.SourceValues(sourceValueId, sourceValueText);
         sourceValues.add(sourceDetails);
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Hide",
                 "Testing hide Function",
                 "Age at Onset Units",
                 "INV144",
-                sourceValues,false,"=","QUESTION",targetValuesList,targetIdentifiers
-        );
+                sourceValues,
+                false,
+                "=",
+                "QUESTION",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest RequireIfRuleTestData() {
+    public static CreateRuleRequest RequireIfRuleTestData() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Named");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("CON143");
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Require If",
                 "If the Naming Between question is answered, require the Named dropdown",
                 "Relationship with Patient/Other infected Patient?",
                 "CON141",
-                null,true,"=",null,targetValuesList,targetIdentifiers
-        );
+                null,
+                true,
+                "=",
+                null,
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest RequireIfRuleTestDataAnySourceIsTrue() {
+    public static CreateRuleRequest RequireIfRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Require If",
                 "require if ",
                 "test",
                 "INV123",
-                null,true,"=","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                null,
+                true,
+                "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest HideRuleTestDataAnySourceIsTrue() {
+    public static CreateRuleRequest HideRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Hide",
                 "Hide",
                 "test",
                 "INV123",
-                null,true,"=","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                null,
+                true,
+                "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest EnableRuleTestDataAnySourceIsTrue() {
+    public static CreateRuleRequest EnableRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Enable",
                 "Enable",
                 "test",
                 "INV123",
-                null,true,"=","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                null,
+                true,
+                "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest DisableRuleTestDataAnySourceIsTrue() {
+    public static CreateRuleRequest DisableRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Disable",
                 "Disable",
                 "test",
                 "INV123",
-                null,true,"=","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                null,
+                true,
+                "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest UnhideRuleRequest() {
+    public static CreateRuleRequest UnhideRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
-        CreateRuleRequest.sourceValues sourceDetails= testData();
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        CreateRuleRequest.SourceValues sourceDetails = testData();
         sourceValues.add(sourceDetails);
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Unhide",
                 "Unhide",
                 "test",
                 "INV123",
-                sourceValues,false,"<>","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                sourceValues,
+                false,
+                "<>",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest UnhideRuleRequestIfAnySource() {
+    public static CreateRuleRequest UnhideRuleRequestIfAnySource() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Unhide",
                 "Unhide",
                 "test",
                 "INV123",
-                null,true,"=","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                null,
+                true,
+                "=",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 
-    public static CreateRuleRequest.ruleRequest InvalidRuleRequest() {
+    public static CreateRuleRequest InvalidRuleRequest() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");
         targetValuesList.add("Discharge Date");
-        List<String> targetIdentifiers= new ArrayList<>();
+        List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("test123");
         targetIdentifiers.add("test234");
-        List<CreateRuleRequest.sourceValues> sourceValues= new ArrayList<>();
-        CreateRuleRequest.sourceValues sourceDetails= testData();
+        List<CreateRuleRequest.SourceValues> sourceValues = new ArrayList<>();
+        CreateRuleRequest.SourceValues sourceDetails = testData();
         sourceValues.add(sourceDetails);
 
-        return new CreateRuleRequest.ruleRequest(
+        return new CreateRuleRequest(
                 123456L,
                 "Invalid",
                 "Invalid",
                 "test",
                 "INV123",
-                sourceValues,false,"<>","TestQuestion",targetValuesList,targetIdentifiers
-        );
+                sourceValues,
+                false,
+                "<>",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
     }
 }
