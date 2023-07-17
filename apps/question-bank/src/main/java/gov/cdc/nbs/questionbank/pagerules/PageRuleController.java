@@ -18,49 +18,51 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/")
 public class PageRuleController {
 
-   private final PageRuleService pageRuleService;
+    private final PageRuleService pageRuleService;
 
-   private final UserDetailsProvider userDetailsProvider;
+    private final UserDetailsProvider userDetailsProvider;
 
-   public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider){
-       this.userDetailsProvider = userDetailsProvider;
-       this.pageRuleService= pageRuleService;
-   }
+    public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider) {
+        this.userDetailsProvider = userDetailsProvider;
+        this.pageRuleService = pageRuleService;
+    }
 
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     @PostMapping("rule")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest.ruleRequest request){
+    public CreateRuleResponse createBusinessRule(@RequestBody CreateRuleRequest request) {
         log.info("Request for Business Rule Creation");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        try{
-            CreateRuleResponse ruleResponse=  pageRuleService.createPageRule(userId,request);
-            log.debug("Successfully added business rule with Id: {}",ruleResponse.ruleId());
+        try {
+            CreateRuleResponse ruleResponse = pageRuleService.createPageRule(userId, request);
+            log.debug("Successfully added business rule with Id: {}", ruleResponse.ruleId());
             return ruleResponse;
-        }catch(RuleException e){
+        } catch (RuleException e) {
             return new CreateRuleResponse(null, "Error in Creating a Rule");
         }
     }
+
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-    @DeleteMapping ("rule/{ruleId}")
+    @DeleteMapping("rule/{ruleId}")
     @ResponseBody
-    public CreateRuleResponse deletePageRule(@PathVariable Long ruleId){
-      return pageRuleService.deletePageRule(ruleId);
+    public CreateRuleResponse deletePageRule(@PathVariable Long ruleId) {
+        return pageRuleService.deletePageRule(ruleId);
     }
 
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     @PutMapping("rule/{ruleId}")
     @ResponseBody
-    public CreateRuleResponse updatePageRule(@PathVariable Long ruleId, @RequestBody CreateRuleRequest.ruleRequest request ) throws RuleException {
+    public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
+            @RequestBody CreateRuleRequest request) throws RuleException {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-        return pageRuleService.updatePageRule(ruleId,request,userId);
+        return pageRuleService.updatePageRule(ruleId, request, userId);
     }
 
     @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
     @GetMapping("rule/{ruleId}")
     @ResponseBody
-    public ViewRuleResponse.ruleResponse viewRuleResponse(@PathVariable Long ruleId){
-       return pageRuleService.getRuleResponse(ruleId);
+    public ViewRuleResponse viewRuleResponse(@PathVariable Long ruleId) {
+        return pageRuleService.getRuleResponse(ruleId);
     }
 }
