@@ -4,7 +4,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import './RangeToggle.scss';
 
 export const RangeToggle = () => {
-    const { pageSize, setPageSize } = useContext(PagesContext);
+    const { pageSize, setPageSize, currentPage, setCurrentPage } = useContext(PagesContext);
     const [range, setRange] = useState(10);
     const options = [
         { name: '10', value: '10' },
@@ -13,6 +13,9 @@ export const RangeToggle = () => {
     ];
 
     useEffect(() => {
+        if (currentPage > 1 && setCurrentPage) {
+            setCurrentPage(1);
+        }
         setPageSize(range);
     }, [range]);
 

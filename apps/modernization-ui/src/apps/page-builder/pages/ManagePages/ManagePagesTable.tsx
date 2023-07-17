@@ -98,6 +98,9 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {
+        if (currentPage > 1 && setCurrentPage) {
+            setCurrentPage(1);
+        }
         toSortString(name);
         setSortDirection(direction);
     };
