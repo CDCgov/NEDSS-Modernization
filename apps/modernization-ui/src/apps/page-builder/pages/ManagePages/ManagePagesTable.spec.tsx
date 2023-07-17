@@ -1,4 +1,3 @@
-// import { PageProvider } from 'page';
 import { ManagePagesTable } from './ManagePagesTable';
 import { render } from '@testing-library/react';
 import { PageSummary } from 'apps/page-builder/generated';

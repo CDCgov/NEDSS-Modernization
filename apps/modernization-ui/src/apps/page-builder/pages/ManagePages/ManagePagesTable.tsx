@@ -27,7 +27,6 @@ const tableColumns = [
 ];
 
 type Props = {
-    // sortChange: (sort?: string) => void;
     summaries: PageSummary[];
     currentPage: number;
     pageSize: number;
