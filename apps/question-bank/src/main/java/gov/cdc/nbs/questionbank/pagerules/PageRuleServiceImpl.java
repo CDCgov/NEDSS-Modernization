@@ -40,7 +40,7 @@ public class PageRuleServiceImpl implements PageRuleService {
     private static final String MUST_BE = "must be";
 
     private static final String PARANTHESIS = "');\n";
-    
+
     private static final String DOLLARCLOSING= "$j('#";
 
     private static final String ANY_SOURCE_VALUE = "( Any Source Value )";
@@ -57,7 +57,7 @@ public class PageRuleServiceImpl implements PageRuleService {
     private static final String FUNCTION="function ";
 
     private static final String ACTION_1 = "()\n{";
-    
+
 
     public PageRuleServiceImpl(WaRuleMetaDataRepository waRuleMetaDataRepository, RuleCreatedEventProducer ruleCreatedEventProducer) {
         this.waRuleMetaDataRepository = waRuleMetaDataRepository;
@@ -348,7 +348,6 @@ public class PageRuleServiceImpl implements PageRuleService {
         secondSB.append("\n var targetElt;\n var targetStr = ''; \n var targetDate = '';");
         Collection<String> coll = request.targetValueIdentifier();
         for (String targetQuestionIdentifier : coll) {
-            String sourceText= sourceValuesHelper.sourceText();
             //check for null just in case the target got deleted or is not visible except for edit
             secondSB.append("\n targetStr =getElementByIdOrByName(\"").append(targetQuestionIdentifier.trim()).append("\") == null ? \"\" :getElementByIdOrByName(\"").append(targetQuestionIdentifier.trim()).append("\").value;");
             secondSB.append("\n if (targetStr!=\"\") {");
@@ -359,11 +358,16 @@ public class PageRuleServiceImpl implements PageRuleService {
             secondSB.append("\n var srcDateEle=getElementByIdOrByName(\"").append(sourceValuesHelper.sourceIdentifiers()).append("\");");
             secondSB.append("\n var targetDateEle=getElementByIdOrByName(\"").append(targetQuestionIdentifier.trim()).append("\");");
             try {
-                secondSB.append("\n var srca2str=buildErrorAnchorLink(srcDateEle," + "\"").append(sourceValuesHelper.sourceText().substring(0, sourceText.indexOf("(")).trim()).append("\");");
+                secondSB.append("\n var srca2str=buildErrorAnchorLink(srcDateEle," + "\"");
+                secondSB.append(
+                        sourceValuesHelper.sourceText().substring(0, sourceValuesHelper.sourceText().indexOf("(")).trim()).append("\");");
             } catch (Exception e) {
-                break;
+                secondSB.append(
+                        sourceValuesHelper.sourceText().trim()).append("\");");
+
             }
-            secondSB.append("\n var targeta2str=buildErrorAnchorLink(targetDateEle,\"").append(targetValuesHelper.targetTextList().get(0)).append("\");");
+            secondSB.append("\n var targeta2str=buildErrorAnchorLink(targetDateEle,\"").
+                    append(targetValuesHelper.targetTextList().get(0)).append("\");");
             secondSB.append("\n    errorMsgs[i]=srca2str + \" must be ").append(request.comparator()).append(" \" + targeta2str; ");
             secondSB.append("\n    colorElementLabelRed(srcDateEle); ");
             secondSB.append("\n    colorElementLabelRed(targetDateEle); \n");
@@ -400,31 +404,31 @@ public class PageRuleServiceImpl implements PageRuleService {
 
         return new JSFunctionNameHelper(builder.toString(),functionName);
     }
-   private StringBuilder firstPartForEnDs(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, StringBuilder stringBuilder){
+    private StringBuilder firstPartForEnDs(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, StringBuilder stringBuilder){
         String sourceValues = sourceValuesHelper.sourceValueIds();
         if(sourceValues==null){
             LOGGER.info("Any SourceValue is true for this request");
             sourceValues=",";
         }
         List<String> sourceValueList= Arrays.asList(sourceValues.split(","));
-            if(request.anySourceValue()){
-                stringBuilder.append("if(foo.length>0 && foo[0] != '') {\n"); //anything selected
-            }else{
-                stringBuilder.append(IF);
-                for(int i = 0; i < sourceValueList.size(); i++){
-                    String sourceId = sourceValueList.get(i);
-                    stringBuilder.append(ARRAY).append(sourceId).append("',foo) > -1)");
-                    stringBuilder.append(" || ($j.inArray('").append(sourceId).append("'.replace(/^\\s+|\\s+$/g,''),foo) > -1)");//added for the business rule view
-                    try {
-                        sourceValueList.get(i+1);
-                        stringBuilder.append("||");
-                    }catch (Exception e){
-                        break;
-                    }
-
+        if(request.anySourceValue()){
+            stringBuilder.append("if(foo.length>0 && foo[0] != '') {\n"); //anything selected
+        }else{
+            stringBuilder.append(IF);
+            for(int i = 0; i < sourceValueList.size(); i++){
+                String sourceId = sourceValueList.get(i);
+                stringBuilder.append(ARRAY).append(sourceId).append("',foo) > -1)");
+                stringBuilder.append(" || ($j.inArray('").append(sourceId).append("'.replace(/^\\s+|\\s+$/g,''),foo) > -1)");//added for the business rule view
+                try {
+                    sourceValueList.get(i+1);
+                    stringBuilder.append("||");
+                }catch (Exception e){
+                    break;
                 }
-                stringBuilder.append("){\n");
+
             }
+            stringBuilder.append("){\n");
+        }
         return stringBuilder;
 
     }
@@ -433,15 +437,13 @@ public class PageRuleServiceImpl implements PageRuleService {
 
         if("Question".equalsIgnoreCase(request.targetType())){
             for(String targetId: targetQuestionIdentifiers){
-                if(ENABLE.equalsIgnoreCase(request.ruleFunction())&& Objects.equals(request.comparator(), "=")){
+                if(ENABLE.equalsIgnoreCase(request.ruleFunction())&& Objects.equals(request.comparator(), "=")) {
                     stringBuilder.append(PG_ENABLE_ELEMENT).append(targetId).append(PARANTHESIS).append(" }");
-                }else{
-                    stringBuilder.append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS);
+                    stringBuilder.append(" else { \n").append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS).append(" }");
                 }
                 if(!Objects.equals(ENABLE,request.ruleFunction())&&Objects.equals(request.comparator(), "=")){
                     stringBuilder.append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS);
-                }else{
-                    stringBuilder.append(" else { \n").append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS).append(" }");
+                    stringBuilder.append(" else { \n").append(PG_ENABLE_ELEMENT).append(targetId).append(PARANTHESIS).append(" }");
                 }
             }
         }
@@ -449,7 +451,7 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
 
-     private StringBuilder thirdPartForEnDs(CreateRuleRequest.ruleRequest request , StringBuilder stringBuilder){
+    private StringBuilder thirdPartForEnDs(CreateRuleRequest.ruleRequest request , StringBuilder stringBuilder){
         return commonElementPartForEnDs(request,stringBuilder);
     }
 
@@ -463,14 +465,14 @@ public class PageRuleServiceImpl implements PageRuleService {
         buffer.append(LINESEPERATOR_PARANTHESIS);
         if (request.sourceIdentifier() != null) {
 
-            String sourceIds = sourceValuesHelper.sourceValueIds();
+            String sourceValueText = sourceValuesHelper.sourceValueText();
 
             if (request.anySourceValue()) {
                 buffer.append("if(foo.length>0 && foo[0] != '') {\n");
             } else {
                 buffer.append("if(foo.length==0) return;\n");
                 buffer.append(IF);
-                buffer.append(ARRAY).append(sourceIds).append("',foo) > -1)");
+                buffer.append(ARRAY).append(sourceValueText.toUpperCase(), 0, 3).append("',foo) > -1)");
                 buffer.append("){\n");
             }
             String secondPart= frameSecondPartOfRequireIf(request,targetValuesHelper);
@@ -501,22 +503,23 @@ public class PageRuleServiceImpl implements PageRuleService {
     }
 
     public JSFunctionNameHelper jsForHideAndUnhide(CreateRuleRequest.ruleRequest request, SourceValuesHelper sourceValuesHelper, WaRuleMetadata ruleMetadata){
-       String sourceValues= sourceValuesHelper.sourceValueIds();
-       if(sourceValues==null){
-           LOGGER.info("Any SourceValue is true for this request");
-           sourceValues=",";
-       }
-       List<String> sourceValueIdsList= Arrays.asList(sourceValues.split(","));
-       StringBuilder stringBuilder= new StringBuilder();
-       String functionName="ruleHideUnh"+request.sourceIdentifier()+ruleMetadata.getId();
-       stringBuilder.append(FUNCTION).append(functionName).append(ACTION_1);
-       ruleLeftAndRightInvestigation(request,stringBuilder,"",sourceValueIdsList);
-       ruleLeftAndRightInvestigation(request,stringBuilder,"_2",sourceValueIdsList);
-       stringBuilder.append("   \n}");
-       return new JSFunctionNameHelper(stringBuilder.toString(),functionName);
+        String sourceText = sourceValuesHelper.sourceValueText();
+        if(sourceText==null){
+            LOGGER.info("Any SourceValue is true for this request");
+            sourceText=",";
+        }
+        List<String> sourceValueTextList = Arrays.asList(sourceText.split(","));
+        StringBuilder stringBuilder= new StringBuilder();
+        String functionName="ruleHideUnh"+request.sourceIdentifier()+ruleMetadata.getId();
+        stringBuilder.append(FUNCTION).append(functionName).append(ACTION_1);
+        ruleLeftAndRightInvestigation(request,stringBuilder,"", sourceValueTextList);
+        ruleLeftAndRightInvestigation(request,stringBuilder,"_2", sourceValueTextList);
+        stringBuilder.append("   \n}");
+        return new JSFunctionNameHelper(stringBuilder.toString(),functionName);
     }
 
-    private StringBuilder ruleLeftAndRightInvestigation(CreateRuleRequest.ruleRequest request, StringBuilder stringBuilder, String suffix, List<String> sourceValueIds){
+    private StringBuilder ruleLeftAndRightInvestigation(CreateRuleRequest.ruleRequest request,
+                                                        StringBuilder stringBuilder, String suffix, List<String> sourceValueTextList){
         String questionIdentifier= request.sourceIdentifier();
         stringBuilder.append("\n var foo").append(suffix).append(" = [];\n");
         stringBuilder.append(DOLLARCLOSING).append(questionIdentifier).append(suffix).append(SELECTED);
@@ -531,16 +534,18 @@ public class PageRuleServiceImpl implements PageRuleService {
             }else{
                 stringBuilder.append(IF);
                 int i = 0;
-                for(String sourceId: sourceValueIds){
+                for(String sourcetext: sourceValueTextList){
                     if (i != 0) {
 
                         stringBuilder.append(" || ");
 
                     }
                     i++;
-                    stringBuilder.append(ARRAY).append(sourceId).append(suffix).append("',foo").append(suffix).append(") > -1)");
-                    stringBuilder.append(" || ($j.inArray('").append(sourceId).append(suffix).append("'.replace(/^\\s+|\\s+$/g,''),foo").append(suffix).append(") > -1");
-                    stringBuilder.append(" || indexOfArray(foo,'").append(sourceId).append(suffix).append("')==true)");//added for the business rule view
+                    stringBuilder.append(ARRAY).append(sourcetext.charAt(0)).append("',foo").append(suffix).append(") > -1)");
+
+                    stringBuilder.append(" || ($j.inArray('").append(sourcetext).append("'.replace(/^\\s+|\\s+$/g,''),foo").append(suffix).append(") > -1");
+                    stringBuilder.append(" || indexOfArray(foo,'").append(sourcetext).append("')==true)");
+                    //added for the business rule view
                 }
                 stringBuilder.append("){\n");
             }
@@ -591,8 +596,8 @@ public class PageRuleServiceImpl implements PageRuleService {
 
                     stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
                 } else{
-                        stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
-                    }
+                    stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
+                }
                 if(!Objects.equals(request.ruleFunction(), UNHIDE) && Objects.equals(request.comparator(), "=")){
                     stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
                 } else{
@@ -661,8 +666,8 @@ public class PageRuleServiceImpl implements PageRuleService {
         List<String> sourceValues= new ArrayList<>();
         List<String> targetValues= new ArrayList<>();
         if(ruleMetadata.getSourceValues()==null || ruleMetadata.getTargetQuestionIdentifier()==null){
-           sourceValues.add(null);
-           targetValues.add(null);
+            sourceValues.add(null);
+            targetValues.add(null);
         }else{
             String[] sourceValue= ruleMetadata.getSourceValues().split(",");
             sourceValues= Arrays.asList(sourceValue);

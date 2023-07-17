@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.kafka.message.rule.RuleCreatedEvent;
 import gov.cdc.nbs.questionbank.kafka.producer.RuleCreatedEventProducer;
@@ -20,8 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.management.BadAttributeValueExpException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +57,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void should_send_ruleRequest_Event() throws BadAttributeValueExpException{
+    void should_send_ruleRequest_Event() throws RuleException {
         Long userId= 99L ;
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.ruleRequest();
         CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
@@ -71,7 +68,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDateCompare() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForDateCompare() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.dateCompareRuleRequest();
@@ -84,7 +81,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDisable() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForDisable() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.DisableRuleRequest();
@@ -96,7 +93,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.DisableRuleTestDataAnySourceIsTrue();
@@ -109,7 +106,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleTestDataAnySourceIsTrue();
@@ -122,7 +119,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForEnable() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForEnable() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleRequest();
@@ -135,7 +132,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForHide() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForHide() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleRequest();
@@ -148,7 +145,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test()
-    void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleTestDataAnySourceIsTrue();
@@ -161,7 +158,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestDataAnySourceIsTrue();
@@ -174,7 +171,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.UnhideRuleRequest();
@@ -187,7 +184,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
@@ -209,7 +206,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldGiveRuleExpressionInACorrectFormatForUnhideIfAnySourceIsTrue() throws BadAttributeValueExpException{
+    void shouldGiveRuleExpressionInACorrectFormatForUnhideIfAnySourceIsTrue() throws RuleException {
 
 
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.UnhideRuleRequestIfAnySource();
@@ -230,7 +227,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldReturnNotFoundWhenRuleIdIsNotThere() throws BadAttributeValueExpException {
+    void shouldReturnNotFoundWhenRuleIdIsNotThere() throws RuleException {
         Long ruleId=99L;
         Long userId=99L;
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
@@ -243,7 +240,7 @@ class PageRuleServiceImplTest {
         assertEquals("RuleId Not Found",ruleResponse.message());
     }
     @Test
-    void shouldUpdateRule() throws BadAttributeValueExpException {
+    void shouldUpdateRule() throws RuleException {
         Long ruleId=99L;
         Long userId=99L;
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
@@ -292,7 +289,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldCreateJsForDateCompareFunction() throws JsonProcessingException {
+    void shouldCreateJsForDateCompareFunction() {
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.dateCompareRuleRequest();
         SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("INV132","INV132","Admission Date (INV132)","INV132");
         List<String> targetTextList= new ArrayList<>();
@@ -337,9 +334,9 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldCreateJsForHideAndUnhideFunction() throws JsonProcessingException {
+    void shouldCreateJsForHideAndUnhideFunction() {
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.HideRuleRequest();
-        SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("INV144","INV144","Age at Onset Units","INV144");
+        SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("D","Days","Age at Onset Units","INV144");
         List<String> targetTextList= new ArrayList<>();
         targetTextList.add("Additional Gender");
         WaRuleMetadata ruleMetadata= new WaRuleMetadata();
@@ -352,7 +349,7 @@ class PageRuleServiceImplTest {
                 " foo[i] = $j(selected).val();\n" +
                 " });\n" +
                 "if(foo=='' && $j('#INV144').html()!=null){foo[0]=$j('#INV144').html().replace(/^\\s+|\\s+$/g,'');}\n" +
-                " if(($j.inArray('INV144',foo) > -1) || ($j.inArray('INV144'.replace(/^\\s+|\\s+$/g,''),foo) > -1 || indexOfArray(foo,'INV144')==true)){\n" +
+                " if(($j.inArray('D',foo) > -1) || ($j.inArray('Days'.replace(/^\\s+|\\s+$/g,''),foo) > -1 || indexOfArray(foo,'Days')==true)){\n" +
                 "pgHideElement('NBS213');\n" +
                 " } else { \n" +
                 "pgUnhideElement('NBS213');\n" +
@@ -362,7 +359,7 @@ class PageRuleServiceImplTest {
                 " foo_2[i] = $j(selected).val();\n" +
                 " });\n" +
                 "if(foo_2=='' && $j('#INV144_2').html()!=null){foo_2[0]=$j('#INV144_2').html().replace(/^\\s+|\\s+$/g,'');}\n" +
-                " if(($j.inArray('INV144_2',foo_2) > -1) || ($j.inArray('INV144_2'.replace(/^\\s+|\\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'INV144_2')==true)){\n" +
+                " if(($j.inArray('D',foo_2) > -1) || ($j.inArray('Days'.replace(/^\\s+|\\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'Days')==true)){\n" +
                 "pgHideElement('NBS213_2');\n" +
                 " } else { \n" +
                 "pgUnhideElement('NBS213_2');\n" +
@@ -373,7 +370,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldCreateJsForRequireIfFunction() throws JsonProcessingException {
+    void shouldCreateJsForRequireIfFunction() {
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.RequireIfRuleTestData();
         SourceValuesHelper sourceValuesHelper= new SourceValuesHelper(null,null,"Relationship with Patient/Other infected Patient?","CON141");
         List<String> targetTextList= new ArrayList<>();
@@ -398,7 +395,7 @@ class PageRuleServiceImplTest {
     }
 
     @Test
-    void shouldCreateJsForEnableAndDisableFunction() throws JsonProcessingException {
+    void shouldCreateJsForEnableAndDisableFunction() {
         CreateRuleRequest.ruleRequest ruleRequest= RuleRequestMother.EnableRuleRequest();
         SourceValuesHelper sourceValuesHelper= new SourceValuesHelper("Yes","YES","Is the patient pregnant?","INV178");
         List<String> targetTextList= new ArrayList<>();

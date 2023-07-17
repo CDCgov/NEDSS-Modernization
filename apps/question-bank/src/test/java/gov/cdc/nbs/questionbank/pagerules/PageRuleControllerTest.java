@@ -4,6 +4,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.model.ViewRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 import org.junit.Test;
@@ -12,8 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.management.BadAttributeValueExpException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class PageRuleControllerTest {
     }
 
     @Test
-    public void shouldUpdateRule() throws BadAttributeValueExpException {
+    public void shouldUpdateRule() throws RuleException {
         Long ruleId= 99L;
         Long userId= 123L;
         CreateRuleRequest.ruleRequest ruleRequest = RuleRequestMother.ruleRequest();
