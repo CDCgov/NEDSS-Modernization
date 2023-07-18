@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.cdc.nbs.questionbank.template.request.TemplateSearchRequest;
+import gov.cdc.nbs.questionbank.template.response.Template;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class TemplateController {
 
 	private TemplateReader templateReader;
-	/*
+
 	@GetMapping
 	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public Page<Template> findAllTemplates(@PageableDefault(size = 25) Pageable pageable) {
@@ -35,6 +36,6 @@ public class TemplateController {
 	public Page<Template> searchTemplate(@RequestBody TemplateSearchRequest search,
 			@PageableDefault(size = 25) Pageable pageable) {
 		return templateReader.searchTemplate(search, pageable);
-	}*/
+	}
 
 }
