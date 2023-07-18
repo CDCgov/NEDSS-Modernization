@@ -560,7 +560,7 @@
                     <id>223087a1-2154-3cc0-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>10 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
+                    <backPressureObjectThreshold>50</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>a1bb84f8-113a-3d24-0000-000000000000</id>
@@ -811,7 +811,7 @@
                     <id>f677f027-3290-3b6f-0000-000000000000</id>
                     <parentGroupId>74943425-6102-3f02-0000-000000000000</parentGroupId>
                     <backPressureDataSizeThreshold>10 GB</backPressureDataSizeThreshold>
-                    <backPressureObjectThreshold>100</backPressureObjectThreshold>
+                    <backPressureObjectThreshold>10</backPressureObjectThreshold>
                     <destination>
                         <groupId>74943425-6102-3f02-0000-000000000000</groupId>
                         <id>773a5bfb-0c8b-3782-0000-000000000000</id>
@@ -1522,7 +1522,7 @@ group by person_parent_uid</value>
                         <executionNode>ALL</executionNode>
                         <lossTolerant>false</lossTolerant>
                         <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                        <penaltyDuration>30 sec</penaltyDuration>
+                        <penaltyDuration>0 sec</penaltyDuration>
                         <properties>
                             <entry>
 <key>put-es-record-index-op</key>
@@ -1548,7 +1548,7 @@ group by person_parent_uid</value>
                             </entry>
                             <entry>
 <key>put-es-record-batch-size</key>
-<value>500</value>
+<value>1</value>
                             </entry>
                             <entry>
 <key>put-es-record-id-path</key>
@@ -1599,7 +1599,7 @@ group by person_parent_uid</value>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                        <yieldDuration>1 sec</yieldDuration>
+                        <yieldDuration>0 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
                     <name>PutElasticsearchRecord</name>
@@ -1749,7 +1749,7 @@ group by person_parent_uid</value>
                         <executionNode>ALL</executionNode>
                         <lossTolerant>false</lossTolerant>
                         <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                        <penaltyDuration>30 sec</penaltyDuration>
+                        <penaltyDuration>0 sec</penaltyDuration>
                         <properties>
                             <entry>
 <key>Script Engine</key>
@@ -1767,6 +1767,7 @@ import java.nio.charset.StandardCharsets
 require 'json'
 require 'net/http'
 require 'uri'
+require 'timeout'
 
 def initialize_person_index
     req = Net::HTTP::Put.new('/person')
@@ -1930,8 +1931,8 @@ end
 def process_person_row_from_db(person)
     uid = person['person_uid']
     return unless uid
-    person.compact!
     unless $person_by_uid[uid]
+        person.compact!
         $person_by_uid[uid] = person
     end
     add_name(uid, person)
@@ -1995,13 +1996,13 @@ class JRubyStreamCallback2
     def process(inputStream,outputStream)
       text = IOUtils.toString(inputStream)
       list = JSON.parse(text)
+      text = nil
       if list
           list = [list] if list.class != Array
           list.each do |person_hash|
               process_person_row_from_db(person_hash)
           end
-      end      
-      
+      end        
       person_list = convert_person_data_into_person_list_with_nested_fields
       data = person_list.to_json
       outputStream.write(data.to_java.getBytes(StandardCharsets::UTF_8))
@@ -2011,15 +2012,23 @@ end
 class ProcessCollapseJson
   def main(session)
     flowFile = session.get()
-    initialize_person_index
+    # initialize_person_index
     if flowFile != nil
-      jrubyStreamCallback = JRubyStreamCallback2.new  
+      jrubyStreamCallback = nil 
+      begin
+        # Timeout::timeout(30) do
+          jrubyStreamCallback = JRubyStreamCallback2.new 
+        # end
+      rescue Timeout::Error =&gt; exception
+        session.transfer(flowFile, ExecuteScript::REL_FAILURE)
+        return
+      end
       begin
         session.write(flowFile, jrubyStreamCallback)
         session.transfer(flowFile, ExecuteScript::REL_SUCCESS)
       rescue Exception =&gt; exception
         session.transfer(flowFile, ExecuteScript::REL_FAILURE)
-    		raise exception.backtrace.to_s
+        # raise exception.backtrace.to_s
       end
     end    
   end
@@ -2037,7 +2046,7 @@ ProcessCollapseJson.new.main(session)
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                        <yieldDuration>1 sec</yieldDuration>
+                        <yieldDuration>0 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
                     <name>ExecuteScript</name>
@@ -2275,6 +2284,7 @@ class JRubyStreamCallback
     def process(inputStream,outputStream)
         text = IOUtils.toString(inputStream)
         list = JSON.parse(text)
+		    text = nil
         $person_parent_uids = []
         if list
     		    list = [list] if list.class != Array
@@ -2793,5 +2803,5 @@ WHERE
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/16/2023 06:30:52 UTC</timestamp>
+    <timestamp>07/17/2023 19:27:17 UTC</timestamp>
 </template>
