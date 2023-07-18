@@ -44,9 +44,11 @@ export type TableContentProps = {
     currentPage?: number;
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
+    footerAction?: React.ReactNode | React.ReactNode[];
     sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
     rangeSelector?: boolean;
+    handleSelected?: (event: React.ChangeEvent<HTMLInputElement>, key: number) => void;
 };
 
 const nextDirection = (direction: Direction) => {
@@ -73,10 +75,12 @@ export const TableComponent = ({
     currentPage = 1,
     handleNext,
     buttons,
+    footerAction,
     tableSubHeader,
     handleAction,
     sortData,
-    rangeSelector = false
+    rangeSelector = false,
+    handleSelected
 }: TableContentProps) => {
     const initialState: SortState = {};
     tableHead.forEach((header) => (initialState[header.name] = Direction.None));
@@ -177,7 +181,7 @@ export const TableComponent = ({
 
     return (
         <div>
-            <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
+            <div className="grid-row flex-align-center flex-justify padding-x-2 search-box padding-y-3 border-bottom border-base-lighter">
                 <p className="font-sans-lg text-bold margin-0 table-header">
                     {tableHeader}
                     {tableSubHeader}
@@ -195,28 +199,31 @@ export const TableComponent = ({
                                   {item.tableDetails.map((detail: TableDetail, column: number) =>
                                       detail.title ? (
                                           <td className={resolveDetailStyle(detail, column)} key={column}>
-                                              {column === 0 && item.checkbox && (
-                                                  <Fieldset>
-                                                      <Checkbox
-                                                          key={row}
-                                                          id={`${detail.title}-${row}`}
-                                                          name={'tableCheck'}
-                                                          label=""
-                                                      />
-                                                  </Fieldset>
-                                              )}
-                                              {detail?.type !== 'actions' && (
-                                                  <span
-                                                      className={
-                                                          column === 0 && item.checkbox
-                                                              ? 'check-title'
-                                                              : detail.class
-                                                              ? detail.class
-                                                              : 'table-span'
-                                                      }>
-                                                      {renderTitle(detail)}
-                                                  </span>
-                                              )}
+                                              <div>
+                                                  {column === 0 && item.checkbox && (
+                                                      <Fieldset>
+                                                          <Checkbox
+                                                              key={row}
+                                                              id={`${detail.title}-${row}`}
+                                                              name={'tableCheck'}
+                                                              label=""
+                                                              onChange={(e) => handleSelected?.(e, row)}
+                                                          />
+                                                      </Fieldset>
+                                                  )}
+                                                  {detail?.type !== 'actions' && (
+                                                      <span
+                                                          className={
+                                                              column === 0 && item.checkbox
+                                                                  ? 'check-title'
+                                                                  : detail.class
+                                                                  ? detail.class
+                                                                  : 'table-span'
+                                                          }>
+                                                          {renderTitle(detail)}
+                                                      </span>
+                                                  )}
+                                              </div>
                                               {detail?.type === 'actions' && (
                                                   <div className="table-span">
                                                       <Button
@@ -272,6 +279,7 @@ export const TableComponent = ({
                     />
                 )}
             </div>
+            <div className="table-footer-action">{footerAction}</div>
         </div>
     );
 };
