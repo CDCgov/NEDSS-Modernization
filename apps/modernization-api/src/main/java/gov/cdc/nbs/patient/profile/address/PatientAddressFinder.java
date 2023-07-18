@@ -17,8 +17,6 @@ class PatientAddressFinder {
     private static final String ACTIVE_CODE = "ACTIVE";
     private static final String POSTAL_TYPE_CODE_SET = "EL_TYPE_PST_PAT";
     private static final String POSTAL_USE_CODE_SET = "EL_USE_PST_PAT";
-    private static final String COUNTY_CODE_SET = "PHVS_COUNTY_FIPS_6-4";
-
     private final JPAQueryFactory factory;
     private final PatientAddressTupleMapper.Tables tables;
     private final PatientAddressTupleMapper mapper;
@@ -83,8 +81,7 @@ class PatientAddressFinder {
     private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
         return applyBaseCriteria(query, patient)
             .leftJoin(this.tables.county()).on(
-                this.tables.county().id.codeSetNm.eq(COUNTY_CODE_SET),
-                this.tables.county().id.code.eq(this.tables.address().cntyCd)
+                this.tables.county().id.eq(this.tables.address().cntyCd)
             )
             .leftJoin(this.tables.state()).on(
                 this.tables.state().id.eq(this.tables.address().stateCd)

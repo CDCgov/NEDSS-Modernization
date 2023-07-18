@@ -2,14 +2,14 @@ package gov.cdc.nbs.geo.county;
 
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPostalLocator;
-import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
+import gov.cdc.nbs.entity.srte.QStateCountyCodeValue;
 
 import java.util.Objects;
 import java.util.Optional;
 
 public class SimpleCountyTupleMapper {
 
-    public record Tables(QPostalLocator address, QCodeValueGeneral county) {
+    public record Tables(QPostalLocator address, QStateCountyCodeValue county) {
     }
 
 

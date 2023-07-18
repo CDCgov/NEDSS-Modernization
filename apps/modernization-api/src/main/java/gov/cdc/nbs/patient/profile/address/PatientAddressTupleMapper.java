@@ -7,6 +7,7 @@ import gov.cdc.nbs.entity.odse.QPostalLocator;
 import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
 import gov.cdc.nbs.entity.srte.QCountryCode;
 import gov.cdc.nbs.entity.srte.QStateCode;
+import gov.cdc.nbs.entity.srte.QStateCountyCodeValue;
 import gov.cdc.nbs.geo.country.SimpleCountry;
 import gov.cdc.nbs.geo.country.SimpleCountryTupleMapper;
 import gov.cdc.nbs.geo.county.SimpleCounty;
@@ -26,7 +27,7 @@ class PatientAddressTupleMapper {
         QPostalLocator address,
         QCodeValueGeneral type,
         QCodeValueGeneral use,
-        QCodeValueGeneral county,
+        QStateCountyCodeValue county,
         QStateCode state,
         QCountryCode country
     ) {
@@ -38,7 +39,7 @@ class PatientAddressTupleMapper {
                 QPostalLocator.postalLocator,
                 new QCodeValueGeneral("type"),
                 new QCodeValueGeneral("use"),
-                new QCodeValueGeneral("county"),
+                QStateCountyCodeValue.stateCountyCodeValue,
                 QStateCode.stateCode,
                 QCountryCode.countryCode
             );
