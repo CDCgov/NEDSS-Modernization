@@ -1,24 +1,35 @@
 package gov.cdc.nbs.entity.odse;
 
-import java.time.Instant;
-
-import javax.persistence.*;
-
-import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
+import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+import java.time.Instant;
+import java.util.Objects;
+import java.util.function.Predicate;
+
 @Getter
-@Setter
 @Entity
 @Table(name = "Person_name")
 public class PersonName {
+
+    public static Predicate<PersonName> active() {
+        return input -> Objects.equals(input.recordStatusCd, RecordStatus.ACTIVE.name());
+    }
+
     @EmbeddedId
     private PersonNameId id;
 
@@ -27,14 +38,6 @@ public class PersonName {
     @JoinColumn(name = "person_uid", nullable = false)
     private Person personUid;
 
-    @Column(name = "add_reason_cd", length = 20)
-    private String addReasonCd;
-
-    @Column(name = "add_time")
-    private Instant addTime;
-
-    @Column(name = "add_user_id")
-    private Long addUserId;
 
     @Column(name = "default_nm_ind")
     private Character defaultNmInd;
@@ -53,15 +56,6 @@ public class PersonName {
 
     @Column(name = "from_time")
     private Instant fromTime;
-
-    @Column(name = "last_chg_reason_cd", length = 20)
-    private String lastChgReasonCd;
-
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
-
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
 
     @Column(name = "last_nm", length = 50)
     private String lastNm;
@@ -115,20 +109,19 @@ public class PersonName {
     @Column(name = "as_of_date")
     private Instant asOfDate;
 
+    @Embedded
+    private Audit audit;
+
+    PersonName() {
+
+    }
+
     public PersonName(
-            final PersonNameId identifier,
-            final Person person,
-            final PatientCommand.AddName added
+        final PersonNameId identifier,
+        final Person person,
+        final PatientCommand.AddName added
     ) {
-        this.addReasonCd = "Add";
-        this.addTime = added.requestedOn();
-        this.addUserId = added.requester();
-
-        this.lastChgUserId = added.requester();
-        this.lastChgTime = added.requestedOn();
-
-        //  this could be an indicator of a future change
-        this.asOfDate = added.requestedOn();
+        this.asOfDate = added.asOf();
 
         this.statusCd = 'A';
         this.statusTime = added.requestedOn();
@@ -139,11 +132,45 @@ public class PersonName {
         this.id = identifier;
         this.personUid = person;
 
+        this.nmPrefix = added.prefix();
         this.firstNm = added.first();
         this.middleNm = added.middle();
+        this.middleNm2 = added.secondMiddle();
         this.lastNm = added.last();
-        this.nmSuffix = added.suffix();
-        this.nmUseCd = added.type().toString();
+        this.lastNm2 = added.secondLast();
+        this.nmSuffix = Suffix.resolve(added.suffix());
+        this.nmDegree = added.degree();
+        this.nmUseCd = added.type();
 
+        this.audit = new Audit(added.requester(), added.requestedOn());
+    }
+
+    public void update(final PatientCommand.UpdateNameInfo info) {
+        this.asOfDate = info.asOf();
+        this.nmPrefix = info.prefix();
+        this.firstNm = info.first();
+        this.middleNm = info.middle();
+        this.middleNm2 = info.secondMiddle();
+        this.lastNm = info.last();
+        this.lastNm2 = info.secondLast();
+        this.nmSuffix = Suffix.resolve(info.suffix());
+        this.nmDegree = info.degree();
+        this.nmUseCd = info.type();
+
+        this.audit.changed(info.requester(), info.requestedOn());
+    }
+
+    public void delete(final  PatientCommand.DeleteNameInfo deleted) {
+        this.recordStatusCd = RecordStatus.INACTIVE.name();
+        this.recordStatusTime = deleted.requestedOn();
+        this.audit.changed(deleted.requester(), deleted.requestedOn());
+    }
+
+    @Override
+    public String toString() {
+        return "PersonName{" +
+            "id=" + id +
+            ", recordStatusCd='" + recordStatusCd + '\'' +
+            '}';
     }
 }

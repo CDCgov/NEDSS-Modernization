@@ -1,33 +1,82 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
 import format from 'date-fns/format';
-import { SortableTable } from 'components/Table/SortableTable';
-import { AddNameModal } from 'pages/patient/profile/names/AddNameModal';
-import { DetailsNameModal } from 'pages/patient/profile/names/DetailsNameModal';
-import { Actions } from 'components/Table/Actions';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
+import {
+    PatientAddress,
+    useAddPatientAddressMutation,
+    useDeletePatientAddressMutation,
+    useUpdatePatientAddressMutation
+} from 'generated/graphql/schema';
+import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
+import { internalizeDate } from 'date';
 import { TOTAL_TABLE_DATA } from 'utils/util';
-import { Address } from './addresses';
-import { FindPatientProfileQuery, PatientAddress } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, sortByDate, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
-import { AddAddressModal } from 'pages/patient/profile/addresses/AddressModal';
-import { DetailsAddressModal } from 'pages/patient/profile/addresses/DetailsAddressModal';
+import { orNull } from 'utils/orNull';
+import { SortableTable } from 'components/Table/SortableTable';
+import { Actions } from 'components/Table/Actions';
+import { ConfirmationModal } from 'confirmation';
+import { tableActionStateAdapter, useTableActionState } from 'table-action';
+import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
+import EntryModal from 'pages/patient/profile/entry';
+import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
+import { PatientProfileAddressesResult, useFindPatientProfileAddresses } from './useFindPatientProfileAddresses';
+import { AddressEntryForm } from './AddressEntryForm';
+import { AddressEntry, NewAddressEntry, UpdateAddressEntry, isAdd, isUpdate } from './AddressEntry';
+import { useAlert } from 'alert/useAlert';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asDetail = (data: PatientAddress): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Type', value: maybeDescription(data.type) },
+    { name: 'Use', value: maybeDescription(data.use) },
+    { name: 'Street address 1', value: data.address1 },
+    { name: 'Street address 2', value: data.address2 },
+    { name: 'City', value: data.city },
+    { name: 'State', value: maybeDescription(data.state) },
+    { name: 'Zip', value: data.zipcode },
+    { name: 'County', value: maybeDescription(data.county) },
+    { name: 'Census tract', value: data.censusTract },
+    { name: 'Country', value: maybeDescription(data.country) },
+    { name: 'Additional comments', value: data.comment }
+];
+
+const asEntry = (address: PatientAddress): UpdateAddressEntry => ({
+    patient: address.patient,
+    id: +address.id,
+    asOf: internalizeDate(address.asOf),
+    type: maybeId(address.type),
+    use: maybeId(address.use),
+    address1: orNull(address.address1),
+    address2: orNull(address.address2),
+    city: orNull(address.city),
+    state: maybeId(address.state),
+    zipcode: orNull(address.zipcode),
+    county: maybeId(address.county),
+    censusTract: orNull(address.censusTract),
+    country: maybeId(address.country),
+    comment: orNull(address.comment)
+});
+
+const resolveInitialEntry = (patient: string): NewAddressEntry => ({
+    patient: +patient,
+    asOf: null,
+    type: null,
+    use: null,
+    address1: null,
+    address2: null,
+    city: null,
+    state: null,
+    zipcode: null,
+    county: null,
+    censusTract: null,
+    country: null,
+    comment: null
+});
+
+type Props = {
+    patient: string;
 };
 
-export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
+export const AddressesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -37,39 +86,136 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
         { name: 'Zip', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
     ]);
+
+    const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const addModalRef = useRef<ModalRef>(null);
-    const detailsModalRef = useRef<ModalRef>(null);
-    const deleteModalRef = useRef<ModalRef>(null);
+    const initial = resolveInitialEntry(patient);
 
-    const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [details, setDetails] = useState<any>(undefined);
-    const [isActions, setIsActions] = useState<any>(null);
-    const [addresses, setAddresses] = useState<Address[]>([]);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+    const { selected, actions } = useTableActionState<PatientAddress>();
 
-    const handleComplete = (data: FindPatientProfileQuery) => {
-        if (data?.findPatientProfile?.addresses?.content && data?.findPatientProfile?.addresses?.content?.length > 0) {
-            setAddresses(data?.findPatientProfile?.addresses?.content);
+    const [isActions, setIsActions] = useState<number | null>(null);
+
+    const modal = useRef<ModalRef>(null);
+
+    useEffect(() => {
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
+
+    const [addresses, setAddresses] = useState<PatientAddress[]>([]);
+
+    const handleComplete = (data: PatientProfileAddressesResult) => {
+        setTotal(data?.findPatientProfile?.addresses?.total ?? 0);
+        setAddresses(data?.findPatientProfile?.addresses?.content ?? []);
+    };
+
+    const [fetch, { refetch }] = useFindPatientProfileAddresses({ onCompleted: handleComplete });
+
+    const [add] = useAddPatientAddressMutation();
+    const [update] = useUpdatePatientAddressMutation();
+    const [remove] = useDeletePatientAddressMutation();
+
+    useEffect(() => {
+        fetch({
+            variables: {
+                patient: patient,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: TOTAL_TABLE_DATA
+                }
+            }
+        });
+    }, [currentPage]);
+
+    const onAdded = (entry: AddressEntry) => {
+        if (isAdd(entry) && entry.use && entry.type) {
+            add({
+                variables: {
+                    input: {
+                        patient: entry.patient,
+                        asOf: entry.asOf,
+                        use: entry.use,
+                        type: entry.type,
+                        address1: entry.address1,
+                        address2: entry.address2,
+                        city: entry.city,
+                        state: entry.state,
+                        zipcode: entry.zipcode,
+                        county: entry.county,
+                        censusTract: entry.censusTract,
+                        country: entry.country,
+                        comment: entry.comment
+                    }
+                }
+            })
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added address`
+                    });
+                    refetch();
+                })
+                .then(actions.reset);
         }
     };
 
-    const [getProfile, { data }] = useFindPatientProfileAddresses({ onCompleted: handleComplete });
-
-    useEffect(() => {
-        if (patient) {
-            getProfile({
+    const onChanged = (entry: AddressEntry) => {
+        if (isUpdate(entry) && entry.use && entry.type) {
+            const updated = entry as UpdateAddressEntry;
+            update({
                 variables: {
-                    patient: patient,
-                    page2: {
-                        pageNumber: currentPage - 1,
-                        pageSize: TOTAL_TABLE_DATA
+                    input: {
+                        patient: updated.patient,
+                        id: +updated.id,
+                        asOf: entry.asOf,
+                        use: entry.use,
+                        type: entry.type,
+                        address1: entry.address1,
+                        address2: entry.address2,
+                        city: entry.city,
+                        state: entry.state,
+                        zipcode: entry.zipcode,
+                        county: entry.county,
+                        censusTract: entry.censusTract,
+                        country: entry.country,
+                        comment: entry.comment
                     }
                 }
-            });
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated address`
+                    });
+                })
+                .then(actions.reset);
         }
-    }, [patient, currentPage]);
+    };
+
+    const onDeleted = () => {
+        if (selected?.type == 'delete') {
+            remove({
+                variables: {
+                    input: {
+                        patient: selected.item.patient,
+                        id: +selected.item.id
+                    }
+                }
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted address`
+                    });
+                })
+                .then(actions.reset);
+        }
+    };
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -87,7 +233,7 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
         switch (name.toLowerCase()) {
             case 'as of':
                 setAddresses(
-                    addresses?.slice().sort((a: Address, b: Address) => {
+                    addresses?.slice().sort((a: PatientAddress, b: PatientAddress) => {
                         const dateA: any = new Date(a?.asOf);
                         const dateB: any = new Date(b?.asOf);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;
@@ -98,29 +244,23 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                 setAddresses(addresses.slice().sort(withDirection(sortByNestedProperty('type'), type)));
                 break;
             case 'address':
-                setAddresses(addresses.slice().sort(withDirection(sortByAlpha('address1') as any, type)));
+                setAddresses(addresses.slice().sort(withDirection(sortByAlpha('address1'), type)));
                 break;
             case 'city':
-                setAddresses(addresses.slice().sort(withDirection(sortByAlpha('city') as any, type)));
+                setAddresses(addresses.slice().sort(withDirection(sortByAlpha('city'), type)));
                 break;
             case 'state':
                 setAddresses(addresses.slice().sort(withDirection(sortByNestedProperty('state'), type)));
                 break;
             case 'zip':
-                setAddresses(addresses.slice().sort(withDirection(sortByAlpha('zipcode') as any, type)));
+                setAddresses(addresses.slice().sort(withDirection(sortByAlpha('zipcode'), type)));
                 break;
         }
     };
 
     const getAddress = (name: PatientAddress) => {
-        return `${name?.address1 ?? ''} ${name?.address2 ?? ''} ${name?.address2 ?? ''}`;
+        return `${name?.address1 ?? ''} ${name?.address2 ?? ''} ${name?.zipcode ?? ''}`;
     };
-
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
 
     return (
         <>
@@ -128,22 +268,10 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                addModalRef.current?.toggleModal();
-                                setDetails(null);
-                                setIsEditModal(false);
-                            }}
-                            className="display-inline-flex">
+                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add address
                         </Button>
-                        <AddAddressModal
-                            modalHead={isEditModal ? 'Edit - Address' : 'Add - Address'}
-                            modalRef={addModalRef}
-                        />
-                        <DetailsAddressModal data={details} modalRef={detailsModalRef} />
                     </div>
                 }
                 tableHeader={'Address'}
@@ -202,18 +330,7 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                                     <Actions
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                setIsEditModal(true);
-                                                addModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'delete') {
-                                                setIsDeleteModal(true);
-                                                deleteModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'details') {
-                                                setDetails(name);
-                                                detailsModalRef.current?.toggleModal();
-                                            }
+                                            tableActionStateAdapter(actions, name)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -222,39 +339,44 @@ export const AddressesTable = ({ patient }: PatientLabReportTableProps) => {
                         </td>
                     </tr>
                 ))}
-                totalResults={data?.findPatientProfile?.addresses?.total}
+                totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
             />
-            {isDeleteModal && (
-                <Modal
-                    forceAction
-                    ref={deleteModalRef}
-                    id="example-modal-1"
-                    aria-labelledby="modal-1-heading"
-                    className="padding-0"
-                    aria-describedby="modal-1-description">
-                    <ModalHeading
-                        id="modal-1-heading"
-                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                        Delete name
-                    </ModalHeading>
-                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                        <p id="modal-1-description">Are you sure you want to delete this address record?</p>
-                    </div>
-                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                        <ButtonGroup>
-                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
-                                Cancel
-                            </Button>
-                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
-                                Yes, delete
-                            </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </Modal>
+            {selected?.type === 'add' && (
+                <EntryModal modal={modal} id="add-patient-address-modal" title="Add - Address">
+                    <AddressEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                </EntryModal>
+            )}
+            {selected?.type === 'update' && (
+                <EntryModal modal={modal} id="edit-patient-address-modal" title="Edit - Address">
+                    <AddressEntryForm
+                        action={'Edit'}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
+                        onChange={onChanged}
+                    />
+                </EntryModal>
+            )}
+            {selected?.type === 'delete' && (
+                <ConfirmationModal
+                    modal={modal}
+                    title="Delete address"
+                    message="Are you sure you want to delete this address record?"
+                    confirmText="Yes, delete"
+                    onConfirm={onDeleted}
+                    onCancel={actions.reset}
+                />
+            )}
+
+            {selected?.type === 'detail' && (
+                <DetailsModal
+                    title={'View details - Address'}
+                    modal={modal}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
+                />
             )}
         </>
     );

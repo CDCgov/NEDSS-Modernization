@@ -54,6 +54,7 @@ public sealed interface PatientEvent {
 
         public record Address(
             long identifier,
+            Instant asOf,
             String streetAddress1,
             String streetAddress2,
             String city,
@@ -66,15 +67,15 @@ public sealed interface PatientEvent {
         }
 
 
-        public record Phone(long identifier, String type, String use, String number, String extension) {
+        public record Phone(long identifier, Instant asOf, String type, String use, String number, String extension) {
         }
 
 
-        public record Email(long identifier, String type, String use, String address) {
+        public record Email(long identifier, Instant asOf, String type, String use, String address) {
         }
 
 
-        public record Identification(int identifier, String type, String authority, String value) {
+        public record Identification(int identifier, Instant asOf, String type, String authority, String value) {
         }
     }
 

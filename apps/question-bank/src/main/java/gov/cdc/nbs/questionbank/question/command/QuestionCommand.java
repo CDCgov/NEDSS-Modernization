@@ -1,13 +1,40 @@
 package gov.cdc.nbs.questionbank.question.command;
 
 import java.time.Instant;
+import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 
 public sealed interface QuestionCommand {
     long userId();
 
     Instant requestedOn();
 
-    QuestionData questionData();
+    public sealed interface CreateQuestionCommand extends QuestionCommand {
+        QuestionData questionData();
+
+        ReportingData reportingData();
+
+        MessagingData messagingData();
+    }
+
+    public record Update(
+            UpdatableQuestionData questionData,
+
+            String defaultValue,
+            String mask,
+            String fieldLength,
+            boolean allowFutureDates,
+            Long minValue,
+            Long maxValue,
+            Long valueSet,
+            UnitType unitType,
+            String unitValue,
+
+            ReportingData reportingData,
+            MessagingData messagingData,
+            long userId,
+            Instant requestedOn)
+            implements QuestionCommand {
+    }
 
     public record AddTextQuestion(
             // Text specific fields
@@ -26,7 +53,7 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
 
     public record AddDateQuestion(
@@ -45,7 +72,7 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
 
     public record AddNumericQuestion(
@@ -69,7 +96,7 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
 
     public record AddCodedQuestion(
@@ -88,14 +115,24 @@ public sealed interface QuestionCommand {
 
             // Audit info
             long userId,
-            Instant requestedOn) implements QuestionCommand {
+            Instant requestedOn) implements CreateQuestionCommand {
     }
-
     record QuestionData(
             String codeSet,
             String localId,
             String uniqueName,
             String subgroup,
+            String description,
+            String label,
+            String tooltip,
+            Long displayControl,
+            String adminComments,
+            QuestionOid questionOid) {
+    }
+
+    record UpdatableQuestionData(
+            boolean questionInUse,
+            String uniqueName,
             String description,
             String label,
             String tooltip,
@@ -126,5 +163,11 @@ public sealed interface QuestionCommand {
     }
 
 
+
+    public record SetStatus(
+            boolean active,
+            long userId,
+            Instant requestedOn) implements QuestionCommand {
+    }
 
 }

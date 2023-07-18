@@ -1,5 +1,6 @@
-mutation addPatientPhone($input: PhoneInput!){
+mutation addPatientPhone($input: NewPatientPhoneInput!){
     addPatientPhone(input: $input){
-        patientId
+        patient
+        id
     }
 }

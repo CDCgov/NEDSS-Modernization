@@ -8,8 +8,8 @@ import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import lombok.Getter;
@@ -31,7 +31,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -408,10 +408,7 @@ public class Person {
 
         this.nbsEntity = new NBSEntity(patient);
 
-        if (patient.dateOfBirth() != null) {
-            this.birthTime = patient.dateOfBirth().atStartOfDay(ZoneOffset.UTC).toInstant();
-            this.birthTimeCalc = this.birthTime;
-        }
+        resolveDateOfBirth(patient.dateOfBirth());
 
         this.birthGenderCd = patient.birthGender();
         this.currSexCd = patient.currentGender();
@@ -443,6 +440,15 @@ public class Person {
 
     }
 
+    private void resolveDateOfBirth(final LocalDate dateOfBirth) {
+        if (dateOfBirth != null) {
+            this.birthTime = dateOfBirth.atStartOfDay(ZoneOffset.UTC).toInstant();
+        } else {
+            this.birthTime = null;
+        }
+        this.birthTimeCalc = this.birthTime;
+    }
+
     public Person revise(final PatientCommand.Revise revise) {
 
         Person revision = new Person(revise.person(), this.localId);
@@ -463,13 +469,14 @@ public class Person {
         Collection<PersonName> existing = ensureNames();
 
         if (existing.isEmpty()) {
+
             this.firstNm = added.first();
             this.middleNm = added.middle();
             this.lastNm = added.last();
-            this.nmSuffix = added.suffix();
+            this.nmSuffix = Suffix.resolve(added.suffix());
         }
 
-        PersonNameId identifier = new PersonNameId(this.id, (short) (existing.size() + 1));
+        PersonNameId identifier = PersonNameId.from(this.id, existing.size() + 1);
 
         PersonName personName = new PersonName(
             identifier,
@@ -479,7 +486,33 @@ public class Person {
 
         existing.add(personName);
 
+        changed(added);
         return personName;
+    }
+
+
+    public void update(final PatientCommand.UpdateNameInfo info) {
+        PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> name.update(info));
+
+        changed(info);
+    }
+
+    public void delete(final PatientCommand.DeleteNameInfo deleted) {
+        PersonNameId identifier = PersonNameId.from(deleted.person(), deleted.sequence());
+        ensureNames().stream()
+            .filter(name -> Objects.equals(name.getId(), identifier))
+            .findFirst()
+            .ifPresent(name -> delete(deleted, name));
+    }
+
+    private void delete (final PatientCommand.DeleteNameInfo deleted, final PersonName name) {
+        name.delete(deleted);
+        changed(deleted);
     }
 
     private Collection<PersonName> ensureNames() {
@@ -490,7 +523,7 @@ public class Person {
     }
 
     public List<PersonName> getNames() {
-        return this.names == null ? List.of() : List.copyOf(this.names);
+        return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
     }
 
     public EntityId add(final PatientCommand.AddIdentification added) {
@@ -518,11 +551,27 @@ public class Person {
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
-        return this.nbsEntity.add(address);
+        EntityLocatorParticipation added = this.nbsEntity.add(address);
+        changed(address);
+        return added;
+    }
+
+    public void update(final PatientCommand.UpdateAddress address) {
+        this.nbsEntity.update(address);
+        changed(address);
+    }
+
+    public void delete(final PatientCommand.DeleteAddress address) {
+        this.nbsEntity.delete(address);
+        changed(address);
     }
 
     public Collection<PostalEntityLocatorParticipation> addresses() {
         return this.nbsEntity.addresses();
+    }
+
+    public Collection<TeleEntityLocatorParticipation> phones() {
+        return this.nbsEntity.phones();
     }
 
     public Collection<TeleEntityLocatorParticipation> phoneNumbers() {
@@ -545,112 +594,94 @@ public class Person {
         return this.nbsEntity.add(emailAddress);
     }
 
-    public EntityLocatorParticipation add(AddMortalityLocator mortality) {
-        return this.nbsEntity.add(mortality);
+    public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
+        return this.nbsEntity.add(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateAddress address) {
-        return this.nbsEntity.update(address);
+    public void update(final PatientCommand.UpdatePhone phone) {
+        this.nbsEntity.update(phone);
     }
 
-    public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdatePhoneNumber phoneNumber) {
-        return this.nbsEntity.update(phoneNumber);
+    public void delete(final PatientCommand.DeletePhone phone) {
+        this.nbsEntity.delete(phone);
     }
 
     public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {
         return this.nbsEntity.update(emailAddress);
     }
 
-    public boolean delete(final PatientCommand.DeleteMortalityLocator mortality) {
-        return this.nbsEntity.delete(mortality);
-    }
-
-    public boolean delete(final PatientCommand.DeleteAddress address) {
-        return this.nbsEntity.delete(address);
-    }
-
-    public boolean delete(final PatientCommand.DeletePhoneNumber phoneNumber) {
-        return this.nbsEntity.delete(phoneNumber);
-    }
-
     public boolean delete(final PatientCommand.DeleteEmailAddress emailAddress) {
         return this.nbsEntity.delete(emailAddress);
     }
 
-    public void update(PatientCommand.UpdateGeneralInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-        this.setMaritalStatusCd(info.maritalStatus());
-        this.setMothersMaidenNm(info.mothersMaidenName());
-        this.setAdultsInHouseNbr(info.adultsInHouseNumber());
-        this.setChildrenInHouseNbr(info.childrenInHouseNumber());
-        this.setOccupationCd(info.occupationCode());
-        this.setEducationLevelCd(info.educationLevelCode());
-        this.setPrimLangCd(info.primaryLanguageCode());
-        this.setSpeaksEnglishCd(info.speaksEnglishCode());
-        this.setEharsId(info.eharsId());
+    public void update(final PatientCommand.UpdateGeneralInfo info) {
+        this.asOfDateGeneral = info.asOf();
+        this.maritalStatusCd = info.maritalStatus();
+        this.mothersMaidenNm = info.mothersMaidenName();
+        this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
+        this.childrenInHouseNbr =
+            info.childrenInHouseNumber() == null ? null : info.childrenInHouseNumber().shortValue();
+        this.occupationCd = info.occupationCode();
+        this.educationLevelCd = info.educationLevelCode();
+        this.primLangCd = info.primaryLanguageCode();
+        this.speaksEnglishCd = info.speaksEnglishCode();
+        this.eharsId = info.eharsId();
 
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateAdministrativeInfo info) {
-        this.setDescription(info.description());
-        changed(info);
-    }
-
-    public void update(PatientCommand.AddName info) {
-        this.add(info);
-        changed(info);
-    }
-
-    public void update(PatientCommand.UpdateNameInfo info) {
-        this.setAsOfDateGeneral(info.asOf());
-
-        Collection<PersonName> existing = ensureNames();
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-
-        existing.stream().filter(p -> p.getId() != null && p.getId().equals(identifier)).findFirst().ifPresent(p -> {
-            p.setFirstNm(info.first());
-            p.setMiddleNm(info.middle());
-            p.setLastNm(info.last());
-            p.setNmSuffix(info.suffix());
-            p.setNmUseCd(info.type());
-        });
+    public void update(final PatientCommand.UpdateAdministrativeInfo info) {
+        this.asOfDateAdmin = info.asOf();
+        this.description = info.comment();
 
         changed(info);
     }
 
-    public void update(PatientCommand.DeleteNameInfo info) {
-        PersonNameId identifier = new PersonNameId(info.person(), info.personNameSeq());
-        List<PersonName> arraylist = new ArrayList<>(this.names);
-        arraylist.removeIf(item -> (item.getId().equals(identifier)));
-        this.names = arraylist;
+    public void update(
+        final PatientCommand.UpdateBirth birth,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        this.asOfDateSex = birth.asOf();
+        resolveDateOfBirth(birth.bornOn());
+        this.birthGenderCd = Gender.resolve(birth.gender());
+        this.multipleBirthInd = birth.multipleBirth();
+        this.birthOrderNbr = birth.birthOrder() == null ? null : birth.birthOrder().shortValue();
+
+        this.nbsEntity.update(birth, identifierGenerator);
+
+        changed(birth);
+    }
+
+    public void update(final PatientCommand.UpdateGender changes) {
+
+        this.asOfDateSex = changes.asOf();
+        this.currSexCd = Gender.resolve(changes.current());
+        this.sexUnkReasonCd = changes.unknownReason();
+        this.preferredGenderCd = changes.preferred();
+        this.additionalGenderCd = changes.additional();
+
+        changed(changes);
+    }
+
+    public void update(
+        final PatientCommand.UpdateMortality info,
+        final AddressIdentifierGenerator identifierGenerator
+    ) {
+        this.asOfDateMorbidity = info.asOf();
+        this.deceasedIndCd = Deceased.resolve(info.deceased());
+
+        if (Objects.equals(Deceased.Y, this.deceasedIndCd)) {
+            this.deceasedTime = info.deceasedOn() == null
+                ? null :
+                info.deceasedOn().atStartOfDay(ZoneOffset.UTC).toInstant();
+        } else {
+            this.deceasedTime = null;
+        }
+        this.nbsEntity.update(info, identifierGenerator);
+
         changed(info);
     }
 
-    public void update(PatientCommand.UpdateSexAndBirthInfo info) {
-        this.setBirthGenderCd(info.birthGender());
-        this.setCurrSexCd(info.currentGender());
-        this.setBirthTime(info.dateOfBirth().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        this.setAsOfDateSex(info.asOf());
-        this.setAgeReported(info.currentAge());
-        this.setAgeReportedTime(info.ageReportedTime());
-        this.setBirthCityCd(info.birthCity());
-        this.setBirthCntryCd(info.birthCntry());
-        this.setBirthStateCd(info.birthState());
-        this.setBirthOrderNbr(info.birthOrderNbr());
-        this.setMultipleBirthInd(info.multipleBirth());
-        this.setSexUnkReasonCd(info.sexUnknown());
-        this.setAdditionalGenderCd(info.additionalGender());
-        this.setPreferredGenderCd(info.transGenderInfo());
-
-        changed(info);
-    }
-
-    public void update(PatientCommand.UpdateMortalityLocator info) {
-        this.setDeceasedIndCd(info.deceased());
-        this.setDeceasedTime(info.deceasedTime());
-        changed(info);
-    }
     public void delete(
         final PatientCommand.Delete delete,
         final PatientAssociationCountFinder finder) throws PatientHasAssociatedEventsException {

@@ -1,0 +1,6 @@
+query prefixes{
+    prefixes{
+        value
+        name
+    }
+}

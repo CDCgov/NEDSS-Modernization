@@ -1,14 +1,9 @@
 package gov.cdc.nbs.patient.create;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.junit.jupiter.api.Test;
@@ -73,7 +68,7 @@ class PatientCreatedEmitterTest {
             .returns("HIV-Case", PatientEvent.Created::stateHIVCase)
             .returns(131L, PatientEvent.Created::createdBy)
             .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PatientEvent.Created::createdOn)
-            ;
+        ;
 
         assertThat(actual.names()).isEmpty();
         assertThat(actual.races()).isEmpty();
@@ -112,11 +107,12 @@ class PatientCreatedEmitterTest {
         patient.add(
             new PatientCommand.AddName(
                 117L,
+                Instant.parse("2021-05-15T10:00:00Z"),
                 "First",
                 "Middle",
                 "Last",
-                Suffix.JR,
-                PatientInput.NameUseCd.L,
+                "JR",
+                "L",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
             )
@@ -219,13 +215,14 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddAddress(
                 117L,
                 4861L,
+                Instant.parse("2021-07-07T03:06:09Z"),
                 "SA1",
                 "SA2",
-                new City("city-code", "city-description"),
+                "city-description",
                 "State",
                 "Zip",
-                new County("county-code", "county-description"),
-                new Country("country-code", "country-description"),
+                "county-code",
+                "country-code",
                 "Census Tract",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
@@ -244,6 +241,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(4861L, PatientEvent.Created.Address::identifier)
+                    .returns(Instant.parse("2021-07-07T03:06:09Z"),PatientEvent.Created.Address::asOf)
                     .returns("SA1", PatientEvent.Created.Address::streetAddress1)
                     .returns("SA2", PatientEvent.Created.Address::streetAddress2)
                     .returns("city-description", PatientEvent.Created.Address::city)
@@ -285,10 +283,11 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddPhoneNumber(
                 117L,
                 5347L,
-                "Phone Number",
-                "Extension",
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "CP",
                 "MC",
+                "Phone Number",
+                "Extension",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
             )
@@ -306,6 +305,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(5347L, PatientEvent.Created.Phone::identifier)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Phone::asOf)
                     .returns("CP", PatientEvent.Created.Phone::type)
                     .returns("MC", PatientEvent.Created.Phone::use)
                     .returns("Phone Number", PatientEvent.Created.Phone::number)
@@ -343,6 +343,7 @@ class PatientCreatedEmitterTest {
             new PatientCommand.AddEmailAddress(
                 117L,
                 5333L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "AnEmail@email.com",
                 131L,
                 Instant.parse("2020-03-03T10:15:30.00Z")
@@ -361,6 +362,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(5333L, PatientEvent.Created.Email::identifier)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"),PatientEvent.Created.Email::asOf)
                     .returns("NET", PatientEvent.Created.Email::type)
                     .returns("H", PatientEvent.Created.Email::use)
                     .returns("AnEmail@email.com", PatientEvent.Created.Email::address)
@@ -396,6 +398,7 @@ class PatientCreatedEmitterTest {
         patient.add(
             new PatientCommand.AddIdentification(
                 117L,
+                Instant.parse("2017-05-16T11:13:19Z"),
                 "identification-value",
                 "authority-value",
                 "identification-type",
@@ -416,6 +419,7 @@ class PatientCreatedEmitterTest {
             .satisfiesExactly(
                 actual -> assertThat(actual)
                     .returns(1, PatientEvent.Created.Identification::identifier)
+                    .returns(Instant.parse("2017-05-16T11:13:19Z"), PatientEvent.Created.Identification::asOf)
                     .returns("identification-type", PatientEvent.Created.Identification::type)
                     .returns("authority-value", PatientEvent.Created.Identification::authority)
                     .returns("identification-value", PatientEvent.Created.Identification::value)

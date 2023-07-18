@@ -1,14 +1,10 @@
 package gov.cdc.nbs.support;
 
 import com.github.javafaker.Faker;
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.message.enums.Gender;
-import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.support.util.StateCodeUtil;
@@ -82,6 +78,7 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddIdentification(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
                 "GA",
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
@@ -94,11 +91,12 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddName(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 firstName,
                 middleName,
                 lastName,
                 null,
-                PatientInput.NameUseCd.L,
+                "L",
                 id,
                 now));
 
@@ -119,6 +117,7 @@ public class PersonMother {
             new PatientCommand.AddPhoneNumber(
                 id,
                 id + 40000L,
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomPhoneNumber(),
                 null,
                 "PH",
@@ -128,23 +127,24 @@ public class PersonMother {
             )
         );
 
-        String city = faker.address().city();
-
         // Postal locator entry
         person.add(
             new PatientCommand.AddAddress(
                 id,
                 id + 80000L,
+                RandomUtil.getRandomDateInPast(),
                 faker.address().streetAddress(),
                 null,
-                new City(city),
+                faker.address().city(),
                 RandomUtil.getRandomStateCode(),
                 faker.address().zipCode(),
                 null,
                 RandomUtil.country(),
                 null,
                 CREATED_BY_ID,
-                now));
+                now
+            )
+        );
 
         return person;
     }
@@ -165,11 +165,12 @@ public class PersonMother {
         person.add(
             new PatientCommand.AddName(
                 id,
+                RandomUtil.getRandomDateInPast(),
                 "Jane",
                 "S",
                 "Doe",
                 null,
-                PatientInput.NameUseCd.L,
+                "L",
                 CREATED_BY_ID,
                 now));
 
@@ -178,6 +179,7 @@ public class PersonMother {
             new PatientCommand.AddPhoneNumber(
                 id,
                 id + 40000L,
+                RandomUtil.getRandomDateInPast(),
                 "111-222-3333",
                 null,
                 "PH",
@@ -192,13 +194,14 @@ public class PersonMother {
             new PatientCommand.AddAddress(
                 id,
                 id + 80000L,
+                RandomUtil.getRandomDateInPast(),
                 "123 Main St",
                 null,
-                new City("Atlanta"),
+                "Atlanta",
                 StateCodeUtil.stateCodeMap.get("Georgia"),
                 "30301",
-                new County("13089"),
-                new Country("840", "United States"),
+                "13089",
+                "840",
                 null,
                 CREATED_BY_ID,
                 now

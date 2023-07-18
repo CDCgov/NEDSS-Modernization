@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Control, Controller, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldValues, useWatch } from 'react-hook-form';
 import {
     LaboratoryReportEventDateType,
     LaboratoryEventIdType,
@@ -32,6 +32,7 @@ let processingStatusArr: string[] = [];
 
 export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
+    const selectedEventDateType = useWatch({ control, name: 'labeventDateType' });
 
     return (
         <>
@@ -117,13 +118,41 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 })}
             />
 
+            <Controller
+                control={control}
+                name="labfrom"
+                render={({ field: { onChange, value } }) => (
+                    <DatePickerInput
+                        disabled={!selectedEventDateType}
+                        defaultValue={value}
+                        onChange={onChange}
+                        htmlFor={'from'}
+                        label="From"
+                    />
+                )}
+            />
+
+            <Controller
+                control={control}
+                name="labto"
+                render={({ field: { onChange, value } }) => (
+                    <DatePickerInput
+                        disabled={!selectedEventDateType}
+                        defaultValue={value}
+                        onChange={onChange}
+                        htmlFor={'to'}
+                        label="To"
+                    />
+                )}
+            />
+
             <Label htmlFor={'entryMethod'}>
                 Entry method
                 <Controller
                     control={control}
                     name="entryMethod"
                     render={({ field: { onChange, value } }) => {
-                        entryMethodArr = value;
+                        entryMethodArr = value || [];
                         return (
                             <div className="grid-row">
                                 {Object.values(EntryMethod).map((status, index) => (
@@ -160,7 +189,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                     control={control}
                     name="enteredBy"
                     render={({ field: { onChange, value } }) => {
-                        enteredByArr = value;
+                        enteredByArr = value || [];
                         return (
                             <div className="grid-row">
                                 {Object.values(UserType).map((item, index) => (
@@ -199,7 +228,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                     render={({ field: { onChange, value } }) => (
                         <div className="grid-row">
                             {Object.values(EventStatus).map((item, index) => {
-                                eventStatusArr = value;
+                                eventStatusArr = value || [];
                                 return (
                                     <Checkbox
                                         checked={value?.includes(item)}
@@ -234,7 +263,7 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                     control={control}
                     name="processingStatus"
                     render={({ field: { onChange, value } }) => {
-                        processingStatusArr = value;
+                        processingStatusArr = value || [];
                         return (
                             <div className="grid-row">
                                 {Object.values(LaboratoryReportStatus).map((item, index) => (
@@ -264,22 +293,6 @@ export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                     }}
                 />
             </Label>
-
-            <Controller
-                control={control}
-                name="labfrom"
-                render={({ field: { onChange, value } }) => (
-                    <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'from'} label="From" />
-                )}
-            />
-
-            <Controller
-                control={control}
-                name="labto"
-                render={({ field: { onChange, value } }) => (
-                    <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'to'} label="To" />
-                )}
-            />
 
             <SearchCriteriaContext.Consumer>
                 {({ searchCriteria }) => (

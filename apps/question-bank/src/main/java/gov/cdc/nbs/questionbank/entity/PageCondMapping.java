@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
+import gov.cdc.nbs.questionbank.page.PageCommand;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -17,6 +17,7 @@ import java.time.Instant;
 @Table(name = "Page_cond_mapping", catalog = "NBS_ODSE")
 public class PageCondMapping {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "page_cond_mapping_uid", nullable = false)
     private Long id;
 
@@ -38,5 +39,16 @@ public class PageCondMapping {
 
     @Column(name = "last_chg_user_id", nullable = false)
     private Long lastChgUserId;
+
+
+    public PageCondMapping(PageCommand command, WaTemplate template, String conditionCode) {
+        this.waTemplateUid = template;
+        this.conditionCd = conditionCode;
+
+        this.addTime = command.requestedOn();
+        this.addUserId = command.requester();
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.requester();
+    }
 
 }

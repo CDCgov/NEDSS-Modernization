@@ -1,5 +1,20 @@
 package gov.cdc.nbs.questionbank.question.request;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true)
+@JsonSubTypes({
+        @Type(value = CreateQuestionRequest.Text.class, name = "TEXT"),
+        @Type(value = CreateQuestionRequest.Date.class, name = "DATE"),
+        @Type(value = CreateQuestionRequest.Numeric.class, name = "NUMERIC"),
+        @Type(value = CreateQuestionRequest.Coded.class, name = "CODED")
+})
 public sealed interface CreateQuestionRequest {
     String codeSet();
 
@@ -23,6 +38,8 @@ public sealed interface CreateQuestionRequest {
 
     String adminComments();
 
+    QuestionType type();
+
     record Text(
             // General question fields
             String codeSet,
@@ -36,6 +53,7 @@ public sealed interface CreateQuestionRequest {
             ReportingInfo dataMartInfo,
             MessagingInfo messagingInfo,
             String adminComments,
+            QuestionType type,
 
             // Text specific fields
             String mask,
@@ -56,6 +74,7 @@ public sealed interface CreateQuestionRequest {
             ReportingInfo dataMartInfo,
             MessagingInfo messagingInfo,
             String adminComments,
+            QuestionType type,
 
             // Date specific fields
             String mask,
@@ -76,6 +95,7 @@ public sealed interface CreateQuestionRequest {
             ReportingInfo dataMartInfo,
             MessagingInfo messagingInfo,
             String adminComments,
+            QuestionType type,
 
             // Numeric specific fields
             String mask,
@@ -101,6 +121,7 @@ public sealed interface CreateQuestionRequest {
             ReportingInfo dataMartInfo,
             MessagingInfo messagingInfo,
             String adminComments,
+            QuestionType type,
 
             // Coded specific fields
             Long valueSet,

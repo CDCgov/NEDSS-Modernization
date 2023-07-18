@@ -1,6 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +16,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 @AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "Entity_id")
 public class EntityId {
+
+    public static Predicate<EntityId> active() {
+        return input -> Objects.equals(input.getRecordStatusCd(), RecordStatus.ACTIVE.name());
+    }
+
     @EmbeddedId
     private EntityIdId id;
 
@@ -98,6 +106,7 @@ public class EntityId {
         this.nbsEntityUid = nbs;
         this.id = identifier;
 
+        this.asOfDate = added.asOf();
         this.typeCd = added.identificationType();
         this.assigningAuthorityCd = added.assigningAuthority();
         this.rootExtensionTxt = added.identificationNumber();
@@ -112,10 +121,18 @@ public class EntityId {
     }
 
     public void update(final PatientCommand.UpdateIdentification info) {
+        this.asOfDate = info.asOf();
         this.assigningAuthorityCd = info.assigningAuthority();
         this.rootExtensionTxt = info.identificationNumber();
         this.typeCd = info.identificationType();
 
-        this.audit.changed(info.requester(), info.requestedOn(), "Identification Updated");
+        this.audit.changed(info.requester(), info.requestedOn());
+    }
+
+    public void delete(final PatientCommand.DeleteIdentification deleted) {
+        this.recordStatusCd = RecordStatus.INACTIVE.name();
+        this.recordStatusTime = deleted.requestedOn();
+
+        this.audit.changed(deleted.requester(), deleted.requestedOn());
     }
 }

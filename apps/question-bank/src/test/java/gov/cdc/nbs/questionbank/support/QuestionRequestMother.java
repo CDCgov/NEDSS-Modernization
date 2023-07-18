@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.support;
 
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionType;
+import gov.cdc.nbs.questionbank.question.request.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.UnitType;
 import gov.cdc.nbs.questionbank.question.request.CreateQuestionRequest.MessagingInfo;
@@ -36,11 +38,16 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.DATE,
                 "Mask",
                 false);
     }
 
     public static CreateQuestionRequest.Numeric numericRequest() {
+        return numericRequest(UnitType.LITERAL, "Some literal value");
+    }
+
+    public static CreateQuestionRequest.Numeric numericRequest(UnitType unitType, String unitValue) {
         return new CreateQuestionRequest.Numeric(
                 "PHIN",
                 "Test unique Id",
@@ -53,13 +60,14 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.NUMERIC,
                 "NUM",
                 "3",
                 "1",
                 0L,
                 100L,
-                UnitType.LITERAL,
-                "Some literal value");
+                unitType,
+                unitValue);
     }
 
     public static CreateQuestionRequest.Coded codedRequest(long valueSet) {
@@ -75,6 +83,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(true),
                 "Test admin comments",
+                QuestionType.CODED,
                 valueSet,
                 null);
     }
@@ -97,6 +106,7 @@ public class QuestionRequestMother {
                 reportingInfo("custom label", rdbTableName, rdbColumnName, dataMartColumnName),
                 messagingInfo(false),
                 "Test admin comments",
+                QuestionType.TEXT,
                 "Mask",
                 "50",
                 "Test default");
@@ -115,6 +125,7 @@ public class QuestionRequestMother {
                 reportingInfo(),
                 messagingInfo(includedInMessage),
                 "Test admin comments",
+                QuestionType.TEXT,
                 "Mask",
                 "50",
                 "Test default");
@@ -146,4 +157,38 @@ public class QuestionRequestMother {
                 rdbColumnName,
                 dataMartColumnName);
     }
+
+    public static UpdateQuestionRequest update(QuestionType type) {
+        return new UpdateQuestionRequest(
+                "updated unique name",
+                "updated description",
+                type,
+                "updated label",
+                "updated tooltip",
+                123L,
+                "updated admin comments",
+                "updated default value",
+                "TXT_SSN",
+                "12",
+                false,
+                -1L,
+                70L,
+                UnitType.LITERAL,
+                "some literalValue",
+                333L,
+                "updated report label",
+                "UP_DMART_COL",
+                "UP_RDB_COL_NM",
+                true,
+                "Updated msg var id",
+                "updated msg label",
+                "PH_ACCEPTAPPLICATION",
+                false,
+                "CWE");
+    }
+
+    public static UpdateQuestionRequest update() {
+        return update(QuestionType.TEXT);
+    }
+
 }

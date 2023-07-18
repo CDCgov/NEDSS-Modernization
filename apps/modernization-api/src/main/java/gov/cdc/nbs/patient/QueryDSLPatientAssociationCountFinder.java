@@ -22,6 +22,7 @@ class QueryDSLPatientAssociationCountFinder implements PatientAssociationCountFi
             .from(this.revision)
             .where(
                 this.revision.personParentUid.id.eq(patient),
+                // In addition to counting associations we also check that the person is not deleted
                 this.revision.recordStatusCd.ne(RecordStatus.LOG_DEL),
                 this.revision.id.ne(patient)
             ).fetchOne();

@@ -6,10 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Instant;
-import java.util.Objects;
-import java.util.function.Predicate;
 
 @AllArgsConstructor
 @Getter
@@ -18,18 +24,6 @@ import java.util.function.Predicate;
 @Table(name = "Person_race")
 @IdClass(PersonRaceId.class)
 public class PersonRace {
-
-    public static Predicate<PersonRace> inCategory(final String category) {
-        return test -> Objects.equals(test.getRaceCategoryCd(), category);
-    }
-
-    public static Predicate<PersonRace> identifiedBy(final String race) {
-        return test -> Objects.equals(test.getRaceCd(), race);
-    }
-
-    public static Predicate<PersonRace> isDetail() {
-        return test -> !Objects.equals(test.getRaceCategoryCd(), test.getRaceCd());
-    }
 
     @Id
     @Column(name = "race_cd", nullable = false, length = 20)

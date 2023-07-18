@@ -53,13 +53,6 @@
     margin-top: 0 !important;
 }
 
-.usa-alert {
-    position: fixed;
-    top: 15px;
-    animation: mymove 1s;
-    animation-fill-mode: forwards;
-}
-
 .advanced-search-alert {
     .usa-alert {
         position: relative !important;
@@ -69,7 +62,7 @@
 
 @keyframes mymove {
     from {
-        right: -250px;
+        right: -450px;
     }
     to {
         right: 15px;

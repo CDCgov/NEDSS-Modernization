@@ -1,6 +1,6 @@
 type CodeValueGeneralId {
     codeSetNm: String!
-    code: String!
+    code: ID!
 }
 
 type StateCountyCodeValueResults {
@@ -129,12 +129,12 @@ type KeyValuePair {
 }
 
 type CodedValue {
-    value: String!
+    value: ID!
     name: String!
 }
 
 type GroupedCodedValue {
-    value: String!
+    value: ID!
     name: String!
     group: String!
 }
@@ -188,4 +188,14 @@ extend type Query {
     countries: [CodedValue!]!
     states: [CodedValue!]!
     counties(state: String): [GroupedCodedValue!]!
+    nameTypes: [CodedValue!]!
+    prefixes: [CodedValue!]!
+    suffixes: [CodedValue!]!
+    degrees: [CodedValue!]!
+    addressUses: [CodedValue!]!
+    addressTypes: [CodedValue!]!
+    phoneUses: [CodedValue!]!
+    phoneTypes: [CodedValue!]!
+    identificationTypes: [CodedValue!]!
+    assigningAuthorities: [CodedValue!]!
 }

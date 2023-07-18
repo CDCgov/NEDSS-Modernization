@@ -1,0 +1,57 @@
+@import 'settings.scss';
+
+.manage-pages {
+    position: relative;
+    .manage-pages__container {
+        display: flex;
+        flex-direction: row;
+    }
+    .manage-pages__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        button {
+            padding: 9px 16px;
+            height: 40px;
+            p {
+                margin: 0;
+                font-size: 16px;
+            }
+            &:first-of-type {
+                border-radius: 0 4px 4px 0;
+                padding: 9px;
+            }
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+        .input {
+            input {
+                margin: 0;
+                width: 252px;
+            }
+            span {
+                display: none;
+            }
+        }
+    }
+    .manage-pages__table {
+        background-color: $color-white;
+        margin: 1.5rem;
+        border-radius: 3px;
+        border: 1px solid $color-bg-base-lightest;
+        min-width: 96.5%;
+        min-height: calc(100vh - 12rem);
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        thead th {
+            &:nth-of-type(2) {
+                width: 150px;
+            }
+            &:nth-of-type(4) {
+                width: 150px;
+            }
+        }
+    }
+}

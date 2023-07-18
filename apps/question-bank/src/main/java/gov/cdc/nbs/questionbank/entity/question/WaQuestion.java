@@ -12,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import org.hibernate.annotations.Where;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +23,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Where(clause = "data_type in ('DATE', 'TEXT', 'NUMERIC', 'CODED')")
 @Table(name = "WA_question", catalog = "NBS_ODSE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "data_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class WaQuestion {
+
+    public static final String ACTIVE = "Active";
+    public static final String INACTIVE = "Inactive";
 
     @Id
     @Column(name = "wa_question_uid", nullable = false)
@@ -39,6 +45,10 @@ public abstract class WaQuestion {
 
     @Column(name = "question_identifier", nullable = false, length = 50)
     private String questionIdentifier;
+
+    public void setQuestionIdentifier(String questionIdentifier) {
+        this.questionIdentifier = requireNonNull(questionIdentifier, "Question Identifier must not be null");
+    }
 
     @Column(name = "question_oid", length = 150)
     private String questionOid;
@@ -55,8 +65,16 @@ public abstract class WaQuestion {
     @Column(name = "question_label", length = 300)
     private String questionLabel;
 
+    public void setQuestionLabel(String label) {
+        this.questionLabel = requireNonNull(label, "Question label must not be null");
+    }
+
     @Column(name = "question_tool_tip", length = 2000)
     private String questionToolTip;
+
+    public void setQuestionToolTip(String tooltip) {
+        this.questionToolTip = requireNonNull(tooltip, "Question tooltip must not be null");
+    }
 
     @Column(name = "rdb_column_nm", length = 30)
     private String rdbColumnNm;
@@ -92,14 +110,32 @@ public abstract class WaQuestion {
     @Column(name = "question_nm", length = 50)
     private String questionNm;
 
+    public void setQuestionNm(String questionName) {
+        this.questionNm = requireNonNull(questionName, "Question Name must not be null");
+    }
+
+    public void setQuestionNm(QuestionCommand.UpdatableQuestionData command) {
+        if (!command.questionInUse() && getQuestionType().equals("LOCAL")) {
+            setQuestionNm(command.uniqueName());
+        }
+    }
+
     @Column(name = "group_nm", length = 50)
     private String groupNm;
 
     @Column(name = "sub_group_nm", length = 50)
     private String subGroupNm;
 
+    public void setSubGroupNm(String subgroup) {
+        this.subGroupNm = requireNonNull(subgroup, "Question subgroup name must not be null");
+    }
+
     @Column(name = "desc_txt", length = 2000)
     private String descTxt;
+
+    public void setDescTxt(String descTxt) {
+        this.descTxt = requireNonNull(descTxt, "Description must not be null");
+    }
 
     @Column(name = "rpt_admin_column_nm", length = 50)
     private String rptAdminColumnNm;
@@ -134,6 +170,10 @@ public abstract class WaQuestion {
     @Column(name = "nbs_ui_component_uid")
     private Long nbsUiComponentUid;
 
+    public void setNbsUiComponentUid(Long displayControl) {
+        this.nbsUiComponentUid = requireNonNull(displayControl, "Question display control must not be null");
+    }
+
     @Column(name = "standard_question_ind_cd")
     private Character standardQuestionIndCd;
 
@@ -142,6 +182,10 @@ public abstract class WaQuestion {
 
     @Column(name = "question_type", length = 20)
     private String questionType;
+
+    public void setQuestionType(String questionCodeset) {
+        this.questionType = requireNonNull(questionCodeset, "CodeSet must not be null");
+    }
 
     @Column(name = "admin_comment", length = 2000)
     private String adminComment;
@@ -185,13 +229,14 @@ public abstract class WaQuestion {
 
     public abstract String getDataType();
 
-    protected WaQuestion(QuestionCommand command) {
+    public abstract void update(QuestionCommand.Update command);
+
+    protected WaQuestion(CreateQuestionCommand command) {
         // Defaults
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
         setStandardQuestionIndCd('F');
         setEntryMethod("USER");
         setStandardQuestionIndCd('F');
-        setOrderGroupId("2");
         setFutureDateIndCd('F');
 
         QuestionCommand.QuestionData data = command.questionData();
@@ -199,17 +244,22 @@ public abstract class WaQuestion {
             setQuestionOid(data.questionOid().oid());
             setQuestionOidSystemTxt(data.questionOid().system());
         }
-        setQuestionIdentifier(requireNonNull(data.localId(), "LocalId must not be null"));
-        setQuestionLabel(requireNonNull(data.label(), "Label must not be null"));
-        setQuestionToolTip(requireNonNull(data.tooltip(), "Tooltip must not be null"));
-        setQuestionNm(requireNonNull(data.uniqueName(), "UniqueName must not be null"));
-        setSubGroupNm(requireNonNull(data.subgroup(), "Subgroup must not be null"));
-        setDescTxt(requireNonNull(data.description(), "Description must not be null"));
-        setNbsUiComponentUid(requireNonNull(data.displayControl(), "DisplayControl must not be null"));
-        setQuestionType(requireNonNull(data.codeSet(), "CodeSet must not be null"));
+        setQuestionIdentifier(data.localId());
+        setQuestionLabel(data.label());
+        setQuestionToolTip(data.tooltip());
+        setQuestionNm(data.uniqueName());
+        setSubGroupNm(data.subgroup());
+        setDescTxt(data.description());
+        setNbsUiComponentUid(data.displayControl());
+        setQuestionType(data.codeSet());
         setAdminComment(data.adminComments());
     }
 
+    /**
+     * Can be used for both update and create as messaging data can always be changed
+     * 
+     * @param data
+     */
     public void setMessagingData(QuestionCommand.MessagingData data) {
         setNndMsgInd(data.includedInMessage() ? 'T' : 'F');
         if (data.includedInMessage()) {
@@ -220,14 +270,39 @@ public abstract class WaQuestion {
             setQuestionRequiredNnd(data.requiredInMessage() ? 'R' : 'O');
             setQuestionDataTypeNnd(requireNonNull(data.hl7DataType(), "HL7 data type must not be null"));
             setHl7SegmentField("OBX-3.0");
+            setOrderGroupId("2");
+        } else {
+            setQuestionIdentifierNnd(null);
+            setQuestionLabelNnd(null);
+            setStandardNndIndCd(null);
+            setQuestionRequiredNnd(null);
+            setQuestionDataTypeNnd(null);
+            setHl7SegmentField(null);
+            setOrderGroupId(null);
         }
     }
 
-    public void setReportingData(QuestionCommand.ReportingData data) {
+    /**
+     * Used when creating a new entity.
+     * 
+     * @param data
+     */
+    public void setReportingData(QuestionCommand.CreateQuestionCommand command) {
+        var data = command.reportingData();
         setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name must not be null"));
         setGroupNm("GROUP_INV");
         setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label must not be null"));
         setRdbTableNm(requireNonNull(data.defaultRdbTableName(), "Default RDB Table Name must not be null"));
+        setUserDefinedColumnNm(data.dataMartColumnName());
+    }
+
+    public void setReportingData(QuestionCommand.Update command) {
+        var data = command.reportingData();
+        // Can only update rdb column name if the question is not in use
+        if (!command.questionData().questionInUse()) {
+            setRdbColumnNm(requireNonNull(data.rdbColumnName(), "Rdb Column Name must not be null"));
+        }
+        setRptAdminColumnNm(requireNonNull(data.reportLabel(), "Report label must not be null"));
         setUserDefinedColumnNm(data.dataMartColumnName());
     }
 
@@ -237,8 +312,29 @@ public abstract class WaQuestion {
         setLastChgUserId(command.userId());
         setLastChgTime(command.requestedOn());
         setVersionCtrlNbr(1);
-        setRecordStatusCd("Active");
+        setRecordStatusCd(ACTIVE);
         setRecordStatusTime(command.requestedOn());
+    }
+
+    public void update(QuestionCommand.UpdatableQuestionData command) {
+        setQuestionNm(command);
+        setDescTxt(command.description());
+        setQuestionLabel(command.label());
+        setQuestionToolTip(command.tooltip());
+        setNbsUiComponentUid(command.displayControl());
+        setAdminComment(command.adminComments());
+    }
+
+    public void statusChange(QuestionCommand.SetStatus command) {
+        setRecordStatusCd(command.active() ? ACTIVE : INACTIVE);
+        setRecordStatusTime(command.requestedOn());
+        changed(command);
+    }
+
+    protected void changed(QuestionCommand command) {
+        setLastChgUserId(command.userId());
+        setLastChgTime(command.requestedOn());
+        setVersionCtrlNbr(this.getVersionCtrlNbr() + 1);
     }
 
     private String formatAndValidateReportingField(String s) {

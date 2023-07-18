@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { FindPatientProfileQuery, PatientGeneral, useUpdatePatientGeneralInfoMutation } from 'generated/graphql/schema';
-import { useFindPatientProfileGeneral } from './useFindPatientProfileGeneral';
+import { PatientGeneral, useUpdatePatientGeneralInfoMutation } from 'generated/graphql/schema';
+import { PatientProfileGeneralResult, useFindPatientProfileGeneral } from './useFindPatientProfileGeneral';
 import { externalizeDateTime, internalizeDate } from 'date';
 import { maybeDescription, maybeId } from '../coded';
 import { Data, EditableCard } from 'components/EditableCard';
 import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
-
-type PatientLabReportTableProps = {
-    patient: string | undefined;
-};
+import { orNull } from 'utils/orNull';
+import { useAlert } from 'alert/useAlert';
 
 const initialEntry = {
     asOf: null,
-    maritalStatus: '',
+    maritalStatus: null,
     maternalMaidenName: null,
-    adultsInHouse: '',
+    adultsInHouse: null,
     childrenInHouse: null,
     occupation: null,
     educationLevel: null,
@@ -44,25 +42,29 @@ const asView = (general?: PatientGeneral | null): Data[] => [
 ];
 
 const asEntry = (mortality?: PatientGeneral | null): GeneralInformationEntry => ({
-    ...initialEntry,
     asOf: internalizeDate(mortality?.asOf),
     maritalStatus: maybeId(mortality?.maritalStatus),
-    maternalMaidenName: mortality?.maternalMaidenName,
-    adultsInHouse: mortality?.adultsInHouse?.toString(),
-    childrenInHouse: mortality?.childrenInHouse?.toString(),
+    maternalMaidenName: orNull(mortality?.maternalMaidenName),
+    adultsInHouse: mortality?.adultsInHouse ?? null,
+    childrenInHouse: mortality?.childrenInHouse ?? null,
     occupation: maybeId(mortality?.occupation),
     educationLevel: maybeId(mortality?.educationLevel),
     primaryLanguage: maybeId(mortality?.primaryLanguage),
     speaksEnglish: maybeId(mortality?.speaksEnglish),
-    stateHIVCase: mortality?.stateHIVCase
+    stateHIVCase: orNull(mortality?.stateHIVCase)
 });
 
-export const GeneralPatient = ({ patient }: PatientLabReportTableProps) => {
+type Props = {
+    patient: string;
+};
+
+export const GeneralPatient = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [editing, isEditing] = useState<boolean>(false);
     const [tableData, setData] = useState<Data[]>([]);
     const [entry, setEntry] = useState<GeneralInformationEntry>(initialEntry);
 
-    const handleComplete = (data: FindPatientProfileQuery) => {
+    const handleComplete = (data: PatientProfileGeneralResult) => {
         setData(asView(data.findPatientProfile?.general));
         setEntry(asEntry(data.findPatientProfile?.general));
     };
@@ -70,29 +72,32 @@ export const GeneralPatient = ({ patient }: PatientLabReportTableProps) => {
     const handleUpdate = () => {
         refetch();
         isEditing(false);
+        showAlert({
+            type: 'success',
+            header: 'success',
+            message: `Updated General patient information`
+        });
     };
 
     const [getProfile, { refetch }] = useFindPatientProfileGeneral({ onCompleted: handleComplete });
 
     useEffect(() => {
-        if (patient) {
-            getProfile({
-                variables: {
-                    patient: patient
-                }
-            });
-        }
+        getProfile({
+            variables: {
+                patient: patient
+            }
+        });
     }, [patient]);
 
     const [update] = useUpdatePatientGeneralInfoMutation();
 
-    const onUpdate = (updated: any) => {
+    const onUpdate = (updated: GeneralInformationEntry) => {
         update({
             variables: {
                 input: {
                     ...updated,
-                    asOf: externalizeDateTime(updated.asOf),
-                    patientId: patient
+                    patient: +patient,
+                    asOf: externalizeDateTime(updated.asOf)
                 }
             }
         }).then(handleUpdate);

@@ -16,17 +16,22 @@ jest.mock('pages/patient/profile/ethnicity', () => ({
 }));
 
 describe('EthnicityForm', () => {
+    const intial = { asOf: null, ethnicGroup: null, unknownReason: null, detailed: [] };
+
     it('Should renders table component', async () => {
-        const { container } = render(<EthnicityForm />);
+        const { container } = render(<EthnicityForm entry={intial} onChanged={() => {}} onCancel={() => {}} />);
 
         const tableHeader = container.getElementsByClassName('label-text');
         expect(tableHeader[0]).toHaveTextContent('As of:');
     });
 
     it('should submit the form with the selected values', async () => {
-        const setEthnicityForm = jest.fn();
+        const handleChange = jest.fn();
+        const handleCancel = jest.fn();
 
-        const { getByText, getByLabelText } = render(<EthnicityForm onChanged={setEthnicityForm} />);
+        const { getByText, getByLabelText } = render(
+            <EthnicityForm entry={intial} onChanged={handleChange} onCancel={handleCancel} />
+        );
 
         const datepicker = getByLabelText(/As of/);
         fireEvent.change(datepicker, { target: { value: '2022-01-01' } });
@@ -39,7 +44,7 @@ describe('EthnicityForm', () => {
         const saveButton = getByText('Save');
         fireEvent.click(saveButton);
         setTimeout(() => {
-            expect(setEthnicityForm).toHaveBeenCalledWith({
+            expect(handleChange).toHaveBeenCalledWith({
                 datepicker: '2022-01-01',
                 ethnicity: 'ETH1'
             });
@@ -47,14 +52,17 @@ describe('EthnicityForm', () => {
     });
 
     it('should press the cancel button', () => {
-        const setEthnicityForm = jest.fn();
+        const handleChange = jest.fn();
+        const handleCancel = jest.fn();
 
-        const { getByTestId } = render(<EthnicityForm />);
+        const { getByTestId } = render(
+            <EthnicityForm entry={intial} onChanged={handleChange} onCancel={handleCancel} />
+        );
         const cancelButton = getByTestId('cancel-btn');
         fireEvent.click(cancelButton);
 
         setTimeout(() => {
-            expect(setEthnicityForm).toBeCalled();
+            expect(handleCancel).toBeCalled();
         });
     });
 });

@@ -1,17 +1,14 @@
-import { Dropdown, Grid, Label } from '@trussworks/react-uswds';
+import { Dropdown, Grid, Label, ErrorMessage } from '@trussworks/react-uswds';
 
 type SelectProps = {
-    name?: string;
     htmlFor?: string;
     label?: string;
-    id?: string;
     options: { name: string; value: string }[];
-    onChange?: any;
-    defaultValue?: string;
     isMulti?: boolean;
     dataTestid?: string;
     flexBox?: boolean;
-};
+    error?: string;
+} & JSX.IntrinsicElements['select'];
 
 export const SelectInput = ({
     name,
@@ -24,11 +21,14 @@ export const SelectInput = ({
     isMulti,
     dataTestid,
     flexBox,
+    error,
+    onBlur,
     ...props
 }: SelectProps) => {
     const DropDown = () => {
         return (
             <Dropdown
+                onBlur={onBlur}
                 data-testid={dataTestid || 'dropdown'}
                 multiple={isMulti}
                 defaultValue={defaultValue}
@@ -38,7 +38,7 @@ export const SelectInput = ({
                 id={id || ''}
                 name={name || ''}>
                 <>
-                    <option>- Select -</option>
+                    <option value="">- Select -</option>
                     {options?.map((item, index) => (
                         <option key={index} value={item.value}>
                             {item.name}
@@ -53,7 +53,14 @@ export const SelectInput = ({
         <>
             {flexBox ? (
                 <Grid row>
-                    <Grid col={6}>{label && <Label htmlFor={htmlFor || ''}>{label}</Label>}</Grid>
+                    <Grid col={6}>
+                        {label && (
+                            <>
+                                <Label htmlFor={htmlFor || ''}>{label}</Label>
+                                <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>
+                            </>
+                        )}
+                    </Grid>
                     <Grid col={6}>
                         {defaultValue && <DropDown />}
                         {!defaultValue && <DropDown />}

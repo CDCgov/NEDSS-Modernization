@@ -1,30 +1,76 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    Modal,
-    ModalFooter,
-    ModalHeading,
-    ModalRef,
-    ModalToggleButton
-} from '@trussworks/react-uswds';
 import format from 'date-fns/format';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
+import {
+    PatientPhone,
+    useAddPatientPhoneMutation,
+    useDeletePatientPhoneMutation,
+    useUpdatePatientPhoneMutation
+} from 'generated/graphql/schema';
+import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
+import { externalizeDateTime, internalizeDate } from 'date';
+import { TOTAL_TABLE_DATA } from 'utils/util';
+import { orNull } from 'utils/orNull';
 import { SortableTable } from 'components/Table/SortableTable';
 import { Actions } from 'components/Table/Actions';
-import { TOTAL_TABLE_DATA } from 'utils/util';
-import { PhoneEmail } from './phoneEmail';
-import { FindPatientProfileQuery } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, sortByNestedProperty, withDirection } from 'sorting/Sort';
-import { useFindPatientProfilePhoneAndEmail } from './useFindPatientProfilePhoneAndEmail';
-import { AddPhoneEmailModal } from 'pages/patient/profile/phoneEmail/AddPhoneEmailModal';
-import { DetailsPhoneEmailModal } from 'pages/patient/profile/phoneEmail/DetailsPhoneEmailModal';
+import { ConfirmationModal } from 'confirmation';
+import { tableActionStateAdapter, useTableActionState } from 'table-action';
+import { Detail, DetailsModal } from 'pages/patient/profile/DetailsModal';
+import EntryModal from 'pages/patient/profile/entry';
+import { maybeDescription, maybeId } from 'pages/patient/profile/coded';
+import {
+    PatientProfilePhoneEmailResult,
+    useFindPatientProfilePhoneAndEmail
+} from './useFindPatientProfilePhoneAndEmail';
+import { PhoneEmailEntryForm } from './PhoneEmailEntryForm';
+import { PhoneEmailEntry, NewPhoneEmailEntry, UpdatePhoneEmailEntry, isAdd, isUpdate } from './PhoneEmailEntry';
+import { useAlert } from 'alert/useAlert';
 
-type PatientLabReportTableProps = {
-    patient: string | undefined;
+const asDetail = (data: PatientPhone): Detail[] => [
+    { name: 'As of', value: internalizeDate(data.asOf) },
+    { name: 'Type', value: maybeDescription(data.use) },
+    { name: 'Use', value: maybeDescription(data.use) },
+    { name: 'Country code', value: data.countryCode },
+    { name: 'Phone number', value: data.number },
+    { name: 'Extension', value: data.extension },
+    { name: 'Email address', value: data.email },
+    { name: 'Url', value: data.url },
+    { name: 'Additional comments', value: data.comment }
+];
+
+const asEntry = (data: PatientPhone): UpdatePhoneEmailEntry => ({
+    patient: data.patient,
+    id: +data.id,
+    asOf: internalizeDate(data.asOf),
+    type: maybeId(data.type),
+    use: maybeId(data.use),
+    countryCode: orNull(data.countryCode),
+    number: orNull(data.number),
+    extension: orNull(data.extension),
+    email: orNull(data.email),
+    url: orNull(data.url),
+    comment: orNull(data.comment)
+});
+
+const resolveInitialEntry = (patient: string): NewPhoneEmailEntry => ({
+    patient: +patient,
+    asOf: null,
+    type: null,
+    use: null,
+    countryCode: null,
+    number: null,
+    extension: null,
+    email: null,
+    url: null,
+    comment: null
+});
+
+type Props = {
+    patient: string;
 };
 
-export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
+export const PhoneAndEmailTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Type', sortable: true, sort: 'all' },
@@ -32,39 +78,119 @@ export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
         { name: 'Email address', sortable: true, sort: 'all' },
         { name: 'Actions', sortable: false }
     ]);
+    const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const addModalRef = useRef<ModalRef>(null);
-    const detailsModalRef = useRef<ModalRef>(null);
-    const deleteModalRef = useRef<ModalRef>(null);
+    const initial = resolveInitialEntry(patient);
 
-    const [isEditModal, setIsEditModal] = useState<boolean>(false);
-    const [details, setDetails] = useState<any>(undefined);
-    const [isActions, setIsActions] = useState<any>(null);
-    const [phoneEmail, setPhoneEmail] = useState<PhoneEmail[]>([]);
-    const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
+    const { selected, actions } = useTableActionState<PatientPhone>();
 
-    const handleComplete = (data: FindPatientProfileQuery) => {
-        if (data?.findPatientProfile?.phones?.content && data?.findPatientProfile?.phones?.content?.length > 0) {
-            setPhoneEmail(data?.findPatientProfile?.phones?.content);
+    const [isActions, setIsActions] = useState<number | null>(null);
+
+    const modal = useRef<ModalRef>(null);
+
+    useEffect(() => {
+        modal.current?.toggleModal(undefined, selected !== undefined);
+    }, [selected]);
+
+    const [phoneEmail, setPhoneEmail] = useState<PatientPhone[]>([]);
+
+    const handleComplete = (data: PatientProfilePhoneEmailResult) => {
+        setTotal(data?.findPatientProfile?.phones?.total ?? 0);
+        setPhoneEmail(data?.findPatientProfile?.phones?.content ?? []);
+    };
+
+    const [fetch, { refetch }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
+
+    const [add] = useAddPatientPhoneMutation();
+    const [update] = useUpdatePatientPhoneMutation();
+    const [remove] = useDeletePatientPhoneMutation();
+
+    useEffect(() => {
+        fetch({
+            variables: {
+                patient: patient,
+                page: {
+                    pageNumber: currentPage - 1,
+                    pageSize: TOTAL_TABLE_DATA
+                }
+            }
+        });
+    }, [currentPage]);
+
+    const onAdded = (entry: PhoneEmailEntry) => {
+        if (isAdd(entry) && entry.use && entry.type) {
+            add({
+                variables: {
+                    input: {
+                        ...entry,
+                        patient: entry.patient,
+                        asOf: externalizeDateTime(entry.asOf),
+                        use: entry.use,
+                        type: entry.type
+                    }
+                }
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added Phone & Email`
+                    });
+                })
+                .then(actions.reset);
         }
     };
 
-    const [getProfile, { data }] = useFindPatientProfilePhoneAndEmail({ onCompleted: handleComplete });
-
-    useEffect(() => {
-        if (patient) {
-            getProfile({
+    const onChanged = (entry: PhoneEmailEntry) => {
+        if (isUpdate(entry) && entry.use && entry.type) {
+            const updated = entry as UpdatePhoneEmailEntry;
+            update({
                 variables: {
-                    patient: patient,
-                    page3: {
-                        pageNumber: currentPage - 1,
-                        pageSize: TOTAL_TABLE_DATA
+                    input: {
+                        ...entry,
+                        patient: updated.patient,
+                        id: +updated.id,
+                        asOf: externalizeDateTime(entry.asOf),
+                        use: entry.use,
+                        type: entry.type
                     }
                 }
-            });
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated Phone & Email`
+                    });
+                })
+                .then(actions.reset);
         }
-    }, [patient, currentPage]);
+    };
+
+    const onDeleted = () => {
+        if (selected?.type == 'delete') {
+            remove({
+                variables: {
+                    input: {
+                        patient: selected.item.patient,
+                        id: +selected.item.id
+                    }
+                }
+            })
+                .then(() => {
+                    refetch();
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted Phone & Email`
+                    });
+                })
+                .then(actions.reset);
+        }
+    };
 
     const tableHeadChanges = (name: string, type: string) => {
         tableHead.map((item) => {
@@ -82,7 +208,7 @@ export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
         switch (name.toLowerCase()) {
             case 'as of':
                 setPhoneEmail(
-                    phoneEmail?.slice().sort((a: PhoneEmail, b: PhoneEmail) => {
+                    phoneEmail?.slice().sort((a: PatientPhone, b: PatientPhone) => {
                         const dateA: any = new Date(a?.asOf);
                         const dateB: any = new Date(b?.asOf);
                         return type === 'asc' ? dateB - dateA : dateA - dateB;
@@ -101,34 +227,16 @@ export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
         }
     };
 
-    useEffect(() => {
-        if (isDeleteModal) {
-            deleteModalRef.current?.toggleModal();
-        }
-    }, [isDeleteModal]);
-
     return (
         <>
             <SortableTable
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                addModalRef.current?.toggleModal();
-                                setDetails(null);
-                                setIsEditModal(false);
-                            }}
-                            className="display-inline-flex">
+                        <Button type="button" onClick={actions.prepareForAdd} className="display-inline-flex">
                             <Icon.Add className="margin-right-05" />
                             Add phone & email
                         </Button>
-                        <AddPhoneEmailModal
-                            modalHead={isEditModal ? 'Edit - Phone & Email' : 'Add - Phone & Email'}
-                            modalRef={addModalRef}
-                        />
-                        <DetailsPhoneEmailModal data={details} modalRef={detailsModalRef} />
                     </div>
                 }
                 tableHeader={'Phone & email'}
@@ -173,18 +281,7 @@ export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
                                     <Actions
                                         handleOutsideClick={() => setIsActions(null)}
                                         handleAction={(type: string) => {
-                                            if (type === 'edit') {
-                                                setIsEditModal(true);
-                                                addModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'delete') {
-                                                setIsDeleteModal(true);
-                                                deleteModalRef.current?.toggleModal();
-                                            }
-                                            if (type === 'details') {
-                                                setDetails(name);
-                                                detailsModalRef.current?.toggleModal();
-                                            }
+                                            tableActionStateAdapter(actions, phone)(type);
                                             setIsActions(null);
                                         }}
                                     />
@@ -193,40 +290,44 @@ export const PhoneAndEmailTable = ({ patient }: PatientLabReportTableProps) => {
                         </td>
                     </tr>
                 ))}
-                totalResults={data?.findPatientProfile?.phones?.total}
+                totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
                 sortDirectionData={handleSort}
-                currentPageLength={data?.findPatientProfile?.phones?.content?.length || 0}
             />
-            {isDeleteModal && (
-                <Modal
-                    forceAction
-                    ref={deleteModalRef}
-                    id="example-modal-1"
-                    aria-labelledby="modal-1-heading"
-                    className="padding-0"
-                    aria-describedby="modal-1-description">
-                    <ModalHeading
-                        id="modal-1-heading"
-                        className="border-bottom border-base-lighter font-sans-lg padding-2">
-                        Delete name
-                    </ModalHeading>
-                    <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
-                        <Icon.Warning className="font-sans-2xl margin-x-2" />
-                        <p id="modal-1-description">Are you sure you want to delete this phone & email record?</p>
-                    </div>
-                    <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
-                        <ButtonGroup>
-                            <Button type="button" onClick={() => setIsDeleteModal(false)} outline>
-                                Cancel
-                            </Button>
-                            <ModalToggleButton modalRef={deleteModalRef} closer className="padding-105 text-center">
-                                Yes, delete
-                            </ModalToggleButton>
-                        </ButtonGroup>
-                    </ModalFooter>
-                </Modal>
+            {selected?.type === 'add' && (
+                <EntryModal modal={modal} id="add-patient-phone-email-modal" title="Add - Phone & email">
+                    <PhoneEmailEntryForm action={'Add'} entry={initial} onCancel={actions.reset} onChange={onAdded} />
+                </EntryModal>
+            )}
+            {selected?.type === 'update' && (
+                <EntryModal modal={modal} id="edit-patient-phone-email-modal" title="Edit - PhoneEmail">
+                    <PhoneEmailEntryForm
+                        action={'Edit'}
+                        entry={asEntry(selected.item)}
+                        onCancel={actions.reset}
+                        onChange={onChanged}
+                    />
+                </EntryModal>
+            )}
+            {selected?.type === 'delete' && (
+                <ConfirmationModal
+                    modal={modal}
+                    title="Delete Phone & email"
+                    message="Are you sure you want to delete this Phone & email record?"
+                    confirmText="Yes, delete"
+                    onConfirm={onDeleted}
+                    onCancel={actions.reset}
+                />
+            )}
+
+            {selected?.type === 'detail' && (
+                <DetailsModal
+                    title={'View details - Phone & email'}
+                    modal={modal}
+                    details={asDetail(selected.item)}
+                    onClose={actions.reset}
+                />
             )}
         </>
     );

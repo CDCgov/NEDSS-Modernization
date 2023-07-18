@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.profile.address;
 
 import com.github.javafaker.Faker;
+
+import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.graphql.GraphQLPage;
@@ -59,7 +61,7 @@ public class PatientProfileAddressSteps {
             faker.address().city(),
             RandomUtil.getRandomStateCode(),
             RandomUtil.getRandomString(),
-            RandomUtil.country().code(),
+            RandomUtil.country(),
             RandomUtil.getRandomNumericString(15),
             null
         );
@@ -86,7 +88,7 @@ public class PatientProfileAddressSteps {
     public void the_profile_has_associated_addresses() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -98,7 +100,7 @@ public class PatientProfileAddressSteps {
     public void the_profile_has_no_associated_addresses() {
         long patient = this.patients.one().id();
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 
@@ -111,7 +113,7 @@ public class PatientProfileAddressSteps {
         long patient = this.patients.one().id();
 
 
-        PatientProfile profile = new PatientProfile(patient, "local", (short) 1);
+        PatientProfile profile = new PatientProfile(patient, "local", (short) 1, RecordStatus.ACTIVE.toString());
 
         GraphQLPage page = new GraphQLPage(1);
 

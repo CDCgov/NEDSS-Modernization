@@ -5,6 +5,10 @@ public enum Gender {
     F("F", "Female"),
     U("U", "Unknown");
 
+    public static Gender resolve(final String value) {
+        return value == null? null : Gender.valueOf(value);
+    }
+
     private final String value;
     private final String display;
 

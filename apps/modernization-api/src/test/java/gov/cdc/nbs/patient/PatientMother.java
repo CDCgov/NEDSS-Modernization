@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient;
 
 import com.github.javafaker.Faker;
-import gov.cdc.nbs.address.City;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.identity.TestUniqueIdGenerator;
@@ -98,15 +97,14 @@ public class PatientMother {
     public void withAddress(final PatientIdentifier identifier) {
         Person patient = managed(identifier);
 
-        String city = faker.address().city();
-
         patient.add(
             new PatientCommand.AddAddress(
                 patient.getId(),
                 idGenerator.next(),
+                RandomUtil.getRandomDateInPast(),
                 faker.address().streetAddress(),
                 null,
-                new City(city),
+                faker.address().city(),
                 RandomUtil.getRandomStateCode(),
                 faker.address().zipCode(),
                 null,
@@ -125,6 +123,7 @@ public class PatientMother {
         patient.add(
             new PatientCommand.AddIdentification(
                 identifier.id(),
+                RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomNumericString(8),
                 "GA",
                 RandomUtil.getRandomFromArray(IdentificationMother.IDENTIFICATION_CODE_LIST),
@@ -143,6 +142,52 @@ public class PatientMother {
                 identifier.id(),
                 RandomUtil.getRandomDateInPast(),
                 RandomUtil.getRandomFromArray(RaceMother.RACE_LIST),
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    @Transactional
+    public void withName(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddName(
+                identifier.id(),
+                RandomUtil.getRandomDateInPast(),
+                null,
+                faker.name().firstName(),
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.name().lastName(),
+                faker.name().lastName(),
+                null,
+                null,
+                "L",
+                this.settings.createdBy(),
+                this.settings.createdOn()
+            )
+        );
+    }
+
+    @Transactional
+    public void withPhone(final PatientIdentifier identifier) {
+        Person patient = managed(identifier);
+
+        patient.add(
+            new PatientCommand.AddPhone(
+                identifier.id(),
+                idGenerator.next(),
+                RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
+                RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP","TMP"),
+                RandomUtil.getRandomDateInPast(),
+                RandomUtil.getRandomString(),
+                faker.phoneNumber().cellPhone(),
+                faker.phoneNumber().extension(),
+                faker.internet().emailAddress(),
+                faker.internet().url(),
+                RandomUtil.getRandomString(),
                 this.settings.createdBy(),
                 this.settings.createdOn()
             )

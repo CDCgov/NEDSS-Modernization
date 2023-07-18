@@ -1,11 +1,13 @@
 package gov.cdc.nbs.questionbank.question;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
@@ -32,13 +34,13 @@ class QuestionControllerTest {
         when(provider.getCurrentUserDetails()).thenReturn(user);
 
         // and a create text question request is sent
-        CreateQuestionRequest.Text request = QuestionRequestMother.localTextRequest();
+        CreateQuestionRequest request = QuestionRequestMother.localTextRequest();
 
         // and the creator will create the question
-        when(creator.create(user.getId(), request)).thenReturn(19L);
+        when(creator.create(eq(user.getId()), Mockito.any(CreateQuestionRequest.class))).thenReturn(19L);
 
         // when the request is processed
-        CreateQuestionResponse response = controller.createTextQuestion(request);
+        CreateQuestionResponse response = controller.createQuestion(request);
 
         // then a valid response is given
         assertEquals(19L, response.questionId());

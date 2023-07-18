@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Control, Controller, FieldValues } from 'react-hook-form';
+import { Control, Controller, FieldValues, useWatch } from 'react-hook-form';
 import {
     InvestigationEventDateType,
     InvestigationEventIdType,
@@ -21,6 +21,7 @@ type GeneralSearchProps = {
 
 export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
+    const selectedEventDateType = useWatch({ control, name: 'eventDateType' });
 
     return (
         <>
@@ -123,7 +124,13 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 control={control}
                 name="from"
                 render={({ field: { onChange, value } }) => (
-                    <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'from'} label="From" />
+                    <DatePickerInput
+                        disabled={!selectedEventDateType}
+                        defaultValue={value}
+                        onChange={onChange}
+                        htmlFor={'from'}
+                        label="From"
+                    />
                 )}
             />
 
@@ -131,7 +138,13 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                 control={control}
                 name="to"
                 render={({ field: { onChange, value } }) => (
-                    <DatePickerInput defaultValue={value} onChange={onChange} htmlFor={'to'} label="To" />
+                    <DatePickerInput
+                        disabled={!selectedEventDateType}
+                        defaultValue={value}
+                        onChange={onChange}
+                        htmlFor={'to'}
+                        label="To"
+                    />
                 )}
             />
 

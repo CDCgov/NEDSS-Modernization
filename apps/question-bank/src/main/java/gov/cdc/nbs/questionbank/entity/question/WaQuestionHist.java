@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
+import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -17,6 +17,7 @@ import java.time.Instant;
 @Table(name = "WA_question_hist", catalog = "NBS_ODSE")
 public class WaQuestionHist {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_question_hist_uid", nullable = false)
     private Long id;
 
@@ -194,5 +195,84 @@ public class WaQuestionHist {
 
     @Column(name = "coinfection_ind_cd")
     private Character coinfectionIndCd;
+
+    public WaQuestionHist(WaQuestion entity) {
+        this.waQuestionUid = entity;
+        this.dataType = entity.getDataType();
+        this.dataCd = entity.getDataCd();
+        this.dataLocation = entity.getDataLocation();
+        this.questionIdentifier = entity.getQuestionIdentifier();
+        this.questionOid = entity.getQuestionOid();
+        this.questionOidSystemTxt = entity.getQuestionOidSystemTxt();
+        this.questionUnitIdentifier = entity.getQuestionUnitIdentifier();
+        this.dataUseCd = entity.getDataUseCd();
+        this.questionLabel = entity.getQuestionLabel();
+        this.questionToolTip = entity.getQuestionToolTip();
+        this.rdbColumnNm = entity.getRdbColumnNm();
+        this.partTypeCd = entity.getPartTypeCd();
+        this.versionCtrlNbr = entity.getVersionCtrlNbr();
+        this.unitParentIdentifier = entity.getUnitParentIdentifier();
+        this.questionGroupSeqNbr = entity.getQuestionGroupSeqNbr();
+        this.futureDateIndCd = entity.getFutureDateIndCd();
+        this.legacyDataLocation = entity.getLegacyDataLocation();
+        this.repeatsIndCd = entity.getRepeatsIndCd();
+        this.localId = entity.getLocalId();
+        this.questionNm = entity.getQuestionNm();
+        this.groupNm = entity.getGroupNm();
+        this.subGroupNm = entity.getSubGroupNm();
+        this.descTxt = entity.getDescTxt();
+        this.rptAdminColumnNm = entity.getRptAdminColumnNm();
+        this.nndMsgInd = entity.getNndMsgInd();
+        this.questionIdentifierNnd = entity.getQuestionIdentifierNnd();
+        this.questionLabelNnd = entity.getQuestionLabelNnd();
+        this.questionRequiredNnd = entity.getQuestionRequiredNnd();
+        this.questionDataTypeNnd = entity.getQuestionDataTypeNnd();
+        this.hl7SegmentField = entity.getHl7SegmentField();
+        this.orderGroupId = entity.getOrderGroupId();
+        this.recordStatusCd = entity.getRecordStatusCd();
+        this.recordStatusTime = entity.getRecordStatusTime();
+        this.nbsUiComponentUid = entity.getNbsUiComponentUid();
+        this.standardQuestionIndCd = entity.getStandardQuestionIndCd();
+        this.entryMethod = entity.getEntryMethod();
+        this.questionType = entity.getQuestionType();
+        this.adminComment = entity.getAdminComment();
+        this.rdbTableNm = entity.getRdbTableNm();
+        this.userDefinedColumnNm = entity.getUserDefinedColumnNm();
+        this.standardNndIndCd = entity.getStandardNndIndCd();
+        this.legacyQuestionIdentifier = entity.getLegacyQuestionIdentifier();
+        this.otherValueIndCd = entity.getOtherValueIndCd();
+        this.sourceNm = entity.getSourceNm();
+        this.coinfectionIndCd = entity.getCoinfectionIndCd();
+        this.addUserId = entity.getAddUserId();
+        this.addTime = entity.getAddTime();
+        this.lastChgTime = entity.getLastChgTime();
+        this.lastChgUserId = entity.getLastChgUserId();
+
+        setQuestionTypeFields(entity);
+    }
+
+    private void setQuestionTypeFields(WaQuestion entity) {
+        if (entity instanceof TextQuestionEntity tq) {
+            this.mask = tq.getMask();
+            this.fieldSize = tq.getFieldSize();
+            this.defaultValue = tq.getDefaultValue();
+        } else if (entity instanceof NumericQuestionEntity nq) {
+            this.mask = nq.getMask();
+            this.fieldSize = nq.getFieldSize();
+            this.defaultValue = nq.getDefaultValue();
+            this.minValue = nq.getMinValue();
+            this.maxValue = nq.getMaxValue();
+            this.unitTypeCd = nq.getUnitTypeCd();
+            this.unitValue = nq.getUnitValue();
+        } else if (entity instanceof DateQuestionEntity dq) {
+            this.mask = dq.getMask();
+            this.futureDateIndCd = dq.getFutureDateIndCd();
+        } else if (entity instanceof CodedQuestionEntity cq) {
+            this.codeSetGroupId = cq.getCodeSetGroupId();
+            this.defaultValue = cq.getDefaultValue();
+        } else {
+            throw new UpdateQuestionException("Failed to create history entry from entity");
+        }
+    }
 
 }

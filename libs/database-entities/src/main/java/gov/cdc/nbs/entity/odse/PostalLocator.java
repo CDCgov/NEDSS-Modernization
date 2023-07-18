@@ -1,11 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
-import gov.cdc.nbs.address.City;
-import gov.cdc.nbs.address.Country;
-import gov.cdc.nbs.address.County;
+import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientCommand.AddMortalityLocator;
-import gov.cdc.nbs.patient.PatientCommand.UpdateMortalityLocator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Getter
@@ -93,57 +90,68 @@ public class PostalLocator extends Locator {
         this.id = address.id();
         this.streetAddr1 = address.address1();
         this.streetAddr2 = address.address2();
-        applyCity(address.city());
+        this.cityDescTxt = address.city();
         this.stateCd = address.state();
         this.zipCd = address.zip();
-        applyCounty(address.county());
-        applyCountry(address.country());
+        this.cntyCd = address.county();
+        this.cntryCd = address.country();
         this.censusTract = address.censusTract();
     }
 
+    PostalLocator(
+        final long identifier,
+        final PatientCommand.UpdateBirth birth
+    ) {
+        super(birth);
 
-    public PostalLocator(AddMortalityLocator add) {
-        super(add);
-        this.id = add.id();
-        this.cityDescTxt = add.cityOfDeath();
-        this.cntryCd = add.countryOfDeath();
-        this.cntyCd = add.countyOfDeath();
-        this.stateCd = add.stateOfDeath();
+        this.id = identifier;
     }
 
-    public void update(UpdateMortalityLocator update) {
-        this.setCityDescTxt(update.cityOfDeath());
-        this.setStateCd(update.stateOfDeath());
-        this.setCntyCd(update.countyOfDeath());
-        this.setCntryCd(update.countryOfDeath());
-        this.setLastChgTime(update.requestedOn());
-        this.setLastChgUserId(update.requester());
+    PostalLocator(
+        final long identifier,
+        final PatientCommand.UpdateMortality mortality
+    ) {
+        super(mortality);
+
+        this.id = identifier;
     }
 
-    private void applyCity(final City city) {
-        if (city != null) {
-            this.cityDescTxt = city.description();
+    public void update(final PatientCommand.UpdateBirth birth) {
+        this.cityDescTxt = birth.city();
+        this.stateCd = birth.state();
+        this.cntyCd = birth.county();
+        this.cntryCd = birth.country();
+    }
+
+    public void update(final PatientCommand.UpdateMortality mortality) {
+        if (Objects.equals(mortality.deceased(), Deceased.Y.value())) {
+            this.cityDescTxt = mortality.city();
+            this.stateCd = mortality.state();
+            this.cntyCd = mortality.county();
+            this.cntryCd = mortality.country();
+        } else {
+            this.cityDescTxt = null;
+            this.stateCd = null;
+            this.cntyCd = null;
+            this.cntryCd = null;
         }
     }
 
-    private void applyCounty(final County county) {
-        if (county != null) {
-            this.cntyCd = county.code();
-            this.cntyDescTxt = county.description();
-        }
-    }
-
-    private void applyCountry(final Country county) {
-        if (county != null) {
-            this.cntryCd = county.code();
-            this.cntryDescTxt = county.description();
-        }
+    public void update(final PatientCommand.UpdateAddress update) {
+        this.streetAddr1 = update.address1();
+        this.streetAddr2 = update.address2();
+        this.cityDescTxt = update.city();
+        this.stateCd = update.state();
+        this.zipCd = update.zip();
+        this.cntyCd = update.county();
+        this.cntryCd = update.country();
+        this.censusTract = update.censusTract();
     }
 
     @Override
     public String toString() {
         return "PostalLocator{" +
-                "id=" + id +
-                '}';
+            "id=" + id +
+            '}';
     }
 }
