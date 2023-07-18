@@ -18,10 +18,8 @@ import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 @Entity
 @Table(name="Condition_code", catalog="NBS_SRTE")
 public class ConditionCode {
-    @EmbeddedId
-    private ConditionCodeId id;
-
-    @Column(name="condition_cd", length=20)
+    @Id
+    @Column(name="condition_cd", nullable=false, length=20)
     private String conditionCd;
 
     @Column(name="condition_codeset_nm", length=256)
@@ -127,7 +125,6 @@ public class ConditionCode {
     private String rhapActionValue;
 
     public ConditionCode(final ConditionCommand.AddCondition request) {
-        // this.id = new ConditionCodeId(request.getId());
         this.conditionCd = request.getConditionCd();
         this.conditionCodesetNm = request.getConditionCodesetNm();
         this.conditionSeqNm = request.getConditionSeqNm();

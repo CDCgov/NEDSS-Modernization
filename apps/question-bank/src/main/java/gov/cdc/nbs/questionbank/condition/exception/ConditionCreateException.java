@@ -7,6 +7,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ConditionCreateException extends RuntimeException {
     public ConditionCreateException(String message){
         super(message);
-        //same as create question
     }
 }

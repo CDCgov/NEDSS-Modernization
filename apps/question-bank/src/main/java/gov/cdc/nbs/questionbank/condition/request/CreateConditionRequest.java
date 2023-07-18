@@ -6,49 +6,77 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+public class CreateConditionRequest {
 
-public sealed interface CreateConditionRequest {
+    private String conditionCd;
 
-    CodeSystem codeSystemCd();
+    private String conditionCodesetNm;
 
-    String conditionCd();
+    private Integer conditionSeqNm;
 
-    String conditionShortNm();
+    private String assigningAuthorityCd;
 
-    String progAreaCd();
+    private String assigningAuthorityDescText;
 
-    String familyCd();
+    private String codeSystemCd;
 
-    String coinfectionGrpCd();
+    private String codeSystemDescTxt;
 
-    String nndInd();
+    private String conditionDescTxt;
 
-    String reportableMorbidityInd();
+    private String conditionShortNm;
 
-    String reportableSummaryInd();
+    private Instant effectiveFromTime;
 
-    String contactTracingEnableInd();
+    private Instant effectiveToTime;
 
-    //All UI fields for condition
-    record Text(
-        CodeSystem codeSystemCd,
-        String conditionCd,
-        String conditionShortNm,
-        String progAreaCd,
-        String familyCd,
-        String coinfectionGrpCd,
-        String nndInd,
-        String reportableMorbidInd,
-        String reportableSummaryInd,
-        String contactTracingEnableInd
-    )
+    private Integer indentLevelNbr;
 
-    record CodeSystem(
-        String assigningAuthorityCd,
-        String assigningAuthorityDescTxt,
-        String codeSystemCd,
-        String codeSystemDescTxt
-    ) implements CreateConditionRequest {
+    private String investigationFormCd;
 
-    }
+    private String isModifiableInd;
+
+    private Integer nbsUid;
+
+    private String nndInd;
+
+    private String parentIsCd;
+
+    private String progAreaCd;
+
+    private String reportableMorbidityInd;
+
+    private String reportableSummaryInd;
+
+    private String statusCd;
+
+    private Instant statusTime;
+
+    private String nndEntityIdentifier;
+
+    private String nndSummaryEntityIdentifier;
+
+    private String summaryInvestigationFormCd;
+
+    private String contactTracingEnable;
+
+    private String vaccineEnable;
+
+    private String treatmentEnable;
+
+    private String labReportEnable;
+
+    private String morbReportEnable;
+
+    private String portReqIndCd;
+
+    private String familyCd;
+
+    private String coinfectionGrpCd;
+
+    private String rhapParseNbsInd;
+
+    private String rhapActionValue;
 }
