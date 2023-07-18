@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
-import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
+import gov.cdc.nbs.questionbank.condition.repository.ConditionRepository;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ public class ConditionCreator {
     private static final String defaultCodingSys = "2.16.840.1.114222.4.5.277";
 
     @Autowired
-    private ConditionCodeRepository conditionCodeRepository;
+    private ConditionRepository conditionCodeRepository;
 
     public CreateConditionResponse createCondition(CreateConditionRequest request, long userId){
         CreateConditionResponse response = new CreateConditionResponse();

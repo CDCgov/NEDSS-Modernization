@@ -9,6 +9,11 @@ import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 @Data
 @NoArgsConstructor
 public class CreateConditionResponse {
-   
-}
+    private CreateConditionBody body;
+    private HttpStatus status;
 
+
+public record CreateConditionBody (
+    String id
+)
+}
