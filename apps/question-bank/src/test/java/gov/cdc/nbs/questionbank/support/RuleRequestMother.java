@@ -175,6 +175,29 @@ public class RuleRequestMother {
                 targetIdentifiers);
     }
 
+    public static CreateRuleRequest RequireIfRuleTestData_othercomparator() {
+        List<String> targetValuesList = new ArrayList<>();
+        targetValuesList.add("Admission Date");
+        targetValuesList.add("Discharge Date");
+        List<String> targetIdentifiers = new ArrayList<>();
+        targetIdentifiers.add("test123");
+        targetIdentifiers.add("test234");
+
+        return new CreateRuleRequest(
+                123456L,
+                "Require If",
+                "require if ",
+                "test",
+                "INV123",
+                null,
+                true,
+                "Something else",
+                "TestQuestion",
+                targetValuesList,
+                targetIdentifiers);
+    }
+
+
     public static CreateRuleRequest RequireIfRuleTestDataAnySourceIsTrue() {
         List<String> targetValuesList = new ArrayList<>();
         targetValuesList.add("Admission Date");

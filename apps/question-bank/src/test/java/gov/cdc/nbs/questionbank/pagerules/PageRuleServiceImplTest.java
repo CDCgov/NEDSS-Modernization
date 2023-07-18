@@ -171,6 +171,22 @@ class PageRuleServiceImplTest {
 
     }
 
+
+    @Test
+    void shouldGiveRuleExpressionInACorrectFormatForRequireIfElsePart() throws RuleException {
+
+
+        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestData_othercomparator();
+        Long userId = 99L;
+        CreateRuleResponse ruleResponse = pageRuleServiceImpl.createPageRule(userId, ruleRequest);
+
+        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+        assertEquals("Rule Created Successfully", ruleResponse.message());
+
+    }
+
+
+
     @Test
     void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws RuleException {
 
@@ -386,7 +402,8 @@ class PageRuleServiceImplTest {
     void shouldCreateJsForRequireIfFunction() {
         CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestData();
         SourceValuesHelper sourceValuesHelper =
-                new SourceValuesHelper(null, null, "Relationship with Patient/Other infected Patient?", "CON141");
+                new SourceValuesHelper(null, null,
+                        "Relationship with Patient/Other infected Patient?", "CON141");
         List<String> targetTextList = new ArrayList<>();
         targetTextList.add("Named");
         WaRuleMetadata ruleMetadata = new WaRuleMetadata();
