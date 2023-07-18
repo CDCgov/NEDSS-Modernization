@@ -17,9 +17,7 @@ export const AddValueset = () => {
     const [isValuesetCodeNotValid, setIsValuesetCodeNotValid] = useState(false);
     const [isValidationFailure, setIsValidationFailure] = useState(false);
 
-    const token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJubmRfYmF0Y2hfdG9fY2RjIiwiaXNzIjoiZ292LmNkYy5uYnMiLCJleHAiOjE2ODk2ODkwOTgsImlhdCI6MTY4OTY4NzI5OH0.92pYZhtXyhp4CKQtIp20n9zc4twisywPiH7z-uMmAhQ';
-    const authorization = `Bearer ${state.getToken() || token}`;
+    const authorization = `Bearer ${state.getToken()}`;
 
     const handleSubmit = () => {
         const request = {
