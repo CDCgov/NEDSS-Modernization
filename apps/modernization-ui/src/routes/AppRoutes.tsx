@@ -13,7 +13,6 @@ import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatie
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
 import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
 import { Config } from 'config';
-import { AddValueset } from '../apps/page-builder/components/AddValueset/AddValueset';
 import { ValuesetLibrary } from '../apps/page-builder/components/ValuesetLibrary/ValuesetLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
@@ -71,7 +70,6 @@ export const AppRoutes = () => {
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
-                                        <Route path="valueset" element={<AddValueset />} />
                                         <Route path="condition" element={<CreateCondition />} />
                                     </Route>
                                 </Route>
