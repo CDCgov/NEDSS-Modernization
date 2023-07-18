@@ -3,6 +3,8 @@ package gov.cdc.nbs.questionbank.valueset.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -51,7 +53,8 @@ class ValueSetCreatorTest {
 		ValueSetRequest request = getValueSetRequest();
 		Codeset requestCodeSet = new Codeset(valueSetCreator.asAdd(request,userId));
 		CodeSetGroupMetadatum codeSetGrpRequest = new CodeSetGroupMetadatum();
-		request.setCodeSetGroup(codeSetGrpRequest);
+		codeSetGrpRequest.setId(2l);
+		requestCodeSet.setCodeSetGroup(codeSetGrpRequest);
 
 		when(valueSetRepository.save(Mockito.any())).thenReturn(requestCodeSet);
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
@@ -64,6 +67,7 @@ class ValueSetCreatorTest {
 		assertEquals(requestCodeSet.getAddTime(),response.getBody().addTime());
 		assertEquals(requestCodeSet.getAddUserId(),response.getBody().addUserId());
 		assertEquals(requestCodeSet.getValueSetNm(),response.getBody().valueSetNm());
+		assertEquals(requestCodeSet.getCodeSetGroup().getId(),response.getBody().codeSetGroupId());
 		assertEquals(HttpStatus.CREATED, response.getStatus());
 		assertEquals(ValueSetConstants.SUCCESS_MESSAGE,response.getMessage());
 
