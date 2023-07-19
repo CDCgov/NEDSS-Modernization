@@ -34,7 +34,7 @@ class CountryCodedValueFinder {
 
     private CodedValue map(final Tuple tuple) {
         String value = tuple.get(values.id);
-        String name = StandardNameFormatter.formatted(tuple.get(values.codeDescTxt));
+        String name = tuple.get(values.codeDescTxt);
         return new CodedValue(value, name);
     }
 }

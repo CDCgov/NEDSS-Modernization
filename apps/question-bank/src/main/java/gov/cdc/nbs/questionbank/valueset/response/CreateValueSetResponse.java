@@ -23,7 +23,8 @@ public record ValueSetCreateShort (
 	 CodesetId id,
 	 Instant addTime,
 	 Long addUserId,
-	 String valueSetNm
+	 String valueSetNm,
+	 Long codeSetGroupId
 ) {}
 
 
