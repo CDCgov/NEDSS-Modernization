@@ -15,7 +15,11 @@ type EntryProps = {
 };
 
 export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const { handleSubmit, control } = useForm();
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm();
 
     const coded = usePatientPhoneCodedValues();
 
@@ -232,6 +236,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">
