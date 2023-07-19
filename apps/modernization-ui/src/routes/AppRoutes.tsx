@@ -11,6 +11,7 @@ import { Spinner } from 'components/Spinner/Spinner';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
+import { Config } from 'config';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -24,7 +25,7 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
     const location = useLocation();
-    const [loading, setLoading] = useState(location.pathname !== '/login'); // allow login page to load immediately
+    const [loading, setLoading] = useState(location.pathname !== '/dev/login'); // allow login page to load immediately
     const [initializing, setInitializing] = useState(true);
 
     useEffect(() => {
@@ -73,10 +74,24 @@ export const AppRoutes = () => {
                             <Route path="/" element={<Navigate to="/advanced-search" />} />
                         </>
                     )}
-                    {!state.isLoggedIn && !state.isLoginPending && !loading && (
-                        <Route path="*" element={<Navigate to="/login" />} />
+
+                    {Config.enableLogin && (
+                        <>
+                            {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                                <>
+                                    <Route path="/dev/login" element={<Login />} />
+                                    <Route path="*" element={<Navigate to="/dev/login" />} />
+                                </>
+                            )}
+                        </>
                     )}
-                    <Route path="/login" element={<Login />} />
+                    {!Config.enableLogin && (
+                        <>
+                            {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                                <Route path="*" element={<>{(window.location.href = `${Config.nbsUrl}/login`)}</>} />
+                            )}
+                        </>
+                    )}
                 </Routes>
             </ScrollToTop>
         </>
