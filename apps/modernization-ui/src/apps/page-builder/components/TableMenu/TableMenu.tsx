@@ -10,12 +10,13 @@ type Props = {
 export const TableMenu = ({ tableType }: Props) => {
     const navigate = useNavigate();
     const addNew = () => {
-        navigate(`/page-builder/add-new-${tableType}`);
+        navigate(`/page-builder/add/${tableType}`);
     };
 
     return (
         <div className="manage-pages__header">
-            <Input placeholder="Search pages by keyword" type="text" htmlFor="searchbar" id="searchbar" />
+            {/* Search input readonly until search is enabled */}
+            <Input placeholder="Search pages by keyword" type="text" htmlFor="searchbar" id="searchbar" readOnly />
             <Button type="submit">
                 <Icon.Search size={3} />
             </Button>

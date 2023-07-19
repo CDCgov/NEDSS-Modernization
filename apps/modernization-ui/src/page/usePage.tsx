@@ -13,7 +13,11 @@ type Page = {
     current: number;
 };
 
-type Action = { type: 'ready'; total: number; page: number } | { type: 'go-to'; page: number } | { type: 'reload' };
+type Action =
+    | { type: 'ready'; total: number; page: number }
+    | { type: 'go-to'; page: number }
+    | { type: 'reload' }
+    | { type: 'set-page-size'; pageSize: number };
 
 const pageReducer = (state: Page, action: Action) => {
     switch (action.type) {
@@ -23,6 +27,8 @@ const pageReducer = (state: Page, action: Action) => {
             return { ...state, status: Status.Requested, current: action.page };
         case 'reload':
             return { ...state, status: Status.Requested };
+        case 'set-page-size':
+            return { ...state, pageSize: action.pageSize, current: 1, status: Status.Requested };
     }
 };
 
@@ -32,6 +38,7 @@ type PageContextState = {
     reload: () => void;
     request: (page: number) => void;
     ready: (total: number, page: number) => void;
+    setPageSize: (size: number) => void;
 };
 
 const PageContext = createContext<PageContextState | undefined>(undefined);
@@ -50,8 +57,9 @@ const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, children }: PageProviderPro
     const reload = () => dispatch({ type: 'reload' });
     const request = (page: number) => dispatch({ type: 'go-to', page: page });
     const ready = (total: number, page: number) => dispatch({ type: 'ready', total, page });
+    const setPageSize = (pageSize: number) => dispatch({ type: 'set-page-size', pageSize });
 
-    const value = { page, firstPage, reload, request, ready };
+    const value = { page, firstPage, reload, request, ready, setPageSize };
 
     return <PageContext.Provider value={value}>{children}</PageContext.Provider>;
 };

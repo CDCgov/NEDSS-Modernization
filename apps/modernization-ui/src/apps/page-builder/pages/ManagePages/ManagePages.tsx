@@ -1,22 +1,48 @@
-import { useContext, useState } from 'react';
-import { ManagePagesTableContainer } from './ManagePagesTableContainer';
-import './ManagePages.scss';
-import { PageBuilderContext } from 'apps/page-builder/context/PageBuilderContext';
+import { useContext, useEffect, useState } from 'react';
 import { PageBuilder } from '../PageBuilder/PageBuilder';
-import { PageProvider } from 'page';
+import './ManagePages.scss';
+import { PagesContext } from 'apps/page-builder/context/PagesContext';
+import { fetchPageSummaries } from './usePageSummaryAPI';
+import { ManagePagesTable } from './ManagePagesTable';
+import { UserContext } from 'user';
+import { Spinner } from '@cmsgov/design-system';
 
 export const ManagePages = () => {
-    const { pages } = useContext(PageBuilderContext);
-    const [pageSize] = useState(10);
+    const [pages, setPages] = useState(null);
+    const { sortBy, sortDirection, currentPage, pageSize, isLoading, setIsLoading } = useContext(PagesContext);
+    const [searchString] = useState('');
+    const { state } = useContext(UserContext);
+    const token = `Bearer ${state.getToken()}`;
+    const [totalElements, setTotalElements] = useState(0);
+
+    useEffect(() => {
+        setIsLoading(true);
+        // get Pages
+        fetchPageSummaries(token, searchString, sortBy.toLowerCase() + ',' + sortDirection, currentPage, pageSize).then(
+            (data: any) => {
+                setPages(data.content);
+                setTotalElements(data.totalElements);
+                setIsLoading(false);
+            }
+        );
+    }, [searchString, currentPage, pageSize, sortBy, sortDirection]);
+
     return (
         <>
             <PageBuilder page="manage-pages">
                 <div className="manage-pages">
                     <div className="manage-pages__container">
                         <div className="manage-pages__table">
-                            <PageProvider pageSize={pageSize}>
-                                <ManagePagesTableContainer pages={pages} />
-                            </PageProvider>
+                            {pages && !isLoading ? (
+                                <ManagePagesTable
+                                    summaries={pages}
+                                    currentPage={currentPage}
+                                    pageSize={pageSize}
+                                    totalElements={totalElements}
+                                />
+                            ) : (
+                                <Spinner />
+                            )}
                         </div>
                     </div>
                 </div>

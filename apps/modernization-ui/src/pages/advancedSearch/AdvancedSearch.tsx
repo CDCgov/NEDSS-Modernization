@@ -444,6 +444,48 @@ export const AdvancedSearch = () => {
             case 'Coded Result':
                 delete tempLabReportFilter.codedResult;
                 break;
+            case 'Entry Methods':
+                if (tempLabReportFilter?.entryMethods) {
+                    if (tempLabReportFilter?.entryMethods?.length > 1) {
+                        tempLabReportFilter.entryMethods = tempLabReportFilter.entryMethods?.filter(
+                            (item) => item !== value
+                        );
+                    } else {
+                        delete tempLabReportFilter.entryMethods;
+                    }
+                }
+                break;
+            case 'Entered By':
+                if (tempLabReportFilter?.enteredBy) {
+                    if (tempLabReportFilter?.enteredBy?.length > 1) {
+                        tempLabReportFilter.enteredBy = tempLabReportFilter.enteredBy?.filter((item) => item !== value);
+                    } else {
+                        delete tempLabReportFilter.enteredBy;
+                    }
+                }
+                break;
+            case 'Processing Status':
+                if (tempLabReportFilter?.processingStatus) {
+                    if (tempLabReportFilter?.processingStatus?.length > 1) {
+                        tempLabReportFilter.processingStatus = tempLabReportFilter.processingStatus?.filter(
+                            (item) => item !== value
+                        );
+                    } else {
+                        delete tempLabReportFilter.processingStatus;
+                    }
+                }
+                break;
+            case 'Event Status':
+                if (tempLabReportFilter?.eventStatus) {
+                    if (tempLabReportFilter?.eventStatus?.length > 1) {
+                        tempLabReportFilter.eventStatus = tempLabReportFilter.eventStatus?.filter(
+                            (item) => item !== value
+                        );
+                    } else {
+                        delete tempLabReportFilter.eventStatus;
+                    }
+                }
+                break;
         }
 
         handleEventTags(tempLabReportFilter);

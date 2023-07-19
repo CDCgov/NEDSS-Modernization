@@ -1,4 +1,11 @@
 package gov.cdc.nbs.patient.profile;
 
-public record PatientProfile(long id, String local, short version) {
+import gov.cdc.nbs.entity.enums.RecordStatus;
+
+public record PatientProfile(long id, String local, short version, String recordStatusCd) {
+
+    public PatientProfile(long id, String local, short version) {
+        this(id, local, version, RecordStatus.ACTIVE.name());
+    }
+
 }

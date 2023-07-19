@@ -2,7 +2,7 @@ package gov.cdc.nbs.geo.county;
 
 import com.querydsl.core.Tuple;
 import gov.cdc.nbs.entity.odse.QPostalLocator;
-import gov.cdc.nbs.entity.srte.QCodeValueGeneral;
+import gov.cdc.nbs.entity.srte.QStateCountyCodeValue;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ class SimpleCountyTupleMapperTest {
     void should_map_known_county_from_tuple() {
         SimpleCountyTupleMapper.Tables tables = new SimpleCountyTupleMapper.Tables(
             QPostalLocator.postalLocator,
-            QCodeValueGeneral.codeValueGeneral
+            QStateCountyCodeValue.stateCountyCodeValue
         );
 
         Tuple tuple = mock(Tuple.class);
@@ -38,7 +38,7 @@ class SimpleCountyTupleMapperTest {
     void should_map_unknown_county_from_tuple() {
         SimpleCountyTupleMapper.Tables tables = new SimpleCountyTupleMapper.Tables(
             QPostalLocator.postalLocator,
-            QCodeValueGeneral.codeValueGeneral
+            QStateCountyCodeValue.stateCountyCodeValue
         );
 
         Tuple tuple = mock(Tuple.class);
@@ -57,7 +57,7 @@ class SimpleCountyTupleMapperTest {
     void should_not_map_county_without_identifier() {
         SimpleCountyTupleMapper.Tables tables = new SimpleCountyTupleMapper.Tables(
             QPostalLocator.postalLocator,
-            QCodeValueGeneral.codeValueGeneral
+            QStateCountyCodeValue.stateCountyCodeValue
         );
 
         Tuple tuple = mock(Tuple.class);
@@ -72,7 +72,7 @@ class SimpleCountyTupleMapperTest {
     void should_map_known_county_if_present() {
         SimpleCountyTupleMapper.Tables tables = new SimpleCountyTupleMapper.Tables(
             QPostalLocator.postalLocator,
-            QCodeValueGeneral.codeValueGeneral
+            QStateCountyCodeValue.stateCountyCodeValue
         );
 
         Tuple tuple = mock(Tuple.class);
@@ -93,7 +93,7 @@ class SimpleCountyTupleMapperTest {
     void should_map_unknown_county_if_present() {
         SimpleCountyTupleMapper.Tables tables = new SimpleCountyTupleMapper.Tables(
             QPostalLocator.postalLocator,
-            QCodeValueGeneral.codeValueGeneral
+            QStateCountyCodeValue.stateCountyCodeValue
         );
 
         Tuple tuple = mock(Tuple.class);
@@ -113,7 +113,7 @@ class SimpleCountyTupleMapperTest {
     void should_not_map_county_when_not_present() {
         SimpleCountyTupleMapper.Tables tables = new SimpleCountyTupleMapper.Tables(
             QPostalLocator.postalLocator,
-            QCodeValueGeneral.codeValueGeneral
+            QStateCountyCodeValue.stateCountyCodeValue
         );
 
         Tuple tuple = mock(Tuple.class);

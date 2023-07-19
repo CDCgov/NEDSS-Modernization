@@ -20,7 +20,7 @@ import EntryModal from 'pages/patient/profile/entry';
 import { PatientProfileRaceResult, useFindPatientProfileRace } from './useFindPatientProfileRace';
 import { RaceEntry } from './RaceEntry';
 import { RaceEntryForm } from './RaceEntryForm';
-import { AlertType } from 'pages/patientProfile/Demographics';
+import { useAlert } from 'alert/useAlert';
 
 const asDetail = (data: PatientRace): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -44,10 +44,10 @@ const resolveInitialEntry = (patient: string): RaceEntry => ({
 
 type Props = {
     patient: string;
-    handleAlert?: (data: AlertType) => void;
 };
 
-export const RacesTable = ({ patient, handleAlert }: Props) => {
+export const RacesTable = ({ patient }: Props) => {
+    const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>([
         { name: 'As of', sortable: true, sort: 'all' },
         { name: 'Race', sortable: true, sort: 'all' },
@@ -107,7 +107,11 @@ export const RacesTable = ({ patient, handleAlert }: Props) => {
                 }
             })
                 .then(() => {
-                    handleAlert?.({ type: 'Added', table: 'Race' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Added race`
+                    });
                     refetch();
                 })
                 .then(actions.reset);
@@ -127,7 +131,11 @@ export const RacesTable = ({ patient, handleAlert }: Props) => {
                 }
             })
                 .then(() => {
-                    handleAlert?.({ type: 'Updated', table: 'Race' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Updated race`
+                    });
                     refetch();
                 })
                 .then(actions.reset);
@@ -145,7 +153,11 @@ export const RacesTable = ({ patient, handleAlert }: Props) => {
                 }
             })
                 .then(() => {
-                    handleAlert?.({ type: 'Deleted', table: 'Race' });
+                    showAlert({
+                        type: 'success',
+                        header: 'success',
+                        message: `Deleted race`
+                    });
                     refetch();
                 })
                 .then(actions.reset);

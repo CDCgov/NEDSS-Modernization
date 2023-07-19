@@ -1,6 +1,38 @@
+.usa-modal-wrapper {
+    .address-section {
+        display: flex;
+        justify-content: space-between;
+    }
+    .verified-button-group {
+        justify-content: center;
+    }
+}
+
 .content {
     background-color: #f1f6f9;
     width: 100%;
+
+    .address-fields-grid {
+        .button-group {
+            margin-left: 0.45em;
+            margin-right: -0.45em;
+            ul {
+                width: 100%;
+                filter: none;
+                border: 1px solid black;
+                border-top: 0;
+                border-radius: 0;
+
+                .address-suggestion-line {
+                    display: block;
+                }
+
+                .usa-nav__submenu-item .address-suggestion-line:not(:last-child) {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
 }
 .max-width-full {
     max-width: 100% !important;

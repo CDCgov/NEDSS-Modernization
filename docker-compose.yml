@@ -13,6 +13,15 @@ services:
     networks:
       - nbs
 
+  pagebuilder-api:
+    build:
+      context: ./
+      dockerfile: ./apps/question-bank/Dockerfile
+    container_name: pagebuilder-api
+    environment:
+      - NBS_DATASOURCE_SERVER=nbs-mssql
+    networks:
+      - nbs
 
   cdc-address-api:
     image: ghcr.io/cdcgov/phdi/ingestion:latest

@@ -6,11 +6,20 @@ import gov.cdc.nbs.questionbank.question.model.Condition;
 
 public record PageSummary(
         long id,
-        String eventType,
+        EventType eventType,
         String name,
+        String description,
         String status,
-        String messageMappingGuide,
+        MessageMappingGuide messageMappingGuide,
         List<Condition> conditions,
         Instant lastUpdate,
-        String lastUpdateB) {
+        String lastUpdateBy) {
+
+    public record EventType(String value, String name) {
+    }
+
+    public record MessageMappingGuide(String value, String name) {
+    }
 }
+
+

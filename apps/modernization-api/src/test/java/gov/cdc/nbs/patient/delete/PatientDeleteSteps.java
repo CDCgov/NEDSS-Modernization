@@ -12,10 +12,15 @@ import io.cucumber.java.en.When;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+
 public class PatientDeleteSteps {
+    @Autowired
+    EntityManager entityManager;
 
     @Autowired
     TestActiveUser activeUser;
@@ -54,43 +59,41 @@ public class PatientDeleteSteps {
     @Then("the patient is deleted")
     public void the_patient_is_deleted() {
         assertThat(this.result)
-            .isInstanceOf(PatientDeleteResult.PatientDeleteSuccessful.class);
+                .isInstanceOf(PatientDeleteResult.PatientDeleteSuccessful.class);
 
         Person actual = repository.findById(this.result.patient())
-            .orElseThrow();
+                .orElseThrow();
 
         assertThat(actual)
-            .returns(RecordStatus.LOG_DEL, Person::getRecordStatusCd)
-            .extracting(Person::getRecordStatusTime).isNotNull();
+                .returns(RecordStatus.LOG_DEL, Person::getRecordStatusCd)
+                .extracting(Person::getRecordStatusTime).isNotNull();
 
         assertThat(actual)
-            .returns(activeUser.active().id(), Person::getLastChgUserId)
-            .extracting(Person::getLastChgTime).isNotNull();
+                .returns(activeUser.active().id(), Person::getLastChgUserId)
+                .extracting(Person::getLastChgTime).isNotNull();
 
     }
 
     @Then("the patient is not deleted because of an association with an event")
     public void the_patient_is_not_deleted_because_of_an_association_with_an_event() {
         assertThat(this.result)
-            .isInstanceOf(PatientDeleteResult.PatientDeleteFailed.class)
-            .asInstanceOf(InstanceOfAssertFactories.type(PatientDeleteResult.PatientDeleteFailed.class))
-            .satisfies(
-                actual_result -> assertThat(actual_result.reason())
-                    .containsIgnoringCase("Cannot delete patient with Active Revisions")
-            )
-        ;
+                .isInstanceOf(PatientDeleteResult.PatientDeleteFailed.class)
+                .asInstanceOf(InstanceOfAssertFactories.type(PatientDeleteResult.PatientDeleteFailed.class))
+                .satisfies(
+                        actual_result -> assertThat(actual_result.reason())
+                                .containsIgnoringCase("Cannot delete patient with Active Revisions"));
 
         Person actual = repository.findById(this.result.patient())
-            .orElseThrow();
+                .orElseThrow();
 
         assertThat(actual)
-            .returns(RecordStatus.ACTIVE, Person::getRecordStatusCd);
+                .returns(RecordStatus.ACTIVE, Person::getRecordStatusCd);
     }
 
     @Then("I am not allowed to delete the patient")
     public void i_am_not_allowed_to_delete_the_patient() {
         assertThat(accessDeniedException)
-            .hasMessageContaining("Access is denied");
+                .hasMessageContaining("Access is denied");
     }
 
     @When("I delete an unknown patient")
@@ -105,14 +108,22 @@ public class PatientDeleteSteps {
     @Then("there is no patient to delete")
     public void there_is_no_patient_to_delete() {
         assertThat(this.result)
-            .isInstanceOf(PatientDeleteResult.PatientDeleteFailed.class)
-            .asInstanceOf(InstanceOfAssertFactories.type(PatientDeleteResult.PatientDeleteFailed.class))
-            .satisfies(
-                actual_result -> assertThat(actual_result.reason())
-                    .containsIgnoringCase("Unable to find patient")
-                    .contains(String.valueOf(this.result.patient()))
-            )
-        ;
+                .isInstanceOf(PatientDeleteResult.PatientDeleteFailed.class)
+                .asInstanceOf(InstanceOfAssertFactories.type(PatientDeleteResult.PatientDeleteFailed.class))
+                .satisfies(
+                        actual_result -> assertThat(actual_result.reason())
+                                .containsIgnoringCase("Unable to find patient")
+                                .contains(String.valueOf(this.result.patient())));
     }
 
+    @When("the patient has been deleted")
+    public void the_patient_has_been_deleted() {
+        PatientIdentifier patientId = this.patients.one();
+        Optional<Person> maybePerson = repository.findById(patientId.id());
+        if (maybePerson.isPresent()) {
+            Person person = maybePerson.get();
+            person.setRecordStatusCd(RecordStatus.LOG_DEL);
+            repository.save(person);
+        }
+    }
 }

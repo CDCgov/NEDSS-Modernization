@@ -13,9 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 import gov.cdc.nbs.questionbank.phin.client.PhinVadsClient;
-import gov.cdc.nbs.questionbank.question.model.Compose;
-import gov.cdc.nbs.questionbank.question.model.Concept;
-import gov.cdc.nbs.questionbank.question.model.Include;
+import gov.cdc.nbs.questionbank.phin.model.Compose;
+import gov.cdc.nbs.questionbank.phin.model.Concept;
+import gov.cdc.nbs.questionbank.phin.model.Include;
 import gov.cdc.nbs.questionbank.question.response.PhinvadsValueSetByIDData;
 import gov.cdc.nbs.questionbank.question.response.ValueSetByOIDResults;
 

@@ -20,7 +20,7 @@ import io.cucumber.java.en.When;
 public class PageSummarySearchSteps {
 
     @Autowired
-    private PageSummaryController controller;
+    private PageController controller;
 
     @Autowired
     private PageMother pageMother;
@@ -86,9 +86,11 @@ public class PageSummarySearchSteps {
         return switch (field) {
             case "id" -> Long.valueOf(a.id()).compareTo(Long.valueOf(b.id())) * (direction.equals("ASC") ? 1 : -1);
             case "name" -> a.name().compareTo(b.name()) * (direction.equals("ASC") ? 1 : -1);
-            case "eventType" -> a.eventType().compareTo(b.eventType()) * (direction.equals("ASC") ? 1 : -1);
+            case "eventType" -> a.eventType().value().compareTo(b.eventType().value())
+                    * (direction.equals("ASC") ? 1 : -1);
             case "status" -> a.status().compareTo(b.status()) * (direction.equals("ASC") ? 1 : -1);
             case "lastUpdate" -> a.lastUpdate().compareTo(b.lastUpdate()) * (direction.equals("ASC") ? 1 : -1);
+            case "lastUpdateBy" -> a.lastUpdateBy().compareTo(b.lastUpdateBy()) * (direction.equals("ASC") ? 1 : -1);
             default -> throw new IllegalArgumentException();
         };
     }
@@ -97,6 +99,19 @@ public class PageSummarySearchSteps {
     public void search_by_text(String searchText) {
         try {
             holder.setResults(controller.search(new PageSummaryRequest(searchText), PageRequest.ofSize(25)));
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
+        }
+    }
+
+    @When("I search for summaries by {string} and sort by {string} {string}")
+    public void search_by_text_and_sort(String searchText, String field, String direction) {
+        Direction dir = direction.equals("ASC") ? Direction.ASC : Direction.DESC;
+        try {
+            holder.setResults(
+                    controller.search(new PageSummaryRequest(searchText), PageRequest.of(0, 25, dir, field)));
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {

@@ -48,7 +48,7 @@ class CountyCodedValueFinder {
 
     private GroupedCodedValue map(final Tuple tuple) {
         String value = tuple.get(values.id);
-        String name = StandardNameFormatter.formatted(tuple.get(values.codeDescTxt));
+        String name = tuple.get(values.codeDescTxt);
         String group = tuple.get(values.parentIsCd);
         return new GroupedCodedValue(value, name, group);
     }
