@@ -1,7 +1,6 @@
 import {
     Button,
     ButtonGroup,
-    ComboBox,
     ErrorMessage,
     FormGroup,
     Grid,
@@ -37,15 +36,6 @@ export interface InputAddressFields {
     country: string;
 }
 
-interface SmartyAutocompleteFields {
-    street_line: string;
-    secondary: string;
-    city: string;
-    state: string;
-    zipcode: string;
-    entries: number;
-}
-
 export interface AddressSuggestion {
     street_line: string;
     secondary: string;
@@ -77,9 +67,6 @@ export default function AddressFields({
     const [unverified, setUnverified] = useState<boolean>(false);
     const verifiedModalRef = useRef<ModalRef>(null);
     const unverifiedModalRef = useRef<ModalRef>(null);
-    const [addressTypeAheadQuery, setAddressTypeAheadQuery] = useState<string>('');
-
-    const [addressSuggestions, setAddressSuggestions] = useState<ComboBoxOption[]>([]);
 
     const setCounty = (results: FindAllCountyCodesForStateQuery) => {
         if (results?.findAllCountyCodesForState) {
@@ -114,57 +101,18 @@ export default function AddressFields({
         setIsTractValid((document.getElementById('census-tract') as HTMLInputElement).validity.valid);
     }
 
-    const fetchAddressSuggestions = async () => {
-        if (addressTypeAheadQuery.length > 2) {
+    async function populateSuggestions(eve: ChangeEvent<HTMLInputElement>) {
+        if (eve.target.value.length > 2) {
             const data = await fetch(
-                `https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${addressTypeAheadQuery}`,
+                `https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${eve.target.value}`,
                 {
                     headers: {
                         referer: 'localhost'
                     }
                 }
             ).then((resp) => resp.json());
-            setAddressSuggestions(
-                data.suggestions.map((suggestion: SmartyAutocompleteFields) => ({
-                    label: suggestion.street_line,
-                    value: JSON.stringify(suggestion)
-                }))
-            );
+            setSuggestions(data.suggestions);
         }
-    };
-
-    function populateSuggestions(eve: ChangeEvent<HTMLInputElement>) {
-        // TODO- this will come from the api
-        const mockSuggestionsResp = {
-            suggestions: [
-                {
-                    street_line: '7927 Jones Branch Dr',
-                    secondary: '',
-                    city: 'Mc Lean',
-                    state: 'VA',
-                    zipcode: '22102',
-                    entries: 0
-                },
-                {
-                    street_line: '7927 Jones Branch Dr',
-                    secondary: 'Ste',
-                    city: 'Mc Lean',
-                    state: 'VA',
-                    zipcode: '22102',
-                    entries: 38
-                },
-                {
-                    street_line: '7927 Jones Rd',
-                    secondary: '',
-                    city: 'Cleveland',
-                    state: 'OH',
-                    zipcode: '44105',
-                    entries: 0
-                }
-            ]
-        };
-        eve.target.value;
-        setSuggestions(mockSuggestionsResp.suggestions);
         setShowSuggestions(true);
     }
 
