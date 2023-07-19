@@ -143,24 +143,20 @@ export default function AddressFields({
         switch (event.key) {
             case 'Enter' || 'enter': {
                 event.preventDefault();
-                // Do verification here and show either unverified or verified modal based on it.
-                // mock verified vs unverified by just checking for a certaiun number
-                // TODO will change to api fetch once ready.
-                if (event.target.value.includes('1234')) {
-                    setSuggestions([
-                        {
-                            street_line: '1234 Salem St',
-                            secondary: '',
-                            city: 'Mc Lean',
-                            state: 'VA',
-                            zipcode: '22102',
-                            entries: 0
+                fetch(
+                    `https://www.smarty.com/products/us-address-verification?key=166215385741384990&address-type=us-street-components&street=${addressFields.streetAddress1}&street2=${addressFields.streetAddress2}&city=${addressFields.city}&state=${addressFields.state}&zipcode=${addressFields.zip}`,
+                    {
+                        headers: {
+                            referer: 'localhost'
                         }
-                    ]);
-                    setVerified(true);
-                } else {
-                    setUnverified(true);
-                }
+                    }
+                )
+                    .then((resp) => resp.json())
+                    .then((data) => {
+                        setSuggestions([...data]);
+                        setVerified(true);
+                        setShowSuggestions(false);
+                    });
                 setShowSuggestions(false);
             }
         }
