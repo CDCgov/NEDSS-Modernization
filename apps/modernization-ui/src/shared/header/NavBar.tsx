@@ -1,8 +1,8 @@
 import { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Config } from '../../config';
 import { UserContext } from '../../providers/UserContext';
 import './NavBar.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 // eslint-disable-next-line no-undef
 const NBS_URL = Config.nbsUrl;
@@ -10,9 +10,7 @@ const NBS_URL = Config.nbsUrl;
 export default function NavBar() {
     const { state, logout } = useContext(UserContext);
     const location = useLocation();
-    const nav = useNavigate();
     const logoutClick = () => {
-        nav('/login');
         logout();
     };
     return (
