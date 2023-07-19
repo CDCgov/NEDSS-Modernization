@@ -3,7 +3,7 @@ import java.time.Instant;
 
 public sealed interface ConditionCommand {
     public record AddCondition(
-        String conditionCd,
+        String id,
         String conditionCodesetNm,
         Integer conditionSeqNum,
         String assigningAuthorityCd,
@@ -38,22 +38,6 @@ public sealed interface ConditionCommand {
         String coinfectionGrpCd,
         String rhapParseNbsInd,
         String rhapActionValue
-    ) implements ConditionCommand {
+    ) implements ConditionCommand {}
 
-    }
-
-    record CodeCondition(
-        String codeSystemCd,
-        String codeSystemDescTxt,
-        String code,
-        String codeDescTxt,
-        String codeSystemVersionId,
-        String conditionCd,
-        String diseaseNm,
-        String statusCd,
-        Instant statusTime,
-        Integer nbsUid,
-        Instant effectiveFromTime,
-        Instant effectiveToTime){
-    }
 }

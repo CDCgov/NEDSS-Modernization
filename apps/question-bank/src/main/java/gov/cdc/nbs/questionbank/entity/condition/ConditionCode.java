@@ -1,18 +1,17 @@
 package gov.cdc.nbs.questionbank.entity.condition;
 
+import java.io.Serializable;
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import gov.cdc.nbs.questionbank.condition.command.ConditionCommand;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -73,10 +72,6 @@ public class ConditionCode implements Serializable {
     @Column(name = "parent_is_cd", length = 20)
     private String parentIsCd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prog_area_cd")
-    private ProgramAreaCode progAreaCd;
-
     @Column(name = "reportable_morbidity_ind", nullable = false)
     private Character reportableMorbidityInd;
 
@@ -122,24 +117,6 @@ public class ConditionCode implements Serializable {
     @Column(name = "coinfection_grp_cd", length = 20)
     private String coinfectionGrpCd;
 
-    @OneToMany(mappedBy = "conditionCd")
-    private Set<LdfPageSet> ldfPageSets = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "defaultConditionCd")
-    private Set<LabResult> labResults = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "conditionCd")
-    private Set<LoincSnomedCondition> loincSnomedConditions = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "defaultConditionCd")
-    private Set<LabTest> labTests = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "id.snomedCd")
-    private Set<SnomedCondition> snomedConditions = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "conditionCd")
-    private Set<LoincCondition> loincConditions = new LinkedHashSet<>();
-
     public ConditionCode(final ConditionCommand.AddCondition request) {
         this.id = request.getId();
         this.conditionCodesetNm = request.getConditionCodesetNm();
@@ -177,5 +154,4 @@ public class ConditionCode implements Serializable {
         this.rhapParseNbsInd = request.getRhapParseNbsInd();
         this.rhapActionValue = request.getRhapActionValue();
     }
-
 }

@@ -69,7 +69,7 @@ public class ConditionCreator {
 
     public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId) {
         return new CreateConditionCommand.AddCondition(
-            request.getConditionCd(),
+            request.getId(),
             request.getConditionCodesetNm(),
             request.getConditionSeqNum(),
             request.getAssigningAuthorityCd(),
