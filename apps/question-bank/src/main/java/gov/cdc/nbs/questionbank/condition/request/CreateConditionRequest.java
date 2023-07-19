@@ -1,10 +1,10 @@
 package gov.cdc.nbs.questionbank.condition.request;
 
 import java.time.Instant;
-import gov.cdc.nbs.questionbank.entity.condition.CondtionCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 
 @Data
 @NoArgsConstructor

@@ -8,5 +8,6 @@ import gov.cdc.nbs.entity.srte.CountryCode;
 
 public interface ConditionCodeRepository
         extends JpaRepository<ConditionCode, String>, QuerydslPredicateExecutor<CountryCode> {
+                
 
 }

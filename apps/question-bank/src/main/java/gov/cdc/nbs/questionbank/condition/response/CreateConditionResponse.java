@@ -1,10 +1,9 @@
 package gov.cdc.nbs.questionbank.condition.response;
 
 import org.springframework.http.HttpStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
+import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +14,6 @@ public class CreateConditionResponse {
 
 public record CreateConditionBody (
     String id
-)
+) {}
+
 }
