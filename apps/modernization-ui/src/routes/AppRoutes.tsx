@@ -11,6 +11,7 @@ import { Spinner } from 'components/Spinner/Spinner';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
 import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
+import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
 import { Config } from 'config';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
@@ -67,6 +68,7 @@ export const AppRoutes = () => {
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
+                                        <Route path="condition" element={<CreateCondition />} />
                                     </Route>
                                 </Route>
                             </Route>
