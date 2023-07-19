@@ -21,7 +21,6 @@
         "lodash.debounce": "^4.0.8",
         "multiselect-react-dropdown": "^2.0.25",
         "react": "^17",
-        "react-bootstrap-typeahead": "^6.2.3",
         "react-dom": "^17",
         "react-hook-form": "^7.36.1",
         "react-refresh": "^0.14.0",

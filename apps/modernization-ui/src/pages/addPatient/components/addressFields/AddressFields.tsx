@@ -1,15 +1,18 @@
-import { ErrorMessage, FormGroup, Grid, Label, TextInput } from '@trussworks/react-uswds';
+import { ComboBox, ErrorMessage, FormGroup, Grid, Label, TextInput } from '@trussworks/react-uswds';
 import FormCard from '../../../../components/FormCard/FormCard';
 import { Controller } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import {
     CountyCode,
     FindAllCountyCodesForStateQuery,
     useFindAllCountyCodesForStateLazyQuery
 } from 'generated/graphql/schema';
-import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
+import './AddressFields.scss';
+import { ComboBoxOption } from '@trussworks/react-uswds/lib/components/forms/ComboBox/ComboBox';
 
 export interface InputAddressFields {
     streetAddress1: string;
@@ -29,10 +32,6 @@ interface SmartyAutocompleteFields {
     state: string;
     zipcode: string;
     entries: number;
-}
-
-interface SmartyResponse {
-    suggestions: SmartyAutocompleteFields[];
 }
 
 export default function AddressFields(
@@ -55,9 +54,10 @@ export default function AddressFields(
 
     const [counties, setCounties] = useState<CountyCode[]>([]);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [addressTypeAheadQuery, setAddressTypeAheadQuery] = useState<string>('');
 
-    const [options, setOptions] = useState<SmartyAutocompleteFields[]>([]);
+    const [addressSuggestions, setAddressSuggestions] = useState<ComboBoxOption[]>([]);
+
     const setCounty = (results: FindAllCountyCodesForStateQuery) => {
         if (results?.findAllCountyCodesForState) {
             const counties: CountyCode[] = [];
@@ -77,47 +77,79 @@ export default function AddressFields(
         setIsTractValid((document.getElementById('census-tract') as HTMLInputElement).validity.valid);
     }
 
-    const getOnSearch = (query: string) => {
-        setIsLoading(true);
-        fetch(`https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${query}`, {
-            headers: {
-                referer: 'localhost'
-            }
-        })
-            .then((resp) => resp.json())
-            .then(({ suggestions }: SmartyResponse) => {
-                setOptions(suggestions);
-                setIsLoading(false);
-            });
+    const fetchAddressSuggestions = async () => {
+        if (addressTypeAheadQuery.length > 2) {
+            const data = await fetch(
+                `https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${addressTypeAheadQuery}`,
+                {
+                    headers: {
+                        referer: 'localhost'
+                    }
+                }
+            ).then((resp) => resp.json());
+            setAddressSuggestions(
+                data.suggestions.map((suggestion: SmartyAutocompleteFields) => ({
+                    label: suggestion.street_line,
+                    value: JSON.stringify(suggestion)
+                }))
+            );
+        }
     };
 
-    const renderAddressForSelection = (suggestion: SmartyAutocompleteFields) => (
-        <>
-            <span>
-                {suggestion?.street_line}
-                <br />
-                {/*{suggestion.secondary}*/}
-                {/*<br />*/}
-                {/*{suggestion.city}&nbsp;{suggestion.state},&nbsp;{suggestion.zipcode}*/}
-            </span>
-        </>
-    );
+    useEffect(() => {
+        fetchAddressSuggestions().catch(console.error);
+    }, [addressTypeAheadQuery]);
 
-    // @ts-ignore
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
                 <Grid row>
                     <Grid col={6}>
                         <Label htmlFor="mailingAddress1">Street address 1</Label>
-                        <AsyncTypeahead
-                            id="mailingAddress1"
-                            isLoading={isLoading}
-                            labelKey="toString"
-                            onSearch={getOnSearch}
-                            options={options}
-                            renderMenuItemChildren={renderAddressForSelection}
-                        />
+                        <SearchCriteriaContext.Consumer>
+                            {({ searchCriteria }) => {
+                                return (
+                                    <Controller
+                                        control={control}
+                                        name="streetAddress1"
+                                        render={({ field: { onChange, value } }) => (
+                                            <ComboBox
+                                                id={'streetAddress1'}
+                                                name={'streetAddress1'}
+                                                onChange={(value) => {
+                                                    if (value) {
+                                                        const smartyAddress: SmartyAutocompleteFields =
+                                                            JSON.parse(value);
+                                                        const convertedStateValue: string =
+                                                            searchCriteria.states.find(
+                                                                (state) => state.stateNm === smartyAddress.state
+                                                            )?.id || '';
+                                                        console.log(`smartyAddress: ${smartyAddress}`);
+                                                        console.log(`convertedStateValue: ${convertedStateValue}`);
+                                                        updateCallback({
+                                                            ...addressFields,
+                                                            streetAddress1: smartyAddress.street_line,
+                                                            streetAddress2: smartyAddress.secondary,
+                                                            city: smartyAddress.city,
+                                                            state: convertedStateValue,
+                                                            zip: smartyAddress.zipcode
+                                                        });
+                                                        onChange(value);
+                                                    }
+                                                }}
+                                                defaultValue={value}
+                                                inputProps={{
+                                                    onChange: (e) => {
+                                                        setAddressTypeAheadQuery(e.target.value);
+                                                    }
+                                                }}
+                                                options={addressSuggestions}
+                                            />
+                                        )}
+                                    />
+                                );
+                            }}
+                        </SearchCriteriaContext.Consumer>
                     </Grid>
                 </Grid>
                 <Grid row>
@@ -171,6 +203,7 @@ export default function AddressFields(
                                             <SelectInput
                                                 onChange={(e: any) => {
                                                     if (e.target.value) {
+                                                        console.log(`e.target.value: ${e.target.value}`);
                                                         getAllStateCounty({
                                                             variables: {
                                                                 stateCode: e.target.value,
