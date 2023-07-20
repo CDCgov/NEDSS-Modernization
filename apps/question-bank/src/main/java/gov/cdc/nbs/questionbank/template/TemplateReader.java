@@ -29,7 +29,7 @@ public class TemplateReader {
 
 	public Page<Template> searchTemplate(TemplateSearchRequest search, Pageable pageable) {
 
-		List<Template> pageResult = new ArrayList<Template>();
+		List<Template> pageResult = new ArrayList<>();
 		if (simpleSearch(search)) {
 			Optional<WaTemplate> result = templateRepository.findByIdAndTemplateTypeIn(search.getId(),
 					search.getTemplateType());
@@ -50,16 +50,13 @@ public class TemplateReader {
 	}
 
 	public boolean simpleSearch(TemplateSearchRequest search) {
-		if ((search.getId() > 0l && search.getTemplateType() != null) && search.getConditionCd() == null
+		return ((search.getId() > 0l && search.getTemplateType() != null) && search.getConditionCd() == null
 				&& search.getDataMartNm() == null && search.getRecordStatusCd() == null
-				&& search.getTemplateNm() == null) {
-			return true;
-		}
-		return false;
+				&& search.getTemplateNm() == null) ? true : false;
 	}
 
 	private List<Template> toTempate(Page<WaTemplate> templates) {
-		List<Template> results = new ArrayList<Template>();
+		List<Template> results = new ArrayList<>();
 
 		for (WaTemplate aWaTemplate : templates.getContent()) {
 			results.add(convertTemplate(aWaTemplate));

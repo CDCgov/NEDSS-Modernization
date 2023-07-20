@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.cdc.nbs.questionbank.template.request.TemplateSearchRequest;
 import gov.cdc.nbs.questionbank.template.response.Template;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
 import lombok.RequiredArgsConstructor;
 
 @RestController
