@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.template.request;
 import java.util.List;
 
 
-import lombok.Data;
+
 
 
 public record TemplateSearchRequest (
