@@ -14,7 +14,6 @@ type Props = {
 export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => {
     const navigate = useNavigate();
     const [keywords, setKeywords] = useState<string>('');
-    const clearX = document.getElementById('searchbar');
     const addNew = () => {
         navigate(`/page-builder/add/${tableType}`);
     };
@@ -23,11 +22,6 @@ export const TableMenu = ({ tableType, searchQuery, setSearchQuery }: Props) => 
             setSearchQuery(keywords);
         }
     };
-    if (clearX) {
-        clearX.addEventListener('search', (e) => {
-            console.log(e);
-        });
-    }
     useEffect(() => {
         if (searchQuery && searchQuery !== '') {
             setKeywords(searchQuery);

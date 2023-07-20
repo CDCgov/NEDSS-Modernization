@@ -27,7 +27,7 @@ const tableColumns = [
 ];
 
 type Props = {
-    summaries: PageSummary[];
+    summaries?: PageSummary[];
     currentPage: number;
     pageSize: number;
     totalElements: number;

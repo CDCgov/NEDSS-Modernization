@@ -5,12 +5,10 @@ import { PagesContext } from 'apps/page-builder/context/PagesContext';
 import { fetchPageSummaries } from './usePageSummaryAPI';
 import { ManagePagesTable } from './ManagePagesTable';
 import { UserContext } from 'user';
-import { Spinner } from '@cmsgov/design-system';
 
 export const ManagePages = () => {
-    const [pages, setPages] = useState(null);
-    const { searchQuery, sortBy, sortDirection, currentPage, pageSize, isLoading, setIsLoading } =
-        useContext(PagesContext);
+    const [pages, setPages] = useState([]);
+    const { searchQuery, sortBy, sortDirection, currentPage, pageSize, setIsLoading } = useContext(PagesContext);
     const { state } = useContext(UserContext);
     const token = `Bearer ${state.getToken()}`;
     const [totalElements, setTotalElements] = useState(0);
@@ -33,16 +31,12 @@ export const ManagePages = () => {
                 <div className="manage-pages">
                     <div className="manage-pages__container">
                         <div className="manage-pages__table">
-                            {pages && !isLoading ? (
-                                <ManagePagesTable
-                                    summaries={pages}
-                                    currentPage={currentPage}
-                                    pageSize={pageSize}
-                                    totalElements={totalElements}
-                                />
-                            ) : (
-                                <Spinner />
-                            )}
+                            <ManagePagesTable
+                                summaries={pages}
+                                currentPage={currentPage}
+                                pageSize={pageSize}
+                                totalElements={totalElements}
+                            />
                         </div>
                     </div>
                 </div>
