@@ -20,9 +20,6 @@ export const ValuesetLibrary = () => {
                     <li className={activeTab == 'local' ? 'active' : ''} onClick={() => handleTab('local')}>
                         Search Local
                     </li>
-                    <li className={activeTab == 'phin' ? 'active' : ''} onClick={() => handleTab('phin')}>
-                        Search PHIN VADS
-                    </li>
                     <li className={activeTab == 'recent' ? 'active' : ''} onClick={() => handleTab('recent')}>
                         Recently Created
                     </li>

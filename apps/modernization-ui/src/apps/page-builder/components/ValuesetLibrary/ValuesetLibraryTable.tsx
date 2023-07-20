@@ -1,14 +1,16 @@
 /* eslint-disable camelcase */
-import { PageSummary } from 'apps/page-builder/generated';
+import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
+import { Button } from '@trussworks/react-uswds';
 import { ValueSet } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { usePage } from 'page';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ValuesetLibraryTable.scss';
 import { SearchBar } from './SearchBar';
-import { ClassicButton } from '../../../../classic';
 import { Icon } from '@trussworks/react-uswds';
+import { UserContext } from '../../../../providers/UserContext';
+import { useAlert } from 'alert';
 
 export enum Column {
     Type = 'Type',
@@ -29,7 +31,12 @@ type Props = {
 };
 export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
     const { page, request } = usePage();
+    const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
+    const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
+
+    const { state } = useContext(UserContext);
+    const authorization = `Bearer ${state.getToken()}`;
 
     const asTableRow = (page: ValueSet): TableBody => ({
         id: page.nbsUid,
@@ -55,7 +62,13 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
             }
         ]
     });
-    const handleSelected = () => {};
+    const handleSelected = ({ target }: any, index: number) => {
+        if (target.checked) {
+            setSelectedValueSet(summaries[index]);
+        } else {
+            setSelectedValueSet({});
+        }
+    };
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
 
     /*
@@ -65,11 +78,11 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
         if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.Type:
-                    return `name,${direction}`;
+                    return `valueSetTypeCd,${direction}`;
                 case Column.ValuesetName:
-                    return `eventType,${direction}`;
+                    return `valueSetNm,${direction}`;
                 case Column.ValuesetDesc:
-                    return `status,${direction}`;
+                    return `codeSetDescTxt,${direction}`;
                 default:
                     return undefined;
             }
@@ -84,15 +97,71 @@ export const ValuesetLibraryTable = ({ summaries, sortChange }: Props) => {
     const handleSort = (name: string, direction: Direction): void => {
         sortChange(toSortString(name, direction));
     };
+    const handleAddQsn = async () => {
+        // @ts-ignore
+        // TODO :  we have to add logic for get quetion ID here
+        const id: number = selectedValueSet?.codeSetGroupId;
+
+        const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
+            authorization,
+            id
+        }).then((response: GetQuestionResponse) => {
+            return response;
+        });
+
+        const {
+            valueSet,
+            unitValue,
+            description,
+            messagingInfo,
+            label,
+            tooltip,
+            displayControl,
+            mask,
+            dataMartInfo,
+            uniqueName,
+            fieldLength
+        }: any = question;
+
+        const request = {
+            description,
+            labelInMessage: messagingInfo.labelInMessage,
+            messageVariableId: messagingInfo.messageVariableId,
+            hl7DataType: messagingInfo.hl7DataType,
+            label,
+            tooltip,
+            displayControl,
+            mask,
+            fieldLength,
+            defaultLabelInReport: dataMartInfo.defaultLabelInReport,
+            uniqueName,
+            valueSet,
+            unitValue
+        };
+
+        QuestionControllerService.updateQuestionUsingPut({
+            authorization,
+            id,
+            request
+        }).then((response: any) => {
+            setSelectedValueSet({});
+            showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
+            return response;
+        });
+    };
 
     const footerActionBtn = (
         <div className="valueset-action-btn ds-u-text-align--right margin-bottom-1em">
-            <ClassicButton className="cancel-btn" url="" onClick={() => {}}>
+            <Button className="cancel-btn" type="button" onClick={() => setSelectedValueSet({})}>
                 Cancel
-            </ClassicButton>
-            <ClassicButton className="submit-btn" url="" onClick={() => {}} disabled>
+            </Button>
+            <Button
+                className="submit-btn"
+                type="button"
+                onClick={handleAddQsn}
+                disabled={!Object.keys(selectedValueSet).length}>
                 Add to question
-            </ClassicButton>
+            </Button>
         </div>
     );
 
