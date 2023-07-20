@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import {
     Button,
     ButtonGroup,
@@ -15,7 +13,9 @@ import {
     TextInput
 } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { CodedValue } from 'coded';
 import { Input } from 'components/FormInputs/Input';
@@ -72,7 +72,6 @@ export default function AddressFields({ id, title, coded }: Props) {
         };
     }, [wrapperRef]);
 
-
     async function populateSuggestions(eve: ChangeEvent<HTMLInputElement>) {
         if (eve.target.value.length > 2) {
             const data = await fetch(
@@ -85,8 +84,6 @@ export default function AddressFields({ id, title, coded }: Props) {
             ).then((resp) => resp.json());
             setSuggestions(data.suggestions);
         }
-        };
-
         setShowSuggestions(true);
     }
 
@@ -133,7 +130,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                             render={({ field: { onChange, value } }) => (
                                 <Input
                                     onChange={(v: any) => {
-                                        populateSuggestions();
+                                        populateSuggestions(v);
                                         onChange(v);
                                     }}
                                     type="text"
