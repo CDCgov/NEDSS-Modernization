@@ -1122,9 +1122,9 @@ type PatientRaceResults {
 type PatientProfile {
     id: ID!
     local: String!
-    shortId: Int
+    shortId: Int!
     version: Int!
-    recordStatusCd: String!
+    status: String!
     deletable: Boolean!
     summary(asOf: DateTime): PatientSummary
     names(page: Page): PatientNameResults
