@@ -21,18 +21,19 @@ public class SecurityService {
     public Set<Long> getProgramAreaJurisdictionOids(NbsUserDetails userDetails) {
         var jurisdictionCodes = jurisdictionCodeRepository.findAll();
         var oidsUserHasAccessTo = new HashSet<Long>();
-        userDetails.getAuthorities().forEach(e -> {
-            if (e.getJurisdiction().equals(ALL)) {
+        userDetails.getAuthorities().forEach(authority -> {
+            if (authority.getJurisdiction().equals(ALL)) {
                 // for each existing jurisdiction, create an Oid with the program area
                 oidsUserHasAccessTo
-                        .addAll(jurisdictionCodes.stream().map(jc -> generateOid(jc.getNbsUid(), e.getProgramAreaUid()))
+                        .addAll(jurisdictionCodes.stream()
+                                .map(jc -> generateOid(jc.getNbsUid(), authority.getProgramAreaUid()))
                                 .collect(Collectors.toSet()));
             } else {
                 // generate an Oid for the jurisdiction and program area
                 jurisdictionCodes.stream()
-                        .filter(jc -> jc.getId().equals(e.getJurisdiction()))
+                        .filter(jc -> jc.getId().equals(authority.getJurisdiction()))
                         .findFirst()
-                        .map(jc -> generateOid(jc.getNbsUid(), e.getProgramAreaUid()))
+                        .map(jc -> generateOid(jc.getNbsUid(), authority.getProgramAreaUid()))
                         .ifPresent(oidsUserHasAccessTo::add);
             }
         });
