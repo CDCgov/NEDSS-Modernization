@@ -139,6 +139,12 @@ type GroupedCodedValue {
     group: String!
 }
 
+type StateCodedValue {
+    value: ID!
+    name: String!
+    abbreviation: String!
+}
+
 type StateCountyCodeValue {
     id: ID!
     assigningAuthorityCd: String
@@ -186,7 +192,7 @@ extend type Query {
     genderUnknownReasons: [CodedValue!]!
     preferredGenders: [CodedValue!]!
     countries: [CodedValue!]!
-    states: [CodedValue!]!
+    states: [StateCodedValue!]!
     counties(state: String): [GroupedCodedValue!]!
     nameTypes: [CodedValue!]!
     prefixes: [CodedValue!]!

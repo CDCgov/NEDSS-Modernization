@@ -1,11 +1,17 @@
-import { Grid } from '@trussworks/react-uswds';
-import FormCard from '../../../../components/FormCard/FormCard';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { Suffix } from '../../../../generated/graphql/schema';
 import { Controller } from 'react-hook-form';
-import { Input } from '../../../../components/FormInputs/Input';
+import { Grid } from '@trussworks/react-uswds';
+import { CodedValue } from 'coded';
+import FormCard from 'components/FormCard/FormCard';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Input } from 'components/FormInputs/Input';
 
-export default function NameFields({ id, title, control }: { id?: string; title?: string; control?: any }) {
+type CodedValues = {
+    suffixes: CodedValue[];
+};
+
+type Props = { id: string; title: string; control: any; coded: CodedValues };
+
+export default function NameFields({ id, title, control, coded }: Props) {
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -75,12 +81,7 @@ export default function NameFields({ id, title, control }: { id?: string; title?
                                     name="suffix"
                                     htmlFor={'suffix'}
                                     label="Suffix"
-                                    options={Object.values(Suffix).map((suffix) => {
-                                        return {
-                                            name: suffix,
-                                            value: suffix
-                                        };
-                                    })}
+                                    options={coded.suffixes}
                                 />
                             )}
                         />
