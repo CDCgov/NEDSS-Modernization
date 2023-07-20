@@ -5,13 +5,15 @@ import java.util.List;
 
 import lombok.Data;
 
-@Data
-public class TemplateSearchRequest {
-	private Long id;
-	private String templateNm;
-	private List<String> templateType;
-	private String conditionCd;
-	private String dataMartNm;
-	private String recordStatusCd;
 
-}
+public record TemplateSearchRequest (
+	Long id,
+	String templateNm,
+	List<String> templateType,
+	String conditionCd,
+	String dataMartNm,
+	String recordStatusCd
+	
+	) {}
+
+

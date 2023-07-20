@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +53,7 @@ public class ReadTemplateSteps {
 	@Given("I make a request for a template that does not exist")
 	public void i_make_a_request_for_a_template_that_does_not_exist() {
 		try {
-			search = new TemplateSearchRequest();
+			search = new TemplateSearchRequest(1l,null,null,null,null,null);
 			Page<Template> results = templateController.searchTemplate(search, PageRequest.ofSize(20));
 			templateHolder.setTemplateResults(results);
 		} catch (AccessDeniedException e) {
@@ -65,7 +67,7 @@ public class ReadTemplateSteps {
 	@Given("I search for a template that exists")
 	public void i_search_for_a_template_that_exists() {
 		try {
-			search = new TemplateSearchRequest();
+			search = new TemplateSearchRequest(1l,"templateNm",List.of("Draft"),null,null,null);
 			Page<Template> results = templateController.searchTemplate(search, PageRequest.ofSize(20));
 			templateHolder.setTemplateResults(results);
 		} catch (AccessDeniedException e) {

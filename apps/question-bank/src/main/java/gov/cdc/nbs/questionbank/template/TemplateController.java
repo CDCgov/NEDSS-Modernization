@@ -20,17 +20,15 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class TemplateController {
 
-	private TemplateReader templateReader;
+	private final TemplateReader templateReader;
 
 	@GetMapping
-	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public Page<Template> findAllTemplates(@PageableDefault(size = 25) Pageable pageable) {
 		return templateReader.findAllTemplates(pageable);
 
 	}
 
 	@PostMapping("search")
-	@PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 	public Page<Template> searchTemplate(@RequestBody TemplateSearchRequest search,
 			@PageableDefault(size = 25) Pageable pageable) {
 		return templateReader.searchTemplate(search, pageable);

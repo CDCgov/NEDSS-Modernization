@@ -54,9 +54,7 @@ class TemplateReaderTest {
 		Pageable pageable = Pageable.ofSize(25);
 		when(templateRepository.findByIdAndTemplateTypeIn(Mockito.anyLong(), Mockito.any()))
 				.thenReturn(Optional.of(getWaTemplate(1)));
-		TemplateSearchRequest search = new TemplateSearchRequest();
-		search.setId(1l);
-		search.setTemplateType(List.of("Draft"));
+		TemplateSearchRequest search = new TemplateSearchRequest(1l,null,List.of("Draft"),null,null,null);
 		Page<Template> result = templateReader.searchTemplate(search, pageable);
 		assertNotNull(result);
 		assertNotNull(result.getContent());
@@ -66,13 +64,7 @@ class TemplateReaderTest {
 	@Test
 	void searchTemplateExpanded() {
 		Pageable pageable = Pageable.ofSize(25);
-		TemplateSearchRequest search = new TemplateSearchRequest();
-		search.setId(1l);
-		search.setTemplateType(List.of("Draft"));
-		search.setTemplateNm("templateNm");
-		search.setConditionCd("ConditionCd");
-		search.setDataMartNm("DataMartNm");
-		search.setRecordStatusCd("Active");		
+		TemplateSearchRequest search = new TemplateSearchRequest(1l,"templateNm",List.of("Draft"),"ConditionCd","DataMartNm","Active");
 		when(templateRepository.searchTemplate(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.any())).thenReturn(getTemplatePage(5, pageable));
 	
 		Page<Template> result = templateReader.searchTemplate(search, pageable);
@@ -84,14 +76,10 @@ class TemplateReaderTest {
 
 	@Test
 	void simpleSearch() {
-		TemplateSearchRequest search = new TemplateSearchRequest();
-		search.setId(1234l);
-		List<String> type = new ArrayList<String>();
-		type.add("Draft");
-		search.setTemplateType(type);
+		TemplateSearchRequest search = new TemplateSearchRequest(1234l,null,List.of("Draft"),null,null,null);
 		boolean result = templateReader.simpleSearch(search);
 		assertTrue(result);
-		search.setTemplateNm("templateNm");
+		 search = new TemplateSearchRequest(1234l,"templateNm",List.of("Draft"),null,null,null);
 		result = templateReader.simpleSearch(search);
 		assertFalse(result);
 	}

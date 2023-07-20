@@ -31,17 +31,17 @@ public class TemplateReader {
 
 		List<Template> pageResult = new ArrayList<>();
 		if (simpleSearch(search)) {
-			Optional<WaTemplate> result = templateRepository.findByIdAndTemplateTypeIn(search.getId(),
-					search.getTemplateType());
+			Optional<WaTemplate> result = templateRepository.findByIdAndTemplateTypeIn(search.id(),
+					search.templateType());
 			if (result.isPresent()) {
 				pageResult.add(convertTemplate(result.get()));
 			}
 			return new PageImpl<>(pageResult, pageable, pageResult.size());
 
 		} else {
-			Page<WaTemplate> result= templateRepository.searchTemplate(search.getId(), search.getTemplateNm(),
-					search.getConditionCd(), search.getDataMartNm(), search.getRecordStatusCd(),
-					search.getTemplateType(), pageable);
+			Page<WaTemplate> result= templateRepository.searchTemplate(search.id(), search.templateNm(),
+					search.conditionCd(), search.dataMartNm(), search.recordStatusCd(),
+					search.templateType(), pageable);
 			pageResult = toTempate(result);
 			
 			return new PageImpl<>(pageResult, pageable, result.getTotalElements());
@@ -50,9 +50,9 @@ public class TemplateReader {
 	}
 
 	public boolean simpleSearch(TemplateSearchRequest search) {
-		return ((search.getId() > 0l && search.getTemplateType() != null) && search.getConditionCd() == null
-				&& search.getDataMartNm() == null && search.getRecordStatusCd() == null
-				&& search.getTemplateNm() == null);
+		return (( search.id()!=null && search.id() > 0l && search.templateType() != null) && search.conditionCd() == null
+				&& search.dataMartNm() == null && search.recordStatusCd() == null
+				&& search.templateNm() == null);
 	}
 
 	private List<Template> toTempate(Page<WaTemplate> templates) {
@@ -70,26 +70,12 @@ public class TemplateReader {
 				aWaTemplate.getId(),
 				aWaTemplate.getTemplateNm(),
 				aWaTemplate.getTemplateType(),
-				aWaTemplate.getXmlPayload(),
-				aWaTemplate.getPublishVersionNbr(),
-				aWaTemplate.getFormCd(),
-				aWaTemplate.getConditionCd(),
-				aWaTemplate.getBusObjType(),
-				aWaTemplate.getDatamartNm(),
 				aWaTemplate.getRecordStatusCd(),
-				aWaTemplate.getRecordStatusTime(),
 				aWaTemplate.getLastChgTime(),
 				aWaTemplate.getLastChgUserId(),
-				aWaTemplate.getLocalId(),
 				aWaTemplate.getDescTxt(),
-				aWaTemplate.getPublishIndCd(),
-				aWaTemplate.getAddTime(),
-				aWaTemplate.getAddUserId(),
-				aWaTemplate.getNndEntityIdentifier(),
 				aWaTemplate.getParentTemplateUid(),
-				aWaTemplate.getSourceNm(),
-				aWaTemplate.getTemplateVersionNbr(),
-				aWaTemplate.getVersionNote()
+				aWaTemplate.getSourceNm()
 				);
 	}
 
