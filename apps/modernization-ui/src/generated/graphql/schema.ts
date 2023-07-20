@@ -2010,7 +2010,7 @@ export type Query = {
   primaryLanguages: Array<CodedValue>;
   primaryOccupations: Array<CodedValue>;
   raceCategories: Array<CodedValue>;
-  states: Array<CodedValue>;
+  states: Array<StateCodedValue>;
   suffixes: Array<CodedValue>;
 };
 
@@ -2375,6 +2375,13 @@ export type StateCode = {
   stateNm?: Maybe<Scalars['String']>;
   statusCd?: Maybe<Scalars['String']>;
   statusTime?: Maybe<Scalars['DateTime']>;
+};
+
+export type StateCodedValue = {
+  __typename?: 'StateCodedValue';
+  abbreviation: Scalars['String'];
+  name: Scalars['String'];
+  value: Scalars['ID'];
 };
 
 export type StateCountyCodeValue = {
@@ -3177,7 +3184,7 @@ export type RaceCategoriesQuery = { __typename?: 'Query', raceCategories: Array<
 export type StatesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type StatesQuery = { __typename?: 'Query', states: Array<{ __typename?: 'CodedValue', value: string, name: string }> };
+export type StatesQuery = { __typename?: 'Query', states: Array<{ __typename?: 'StateCodedValue', value: string, name: string, abbreviation: string }> };
 
 export type SuffixesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8424,6 +8431,7 @@ export const StatesDocument = gql`
   states {
     value
     name
+    abbreviation
   }
 }
     `;

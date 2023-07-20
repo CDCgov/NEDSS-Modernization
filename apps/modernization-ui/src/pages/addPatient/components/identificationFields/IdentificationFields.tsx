@@ -1,24 +1,25 @@
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { Button, Grid } from '@trussworks/react-uswds';
-import FormCard from '../../../../components/FormCard/FormCard';
-import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
-import { Controller } from 'react-hook-form';
-import { SelectInput } from '../../../../components/FormInputs/SelectInput';
-import { formatInterfaceString } from '../../../../utils/util';
-import { Input } from '../../../../components/FormInputs/Input';
+import FormCard from 'components/FormCard/FormCard';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { Input } from 'components/FormInputs/Input';
+import { CodedValue } from 'coded';
 
-export const IdentificationFields = ({
-    id,
-    title,
-    control,
-    fields,
-    append
-}: {
-    id: string;
-    title: string;
-    control: any;
-    fields: any;
-    append: any;
-}) => {
+type CodedValues = {
+    identificationTypes: CodedValue[];
+    assigningAuthorities: CodedValue[];
+};
+
+type Props = { id: string; title: string; coded: CodedValues };
+
+export const IdentificationFields = ({ id, title, coded }: Props) => {
+    const { control } = useFormContext();
+
+    const { fields, append } = useFieldArray({
+        control,
+        name: 'identification'
+    });
+
     const handleAddAnotherId = () => {
         append({ type: null, authority: null, value: null });
     };
@@ -28,68 +29,40 @@ export const IdentificationFields = ({
             {fields.map((item: any, index: number) => (
                 <Grid col={12} className="padding-x-3 padding-bottom-2" key={item.id}>
                     <Grid row>
-                        <SearchCriteriaContext.Consumer>
-                            {({ searchCriteria }) => (
-                                <Grid col={6}>
-                                    <Controller
-                                        control={control}
-                                        name={`identification[${index}].type`}
-                                        render={({ field: { onChange } }) => {
-                                            return (
-                                                <SelectInput
-                                                    defaultValue={
-                                                        control._formValues['identification']?.[index]?.type || ''
-                                                    }
-                                                    options={searchCriteria.identificationTypes.map((type) => {
-                                                        return {
-                                                            name: formatInterfaceString(type.codeDescTxt),
-                                                            value: type.id.code
-                                                        };
-                                                    })}
-                                                    onChange={onChange}
-                                                    htmlFor={`identification[${index}].type`}
-                                                    label="ID type"
-                                                />
-                                            );
-                                        }}
-                                    />
-                                </Grid>
-                            )}
-                        </SearchCriteriaContext.Consumer>
-                    </Grid>
-                    <Grid row>
                         <Grid col={6}>
-                            <SearchCriteriaContext.Consumer>
-                                {({ searchCriteria }) => {
+                            <Controller
+                                control={control}
+                                name={`identification[${index}].type`}
+                                render={({ field: { onChange } }) => {
                                     return (
-                                        <Controller
-                                            control={control}
-                                            name={`identification[${index}].authority`}
-                                            render={({ field: { onChange, value } }) => (
-                                                <SelectInput
-                                                    onChange={onChange}
-                                                    defaultValue={value}
-                                                    name={`identification[${index}].authority`}
-                                                    htmlFor={`identification[${index}].authority`}
-                                                    label="Assigning authority"
-                                                    options={
-                                                        searchCriteria.authorities
-                                                            ? Object.values(searchCriteria.authorities).map(
-                                                                  (country) => {
-                                                                      return {
-                                                                          name: country?.codeShortDescTxt || '',
-                                                                          value: country?.id?.code || ''
-                                                                      };
-                                                                  }
-                                                              )
-                                                            : []
-                                                    }
-                                                />
-                                            )}
+                                        <SelectInput
+                                            defaultValue={control._formValues['identification']?.[index]?.type || ''}
+                                            options={coded.identificationTypes}
+                                            onChange={onChange}
+                                            htmlFor={`identification[${index}].type`}
+                                            label="ID type"
                                         />
                                     );
                                 }}
-                            </SearchCriteriaContext.Consumer>
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid row>
+                        <Grid col={6}>
+                            <Controller
+                                control={control}
+                                name={`identification[${index}].authority`}
+                                render={({ field: { onChange, value } }) => (
+                                    <SelectInput
+                                        onChange={onChange}
+                                        defaultValue={value}
+                                        name={`identification[${index}].authority`}
+                                        htmlFor={`identification[${index}].authority`}
+                                        label="Assigning authority"
+                                        options={coded.assigningAuthorities}
+                                    />
+                                )}
+                            />
                         </Grid>
                     </Grid>
                     <Grid row>

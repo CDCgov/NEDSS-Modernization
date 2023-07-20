@@ -1,4 +1,4 @@
-package gov.cdc.nbs.codes;
+package gov.cdc.nbs.codes.location.state;
 
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ public class StateCodedValueResolver {
     }
 
     @QueryMapping
-    public Collection<CodedValue> states() {
+    public Collection<StateCodedValue> states() {
         return finder.all();
     }
 
