@@ -2,10 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ValueSetSearchRequest = {
+export type ValueSetUpdateRequest = {
+    codeSetDescTxt?: string;
     codeSetName?: string;
-    valueSetCode?: string;
     valueSetNm?: string;
-    valueSetTypeCd?: string;
 };
 
