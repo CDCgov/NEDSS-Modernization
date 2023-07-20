@@ -7,19 +7,22 @@ import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from './routes/AppRoutes';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
+import { AlertProvider } from 'alert';
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <UserContextProvider>
-                <ApolloWrapper>
-                    <NavBar />
-                    <div className="route-content">
-                        <AppRoutes />
-                    </div>
-                </ApolloWrapper>
-            </UserContextProvider>
-        </BrowserRouter>
+        <AlertProvider>
+            <BrowserRouter>
+                <UserContextProvider>
+                    <ApolloWrapper>
+                        <NavBar />
+                        <div className="route-content">
+                            <AppRoutes />
+                        </div>
+                    </ApolloWrapper>
+                </UserContextProvider>
+            </BrowserRouter>
+        </AlertProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
