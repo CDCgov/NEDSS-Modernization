@@ -39,10 +39,11 @@ public class TemplateReader {
 			return new PageImpl<>(pageResult, pageable, pageResult.size());
 
 		} else {
-			Page<WaTemplate> result = templateRepository.findTemplate(search.getId(), search.getTemplateNm(),
+			Page<WaTemplate> result= templateRepository.searchTemplate(search.getId(), search.getTemplateNm(),
 					search.getConditionCd(), search.getDataMartNm(), search.getRecordStatusCd(),
 					search.getTemplateType(), pageable);
 			pageResult = toTempate(result);
+			
 			return new PageImpl<>(pageResult, pageable, result.getTotalElements());
 
 		}
