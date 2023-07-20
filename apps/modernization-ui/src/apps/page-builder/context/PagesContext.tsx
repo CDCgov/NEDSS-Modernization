@@ -2,7 +2,7 @@
 import { createContext, useState, Dispatch, SetStateAction } from 'react';
 
 interface PagesContextData {
-    searchQuery?: string;
+    searchQuery: string;
     setSearchQuery: (query: string) => void;
     currentPage: number;
     setCurrentPage?: (page: number) => void;

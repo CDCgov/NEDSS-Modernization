@@ -1,29 +1,28 @@
 import { Button, Grid } from '@trussworks/react-uswds';
-import FormCard from '../../../../components/FormCard/FormCard';
-import { Controller } from 'react-hook-form';
-import { Input } from '../../../../components/FormInputs/Input';
-import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import FormCard from 'components/FormCard/FormCard';
 import { validatePhoneNumber } from 'validation/phone';
+import { Input } from 'components/FormInputs/Input';
+import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 
-export default function ContactFields({
-    id,
-    title,
-    control,
-    phoneNumberFields,
-    emailFields,
-    phoneNumberAppend,
-    emailFieldAppend,
-    errors
-}: {
-    id?: string;
-    title?: string;
-    control?: any;
-    phoneNumberFields: any;
-    emailFields: any;
-    phoneNumberAppend: any;
-    emailFieldAppend: any;
-    errors: any;
-}) {
+type Props = {
+    id: string;
+    title: string;
+};
+
+export default function ContactFields({ id, title }: Props) {
+    const { control } = useFormContext();
+
+    const { fields: phoneNumberFields, append: phoneNumberAppend } = useFieldArray({
+        control,
+        name: 'phoneNumbers'
+    });
+
+    const { fields: emailFields, append: emailFieldAppend } = useFieldArray({
+        control,
+        name: 'emailAddresses'
+    });
+
     return (
         <FormCard id={id} title={title}>
             <Grid col={12} className="padding-x-3 padding-bottom-3">
@@ -34,17 +33,17 @@ export default function ContactFields({
                             name="homePhone"
                             rules={{
                                 validate: {
-                                    properNumber: (value) => validatePhoneNumber(value)
+                                    properNumber: validatePhoneNumber
                                 }
                             }}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
                                     label="Home phone"
                                     defaultValue={value}
                                     id="homePhone"
-                                    error={errors && errors.homePhone && 'Invalid phone number'}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -57,17 +56,17 @@ export default function ContactFields({
                             name="workPhone"
                             rules={{
                                 validate: {
-                                    properNumber: (value) => validatePhoneNumber(value)
+                                    properNumber: validatePhoneNumber
                                 }
                             }}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <PhoneNumberInput
                                     placeholder="333-444-555"
                                     onChange={onChange}
                                     label="Work phone"
                                     defaultValue={value}
                                     id="workPhone"
-                                    error={errors && errors.workPhone && 'Invalid phone number'}
+                                    error={error?.message}
                                 />
                             )}
                         />
@@ -99,17 +98,17 @@ export default function ContactFields({
                                 name={`cellPhone_${index}`}
                                 rules={{
                                     validate: {
-                                        properNumber: (value) => validatePhoneNumber(value)
+                                        properNumber: validatePhoneNumber
                                     }
                                 }}
-                                render={({ field: { onChange, value } }) => (
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <PhoneNumberInput
                                         placeholder="333-444-555"
                                         onChange={onChange}
                                         label="Cell phone"
                                         defaultValue={value}
                                         id={`cellPhone_${index}`}
-                                        error={errors && errors[`cellPhone_${index}`] && 'Invalid phone number'}
+                                        error={error?.message}
                                     />
                                 )}
                             />
@@ -144,7 +143,7 @@ export default function ContactFields({
                                         message: 'Invalid email'
                                     }
                                 }}
-                                render={({ field: { onChange, value } }) => (
+                                render={({ field: { onChange, value }, fieldState: { error } }) => (
                                     <Input
                                         placeholder="jdoe@gmail.com"
                                         onChange={onChange}
@@ -153,11 +152,7 @@ export default function ContactFields({
                                         defaultValue={value}
                                         htmlFor={`emailAddresses_${index}`}
                                         id={`emailAddresses_${index}`}
-                                        error={
-                                            errors &&
-                                            errors[`emailAddresses_${index}`] &&
-                                            errors[`emailAddresses_${index}`].message
-                                        }
+                                        error={error?.message}
                                     />
                                 )}
                             />
