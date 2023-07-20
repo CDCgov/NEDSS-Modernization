@@ -38,3 +38,7 @@ p.no-data {
     margin: 0;
     font-style: italic;
 }
+
+td span {
+    word-break: break-all;
+}
