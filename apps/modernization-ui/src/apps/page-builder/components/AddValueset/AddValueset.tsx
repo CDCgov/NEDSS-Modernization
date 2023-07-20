@@ -1,14 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { Button, Icon } from '@trussworks/react-uswds';
-import { ClassicButton } from '../../../../classic';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import { UserContext } from '../../../../providers/UserContext';
+import { useAlert } from 'alert';
 
 export const AddValueset = () => {
     const { state } = useContext(UserContext);
+    const { showAlert } = useAlert();
     // Fields
-    const [isLocalOrPhin, setIsLocalOrPhin] = useState(true);
+    const [isLocalOrPhin, setIsLocalOrPhin] = useState('LOCAL');
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
     const [code, setCode] = useState('');
@@ -23,7 +24,7 @@ export const AddValueset = () => {
         const request = {
             valueSetNm: name,
             valueSetCode: code,
-            valueSetTypeCd: 'LOCAL'
+            valueSetTypeCd: isLocalOrPhin
         };
 
         ValueSetControllerService.createValueSetUsingPost({
@@ -33,6 +34,7 @@ export const AddValueset = () => {
             setDesc('');
             setCode('');
             setName('');
+            showAlert({ type: 'success', header: 'Created', message: 'Question Added successfully' });
             return response;
         });
         // xox- POST API call here
@@ -46,7 +48,7 @@ export const AddValueset = () => {
         history.go(-1);
     };
     const validateValuesetName = (name: string) => {
-        const pattern = /^[a-zA-Z0-9_]*$/;
+        const pattern = /^[a-zA-Z0-9]*$/;
         if (name.match(pattern)) {
             setIsValuesetNameNotValid(false);
             setIsValidationFailure(false);
@@ -66,6 +68,7 @@ export const AddValueset = () => {
             setIsValidationFailure(true);
         }
     };
+    const disableBtn = isValidationFailure || !name || !code;
 
     return (
         <div className="add-valueset">
@@ -81,7 +84,7 @@ export const AddValueset = () => {
             <div className="add-valueset__container">
                 <h3 className="header-title">Add value set</h3>
                 <p className="fields-info">
-                    All fields with <span className="mandatory-indicator">*</span> are require
+                    All fields with <span className="mandatory-indicator">*</span> are required
                 </p>
                 <p className="description">
                     These fields will not be displayed to your users, it only makes it easier for others to search for
@@ -91,19 +94,19 @@ export const AddValueset = () => {
                 <input
                     type="radio"
                     name="isLocalOrPhin"
-                    value="local"
+                    value="LOCAL"
                     className="field-space"
-                    checked={isLocalOrPhin}
-                    onChange={(e: any) => setIsLocalOrPhin(e.target.checked)}
+                    checked={isLocalOrPhin === 'LOCAL'}
+                    onChange={(e: any) => setIsLocalOrPhin(e.target.value)}
                 />
                 <span className="radio-label">LOCAL</span>
                 <input
                     type="radio"
                     name="isLocalOrPhin"
-                    value="phin"
+                    value="PHIN"
                     className="right-radio"
-                    checked={!isLocalOrPhin}
-                    onChange={(e: any) => setIsLocalOrPhin(!e.target.checked)}
+                    checked={isLocalOrPhin === 'PHIN'}
+                    onChange={(e: any) => setIsLocalOrPhin(e.target.value)}
                 />
                 <span className="radio-label">PHIN</span>
                 <br></br>
@@ -150,12 +153,12 @@ export const AddValueset = () => {
                     />
                 </div>
             </div>
-            <ClassicButton className="submit-btn" url="" onClick={handleSubmit} disabled={isValidationFailure}>
+            <Button className="submit-btn" type="button" onClick={handleSubmit} disabled={disableBtn}>
                 Add to question
-            </ClassicButton>
-            <ClassicButton className="cancel-btn" url="" onClick={handleSubmit}>
+            </Button>
+            <Button className="cancel-btn" type="button" onClick={handleSubmit}>
                 Cancel
-            </ClassicButton>
+            </Button>
         </div>
     );
 };

@@ -100,4 +100,10 @@
         color: #1b1b1b;
         margin: 15px auto;
     }
+    .usa-button {
+        &:disabled {
+            border: 2px solid #C9C9C9;;
+            background: #C9C9C9;
+        }
+    }
 }
