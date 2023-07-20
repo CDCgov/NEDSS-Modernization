@@ -52,7 +52,7 @@ public class TemplateReader {
 	public boolean simpleSearch(TemplateSearchRequest search) {
 		return ((search.getId() > 0l && search.getTemplateType() != null) && search.getConditionCd() == null
 				&& search.getDataMartNm() == null && search.getRecordStatusCd() == null
-				&& search.getTemplateNm() == null) ? true : false;
+				&& search.getTemplateNm() == null);
 	}
 
 	private List<Template> toTempate(Page<WaTemplate> templates) {
