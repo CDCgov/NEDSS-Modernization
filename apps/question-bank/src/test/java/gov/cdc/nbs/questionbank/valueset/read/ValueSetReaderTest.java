@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.valueset;
+package gov.cdc.nbs.questionbank.valueset.read;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,6 +27,7 @@ import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.response.Concept;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
+import gov.cdc.nbs.questionbank.valueset.ValueSetReader;
 import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 
@@ -65,11 +66,13 @@ class ValueSetReaderTest {
         search.setCodeSetName("setnm");
         search.setValueSetNm("setnm");
         search.setValueSetCode("setCode");
+        search.setValueSetTypeCd("LOCAL");
+        
         int max = 5;
         Pageable pageable = PageRequest.of(0, max);
         Page<Codeset> codePage = getCodeSetPage(max, pageable);
-        when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCode(Mockito.anyString(), Mockito.anyString(),
-                Mockito.anyString(), Mockito.any())).thenReturn(codePage);
+        when(valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(Mockito.anyString(), Mockito.anyString(),
+                Mockito.anyString(),Mockito.anyString(), Mockito.any())).thenReturn(codePage);
         Page<ValueSet> result = valueSetReader.searchValueSearch(search, pageable);
         assertNotNull(result);
         assertEquals(max, result.getTotalElements());

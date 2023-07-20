@@ -10,6 +10,9 @@ import { UserContext } from 'providers/UserContext';
 import { Spinner } from 'components/Spinner/Spinner';
 import { CompareInvestigations } from 'pages/CompareInvestigations/CompareInvestigations';
 import { AddedPatient } from 'pages/addPatient/components/SuccessForm/AddedPatient';
+import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderContext';
+import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
+import { Config } from 'config';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -23,7 +26,7 @@ const ScrollToTop = ({ children }: { children: ReactNode }) => {
 export const AppRoutes = () => {
     const { state } = useContext(UserContext);
     const location = useLocation();
-    const [loading, setLoading] = useState(location.pathname !== '/login'); // allow login page to load immediately
+    const [loading, setLoading] = useState(location.pathname !== '/dev/login'); // allow login page to load immediately
     const [initializing, setInitializing] = useState(true);
 
     useEffect(() => {
@@ -58,24 +61,39 @@ export const AppRoutes = () => {
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
-
-                            <Route path="/page-builder">
-                                <Route path="manage">
-                                    <Route path="pages" element={<ManagePages />} />
-                                </Route>
-                                <Route path="add">
-                                    <Route path="page" element={<AddNewPage />} />
+                            <Route element={<PageBuilderContextProvider />}>
+                                <Route path="/page-builder">
+                                    <Route path="manage">
+                                        <Route path="pages" element={<ManagePages />} />
+                                    </Route>
+                                    <Route path="add">
+                                        <Route path="page" element={<AddNewPage />} />
+                                        <Route path="condition" element={<CreateCondition />} />
+                                    </Route>
                                 </Route>
                             </Route>
-
                             <Route path="*" element={<Navigate to="/advanced-search" />} />
                             <Route path="/" element={<Navigate to="/advanced-search" />} />
                         </>
                     )}
-                    {!state.isLoggedIn && !state.isLoginPending && !loading && (
-                        <Route path="*" element={<Navigate to="/login" />} />
+
+                    {Config.enableLogin && (
+                        <>
+                            {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                                <>
+                                    <Route path="/dev/login" element={<Login />} />
+                                    <Route path="*" element={<Navigate to="/dev/login" />} />
+                                </>
+                            )}
+                        </>
                     )}
-                    <Route path="/login" element={<Login />} />
+                    {!Config.enableLogin && (
+                        <>
+                            {!state.isLoggedIn && !state.isLoginPending && !loading && (
+                                <Route path="*" element={<>{(window.location.href = `${Config.nbsUrl}/login`)}</>} />
+                            )}
+                        </>
+                    )}
                 </Routes>
             </ScrollToTop>
         </>

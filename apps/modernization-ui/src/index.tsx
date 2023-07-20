@@ -12,19 +12,19 @@ import NavBar from './shared/header/NavBar';
 
 ReactDOM.render(
     <React.StrictMode>
-        <UserContextProvider>
-            <ApolloWrapper>
-                <SearchCriteriaProvider>
-                    <BrowserRouter>
+        <BrowserRouter>
+            <UserContextProvider>
+                <ApolloWrapper>
+                    <SearchCriteriaProvider>
                         {/* <TopBanner /> */}
                         <NavBar />
                         <div className="route-content">
                             <AppRoutes />
                         </div>
-                    </BrowserRouter>
-                </SearchCriteriaProvider>
-            </ApolloWrapper>
-        </UserContextProvider>
+                    </SearchCriteriaProvider>
+                </ApolloWrapper>
+            </UserContextProvider>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

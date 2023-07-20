@@ -7,5 +7,6 @@ public class ValueSetSearchRequest {
 	private String codeSetName;
 	private String valueSetNm;
 	private String valueSetCode;
+	private String valueSetTypeCd;
 
 }

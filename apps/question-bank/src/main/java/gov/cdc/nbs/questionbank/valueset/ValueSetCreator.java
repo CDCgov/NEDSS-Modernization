@@ -76,7 +76,7 @@ public class ValueSetCreator {
 			}
 			CreateValueSetResponse.ValueSetCreateShort body = new CreateValueSetResponse.ValueSetCreateShort(
 					resultCodeSet.getId(), resultCodeSet.getAddTime(), resultCodeSet.getAddUserId(),
-					resultCodeSet.getValueSetNm());
+					resultCodeSet.getValueSetNm(),resultCodeSet.getCodeSetGroup().getId());
 
 			response.setBody(body);
 			response.setMessage(ValueSetConstants.SUCCESS_MESSAGE);
