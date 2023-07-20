@@ -1,5 +1,13 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.entity.enums.RecordStatus;
@@ -7,14 +15,6 @@ import gov.cdc.nbs.entity.odse.QActRelationship;
 import gov.cdc.nbs.entity.odse.QNotification;
 import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 @Component
 class PatientInvestigationFinder {
@@ -38,11 +38,15 @@ class PatientInvestigationFinder {
     private static final String CASE_STATUS_CODE_SET = "PHC_CLASS";
 
 
-    record Criteria(long patient, Status... status) {
+    record Criteria(
+            long patient,
+            Set<Long> programJurisdicitonOids,
+            Status... status) {
 
         enum Status {
             OPEN("O"),
             CLOSED("C");
+
             private final String code;
 
             Status(final String code) {
@@ -54,8 +58,8 @@ class PatientInvestigationFinder {
             }
         }
 
-        Criteria(long patient) {
-            this(patient, Status.values());
+        Criteria(long patient, Set<Long> programJurisdicitonOids) {
+            this(patient, programJurisdicitonOids, Status.values());
         }
 
         @Override
@@ -78,9 +82,9 @@ class PatientInvestigationFinder {
         @Override
         public String toString() {
             return "Criteria{" +
-                "patient=" + patient +
-                ", status=" + Arrays.toString(status) +
-                '}';
+                    "patient=" + patient +
+                    ", status=" + Arrays.toString(status) +
+                    '}';
         }
     }
 
@@ -96,48 +100,46 @@ class PatientInvestigationFinder {
     }
 
     Page<PatientInvestigation> find(
-        final Criteria criteria,
-        final Pageable pageable
-    ) {
+            final Criteria criteria,
+            final Pageable pageable) {
         long total = resolveTotal(criteria);
 
         return total > 0
-            ? new PageImpl<>(resolvePage(criteria, pageable), pageable, total)
-            : Page.empty(pageable);
+                ? new PageImpl<>(resolvePage(criteria, pageable), pageable, total)
+                : Page.empty(pageable);
     }
 
     private long resolveTotal(final Criteria criteria) {
         Long total = applyCriteria(
-            factory.select(this.tables.investigation().countDistinct()),
-            criteria
-        )
-            .fetchOne();
+                factory.select(this.tables.investigation().countDistinct()),
+                criteria)
+                        .fetchOne();
         return total == null ? 0L : total;
     }
 
     private <R> JPAQuery<R> applyCriteria(
-        final JPAQuery<R> query,
-        final Criteria criteria
-    ) {
+            final JPAQuery<R> query,
+            final Criteria criteria) {
+
 
         return query.from(PATIENT)
-            .join(INVESTIGATED).on(
-                INVESTIGATED.recordStatusCd.eq(RecordStatus.ACTIVE),
-                INVESTIGATED.actClassCd.eq(CASE_CLASS),
-                INVESTIGATED.id.typeCd.eq(SUBJECT_OF_INVESTIGATION),
-                INVESTIGATED.id.subjectEntityUid.eq(PATIENT.id),
-                INVESTIGATED.subjectClassCd.eq(PERSON_CODE)
-            )
-            .join(this.tables.investigation()).on(
-                this.tables.investigation().id.eq(INVESTIGATED.id.actUid),
-                this.tables.investigation().recordStatusCd.ne(DELETED),
-                this.tables.investigation().investigationStatusCd.in(resolveInvestigationStatus(criteria.status()))
-            )
-            .where(
-                PATIENT.personParentUid.id.eq(criteria.patient()),
-                PATIENT.cd.eq(PATIENT_CODE),
-                PATIENT.recordStatusCd.eq(RecordStatus.ACTIVE)
-            );
+                .join(INVESTIGATED).on(
+                        INVESTIGATED.recordStatusCd.eq(RecordStatus.ACTIVE),
+                        INVESTIGATED.actClassCd.eq(CASE_CLASS),
+                        INVESTIGATED.id.typeCd.eq(SUBJECT_OF_INVESTIGATION),
+                        INVESTIGATED.id.subjectEntityUid.eq(PATIENT.id),
+                        INVESTIGATED.subjectClassCd.eq(PERSON_CODE))
+                .join(this.tables.investigation()).on(
+                        this.tables.investigation().id.eq(INVESTIGATED.id.actUid),
+                        this.tables.investigation().recordStatusCd.ne(DELETED),
+                        this.tables.investigation().investigationStatusCd
+                                .in(resolveInvestigationStatus(criteria.status())))
+                .where(
+                        PATIENT.personParentUid.id.eq(criteria.patient()),
+                        PATIENT.cd.eq(PATIENT_CODE),
+                        PATIENT.recordStatusCd.eq(RecordStatus.ACTIVE),
+                        // only return investigations where the user has access to program area / jurisdiction
+                        this.tables.investigation().programJurisdictionOid.in(criteria.programJurisdicitonOids()));
     }
 
     private String[] resolveInvestigationStatus(final Criteria.Status... status) {
@@ -152,67 +154,55 @@ class PatientInvestigationFinder {
     }
 
     private List<PatientInvestigation> resolvePage(
-        final Criteria criteria,
-        final Pageable pageable
-    ) {
+            final Criteria criteria,
+            final Pageable pageable) {
         return applyCriteria(
-            this.factory.selectDistinct(
-                this.tables.investigation().id,
-                this.tables.investigation().activityFromTime,
-                this.tables.condition().conditionShortNm,
-                this.tables.status().codeShortDescTxt,
-                this.tables.caseStatus().codeShortDescTxt,
-                this.tables.jurisdiction().codeShortDescTxt,
-                this.tables.investigation().localId,
-                this.tables.notificationStatus().codeShortDescTxt,
-                this.tables.investigation().coinfectionId,
-                this.tables.investigator().firstNm,
-                this.tables.investigator().lastNm
-            ),
-            criteria
-        )
-            .join(this.tables.status()).on(
-                this.tables.status().id.codeSetNm.eq(INVESTIGATION_STATUS_CODE_SET),
-                this.tables.status().id.code.eq(this.tables.investigation().investigationStatusCd)
-            )
-            .join(this.tables.condition()).on(
-                this.tables.condition().id.eq(this.tables.investigation().cd)
-            )
-            .join(this.tables.jurisdiction()).on(
-                this.tables.jurisdiction().id.eq(this.tables.investigation().jurisdictionCd)
-            )
-            .leftJoin(this.tables.caseStatus()).on(
-                this.tables.caseStatus().id.codeSetNm.eq(CASE_STATUS_CODE_SET),
-                this.tables.caseStatus().id.code.eq(this.tables.investigation().caseClassCd)
-            )
-            .leftJoin(NOTIFIED).on(
-                NOTIFIED.id.typeCd.eq(NOTIFICATION_TYPE),
-                NOTIFIED.id.targetActUid.eq(this.tables.investigation().id),
-                NOTIFIED.targetClassCd.eq(CASE_CLASS),
-                NOTIFIED.recordStatusCd.eq(ACTIVE_STATUS),
-                NOTIFIED.sourceClassCd.eq(NOTIFICATION_CLASS)
-            )
-            .leftJoin(NOTIFICATION).on(
-                NOTIFICATION.id.eq(NOTIFIED.id.sourceActUid)
-            )
-            .leftJoin(this.tables.notificationStatus()).on(
-                this.tables.notificationStatus().id.codeSetNm.eq(RECORD_STATUS_CODE_SET),
-                this.tables.notificationStatus().id.code.eq(NOTIFICATION.recordStatusCd)
-            )
-            .leftJoin(INVESTIGATED_BY).on(
-                INVESTIGATED_BY.id.typeCd.eq(INVESTIGATOR_OF_CASE),
-                INVESTIGATED_BY.id.actUid.eq(this.tables.investigation().id),
-                INVESTIGATED_BY.actClassCd.eq(CASE_CLASS),
-                INVESTIGATED_BY.subjectClassCd.eq(PERSON_CODE)
-            )
-            .leftJoin(this.tables.investigator()).on(
-                this.tables.investigator().id.eq(INVESTIGATED_BY.id.subjectEntityUid)
-            )
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch()
-            .stream()
-            .map(mapper::map)
-            .toList();
+                this.factory.selectDistinct(
+                        this.tables.investigation().id,
+                        this.tables.investigation().activityFromTime,
+                        this.tables.condition().conditionShortNm,
+                        this.tables.status().codeShortDescTxt,
+                        this.tables.caseStatus().codeShortDescTxt,
+                        this.tables.jurisdiction().codeShortDescTxt,
+                        this.tables.investigation().localId,
+                        this.tables.notificationStatus().codeShortDescTxt,
+                        this.tables.investigation().coinfectionId,
+                        this.tables.investigator().firstNm,
+                        this.tables.investigator().lastNm),
+                criteria)
+                        .join(this.tables.status()).on(
+                                this.tables.status().id.codeSetNm.eq(INVESTIGATION_STATUS_CODE_SET),
+                                this.tables.status().id.code.eq(this.tables.investigation().investigationStatusCd))
+                        .join(this.tables.condition()).on(
+                                this.tables.condition().id.eq(this.tables.investigation().cd))
+                        .join(this.tables.jurisdiction()).on(
+                                this.tables.jurisdiction().id.eq(this.tables.investigation().jurisdictionCd))
+                        .leftJoin(this.tables.caseStatus()).on(
+                                this.tables.caseStatus().id.codeSetNm.eq(CASE_STATUS_CODE_SET),
+                                this.tables.caseStatus().id.code.eq(this.tables.investigation().caseClassCd))
+                        .leftJoin(NOTIFIED).on(
+                                NOTIFIED.id.typeCd.eq(NOTIFICATION_TYPE),
+                                NOTIFIED.id.targetActUid.eq(this.tables.investigation().id),
+                                NOTIFIED.targetClassCd.eq(CASE_CLASS),
+                                NOTIFIED.recordStatusCd.eq(ACTIVE_STATUS),
+                                NOTIFIED.sourceClassCd.eq(NOTIFICATION_CLASS))
+                        .leftJoin(NOTIFICATION).on(
+                                NOTIFICATION.id.eq(NOTIFIED.id.sourceActUid))
+                        .leftJoin(this.tables.notificationStatus()).on(
+                                this.tables.notificationStatus().id.codeSetNm.eq(RECORD_STATUS_CODE_SET),
+                                this.tables.notificationStatus().id.code.eq(NOTIFICATION.recordStatusCd))
+                        .leftJoin(INVESTIGATED_BY).on(
+                                INVESTIGATED_BY.id.typeCd.eq(INVESTIGATOR_OF_CASE),
+                                INVESTIGATED_BY.id.actUid.eq(this.tables.investigation().id),
+                                INVESTIGATED_BY.actClassCd.eq(CASE_CLASS),
+                                INVESTIGATED_BY.subjectClassCd.eq(PERSON_CODE))
+                        .leftJoin(this.tables.investigator()).on(
+                                this.tables.investigator().id.eq(INVESTIGATED_BY.id.subjectEntityUid))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .fetch()
+                        .stream()
+                        .map(mapper::map)
+                        .toList();
     }
 }
