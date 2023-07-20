@@ -17,6 +17,7 @@ import { ValuesetLibrary } from '../apps/page-builder/pages/ValuesetLibrary/Valu
 import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { QuestionLibrary } from '../apps/page-builder/pages/QuestionLibrary/QuestionLibrary';
+import { EditPage } from 'apps/page-builder/pages/EditPage/EditPage';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -77,6 +78,9 @@ export const AppRoutes = () => {
                                         <Route path="import-template" element={<ImportTemplate />} />
                                         <Route path="condition" element={<CreateCondition />} />
                                         <Route path="conditional-case" element={<ConditionalCase />} />
+                                    </Route>
+                                    <Route path="edit">
+                                        <Route path="page/:pageId?" element={<EditPage />} />
                                     </Route>
                                 </Route>
                             </Route>
