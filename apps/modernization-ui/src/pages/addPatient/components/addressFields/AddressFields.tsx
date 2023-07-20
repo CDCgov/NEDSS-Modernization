@@ -137,26 +137,13 @@ export default function AddressFields({
         unverifiedModalRef.current?.toggleModal(undefined, true);
     }, [unverified]);
 
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = async (event: any) => {
         setVerified(false);
         setUnverified(false);
         switch (event.key) {
             case 'Enter' || 'enter': {
                 event.preventDefault();
-                fetch(
-                    `https://www.smarty.com/products/us-address-verification?key=166215385741384990&address-type=us-street-components&street=${addressFields.streetAddress1}&street2=${addressFields.streetAddress2}&city=${addressFields.city}&state=${addressFields.state}&zipcode=${addressFields.zip}`,
-                    {
-                        headers: {
-                            referer: 'localhost'
-                        }
-                    }
-                )
-                    .then((resp) => resp.json())
-                    .then((data) => {
-                        setSuggestions([...data]);
-                        setVerified(true);
-                        setShowSuggestions(false);
-                    });
+                await populateSuggestions(event);
                 setShowSuggestions(false);
             }
         }
