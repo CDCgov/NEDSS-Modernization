@@ -1,3 +1,5 @@
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import {
     Button,
     ButtonGroup,
@@ -13,9 +15,7 @@ import {
     TextInput
 } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { CodedValue } from 'coded';
 import { Input } from 'components/FormInputs/Input';
