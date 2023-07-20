@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +14,10 @@ import lombok.RequiredArgsConstructor;
 public class SecurityService {
     private static final String ALL = "ALL";
     private final JurisdictionCodeRepository jurisdictionCodeRepository;
+
+    public Set<Long> getCurrentUserProgramAreaJurisdictionOids() {
+        return getProgramAreaJurisdictionOids(SecurityUtil.getUserDetails());
+    }
 
     /**
      * Returns a Set of Ids that are a combination of ProgramAreas and Jurisdictions the user has access to. These are

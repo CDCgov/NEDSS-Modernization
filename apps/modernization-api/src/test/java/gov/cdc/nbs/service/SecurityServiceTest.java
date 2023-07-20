@@ -1,5 +1,6 @@
 package gov.cdc.nbs.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import gov.cdc.nbs.authentication.NbsAuthority;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.entity.srte.JurisdictionCode;
@@ -26,13 +29,38 @@ class SecurityServiceTest {
     @InjectMocks
     private SecurityService securityService;
 
+    @Test
+    void should_get_the_current_users_oids() {
+        // given two jurisdictions exist
+        when(jurisdictionCodeRepository.findAll()).thenReturn(Arrays.asList(fultonCounty(), gwinnettCounty()));
+
+        // and the user has access to program area id 1 and the jurisdiciton "ALL"
+        NbsUserDetails userDetails = userDetails(allProgramAreas());
+
+        // and the user is logged in
+        var pat = new PreAuthenticatedAuthenticationToken(
+            userDetails,
+            null,
+            userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(pat);
+
+        // when compiling program_jurisdiction_oids
+        Set<Long> oids = securityService.getProgramAreaJurisdictionOids(userDetails);
+
+        // then the expected oids are returned
+        assertNotNull(oids);
+        assertEquals(2, oids.size());
+        assertTrue(oids.contains(1300100095L));
+        assertTrue(oids.contains(1300300095L));
+    }
+
 
     @Test
     void should_return_oids_for_all_jurisdiction() {
         // given two jurisdictions exist
         when(jurisdictionCodeRepository.findAll()).thenReturn(Arrays.asList(fultonCounty(), gwinnettCounty()));
 
-        // and the program area id 1 and the jurisdiciton "ALL"
+        // and the user has access to program area id 95 and the jurisdiciton "ALL"
         NbsUserDetails userDetails = userDetails(allProgramAreas());
 
         // when compiling program_jurisdiction_oids
@@ -40,7 +68,7 @@ class SecurityServiceTest {
 
         // then the expected oids are returned
         assertNotNull(oids);
-        assertTrue(oids.size() == 2);
+        assertEquals(2, oids.size());
         assertTrue(oids.contains(1300100095L));
         assertTrue(oids.contains(1300300095L));
     }
@@ -50,7 +78,7 @@ class SecurityServiceTest {
         // given two jurisdictions exist
         when(jurisdictionCodeRepository.findAll()).thenReturn(Arrays.asList(fultonCounty(), gwinnettCounty()));
 
-        // and the program area id 1 and the jurisdiciton "ALL"
+        // and the user has access to program area id 95 and the jurisdiciton "130001"
         NbsUserDetails userDetails = userDetails(oneProgramArea());
 
         // when compiling program_jurisdiction_oids
@@ -58,7 +86,7 @@ class SecurityServiceTest {
 
         // then the expected oids are returned
         assertNotNull(oids);
-        assertTrue(oids.size() == 1);
+        assertEquals(1, oids.size());
         assertTrue(oids.contains(1300100095L));
     }
 

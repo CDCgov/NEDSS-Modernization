@@ -3,19 +3,18 @@ package gov.cdc.nbs.patient.profile.investigation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.QActRelationship;
 import gov.cdc.nbs.entity.odse.QNotification;
 import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
-import gov.cdc.nbs.service.SecurityService;
 
 @Component
 class PatientInvestigationFinder {
@@ -39,7 +38,10 @@ class PatientInvestigationFinder {
     private static final String CASE_STATUS_CODE_SET = "PHC_CLASS";
 
 
-    record Criteria(long patient, Status... status) {
+    record Criteria(
+            long patient,
+            Set<Long> programJurisdicitonOids,
+            Status... status) {
 
         enum Status {
             OPEN("O"),
@@ -56,8 +58,8 @@ class PatientInvestigationFinder {
             }
         }
 
-        Criteria(long patient) {
-            this(patient, Status.values());
+        Criteria(long patient, Set<Long> programJurisdicitonOids) {
+            this(patient, programJurisdicitonOids, Status.values());
         }
 
         @Override
@@ -90,15 +92,11 @@ class PatientInvestigationFinder {
     private final JPAQueryFactory factory;
     private final PatientInvestigationTupleMapper.Tables tables;
     private final PatientInvestigationTupleMapper mapper;
-    private final SecurityService securityService;
 
-    PatientInvestigationFinder(
-            final JPAQueryFactory factory,
-            final SecurityService securityService) {
+    PatientInvestigationFinder(final JPAQueryFactory factory) {
         this.factory = factory;
         this.tables = new PatientInvestigationTupleMapper.Tables();
         this.mapper = new PatientInvestigationTupleMapper(this.tables);
-        this.securityService = securityService;
     }
 
     Page<PatientInvestigation> find(
@@ -122,9 +120,7 @@ class PatientInvestigationFinder {
     private <R> JPAQuery<R> applyCriteria(
             final JPAQuery<R> query,
             final Criteria criteria) {
-        // Get the current user and a list of their available program area + jurisdiction OIDs
-        var userDetails = SecurityUtil.getUserDetails();
-        var userOids = securityService.getProgramAreaJurisdictionOids(userDetails);
+
 
         return query.from(PATIENT)
                 .join(INVESTIGATED).on(
@@ -143,7 +139,7 @@ class PatientInvestigationFinder {
                         PATIENT.cd.eq(PATIENT_CODE),
                         PATIENT.recordStatusCd.eq(RecordStatus.ACTIVE),
                         // only return investigations where the user has access to program area / jurisdiction
-                        this.tables.investigation().programJurisdictionOid.in(userOids));
+                        this.tables.investigation().programJurisdictionOid.in(criteria.programJurisdicitonOids()));
     }
 
     private String[] resolveInvestigationStatus(final Criteria.Status... status) {
