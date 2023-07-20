@@ -4,9 +4,11 @@
 import type { Concept } from '../models/Concept';
 import type { CreateValueSetResponse } from '../models/CreateValueSetResponse';
 import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
+import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
 import type { ValueSetRequest } from '../models/ValueSetRequest';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
+import type { ValueSetUpdateRequest } from '../models/ValueSetUpdateRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -81,12 +83,12 @@ export class ValueSetControllerService {
     }
 
     /**
-     * searchValueSearch
+     * searchValueSet
      * @returns Page_ValueSet_ OK
      * @returns any Created
      * @throws ApiError
      */
-    public static searchValueSearchUsingPost({
+    public static searchValueSetUsingPost({
         authorization,
         search,
         page,
@@ -123,32 +125,32 @@ export class ValueSetControllerService {
     }
 
     /**
-     * deleteValueSet
-     * @returns ValueSetStateChangeResponse OK
+     * updateValueSet
+     * @returns UpdatedValueSetResponse OK
+     * @returns any Created
      * @throws ApiError
      */
-    public static deleteValueSetUsingDelete({
+    public static updateValueSetUsingPost({
         authorization,
-        codeSetNm,
+        update,
     }: {
         authorization: any,
         /**
-         * codeSetNm
+         * update
          */
-        codeSetNm: string,
-    }): CancelablePromise<ValueSetStateChangeResponse> {
+        update: ValueSetUpdateRequest,
+    }): CancelablePromise<UpdatedValueSetResponse | any> {
         return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/page-builder/api/v1/valueset/{codeSetNm}',
-            path: {
-                'codeSetNm': codeSetNm,
-            },
+            method: 'POST',
+            url: '/page-builder/api/v1/valueset/update',
             headers: {
                 'Authorization': authorization,
             },
+            body: update,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }
@@ -156,9 +158,10 @@ export class ValueSetControllerService {
     /**
      * activateValueSet
      * @returns ValueSetStateChangeResponse OK
+     * @returns any Created
      * @throws ApiError
      */
-    public static activateValueSetUsingPatch({
+    public static activateValueSetUsingPut({
         authorization,
         codeSetNm,
     }: {
@@ -167,10 +170,10 @@ export class ValueSetControllerService {
          * codeSetNm
          */
         codeSetNm: string,
-    }): CancelablePromise<ValueSetStateChangeResponse> {
+    }): CancelablePromise<ValueSetStateChangeResponse | any> {
         return __request(OpenAPI, {
-            method: 'PATCH',
-            url: '/page-builder/api/v1/valueset/{codeSetNm}',
+            method: 'PUT',
+            url: '/page-builder/api/v1/valueset/{codeSetNm}/activate',
             path: {
                 'codeSetNm': codeSetNm,
             },
@@ -180,6 +183,7 @@ export class ValueSetControllerService {
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
+                404: `Not Found`,
             },
         });
     }
@@ -202,6 +206,39 @@ export class ValueSetControllerService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/page-builder/api/v1/valueset/{codeSetNm}/concepts',
+            path: {
+                'codeSetNm': codeSetNm,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * deleteValueSet
+     * @returns ValueSetStateChangeResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static deleteValueSetUsingPut({
+        authorization,
+        codeSetNm,
+    }: {
+        authorization: any,
+        /**
+         * codeSetNm
+         */
+        codeSetNm: string,
+    }): CancelablePromise<ValueSetStateChangeResponse | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/page-builder/api/v1/valueset/{codeSetNm}/deactivate',
             path: {
                 'codeSetNm': codeSetNm,
             },
