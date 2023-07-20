@@ -13,7 +13,7 @@ server.servlet.context-path: /page-builder
 
 spring:
   mvc.pathmatch.matching-strategy: ant_path_matcher # swagger
-  data.web.pageable.max-page-size: 25 # max pageable size
+  data.web.pageable.max-page-size: 50 # max pageable size
   jpa:
     properties:
       hibernate:

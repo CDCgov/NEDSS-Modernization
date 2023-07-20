@@ -27,14 +27,14 @@ const tableColumns = [
 ];
 
 type Props = {
-    summaries: PageSummary[];
+    summaries?: PageSummary[];
     currentPage: number;
     pageSize: number;
     totalElements: number;
 };
 export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElements }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const { setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
 
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
@@ -115,7 +115,7 @@ export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElemen
             currentPage={currentPage}
             handleNext={setCurrentPage}
             sortData={handleSort}
-            buttons={<TableMenu tableType="page" />}
+            buttons={<TableMenu tableType="page" searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
             rangeSelector={true}
         />
     );
