@@ -113,7 +113,7 @@ public class ConditionCode implements Serializable {
     private Character morbReportEnableInd;
 
     @Column(name = "port_req_ind_cd")
-    private String portReqIndCd;
+    private Character portReqIndCd;
 
     @Column(name = "family_cd", length = 256)
     private String familyCd;
