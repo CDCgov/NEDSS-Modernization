@@ -2,29 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloWrapper from './providers/ApolloContext';
-import { SearchCriteriaProvider } from './providers/SearchCriteriaContext';
-// import { TopBanner } from './components/TopBanner/TopBanner';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from './routes/AppRoutes';
 import './settings.scss';
 import NavBar from './shared/header/NavBar';
+import { AlertProvider } from 'alert';
 
 ReactDOM.render(
     <React.StrictMode>
-        <UserContextProvider>
-            <ApolloWrapper>
-                <SearchCriteriaProvider>
-                    <BrowserRouter>
-                        {/* <TopBanner /> */}
+        <AlertProvider>
+            <BrowserRouter>
+                <UserContextProvider>
+                    <ApolloWrapper>
                         <NavBar />
                         <div className="route-content">
                             <AppRoutes />
                         </div>
-                    </BrowserRouter>
-                </SearchCriteriaProvider>
-            </ApolloWrapper>
-        </UserContextProvider>
+                    </ApolloWrapper>
+                </UserContextProvider>
+            </BrowserRouter>
+        </AlertProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.codes;
+package gov.cdc.nbs.codes.location.state;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
@@ -20,21 +20,23 @@ class StateCodedValueFinder {
         this.values = QStateCode.stateCode;
     }
 
-    Collection<CodedValue> all() {
+    Collection<StateCodedValue> all() {
         return this.factory.select(
                 values.id,
-                values.codeDescTxt
+                values.codeDescTxt,
+                values.stateNm
             ).from(values)
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
+            .orderBy(new OrderSpecifier<>(Order.ASC, values.id))
             .fetch()
             .stream()
             .map(this::map)
             .toList();
     }
 
-    private CodedValue map(final Tuple tuple) {
+    private StateCodedValue map(final Tuple tuple) {
         String value = tuple.get(values.id);
         String name = tuple.get(values.codeDescTxt);
-        return new CodedValue(value, name);
+        String abbreviation = tuple.get(values.stateNm);
+        return new StateCodedValue(value, name, abbreviation);
     }
 }

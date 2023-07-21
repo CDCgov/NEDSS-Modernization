@@ -32,7 +32,6 @@ Feature: Value Sets for common data inputs are retrievable
       | "Identification Type"                 |
       | "Assigning Authority"                 |
       | "Country"                             |
-      | "State"                               |
 
 
   Scenario Outline: I can retrieve Detailed Races by <parent>
@@ -43,3 +42,8 @@ Feature: Value Sets for common data inputs are retrievable
       | name            | parent |
       | "Detailed Race" | "ROOT" |
       | "County"        | "ROOT" |
+
+    Scenario: I can retrieve a State Value Set
+      When I want to retrieve the state value set
+      Then the state value set is returned
+
