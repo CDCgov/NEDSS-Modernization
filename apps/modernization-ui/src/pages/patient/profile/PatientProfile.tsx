@@ -1,5 +1,4 @@
 import {
-    Alert,
     Button,
     ButtonGroup,
     Icon,
@@ -10,7 +9,7 @@ import {
     ModalToggleButton
 } from '@trussworks/react-uswds';
 import 'pages/patientProfile/style.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Summary } from 'pages/patientProfile/Summary';
@@ -20,6 +19,8 @@ import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
+import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
+import { resolveDeleteMessage } from './resolveDeleteMessage';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -48,10 +49,9 @@ export const PatientProfile = () => {
 
     const profile = usePatientProfile(id);
 
+    const deletability = resolveDeletability(profile?.patient);
+
     const navigate = useNavigate();
-    const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
-    const [addedItem, setAddedItem] = useState<string>('');
-    const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
     const handleComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
@@ -73,14 +73,6 @@ export const PatientProfile = () => {
         }
     }
 
-    useEffect(() => {
-        if (submittedSuccess) {
-            setTimeout(() => {
-                setSubmittedSuccess(false);
-            }, 5000);
-        }
-    }, [submittedSuccess]);
-
     return (
         <div className="height-full main-banner">
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
@@ -94,6 +86,8 @@ export const PatientProfile = () => {
                         Print
                     </Button>
                     <ModalToggleButton
+                        disabled={deletability !== DeletabilityResult.Deletable}
+                        title={resolveDeleteMessage(deletability)}
                         modalRef={modalRef}
                         opener
                         className="delete-btn display-inline-flex"
@@ -115,7 +109,7 @@ export const PatientProfile = () => {
                         <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                             <Icon.Warning className="font-sans-2xl margin-x-2" />
                             <p id="modal-1-description">
-                                Would you like to permenantly delete patient record {profile?.patient?.shortId},{' '}
+                                Would you like to permanently delete patient record {profile?.patient?.shortId},{' '}
                                 {`${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
                             </p>
                         </div>
@@ -167,16 +161,7 @@ export const PatientProfile = () => {
 
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={profile?.patient.id} />}
                 {activeTab === ACTIVE_TAB.EVENT && <Events patient={profile?.patient.id} />}
-                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
-                    <Demographics
-                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
-                            setSubmittedSuccess(true);
-                            setAddedItem(message);
-                            setAlertType(type);
-                        }}
-                        id={profile?.patient.id || ''}
-                    />
-                )}
+                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics id={profile?.patient.id || ''} />}
 
                 <div className="text-center margin-y-5">
                     <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -185,20 +170,6 @@ export const PatientProfile = () => {
                     </Button>
                 </div>
             </div>
-
-            {submittedSuccess && (
-                <Alert
-                    type={alertType}
-                    heading="Success"
-                    headingLevel="h4"
-                    cta={
-                        <Button type="button" unstyled>
-                            <Icon.Close />
-                        </Button>
-                    }>
-                    Added new name, {addedItem}
-                </Alert>
-            )}
         </div>
     );
 };
