@@ -1,14 +1,17 @@
 import { Checkbox, Fieldset, Grid } from '@trussworks/react-uswds';
-import FormCard from '../../../../components/FormCard/FormCard';
-import { SearchCriteriaContext } from '../../../../providers/SearchCriteriaContext';
-import { formatInterfaceString } from '../../../../utils/util';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import FormCard from 'components/FormCard/FormCard';
+import { CodedValue } from 'coded';
 
-export interface InputEthnicityFields {
-    ethnicity: string;
-    // TODO races
-}
-export default function EthnicityFields({ id, title, control }: { id?: string; title?: string; control?: any }) {
+type CodedValues = {
+    raceCategories: CodedValue[];
+};
+
+type Props = { id: string; title: string; coded: CodedValues };
+
+export default function RaceFields({ id, title, coded }: Props) {
+    const { control } = useFormContext();
+
     const tempArr: any = [];
     return (
         <FormCard title={title} id={id}>
@@ -21,51 +24,45 @@ export default function EthnicityFields({ id, title, control }: { id?: string; t
                                 name="race"
                                 render={({ field: { onChange, value } }) => {
                                     return (
-                                        <SearchCriteriaContext.Consumer>
-                                            {({ searchCriteria }) =>
-                                                Object.values(searchCriteria.races).map((race, index) => (
-                                                    <Checkbox
-                                                        key={index}
-                                                        onChange={(e) => {
-                                                            if (!value || value?.length === 0) {
-                                                                if (e.target.checked) {
-                                                                    tempArr.push(e.target.value);
-                                                                    onChange(tempArr);
-                                                                } else {
-                                                                    const index = tempArr.indexOf(e.target.value);
-                                                                    if (index > -1) {
-                                                                        tempArr.splice(index, 1);
-                                                                    }
-                                                                    onChange(tempArr);
-                                                                }
+                                        <>
+                                            {coded.raceCategories.map((race, index) => (
+                                                <Checkbox
+                                                    key={index}
+                                                    onChange={(e) => {
+                                                        if (!value || value?.length === 0) {
+                                                            if (e.target.checked) {
+                                                                tempArr.push(e.target.value);
+                                                                onChange(tempArr);
                                                             } else {
-                                                                if (e.target.checked) {
-                                                                    value.push(e.target.value);
-                                                                    onChange(value);
-                                                                } else {
-                                                                    const index = value.indexOf(e.target.value);
-                                                                    if (index > -1) {
-                                                                        value.splice(index, 1);
-                                                                    }
-                                                                    onChange(value);
+                                                                const index = tempArr.indexOf(e.target.value);
+                                                                if (index > -1) {
+                                                                    tempArr.splice(index, 1);
                                                                 }
+                                                                onChange(tempArr);
                                                             }
-                                                        }}
-                                                        defaultChecked={
-                                                            value?.find((it: any) => it === race.id.code) || false
+                                                        } else {
+                                                            if (e.target.checked) {
+                                                                value.push(e.target.value);
+                                                                onChange(value);
+                                                            } else {
+                                                                const index = value.indexOf(e.target.value);
+                                                                if (index > -1) {
+                                                                    value.splice(index, 1);
+                                                                }
+                                                                onChange(value);
+                                                            }
                                                         }
-                                                        checked={value?.find((it: any) => it === race.id.code) || false}
-                                                        value={
-                                                            value?.find((it: any) => it === race.id.code) ||
-                                                            race.id.code
-                                                        }
-                                                        id={race.id.code}
-                                                        name={'race'}
-                                                        label={formatInterfaceString(race.codeDescTxt)}
-                                                    />
-                                                ))
-                                            }
-                                        </SearchCriteriaContext.Consumer>
+                                                    }}
+                                                    defaultChecked={
+                                                        value?.find((it: any) => it === race.value) || false
+                                                    }
+                                                    value={value?.find((it: any) => it === race.value) || race.value}
+                                                    id={race.value}
+                                                    name={'race'}
+                                                    label={race.name}
+                                                />
+                                            ))}
+                                        </>
                                     );
                                 }}
                             />

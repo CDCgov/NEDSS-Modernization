@@ -1,5 +1,7 @@
 package gov.cdc.nbs.codes;
 
+import gov.cdc.nbs.codes.location.state.StateCodedValue;
+import gov.cdc.nbs.codes.location.state.StateCodedValueResolver;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -39,6 +41,8 @@ public class CodedValuesSteps {
     private Collection<CodedValue> codedValues;
     private Collection<GroupedCodedValue> groupedCodedValues;
 
+    private Collection<StateCodedValue> stateCodedValues;
+
     @Before("@coded-values")
     public void reset() {
         this.codedValues = null;
@@ -71,10 +75,8 @@ public class CodedValuesSteps {
             case "Assigning Authority" -> this.codedValues = generalResolver.assigningAuthorities();
             case "Gender" -> this.codedValues = this.genderResolver.genders();
             case "Country" -> this.codedValues = this.countryResolver.countries();
-            case "State" -> this.codedValues = this.stateResolver.states();
             default -> this.codedValues = List.of();
         }
-
     }
 
     @Then("a value set is returned")
@@ -96,4 +98,13 @@ public class CodedValuesSteps {
         assertThat(groupedCodedValues).isNotEmpty();
     }
 
+    @When("I want to retrieve the state value set")
+    public void i_want_to_retrieve_the_state_value_set() {
+        this.stateCodedValues = this.stateResolver.states();
+    }
+
+    @Then("the state value set is returned")
+    public void the_state_value_set_is_returned() {
+        assertThat(stateCodedValues).isNotEmpty();
+    }
 }

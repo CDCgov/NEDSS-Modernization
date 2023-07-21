@@ -32,7 +32,7 @@ let processingStatusArr: string[] = [];
 
 export const LabGeneralSearch = ({ control, filter }: GeneralSearchProps) => {
     const [facilityType, setFacilityType] = useState(false);
-    const selectedEventDateType = useWatch({ control, name: 'eventDateType' });
+    const selectedEventDateType = useWatch({ control, name: 'labeventDateType' });
 
     return (
         <>

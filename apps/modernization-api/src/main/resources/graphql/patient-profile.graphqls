@@ -1,4 +1,4 @@
-type PatientCodedValue {
+type PatientIndicatorCodedValue {
     id: String!
     description: String!
 }
@@ -56,20 +56,40 @@ type PatientAdministrativeResults {
     size: Int!
 }
 
+type PatientNameUse {
+    id: String!
+    description: String!
+}
+
+type PatientNamePrefix{
+    id: String!
+    description: String!
+}
+
+type PatientNameSuffix{
+    id: String!
+    description: String!
+}
+
+type PatientNameDegree {
+    id: String!
+    description: String!
+}
+
 type PatientName {
     patient: Int!
     version: Int!
     asOf: DateTime!
     sequence: Int!
-    use: PatientCodedValue!
-    prefix: PatientCodedValue
+    use: PatientNameUse!
+    prefix: PatientNamePrefix
     first: String
     middle: String
     secondMiddle: String
     last: String
     secondLast: String
-    suffix: PatientCodedValue
-    degree: PatientCodedValue
+    suffix: PatientNameSuffix
+    degree: PatientNameDegree
 }
 
 type PatientNameResults {
@@ -79,20 +99,45 @@ type PatientNameResults {
     size: Int!
 }
 
+type PatientAddressType {
+    id: String!
+    description: String!
+}
+
+type PatientAddressUse {
+    id: String!
+    description: String!
+}
+
+type PatientCounty {
+    id: String!
+    description: String!
+}
+
+type PatientState {
+    id: String!
+    description: String!
+}
+
+type PatientCountry {
+    id: String!
+    description: String!
+}
+
 type PatientAddress {
     patient: Int!
     id: ID!
     version: Int!
     asOf: DateTime!
-    type: PatientCodedValue!
-    use: PatientCodedValue!
+    type: PatientAddressType!
+    use: PatientAddressUse!
     address1: String
     address2: String
     city: String
-    county: PatientCodedValue
-    state: PatientCodedValue
+    county: PatientCounty
+    state: PatientState
     zipcode: String
-    country: PatientCodedValue
+    country: PatientCountry
     censusTract: String
     comment: String
 }
@@ -104,13 +149,23 @@ type PatientAddressResults {
     size: Int!
 }
 
+type PatientPhoneType {
+    id: String!
+    description: String!
+}
+
+type PatientPhoneUse {
+    id: String!
+    description: String!
+}
+
 type PatientPhone {
     patient: Int!
     id: ID!
     version: Int!
     asOf: DateTime!
-    type: PatientCodedValue
-    use: PatientCodedValue
+    type: PatientPhoneType
+    use: PatientPhoneUse
     countryCode: String
     number: String
     extension: String
@@ -133,12 +188,27 @@ type PatientBirth {
     asOf: DateTime!
     bornOn: Date
     age: Int
-    multipleBirth: PatientCodedValue
+    multipleBirth: PatientIndicatorCodedValue
     birthOrder: Int
     city: String
-    state: PatientCodedValue
-    county: PatientCodedValue
-    country: PatientCodedValue
+    state: PatientState
+    county: PatientCounty
+    country: PatientCountry
+}
+
+type PatientGenderCodedValue {
+    id: String!
+    description: String!
+}
+
+type PatientPreferredGender {
+    id: String!
+    description: String!
+}
+
+type PatientGenderUnknownReason {
+    id: String!
+    description: String!
 }
 
 type PatientGender {
@@ -146,11 +216,21 @@ type PatientGender {
     id: ID!
     version: Int!
     asOf: DateTime!
-    birth: PatientCodedValue
-    current: PatientCodedValue
-    unknownReason: PatientCodedValue
-    preferred: PatientCodedValue
+    birth: PatientGenderCodedValue
+    current: PatientGenderCodedValue
+    unknownReason: PatientGenderUnknownReason
+    preferred: PatientPreferredGender
     additional: String
+}
+
+type PatientIdentificationType {
+    id: String!
+    description: String!
+}
+
+type PatientIdentificationAuthority {
+    id: String!
+    description: String!
 }
 
 type PatientIdentification {
@@ -158,8 +238,8 @@ type PatientIdentification {
     sequence: Int!
     version: Int!
     asOf: DateTime!
-    type: PatientCodedValue!
-    authority: PatientCodedValue
+    type: PatientIdentificationType!
+    authority: PatientIdentificationAuthority
     value: String
 }
 
@@ -175,12 +255,32 @@ type PatientMortality {
     id: ID!
     version: Int!
     asOf: DateTime!
-    deceased: PatientCodedValue
+    deceased: PatientIndicatorCodedValue
     deceasedOn: Date
     city: String
-    state: PatientCodedValue
-    county: PatientCodedValue
-    country: PatientCodedValue
+    state: PatientState
+    county: PatientCounty
+    country: PatientCountry
+}
+
+type PatientMaritalStatus {
+    id: String!
+    description: String!
+}
+
+type PatientOccupation {
+    id: String!
+    description: String!
+}
+
+type PatientEducationLevel {
+    id: String!
+    description: String!
+}
+
+type PatientPrimaryLanguage {
+    id: String!
+    description: String!
 }
 
 type PatientGeneral {
@@ -188,15 +288,30 @@ type PatientGeneral {
     id: ID!
     version: Int!
     asOf: DateTime!
-    maritalStatus: PatientCodedValue
+    maritalStatus: PatientMaritalStatus
     maternalMaidenName: String
     adultsInHouse: Int
     childrenInHouse: Int
-    occupation: PatientCodedValue
-    educationLevel: PatientCodedValue
-    primaryLanguage: PatientCodedValue
-    speaksEnglish: PatientCodedValue
+    occupation: PatientOccupation
+    educationLevel: PatientEducationLevel
+    primaryLanguage: PatientPrimaryLanguage
+    speaksEnglish: PatientIndicatorCodedValue
     stateHIVCase: String
+}
+
+type PatientEthnicGroup {
+    id: String!
+    description: String!
+}
+
+type PatientEthnicityUnknownReason {
+    id: String!
+    description: String!
+}
+
+type PatientDetailedEthnicity {
+    id: String!
+    description: String!
 }
 
 type PatientEthnicity {
@@ -204,9 +319,19 @@ type PatientEthnicity {
     id: ID!
     version: Int!
     asOf: DateTime!
-    ethnicGroup: PatientCodedValue!
-    unknownReason: PatientCodedValue
-    detailed: [PatientCodedValue!]!
+    ethnicGroup: PatientEthnicGroup!
+    unknownReason: PatientEthnicityUnknownReason
+    detailed: [PatientDetailedEthnicity!]!
+}
+
+type PatientRaceCategory {
+    id: String!
+    description: String!
+}
+
+type PatientRaceDetail {
+    id: String!
+    description: String!
 }
 
 type PatientRace {
@@ -214,8 +339,8 @@ type PatientRace {
     id: Int!
     version: Int!
     asOf: DateTime!
-    category: PatientCodedValue!
-    detailed: [PatientCodedValue!]!
+    category: PatientRaceCategory!
+    detailed: [PatientRaceDetail!]!
 }
 
 type PatientRaceResults {
@@ -228,17 +353,17 @@ type PatientRaceResults {
 type PatientProfile {
     id: ID!
     local: String!
-    shortId: Int
+    shortId: Int!
     version: Int!
-    recordStatusCd: String!
+    status: String!
     deletable: Boolean!
     summary(asOf: DateTime): PatientSummary
-    names(page: Page): PatientNameResults
-    administrative(page: Page): PatientAdministrativeResults
+    names(page: Page): PatientNameResults!
+    administrative(page: Page): PatientAdministrativeResults!
     addresses(page: Page): PatientAddressResults!
-    phones(page: Page): PatientPhoneResults
-    identification(page: Page): PatientIdentificationResults
-    races(page: Page): PatientRaceResults
+    phones(page: Page): PatientPhoneResults!
+    identification(page: Page): PatientIdentificationResults!
+    races(page: Page): PatientRaceResults!
     birth: PatientBirth
     gender: PatientGender
     mortality: PatientMortality

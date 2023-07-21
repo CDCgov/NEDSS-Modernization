@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -25,9 +24,6 @@ import lombok.RequiredArgsConstructor;
 @EntityScan({"gov.cdc.nbs.questionbank"})
 public class WebSecurityConfig {
     private final JWTFilter jwtFilter;
-
-    @Value("${server.servlet.context-path:}")
-    private String contextPath;
 
     @Bean
     @SuppressWarnings("squid:S4502")

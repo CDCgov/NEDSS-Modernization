@@ -25,12 +25,11 @@ public class InvestigationMother {
     private final TestInvestigationCleaner cleaner;
 
     public InvestigationMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestInvestigations investigations,
-        final TestInvestigationCleaner cleaner
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestInvestigations investigations,
+            final TestInvestigationCleaner cleaner) {
         this.idGenerator = idGenerator;
         this.settings = settings;
         this.entityManager = entityManager;
@@ -53,8 +52,9 @@ public class InvestigationMother {
         investigation.setAddTime(settings.createdOn());
         investigation.setAddUserId(settings.createdBy());
 
-        investigation.setCd("42060");   // other injury
-        investigation.setJurisdictionCd("999999");    // out of system
+        investigation.setCd("42060"); // other injury
+        investigation.setJurisdictionCd("999999"); // out of system
+        investigation.setProgramJurisdictionOid(1300600015L); // Clayton county + STD
 
         subjectOf(investigation.getAct(), subject);
 

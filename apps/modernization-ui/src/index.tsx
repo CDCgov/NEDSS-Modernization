@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloWrapper from './providers/ApolloContext';
-import { SearchCriteriaProvider } from './providers/SearchCriteriaContext';
-// import { TopBanner } from './components/TopBanner/TopBanner';
 import { UserContextProvider } from './providers/UserContext';
 import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from './routes/AppRoutes';
@@ -12,19 +10,16 @@ import NavBar from './shared/header/NavBar';
 
 ReactDOM.render(
     <React.StrictMode>
-        <UserContextProvider>
-            <ApolloWrapper>
-                <SearchCriteriaProvider>
-                    <BrowserRouter>
-                        {/* <TopBanner /> */}
-                        <NavBar />
-                        <div className="route-content">
-                            <AppRoutes />
-                        </div>
-                    </BrowserRouter>
-                </SearchCriteriaProvider>
-            </ApolloWrapper>
-        </UserContextProvider>
+        <BrowserRouter>
+            <UserContextProvider>
+                <ApolloWrapper>
+                    <NavBar />
+                    <div className="route-content">
+                        <AppRoutes />
+                    </div>
+                </ApolloWrapper>
+            </UserContextProvider>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

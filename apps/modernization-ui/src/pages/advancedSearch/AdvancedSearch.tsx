@@ -37,7 +37,7 @@ import { LabReportResults } from './components/LabReportResults';
 import { PatientResults } from './components/PatientResults';
 import { PatientSearch } from './components/patientSearch/PatientSearch';
 import { Icon } from '@trussworks/react-uswds';
-import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { SearchCriteria, SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -444,6 +444,48 @@ export const AdvancedSearch = () => {
             case 'Coded Result':
                 delete tempLabReportFilter.codedResult;
                 break;
+            case 'Entry Methods':
+                if (tempLabReportFilter?.entryMethods) {
+                    if (tempLabReportFilter?.entryMethods?.length > 1) {
+                        tempLabReportFilter.entryMethods = tempLabReportFilter.entryMethods?.filter(
+                            (item) => item !== value
+                        );
+                    } else {
+                        delete tempLabReportFilter.entryMethods;
+                    }
+                }
+                break;
+            case 'Entered By':
+                if (tempLabReportFilter?.enteredBy) {
+                    if (tempLabReportFilter?.enteredBy?.length > 1) {
+                        tempLabReportFilter.enteredBy = tempLabReportFilter.enteredBy?.filter((item) => item !== value);
+                    } else {
+                        delete tempLabReportFilter.enteredBy;
+                    }
+                }
+                break;
+            case 'Processing Status':
+                if (tempLabReportFilter?.processingStatus) {
+                    if (tempLabReportFilter?.processingStatus?.length > 1) {
+                        tempLabReportFilter.processingStatus = tempLabReportFilter.processingStatus?.filter(
+                            (item) => item !== value
+                        );
+                    } else {
+                        delete tempLabReportFilter.processingStatus;
+                    }
+                }
+                break;
+            case 'Event Status':
+                if (tempLabReportFilter?.eventStatus) {
+                    if (tempLabReportFilter?.eventStatus?.length > 1) {
+                        tempLabReportFilter.eventStatus = tempLabReportFilter.eventStatus?.filter(
+                            (item) => item !== value
+                        );
+                    } else {
+                        delete tempLabReportFilter.eventStatus;
+                    }
+                }
+                break;
         }
 
         handleEventTags(tempLabReportFilter);
@@ -701,332 +743,341 @@ export const AdvancedSearch = () => {
     };
 
     return (
-        <div
-            className={`padding-0 search-page-height bg-light advanced-search ${
-                (investigationData?.content && investigationData.content.length > 7) ||
-                (labReportData?.content && labReportData.content.length > 7) ||
-                (patientData?.content && patientData?.content.length > 7)
-                    ? 'full-height'
-                    : 'partial-height'
-            }`}>
-            <Grid row className="page-title-bar bg-white">
-                <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
-                    Search
-                    <div className="button-group">
-                        <Button
-                            disabled={!lastSearchType}
-                            className="padding-x-3 add-patient-button"
-                            type={'button'}
-                            onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
-                            Add new
-                            <img src={'/down-arrow-white.svg'} />
-                        </Button>
-                        {showAddNewDropDown && (
-                            <ul
-                                ref={addPatiendRef}
-                                id="basic-nav-section-one"
-                                className="usa-nav__submenu add-patient-menu">
-                                <li className="usa-nav__submenu-item">
-                                    <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
-                                        Add new patient
-                                    </Button>
-                                </li>
-                                <li className="usa-nav__submenu-item">
-                                    <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
-                                        Add new lab report
-                                    </Button>
-                                </li>
-                            </ul>
-                        )}
-                    </div>
-                </div>
-            </Grid>
-            <Grid row className="search-page-height">
-                <Grid col={3} className="bg-white border-right border-base-light">
-                    <div className="left-searchbar">
-                        <h3 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h3>
-                        <div className="grid-row flex-align-center" style={{ borderBottom: '1.5px solid lightgray' }}>
-                            <h6
-                                className={`${
-                                    activeTab === ACTIVE_TAB.PERSON && 'active'
-                                } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
-                                onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
-                                Patient search
-                            </h6>
-                            <h6
-                                className={`${
-                                    activeTab === ACTIVE_TAB.EVENT && 'active'
-                                } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
-                                onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
-                                Event search
-                            </h6>
+        <SearchCriteriaProvider>
+            <div
+                className={`padding-0 search-page-height bg-light advanced-search ${
+                    (investigationData?.content && investigationData.content.length > 7) ||
+                    (labReportData?.content && labReportData.content.length > 7) ||
+                    (patientData?.content && patientData?.content.length > 7)
+                        ? 'full-height'
+                        : 'partial-height'
+                }`}>
+                <Grid row className="page-title-bar bg-white">
+                    <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
+                        Search
+                        <div className="button-group">
+                            <Button
+                                disabled={!lastSearchType}
+                                className="padding-x-3 add-patient-button"
+                                type={'button'}
+                                onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}>
+                                Add new
+                                <img src={'/down-arrow-white.svg'} />
+                            </Button>
+                            {showAddNewDropDown && (
+                                <ul
+                                    ref={addPatiendRef}
+                                    id="basic-nav-section-one"
+                                    className="usa-nav__submenu add-patient-menu">
+                                    <li className="usa-nav__submenu-item">
+                                        <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
+                                            Add new patient
+                                        </Button>
+                                    </li>
+                                    <li className="usa-nav__submenu-item">
+                                        <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
+                                            Add new lab report
+                                        </Button>
+                                    </li>
+                                </ul>
+                            )}
                         </div>
-                        {activeTab === ACTIVE_TAB.PERSON ? (
-                            <PatientSearch handleSubmission={doSubmit} data={personFilter} clearAll={handleClearAll} />
-                        ) : (
-                            <EventSearch
-                                onSearch={handleSubmit}
-                                investigationFilter={investigationFilter}
-                                labReportFilter={labReportFilter}
-                                clearAll={handleClearAll}
-                            />
-                        )}
                     </div>
                 </Grid>
-                <Grid col={9} className="scrollable-results">
-                    <Grid
-                        row
-                        className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
-                        {submitted && !isError() ? (
-                            <SearchCriteriaContext.Consumer>
-                                {({ searchCriteria }) => (
-                                    <div
-                                        className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
-                                        style={{ maxWidth: '55%' }}>
-                                        <strong className="margin-right-1">
-                                            {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
-                                            {lastSearchType === SEARCH_TYPE.INVESTIGATION && investigationData?.total}
-                                            {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
-                                        </strong>{' '}
-                                        Results for
-                                        {resultsChip.map((re, index) => {
-                                            return (
-                                                re.value && (
-                                                    <Chip
-                                                        key={index}
-                                                        name={re.name}
-                                                        value={getChipValues(re, searchCriteria)}
-                                                        handleClose={handleChipClose}
-                                                    />
-                                                )
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </SearchCriteriaContext.Consumer>
-                        ) : (
-                            <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
-                        )}
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <div className="button-group">
+                <Grid row className="search-page-height">
+                    <Grid col={3} className="bg-white border-right border-base-light">
+                        <div className="left-searchbar">
+                            <h3 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h3>
+                            <div
+                                className="grid-row flex-align-center"
+                                style={{ borderBottom: '1.5px solid lightgray' }}>
+                                <h6
+                                    className={`${
+                                        activeTab === ACTIVE_TAB.PERSON && 'active'
+                                    } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
+                                    onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
+                                    Patient search
+                                </h6>
+                                <h6
+                                    className={`${
+                                        activeTab === ACTIVE_TAB.EVENT && 'active'
+                                    } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
+                                    onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
+                                    Event search
+                                </h6>
+                            </div>
+                            {activeTab === ACTIVE_TAB.PERSON ? (
+                                <PatientSearch
+                                    handleSubmission={doSubmit}
+                                    data={personFilter}
+                                    clearAll={handleClearAll}
+                                />
+                            ) : (
+                                <EventSearch
+                                    onSearch={handleSubmit}
+                                    investigationFilter={investigationFilter}
+                                    labReportFilter={labReportFilter}
+                                    clearAll={handleClearAll}
+                                />
+                            )}
+                        </div>
+                    </Grid>
+                    <Grid col={9} className="scrollable-results">
+                        <Grid
+                            row
+                            className="flex-align-center flex-justify margin-top-4 margin-x-4 border-bottom padding-bottom-1 border-base-lighter">
+                            {submitted && !isError() ? (
+                                <SearchCriteriaContext.Consumer>
+                                    {({ searchCriteria }) => (
+                                        <div
+                                            className="margin-0 font-sans-md margin-top-05 text-normal grid-row"
+                                            style={{ maxWidth: '55%' }}>
+                                            <strong className="margin-right-1">
+                                                {lastSearchType === SEARCH_TYPE.PERSON && patientData?.total}
+                                                {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
+                                                    investigationData?.total}
+                                                {lastSearchType === SEARCH_TYPE.LAB_REPORT && labReportData?.total}
+                                            </strong>{' '}
+                                            Results for
+                                            {resultsChip.map(
+                                                (re, index) =>
+                                                    re.value && (
+                                                        <Chip
+                                                            key={index}
+                                                            name={re.name}
+                                                            value={getChipValues(re, searchCriteria)}
+                                                            handleClose={handleChipClose}
+                                                        />
+                                                    )
+                                            )}
+                                        </div>
+                                    )}
+                                </SearchCriteriaContext.Consumer>
+                            ) : (
+                                <p className="margin-0 font-sans-md margin-top-05 text-normal">Perform a search</p>
+                            )}
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <div className="button-group">
+                                    <Button
+                                        disabled={
+                                            (!investigationData?.content || investigationData?.content?.length === 0) &&
+                                            (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                            (!patientData?.content || patientData?.content?.length === 0)
+                                        }
+                                        className="padding-x-3"
+                                        type={'button'}
+                                        onClick={() => setShowSorting(!showSorting)}
+                                        outline>
+                                        Sort by
+                                        <img
+                                            style={{ marginLeft: '5px' }}
+                                            src={
+                                                (!investigationData?.content ||
+                                                    investigationData?.content?.length === 0) &&
+                                                (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                                (!patientData?.content || patientData?.content?.length === 0)
+                                                    ? '/down-arrow-white.svg'
+                                                    : '/down-arrow-blue.svg'
+                                            }
+                                        />
+                                    </Button>
+                                    {showSorting && (
+                                        <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
+                                            <li className="usa-nav__submenu-item">
+                                                <Button
+                                                    onClick={() => {
+                                                        setSort({
+                                                            sortField: SortField.Relevance
+                                                        });
+                                                        setShowSorting(false);
+                                                    }}
+                                                    type={'button'}
+                                                    unstyled>
+                                                    Closest match
+                                                </Button>
+                                            </li>
+                                            <li className="usa-nav__submenu-item">
+                                                <Button
+                                                    onClick={() => {
+                                                        setSort({
+                                                            sortDirection: SortDirection.Asc,
+                                                            sortField: SortField.LastNm
+                                                        });
+                                                        setShowSorting(false);
+                                                    }}
+                                                    type={'button'}
+                                                    outline={sort.sortDirection === SortDirection.Asc}
+                                                    unstyled>
+                                                    Patient name (A-Z)
+                                                </Button>
+                                            </li>
+                                            <li className="usa-nav__submenu-item">
+                                                <Button
+                                                    onClick={() => {
+                                                        setSort({
+                                                            sortDirection: SortDirection.Desc,
+                                                            sortField: SortField.LastNm
+                                                        });
+                                                        setShowSorting(false);
+                                                    }}
+                                                    type={'button'}
+                                                    unstyled>
+                                                    Patient name (Z-A)
+                                                </Button>
+                                            </li>
+                                            <li className="usa-nav__submenu-item">
+                                                <Button
+                                                    onClick={() => {
+                                                        setSort({
+                                                            sortDirection: SortDirection.Asc,
+                                                            sortField: SortField.BirthTime
+                                                        });
+                                                        setShowSorting(false);
+                                                    }}
+                                                    type={'button'}
+                                                    unstyled>
+                                                    Date of birth (Ascending)
+                                                </Button>
+                                            </li>
+                                            <li className="usa-nav__submenu-item">
+                                                <Button
+                                                    onClick={() => {
+                                                        setSort({
+                                                            sortDirection: SortDirection.Desc,
+                                                            sortField: SortField.BirthTime
+                                                        });
+                                                        setShowSorting(false);
+                                                    }}
+                                                    type={'button'}
+                                                    unstyled>
+                                                    Date of birth (Descending)
+                                                </Button>
+                                            </li>
+                                        </ul>
+                                    )}
+                                </div>
                                 <Button
                                     disabled={
                                         (!investigationData?.content || investigationData?.content?.length === 0) &&
                                         (!labReportData?.content || labReportData?.content?.length === 0) &&
                                         (!patientData?.content || patientData?.content?.length === 0)
                                     }
-                                    className="padding-x-3"
+                                    className="width-full margin-top-0"
+                                    style={{ display: 'none' }}
                                     type={'button'}
-                                    onClick={() => setShowSorting(!showSorting)}
+                                    onClick={handleExportClick}
                                     outline>
-                                    Sort by
-                                    <img
-                                        style={{ marginLeft: '5px' }}
-                                        src={
-                                            (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                            (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                            (!patientData?.content || patientData?.content?.length === 0)
-                                                ? '/down-arrow-white.svg'
-                                                : '/down-arrow-blue.svg'
-                                        }
-                                    />
+                                    Export
                                 </Button>
-                                {showSorting && (
-                                    <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
-                                        <li className="usa-nav__submenu-item">
-                                            <Button
-                                                onClick={() => {
-                                                    setSort({
-                                                        sortField: SortField.Relevance
-                                                    });
-                                                    setShowSorting(false);
-                                                }}
-                                                type={'button'}
-                                                unstyled>
-                                                Closest match
-                                            </Button>
-                                        </li>
-                                        <li className="usa-nav__submenu-item">
-                                            <Button
-                                                onClick={() => {
-                                                    setSort({
-                                                        sortDirection: SortDirection.Asc,
-                                                        sortField: SortField.LastNm
-                                                    });
-                                                    setShowSorting(false);
-                                                }}
-                                                type={'button'}
-                                                outline={sort.sortDirection === SortDirection.Asc}
-                                                unstyled>
-                                                Patient name (A-Z)
-                                            </Button>
-                                        </li>
-                                        <li className="usa-nav__submenu-item">
-                                            <Button
-                                                onClick={() => {
-                                                    setSort({
-                                                        sortDirection: SortDirection.Desc,
-                                                        sortField: SortField.LastNm
-                                                    });
-                                                    setShowSorting(false);
-                                                }}
-                                                type={'button'}
-                                                unstyled>
-                                                Patient name (Z-A)
-                                            </Button>
-                                        </li>
-                                        <li className="usa-nav__submenu-item">
-                                            <Button
-                                                onClick={() => {
-                                                    setSort({
-                                                        sortDirection: SortDirection.Asc,
-                                                        sortField: SortField.BirthTime
-                                                    });
-                                                    setShowSorting(false);
-                                                }}
-                                                type={'button'}
-                                                unstyled>
-                                                Date of birth (Ascending)
-                                            </Button>
-                                        </li>
-                                        <li className="usa-nav__submenu-item">
-                                            <Button
-                                                onClick={() => {
-                                                    setSort({
-                                                        sortDirection: SortDirection.Desc,
-                                                        sortField: SortField.BirthTime
-                                                    });
-                                                    setShowSorting(false);
-                                                }}
-                                                type={'button'}
-                                                unstyled>
-                                                Date of birth (Descending)
-                                            </Button>
-                                        </li>
-                                    </ul>
-                                )}
+                                <Button
+                                    disabled={
+                                        (!investigationData?.content || investigationData?.content?.length === 0) &&
+                                        (!labReportData?.content || labReportData?.content?.length === 0) &&
+                                        (!patientData?.content || patientData?.content?.length === 0)
+                                    }
+                                    className="width-full margin-top-0"
+                                    style={{ display: 'none' }}
+                                    type={'button'}
+                                    onClick={handlePrintClick}
+                                    outline>
+                                    Print
+                                </Button>
                             </div>
-                            <Button
-                                disabled={
-                                    (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                    (!patientData?.content || patientData?.content?.length === 0)
-                                }
-                                className="width-full margin-top-0"
-                                style={{ display: 'none' }}
-                                type={'button'}
-                                onClick={handleExportClick}
-                                outline>
-                                Export
-                            </Button>
-                            <Button
-                                disabled={
-                                    (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                    (!patientData?.content || patientData?.content?.length === 0)
-                                }
-                                className="width-full margin-top-0"
-                                style={{ display: 'none' }}
-                                type={'button'}
-                                onClick={handlePrintClick}
-                                outline>
-                                Print
-                            </Button>
-                        </div>
-                    </Grid>
-                    {isLoading() && (
-                        <Grid row className="padding-5 flex-justify-center">
-                            <span className="ds-c-spinner" role="status">
-                                <span className="ds-u-visibility--screen-reader">Loading</span>
-                            </span>
                         </Grid>
-                    )}
-                    {!isLoading() && (
-                        <>
-                            {submitted && isEmptyFilter() && (
-                                <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-alert">
-                                    <Alert
-                                        type="error"
-                                        // heading="You did not make a search"
-                                        headingLevel="h4"
-                                        className="width-full">
-                                        <div className="display-flex flex-justify flex-align-center">
-                                            You must enter at least one item to search
-                                            <Icon.Close
-                                                onClick={() => setSubmitted(false)}
-                                                className="margin-left-05"
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                        </div>
-                                    </Alert>
+                        {isLoading() && (
+                            <Grid row className="padding-5 flex-justify-center">
+                                <span className="ds-c-spinner" role="status">
+                                    <span className="ds-u-visibility--screen-reader">Loading</span>
+                                </span>
+                            </Grid>
+                        )}
+                        {!isLoading() && (
+                            <>
+                                {submitted && isEmptyFilter() && (
+                                    <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-alert">
+                                        <Alert
+                                            type="error"
+                                            // heading="You did not make a search"
+                                            headingLevel="h4"
+                                            className="width-full">
+                                            <div className="display-flex flex-justify flex-align-center">
+                                                You must enter at least one item to search
+                                                <Icon.Close
+                                                    onClick={() => setSubmitted(false)}
+                                                    className="margin-left-05"
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+                                            </div>
+                                        </Alert>
+                                    </div>
+                                )}
+                                {!submitted && (
+                                    <div
+                                        className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center text-normal flex-justify-center advanced-search-message"
+                                        style={{
+                                            background: 'white',
+                                            border: '1px solid #DFE1E2',
+                                            borderRadius: '5px',
+                                            height: '147px'
+                                        }}>
+                                        Perform a search to see results
+                                    </div>
+                                )}
+                            </>
+                        )}
+                        {!isError() && !isLoading() && isNoResultsFound() && (
+                            <div
+                                className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
+                                style={{
+                                    background: 'white',
+                                    border: '1px solid #DFE1E2',
+                                    borderRadius: '5px',
+                                    height: '147px'
+                                }}>
+                                <div className="text-center">
+                                    <p>No results found.</p>
+                                    <p>
+                                        Try refining your search, or{' '}
+                                        <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
+                                            add a new patient
+                                        </a>
+                                    </p>
                                 </div>
-                            )}
-                            {!submitted && (
-                                <div
-                                    className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center text-normal flex-justify-center advanced-search-message"
-                                    style={{
-                                        background: 'white',
-                                        border: '1px solid #DFE1E2',
-                                        borderRadius: '5px',
-                                        height: '147px'
-                                    }}>
-                                    Perform a search to see results
-                                </div>
-                            )}
-                        </>
-                    )}
-                    {!isError() && !isLoading() && isNoResultsFound() && (
-                        <div
-                            className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-message"
-                            style={{
-                                background: 'white',
-                                border: '1px solid #DFE1E2',
-                                borderRadius: '5px',
-                                height: '147px'
-                            }}>
-                            <div className="text-center">
-                                <p>No results found.</p>
-                                <p>
-                                    Try refining your search, or{' '}
-                                    <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
-                                        add a new patient
-                                    </a>
-                                </p>
                             </div>
-                        </div>
-                    )}
-                    {lastSearchType === SEARCH_TYPE.PERSON &&
-                        patientData?.content &&
-                        patientData.content.length > 0 && (
-                            <PatientResults
-                                data={patientData.content}
-                                totalResults={patientData.total}
-                                handlePagination={handlePagination}
-                                currentPage={currentPage}
-                            />
                         )}
-                    {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
-                        investigationData?.content &&
-                        investigationData?.content?.length > 0 && (
-                            <InvestigationResults
-                                data={investigationData?.content as [Investigation]}
-                                totalResults={investigationData?.total}
-                                handlePagination={handlePagination}
-                                currentPage={currentPage}
-                            />
-                        )}
-                    {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
-                        labReportData?.content &&
-                        labReportData?.content?.length > 0 && (
-                            <LabReportResults
-                                data={labReportData?.content as [LabReport]}
-                                totalResults={labReportData?.total}
-                                handlePagination={handlePagination}
-                                currentPage={currentPage}
-                            />
-                        )}
+                        {lastSearchType === SEARCH_TYPE.PERSON &&
+                            patientData?.content &&
+                            patientData.content.length > 0 && (
+                                <PatientResults
+                                    data={patientData.content}
+                                    totalResults={patientData.total}
+                                    handlePagination={handlePagination}
+                                    currentPage={currentPage}
+                                />
+                            )}
+                        {lastSearchType === SEARCH_TYPE.INVESTIGATION &&
+                            investigationData?.content &&
+                            investigationData?.content?.length > 0 && (
+                                <InvestigationResults
+                                    data={investigationData?.content as [Investigation]}
+                                    totalResults={investigationData?.total}
+                                    handlePagination={handlePagination}
+                                    currentPage={currentPage}
+                                />
+                            )}
+                        {lastSearchType === SEARCH_TYPE.LAB_REPORT &&
+                            labReportData?.content &&
+                            labReportData?.content?.length > 0 && (
+                                <LabReportResults
+                                    data={labReportData?.content as [LabReport]}
+                                    totalResults={labReportData?.total}
+                                    handlePagination={handlePagination}
+                                    currentPage={currentPage}
+                                />
+                            )}
+                    </Grid>
                 </Grid>
-            </Grid>
-        </div>
+            </div>
+        </SearchCriteriaProvider>
     );
 };
