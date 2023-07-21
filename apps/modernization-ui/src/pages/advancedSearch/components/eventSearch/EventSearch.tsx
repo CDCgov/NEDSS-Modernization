@@ -33,6 +33,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
     // const navigate = useNavigate();
     const methods = useForm();
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
+    const [lastEventSearchType, setLastEventSearchType] = useState<SEARCH_TYPE | ''>();
     const { handleSubmit, control, reset } = methods;
 
     const [getLocalResultedTests] = useFindLocalLabTestLazyQuery();
@@ -49,6 +50,12 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         }
     }, [investigationFilter, labReportFilter]);
 
+    useEffect(() => {
+        if (lastEventSearchType && !eventSearchType) {
+            setEventSearchType(lastEventSearchType);
+        }
+    }, [eventSearchType]);
+
     const eventSearchItems: AccordionItemProps[] = [
         {
             title: 'Event type',
@@ -57,6 +64,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                     defaultValue={eventSearchType}
                     onChangeMethod={(e) => {
                         setEventSearchType(e);
+                        setLastEventSearchType(e);
                         if (e === SEARCH_TYPE.LAB_REPORT) {
                             methods.reset(
                                 setLabReportFilters({
