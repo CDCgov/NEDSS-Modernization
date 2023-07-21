@@ -1,12 +1,12 @@
-import { Maybe, PatientCodedValue, Scalars } from 'generated/graphql/schema';
+import { Maybe, PatientIdentificationAuthority, PatientIdentificationType, Scalars } from 'generated/graphql/schema';
 
 export type Identification = {
     __typename?: 'PatientIdentification';
     asOf: Scalars['DateTime'];
-    authority?: Maybe<PatientCodedValue>;
+    authority?: Maybe<PatientIdentificationAuthority>;
     patient: Scalars['Int'];
     sequence: Scalars['Int'];
-    type?: PatientCodedValue;
+    type?: PatientIdentificationType;
     value?: Maybe<Scalars['String']>;
     version: Scalars['Int'];
 };
