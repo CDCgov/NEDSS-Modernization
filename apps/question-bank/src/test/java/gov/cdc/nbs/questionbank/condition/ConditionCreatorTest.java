@@ -37,8 +37,8 @@ public class ConditionCreatorTest {
         CreateConditionRequest request = getCreateConditionRequest();
         ConditionCode conditionDb = new ConditionCode(conditionCreator.conditionAdd(request, userId));
         when(conditionCodeRepository.save(Mockito.any(ConditionCode.class))).thenReturn(conditionDb);
-        when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(1L);
-        when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1L);
+        when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(0L);
+        when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(0L);
         CreateConditionResponse response = conditionCreator.createCondition(request, userId);
         assertEquals(conditionDb.getId(), response.getId());
         assertEquals(HttpStatus.CREATED, response.getStatus());
