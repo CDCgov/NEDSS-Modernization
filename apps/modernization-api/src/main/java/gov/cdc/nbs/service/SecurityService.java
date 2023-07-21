@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,10 @@ public class SecurityService {
     private static final String ALL = "ALL";
     private final JurisdictionCodeRepository jurisdictionCodeRepository;
 
+    public Set<Long> getCurrentUserProgramAreaJurisdictionOids() {
+        return getProgramAreaJurisdictionOids(SecurityUtil.getUserDetails());
+    }
+
     /**
      * Returns a Set of Ids that are a combination of ProgramAreas and Jurisdictions the user has access to. These are
      * created in the {@link SecurityService#generateOid(Integer, Integer)} method
@@ -21,18 +26,19 @@ public class SecurityService {
     public Set<Long> getProgramAreaJurisdictionOids(NbsUserDetails userDetails) {
         var jurisdictionCodes = jurisdictionCodeRepository.findAll();
         var oidsUserHasAccessTo = new HashSet<Long>();
-        userDetails.getAuthorities().forEach(e -> {
-            if (e.getJurisdiction().equals(ALL)) {
+        userDetails.getAuthorities().forEach(authority -> {
+            if (authority.getJurisdiction().equals(ALL)) {
                 // for each existing jurisdiction, create an Oid with the program area
                 oidsUserHasAccessTo
-                        .addAll(jurisdictionCodes.stream().map(jc -> generateOid(jc.getNbsUid(), e.getProgramAreaUid()))
+                        .addAll(jurisdictionCodes.stream()
+                                .map(jc -> generateOid(jc.getNbsUid(), authority.getProgramAreaUid()))
                                 .collect(Collectors.toSet()));
             } else {
                 // generate an Oid for the jurisdiction and program area
                 jurisdictionCodes.stream()
-                        .filter(jc -> jc.getId().equals(e.getJurisdiction()))
+                        .filter(jc -> jc.getId().equals(authority.getJurisdiction()))
                         .findFirst()
-                        .map(jc -> generateOid(jc.getNbsUid(), e.getProgramAreaUid()))
+                        .map(jc -> generateOid(jc.getNbsUid(), authority.getProgramAreaUid()))
                         .ifPresent(oidsUserHasAccessTo::add);
             }
         });

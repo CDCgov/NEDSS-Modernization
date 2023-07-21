@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.profile.investigation.PatientInvestigationFinder.Criteria;
+import gov.cdc.nbs.service.SecurityService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ class PatientInvestigationResolverTest {
     void should_find_paginated_investigations_for_the_provided_patient_using_the_finder() {
 
         PatientInvestigationFinder finder = mock(PatientInvestigationFinder.class);
+        SecurityService securityService = mock(SecurityService.class);
 
         when(finder.find(any(), any()))
             .thenAnswer(args -> new PageImpl<>(
@@ -31,7 +33,7 @@ class PatientInvestigationResolverTest {
                 )
             );
 
-        PatientInvestigationResolver resolver = new PatientInvestigationResolver(25, finder);
+        PatientInvestigationResolver resolver = new PatientInvestigationResolver(25, finder, securityService);
 
         GraphQLPage page = new GraphQLPage(25, 2);
 
@@ -67,6 +69,7 @@ class PatientInvestigationResolverTest {
     void should_find_paginated_open_investigations_for_the_provided_patient_using_the_finder() {
 
         PatientInvestigationFinder finder = mock(PatientInvestigationFinder.class);
+        SecurityService securityService = mock(SecurityService.class);
 
         when(finder.find(any(), any()))
             .thenAnswer(args -> new PageImpl<>(
@@ -76,7 +79,7 @@ class PatientInvestigationResolverTest {
                 )
             );
 
-        PatientInvestigationResolver resolver = new PatientInvestigationResolver(25, finder);
+        PatientInvestigationResolver resolver = new PatientInvestigationResolver(25, finder, securityService);
 
         GraphQLPage page = new GraphQLPage(25, 2);
 

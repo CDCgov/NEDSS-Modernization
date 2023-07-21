@@ -2,11 +2,11 @@
 import { PageSummary } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { asLocalDate } from 'date';
-import { usePage } from 'page';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
 import './ManagePagesTable.scss';
 import { TableMenu } from 'apps/page-builder/components/TableMenu/TableMenu';
+import { PagesContext } from 'apps/page-builder/context/PagesContext';
 
 export enum Column {
     PageName = 'Page name',
@@ -27,12 +27,14 @@ const tableColumns = [
 ];
 
 type Props = {
-    sortChange: (sort?: string) => void;
-    summaries: PageSummary[];
+    summaries?: PageSummary[];
+    currentPage: number;
+    pageSize: number;
+    totalElements: number;
 };
-export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
-    const { page, request } = usePage();
+export const ManagePagesTable = ({ summaries, currentPage, pageSize, totalElements }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
+    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, setSortDirection } = useContext(PagesContext);
 
     const asTableRow = (page: PageSummary): TableBody => ({
         id: page.name,
@@ -65,24 +67,29 @@ export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
-    const toSortString = (name: string, direction: Direction): string | undefined => {
-        if (name && direction && direction !== Direction.None) {
+    const toSortString = (name: string): string | undefined => {
+        if (name) {
             switch (name) {
                 case Column.PageName:
-                    return `name,${direction}`;
+                    setSortBy('name');
+                    break;
                 case Column.EventType:
-                    return `eventType,${direction}`;
+                    setSortBy('eventType');
+                    break;
                 case Column.Status:
-                    return `status,${direction}`;
+                    setSortBy('status');
+                    break;
                 case Column.LastUpdate:
-                    return `lastUpdate,${direction}`;
+                    setSortBy('lastUpdate');
+                    break;
                 case Column.LastUpdatedBy:
-                    return `lastUpdateBy,${direction}`;
+                    setSortBy('lastUpdateBy');
+                    break;
                 default:
-                    return undefined;
+                    return '';
             }
         }
-        return undefined;
+        return '';
     };
 
     useEffect(() => {
@@ -90,7 +97,11 @@ export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
     }, [summaries]);
 
     const handleSort = (name: string, direction: Direction): void => {
-        sortChange(toSortString(name, direction));
+        if (currentPage > 1 && setCurrentPage) {
+            setCurrentPage(1);
+        }
+        toSortString(name);
+        setSortDirection(direction);
     };
 
     return (
@@ -99,12 +110,13 @@ export const ManagePagesTable = ({ summaries, sortChange }: Props) => {
             tableHead={tableColumns}
             tableBody={tableRows}
             isPagination={true}
-            pageSize={page.pageSize}
-            totalResults={page.total}
-            currentPage={page.current}
-            handleNext={request}
+            pageSize={pageSize}
+            totalResults={totalElements}
+            currentPage={currentPage}
+            handleNext={setCurrentPage}
             sortData={handleSort}
-            buttons={<TableMenu tableType="page" />}
+            buttons={<TableMenu tableType="page" searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
+            rangeSelector={true}
         />
     );
 };

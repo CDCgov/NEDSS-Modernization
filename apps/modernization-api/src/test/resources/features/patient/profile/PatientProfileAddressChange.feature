@@ -8,14 +8,14 @@ Feature: Patient Profile Address Changes
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT,EDIT-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     When a patient's address is added
-    Then the patient has the new address
+    Then the patient profile has the new address
 
   Scenario: I can update a patient's existing address
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT,EDIT-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     And the patient has an address
     When a patient's address is changed
-    Then the patient has the expected address
+    Then the patient profile has the expected address
 
   Scenario: I can remove a patient's existing address
     Given I am logged into NBS
@@ -23,6 +23,7 @@ Feature: Patient Profile Address Changes
     And the patient has an address
     When a patient's address is removed
     Then the patient does not have the expected address
+    And the profile has no associated addresses
 
   Scenario: I cannot add a patient's address without proper permission
     Given I am logged into NBS

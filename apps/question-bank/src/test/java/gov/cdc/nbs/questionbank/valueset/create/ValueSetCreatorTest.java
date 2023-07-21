@@ -51,7 +51,8 @@ class ValueSetCreatorTest {
 		ValueSetRequest request = getValueSetRequest();
 		Codeset requestCodeSet = new Codeset(valueSetCreator.asAdd(request,userId));
 		CodeSetGroupMetadatum codeSetGrpRequest = new CodeSetGroupMetadatum();
-		request.setCodeSetGroup(codeSetGrpRequest);
+		codeSetGrpRequest.setId(2l);
+		requestCodeSet.setCodeSetGroup(codeSetGrpRequest);
 
 		when(valueSetRepository.save(Mockito.any())).thenReturn(requestCodeSet);
 		when(valueSetRepository.checkValueSetName(Mockito.anyString())).thenReturn(0l);
@@ -64,6 +65,7 @@ class ValueSetCreatorTest {
 		assertEquals(requestCodeSet.getAddTime(),response.getBody().addTime());
 		assertEquals(requestCodeSet.getAddUserId(),response.getBody().addUserId());
 		assertEquals(requestCodeSet.getValueSetNm(),response.getBody().valueSetNm());
+		assertEquals(requestCodeSet.getCodeSetGroup().getId(),response.getBody().codeSetGroupId());
 		assertEquals(HttpStatus.CREATED, response.getStatus());
 		assertEquals(ValueSetConstants.SUCCESS_MESSAGE,response.getMessage());
 
