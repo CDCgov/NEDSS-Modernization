@@ -8,21 +8,27 @@ import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
-import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ConditionCreator {
 
-    private static final String defaultCodingSys = '2.16.840.1.114222.4.5.277';
+    private static final String defaultCodingSys = "2.16.840.1.114222.4.5.277";
 
     @Autowired
     private ConditionCodeRepository conditionCodeRepository;
 
     public CreateConditionResponse createCondition(CreateConditionRequest request, long userId) {
         CreateConditionResponse response = new CreateConditionResponse();
+        String id = request.getId();
         String conditionNm = request.getConditionShortNm();
+
+        //check if id already exists
+        if(checkId(id)) {
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            return response;
+        }
 
         //check if conditionNm already exists
         if (checkConditionNm(conditionNm)) {
@@ -59,47 +65,26 @@ public class ConditionCreator {
 
     }
 
+    public boolean checkId(String id) {
+        return (id != null && conditionCodeRepository.checkId(id) > 0);
+    }
+
     public boolean checkConditionNm(String conditionNm) {
         return (conditionNm != null && conditionCodeRepository.checkConditionName(conditionNm) > 0);
     }
 
     public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId) {
-        return new CreateConditionCommand.AddCondition(
+        return new ConditionCommand.AddCondition(
                 request.getId(),
-                request.getConditionCodesetNm(),
-                request.getConditionSeqNum(),
-                request.getAssigningAuthorityCd(),
-                request.getAssigningAuthorityDescTxt(),
-                request.getCodeSystemCd(),
                 request.getCodeSystemDescTxt(),
-                request.getConditionDescTxt(),
                 request.getConditionShortNm(),
-                request.getEffectiveFromTime(),
-                request.getEffectiveToTime(),
-                request.getIndentLevelNbr(),
-                request.getInvestigationFormCd(),
-                request.getIsModifiableInd(),
-                request.getNbsUid(),
                 request.getNndInd(),
-                request.getParentIsCd(),
                 request.getProgAreaCd(),
                 request.getReportableMorbidityInd(),
                 request.getReportableSummaryInd(),
-                request.getStatusCd(),
-                request.getStatusTime(),
-                request.getNndEntityIdentifier(),
-                request.getNndSummaryEntityIdentifier(),
-                request.getSummaryInvestigationFormCd(),
                 request.getContactTracingEnableInd(),
-                request.getVaccineEnableInd(),
-                request.getTreatmentEnableInd(),
-                request.getLabReportEnableInd(),
-                request.getMorbReportEnableInd(),
-                request.getPortReqIndCd(),
                 request.getFamilyCd(),
                 request.getCoinfectionGrpCd(),
-                request.getRhapParseNbsInd(),
-                request.getRhapActionValue(),
                 userId);
     }
 

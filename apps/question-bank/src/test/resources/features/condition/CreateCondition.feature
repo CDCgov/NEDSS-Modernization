@@ -1,21 +1,24 @@
 @condition_create
 Feature: Create condition
+    When attempting to create a condition
 
-    Background: condition setup
-        Given: No conditions exist
-
-    Scenario: I can create a condition
-        Given I am an admin user
-        When I send a create "<condition>" condition request
-        Then the "<condition>" condition is created
+    Scenario Outline: ConditionCd already exists
+        Given ConditionCd already exists
+        When Create condition
+        Then A condition creation exception is thrown
         Examples:
             | condition |
-            | text      |
-    
-    Scenario: I cannot create a condition which already exists
-        Given I am an admin user
-        When I send a create "<condition>" condition duplicate request
+            | id      |
+
+    Scenario Outline: Condition name already exists
+        Given A condition name already exists
+        When Create condition
         Then a condition creation exception is thrown
         Examples:
             | condition |
-            | text      |
+            | name      |
+
+        Scenario: I am admin and condition does not exist
+            Given I am an admin and a condition does not exist
+            When Create condition
+            Then The Condition is created
