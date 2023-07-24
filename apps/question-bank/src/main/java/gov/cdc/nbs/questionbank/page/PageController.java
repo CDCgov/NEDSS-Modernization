@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.model.PageSummary;
+import gov.cdc.nbs.questionbank.page.request.PageCreateRequest;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
+import gov.cdc.nbs.questionbank.page.response.PageCreateResponse;
+import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,12 +29,22 @@ public class PageController {
 
     private final PageUpdater pageUpdater;
     private final PageSummaryFinder finder;
+    private final PageCreator creator;
+    private final PageStateChange stateChange;
+    private final UserDetailsProvider userDetailsProvider;
+    
 
     public PageController(
             PageUpdater pageUpdater,
-            PageSummaryFinder finder) {
+            PageSummaryFinder finder,
+            PageCreator creator,
+            PageStateChange stateChange,
+            UserDetailsProvider userDetailsProvider) {
         this.pageUpdater = pageUpdater;
         this.finder = finder;
+        this.creator = creator;
+        this.stateChange = stateChange;
+        this.userDetailsProvider = userDetailsProvider;
     }
 
     @PutMapping("{id}/details")
@@ -59,6 +74,17 @@ public class PageController {
         var results = finder.find(request, pageable);
         log.debug("Returning page summaries");
         return results;
+    }
+    
+    @PostMapping("/add")
+    public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
+    	Long userId = userDetailsProvider.getCurrentUserDetails().getId();
+    	return creator.createPage(request,userId);
+    }
+    
+    @PutMapping("{id}/draft")
+    public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
+    	return stateChange.savePageAsDraft(pageId);
     }
 
 }
