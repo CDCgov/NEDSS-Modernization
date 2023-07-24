@@ -61,4 +61,9 @@ public class PageController {
         return results;
     }
 
+    @PostMapping("{id}/questions")
+    public void addQuestionToPage() {
+
+    }
+
 }
