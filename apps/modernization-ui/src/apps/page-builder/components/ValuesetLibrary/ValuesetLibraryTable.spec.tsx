@@ -3,13 +3,16 @@ import { ValuesetLibraryTable } from './ValuesetLibraryTable';
 import { render } from '@testing-library/react';
 import { ValueSet } from 'apps/page-builder/generated';
 import { BrowserRouter } from 'react-router-dom';
+import { AlertProvider } from '../../../../alert';
 
 describe('when rendered', () => {
     it('should display sentence cased headers', async () => {
         const { container } = render(
             <BrowserRouter>
                 <PageProvider>
-                    <ValuesetLibraryTable summaries={[]} sortChange={() => {}}></ValuesetLibraryTable>
+                    <AlertProvider>
+                        <ValuesetLibraryTable summaries={[]} sortChange={() => {}}></ValuesetLibraryTable>
+                    </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
         );
@@ -57,7 +60,9 @@ describe('when at least one summary is available', () => {
         const { container } = render(
             <BrowserRouter>
                 <PageProvider>
-                    <ValuesetLibraryTable summaries={summaries} sortChange={() => {}}></ValuesetLibraryTable>
+                    <AlertProvider>
+                        <ValuesetLibraryTable summaries={summaries} sortChange={() => {}}></ValuesetLibraryTable>
+                    </AlertProvider>
                 </PageProvider>
             </BrowserRouter>
         );
