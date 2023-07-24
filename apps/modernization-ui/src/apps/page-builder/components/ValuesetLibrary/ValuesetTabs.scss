@@ -1,0 +1,29 @@
+.valueset-local-library {
+    .tabs {
+        display: flex;
+        border-bottom: 2px solid var(--base-lighter, #DCDEE0);
+        box-shadow: 0 2px 5px  0 rgba(0,0,0,.09);
+        padding-left: 32px ;
+        li {
+            display: inline-block;
+            cursor: pointer;
+            color: var(--base-black, #000);
+            font-family: Public Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            background: #ffffff;
+            margin-right: 40px;
+            &.active {
+                font-family: Public Sans;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                border-bottom: 4px solid  var(--primary-primary, #005EA2);
+                padding-bottom: 10px;
+            }
+        }
+    }
+}
