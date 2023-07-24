@@ -11,7 +11,7 @@ export const useValuesetAPI = (search?: string, sort?: string) => {
 
     const fetchValueSet = () => {
         setValueSet([]);
-        ValueSetControllerService.searchValueSearchUsingPost({
+        ValueSetControllerService.searchValueSetUsingPost({
             authorization: `Bearer ${state.getToken()}`,
             search: { valueSetTypeCd: search },
             page: page.current - 1,
