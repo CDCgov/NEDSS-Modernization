@@ -40,8 +40,8 @@ Feature: Investigation search
 
     Examples: 
       | field            | qualifier                 |
-      | condition        | Bacterial Vaginosis       |
-      | condition        | Trichomoniasis            |
+      | condition        | Bacterial VaginosisId     |
+      | condition        | TrichomoniasisId          |
       | program area     | STD                       |
       | program area     | ARBO                      |
       | jurisdiction     | jd1                       |
