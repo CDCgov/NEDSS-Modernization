@@ -4,9 +4,11 @@ package gov.cdc.nbs.patient.search;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedAddress;
 import gov.cdc.nbs.entity.elasticsearch.NestedEmail;
+import gov.cdc.nbs.entity.elasticsearch.NestedEntityId;
 import gov.cdc.nbs.entity.elasticsearch.NestedName;
 import gov.cdc.nbs.entity.elasticsearch.NestedPhone;
 import gov.cdc.nbs.entity.elasticsearch.NestedRace;
+import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
@@ -55,6 +57,7 @@ class SearchablePatientConverter {
                 .asOfDateAdmin(person.getAsOfDateAdmin())
                 .asOfDateSex(person.getAsOfDateSex())
                 .description(person.getDescription())
+                .entityId(asIdentifications(person))
                 .build();
     }
 
@@ -163,6 +166,21 @@ class SearchablePatientConverter {
                 .cntyCd(locator.getCntyCd())
                 .cntryCd(locator.getCntryCd())
                 .build();
+    }
+
+    private static List<NestedEntityId> asIdentifications(final Person person) {
+        return person.identifications()
+            .stream()
+            .map(SearchablePatientConverter::asIdentification)
+            .toList();
+    }
+
+    private static NestedEntityId asIdentification(final EntityId identification) {
+        return new NestedEntityId(
+            identification.getRecordStatusCd(),
+            identification.getRootExtensionTxt(),
+            identification.getTypeCd()
+        );
     }
 
 }
