@@ -31,12 +31,12 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                         <MultiSelectControl
                             defaultValue={filter?.conditions}
                             control={control}
-                            name="conditon"
+                            name="condition"
                             label="Condition"
                             options={searchCriteria.conditions.map((c) => {
                                 return {
                                     label: c.conditionDescTxt,
-                                    value: c.id
+                                    value: c.conditionDescTxt
                                 };
                             })}
                         />

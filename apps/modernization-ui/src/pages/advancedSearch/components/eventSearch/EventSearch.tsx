@@ -184,7 +184,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         let filterData: InvestigationFilter | LabReportFilter = {};
         if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
             filterData = {
-                conditions: body.conditon?.length > 0 ? body.conditon : undefined,
+                conditions: body.condition?.length > 0 ? body.condition : undefined,
                 jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
                 pregnancyStatus:
                     body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,
