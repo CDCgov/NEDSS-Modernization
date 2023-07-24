@@ -716,7 +716,7 @@ export const AdvancedSearch = () => {
             case 'Conditions':
                 return (
                     searchCriteria.conditions.find((element) => {
-                        return element.id === re.value;
+                        return element.conditionDescTxt === re.value;
                     })?.conditionDescTxt || ''
                 );
             case 'Created By':
