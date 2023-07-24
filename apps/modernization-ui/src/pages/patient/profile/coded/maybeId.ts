@@ -1,8 +1,8 @@
-import { PatientCodedValue } from 'generated/graphql/schema';
 import { mapNonNull } from 'utils/mapNonNull';
+import { ProfileCodedValue } from './ProfileCodedValue';
 
-const maybeId = (coded?: PatientCodedValue | null) => coded?.id ?? null;
+const maybeId = (coded?: ProfileCodedValue | null) => coded?.id ?? null;
 
-const maybeIds = (values?: (PatientCodedValue | null)[]): string[] => mapNonNull(maybeId, values);
+const maybeIds = (values?: (ProfileCodedValue | null)[]): string[] => mapNonNull(maybeId, values);
 
 export { maybeId, maybeIds };

@@ -1,0 +1,109 @@
+@import '../../../../settings';
+
+.add-valueset {
+    padding: 5px 30px;
+    .field-space {
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+    .main-header-title {
+        font-size: 22px;
+    }
+    input {
+        width: 480px;
+        height: 40px;
+        border: 1px solid #171717;
+    }
+    input[type="radio"],
+    input[type="checkbox"] {
+        width: 24px;
+        height: 24px;
+        accent-color: #005EA2;
+        outline: none;
+        line-height: 2;
+    }
+    button {
+        outline: none;
+        border-radius: 1px;
+    }
+    .radio-label {
+        position: relative;
+        top: -5px;
+        margin: 0 10px;
+    }
+    .right-radio {
+        margin-left: 45px;
+    }
+    .add-valueset__container {
+        width: 500px;
+        margin: 50px auto;
+        .header-title {
+            font-size: 16px;
+            text-align: center;
+        }
+        .description {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .fields-info {
+            color: #71767A;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .mandatory-indicator {
+            color: #D83933;
+        }
+    }
+    .submit-btn {
+        float: right;
+        margin-right: 20px;
+        border: 2px solid #005EA2;
+        border-radius: 4px;
+    }
+    .cancel-btn {
+        float: right;
+        margin-right: 20px;
+        margin-bottom: 80px;
+        border: 2px solid #005EA2;
+        background: #fff;
+        color: #005EA2;
+        border-radius: 4px;
+    }
+
+    .error-text {
+        display: none;
+    }
+
+    .error-border {
+        border-left: 2px solid #dc3545;
+        padding-left: 10px;
+        margin-bottom: 30px;
+        padding-bottom: 0;
+
+        .error-text {
+            font-weight: 700;
+            color: #dc3545;
+            display: block;
+            margin: 5px 0 0 0;
+        }
+        .field-space {
+            margin-bottom: 0;
+        }
+    }
+    .back-btn {
+        margin-right: 10px;
+        color: #1b1b1b;
+    }
+    .close-btn {
+        float: right;
+        font-size: 32px;
+        color: #1b1b1b;
+        margin: 15px auto;
+    }
+    .usa-button {
+        &:disabled {
+            border: 2px solid #C9C9C9;;
+            background: #C9C9C9;
+        }
+    }
+}
