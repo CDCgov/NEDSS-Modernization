@@ -17,44 +17,57 @@ public class CreateTabService implements CreateTabInterface{
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
-    private Long getCurrentHighestOrderNumber() {
-        return waUiMetaDataRepository.findMaxOrderNumber();
+    private Long getCurrentHighestOrderNumber(Long nbsUiComponentUid) {
+        return waUiMetaDataRepository.findMaxOrderNumberByNbsUiComponentUid(nbsUiComponentUid);
     }
 
     @Override
     public CreateUiResponse createTab(Long userId, CreateTabRequest request) throws AddTabException {
-        WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
-        log.info("Saving Rule to DB");
-        waUiMetaDataRepository.save(waUiMetadata);
-        return new CreateUiResponse(waUiMetadata.getId(), "Tab Created Successfully");
+        try {
+            WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
+            log.info("Saving Rule to DB");
+            waUiMetaDataRepository.save(waUiMetadata);
+            return new CreateUiResponse(waUiMetadata.getId(), "Tab Created Successfully");
+        } catch(Exception exception) {
+            throw new AddTabException("Add tab exception", 1010);
+        }
 
     }
     private WaUiMetadata createWaUiMetadata(Long uid, CreateTabRequest request ) {
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setWaTemplateUid(request.getWaTemplateUid());
-        waUiMetadata.setNbsUiComponentUid(request.getNbsUiComponentUid());
-        waUiMetadata.setQuestionLabel(request.getQuestionLabel());
-        waUiMetadata.setEnableInd(request.getEnableInd());
-        waUiMetadata.setDefaultValue(waUiMetadata.getDefaultValue());
-        waUiMetadata.setDisplayInd(waUiMetadata.getDisplayInd());
-        waUiMetadata.setOrderNbr(request.getOrderNbr());
-        waUiMetadata.setRequiredInd(request.getRequiredInd());
+        waUiMetadata.setWaTemplateUid(request.page());
+        waUiMetadata.setNbsUiComponentUid(1010L);
+        Long nbsUiComponentUid = waUiMetadata.getNbsUiComponentUid();
+        Long nextOrderNumber = null;
+
+        if (nbsUiComponentUid.equals(1010L)) {
+            // Get the next order number for NBS_UI component with nbsUiComponentUid 1010
+            nextOrderNumber = getCurrentHighestOrderNumber(1010L) + 1;
+        }
+
+        waUiMetadata.setEnableInd(request.visible());
+        waUiMetadata.setDisplayInd(request.visible());
+        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
+
+        waUiMetadata.setRequiredInd("F");
         waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setDisplayInd(request.getDisplayInd());
+        waUiMetadata.setAddTime(Instant.now());
         waUiMetadata.setLastChgTime(Instant.now());
         waUiMetadata.setLastChgUserId(uid);
-        waUiMetadata.setRecordStatusCd(request.getRecordStatusCd());
+        waUiMetadata.setRecordStatusCd("Active");
         waUiMetadata.setRecordStatusTime(Instant.now());
-        waUiMetadata.setMaxLength(1000L);
-        waUiMetadata.setMinValue(1L);
-        waUiMetadata.setVersionCtrlNbr(request.getVersionCtrlNbr());
-        waUiMetadata.setStandardNndIndCd(request.getStandardNndIndCd());
-        waUiMetadata.setQuestionIdentifier(request.getQuestionIdentifier());
-        waUiMetadata.setAddTime(Instant.now());
+        waUiMetadata.setVersionCtrlNbr(1);
+        waUiMetadata.setStandardNndIndCd("F");
+        waUiMetadata.setLocalId("NBS_1_14");
+        waUiMetadata.setQuestionIdentifier("NBS_UI_4");
+        waUiMetadata.setCoinfectionIndCd("F");
+        waUiMetadata.setFutureDateIndCd("F");
+        waUiMetadata.setStandardQuestionIndCd("F");
+        waUiMetadata.setPublishIndCd("T");
+        waUiMetadata.setQuestionLabel(request.name());
+        waUiMetadata.setEnableInd("T");
 
-        Long currentHighestOrderNumber = getCurrentHighestOrderNumber();
-        waUiMetadata.setOrderNbr((int) (currentHighestOrderNumber + 1));
         return waUiMetadata;
 
     }

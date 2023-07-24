@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long> {
 
-    @Query(value = "SELECT MAX(order_nbr) FROM WA_Ui_metadata", nativeQuery = true)
-    Long findMaxOrderNumber();
+    @Query(value = "SELECT MAX(w.order_nbr) FROM WA_Ui_metadata w WHERE w.nbs_ui_component_uid = '1010'", nativeQuery = true)
+    Long findMaxOrderNumberByNbsUiComponentUid(Long nbsUiComponentUid);
 }
