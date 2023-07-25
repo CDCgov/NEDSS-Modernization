@@ -51,12 +51,7 @@ export const AddressForm = ({ control, errors }: any) => {
                                     onChange={onChange}
                                     htmlFor={'state'}
                                     label="State"
-                                    options={searchCriteria.states.map((state) => {
-                                        return {
-                                            value: state?.id!,
-                                            name: state?.codeDescTxt!
-                                        };
-                                    })}
+                                    options={searchCriteria.states}
                                 />
                             )}
                         />

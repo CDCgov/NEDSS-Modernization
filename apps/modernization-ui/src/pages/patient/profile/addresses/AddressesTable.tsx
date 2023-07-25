@@ -265,7 +265,7 @@ export const AddressesTable = ({ patient }: Props) => {
     };
 
     const getAddress = (name: PatientAddress) => {
-        return `${name?.address1 ?? ''} ${name?.address2 ?? ''} ${name?.zipcode ?? ''}`;
+        return `${name?.address1 ?? ''} ${name?.address2 ?? ''}`;
     };
 
     return (

@@ -32,7 +32,7 @@ class PatientProfileTupleMapperTest {
         assertThat(actual.id()).isEqualTo(3167L);
         assertThat(actual.local()).isEqualTo("local-id-value");
         assertThat(actual.version()).isEqualTo((short) 89);
-        assertThat(actual.recordStatusCd()).isEqualTo(RecordStatus.ACTIVE.toString());
+        assertThat(actual.status()).isEqualTo(RecordStatus.ACTIVE.toString());
     }
 
     @Test

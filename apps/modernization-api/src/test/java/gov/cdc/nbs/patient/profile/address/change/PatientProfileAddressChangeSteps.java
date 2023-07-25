@@ -4,8 +4,8 @@ import com.github.javafaker.Faker;
 import gov.cdc.nbs.entity.odse.EntityLocatorParticipationId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
-import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.TestActive;
 import gov.cdc.nbs.support.TestAvailable;
 import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
@@ -34,70 +34,44 @@ public class PatientProfileAddressChangeSteps {
     @Autowired
     EntityManager entityManager;
 
-    private NewPatientAddressInput newRequest;
-    private UpdatePatientAddressInput updateRequest;
-    private DeletePatientAddressInput deleteRequest;
+    @Autowired
+    TestActive<NewPatientAddressInput> newRequest;
+
+    @Autowired
+    TestActive<UpdatePatientAddressInput> updateRequest;
+    @Autowired
+    TestActive<DeletePatientAddressInput> deleteRequest;
 
     @Before("@patient-profile-address-change")
     public void reset() {
-        newRequest = null;
-        updateRequest = null;
-        deleteRequest = null;
+        newRequest.reset();
+        updateRequest.reset();
+        deleteRequest.reset();
     }
 
     @When("a patient's address is added")
     public void a_patient_address_is_added() {
         long patient = patients.one().id();
 
-        newRequest = new NewPatientAddressInput(
-            patient,
-            RandomUtil.getRandomDateInPast(),
-            "H",
-            "H",
-            faker.address().streetAddress(),
-            RandomUtil.getRandomString(),
-            faker.address().city(),
-            RandomUtil.getRandomStateCode(),
-            RandomUtil.getRandomNumericString(15),
-            RandomUtil.getRandomString(),
-            RandomUtil.getRandomString(10),
-            RandomUtil.country(),
-            RandomUtil.getRandomString()
+        newRequest.active(
+            new NewPatientAddressInput(
+                patient,
+                RandomUtil.getRandomDateInPast(),
+                "H",
+                "H",
+                faker.address().streetAddress(),
+                RandomUtil.getRandomString(),
+                faker.address().city(),
+                RandomUtil.getRandomStateCode(),
+                RandomUtil.getRandomNumericString(15),
+                RandomUtil.getRandomString(),
+                RandomUtil.getRandomString(10),
+                RandomUtil.country(),
+                RandomUtil.getRandomString()
+            )
         );
 
-        controller.add(newRequest);
-    }
-
-    @Then("the patient has the new address")
-    @Transactional
-    public void the_patient_has_the_new_address() {
-        PatientIdentifier patient = this.patients.one();
-
-        Person person = this.entityManager.find(Person.class, patient.id());
-
-        assertThat(person.addresses()).anySatisfy(
-            actual -> assertThat(actual)
-                .returns(newRequest.type(), PostalEntityLocatorParticipation::getCd)
-                .returns(newRequest.use(), PostalEntityLocatorParticipation::getUseCd)
-                .returns(newRequest.asOf(), PostalEntityLocatorParticipation::getAsOfDate)
-                .returns(newRequest.comment(), PostalEntityLocatorParticipation::getLocatorDescTxt)
-                .satisfies(
-                    address -> assertThat(address)
-                        .extracting(PostalEntityLocatorParticipation::getId)
-                        .returns(newRequest.patient(), EntityLocatorParticipationId::getEntityUid)
-                )
-                .satisfies(
-                    address -> assertThat(address).extracting(PostalEntityLocatorParticipation::getLocator)
-                        .returns(newRequest.address1(), PostalLocator::getStreetAddr1)
-                        .returns(newRequest.address2(), PostalLocator::getStreetAddr2)
-                        .returns(newRequest.city(), PostalLocator::getCityDescTxt)
-                        .returns(newRequest.state(), PostalLocator::getStateCd)
-                        .returns(newRequest.county(), PostalLocator::getCntyCd)
-                        .returns(newRequest.zipcode(), PostalLocator::getZipCd)
-                        .returns(newRequest.country(), PostalLocator::getCntryCd)
-                        .returns(newRequest.censusTract(), PostalLocator::getCensusTract)
-                )
-        );
+        controller.add(newRequest.active());
     }
 
     @When("a patient's address is changed")
@@ -109,57 +83,26 @@ public class PatientProfileAddressChangeSteps {
             .findFirst()
             .orElseThrow();
 
-        updateRequest = new UpdatePatientAddressInput(
-            existing.getId().getEntityUid(),
-            existing.getId().getLocatorUid(),
-            RandomUtil.getRandomDateInPast(),
-            "EC",
-            "TMP",
-            faker.address().streetAddress(),
-            RandomUtil.getRandomString(),
-            faker.address().city(),
-            RandomUtil.getRandomStateCode(),
-            RandomUtil.getRandomNumericString(15),
-            RandomUtil.getRandomString(),
-            RandomUtil.getRandomString(10),
-            RandomUtil.country(),
-            RandomUtil.getRandomString()
+        updateRequest.active(
+            new UpdatePatientAddressInput(
+                existing.getId().getEntityUid(),
+                existing.getId().getLocatorUid(),
+                RandomUtil.getRandomDateInPast(),
+                "EC",
+                "TMP",
+                faker.address().streetAddress(),
+                RandomUtil.getRandomString(),
+                faker.address().city(),
+                RandomUtil.getRandomStateCode(),
+                RandomUtil.getRandomNumericString(15),
+                RandomUtil.getRandomString(),
+                RandomUtil.getRandomString(10),
+                RandomUtil.country(),
+                RandomUtil.getRandomString()
+            )
         );
 
-        controller.update(updateRequest);
-    }
-
-    @Then("the patient has the expected address")
-    @Transactional
-    public void the_patient_has_the_expected_address() {
-        PatientIdentifier patient = this.patients.one();
-
-        Person person = this.entityManager.find(Person.class, patient.id());
-
-        assertThat(person.addresses()).anySatisfy(
-            actual -> assertThat(actual)
-                .returns(updateRequest.type(), PostalEntityLocatorParticipation::getCd)
-                .returns(updateRequest.use(), PostalEntityLocatorParticipation::getUseCd)
-                .returns(updateRequest.asOf(), PostalEntityLocatorParticipation::getAsOfDate)
-                .returns(updateRequest.comment(), PostalEntityLocatorParticipation::getLocatorDescTxt)
-                .satisfies(
-                    address -> assertThat(address)
-                        .extracting(PostalEntityLocatorParticipation::getId)
-                        .returns(updateRequest.patient(), EntityLocatorParticipationId::getEntityUid)
-                        .returns(updateRequest.id(), EntityLocatorParticipationId::getLocatorUid)
-                )
-                .satisfies(
-                    address -> assertThat(address).extracting(PostalEntityLocatorParticipation::getLocator)
-                        .returns(updateRequest.address1(), PostalLocator::getStreetAddr1)
-                        .returns(updateRequest.address2(), PostalLocator::getStreetAddr2)
-                        .returns(updateRequest.city(), PostalLocator::getCityDescTxt)
-                        .returns(updateRequest.state(), PostalLocator::getStateCd)
-                        .returns(updateRequest.county(), PostalLocator::getCntyCd)
-                        .returns(updateRequest.zipcode(), PostalLocator::getZipCd)
-                        .returns(updateRequest.country(), PostalLocator::getCntryCd)
-                        .returns(updateRequest.censusTract(), PostalLocator::getCensusTract)
-                )
-        );
+        controller.update(updateRequest.active());
     }
 
     @When("a patient's address is removed")
@@ -168,14 +111,16 @@ public class PatientProfileAddressChangeSteps {
 
         Person patient = this.entityManager.find(Person.class, patients.one().id());
 
-        this.deleteRequest = patient.addresses()
-            .stream()
-            .findFirst()
-            .map(PostalEntityLocatorParticipation::getId)
-            .map(id -> new DeletePatientAddressInput(id.getEntityUid(), id.getLocatorUid()))
-            .orElseThrow();
+        this.deleteRequest.active(
+            patient.addresses()
+                .stream()
+                .findFirst()
+                .map(PostalEntityLocatorParticipation::getId)
+                .map(id -> new DeletePatientAddressInput(id.getEntityUid(), id.getLocatorUid()))
+                .orElseThrow()
+        );
 
-        this.controller.delete(this.deleteRequest);
+        this.controller.delete(this.deleteRequest.active());
     }
 
     @Then("the patient does not have the expected address")
@@ -185,31 +130,33 @@ public class PatientProfileAddressChangeSteps {
 
         Person actual = this.entityManager.find(Person.class, patient.id());
 
+        DeletePatientAddressInput request = deleteRequest.active();
+
         assertThat(actual.addresses())
             .noneSatisfy(
                 address -> assertThat(address)
                     .extracting(PostalEntityLocatorParticipation::getId)
-                    .returns(deleteRequest.patient(), EntityLocatorParticipationId::getEntityUid)
-                    .returns(deleteRequest.id(), EntityLocatorParticipationId::getLocatorUid)
+                    .returns(request.patient(), EntityLocatorParticipationId::getEntityUid)
+                    .returns(request.id(), EntityLocatorParticipationId::getLocatorUid)
             )
         ;
     }
 
     @Then("I am unable to add a patient's address")
     public void i_am_unable_to_add_a_patient_ethnicity() {
-        assertThatThrownBy(() -> controller.add(newRequest))
+        assertThatThrownBy(() -> controller.add(newRequest.maybeActive().orElse(null)))
             .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to change a patient's address")
     public void i_am_unable_to_change_a_patient_ethnicity() {
-        assertThatThrownBy(() -> controller.update(updateRequest))
+        assertThatThrownBy(() -> controller.update(updateRequest.maybeActive().orElse(null)))
             .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("I am unable to remove a patient's address")
     public void i_am_unable_to_remove_a_patient_ethnicity() {
-        assertThatThrownBy(() -> controller.delete(deleteRequest))
+        assertThatThrownBy(() -> controller.delete(deleteRequest.maybeActive().orElse(null)))
             .isInstanceOf(AccessDeniedException.class);
     }
 }
