@@ -12,7 +12,7 @@ import { orNull } from 'utils';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { AddressSuggestion } from 'pages/addPatient/components/addressFields/AddressFields';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { StateCode } from 'generated/graphql/schema';
+import { StateCodedValue } from 'location';
 
 type EntryProps = {
     action: string;
@@ -64,9 +64,10 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel, onModalCon
         };
     }, [wrapperRef]);
 
-    function handleSuggestionSelection(idx: number, statesDetails: StateCode[]) {
+    function handleSuggestionSelection(idx: number, statesDetails: StateCodedValue[]) {
         const selectedSuggestion = suggestions[idx];
-        const selectedState = statesDetails.find((state) => state.stateNm === selectedSuggestion.state)?.id || '00';
+        const selectedState =
+            statesDetails.find((state) => state.abbreviation === selectedSuggestion.state)?.value || '00';
 
         // Set values of other address inputs
         setValue('address1', selectedSuggestion.street_line);
