@@ -5,20 +5,16 @@ import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.addtab.controller.AddTabController;
 import gov.cdc.nbs.questionbank.addtab.exceptions.AddTabException;
 import gov.cdc.nbs.questionbank.addtab.model.CreateTabRequest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class AddTabControllerTest {
-
-    @InjectMocks
-    AddTabController addTabController;
+@ExtendWith(MockitoExtension.class)
+class AddTabControllerTest {
 
     @Mock
     private CreateTabService createTabService;
@@ -27,7 +23,10 @@ public class AddTabControllerTest {
     private UserDetailsProvider userDetailsProvider;
 
     @Test
-    public void createTabTest() throws AddTabException {
+    void createTabTest() throws AddTabException {
+
+        AddTabController addTabController = new AddTabController(createTabService,
+                userDetailsProvider);
 
         CreateTabRequest createTabRequest = new CreateTabRequest(1000376L, "Local", "T");
         NbsUserDetails nbsUserDetails =

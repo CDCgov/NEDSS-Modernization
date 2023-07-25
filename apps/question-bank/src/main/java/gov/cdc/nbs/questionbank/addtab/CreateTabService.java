@@ -46,10 +46,8 @@ public class CreateTabService implements CreateTabInterface{
             nextOrderNumber = getCurrentHighestOrderNumber(1010L) + 1;
         }
 
-        waUiMetadata.setEnableInd(request.visible());
         waUiMetadata.setDisplayInd(request.visible());
         waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
-
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setAddUserId(uid);
         waUiMetadata.setAddTime(Instant.now());

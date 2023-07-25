@@ -3,17 +3,17 @@ package gov.cdc.nbs.questionbank.addtab;
 import gov.cdc.nbs.questionbank.addtab.exceptions.AddTabException;
 import gov.cdc.nbs.questionbank.addtab.model.CreateTabRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class AddTabServiceTest {
+@ExtendWith(MockitoExtension.class)
+class AddTabServiceTest {
 
     @InjectMocks
     private CreateTabService createTabService;
@@ -22,16 +22,18 @@ public class AddTabServiceTest {
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
     @Test
-    public void createTabServiceTest() throws AddTabException {
+    void createTabServiceTest() throws AddTabException {
 
-        CreateTabRequest createTabRequest = new CreateTabRequest(10L, "Local", "T");
+        CreateTabRequest createTabRequest =
+                new CreateTabRequest(10L, "Local", "T");
 
-        CreateUiResponse createUiResponse = createTabService.createTab(123L, createTabRequest);
+        CreateUiResponse createUiResponse =
+                createTabService.createTab(123L, createTabRequest);
         assertEquals("Tab Created Successfully", createUiResponse.message());
     }
 
     @Test
-    public void createTabServiceTestException() throws AddTabException {
+    void createTabServiceTestException() throws AddTabException {
 
         AddTabException exception =
                 assertThrows(AddTabException.class, () -> createTabService.createTab(123L, null));
