@@ -101,7 +101,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             rules={{
                                 pattern: {
                                     value: /^\+?\d{1,6}$/,
-                                    message: 'Invalid country code'
+                                    message: 'A country code should be 1 to 3 digits"'
                                 }
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => {
@@ -118,7 +118,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                         name="countryCode"
                                         htmlFor="countryCode"
                                         id="countryCode"
-                                        error={error && 'Invalid country code'}
+                                        error={error?.message}
                                     />
                                 );
                             }}
