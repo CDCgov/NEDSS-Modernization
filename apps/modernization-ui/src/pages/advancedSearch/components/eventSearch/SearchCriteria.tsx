@@ -19,7 +19,7 @@ type GeneralSearchProps = {
 
 export const SearchCriteria = ({ control }: GeneralSearchProps) => {
     return (
-        <>
+        <div id="criteria">
             <SelectControl
                 control={control}
                 name="investigationStatus"
@@ -85,6 +85,6 @@ export const SearchCriteria = ({ control }: GeneralSearchProps) => {
                     };
                 })}
             />
-        </>
+        </div>
     );
 };

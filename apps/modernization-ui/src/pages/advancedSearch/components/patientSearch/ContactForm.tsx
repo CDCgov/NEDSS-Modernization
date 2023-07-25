@@ -1,7 +1,6 @@
 import { Grid } from '@trussworks/react-uswds';
 import { Input } from '../../../../components/FormInputs/Input';
 import { Controller } from 'react-hook-form';
-import { PhoneNumberInput } from '../../../../components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { validate as validatePhoneNumber } from 'validation/phone/search';
 
 export const ContactForm = ({ control, errors }: any) => {
@@ -17,7 +16,11 @@ export const ContactForm = ({ control, errors }: any) => {
                         }
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <PhoneNumberInput
+                        <Input
+                            type="text"
+                            name="phoneNumber"
+                            htmlFor={'phoneNumber'}
+                            id={'phoneNumber'}
                             onChange={onChange}
                             label="Phone number"
                             defaultValue={value}

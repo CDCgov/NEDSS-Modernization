@@ -19,7 +19,7 @@ export const LabSearchCriteria = ({
     codedResultsChange
 }: GeneralSearchProps) => {
     return (
-        <>
+        <div id="criteria">
             <Label htmlFor={'resultedTest'}>Resulted test</Label>
             <Controller
                 control={control}
@@ -65,6 +65,6 @@ export const LabSearchCriteria = ({
                     />
                 )}
             />
-        </>
+        </div>
     );
 };
