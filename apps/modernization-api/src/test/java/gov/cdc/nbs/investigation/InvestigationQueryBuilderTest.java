@@ -212,7 +212,7 @@ class InvestigationQueryBuilderTest {
         var must = ((BoolQueryBuilder) query.getQuery()).must();
 
         // Condition clause was added
-        var clause = findTermsQueryBuilder(Investigation.CONDITION_ID, must);
+        var clause = findTermsQueryBuilder(Investigation.CONDITION, must);
 
         assertTrue(clause.values().contains("Condition1"));
         assertTrue(clause.values().contains("Condition2"));
