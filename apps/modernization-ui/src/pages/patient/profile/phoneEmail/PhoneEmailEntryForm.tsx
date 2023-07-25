@@ -18,9 +18,8 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
     const {
         handleSubmit,
         control,
-        formState: { isValid },
-        trigger
-    } = useForm();
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const coded = usePatientPhoneCodedValues();
 
@@ -104,16 +103,14 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                     message: 'A country code should be 1 to 3 digits"'
                                 }
                             }}
-                            render={({ field: { onChange, value }, fieldState: { error } }) => {
+                            render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => {
                                 return (
                                     <Input
                                         flexBox
-                                        onChange={(e: any) => {
-                                            onChange(e);
-                                            trigger('countryCode');
-                                        }}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
                                         defaultValue={value}
-                                        type="text"
+                                        type="number"
                                         label="Country code"
                                         name="countryCode"
                                         htmlFor="countryCode"
