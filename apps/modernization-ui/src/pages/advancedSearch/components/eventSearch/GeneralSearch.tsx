@@ -36,7 +36,7 @@ export const GeneralSearch = ({ control, filter }: GeneralSearchProps) => {
                             options={searchCriteria.conditions.map((c) => {
                                 return {
                                     label: c.conditionDescTxt,
-                                    value: c.conditionDescTxt
+                                    value: c.id
                                 };
                             })}
                         />

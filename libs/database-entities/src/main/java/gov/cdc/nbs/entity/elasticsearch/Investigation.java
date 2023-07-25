@@ -33,6 +33,7 @@ public class Investigation {
     public static final String OUTBREAK_NAME = "outbreak_name";
     public static final String CASE_TYPE_CD = "case_type_cd";
     public static final String CD_DESC_TXT = "cd_desc_txt";
+    public static final String CONDITION_ID = "cd";
     public static final String PROGRAM_AREA_CD = "prog_area_cd";
     public static final String JURISDICTION_CD = "jurisdiction_cd";
     public static final String JURISDICTION_CODE_DESC_TXT = "jurisdiction_code_desc_txt";
@@ -86,6 +87,9 @@ public class Investigation {
 
     @Field(name = CD_DESC_TXT, type = FieldType.Keyword)
     private String cdDescTxt;
+
+    @Field(name = CONDITION_ID, type = FieldType.Keyword)
+    private String cd;
 
     @Field(name = PROGRAM_AREA_CD, type = FieldType.Keyword)
     private String progAreaCd;
