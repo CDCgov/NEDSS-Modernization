@@ -11,7 +11,6 @@ import { AddressEntry } from './AddressEntry';
 import { orNull } from 'utils';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { AddressSuggestion } from 'pages/addPatient/components/addressFields/AddressFields';
-import { CodedValue } from 'coded';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { StateCode } from 'generated/graphql/schema';
 
@@ -20,9 +19,10 @@ type EntryProps = {
     entry: AddressEntry;
     onChange: (updated: AddressEntry) => void;
     onCancel: () => void;
+    onModalContextChange?: (modalContext: string) => void;
 };
 
-export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
+export const AddressEntryForm = ({ action, entry, onChange, onCancel, onModalContextChange }: EntryProps) => {
     const {
         handleSubmit,
         control,
@@ -43,6 +43,14 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
     const byState = useCountyCodedValues(selectedState);
 
     useEffect(() => {
+        if (onModalContextChange) {
+            onModalContextChange(
+                (verified && 'verified-modal') || (unverified && 'unverified-modal') || 'add-address-modal'
+            );
+        }
+    }, [verified, unverified]);
+
+    useEffect(() => {
         function handleClickOutside(event: any) {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 setShowSuggestions(false);
@@ -56,11 +64,12 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
         };
     }, [wrapperRef]);
 
-    function handleSuggestionSelection(idx: number, states: CodedValue[], statesDetails: StateCode[]) {
+    function handleSuggestionSelection(idx: number, statesDetails: StateCode[]) {
         const selectedSuggestion = suggestions[idx];
         const selectedState = statesDetails.find((state) => state.stateNm === selectedSuggestion.state)?.id || '00';
 
         // Set values of other address inputs
+        setValue('address1', selectedSuggestion.street_line);
         setValue('city', selectedSuggestion.city);
         setValue('state', selectedState);
         setValue('zipcode', selectedSuggestion.zipcode);
@@ -258,7 +267,6 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                                                                     onClick={() =>
                                                                         handleSuggestionSelection(
                                                                             idx,
-                                                                            location.states,
                                                                             searchCriteria.states
                                                                         )
                                                                     }
@@ -493,7 +501,7 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
             )}
 
             {verified && (
-                <span>
+                <span className="verified-address-suggestion-modal">
                     <ModalHeading
                         id="incomplete-form-confirmation-modal-heading"
                         className="border-bottom border-base-lighter font-sans-lg padding-2">
@@ -535,9 +543,20 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel }: EntryPro
                             <Button onClick={() => setVerified(false)} outline type={'button'}>
                                 Continue without update
                             </Button>{' '}
-                            <Button onClick={() => setVerified(false)} type={'button'}>
-                                Update address and continue
-                            </Button>
+                            <SearchCriteriaContext.Consumer>
+                                {({ searchCriteria }) => {
+                                    return (
+                                        <Button
+                                            onClick={() => {
+                                                handleSuggestionSelection(0, searchCriteria.states);
+                                                setVerified(false);
+                                            }}
+                                            type={'button'}>
+                                            Update address and continue
+                                        </Button>
+                                    );
+                                }}
+                            </SearchCriteriaContext.Consumer>
                         </ButtonGroup>
                     </ModalFooter>
                 </span>

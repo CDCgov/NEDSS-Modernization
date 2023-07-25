@@ -9,11 +9,12 @@ type Props = {
     overflow?: boolean;
     children: ReactNode;
     onClose?: () => void;
+    className?: string;
 };
 
-export const EntryModal = ({ modal, id, title, children, overflow = false }: Props) => {
+export const EntryModal = ({ modal, id, title, children, overflow = false, className }: Props) => {
     return (
-        <Modal id={id} forceAction ref={modal} className={overflow ? 'overflow' : ''}>
+        <Modal id={id} forceAction ref={modal} className={`${overflow ? 'overflow' : ''} ${className}`}>
             {title && (
                 <ModalHeading className="border-bottom border-base-lighter font-sans-lg padding-2 margin-0 modal-1-heading">
                     {title}
