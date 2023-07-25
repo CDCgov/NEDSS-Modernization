@@ -61,7 +61,7 @@ public class InvestigationQueryBuilder {
 
         // conditions
         if (filter.getConditions() != null && !filter.getConditions().isEmpty()) {
-            builder.must(QueryBuilders.termsQuery(Investigation.CONDITION, filter.getConditions()));
+            builder.must(QueryBuilders.termsQuery(Investigation.CONDITION_ID, filter.getConditions()));
         }
         // program areas
         if (filter.getProgramAreas() != null && !filter.getProgramAreas().isEmpty()) {
