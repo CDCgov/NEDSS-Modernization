@@ -18,7 +18,8 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
     const {
         handleSubmit,
         control,
-        formState: { isValid }
+        formState: { isValid },
+        trigger
     } = useForm();
 
     const coded = usePatientPhoneCodedValues();
@@ -97,18 +98,30 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="countryCode"
                             defaultValue={entry.countryCode}
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Country code"
-                                    name="countryCode"
-                                    htmlFor="countryCode"
-                                    id="countryCode"
-                                />
-                            )}
+                            rules={{
+                                pattern: {
+                                    value: /^\+?\d{1,6}$/,
+                                    message: 'Invalid country code'
+                                }
+                            }}
+                            render={({ field: { onChange, value }, fieldState: { error } }) => {
+                                return (
+                                    <Input
+                                        flexBox
+                                        onChange={(e: any) => {
+                                            onChange(e);
+                                            trigger('countryCode');
+                                        }}
+                                        defaultValue={value}
+                                        type="text"
+                                        label="Country code"
+                                        name="countryCode"
+                                        htmlFor="countryCode"
+                                        id="countryCode"
+                                        error={error && 'Invalid country code'}
+                                    />
+                                );
+                            }}
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
