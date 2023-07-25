@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import {
     Button,
@@ -72,38 +72,18 @@ export default function AddressFields({ id, title, coded }: Props) {
         };
     }, [wrapperRef]);
 
-    function populateSuggestions() {
-        // TODO- this will come from the api
-        const mockSuggestionsResp = {
-            suggestions: [
+    async function populateSuggestions(eve: ChangeEvent<HTMLInputElement>) {
+        if (eve.target.value.length > 2) {
+            const data = await fetch(
+                `https://us-autocomplete-pro.api.smarty.com/lookup?key=166215385741384990&search=${eve.target.value}`,
                 {
-                    street_line: '7927 Jones Branch Dr',
-                    secondary: '',
-                    city: 'Mc Lean',
-                    state: 'VA',
-                    zipcode: '22102',
-                    entries: 0
-                },
-                {
-                    street_line: '7927 Jones Branch Dr',
-                    secondary: 'Ste',
-                    city: 'Mc Lean',
-                    state: 'VA',
-                    zipcode: '22102',
-                    entries: 38
-                },
-                {
-                    street_line: '7927 Jones Rd',
-                    secondary: '',
-                    city: 'Cleveland',
-                    state: 'OH',
-                    zipcode: '44105',
-                    entries: 0
+                    headers: {
+                        referer: 'localhost'
+                    }
                 }
-            ]
-        };
-
-        setSuggestions(mockSuggestionsResp.suggestions);
+            ).then((resp) => resp.json());
+            setSuggestions(data.suggestions);
+        }
         setShowSuggestions(true);
     }
 
@@ -127,30 +107,13 @@ export default function AddressFields({ id, title, coded }: Props) {
         unverifiedModalRef.current?.toggleModal(undefined, true);
     }, [unverified]);
 
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = async (event: any) => {
         setVerified(false);
         setUnverified(false);
         switch (event.key) {
             case 'Enter' || 'enter': {
                 event.preventDefault();
-                // Do verification here and show either unverified or verified modal based on it.
-                // mock verified vs unverified by just checking for a certaiun number
-                // TODO will change to api fetch once ready.
-                if (event.target.value.includes('1234')) {
-                    setSuggestions([
-                        {
-                            street_line: '1234 Salem St',
-                            secondary: '',
-                            city: 'Mc Lean',
-                            state: 'VA',
-                            zipcode: '22102',
-                            entries: 0
-                        }
-                    ]);
-                    setVerified(true);
-                } else {
-                    setUnverified(true);
-                }
+                await populateSuggestions(event);
                 setShowSuggestions(false);
             }
         }
@@ -167,7 +130,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                             render={({ field: { onChange, value } }) => (
                                 <Input
                                     onChange={(v: any) => {
-                                        populateSuggestions();
+                                        populateSuggestions(v);
                                         onChange(v);
                                     }}
                                     type="text"
