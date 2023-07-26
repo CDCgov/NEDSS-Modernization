@@ -73,7 +73,7 @@ public class PageController {
         return results;
     }
 
-    @PostMapping("{id}/questions}")
+    @PostMapping("{id}/questions")
     public AddQuestionResponse addQuestionToPage(
             @PathVariable("id") Long pageId,
             @RequestBody AddQuestionRequest request) {

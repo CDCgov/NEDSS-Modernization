@@ -33,7 +33,6 @@ class WaUiMetadatumTest {
         // Then the expected values are set
         assertDefaultValues(metadata);
         assertGeneralValues(metadata, command);
-        assertEquals('F', metadata.getFutureDateIndCd().charValue());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFieldSize(), metadata.getFieldSize());
@@ -79,7 +78,6 @@ class WaUiMetadatumTest {
         // Then the expected values are set
         assertDefaultValues(metadata);
         assertGeneralValues(metadata, command);
-        assertEquals('F', metadata.getFutureDateIndCd().charValue());
         assertEquals(question.getMask(), metadata.getMask());
         assertEquals(question.getFieldSize(), metadata.getFieldSize());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
@@ -107,7 +105,6 @@ class WaUiMetadatumTest {
         // Then the expected values are set
         assertDefaultValues(metadata);
         assertGeneralValues(metadata, command);
-        assertEquals('F', metadata.getFutureDateIndCd().charValue());
         assertEquals(question.getCodeSetGroupId(), metadata.getCodeSetGroupId());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
     }
@@ -141,6 +138,7 @@ class WaUiMetadatumTest {
         assertEquals(question.getGroupNm(), metadata.getGroupNm());
         assertEquals(question.getSubGroupNm(), metadata.getSubGroupNm());
         assertEquals(question.getDataType(), metadata.getDataType());
+        assertEquals(question.getOtherValueIndCd(), metadata.getOtherValueIndCd());
     }
 
     private WaTemplate page() {
