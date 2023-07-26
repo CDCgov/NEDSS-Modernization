@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.page.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;

@@ -1,13 +1,20 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +23,13 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_UI_metadata", catalog = "NBS_ODSE")
 public class WaUiMetadatum {
+
+    public static final String ACTIVE = "Active";
+    public static final String INACTIVE = "Inactive";
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_ui_metadata_uid", nullable = false)
     private Long id;
 
@@ -188,5 +201,84 @@ public class WaUiMetadatum {
 
     @Column(name = "block_nm", length = 30)
     private String blockNm;
+
+
+    public WaUiMetadatum(PageContentCommand.AddQuestion command) {
+        // Defaults
+        this.standardNndIndCd = 'F';
+        this.standardQuestionIndCd = 'F';
+        this.enableInd = "T";
+        this.entryMethod = "USER";
+        this.recordStatusCd = ACTIVE;
+
+        // User specified
+        this.waTemplateUid = command.page();
+        this.nbsUiComponentUid = command.uiComponent();
+        this.questionLabel = command.label();
+        this.questionToolTip = command.tooltip();
+        this.orderNbr = command.orderNumber();
+        this.adminComment = command.adminComment();
+        this.dataLocation = command.dataLocation();
+        this.descTxt = command.description();
+        this.questionType = command.questionType();
+        this.questionNm = command.questionName();
+        this.questionIdentifier = command.questionIdentifier();
+        this.questionOid = command.questionOid();
+        this.questionOidSystemTxt = command.questionOidSystem();
+        this.groupNm = command.groupName();
+
+
+        if (command instanceof PageContentCommand.AddQuestion.AddTextQuestion t) {
+            setTextFields(t);
+        } else if (command instanceof PageContentCommand.AddQuestion.AddDateQuestion d) {
+            setDateFields(d);
+        } else if (command instanceof PageContentCommand.AddQuestion.AddNumericQuestion n) {
+            setNumericFields(n);
+        } else if (command instanceof PageContentCommand.AddQuestion.AddCodedQuestion c) {
+            setCodedFields(c);
+        }
+
+        this.added(command);
+    }
+
+    public void setTextFields(PageContentCommand.AddQuestion.AddTextQuestion command) {
+        this.dataType = "TEXT";
+        this.defaultValue = command.defaultValue();
+        this.mask = command.mask();
+        this.fieldSize = command.fieldLength();
+    }
+
+    public void setDateFields(PageContentCommand.AddQuestion.AddDateQuestion command) {
+        this.dataType = "DATE";
+        this.mask = command.mask();
+        this.futureDateIndCd = command.futureDateIndicator();
+    }
+
+    public void setNumericFields(PageContentCommand.AddQuestion.AddNumericQuestion command) {
+        this.dataType = "NUMERIC";
+        this.mask = command.mask();
+        this.fieldSize = command.fieldLength();
+        this.defaultValue = command.defaultValue();
+        this.minValue = command.minValue();
+        this.maxValue = command.maxValue();
+        this.unitTypeCd = command.unitTypeCd();
+        this.unitValue = command.unitValue();
+    }
+
+    public void setCodedFields(PageContentCommand.AddQuestion.AddCodedQuestion command) {
+        this.dataType = "CODED";
+        this.codeSetGroupId = command.codeSetGroupId();
+        this.defaultValue = command.defaultValue();
+    }
+
+    private void added(PageContentCommand.AddQuestion command) {
+        this.addTime = command.requestedOn();
+        this.addUserId = command.userId();
+        this.lastChgTime = command.requestedOn();;
+        this.lastChgUserId = command.userId();
+        this.recordStatusTime = command.requestedOn();;
+    }
+
+
 
 }
