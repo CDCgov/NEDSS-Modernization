@@ -17,8 +17,9 @@ public class CreateTabService implements CreateTabInterface{
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
-    private Long getCurrentHighestOrderNumber(Long nbsUiComponentUid) {
-        return waUiMetaDataRepository.findMaxOrderNumberByNbsUiComponentUid(nbsUiComponentUid);
+    private Long getCurrentHighestOrderNumber(Long waTemplateId) {
+        Long maxOrderNumber = waUiMetaDataRepository.findMaxOrderNumberByTemplateUid(waTemplateId);
+        return (maxOrderNumber != null) ? maxOrderNumber : 0L;
     }
 
     @Override
@@ -36,15 +37,12 @@ public class CreateTabService implements CreateTabInterface{
     private WaUiMetadata createWaUiMetadata(Long uid, CreateTabRequest request ) {
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setWaTemplateUid(request.page());
         waUiMetadata.setNbsUiComponentUid(1010L);
-        Long nbsUiComponentUid = waUiMetadata.getNbsUiComponentUid();
-        Long nextOrderNumber = null;
+        waUiMetadata.getNbsUiComponentUid();
+        waUiMetadata.setWaTemplateUid(request.page());
+        Long waTemplateUid = waUiMetadata.getWaTemplateUid();
+        Long nextOrderNumber = getCurrentHighestOrderNumber(waTemplateUid) + 1;
 
-        if (nbsUiComponentUid.equals(1010L)) {
-            // Get the next order number for NBS_UI component with nbsUiComponentUid 1010
-            nextOrderNumber = getCurrentHighestOrderNumber(1010L) + 1;
-        }
 
         waUiMetadata.setDisplayInd(request.visible());
         waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
