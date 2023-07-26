@@ -26,6 +26,8 @@ services:
   cdc-address-api:
     image: ghcr.io/cdcgov/phdi/ingestion:latest
     container_name: cdc-address-api
+#    ports:
+#      - 8081:8080
     networks:
       - nbs
 
