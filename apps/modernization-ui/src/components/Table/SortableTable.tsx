@@ -3,6 +3,7 @@ import React from 'react';
 import './style.scss';
 import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Direction } from 'sorting';
+import { Spinner } from '@cmsgov/design-system';
 
 export type TableDetail = {
     id: string | number;
@@ -26,6 +27,7 @@ export type TableContentProps = {
     sortDirectionData?: (name: string, type: Direction) => void;
     tableBody: any;
     currentPageLength?: number;
+    isLoading?: boolean;
 };
 
 export const SortableTable = ({
@@ -41,7 +43,8 @@ export const SortableTable = ({
     tableSubHeader,
     sortData,
     sortDirectionData,
-    currentPageLength
+    currentPageLength,
+    isLoading = false
 }: TableContentProps) => {
     const handleSort = (headerName: string, type: string) => {
         sortData?.(headerName, type);
@@ -104,7 +107,13 @@ export const SortableTable = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {tableBody ? (
+                    {isLoading ? (
+                        <tr className="text-center not-available">
+                            <td colSpan={tableHead.length}>
+                                <Spinner className="sortable-table-spinner" />
+                            </td>
+                        </tr>
+                    ) : tableBody ? (
                         tableBody
                     ) : (
                         <tr className="text-center no-data not-available">

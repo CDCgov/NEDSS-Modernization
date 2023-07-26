@@ -109,7 +109,7 @@ export const AddressesTable = ({ patient }: Props) => {
         setAddresses(data?.findPatientProfile?.addresses?.content ?? []);
     };
 
-    const [fetch, { refetch }] = useFindPatientProfileAddresses({ onCompleted: handleComplete });
+    const [fetch, { refetch, loading }] = useFindPatientProfileAddresses({ onCompleted: handleComplete });
 
     const [add] = useAddPatientAddressMutation();
     const [update] = useUpdatePatientAddressMutation();
@@ -265,6 +265,7 @@ export const AddressesTable = ({ patient }: Props) => {
     return (
         <>
             <SortableTable
+                isLoading={loading}
                 isPagination={true}
                 buttons={
                     <div className="grid-row">
