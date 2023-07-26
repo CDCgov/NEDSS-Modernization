@@ -33,6 +33,9 @@ public class PageContentManager {
     }
 
     public Long addQuestion(Long pageId, AddQuestionRequest request, Long user) {
+        if (pageId == null || request.orderNumber() == null) {
+            throw new AddQuestionException("Page and order number are required");
+        }
         WaTemplate template = entityManager.getReference(WaTemplate.class, pageId);
         // find the question
         WaQuestion question = questionRepository.findById(request.questionId())

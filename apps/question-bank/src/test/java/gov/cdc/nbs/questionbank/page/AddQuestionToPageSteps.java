@@ -37,6 +37,11 @@ public class AddQuestionToPageSteps {
 
     private AddQuestionResponse response;
 
+    @Given("No questions are in use")
+    public void no_questions_are_in_use() {
+        repository.deleteAll();
+    }
+
     @Given("I add a question to a page")
     public void i_add_a_question_to_a_page() {
         WaQuestion question = questionMother.one();
