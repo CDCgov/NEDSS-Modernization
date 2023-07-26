@@ -10,6 +10,7 @@ import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.AddQuestion;
+import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.question.exception.QuestionNotFoundException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
@@ -36,6 +37,12 @@ public class PageContentManager {
         // find the question
         WaQuestion question = questionRepository.findById(request.questionId())
                 .orElseThrow(() -> new QuestionNotFoundException(request.questionId()));
+
+        // check if question is already associated with page 
+        Long count = uiMetadatumRepository.countByPageAndQuestionIdentifier(pageId, question.getQuestionIdentifier());
+        if (count > 0) {
+            throw new AddQuestionException("The specified question is already associated with the page");
+        }
 
         // add 1 to any existing entry with 'order_nbr >= new entry order_nbr'
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, request.orderNumber());

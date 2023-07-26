@@ -14,4 +14,10 @@ public interface WaUiMetadatumRepository extends JpaRepository<WaUiMetadatum, Lo
     @Modifying
     @Query("Update WaUiMetadatum ui SET ui.orderNbr = ui.orderNbr + 1 WHERE ui.waTemplateUid.id = :pageId AND ui.orderNbr >= :orderNumber")
     void incrementOrderNbrGreaterThanOrEqualTo(@Param("pageId") Long pageId, @Param("orderNumber") Integer orderNumber);
+
+
+    @Query("SELECT COUNT(ui) FROM WaUiMetadatum ui WHERE ui.waTemplateUid.id =:pageId AND ui.questionIdentifier =:questionIdentifier")
+    Long countByPageAndQuestionIdentifier(
+            @Param("pageId") Long pageId,
+            @Param("questionIdentifier") String questionIdentifier);
 }
