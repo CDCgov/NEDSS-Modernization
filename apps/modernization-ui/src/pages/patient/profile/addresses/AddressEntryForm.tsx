@@ -11,7 +11,6 @@ import { AddressEntry } from './AddressEntry';
 import { orNull } from 'utils';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { AddressSuggestion } from 'pages/addPatient/components/addressFields/AddressFields';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { StateCodedValue } from 'location';
 
 type EntryProps = {
@@ -260,30 +259,18 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel, onModalCon
                                             className="suggestion-list-container usa-nav__submenu">
                                             {suggestions.map((suggestion, idx) => (
                                                 <li key={idx} className="usa-nav__submenu-item">
-                                                    <SearchCriteriaContext.Consumer>
-                                                        {({ searchCriteria }) => {
-                                                            return (
-                                                                <Button
-                                                                    key={idx}
-                                                                    onClick={() =>
-                                                                        handleSuggestionSelection(
-                                                                            idx,
-                                                                            searchCriteria.states
-                                                                        )
-                                                                    }
-                                                                    type={'button'}
-                                                                    unstyled>
-                                                                    <div className="address-suggestion-line">
-                                                                        {suggestion.street_line}
-                                                                    </div>
-                                                                    <div className="address-suggestion-line">
-                                                                        {suggestion.city}, {suggestion.state}{' '}
-                                                                        {suggestion.zipcode}
-                                                                    </div>
-                                                                </Button>
-                                                            );
-                                                        }}
-                                                    </SearchCriteriaContext.Consumer>
+                                                    <Button
+                                                        key={idx}
+                                                        onClick={() => handleSuggestionSelection(idx, location.states)}
+                                                        type={'button'}
+                                                        unstyled>
+                                                        <div className="address-suggestion-line">
+                                                            {suggestion.street_line}
+                                                        </div>
+                                                        <div className="address-suggestion-line">
+                                                            {suggestion.city}, {suggestion.state} {suggestion.zipcode}
+                                                        </div>
+                                                    </Button>
                                                 </li>
                                             ))}
                                         </ul>
@@ -544,20 +531,14 @@ export const AddressEntryForm = ({ action, entry, onChange, onCancel, onModalCon
                             <Button onClick={() => setVerified(false)} outline type={'button'}>
                                 Continue without update
                             </Button>{' '}
-                            <SearchCriteriaContext.Consumer>
-                                {({ searchCriteria }) => {
-                                    return (
-                                        <Button
-                                            onClick={() => {
-                                                handleSuggestionSelection(0, searchCriteria.states);
-                                                setVerified(false);
-                                            }}
-                                            type={'button'}>
-                                            Update address and continue
-                                        </Button>
-                                    );
+                            <Button
+                                onClick={() => {
+                                    handleSuggestionSelection(0, location.states);
+                                    setVerified(false);
                                 }}
-                            </SearchCriteriaContext.Consumer>
+                                type={'button'}>
+                                Update address and continue
+                            </Button>
                         </ButtonGroup>
                     </ModalFooter>
                 </span>
