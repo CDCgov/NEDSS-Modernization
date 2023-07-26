@@ -10,7 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -213,62 +218,47 @@ public class WaUiMetadatum {
 
         // User specified
         this.waTemplateUid = command.page();
-        this.nbsUiComponentUid = command.uiComponent();
-        this.questionLabel = command.label();
-        this.questionToolTip = command.tooltip();
+        this.nbsUiComponentUid = command.question().getNbsUiComponentUid();
+        this.questionLabel = command.question().getQuestionLabel();
+        this.questionToolTip = command.question().getQuestionToolTip();
         this.orderNbr = command.orderNumber();
-        this.adminComment = command.adminComment();
-        this.dataLocation = command.dataLocation();
-        this.descTxt = command.description();
-        this.questionType = command.questionType();
-        this.questionNm = command.questionName();
-        this.questionIdentifier = command.questionIdentifier();
-        this.questionOid = command.questionOid();
-        this.questionOidSystemTxt = command.questionOidSystem();
-        this.groupNm = command.groupName();
+        this.adminComment = command.question().getAdminComment();
+        this.dataLocation = command.question().getDataLocation();
+        this.descTxt = command.question().getDescTxt();
+        this.questionType = command.question().getQuestionType();
+        this.questionNm = command.question().getQuestionNm();
+        this.questionIdentifier = command.question().getQuestionIdentifier();
+        this.questionOid = command.question().getQuestionOid();
+        this.questionOidSystemTxt = command.question().getQuestionOidSystemTxt();
+        this.groupNm = command.question().getGroupNm();
+        this.dataType = command.question().getDataType();
 
 
-        if (command instanceof PageContentCommand.AddQuestion.AddTextQuestion t) {
-            setTextFields(t);
-        } else if (command instanceof PageContentCommand.AddQuestion.AddDateQuestion d) {
-            setDateFields(d);
-        } else if (command instanceof PageContentCommand.AddQuestion.AddNumericQuestion n) {
-            setNumericFields(n);
-        } else if (command instanceof PageContentCommand.AddQuestion.AddCodedQuestion c) {
-            setCodedFields(c);
+        // Question type specific fields
+        if (command.question() instanceof TextQuestionEntity t) {
+            this.defaultValue = t.getDefaultValue();
+            this.mask = t.getMask();
+            this.fieldSize = t.getFieldSize();
+        } else if (command.question() instanceof DateQuestionEntity d) {
+            this.mask = d.getMask();
+            this.futureDateIndCd = d.getFutureDateIndCd();
+        } else if (command.question() instanceof NumericQuestionEntity n) {
+            this.mask = n.getMask();
+            this.fieldSize = n.getFieldSize();
+            this.defaultValue = n.getDefaultValue();
+            this.minValue = n.getMinValue();
+            this.maxValue = n.getMaxValue();
+            this.unitTypeCd = n.getUnitTypeCd();
+            this.unitValue = n.getUnitValue();
+        } else if (command.question() instanceof CodedQuestionEntity c) {
+            this.codeSetGroupId = c.getCodeSetGroupId();
+            this.defaultValue = c.getDefaultValue();
+        } else {
+            throw new AddQuestionException("Failed to determine question type");
         }
 
+        // Audit info
         this.added(command);
-    }
-
-    public void setTextFields(PageContentCommand.AddQuestion.AddTextQuestion command) {
-        this.dataType = "TEXT";
-        this.defaultValue = command.defaultValue();
-        this.mask = command.mask();
-        this.fieldSize = command.fieldLength();
-    }
-
-    public void setDateFields(PageContentCommand.AddQuestion.AddDateQuestion command) {
-        this.dataType = "DATE";
-        this.mask = command.mask();
-        this.futureDateIndCd = command.futureDateIndicator();
-    }
-
-    public void setNumericFields(PageContentCommand.AddQuestion.AddNumericQuestion command) {
-        this.dataType = "NUMERIC";
-        this.mask = command.mask();
-        this.fieldSize = command.fieldLength();
-        this.defaultValue = command.defaultValue();
-        this.minValue = command.minValue();
-        this.maxValue = command.maxValue();
-        this.unitTypeCd = command.unitTypeCd();
-        this.unitValue = command.unitValue();
-    }
-
-    public void setCodedFields(PageContentCommand.AddQuestion.AddCodedQuestion command) {
-        this.dataType = "CODED";
-        this.codeSetGroupId = command.codeSetGroupId();
-        this.defaultValue = command.defaultValue();
     }
 
     private void added(PageContentCommand.AddQuestion command) {
@@ -278,7 +268,5 @@ public class WaUiMetadatum {
         this.lastChgUserId = command.userId();
         this.recordStatusTime = command.requestedOn();;
     }
-
-
 
 }
