@@ -75,7 +75,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
         setBodies(asTableBodies(sorted, patient));
     };
 
-    const [getInvestigation] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
+    const [getInvestigation, { loading }] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -112,6 +112,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
                     </ClassicButton>
                 </div>
             }
+            isLoading={loading}
             tableHeader={'Investigations'}
             tableHead={headers}
             tableBody={bodies}

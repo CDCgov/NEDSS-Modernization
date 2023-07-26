@@ -72,7 +72,7 @@ export const PatientOpenInvestigationsTable = ({ patient, pageSize }: Props) => 
         setBodies(asTableBodies(sorted, patient));
     };
 
-    const [getInvestigation] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
+    const [getInvestigation, { loading }] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -97,6 +97,7 @@ export const PatientOpenInvestigationsTable = ({ patient, pageSize }: Props) => 
 
     return (
         <TableComponent
+            isLoading={loading}
             tableHeader={'Open Investigations'}
             tableHead={headers}
             tableBody={bodies}
