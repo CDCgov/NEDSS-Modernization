@@ -213,8 +213,12 @@ public class WaUiMetadatum {
         this.standardNndIndCd = 'F';
         this.standardQuestionIndCd = 'F';
         this.enableInd = "T";
+        this.displayInd = "T";
+        this.requiredInd = "F";
         this.entryMethod = "USER";
         this.recordStatusCd = ACTIVE;
+        this.versionCtrlNbr = 1;
+        this.futureDateIndCd = 'F';
 
         // User specified
         this.waTemplateUid = command.page();
@@ -231,6 +235,7 @@ public class WaUiMetadatum {
         this.questionOid = command.question().getQuestionOid();
         this.questionOidSystemTxt = command.question().getQuestionOidSystemTxt();
         this.groupNm = command.question().getGroupNm();
+        this.subGroupNm = command.question().getSubGroupNm();
         this.dataType = command.question().getDataType();
 
 
