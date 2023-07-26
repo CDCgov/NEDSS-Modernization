@@ -2,7 +2,7 @@ name: Build and Deploy modernization-api image
 on:
   push:
     branches:
-      - main 
+      - willz 
     paths-ignore:
       - 'cdc-sandbox/**'
       - 'docker-compose.yml'      
@@ -34,4 +34,25 @@ jobs:
     secrets:
       GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}  
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+
+  sonar_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Sonar Scan
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: workflows } = await github.actions.listRepoWorkflows();
+            const sonarWorkflow = workflows.find((workflow) => workflow.path === '.github/workflows/sonar.yml');
+            if (sonarWorkflow) {
+              await github.actions.createWorkflowDispatch({
+                workflow_id: sonarWorkflow.id,
+                ref: github.context.ref,
+                inputs: {}
+              });
+              console.log('Sonar Analysis triggered successfully.');
+            } else {
+              console.error('Sonar Analysis workflow not found.');
+            }
