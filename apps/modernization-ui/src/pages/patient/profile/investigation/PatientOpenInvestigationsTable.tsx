@@ -13,7 +13,7 @@ const asTableBody =
     (patient?: string) =>
     (investigation: Investigation): TableBody => ({
         id: investigation.investigation,
-        checkbox: false,
+        checkbox: true,
         tableDetails: [
             {
                 id: 1,

@@ -42,3 +42,16 @@ p.no-data {
 td span {
     word-break: break-all;
 }
+
+/* Hiding the arrows for the input type number */
+/* For WebKit-based browsers (Chrome and Safari) */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type='number']::-moz-number-spin-box {
+    -moz-appearance: textfield;
+}
