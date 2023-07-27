@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PageStateChange {
+public class PageStateChanger {
 
 	@Autowired
 	private WaTemplateRepository templateRepository;

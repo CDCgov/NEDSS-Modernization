@@ -30,7 +30,7 @@ public class PageController {
     private final PageUpdater pageUpdater;
     private final PageSummaryFinder finder;
     private final PageCreator creator;
-    private final PageStateChange stateChange;
+    private final PageStateChanger stateChange;
     private final UserDetailsProvider userDetailsProvider;
     
 
@@ -38,7 +38,7 @@ public class PageController {
             PageUpdater pageUpdater,
             PageSummaryFinder finder,
             PageCreator creator,
-            PageStateChange stateChange,
+            PageStateChanger stateChange,
             UserDetailsProvider userDetailsProvider) {
         this.pageUpdater = pageUpdater;
         this.finder = finder;
@@ -76,11 +76,12 @@ public class PageController {
         return results;
     }
     
+    /*
     @PostMapping("/add")
     public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
     	Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     	return creator.createPage(request,userId);
-    }
+    }*/
     
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
