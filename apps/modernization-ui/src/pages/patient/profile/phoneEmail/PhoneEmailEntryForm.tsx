@@ -6,6 +6,7 @@ import { Input } from 'components/FormInputs/Input';
 import { usePatientPhoneCodedValues } from './usePatientPhoneCodedValues';
 import { PhoneEmailEntry } from './PhoneEmailEntry';
 import { validatePhoneNumber } from 'validation/phone';
+import { allowNumericValues } from 'utils/util';
 
 type EntryProps = {
     action: string;
@@ -110,7 +111,8 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         defaultValue={value}
-                                        type="number"
+                                        onKeyDown={allowNumericValues}
+                                        type="tel"
                                         label="Country code"
                                         name="countryCode"
                                         htmlFor="countryCode"

@@ -1,3 +1,4 @@
+import React from 'react';
 import { InvestigationFilter, LabReportFilter } from '../generated/graphql/schema';
 
 export const TOTAL_TABLE_DATA = 10;
@@ -79,4 +80,14 @@ export const setLabReportFilters = (labReportFilter: LabReportFilter) => {
         eventStatus: labReportFilter?.eventStatus,
         processingStatus: labReportFilter?.processingStatus
     };
+};
+
+export const allowNumericValues = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const isValidKey = /^[0-9]$/.test(event.key);
+    const isSpecialKey =
+        event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight';
+
+    if (!isValidKey && !isSpecialKey) {
+        event.preventDefault();
+    }
 };
