@@ -4,7 +4,7 @@ import { CodedValue } from 'coded';
 import { useEffect, useState } from 'react';
 
 const Query = gql`
-    query addresses {
+    query locations {
         countries {
             value
             name
@@ -12,16 +12,19 @@ const Query = gql`
         states {
             value
             name
+            abbreviation
         }
     }
 `;
 
 type Variables = { [key: string]: never };
 
+type StateCodedValue = CodedValue & { abbreviation: string };
+
 type Result = {
     __typename?: 'Query';
     countries: Array<CodedValue>;
-    states: Array<CodedValue>;
+    states: Array<StateCodedValue>;
 };
 
 function useCodedValueQuery(baseOptions?: Apollo.QueryHookOptions<Result, Variables>) {
@@ -36,7 +39,7 @@ const initial = {
 
 type LocationCodedValues = {
     countries: CodedValue[];
-    states: CodedValue[];
+    states: StateCodedValue[];
 };
 
 const useLocationCodedValues = () => {
@@ -52,4 +55,4 @@ const useLocationCodedValues = () => {
 };
 
 export { useLocationCodedValues };
-export type { LocationCodedValues };
+export type { LocationCodedValues, StateCodedValue };

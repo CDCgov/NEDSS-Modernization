@@ -18,6 +18,6 @@ class PatientProfileDeletableResolver {
 
     @SchemaMapping("deletable")
     boolean resolve(final PatientProfile profile) {
-        return !profile.recordStatusCd().equals(RecordStatus.LOG_DEL.toString()) && finder.count(profile.id()) == 0;
+        return !profile.status().equals(RecordStatus.LOG_DEL.toString()) && finder.count(profile.id()) == 0;
     }
 }

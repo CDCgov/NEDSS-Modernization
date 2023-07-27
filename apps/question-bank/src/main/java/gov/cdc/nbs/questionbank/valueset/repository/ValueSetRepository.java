@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.valueset.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,8 +35,11 @@ public interface ValueSetRepository extends JpaRepository <Codeset,CodesetId> {
  @Query("UPDATE Codeset SET statusCd='A' WHERE  id.codeSetNm =:codeSetNm")
  int activateValueSet(@Param("codeSetNm") String codeSetNm);
  
- @Query("SELECT v from Codeset v WHERE v.id.codeSetNm LIKE %:codeSetNm% OR v.valueSetNm LIKE %:valueSetNm% OR v.valueSetCode LIKE %:valueSetCode% ")
- Page<Codeset> findByCodeSetNmOrValueSetNmorValueSetCode(@Param("codeSetNm") String codeSetNm, @Param("valueSetNm") String valueSetNm , @Param("valueSetCode") String valueSetCode,Pageable pageable);
+ @Query("SELECT v from Codeset v WHERE v.id.codeSetNm LIKE %:codeSetNm% OR v.valueSetNm LIKE %:valueSetNm% OR v.valueSetCode LIKE %:valueSetCode% OR v.valueSetTypeCd=:valueSetTypeCd  AND v.id.classCd = 'code_value_general'")
+ Page<Codeset> findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(@Param("codeSetNm") String codeSetNm, @Param("valueSetNm") String valueSetNm , @Param("valueSetCode") String valueSetCode, @Param("valueSetTypeCd") String valueSetTypeCd, Pageable pageable);
+ 
+ @Query("SELECT v from Codeset v WHERE  v.id.codeSetNm =:codeSetNm AND v.id.classCd = 'code_value_general'" )
+ Optional<Codeset> findByCodeSetNm(@Param("codeSetNm") String codeSetNm);
  
 
 }

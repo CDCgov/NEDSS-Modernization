@@ -28,10 +28,7 @@ describe('EthnicityForm component tests', () => {
             outbreaks: [],
             races: [],
             identificationTypes: [],
-            states: [],
-            counties: [],
-            countries: [],
-            authorities: []
+            states: []
         };
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>
@@ -58,10 +55,7 @@ describe('EthnicityForm component tests', () => {
             userResults: [],
             outbreaks: [],
             identificationTypes: [],
-            states: [],
-            counties: [],
-            countries: [],
-            authorities: []
+            states: []
         };
         const { container } = render(
             <SearchCriteriaContext.Provider value={{ searchCriteria }}>

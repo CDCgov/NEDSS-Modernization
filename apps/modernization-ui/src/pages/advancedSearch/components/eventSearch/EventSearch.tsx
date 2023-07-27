@@ -33,6 +33,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
     // const navigate = useNavigate();
     const methods = useForm();
     const [eventSearchType, setEventSearchType] = useState<SEARCH_TYPE | ''>();
+    const [lastEventSearchType, setLastEventSearchType] = useState<SEARCH_TYPE | ''>();
     const { handleSubmit, control, reset } = methods;
 
     const [getLocalResultedTests] = useFindLocalLabTestLazyQuery();
@@ -49,6 +50,35 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         }
     }, [investigationFilter, labReportFilter]);
 
+    const [toBottom, setToBottom] = useState(false);
+    useEffect(() => {
+        if (lastEventSearchType && !eventSearchType) {
+            setEventSearchType(lastEventSearchType);
+        }
+
+        if (eventSearchType) {
+            const element = document.getElementsByClassName('usa-accordion__heading accordian-item');
+
+            if (element) {
+                element?.[2]?.addEventListener('click', function () {
+                    setToBottom(true);
+                });
+            }
+        }
+    }, [eventSearchType]);
+
+    useEffect(() => {
+        if (toBottom) {
+            const divElement = document.getElementById('criteria');
+            if (divElement) {
+                setTimeout(() => {
+                    divElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    setToBottom(false);
+                });
+            }
+        }
+    }, [toBottom]);
+
     const eventSearchItems: AccordionItemProps[] = [
         {
             title: 'Event type',
@@ -57,6 +87,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
                     defaultValue={eventSearchType}
                     onChangeMethod={(e) => {
                         setEventSearchType(e);
+                        setLastEventSearchType(e);
                         if (e === SEARCH_TYPE.LAB_REPORT) {
                             methods.reset(
                                 setLabReportFilters({
@@ -176,7 +207,7 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         let filterData: InvestigationFilter | LabReportFilter = {};
         if (eventSearchType === SEARCH_TYPE.INVESTIGATION) {
             filterData = {
-                conditions: body.conditon?.length > 0 ? body.conditon : undefined,
+                conditions: body.condition?.length > 0 ? body.condition : undefined,
                 jurisdictions: body.jurisdiction?.length > 0 ? body.jurisdiction : undefined,
                 pregnancyStatus:
                     body.pregnancyTest && body.pregnancyTest !== '- Select -' ? body.pregnancyTest : undefined,

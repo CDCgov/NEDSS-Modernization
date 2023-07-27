@@ -15,7 +15,11 @@ type EntryProps = {
 };
 
 export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const { handleSubmit, control } = useForm();
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm({ mode: 'onBlur' });
 
     const coded = usePatientPhoneCodedValues();
 
@@ -93,18 +97,28 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             control={control}
                             name="countryCode"
                             defaultValue={entry.countryCode}
-                            render={({ field: { onChange, value } }) => (
-                                <Input
-                                    flexBox
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Country code"
-                                    name="countryCode"
-                                    htmlFor="countryCode"
-                                    id="countryCode"
-                                />
-                            )}
+                            rules={{
+                                pattern: {
+                                    value: /^\+?\d{1,3}$/,
+                                    message: 'A country code should be 1 to 3 digits"'
+                                }
+                            }}
+                            render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => {
+                                return (
+                                    <Input
+                                        flexBox
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        defaultValue={value}
+                                        type="number"
+                                        label="Country code"
+                                        name="countryCode"
+                                        htmlFor="countryCode"
+                                        id="countryCode"
+                                        error={error?.message}
+                                    />
+                                );
+                            }}
                         />
                     </Grid>
                     <Grid col={12} className="border-bottom border-base-lighter padding-bottom-2 padding-2">
@@ -232,6 +246,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">

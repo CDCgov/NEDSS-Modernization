@@ -21,4 +21,7 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
 
     @Query("SELECT MAX(id) from WaTemplate")
     Long getMaxTemplateID();
+    
+    @Query("SELECT v from WaTemplate v WHERE v.id=:id OR v.templateNm LIKE %:templateNm% OR v.conditionCd LIKE %:conditionCd% OR v.datamartNm LIKE %:dataMartNm% OR v.recordStatusCd LIKE %:recordStatusCd% OR v.templateType IN :templateType")
+    Page<WaTemplate> searchTemplate(@Param("id") Long id, @Param("templateNm") String templateNm, @Param("conditionCd") String conditionCd , @Param("dataMartNm") String dataMartNm, @Param("recordStatusCd") String recordStatusCd,  @Param("templateType") List<String> templateType, Pageable pageable);
 }

@@ -14,7 +14,11 @@ type EntryProps = {
 };
 
 export const NameEntryForm = ({ action, entry, onChange, onCancel }: EntryProps) => {
-    const { handleSubmit, control } = useForm();
+    const {
+        handleSubmit,
+        control,
+        formState: { isValid }
+    } = useForm();
 
     const coded = usePatientNameCodedValues();
 
@@ -222,6 +226,7 @@ export const NameEntryForm = ({ action, entry, onChange, onCancel }: EntryProps)
                         Go Back
                     </Button>
                     <Button
+                        disabled={!isValid}
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="padding-105 text-center margin-top-0">
