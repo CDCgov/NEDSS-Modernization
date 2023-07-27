@@ -38,7 +38,7 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
         setLabReportData(data.findLabReportsByFilter?.content);
     };
 
-    const [getLabReport] = useFindLabReportsByFilterLazyQuery({ onCompleted: handleComplete });
+    const [getLabReport, { loading }] = useFindLabReportsByFilterLazyQuery({ onCompleted: handleComplete });
 
     const getOrderingProviderName = (labReport: LabReport): string | undefined => {
         const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
@@ -202,6 +202,7 @@ export const LabReportTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
 
     return (
         <SortableTable
+            isLoading={loading}
             isPagination={true}
             buttons={
                 <div className="grid-row">

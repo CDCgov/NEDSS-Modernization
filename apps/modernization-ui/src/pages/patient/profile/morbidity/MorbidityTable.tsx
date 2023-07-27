@@ -37,7 +37,7 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
         setMorbidityData(data.findMorbidityReportsForPatient?.content);
     };
 
-    const [getmorbidity] = useFindMorbidityReportsForPatientLazyQuery({ onCompleted: handleComplete });
+    const [getmorbidity, { loading }] = useFindMorbidityReportsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -133,6 +133,7 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
 
     return (
         <SortableTable
+            isLoading={loading}
             isPagination={true}
             buttons={
                 <div className="grid-row">
