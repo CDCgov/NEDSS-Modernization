@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-class ClassicOutgoingRequestInterceptor implements ClientHttpRequestInterceptor {
+class ClassicOutgoingAuthenticationRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private final ClassicContext context;
 
-    ClassicOutgoingRequestInterceptor(final ClassicContext context) {
+    ClassicOutgoingAuthenticationRequestInterceptor(final ClassicContext context) {
         this.context = context;
     }
 
@@ -25,7 +25,11 @@ class ClassicOutgoingRequestInterceptor implements ClientHttpRequestInterceptor 
         final ClientHttpRequestExecution execution
     )
         throws IOException {
-        request.getHeaders().add(HttpHeaders.COOKIE, context.session());
+        request.getHeaders().add(HttpHeaders.COOKIE, resolveSessionCookie(context));
         return execution.execute(request, body);
+    }
+
+    private String resolveSessionCookie(final ClassicContext context) {
+        return "JSESSIONID=" + context.session() + ";";
     }
 }

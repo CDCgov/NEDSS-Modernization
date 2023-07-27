@@ -15,12 +15,13 @@ class ClassicRestTemplateConfiguration {
     @Qualifier("classic")
     RestTemplate classicRestTemplate(
         final ClassicPathResolver resolver,
-        final ClassicOutgoingRequestInterceptor interceptor
+        final ClassicOutgoingAuthenticationRequestInterceptor authenticationInterceptor,
+        final ClassicOutgoingLoggingHttpRequestInterceptor loggingInterceptor
     ) throws MalformedURLException {
 
         return new RestTemplateBuilder()
             .rootUri(resolver.base().toURL().toString())
-            .additionalInterceptors(new ClassicOutgoingLoggingHttpRequestInterceptor(), interceptor)
+            .additionalInterceptors(loggingInterceptor, authenticationInterceptor)
             .build();
     }
 
