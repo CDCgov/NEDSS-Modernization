@@ -1,59 +1,54 @@
 package gov.cdc.nbs.questionbank.addtab;
 
-import gov.cdc.nbs.questionbank.addtab.exceptions.AddTabException;
+import static org.junit.Assert.assertEquals;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import gov.cdc.nbs.questionbank.addtab.controller.AddTabController;
 import gov.cdc.nbs.questionbank.addtab.model.CreateTabRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.addtab.WaUiMetadata;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
+import gov.cdc.nbs.questionbank.support.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.messages.types.DataTable;
-import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddTabSteps {
 
     @Autowired
-    CreateTabService createTabService;
+    private AddTabController tabController;
 
     @Autowired
-    WaUiMetaDataRepository waUiMetadataRepository;
+    private WaUiMetaDataRepository waUiMetadataRepository;
 
-    @Given("a tab creation request:")
-    public CreateTabRequest a_valid_tab_creation_request(DataTable dataTable) {
-        List<String> requestValues = new ArrayList<>();
-        dataTable.getRows().get(1).getCells().stream().map(fields ->
-                requestValues.add(fields.getValue()));
+    @Autowired
+    private PageMother pageMother;
 
-        CreateTabRequest createTabRequest = new CreateTabRequest(Long.parseLong(requestValues.get(0)),
-                requestValues.get(1), requestValues.get(2));
+    private CreateUiResponse response;
 
-        return createTabRequest;
-    }
+    @Autowired
+    private ExceptionHolder exceptionHolder;
 
-    @Then("the service should create the tab successfully")
-    public void the_tab_created_successfully() {
-        CreateTabRequest createTabRequest = new CreateTabRequest(123L, "Some Message", "T");
-
+    @Given("I send an add tab request with {string}")
+    public void i_send_an_add_tab_request(String visibility) {
+        WaTemplate template = pageMother.one();
+        CreateTabRequest createTabRequest = new CreateTabRequest(template.getId(), "Local Tab", visibility);
         try {
-            CreateUiResponse response = createTabService.createTab(123L, createTabRequest);
-            Assert.assertEquals( "tab created succesfully", response.message());
-        } catch(Exception exception) {
-            throw  new AddTabException("Some Exception", 1010);
+            response = tabController.createTab(createTabRequest);
+        } catch (AccessDeniedException e) {
+            exceptionHolder.setException(e);
+        } catch (AuthenticationCredentialsNotFoundException e) {
+            exceptionHolder.setException(e);
         }
     }
 
-    @Then("the service should throw an AddTabException")
-    public void the_tab_creat_exception() {
-
-        try {
-            CreateUiResponse response = createTabService.createTab(123L, null);
-
-        } catch(Exception exception) {
-            throw  new AddTabException("Some Exception", 1010);
-        }
+    @Then("the tab is created with {string}")
+    public void the_tab_created_successfully(String visibility) {
+        WaUiMetadata metadata = waUiMetadataRepository.findById(response.uid()).orElseThrow();
+        assertEquals(1010L, metadata.getNbsUiComponentUid().longValue());
+        assertEquals("Local Tab", metadata.getQuestionLabel());
+        assertEquals(visibility, metadata.getDisplayInd());
     }
-
 
 }
