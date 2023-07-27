@@ -47,11 +47,15 @@ public class PageContentManager {
             throw new AddQuestionException("The specified question is already associated with the page");
         }
 
+        // limit order number to max + 1 of existing questions
+        Integer currentMaxOrder = uiMetadatumRepository.findMaxOrderNbrForPage(pageId);
+        Integer orderNbr = request.orderNumber() > currentMaxOrder + 1 ? currentMaxOrder + 1 : request.orderNumber();
+
         // add 1 to any existing entry with 'order_nbr >= new entry order_nbr'
         uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, request.orderNumber());
 
         // create an new entity 
-        WaUiMetadatum questionPageEntry = new WaUiMetadatum(asAdd(template, question, user, request.orderNumber()));
+        WaUiMetadatum questionPageEntry = new WaUiMetadatum(asAdd(template, question, user, orderNbr));
 
         // save the new entry
         return uiMetadatumRepository.save(questionPageEntry).getId();

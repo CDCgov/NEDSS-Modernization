@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,10 @@ import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
 @ExtendWith(MockitoExtension.class)
@@ -107,6 +111,35 @@ class WaUiMetadatumTest {
         assertGeneralValues(metadata, command);
         assertEquals(question.getCodeSetGroupId(), metadata.getCodeSetGroupId());
         assertEquals(question.getDefaultValue(), metadata.getDefaultValue());
+    }
+
+    @Test
+    void should_throw_addQuestion_exception() {
+        Instant now = Instant.now();
+        // Given an AddQuestion command with invalid question type
+        WaTemplate page = page();
+        WaQuestion question = new WaQuestion() {
+            @Override
+            public String getDataType() {
+                return "test";
+            }
+
+            @Override
+            public void update(Update command) {
+
+            }
+        };
+
+        PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
+                page,
+                question,
+                12,
+                1L,
+                now);
+        // When a new WaUiMetadata entry is created 
+        // Then an exception is thrown
+        assertThrows(AddQuestionException.class, () -> new WaUiMetadatum(command));
+
     }
 
     private void assertDefaultValues(WaUiMetadatum metadata) {

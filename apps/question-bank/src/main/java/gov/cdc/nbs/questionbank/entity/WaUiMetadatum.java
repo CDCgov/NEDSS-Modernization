@@ -269,9 +269,9 @@ public class WaUiMetadatum {
     private void added(PageContentCommand.AddQuestion command) {
         this.addTime = command.requestedOn();
         this.addUserId = command.userId();
-        this.lastChgTime = command.requestedOn();;
+        this.lastChgTime = command.requestedOn();
         this.lastChgUserId = command.userId();
-        this.recordStatusTime = command.requestedOn();;
+        this.recordStatusTime = command.requestedOn();
     }
 
 }

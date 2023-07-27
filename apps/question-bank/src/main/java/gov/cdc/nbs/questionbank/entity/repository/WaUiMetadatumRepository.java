@@ -20,4 +20,7 @@ public interface WaUiMetadatumRepository extends JpaRepository<WaUiMetadatum, Lo
     Long countByPageAndQuestionIdentifier(
             @Param("pageId") Long pageId,
             @Param("questionIdentifier") String questionIdentifier);
+
+    @Query("Select COALESCE(Max(ui.orderNbr),0) FROM WaUiMetadatum ui WHERE ui.waTemplateUid.id =:pageId")
+    Integer findMaxOrderNbrForPage(@Param("pageId") Long pageId);
 }
