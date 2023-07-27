@@ -1,20 +1,24 @@
 @add_tab_steps
 Feature: Create Tab Service
 
-  Scenario: Create a new tab successfully
-     Given a tab creation request:
-       | Page ID | Name      | Visible |
-       | 1000376 | Local Tab | T       |
-    Then the service should create the tab successfully
+    Background:
+        Given pages exist
 
-  Scenario: Attempt to create a new tab with hidden functionality
-    Given a tab creation request:
-      | Page ID | Name      | Visible |
-      | 1000376 | Local Tab | F       |
-    Then the service should create the tab successfully
+    Scenario: I can add a tab to a page
+        Given I am an admin user
+        When I send an add tab request with "<visibility>"
+        Then the tab is created with "<visibility>"
+        Examples:
+            | visibility |
+            | T          |
+            | F          |
 
-  Scenario: Attempt to create a new tab with missing data
-   Given a tab creation request:
-     | Page ID | Name | Visible |
-     | 1000376 |      | T       |
-    Then the service should throw an AddTabException
+    Scenario: I cannot add a tab without logging in
+        Given I am not logged in
+        When I send an add tab request with "T"
+        Then a no credentials found exception is thrown
+
+    Scenario: I cannot add a tab without permissions
+        Given I am a user without permissions
+        When I send an add tab request with "F"
+        Then an accessdenied exception is thrown
