@@ -49,7 +49,7 @@ export type TableContentProps = {
     sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
     rangeSelector?: boolean;
-    handleSelected?: (event: React.ChangeEvent<HTMLInputElement>, item: TableBody) => void;
+    handleSelected?: (event: React.ChangeEvent<HTMLInputElement>, item: any) => void;
     isLoading?: boolean;
 };
 
