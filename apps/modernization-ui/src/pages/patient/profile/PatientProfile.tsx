@@ -160,7 +160,9 @@ export const PatientProfile = () => {
                 </div>
 
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={profile?.patient.id} />}
-                {activeTab === ACTIVE_TAB.EVENT && <Events patient={profile?.patient.id} />}
+                {activeTab === ACTIVE_TAB.EVENT && (
+                    <Events patient={profile?.patient.id} addEventsAllowed={profile?.patient.status === 'ACTIVE'} />
+                )}
                 {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics id={profile?.patient.id || ''} />}
 
                 <div className="text-center margin-y-5">

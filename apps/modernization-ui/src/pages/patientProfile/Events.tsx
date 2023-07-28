@@ -1,8 +1,3 @@
-import {
-    FindInvestigationsByFilterQuery,
-    FindLabReportsByFilterQuery,
-    FindMorbidityReportsForPatientQuery
-} from '../../generated/graphql/schema';
 import { PatientTreatmentTable } from 'pages/patient/profile/treatment';
 import {
     PatientProfileContactsNamedByPatient,
@@ -18,27 +13,24 @@ import { ClassicModalProvider } from 'classic/ClassicModalContext';
 
 type EventTabProp = {
     patient: string | undefined;
-    investigationData?: FindInvestigationsByFilterQuery['findInvestigationsByFilter'];
-    labReports?: FindLabReportsByFilterQuery['findLabReportsByFilter'] | undefined;
-    morbidityData?: FindMorbidityReportsForPatientQuery['findMorbidityReportsForPatient'] | undefined;
-    profileData?: any;
+    addEventsAllowed: boolean;
 };
 
-export const Events = ({ patient }: EventTabProp) => {
+export const Events = ({ patient, addEventsAllowed = true }: EventTabProp) => {
     return (
         <ClassicModalProvider>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <PatientInvestigationsTable patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientInvestigationsTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
             </div>
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <LabReportTable patient={patient} />
+                <LabReportTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
             </div>
 
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                <MorbidityTable patient={patient} />
+                <MorbidityTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
             </div>
 
-            <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} />
+            <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
             <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                 <PatientTreatmentTable patient={patient} />
             </div>
