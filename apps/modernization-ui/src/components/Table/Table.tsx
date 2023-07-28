@@ -49,7 +49,7 @@ export type TableContentProps = {
     sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
     rangeSelector?: boolean;
-    handleSelected?: (event: React.ChangeEvent<HTMLInputElement>, key: number) => void;
+    handleSelected?: (event: React.ChangeEvent<HTMLInputElement>, item: TableBody) => void;
     isLoading?: boolean;
 };
 
@@ -214,7 +214,7 @@ export const TableComponent = ({
                                                     id={`${detail.title}-${row}`}
                                                     name={'tableCheck'}
                                                     label=""
-                                                    onChange={(e) => handleSelected?.(e, row)}
+                                                    onChange={(e) => handleSelected?.(e, item)}
                                                 />
                                             </Fieldset>
                                         )}
