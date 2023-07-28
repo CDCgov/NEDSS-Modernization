@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.entity.condition;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -127,7 +128,7 @@ public class ConditionCode implements Serializable {
     @Column(name = "rhap_action_value")
     private String rhapActionValue;
 
-    @OneToMany(mappedBy = "conditionCd")
+    @OneToMany(mappedBy = "conditionCd" )
     private Set<LdfPageSet> ldfPageSets = new LinkedHashSet<>();
 
     public ConditionCode(final ConditionCommand.AddCondition request) {
@@ -141,5 +142,11 @@ public class ConditionCode implements Serializable {
         this.contactTracingEnableInd = request.contactTracingEnableInd();
         this.familyCd = request.familyCd();
         this.coinfectionGrpCd = request.coinfectionGrpCd();
+
+       this.ldfPageSets = new LinkedHashSet<>();
+    }
+
+    public void setLdf(LdfPageSet... ldf) {
+        this.ldfPageSets.addAll(Arrays.asList(ldf));
     }
 }

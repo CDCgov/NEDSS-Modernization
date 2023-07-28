@@ -69,4 +69,21 @@ public class LdfPageSet implements Serializable {
     @Column(name = "display_column")
     private Short displayColumn;
 
+
+
+//    public LdfPageSet(Instant effectiveFromTime, Instant effectiveToTime, Character statusCd, String codeShortDescTxt){
+//        this.businessObjectNm = "PHC";
+//        this.uiDisplay = "Link";
+//        this.indentLevelNbr = 2;
+//        this.parentIsCd = "30";
+//        this.codeSetNm = "LDF_PAGE_SET";
+//        this.seqNum = 1;
+//        this.codeVersion = "1";
+//        this.effectiveFromTime = effectiveFromTime;
+//        this.effectiveToTime = effectiveToTime;
+//        this.statusCd = statusCd;
+//        this.codeShortDescTxt = codeShortDescTxt;
+//        this.displayColumn = 2;
+//    }
+
 }

@@ -40,7 +40,7 @@ public class ConditionEntityMother {
         c.setTreatmentEnableInd('Y');
         c.setLabReportEnableInd('Y');
         c.setMorbReportEnableInd('Y');
-        c.setPortReqIndCd("sample port req");
+        c.setPortReqIndCd('Y');
         c.setFamilyCd("ARBO");
         c.setCoinfectionGrpCd("sample co infection cd");
         c.setRhapParseNbsInd("sample rhap parse");

@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.command;
 
-import java.time.Instant;
 
 public sealed interface ConditionCommand {
     public record AddCondition(
@@ -14,6 +13,7 @@ public sealed interface ConditionCommand {
             Character contactTracingEnableInd,
             String familyCd,
             String coinfectionGrpCd, long userId) implements ConditionCommand {
+
     }
 
 }
