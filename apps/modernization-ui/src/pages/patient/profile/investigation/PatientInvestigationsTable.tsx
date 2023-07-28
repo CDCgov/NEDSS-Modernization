@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
@@ -98,6 +98,28 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
         setBodies(asTableBodies(sorted, patient));
     };
 
+    const [checkedItems, setCheckedItems] = useState<{ id: string; value: string | undefined }[]>([]);
+    const handleSelected = (e: React.ChangeEvent<HTMLInputElement>, row: TableBody) => {
+        if (e.target.checked) {
+            if (e.target.value === row.tableDetails[1].title) {
+                if (checkedItems?.[0]?.value === e.target.value) {
+                    setCheckedItems((old) => [
+                        ...old,
+                        { id: row.id as string, value: row.tableDetails[1].title as string }
+                    ]);
+                }
+                if (checkedItems?.length === 0) {
+                    setCheckedItems((old) => [
+                        ...old,
+                        { id: row.id as string, value: row.tableDetails[1].title as string }
+                    ]);
+                }
+            }
+        } else {
+            setCheckedItems(checkedItems.filter((item) => item.id !== row.id));
+        }
+    };
+
     return (
         <TableComponent
             buttons={
@@ -121,6 +143,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
             currentPage={currentPage}
             handleNext={setCurrentPage}
             sortData={handleSort}
+            handleSelected={handleSelected}
         />
     );
 };
