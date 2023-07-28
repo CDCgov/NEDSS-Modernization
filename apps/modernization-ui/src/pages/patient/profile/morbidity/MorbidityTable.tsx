@@ -6,7 +6,6 @@ import {
     useFindMorbidityReportsForPatientLazyQuery
 } from 'generated/graphql/schema';
 
-import { TOTAL_TABLE_DATA } from 'utils/util';
 import { SortableTable } from 'components/Table/SortableTable';
 
 import { ClassicButton, ClassicLink } from 'classic';
@@ -15,10 +14,11 @@ export type PatientMorbidities = FindMorbidityReportsForPatientQuery['findMorbid
 
 type PatientMoribidityTableProps = {
     patient?: string;
-    pageSize?: number;
+    pageSize: number;
+    allowAdd?: boolean;
 };
 
-export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: PatientMoribidityTableProps) => {
+export const MorbidityTable = ({ patient, pageSize, allowAdd = false }: PatientMoribidityTableProps) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [morbidityData, setMorbidityData] = useState<any>([]);
@@ -135,12 +135,14 @@ export const MorbidityTable = ({ patient, pageSize = TOTAL_TABLE_DATA }: Patient
         <SortableTable
             isPagination={true}
             buttons={
-                <div className="grid-row">
-                    <ClassicButton url={`/nbs/api/profile/${patient}/report/morbidity`}>
-                        <Icon.Add className="margin-right-05" />
-                        Add morbidity report
-                    </ClassicButton>
-                </div>
+                allowAdd && (
+                    <div className="grid-row">
+                        <ClassicButton url={`/nbs/api/profile/${patient}/report/morbidity`}>
+                            <Icon.Add className="margin-right-05" />
+                            Add morbidity report
+                        </ClassicButton>
+                    </div>
+                )
             }
             tableHeader={'Morbidity reports'}
             tableHead={tableHead}
