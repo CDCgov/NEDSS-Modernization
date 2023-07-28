@@ -18,11 +18,11 @@ export const ImportTemplate = () => {
                 <div className="heading">
                     <label>Import a new template</label>
                 </div>
-                <label onChange={() => {}} htmlFor="formId">
-                    <input name="" type="file" id="formId" hidden />
+                <label onChange={() => {}} htmlFor="importTempId">
+                    <input name="" type="file" id="importTempId" hidden />
                     <div className="drop-area">
                         <Icon.Logout size={4} />
-                        <label>
+                        <label htmlFor="importTempId">
                             Drag & drop or <span>Choose file</span> to upload
                         </label>
                     </div>
