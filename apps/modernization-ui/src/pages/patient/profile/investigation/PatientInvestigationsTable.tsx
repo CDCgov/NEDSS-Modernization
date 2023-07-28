@@ -56,9 +56,10 @@ const headers = [
 type Props = {
     patient: string | undefined;
     pageSize: number;
+    allowAdd?: boolean;
 };
 
-export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
+export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<any>([]);
@@ -123,16 +124,18 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
     return (
         <TableComponent
             buttons={
-                <div className="grid-row">
-                    <Button disabled type="button" className="grid-row">
-                        <Icon.Topic className="margin-right-05" />
-                        Compare investigations
-                    </Button>
-                    <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
-                        <Icon.Add className="margin-right-05" />
-                        Add investigation
-                    </ClassicButton>
-                </div>
+                allowAdd && (
+                    <div className="grid-row">
+                        <Button disabled type="button" className="grid-row">
+                            <Icon.Topic className="margin-right-05" />
+                            Compare investigations
+                        </Button>
+                        <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
+                            <Icon.Add className="margin-right-05" />
+                            Add investigation
+                        </ClassicButton>
+                    </div>
+                )
             }
             isLoading={loading}
             tableHeader={'Investigations'}
