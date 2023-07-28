@@ -91,7 +91,7 @@ class WaQuestionTest {
 
         assertEquals('F', question.getStandardQuestionIndCd().charValue());
         assertEquals("USER", question.getEntryMethod());
-        assertEquals('F', question.getStandardQuestionIndCd().charValue());
+        assertEquals('F', question.getStandardNndIndCd().charValue());
         assertEquals("2", question.getOrderGroupId());
         assertEquals('F', question.getFutureDateIndCd().charValue());
 
