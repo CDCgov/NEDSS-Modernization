@@ -50,6 +50,38 @@ public class PageMother {
                 .findFirst()
                 .orElseGet(this::createAsepticMeningitisPage);
     }
+    
+    public void removeDeleteOne(WaTemplate one) {
+    	repository.delete(one);
+    }
+    
+    public  WaTemplate  createOne() {
+    	 Instant now = Instant.now();
+         WaTemplate page = new WaTemplate();
+         page.setTemplateNm("Congenital Syphilis Investigation");
+         page.setTemplateType("Test");
+         page.setBusObjType("INV");
+         page.setNndEntityIdentifier("CongSyph_MMG_V1.0");
+
+         page.setRecordStatusCd("Active");
+         page.setRecordStatusTime(now);
+         page.setAddTime(now);
+         page.setAddUserId(1L);
+         page.setLastChgTime(now);
+         page.setLastChgUserId(1L);
+
+         PageCondMapping conditionMapping = new PageCondMapping();
+         conditionMapping.setWaTemplateUid(page);
+         conditionMapping.setConditionCd("10316"); // From test db condition_code table
+         conditionMapping.setAddTime(now);
+         conditionMapping.setAddUserId(1l);
+         conditionMapping.setLastChgTime(now);
+         conditionMapping.setLastChgUserId(1l);
+
+         page.setConditionMappings(Collections.singleton(conditionMapping));
+         page = repository.save(page);
+         return page;
+    }
 
     private WaTemplate createBrucellosisPage() {
         Instant now = Instant.now();
