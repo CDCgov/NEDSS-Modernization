@@ -50,11 +50,34 @@ export const EventSearch = ({ onSearch, investigationFilter, labReportFilter, cl
         }
     }, [investigationFilter, labReportFilter]);
 
+    const [toBottom, setToBottom] = useState(false);
     useEffect(() => {
         if (lastEventSearchType && !eventSearchType) {
             setEventSearchType(lastEventSearchType);
         }
+
+        if (eventSearchType) {
+            const element = document.getElementsByClassName('usa-accordion__heading accordian-item');
+
+            if (element) {
+                element?.[2]?.addEventListener('click', function () {
+                    setToBottom(true);
+                });
+            }
+        }
     }, [eventSearchType]);
+
+    useEffect(() => {
+        if (toBottom) {
+            const divElement = document.getElementById('criteria');
+            if (divElement) {
+                setTimeout(() => {
+                    divElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    setToBottom(false);
+                });
+            }
+        }
+    }, [toBottom]);
 
     const eventSearchItems: AccordionItemProps[] = [
         {
