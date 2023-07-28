@@ -67,6 +67,7 @@ class ValueSetReaderTest {
         search.setValueSetNm("setnm");
         search.setValueSetCode("setCode");
         search.setValueSetTypeCd("LOCAL");
+        search.setValueSetDescription("descText");
         
         int max = 5;
         Pageable pageable = PageRequest.of(0, max);
