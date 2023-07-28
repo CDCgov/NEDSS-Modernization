@@ -18,7 +18,7 @@ import gov.cdc.nbs.questionbank.page.PageStateChanger;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 
-public class PageStateChangeTest {
+ class PageStateChangeTest {
 
 	@Mock
 	private WaTemplateRepository templateRepository;
