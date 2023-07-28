@@ -81,13 +81,3 @@ export const setLabReportFilters = (labReportFilter: LabReportFilter) => {
         processingStatus: labReportFilter?.processingStatus
     };
 };
-
-export const allowNumericValues = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const isValidKey = /^[0-9]$/.test(event.key);
-    const isSpecialKey =
-        event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight';
-
-    if (!isValidKey && !isSpecialKey) {
-        event.preventDefault();
-    }
-};

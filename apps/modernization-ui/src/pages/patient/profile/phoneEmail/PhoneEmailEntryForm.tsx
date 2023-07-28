@@ -6,7 +6,6 @@ import { Input } from 'components/FormInputs/Input';
 import { usePatientPhoneCodedValues } from './usePatientPhoneCodedValues';
 import { PhoneEmailEntry } from './PhoneEmailEntry';
 import { validatePhoneNumber } from 'validation/phone';
-import { allowNumericValues } from 'utils/util';
 
 type EntryProps = {
     action: string;
@@ -111,7 +110,6 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         defaultValue={value}
-                                        onKeyDown={allowNumericValues}
                                         type="tel"
                                         label="Country code"
                                         name="countryCode"
@@ -154,8 +152,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             name="extension"
                             defaultValue={entry.extension}
                             rules={{
-                                validate: {
-                                    properNumber: (value) => validatePhoneNumber(value)
+                                pattern: {
+                                    value: /^\+?\d{1,4}$/,
+                                    message: 'A Extension should be 1 to 4 digits"'
                                 }
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (
