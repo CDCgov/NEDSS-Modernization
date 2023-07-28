@@ -1,4 +1,3 @@
-import React from 'react';
 import { InvestigationFilter, LabReportFilter } from '../generated/graphql/schema';
 
 export const TOTAL_TABLE_DATA = 10;
