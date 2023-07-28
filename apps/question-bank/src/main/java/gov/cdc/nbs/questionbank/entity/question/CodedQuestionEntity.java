@@ -60,7 +60,6 @@ public class CodedQuestionEntity extends WaQuestion {
         setCodeSetGroupId(command.valueSet());
         setDefaultValue(command.defaultValue());
 
-
         // Reporting
         setReportingData(command);
 

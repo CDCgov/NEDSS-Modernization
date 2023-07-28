@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.page.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +24,7 @@ import gov.cdc.nbs.questionbank.entity.QPageCondMapping;
 import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import gov.cdc.nbs.questionbank.exception.QueryException;
+import gov.cdc.nbs.questionbank.page.PageSummaryMapper;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.page.model.PageSummary;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
