@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.page.state;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.PageController;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
