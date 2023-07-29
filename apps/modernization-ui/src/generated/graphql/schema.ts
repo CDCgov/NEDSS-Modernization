@@ -1372,7 +1372,7 @@ export type PatientInvestigation = {
   investigator?: Maybe<Scalars['String']>;
   jurisdiction: Scalars['String'];
   notification?: Maybe<Scalars['String']>;
-  startedOn?: Maybe<Scalars['DateTime']>;
+  startedOn?: Maybe<Scalars['Date']>;
   status: Scalars['String'];
 };
 

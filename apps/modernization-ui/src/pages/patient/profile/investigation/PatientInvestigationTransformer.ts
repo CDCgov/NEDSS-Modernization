@@ -1,3 +1,4 @@
+import { asLocalDate } from 'date';
 import { Investigation } from './PatientInvestigation';
 import { FindInvestigationsForPatientQuery } from 'generated/graphql/schema';
 
@@ -21,7 +22,7 @@ const internalized = (content: Content): Investigation | null => {
     return (
         content && {
             ...content,
-            startedOn: content.startedOn && new Date(content.startedOn)
+            startedOn: content.startedOn && asLocalDate(content.startedOn)
         }
     );
 };
