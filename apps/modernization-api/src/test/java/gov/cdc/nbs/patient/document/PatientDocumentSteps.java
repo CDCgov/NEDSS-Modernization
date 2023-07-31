@@ -42,6 +42,12 @@ public class PatientDocumentSteps {
         this.mother.caseReport(revision.id());
     }
 
+    @When("the patient only has a Case Report with no program area or jurisdiction")
+    public void the_patient_only_has_a_report_with_no_program_area_or_jurisdiction() {
+        PatientIdentifier revision = patientMother.revise(patients.one());
+        this.mother.reset();
+        this.mother.caseReportWithoutJurisdiction(revision.id());
+    }
 
     @Then("the profile has an associated document")
     public void the_profile_has_an_associated_document() {
@@ -59,12 +65,10 @@ public class PatientDocumentSteps {
         GraphQLPage page = new GraphQLPage(1);
 
         assertThatThrownBy(
-            () -> this.resolver.find(
-                patient,
-                page
-            )
-        )
-            .isInstanceOf(AccessDeniedException.class);
+                () -> this.resolver.find(
+                        patient,
+                        page))
+                                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("the profile has no associated document")

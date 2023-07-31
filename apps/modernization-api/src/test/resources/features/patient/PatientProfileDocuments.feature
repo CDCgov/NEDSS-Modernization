@@ -14,6 +14,11 @@ Feature: Patient Profile Documents
     Then the profile has no associated document
 
 
+  Scenario: I cannot view documents that do not have a program area and jurisdiction assigned
+    Given I have the authorities: "FIND-PATIENT,VIEW-DOCUMENT" for the jurisdiction: "ALL" and program area: "STD"
+    When the patient only has a Case Report with no program area or jurisdiction
+    Then the profile has no associated document
+
   Scenario: I cannot retrieve documents without proper authorities
     Given I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then the profile documents are not returned
