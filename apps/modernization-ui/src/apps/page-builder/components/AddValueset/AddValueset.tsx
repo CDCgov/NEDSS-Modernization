@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { GetQuestionResponse, QuestionControllerService } from 'apps/page-builder/generated';
+import { Button, Icon, ModalToggleButton } from '@trussworks/react-uswds';
 import './AddValueset.scss';
 import { ValueSetControllerService } from '../../generated';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 
-export const AddValueset = () => {
+export const AddValueset = ({ hideHeader, modalRef }: any) => {
     const { state } = useContext(UserContext);
     const { showAlert } = useAlert();
     // Fields
@@ -34,11 +35,67 @@ export const AddValueset = () => {
             setDesc('');
             setCode('');
             setName('');
-            showAlert({ type: 'success', header: 'Created', message: 'Question Added successfully' });
+            // @ts-ignore
+            const id = parseInt(localStorage.getItem('selectedQuestion'));
+            updateQuestion(id);
             return response;
         });
         // xox- POST API call here
         // POST /page-builder/api/v1/valueset/
+    };
+
+    const updateQuestion = async (id: number) => {
+        // TODO :  we have to add logic for get question ID here
+        const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
+            authorization,
+            id
+        }).then((response: GetQuestionResponse) => {
+            return response;
+        });
+
+        const {
+            valueSet,
+            unitValue,
+            description,
+            messagingInfo,
+            label,
+            tooltip,
+            displayControl,
+            mask,
+            dataMartInfo,
+            uniqueName,
+            fieldLength,
+            fieldSize
+        }: any = question;
+
+        const request = {
+            description,
+            labelInMessage: messagingInfo.labelInMessage,
+            messageVariableId: messagingInfo.messageVariableId,
+            hl7DataType: messagingInfo.hl7DataType,
+            label,
+            displayControl,
+            mask,
+            fieldLength,
+            defaultLabelInReport: dataMartInfo.defaultLabelInReport,
+            uniqueName,
+            valueSet,
+            unitValue,
+            // eslint-disable-next-line no-dupe-keys
+            tooltip: tooltip || 'demo tooltip',
+            size: 50,
+            fieldSize: fieldSize || 50
+        };
+
+        QuestionControllerService.updateQuestionUsingPut({
+            authorization,
+            id,
+            request
+        }).then((response: any) => {
+            showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
+            // modalRef.current.closeModal();
+            return response;
+        });
     };
     const handleClose = () => {
         window.close();
@@ -58,6 +115,12 @@ export const AddValueset = () => {
         }
     };
 
+    const handleType = (e: any) => {
+        setTimeout(() => {
+            setIsLocalOrPhin(e.target.value);
+        }, 10);
+    };
+
     const validateValuesetCode = (name: string) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
         if (name.match(pattern)) {
@@ -72,15 +135,19 @@ export const AddValueset = () => {
 
     return (
         <div className="add-valueset">
-            <Button className="usa-button--unstyled close-btn" type={'button'} onClick={handleClose}>
-                <Icon.Close />
-            </Button>
-            <h3 className="main-header-title" data-testid="header-title">
-                <Button className="usa-button--unstyled back-btn" type={'button'} onClick={handleBack}>
-                    <Icon.ArrowBack />
+            {!hideHeader && (
+                <Button className="usa-button--unstyled close-btn" type={'button'} onClick={handleClose}>
+                    <Icon.Close />
                 </Button>
-                Add value set
-            </h3>
+            )}
+            {!hideHeader && (
+                <h3 className="main-header-title" data-testid="header-title">
+                    <Button className="usa-button--unstyled back-btn" type={'button'} onClick={handleBack}>
+                        <Icon.ArrowBack />
+                    </Button>
+                    Add value set
+                </h3>
+            )}
             <div className="add-valueset__container">
                 <h3 className="header-title">Add value set</h3>
                 <p className="fields-info">
@@ -95,20 +162,26 @@ export const AddValueset = () => {
                     type="radio"
                     name="isLocalOrPhin"
                     value="LOCAL"
+                    id="rdLOCAL"
                     className="field-space"
                     checked={isLocalOrPhin === 'LOCAL'}
-                    onChange={(e: any) => setIsLocalOrPhin(e.target.value)}
+                    onChange={handleType}
                 />
-                <span className="radio-label">LOCAL</span>
+                <label htmlFor="rdLOCAL" className="radio-label">
+                    LOCAL
+                </label>
                 <input
                     type="radio"
+                    id="rdPHIN"
                     name="isLocalOrPhin"
                     value="PHIN"
                     className="right-radio"
                     checked={isLocalOrPhin === 'PHIN'}
-                    onChange={(e: any) => setIsLocalOrPhin(e.target.value)}
+                    onChange={handleType}
                 />
-                <span className="radio-label">PHIN</span>
+                <label htmlFor="rdPHIN" className="radio-label">
+                    PHIN
+                </label>
                 <br></br>
                 <div className={isValuesetNameNotValid ? 'error-border' : ''}>
                     <label>
@@ -155,12 +228,17 @@ export const AddValueset = () => {
                     />
                 </div>
             </div>
-            <Button className="submit-btn" type="button" onClick={handleSubmit} disabled={disableBtn}>
+            <ModalToggleButton
+                className="submit-btn"
+                type="button"
+                modalRef={modalRef}
+                onClick={handleSubmit}
+                disabled={disableBtn}>
                 Add to question
-            </Button>
-            <Button className="cancel-btn" type="button" onClick={handleSubmit}>
+            </ModalToggleButton>
+            <ModalToggleButton className="cancel-btn" modalRef={modalRef} type="button">
                 Cancel
-            </Button>
+            </ModalToggleButton>
         </div>
     );
 };
