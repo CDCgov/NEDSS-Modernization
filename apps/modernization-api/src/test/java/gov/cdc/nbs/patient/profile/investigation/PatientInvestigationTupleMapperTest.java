@@ -44,7 +44,7 @@ class PatientInvestigationTupleMapperTest {
         PatientInvestigation actual = mapper.map(tuple);
 
         assertThat(actual.investigation()).isEqualTo(1787L);
-        assertThat(actual.startedOn()).isEqualTo("2022-06-07T12:01:47Z");
+        assertThat(actual.startedOn()).isEqualTo("2022-06-07");
         assertThat(actual.condition()).isEqualTo("condition");
         assertThat(actual.status()).isEqualTo("status");
         assertThat(actual.caseStatus()).isEqualTo("case-status");
