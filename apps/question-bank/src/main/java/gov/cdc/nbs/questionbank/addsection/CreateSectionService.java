@@ -27,7 +27,7 @@ public class CreateSectionService implements CreateSectionInterface {
             waUiMetaDataRepository.save(waUiMetadata);
             return new CreateSectionResponse(waUiMetadata.getId(), "Section Created Successfully");
         } catch(Exception exception) {
-            throw new AddSectionException(exception.toString()+request.wa_ui_metadata_uid(), 1015);
+            throw new AddSectionException("Add section exception", 1015);
         }
 
     }
