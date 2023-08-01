@@ -1,13 +1,25 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +28,13 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_UI_metadata", catalog = "NBS_ODSE")
 public class WaUiMetadatum {
+
+    public static final String ACTIVE = "Active";
+    public static final String INACTIVE = "Inactive";
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_ui_metadata_uid", nullable = false)
     private Long id;
 
@@ -188,5 +206,72 @@ public class WaUiMetadatum {
 
     @Column(name = "block_nm", length = 30)
     private String blockNm;
+
+
+    public WaUiMetadatum(PageContentCommand.AddQuestion command) {
+        // Defaults
+        this.standardNndIndCd = 'F';
+        this.standardQuestionIndCd = 'F';
+        this.enableInd = "T";
+        this.displayInd = "T";
+        this.requiredInd = "F";
+        this.entryMethod = "USER";
+        this.recordStatusCd = ACTIVE;
+        this.versionCtrlNbr = 1;
+
+        // User specified
+        this.waTemplateUid = command.page();
+        this.nbsUiComponentUid = command.question().getNbsUiComponentUid();
+        this.questionLabel = command.question().getQuestionLabel();
+        this.questionToolTip = command.question().getQuestionToolTip();
+        this.orderNbr = command.orderNumber();
+        this.adminComment = command.question().getAdminComment();
+        this.dataLocation = command.question().getDataLocation();
+        this.descTxt = command.question().getDescTxt();
+        this.questionType = command.question().getQuestionType();
+        this.questionNm = command.question().getQuestionNm();
+        this.questionIdentifier = command.question().getQuestionIdentifier();
+        this.questionOid = command.question().getQuestionOid();
+        this.questionOidSystemTxt = command.question().getQuestionOidSystemTxt();
+        this.groupNm = command.question().getGroupNm();
+        this.subGroupNm = command.question().getSubGroupNm();
+        this.dataType = command.question().getDataType();
+        this.otherValueIndCd = command.question().getOtherValueIndCd();
+
+
+        // Question type specific fields
+        if (command.question() instanceof TextQuestionEntity t) {
+            this.defaultValue = t.getDefaultValue();
+            this.mask = t.getMask();
+            this.fieldSize = t.getFieldSize();
+        } else if (command.question() instanceof DateQuestionEntity d) {
+            this.mask = d.getMask();
+            this.futureDateIndCd = d.getFutureDateIndCd();
+        } else if (command.question() instanceof NumericQuestionEntity n) {
+            this.mask = n.getMask();
+            this.fieldSize = n.getFieldSize();
+            this.defaultValue = n.getDefaultValue();
+            this.minValue = n.getMinValue();
+            this.maxValue = n.getMaxValue();
+            this.unitTypeCd = n.getUnitTypeCd();
+            this.unitValue = n.getUnitValue();
+        } else if (command.question() instanceof CodedQuestionEntity c) {
+            this.codeSetGroupId = c.getCodeSetGroupId();
+            this.defaultValue = c.getDefaultValue();
+        } else {
+            throw new AddQuestionException("Failed to determine question type");
+        }
+
+        // Audit info
+        this.added(command);
+    }
+
+    private void added(PageContentCommand.AddQuestion command) {
+        this.addTime = command.requestedOn();
+        this.addUserId = command.userId();
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.userId();
+        this.recordStatusTime = command.requestedOn();
+    }
 
 }

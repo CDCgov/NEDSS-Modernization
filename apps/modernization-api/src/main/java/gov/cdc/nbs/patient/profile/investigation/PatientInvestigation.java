@@ -1,10 +1,10 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 record PatientInvestigation(
     long investigation,
-    Instant startedOn,
+    LocalDate startedOn,
     String condition,
     String status,
     String caseStatus,

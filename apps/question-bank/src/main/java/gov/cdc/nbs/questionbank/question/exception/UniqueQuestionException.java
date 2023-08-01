@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.question.exception;
 
-public class UniqueQuestionException extends RuntimeException {
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
+
+public class UniqueQuestionException extends BadRequestException {
     public UniqueQuestionException(String message) {
         super(message);
     }

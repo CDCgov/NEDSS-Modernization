@@ -110,7 +110,7 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         defaultValue={value}
-                                        type="number"
+                                        type="tel"
                                         label="Country code"
                                         name="countryCode"
                                         htmlFor="countryCode"
@@ -152,8 +152,9 @@ export const PhoneEmailEntryForm = ({ action, entry, onChange, onCancel }: Entry
                             name="extension"
                             defaultValue={entry.extension}
                             rules={{
-                                validate: {
-                                    properNumber: (value) => validatePhoneNumber(value)
+                                pattern: {
+                                    value: /^\+?\d{1,4}$/,
+                                    message: 'A Extension should be 1 to 4 digits"'
                                 }
                             }}
                             render={({ field: { onChange, value }, fieldState: { error } }) => (

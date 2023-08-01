@@ -8,9 +8,10 @@ type PageAwarePatientDataSource<T> = (patient?: string) => T[];
 type Props = {
     source: PageAwarePatientDataSource<Vaccination>;
     patient?: string;
+    allowAdd: boolean;
 };
 
-export const PatientVaccinationContainer = ({ source, patient }: Props) => {
+export const PatientVaccinationContainer = ({ source, patient, allowAdd }: Props) => {
     const tracing = source(patient);
     const { firstPage } = usePage();
 
@@ -20,5 +21,5 @@ export const PatientVaccinationContainer = ({ source, patient }: Props) => {
         }
     }, [patient]);
 
-    return <PatientVaccinationTable patient={patient} vaccinations={tracing} />;
+    return <PatientVaccinationTable patient={patient} vaccinations={tracing} allowAdd={allowAdd} />;
 };
