@@ -43,9 +43,10 @@ public class QuestionFinder {
     }
 
     public Page<Question> find(FindQuestionRequest request, Pageable pageable) {
-        Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifier(
+        Page<WaQuestion> page = questionRepository.findAllByNameOrIdentifierOrQuestionType(
                 request.search(),
                 tryConvert(request.search()),
+                request.questionType(),
                 pageable);
         List<Question> questions = page.get().map(questionMapper::toQuestion).toList();
         return new PageImpl<>(questions, pageable, page.getTotalElements());
