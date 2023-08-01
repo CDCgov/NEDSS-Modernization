@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Component
 class PatientDocumentFinder {
@@ -45,61 +46,70 @@ class PatientDocumentFinder {
         this.factory = factory;
     }
 
-    List<PatientDocument> find(final long patient) {
-        return applyCriteria(
-            selection(),
-            patient
-        ).fetch()
-            .stream()
-            .map(this::map)
-            .toList();
+    List<PatientDocument> find(final long patient, final Set<Long> programJurisdictionOids) {
+        JPAQuery<Tuple> query = applyCriteria(
+                selection(),
+                patient);
+        return applySecurity(query, programJurisdictionOids)
+                .fetch()
+                .stream()
+                .map(this::map)
+                .toList();
+    }
+
+    Page<PatientDocument> find(
+            final long patient,
+            final Set<Long> programJurisdictionOids,
+            final Pageable pageable) {
+        long total = resolveTotal(patient, programJurisdictionOids);
+        return total > 0
+                ? new PageImpl<>(resolvePage(patient, pageable, programJurisdictionOids), pageable, total)
+                : Page.empty(pageable);
     }
 
     private JPAQuery<Tuple> selection() {
         return this.factory.selectDistinct(
-            DOCUMENT.id,
-            DOCUMENT.addTime,
-            DOCUMENT_TYPE.codeShortDescTxt,
-            DOCUMENT.sendingFacilityNm,
-            DOCUMENT.cdDescTxt,
-            DOCUMENT.localId,
-            DOCUMENT.externalVersionCtrlNbr,
-            INVESTIGATION.id,
-            INVESTIGATION.localId
-        );
+                DOCUMENT.id,
+                DOCUMENT.addTime,
+                DOCUMENT_TYPE.codeShortDescTxt,
+                DOCUMENT.sendingFacilityNm,
+                DOCUMENT.cdDescTxt,
+                DOCUMENT.localId,
+                DOCUMENT.externalVersionCtrlNbr,
+                INVESTIGATION.id,
+                INVESTIGATION.localId);
     }
 
-    private <R> JPAQuery<R> applyBaseCriteria(final JPAQuery<R> query, final long patient) {
+    private <R> JPAQuery<R> applyBaseCriteria(
+            final JPAQuery<R> query,
+            final long patient) {
         return query.from(PATIENT)
-            .join(PARTICIPATION).on(
-                PARTICIPATION.id.subjectEntityUid.eq(PATIENT.id),
-                PARTICIPATION.id.typeCd.eq(SUBJECT_OF_DOCUMENT),
-                PARTICIPATION.actClassCd.eq(DOCUMENT_CLASS),
-                PARTICIPATION.subjectClassCd.eq(PERSON_CLASS),
-                PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE)
-            )
-            .join(DOCUMENT).on(
-                DOCUMENT.id.eq(PARTICIPATION.id.actUid),
-                DOCUMENT.recordStatusCd.ne(DELETED)
-            )
-            .join(DOCUMENT_TYPE).on(
-                DOCUMENT_TYPE.id.codeSetNm.eq(DOCUMENT_TYPE_CODE_NAME_SET),
-                DOCUMENT_TYPE.id.code.eq(DOCUMENT.docTypeCd)
-            )
-            .where(PATIENT.personParentUid.id.eq(patient));
+                .join(PARTICIPATION).on(
+                        PARTICIPATION.id.subjectEntityUid.eq(PATIENT.id),
+                        PARTICIPATION.id.typeCd.eq(SUBJECT_OF_DOCUMENT),
+                        PARTICIPATION.actClassCd.eq(DOCUMENT_CLASS),
+                        PARTICIPATION.subjectClassCd.eq(PERSON_CLASS),
+                        PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE))
+                .join(DOCUMENT).on(
+                        DOCUMENT.id.eq(PARTICIPATION.id.actUid),
+                        DOCUMENT.recordStatusCd.ne(DELETED))
+                .join(DOCUMENT_TYPE).on(
+                        DOCUMENT_TYPE.id.codeSetNm.eq(DOCUMENT_TYPE_CODE_NAME_SET),
+                        DOCUMENT_TYPE.id.code.eq(DOCUMENT.docTypeCd))
+                .where(PATIENT.personParentUid.id.eq(patient));
     }
 
-    private <R> JPAQuery<R> applyCriteria(final JPAQuery<R> query, final long patient) {
+    private <R> JPAQuery<R> applyCriteria(
+            final JPAQuery<R> query,
+            final long patient) {
         return applyBaseCriteria(query, patient)
-            .leftJoin(RELATIONSHIP).on(
-                RELATIONSHIP.targetClassCd.eq(INVESTIGATION_CLASS),
-                RELATIONSHIP.sourceClassCd.eq(DOCUMENT_CLASS)
-            )
-            .leftJoin(INVESTIGATION).on(
-                INVESTIGATION.id.eq(RELATIONSHIP.id.targetActUid),
-                INVESTIGATION.recordStatusCd.ne(DELETED)
-            )
-            .orderBy(new OrderSpecifier<>(Order.DESC, DOCUMENT.addTime));
+                .leftJoin(RELATIONSHIP).on(
+                        RELATIONSHIP.targetClassCd.eq(INVESTIGATION_CLASS),
+                        RELATIONSHIP.sourceClassCd.eq(DOCUMENT_CLASS))
+                .leftJoin(INVESTIGATION).on(
+                        INVESTIGATION.id.eq(RELATIONSHIP.id.targetActUid),
+                        INVESTIGATION.recordStatusCd.ne(DELETED))
+                .orderBy(new OrderSpecifier<>(Order.DESC, DOCUMENT.addTime));
     }
 
     private PatientDocument map(final Tuple tuple) {
@@ -116,21 +126,20 @@ class PatientDocumentFinder {
         PatientDocument.Investigation investigation = maybeMapInvestigation(tuple);
 
         return new PatientDocument(
-            identifier,
-            added,
-            type,
-            sendingFacility,
-            added,
-            condition,
-            event,
-            investigation
-        );
+                identifier,
+                added,
+                type,
+                sendingFacility,
+                added,
+                condition,
+                event,
+                investigation);
     }
 
     private String resolveEvent(final String localId, final Short version) {
         return version != null && version > 1
-            ? localId + UPDATED_MODIFIER
-            : localId;
+                ? localId + UPDATED_MODIFIER
+                : localId;
     }
 
     private PatientDocument.Investigation maybeMapInvestigation(final Tuple tuple) {
@@ -138,38 +147,45 @@ class PatientDocumentFinder {
         String local = tuple.get(INVESTIGATION.localId);
 
         return identifier == null
-            ? null
-            : new PatientDocument.Investigation(
-            identifier,
-            local
-        );
+                ? null
+                : new PatientDocument.Investigation(
+                        identifier,
+                        local);
     }
 
-    Page<PatientDocument> find(final long patient, final Pageable pageable) {
-        long total = resolveTotal(patient);
-
-        return total > 0
-            ? new PageImpl<>(resolvePage(patient, pageable), pageable, total)
-            : Page.empty(pageable);
-    }
-
-    private long resolveTotal(final long patient) {
-        Long total = applyBaseCriteria(factory.selectDistinct(DOCUMENT.countDistinct()), patient)
-            .fetchOne();
+    private long resolveTotal(final long patient, final Set<Long> programJurisdictionOids) {
+        JPAQuery<Long> query = applyBaseCriteria(
+                factory.selectDistinct(DOCUMENT.countDistinct()),
+                patient);
+        Long total = applySecurity(query, programJurisdictionOids)
+                .fetchOne();
         return total == null ? 0L : total;
     }
 
-    private List<PatientDocument> resolvePage(final long patient, final Pageable pageable) {
-        return applyCriteria(
-            selection(),
-            patient
-        )
-            .offset(pageable.getOffset())
-            .limit(pageable.getPageSize())
-            .fetch()
-            .stream()
-            .map(this::map)
-            .toList()
-            ;
+    private List<PatientDocument> resolvePage(
+            final long patient,
+            final Pageable pageable,
+            final Set<Long> programJurisdictionOids) {
+        JPAQuery<Tuple> query = applyCriteria(
+                selection(),
+                patient)
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize());
+        return applySecurity(query, programJurisdictionOids)
+                .fetch()
+                .stream()
+                .map(this::map)
+                .toList();
+    }
+
+    /**
+     * Appends a programJurisdictionOid WHERE clause to a query
+     * 
+     * @param query
+     * @param programJurisdictionOids
+     * @return
+     */
+    private <R> JPAQuery<R> applySecurity(final JPAQuery<R> query, final Set<Long> programJurisdictionOids) {
+        return query.where(DOCUMENT.programJurisdictionOid.in(programJurisdictionOids));
     }
 }
