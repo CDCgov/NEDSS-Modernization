@@ -15,6 +15,7 @@ import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.PageMother;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -36,6 +37,11 @@ public class AddQuestionToPageSteps {
     private PageMother pageMother;
 
     private AddQuestionResponse response;
+
+    @Before
+    public void clearExceptions() {
+        exceptionHolder.clear();
+    }
 
     @Given("No questions are in use")
     public void no_questions_are_in_use() {
