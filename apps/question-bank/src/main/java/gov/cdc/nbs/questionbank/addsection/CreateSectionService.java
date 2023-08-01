@@ -40,25 +40,26 @@ public class CreateSectionService implements CreateSectionInterface {
         waUiMetadata.setWaTemplateUid(request.page());
         Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSection(request.wa_ui_metadata_uid());
 
+        waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setDisplayInd(request.visible());
         waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber+1));
         waUiMetadata.setRequiredInd("F");
-        waUiMetadata.setAddUserId(uid);
-        waUiMetadata.setAddTime(Instant.now());
-        waUiMetadata.setLastChgTime(Instant.now());
-        waUiMetadata.setLastChgUserId(uid);
-        waUiMetadata.setRecordStatusCd("Active");
-        waUiMetadata.setRecordStatusTime(Instant.now());
-        waUiMetadata.setVersionCtrlNbr(1);
-        waUiMetadata.setStandardNndIndCd("F");
-        waUiMetadata.setLocalId("NBS_1_14");
-        waUiMetadata.setQuestionIdentifier("NBS_UI_4");
         waUiMetadata.setCoinfectionIndCd("F");
         waUiMetadata.setFutureDateIndCd("F");
         waUiMetadata.setStandardQuestionIndCd("F");
         waUiMetadata.setPublishIndCd("T");
         waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setEnableInd("T");
+        waUiMetadata.setStandardNndIndCd("F");
+        waUiMetadata.setAddTime(Instant.now());
+        waUiMetadata.setAddUserId(uid);
+        waUiMetadata.setLastChgTime(Instant.now());
+        waUiMetadata.setLastChgUserId(uid);
+        waUiMetadata.setRecordStatusCd("Active");
+        waUiMetadata.setRecordStatusTime(Instant.now());
+        waUiMetadata.setVersionCtrlNbr(1);
+        waUiMetadata.setLocalId("NBS_1_15");
+        waUiMetadata.setQuestionIdentifier("NBS_1_15");
 
         return waUiMetadata;
 
