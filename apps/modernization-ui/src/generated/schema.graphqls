@@ -808,6 +808,39 @@ extend type Query {
 
   findPatientNamedByContact(patient:ID!, page: Page) : PatientNamedByContactResults
 }
+type DocumentRequiringReview {
+  id: ID!
+  localId: String!
+  type: String!
+  dateReceived: DateTime!
+  eventDate: DateTime
+  isElectronic: Boolean!
+  facilityProviders: [FacilityProvider]!
+  descriptions: [Description]!
+}
+
+type FacilityProvider {
+  title: String!
+  name: String
+}
+
+type Description {
+  title: String
+  value: String
+}
+
+type PatientDocumentRequiringReviewResults {
+  content: [DocumentRequiringReview]!
+  total: Int!
+  number: Int!
+}
+
+extend type Query {
+  findDocumentsRequiringReviewForPatient(
+    patient: Int!
+    page: Page
+  ): PatientDocumentRequiringReviewResults!
+}
 type PatientDocument {
     document: ID!
     receivedOn: DateTime!
@@ -1329,10 +1362,6 @@ type Query {
         filter: OrganizationFilter!
         page: SortablePage
     ): PersonResults!
-    findDocumentsRequiringReviewForPatient(
-        patientId: Int!
-        page: Page
-    ): LabReportResults!
     findOpenInvestigationsForPatient(
         patientId: Int!
         page: Page

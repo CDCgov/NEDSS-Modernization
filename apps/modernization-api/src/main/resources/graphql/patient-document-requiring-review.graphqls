@@ -1,0 +1,33 @@
+type DocumentRequiringReview {
+  id: ID!
+  localId: String!
+  type: String!
+  dateReceived: DateTime!
+  eventDate: DateTime
+  isElectronic: Boolean!
+  facilityProviders: [FacilityProvider]!
+  descriptions: [Description]!
+}
+
+type FacilityProvider {
+  title: String!
+  name: String
+}
+
+type Description {
+  title: String
+  value: String
+}
+
+type PatientDocumentRequiringReviewResults {
+  content: [DocumentRequiringReview]!
+  total: Int!
+  number: Int!
+}
+
+extend type Query {
+  findDocumentsRequiringReviewForPatient(
+    patient: Int!
+    page: Page
+  ): PatientDocumentRequiringReviewResults!
+}
