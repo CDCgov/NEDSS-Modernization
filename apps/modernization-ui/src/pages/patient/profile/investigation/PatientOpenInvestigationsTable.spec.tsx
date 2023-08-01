@@ -81,7 +81,7 @@ describe('when at least one investigation is available for a patient', () => {
                     content: [
                         {
                             investigation: 'investigation-id',
-                            startedOn: '2023-03-27T00:00:00Z',
+                            startedOn: '2023-03-27',
                             condition: 'condition',
                             status: 'status',
                             caseStatus: 'case-status',
@@ -112,7 +112,7 @@ describe('when at least one investigation is available for a patient', () => {
 
         const tableData = container.getElementsByClassName('table-data');
 
-        expect(tableData[0]).toHaveTextContent('03/26/2023');
+        expect(tableData[0]).toHaveTextContent('03/27/2023');
         expect(tableData[1]).toHaveTextContent('condition');
         expect(tableData[2]).toHaveTextContent('case-status');
         expect(tableData[3]).toHaveTextContent('notification');

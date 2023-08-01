@@ -10,4 +10,8 @@ import lombok.Setter;
 public class ExceptionHolder {
 
     private Exception exception;
+
+    public void clear() {
+        this.exception = null;
+    }
 }

@@ -65,7 +65,7 @@ describe('when the result has content', () => {
                 }),
                 expect.objectContaining({
                     investigation: '829',
-                    startedOn: new Date('2023-03-27T00:00:00Z'),
+                    startedOn: new Date('2023-03-27T05:00:00Z'),
                     condition: 'condition-829',
                     status: 'status-829',
                     caseStatus: 'case-status-829',
