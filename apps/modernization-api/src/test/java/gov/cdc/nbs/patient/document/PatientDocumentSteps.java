@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.document;
 
+import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatientIdentifier;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.List;
 
 @Transactional
 public class PatientDocumentSteps {
@@ -42,12 +44,27 @@ public class PatientDocumentSteps {
         this.mother.caseReport(revision.id());
     }
 
+    @When("the patient only has a Case Report with no program area or jurisdiction")
+    public void the_patient_only_has_a_report_with_no_program_area_or_jurisdiction() {
+        PatientIdentifier revision = patientMother.revise(patients.one());
+        this.mother.reset();
+        this.mother.caseReportWithoutJurisdiction(revision.id());
+    }
 
     @Then("the profile has an associated document")
     public void the_profile_has_an_associated_document() {
         long patient = this.patients.one().id();
 
         Page<PatientDocument> actual = this.resolver.find(patient, new GraphQLPage(1));
+        assertThat(actual).isNotEmpty();
+    }
+
+    @Then("I can view the document when listing all documents for patient")
+    public void view_document_when_listing_all() {
+        long patient = this.patients.one().id();
+        Person person = new Person(patient, "local");
+
+        List<PatientDocument> actual = this.resolver.resolve(person);
         assertThat(actual).isNotEmpty();
     }
 
@@ -59,12 +76,10 @@ public class PatientDocumentSteps {
         GraphQLPage page = new GraphQLPage(1);
 
         assertThatThrownBy(
-            () -> this.resolver.find(
-                patient,
-                page
-            )
-        )
-            .isInstanceOf(AccessDeniedException.class);
+                () -> this.resolver.find(
+                        patient,
+                        page))
+                                .isInstanceOf(AccessDeniedException.class);
     }
 
     @Then("the profile has no associated document")
