@@ -24,14 +24,14 @@ public class PageStateChanger {
 		try {
 			Optional<WaTemplate> result = templateRepository.findById(id);
 			if (result.isPresent()) {
-				WaTemplate template = result.get();
-				template.setTemplateType("Draft");
-				template.setPublishVersionNbr(null);
-				template.setPublishIndCd('F');
-				templateRepository.save(template);
-				response.setMessage(template.getId() + PageConstants.SAVE_DRAFT_SUCCESS);
+				WaTemplate page = result.get();
+				WaTemplate draftPage = createDraftCopy(page);
+				page.setTemplateType("Published With Draft");
+				templateRepository.save(page);
+				templateRepository.save(draftPage);
+				response.setMessage(PageConstants.SAVE_DRAFT_SUCCESS);
 				response.setStatus(HttpStatus.OK);
-				response.setTemplateId(template.getId());
+				response.setTemplateId(page.getId());
 
 			} else {
 				response.setMessage(PageConstants.SAVE_DRAFT_FAIL);
@@ -46,5 +46,44 @@ public class PageStateChanger {
 		}
 		return response;
 	}
+	
+	public WaTemplate createDraftCopy(WaTemplate oldPage) {
+		if (oldPage.getTemplateType().equals("Draft")) {
+			return oldPage;
+		}
+		Long id = templateRepository.getMaxTemplateID();
+		WaTemplate draftCopy = new WaTemplate();
+		draftCopy.setId(id);
+		draftCopy.setTemplateType("Draft");
+		draftCopy.setPublishVersionNbr(0);
+		draftCopy.setPublishIndCd('F');
+		draftCopy.setAddTime(oldPage.getAddTime());
+		draftCopy.setAddUserId(oldPage.getAddUserId());
+		draftCopy.setBusObjType(oldPage.getBusObjType());
+		draftCopy.setConditionCd(oldPage.getConditionCd());
+		draftCopy.setConditionMappings(oldPage.getConditionMappings());
+		draftCopy.setDatamartNm(oldPage.getDatamartNm());
+		draftCopy.setDescTxt(oldPage.getDescTxt());
+		draftCopy.setFormCd(oldPage.getFormCd());
+		draftCopy.setLastChgTime(oldPage.getLastChgTime());
+		draftCopy.setLastChgUserId(oldPage.getLastChgUserId());
+		draftCopy.setLocalId(oldPage.getLocalId());
+		draftCopy.setNndEntityIdentifier(oldPage.getNndEntityIdentifier());
+		draftCopy.setParentTemplateUid(oldPage.getParentTemplateUid());
+		draftCopy.setPublishIndCd(oldPage.getPublishIndCd());
+		draftCopy.setPublishVersionNbr(oldPage.getPublishVersionNbr());
+		draftCopy.setRecordStatusCd(oldPage.getRecordStatusCd());
+		draftCopy.setRecordStatusTime(oldPage.getRecordStatusTime());
+		draftCopy.setSourceNm(oldPage.getSourceNm());
+		draftCopy.setTemplateType(oldPage.getTemplateType());
+		draftCopy.setTemplateVersionNbr(oldPage.getTemplateVersionNbr());
+		draftCopy.setVersionNote(oldPage.getVersionNote());
+		draftCopy.setXmlPayload(oldPage.getXmlPayload());
+		
+
+		return draftCopy;
+
+	}
+	
 
 }

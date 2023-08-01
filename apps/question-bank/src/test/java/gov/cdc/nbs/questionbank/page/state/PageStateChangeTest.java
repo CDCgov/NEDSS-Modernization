@@ -64,6 +64,19 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		assertEquals(PageConstants.SAVE_DRAFT_FAIL, response.getMessage());
 	}
 
+		
+	@Test
+	void testCreateDraftCopy() {
+		WaTemplate oldPage = getTemplate(10l);
+		WaTemplate newPage = pageStateChanger.createDraftCopy(oldPage);
+		assertEquals(oldPage.getTemplateNm(), newPage.getTemplateNm());
+		assertEquals(oldPage.getTemplateType(), "Draft");
+		assertEquals(oldPage.getPublishVersionNbr().intValue(), 0);
+		assertEquals(oldPage.getPublishIndCd().charValue(), 'F');
+
+	}
+
+
 	private WaTemplate getTemplate(Long id) {
 		WaTemplate template = new WaTemplate();
 		template.setId(id);

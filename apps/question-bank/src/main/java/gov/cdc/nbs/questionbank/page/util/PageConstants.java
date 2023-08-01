@@ -5,7 +5,7 @@ public class PageConstants {
 	private PageConstants() {}
 	
 	// Page State Change
-	public static final String SAVE_DRAFT_SUCCESS = " was successfully updated to draft status";
+	public static final String SAVE_DRAFT_SUCCESS = "Draft was saved successfully.";
 	public static final String SAVE_DRAFT_FAIL = " Failed to update to draft status: ";
 	
 	
