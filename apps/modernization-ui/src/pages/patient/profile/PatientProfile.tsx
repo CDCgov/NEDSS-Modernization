@@ -1,4 +1,5 @@
 import {
+    Alert,
     Button,
     ButtonGroup,
     Icon,
@@ -9,18 +10,17 @@ import {
     ModalToggleButton
 } from '@trussworks/react-uswds';
 import 'pages/patientProfile/style.scss';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Summary } from 'pages/patientProfile/Summary';
 import { Events } from 'pages/patientProfile/Events';
 import { Demographics } from 'pages/patientProfile/Demographics';
+import { CalculatedVariables } from 'pages/patientProfile/CalculatedVariables';
 import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
-import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
-import { resolveDeleteMessage } from './resolveDeleteMessage';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -35,7 +35,8 @@ const openPrintableView = (patient: string | undefined) => () => {
 enum ACTIVE_TAB {
     SUMMARY = 'Summary',
     EVENT = 'Events',
-    DEMOGRAPHICS = 'Demographics'
+    DEMOGRAPHICS = 'Demographics',
+    CALCULATED_VARIABLE = 'Calculated Variables'
 }
 
 export const PatientProfile = () => {
@@ -43,15 +44,64 @@ export const PatientProfile = () => {
 
     const modalRef = useRef<ModalRef>(null);
 
-    const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
+    const [activeTab, setActiveTab] = useState<ACTIVE_TAB.CALCULATED_VARIABLE | ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
         ACTIVE_TAB.SUMMARY
     );
 
-    const profile = usePatientProfile(id);
+    let PatientLegalNameObject = {
+        __typename: 'PatientLegalName',
+        prefix: '',
+        first: 'Mike',
+        middle: 'Greg',
+        last: 'Davis',
+        suffix: ''
+    };
 
-    const deletability = resolveDeletability(profile?.patient);
+    let PatientSummaryAddressObject = {
+        __typename: 'PatientSummaryAddress',
+        street: '12',
+        city: 'Atl',
+        state: 'GA',
+        zipcode: '32355',
+        country: 'USA '
+    };
+
+
+    let PatientSummaryPhoneObject = { __typename: 'PatientSummaryPhone', use: 'string', number: '555-5555555' };
+    let PatientSummaryEmailObject = { __typename: 'PatientSummaryEmail', use: 'string', address: 'string' };
+
+    let PatientSummaryObject = {
+        __typename: 'PatientSummary',
+        birthday: '01/01/1980',
+        age: 43,
+        gender: 'Male',
+        ethnicity: 'non-hipanic',
+        race: 'white',
+        legalName: PatientLegalNameObject,
+        phone: PatientSummaryPhoneObject,
+        email: PatientSummaryEmailObject,
+        address: PatientSummaryAddressObject,
+    };
+
+    let PatientProfileObject = {
+        __typename: 'PatientProfile',
+        id: 'string',
+        local: 'string',
+        shortId: 80201,
+        version: 'number',
+        status: 'string',
+        deletable: false,
+        summary: PatientSummaryObject,
+        deceased: false
+    };
+
+
+    const profile = {patient: PatientProfileObject, summary: PatientSummaryObject};
 
     const navigate = useNavigate();
+    const [submittedSuccess, setSubmittedSuccess] = useState<boolean>(false);
+    const [addedItem, setAddedItem] = useState<string>('');
+    const [alertType, setAlertType] = useState<'error' | 'success' | 'warning' | 'info'>('success');
 
     const handleComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
@@ -73,6 +123,14 @@ export const PatientProfile = () => {
         }
     }
 
+    useEffect(() => {
+        if (submittedSuccess) {
+            setTimeout(() => {
+                setSubmittedSuccess(false);
+            }, 5000);
+        }
+    }, [submittedSuccess]);
+
     return (
         <div className="height-full main-banner">
             <div className="bg-white grid-row flex-align-center flex-justify border-bottom-style">
@@ -86,8 +144,6 @@ export const PatientProfile = () => {
                         Print
                     </Button>
                     <ModalToggleButton
-                        disabled={deletability !== DeletabilityResult.Deletable}
-                        title={resolveDeleteMessage(deletability)}
                         modalRef={modalRef}
                         opener
                         className="delete-btn display-inline-flex"
@@ -109,7 +165,7 @@ export const PatientProfile = () => {
                         <div className="margin-2 grid-row flex-no-wrap border-left-1 border-accent-warm flex-align-center">
                             <Icon.Warning className="font-sans-2xl margin-x-2" />
                             <p id="modal-1-description">
-                                Would you like to permanently delete patient record {profile?.patient?.shortId},{' '}
+                                Would you like to permenantly delete patient record {profile?.patient?.shortId},{' '}
                                 {`${profile?.summary?.legalName?.last}, ${profile?.summary?.legalName?.first}`}
                             </p>
                         </div>
@@ -153,15 +209,41 @@ export const PatientProfile = () => {
                     <h6
                         className={`${
                             activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
-                        } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0`}
+                        } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0`}
                         onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}>
                         {ACTIVE_TAB.DEMOGRAPHICS}
+                    </h6>
+                    <h6
+                        className={`${
+                            activeTab === ACTIVE_TAB.CALCULATED_VARIABLE && 'active'
+                        } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0`}
+                        onClick={() => setActiveTab(ACTIVE_TAB.CALCULATED_VARIABLE)}>
+                        {ACTIVE_TAB.CALCULATED_VARIABLE}
                     </h6>
                 </div>
 
                 {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={profile?.patient.id} />}
                 {activeTab === ACTIVE_TAB.EVENT && <Events patient={profile?.patient.id} />}
-                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics id={profile?.patient.id || ''} />}
+                {activeTab === ACTIVE_TAB.DEMOGRAPHICS && (
+                    <Demographics
+                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                            setSubmittedSuccess(true);
+                            setAddedItem(message);
+                            setAlertType(type);
+                        }}
+                        id={profile?.patient.id || ''}
+                    />
+                )}
+                {activeTab === ACTIVE_TAB.CALCULATED_VARIABLE && (
+                    <CalculatedVariables
+                        handleFormSubmission={(type: 'error' | 'success' | 'warning' | 'info', message: string) => {
+                            setSubmittedSuccess(true);
+                            setAddedItem(message);
+                            setAlertType(type);
+                        }}
+                        id={profile?.patient.id || ''}
+                    />
+                )}
 
                 <div className="text-center margin-y-5">
                     <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -170,6 +252,20 @@ export const PatientProfile = () => {
                     </Button>
                 </div>
             </div>
+
+            {submittedSuccess && (
+                <Alert
+                    type={alertType}
+                    heading="Success"
+                    headingLevel="h4"
+                    cta={
+                        <Button type="button" unstyled>
+                            <Icon.Close />
+                        </Button>
+                    }>
+                    Added new name, {addedItem}
+                </Alert>
+            )}
         </div>
     );
 };

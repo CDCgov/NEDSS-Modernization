@@ -97,45 +97,6 @@ export default function NavBar() {
                     </tr>
                 </tbody>
             </table>
-            <h1 className="pageHeader" style={{ padding: '0px', margin: '0px', fontSize: '13px', color: '#185394' }}>
-                <table role="presentation" className="nedssPageHeaderAndLogoTable">
-                    <tbody>
-                        <tr>
-                            <td className="pageHeader" style={{ padding: '5px', marginBottom: '0px' }}>
-                                <a style={{ textTransform: 'capitalize' }}>
-                                    {location?.pathname?.split('/')[1]?.split('-').join(' ')}
-                                </a>
-                            </td>
-
-                            <td className="currentUser" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                User : {state.displayName}
-                            </td>
-
-                            <td className="currentUser logo" style={{ paddingBottom: '0px', marginBottom: '0px' }}>
-                                <img
-                                    style={{ background: '#DCDCDC', border: 0 }}
-                                    title="Logo"
-                                    alt="NBS Logo"
-                                    height="32"
-                                    width="80"
-                                    src="/nedssLogo.jpeg"
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td
-                                colSpan={3}
-                                style={{
-                                    padding: '0px',
-                                    margin: '0px',
-                                    height: '9px',
-                                    backgroundImage: 'url(dropshadow.gif)',
-                                    backgroundRepeat: 'repeat-x'
-                                }}></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </h1>
         </div>
     );
 }

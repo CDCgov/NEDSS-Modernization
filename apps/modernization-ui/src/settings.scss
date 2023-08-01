@@ -42,3 +42,54 @@ p.no-data {
 td span {
     word-break: break-all;
 }
+
+.summary-holder {
+    padding: 0 18px;
+}
+
+.bg-gray {
+    background-color: $color-gray-5;
+}
+
+.summary-label {
+    color: $color-gray-20;
+    font-size: 16px;
+}
+
+.patient-summary-value {
+    color: #1c1c1c;
+}
+
+.summary-blue {
+    color: $color-blue-30;
+}
+
+.summary-blue-legal-name {
+    color: $color-blue-30;
+    font-weight: bold;
+}
+
+span.light-title {
+    color: $color-gray-20;
+    font-weight: normal;
+}
+span.dark-title {
+    color: $color-black;
+}
+
+.tabs-common-card {
+    min-height: 58px;
+    padding-left: 18px;
+
+    h6 {
+     font-size: 16px;
+    }
+}
+
+.page-title-span {
+    min-height: 32px;
+    font-family: sans-serif;
+    font-size: 16px;
+    padding: 0 23px;
+
+}

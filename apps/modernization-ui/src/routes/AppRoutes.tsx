@@ -3,6 +3,7 @@ import { AdvancedSearch } from '../pages/advancedSearch/AdvancedSearch';
 import { Login } from '../pages/login/Login';
 import { PatientProfile } from '../pages/patient/profile';
 import AddPatient from '../pages/addPatient/AddPatient';
+import AddAdultCaseReport from '../pages/addAdultCaseReport/AddAdultCaseReport';
 import { ManagePages } from 'apps/page-builder/pages/ManagePages/ManagePages';
 import { AddNewPage } from 'apps/page-builder/pages/AddNewPage/AddNewPage';
 import { ReactNode, useContext, useEffect, useState } from 'react';
@@ -55,11 +56,13 @@ export const AppRoutes = () => {
             {loading && <Spinner />}
             <ScrollToTop>
                 <Routes>
-                    {state.isLoggedIn && (
+                    {!state.isLoggedIn && (
                         <>
                             <Route path="/advanced-search/:searchType?" element={<AdvancedSearch />} />
                             <Route path="/patient-profile/:id" element={<PatientProfile />} />
                             <Route path="/compare-investigation/:id" element={<CompareInvestigations />} />
+                            <Route path="/add-adult-case-report" element={<AddAdultCaseReport />} />
+                            <Route path="/add-patient/add-adult-case-report" element={<AddAdultCaseReport />} />
                             <Route path="/add-patient" element={<AddPatient />} />
                             <Route path="/add-patient/patient-added" element={<AddedPatient />} />
                             <Route element={<PageBuilderContextProvider />}>
@@ -89,13 +92,13 @@ export const AppRoutes = () => {
                             )}
                         </>
                     )}
-                    {!Config.enableLogin && (
+{/*                    {!Config.enableLogin && (
                         <>
                             {!state.isLoggedIn && !state.isLoginPending && !loading && (
                                 <Route path="*" element={<>{(window.location.href = `${Config.nbsUrl}/login`)}</>} />
                             )}
                         </>
-                    )}
+                    )}*/}
                 </Routes>
             </ScrollToTop>
         </>
