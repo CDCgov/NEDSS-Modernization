@@ -10,4 +10,8 @@ public interface WaUiMetaDataRepository extends JpaRepository<WaUiMetadata, Long
 
     @Query(value = "SELECT MAX(w.order_nbr) FROM WA_Ui_metadata w WHERE w.wa_template_uid = ?1 ", nativeQuery = true)
     Long findMaxOrderNumberByTemplateUid(Long waTemplateId);
+
+    @Query(value = "SELECT w.order_nbr FROM WA_Ui_metadata w WHERE w.wa_ui_metadata_uid = ?1 ", nativeQuery = true)
+    Long findOrderNbrForSection(Long waUiMetadataUid);
+
 }

@@ -19,12 +19,7 @@ public class CreateSectionService implements CreateSectionInterface {
     @Autowired
     private WaUiMetaDataRepository waUiMetaDataRepository;
 
-    private Long getCurrentHighestOrderNumber(Long waTemplateId) {
-        Long maxOrderNumber = waUiMetaDataRepository.findMaxOrderNumberByTemplateUid(waTemplateId);
-        return (maxOrderNumber != null) ? maxOrderNumber : 0L;
-    }
-
-   @Override
+    @Override
     public CreateSectionResponse createSection(Long userId, CreateSectionRequest request) throws AddSectionException {
         try {
             WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
@@ -32,22 +27,21 @@ public class CreateSectionService implements CreateSectionInterface {
             waUiMetaDataRepository.save(waUiMetadata);
             return new CreateSectionResponse(waUiMetadata.getId(), "Section Created Successfully");
         } catch(Exception exception) {
-            throw new AddSectionException("Add section exception", 1015);
+            throw new AddSectionException(exception.toString()+request.wa_ui_metadata_uid(), 1015);
         }
 
     }
 
-    private WaUiMetadata createWaUiMetadata(Long uid, CreateSectionRequest request ) {
+    private WaUiMetadata createWaUiMetadata(Long uid, CreateSectionRequest request) {
         WaUiMetadata waUiMetadata = new WaUiMetadata();
         waUiMetadata.setAddUserId(uid);
         waUiMetadata.setNbsUiComponentUid(1015L);
         waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(request.page());
-        Long waTemplateUid = waUiMetadata.getWaTemplateUid();
-        Long nextOrderNumber = getCurrentHighestOrderNumber(waTemplateUid) + 1;
+        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSection(request.wa_ui_metadata_uid());
 
         waUiMetadata.setDisplayInd(request.visible());
-        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
+        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber+1));
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setAddUserId(uid);
         waUiMetadata.setAddTime(Instant.now());

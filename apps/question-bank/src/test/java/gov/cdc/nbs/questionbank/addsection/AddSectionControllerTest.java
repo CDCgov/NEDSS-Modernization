@@ -28,7 +28,7 @@ class AddSectionControllerTest {
         AddSectionController addSectionController = new AddSectionController(createSectionService,
                 userDetailsProvider);
 
-        CreateSectionRequest createSectionRequest = new CreateSectionRequest(1000376L, "Local", "T");
+        CreateSectionRequest createSectionRequest = new CreateSectionRequest(1000L, 1000376L, "Local", "T");
         NbsUserDetails nbsUserDetails =
                 NbsUserDetails.builder().id(123L).firstName("test user").lastName("test").build();
         Mockito.when(createSectionService.createSection(123L, createSectionRequest))

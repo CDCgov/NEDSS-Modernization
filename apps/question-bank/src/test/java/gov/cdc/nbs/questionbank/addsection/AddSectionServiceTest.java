@@ -25,7 +25,7 @@ class AddSectionServiceTest {
     void createSectionServiceTest() throws AddSectionException {
 
         CreateSectionRequest createSectionRequest =
-                new CreateSectionRequest(10L, "Local", "T");
+                new CreateSectionRequest(10L, 10L, "Local", "T");
 
         CreateSectionResponse createSectionResponse =
                 createSectionService.createSection(123L, createSectionRequest);
