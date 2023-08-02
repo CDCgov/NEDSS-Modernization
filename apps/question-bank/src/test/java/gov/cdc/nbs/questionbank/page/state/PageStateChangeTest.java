@@ -91,7 +91,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		WaTemplate newPage = pageStateChanger.createDraftCopy(oldPage);
 		List<WaUiMetadatum> result = pageStateChanger.copyWaTemplateUIMetaData(oldPage, newPage);
 		assertNotNull(result);
-		assertEquals(newPage.getId(), result.get(0).getId());
+		assertEquals(newPage.getId(), result.get(0).getWaTemplateUid().getId());
 
 	}
 	
