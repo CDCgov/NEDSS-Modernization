@@ -11,7 +11,7 @@ public class    ConditionEntityMother {
     public static ConditionCode conditionCode() {
         Instant now = Instant.now();
         ConditionCode c = new ConditionCode();
-        c.setId("1L");
+        c.setId("T1234567");
         c.setConditionCodesetNm("PHC_TYPE");
         c.setConditionSeqNum((short) 1);
         c.setAssigningAuthorityCd("2.16.840.1.114222");
@@ -25,7 +25,7 @@ public class    ConditionEntityMother {
         c.setIndentLevelNbr((short) 1);
         c.setInvestigationFormCd("INV_FORM_GEN");
         c.setIsModifiableInd('Y');
-        c.setNbsUid(1L);
+        c.setNbsUid(999L);
         c.setNndInd('Y');
         c.setParentIsCd("99999");
         c.setProgAreaCd("ARBO");

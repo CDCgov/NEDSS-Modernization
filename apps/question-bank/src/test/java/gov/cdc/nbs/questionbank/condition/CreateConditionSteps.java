@@ -16,6 +16,7 @@ import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.Before;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,9 @@ public class CreateConditionSteps {
         Page<CreateConditionResponse> condition;
         ConditionCode conditionCode;
     }
+
+    @Before //delete condition here
+    public void
 
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){
