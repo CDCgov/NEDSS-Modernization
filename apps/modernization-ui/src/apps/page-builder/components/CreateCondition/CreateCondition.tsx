@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './CreateCondition.scss';
 import { Button } from '@trussworks/react-uswds';
-
 import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
 import { useAlert } from 'alert';
