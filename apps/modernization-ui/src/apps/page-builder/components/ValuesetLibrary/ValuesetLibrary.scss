@@ -55,6 +55,10 @@
       border: 1px solid var(--base-lighter, #DCDEE0);
       border-bottom: 1px solid rgba(27, 27, 27, 0.95);
       background: var(--base-white, #FFF);
+      .check-title {
+        display: block;
+        margin-left: 64px;
+      }
     }
     div.search-box {
       border-radius: 5px;
@@ -80,11 +84,6 @@
         border: 0;
         .usa-checkbox__label::before{
           margin-top: 0.18rem;
-        }
-      }
-      td:first-child {
-        div{
-          display: flex
         }
       }
     }
@@ -120,5 +119,19 @@
         }
       }
     }
+  }
+}
+
+.usa-modal--lg {
+  .usa-modal__main {
+    max-width: unset !important;
+  }
+  .usa-modal__heading {
+    padding: 24px;
+    font-family: Public Sans;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
 }
