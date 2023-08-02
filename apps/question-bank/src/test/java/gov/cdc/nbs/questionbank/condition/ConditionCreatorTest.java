@@ -101,10 +101,10 @@ public class ConditionCreatorTest {
 
     @Test
     void testFindDisplayRow() {
-        short maxDisplayRow = 10;
+        int maxDisplayRow = 10;
         doReturn(maxDisplayRow).when(ldfPageSetRepository).findMaxDisplayRow();
-        short result = conditionCreator.findDisplayRow();
-        assertEquals((short) (maxDisplayRow + 1), result);
+        int result = conditionCreator.findDisplayRow();
+        assertEquals(maxDisplayRow + 1, result);
     }
 
     @Test
