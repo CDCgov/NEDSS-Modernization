@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.page;
+package gov.cdc.nbs.questionbank.page.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +24,7 @@ import gov.cdc.nbs.questionbank.entity.QPageCondMapping;
 import gov.cdc.nbs.questionbank.entity.QWaTemplate;
 import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
 import gov.cdc.nbs.questionbank.exception.QueryException;
+import gov.cdc.nbs.questionbank.page.PageSummaryMapper;
 import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.page.model.PageSummary;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
@@ -93,7 +94,7 @@ public class PageSummaryFinder {
 
     /**
      * Retrieves PageSummary objects for a list of Ids
-     * 
+     *
      * @param ids
      * @param pageable
      * @param totalSize
@@ -102,20 +103,20 @@ public class PageSummaryFinder {
     private Page<PageSummary> fetchPageSummary(List<Long> ids, Pageable pageable, int totalSize) {
         // get the summaries based on supplied Ids
         JPAQuery<Tuple> query = factory.select(
-                waTemplate.id,
-                waTemplate.templateType,
-                waTemplate.templateNm,
-                waTemplate.descTxt,
-                waTemplate.busObjType,
-                waTemplate.lastChgTime,
-                waTemplate.lastChgUserId,
-                waTemplate.nndEntityIdentifier,
-                waTemplate.publishVersionNbr,
-                codeValueGeneral.codeShortDescTxt,
-                authUser.userFirstNm,
-                authUser.userLastNm,
-                conditionCode.id,
-                conditionCode.conditionShortNm)
+                        waTemplate.id,
+                        waTemplate.templateType,
+                        waTemplate.templateNm,
+                        waTemplate.descTxt,
+                        waTemplate.busObjType,
+                        waTemplate.lastChgTime,
+                        waTemplate.lastChgUserId,
+                        waTemplate.nndEntityIdentifier,
+                        waTemplate.publishVersionNbr,
+                        codeValueGeneral.codeShortDescTxt,
+                        authUser.userFirstNm,
+                        authUser.userLastNm,
+                        conditionCode.id,
+                        conditionCode.conditionShortNm)
                 .from(waTemplate)
                 .leftJoin(authUser).on(waTemplate.lastChgUserId.eq(authUser.nedssEntryId))
                 .leftJoin(conditionMapping).on(waTemplate.id.eq(conditionMapping.waTemplateUid.id))
@@ -156,7 +157,7 @@ public class PageSummaryFinder {
     /**
      * Adds order by clausees to query. First order by is the user supplied clause, second is the identifier to prevent
      * non unique sort exception. Supported fields are: id, name, eventType, status, lastUpdate, lastUpdatedBy
-     * 
+     *
      * @param pageable
      * @return
      */
@@ -182,6 +183,5 @@ public class PageSummaryFinder {
             query.orderBy(waTemplate.id.desc());
         }
     }
-
 
 }
