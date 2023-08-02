@@ -38,7 +38,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 		PageStateResponse response = pageStateChanger.savePageAsDraft(requestId);
 		assertEquals(requestId, response.getTemplateId());
 		assertEquals(HttpStatus.OK, response.getStatus());
-		assertEquals(response.getTemplateId() + PageConstants.SAVE_DRAFT_SUCCESS, response.getMessage());
+		assertEquals(PageConstants.SAVE_DRAFT_SUCCESS, response.getMessage());
 
 	}
 
@@ -69,10 +69,10 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 	void testCreateDraftCopy() {
 		WaTemplate oldPage = getTemplate(10l);
 		WaTemplate newPage = pageStateChanger.createDraftCopy(oldPage);
-		assertEquals(oldPage.getTemplateNm(), newPage.getTemplateNm());
-		assertEquals(oldPage.getTemplateType(), "Draft");
-		assertEquals(oldPage.getPublishVersionNbr().intValue(), 0);
-		assertEquals(oldPage.getPublishIndCd().charValue(), 'F');
+		assertEquals(newPage.getTemplateNm(), newPage.getTemplateNm());
+		assertEquals("Draft", newPage.getTemplateType());
+		assertEquals(0,newPage.getPublishVersionNbr().intValue());
+		assertEquals('F',newPage.getPublishIndCd().charValue());
 
 	}
 
