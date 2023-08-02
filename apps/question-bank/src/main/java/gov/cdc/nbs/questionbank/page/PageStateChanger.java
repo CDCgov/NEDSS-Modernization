@@ -58,7 +58,7 @@ public class PageStateChanger {
 	}
 	
 	public  List<WaUiMetadatum> copyWaTemplateUIMetaData(WaTemplate page, WaTemplate clonePage ) {
-		List<WaUiMetadatum> draftMappings = new ArrayList<WaUiMetadatum>();
+		List<WaUiMetadatum> draftMappings = new ArrayList<>();
 		List<WaUiMetadatum> pages = waUiMetadatumRepository.findAllByWaTemplateUid(page);
 		for(WaUiMetadatum original : pages ) {
 	    WaUiMetadatum clone = original;
