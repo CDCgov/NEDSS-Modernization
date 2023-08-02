@@ -18,7 +18,6 @@ import java.time.Instant;
 @Table(catalog = "NBS_SRTE", name = "LDF_page_set")
 public class LdfPageSet implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ldf_page_id", nullable = false, length = 20)
     private String id;
 

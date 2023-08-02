@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.condition;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.condition.ConditionMother;
@@ -14,7 +13,6 @@ import gov.cdc.nbs.questionbank.condition.controller.ConditionController;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
-import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

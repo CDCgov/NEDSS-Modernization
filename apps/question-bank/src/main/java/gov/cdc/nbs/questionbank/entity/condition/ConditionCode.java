@@ -128,7 +128,7 @@ public class ConditionCode implements Serializable {
     @Column(name = "rhap_action_value")
     private String rhapActionValue;
 
-    @OneToMany(mappedBy = "conditionCd" )
+    @OneToMany(mappedBy = "conditionCd")
     private Set<LdfPageSet> ldfPageSets = new LinkedHashSet<>();
 
     public ConditionCode(final ConditionCommand.AddCondition request) {

@@ -8,6 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface LdfPageSetRepository extends JpaRepository<LdfPageSet, String> {
-    @Query(value = "SELECT id FROM LdfPageSet")
+    @Query("SELECT id FROM LdfPageSet")
     List<String> findAllIds();
+
+    @Query("SELECT MAX(displayRow) FROM LdfPageSet")
+    Integer findMaxDisplayRow();
+
+    @Query("SELECT MAX(nbsUid) FROM LdfPageSet")
+    Integer findNbsUid();
 }

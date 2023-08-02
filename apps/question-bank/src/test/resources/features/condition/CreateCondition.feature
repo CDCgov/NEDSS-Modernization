@@ -1,6 +1,5 @@
 @condition_create
 Feature: Create condition
-    When attempting to create a condition
 
     Scenario: ConditionCd already exists
         Given ConditionCd already exists
