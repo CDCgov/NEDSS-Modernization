@@ -84,7 +84,7 @@ public class PageStateChangeSteps {
 	public void a_page_state_should_change() {
 		assertNotNull(pageStatedResponse);
 		assertEquals(HttpStatus.OK, pageStatedResponse.getStatus());
-		assertEquals(requestId + PageConstants.SAVE_DRAFT_SUCCESS, pageStatedResponse.getMessage());
+		assertEquals(PageConstants.SAVE_DRAFT_SUCCESS, pageStatedResponse.getMessage());
 		pageMother.removeDeleteOne(result);
 	}
 

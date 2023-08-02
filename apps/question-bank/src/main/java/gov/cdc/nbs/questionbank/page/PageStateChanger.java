@@ -70,13 +70,9 @@ public class PageStateChanger {
 		draftCopy.setLocalId(oldPage.getLocalId());
 		draftCopy.setNndEntityIdentifier(oldPage.getNndEntityIdentifier());
 		draftCopy.setParentTemplateUid(oldPage.getParentTemplateUid());
-		draftCopy.setPublishIndCd(oldPage.getPublishIndCd());
-		draftCopy.setPublishVersionNbr(oldPage.getPublishVersionNbr());
 		draftCopy.setRecordStatusCd(oldPage.getRecordStatusCd());
 		draftCopy.setRecordStatusTime(oldPage.getRecordStatusTime());
 		draftCopy.setSourceNm(oldPage.getSourceNm());
-		draftCopy.setTemplateType(oldPage.getTemplateType());
-		draftCopy.setTemplateVersionNbr(oldPage.getTemplateVersionNbr());
 		draftCopy.setVersionNote(oldPage.getVersionNote());
 		draftCopy.setXmlPayload(oldPage.getXmlPayload());
 		
