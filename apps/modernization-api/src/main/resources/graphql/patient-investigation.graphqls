@@ -1,6 +1,6 @@
 type PatientInvestigation {
     investigation: ID!
-    startedOn: DateTime
+    startedOn: Date
     condition: String!
     status: String!
     caseStatus: String

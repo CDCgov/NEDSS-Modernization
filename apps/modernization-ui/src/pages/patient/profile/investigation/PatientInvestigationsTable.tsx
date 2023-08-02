@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
@@ -56,9 +56,10 @@ const headers = [
 type Props = {
     patient: string | undefined;
     pageSize: number;
+    allowAdd?: boolean;
 };
 
-export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
+export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false }: Props) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [total, setTotal] = useState<number>(0);
     const [items, setItems] = useState<any>([]);
@@ -75,7 +76,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
         setBodies(asTableBodies(sorted, patient));
     };
 
-    const [getInvestigation] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
+    const [getInvestigation, { loading }] = useFindInvestigationsForPatientLazyQuery({ onCompleted: handleComplete });
 
     useEffect(() => {
         if (patient) {
@@ -98,20 +99,45 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
         setBodies(asTableBodies(sorted, patient));
     };
 
+    const [checkedItems, setCheckedItems] = useState<{ id: string; value: string | undefined }[]>([]);
+    const handleSelected = (e: React.ChangeEvent<HTMLInputElement>, row: TableBody) => {
+        if (e.target.checked) {
+            if (e.target.value === row.tableDetails[1].title) {
+                if (checkedItems?.[0]?.value === e.target.value) {
+                    setCheckedItems((old) => [
+                        ...old,
+                        { id: row.id as string, value: row.tableDetails[1].title as string }
+                    ]);
+                }
+                if (checkedItems?.length === 0) {
+                    setCheckedItems((old) => [
+                        ...old,
+                        { id: row.id as string, value: row.tableDetails[1].title as string }
+                    ]);
+                }
+            }
+        } else {
+            setCheckedItems(checkedItems.filter((item) => item.id !== row.id));
+        }
+    };
+
     return (
         <TableComponent
             buttons={
-                <div className="grid-row">
-                    <Button disabled type="button" className="grid-row">
-                        <Icon.Topic className="margin-right-05" />
-                        Compare investigations
-                    </Button>
-                    <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
-                        <Icon.Add className="margin-right-05" />
-                        Add investigation
-                    </ClassicButton>
-                </div>
+                allowAdd && (
+                    <div className="grid-row">
+                        <Button disabled type="button" className="grid-row">
+                            <Icon.Topic className="margin-right-05" />
+                            Compare investigations
+                        </Button>
+                        <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
+                            <Icon.Add className="margin-right-05" />
+                            Add investigation
+                        </ClassicButton>
+                    </div>
+                )
             }
+            isLoading={loading}
             tableHeader={'Investigations'}
             tableHead={headers}
             tableBody={bodies}
@@ -121,6 +147,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize }: Props) => {
             currentPage={currentPage}
             handleNext={setCurrentPage}
             sortData={handleSort}
+            handleSelected={handleSelected}
         />
     );
 };

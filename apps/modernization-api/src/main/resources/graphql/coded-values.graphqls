@@ -129,12 +129,12 @@ type KeyValuePair {
 }
 
 type CodedValue {
-    value: ID!
+    value: String!
     name: String!
 }
 
 type GroupedCodedValue {
-    value: ID!
+    value: String!
     name: String!
     group: String!
 }

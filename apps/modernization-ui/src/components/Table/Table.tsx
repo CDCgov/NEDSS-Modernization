@@ -5,6 +5,7 @@ import { TOTAL_TABLE_DATA } from '../../utils/util';
 import { Actions } from './Actions';
 import { Direction } from 'sorting';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
+import { Spinner } from '@cmsgov/design-system';
 
 type SortState = {
     [key: string]: Direction;
@@ -44,9 +45,12 @@ export type TableContentProps = {
     currentPage?: number;
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
+    footerAction?: React.ReactNode | React.ReactNode[];
     sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
     rangeSelector?: boolean;
+    handleSelected?: (event: React.ChangeEvent<HTMLInputElement>, item: any) => void;
+    isLoading?: boolean;
 };
 
 const nextDirection = (direction: Direction) => {
@@ -73,10 +77,13 @@ export const TableComponent = ({
     currentPage = 1,
     handleNext,
     buttons,
+    footerAction,
     tableSubHeader,
     handleAction,
     sortData,
-    rangeSelector = false
+    rangeSelector = false,
+    handleSelected,
+    isLoading = false
 }: TableContentProps) => {
     const initialState: SortState = {};
     tableHead.forEach((header) => (initialState[header.name] = Direction.None));
@@ -169,15 +176,15 @@ export const TableComponent = ({
         </tr>
     );
 
-    const renderNoDataDetail = (detail: TableDetail, column: number) => (
-        <td key={column} className={`no-data ${resolveDetailStyle(detail, column)}`}>
+    const renderNoDataDetail = (detail: TableDetail, column: number, isCheckbox?: boolean) => (
+        <span key={column} className={`no-data ${resolveDetailStyle(detail, column)} ${isCheckbox && 'margin-left-4'}`}>
             No data
-        </td>
+        </span>
     );
 
     return (
         <div>
-            <div className="grid-row flex-align-center flex-justify padding-x-2 padding-y-3 border-bottom border-base-lighter">
+            <div className="grid-row flex-align-center flex-justify padding-x-2 search-box padding-y-3 border-bottom border-base-lighter">
                 <p className="font-sans-lg text-bold margin-0 table-header">
                     {tableHeader}
                     {tableSubHeader}
@@ -189,61 +196,72 @@ export const TableComponent = ({
                     <tr>{tableHead.map(renderHeader)}</tr>
                 </thead>
                 <tbody>
-                    {tableBody?.length > 0
-                        ? tableBody.map((item: TableBody, row: number) => (
-                              <tr key={row}>
-                                  {item.tableDetails.map((detail: TableDetail, column: number) =>
-                                      detail.title ? (
-                                          <td className={resolveDetailStyle(detail, column)} key={column}>
-                                              {column === 0 && item.checkbox && (
-                                                  <Fieldset>
-                                                      <Checkbox
-                                                          key={row}
-                                                          id={`${detail.title}-${row}`}
-                                                          name={'tableCheck'}
-                                                          label=""
-                                                      />
-                                                  </Fieldset>
-                                              )}
-                                              {detail?.type !== 'actions' && (
-                                                  <span
-                                                      className={
-                                                          column === 0 && item.checkbox
-                                                              ? 'check-title'
-                                                              : detail.class
-                                                              ? detail.class
-                                                              : 'table-span'
-                                                      }>
-                                                      {renderTitle(detail)}
-                                                  </span>
-                                              )}
-                                              {detail?.type === 'actions' && (
-                                                  <div className="table-span">
-                                                      <Button
-                                                          onClick={() => setIsActions(isActions === row ? null : row)}
-                                                          type="button"
-                                                          unstyled>
-                                                          {detail.title}
-                                                      </Button>
-                                                      {isActions === row && (
-                                                          <Actions
-                                                              handleOutsideClick={() => setIsActions(null)}
-                                                              handleAction={(data: string) => {
-                                                                  handleAction?.(data, JSON.stringify(item?.data));
-                                                                  setIsActions(null);
-                                                              }}
-                                                          />
-                                                      )}
-                                                  </div>
-                                              )}
-                                          </td>
-                                      ) : (
-                                          renderNoDataDetail(detail, column)
-                                      )
-                                  )}
-                              </tr>
-                          ))
-                        : dataNotAvailalbe}
+                    {isLoading ? (
+                        <tr className="text-center not-available">
+                            <td colSpan={tableHead.length}>
+                                <Spinner className="sortable-table-spinner" />
+                            </td>
+                        </tr>
+                    ) : tableBody?.length > 0 ? (
+                        tableBody.map((item: TableBody, row: number) => (
+                            <tr key={row}>
+                                {item.tableDetails.map((detail: TableDetail, column: number) => (
+                                    <td className={resolveDetailStyle(detail, column)} key={column}>
+                                        {column === 0 && item.checkbox && (
+                                            <Fieldset>
+                                                <Checkbox
+                                                    key={row}
+                                                    id={`${detail.title}-${row}`}
+                                                    name={'tableCheck'}
+                                                    label=""
+                                                    onChange={(e) => handleSelected?.(e, item)}
+                                                />
+                                            </Fieldset>
+                                        )}
+                                        {detail.title ? (
+                                            <>
+                                                {detail?.type !== 'actions' && (
+                                                    <span
+                                                        className={
+                                                            column === 0 && item.checkbox
+                                                                ? 'check-title'
+                                                                : detail.class
+                                                                ? detail.class
+                                                                : 'table-span'
+                                                        }>
+                                                        {renderTitle(detail)}
+                                                    </span>
+                                                )}
+                                                {detail?.type === 'actions' && (
+                                                    <div className="table-span">
+                                                        <Button
+                                                            onClick={() => setIsActions(isActions === row ? null : row)}
+                                                            type="button"
+                                                            unstyled>
+                                                            {detail.title}
+                                                        </Button>
+                                                        {isActions === row && (
+                                                            <Actions
+                                                                handleOutsideClick={() => setIsActions(null)}
+                                                                handleAction={(data: string) => {
+                                                                    handleAction?.(data, JSON.stringify(item?.data));
+                                                                    setIsActions(null);
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </>
+                                        ) : (
+                                            renderNoDataDetail(detail, column, item.checkbox)
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    ) : (
+                        dataNotAvailalbe
+                    )}
                 </tbody>
             </Table>
             <div className="padding-2 padding-top-0 grid-row flex-align-center flex-justify">
@@ -272,6 +290,7 @@ export const TableComponent = ({
                     />
                 )}
             </div>
+            <div className="table-footer-action">{footerAction}</div>
         </div>
     );
 };

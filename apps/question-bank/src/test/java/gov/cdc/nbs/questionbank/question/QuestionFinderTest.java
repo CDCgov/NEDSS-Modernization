@@ -89,11 +89,11 @@ class QuestionFinderTest {
     @Test
     void should_try_search_id() {
         // given a request that can be converted to an id
-        FindQuestionRequest request = new FindQuestionRequest("123");
+        FindQuestionRequest request = new FindQuestionRequest("123","LOCAL");
 
         // and a question exists
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifier(eq("123"), captor.capture(), Mockito.any()))
+        when(questionRepository.findAllByNameOrIdentifierOrQuestionType(eq("123"), captor.capture(), Mockito.anyString(), Mockito.any()))
                 .thenReturn(new PageImpl<>(new ArrayList<>()));
 
         // when a query is run
@@ -106,11 +106,11 @@ class QuestionFinderTest {
     @Test
     void should_try_not_fail_if_search_not_id() {
         // given a request that can be converted to an id
-        FindQuestionRequest request = new FindQuestionRequest("abc");
+        FindQuestionRequest request = new FindQuestionRequest("abc","LOCAL");
 
         // and a question exists
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifier(eq("abc"), captor.capture(), Mockito.any()))
+        when(questionRepository.findAllByNameOrIdentifierOrQuestionType(eq("abc"), captor.capture(), Mockito.anyString(), Mockito.any()))
                 .thenReturn(new PageImpl<>(new ArrayList<>()));
 
         // when a query is run

@@ -590,7 +590,7 @@ export const AdvancedSearch = () => {
     const handlePersonChipClose = (name: string, value: string) => {
         let tempPersonFilter = personFilter as PersonFilter;
         // remove the closed chip from the display
-        let newChips = resultsChip.filter((c) => c.name != name || c.value != value);
+        let newChips = resultsChip.filter((c) => c.name != name && c.value != value);
 
         // ID Number and ID Type are separate chips but invalid if not together
         if (name === 'ID Number' || name === 'ID Type') {
@@ -705,8 +705,8 @@ export const AdvancedSearch = () => {
         switch (re.name) {
             case 'state':
                 return searchCriteria.states.find((element) => {
-                    return element.id === re.value;
-                })?.codeDescTxt!;
+                    return element.value === re.value;
+                })?.name!;
             case 'Jurisdictions':
                 return (
                     searchCriteria.jurisdictions.find((element) => {
@@ -717,7 +717,7 @@ export const AdvancedSearch = () => {
                 return (
                     searchCriteria.conditions.find((element) => {
                         return element.id === re.value;
-                    })?.conditionDescTxt || ''
+                    })?.id || ''
                 );
             case 'Created By':
                 return (

@@ -11,7 +11,7 @@ import java.util.Optional;
 class PatientBirthFinder {
     
     private static final QPostalEntityLocatorParticipation LOCATORS = QPostalEntityLocatorParticipation.postalEntityLocatorParticipation;
-    private static final String COUNTY_CODE_SET = "PHVS_COUNTY_FIPS_6-4";
+
     private static final String PATIENT_CODE = "PAT";
     private static final String BIRTH_ADDRESS_CODE = "BIR";
     private static final String ACTIVE_CODE = "ACTIVE";

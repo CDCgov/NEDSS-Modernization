@@ -30,9 +30,10 @@ const displayAssociation = (patient: string, association?: AssociatedWith | null
 type Props = {
     patient?: string;
     vaccinations: Vaccination[];
+    allowAdd?: boolean;
 };
 
-export const PatientVaccinationTable = ({ patient, vaccinations }: Props) => {
+export const PatientVaccinationTable = ({ patient, vaccinations, allowAdd = false }: Props) => {
     const { page, request, reload } = usePage();
     const [criteria, setCriteria] = useState<SortCriteria>({});
 
@@ -95,7 +96,7 @@ export const PatientVaccinationTable = ({ patient, vaccinations }: Props) => {
     return (
         <TableComponent
             tableHeader={'Vaccinations'}
-            buttons={buttons}
+            buttons={allowAdd && buttons}
             tableHead={headings}
             tableBody={bodies}
             isPagination={true}

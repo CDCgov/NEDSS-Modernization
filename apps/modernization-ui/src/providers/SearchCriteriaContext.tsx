@@ -24,11 +24,11 @@ import {
     IdentificationType,
     useFindAllPatientIdentificationTypesLazyQuery,
     FindAllPatientIdentificationTypesQuery,
-    StateCode,
-    useFindAllStateCodesLazyQuery,
-    FindAllStateCodesQuery
+    useStatesLazyQuery,
+    StatesQuery
 } from '../generated/graphql/schema';
 import { UserContext } from './UserContext';
+import { StateCodedValue } from 'location';
 
 export interface SearchCriteria {
     programAreas: ProgramAreaCode[];
@@ -39,7 +39,7 @@ export interface SearchCriteria {
     ethnicities: Ethnicity[];
     races: Race[];
     identificationTypes: IdentificationType[];
-    states: StateCode[];
+    states: StateCodedValue[];
 }
 
 const initialState: SearchCriteria = {
@@ -73,7 +73,7 @@ export const SearchCriteriaProvider = (props: any) => {
     });
     const [getRaces] = useFindAllRaceValuesLazyQuery({ onCompleted: setRaces });
     const [getAllUsers] = useFindAllUsersLazyQuery({ onCompleted: setAllUSers });
-    const [getStates] = useFindAllStateCodesLazyQuery({ onCompleted: setStates });
+    const [getStates] = useStatesLazyQuery({ onCompleted: setStates });
 
     // on init, load search data from API
     useEffect(() => {
@@ -195,18 +195,8 @@ export const SearchCriteriaProvider = (props: any) => {
         }
     }
 
-    function setStates(results: FindAllStateCodesQuery): void {
-        if (results.findAllStateCodes) {
-            const states: StateCode[] = [];
-            results.findAllStateCodes.forEach((i) => i && states.push(i));
-            states.sort((a, b) => {
-                if (a.codeDescTxt && b.codeDescTxt) {
-                    return a.codeDescTxt.localeCompare(b.codeDescTxt);
-                }
-                return 0;
-            });
-            setSearchCriteria({ ...searchCriteria, states });
-        }
+    function setStates(results: StatesQuery): void {
+        setSearchCriteria((previous) => ({ ...previous, states: results.states }));
     }
 
     return <SearchCriteriaContext.Provider value={{ searchCriteria }}>{props.children}</SearchCriteriaContext.Provider>;

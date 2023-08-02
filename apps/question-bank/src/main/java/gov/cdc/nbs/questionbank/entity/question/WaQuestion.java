@@ -236,7 +236,7 @@ public abstract class WaQuestion {
         setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
         setStandardQuestionIndCd('F');
         setEntryMethod("USER");
-        setStandardQuestionIndCd('F');
+        setStandardNndIndCd('F');
         setFutureDateIndCd('F');
 
         QuestionCommand.QuestionData data = command.questionData();

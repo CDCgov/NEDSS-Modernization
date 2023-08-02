@@ -35,7 +35,7 @@ public class ValueSetReader {
 
     public Page<ValueSet> searchValueSearch(ValueSetSearchRequest search, Pageable pageable) {
         Page<Codeset> rawResults = valueSetRepository.findByCodeSetNmOrValueSetNmorValueSetCodeorValueSetType(search.getCodeSetName(),
-                search.getValueSetNm(), search.getValueSetCode(), search.getValueSetTypeCd(), pageable);
+                search.getValueSetNm(), search.getValueSetCode(), search.getValueSetTypeCd(), search.getValueSetDescription(), pageable);
         List<ValueSet> formatResults = toReadValueSet(rawResults);
         return new PageImpl<>(formatResults, pageable, rawResults.getTotalElements());
 

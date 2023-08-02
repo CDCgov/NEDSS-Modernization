@@ -40,8 +40,8 @@ Feature: Investigation search
 
     Examples: 
       | field            | qualifier                 |
-      | condition        | Bacterial Vaginosis       |
-      | condition        | Trichomoniasis            |
+      | condition        | Bacterial VaginosisId     |
+      | condition        | TrichomoniasisId          |
       | program area     | STD                       |
       | program area     | ARBO                      |
       | jurisdiction     | jd1                       |
@@ -69,19 +69,19 @@ Feature: Investigation search
     Then I find the investigation
 
     Examples: 
-      | field            | qualifier           | field2       | qualifier2      | field3       | qualifier3   |
-      | condition        | Bacterial Vaginosis | jurisdiction | jd2             | program area | STD          |
-      | condition        | Trichomoniasis      | jurisdiction | jd1             | program area | ARBO         |
-      | program area     | STD                 | jurisdiction | jd2             | event id     | ABCS_CASE_ID |
-      | program area     | ARBO                | jurisdiction | jd1             | created by   |              |
-      | jurisdiction     | jd1                 | event id     | NOTIFICATION_ID | program area | ARBO         |
-      | jurisdiction     | jd2                 | event id     | ABCS_CASE_ID    | program area | STD          |
-      | pregnancy status |                     | jurisdiction | jd1             | program area | ARBO         |
-      | event id         | ABCS_CASE_ID        | jurisdiction | jd2             | program area | STD          |
-      | event id         | CITY_COUNTY_CASE_ID | jurisdiction | jd2             | program area | STD          |
-      | event id         | INVESTIGATION_ID    | jurisdiction | jd2             | program area | STD          |
-      | event id         | NOTIFICATION_ID     | jurisdiction | jd1             | program area | ARBO         |
-      | event id         | STATE_CASE_ID       | jurisdiction | jd1             | program area | ARBO         |
-      | created by       |                     | jurisdiction | jd1             | program area | ARBO         |
-      | updated by       |                     | jurisdiction | jd1             | program area | ARBO         |
-      | patient id       |                     | jurisdiction | jd1             | program area | ARBO         |
+      | field            | qualifier             | field2       | qualifier2      | field3       | qualifier3   |
+      | condition        | Bacterial VaginosisId | jurisdiction | jd2             | program area | STD          |
+      | condition        | TrichomoniasisId      | jurisdiction | jd1             | program area | ARBO         |
+      | program area     | STD                   | jurisdiction | jd2             | event id     | ABCS_CASE_ID |
+      | program area     | ARBO                  | jurisdiction | jd1             | created by   |              |
+      | jurisdiction     | jd1                   | event id     | NOTIFICATION_ID | program area | ARBO         |
+      | jurisdiction     | jd2                   | event id     | ABCS_CASE_ID    | program area | STD          |
+      | pregnancy status |                       | jurisdiction | jd1             | program area | ARBO         |
+      | event id         | ABCS_CASE_ID          | jurisdiction | jd2             | program area | STD          |
+      | event id         | CITY_COUNTY_CASE_ID   | jurisdiction | jd2             | program area | STD          |
+      | event id         | INVESTIGATION_ID      | jurisdiction | jd2             | program area | STD          |
+      | event id         | NOTIFICATION_ID       | jurisdiction | jd1             | program area | ARBO         |
+      | event id         | STATE_CASE_ID         | jurisdiction | jd1             | program area | ARBO         |
+      | created by       |                       | jurisdiction | jd1             | program area | ARBO         |
+      | updated by       |                       | jurisdiction | jd1             | program area | ARBO         |
+      | patient id       |                       | jurisdiction | jd1             | program area | ARBO         |

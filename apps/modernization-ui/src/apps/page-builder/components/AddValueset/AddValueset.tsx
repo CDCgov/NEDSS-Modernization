@@ -141,7 +141,9 @@ export const AddValueset = () => {
                         Value set code<span className="mandatory-indicator">*</span>
                     </label>
                     <br></br>
-                    <p className="error-text">Value set code Not Valid</p>
+                    <p data-testid="error-text" className="error-text">
+                        Value set code Not Valid
+                    </p>
                     <input
                         className="field-space"
                         type="text"

@@ -101,7 +101,7 @@ export type CodeValueGeneralId = {
 export type CodedValue = {
   __typename?: 'CodedValue';
   name: Scalars['String'];
-  value: Scalars['ID'];
+  value: Scalars['String'];
 };
 
 export type ConditionCode = {
@@ -255,7 +255,7 @@ export type GroupedCodedValue = {
   __typename?: 'GroupedCodedValue';
   group: Scalars['String'];
   name: Scalars['String'];
-  value: Scalars['ID'];
+  value: Scalars['String'];
 };
 
 export type IdentificationCriteria = {
@@ -1083,13 +1083,13 @@ export type PatientAddress = {
   censusTract?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   comment?: Maybe<Scalars['String']>;
-  country?: Maybe<PatientCodedValue>;
-  county?: Maybe<PatientCodedValue>;
+  country?: Maybe<PatientCountry>;
+  county?: Maybe<PatientCounty>;
   id: Scalars['ID'];
   patient: Scalars['Int'];
-  state?: Maybe<PatientCodedValue>;
-  type: PatientCodedValue;
-  use: PatientCodedValue;
+  state?: Maybe<PatientState>;
+  type: PatientAddressType;
+  use: PatientAddressUse;
   version: Scalars['Int'];
   zipcode?: Maybe<Scalars['String']>;
 };
@@ -1106,6 +1106,18 @@ export type PatientAddressResults = {
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
+};
+
+export type PatientAddressType = {
+  __typename?: 'PatientAddressType';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientAddressUse = {
+  __typename?: 'PatientAddressUse';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientAdministrative = {
@@ -1137,12 +1149,12 @@ export type PatientBirth = {
   birthOrder?: Maybe<Scalars['Int']>;
   bornOn?: Maybe<Scalars['Date']>;
   city?: Maybe<Scalars['String']>;
-  country?: Maybe<PatientCodedValue>;
-  county?: Maybe<PatientCodedValue>;
+  country?: Maybe<PatientCountry>;
+  county?: Maybe<PatientCounty>;
   id: Scalars['ID'];
-  multipleBirth?: Maybe<PatientCodedValue>;
+  multipleBirth?: Maybe<PatientIndicatorCodedValue>;
   patient: Scalars['Int'];
-  state?: Maybe<PatientCodedValue>;
+  state?: Maybe<PatientState>;
   version: Scalars['Int'];
 };
 
@@ -1151,17 +1163,23 @@ export type PatientBirthAndGenderChangeResult = {
   patient: Scalars['Int'];
 };
 
-export type PatientCodedValue = {
-  __typename?: 'PatientCodedValue';
-  description: Scalars['String'];
-  id: Scalars['String'];
-};
-
 export type PatientContactInvestigation = {
   __typename?: 'PatientContactInvestigation';
   condition: Scalars['String'];
   id: Scalars['ID'];
   local: Scalars['String'];
+};
+
+export type PatientCountry = {
+  __typename?: 'PatientCountry';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientCounty = {
+  __typename?: 'PatientCounty';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientCreatedResponse = {
@@ -1181,6 +1199,12 @@ export type PatientDeleteResult = PatientDeleteFailed | PatientDeleteSuccessful;
 export type PatientDeleteSuccessful = {
   __typename?: 'PatientDeleteSuccessful';
   patient: Scalars['Int'];
+};
+
+export type PatientDetailedEthnicity = {
+  __typename?: 'PatientDetailedEthnicity';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientDocument = {
@@ -1208,14 +1232,26 @@ export type PatientDocumentResults = {
   total: Scalars['Int'];
 };
 
+export type PatientEducationLevel = {
+  __typename?: 'PatientEducationLevel';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientEthnicGroup = {
+  __typename?: 'PatientEthnicGroup';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientEthnicity = {
   __typename?: 'PatientEthnicity';
   asOf: Scalars['DateTime'];
-  detailed: Array<PatientCodedValue>;
-  ethnicGroup: PatientCodedValue;
+  detailed: Array<PatientDetailedEthnicity>;
+  ethnicGroup: PatientEthnicGroup;
   id: Scalars['ID'];
   patient: Scalars['Int'];
-  unknownReason?: Maybe<PatientCodedValue>;
+  unknownReason?: Maybe<PatientEthnicityUnknownReason>;
   version: Scalars['Int'];
 };
 
@@ -1224,17 +1260,35 @@ export type PatientEthnicityChangeResult = {
   patient: Scalars['String'];
 };
 
+export type PatientEthnicityUnknownReason = {
+  __typename?: 'PatientEthnicityUnknownReason';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientGender = {
   __typename?: 'PatientGender';
   additional?: Maybe<Scalars['String']>;
   asOf: Scalars['DateTime'];
-  birth?: Maybe<PatientCodedValue>;
-  current?: Maybe<PatientCodedValue>;
+  birth?: Maybe<PatientGenderCodedValue>;
+  current?: Maybe<PatientGenderCodedValue>;
   id: Scalars['ID'];
   patient: Scalars['Int'];
-  preferred?: Maybe<PatientCodedValue>;
-  unknownReason?: Maybe<PatientCodedValue>;
+  preferred?: Maybe<PatientPreferredGender>;
+  unknownReason?: Maybe<PatientGenderUnknownReason>;
   version: Scalars['Int'];
+};
+
+export type PatientGenderCodedValue = {
+  __typename?: 'PatientGenderCodedValue';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientGenderUnknownReason = {
+  __typename?: 'PatientGenderUnknownReason';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientGeneral = {
@@ -1242,14 +1296,14 @@ export type PatientGeneral = {
   adultsInHouse?: Maybe<Scalars['Int']>;
   asOf: Scalars['DateTime'];
   childrenInHouse?: Maybe<Scalars['Int']>;
-  educationLevel?: Maybe<PatientCodedValue>;
+  educationLevel?: Maybe<PatientEducationLevel>;
   id: Scalars['ID'];
-  maritalStatus?: Maybe<PatientCodedValue>;
+  maritalStatus?: Maybe<PatientMaritalStatus>;
   maternalMaidenName?: Maybe<Scalars['String']>;
-  occupation?: Maybe<PatientCodedValue>;
+  occupation?: Maybe<PatientOccupation>;
   patient: Scalars['Int'];
-  primaryLanguage?: Maybe<PatientCodedValue>;
-  speaksEnglish?: Maybe<PatientCodedValue>;
+  primaryLanguage?: Maybe<PatientPrimaryLanguage>;
+  speaksEnglish?: Maybe<PatientIndicatorCodedValue>;
   stateHIVCase?: Maybe<Scalars['String']>;
   version: Scalars['Int'];
 };
@@ -1262,12 +1316,18 @@ export type PatientGeneralChangeResult = {
 export type PatientIdentification = {
   __typename?: 'PatientIdentification';
   asOf: Scalars['DateTime'];
-  authority?: Maybe<PatientCodedValue>;
+  authority?: Maybe<PatientIdentificationAuthority>;
   patient: Scalars['Int'];
   sequence: Scalars['Int'];
-  type: PatientCodedValue;
+  type: PatientIdentificationType;
   value?: Maybe<Scalars['String']>;
   version: Scalars['Int'];
+};
+
+export type PatientIdentificationAuthority = {
+  __typename?: 'PatientIdentificationAuthority';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientIdentificationChangeResult = {
@@ -1284,10 +1344,22 @@ export type PatientIdentificationResults = {
   total: Scalars['Int'];
 };
 
+export type PatientIdentificationType = {
+  __typename?: 'PatientIdentificationType';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientIdentificationTypeResults = {
   __typename?: 'PatientIdentificationTypeResults';
   content: Array<Maybe<IdentificationType>>;
   total: Scalars['Int'];
+};
+
+export type PatientIndicatorCodedValue = {
+  __typename?: 'PatientIndicatorCodedValue';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientInvestigation = {
@@ -1300,7 +1372,7 @@ export type PatientInvestigation = {
   investigator?: Maybe<Scalars['String']>;
   jurisdiction: Scalars['String'];
   notification?: Maybe<Scalars['String']>;
-  startedOn?: Maybe<Scalars['DateTime']>;
+  startedOn?: Maybe<Scalars['Date']>;
   status: Scalars['String'];
 };
 
@@ -1318,6 +1390,12 @@ export type PatientLegalName = {
   middle?: Maybe<Scalars['String']>;
   prefix?: Maybe<Scalars['String']>;
   suffix?: Maybe<Scalars['String']>;
+};
+
+export type PatientMaritalStatus = {
+  __typename?: 'PatientMaritalStatus';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientMorbidity = {
@@ -1361,13 +1439,13 @@ export type PatientMortality = {
   __typename?: 'PatientMortality';
   asOf: Scalars['DateTime'];
   city?: Maybe<Scalars['String']>;
-  country?: Maybe<PatientCodedValue>;
-  county?: Maybe<PatientCodedValue>;
-  deceased?: Maybe<PatientCodedValue>;
+  country?: Maybe<PatientCountry>;
+  county?: Maybe<PatientCounty>;
+  deceased?: Maybe<PatientIndicatorCodedValue>;
   deceasedOn?: Maybe<Scalars['Date']>;
   id: Scalars['ID'];
   patient: Scalars['Int'];
-  state?: Maybe<PatientCodedValue>;
+  state?: Maybe<PatientState>;
   version: Scalars['Int'];
 };
 
@@ -1379,17 +1457,17 @@ export type PatientMortalityChangeResult = {
 export type PatientName = {
   __typename?: 'PatientName';
   asOf: Scalars['DateTime'];
-  degree?: Maybe<PatientCodedValue>;
+  degree?: Maybe<PatientNameDegree>;
   first?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['String']>;
   middle?: Maybe<Scalars['String']>;
   patient: Scalars['Int'];
-  prefix?: Maybe<PatientCodedValue>;
+  prefix?: Maybe<PatientNamePrefix>;
   secondLast?: Maybe<Scalars['String']>;
   secondMiddle?: Maybe<Scalars['String']>;
   sequence: Scalars['Int'];
-  suffix?: Maybe<PatientCodedValue>;
-  use: PatientCodedValue;
+  suffix?: Maybe<PatientNameSuffix>;
+  use: PatientNameUse;
   version: Scalars['Int'];
 };
 
@@ -1397,6 +1475,18 @@ export type PatientNameChangeResult = {
   __typename?: 'PatientNameChangeResult';
   patient: Scalars['Int'];
   sequence: Scalars['Int'];
+};
+
+export type PatientNameDegree = {
+  __typename?: 'PatientNameDegree';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientNamePrefix = {
+  __typename?: 'PatientNamePrefix';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientNameResults = {
@@ -1407,11 +1497,29 @@ export type PatientNameResults = {
   total: Scalars['Int'];
 };
 
+export type PatientNameSuffix = {
+  __typename?: 'PatientNameSuffix';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientNameUse = {
+  __typename?: 'PatientNameUse';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientNamedByContactResults = {
   __typename?: 'PatientNamedByContactResults';
   content: Array<Maybe<NamedByPatient>>;
   number: Scalars['Int'];
   total: Scalars['Int'];
+};
+
+export type PatientOccupation = {
+  __typename?: 'PatientOccupation';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientPhone = {
@@ -1424,9 +1532,9 @@ export type PatientPhone = {
   id: Scalars['ID'];
   number?: Maybe<Scalars['String']>;
   patient: Scalars['Int'];
-  type?: Maybe<PatientCodedValue>;
+  type?: Maybe<PatientPhoneType>;
   url?: Maybe<Scalars['String']>;
-  use?: Maybe<PatientCodedValue>;
+  use?: Maybe<PatientPhoneUse>;
   version: Scalars['Int'];
 };
 
@@ -1444,22 +1552,46 @@ export type PatientPhoneResults = {
   total: Scalars['Int'];
 };
 
+export type PatientPhoneType = {
+  __typename?: 'PatientPhoneType';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientPhoneUse = {
+  __typename?: 'PatientPhoneUse';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientPreferredGender = {
+  __typename?: 'PatientPreferredGender';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
+export type PatientPrimaryLanguage = {
+  __typename?: 'PatientPrimaryLanguage';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientProfile = {
   __typename?: 'PatientProfile';
   addresses: PatientAddressResults;
-  administrative?: Maybe<PatientAdministrativeResults>;
+  administrative: PatientAdministrativeResults;
   birth?: Maybe<PatientBirth>;
   deletable: Scalars['Boolean'];
   ethnicity?: Maybe<PatientEthnicity>;
   gender?: Maybe<PatientGender>;
   general?: Maybe<PatientGeneral>;
   id: Scalars['ID'];
-  identification?: Maybe<PatientIdentificationResults>;
+  identification: PatientIdentificationResults;
   local: Scalars['String'];
   mortality?: Maybe<PatientMortality>;
-  names?: Maybe<PatientNameResults>;
-  phones?: Maybe<PatientPhoneResults>;
-  races?: Maybe<PatientRaceResults>;
+  names: PatientNameResults;
+  phones: PatientPhoneResults;
+  races: PatientRaceResults;
   shortId: Scalars['Int'];
   status: Scalars['String'];
   summary?: Maybe<PatientSummary>;
@@ -1504,16 +1636,28 @@ export type PatientProfileSummaryArgs = {
 export type PatientRace = {
   __typename?: 'PatientRace';
   asOf: Scalars['DateTime'];
-  category: PatientCodedValue;
-  detailed: Array<PatientCodedValue>;
+  category: PatientRaceCategory;
+  detailed: Array<PatientRaceDetail>;
   id: Scalars['Int'];
   patient: Scalars['Int'];
   version: Scalars['Int'];
 };
 
+export type PatientRaceCategory = {
+  __typename?: 'PatientRaceCategory';
+  description: Scalars['String'];
+  id: Scalars['String'];
+};
+
 export type PatientRaceChangeResult = {
   __typename?: 'PatientRaceChangeResult';
   patient: Scalars['Int'];
+};
+
+export type PatientRaceDetail = {
+  __typename?: 'PatientRaceDetail';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientRaceResults = {
@@ -1522,6 +1666,12 @@ export type PatientRaceResults = {
   number: Scalars['Int'];
   size: Scalars['Int'];
   total: Scalars['Int'];
+};
+
+export type PatientState = {
+  __typename?: 'PatientState';
+  description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type PatientSummary = {
@@ -3064,7 +3214,7 @@ export type FindPatientProfileQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId: number, version: number, status: string, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names?: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientCodedValue', id: string, description: string }, prefix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, suffix?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, degree?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, administrative?: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> } | null, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientCodedValue', id: string, description: string }, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> }, phones?: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> } | null, identification?: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientCodedValue', id: string, description: string } | null }> } | null, races?: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientCodedValue', id: string, description: string }, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> }> } | null, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, preferred?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, county?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, country?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, occupation?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientCodedValue', id: string, description: string }, unknownReason?: { __typename?: 'PatientCodedValue', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientCodedValue', id: string, description: string }> } | null } | null };
+export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile?: { __typename?: 'PatientProfile', id: string, local: string, shortId: number, version: number, status: string, deletable: boolean, summary?: { __typename?: 'PatientSummary', birthday?: any | null, age?: number | null, gender?: string | null, ethnicity?: string | null, race?: string | null, legalName?: { __typename?: 'PatientLegalName', prefix?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, phone?: Array<{ __typename?: 'PatientSummaryPhone', use?: string | null, number?: string | null }> | null, email?: Array<{ __typename?: 'PatientSummaryEmail', use?: string | null, address?: string | null }> | null, address?: { __typename?: 'PatientSummaryAddress', street?: string | null, city?: string | null, state?: string | null, zipcode?: string | null, country?: string | null } | null } | null, names: { __typename?: 'PatientNameResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientName', patient: number, version: number, asOf: any, sequence: number, first?: string | null, middle?: string | null, secondMiddle?: string | null, last?: string | null, secondLast?: string | null, use: { __typename?: 'PatientNameUse', id: string, description: string }, prefix?: { __typename?: 'PatientNamePrefix', id: string, description: string } | null, suffix?: { __typename?: 'PatientNameSuffix', id: string, description: string } | null, degree?: { __typename?: 'PatientNameDegree', id: string, description: string } | null }> }, administrative: { __typename?: 'PatientAdministrativeResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAdministrative', patient: string, id: string, version: number, asOf: any, comment?: string | null }> }, addresses: { __typename?: 'PatientAddressResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientAddress', patient: number, id: string, version: number, asOf: any, address1?: string | null, address2?: string | null, city?: string | null, zipcode?: string | null, censusTract?: string | null, comment?: string | null, type: { __typename?: 'PatientAddressType', id: string, description: string }, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null }> }, phones: { __typename?: 'PatientPhoneResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientPhone', patient: number, id: string, version: number, asOf: any, countryCode?: string | null, number?: string | null, extension?: string | null, email?: string | null, url?: string | null, comment?: string | null }> }, identification: { __typename?: 'PatientIdentificationResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientIdentification', patient: number, sequence: number, version: number, asOf: any, value?: string | null, authority?: { __typename?: 'PatientIdentificationAuthority', id: string, description: string } | null }> }, races: { __typename?: 'PatientRaceResults', total: number, number: number, size: number, content: Array<{ __typename?: 'PatientRace', patient: number, id: number, version: number, asOf: any, category: { __typename?: 'PatientRaceCategory', id: string, description: string }, detailed: Array<{ __typename?: 'PatientRaceDetail', id: string, description: string }> }> }, birth?: { __typename?: 'PatientBirth', patient: number, id: string, version: number, asOf: any, bornOn?: any | null, age?: number | null, birthOrder?: number | null, city?: string | null, multipleBirth?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, gender?: { __typename?: 'PatientGender', patient: number, id: string, version: number, asOf: any, additional?: string | null, birth?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, current?: { __typename?: 'PatientGenderCodedValue', id: string, description: string } | null, unknownReason?: { __typename?: 'PatientGenderUnknownReason', id: string, description: string } | null, preferred?: { __typename?: 'PatientPreferredGender', id: string, description: string } | null } | null, mortality?: { __typename?: 'PatientMortality', patient: number, id: string, version: number, asOf: any, deceasedOn?: any | null, city?: string | null, deceased?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null, state?: { __typename?: 'PatientState', id: string, description: string } | null, county?: { __typename?: 'PatientCounty', id: string, description: string } | null, country?: { __typename?: 'PatientCountry', id: string, description: string } | null } | null, general?: { __typename?: 'PatientGeneral', patient: number, id: string, version: number, asOf: any, maternalMaidenName?: string | null, adultsInHouse?: number | null, childrenInHouse?: number | null, stateHIVCase?: string | null, maritalStatus?: { __typename?: 'PatientMaritalStatus', id: string, description: string } | null, occupation?: { __typename?: 'PatientOccupation', id: string, description: string } | null, educationLevel?: { __typename?: 'PatientEducationLevel', id: string, description: string } | null, primaryLanguage?: { __typename?: 'PatientPrimaryLanguage', id: string, description: string } | null, speaksEnglish?: { __typename?: 'PatientIndicatorCodedValue', id: string, description: string } | null } | null, ethnicity?: { __typename?: 'PatientEthnicity', patient: number, id: string, version: number, asOf: any, ethnicGroup: { __typename?: 'PatientEthnicGroup', id: string, description: string }, unknownReason?: { __typename?: 'PatientEthnicityUnknownReason', id: string, description: string } | null, detailed: Array<{ __typename?: 'PatientDetailedEthnicity', id: string, description: string }> } | null } | null };
 
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;

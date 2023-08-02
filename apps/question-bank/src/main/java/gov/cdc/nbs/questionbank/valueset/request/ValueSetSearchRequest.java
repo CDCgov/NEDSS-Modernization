@@ -8,5 +8,6 @@ public class ValueSetSearchRequest {
 	private String valueSetNm;
 	private String valueSetCode;
 	private String valueSetTypeCd;
+	private String valueSetDescription;
 
 }
