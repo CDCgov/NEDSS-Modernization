@@ -3,15 +3,16 @@ Feature: Create condition
 
     Scenario: ConditionCd already exists
         Given ConditionCd already exists
-        When Create condition
+        When I send a create condition request
         Then A condition creation exception is thrown
 
     Scenario: Condition name already exists
         Given A condition name already exists
-        When Create condition
-        Then a condition creation exception is thrown
+        When I send a create condition request
+        Then A condition creation exception is thrown
 
-        Scenario: I am admin and condition does not exist
-            Given I am an admin and a condition does not exist
-            When Create condition
-            Then The Condition is created
+    Scenario: I can create a condition
+        Given I am an admin user
+        And a condition does not exist
+        When I send a create condition request
+        Then the condition is created

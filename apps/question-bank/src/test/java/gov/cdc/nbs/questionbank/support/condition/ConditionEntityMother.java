@@ -5,7 +5,7 @@ import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import javax.persistence.Column;
 import java.time.Instant;
 
-public class ConditionEntityMother {
+public class    ConditionEntityMother {
     private ConditionEntityMother(){}
 
     public static ConditionCode conditionCode() {
@@ -23,11 +23,11 @@ public class ConditionEntityMother {
         c.setEffectiveFromTime(now);
         c.setEffectiveToTime(now);
         c.setIndentLevelNbr((short) 1);
-        c.setInvestigationFormCd("PG_Arboviral_Human_Investigation");
+        c.setInvestigationFormCd("INV_FORM_GEN");
         c.setIsModifiableInd('Y');
         c.setNbsUid(1L);
         c.setNndInd('Y');
-        c.setParentIsCd("sample");
+        c.setParentIsCd("99999");
         c.setProgAreaCd("ARBO");
         c.setReportableMorbidityInd('Y');
         c.setReportableSummaryInd('Y');
@@ -42,9 +42,9 @@ public class ConditionEntityMother {
         c.setMorbReportEnableInd('Y');
         c.setPortReqIndCd('Y');
         c.setFamilyCd("ARBO");
-        c.setCoinfectionGrpCd("sample co infection cd");
-        c.setRhapParseNbsInd("sample rhap parse");
-        c.setRhapActionValue("sample rhap action");
+        c.setCoinfectionGrpCd("STD_HIV_GROUP");
+        c.setRhapParseNbsInd("N");
+        c.setRhapActionValue("N");
 
 
         return c;

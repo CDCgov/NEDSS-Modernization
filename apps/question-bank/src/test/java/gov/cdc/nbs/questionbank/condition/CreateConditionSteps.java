@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.condition.ConditionMother;
+import io.cucumber.java.en.And;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import gov.cdc.nbs.questionbank.condition.controller.ConditionController;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
+import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -32,6 +34,9 @@ public class CreateConditionSteps {
 
     @Autowired
     private ConditionMother conditionMother;
+
+    @Autowired
+    private UserMother userMother;
 
     private CreateConditionRequest request;
     private CreateConditionResponse response;
@@ -74,14 +79,19 @@ public class CreateConditionSteps {
         }
     }
 
-    @Given("I am an admin and a condition does not exist")
-    public void i_am_an_admin_and_a_condition_does_not_exist() {
+    @Given("I am an admin user")
+    public void i_am_an_admin_user() {
+        userMother.adminUser();
+    }
+
+    @And("a condition does not exist")
+    public void a_condition_does_not_exists() {
         ConditionHolder conditionHolder = new ConditionHolder();
         conditionHolder.setCondition(null);
         result = 0L;
     }
     
-    @When("Create condition")
+    @When("I send a create condition request")
     public void create_condition() {
         ConditionHolder conditionHolder = new ConditionHolder();
         try {
@@ -99,7 +109,7 @@ public class CreateConditionSteps {
         }
     }
 
-    @Then("The Condition is created")
+    @Then("the condition is created")
     public void the_condition_is_created(){
         ConditionHolder conditionHolder = new ConditionHolder();
         assertNull(conditionHolder.getCondition());
