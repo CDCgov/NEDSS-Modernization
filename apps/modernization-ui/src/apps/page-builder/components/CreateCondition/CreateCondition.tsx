@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ClassicButton } from '../../../../classic';
 import './CreateCondition.scss';
-import { ProgramAreaControllerService, ValueSetControllerService } from '../../generated';
+import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
 
 export const CreateCondition = () => {
@@ -98,20 +98,25 @@ export const CreateCondition = () => {
             </option>
         ));
     const handleSubmit = () => {
-        console.log('xox-handleSubmit', {
-            name,
-            system,
-            code,
-            area,
-            isReportable,
-            isMorbidity,
-            isAggregate,
-            isTracingModule,
-            family,
-            group
+        const authorization = `Bearer ${state.getToken()}`;
+        const request = {
+            codeSystemDescTxt: system,
+            conditionShortNm: name,
+            progAreaCd: area,
+            nndInd: isReportable,
+            reportableMorbidityInd: isMorbidity,
+            reportableSummaryInd: isAggregate,
+            contactTracingEnableInd: isTracingModule,
+            familyCd: family,
+            coinfectionGrpCd: group
+        };
+
+        ConditionControllerService.createConditionUsingPost({
+            authorization,
+            request
+        }).then((response: any) => {
+            return response;
         });
-        // xox- POST API call here
-        //
     };
     const validateConditionName = (name: any) => {
         const pattern = /^[a-zA-Z0-9_]*$/;
@@ -135,6 +140,8 @@ export const CreateCondition = () => {
         }
     };
 
+    const isDisableBtn = !name || !system || !code || !area;
+
     return (
         <div className="create-condition">
             <h3 className="main-header-title" data-testid="header-title">
@@ -147,7 +154,7 @@ export const CreateCondition = () => {
                     to your new page
                 </p>
                 <p className="fields-info">
-                    All fields with <span className="mandatory-indicator">*</span> are require
+                    All fields with <span className="mandatory-indicator">*</span> are required
                 </p>
                 <br></br>
                 <div className={isConditionNotValid ? 'error-border' : ''}>
@@ -172,8 +179,8 @@ export const CreateCondition = () => {
                 <select
                     className="field-space"
                     name="codingSystem"
-                    defaultValue={system}
-                    onSelect={(e: any) => setSystem(e.target.value)}>
+                    value={system}
+                    onChange={(e: any) => setSystem(e.target.value)}>
                     <option>-Select-</option>
                     {buildOptions(systemOptions)}
                 </select>
@@ -202,7 +209,7 @@ export const CreateCondition = () => {
                     className="field-space"
                     name="programArea"
                     defaultValue={area}
-                    onSelect={(e: any) => setArea(e.target.value)}>
+                    onChange={(e: any) => setArea(e.target.value)}>
                     <option>-Select-</option>
                     {buildOptions(programAreaOptions)}
                 </select>
@@ -329,7 +336,11 @@ export const CreateCondition = () => {
                 </select>
                 <br></br>
             </div>
-            <ClassicButton className="submit-btn" url="" onClick={handleSubmit} disabled={isValidationFailure}>
+            <ClassicButton
+                className="submit-btn"
+                url=""
+                onClick={handleSubmit}
+                disabled={isValidationFailure || isDisableBtn}>
                 Create & add condition
             </ClassicButton>
             <ClassicButton className="cancel-btn" url="" onClick={handleSubmit}>

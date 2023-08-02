@@ -8,7 +8,16 @@ type Props = {
 };
 export const ValuesetLibraryTableWrapper = ({ activeTab, modalRef }: Props) => {
     const [sort, setSort] = useState<string | undefined>();
-    const [searchString] = useState('');
-    const summaries = useValuesetAPI(searchString || activeTab, sort);
-    return <ValuesetLibraryTable summaries={summaries} sortChange={setSort} labModalRef={modalRef} />;
+    const [searchString, setSearchString] = useState<string | undefined>('');
+    const summaries = useValuesetAPI(searchString, sort);
+    return (
+        <ValuesetLibraryTable
+            summaries={summaries}
+            sortChange={setSort}
+            labModalRef={modalRef}
+            toSearch={(search) => {
+                setSearchString(search || activeTab);
+            }}
+        />
+    );
 };

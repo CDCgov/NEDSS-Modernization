@@ -16,6 +16,7 @@ import { Config } from 'config';
 import { ValuesetLibrary } from '../apps/page-builder/components/ValuesetLibrary/ValuesetLibrary';
 import { ConditionalCase } from '../apps/page-builder/components/ConditionalCase/ConditionalCase';
 import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
+import { QuestionLibrary } from '../apps/page-builder/components/QuestionLibrary/QuestionLibrary';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -69,6 +70,7 @@ export const AppRoutes = () => {
                                     <Route path="manage">
                                         <Route path="pages" element={<ManagePages />} />
                                         <Route path="valueset-library" element={<ValuesetLibrary />} />
+                                        <Route path="question-library" element={<QuestionLibrary />} />
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />

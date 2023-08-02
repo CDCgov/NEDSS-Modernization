@@ -13,7 +13,7 @@ export const useValuesetAPI = (search?: string, sort?: string) => {
         setValueSet([]);
         ValueSetControllerService.searchValueSetUsingPost({
             authorization: `Bearer ${state.getToken()}`,
-            search: { valueSetTypeCd: search },
+            search: { valueSetNm: search, valueSetDescription: search },
             page: page.current - 1,
             size: page.pageSize,
             sort

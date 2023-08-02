@@ -5,6 +5,7 @@
 export type Question = {
     questionType?: string;
     uniqueId?: string;
+    id?: number;
     uniqueName?: string;
     subgroup?: string,
     nbsUid?: number;

@@ -1,63 +1,68 @@
 /* eslint-disable camelcase */
 import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { ValueSet } from 'apps/page-builder/generated';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Question } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { usePage } from 'page';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Direction } from 'sorting';
-import './ValuesetLibraryTable.scss';
+import './QuestionLibraryTable.scss';
 import { SearchBar } from './SearchBar';
 import { Icon } from '@trussworks/react-uswds';
 import { UserContext } from '../../../../providers/UserContext';
 import { useAlert } from 'alert';
 import { ModalComponent } from '../../../../components/ModalComponent/ModalComponent';
-import { AddValueset } from '../AddValueset/AddValueset';
 
 export enum Column {
     Type = 'Type',
-    ValuesetName = 'Value set name',
-    ValuesetDesc = 'Value set description'
+    UniqueId = 'Unique ID',
+    UniqueName = 'Unique name',
+    SubGroup = 'Subgroup'
 }
 
 const tableColumns = [
     { name: Column.Type, sortable: true },
-    { name: Column.ValuesetName, sortable: true },
-    { name: Column.ValuesetDesc, sortable: true },
+    { name: Column.UniqueId, sortable: true },
+    { name: Column.UniqueName, sortable: true },
+    { name: Column.SubGroup, sortable: true },
     { name: '', sortable: false }
 ];
 
 type Props = {
     sortChange: (sort?: string) => void;
     toSearch?: (search?: string, filter?: any) => void;
-    summaries: ValueSet[];
-    labModalRef?: any;
+    summaries: Question[];
 };
-export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModalRef }: Props) => {
+export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props) => {
     const { page, request } = usePage();
     const { showAlert } = useAlert();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
+    const [search, setSearch] = useState<string>('');
+    const [selectedQuestion, setSelectedQuestion] = useState<Question>({});
 
     const { state } = useContext(UserContext);
     const authorization = `Bearer ${state.getToken()}`;
 
     // @ts-ignore
-    const asTableRow = (page: ValueSet): TableBody => ({
-        id: page.nbsUid,
+    const asTableRow = (page: Question): TableBody => ({
+        id: page.id,
         checkbox: true,
         tableDetails: [
             {
                 id: 1,
-                title: <div className="page-name">{page?.valueSetTypeCd}</div> || null
+                title: <div className="page-name">{page?.questionType || page.codeSet}</div> || null
             },
-            { id: 2, title: <div className="event-text">{page?.valueSetNm}</div> || null },
+            { id: 2, title: <div className="event-text">{page?.uniqueId}</div> || null },
             {
                 id: 3,
-                title: <div>{page?.codeSetDescTxt}</div> || null
+                title: <div>{page?.uniqueName}</div> || null
             },
             {
                 id: 4,
+                title: <div>{page?.subgroup}</div> || null
+            },
+            {
+                id: 5,
                 title:
                     (
                         <div className="ds-u-text-align--right">
@@ -69,10 +74,10 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
     });
     const handleSelected = ({ target }: any, item: any) => {
         if (target.checked) {
-            const value: any = summaries.filter((val: any) => item.id === val.nbsUid);
-            setSelectedValueSet(value);
+            const value: any = summaries.filter((val: any) => item.id === val.id);
+            setSelectedQuestion(value);
         } else {
-            setSelectedValueSet({});
+            setSelectedQuestion({});
         }
     };
     const asTableRows = (pages: PageSummary[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
@@ -84,11 +89,13 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
         if (name && direction && direction !== Direction.None) {
             switch (name) {
                 case Column.Type:
-                    return `valueSetTypeCd,${direction}`;
-                case Column.ValuesetName:
-                    return `valueSetNm,${direction}`;
-                case Column.ValuesetDesc:
-                    return `codeSetDescTxt,${direction}`;
+                    return `questionType,${direction}`;
+                case Column.UniqueId:
+                    return `uniqueId,${direction}`;
+                case Column.UniqueName:
+                    return `uniqueName,${direction}`;
+                case Column.SubGroup:
+                    return `subgroup,${direction}`;
                 default:
                     return undefined;
             }
@@ -100,6 +107,11 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
         setTableRows(asTableRows(summaries));
     }, [summaries]);
 
+    const handleSearch = (search: string, filter: any) => {
+        setSearch(search);
+        toSearch?.(search, filter);
+    };
+
     useEffect(() => {
         return () => localStorage.setItem('selectedQuestion', '0');
     }, []);
@@ -107,12 +119,9 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
     const handleSort = (name: string, direction: Direction): void => {
         sortChange(toSortString(name, direction));
     };
-    const handleSearch = (search: string, filter: any) => {
-        toSearch?.(search, filter);
-    };
     const handleAddQsn = async () => {
         // @ts-ignore
-        // TODO :  we have to add logic for get quetion ID here
+        // TODO :  we have to add logic for get question ID here
         const id: number = parseInt(localStorage.getItem('selectedQuestion'));
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
@@ -151,7 +160,7 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
             uniqueName,
             valueSet,
             unitValue,
-            size: size,
+            size,
             fieldSize
         };
 
@@ -160,65 +169,64 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
             id,
             request
         }).then((response: any) => {
-            setSelectedValueSet({});
+            setSelectedQuestion({});
             showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
             return response;
         });
     };
 
     const footerActionBtn = (
-        <div className="valueset-action-btn ds-u-text-align--right margin-bottom-1em">
-            <ModalToggleButton
-                closer
-                modalRef={labModalRef}
-                className="cancel-btn"
-                type="button"
-                onClick={() => setSelectedValueSet({})}>
+        <div className="question-action-btn">
+            <Button className="cancel-btn" type="button" onClick={() => setSelectedQuestion({})}>
                 Cancel
-            </ModalToggleButton>
-            <ModalToggleButton
-                closer
-                modalRef={labModalRef}
+            </Button>
+            <Button
                 className="submit-btn"
                 type="button"
                 onClick={handleAddQsn}
-                disabled={!Object.keys(selectedValueSet).length}>
-                Add to question
-            </ModalToggleButton>
+                disabled={!Object.keys(selectedQuestion).length}>
+                Add to page
+            </Button>
         </div>
     );
-
     const modalRef = useRef<ModalRef>(null);
     const dataNotAvailableElement = (
-        <div className="display-block">
-            <div className="margin-bottom-1em">No data</div>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef}>
-                Add value set
+        <div className="no-data-available">
+            <label className="margin-bottom-1em no-text">
+                {search ? `No results found for ‘${search}’` : 'No results found '}
+            </label>
+            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
+                Create New
             </ModalToggleButton>
             <ModalComponent
                 isLarge
                 modalRef={modalRef}
-                modalHeading={'Add value set'}
-                modalBody={<AddValueset hideHeader modalRef={modalRef} />}
+                modalHeading={'Add question'}
+                modalBody={<div> Add page </div>}
             />
         </div>
     );
 
     return (
-        <TableComponent
-            tableHeader=""
-            tableHead={tableColumns}
-            tableBody={tableRows}
-            isPagination={true}
-            pageSize={page.pageSize}
-            totalResults={page.total}
-            currentPage={page.current}
-            handleNext={request}
-            sortData={handleSort}
-            buttons={<SearchBar onChange={handleSearch} />}
-            handleSelected={handleSelected}
-            footerAction={footerActionBtn}
-            dataNotAvailableElement={dataNotAvailableElement}
-        />
+        <div>
+            <div>{<SearchBar onChange={handleSearch} />}</div>
+            {summaries?.length ? (
+                <TableComponent
+                    tableHeader=""
+                    tableHead={tableColumns}
+                    tableBody={tableRows}
+                    isPagination={true}
+                    pageSize={page.pageSize}
+                    totalResults={page.total}
+                    currentPage={page.current}
+                    handleNext={request}
+                    sortData={handleSort}
+                    handleSelected={handleSelected}
+                />
+            ) : (
+                dataNotAvailableElement
+            )}
+            <div className="footer-action">{footerActionBtn}</div>
+        </div>
     );
 };

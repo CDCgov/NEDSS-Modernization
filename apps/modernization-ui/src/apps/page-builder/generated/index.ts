@@ -64,3 +64,4 @@ export { QuestionControllerService } from './services/QuestionControllerService'
 export { TemplateControllerService } from './services/TemplateControllerService';
 export { ValueSetControllerService } from './services/ValueSetControllerService';
 export { VocabSearchControllerService } from './services/VocabSearchControllerService';
+export { ConditionControllerService } from './services/ConditionControllerService';
