@@ -36,7 +36,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAddAdultCaseReportCodedValues } from './useAddAdultCaseReportCodedValues';
 import { useCountyCodedValues, useLocationCodedValues } from 'location';
 import { externalizeDateTime } from 'date';
-import { usePatientProfile } from './usePatientProfile';
+import { usePatientProfile } from '../patient/profile/usePatientProfile';
 import { PatientProfileSummary } from '../patient/profile/summary/PatientProfileSummaryACR';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
@@ -96,8 +96,8 @@ export default function addAdultCaseReport() {
     };
 
 
-    const profile = {patient: PatientProfileObject, summary: PatientSummaryObject};
-
+    //  const profile = {patient: PatientProfileObject, summary: PatientSummaryObject};
+    const profile = usePatientProfile('1');
 
 
     const navigate = useNavigate();
@@ -379,7 +379,7 @@ export default function addAdultCaseReport() {
                         <Grid col={3} className="bg-white border-right border-base-light">
                             <LeftBar activeTab={ACTIVE_TAB.FORM_INFO} />
                         </Grid>
-                        <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
+                        <Grid col={6} className="margin-left-auto" style={{ position: 'relative' }}>
 
 
 
@@ -469,6 +469,29 @@ export default function addAdultCaseReport() {
 
                                 </Form>
                             </FormProvider>
+                        </Grid>
+                        <Grid col={3} style={{ alignSelf: 'flex-start' }}>
+                            <main className="content-container">
+                                <aside className="content-sidebar">
+                                    <nav className="content-navigation">
+                                        <h3 className="content-navigation-title margin-top-0 margin-bottom-1">
+                                            On this page
+                                        </h3>
+                                        <div className="border-left border-base-lighter">
+                                            <a href="#section-General_information">
+                                                General information
+                                            </a>
+                                            <a href="#section-Name">Name information</a>
+                                            <a href="#section-Other">Other information</a>
+                                            <a href="#section-Address">Address</a>
+                                            <a href="#section-Telephone">Telephone</a>
+                                            <a href="#section-Ethnicity">Ethnicity</a>
+                                            <a href="#section-Race">Race</a>
+                                            <a href="#section-Identification">Identification</a>
+                                        </div>
+                                    </nav>
+                                </aside>
+                            </main>
                         </Grid>
                     </Grid>
                     </div>
