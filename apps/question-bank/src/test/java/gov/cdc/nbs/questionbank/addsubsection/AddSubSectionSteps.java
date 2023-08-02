@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.addsubsection;
 
-import gov.cdc.nbs.questionbank.addsubsection.CreateSubSectionResponse;
 import gov.cdc.nbs.questionbank.addsubsection.controller.AddSubSectionController;
 import gov.cdc.nbs.questionbank.addsubsection.model.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.addtab.repository.WaUiMetaDataRepository;
@@ -35,7 +34,7 @@ public class AddSubSectionSteps {
     @Given("I send an add subsection request with {string}")
     public void i_send_an_add_subsection_request(String visibility) {
         WaTemplate template = pageMother.one();
-        CreateSubSectionRequest createSubSectionRequest = new CreateSubSectionRequest(waUiMetadataRepository.count(), template.getId(), "Local SubSection", visibility);
+        CreateSubSectionRequest createSubSectionRequest = new CreateSubSectionRequest(response.uid(), template.getId(), "Local SubSection", visibility);
         try {
             response = subSectionController.createSubSection(createSubSectionRequest);
         } catch (AccessDeniedException e) {
