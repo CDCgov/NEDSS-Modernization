@@ -12,7 +12,6 @@ Feature: Create condition
         Then A condition creation exception is thrown
 
     Scenario: I can create a condition
-        Given I am an admin user
-        And a condition does not exist
+        Given I am an admin user and a condition does not exist
         When I send a create condition request
         Then the condition is created
