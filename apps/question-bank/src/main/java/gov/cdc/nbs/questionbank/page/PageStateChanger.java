@@ -54,6 +54,7 @@ public class PageStateChanger {
 		Long id = templateRepository.getMaxTemplateID();
 		WaTemplate draftCopy = new WaTemplate();
 		draftCopy.setId(id);
+		draftCopy.setTemplateNm(oldPage.getTemplateNm());
 		draftCopy.setTemplateType("Draft");
 		draftCopy.setPublishVersionNbr(0);
 		draftCopy.setPublishIndCd('F');
