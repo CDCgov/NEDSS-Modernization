@@ -14,6 +14,7 @@ import PageBuilderContextProvider from 'apps/page-builder/context/PageBuilderCon
 import { CreateCondition } from '../apps/page-builder/components/CreateCondition/CreateCondition';
 import { Config } from 'config';
 import { ValuesetLibrary } from '../apps/page-builder/components/ValuesetLibrary/ValuesetLibrary';
+import { ImportTemplate } from '../apps/page-builder/components/ImportTemplate/ImportTemplate';
 
 const ScrollToTop = ({ children }: { children: ReactNode }) => {
     const location = useLocation();
@@ -70,6 +71,7 @@ export const AppRoutes = () => {
                                     </Route>
                                     <Route path="add">
                                         <Route path="page" element={<AddNewPage />} />
+                                        <Route path="import-template" element={<ImportTemplate />} />
                                         <Route path="condition" element={<CreateCondition />} />
                                     </Route>
                                 </Route>
