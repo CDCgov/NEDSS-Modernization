@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadatum;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 import gov.cdc.nbs.questionbank.page.response.PageStateResponse;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,9 @@ public class PageStateChanger {
 
 	@Autowired
 	private WaTemplateRepository templateRepository;
+	
+	@Autowired
+	private WaUiMetadatumRepository waUiMetadatumRepository;
 
 	public PageStateResponse savePageAsDraft(Long id) {
 		PageStateResponse response = new PageStateResponse();
@@ -29,6 +36,9 @@ public class PageStateChanger {
 				page.setTemplateType("Published With Draft");
 				templateRepository.save(page);
 				templateRepository.save(draftPage);
+				List<WaUiMetadatum> draftMappings = copyWaTemplateUIMetaData(page, draftPage);
+				waUiMetadatumRepository.saveAll(draftMappings);
+				
 				response.setMessage(PageConstants.SAVE_DRAFT_SUCCESS);
 				response.setStatus(HttpStatus.OK);
 				response.setTemplateId(page.getId());
@@ -45,6 +55,18 @@ public class PageStateChanger {
 
 		}
 		return response;
+	}
+	
+	public  List<WaUiMetadatum> copyWaTemplateUIMetaData(WaTemplate page, WaTemplate clonePage ) {
+		List<WaUiMetadatum> draftMappings = new ArrayList<WaUiMetadatum>();
+		List<WaUiMetadatum> pages = waUiMetadatumRepository.findAllByWaTemplateUid(page);
+		for(WaUiMetadatum original : pages ) {
+	    WaUiMetadatum clone = original;
+	    clone.setWaTemplateUid(clonePage);
+	    draftMappings.add(clone);
+		}
+		return draftMappings;
+		
 	}
 	
 	public WaTemplate createDraftCopy(WaTemplate oldPage) {
