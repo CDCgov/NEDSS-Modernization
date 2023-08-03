@@ -39,10 +39,6 @@ public class CreateConditionSteps {
 
     private long result;
 
-    public CreateConditionSteps(CreateConditionRequest request) {
-        this.request = request;
-    }
-
 
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){

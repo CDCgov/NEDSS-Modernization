@@ -1,7 +1,6 @@
-@condition_create
 Feature: Create condition
 
-    Scenario: ConditionCd already exists
+    Scenario: Condition Code already exists
         Given ConditionCd already exists
         When I send a create condition request
         Then A condition creation exception is thrown
