@@ -43,6 +43,8 @@ public class CreateConditionSteps {
 
     private long result;
 
+    public CreateConditionSteps() {
+    }
 
 
     @Given("ConditionCd already exists")
@@ -80,11 +82,38 @@ public class CreateConditionSteps {
     @When("I send a create condition request")
     public void create_condition() {
         try {
-            if(conditionHolder.getConditionCode().getId() != null) {
-                String id = conditionHolder.getConditionCode().getId();
-                request.setId(id);
+            if(conditionHolder.getConditionCode() != null) {
+                String codingSys = conditionHolder.getConditionCode().getCodeSystemDescTxt();
+                String conditionCode = conditionHolder.getConditionCode().getId();
+                String conditionNm = conditionHolder.getConditionCode().getConditionShortNm();
+                String progArea = conditionHolder.getConditionCode().getProgAreaCd();
+                String conditionFamily = conditionHolder.getConditionCode().getFamilyCd();
+                String coinfectionGrp = conditionHolder.getConditionCode().getCoinfectionGrpCd();
+                Character nndInd = conditionHolder.getConditionCode().getNndInd();
+                Character morbidityReport = conditionHolder.getConditionCode().getReportableMorbidityInd();
+                Character summary = conditionHolder.getConditionCode().getReportableSummaryInd();
+                Character contactTracing = conditionHolder.getConditionCode().getContactTracingEnableInd();
+                request.setCodeSystemDescTxt(codingSys);
+                request.setId(conditionCode);
+                request.setConditionShortNm(conditionNm);
+                request.setProgAreaCd(progArea);
+                request.setFamilyCd(conditionFamily);
+                request.setCoinfectionGrpCd(coinfectionGrp);
+                request.setNndInd(nndInd);
+                request.setReportableMorbidityInd(morbidityReport);
+                request.setReportableSummaryInd(summary);
+                request.setContactTracingEnableInd(contactTracing);
             } else{
+                request.setCodeSystemDescTxt("Test1234");
                 request.setId("1L");
+                request.setConditionShortNm("Test1234");
+                request.setProgAreaCd("Test");
+                request.setFamilyCd("Test");
+                request.setCoinfectionGrpCd("Test");
+                request.setNndInd('Y');
+                request.setReportableMorbidityInd('Y');
+                request.setReportableSummaryInd('Y');
+                request.setContactTracingEnableInd('Y');
             }
 
             ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
