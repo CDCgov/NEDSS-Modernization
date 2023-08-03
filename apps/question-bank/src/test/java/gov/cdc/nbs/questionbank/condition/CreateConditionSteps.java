@@ -64,7 +64,6 @@ public class CreateConditionSteps {
             request.setContactTracingEnableInd('Y');
         } catch(AccessDeniedException e) {
             exceptionHolder.setException(e);
-            e.printStackTrace();
         } catch(AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
@@ -90,7 +89,6 @@ public class CreateConditionSteps {
             request.setContactTracingEnableInd('Y');
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
-            e.printStackTrace();
         } catch (AuthenticationCredentialsNotFoundException e){
             exceptionHolder.setException(e);
         }
@@ -104,7 +102,7 @@ public class CreateConditionSteps {
         request.setCodeSystemDescTxt("Test1234");
         request.setId("A1234567");
         request.setConditionShortNm("Sample");
-        request.setProgAreaCd("Test");
+        request.setProgAreaCd("STD");
         request.setFamilyCd("Test");
         request.setCoinfectionGrpCd("Test");
         request.setNndInd('Y');

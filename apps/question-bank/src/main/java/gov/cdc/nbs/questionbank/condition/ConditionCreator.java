@@ -130,7 +130,6 @@ public class ConditionCreator {
             response.setStatus(HttpStatus.CREATED);
 
         } catch (Exception e) {
-            e.printStackTrace();
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
