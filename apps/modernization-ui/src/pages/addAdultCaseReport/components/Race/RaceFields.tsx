@@ -1,5 +1,5 @@
-import { Checkbox, Fieldset, Grid } from '@trussworks/react-uswds';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Checkbox, Fieldset, Grid, Button } from '@trussworks/react-uswds';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { CodedValue } from 'coded';
 
@@ -10,7 +10,19 @@ type CodedValues = {
 type Props = { id: string; title: string; coded: CodedValues };
 
 export default function RaceFields({ id, title, coded }: Props) {
+
     const { control } = useFormContext();
+
+    const { fields, append } = useFieldArray({
+        control,
+        name: 'identification'
+    });
+    let raceCategories = [{value: 4, name:'American Indian or Alaska Native'}, {value: 1, name:'Black or African American'}, {value: 2, name:'White'}, {value: 3, name:'Asian'}, {value: 5, name:'Native Hawaiian or Other Pacific Islander'}, {value: 6, name:'Other'}, {value: 7, name:'Refused to Answer'}, {value: 8, name:'Not Asked'}, {value: 9, name:'Unknown'} ];
+
+    const handleAddAnotherId = () => {
+        append({ type: null, authority: null, value: null });
+    };
+    // debugger
 
     const tempArr: any = [];
     return (
@@ -25,7 +37,7 @@ export default function RaceFields({ id, title, coded }: Props) {
                                 render={({ field: { onChange, value } }) => {
                                     return (
                                         <>
-                                            {coded.raceCategories.map((race, index) => (
+                                            {raceCategories.map((race, index) => (
                                                 <Checkbox
                                                     key={index}
                                                     onChange={(e) => {

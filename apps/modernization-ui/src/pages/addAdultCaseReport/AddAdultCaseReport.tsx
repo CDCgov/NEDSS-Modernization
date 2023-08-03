@@ -46,57 +46,6 @@ export default function addAdultCaseReport() {
         ACTIVE_TAB.FORM_INFO
     );
 
-    // const hideSummary = useState<>
-
-    let PatientLegalNameObject = {
-        __typename: 'PatientLegalName',
-        prefix: '',
-        first: 'Mike',
-        middle: 'Greg',
-        last: 'Davis',
-        suffix: ''
-    };
-
-    let PatientSummaryAddressObject = {
-        __typename: 'PatientSummaryAddress',
-        street: 'string',
-        city: 'string',
-        state: 'sting',
-        zipcode: 'string',
-        country: 'string '
-    };
-
-
-    let PatientSummaryPhoneObject = { __typename: 'PatientSummaryPhone', use: 'string', number: '555-5555555' };
-    let PatientSummaryEmailObject = { __typename: 'PatientSummaryEmail', use: 'string', address: 'string' };
-
-    let PatientSummaryObject = {
-        __typename: 'PatientSummary',
-        birthday: '01/01/1980',
-        age: 43,
-        gender: 'Female',
-        ethnicity: 'non-hipanic',
-        race: 'white',
-        legalName: PatientLegalNameObject,
-        phone: PatientSummaryPhoneObject,
-        email: PatientSummaryEmailObject,
-        address: PatientSummaryAddressObject,
-    };
-
-    let PatientProfileObject = {
-        __typename: 'PatientProfile',
-        id: 'string',
-        local: 'string',
-        shortId: 80201,
-        version: 'number',
-        status: 'string',
-        deletable: false,
-        summary: PatientSummaryObject,
-        deceased: false
-    };
-
-
-    //  const profile = {patient: PatientProfileObject, summary: PatientSummaryObject};
     const profile = usePatientProfile('1');
 
 
