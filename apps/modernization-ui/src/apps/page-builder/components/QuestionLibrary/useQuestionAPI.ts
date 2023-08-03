@@ -17,7 +17,8 @@ export const useQuestionAPI = (search?: string, sort?: string, filter?: any) => 
         setQuestion([]);
         const request = {
             search,
-            questionType: filter.questionType
+            questionType: filter.questionType,
+            questionSubGroup: filter.questionSubGroup
         };
         QuestionControllerService.findQuestionsUsingPost({
             authorization: `Bearer ${state.getToken()}`,

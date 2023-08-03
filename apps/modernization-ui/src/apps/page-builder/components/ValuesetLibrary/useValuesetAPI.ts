@@ -4,16 +4,19 @@ import { Status, usePage } from 'page';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
 
-export const useValuesetAPI = (search?: string, sort?: string) => {
+export const useValuesetAPI = (search?: string, sort?: string, filter?: any) => {
     const [valueSet, setValueSet] = useState([] as ValueSet[]);
     const { page, firstPage, ready } = usePage();
     const { state } = useContext(UserContext);
 
     const fetchValueSet = () => {
         setValueSet([]);
+
         ValueSetControllerService.searchValueSetUsingPost({
             authorization: `Bearer ${state.getToken()}`,
-            search: { valueSetNm: search, valueSetDescription: search },
+            search: search
+                ? { valueSetNm: search, valueSetDescription: search, valueSetTypeCd: filter?.questionType }
+                : { valueSetTypeCd: filter?.questionType },
             page: page.current - 1,
             size: page.pageSize,
             sort
@@ -33,10 +36,14 @@ export const useValuesetAPI = (search?: string, sort?: string) => {
             ready(response.totalElements || 0, page.current);
         });
     };
-
+    console.log(
+        'filter.newestToOldest || (!search && !filter?.questionType)...',
+        filter.newestToOldest,
+        !search && !filter?.questionType
+    );
     useEffect(() => {
         if (page.status === Status.Requested) {
-            if (search === 'RECENT') {
+            if (filter.newestToOldest || (!search && !filter?.questionType)) {
                 fetchRecentValueSet();
             } else {
                 fetchValueSet();
@@ -46,7 +53,7 @@ export const useValuesetAPI = (search?: string, sort?: string) => {
 
     useEffect(() => {
         firstPage();
-    }, [search, sort]);
+    }, [search, sort, filter]);
 
     return valueSet;
 };

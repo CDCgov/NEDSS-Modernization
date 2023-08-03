@@ -8,5 +8,6 @@ export type ValueSetSearchRequest = {
     valueSetNm?: string;
     valueSetDescription?: string;
     valueSetTypeCd?: string;
+    questionType?: string
 };
 

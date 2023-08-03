@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ClassicButton } from '../../../../classic';
 import './CreateCondition.scss';
+import { Button } from '@trussworks/react-uswds';
+
 import { ProgramAreaControllerService, ConditionControllerService, ValueSetControllerService } from '../../generated';
 import { UserContext } from 'user';
 
@@ -336,16 +337,16 @@ export const CreateCondition = () => {
                 </select>
                 <br></br>
             </div>
-            <ClassicButton
+            <Button
                 className="submit-btn"
-                url=""
+                type="submit"
                 onClick={handleSubmit}
                 disabled={isValidationFailure || isDisableBtn}>
                 Create & add condition
-            </ClassicButton>
-            <ClassicButton className="cancel-btn" url="" onClick={handleSubmit}>
+            </Button>
+            <Button className="cancel-btn" type="submit" onClick={handleSubmit}>
                 Cancel
-            </ClassicButton>
+            </Button>
         </div>
     );
 };

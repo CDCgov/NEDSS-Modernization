@@ -36,6 +36,7 @@ type Props = {
 export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModalRef }: Props) => {
     const { page, request } = usePage();
     const { showAlert } = useAlert();
+    const [search, setSearch] = useState<string>('');
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedValueSet, setSelectedValueSet] = useState<ValueSet>({});
 
@@ -108,11 +109,11 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
         sortChange(toSortString(name, direction));
     };
     const handleSearch = (search: string, filter: any) => {
+        setSearch(search);
         toSearch?.(search, filter);
     };
     const handleAddQsn = async () => {
         // @ts-ignore
-        // TODO :  we have to add logic for get quetion ID here
         const id: number = parseInt(localStorage.getItem('selectedQuestion'));
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
@@ -190,9 +191,11 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
 
     const modalRef = useRef<ModalRef>(null);
     const dataNotAvailableElement = (
-        <div className="display-block">
-            <div className="margin-bottom-1em">No data</div>
-            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef}>
+        <div className="no-data-available">
+            <label className="margin-bottom-1em no-text">
+                {search ? `No results found for ‘${search}’` : 'No results found '}
+            </label>
+            <ModalToggleButton className="submit-btn" type="button" modalRef={modalRef} outline>
                 Add value set
             </ModalToggleButton>
             <ModalComponent
@@ -205,20 +208,25 @@ export const ValuesetLibraryTable = ({ summaries, sortChange, toSearch, labModal
     );
 
     return (
-        <TableComponent
-            tableHeader=""
-            tableHead={tableColumns}
-            tableBody={tableRows}
-            isPagination={true}
-            pageSize={page.pageSize}
-            totalResults={page.total}
-            currentPage={page.current}
-            handleNext={request}
-            sortData={handleSort}
-            buttons={<SearchBar onChange={handleSearch} />}
-            handleSelected={handleSelected}
-            footerAction={footerActionBtn}
-            dataNotAvailableElement={dataNotAvailableElement}
-        />
+        <div>
+            <div>{<SearchBar onChange={handleSearch} />}</div>
+            {summaries?.length ? (
+                <TableComponent
+                    tableHeader=""
+                    tableHead={tableColumns}
+                    tableBody={tableRows}
+                    isPagination={true}
+                    pageSize={page.pageSize}
+                    totalResults={page.total}
+                    currentPage={page.current}
+                    handleNext={request}
+                    sortData={handleSort}
+                    handleSelected={handleSelected}
+                />
+            ) : (
+                dataNotAvailableElement
+            )}
+            <div className="footer-action">{footerActionBtn}</div>
+        </div>
     );
 };

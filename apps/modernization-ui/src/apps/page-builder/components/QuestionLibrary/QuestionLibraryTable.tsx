@@ -122,7 +122,7 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
     const handleAddQsn = async () => {
         // @ts-ignore
         // TODO :  we have to add logic for get question ID here
-        const id: number = parseInt(localStorage.getItem('selectedQuestion'));
+        const id: number = selectedQuestion[0]?.id;
         const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
             authorization,
             id
