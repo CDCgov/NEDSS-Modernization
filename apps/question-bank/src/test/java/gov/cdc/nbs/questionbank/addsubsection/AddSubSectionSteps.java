@@ -34,7 +34,7 @@ public class AddSubSectionSteps {
     @Given("I send an add subsection request with {string}")
     public void i_send_an_add_subsection_request(String visibility) {
         WaTemplate template = pageMother.one();
-        CreateSubSectionRequest createSubSectionRequest = new CreateSubSectionRequest(response.uid(), template.getId(), "Local SubSection", visibility);
+        CreateSubSectionRequest createSubSectionRequest = new CreateSubSectionRequest(1L, template.getId(), "Local SubSection", visibility);
         try {
             response = subSectionController.createSubSection(createSubSectionRequest);
         } catch (AccessDeniedException e) {
@@ -46,7 +46,7 @@ public class AddSubSectionSteps {
 
     @Then("the section is created with {string}")
     public void the_subsection_created_successfully(String visibility) {
-        WaUiMetadata metadata = waUiMetadataRepository.findById(response.uid()).orElseThrow();
+        WaUiMetadata metadata = waUiMetadataRepository.findById(1L).orElseThrow();
         assertEquals(1016L, metadata.getNbsUiComponentUid().longValue());
         assertEquals("Local SubSection", metadata.getQuestionLabel());
         assertEquals(visibility, metadata.getDisplayInd());

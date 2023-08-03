@@ -23,6 +23,7 @@ public class CreateSubSectionService implements CreateSubSectionInterface {
             WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
             log.info("Saving Rule to DB");
             waUiMetaDataRepository.save(waUiMetadata);
+            waUiMetaDataRepository.updateOrderNumber(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
             return new CreateSubSectionResponse(waUiMetadata.getId(), "SubSection Created Successfully");
         } catch(Exception exception) {
             throw new AddSubSectionException("Add SubSection exception", 1015);
@@ -36,11 +37,15 @@ public class CreateSubSectionService implements CreateSubSectionInterface {
         waUiMetadata.setNbsUiComponentUid(1016L);
         waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(request.page());
-        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSection(request.wa_ui_metadata_uid());
-
+        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSubSection_first(request.wa_ui_metadata_uid(),
+                request.page());
+        if (nextOrderNumber == null) {
+            nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSubSection(request.wa_ui_metadata_uid(),
+                    request.page());
+        }
         waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setDisplayInd(request.visible());
-        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber+1));
+        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setCoinfectionIndCd("F");
         waUiMetadata.setFutureDateIndCd("F");
