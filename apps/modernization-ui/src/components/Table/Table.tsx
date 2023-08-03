@@ -80,7 +80,6 @@ export const TableComponent = ({
     tableSubHeader,
     handleAction,
     sortData,
-    rangeSelector = false,
     handleSelected,
     isLoading = false
 }: TableContentProps) => {
