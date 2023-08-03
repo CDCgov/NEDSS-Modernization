@@ -48,10 +48,10 @@ public class CreateConditionSteps {
         ConditionCode conditionCode;
     }
 
-    @Before
-    public void reset(){
-        this.conditionMother = null;
-    }
+//    @Before
+//    public void reset(){
+//        this.conditionMother = null;
+//    }
 
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){
