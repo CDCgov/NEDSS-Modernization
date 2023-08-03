@@ -216,6 +216,7 @@ export const TableComponent = ({
                                                     id={`${detail.title}-${row}`}
                                                     name={'tableCheck'}
                                                     label=""
+                                                    value={item?.tableDetails[1].title as string}
                                                     onChange={(e) => handleSelected?.(e, item)}
                                                 />
                                             </Fieldset>

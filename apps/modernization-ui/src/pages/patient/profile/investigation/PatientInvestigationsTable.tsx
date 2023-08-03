@@ -126,7 +126,7 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
             buttons={
                 allowAdd && (
                     <div className="grid-row">
-                        <Button disabled type="button" className="grid-row">
+                        <Button disabled={checkedItems?.length !== 2} type="button" className="grid-row">
                             <Icon.Topic className="margin-right-05" />
                             Compare investigations
                         </Button>
