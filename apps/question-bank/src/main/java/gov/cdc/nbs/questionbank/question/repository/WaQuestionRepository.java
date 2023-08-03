@@ -18,8 +18,8 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
             @Param("userDefinedColumnNm") String userDefinedColumnNm,
             @Param("rdbColumnNm") String rdbColumnNm);
 
-    @Query("Select q from WaQuestion q WHERE (q.questionNm LIKE %:search% OR q.questionIdentifier LIKE %:search% OR q.questionLabel LIKE %:search% OR q.id =:searchId) AND q.questionType LIKE %:questionType%")
-    public Page<WaQuestion> findAllByNameOrIdentifierOrQuestionType(
+    @Query("Select q from WaQuestion q WHERE (q.questionNm LIKE %:search% OR q.questionIdentifier LIKE %:search% OR q.questionLabel LIKE %:search% OR q.subGroupNm LIKE %:search% OR q.id =:searchId) AND q.questionType LIKE %:questionType%")
+    public Page<WaQuestion> findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(
             @Param("search") String search,
             @Param("searchId") Long id,
             @Param("questionType") String questionType,
