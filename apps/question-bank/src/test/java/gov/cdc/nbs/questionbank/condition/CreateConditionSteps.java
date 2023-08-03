@@ -80,7 +80,7 @@ public class CreateConditionSteps {
     @When("I send a create condition request")
     public void create_condition() {
         try {
-            if(conditionHolder.getConditionCode() != null) {
+            if(conditionHolder.getConditionCode().getId() != null) {
                 String id = conditionHolder.getConditionCode().getId();
                 request.setId(id);
             } else{
