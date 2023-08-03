@@ -46,6 +46,7 @@ public class CreateConditionSteps {
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
             result = 0L;
+            request = new CreateConditionRequest();
             request.setCodeSystemDescTxt("Test1234");
             request.setId("T1234567");
             request.setConditionShortNm("Test1234");
@@ -69,6 +70,7 @@ public class CreateConditionSteps {
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
             result = 0L;
+            request = new CreateConditionRequest();
             request.setCodeSystemDescTxt("Test1234");
             request.setId("T1234567");
             request.setConditionShortNm("Sample Text");
@@ -89,6 +91,7 @@ public class CreateConditionSteps {
     @Given("I am an admin user and a condition does not exist")
     public void i_am_an_admin_user_and_a_condition_does_not_exist() {
         conditionHolder.setConditionCode(null);
+        request = new CreateConditionRequest();
         request.setCodeSystemDescTxt("Test1234");
         request.setId("T1234567");
         request.setConditionShortNm("Sample Text");
