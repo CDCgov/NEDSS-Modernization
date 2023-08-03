@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.condition.ConditionMother;
 import lombok.Getter;
 import lombok.Setter;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import gov.cdc.nbs.questionbank.condition.controller.ConditionController;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
@@ -17,12 +18,14 @@ import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.Before;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CreateConditionSteps {
@@ -43,9 +46,11 @@ public class CreateConditionSteps {
 
     private long result;
 
-    public CreateConditionSteps() {
+    @Before
+    public void reset() {
+        List<ConditionCode> allConditions = new ArrayList<>();
+        allConditions.clear();
     }
-
 
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){
@@ -82,28 +87,26 @@ public class CreateConditionSteps {
     @When("I send a create condition request")
     public void create_condition() {
         try {
-            if(conditionHolder.getConditionCode() != null) {
-                String codingSys = conditionHolder.getConditionCode().getCodeSystemDescTxt();
-                String conditionCode = conditionHolder.getConditionCode().getId();
-                String conditionNm = conditionHolder.getConditionCode().getConditionShortNm();
-                String progArea = conditionHolder.getConditionCode().getProgAreaCd();
-                String conditionFamily = conditionHolder.getConditionCode().getFamilyCd();
-                String coinfectionGrp = conditionHolder.getConditionCode().getCoinfectionGrpCd();
-                Character nndInd = conditionHolder.getConditionCode().getNndInd();
-                Character morbidityReport = conditionHolder.getConditionCode().getReportableMorbidityInd();
-                Character summary = conditionHolder.getConditionCode().getReportableSummaryInd();
-                Character contactTracing = conditionHolder.getConditionCode().getContactTracingEnableInd();
-                request.setCodeSystemDescTxt(codingSys);
-                request.setId(conditionCode);
-                request.setConditionShortNm(conditionNm);
-                request.setProgAreaCd(progArea);
-                request.setFamilyCd(conditionFamily);
-                request.setCoinfectionGrpCd(coinfectionGrp);
-                request.setNndInd(nndInd);
-                request.setReportableMorbidityInd(morbidityReport);
-                request.setReportableSummaryInd(summary);
-                request.setContactTracingEnableInd(contactTracing);
-            } else{
+//                String codingSys = conditionHolder.getConditionCode().getCodeSystemDescTxt();
+//                String conditionCode = conditionHolder.getConditionCode().getId();
+//                String conditionNm = conditionHolder.getConditionCode().getConditionShortNm();
+//                String progArea = conditionHolder.getConditionCode().getProgAreaCd();
+//                String conditionFamily = conditionHolder.getConditionCode().getFamilyCd();
+//                String coinfectionGrp = conditionHolder.getConditionCode().getCoinfectionGrpCd();
+//                Character nndInd = conditionHolder.getConditionCode().getNndInd();
+//                Character morbidityReport = conditionHolder.getConditionCode().getReportableMorbidityInd();
+//                Character summary = conditionHolder.getConditionCode().getReportableSummaryInd();
+//                Character contactTracing = conditionHolder.getConditionCode().getContactTracingEnableInd();
+//                request.setCodeSystemDescTxt(codingSys);
+//                request.setId(conditionCode);
+//                request.setConditionShortNm(conditionNm);
+//                request.setProgAreaCd(progArea);
+//                request.setFamilyCd(conditionFamily);
+//                request.setCoinfectionGrpCd(coinfectionGrp);
+//                request.setNndInd(nndInd);
+//                request.setReportableMorbidityInd(morbidityReport);
+//                request.setReportableSummaryInd(summary);
+//                request.setContactTracingEnableInd(contactTracing);
                 request.setCodeSystemDescTxt("Test1234");
                 request.setId("1L");
                 request.setConditionShortNm("Test1234");
@@ -114,7 +117,7 @@ public class CreateConditionSteps {
                 request.setReportableMorbidityInd('Y');
                 request.setReportableSummaryInd('Y');
                 request.setContactTracingEnableInd('Y');
-            }
+
 
             ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
             response = val.getBody();
