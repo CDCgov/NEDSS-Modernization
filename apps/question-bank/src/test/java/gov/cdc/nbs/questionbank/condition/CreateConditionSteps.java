@@ -102,8 +102,8 @@ public class CreateConditionSteps {
         conditionHolder.setConditionCode(null);
         request = new CreateConditionRequest();
         request.setCodeSystemDescTxt("Test1234");
-        request.setId("T1234567");
-        request.setConditionShortNm("Sample Text");
+        request.setId("A1234567");
+        request.setConditionShortNm("Sample");
         request.setProgAreaCd("Test");
         request.setFamilyCd("Test");
         request.setCoinfectionGrpCd("Test");
