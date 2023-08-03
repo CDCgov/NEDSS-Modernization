@@ -118,11 +118,12 @@ public class CreateConditionSteps {
     public void create_condition() {
         ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
         response = val.getBody();
+        conditionHolder.setCreateConditionResponse(response);
     }
 
     @Then("the condition is created")
     public void the_condition_is_created(){
-        assertNull(conditionHolder.getConditionCode());
+        assertNull(conditionHolder.getCreateConditionResponse());
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatus());
     }

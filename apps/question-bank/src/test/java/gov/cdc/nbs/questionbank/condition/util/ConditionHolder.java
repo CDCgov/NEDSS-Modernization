@@ -12,5 +12,6 @@ import lombok.Setter;
 @Setter
 @Component
 public class ConditionHolder {
+    CreateConditionResponse createConditionResponse;
     ConditionCode conditionCode;
 }
