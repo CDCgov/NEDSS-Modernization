@@ -189,6 +189,26 @@ export default function AddPatient() {
         // noinspection JSCheckFunctionSignatures
         sections.forEach((section) => observer.observe(section));
 
+        // Smooth scrolling function
+        const smoothScroll = (element: any) => {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        };
+
+        // Add click event listeners to each sectionLink
+        sections.forEach((section) => {
+            const sectionId = section.id;
+            const sectionLink = document.querySelector(`a[href="#${sectionId}"]`);
+            if (sectionLink) {
+                sectionLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    smoothScroll(section);
+                });
+            }
+        });
+
         return () => observer.disconnect();
     }, []);
 
