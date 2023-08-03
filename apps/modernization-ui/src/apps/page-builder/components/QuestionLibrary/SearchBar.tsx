@@ -37,13 +37,20 @@ export const SearchBar = ({ onChange }: any) => {
         setSearchTags([...searchTags, search]);
         onChange(search, filterData);
     };
+    const handleRemove = (removeTag: string) => {
+        setSearch('');
+        onChange('', filterData);
+        setSearchTags((preTag: string[]) => preTag.filter((tag) => tag !== removeTag));
+    };
 
     return (
         <div className="question-local-library__header outer-search-box">
             <div className="search-tag">
-                {searchTags.map((tagName: string) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <Tag background="#005EA2">{tagName}</Tag>
+                {searchTags.map((tagName: string, index: number) => (
+                    <div className="tag-cover" key={index}>
+                        <Tag background="#005EA2">{tagName}</Tag>
+                        <Icon.Close onClick={() => handleRemove(tagName)} />
+                    </div>
                 ))}
             </div>
             <div className="search-filter">
@@ -101,12 +108,20 @@ export const SearchBar = ({ onChange }: any) => {
                                     onChangeMethod={handleOnChange}
                                     options={[
                                         {
-                                            name: 'LOCAL',
-                                            value: 'LOCAL'
+                                            name: 'INV',
+                                            value: 'INV'
                                         },
                                         {
-                                            name: 'PHIN',
-                                            value: 'PHIN'
+                                            name: 'IPO',
+                                            value: 'IPO'
+                                        },
+                                        {
+                                            name: 'MSG',
+                                            value: 'MSG'
+                                        },
+                                        {
+                                            name: 'NOT',
+                                            value: 'NOT'
                                         }
                                     ]}
                                 />

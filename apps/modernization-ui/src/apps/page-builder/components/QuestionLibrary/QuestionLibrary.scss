@@ -124,9 +124,19 @@
     margin-bottom: 16px;
   }
   .search-tag {
-    .usa-tag {
-      padding: 4px 8px;
+    display: flex;
+    gap: 10px;
+    .tag-cover {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 6px 4px 2px;
       border-radius: 2px;
+      color: #FFFFFF;
+      background: #005EA2;
+      .usa-icon {
+        cursor: pointer;
+      }
     }
   }
   button {

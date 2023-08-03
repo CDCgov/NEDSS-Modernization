@@ -119,7 +119,6 @@ export const CreateCondition = () => {
             request
         }).then((response: any) => {
             showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
-            // Fields
             resetInput();
             return response;
         });
