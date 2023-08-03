@@ -12,6 +12,7 @@ import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
 import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
+import gov.cdc.nbs.questionbank.support.UserMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -22,6 +23,9 @@ import org.springframework.security.access.AccessDeniedException;
 
 
 public class CreateConditionSteps {
+    @Autowired
+    private UserMother userMother;
+
     @Autowired
     private ConditionController conditionController;
 
@@ -43,6 +47,7 @@ public class CreateConditionSteps {
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){
         try {
+            userMother.adminUser();
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
             result = 0L;
@@ -68,6 +73,7 @@ public class CreateConditionSteps {
     @Given("A condition name already exists")
     public void a_conditionnm_already_exists(){
         try {
+            userMother.adminUser();
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
             result = 0L;
@@ -92,6 +98,7 @@ public class CreateConditionSteps {
 
     @Given("I am an admin user and a condition does not exist")
     public void i_am_an_admin_user_and_a_condition_does_not_exist() {
+        userMother.adminUser();
         conditionHolder.setConditionCode(null);
         request = new CreateConditionRequest();
         request.setCodeSystemDescTxt("Test1234");
@@ -109,8 +116,8 @@ public class CreateConditionSteps {
 
     @When("I send a create condition request")
     public void create_condition() {
-            ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
-            response = val.getBody();
+        ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
+        response = val.getBody();
     }
 
     @Then("the condition is created")
