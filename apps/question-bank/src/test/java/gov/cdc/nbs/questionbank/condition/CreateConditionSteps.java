@@ -6,9 +6,6 @@ import static org.junit.Assert.assertNull;
 
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.condition.ConditionMother;
-import lombok.Getter;
-import lombok.Setter;
-import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import gov.cdc.nbs.questionbank.condition.controller.ConditionController;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
@@ -18,14 +15,10 @@ import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CreateConditionSteps {
@@ -46,11 +39,10 @@ public class CreateConditionSteps {
 
     private long result;
 
-    @Before
-    public void reset() {
-        List<ConditionCode> allConditions = new ArrayList<>();
-        allConditions.clear();
+    public CreateConditionSteps(CreateConditionRequest request) {
+        this.request = request;
     }
+
 
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){
