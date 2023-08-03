@@ -25,9 +25,10 @@ public class CreateSectionService implements CreateSectionInterface {
             WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
             log.info("Saving Rule to DB");
             waUiMetaDataRepository.save(waUiMetadata);
+            waUiMetaDataRepository.updateOrderNumber(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
             return new CreateSectionResponse(waUiMetadata.getId(), "Section Created Successfully");
         } catch(Exception exception) {
-            throw new AddSectionException("Add section exception", 1015);
+            throw new AddSectionException(exception.toString(), 1015);
         }
 
     }
@@ -38,11 +39,14 @@ public class CreateSectionService implements CreateSectionInterface {
         waUiMetadata.setNbsUiComponentUid(1015L);
         waUiMetadata.getNbsUiComponentUid();
         waUiMetadata.setWaTemplateUid(request.page());
-        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSection(request.wa_ui_metadata_uid());
-
+        Long nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSection_first(request.wa_ui_metadata_uid(),
+                request.page());
+        if (nextOrderNumber == null) {
+            nextOrderNumber = waUiMetaDataRepository.findOrderNbrForSection(request.wa_ui_metadata_uid(), request.page());
+        }
         waUiMetadata.setQuestionLabel(request.name());
         waUiMetadata.setDisplayInd(request.visible());
-        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber+1));
+        waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
         waUiMetadata.setRequiredInd("F");
         waUiMetadata.setCoinfectionIndCd("F");
         waUiMetadata.setFutureDateIndCd("F");

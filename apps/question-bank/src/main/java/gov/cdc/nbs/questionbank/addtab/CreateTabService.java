@@ -28,6 +28,7 @@ public class CreateTabService implements CreateTabInterface{
             WaUiMetadata waUiMetadata = createWaUiMetadata(userId, request);
             log.info("Saving Rule to DB");
             waUiMetaDataRepository.save(waUiMetadata);
+            waUiMetaDataRepository.updateOrderNumber(waUiMetadata.getOrderNbr(), waUiMetadata.getId());
             return new CreateUiResponse(waUiMetadata.getId(), "Tab Created Successfully");
         } catch(Exception exception) {
             throw new AddTabException("Add tab exception", 1010);
@@ -42,7 +43,6 @@ public class CreateTabService implements CreateTabInterface{
         waUiMetadata.setWaTemplateUid(request.page());
         Long waTemplateUid = waUiMetadata.getWaTemplateUid();
         Long nextOrderNumber = getCurrentHighestOrderNumber(waTemplateUid) + 1;
-
 
         waUiMetadata.setDisplayInd(request.visible());
         waUiMetadata.setOrderNbr(Math.toIntExact(nextOrderNumber));
