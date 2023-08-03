@@ -123,7 +123,7 @@ public class CreateConditionSteps {
 
     @Then("the condition is created")
     public void the_condition_is_created(){
-        assertNull(conditionHolder.getCreateConditionResponse());
+        assertNull(conditionHolder.getConditionCode());
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatus());
     }
