@@ -46,6 +46,16 @@ public class CreateConditionSteps {
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
             result = 0L;
+            request.setCodeSystemDescTxt("Test1234");
+            request.setId("T1234567");
+            request.setConditionShortNm("Test1234");
+            request.setProgAreaCd("Test");
+            request.setFamilyCd("Test");
+            request.setCoinfectionGrpCd("Test");
+            request.setNndInd('Y');
+            request.setReportableMorbidityInd('Y');
+            request.setReportableSummaryInd('Y');
+            request.setContactTracingEnableInd('Y');
         } catch(AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch(AuthenticationCredentialsNotFoundException e) {
@@ -59,6 +69,16 @@ public class CreateConditionSteps {
             ConditionCode val = conditionMother.createCondition();
             conditionHolder.setConditionCode(val);
             result = 0L;
+            request.setCodeSystemDescTxt("Test1234");
+            request.setId("T1234567");
+            request.setConditionShortNm("Sample Text");
+            request.setProgAreaCd("Test");
+            request.setFamilyCd("Test");
+            request.setCoinfectionGrpCd("Test");
+            request.setNndInd('Y');
+            request.setReportableMorbidityInd('Y');
+            request.setReportableSummaryInd('Y');
+            request.setContactTracingEnableInd('Y');
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e){
@@ -69,51 +89,23 @@ public class CreateConditionSteps {
     @Given("I am an admin user and a condition does not exist")
     public void i_am_an_admin_user_and_a_condition_does_not_exist() {
         conditionHolder.setConditionCode(null);
+        request.setCodeSystemDescTxt("Test1234");
+        request.setId("T1234567");
+        request.setConditionShortNm("Sample Text");
+        request.setProgAreaCd("Test");
+        request.setFamilyCd("Test");
+        request.setCoinfectionGrpCd("Test");
+        request.setNndInd('Y');
+        request.setReportableMorbidityInd('Y');
+        request.setReportableSummaryInd('Y');
+        request.setContactTracingEnableInd('Y');
         result = 0L;
     }
 
     @When("I send a create condition request")
     public void create_condition() {
-        try {
-//                String codingSys = conditionHolder.getConditionCode().getCodeSystemDescTxt();
-//                String conditionCode = conditionHolder.getConditionCode().getId();
-//                String conditionNm = conditionHolder.getConditionCode().getConditionShortNm();
-//                String progArea = conditionHolder.getConditionCode().getProgAreaCd();
-//                String conditionFamily = conditionHolder.getConditionCode().getFamilyCd();
-//                String coinfectionGrp = conditionHolder.getConditionCode().getCoinfectionGrpCd();
-//                Character nndInd = conditionHolder.getConditionCode().getNndInd();
-//                Character morbidityReport = conditionHolder.getConditionCode().getReportableMorbidityInd();
-//                Character summary = conditionHolder.getConditionCode().getReportableSummaryInd();
-//                Character contactTracing = conditionHolder.getConditionCode().getContactTracingEnableInd();
-//                request.setCodeSystemDescTxt(codingSys);
-//                request.setId(conditionCode);
-//                request.setConditionShortNm(conditionNm);
-//                request.setProgAreaCd(progArea);
-//                request.setFamilyCd(conditionFamily);
-//                request.setCoinfectionGrpCd(coinfectionGrp);
-//                request.setNndInd(nndInd);
-//                request.setReportableMorbidityInd(morbidityReport);
-//                request.setReportableSummaryInd(summary);
-//                request.setContactTracingEnableInd(contactTracing);
-                request.setCodeSystemDescTxt("Test1234");
-                request.setId("1L");
-                request.setConditionShortNm("Test1234");
-                request.setProgAreaCd("Test");
-                request.setFamilyCd("Test");
-                request.setCoinfectionGrpCd("Test");
-                request.setNndInd('Y');
-                request.setReportableMorbidityInd('Y');
-                request.setReportableSummaryInd('Y');
-                request.setContactTracingEnableInd('Y');
-
-
             ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
             response = val.getBody();
-        } catch (AccessDeniedException e){
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        }
     }
 
     @Then("the condition is created")
