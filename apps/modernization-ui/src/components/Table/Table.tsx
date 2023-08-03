@@ -46,6 +46,7 @@ export type TableContentProps = {
     handleNext?: (page: number) => void;
     buttons?: React.ReactNode | React.ReactNode[];
     footerAction?: React.ReactNode | React.ReactNode[];
+    dataNotAvailableElement?: React.ReactNode | React.ReactNode[];
     sortData?: SortHandler;
     handleAction?: (type: string, data: any) => void;
     rangeSelector?: boolean;
@@ -78,6 +79,7 @@ export const TableComponent = ({
     handleNext,
     buttons,
     footerAction,
+    dataNotAvailableElement,
     tableSubHeader,
     handleAction,
     sortData,
@@ -172,7 +174,7 @@ export const TableComponent = ({
 
     const dataNotAvailalbe = (
         <tr className="text-center no-data not-available">
-            <td colSpan={tableHead.length}>No data</td>
+            <td colSpan={tableHead.length}>{dataNotAvailableElement ? dataNotAvailableElement : 'No data'}</td>
         </tr>
     );
 
@@ -214,6 +216,7 @@ export const TableComponent = ({
                                                     id={`${detail.title}-${row}`}
                                                     name={'tableCheck'}
                                                     label=""
+                                                    value={item?.tableDetails[1].title as string}
                                                     onChange={(e) => handleSelected?.(e, item)}
                                                 />
                                             </Fieldset>

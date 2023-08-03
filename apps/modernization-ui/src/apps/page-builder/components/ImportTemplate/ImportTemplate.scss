@@ -1,0 +1,95 @@
+@import '../../../../settings';
+
+.import-template {
+    padding: 5px 30px;
+    .field-space {
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+    .main-header-title {
+        font-size: 22px;
+    }
+    .drop-container {
+        height: 60vh;
+        .heading {
+            padding: 40px 24px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            label{
+                color: var(--base-black, #000);
+                font-family: Public Sans;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+        .drop-area {
+            display: flex;
+            padding: 32px;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            align-self: stretch;
+            margin: 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1px dashed var(--base-light, #A9AEB1);
+            svg {
+                transform: rotate(-90deg);
+                color: #A9AEB1;
+            }
+            label {
+                color: #000;
+                font-family: Public Sans;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 162%; /* 25.92px */
+                span {
+                    color: var(--primary-primary, #005EA2);
+                    font-family: Public Sans;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .submit-btn {
+        float: right;
+        margin-right: 20px;
+        border: 2px solid #005EA2;
+        border-radius: 4px;
+    }
+    .cancel-btn {
+        float: right;
+        margin-right: 20px;
+        margin-bottom: 80px;
+        border: 2px solid #005EA2;
+        background: #fff;
+        color: #005EA2;
+        border-radius: 4px;
+    }
+    .back-btn {
+        margin-right: 10px;
+        color: #1b1b1b;
+    }
+    .close-btn {
+        float: right;
+        font-size: 32px;
+        color: #1b1b1b;
+        margin: 15px auto;
+    }
+    .usa-button {
+        &:disabled {
+            border: 2px solid #C9C9C9;;
+            background: #C9C9C9;
+        }
+    }
+}
