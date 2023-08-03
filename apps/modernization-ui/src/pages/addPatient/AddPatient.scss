@@ -38,6 +38,11 @@
             border-left: 4px solid transparent !important;
             font-size: 0.85rem;
 
+            &:focus {
+                outline: none !important;
+                background-color: transparent !important;
+            }
+
             &.visible {
                 color: #1b1b1b !important;
                 font-weight: bold !important;
