@@ -59,6 +59,7 @@ public class CreateConditionSteps {
             request.setContactTracingEnableInd('Y');
         } catch(AccessDeniedException e) {
             exceptionHolder.setException(e);
+            e.printStackTrace();
         } catch(AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
@@ -83,6 +84,7 @@ public class CreateConditionSteps {
             request.setContactTracingEnableInd('Y');
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
+            e.printStackTrace();
         } catch (AuthenticationCredentialsNotFoundException e){
             exceptionHolder.setException(e);
         }
