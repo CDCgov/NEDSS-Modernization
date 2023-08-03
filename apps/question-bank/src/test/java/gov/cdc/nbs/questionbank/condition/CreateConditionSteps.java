@@ -13,6 +13,7 @@ import gov.cdc.nbs.questionbank.condition.controller.ConditionController;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.CreateConditionResponse;
+import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -34,6 +35,8 @@ public class CreateConditionSteps {
     @Autowired
     private ConditionMother conditionMother;
 
+    @Autowired
+    private ConditionHolder conditionHolder;
 
     private CreateConditionRequest request;
     private CreateConditionResponse response;
@@ -41,24 +44,12 @@ public class CreateConditionSteps {
     private long result;
 
 
-    @Getter
-    @Setter
-    public class ConditionHolder {
-        Page<CreateConditionResponse> condition;
-        ConditionCode conditionCode;
-    }
-
-//    @Before
-//    public void reset(){
-//        this.conditionMother = null;
-//    }
 
     @Given("ConditionCd already exists")
     public void a_conditioncd_already_exists(){
         try {
             ConditionCode val = conditionMother.createCondition();
-            ConditionHolder conditionHolder = new ConditionHolder();
-            conditionHolder.setCondition((Page<CreateConditionResponse>) val);
+            conditionHolder.setConditionCode(val);
             result = 0L;
         } catch(AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -71,8 +62,7 @@ public class CreateConditionSteps {
     public void a_conditionnm_already_exists(){
         try {
             ConditionCode val = conditionMother.createCondition();
-            ConditionHolder conditionHolder = new ConditionHolder();
-            conditionHolder.setCondition((Page<CreateConditionResponse>) val);
+            conditionHolder.setConditionCode(val);
             result = 0L;
         } catch (AccessDeniedException e) {
             exceptionHolder.setException(e);
@@ -83,22 +73,22 @@ public class CreateConditionSteps {
 
     @Given("I am an admin user and a condition does not exist")
     public void i_am_an_admin_user_and_a_condition_does_not_exist() {
-        ConditionHolder conditionHolder = new ConditionHolder();
-        conditionHolder.setCondition(null);
+        conditionHolder.setConditionCode(null);
         result = 0L;
     }
 
     @When("I send a create condition request")
     public void create_condition() {
-        ConditionHolder conditionHolder = new ConditionHolder();
         try {
-            if(conditionHolder.getCondition() != null) {
-                request.setId(conditionHolder.getCondition().toString());
+            if(conditionHolder.getConditionCode() != null) {
+                String id = conditionHolder.getConditionCode().getId();
+                request.setId(id);
             } else{
                 request.setId("1L");
             }
 
             ResponseEntity<CreateConditionResponse> val = conditionController.createCondition(request);
+            response = val.getBody();
         } catch (AccessDeniedException e){
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
@@ -108,8 +98,7 @@ public class CreateConditionSteps {
 
     @Then("the condition is created")
     public void the_condition_is_created(){
-        ConditionHolder conditionHolder = new ConditionHolder();
-        assertNull(conditionHolder.getCondition());
+        assertNull(conditionHolder.getConditionCode());
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatus());
     }
