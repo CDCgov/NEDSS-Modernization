@@ -76,12 +76,12 @@ public class PageController {
         return results;
     }
     
-    /*
+    
     @PostMapping("/add")
     public PageCreateResponse createPage(@RequestBody PageCreateRequest request) {
     	Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     	return creator.createPage(request,userId);
-    }*/
+    }
     
     @PutMapping("{id}/draft")
     public PageStateResponse savePageDraft(@PathVariable("id") Long pageId) {
