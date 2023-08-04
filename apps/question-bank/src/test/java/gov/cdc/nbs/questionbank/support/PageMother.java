@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
+import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadatumRepository;
 
 @Component
 public class PageMother {
@@ -17,11 +18,15 @@ public class PageMother {
 
     @Autowired
     private WaTemplateRepository repository;
+    
+    @Autowired
+	private WaUiMetadatumRepository waUiMetadatumRepository;
 
     private List<WaTemplate> allPages = new ArrayList<>();
 
-    public void clean() {
-        repository.deleteAll();
+    public void clean() {   	
+    	waUiMetadatumRepository.deleteAll();
+        repository.deleteAll();   
         allPages.clear();
     }
 
@@ -50,6 +55,7 @@ public class PageMother {
                 .findFirst()
                 .orElseGet(this::createAsepticMeningitisPage);
     }
+    
 
     private WaTemplate createBrucellosisPage() {
         Instant now = Instant.now();
