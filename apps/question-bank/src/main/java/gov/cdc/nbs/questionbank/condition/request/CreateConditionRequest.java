@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.request;
 
-import java.time.Instant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

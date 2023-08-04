@@ -24,7 +24,7 @@ import java.util.List;
 
 
 
-public class ConditionCreatorTest {
+class ConditionCreatorTest {
 
     @Mock
     ConditionCodeRepository conditionCodeRepository;

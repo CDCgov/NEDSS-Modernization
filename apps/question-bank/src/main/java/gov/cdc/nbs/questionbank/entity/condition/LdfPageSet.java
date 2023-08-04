@@ -67,6 +67,5 @@ public class LdfPageSet implements Serializable {
 
     @Column(name = "display_column")
     private Short displayColumn;
-
-
+    
 }

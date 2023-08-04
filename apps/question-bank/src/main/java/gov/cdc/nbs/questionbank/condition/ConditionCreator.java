@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.condition;
 
 import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.entity.condition.LdfPageSet;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
@@ -13,21 +12,15 @@ import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import lombok.RequiredArgsConstructor;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
 public class ConditionCreator {
-
-    private static final String defaultCodingSys = "2.16.840.1.114222.4.5.277";
-    private static final String alternateCodingSys = "2.16.840.1.113883.6.96";
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     Instant instant = timestamp.toInstant();
 
@@ -82,9 +75,9 @@ public class ConditionCreator {
             if (codeSystemTxt.equals("Local")) {
                 conditionCode.setCodeSystemCd("L");
             } else if (codeSystemTxt.equals("SNOMED-CT")) {
-                conditionCode.setCodeSystemCd(alternateCodingSys);
+                conditionCode.setCodeSystemCd("2.16.840.1.113883.6.96");
             } else{
-                conditionCode.setCodeSystemCd(defaultCodingSys);
+                conditionCode.setCodeSystemCd("2.16.840.1.114222.4.5.277");
             }
             //radio buttons
             conditionCode.setNndInd('Y');
