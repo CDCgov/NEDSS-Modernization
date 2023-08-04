@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,6 @@ import gov.cdc.nbs.entity.odse.QParticipation;
 import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.srte.QConditionCode;
-import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
 import gov.cdc.nbs.service.SecurityService;
@@ -283,25 +283,15 @@ public class ReviewDocumentFinder {
     }
 
     private void addOrderingProvider(DocumentRequiringReview doc, Tuple row) {
-        String prefix = row.get(PERSON_NAME.nmPrefix);
-        String first = row.get(PERSON_NAME.firstNm);
-        String last = row.get(PERSON_NAME.lastNm);
-        Suffix suffix = row.get(PERSON_NAME.nmSuffix);
-        StringBuilder sb = new StringBuilder();
-        if (prefix != null) {
-            sb.append(prefix).append(" ");
-        }
-        if (first != null) {
-            sb.append(first).append(" ");
-        }
-        if (last != null) {
-            sb.append(last).append(" ");
-        }
-        if (suffix != null) {
-            sb.append(suffix);
-        }
-
-        doc.facilityProviders().add(new FacilityProvider("Ordering provider", sb.toString()));
+        String name = Arrays.asList(
+                row.get(PERSON_NAME.nmPrefix),
+                row.get(PERSON_NAME.firstNm),
+                row.get(PERSON_NAME.lastNm),
+                row.get(PERSON_NAME.nmSuffix) != null ? row.get(PERSON_NAME.nmSuffix).display() : null)
+                .stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
+        doc.facilityProviders().add(new FacilityProvider("Ordering provider", name));
     }
 
     private void addReportingFacility(DocumentRequiringReview doc, Tuple row) {
