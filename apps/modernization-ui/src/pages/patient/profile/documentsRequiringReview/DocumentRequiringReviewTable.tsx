@@ -10,7 +10,7 @@ enum Headers {
     DateReceived = 'Date received',
     ReportingFacilityProvider = 'Reporting facility / provider',
     EventDate = 'Event date',
-    Description = 'Description with',
+    Description = 'Description',
     EventID = 'Event #'
 }
 

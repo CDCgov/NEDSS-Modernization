@@ -2,7 +2,9 @@ package gov.cdc.nbs.patient.documentsrequiringreview;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,6 +33,7 @@ import gov.cdc.nbs.entity.odse.QPerson;
 import gov.cdc.nbs.entity.odse.QPersonName;
 import gov.cdc.nbs.entity.srte.QConditionCode;
 import gov.cdc.nbs.message.enums.Suffix;
+import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.Description;
 import gov.cdc.nbs.patient.documentsrequiringreview.DocumentRequiringReview.FacilityProvider;
 import gov.cdc.nbs.service.SecurityService;
 
@@ -45,6 +48,7 @@ public class ReviewDocumentFinder {
 
     // Lab + Morb report tables
     private static final QObservation OBSERVATION = QObservation.observation;
+    private static final QObservation OBSERVATION_2 = new QObservation("obs2");
     private static final QParticipation PARTICIPATION_2 = new QParticipation("part2");
     private static final QOrganization ORGANIZATION = QOrganization.organization;
     private static final QPerson PERSON_2 = new QPerson("person2");
@@ -113,7 +117,7 @@ public class ReviewDocumentFinder {
                 // Sorting
                 .orderBy(getSort(pageable))
                 .fetch();
-        var mappedResults = results.stream().map(this::toDocumentRequiringReview).toList();
+        var mappedResults = results.stream().map(this::toDocumentRequiringReview).filter(Objects::nonNull).toList();
         return new PageImpl<>(mappedResults, pageable, total);
     }
 
@@ -124,7 +128,6 @@ public class ReviewDocumentFinder {
                 .leftJoin(PARTICIPATION).on(PARTICIPATION.id.subjectEntityUid.eq(PERSON.id))
                 .leftJoin(DOCUMENT).on(DOCUMENT.id.eq(PARTICIPATION.actUid.id))
                 .leftJoin(EDX_EVENT_PROCESS).on(EDX_EVENT_PROCESS.nbsDocumentUid.id.eq(DOCUMENT.id))
-                .leftJoin(CONDITION).on(CONDITION.id.eq(DOCUMENT.cd))
                 // Lab + Morbidity report tables
                 .leftJoin(OBSERVATION).on(OBSERVATION.id.eq(PARTICIPATION.actUid.id))
                 .leftJoin(PARTICIPATION_2).on(PARTICIPATION_2.actUid.id.eq(OBSERVATION.id))
@@ -132,6 +135,7 @@ public class ReviewDocumentFinder {
                 .leftJoin(PERSON_2).on(PERSON_2.id.eq(PARTICIPATION_2.id.subjectEntityUid))
                 .leftJoin(RELATIONSHIP).on(RELATIONSHIP.targetActUid.id.eq(PARTICIPATION_2.actUid.id))
                 .leftJoin(OBS_VALUE_CODED).on(OBS_VALUE_CODED.id.observationUid.eq(RELATIONSHIP.sourceActUid.id))
+                .leftJoin(CONDITION).on(CONDITION.id.eq(DOCUMENT.cd).or(CONDITION.id.eq(OBSERVATION.cd)))
                 // Return only document types user has access to
                 .where(getWhereForPermissionSet(patient));
     }
@@ -221,27 +225,38 @@ public class ReviewDocumentFinder {
     }
 
     private DocumentRequiringReview toDocumentRequiringReview(Tuple row) {
-        if (row.get(Expressions.stringPath(TYPE)).equals("Document")) {
+        String type = row.get(Expressions.stringPath(TYPE));
+        if (type.equals("Document")) {
             return new DocumentRequiringReview(
                     row.get(Expressions.path(Long.class, ID)),
                     row.get(Expressions.path(String.class, LOCAL_ID)),
                     row.get(Expressions.path(String.class, TYPE)),
                     row.get(Expressions.path(Instant.class, EVENT_DATE)),
                     row.get(Expressions.path(Instant.class, DATE_RECEIVED)),
+                    false,
                     row.get(DOCUMENT.externalVersionCtrlNbr) > 1,
-                    row.get(DOCUMENT.sendingFacilityNm),
-                    row.get(CONDITION.conditionDescTxt));
-        } else {
+                    Arrays.asList(new FacilityProvider("Sending Facility", row.get(DOCUMENT.sendingFacilityNm))),
+                    Arrays.asList(new Description(row.get(CONDITION.conditionDescTxt), "")));
+        } else if (type.equals("MorbReport") || type.equals("LabReport")) {
+            List<Description> descriptions = type.equals("MorbReport")
+                    ? Arrays.asList(new Description(row.get(CONDITION.conditionDescTxt), ""))
+                    : new ArrayList<>();
+            Character externalIndicator = row.get(OBSERVATION.electronicInd);
+            boolean isExternal = externalIndicator != null && !externalIndicator.equals('N');
             return new DocumentRequiringReview(
                     row.get(Expressions.path(Long.class, ID)),
                     row.get(Expressions.path(String.class, LOCAL_ID)),
                     row.get(Expressions.path(String.class, TYPE)),
                     row.get(Expressions.path(Instant.class, EVENT_DATE)),
                     row.get(Expressions.path(Instant.class, DATE_RECEIVED)),
-                    !row.get(OBSERVATION.electronicInd).equals('N'));
+                    isExternal,
+                    false,
+                    new ArrayList<>(),
+                    descriptions);
+        } else {
+            return null;
         }
     }
-
 
     private void setLabAndMorbReportData(Page<DocumentRequiringReview> docs) {
         List<Long> ids = docs.stream()
@@ -261,6 +276,8 @@ public class ReviewDocumentFinder {
                 addOrderingProvider(doc, row);
             } else if (type.equals("ReporterOfMorbReport") || type.equals("AUT")) {
                 addReportingFacility(doc, row);
+            } else if (type.equals("SPC")) {
+                addDescription(doc, row);
             }
         });
     }
@@ -294,6 +311,10 @@ public class ReviewDocumentFinder {
                         row.get(ORGANIZATION.displayNm)));
     }
 
+    private void addDescription(DocumentRequiringReview doc, Tuple row) {
+        doc.descriptions().add(new Description(row.get(OBSERVATION_2.cdDescTxt), row.get(OBS_VALUE_CODED.displayName)));
+    }
+
     private List<Tuple> fetchLabAndMorbReportData(List<Long> ids) {
         return queryFactory.select(
                 OBSERVATION.id,
@@ -305,18 +326,23 @@ public class ReviewDocumentFinder {
                 PERSON_NAME.firstNm,
                 PERSON_NAME.lastNm,
                 PERSON_NAME.nmSuffix,
-                OBS_VALUE_CODED.displayName).from(OBSERVATION)
+                OBS_VALUE_CODED.displayName,
+                OBSERVATION_2.cdDescTxt)
+                .from(OBSERVATION)
                 .leftJoin(PARTICIPATION).on(PARTICIPATION.actUid.id.eq(OBSERVATION.id))
                 .leftJoin(ORGANIZATION).on(ORGANIZATION.id.eq(PARTICIPATION.id.subjectEntityUid))
                 .leftJoin(PERSON_NAME).on(PERSON_NAME.personUid.id.eq(PARTICIPATION.id.subjectEntityUid))
                 .join(RELATIONSHIP).on(RELATIONSHIP.targetActUid.id.eq(PARTICIPATION.actUid.id))
                 .join(OBS_VALUE_CODED).on(OBS_VALUE_CODED.observationUid.id.eq(RELATIONSHIP.sourceActUid.id))
+                .leftJoin(OBSERVATION_2).on(OBSERVATION_2.id.eq(OBS_VALUE_CODED.observationUid.id))
                 .where(OBSERVATION.id.in(ids)
                         .and(PARTICIPATION.id.typeCd.notIn("PATSBJ", "SubjOfMorbReport"))
                         .and((PARTICIPATION.subjectClassCd.in("ORG")
                                 .and(PARTICIPATION.id.typeCd.in("AUT", "ReporterOfMorbReport"))
                                 .or(PARTICIPATION.subjectClassCd.in("PSN")
-                                        .and(PARTICIPATION.id.typeCd.in("ORD", "PhysicianOfMorb"))))))
+                                        .and(PARTICIPATION.id.typeCd.in("ORD", "PhysicianOfMorb")))
+                                .or(PARTICIPATION.subjectClassCd.in("MAT")
+                                        .and(PARTICIPATION.id.typeCd.in("SPC"))))))
                 .fetch();
     }
 }
