@@ -138,4 +138,5 @@ public class ConditionCode implements Serializable {
     @OneToMany(mappedBy = "conditionCd")
     private Set<LoincCondition> loincConditions = new LinkedHashSet<>();
 
+
 }

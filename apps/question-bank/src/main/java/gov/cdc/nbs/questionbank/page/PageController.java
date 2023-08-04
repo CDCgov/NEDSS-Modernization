@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page;
 
+import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,7 +19,6 @@ import gov.cdc.nbs.questionbank.page.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.request.PageSummaryRequest;
 import gov.cdc.nbs.questionbank.page.request.UpdatePageDetailsRequest;
 import gov.cdc.nbs.questionbank.page.services.PageContentManager;
-import gov.cdc.nbs.questionbank.page.services.PageSummaryFinder;
 import gov.cdc.nbs.questionbank.page.services.PageUpdater;
 import lombok.extern.slf4j.Slf4j;
 
