@@ -1,9 +1,10 @@
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { format } from 'date-fns';
-import { DocumentRequiringReview } from 'generated/graphql/schema';
+import { DocumentRequiringReview, DocumentRequiringReviewSortableField, SortDirection } from 'generated/graphql/schema';
 import { usePage } from 'page/usePage';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
+import { Sort } from './DocumentsRequiringReview';
 
 enum Headers {
     DocumentType = 'Document type',
@@ -17,9 +18,9 @@ enum Headers {
 const headers = [
     { name: Headers.DocumentType, sortable: true },
     { name: Headers.DateReceived, sortable: true },
-    { name: Headers.ReportingFacilityProvider, sortable: true },
+    { name: Headers.ReportingFacilityProvider, sortable: false },
     { name: Headers.EventDate, sortable: true },
-    { name: Headers.Description, sortable: true },
+    { name: Headers.Description, sortable: false },
     { name: Headers.EventID, sortable: true }
 ];
 
@@ -141,7 +142,13 @@ const asTableBody = (document: DocumentRequiringReview): TableBody => ({
 const asTableBodies = (documents: DocumentRequiringReview[]): TableBody[] =>
     documents?.map((d) => asTableBody(d)) || [];
 
-export const DocumentsRequiringReviewTable = ({ documents }: { documents: DocumentRequiringReview[] | undefined }) => {
+export const DocumentsRequiringReviewTable = ({
+    documents,
+    setSort
+}: {
+    documents: DocumentRequiringReview[] | undefined;
+    setSort: Dispatch<SetStateAction<Sort | undefined>>;
+}) => {
     const { page, request } = usePage();
     const [bodies, setBodies] = useState<TableBody[]>([]);
 
@@ -151,8 +158,26 @@ export const DocumentsRequiringReviewTable = ({ documents }: { documents: Docume
         }
     }, [documents]);
 
-    const handleSort = (name: string, type: Direction) => {
-        console.log('sort', name, type);
+    const handleSort = (field: string, direction: Direction) => {
+        let sortField: DocumentRequiringReviewSortableField;
+        switch (field) {
+            case Headers.DocumentType:
+                sortField = DocumentRequiringReviewSortableField.Type;
+                break;
+            case Headers.DateReceived:
+                sortField = DocumentRequiringReviewSortableField.DateReceived;
+                break;
+            case Headers.EventDate:
+                sortField = DocumentRequiringReviewSortableField.EventDate;
+                break;
+            case Headers.EventID:
+                sortField = DocumentRequiringReviewSortableField.LocalId;
+                break;
+            default:
+                return;
+        }
+        const sortDirection = direction === Direction.Ascending ? SortDirection.Asc : SortDirection.Desc;
+        setSort({ field: sortField, direction: sortDirection });
     };
 
     return (

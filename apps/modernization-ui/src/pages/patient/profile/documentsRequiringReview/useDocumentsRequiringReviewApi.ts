@@ -5,8 +5,9 @@ import {
     useFindDocumentsRequiringReviewForPatientLazyQuery
 } from 'generated/graphql/schema';
 import { usePage, Status } from 'page';
+import { Sort } from './DocumentsRequiringReview';
 
-export const useDocumentsRequiringReviewApi = (patient?: string) => {
+export const useDocumentsRequiringReviewApi = (patient?: string, sort?: Sort) => {
     const [documents, setDocuments] = useState<DocumentRequiringReview[]>();
 
     const { page, ready } = usePage();
@@ -28,7 +29,9 @@ export const useDocumentsRequiringReviewApi = (patient?: string) => {
                     patient: parseInt(patient),
                     page: {
                         pageNumber: page.current - 1,
-                        pageSize: page.pageSize
+                        pageSize: page.pageSize,
+                        sortField: sort?.field,
+                        sortDirection: sort?.direction
                     }
                 }
             });

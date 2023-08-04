@@ -44,7 +44,6 @@ public class ReviewDocumentFinder {
     private static final QParticipation PARTICIPATION = QParticipation.participation;
     private static final QNbsDocument DOCUMENT = QNbsDocument.nbsDocument;
     private static final QEdxEventProcess EDX_EVENT_PROCESS = QEdxEventProcess.edxEventProcess;
-    private static final QConditionCode CONDITION = QConditionCode.conditionCode;
 
     // Lab + Morb report tables
     private static final QObservation OBSERVATION = QObservation.observation;
@@ -55,8 +54,9 @@ public class ReviewDocumentFinder {
     private static final QActRelationship RELATIONSHIP = QActRelationship.actRelationship;
     private static final QObsValueCoded OBS_VALUE_CODED = QObsValueCoded.obsValueCoded;
 
-    // Other tables
+    // Shared tables
     private static final QPersonName PERSON_NAME = QPersonName.personName;
+    private static final QConditionCode CONDITION = QConditionCode.conditionCode;
 
     // Query alias
     private static final String ID = "id";
@@ -79,7 +79,7 @@ public class ReviewDocumentFinder {
     }
 
     public Page<DocumentRequiringReview> find(long patient, Pageable pageable) {
-        // Get the base data for documents with paging / sorting applied
+        // Get the base data for documents with paging and sorting applied
         Page<DocumentRequiringReview> docs = findSortedAndPaged(patient, pageable);
 
         // Fill in missing data
@@ -87,7 +87,6 @@ public class ReviewDocumentFinder {
 
         return docs;
     }
-
 
     /**
      * Queries for Documents, Lab, and Morbidity reports with sorting / paging.

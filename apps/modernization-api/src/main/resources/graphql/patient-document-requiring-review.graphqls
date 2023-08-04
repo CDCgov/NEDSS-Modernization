@@ -25,9 +25,23 @@ type PatientDocumentRequiringReviewResults {
   number: Int!
 }
 
+enum DocumentRequiringReviewSortableField {
+  type
+  dateReceived
+  eventDate
+  localId
+}
+
+input DocumentRequiringReviewSortablePage {
+  pageSize: Int
+  pageNumber: Int
+  sortField: DocumentRequiringReviewSortableField
+  sortDirection: SortDirection
+}
+
 extend type Query {
   findDocumentsRequiringReviewForPatient(
     patient: Int!
-    page: Page
+    page: DocumentRequiringReviewSortablePage
   ): PatientDocumentRequiringReviewResults!
 }

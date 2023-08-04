@@ -209,6 +209,20 @@ export type DocumentRequiringReview = {
   type: Scalars['String'];
 };
 
+export enum DocumentRequiringReviewSortableField {
+  DateReceived = 'dateReceived',
+  EventDate = 'eventDate',
+  LocalId = 'localId',
+  Type = 'type'
+}
+
+export type DocumentRequiringReviewSortablePage = {
+  pageNumber?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  sortDirection?: InputMaybe<SortDirection>;
+  sortField?: InputMaybe<DocumentRequiringReviewSortableField>;
+};
+
 export enum EntryMethod {
   Electronic = 'ELECTRONIC',
   Manual = 'MANUAL'
@@ -2341,7 +2355,7 @@ export type QueryFindDocumentsForPatientArgs = {
 
 
 export type QueryFindDocumentsRequiringReviewForPatientArgs = {
-  page?: InputMaybe<Page>;
+  page?: InputMaybe<DocumentRequiringReviewSortablePage>;
   patient: Scalars['Int'];
 };
 
@@ -3124,7 +3138,7 @@ export type FindDocumentsForPatientQuery = { __typename?: 'Query', findDocuments
 
 export type FindDocumentsRequiringReviewForPatientQueryVariables = Exact<{
   patient: Scalars['Int'];
-  page?: InputMaybe<Page>;
+  page?: InputMaybe<DocumentRequiringReviewSortablePage>;
 }>;
 
 
@@ -5940,7 +5954,7 @@ export type FindDocumentsForPatientQueryHookResult = ReturnType<typeof useFindDo
 export type FindDocumentsForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsForPatientLazyQuery>;
 export type FindDocumentsForPatientQueryResult = Apollo.QueryResult<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>;
 export const FindDocumentsRequiringReviewForPatientDocument = gql`
-    query findDocumentsRequiringReviewForPatient($patient: Int!, $page: Page) {
+    query findDocumentsRequiringReviewForPatient($patient: Int!, $page: DocumentRequiringReviewSortablePage) {
   findDocumentsRequiringReviewForPatient(patient: $patient, page: $page) {
     content {
       id

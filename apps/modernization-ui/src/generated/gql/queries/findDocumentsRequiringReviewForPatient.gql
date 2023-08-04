@@ -1,4 +1,4 @@
-query findDocumentsRequiringReviewForPatient($patient: Int!, $page: Page){
+query findDocumentsRequiringReviewForPatient($patient: Int!, $page: DocumentRequiringReviewSortablePage){
     findDocumentsRequiringReviewForPatient(patient: $patient, page: $page){
         content{
             id
