@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { GetQuestionResponse, PageSummary, QuestionControllerService } from 'apps/page-builder/generated';
+import { PageControllerService, PageSummary } from 'apps/page-builder/generated';
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Question } from 'apps/page-builder/generated';
 import { TableBody, TableComponent } from 'components/Table/Table';
@@ -119,58 +119,22 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
     const handleSort = (name: string, direction: Direction): void => {
         sortChange(toSortString(name, direction));
     };
-    const handleAddQsn = async () => {
+    const handleAddQsntoPage = async () => {
         // @ts-ignore
-        // TODO :  we have to add logic for get question ID here
         const id: number = selectedQuestion[0]?.id;
-        const { question }: GetQuestionResponse = await QuestionControllerService.getQuestionUsingGet({
-            authorization,
-            id
-        }).then((response: GetQuestionResponse) => {
-            return response;
-        });
-
-        const {
-            valueSet,
-            unitValue,
-            description,
-            messagingInfo,
-            label,
-            tooltip,
-            displayControl,
-            mask,
-            dataMartInfo,
-            uniqueName,
-            fieldLength,
-            size,
-            fieldSize
-        }: any = question;
 
         const request = {
-            description,
-            labelInMessage: messagingInfo.labelInMessage,
-            messageVariableId: messagingInfo.messageVariableId,
-            hl7DataType: messagingInfo.hl7DataType,
-            label,
-            tooltip,
-            displayControl,
-            mask,
-            fieldLength,
-            defaultLabelInReport: dataMartInfo.defaultLabelInReport,
-            uniqueName,
-            valueSet,
-            unitValue,
-            size,
-            fieldSize
+            orderNumber: 'orderNumber',
+            questionId: id
         };
 
-        QuestionControllerService.updateQuestionUsingPut({
+        PageControllerService.addPageQuestionsUsingPost({
             authorization,
             id,
             request
         }).then((response: any) => {
             setSelectedQuestion({});
-            showAlert({ type: 'success', header: 'Add', message: 'Question Added successfully' });
+            showAlert({ type: 'success', header: 'Add', message: 'Add Question successfully on page' });
             return response;
         });
     };
@@ -183,7 +147,7 @@ export const QuestionLibraryTable = ({ summaries, sortChange, toSearch }: Props)
             <Button
                 className="submit-btn"
                 type="button"
-                onClick={handleAddQsn}
+                onClick={handleAddQsntoPage}
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
             </Button>

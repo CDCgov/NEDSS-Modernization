@@ -1,5 +1,10 @@
 /* eslint-disable camelcase */
-import { QuestionControllerService, Page_Question_, Question } from 'apps/page-builder/generated';
+import {
+    QuestionControllerService,
+    Page_Question_,
+    Question,
+    ValueSetControllerService
+} from 'apps/page-builder/generated';
 import { Status, usePage } from 'page';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'user';
@@ -42,9 +47,10 @@ export const useQuestionAPI = (search?: string, sort?: string, filter?: any) => 
             ready(response.totalElements || 0, page.current);
         });
     };
+
     useEffect(() => {
         if (page.status === Status.Requested) {
-            if (filter.newestToOldest || (!search && !filter?.questionType)) {
+            if (filter.newestToOldest || (!search && !filter?.questionType && !filter.questionSubGroup)) {
                 fetchRecentQuestion();
             } else {
                 fetchQuestion();
@@ -57,4 +63,28 @@ export const useQuestionAPI = (search?: string, sort?: string, filter?: any) => 
     }, [search, sort, filter]);
 
     return question;
+};
+
+export const useSubGroupAPI = () => {
+    const [familyOptions, setFamilyOptions] = useState([]);
+    const { state } = useContext(UserContext);
+
+    const fetchFamilyOptions = () => {
+        ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            authorization: `Bearer ${state.getToken()}`,
+            codeSetNm: 'CONDITION_FAMILY'
+        }).then((response: any) => {
+            const data = response || [];
+            const familyList: any = [];
+            data.map((each: { value: never }) => {
+                familyList.push({ name: each.value, value: each.value });
+            });
+            setFamilyOptions(familyList);
+        });
+    };
+    useEffect(() => {
+        fetchFamilyOptions();
+    }, []);
+
+    return familyOptions;
 };
