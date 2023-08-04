@@ -50,7 +50,7 @@ public class PageStateChangeSteps {
 	public void i_am_an_admin_user_and_page_exists() {
 
 		try {
-			result = pageMother.createOne();
+			result = pageMother.brucellosis();
 			requestId = result.getId();
 		} catch (AccessDeniedException e) {
 			exceptionHolder.setException(e);
@@ -85,7 +85,7 @@ public class PageStateChangeSteps {
 		assertNotNull(pageStatedResponse);
 		assertEquals(HttpStatus.OK, pageStatedResponse.getStatus());
 		assertEquals(PageConstants.SAVE_DRAFT_SUCCESS, pageStatedResponse.getMessage());
-		pageMother.removeDeleteOne(result);
+		pageMother.clean();
 	}
 
 }
