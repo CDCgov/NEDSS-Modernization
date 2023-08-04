@@ -1,4 +1,5 @@
-package gov.cdc.nbs.entity.srte;
+package gov.cdc.nbs.questionbank.entity.condition;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -66,5 +67,5 @@ public class LdfPageSet implements Serializable {
 
     @Column(name = "display_column")
     private Short displayColumn;
-
+    
 }
