@@ -3,11 +3,13 @@ import { Button, Checkbox, Icon, Tag } from '@trussworks/react-uswds';
 import { useState } from 'react';
 import { SelectControl } from '../../../../components/FormInputs/SelectControl';
 import { useForm } from 'react-hook-form';
+import { useSubGroupAPI } from './useQuestionAPI';
 
 export const SearchBar = ({ onChange }: any) => {
     const methods = useForm();
     const { control } = methods;
     const initial = { questionSubGroup: '', questionType: '', newestToOldest: false };
+    const subGroups = useSubGroupAPI();
 
     const [searchTags, setSearchTags] = useState<any>([]);
     const [search, setSearch] = useState<string>('');
@@ -98,6 +100,10 @@ export const SearchBar = ({ onChange }: any) => {
                                         {
                                             name: 'PHIN',
                                             value: 'PHIN'
+                                        },
+                                        {
+                                            name: 'SYS',
+                                            value: 'SYS'
                                         }
                                     ]}
                                 />
@@ -106,24 +112,7 @@ export const SearchBar = ({ onChange }: any) => {
                                     name="questionSubGroup"
                                     label="Sub Group"
                                     onChangeMethod={handleOnChange}
-                                    options={[
-                                        {
-                                            name: 'INV',
-                                            value: 'INV'
-                                        },
-                                        {
-                                            name: 'IPO',
-                                            value: 'IPO'
-                                        },
-                                        {
-                                            name: 'MSG',
-                                            value: 'MSG'
-                                        },
-                                        {
-                                            name: 'NOT',
-                                            value: 'NOT'
-                                        }
-                                    ]}
+                                    options={subGroups}
                                 />
                             </div>
                             <div className="action-block">
