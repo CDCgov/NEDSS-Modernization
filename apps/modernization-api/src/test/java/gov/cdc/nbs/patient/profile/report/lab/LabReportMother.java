@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 
 @Component
-class LabReportMother {
+public class LabReportMother {
 
     private static final String LAB_REPORT_CLASS_CODE = "OBS";
     private static final String PERSON_CLASS = "PSN";
@@ -29,12 +29,11 @@ class LabReportMother {
     private final TestLabReports reports;
 
     LabReportMother(
-        final MotherSettings settings,
-        final TestUniqueIdGenerator idGenerator,
-        final EntityManager entityManager,
-        final TestLabReportCleaner cleaner,
-        final TestLabReports reports
-    ) {
+            final MotherSettings settings,
+            final TestUniqueIdGenerator idGenerator,
+            final EntityManager entityManager,
+            final TestLabReportCleaner cleaner,
+            final TestLabReports reports) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;
@@ -42,7 +41,7 @@ class LabReportMother {
         this.reports = reports;
     }
 
-    void reset() {
+    public void reset() {
         this.cleaner.clean(this.settings.starting());
         this.reports.reset();
     }
@@ -79,6 +78,10 @@ class LabReportMother {
 
         this.reports.available(observation.getId());
 
+    }
+
+    public void unprocessedLabReport(final long patient) {
+        // TODO create observation, participation that meet search criteria requirements
     }
 
     private void subjectOfObservation(final Observation observation, final long patient) {
