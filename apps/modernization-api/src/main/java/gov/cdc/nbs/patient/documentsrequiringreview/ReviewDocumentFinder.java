@@ -139,9 +139,9 @@ public class ReviewDocumentFinder {
                 .where(getWhereForPermissionSet(patient));
     }
 
-    private OrderSpecifier<?> getSort(Pageable pageable) {
+    OrderSpecifier<?> getSort(Pageable pageable) {
         if (pageable == null || pageable.getSort() == null) {
-            return DOCUMENT.id.coalesce(OBSERVATION.id).desc();
+            return Expressions.stringPath(TYPE).desc();
         }
         Order order = pageable.getSort().stream().findFirst().orElse(new Order(Direction.DESC, LOCAL_ID));
         boolean isAsc = order.getDirection().equals(Direction.ASC);
@@ -150,7 +150,7 @@ public class ReviewDocumentFinder {
             case DATE_RECEIVED -> setAscDesc(Expressions.numberPath(Long.class, DATE_RECEIVED), isAsc);
             case EVENT_DATE -> setAscDesc(Expressions.numberPath(Long.class, EVENT_DATE), isAsc);
             case LOCAL_ID -> setAscDesc(Expressions.stringPath(LOCAL_ID), isAsc);
-            default -> DOCUMENT.id.coalesce(OBSERVATION.id).desc();
+            default -> Expressions.stringPath(TYPE).desc();
         };
     }
 
@@ -161,16 +161,7 @@ public class ReviewDocumentFinder {
     private BooleanExpression getWhereForPermissionSet(long patient) {
         NbsUserDetails userDetails = detailsProvider.getCurrentUserDetails();
         // compile a list of the 'where' clauses the user has access to
-        List<BooleanExpression> whereClauses = new ArrayList<>();
-        if (hasPermission(userDetails, "DOCUMENT", "VIEW")) {
-            whereClauses.add(documentWhereClause(userDetails));
-        }
-        if (hasPermission(userDetails, "OBSERVATIONLABREPORT", "VIEW")) {
-            whereClauses.add(labReportWhereClause(userDetails));
-        }
-        if (hasPermission(userDetails, "OBSERVATIONMORBIDITYREPORT", "VIEW")) {
-            whereClauses.add(morbidityReportWhereClause(userDetails));
-        }
+        List<BooleanExpression> whereClauses = getWhereClauses(userDetails);
 
         // combine the where claueses into a single ((clause1) OR (clause2)...)
         BooleanExpression combined = whereClauses.get(0);
@@ -186,6 +177,26 @@ public class ReviewDocumentFinder {
                 .and(combined)
                 .and(DOCUMENT.programJurisdictionOid.in(programJurisdictionOids)
                         .or(OBSERVATION.programJurisdictionOid.in(programJurisdictionOids)));
+    }
+
+    /**
+     * Returns the appropriate 'WHERE' clasues given the users permission set
+     * 
+     * @param userDetails
+     * @return
+     */
+    List<BooleanExpression> getWhereClauses(NbsUserDetails userDetails) {
+        List<BooleanExpression> clauses = new ArrayList<>();
+        if (userDetails.hasPermission("DOCUMENT", "VIEW")) {
+            clauses.add(documentWhereClause(userDetails));
+        }
+        if (userDetails.hasPermission("OBSERVATIONLABREPORT", "VIEW")) {
+            clauses.add(labReportWhereClause(userDetails));
+        }
+        if (userDetails.hasPermission("OBSERVATIONMORBIDITYREPORT", "VIEW")) {
+            clauses.add(morbidityReportWhereClause(userDetails));
+        }
+        return clauses;
     }
 
     private BooleanExpression documentWhereClause(NbsUserDetails userDetails) {
@@ -214,13 +225,6 @@ public class ReviewDocumentFinder {
                 .and(PARTICIPATION.subjectClassCd.eq("PSN"))
                 .and(PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE))
                 .and(OBSERVATION.recordStatusCd.eq("UNPROCESSED"));
-    }
-
-    private boolean hasPermission(NbsUserDetails userDetails, String businessObject, String operation) {
-        return userDetails.getAuthorities()
-                .stream()
-                .anyMatch((a) -> a.getBusinessObject().equals(businessObject)
-                        && a.getBusinessOperation().equals(operation));
     }
 
     private DocumentRequiringReview toDocumentRequiringReview(Tuple row) {
@@ -257,12 +261,13 @@ public class ReviewDocumentFinder {
         }
     }
 
-    private void setLabAndMorbReportData(Page<DocumentRequiringReview> docs) {
+    void setLabAndMorbReportData(Page<DocumentRequiringReview> docs) {
         List<Long> ids = docs.stream()
                 .filter(d -> d.type().equals("LabReport") || d.type().equals("MorbReport"))
                 .map(DocumentRequiringReview::id)
                 .toList();
         List<Tuple> extendedData = fetchLabAndMorbReportData(ids);
+
         extendedData.forEach(row -> {
             // Which doc does the data belong to?
             DocumentRequiringReview doc = docs.stream()

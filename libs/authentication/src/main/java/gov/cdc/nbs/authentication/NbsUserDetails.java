@@ -39,4 +39,22 @@ public class NbsUserDetails implements UserDetails {
         return isAccountNonExpired();
     }
 
+    /**
+     * Checks if user has the specified permission
+     * 
+     * @param userDetails
+     * @param businessObject
+     * @param operation
+     * @return
+     */
+    public boolean hasPermission(String businessObject, String operation) {
+        if (getAuthorities() == null) {
+            return false;
+        }
+        return getAuthorities()
+                .stream()
+                .anyMatch((a) -> a.getBusinessObject().equals(businessObject)
+                        && a.getBusinessOperation().equals(operation));
+    }
+
 }
