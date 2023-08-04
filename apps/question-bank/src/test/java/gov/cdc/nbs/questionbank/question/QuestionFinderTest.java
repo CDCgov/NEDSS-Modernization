@@ -93,7 +93,7 @@ class QuestionFinderTest {
 
         // and a question exists
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifierOrQuestionType(eq("123"), captor.capture(), Mockito.anyString(), Mockito.any()))
+        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("123"), captor.capture(), Mockito.anyString(), Mockito.any()))
                 .thenReturn(new PageImpl<>(new ArrayList<>()));
 
         // when a query is run
@@ -110,7 +110,7 @@ class QuestionFinderTest {
 
         // and a question exists
         ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-        when(questionRepository.findAllByNameOrIdentifierOrQuestionType(eq("abc"), captor.capture(), Mockito.anyString(), Mockito.any()))
+        when(questionRepository.findAllByNameOrIdentifierOrQuestionTypeOrSubGroup(eq("abc"), captor.capture(), Mockito.anyString(), Mockito.any()))
                 .thenReturn(new PageImpl<>(new ArrayList<>()));
 
         // when a query is run
