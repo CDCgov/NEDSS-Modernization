@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Icon } from '@trussworks/react-uswds';
+import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
 
@@ -103,18 +103,10 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
     const handleSelected = (e: React.ChangeEvent<HTMLInputElement>, row: TableBody) => {
         if (e.target.checked) {
             if (e.target.value === row.tableDetails[1].title) {
-                if (checkedItems?.[0]?.value === e.target.value) {
-                    setCheckedItems((old) => [
-                        ...old,
-                        { id: row.id as string, value: row.tableDetails[1].title as string }
-                    ]);
-                }
-                if (checkedItems?.length === 0) {
-                    setCheckedItems((old) => [
-                        ...old,
-                        { id: row.id as string, value: row.tableDetails[1].title as string }
-                    ]);
-                }
+                setCheckedItems((old) => [
+                    ...old,
+                    { id: row.id as string, value: row.tableDetails[1].title as string }
+                ]);
             }
         } else {
             setCheckedItems(checkedItems.filter((item) => item.id !== row.id));
@@ -126,10 +118,16 @@ export const PatientInvestigationsTable = ({ patient, pageSize, allowAdd = false
             buttons={
                 allowAdd && (
                     <div className="grid-row">
-                        <Button disabled={checkedItems?.length !== 2} type="button" className="grid-row">
+                        <ClassicButton
+                            disabled={
+                                checkedItems.length !== 2 || checkedItems?.[0]?.value !== checkedItems?.[1]?.value
+                            }
+                            type="button"
+                            className="grid-row"
+                            url={`/nbs/api/profile/${patient}/investigation/${checkedItems?.[0]?.id}/compare/${checkedItems?.[1]?.id}`}>
                             <Icon.Topic className="margin-right-05" />
                             Compare investigations
-                        </Button>
+                        </ClassicButton>
                         <ClassicButton url={`/nbs/api/profile/${patient}/investigation`}>
                             <Icon.Add className="margin-right-05" />
                             Add investigation
