@@ -9,9 +9,7 @@ import { QuickConditionLookup } from 'apps/page-builder/components/QuickConditio
 import { UserContext } from 'user';
 import { fetchCodingSystemOptions, fetchFamilyOptions } from 'apps/page-builder/services/valueSetAPI';
 import { Controller, useForm } from 'react-hook-form';
-// import { MultiSelectControl } from 'components/FormInputs/MultiSelectControl';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-// import DropdownMenu from 'components/DropdownMenu/DropdownMenu';
 
 type FormValues = {
     conditions: [];
