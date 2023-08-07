@@ -81,7 +81,38 @@ public class LabReportMother {
     }
 
     public void unprocessedLabReport(final long patient) {
-        // TODO create observation, participation that meet search criteria requirements
+        // Observation
+        long identifier = idGenerator.next();
+        String localId = idGenerator.nextLocal(LAB_REPORT_CLASS_CODE);
+
+        Observation observation = new Observation(identifier, localId);
+        observation.setActivityToTime(RandomUtil.getRandomDateInPast());
+        observation.setCtrlCdDisplayForm(LAB_REPORT_DISPLAY_FORM);
+
+        // DOCUMENT.id.coalesce(OBSERVATION.id).as(ID),
+        //                 OBSERVATION.ctrlCdDisplayForm.coalesce("Document").as(TYPE),
+        //                 DOCUMENT.addTime.coalesce(OBSERVATION.addTime).as(DATE_RECEIVED),
+        //                 DOCUMENT.addTime.coalesce(OBSERVATION.effectiveFromTime, OBSERVATION.activityToTime).as(EVENT_DATE),
+        //                 DOCUMENT.localId.coalesce(OBSERVATION.localId).as(LOCAL_ID),
+        //                 DOCUMENT.sendingFacilityNm,
+        //                 DOCUMENT.externalVersionCtrlNbr,
+        //                 OBSERVATION.electronicInd,
+        //                 CONDITION.conditionDescTxt
+
+        // .leftJoin(OBSERVATION).on(OBSERVATION.id.eq(PARTICIPATION.actUid.id))
+        // .leftJoin(PARTICIPATION_2).on(PARTICIPATION_2.actUid.id.eq(OBSERVATION.id))
+        // .leftJoin(ORGANIZATION).on(ORGANIZATION.id.eq(PARTICIPATION_2.id.subjectEntityUid))
+        // .leftJoin(PERSON_2).on(PERSON_2.id.eq(PARTICIPATION_2.id.subjectEntityUid))
+        // .leftJoin(RELATIONSHIP).on(RELATIONSHIP.targetActUid.id.eq(PARTICIPATION_2.actUid.id))
+        // .leftJoin(OBS_VALUE_CODED).on(OBS_VALUE_CODED.id.observationUid.eq(RELATIONSHIP.sourceActUid.id))
+        // .leftJoin(CONDITION).on(CONDITION.id.eq(DOCUMENT.cd).or(CONDITION.id.eq(OBSERVATION.cd)))
+
+        // PARTICIPATION.id.typeCd.eq("PATSBJ")
+        //         .and(PARTICIPATION.actClassCd.eq("OBS"))
+        //         .and(PARTICIPATION.subjectClassCd.eq("PSN"))
+        //         .and(PARTICIPATION.recordStatusCd.eq(RecordStatus.ACTIVE))
+        //         .and(PARTICIPATION_2.id.typeCd.in("AUT", "SPC", "PATSBJ", "ORD"))
+        //         .and(OBSERVATION.recordStatusCd.eq("UNPROCESSED"));
     }
 
     private void subjectOfObservation(final Observation observation, final long patient) {
